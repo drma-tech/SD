@@ -1,0 +1,179 @@
+﻿@inherits ComponenteCore<CardMediaList>
+@inject Settings Settings
+@inject Services.TMDB.MediaDetailService MediaDetailService
+@inject Services.TMDB.WatchProvidersService WatchProvidersService
+@inject TmdbExternalIdTvService TmdbExternalIdTvService
+
+<Card Margin="Margin.Is3.FromBottom">
+    <CardHeader Padding="Padding.Is2">
+        @CardHeader
+        <RadioGroup TValue="int" CheckedValue="PageNumber" Buttons="true" Float="Float.Right" Class="btn-group-xs" CheckedValueChanged="PageNumberChanged">
+            <Radio TValue="int" Value="1">1</Radio>
+            <Radio TValue="int" Value="2">2</Radio>
+            <Radio TValue="int" Value="3">3</Radio>
+            <Radio TValue="int" Value="4">4</Radio>
+        </RadioGroup>
+        @if (HasFilter)
+        {
+            <Button Float="Float.Right" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is2.FromRight" Clicked="@(()=>PopupFilter.ShowModal())">
+                <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
+            </Button>
+        }
+    </CardHeader>
+    <CardBody Padding="Padding.Is2">
+        <VisibilityControl @ref="VisibilityControl">
+            <Row Gutter="(8,8)">
+                <Repeater Items="@ListMedia" Skip="@Skip" Take="@Take">
+                    <Column ColumnSize="ColumnSize.Is(GetCustomStyle)">
+                        <Card Margin="Margin.Is0" Style="display:block; text-align:center;">
+                            <Blazorise.Link Clicked="@(() => OpenPopupMedia(context))" Style="cursor: pointer;">
+                                @if (ShowOnlyYear)
+                                {
+                                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; left: 5px;">@context.release_date?.Year</Badge>
+                                }
+                                else
+                                {
+                                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; left: 5px;">@context.release_date?.ToShortDateString()</Badge>
+                                }
+
+                                @if (context.rating >= 8)
+                                {
+                                    <Badge Color="Color.Success" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; right: 5px;">@context.rating</Badge>
+                                }
+                                else if (context.rating >= 6)
+                                {
+                                    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; right: 5px;">@context.rating</Badge>
+                                }
+                                else if (context.rating > 0)
+                                {
+                                    <Badge Color="Color.Danger" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; right: 5px;">@context.rating</Badge>
+                                }
+
+                                @if (string.IsNullOrEmpty(context.poster_path_small))
+                                {
+                                    <Blazorise.Icon Name="FontAwesomeIcons.Image" Class="fa-4x mt-3 mb-5" Style="opacity: 0.5"></Blazorise.Icon>
+                                }
+                                else
+                                {
+                                    <CardImage Source="@context.poster_path_small" Alt="Poster"></CardImage>
+                                }
+                            </Blazorise.Link>
+                            @if (!string.IsNullOrEmpty(context.comments))
+                            {
+                                <CardBody Padding="Padding.Is1">
+                                    @*<CardTitle Size="6" Style="font-size: 0.8rem; min-height: 30.6px;" Margin="Margin.Is1.FromBottom">
+                                        @context.title
+                                        </CardTitle>*@
+                                    @foreach (var item in context.comments.Split(","))
+                                    {
+                                        <Badge Color="Color.Secondary" Margin="Margin.Is1.FromRight">@item</Badge>
+                                    }
+                                </CardBody>
+                            }
+                        </Card>
+                    </Column>
+                </Repeater>
+            </Row>
+        </VisibilityControl>
+    </CardBody>
+</Card>
+
+<PopupMedia @ref="PopupMedia" ServiceDetail="@MediaDetailService" ServiceProviders="@WatchProvidersService"
+            ShowOnlyYear="ShowOnlyYear"></PopupMedia>
+
+<PopupFilter @ref="PopupFilter" MediaType="MediaType" MediaTypeChanged="TypeMediaChanged"></PopupFilter>
+
+@code {
+    public PopupFilter PopupFilter { get; set; }
+    public VisibilityControl VisibilityControl { get; set; }
+
+    [Parameter]
+    public string CardHeader { get; set; }
+
+    [Parameter]
+    public Services.IMediaListService Service { get; set; }
+
+    [Parameter]
+    public bool ShowOnlyYear { get; set; } = true;
+
+    [Parameter]
+    public bool IsIMDB { get; set; } = false;
+
+    [Parameter]
+    public bool HasFilter { get; set; } = true;
+
+    public string GetCustomStyle => Take - Skip < 6 ? "col-xl-2 col-md-2 col-4" : "col-xl col-md-2 col-4";
+
+    public MediaType MediaType { get; set; } = MediaType.movie;
+
+    private PopupMedia PopupMedia { get; set; }
+
+    public HashSet<MediaDetail> ListMedia { get; set; } = new();
+
+    private int PageNumber = 1;
+
+    private int PageSize = 9;
+
+    private long Skip => (PageNumber - 1) * PageSize;
+
+    private long Take => Math.Min(ListMedia.Count, Skip + PageSize);
+
+    private Dictionary<string, string> ExtraParameters { get; set; } = null;
+
+    public async Task LoadData(MediaType mediaType = MediaType.movie, Dictionary<string, string> extraParameters = null, bool clearData = false)
+    {
+        try
+        {
+            VisibilityControl.ShowLoading();
+
+            if (extraParameters != null) ExtraParameters = extraParameters;
+            if (clearData) ListMedia = new();
+
+            MediaType = mediaType;
+
+            await Service.PopulateListMedia(Http, StorageService, Settings, ListMedia, MediaType, PageSize * PageNumber, ExtraParameters);
+
+            VisibilityControl.ShowLoaded(ListMedia.Any());
+
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            VisibilityControl.ShowError(ex.Message);
+        }
+    }
+
+    public async Task TypeMediaChanged(MediaType value)
+    {
+        ListMedia = new();
+
+        await LoadData(value);
+    }
+
+    private async Task PageNumberChanged(int value)
+    {
+        PageNumber = value;
+
+        VisibilityControl.ShowLoading();
+
+        await Service.PopulateListMedia(Http, StorageService, Settings, ListMedia, MediaType, PageSize * PageNumber, ExtraParameters);
+
+        VisibilityControl.ShowLoaded(Take > Skip);
+    }
+
+    private async Task OpenPopupMedia(MediaDetail media)
+    {
+        var tmdb_id = "";
+
+        if (IsIMDB && MediaType == MediaType.tv) //for now, only tv series (imdb) need this kind of workaround
+        {
+            tmdb_id = await TmdbExternalIdTvService.GetTmdbId(Http, StorageService, Settings, media.tmdb_id);
+        }
+        else
+        {
+            tmdb_id = media.tmdb_id;
+        }
+
+        await PopupMedia.ShowModal(tmdb_id, media.MediaType);
+    }
+}

@@ -1,0 +1,86 @@
+﻿@inherits ComponenteCore<HeadLayout>
+@inject NavigationManager Nav
+@inject Settings Settings
+
+<Bar Mode="BarMode.Horizontal" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark">
+    <Container Fluid="true">
+        <BarBrand>
+            <form class="d-flex">
+                <Select TValue="Region" SelectedValue="@Settings.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromRight">
+                    @foreach (var item in Regions.OrderBy(o => o.Name))
+                    {
+                        <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>
+                    }
+                </Select>
+                <Select TValue="Language" SelectedValue="@Settings.Language" SelectedValueChanged="LanguageValueChanged" Size="Size.Small" Style="width:auto;">
+                    @foreach (var item in Languages.OrderBy(o => o.Name))
+                    {
+                        <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>
+                    }
+                </Select>
+            </form>
+        </BarBrand>
+        <BarMenu Style="flex-basis: unset !important;">
+            <BarEnd>
+                <BarItem>
+                    <AuthorizeView>
+                        <Authorized>
+                            <Button Color="Color.Danger" Type="ButtonType.Link" To="/.auth/logout" Float="Float.End" Size="Size.ExtraSmall">
+                                <Blazorise.Icon Name="FontAwesomeIcons.SignOutAlt" /> Sair
+                            </Button>
+                        </Authorized>
+                        <NotAuthorized>
+                            <Button Color="Color.Primary" Type="ButtonType.Link" To="/login-providers" Float="Float.End" Size="Size.ExtraSmall">
+                                <Blazorise.Icon Name="FontAwesomeIcons.SignInAlt" /> Entrar
+                            </Button>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </BarItem>
+            </BarEnd>
+        </BarMenu>
+    </Container>
+</Bar>
+
+@code {
+    private IEnumerable<EnumObject> Regions { get; set; } = Enumerable.Empty<EnumObject>();
+    private IEnumerable<EnumObject> Languages { get; set; } = Enumerable.Empty<EnumObject>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        LoadData();
+    }
+
+    protected void LoadData()
+    {
+        Regions = EnumHelper.GetList<Region>();
+        Languages = EnumHelper.GetList<Language>().Where(w => !string.IsNullOrEmpty(w.Name));
+    }
+
+    protected async Task RegionValueChanged(Region value)
+    {
+        var sett = Settings;
+
+        sett.Region = value;
+
+        StorageService.Local.SetItem("Settings", sett);
+
+        await RefreshCore.ChangeRegion(value);
+    }
+
+    protected void LanguageValueChanged(Language value)
+    {
+        var sett = Settings;
+
+        sett.Language = value;
+
+        var culture = System.Globalization.CultureInfo.CurrentCulture;
+
+        StorageService.Local.SetItem("Settings", sett);
+
+        //await RefreshCore.ChangeLanguage(value);
+
+        Nav.NavigateTo(Nav.Uri, forceLoad: true);
+    }
+}

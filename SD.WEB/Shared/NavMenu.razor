@@ -1,0 +1,47 @@
+﻿@inherits ComponenteCore<NavMenu>
+
+<Bar Mode="BarMode.VerticalInline" CollapseMode="BarCollapseMode.Hide" Breakpoint="Breakpoint.Desktop" NavigationBreakpoint="Breakpoint.Tablet"
+     Display="Display.None.Block.OnDesktop" Background="Background.Dark" ThemeContrast="ThemeContrast.Dark">
+    <BarBrand>
+        <BarItem>
+            <BarLink To="">
+                <BarIcon IconName="FontAwesomeIcons.Tv" />
+                Streaming Discovery
+            </BarLink>
+        </BarItem>
+    </BarBrand>
+    <BarMenu>
+        <BarStart>
+            <BarItem>
+                <BarLink To="/" Match="Match.All">
+                    <BarIcon IconName="FontAwesomeIcons.Stream" /> @TranslationText.Providers
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="/Imdb" Match="Match.Prefix">
+                    <Image Source="logo/imdb.png" Style="width: 26px; vertical-align: middle;"></Image> IMDB
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="/Tmdb" Match="Match.Prefix">
+                    <Image Source="logo/tmdb.png" Style="width: 26px; vertical-align: middle;"></Image> TMDB
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="/Oscar" Match="Match.Prefix">
+                    <Image Source="logo/oscar.png" Style="width: 26px; vertical-align: middle;"></Image> Oscar
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="/GoldenGlobes" Match="Match.Prefix">
+                    <Image Source="logo/goldenglobes.png" Style="width: 26px; vertical-align: middle;"></Image> Golden Globes
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="/Emmys" Match="Match.Prefix">
+                    <Image Source="logo/emmys.png" Style="width: 26px; vertical-align: middle;"></Image> Emmys
+                </BarLink>
+            </BarItem>
+        </BarStart>
+    </BarMenu>
+</Bar>

@@ -1,0 +1,399 @@
+﻿@using SD.Shared.Modal.Tmdb
+@inherits ComponenteCore<PopupMedia>
+@inject ProviderServide ProviderServide
+@inject Settings Settings
+
+<Modal @ref="modal">
+    <ModalContent Centered="true" Size="ModalSize.Large">
+        <ModalHeader>
+            <ModalTitle>@media?.title</ModalTitle>
+            <CloseButton Clicked="HideModal" />
+        </ModalHeader>
+        <ModalBody MaxHeight="70">
+            <VisibilityControl @ref="VisibilityControl">
+                <Row Gutter="(8, 8)">
+                    <Column ColumnSize="ColumnSize.Is12.OnMobile.Is4.OnDesktop">
+                        @if (string.IsNullOrEmpty(media.poster_path_large))
+                        {
+                            //generic image
+                        }
+                        else
+                        {
+                            <Div Style="position:relative;">
+                                @if (ShowOnlyYear)
+                                {
+                                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media.release_date?.Year</Badge>
+                                }
+                                else
+                                {
+                                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media.release_date?.ToShortDateString()</Badge>
+                                }
+                                @if (media.rating >= 8)
+                                {
+                                    <Badge Color="Color.Success" Style="position: absolute; top: 5px; right: 5px;">@media.rating</Badge>
+                                }
+                                else if (media.rating >= 6)
+                                {
+                                    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; right: 5px;">@media.rating</Badge>
+                                }
+                                else if (media.rating > 0)
+                                {
+                                    <Badge Color="Color.Danger" Style="position: absolute; top: 5px; right: 5px;">@media.rating</Badge>
+                                }
+                                <Image Source="@media.poster_path_large" Text="@media.title" Style="width: 100%;"></Image>
+                            </Div>
+                        }
+                    </Column>
+                    <Column ColumnSize="ColumnSize.Is12.OnMobile.Is8.OnDesktop">
+                        <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true">
+                            <Items>
+                                <Tab Name="About">About</Tab>
+                                <Tab Name="Streaming">Streaming (@Settings.Region.GetName(false))</Tab>
+                            </Items>
+                            <Content>
+                                <TabPanel Name="About" Class="mt-3">
+                                    <Badge Color="Color.Secondary" Margin="Margin.Is2.FromRight.Is2.FromBottom">@media.runtime.FormatRuntime()</Badge>
+                                    @foreach (var item in media.Genres)
+                                    {
+                                        <Badge Color="Color.Secondary" Margin="Margin.Is2.FromRight.Is2.FromBottom">@item</Badge>
+                                    }
+                                    <Paragraph Alignment="TextAlignment.Justified">
+                                        @media.plot
+                                    </Paragraph>
+                                    @if (media.Videos != null && media.Videos.Any())
+                                    {
+                                        <Row Gutter="(8, 8)">
+                                            <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                                <Button Color="Color.Dark" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">Trailers</Button>
+                                            </Column>
+                                            @foreach (var item in media.Videos)
+                                            {
+                                                <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                    <Button Type="ButtonType.Link" To="@("https://www.youtube.com/watch?v=" + item.key)" Target="Target.Blank" Color="Color.Light"
+                                                    Padding="Padding.Is1" title="@item.name" Block="true">
+                                                        <Blazorise.Icon Name="FontAwesomeIcons.Video"></Blazorise.Icon>
+                                                    </Button>
+                                                </Column>
+                                            }
+                                        </Row>
+                                    }
+                                    @{
+                                        var link = Providers.GetLink(Settings.Region);
+                                        if (string.IsNullOrEmpty(link))
+                                        {
+                                            link = Providers.GetLink(Region.US);
+                                        }
+                                        @if (!string.IsNullOrEmpty(link))
+                                        {
+                                            var uri_link = new Uri(link);
+                                            var fomatted_link = "https://" + uri_link.Host + string.Join("", uri_link.Segments.SkipLast(1));
+                                            <Row Margin="Margin.Is3.FromTop">
+                                                <Column>
+                                                    <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
+                                                        Sugestões de melhorias deste título: <a href="@fomatted_link" target="_blank" rel="noopener">@(uri_link.Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+                                                    </Alert>
+                                                </Column>
+                                            </Row>
+                                        }
+                                    }
+                                </TabPanel>
+                                <TabPanel Name="Streaming" Class="mt-3">
+                                    @{
+                                        var hasProvider = false;
+
+                                        if (Providers != null && Providers.results != null && Providers.GetFreeListProviders(Settings.Region).Any())
+                                        {
+                                            hasProvider = true;
+                                            <Row Gutter="(8, 8)">
+                                                <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                                    <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.Free</Button>
+                                                </Column>
+                                                @foreach (var item in Providers.GetFreeListProviders(Settings.Region))
+                                                {
+                                                    <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                        <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                            @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.FREE))
+                                                            {
+                                                                <span>false</span>
+                                                            }
+                                                        </Button>
+                                                    </Column>
+                                                }
+                                            </Row>
+                                        }
+                                        if (Providers != null && Providers.results != null && Providers.GetAdsListProviders(Settings.Region).Any())
+                                        {
+                                            hasProvider = true;
+                                            <Row Gutter="(8, 8)">
+                                                <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                                    <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.Ads</Button>
+                                                </Column>
+                                                @foreach (var item in Providers.GetAdsListProviders(Settings.Region))
+                                                {
+                                                    <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                        <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                            @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.AVOD))
+                                                            {
+                                                                <span>false</span>
+                                                            }
+                                                        </Button>
+                                                    </Column>
+                                                }
+                                            </Row>
+                                        }
+                                        if (Providers != null && Providers.results != null && Providers.GetFlatRateListProviders(Settings.Region).Any())
+                                        {
+                                            hasProvider = true;
+                                            <Row Gutter="(8, 8)">
+                                                <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                                    <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.FlatRate</Button>
+                                                </Column>
+                                                @foreach (var item in Providers.GetFlatRateListProviders(Settings.Region))
+                                                {
+                                                    <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                        <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                            @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.SVOD))
+                                                            {
+                                                                <span>false</span>
+                                                            }
+                                                        </Button>
+                                                    </Column>
+                                                }
+                                            </Row>
+                                        }
+                                        if (Providers != null && Providers.results != null && Providers.GetFlatRateBuyListProviders(Settings.Region).Any())
+                                        {
+                                            hasProvider = true;
+                                            <Row Gutter="(8, 8)">
+                                                <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                                    <Button Color="Color.Warning" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.FlatRateBuy</Button>
+                                                </Column>
+                                                @foreach (var item in Providers.GetFlatRateBuyListProviders(Settings.Region))
+                                                {
+                                                    <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                        <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                            @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.PVOD))
+                                                            {
+                                                                <span>false</span>
+                                                            }
+                                                        </Button>
+                                                    </Column>
+                                                }
+                                            </Row>
+                                        }
+                                        if (Providers != null && Providers.results != null && Providers.GetRentListProviders(Settings.Region).Any())
+                                        {
+                                            hasProvider = true;
+                                            <Row Gutter="(8, 8)">
+                                                <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                                    <Button Color="Color.Primary" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.Rent</Button>
+                                                </Column>
+                                                @foreach (var item in Providers.GetRentListProviders(Settings.Region))
+                                                {
+                                                    <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                        <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                            @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
+                                                            {
+                                                                <span>false</span>
+                                                            }
+                                                        </Button>
+                                                    </Column>
+                                                }
+                                            </Row>
+                                        }
+                                        if (Providers != null && Providers.results != null && Providers.GetBuyListProviders(Settings.Region).Any())
+                                        {
+                                            hasProvider = true;
+                                            <Row Gutter="(8, 8)">
+                                                <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                                    <Button Color="Color.Danger" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.Buy</Button>
+                                                </Column>
+                                                @foreach (var item in Providers.GetBuyListProviders(Settings.Region))
+                                                {
+                                                    <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                        <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                            @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
+                                                            {
+                                                                <span>false</span>
+                                                            }
+                                                        </Button>
+                                                    </Column>
+                                                }
+                                            </Row>
+                                        }
+
+                                        if (hasProvider)
+                                        {
+                                            <Row Margin="Margin.Is3.FromTop">
+                                                <Column>
+                                                    <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
+                                                        Oferecimento: <a href="https://www.justwatch.com/" target="_blank" rel="noopener">@(new Uri("https://www.justwatch.com/").Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+                                                    </Alert>
+                                                </Column>
+                                            </Row>
+                                        }
+                                        else
+                                        {
+                                            <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
+                                                Infelizmente este título não está disponível em sua região
+                                            </Alert>
+                                        }
+                                    }
+                                </TabPanel>
+                            </Content>
+                        </Tabs>
+                    </Column>
+                </Row>
+            </VisibilityControl>
+        </ModalBody>
+        <ModalFooter Style="justify-content: space-between;">
+            @if (!string.IsNullOrEmpty(media?.homepage))
+            {
+                <a href="@media.homepage" target="_blank" rel="noopener" style="float: left;">@(new Uri(media.homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+            }
+            @*<Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false">Atualizar</Button>*@
+            <Button Color="Color.Secondary" Clicked="@HideModal">@TranslationText.Close</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+@code {
+    private Modal modal;
+    public VisibilityControl VisibilityControl { get; set; }
+
+    [Parameter]
+    public Services.TMDB.MediaDetailService ServiceDetail { get; set; }
+
+    [Parameter]
+    public Services.TMDB.WatchProvidersService ServiceProviders { get; set; }
+
+    [Parameter]
+    public bool ShowOnlyYear { get; set; } = true;
+
+    public MediaDetail media { get; set; }
+    public MediaProviders Providers { get; set; }
+
+    private List<Provider> AllProviders = new();
+
+    string selectedTab = "About";
+
+    public async Task ShowModal(string tmdb_id, MediaType type)
+    {
+        try
+        {
+            modal.Show();
+
+            VisibilityControl.ShowLoading();
+
+            media = await ServiceDetail.GetMedia(Http, StorageService, Settings, tmdb_id, type);
+            Providers = await ServiceProviders.GetProviders(Http, StorageService, Settings, tmdb_id, type);
+            AllProviders = await ProviderServide.GetAllProviders(Http, StorageService.Local);
+
+            VisibilityControl.ShowLoaded(media != null);
+        }
+        catch (Exception ex)
+        {
+            VisibilityControl.ShowError(ex.Message);
+        }
+    }
+
+    public void HideModal()
+    {
+        modal.Hide();
+    }
+
+    private void Atualizar()
+    {
+        foreach (var item in Providers.GetFreeListProviders(Settings.Region))
+        {
+            var provider = AllProviders.Single(s => s.id == item.provider_id.ToString());
+
+            var model = DeliveryModel.FREE;
+
+            if (!provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetAdsListProviders(Settings.Region))
+        {
+            var provider = AllProviders.Single(s => s.id == item.provider_id.ToString());
+
+            var model = DeliveryModel.AVOD;
+
+            if (!provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetFlatRateListProviders(Settings.Region))
+        {
+            var provider = AllProviders.Single(s => s.id == item.provider_id.ToString());
+
+            var model = DeliveryModel.SVOD;
+
+            if (!provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetBuyListProviders(Settings.Region))
+        {
+            var provider = AllProviders.Single(s => s.id == item.provider_id.ToString());
+
+            var model = DeliveryModel.TVOD;
+
+            if (!provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetRentListProviders(Settings.Region))
+        {
+            var provider = AllProviders.Single(s => s.id == item.provider_id.ToString());
+
+            var model = DeliveryModel.TVOD;
+
+            if (!provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetFlatRateBuyListProviders(Settings.Region))
+        {
+            var provider = AllProviders.Single(s => s.id == item.provider_id.ToString());
+
+            var model = DeliveryModel.PVOD;
+
+            if (!provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        StorageService.Local.SetItem("Data/providers.json", AllProviders);
+    }
+}

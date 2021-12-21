@@ -1,0 +1,106 @@
+﻿@inherits ComponenteCore<PopupFilter>
+@inject ProviderServide ProviderServide
+@inject Settings Settings
+
+<Modal @ref="modal">
+    <ModalContent Centered="true" Size="ModalSize.Small">
+        <ModalHeader>
+            <ModalTitle>Filter</ModalTitle>
+            <CloseButton Clicked="HideModal" />
+        </ModalHeader>
+        <ModalBody MaxHeight="70">
+            @if (MediaTypeChanged.HasDelegate)
+            {
+                <Field>
+                    <FieldLabel>@TranslationText.MediaTypes</FieldLabel>
+                    <Select TValue="MediaType" @bind-SelectedValue="@MediaType">
+                        <SelectItem TValue="MediaType"></SelectItem>
+                        @foreach (var item in EnumHelper.GetList<MediaType>())
+                        {
+                            <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>
+                        }
+                    </Select>
+                </Field>
+            }
+            @if (MediaTypeNullChanged.HasDelegate)
+            {
+                <Field>
+                    <FieldLabel>@TranslationText.MediaTypes</FieldLabel>
+                    <Select TValue="MediaType?" @bind-SelectedValue="@MediaTypeNull">
+                        <SelectItem TValue="MediaType?"></SelectItem>
+                        @foreach (var item in EnumHelper.GetList<MediaType>())
+                        {
+                            <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>
+                        }
+                    </Select>
+                </Field>
+            }
+            @if (DeliveryModelChanged.HasDelegate)
+            {
+                <Field>
+                    <FieldLabel>@TranslationText.DeliveryModel</FieldLabel>
+                    <Select TValue="DeliveryModel?" @bind-SelectedValue="@DeliveryModel">
+                        <SelectItem TValue="DeliveryModel?"></SelectItem>
+                        @foreach (var item in EnumHelper.GetList<DeliveryModel>())
+                        {
+                            <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>
+                        }
+                    </Select>
+                </Field>
+            }
+            @if (ContentChanged.HasDelegate)
+            {
+                <Field>
+                    <FieldLabel>Name or Description</FieldLabel>
+                    <TextEdit @bind-Text="Content"></TextEdit>
+                </Field>
+            }
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">@TranslationText.OK</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+@code {
+    private Modal modal;
+
+    [Parameter]
+    public MediaType MediaType { get; set; } = MediaType.movie;
+
+    [Parameter]
+    public EventCallback<MediaType> MediaTypeChanged { get; set; }
+
+    [Parameter]
+    public MediaType? MediaTypeNull { get; set; } = MediaType.movie;
+
+    [Parameter]
+    public EventCallback<MediaType?> MediaTypeNullChanged { get; set; }
+
+    [Parameter]
+    public DeliveryModel? DeliveryModel { get; set; }
+
+    [Parameter]
+    public EventCallback<DeliveryModel?> DeliveryModelChanged { get; set; }
+
+    [Parameter]
+    public string Content { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ContentChanged { get; set; }
+
+    public void ShowModal()
+    {
+        modal.Show();
+    }
+
+    public async Task HideModal()
+    {
+        modal.Hide();
+
+        await MediaTypeChanged.InvokeAsync(MediaType);
+        await MediaTypeNullChanged.InvokeAsync(MediaTypeNull);
+        await DeliveryModelChanged.InvokeAsync(DeliveryModel);
+        await ContentChanged.InvokeAsync(Content);
+    }
+}

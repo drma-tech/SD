@@ -1,0 +1,43 @@
+﻿@page "/Tmdb"
+@inherits ComponenteCore<Tmdb>
+@inject IStringLocalizer<App> L
+@inject Settings Settings
+@inject Services.TMDB.PopularService PopularService
+@inject Services.TMDB.TopRatedService TopRatedService
+@inject Services.TMDB.UpcomingService UpcomingService
+
+<HeadPage ImageSource="logo/tmdb.png" Text="@L["tmdb_desc"]" Link="https://www.themoviedb.org/"></HeadPage>
+
+<CardMediaList @ref="cardPopular" Service="@PopularService" CardHeader="@L["Popular"]"></CardMediaList>
+<CardMediaList @ref="cardTopRated" Service="@TopRatedService" CardHeader="@($"{L["TopRated"]} ({Settings.Region})")"></CardMediaList>
+<CardMediaList @ref="cardUpcoming" Service="@UpcomingService" CardHeader="@($"{L["ComingSoon"]} ({Settings?.Region})")" HasFilter="false" ShowOnlyYear="false"></CardMediaList>
+
+@code {
+    public CardMediaList cardPopular { get; set; }
+    public CardMediaList cardTopRated { get; set; }
+    public CardMediaList cardUpcoming { get; set; }
+
+    public MediaType MediaType { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        RefreshCore.RegionChanged = new EventCallbackFactory().Create(this, async (Region value) => { await LoadData(true); });
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData();
+        }
+    }
+
+    protected async Task LoadData(bool clearData = false)
+    {
+        await cardPopular.LoadData(clearData: clearData);
+        await cardTopRated.LoadData(clearData: clearData);
+        await cardUpcoming.LoadData(clearData: clearData);
+    }
+}

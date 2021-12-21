@@ -1,0 +1,84 @@
+﻿@if (state == State.Loading)
+{
+    <div class="alert alert-warning">
+        <i class="spinner-border spinner-border-sm"></i> @TranslationText.Loading
+    </div>
+}
+else if (state == State.Loaded)
+{
+    @ChildContent
+}
+else if (state == State.NoData)
+{
+    <div class="alert alert-primary">
+        <i class="fas fa-exclamation-triangle"></i> @TranslationText.NoData
+    </div>
+}
+else if (state == State.Error)
+{
+    <div class="alert alert-danger">
+        <i class="fas fa-bug"></i> @error
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public EventCallback LoadMethod { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public bool HasData { get; set; }
+
+    private State state { get; set; }
+
+    private string error { get; set; }
+
+    public enum State
+    {
+        Loading = 1,
+        Loaded = 2,
+        NoData = 3,
+        Error = 4
+    }
+
+    public void ShowLoading()
+    {
+        state = State.Loading;
+
+        StateHasChanged();
+    }
+
+    public void ShowLoaded(bool hasData)
+    {
+        if (hasData)
+            state = State.Loaded;
+        else
+            state = State.NoData;
+
+        StateHasChanged();
+    }
+
+    public void ShowError(string error)
+    {
+        state = State.Error;
+        this.error = error;
+
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && LoadMethod.HasDelegate)
+        {
+            ShowLoading();
+
+            await LoadMethod.InvokeAsync();
+            await Task.Delay(1);
+
+            ShowLoaded(HasData);
+        }
+    }
+}

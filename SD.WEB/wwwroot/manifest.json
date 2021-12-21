@@ -1,0 +1,29 @@
+{
+  "name": "Streaming Discovery",
+  "short_name": "Streaming Discovery",
+  "description": "Descubra os melhores streamings, filmes e seriados mais populares do momento ou os mais premiados (oscar, globo de ouro, emmys, etc)",
+  "lang": "pt-BR",
+  "start_url": "./",
+  "display": "standalone",
+  "theme_color": "#03173d",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.justwatch.justwatch",
+      "id": "com.justwatch.justwatch"
+    },
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.imdb.mobile",
+      "id": "com.imdb.mobile"
+    }
+  ]
+}

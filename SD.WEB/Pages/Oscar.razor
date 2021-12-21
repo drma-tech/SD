@@ -1,0 +1,45 @@
+﻿@page "/Oscar"
+@inherits ComponenteCore<Oscar>
+@inject Services.TMDB.ListService Service
+
+<HeadPage ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></HeadPage>
+
+<CardMediaList @ref="cardPicture" Service="@Service" CardHeader="@TranslationText.MotionPicture" HasFilter="false"></CardMediaList>
+<CardMediaList @ref="cardAnimated" Service="@Service" CardHeader="@TranslationText.Animated" HasFilter="false"></CardMediaList>
+<CardMediaList @ref="cardInternational" Service="@Service" CardHeader="@TranslationText.International" HasFilter="false"></CardMediaList>
+<CardMediaList @ref="cardDocumentary" Service="@Service" CardHeader="@TranslationText.Documentary" HasFilter="false"></CardMediaList>
+
+@code {
+    public CardMediaList cardPicture { get; set; }
+    public CardMediaList cardAnimated { get; set; }
+    public CardMediaList cardInternational { get; set; }
+    public CardMediaList cardDocumentary { get; set; }
+
+    //public bool FindExternalId { get; set; }
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    FindExternalId = Settings.TypeMedia == TypeMedia.tv;
+    //}
+
+    private Dictionary<string, string> GetExtraParameters(string list_id)
+    {
+        return new Dictionary<string, string>() { { "list_id", list_id } };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData();
+        }
+    }
+
+    protected async Task LoadData()
+    {
+        await cardPicture.LoadData(extraParameters: GetExtraParameters("7103422"));
+        await cardAnimated.LoadData(extraParameters: GetExtraParameters("7103492"));
+        await cardInternational.LoadData(extraParameters: GetExtraParameters("7103493"));
+        await cardDocumentary.LoadData(extraParameters: GetExtraParameters("7103488"));
+    }
+}

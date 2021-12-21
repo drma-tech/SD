@@ -1,0 +1,85 @@
+﻿@page "/"
+@page "/Index"
+@inherits ComponenteCore<Index>
+@using System.Linq
+@inject ProviderServide ProviderServide
+@inject Settings Settings
+
+<Card Margin="Margin.Is3.FromBottom">
+    <CardHeader Padding="Padding.Is2">
+        @TranslationText.Providers (@Settings?.Region)
+        <RadioGroup TValue="int" @bind-CheckedValue="ProviderCount" Buttons="true" Float="Float.Right" Class="btn-group-xs">
+            <Radio TValue="int" Value="48">48</Radio>
+            <Radio TValue="int" Value="1000">@TranslationText.All</Radio>
+        </RadioGroup>
+        <Button Float="Float.Right" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is2.FromRight" Clicked="@(()=>PopupFilter.ShowModal())">
+            <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
+        </Button>
+    </CardHeader>
+    <CardBody Padding="Padding.Is2">
+        <VisibilityControl LoadMethod="LoadProviders" HasData="AllProviders.Any()">
+            <Row Gutter="(8,8)">
+                @foreach (var item in GetFilteredProviders(MediaType, DeliveryModel, Content))
+                {
+                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                        <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1" Clicked="@(() => ShowPopupProvider(item))">
+                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.name" Class="w-100"></Image>
+                            @*@if (string.IsNullOrEmpty(item.link))
+                                {<p class="m-0" style="color: red">link</p>}*@
+                            @*@if (string.IsNullOrEmpty(item.description))
+                                {<p class="m-0" style="color: red">description</p>}*@
+                            @*@if (!item.models.Any())
+                                {<p class="m-0" style="color: red">model</p>}*@
+                            @*@if (item.models.Any(a => a == MyStream.Modal.Enum.DeliveryModel.SVOD) && !item.plans.Any())
+                                {<p class="m-0" style="color: red">plan</p>}*@
+                        </Button>
+                    </Column>
+                }
+            </Row>
+        </VisibilityControl>
+    </CardBody>
+</Card>
+
+<PopupProvider @ref="PopupProvider"></PopupProvider>
+<PopupFilter @ref="PopupFilter" @bind-MediaTypeNull="MediaType" @bind-DeliveryModel="DeliveryModel" @bind-Content="Content"></PopupFilter>
+
+@code {
+    public PopupProvider PopupProvider { get; set; }
+    public PopupFilter PopupFilter { get; set; }
+
+    public MediaType? MediaType { get; set; } = SD.Shared.Modal.Enum.MediaType.movie;
+    public DeliveryModel? DeliveryModel { get; set; }
+    public string Content { get; set; }
+
+    public int ProviderCount { get; set; } = 48;
+
+    private List<Provider> AllProviders = new();
+
+    public IEnumerable<Provider> GetFilteredProviders(MediaType? mediaType, DeliveryModel? deliveryModel, string content) => AllProviders.Where(p =>
+        p.regions.Any(a => a == Settings.Region) &
+        (mediaType.HasValue ? p.types.Any(a => a == mediaType.Value) : true) &
+        (deliveryModel.HasValue ? p.models.Any(a => a == deliveryModel.Value) : true) &
+        p.enabled &
+        (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true) &
+        (string.IsNullOrEmpty(content) ? true : (p.name.Contains(content, StringComparison.InvariantCultureIgnoreCase) | (string.IsNullOrEmpty(p.description) ? true : p.description.Contains(content, StringComparison.InvariantCultureIgnoreCase))))
+    ).Take(ProviderCount);
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        RefreshCore.RegionChanged = new EventCallbackFactory().Create(this, (Region value) => Settings.Region = value);
+    }
+
+    private async Task LoadProviders()
+    {
+        AllProviders = await ProviderServide.GetAllProviders(Http, StorageService.Local);
+    }
+
+    private async Task ShowPopupProvider(Provider item)
+    {
+        var type = MediaType.HasValue ? MediaType.Value : SD.Shared.Modal.Enum.MediaType.movie;
+
+        await PopupProvider.ShowModal(item, type);
+    }
+}

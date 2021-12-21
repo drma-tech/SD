@@ -1,0 +1,32 @@
+﻿@inject IMessageService MessageService
+
+<Alert Color="Color.Info" Visible="true" Padding="Padding.Is2">
+    <AlertDescription>
+        <Row Gutter="(8,8)" Style="margin-left: -4px; margin-right: -4px; margin-top: -4px; margin-bottom: -4px;">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Image Source="@ImageSource" Style="height: 26px;"></Image>
+            </Column>
+            <Column>
+                <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is0.FromBottom">
+                    <a href="@Link" target="_blank" rel="noopener">@(new Uri(Link).Host)</a>
+                </Paragraph>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Size="Size.ExtraSmall" Color="Color.Info" Clicked="@(()=>MessageService.Info(Text, "About", opt => { opt.ShowMessageIcon = false; }))">
+                    <Blazorise.Icon Name="FontAwesomeIcons.QuestionCircle"></Blazorise.Icon>
+                </Button>
+            </Column>
+        </Row>
+    </AlertDescription>
+</Alert>
+
+@code {
+    [Parameter]
+    public string ImageSource { get; set; }
+
+    [Parameter]
+    public string Text { get; set; }
+
+    [Parameter]
+    public string Link { get; set; }
+}

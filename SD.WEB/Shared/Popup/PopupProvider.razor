@@ -1,0 +1,126 @@
+﻿@inherits ComponenteCore<PopupProvider>
+@inject Settings Settings
+@inject INotificationService NotificationService
+@inject Services.TMDB.DiscoverService DiscoverService
+
+<Modal @ref="modal">
+    <ModalContent Centered="true" Size="ModalSize.Large">
+        <ModalHeader>
+            <ModalTitle>@provider.name</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody MaxHeight="70">
+            <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true">
+                <Items>
+                    <Tab Name="About">About</Tab>
+                    <Tab Name="Details">Details</Tab>
+                    <Tab Name="Catalog">Catalog</Tab>
+                </Items>
+                <Content>
+                    <TabPanel Name="About" Class="mt-3">
+                        <Row Margin="Margin.Is2.FromBottom" Gutter="(8, 8)">
+                            <Column ColumnSize="ColumnSize.IsAuto">
+                                @if (!string.IsNullOrEmpty(provider.logo_path))
+                                {
+                                    <Image Source="@("https://www.themoviedb.org/t/p/original/" + provider.logo_path)" Text="@provider.name"></Image>
+                                }
+                            </Column>
+                            <Column>
+                                <Paragraph Alignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
+                                    @provider.description
+                                </Paragraph>
+                                <Paragraph>
+                                    @if (string.IsNullOrEmpty(provider.link))
+                                    {
+                                        <a href="@("https://www.google.com/search?q=streaming+" + provider.name)" target="_blank" rel="noopener" style="float: left;">search on google</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@provider.link" target="_blank" rel="noopener" style="float: left;">@(new Uri(provider.link).Host)</a>
+                                    }
+                                </Paragraph>
+                            </Column>
+                        </Row>
+                    </TabPanel>
+                    <TabPanel Name="Details" Class="mt-3">
+                        <Divider DividerType="DividerType.TextContent" Text="@TranslationText.MediaTypes" />
+                        @foreach (var item in provider.types)
+                        {
+                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromRight">@item.GetName()</Badge>
+                        }
+                        <Divider DividerType="DividerType.TextContent" Text="@TranslationText.Regions" />
+                        @foreach (var item in provider.regions.OrderBy(o => o.GetName()))
+                        {
+                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromRight">@item.GetName()</Badge>
+                        }
+                        <Divider DividerType="DividerType.TextContent" Text="@TranslationText.DeliveryModel" />
+                        @foreach (var item in provider.models)
+                        {
+                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromRight" title="@item.GetDescription()" Style="cursor: help;">
+                                @item.GetName() <Blazorise.Icon Name="FontAwesomeIcons.QuestionCircle"></Blazorise.Icon>
+                            </Badge>
+                        }
+                        @if (provider.models.Any(a => a == DeliveryModel.SVOD))
+                        {
+                            <Divider DividerType="DividerType.TextContent" Text="@TranslationText.Plans" />
+                            @if (provider.plans.Any())
+                            {
+                                @foreach (var item in provider.plans)
+                                {
+                                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromRight">@item.name: @item.price.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture(provider.head_language.GetName(false)))</Badge>
+                                }
+                            }
+                            else
+                            {
+                                <Badge Color="Color.Danger">@TranslationText.NotFound</Badge>
+                            }
+                        }
+                    </TabPanel>
+                    <TabPanel Name="Catalog" Class="mt-3">
+                        <CardMediaList @ref="cardPopular" Service="@DiscoverService" CardHeader="@TranslationText.Popular"></CardMediaList>
+                        <CardMediaList @ref="cardNew" Service="@DiscoverService" CardHeader="@TranslationText.Release"></CardMediaList>
+                        <CardMediaList @ref="cardTopRated" Service="@DiscoverService" CardHeader="@TranslationText.TopRated"></CardMediaList>
+                    </TabPanel>
+                </Content>
+            </Tabs>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@modal.Hide">@TranslationText.Close</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+<PopupCatalog @ref="PopupCatalog"></PopupCatalog>
+
+@code {
+    public PopupCatalog PopupCatalog { get; set; }
+
+    private Modal modal;
+
+    public Provider provider { get; set; } = new();
+
+    public MediaType MediaType { get; set; }
+
+    string selectedTab = "About";
+
+    public CardMediaList cardPopular { get; set; }
+    public CardMediaList cardNew { get; set; }
+    public CardMediaList cardTopRated { get; set; }
+
+    public async Task ShowModal(Provider provider, MediaType MediaType)
+    {
+        this.provider = provider;
+        this.MediaType = MediaType;
+
+        modal.Show();
+
+        await cardPopular.LoadData(MediaType, GetExtraParameters(provider.id, "popularity.desc"), true);
+        await cardNew.LoadData(MediaType, GetExtraParameters(provider.id, "primary_release_date.desc"), true);
+        await cardTopRated.LoadData(MediaType, GetExtraParameters(provider.id, "vote_average.desc"), true);
+    }
+
+    private Dictionary<string, string> GetExtraParameters(string provider_id, string sort_by)
+    {
+        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by } }; ;
+    }
+}
