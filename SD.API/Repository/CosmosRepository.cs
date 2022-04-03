@@ -102,20 +102,24 @@ namespace SD.API.Repository
             return results;
         }
 
-        public async Task<T> Add<T>(T item, CancellationToken cancellationToken) where T : CosmosBase
+        public async Task<T> Add<T>(T item, CancellationToken cancellationToken, double? ru_limit = null) where T : CosmosBase
         {
+            if (!ru_limit.HasValue) ru_limit = ru_limit_save;
+
             var response = await Container.CreateItemAsync(item, new PartitionKey(item.Key), null, cancellationToken);
 
-            if (response.RequestCharge > ru_limit_save) throw new NotificationException("RU limit exceeded");
+            if (response.RequestCharge > ru_limit) throw new NotificationException("RU limit exceeded");
 
             return response.Resource;
         }
 
-        public async Task<bool> Update<T>(T item, CancellationToken cancellationToken) where T : CosmosBase
+        public async Task<bool> Update<T>(T item, CancellationToken cancellationToken, double? ru_limit = null) where T : CosmosBase
         {
+            if (!ru_limit.HasValue) ru_limit = ru_limit_save;
+
             var response = await Container.ReplaceItemAsync(item, item.Id, new PartitionKey(item.Key), null, cancellationToken);
 
-            if (response.RequestCharge > ru_limit_save) throw new NotificationException("RU limit exceeded");
+            if (response.RequestCharge > ru_limit) throw new NotificationException("RU limit exceeded");
 
             return response.StatusCode == System.Net.HttpStatusCode.OK;
         }

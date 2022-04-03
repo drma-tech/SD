@@ -16,5 +16,12 @@ namespace SD.API.Core
 
             return obj;
         }
+
+        public static async Task<I> GetParameterGenericObject<I>(this HttpRequest req, CancellationToken cancellationToken)
+        {
+            var obj = await JsonSerializer.DeserializeAsync<I>(req.Body, new JsonSerializerOptions(), cancellationToken);
+
+            return obj;
+        }
     }
 }

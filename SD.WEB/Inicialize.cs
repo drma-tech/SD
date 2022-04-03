@@ -39,7 +39,6 @@ namespace SD.WEB
             collection.AddScoped<Services.TMDB.PopularService>();
             collection.AddScoped<Services.TMDB.TopRatedService>();
             collection.AddScoped<Services.TMDB.UpcomingService>();
-            collection.AddScoped<Services.TMDB.UpdateProviders>();
             collection.AddScoped<Services.TMDB.WatchProvidersService>();
             collection.AddScoped<Services.TmdbExternalIdTvService>();
 

@@ -112,7 +112,7 @@ namespace SD.WEB.Core
             return response;
         }
 
-        public static async Task<HttpResponseMessage> Put(this HttpClient http, string requestUri, object obj)
+        public static async Task<HttpResponseMessage> Put(this HttpClient http, string requestUri, object? obj = null)
         {
             return await http.PutAsJsonAsync(http.BaseApi() + requestUri, obj, GetOptions());
         }

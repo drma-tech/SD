@@ -118,9 +118,9 @@
 
     private long Take => Math.Min(ListMedia.Count, Skip + PageSize);
 
-    private Dictionary<string, string> ExtraParameters { get; set; } = null;
+    private Dictionary<string, string>? ExtraParameters { get; set; } = null;
 
-    public async Task LoadData(MediaType mediaType = MediaType.movie, Dictionary<string, string> extraParameters = null, bool clearData = false)
+    public async Task LoadData(MediaType mediaType = MediaType.movie, Dictionary<string, string>? extraParameters = null, bool clearData = false)
     {
         try
         {

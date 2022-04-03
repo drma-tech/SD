@@ -26,5 +26,10 @@ namespace SD.WEB.Services
 
             await Http.Post("Provider/Post", _providers, session, "Data/providers.json");
         }
+
+        public async Task UpdateAllProvider(HttpClient Http)
+        {
+            await Http.Put("Provider/UpdateAllProvider");
+        }
     }
 }

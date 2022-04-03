@@ -16,8 +16,8 @@ namespace SD.API.Core
 
         Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, string partitionKeyValue, CosmosType Type, CancellationToken cancellationToken) where T : CosmosBase;
 
-        Task<T> Add<T>(T item, CancellationToken cancellationToken) where T : CosmosBase;
+        Task<T> Add<T>(T item, CancellationToken cancellationToken, double? ru_limit = null) where T : CosmosBase;
 
-        Task<bool> Update<T>(T item, CancellationToken cancellationToken) where T : CosmosBase;
+        Task<bool> Update<T>(T item, CancellationToken cancellationToken, double? ru_limit = null) where T : CosmosBase;
     }
 }

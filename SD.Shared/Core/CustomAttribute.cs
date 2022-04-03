@@ -1,4 +1,5 @@
 ﻿using SD.Shared.Core;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Resources;
 
@@ -19,12 +20,12 @@ namespace SD.Shared.Core
 
     public static class CustomAttributeHelper
     {
-        public static string GetName(this Enum value, bool translate = true)
+        public static string? GetName(this Enum value, bool translate = true)
         {
             return value.GetCustomAttribute(translate)?.Name;
         }
 
-        public static string GetDescription(this Enum value, bool translate = true)
+        public static string? GetDescription(this Enum value, bool translate = true)
         {
             return value.GetCustomAttribute(translate)?.Description;
         }
@@ -37,13 +38,13 @@ namespace SD.Shared.Core
 
             var attr = fieldInfo.GetCustomAttribute(typeof(CustomAttribute)) as CustomAttribute;
 
-            if (attr == null) throw new NullReferenceException("attr null");
+            if (attr == null) throw new ValidationException("attr null");
 
             if (translate && attr.ResourceType != null) //translations
             {
                 var rm = new ResourceManager(attr.ResourceType.FullName ?? "", attr.ResourceType.Assembly);
 
-                if (rm == null) throw new NullReferenceException("ResourceManager null");
+                if (rm == null) throw new ValidationException("ResourceManager null");
 
                 if (!string.IsNullOrEmpty(attr.Name)) attr.Name = rm.GetString(attr.Name);
                 if (!string.IsNullOrEmpty(attr.Description)) attr.Description = rm.GetString(attr.Description);

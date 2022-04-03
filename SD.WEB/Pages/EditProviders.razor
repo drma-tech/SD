@@ -1,7 +1,6 @@
 ﻿@page "/EditProviders"
 @inherits ComponenteCore<EditProviders>
 @inject ProviderServide ProviderServide
-@inject Services.TMDB.UpdateProviders UpdateProviders
 @using HtmlAgilityPack
 @using System.Net.Http
 
@@ -109,7 +108,7 @@
 
     protected async Task UpdateProvidersOnClick()
     {
-        await UpdateProviders.UpdateAllProvider(Http, StorageService);
+        await ProviderServide.UpdateAllProvider(Http);
     }
 
     protected void SaveSession()

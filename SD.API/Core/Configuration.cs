@@ -1,4 +1,4 @@
-﻿namespace SD.WEB.Core
+﻿namespace SD.API.Core
 {
     public class TmdbOptions
     {
