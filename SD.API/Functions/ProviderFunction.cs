@@ -89,7 +89,7 @@ namespace SD.API.Functions
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Provider>), Description = "The OK response")]
         public async Task<IActionResult> UpdateAllProvider(
-           [HttpTrigger(AuthorizationLevel.Anonymous, FunctionMethod.PUT, Route = "Provider/UpdateAllProvider")] HttpRequest req,
+           [HttpTrigger(AuthorizationLevel.Admin, FunctionMethod.PUT, Route = "Provider/UpdateAllProvider")] HttpRequest req,
            ILogger log, CancellationToken cancellationToken)
         {
             try

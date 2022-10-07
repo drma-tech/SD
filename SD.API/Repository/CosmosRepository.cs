@@ -23,9 +23,9 @@ namespace SD.API.Repository
 
         public CosmosRepository(IConfiguration config)
         {
-            var connString = config.GetValue<string>("RepositoryOptions:CosmosConnectionString");
-            var databaseId = config.GetValue<string>("RepositoryOptions:DatabaseId");
-            var containerId = config.GetValue<string>("RepositoryOptions:ContainerId");
+            var connString = config.GetValue<string>("RepositoryOptions_CosmosConnectionString");
+            var databaseId = config.GetValue<string>("RepositoryOptions_DatabaseId");
+            var containerId = config.GetValue<string>("RepositoryOptions_ContainerId");
 
             var _client = new CosmosClient(connString, new CosmosClientOptions()
             {
