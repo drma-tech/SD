@@ -15,7 +15,7 @@ namespace SD.WEB.Services
         {
             if (!_providers.Any())
             {
-                _providers = (await Http.Get<List<Provider>>(BaseApi(Http) + "Provider/GetAll", session));
+                _providers = (await Http.Get<List<Provider>>(BaseApi(Http) + "Public/Provider/GetAll", session));
             }
 
             return _providers.OrderBy(o => o.priority).ToList();

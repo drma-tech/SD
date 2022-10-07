@@ -38,7 +38,7 @@ namespace SD.API.Functions
         //[OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Provider>), Description = "The OK response")]
         public async Task<IActionResult> GetAll(
-            [HttpTrigger(AuthorizationLevel.Anonymous, FunctionMethod.GET, Route = "Provider/GetAll")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, FunctionMethod.GET, Route = "Public/Provider/GetAll")] HttpRequest req,
             ILogger log, CancellationToken cancellationToken)
         {
             try
