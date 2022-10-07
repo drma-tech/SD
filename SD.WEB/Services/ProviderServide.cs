@@ -1,6 +1,7 @@
-﻿using Blazored.LocalStorage;
+﻿using Blazored.SessionStorage;
 using SD.Shared.Modal;
 using SD.WEB.Core;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SD.WEB.Services
 {
@@ -8,17 +9,19 @@ namespace SD.WEB.Services
     {
         private List<Provider> _providers = new();
 
-        public async Task<List<Provider>> GetAllProviders(HttpClient Http, ISyncLocalStorageService session)
+        public string BaseApi([NotNullWhen(true)] HttpClient http) => http.BaseAddress?.ToString().Contains("localhost") ?? true ? "http://localhost:7071/api/" : http.BaseAddress.ToString() + "api/";
+
+        public async Task<List<Provider>> GetAllProviders(HttpClient Http, ISyncSessionStorageService session)
         {
             if (!_providers.Any())
             {
-                _providers = (await Http.Get<AllProviders>(session, "Provider/GetAll")).Items;
+                _providers = (await Http.Get<List<Provider>>(BaseApi(Http) + "Provider/GetAll", session));
             }
 
             return _providers.OrderBy(o => o.priority).ToList();
         }
 
-        public async Task SaveProvider(HttpClient Http, ISyncLocalStorageService session, Provider provider)
+        public async Task SaveProvider(HttpClient Http, ISyncSessionStorageService session, Provider provider)
         {
             var temp = _providers.Single(s => s.id == provider.id);
 
@@ -29,7 +32,7 @@ namespace SD.WEB.Services
 
         public async Task UpdateAllProvider(HttpClient Http)
         {
-            await Http.Put("Provider/UpdateAllProvider");
+            await Http.Put<AllProviders>("Provider/UpdateAllProvider", null);
         }
     }
 }

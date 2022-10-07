@@ -10,8 +10,8 @@
             <CloseButton Clicked="HideModal" />
         </ModalHeader>
         <ModalBody MaxHeight="70">
-            <VisibilityControl @ref="VisibilityControl">
-                <Row Gutter="(8, 8)">
+            <CustomVisibility Loading="@Loading" NoData="media == null">
+                <Row HorizontalGutter="8" VerticalAlignment="0">
                     <Column ColumnSize="ColumnSize.Is12.OnMobile.Is4.OnDesktop">
                         @if (string.IsNullOrEmpty(media.poster_path_large))
                         {
@@ -52,17 +52,17 @@
                             </Items>
                             <Content>
                                 <TabPanel Name="About" Class="mt-3">
-                                    <Badge Color="Color.Secondary" Margin="Margin.Is2.FromRight.Is2.FromBottom">@media.runtime.FormatRuntime()</Badge>
+                                    <Badge Color="Color.Secondary" Margin="Margin.Is2.FromEnd.Is2.FromBottom">@media.runtime.FormatRuntime()</Badge>
                                     @foreach (var item in media.Genres)
                                     {
-                                        <Badge Color="Color.Secondary" Margin="Margin.Is2.FromRight.Is2.FromBottom">@item</Badge>
+                                        <Badge Color="Color.Secondary" Margin="Margin.Is2.FromEnd.Is2.FromBottom">@item</Badge>
                                     }
                                     <Paragraph Alignment="TextAlignment.Justified">
                                         @media.plot
                                     </Paragraph>
                                     @if (media.Videos != null && media.Videos.Any())
                                     {
-                                        <Row Gutter="(8, 8)">
+                                        <Row HorizontalGutter="8" VerticalAlignment="0">
                                             <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                                                 <Button Color="Color.Dark" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">Trailers</Button>
                                             </Column>
@@ -104,7 +104,7 @@
                                         if (Providers != null && Providers.results != null && Providers.GetFreeListProviders(Settings.Region).Any())
                                         {
                                             hasProvider = true;
-                                            <Row Gutter="(8, 8)">
+                                            <Row HorizontalGutter="8" VerticalAlignment="0">
                                                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                                                     <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.Free</Button>
                                                 </Column>
@@ -125,7 +125,7 @@
                                         if (Providers != null && Providers.results != null && Providers.GetAdsListProviders(Settings.Region).Any())
                                         {
                                             hasProvider = true;
-                                            <Row Gutter="(8, 8)">
+                                            <Row HorizontalGutter="8" VerticalAlignment="0">
                                                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                                                     <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.Ads</Button>
                                                 </Column>
@@ -146,7 +146,7 @@
                                         if (Providers != null && Providers.results != null && Providers.GetFlatRateListProviders(Settings.Region).Any())
                                         {
                                             hasProvider = true;
-                                            <Row Gutter="(8, 8)">
+                                            <Row HorizontalGutter="8" VerticalAlignment="0">
                                                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                                                     <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.FlatRate</Button>
                                                 </Column>
@@ -167,7 +167,7 @@
                                         if (Providers != null && Providers.results != null && Providers.GetFlatRateBuyListProviders(Settings.Region).Any())
                                         {
                                             hasProvider = true;
-                                            <Row Gutter="(8, 8)">
+                                            <Row HorizontalGutter="8" VerticalAlignment="0">
                                                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                                                     <Button Color="Color.Warning" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.FlatRateBuy</Button>
                                                 </Column>
@@ -188,7 +188,7 @@
                                         if (Providers != null && Providers.results != null && Providers.GetRentListProviders(Settings.Region).Any())
                                         {
                                             hasProvider = true;
-                                            <Row Gutter="(8, 8)">
+                                            <Row HorizontalGutter="8" VerticalAlignment="0">
                                                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                                                     <Button Color="Color.Primary" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.Rent</Button>
                                                 </Column>
@@ -209,7 +209,7 @@
                                         if (Providers != null && Providers.results != null && Providers.GetBuyListProviders(Settings.Region).Any())
                                         {
                                             hasProvider = true;
-                                            <Row Gutter="(8, 8)">
+                                            <Row HorizontalGutter="8" VerticalAlignment="0">
                                                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                                                     <Button Color="Color.Danger" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.Buy</Button>
                                                 </Column>
@@ -250,7 +250,7 @@
                         </Tabs>
                     </Column>
                 </Row>
-            </VisibilityControl>
+            </CustomVisibility>
         </ModalBody>
         <ModalFooter Style="justify-content: space-between;">
             @if (!string.IsNullOrEmpty(media?.homepage))
@@ -264,23 +264,17 @@
 </Modal>
 
 @code {
-    private Modal modal;
-    public VisibilityControl VisibilityControl { get; set; }
+    private Modal? modal;
 
-    [Parameter]
-    public Services.TMDB.MediaDetailService ServiceDetail { get; set; }
+    [Parameter] public Services.TMDB.MediaDetailService? ServiceDetail { get; set; }
+    [Parameter] public Services.TMDB.WatchProvidersService? ServiceProviders { get; set; }
+    [Parameter] public bool ShowOnlyYear { get; set; } = true;
 
-    [Parameter]
-    public Services.TMDB.WatchProvidersService ServiceProviders { get; set; }
+    private MediaDetail? media { get; set; }
+    private MediaProviders? Providers { get; set; }
+    private List<Provider> AllProviders { get; set; } = new();
 
-    [Parameter]
-    public bool ShowOnlyYear { get; set; } = true;
-
-    public MediaDetail media { get; set; }
-    public MediaProviders Providers { get; set; }
-
-    private List<Provider> AllProviders = new();
-
+    private bool Loading;
     string selectedTab = "About";
 
     public async Task ShowModal(string tmdb_id, MediaType type)
@@ -289,17 +283,17 @@
         {
             modal.Show();
 
-            VisibilityControl.ShowLoading();
+            Loading = true;
 
             media = await ServiceDetail.GetMedia(Http, StorageService, Settings, tmdb_id, type);
             Providers = await ServiceProviders.GetProviders(Http, StorageService, Settings, tmdb_id, type);
-            AllProviders = await ProviderServide.GetAllProviders(Http, StorageService.Local);
+            AllProviders = await ProviderServide.GetAllProviders(Http, StorageService.Session);
 
-            VisibilityControl.ShowLoaded(media != null);
+            Loading = false;
         }
         catch (Exception ex)
         {
-            VisibilityControl.ShowError(ex.Message);
+            ex.ProcessException(Toast, Logger);
         }
     }
 

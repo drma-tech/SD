@@ -18,7 +18,7 @@
                 </Items>
                 <Content>
                     <TabPanel Name="About" Class="mt-3">
-                        <Row Margin="Margin.Is2.FromBottom" Gutter="(8, 8)">
+                        <Row Margin="Margin.Is2.FromBottom" HorizontalGutter="8" VerticalAlignment="0">
                             <Column ColumnSize="ColumnSize.IsAuto">
                                 @if (!string.IsNullOrEmpty(provider.logo_path))
                                 {
@@ -46,17 +46,17 @@
                         <Divider DividerType="DividerType.TextContent" Text="@TranslationText.MediaTypes" />
                         @foreach (var item in provider.types)
                         {
-                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromRight">@item.GetName()</Badge>
+                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
                         }
                         <Divider DividerType="DividerType.TextContent" Text="@TranslationText.Regions" />
                         @foreach (var item in provider.regions.OrderBy(o => o.GetName()))
                         {
-                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromRight">@item.GetName()</Badge>
+                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
                         }
                         <Divider DividerType="DividerType.TextContent" Text="@TranslationText.DeliveryModel" />
                         @foreach (var item in provider.models)
                         {
-                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromRight" title="@item.GetDescription()" Style="cursor: help;">
+                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" title="@item.GetDescription()" Style="cursor: help;">
                                 @item.GetName() <Blazorise.Icon Name="FontAwesomeIcons.QuestionCircle"></Blazorise.Icon>
                             </Badge>
                         }
@@ -67,7 +67,7 @@
                             {
                                 @foreach (var item in provider.plans)
                                 {
-                                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromRight">@item.name: @item.price.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture(provider.head_language.GetName(false)))</Badge>
+                                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.name: @item.price.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture(provider.head_language.GetName(false)))</Badge>
                                 }
                             }
                             else
@@ -93,9 +93,9 @@
 <PopupCatalog @ref="PopupCatalog"></PopupCatalog>
 
 @code {
-    public PopupCatalog PopupCatalog { get; set; }
+    public PopupCatalog? PopupCatalog { get; set; }
 
-    private Modal modal;
+    private Modal? modal;
 
     public Provider provider { get; set; } = new();
 
@@ -103,9 +103,9 @@
 
     string selectedTab = "About";
 
-    public CardMediaList cardPopular { get; set; }
-    public CardMediaList cardNew { get; set; }
-    public CardMediaList cardTopRated { get; set; }
+    public CardMediaList? cardPopular { get; set; }
+    public CardMediaList? cardNew { get; set; }
+    public CardMediaList? cardTopRated { get; set; }
 
     public async Task ShowModal(Provider provider, MediaType MediaType)
     {

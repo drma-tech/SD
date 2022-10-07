@@ -5,12 +5,8 @@ namespace SD.Shared.Modal.Authentication
 {
     public class ClientePrincipal : CosmosBase
     {
-        public ClientePrincipal(string UserId, string IdentityProvider, string UserDetails, string Email) : base(CosmosType.Principal)
+        public ClientePrincipal() : base(CosmosType.Principal)
         {
-            this.UserId = UserId;
-            this.IdentityProvider = IdentityProvider;
-            this.UserDetails = UserDetails;
-            this.Email = Email;
         }
 
         public string UserId { get; set; }

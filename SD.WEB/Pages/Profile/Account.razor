@@ -1,12 +1,13 @@
 ﻿@page "/Profile/Account"
 @attribute [Authorize]
-@inherits ComponenteCore<Account>
+@inherits PageCore<Account>
 @using System.Security.Claims
 @using SD.Shared.Modal.Authentication
+@using SD.WEB.Api
 
-<Row>
+<Row HorizontalGutter="8" VerticalGutter="0">
     <Column ColumnSize="ColumnSize.Is6.OnWidescreen">
-        <Card Margin="Margin.Is3.FromBottom">
+        <Card Margin="Margin.Is2.FromBottom">
             <CardHeader>Dados Cadastrais</CardHeader>
             <CardBody>
                 <Fields>
@@ -33,68 +34,75 @@
         </Card>
     </Column>
     <Column ColumnSize="ColumnSize.Is6.OnWidescreen">
-        <Card Margin="Margin.Is3.FromBottom">
-            <CardHeader>Operações</CardHeader>
+        <Card Margin="Margin.Is2.FromBottom">
+            <CardHeader>Dados Cadastrais</CardHeader>
             <CardBody>
-                <Tooltip Text="Limpar o cache local, caso esteja com problemas dos dados sendo exibidos" Placement="TooltipPlacement.Bottom" Multiline="true">
-                    <Button Color="Color.Primary" Block="true" Clicked="()=>{ ClearCache(); }">
-                        <Blazorise.Icon Name="FontAwesomeIcons.Eraser" /> Limpar Cache
-                    </Button>
-                </Tooltip>
-                @*<Tooltip Text="Desfaz todas as interações feitas com outros usuários (isso não afeta seus dados pessoais)" Placement="TooltipPlacement.Bottom" Multiline="true">
-                    <Button Color="Color.Warning" Block="true" Clicked="()=>{ ResetInteractions(); }" Disabled="true">
+                <Button Color="Color.Primary" Clicked="()=>{ ClearCache(); }" Margin="Margin.Is1.FromEnd">
+                    <Blazorise.Icon Name="FontAwesomeIcons.Eraser" /> Limpar Cache
+                </Button>
+                <Button Color="Color.Warning" Clicked="()=>{ ResetInteractions(); }" Disabled="true" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.FastBackward" /> Resetar Interações
-                    </Button>
-                    </Tooltip>*@
-                <Tooltip Text="Caso queira apagar seu perfil e todas as interações feitas (seu perfil não ficará mais disponível)" Placement="TooltipPlacement.Bottom" Multiline="true">
-                    <Button Color="Color.Danger" Block="true" Clicked="()=>{ DeleteAccount(principal.IdentityProvider); }">
-                        <Blazorise.Icon Name="FontAwesomeIcons.UserSlash" /> Deletar Conta
-                    </Button>
-                </Tooltip>
+                </Button>
+                <Button Color="Color.Danger" Clicked="()=>{ DeleteAccount(principal.IdentityProvider); }" Disabled="true">
+                    <Blazorise.Icon Name="FontAwesomeIcons.UserSlash" /> Deletar Conta
+                </Button>
             </CardBody>
         </Card>
     </Column>
 </Row>
 
 @code {
-    private ClientePrincipal principal;
+    private ClientePrincipal? principal = new();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task LoadData()
     {
-        await base.OnInitializedAsync();
-
         if (ComponenteUtils.IsAuthenticated)
         {
-            //principal = await Http.Principal_Get(StorageService.Session);
+            principal = await Http.Principal_Get(StorageService.Session);
 
-            if (principal == null)
+            if (principal == null) principal = new();
+
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+            if (authState != null)
             {
-                var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+                var user = authState.User;
 
-                if (authState != null)
+                if (user != null)
                 {
-                    principal = new ClientePrincipal(
-                        authState.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value,
-                        authState.User.Identity.AuthenticationType,
-                        authState.User.Identity.Name,
-                        principal.UserDetails
-                    );
-
-                    principal.UserRoles = authState.User.Claims.Where(w => w.Type == ClaimTypes.Role)?.Select(s => s.Value).ToArray();
+                    principal.UserId = user.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
+                    principal.IdentityProvider = user.Identity?.AuthenticationType;
+                    principal.UserDetails = user.Identity?.Name;
+                    principal.UserRoles = user.Claims.Where(w => w.Type == ClaimTypes.Role)?.Select(s => s.Value).ToArray();
                 }
+
+                principal.Email = principal.UserDetails;
             }
         }
     }
 
-    private void ClearCache()
+    private async Task ClearCache()
     {
         StorageService.Session.Clear();
 
-        Toast.ShowSuccess("", "Operação efetuada com sucesso!");
+        await Toast.Success("Operação efetuada com sucesso!");
+    }
+
+    private async Task ResetInteractions()
+    {
+        //show question: Desfaz todas as interações feitas com outros usuários (isso não afeta seus dados pessoais)
+
+        //transferir para backup
+
+        //deletar dados
+
+        await Toast.Success("Operação efetuada com sucesso!");
     }
 
     private void DeleteAccount(string provider)
     {
+        //show question: Caso queira apagar seu perfil e todas as interações feitas (seu perfil não ficará mais disponível)
+
         //transferir para backup
 
         //deletar dados

@@ -9,26 +9,17 @@ namespace SD.WEB.Services.IMDB
 {
     public class UpcomingService : IMediaListService
     {
-        private readonly IConfiguration Configuration;
-
-        public UpcomingService(IConfiguration Configuration)
-        {
-            this.Configuration = Configuration;
-        }
-
         public async Task PopulateListMedia(HttpClient http, IStorageService storage, Settings settings,
             HashSet<MediaDetail> list_media, MediaType type, int qtd = 9, Dictionary<string, string>? ExtraParameters = null)
         {
-            var options = Configuration.GetSection(ImdbOptions.Section).Get<ImdbOptions>();
-
             var parameter = new Dictionary<string, string>()
                 {
-                    { "apiKey", options.ApiKey }
+                    { "apiKey", ImdbOptions.ApiKey }
                 };
 
             if (type == MediaType.movie)
             {
-                var result = await http.Get<NewMovieData>(storage.Session, options.BaseUri + "ComingSoon".ConfigureParameters(parameter)); //undefined numeric record
+                var result = await http.Get<NewMovieData>(ImdbOptions.BaseUri + "ComingSoon".ConfigureParameters(parameter), storage.Session); //undefined numeric record
 
                 foreach (var item in result.Items)
                 {

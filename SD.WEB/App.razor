@@ -1,30 +1,73 @@
 ﻿<CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(App).Assembly">
-        <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                <NotAuthorized>
-                    <MyStream.Pages.Index></MyStream.Pages.Index>
-                </NotAuthorized>
-                <Authorizing>
-                    <div class="alert alert-warning" role="alert">
-                        <div class="spinner-border spinner-border-sm" role="status">
-                            <span class="sr-only">Autenticação em andamento...</span>
+    <Blazorise.ThemeProvider Theme="@theme">
+        <Router AppAssembly="@typeof(App).Assembly">
+            <Found Context="routeData">
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                    <NotAuthorized>
+                        <SD.WEB.Pages.Index></SD.WEB.Pages.Index>
+                    </NotAuthorized>
+                    <Authorizing>
+                        <div class="alert alert-warning" role="alert">
+                            <div class="spinner-border spinner-border-sm" role="status">
+                                <span class="sr-only">Autenticação em andamento...</span>
+                            </div>
+                            Autenticação em andamento...
                         </div>
-                        Autenticação em andamento...
+                    </Authorizing>
+                </AuthorizeRouteView>
+                <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            </Found>
+            <NotFound>
+                <PageTitle>Not found</PageTitle>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <div class="alert alert-danger" role="alert">
+                        @SD.Shared.Resources.TranslationText.RouterNotFound
                     </div>
-                </Authorizing>
-            </AuthorizeRouteView>
-            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-        </Found>
-        <NotFound>
-            <PageTitle>Not found</PageTitle>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <div class="alert alert-danger" role="alert">
-                    @SD.Shared.Resources.TranslationText.RouterNotFound
-                </div>
-            </LayoutView>
-        </NotFound>
-    </Router>
+                </LayoutView>
+            </NotFound>
+        </Router>
+    </Blazorise.ThemeProvider>
+
+    <ModalProvider></ModalProvider>
 </CascadingAuthenticationState>
 
-<MessageAlert />
+@code {
+    private Theme theme = new()
+        {
+            LuminanceThreshold = 170,
+            BarOptions = new()
+            {
+                HorizontalHeight = "64px",
+                VerticalBrandHeight = "64px",
+                LightColors = new()
+                {
+                    ItemColorOptions = new()
+                    {
+                        ActiveBackgroundColor = "#dedede",
+                        ActiveColor = "#000000",
+                        HoverBackgroundColor = "#dedede",
+                        HoverColor = "#000000",
+                    },
+                }
+            },
+            ColorOptions = new()
+            {
+                //Primary = "#9317E1",
+                Secondary = "#a5a5a5",
+            },
+            BackgroundOptions = new()
+            {
+                //Primary = "#9317E1",
+                Secondary = "#a5a5a5",
+            },
+            TextColorOptions = new()
+            {
+                //Primary = "#9317E1",
+                Secondary = "#a5a5a5",
+            }
+            //InputOptions = new()
+            //{
+            //    CheckColor = "#0288D1",
+            //},
+        };
+}

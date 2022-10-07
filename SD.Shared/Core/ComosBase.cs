@@ -8,6 +8,8 @@
 
     public abstract class CosmosBase
     {
+        //TODO: proteger os atributos assim que a leitura dos dados na classe conseguir atribuir valores
+
         protected CosmosBase(CosmosType Type)
         {
             this.Type = Type;
@@ -62,5 +64,9 @@
         /// </summary>
         /// <param name="IdLoggedUser">Token's captured user id</param>
         public abstract void SetIds(string IdLoggedUser);
+    }
+
+    public class CosmosBaseQuery
+    {
     }
 }

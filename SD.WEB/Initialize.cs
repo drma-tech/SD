@@ -1,8 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using Blazored.SessionStorage;
-using Blazored.Toast;
 using Blazorise;
-using Blazorise.Bootstrap5;
+using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using SD.Shared.Core;
@@ -17,12 +16,10 @@ namespace SD.WEB
         public static void ConfigureComponents(this IServiceCollection collection)
         {
             collection
-                .AddBlazorise(options => options.ChangeTextOnKeyPress = true)
-                .AddBootstrap5Providers()
-                .AddFontAwesomeIcons()
-                .AddBlazoredToast();
+                .AddBlazorise(options => options.Immediate = true)
+                .AddBootstrapProviders()
+                .AddFontAwesomeIcons();
 
-            collection.AddBlazoredToast();
             collection.AddBlazoredSessionStorage(config => config.JsonSerializerOptions.WriteIndented = true);
             collection.AddBlazoredLocalStorage(config => config.JsonSerializerOptions.WriteIndented = true);
 

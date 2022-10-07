@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SD.API.Core;
 using SD.API.Repository;
 
@@ -27,11 +28,11 @@ namespace SD.API
                 return new CosmosRepository(config);
             });
 
-            //builder.Services.AddLogging(logging =>
-            //{
-            //    logging.AddProvider(new CosmosLoggerProvider(new Repository.CosmosLogRepository(config)));
-            //    //logging.AddAzureWebAppDiagnostics();
-            //});
+            builder.Services.AddLogging(logging =>
+            {
+                logging.AddProvider(new CosmosLoggerProvider(new Repository.CosmosLogRepository(config)));
+                //logging.AddAzureWebAppDiagnostics();
+            });
         }
     }
 }

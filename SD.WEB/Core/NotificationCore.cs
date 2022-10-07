@@ -1,52 +1,48 @@
-﻿using Blazored.Toast.Services;
-using Microsoft.Extensions.Logging;
+﻿using Blazorise;
 using SD.Shared.Helper;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace SD.WEB.Core
 {
     public static class NotificationCore
     {
-        public static async Task ProcessResponse(this HttpResponseMessage response, IToastService toast, string msgSuccess = null, string msgInfo = null)
+        public static async Task ProcessResponse(this HttpResponseMessage response, INotificationService? toast = null, string? msgSuccess = null, string? msgInfo = null)
         {
             var msg = await response.Content.ReadAsStringAsync();
 
-            if ((short)response.StatusCode >= 100 && (short)response.StatusCode <= 199) //Respostas de informação
+            if ((short)response.StatusCode >= 100 && (short)response.StatusCode <= 199) //Provisional response
             {
                 //do nothing
             }
-            else if ((short)response.StatusCode >= 200 && (short)response.StatusCode <= 299) //Respostas de sucesso
+            else if ((short)response.StatusCode >= 200 && (short)response.StatusCode <= 299) //Successful
             {
-                if (!string.IsNullOrEmpty(msgSuccess)) toast.ShowSuccess("", msgSuccess);
-                if (!string.IsNullOrEmpty(msgInfo)) toast.ShowInfo("", msgInfo);
+                if (!string.IsNullOrEmpty(msgSuccess)) toast?.Success(msgSuccess);
+                if (!string.IsNullOrEmpty(msgInfo)) toast?.Info(msgInfo);
             }
-            else if ((short)response.StatusCode >= 300 && (short)response.StatusCode <= 399) //Redirecionamentos
+            else if ((short)response.StatusCode >= 300 && (short)response.StatusCode <= 399) //Redirected
             {
                 throw new NotificationException(msg);
             }
-            else if ((short)response.StatusCode >= 400 && (short)response.StatusCode <= 499) //Erros do cliente
+            else if ((short)response.StatusCode >= 400 && (short)response.StatusCode <= 499) //Request error
             {
                 throw new NotificationException(msg);
             }
-            else //Erros do servidor (above 500)
+            else //Server error
             {
-                throw new Exception(msg);
+                throw new InvalidOperationException(msg);
             }
         }
 
-        public static void ProcessException(this Exception ex, IToastService toast, ILogger logger = default)
+        public static void ProcessException(this Exception ex, INotificationService toast, ILogger logger)
         {
             if (ex is NotificationException)
             {
                 logger.LogWarning(ex, null);
-                toast.ShowWarning("", ex.Message);
+                toast.Warning(ex.Message);
             }
             else
             {
                 logger.LogError(ex, null);
-                toast.ShowError("", ex.Message);
+                toast.Error(ex.Message);
             }
         }
     }

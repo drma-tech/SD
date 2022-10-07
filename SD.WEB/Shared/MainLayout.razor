@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using Toolbelt.Blazor.PWA.Updater
+@inherits LayoutComponentBase
 @inject NavigationManager Navigation
 
 <Layout Sider="true" Style="height: var(--app-height);">
@@ -46,8 +47,8 @@
     </Layout>
 </Layout>
 
-<BlazoredToasts Position="ToastPosition.BottomRight" ShowProgressBar="true" Timeout="10"
-                IconType="IconType.FontAwesome" />
+<NotificationProvider Location="NotificationLocation.End" DefaultInterval="6000" />
+<PWAUpdater Text="A new version is available" />
 
 @code {
     private enum TypeButton
@@ -66,7 +67,7 @@
         StateHasChanged();
     }
 
-    private void OnLocationChanged(object sender, LocationChangedEventArgs args)
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs args)
     {
         ChangeCurrentButton(args.Location);
 

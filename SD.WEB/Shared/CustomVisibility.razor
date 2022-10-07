@@ -1,0 +1,40 @@
+﻿@inherits ComponenteCore<CustomVisibility>
+
+@if (Loading)
+{
+<Alert Color="Color.Warning" Visible="true" Margin="Margin.Is0.FromBottom">
+    <AlertDescription>
+        <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> Carregando...
+    </AlertDescription>
+</Alert>
+}
+else if (Invalid)
+{
+    <Alert Color="Color.Danger" Visible="true" Margin="Margin.Is0.FromBottom">
+        <AlertDescription>
+            <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon> @(CustomError ?? "Operação inválida. Favor, tentar novamente.")
+        </AlertDescription>
+    </Alert>
+}
+else if (NoData)
+{
+    <Alert Color="Color.Primary" Visible="true" Margin="Margin.Is0.FromBottom">
+        <AlertDescription>
+            <Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> @(CustomNoData ?? "Não há dados para mostrar")
+        </AlertDescription>
+    </Alert>
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter] public bool Loading { get; set; }
+    [Parameter] public bool Invalid { get; set; }
+    [Parameter] public bool NoData { get; set; }
+    [Parameter] public string? CustomError { get; set; } = null;
+    [Parameter] public string? CustomNoData { get; set; } = null;
+}

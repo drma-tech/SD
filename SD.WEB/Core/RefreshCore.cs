@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SD.Shared.Modal.Enum;
-using System.Threading.Tasks;
 
 namespace SD.WEB.Core
 {

@@ -20,11 +20,11 @@
 </Modal>
 
 @code {
-    public CardMediaList cardPopular { get; set; }
-    public CardMediaList cardNew { get; set; }
-    public CardMediaList cardTopRated { get; set; }
+    public CardMediaList? cardPopular { get; set; }
+    public CardMediaList? cardNew { get; set; }
+    public CardMediaList? cardTopRated { get; set; }
 
-    private Modal modal;
+    private Modal? modal;
 
     public Provider provider { get; set; } = new();
 
@@ -48,7 +48,7 @@
 
         if (!provider.empty_catalog.HasValue || provider.empty_catalog.Value == true)
         {
-            var AllProviders = await ProviderServide.GetAllProviders(Http, StorageService.Local);
+            var AllProviders = await ProviderServide.GetAllProviders(Http, StorageService.Session);
             var provider_db = AllProviders.Single(s => s.id == provider.id);
 
             provider_db.empty_catalog = cardNew.ListMedia.Count < 9;

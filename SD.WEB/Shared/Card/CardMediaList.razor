@@ -7,7 +7,7 @@
 <Card Margin="Margin.Is3.FromBottom">
     <CardHeader Padding="Padding.Is2">
         @CardHeader
-        <RadioGroup TValue="int" CheckedValue="PageNumber" Buttons="true" Float="Float.Right" Class="btn-group-xs" CheckedValueChanged="PageNumberChanged">
+        <RadioGroup TValue="int" CheckedValue="PageNumber" Buttons="true" Float="Float.End" Class="btn-group-xs" CheckedValueChanged="PageNumberChanged">
             <Radio TValue="int" Value="1">1</Radio>
             <Radio TValue="int" Value="2">2</Radio>
             <Radio TValue="int" Value="3">3</Radio>
@@ -15,14 +15,14 @@
         </RadioGroup>
         @if (HasFilter)
         {
-            <Button Float="Float.Right" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is2.FromRight" Clicked="@(()=>PopupFilter.ShowModal())">
+            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="@(()=>PopupFilter.ShowModal())">
                 <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
             </Button>
         }
     </CardHeader>
     <CardBody Padding="Padding.Is2">
-        <VisibilityControl @ref="VisibilityControl">
-            <Row Gutter="(8,8)">
+        <CustomVisibility Loading="Loading" NoData="Take <= Skip">
+            <Row HorizontalGutter="8" VerticalAlignment="0">
                 <Repeater Items="@ListMedia" Skip="@Skip" Take="@Take">
                     <Column ColumnSize="ColumnSize.Is(GetCustomStyle)">
                         <Card Margin="Margin.Is0" Style="display:block; text-align:center;">
@@ -62,11 +62,11 @@
                             {
                                 <CardBody Padding="Padding.Is1">
                                     @*<CardTitle Size="6" Style="font-size: 0.8rem; min-height: 30.6px;" Margin="Margin.Is1.FromBottom">
-                                        @context.title
-                                        </CardTitle>*@
+                                @context.title
+                                </CardTitle>*@
                                     @foreach (var item in context.comments.Split(","))
                                     {
-                                        <Badge Color="Color.Secondary" Margin="Margin.Is1.FromRight">@item</Badge>
+                                        <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item</Badge>
                                     }
                                 </CardBody>
                             }
@@ -74,7 +74,7 @@
                     </Column>
                 </Repeater>
             </Row>
-        </VisibilityControl>
+        </CustomVisibility>
     </CardBody>
 </Card>
 
@@ -85,24 +85,15 @@
 
 @code {
     public PopupFilter PopupFilter { get; set; }
-    public VisibilityControl VisibilityControl { get; set; }
 
-    [Parameter]
-    public string CardHeader { get; set; }
-
-    [Parameter]
-    public Services.IMediaListService Service { get; set; }
-
-    [Parameter]
-    public bool ShowOnlyYear { get; set; } = true;
-
-    [Parameter]
-    public bool IsIMDB { get; set; } = false;
-
-    [Parameter]
-    public bool HasFilter { get; set; } = true;
+    [Parameter] public string CardHeader { get; set; }
+    [Parameter] public Services.IMediaListService Service { get; set; }
+    [Parameter] public bool ShowOnlyYear { get; set; } = true;
+    [Parameter] public bool IsIMDB { get; set; } = false;
+    [Parameter] public bool HasFilter { get; set; } = true;
 
     public string GetCustomStyle => Take - Skip < 6 ? "col-xl-2 col-md-2 col-4" : "col-xl col-md-2 col-4";
+    private bool Loading;
 
     public MediaType MediaType { get; set; } = MediaType.movie;
 
@@ -124,7 +115,7 @@
     {
         try
         {
-            VisibilityControl.ShowLoading();
+            Loading = true;
 
             if (extraParameters != null) ExtraParameters = extraParameters;
             if (clearData) ListMedia = new();
@@ -133,13 +124,13 @@
 
             await Service.PopulateListMedia(Http, StorageService, Settings, ListMedia, MediaType, PageSize * PageNumber, ExtraParameters);
 
-            VisibilityControl.ShowLoaded(ListMedia.Any());
+            Loading = false;
 
             StateHasChanged();
         }
         catch (Exception ex)
         {
-            VisibilityControl.ShowError(ex.Message);
+            ex.ProcessException(Toast, Logger);
         }
     }
 
@@ -154,11 +145,11 @@
     {
         PageNumber = value;
 
-        VisibilityControl.ShowLoading();
+        Loading = true;
 
         await Service.PopulateListMedia(Http, StorageService, Settings, ListMedia, MediaType, PageSize * PageNumber, ExtraParameters);
 
-        VisibilityControl.ShowLoaded(Take > Skip);
+        Loading = false;
     }
 
     private async Task OpenPopupMedia(MediaDetail media)
@@ -167,7 +158,7 @@
 
         if (IsIMDB && MediaType == MediaType.tv) //for now, only tv series (imdb) need this kind of workaround
         {
-            tmdb_id = await TmdbExternalIdTvService.GetTmdbId(Http, StorageService, Settings, media.tmdb_id);
+            tmdb_id = await TmdbExternalIdTvService.GetTmdbId(Http, StorageService.Session, media.tmdb_id);
         }
         else
         {

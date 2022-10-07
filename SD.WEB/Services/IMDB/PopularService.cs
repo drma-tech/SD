@@ -9,26 +9,17 @@ namespace SD.WEB.Services.IMDB
 {
     public class PopularService : IMediaListService
     {
-        private readonly IConfiguration Configuration;
-
-        public PopularService(IConfiguration Configuration)
-        {
-            this.Configuration = Configuration;
-        }
-
         public async Task PopulateListMedia(HttpClient http, IStorageService storage, Settings settings,
             HashSet<MediaDetail> list_media, MediaType type, int qtd = 9, Dictionary<string, string>? ExtraParameters = null)
         {
-            var options = Configuration.GetSection(ImdbOptions.Section).Get<ImdbOptions>();
-
             var parameter = new Dictionary<string, string>()
                 {
-                    { "apiKey", options.ApiKey }
+                    { "apiKey", ImdbOptions.ApiKey }
                 };
 
             if (type == MediaType.movie)
             {
-                var result = await http.Get<MostPopularData>(storage.Session, options.BaseUri + "MostPopularMovies".ConfigureParameters(parameter)); //bring 100 records
+                var result = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularMovies".ConfigureParameters(parameter), storage.Session); //bring 100 records
 
                 foreach (var item in result.Items)
                 {
@@ -50,7 +41,7 @@ namespace SD.WEB.Services.IMDB
             }
             else if (type == MediaType.tv)
             {
-                var result = await http.Get<MostPopularData>(storage.Session, options.BaseUri + "MostPopularTVs".ConfigureParameters(parameter)); //bring 100 records
+                var result = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularTVs".ConfigureParameters(parameter), storage.Session); //bring 100 records
 
                 foreach (var item in result.Items)
                 {

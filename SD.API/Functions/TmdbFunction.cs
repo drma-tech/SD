@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using SD.API.Core;
 using SD.Shared.Helper;
 using SD.Shared.Modal.Tmdb;
+using SD.WEB.Core;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -20,15 +21,6 @@ namespace SD.API.Functions
 {
     public class TmdbFunction
     {
-        private readonly IConfiguration configuration;
-        private readonly IRepository _repo;
-
-        public TmdbFunction(IConfiguration Configuration, IRepository repo)
-        {
-            configuration = Configuration;
-            _repo = repo;
-        }
-
         [FunctionName("GetTmdbId")]
         [OpenApiOperation("GetTmdbId", new[] { "TMDB" }, Summary = "Get TMDB.ID from IMDB.ID (exclusive for tv shows)")]
         [OpenApiParameter("external_id", In = ParameterLocation.Path, Required = true, Type = typeof(string), Description = "IMDB.ID")]
@@ -40,17 +32,15 @@ namespace SD.API.Functions
         {
             using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
-            var options = configuration.GetSection(TmdbOptions.Section).Get<TmdbOptions>();
-
             var parameter = new Dictionary<string, string>()
             {
-                { "api_key", options.ApiKey },
+                { "api_key", TmdbOptions.ApiKey },
                 { "external_source", "imdb_id" }
             };
 
             using var http = new HttpClient();
 
-            var result = await http.Get<FindByImdb>(options.BaseUri + "find/" + external_id.ConfigureParameters(parameter), source.Token);
+            var result = await http.Get<FindByImdb>(TmdbOptions.BaseUri + "find/" + external_id.ConfigureParameters(parameter), source.Token);
 
             return new OkObjectResult(result.tv_results.First().id.ToString());
         }

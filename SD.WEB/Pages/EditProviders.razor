@@ -1,6 +1,7 @@
 ﻿@page "/EditProviders"
-@inherits ComponenteCore<EditProviders>
+@inherits PageCore<EditProviders>
 @inject ProviderServide ProviderServide
+@using Blazorise.DataGrid
 @using HtmlAgilityPack
 @using System.Net.Http
 
@@ -23,17 +24,17 @@
                 </Button>
             </NewCommandTemplate>
             <EditCommandTemplate>
-                <Button Color="Color.Primary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromRight">
+                <Button Color="Color.Primary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.Edit"></Blazorise.Icon>
                 </Button>
             </EditCommandTemplate>
             <SaveCommandTemplate>
-                <Button Color="Color.Primary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromRight">
+                <Button Color="Color.Primary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.Save"></Blazorise.Icon>
                 </Button>
             </SaveCommandTemplate>
             <CancelCommandTemplate>
-                <Button Color="Color.Secondary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromRight">
+                <Button Color="Color.Secondary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.Ban"></Blazorise.Icon>
                 </Button>
             </CancelCommandTemplate>
@@ -84,14 +85,14 @@
 <PopupProvider @ref="PopupProvider"></PopupProvider>
 
 @code {
-    public PopupProvider PopupProvider { get; set; }
+    public PopupProvider? PopupProvider { get; set; }
 
     public MediaType MediaType { get; set; } = MediaType.movie;
 
-    public DataGrid<Provider> DataGrid { get; set; }
+    public DataGrid<Provider>? DataGrid { get; set; }
     private List<Provider> AllProviders = new();
 
-    public IEnumerable<EnumObject> Languages { get; set; }
+    public IEnumerable<EnumObject> Languages { get; set; } = Array.Empty<EnumObject>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -100,10 +101,10 @@
         await LoadData();
     }
 
-    protected async Task LoadData()
+    protected override async Task LoadData()
     {
         Languages = EnumHelper.GetList<Language>();
-        AllProviders = await ProviderServide.GetAllProviders(Http, StorageService.Local);
+        AllProviders = await ProviderServide.GetAllProviders(Http, StorageService.Session);
     }
 
     protected async Task UpdateProvidersOnClick()
@@ -118,7 +119,7 @@
 
     protected async Task RowUpdated(SavedRowItem<Provider, Dictionary<string, object>> e)
     {
-        await ProviderServide.SaveProvider(Http, StorageService.Local, e.Item);
+        await ProviderServide.SaveProvider(Http, StorageService.Session, e.Item);
     }
 
     protected async Task<string> GetDescriptionOnClick(string url)
@@ -146,6 +147,7 @@
         }
         catch (Exception ex)
         {
+            ex.ProcessException(Toast, Logger);
             return ex.Message;
         }
     }

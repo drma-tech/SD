@@ -9,26 +9,17 @@ namespace SD.WEB.Services.IMDB
 {
     public class TopRatedService : IMediaListService
     {
-        private readonly IConfiguration Configuration;
-
-        public TopRatedService(IConfiguration Configuration)
-        {
-            this.Configuration = Configuration;
-        }
-
         public async Task PopulateListMedia(HttpClient http, IStorageService storage, Settings settings,
             HashSet<MediaDetail> list_media, MediaType type, int qtd = 9, Dictionary<string, string>? ExtraParameters = null)
         {
-            var options = Configuration.GetSection(ImdbOptions.Section).Get<ImdbOptions>();
-
             var parameter = new Dictionary<string, string>()
                 {
-                    { "apiKey", options.ApiKey }
+                    { "apiKey", ImdbOptions.ApiKey }
                 };
 
             if (type == MediaType.movie)
             {
-                var result = await http.Get<Top250Data>(storage.Local, options.BaseUri + "Top250Movies".ConfigureParameters(parameter)); //bring 250 records
+                var result = await http.Get<Top250Data>(ImdbOptions.BaseUri + "Top250Movies".ConfigureParameters(parameter), storage.Session); //bring 250 records
 
                 foreach (var item in result.Items)
                 {
@@ -51,7 +42,7 @@ namespace SD.WEB.Services.IMDB
             }
             else if (type == MediaType.tv)
             {
-                var result = await http.Get<Top250Data>(storage.Local, options.BaseUri + "Top250TVs".ConfigureParameters(parameter)); //bring 250 records
+                var result = await http.Get<Top250Data>(ImdbOptions.BaseUri + "Top250TVs".ConfigureParameters(parameter), storage.Session); //bring 250 records
 
                 foreach (var item in result.Items)
                 {

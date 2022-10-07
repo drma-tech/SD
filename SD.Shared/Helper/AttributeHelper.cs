@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace SD.Shared.Helper
 {
-    public static class AttributesHelper
+    public static class AttributeHelper
     {
         public static DateTime? GetDate(this string value)
         {

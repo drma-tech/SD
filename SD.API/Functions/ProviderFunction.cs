@@ -13,6 +13,8 @@ using SD.Shared.Helper;
 using SD.Shared.Modal;
 using SD.Shared.Modal.Enum;
 using SD.Shared.Modal.Tmdb;
+using SD.WEB.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -24,12 +26,10 @@ namespace SD.API.Functions
 {
     public class ProviderFunction
     {
-        private readonly IConfiguration configuration;
         private readonly IRepository _repo;
 
-        public ProviderFunction(IConfiguration Configuration, IRepository repo)
+        public ProviderFunction(IRepository repo)
         {
-            configuration = Configuration;
             _repo = repo;
         }
 
@@ -41,11 +41,19 @@ namespace SD.API.Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, FunctionMethod.GET, Route = "Provider/GetAll")] HttpRequest req,
             ILogger log, CancellationToken cancellationToken)
         {
-            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
+            try
+            {
+                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
-            var result = await _repo.Get<AllProviders>("providers", "providers", source.Token);
+                var result = await _repo.Get<AllProviders>("providers", "providers", source.Token);
 
-            return new OkObjectResult(result.Items);
+                return new OkObjectResult(result.Items);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
+                return new BadRequestObjectResult(ex.ProcessException());
+            }
         }
 
         [FunctionName("Post")]
@@ -56,16 +64,24 @@ namespace SD.API.Functions
             [HttpTrigger(AuthorizationLevel.Admin, FunctionMethod.POST, Route = "Provider/Post")] HttpRequest req,
             ILogger log, CancellationToken cancellationToken)
         {
-            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
+            try
+            {
+                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
-            var AllProviders = await _repo.Get<AllProviders>("providers", "providers", source.Token);
-            var providers = await req.GetParameterGenericObject<List<Provider>>(source.Token);
+                var AllProviders = await _repo.Get<AllProviders>("providers", "providers", source.Token);
+                var providers = await req.GetParameterGenericObject<List<Provider>>(source.Token);
 
-            AllProviders.DtUpdate = System.DateTimeOffset.UtcNow;
-            AllProviders.Items = providers.OrderBy(o => int.Parse(o.id)).ToList();
-            await _repo.Update(AllProviders, source.Token, ru_limit: 300);
+                AllProviders.DtUpdate = System.DateTimeOffset.UtcNow;
+                AllProviders.Items = providers.OrderBy(o => int.Parse(o.id)).ToList();
+                await _repo.Update(AllProviders, source.Token);
 
-            return new OkObjectResult(AllProviders.Items);
+                return new OkObjectResult(AllProviders.Items);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
+                return new BadRequestObjectResult(ex.ProcessException());
+            }
         }
 
         [FunctionName("UpdateAllProvider")]
@@ -76,44 +92,51 @@ namespace SD.API.Functions
            [HttpTrigger(AuthorizationLevel.Anonymous, FunctionMethod.PUT, Route = "Provider/UpdateAllProvider")] HttpRequest req,
            ILogger log, CancellationToken cancellationToken)
         {
-            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
-
-            var options = configuration.GetSection(TmdbOptions.Section).Get<TmdbOptions>();
-            var result = new List<Provider>();
-
-            var AllProviders = await _repo.Get<AllProviders>("providers", "providers", source.Token);
-            var details = AllProviders.Items;
-
-            foreach (var region in EnumHelper.GetArray<Region>())
+            try
             {
-                var parameter = new Dictionary<string, string>()
+                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
+
+                var result = new List<Provider>();
+
+                var AllProviders = await _repo.Get<AllProviders>("providers", "providers", source.Token);
+                var details = AllProviders.Items;
+
+                foreach (var region in EnumHelper.GetArray<Region>())
                 {
-                    { "api_key", options.ApiKey },
+                    var parameter = new Dictionary<string, string>()
+                {
+                    { "api_key", TmdbOptions.ApiKey },
                     { "language", Language.enUS.GetName(false) },
                     { "watch_region", region.ToString() }
                 };
 
-                using (var http = new HttpClient())
-                {
-                    var movies = await http.Get<TMDB_AllProviders>(options.BaseUri + "watch/providers/movie".ConfigureParameters(parameter), source.Token);
-                    AddProvider(result, movies.results, details, region, MediaType.movie);
+                    using (var http = new HttpClient())
+                    {
+                        var movies = await http.Get<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/movie".ConfigureParameters(parameter), source.Token);
+                        AddProvider(result, movies.results, details, region, MediaType.movie);
 
-                    var tvs = await http.Get<TMDB_AllProviders>(options.BaseUri + "watch/providers/tv".ConfigureParameters(parameter), source.Token);
-                    AddProvider(result, tvs.results, details, region, MediaType.tv);
+                        var tvs = await http.Get<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/tv".ConfigureParameters(parameter), source.Token);
+                        AddProvider(result, tvs.results, details, region, MediaType.tv);
+                    }
                 }
+
+                var _new = AllProviders.DtUpdate == null && AllProviders.DtInsert.AddDays(-7) > System.DateTimeOffset.UtcNow;
+                var _old = AllProviders.DtUpdate != null && AllProviders.DtUpdate.Value.AddDays(-7) > System.DateTimeOffset.UtcNow;
+
+                if (_new || _old)
+                {
+                    AllProviders.DtUpdate = System.DateTimeOffset.UtcNow;
+                    AllProviders.Items = result.OrderBy(o => int.Parse(o.id)).ToList();
+                    await _repo.Update(AllProviders, source.Token);
+                }
+
+                return new OkObjectResult(AllProviders.Items);
             }
-
-            var _new = AllProviders.DtUpdate == null && AllProviders.DtInsert.AddDays(-7) > System.DateTimeOffset.UtcNow;
-            var _old = AllProviders.DtUpdate != null && AllProviders.DtUpdate.Value.AddDays(-7) > System.DateTimeOffset.UtcNow;
-
-            if (_new || _old)
+            catch (Exception ex)
             {
-                AllProviders.DtUpdate = System.DateTimeOffset.UtcNow;
-                AllProviders.Items = result.OrderBy(o => int.Parse(o.id)).ToList();
-                await _repo.Update(AllProviders, source.Token, ru_limit: 300);
+                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
+                return new BadRequestObjectResult(ex.ProcessException());
             }
-
-            return new OkObjectResult(AllProviders.Items);
         }
 
         private static void AddProvider(List<Provider> final_list, List<ProviderBase> new_providers, List<Provider> current_providers, Region region, MediaType type)

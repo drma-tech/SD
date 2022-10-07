@@ -6,7 +6,7 @@
     <Container Fluid="true">
         <BarBrand>
             <form class="d-flex">
-                <Select TValue="Region" SelectedValue="@Settings.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromRight">
+                <Select TValue="Region" SelectedValue="@Settings.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromEnd">
                     @foreach (var item in Regions.OrderBy(o => o.Name))
                     {
                         <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>

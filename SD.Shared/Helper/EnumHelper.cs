@@ -4,35 +4,37 @@ namespace SD.Shared.Helper
 {
     public static class EnumHelper
     {
-        public static TEnum[] GetArray<TEnum>() where TEnum : struct, Enum
+        public static TEnum[] GetArray<TEnum>() where TEnum : struct, System.Enum
         {
-            return Enum.GetValues<TEnum>();
+            return System.Enum.GetValues<TEnum>();
         }
 
-        public static IEnumerable<EnumObject> GetList<TEnum>(bool translate = true) where TEnum : struct, Enum
+        public static IEnumerable<EnumObject> GetList<TEnum>(bool translate = true) where TEnum : struct, System.Enum
         {
             foreach (var val in GetArray<TEnum>())
             {
-                var attr = ((Enum)val).GetCustomAttribute(translate);
+                var attr = val.GetCustomAttribute(translate);
 
-                yield return new EnumObject(Convert.ToInt32(val), val, attr.Name, attr.Description);
+                yield return new EnumObject(Convert.ToInt32(val), val, attr.Name, attr.Description, attr.Group);
             }
         }
     }
 
     public class EnumObject
     {
-        public EnumObject(int Value, object ValueObject, string Name, string Description)
+        public EnumObject(int Value, object ValueObject, string Name, string Description, string Group)
         {
             this.Value = Value;
             this.ValueObject = ValueObject;
             this.Name = Name;
             this.Description = Description;
+            this.Group = Group;
         }
 
         public int Value { get; set; }
         public object ValueObject { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Group { get; set; }
     }
 }
