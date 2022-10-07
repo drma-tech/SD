@@ -44,4 +44,25 @@
             </BarItem>
         </BarStart>
     </BarMenu>
+    <Div Style="bottom: 10px; position: absolute; width: 100%;" TextAlignment="TextAlignment.Center">
+        <Badge Color="Color.Primary" Pill="true">@BuildDateString()</Badge>
+    </Div>
 </Bar>
+
+@code {
+    //https://swharden.com/blog/2020-12-29-blazor-build-info/
+    private string BuildDateString()
+    {
+        try
+        {
+            return DateTime
+               .Parse(Properties.Resources.BuildDate.ReplaceLineEndings(""))
+               .ToString("yyyy.MM.dd");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+            return "Version Error";
+        }
+    }
+}

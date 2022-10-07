@@ -9,6 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SD.API", "SD.API\SD.API.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SD.Shared", "SD.Shared\SD.Shared.csproj", "{61223FCD-314C-4910-B358-1CE8B250A61B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{89DDE7B1-B88E-4E98-842D-739A4DE2FEFC}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\azure-static-web-apps-delightful-beach-0e41c8110.yml = .github\workflows\azure-static-web-apps-delightful-beach-0e41c8110.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
