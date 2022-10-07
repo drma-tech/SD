@@ -61,7 +61,7 @@ namespace SD.API.Functions
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Provider>), Description = "The OK response")]
         public async Task<IActionResult> Post(
-            [HttpTrigger(AuthorizationLevel.Admin, FunctionMethod.POST, Route = "Provider/Post")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, FunctionMethod.POST, Route = "Provider/Post")] HttpRequest req,
             ILogger log, CancellationToken cancellationToken)
         {
             try
@@ -89,7 +89,7 @@ namespace SD.API.Functions
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Provider>), Description = "The OK response")]
         public async Task<IActionResult> UpdateAllProvider(
-           [HttpTrigger(AuthorizationLevel.Admin, FunctionMethod.PUT, Route = "Provider/UpdateAllProvider")] HttpRequest req,
+           [HttpTrigger(AuthorizationLevel.Anonymous, FunctionMethod.PUT, Route = "Provider/UpdateAllProvider")] HttpRequest req,
            ILogger log, CancellationToken cancellationToken)
         {
             try
