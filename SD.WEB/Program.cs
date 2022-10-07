@@ -16,7 +16,6 @@ builder.Services
     .AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) })
     .AddStaticWebAppsAuthentication();
 
-builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddPWAUpdater();
 
 builder.Services.ConfigureServices();
