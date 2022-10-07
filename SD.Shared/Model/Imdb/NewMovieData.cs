@@ -16,7 +16,7 @@ namespace SD.Shared.Modal.Imdb
         public string FullTitle { set; get; }
         public string Year { set; get; }
         public string ReleaseState { set; get; }
-        public string Image { get; set; }
+        public string? Image { get; set; }
         public string RuntimeMins { set; get; }
         public string RuntimeStr { set; get; }
         public string Plot { set; get; }

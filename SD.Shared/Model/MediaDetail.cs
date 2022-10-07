@@ -10,7 +10,7 @@ namespace SD.Shared.Modal
         public string title { get; set; }
         public string plot { get; set; }
         public DateTime? release_date { get; set; }
-        public string poster_path_small { get; set; }
+        public string? poster_path_small { get; set; }
         public string poster_path_large { get; set; }
         public double rating { get; set; }
         public int? runtime { get; set; }

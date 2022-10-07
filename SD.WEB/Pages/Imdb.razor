@@ -11,9 +11,9 @@
 <CardMediaList @ref="cardUpcoming" Service="@UpcomingService" CardHeader="@TranslationText.ComingSoon" HasFilter="false" ShowOnlyYear="false"></CardMediaList>
 
 @code {
-    public CardMediaList cardPopular { get; set; }
-    public CardMediaList cardTopRated { get; set; }
-    public CardMediaList cardUpcoming { get; set; }
+    public CardMediaList? cardPopular { get; set; }
+    public CardMediaList? cardTopRated { get; set; }
+    public CardMediaList? cardUpcoming { get; set; }
 
     public MediaType MediaType { get; set; }
 

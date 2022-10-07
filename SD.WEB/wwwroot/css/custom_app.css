@@ -20,40 +20,6 @@
         background: #555;
     }
 
-/*BLAZORED*/
-
-/*Blazored.Toast*/
-.blazored-toast-container {
-    z-index: 2000 !important;
-}
-
-.position-bottomleft, .position-bottomright, .position-bottomcenter {
-    bottom: 1rem !important;
-}
-
-.blazored-toast {
-    padding: 0.8rem !important;
-}
-
-.blazored-toast-body p {
-    text-align: justify !important;
-}
-
-.blazored-toast-icon {
-    font-size: 2.0rem !important;
-    padding: 0 0.8rem 0 0 !important;
-}
-
-.blazored-toast-body .blazored-toast-header h5 {
-    line-height: inherit !important;
-    text-transform: none !important;
-    font-size: 1rem !important;
-}
-
-.blazored-toast-body .blazored-toast-header .blazored-toast-close {
-    font-size: 1rem !important;
-}
-
 /*BLAZORIZE*/
 
 .b-layout-sider-content {
@@ -97,6 +63,7 @@
     padding: 0.5rem !important;
     max-height: 80vh;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .modal-footer {

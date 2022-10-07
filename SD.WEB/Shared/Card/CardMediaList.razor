@@ -4,79 +4,77 @@
 @inject Services.TMDB.WatchProvidersService WatchProvidersService
 @inject TmdbExternalIdTvService TmdbExternalIdTvService
 
-<Card Margin="Margin.Is3.FromBottom">
-    <CardHeader Padding="Padding.Is2">
-        @CardHeader
-        <RadioGroup TValue="int" CheckedValue="PageNumber" Buttons="true" Float="Float.End" Class="btn-group-xs" CheckedValueChanged="PageNumberChanged">
-            <Radio TValue="int" Value="1">1</Radio>
-            <Radio TValue="int" Value="2">2</Radio>
-            <Radio TValue="int" Value="3">3</Radio>
-            <Radio TValue="int" Value="4">4</Radio>
-        </RadioGroup>
-        @if (HasFilter)
-        {
-            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="@(()=>PopupFilter.ShowModal())">
-                <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
-            </Button>
-        }
-    </CardHeader>
-    <CardBody Padding="Padding.Is2">
-        <CustomVisibility Loading="Loading" NoData="Take <= Skip">
-            <Row HorizontalGutter="8" VerticalAlignment="0">
-                <Repeater Items="@ListMedia" Skip="@Skip" Take="@Take">
-                    <Column ColumnSize="ColumnSize.Is(GetCustomStyle)">
-                        <Card Margin="Margin.Is0" Style="display:block; text-align:center;">
-                            <Blazorise.Link Clicked="@(() => OpenPopupMedia(context))" Style="cursor: pointer;">
-                                @if (ShowOnlyYear)
-                                {
-                                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; left: 5px;">@context.release_date?.Year</Badge>
-                                }
-                                else
-                                {
-                                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; left: 5px;">@context.release_date?.ToShortDateString()</Badge>
-                                }
-
-                                @if (context.rating >= 8)
-                                {
-                                    <Badge Color="Color.Success" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; right: 5px;">@context.rating</Badge>
-                                }
-                                else if (context.rating >= 6)
-                                {
-                                    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; right: 5px;">@context.rating</Badge>
-                                }
-                                else if (context.rating > 0)
-                                {
-                                    <Badge Color="Color.Danger" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; right: 5px;">@context.rating</Badge>
-                                }
-
-                                @if (string.IsNullOrEmpty(context.poster_path_small))
-                                {
-                                    <Blazorise.Icon Name="FontAwesomeIcons.Image" Class="fa-4x mt-3 mb-5" Style="opacity: 0.5"></Blazorise.Icon>
-                                }
-                                else
-                                {
-                                    <CardImage Source="@context.poster_path_small" Alt="Poster"></CardImage>
-                                }
-                            </Blazorise.Link>
-                            @if (!string.IsNullOrEmpty(context.comments))
+<Alert Visible="true" Color="Color.Secondary">
+    <AlertMessage>@CardHeader</AlertMessage>
+    <RadioGroup TValue="int" CheckedValue="PageNumber" Buttons="true" Float="Float.End" Class="btn-group-xs" CheckedValueChanged="PageNumberChanged">
+        <Radio TValue="int" Value="1">1</Radio>
+        <Radio TValue="int" Value="2">2</Radio>
+        <Radio TValue="int" Value="3">3</Radio>
+        <Radio TValue="int" Value="4">4</Radio>
+    </RadioGroup>
+    @if (HasFilter)
+    {
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="@(()=>PopupFilter.ShowModal())">
+            <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
+        </Button>
+    }
+</Alert>
+<Div Margin="Margin.Is2.FromBottom">
+    <CustomVisibility Loading="Loading" NoData="(Take <= Skip)">
+        <Row HorizontalGutter="4" VerticalGutter="4">
+            <Repeater Items="@ListMedia" Skip="@Skip" Take="@Take">
+                <Column ColumnSize="ColumnSize.Is(GetCustomStyle)">
+                    <Card Margin="Margin.Is0" Style="display:block; text-align:center;">
+                        <Blazorise.Link Clicked="@(() => OpenPopupMedia(context))" Style="cursor: pointer;">
+                            @if (ShowOnlyYear)
                             {
-                                <CardBody Padding="Padding.Is1">
-                                    @*<CardTitle Size="6" Style="font-size: 0.8rem; min-height: 30.6px;" Margin="Margin.Is1.FromBottom">
-                                @context.title
-                                </CardTitle>*@
-                                    @foreach (var item in context.comments.Split(","))
-                                    {
-                                        <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item</Badge>
-                                    }
-                                </CardBody>
+                                <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; left: 5px;">@context.release_date?.Year</Badge>
                             }
-                        </Card>
-                    </Column>
-                </Repeater>
-            </Row>
-        </CustomVisibility>
-    </CardBody>
-</Card>
+                            else
+                            {
+                                <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; left: 5px;">@context.release_date?.ToShortDateString()</Badge>
+                            }
+
+                            @if (context.rating >= 8)
+                            {
+                                <Badge Color="Color.Success" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; right: 5px;">@context.rating</Badge>
+                            }
+                            else if (context.rating >= 6)
+                            {
+                                <Badge Color="Color.Warning" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; right: 5px;">@context.rating</Badge>
+                            }
+                            else if (context.rating > 0)
+                            {
+                                <Badge Color="Color.Danger" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 5px; right: 5px;">@context.rating</Badge>
+                            }
+
+                            @if (string.IsNullOrEmpty(context.poster_path_small))
+                            {
+                                <Blazorise.Icon Name="FontAwesomeIcons.Image" Class="fa-4x mt-3 mb-5" Style="opacity: 0.5"></Blazorise.Icon>
+                            }
+                            else
+                            {
+                                <CardImage Source="@context.poster_path_small" Alt="Poster"></CardImage>
+                            }
+                        </Blazorise.Link>
+                        @if (!string.IsNullOrEmpty(context.comments))
+                        {
+                            <CardBody Padding="Padding.Is1">
+                                @*<CardTitle Size="6" Style="font-size: 0.8rem; min-height: 30.6px;" Margin="Margin.Is1.FromBottom">
+                            @context.title
+                            </CardTitle>*@
+                                @foreach (var item in context.comments.Split(","))
+                                {
+                                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item</Badge>
+                                }
+                            </CardBody>
+                        }
+                    </Card>
+                </Column>
+            </Repeater>
+        </Row>
+    </CustomVisibility>
+</Div>
 
 <PopupMedia @ref="PopupMedia" ServiceDetail="@MediaDetailService" ServiceProviders="@WatchProvidersService"
             ShowOnlyYear="ShowOnlyYear"></PopupMedia>
@@ -84,10 +82,10 @@
 <PopupFilter @ref="PopupFilter" MediaType="MediaType" MediaTypeChanged="TypeMediaChanged"></PopupFilter>
 
 @code {
-    public PopupFilter PopupFilter { get; set; }
+    public PopupFilter? PopupFilter { get; set; }
 
-    [Parameter] public string CardHeader { get; set; }
-    [Parameter] public Services.IMediaListService Service { get; set; }
+    [Parameter] public string? CardHeader { get; set; }
+    [Parameter] public Services.IMediaListService? Service { get; set; }
     [Parameter] public bool ShowOnlyYear { get; set; } = true;
     [Parameter] public bool IsIMDB { get; set; } = false;
     [Parameter] public bool HasFilter { get; set; } = true;
@@ -97,7 +95,7 @@
 
     public MediaType MediaType { get; set; } = MediaType.movie;
 
-    private PopupMedia PopupMedia { get; set; }
+    private PopupMedia? PopupMedia { get; set; }
 
     public HashSet<MediaDetail> ListMedia { get; set; } = new();
 

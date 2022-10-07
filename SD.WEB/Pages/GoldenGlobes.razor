@@ -9,9 +9,9 @@
 <CardMediaList @ref="cardAnimated" Service="@Service" CardHeader="@TranslationText.Animated" HasFilter="false"></CardMediaList>
 
 @code {
-    public CardMediaList cardDrama { get; set; }
-    public CardMediaList cardComedy { get; set; }
-    public CardMediaList cardAnimated { get; set; }
+    public CardMediaList? cardDrama { get; set; }
+    public CardMediaList? cardComedy { get; set; }
+    public CardMediaList? cardAnimated { get; set; }
 
     private Dictionary<string, string> GetExtraParameters(string list_id)
     {

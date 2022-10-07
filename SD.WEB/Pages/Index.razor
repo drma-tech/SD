@@ -5,40 +5,37 @@
 @inject ProviderServide ProviderServide
 @inject Settings Settings
 
-<Card Margin="Margin.Is3.FromBottom">
-    <CardHeader Padding="Padding.Is2">
-        @TranslationText.Providers (@Settings?.Region)
-        <RadioGroup TValue="int" @bind-CheckedValue="ProviderCount" Buttons="true" Float="Float.End" Class="btn-group-xs">
-            <Radio TValue="int" Value="48">48</Radio>
-            <Radio TValue="int" Value="1000">@TranslationText.All</Radio>
-        </RadioGroup>
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="@(()=>PopupFilter.ShowModal())">
-            <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
-        </Button>
-    </CardHeader>
-    <CardBody Padding="Padding.Is2">
-        <CustomVisibility NoData="(!AllProviders.Any())">
-            <Row HorizontalGutter="8" VerticalAlignment="0">
-                @foreach (var item in GetFilteredProviders(MediaType, DeliveryModel, Content))
-                {
-                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                        <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1" Clicked="@(() => ShowPopupProvider(item))">
-                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.name" Class="w-100"></Image>
-                            @*@if (string.IsNullOrEmpty(item.link))
-                                {<p class="m-0" style="color: red">link</p>}*@
-                            @*@if (string.IsNullOrEmpty(item.description))
-                                {<p class="m-0" style="color: red">description</p>}*@
-                            @*@if (!item.models.Any())
-                                {<p class="m-0" style="color: red">model</p>}*@
-                            @*@if (item.models.Any(a => a == MyStream.Modal.Enum.DeliveryModel.SVOD) && !item.plans.Any())
-                                {<p class="m-0" style="color: red">plan</p>}*@
-                        </Button>
-                    </Column>
-                }
-            </Row>
-        </CustomVisibility>
-    </CardBody>
-</Card>
+<Alert Visible="true" Color="Color.Secondary">
+    <AlertMessage>@TranslationText.Providers (@Settings?.Region)</AlertMessage>
+    <RadioGroup TValue="int" @bind-CheckedValue="ProviderCount" Buttons="true" Float="Float.End" Class="btn-group-xs">
+        <Radio TValue="int" Value="48">48</Radio>
+        <Radio TValue="int" Value="1000">@TranslationText.All</Radio>
+    </RadioGroup>
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="@(()=>PopupFilter.ShowModal())">
+        <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
+    </Button>
+</Alert>
+
+<CustomVisibility NoData="(!AllProviders.Any())">
+    <Row HorizontalGutter="4" VerticalGutter="4">
+        @foreach (var item in GetFilteredProviders(MediaType, DeliveryModel, Content))
+        {
+            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1" Clicked="@(() => ShowPopupProvider(item))">
+                    <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.name" Class="w-100"></Image>
+                    @*@if (string.IsNullOrEmpty(item.link))
+                {<p class="m-0" style="color: red">link</p>}*@
+                    @*@if (string.IsNullOrEmpty(item.description))
+                {<p class="m-0" style="color: red">description</p>}*@
+                    @*@if (!item.models.Any())
+                {<p class="m-0" style="color: red">model</p>}*@
+                    @*@if (item.models.Any(a => a == MyStream.Modal.Enum.DeliveryModel.SVOD) && !item.plans.Any())
+                {<p class="m-0" style="color: red">plan</p>}*@
+                </Button>
+            </Column>
+        }
+    </Row>
+</CustomVisibility>
 
 <PopupProvider @ref="PopupProvider"></PopupProvider>
 <PopupFilter @ref="PopupFilter" @bind-MediaTypeNull="MediaType" @bind-DeliveryModel="DeliveryModel" @bind-Content="Content"></PopupFilter>

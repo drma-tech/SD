@@ -18,7 +18,7 @@
                 </Items>
                 <Content>
                     <TabPanel Name="About" Class="mt-3">
-                        <Row Margin="Margin.Is2.FromBottom" HorizontalGutter="8" VerticalAlignment="0">
+                        <Row Margin="Margin.Is2.FromBottom" HorizontalGutter="4" VerticalGutter="4">
                             <Column ColumnSize="ColumnSize.IsAuto">
                                 @if (!string.IsNullOrEmpty(provider.logo_path))
                                 {
@@ -26,7 +26,7 @@
                                 }
                             </Column>
                             <Column>
-                                <Paragraph Alignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
+                                <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
                                     @provider.description
                                 </Paragraph>
                                 <Paragraph>

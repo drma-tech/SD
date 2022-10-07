@@ -32,7 +32,7 @@ namespace SD.WEB.Services.IMDB
                         title = item.Title,
                         //plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
                         release_date = DateTime.Parse(item.ReleaseState, CultureInfo.InvariantCulture),
-                        poster_path_small = item.Image.Replace("/original/", "/128x176/"),
+                        poster_path_small = item.Image?.Replace("/original/", "/128x176/"),
                         //poster_path_185 = string.IsNullOrEmpty(item.poster_path) ? null : poster_path_185 + item.poster_path,
                         rating = string.IsNullOrEmpty(item.IMDbRating) ? 0 : double.Parse(item.IMDbRating, CultureInfo.InvariantCulture),
                         MediaType = MediaType.movie

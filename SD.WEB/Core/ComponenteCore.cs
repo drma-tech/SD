@@ -16,6 +16,7 @@ namespace SD.WEB.Core
 
         //public static string GetStorageKey(string key) => string.IsNullOrEmpty(IdUser) ? throw new ArgumentException(IdUser) : $"{key}({IdUser})";
         public static string BaseApi([NotNullWhen(true)] this HttpClient http) => "";
+
         //public static string BaseApi([NotNullWhen(true)] this HttpClient http) => http.BaseAddress?.ToString().Contains("localhost") ?? true ? "http://localhost:7071/api/" : http.BaseAddress.ToString() + "api/";
     }
 
@@ -26,15 +27,10 @@ namespace SD.WEB.Core
     public abstract class ComponenteCore<TClass> : ComponentBase where TClass : class
     {
         [Inject] public IStorageService StorageService { get; set; } = default!;
-
         [Inject] protected ILogger<TClass> Logger { get; set; } = default!;
-
         [Inject] protected NavigationManager Navigation { get; set; } = default!;
-
         [Inject] protected INotificationService Toast { get; set; } = default!;
-
         [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
-
         [Inject] protected HttpClient Http { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
@@ -64,8 +60,7 @@ namespace SD.WEB.Core
     /// <typeparam name="T"></typeparam>
     public abstract class PageCore<T> : ComponenteCore<T> where T : class
     {
-        [Inject]
-        protected IJSRuntime JsRuntime { get; set; } = default!;
+        [Inject] protected IJSRuntime JsRuntime { get; set; } = default!;
 
         protected abstract Task LoadData();
 
