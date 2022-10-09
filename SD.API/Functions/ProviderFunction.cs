@@ -71,7 +71,7 @@ namespace SD.API.Functions
                 var AllProviders = await _repo.Get<AllProviders>("providers", "providers", source.Token);
                 var providers = await req.GetParameterGenericObject<List<Provider>>(source.Token);
 
-                AllProviders.DtUpdate = System.DateTimeOffset.UtcNow;
+                AllProviders.DtUpdate = DateTimeOffset.UtcNow;
                 AllProviders.Items = providers.OrderBy(o => int.Parse(o.id)).ToList();
                 await _repo.Update(AllProviders, source.Token);
 
@@ -120,12 +120,12 @@ namespace SD.API.Functions
                     }
                 }
 
-                var _new = AllProviders.DtUpdate == null && AllProviders.DtInsert.AddDays(-7) > System.DateTimeOffset.UtcNow;
-                var _old = AllProviders.DtUpdate != null && AllProviders.DtUpdate.Value.AddDays(-7) > System.DateTimeOffset.UtcNow;
+                var _new = AllProviders.DtUpdate == null && AllProviders.DtInsert.AddDays(-7) > DateTimeOffset.UtcNow;
+                var _old = AllProviders.DtUpdate != null && AllProviders.DtUpdate.Value.AddDays(-7) > DateTimeOffset.UtcNow;
 
                 if (_new || _old)
                 {
-                    AllProviders.DtUpdate = System.DateTimeOffset.UtcNow;
+                    AllProviders.DtUpdate = DateTimeOffset.UtcNow;
                     AllProviders.Items = result.OrderBy(o => int.Parse(o.id)).ToList();
                     await _repo.Update(AllProviders, source.Token);
                 }

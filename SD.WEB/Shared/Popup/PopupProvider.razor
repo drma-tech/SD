@@ -1,10 +1,9 @@
 ﻿@inherits ComponenteCore<PopupProvider>
 @inject Settings Settings
-@inject INotificationService NotificationService
 @inject Services.TMDB.DiscoverService DiscoverService
 
 <Modal @ref="modal">
-    <ModalContent Centered="true" Size="ModalSize.Large">
+    <ModalContent Centered="true" Size="ModalSize.ExtraLarge">
         <ModalHeader>
             <ModalTitle>@provider.name</ModalTitle>
             <CloseButton />

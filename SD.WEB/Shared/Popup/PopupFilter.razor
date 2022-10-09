@@ -63,31 +63,16 @@
 </Modal>
 
 @code {
-    private Modal modal;
+    private Modal? modal;
 
-    [Parameter]
-    public MediaType MediaType { get; set; } = MediaType.movie;
-
-    [Parameter]
-    public EventCallback<MediaType> MediaTypeChanged { get; set; }
-
-    [Parameter]
-    public MediaType? MediaTypeNull { get; set; } = MediaType.movie;
-
-    [Parameter]
-    public EventCallback<MediaType?> MediaTypeNullChanged { get; set; }
-
-    [Parameter]
-    public DeliveryModel? DeliveryModel { get; set; }
-
-    [Parameter]
-    public EventCallback<DeliveryModel?> DeliveryModelChanged { get; set; }
-
-    [Parameter]
-    public string Content { get; set; }
-
-    [Parameter]
-    public EventCallback<string> ContentChanged { get; set; }
+    [Parameter] public MediaType MediaType { get; set; } = MediaType.movie;
+    [Parameter] public EventCallback<MediaType> MediaTypeChanged { get; set; }
+    [Parameter] public MediaType? MediaTypeNull { get; set; } = MediaType.movie;
+    [Parameter] public EventCallback<MediaType?> MediaTypeNullChanged { get; set; }
+    [Parameter] public DeliveryModel? DeliveryModel { get; set; }
+    [Parameter] public EventCallback<DeliveryModel?> DeliveryModelChanged { get; set; }
+    [Parameter] public string? Content { get; set; }
+    [Parameter] public EventCallback<string> ContentChanged { get; set; }
 
     public void ShowModal()
     {

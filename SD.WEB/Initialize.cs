@@ -8,6 +8,7 @@ using SD.Shared.Core;
 using SD.WEB.Core;
 using SD.WEB.Services;
 using System.Globalization;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace SD.WEB
 {
@@ -22,6 +23,8 @@ namespace SD.WEB
 
             collection.AddBlazoredSessionStorage(config => config.JsonSerializerOptions.WriteIndented = true);
             collection.AddBlazoredLocalStorage(config => config.JsonSerializerOptions.WriteIndented = true);
+
+            collection.AddPWAUpdater();
 
             collection.AddScoped<IStorageService, StorageService>();
             collection.AddScoped<ProviderServide>();

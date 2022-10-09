@@ -30,15 +30,15 @@
                                 }
                                 @if (media.rating >= 8)
                                 {
-                                    <Badge Color="Color.Success" Style="position: absolute; top: 5px; right: 5px;">@media.rating</Badge>
+                                    <Badge Color="Color.Success" Style="position: absolute; top: 5px; right: 5px;">@media.rating.ToString("#.#")</Badge>
                                 }
                                 else if (media.rating >= 6)
                                 {
-                                    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; right: 5px;">@media.rating</Badge>
+                                    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; right: 5px;">@media.rating.ToString("#.#")</Badge>
                                 }
                                 else if (media.rating > 0)
                                 {
-                                    <Badge Color="Color.Danger" Style="position: absolute; top: 5px; right: 5px;">@media.rating</Badge>
+                                    <Badge Color="Color.Danger" Style="position: absolute; top: 5px; right: 5px;">@media.rating.ToString("#.#")</Badge>
                                 }
                                 <Image Source="@media.poster_path_large" Text="@media.title" Style="width: 100%;"></Image>
                             </Div>
@@ -110,15 +110,18 @@
                                                 </Column>
                                                 @foreach (var item in Providers.GetFreeListProviders(Settings.Region))
                                                 {
-                                                    <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                                        <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                                            @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.FREE))
-                                                            {
-                                                                <span>false</span>
-                                                            }
-                                                        </Button>
-                                                    </Column>
+                                                    @if (AllProviders.Any(a => a.id == item.provider_id.ToString())) //sometimes a link from an excluded provider appears
+                                                    {
+                                                        <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                            <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                                <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                                @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.FREE))
+                                                                {
+                                                                    <span>false</span>
+                                                                }
+                                                            </Button>
+                                                        </Column>
+                                                    }
                                                 }
                                             </Row>
                                         }
@@ -131,15 +134,18 @@
                                                 </Column>
                                                 @foreach (var item in Providers.GetAdsListProviders(Settings.Region))
                                                 {
-                                                    <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                                        <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                                            @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.AVOD))
-                                                            {
-                                                                <span>false</span>
-                                                            }
-                                                        </Button>
-                                                    </Column>
+                                                    @if (AllProviders.Any(a => a.id == item.provider_id.ToString())) //sometimes a link from an excluded provider appears
+                                                    {
+                                                        <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                            <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                                <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                                @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.AVOD))
+                                                                {
+                                                                    <span>false</span>
+                                                                }
+                                                            </Button>
+                                                        </Column>
+                                                    }
                                                 }
                                             </Row>
                                         }
@@ -152,15 +158,18 @@
                                                 </Column>
                                                 @foreach (var item in Providers.GetFlatRateListProviders(Settings.Region))
                                                 {
-                                                    <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                                        <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                                            @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.SVOD))
-                                                            {
-                                                                <span>false</span>
-                                                            }
-                                                        </Button>
-                                                    </Column>
+                                                    @if (AllProviders.Any(a => a.id == item.provider_id.ToString())) //sometimes a link from an excluded provider appears
+                                                    {
+                                                        <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                            <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                                <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                                @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.SVOD))
+                                                                {
+                                                                    <span>false</span>
+                                                                }
+                                                            </Button>
+                                                        </Column>
+                                                    }
                                                 }
                                             </Row>
                                         }
@@ -173,15 +182,18 @@
                                                 </Column>
                                                 @foreach (var item in Providers.GetFlatRateBuyListProviders(Settings.Region))
                                                 {
-                                                    <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                                        <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                                            @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.PVOD))
-                                                            {
-                                                                <span>false</span>
-                                                            }
-                                                        </Button>
-                                                    </Column>
+                                                    @if (AllProviders.Any(a => a.id == item.provider_id.ToString())) //sometimes a link from an excluded provider appears
+                                                    {
+                                                        <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                            <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                                <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                                @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.PVOD))
+                                                                {
+                                                                    <span>false</span>
+                                                                }
+                                                            </Button>
+                                                        </Column>
+                                                    }
                                                 }
                                             </Row>
                                         }
@@ -194,15 +206,18 @@
                                                 </Column>
                                                 @foreach (var item in Providers.GetRentListProviders(Settings.Region))
                                                 {
-                                                    <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                                        <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                                            @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
-                                                            {
-                                                                <span>false</span>
-                                                            }
-                                                        </Button>
-                                                    </Column>
+                                                    @if (AllProviders.Any(a => a.id == item.provider_id.ToString())) //sometimes a link from an excluded provider appears
+                                                    {
+                                                        <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                            <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                                <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                                @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
+                                                                {
+                                                                    <span>false</span>
+                                                                }
+                                                            </Button>
+                                                        </Column>
+                                                    }
                                                 }
                                             </Row>
                                         }
@@ -215,15 +230,18 @@
                                                 </Column>
                                                 @foreach (var item in Providers.GetBuyListProviders(Settings.Region))
                                                 {
-                                                    <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                                        <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                                            @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
-                                                            {
-                                                                <span>false</span>
-                                                            }
-                                                        </Button>
-                                                    </Column>
+                                                    @if (AllProviders.Any(a => a.id == item.provider_id.ToString())) //sometimes a link from an excluded provider appears
+                                                    {
+                                                        <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                            <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                                <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                                @if (!AllProviders.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
+                                                                {
+                                                                    <span>false</span>
+                                                                }
+                                                            </Button>
+                                                        </Column>
+                                                    }
                                                 }
                                             </Row>
                                         }
@@ -252,13 +270,21 @@
                 </Row>
             </CustomVisibility>
         </ModalBody>
-        <ModalFooter Style="justify-content: space-between;">
-            @if (!string.IsNullOrEmpty(media?.homepage))
-            {
-                <a href="@media.homepage" target="_blank" rel="noopener" style="float: left;">@(new Uri(media.homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
-            }
-            @*<Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false">Atualizar</Button>*@
-            <Button Color="Color.Secondary" Clicked="@HideModal">@TranslationText.Close</Button>
+        <ModalFooter>
+            <Container Fluid="true" Margin="Margin.Is0">
+                <Row HorizontalGutter="4" VerticalGutter="4">
+                    <Column VerticalAlignment="VerticalAlignment.Middle">
+                        @if (!string.IsNullOrEmpty(media?.homepage))
+                        {
+                            <a href="@media.homepage" target="_blank" rel="noopener" style="float: left;">@(new Uri(media.homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+                        }
+                    </Column>
+                    <Column ColumnSize="ColumnSize.IsAuto">
+                        @*<Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false">Atualizar</Button>*@
+                        <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@TranslationText.Close</Button>
+                    </Column>
+                </Row>
+            </Container>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -388,6 +414,6 @@
             }
         }
 
-        StorageService.Local.SetItem("Data/providers.json", AllProviders);
+        StorageService.Local.SetItem("Data/providers.json", AllProviders.OrderBy(o => int.Parse(o.id)).ToList());
     }
 }

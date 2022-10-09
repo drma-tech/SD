@@ -1,6 +1,4 @@
-﻿@inject IMessageService MessageService
-
-<Alert Color="Color.Info" Visible="true" Padding="Padding.Is2">
+﻿<Alert Color="Color.Info" Visible="true" Padding="Padding.Is2">
     <AlertDescription>
         <Row HorizontalGutter="8" VerticalGutter="8" Style="margin-left: -4px; margin-right: -4px; margin-top: -4px; margin-bottom: -4px;">
             <Column ColumnSize="ColumnSize.IsAuto">
@@ -12,7 +10,7 @@
                 </Paragraph>
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                <Button Size="Size.ExtraSmall" Color="Color.Info" Clicked="@(()=>MessageService.Info(Text, "About", opt => { opt.ShowMessageIcon = false; }))">
+                <Button Size="Size.ExtraSmall" Color="Color.Info" Clicked="@(()=>Toast.Info(Text, $"About {(new Uri(Link).Host)}"))">
                     <Blazorise.Icon Name="FontAwesomeIcons.QuestionCircle"></Blazorise.Icon>
                 </Button>
             </Column>
@@ -21,12 +19,9 @@
 </Alert>
 
 @code {
-    [Parameter]
-    public string ImageSource { get; set; }
+    [Inject] protected INotificationService Toast { get; set; } = default!;
 
-    [Parameter]
-    public string Text { get; set; }
-
-    [Parameter]
-    public string Link { get; set; }
+    [Parameter] public string? ImageSource { get; set; }
+    [Parameter] public string? Text { get; set; }
+    [Parameter] public string? Link { get; set; }
 }
