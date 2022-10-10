@@ -2,7 +2,7 @@
 @inherits LayoutComponentBase
 @inject NavigationManager Navigation
 
-<Layout Sider="true" Style="height: var(--app-height);">
+<Layout Sider="true">
     <LayoutSider>
         <LayoutSiderContent>
             <NavMenu />
@@ -12,7 +12,7 @@
         <LayoutHeader Fixed="true">
             <HeadLayout></HeadLayout>
         </LayoutHeader>
-        <LayoutContent Style="overflow: auto;">
+        <LayoutContent>
             <Container Fluid="true" Padding="Padding.Is3.FromTop">
                 @Body
             </Container>
