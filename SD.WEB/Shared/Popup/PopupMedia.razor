@@ -332,11 +332,11 @@
     {
         foreach (var item in Providers.GetFreeListProviders(Settings.Region))
         {
-            var provider = AllProviders.Single(s => s.id == item.provider_id.ToString());
+            var provider = AllProviders.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
             var model = DeliveryModel.FREE;
 
-            if (!provider.models.Contains(model))
+            if (provider != null && !provider.models.Contains(model))
             {
                 provider.models.Add(model);
 
@@ -346,11 +346,11 @@
 
         foreach (var item in Providers.GetAdsListProviders(Settings.Region))
         {
-            var provider = AllProviders.Single(s => s.id == item.provider_id.ToString());
+            var provider = AllProviders.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
             var model = DeliveryModel.AVOD;
 
-            if (!provider.models.Contains(model))
+            if (provider != null && !provider.models.Contains(model))
             {
                 provider.models.Add(model);
 
@@ -360,11 +360,11 @@
 
         foreach (var item in Providers.GetFlatRateListProviders(Settings.Region))
         {
-            var provider = AllProviders.Single(s => s.id == item.provider_id.ToString());
+            var provider = AllProviders.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
             var model = DeliveryModel.SVOD;
 
-            if (!provider.models.Contains(model))
+            if (provider != null && !provider.models.Contains(model))
             {
                 provider.models.Add(model);
 
@@ -374,11 +374,11 @@
 
         foreach (var item in Providers.GetBuyListProviders(Settings.Region))
         {
-            var provider = AllProviders.Single(s => s.id == item.provider_id.ToString());
+            var provider = AllProviders.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
             var model = DeliveryModel.TVOD;
 
-            if (!provider.models.Contains(model))
+            if (provider != null && !provider.models.Contains(model))
             {
                 provider.models.Add(model);
 
@@ -388,11 +388,11 @@
 
         foreach (var item in Providers.GetRentListProviders(Settings.Region))
         {
-            var provider = AllProviders.Single(s => s.id == item.provider_id.ToString());
+            var provider = AllProviders.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
             var model = DeliveryModel.TVOD;
 
-            if (!provider.models.Contains(model))
+            if (provider != null && !provider.models.Contains(model))
             {
                 provider.models.Add(model);
 
@@ -402,11 +402,11 @@
 
         foreach (var item in Providers.GetFlatRateBuyListProviders(Settings.Region))
         {
-            var provider = AllProviders.Single(s => s.id == item.provider_id.ToString());
+            var provider = AllProviders.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
             var model = DeliveryModel.PVOD;
 
-            if (!provider.models.Contains(model))
+            if (provider != null && !provider.models.Contains(model))
             {
                 provider.models.Add(model);
 
