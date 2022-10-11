@@ -6,30 +6,36 @@
     <Container Fluid="true" Padding="Padding.Is0.OnX">
         <BarBrand Padding="Padding.Is0.OnY">
             <form class="d-flex">
-                <Select TValue="Region" SelectedValue="@Settings.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromEnd" Display="Display.InlineBlock.OnMobile.None.OnTablet">
-                    @foreach (var item in Regions.OrderBy(o => o.Name))
-                    {
-                        <SelectItem Value="@item.ValueObject">@(((Region)item.ValueObject).GetCustomAttribute(false).Name)</SelectItem>
-                    }
-                </Select>
-                <Select TValue="Region" SelectedValue="@Settings.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromEnd" Display="Display.InlineBlock.OnTablet.None.OnMobile">
-                    @foreach (var item in Regions.OrderBy(o => o.Name))
-                    {
-                        <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>
-                    }
-                </Select>
-                <Select TValue="Language" SelectedValue="@Settings.Language" SelectedValueChanged="LanguageValueChanged" Size="Size.Small" Style="width:auto;" Display="Display.InlineBlock.OnMobile.None.OnTablet">
-                    @foreach (var item in Languages.OrderBy(o => o.Name))
-                    {
-                        <SelectItem Value="@item.ValueObject">@(((Language)item.ValueObject).GetCustomAttribute(false).Name)</SelectItem>
-                    }
-                </Select>
-                <Select TValue="Language" SelectedValue="@Settings.Language" SelectedValueChanged="LanguageValueChanged" Size="Size.Small" Style="width:auto;" Display="Display.InlineBlock.OnTablet.None.OnMobile">
-                    @foreach (var item in Languages.OrderBy(o => o.Name))
-                    {
-                            <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>
-                    }
-                </Select>
+                <MediaQuery Media="@Breakpoints.XSmallDown">
+                    <Matched>
+                        <Select TValue="Region" SelectedValue="@Settings.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromEnd">
+                            @foreach (var item in Regions.OrderBy(o => o.Name))
+                            {
+                                <SelectItem Value="@item.ValueObject">@(((Region)item.ValueObject).GetCustomAttribute(false).Name)</SelectItem>
+                            }
+                        </Select>
+                        <Select TValue="Language" SelectedValue="@Settings.Language" SelectedValueChanged="LanguageValueChanged" Size="Size.Small" Style="width:auto;">
+                            @foreach (var item in Languages.OrderBy(o => o.Name))
+                            {
+                                <SelectItem Value="@item.ValueObject">@(((Language)item.ValueObject).GetCustomAttribute(false).Name)</SelectItem>
+                            }
+                        </Select>
+                    </Matched>
+                    <Unmatched>
+                        <Select TValue="Region" SelectedValue="@Settings.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromEnd">
+                            @foreach (var item in Regions.OrderBy(o => o.Name))
+                            {
+                                <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>
+                            }
+                        </Select>
+                        <Select TValue="Language" SelectedValue="@Settings.Language" SelectedValueChanged="LanguageValueChanged" Size="Size.Small" Style="width:auto;">
+                            @foreach (var item in Languages.OrderBy(o => o.Name))
+                            {
+                                <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>
+                            }
+                        </Select>
+                    </Unmatched>
+                </MediaQuery>
             </form>
         </BarBrand>
         <BarMenu Style="flex-basis: unset !important;">

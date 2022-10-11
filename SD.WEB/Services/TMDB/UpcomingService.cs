@@ -32,7 +32,7 @@ namespace SD.WEB.Services.TMDB
 
                     foreach (var item in result.results)
                     {
-                        if (string.IsNullOrEmpty(item.poster_path)) continue;
+                        //if (string.IsNullOrEmpty(item.poster_path)) continue;
 
                         list_media.Add(new MediaDetail
                         {

@@ -5,9 +5,9 @@ using SD.WEB.Core;
 
 namespace SD.WEB.Services.TMDB
 {
-    public class WatchProvidersService
+    public static class WatchProvidersService
     {
-        public async Task<MediaProviders> GetProviders(HttpClient http, IStorageService storage, Settings settings, string tmdb_id, MediaType type)
+        public static async Task<MediaProviders?> GetProviders(HttpClient http, IStorageService storage, Settings settings, string tmdb_id, MediaType type)
         {
             var parameter = new Dictionary<string, string>()
             {

@@ -8,7 +8,7 @@
 
 <CardMediaList @ref="cardPopular" Service="@PopularService" CardHeader="@TranslationText.Popular" IsIMDB="true"></CardMediaList>
 <CardMediaList @ref="cardTopRated" Service="@TopRatedService" CardHeader="@TranslationText.TopRated" IsIMDB="true"></CardMediaList>
-<CardMediaList @ref="cardUpcoming" Service="@UpcomingService" CardHeader="@TranslationText.ComingSoon" HasFilter="false" ShowOnlyYear="false"></CardMediaList>
+<CardMediaList @ref="cardUpcoming" Service="@UpcomingService" CardHeader="@TranslationText.ComingSoon" HasFilter="false" ShowOnlyYear="false" ShowTitle="true"></CardMediaList>
 
 @code {
     public CardMediaList? cardPopular { get; set; }

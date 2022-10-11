@@ -34,7 +34,7 @@ namespace SD.WEB.Services.TMDB
                     {
                         if (item.release_date.GetDate() < DateTime.Now.AddYears(-20)) continue;
                         if (item.vote_count < 1000) continue;
-                        if (string.IsNullOrEmpty(item.poster_path)) continue;
+                        //if (string.IsNullOrEmpty(item.poster_path)) continue;
 
                         list_media.Add(new MediaDetail
                         {

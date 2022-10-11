@@ -1,7 +1,6 @@
 ﻿@inherits ComponenteCore<CardMediaList>
 @inject Settings Settings
 @inject Services.TMDB.MediaDetailService MediaDetailService
-@inject Services.TMDB.WatchProvidersService WatchProvidersService
 @inject TmdbExternalIdTvService TmdbExternalIdTvService
 
 <Alert Visible="true" Color="Color.Secondary">
@@ -50,11 +49,22 @@
 
                             @if (string.IsNullOrEmpty(context.poster_path_small))
                             {
-                                <Blazorise.Icon Name="FontAwesomeIcons.Image" Class="fa-4x mt-3 mb-5" Style="opacity: 0.5"></Blazorise.Icon>
+                                <CardImage Source="nopicture.jpg" Alt="@context.title"></CardImage>
+
+                                <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
+                                    @context.title
+                                </Div>
                             }
                             else
                             {
-                                <CardImage Source="@context.poster_path_small" Alt="Poster"></CardImage>
+                                <CardImage Source="@context.poster_path_small" Alt="@context.title"></CardImage>
+
+                                if (ShowTitle)
+                                {
+                                    <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
+                                        @context.title
+                                    </Div>
+                                }
                             }
                         </Blazorise.Link>
                         @if (!string.IsNullOrEmpty(context.comments))
@@ -76,8 +86,7 @@
     </CustomVisibility>
 </Div>
 
-<PopupMedia @ref="PopupMedia" ServiceDetail="@MediaDetailService" ServiceProviders="@WatchProvidersService"
-            ShowOnlyYear="ShowOnlyYear"></PopupMedia>
+<PopupMedia @ref="PopupMedia" ServiceDetail="@MediaDetailService" ShowOnlyYear="ShowOnlyYear"></PopupMedia>
 
 <PopupFilter @ref="PopupFilter" MediaType="MediaType" MediaTypeChanged="TypeMediaChanged"></PopupFilter>
 
@@ -89,6 +98,7 @@
     [Parameter] public bool ShowOnlyYear { get; set; } = true;
     [Parameter] public bool IsIMDB { get; set; } = false;
     [Parameter] public bool HasFilter { get; set; } = true;
+    [Parameter] public bool ShowTitle { get; set; } = false;
 
     public string GetCustomStyle => Take - Skip < 6 ? "col-xl-2 col-md-2 col-4" : "col-xl col-md-2 col-4";
     private bool Loading;

@@ -15,7 +15,7 @@
                     <Column ColumnSize="ColumnSize.Is12.OnMobile.Is4.OnDesktop">
                         @if (string.IsNullOrEmpty(media.poster_path_large))
                         {
-                            //generic image
+                            <CardImage Source="nopicture.jpg" Alt="@media?.title"></CardImage>
                         }
                         else
                         {
@@ -293,7 +293,6 @@
     private Modal? modal;
 
     [Parameter] public Services.TMDB.MediaDetailService? ServiceDetail { get; set; }
-    [Parameter] public Services.TMDB.WatchProvidersService? ServiceProviders { get; set; }
     [Parameter] public bool ShowOnlyYear { get; set; } = true;
 
     private MediaDetail? media { get; set; }
@@ -312,7 +311,7 @@
             Loading = true;
 
             media = await ServiceDetail.GetMedia(Http, StorageService, Settings, tmdb_id, type);
-            Providers = await ServiceProviders.GetProviders(Http, StorageService, Settings, tmdb_id, type);
+            Providers = await Services.TMDB.WatchProvidersService.GetProviders(Http, StorageService, Settings, tmdb_id, type);
             AllProviders = await ProviderServide.GetAllProviders(Http, StorageService.Session);
 
             Loading = false;

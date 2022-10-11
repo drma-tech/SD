@@ -3,6 +3,7 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
 		<UserSecretsId>8e76a79d-32e2-4465-8c7b-c6305b0d5e6f</UserSecretsId>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.31.0" />

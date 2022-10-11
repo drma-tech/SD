@@ -3,6 +3,7 @@ using Blazored.SessionStorage;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using SD.Shared.Core;
 using SD.WEB.Core;
@@ -25,6 +26,7 @@ namespace SD.WEB
             collection.AddBlazoredLocalStorage(config => config.JsonSerializerOptions.WriteIndented = true);
 
             collection.AddPWAUpdater();
+            collection.AddMediaQueryService();
 
             collection.AddScoped<IStorageService, StorageService>();
             collection.AddScoped<ProviderServide>();
@@ -39,7 +41,6 @@ namespace SD.WEB
             collection.AddScoped<Services.TMDB.PopularService>();
             collection.AddScoped<Services.TMDB.TopRatedService>();
             collection.AddScoped<Services.TMDB.UpcomingService>();
-            collection.AddScoped<Services.TMDB.WatchProvidersService>();
             collection.AddScoped<Services.TmdbExternalIdTvService>();
 
             collection.AddScoped<Services.IMDB.PopularService>();
