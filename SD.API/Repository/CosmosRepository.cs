@@ -63,7 +63,7 @@ namespace SD.API.Repository
             //Container container = await database.CreateContainerIfNotExistsAsync(options, throughput: 400);
         }
 
-        public async Task<T> Get<T>(string id, string partitionKeyValue, CancellationToken cancellationToken) where T : CosmosBase
+        public async Task<T?> Get<T>(string id, string partitionKeyValue, CancellationToken cancellationToken) where T : CosmosBase
         {
             try
             {
@@ -185,7 +185,7 @@ namespace SD.API.Repository
 
     public static class CosmosRepositoryExtensions
     {
-        public static QueryRequestOptions GetDefaultOptions(string partitionKeyValue)
+        public static QueryRequestOptions? GetDefaultOptions(string partitionKeyValue)
         {
             if (string.IsNullOrEmpty(partitionKeyValue))
                 return null;

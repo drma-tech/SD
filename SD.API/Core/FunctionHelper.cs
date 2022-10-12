@@ -12,16 +12,16 @@ namespace SD.API.Core
         {
             var obj = await JsonSerializer.DeserializeAsync<I>(req.Body, new JsonSerializerOptions(), cancellationToken);
 
-            obj.SetIds(req.GetUserId());
+            if (obj != null) obj.SetIds(req.GetUserId());
 
-            return obj;
+            return obj ?? default!;
         }
 
         public static async Task<I> GetParameterGenericObject<I>(this HttpRequest req, CancellationToken cancellationToken)
         {
             var obj = await JsonSerializer.DeserializeAsync<I>(req.Body, new JsonSerializerOptions(), cancellationToken);
 
-            return obj;
+            return obj ?? default!;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace SD.WEB.Services.IMDB
             {
                 var result = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularMovies".ConfigureParameters(parameter), storage.Session); //bring 100 records
 
-                foreach (var item in result.Items)
+                foreach (var item in result?.Items ?? new List<MostPopularDataDetail>())
                 {
                     if (item.IMDbRatingCount == "0") continue; //ignore low-rated movie
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
@@ -31,7 +31,7 @@ namespace SD.WEB.Services.IMDB
                         tmdb_id = item.Id,
                         title = item.Title,
                         //plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                        release_date = new DateTime(int.Parse(item.Year), 1, 1),
+                        release_date = new DateTime(int.Parse(item.Year ?? "0"), 1, 1),
                         poster_path_small = ImdbOptions.ResizeImage + item.Image,
                         rating = string.IsNullOrEmpty(item.IMDbRating) ? 0 : double.Parse(item.IMDbRating, CultureInfo.InvariantCulture),
                         MediaType = MediaType.movie
@@ -42,7 +42,7 @@ namespace SD.WEB.Services.IMDB
             {
                 var result = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularTVs".ConfigureParameters(parameter), storage.Session); //bring 100 records
 
-                foreach (var item in result.Items)
+                foreach (var item in result?.Items ?? new List<MostPopularDataDetail>())
                 {
                     if (item.IMDbRatingCount == "0") continue; //ignore low-rated movie
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
@@ -52,7 +52,7 @@ namespace SD.WEB.Services.IMDB
                         tmdb_id = item.Id,
                         title = item.Title,
                         //plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                        release_date = new DateTime(int.Parse(item.Year), 1, 1),
+                        release_date = new DateTime(int.Parse(item.Year ?? "0"), 1, 1),
                         poster_path_small = ImdbOptions.ResizeImage + item.Image,
                         rating = string.IsNullOrEmpty(item.IMDbRating) ? 0 : double.Parse(item.IMDbRating, CultureInfo.InvariantCulture),
                         MediaType = MediaType.tv

@@ -13,21 +13,21 @@
                 <Fields>
                     <Field ColumnSize="ColumnSize.Is6.OnDesktop">
                         <FieldLabel>Provedor de Acesso</FieldLabel>
-                        <TextEdit Text="@principal.IdentityProvider" Disabled="true" />
+                        <TextEdit Text="@principal?.IdentityProvider" Disabled="true" />
                     </Field>
                     <Field ColumnSize="ColumnSize.Is6.OnDesktop">
                         <FieldLabel>Identificação</FieldLabel>
-                        <TextEdit Text="@principal.UserDetails" Disabled="true" />
+                        <TextEdit Text="@principal?.UserDetails" Disabled="true" />
                     </Field>
                 </Fields>
                 <Fields>
                     <Field ColumnSize="ColumnSize.Is6.OnDesktop">
                         <FieldLabel>Email</FieldLabel>
-                        <TextEdit Text="@principal.Email" Disabled="true" />
+                        <TextEdit Text="@principal?.Email" Disabled="true" />
                     </Field>
                     <Field ColumnSize="ColumnSize.Is6.OnDesktop">
                         <FieldLabel>Mobile</FieldLabel>
-                        <TextEdit Text="@principal.Mobile" Disabled="true" />
+                        <TextEdit Text="@principal?.Mobile" Disabled="true" />
                     </Field>
                 </Fields>
             </CardBody>
@@ -37,13 +37,13 @@
         <Card Margin="Margin.Is2.FromBottom">
             <CardHeader>Dados Cadastrais</CardHeader>
             <CardBody>
-                <Button Color="Color.Primary" Clicked="()=>{ ClearCache(); }" Margin="Margin.Is1.FromEnd">
+                <Button Color="Color.Primary" Clicked="async()=>{ await ClearCache(); }" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.Eraser" /> Limpar Cache
                 </Button>
-                <Button Color="Color.Warning" Clicked="()=>{ ResetInteractions(); }" Disabled="true" Margin="Margin.Is1.FromEnd">
+                <Button Color="Color.Warning" Clicked="async()=>{ await ResetInteractions(); }" Disabled="true" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.FastBackward" /> Resetar Interações
                 </Button>
-                <Button Color="Color.Danger" Clicked="()=>{ DeleteAccount(principal.IdentityProvider); }" Disabled="true">
+                <Button Color="Color.Danger" Clicked="()=>{ DeleteAccount(principal?.IdentityProvider); }" Disabled="true">
                     <Blazorise.Icon Name="FontAwesomeIcons.UserSlash" /> Deletar Conta
                 </Button>
             </CardBody>
@@ -52,7 +52,7 @@
 </Row>
 
 @code {
-    private ClientePrincipal? principal = new();
+    private ClientePrincipal? principal;
 
     protected override async Task LoadData()
     {
@@ -73,10 +73,11 @@
                     principal.UserId = user.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
                     principal.IdentityProvider = user.Identity?.AuthenticationType;
                     principal.UserDetails = user.Identity?.Name;
-                    principal.UserRoles = user.Claims.Where(w => w.Type == ClaimTypes.Role)?.Select(s => s.Value).ToArray();
+                    
+                    principal.UserRoles = user.Claims.Where(w => w.Type == ClaimTypes.Role).Select(s => s.Value).ToArray();
                 }
 
-                principal.Email = principal.UserDetails;
+                principal.Email = principal?.UserDetails;
             }
         }
     }
@@ -99,7 +100,7 @@
         await Toast.Success("Operação efetuada com sucesso!");
     }
 
-    private void DeleteAccount(string provider)
+    private void DeleteAccount(string? provider)
     {
         //show question: Caso queira apagar seu perfil e todas as interações feitas (seu perfil não ficará mais disponível)
 

@@ -35,8 +35,8 @@
 
     protected async Task LoadData(bool clearData = false)
     {
-        await cardPopular.LoadData(clearData: clearData);
-        await cardTopRated.LoadData(clearData: clearData);
-        await cardUpcoming.LoadData(clearData: clearData);
+        if (cardPopular != null) await cardPopular.LoadData(clearData: clearData);
+        if (cardTopRated != null) await cardTopRated.LoadData(clearData: clearData);
+        if (cardUpcoming != null) await cardUpcoming.LoadData(clearData: clearData);
     }
 }

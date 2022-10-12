@@ -6,11 +6,11 @@
             </Column>
             <Column>
                 <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is0.FromBottom">
-                    <a href="@Link" target="_blank" rel="noopener">@(new Uri(Link).Host)</a>
+                    <a href="@Link" target="_blank" rel="noopener">@(new Uri(Link ?? "").Host)</a>
                 </Paragraph>
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                <Button Size="Size.ExtraSmall" Color="Color.Info" Clicked="@(()=>Toast.Info(Text, $"About {(new Uri(Link).Host)}"))">
+                <Button Size="Size.ExtraSmall" Color="Color.Info" Clicked="@(()=>Toast.Info(Text, $"About {(new Uri(Link??"").Host)}"))">
                     <Blazorise.Icon Name="FontAwesomeIcons.QuestionCircle"></Blazorise.Icon>
                 </Button>
             </Column>

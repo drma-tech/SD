@@ -11,13 +11,13 @@
                         <Select TValue="Region" SelectedValue="@Settings.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromEnd">
                             @foreach (var item in Regions.OrderBy(o => o.Name))
                             {
-                                <SelectItem Value="@item.ValueObject">@(((Region)item.ValueObject).GetCustomAttribute(false).Name)</SelectItem>
+                                <SelectItem Value="@item.ValueObject">@(((Region)item.ValueObject).GetCustomAttribute(false)?.Name)</SelectItem>
                             }
                         </Select>
                         <Select TValue="Language" SelectedValue="@Settings.Language" SelectedValueChanged="LanguageValueChanged" Size="Size.Small" Style="width:auto;">
                             @foreach (var item in Languages.OrderBy(o => o.Name))
                             {
-                                <SelectItem Value="@item.ValueObject">@(((Language)item.ValueObject).GetCustomAttribute(false).Name)</SelectItem>
+                                <SelectItem Value="@item.ValueObject">@(((Language)item.ValueObject).GetCustomAttribute(false)?.Name)</SelectItem>
                             }
                         </Select>
                     </Matched>

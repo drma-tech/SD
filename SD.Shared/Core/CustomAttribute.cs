@@ -23,17 +23,17 @@ namespace SD.Shared.Core
 
     public static class CustomAttributeHelper
     {
-        public static string GetName(this System.Enum value, bool translate = true)
+        public static string? GetName(this Enum value, bool translate = true)
         {
             return value.GetCustomAttribute(translate)?.Name;
         }
 
-        public static string GetDescription(this System.Enum value, bool translate = true)
+        public static string? GetDescription(this Enum value, bool translate = true)
         {
             return value.GetCustomAttribute(translate)?.Description;
         }
 
-        public static CustomAttribute? GetCustomAttribute(this System.Enum value, bool translate = true)
+        public static CustomAttribute? GetCustomAttribute(this Enum value, bool translate = true)
         {
             var fieldInfo = value.GetType().GetField(value.ToString());
 

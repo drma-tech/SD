@@ -13,7 +13,7 @@
     </RadioGroup>
     @if (HasFilter)
     {
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="@(()=>PopupFilter.ShowModal())">
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="@(async()=>{if(PopupFilter!=null)await PopupFilter.ShowModal();})">
             <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
         </Button>
     }
@@ -130,7 +130,7 @@
 
             MediaType = mediaType;
 
-            await Service.PopulateListMedia(Http, StorageService, Settings, ListMedia, MediaType, PageSize * PageNumber, ExtraParameters);
+            if (Service != null) await Service.PopulateListMedia(Http, StorageService, Settings, ListMedia, MediaType, PageSize * PageNumber, ExtraParameters);
 
             Loading = false;
 
@@ -155,7 +155,7 @@
 
         Loading = true;
 
-        await Service.PopulateListMedia(Http, StorageService, Settings, ListMedia, MediaType, PageSize * PageNumber, ExtraParameters);
+        if (Service != null) await Service.PopulateListMedia(Http, StorageService, Settings, ListMedia, MediaType, PageSize * PageNumber, ExtraParameters);
 
         Loading = false;
     }
@@ -166,13 +166,13 @@
 
         if (IsIMDB && MediaType == MediaType.tv) //for now, only tv series (imdb) need this kind of workaround
         {
-            tmdb_id = await TmdbExternalIdTvService.GetTmdbId(Http, StorageService.Session, media.tmdb_id);
+            tmdb_id = await TmdbExternalIdTvService.GetTmdbId(Http, StorageService.Session, media?.tmdb_id);
         }
         else
         {
             tmdb_id = media.tmdb_id;
         }
 
-        await PopupMedia.ShowModal(tmdb_id, media.MediaType);
+        if (PopupMedia != null) await PopupMedia.ShowModal(tmdb_id, media?.MediaType);
     }
 }

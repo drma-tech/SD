@@ -23,17 +23,14 @@ namespace SD.WEB.Services.TMDB
             var parameter = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey },
-                { "language", settings.Language.GetName(false) },
+                { "language", settings.Language.GetName(false) ?? "en-US" },
                 { "page", "1" },
                 { "sort_by", "original_order.asc" }
             };
 
-            if (ExtraParameters != null)
+            foreach (var item in ExtraParameters)
             {
-                foreach (var item in ExtraParameters)
-                {
-                    parameter.Add(item.Key, item.Value);
-                }
+                parameter.Add(item.Key, item.Value);
             }
 
             var result = await http.GetNew<CustomListNew>(storage.Local, TmdbOptions.BaseUriNew + "list/" + ExtraParameters["list_id"].ToString().ConfigureParameters(parameter));
@@ -49,7 +46,7 @@ namespace SD.WEB.Services.TMDB
                     tmdb_id = item.id.ToString(),
                     title = tv ? item.name : item.title,
                     plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                    release_date = tv ? item.first_air_date.GetDate() : item.release_date.GetDate(),
+                    release_date = tv ? item.first_air_date?.GetDate() : item.release_date?.GetDate(),
                     poster_path_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                     poster_path_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
                     rating = item.vote_count > 10 ? item.vote_average : 0,

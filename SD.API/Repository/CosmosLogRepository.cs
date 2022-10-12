@@ -13,12 +13,12 @@ namespace SD.API.Repository
             Key = DateTime.UtcNow.ToShortDateString();
         }
 
-        public string Id { get; set; }
-        public string Key { get; set; }
-        public string Name { get; set; }
-        public string State { get; set; }
-        public string Message { get; set; }
-        public string StackTrace { get; set; }
+        public string? Id { get; set; }
+        public string? Key { get; set; }
+        public string? Name { get; set; }
+        public string? State { get; set; }
+        public string? Message { get; set; }
+        public string? StackTrace { get; set; }
     }
 
     public class CosmosLogRepository

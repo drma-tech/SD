@@ -18,7 +18,7 @@ namespace SD.WEB.Services.TMDB
             {
                 { "api_key", TmdbOptions.ApiKey },
                 { "region", settings.Region.ToString() },
-                { "language", settings.Language.GetName(false) },
+                { "language", settings.Language.GetName(false) ?? "en-US" },
                 { "page", page.ToString() }
             };
 
@@ -30,9 +30,9 @@ namespace SD.WEB.Services.TMDB
                     parameter["page"] = page.ToString();
                     var result = await http.Get<MovieTopRated>(TmdbOptions.BaseUri + "movie/top_rated".ConfigureParameters(parameter), storage.Session);
 
-                    foreach (var item in result.results)
+                    foreach (var item in result?.results ?? new List<ResultMovieTopRated>())
                     {
-                        if (item.release_date.GetDate() < DateTime.Now.AddYears(-20)) continue;
+                        if (item.release_date?.GetDate() < DateTime.Now.AddYears(-20)) continue;
                         if (item.vote_count < 1000) continue;
                         //if (string.IsNullOrEmpty(item.poster_path)) continue;
 
@@ -41,7 +41,7 @@ namespace SD.WEB.Services.TMDB
                             tmdb_id = item.id.ToString(),
                             title = item.title,
                             plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                            release_date = item.release_date.GetDate(),
+                            release_date = item.release_date?.GetDate(),
                             poster_path_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                             poster_path_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
                             rating = item.vote_average,
@@ -49,8 +49,8 @@ namespace SD.WEB.Services.TMDB
                         });
                     }
 
-                    if (result.total_results < qtd) break; //if there is less result than requested
-                    if (page >= result.total_pages) break; //passed the last page
+                    if (result?.total_results < qtd) break; //if there is less result than requested
+                    if (page >= result?.total_pages) break; //passed the last page
                     if (page > 10) break; //if it exceeds 10 calls, something is wrong
                 }
             }
@@ -62,9 +62,9 @@ namespace SD.WEB.Services.TMDB
                     parameter["page"] = page.ToString();
                     var result = await http.Get<TVTopRated>(TmdbOptions.BaseUri + "tv/top_rated".ConfigureParameters(parameter), storage.Session);
 
-                    foreach (var item in result.results)
+                    foreach (var item in result?.results ?? new List<ResultTVTopRated>())
                     {
-                        if (item.first_air_date.GetDate() < DateTime.Now.AddYears(-20)) continue;
+                        if (item.first_air_date?.GetDate() < DateTime.Now.AddYears(-20)) continue;
                         if (item.vote_count < 1000) continue;
                         if (string.IsNullOrEmpty(item.poster_path)) continue;
 
@@ -73,7 +73,7 @@ namespace SD.WEB.Services.TMDB
                             tmdb_id = item.id.ToString(),
                             title = item.name,
                             plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                            release_date = item.first_air_date.GetDate(),
+                            release_date = item.first_air_date?.GetDate(),
                             poster_path_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                             poster_path_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
                             rating = item.vote_average,
@@ -81,8 +81,8 @@ namespace SD.WEB.Services.TMDB
                         });
                     }
 
-                    if (result.total_results < qtd) break; //if there is less result than requested
-                    if (page >= result.total_pages) break; //passed the last page
+                    if (result?.total_results < qtd) break; //if there is less result than requested
+                    if (page >= result?.total_pages) break; //passed the last page
                     if (page > 10) break; //if it exceeds 10 calls, something is wrong
                 }
             }

@@ -42,7 +42,7 @@
                 @*<Button Color="Color.Danger" Clicked="@context.Clicked" Size="Size.Small">
                 <Blazorise.Icon Name="FontAwesomeIcons.Trash"></Blazorise.Icon>
                 </Button>*@
-                <Button Color="Color.Secondary" Clicked="@(() => PopupProvider.ShowModal(@context.Item, @context.Item.types.First()))" Size="Size.Small">
+                <Button Color="Color.Secondary" Clicked="@(async() => {if(PopupProvider!=null) await PopupProvider.ShowModal(@context.Item, @context.Item.types.First());})" Size="Size.Small">
                     <Blazorise.Icon Name=" FontAwesomeIcons.Eye">
                     </Blazorise.Icon>
                 </Button>
@@ -114,7 +114,7 @@
 
     protected void SaveSession()
     {
-        StorageService.Local.SetItem("Data/providers.json", AllProviders.OrderBy(o => int.Parse(o.id)).ToList());
+        StorageService.Local.SetItem("Data/providers.json", AllProviders.OrderBy(o => int.Parse(o.id ?? "0")).ToList());
     }
 
     protected async Task RowUpdated(SavedRowItem<Provider, Dictionary<string, object>> e)
@@ -122,8 +122,10 @@
         await ProviderServide.SaveProvider(Http, StorageService.Session, e.Item);
     }
 
-    protected async Task<string> GetDescriptionOnClick(string url)
+    protected async Task<string> GetDescriptionOnClick(string? url)
     {
+        if (url == null) throw new ArgumentNullException(nameof(url));
+
         try
         {
             var client = new HttpClient();

@@ -7,8 +7,11 @@ namespace SD.WEB.Services.TMDB
 {
     public static class WatchProvidersService
     {
-        public static async Task<MediaProviders?> GetProviders(HttpClient http, IStorageService storage, Settings settings, string tmdb_id, MediaType type)
+        public static async Task<MediaProviders?> GetProviders(HttpClient http, IStorageService storage, Settings settings, string? tmdb_id, MediaType? type)
         {
+            if (tmdb_id == null) throw new ArgumentNullException(nameof(tmdb_id));
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
             var parameter = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey }

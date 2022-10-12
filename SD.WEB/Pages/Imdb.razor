@@ -27,8 +27,8 @@
 
     protected async Task LoadData()
     {
-        await cardPopular.LoadData();
-        await cardTopRated.LoadData();
-        await cardUpcoming.LoadData();
+        if (cardPopular != null) await cardPopular.LoadData();
+        if (cardTopRated != null) await cardTopRated.LoadData();
+        if (cardUpcoming != null) await cardUpcoming.LoadData();
     }
 }

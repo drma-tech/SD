@@ -10,15 +10,15 @@ namespace SD.API.Core
 {
     public static class StaticWebAppsAuth
     {
-        private class ClientPrincipal
+        private sealed class ClientPrincipal
         {
-            public string IdentityProvider { get; set; }
-            public string UserId { get; set; }
-            public string UserDetails { get; set; }
-            public IEnumerable<string> UserRoles { get; set; }
+            public string? IdentityProvider { get; }
+            public string? UserId { get; }
+            public string? UserDetails { get; }
+            public IEnumerable<string> UserRoles { get; set; } = Array.Empty<string>();
         }
 
-        public static ClaimsPrincipal Parse(this HttpRequest req)
+        public static ClaimsPrincipal? Parse(this HttpRequest req)
         {
             var principal = new ClientPrincipal();
 
@@ -30,22 +30,29 @@ namespace SD.API.Core
                 principal = JsonSerializer.Deserialize<ClientPrincipal>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             }
 
-            principal.UserRoles = principal.UserRoles?.Except(new string[] { "anonymous" }, StringComparer.CurrentCultureIgnoreCase);
-
-            if (!principal.UserRoles?.Any() ?? true)
+            if (principal != null)
             {
-                return new ClaimsPrincipal();
+                principal.UserRoles = principal.UserRoles?.Except(new string[] { "anonymous" }, StringComparer.CurrentCultureIgnoreCase) ?? Array.Empty<string>();
+
+                if (!principal.UserRoles?.Any() ?? true)
+                {
+                    return new ClaimsPrincipal();
+                }
+
+                var identity = new ClaimsIdentity(principal.IdentityProvider);
+                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, principal.UserId ?? ""));
+                identity.AddClaim(new Claim(ClaimTypes.Name, principal.UserDetails ?? ""));
+                identity.AddClaims(principal.UserRoles?.Select(r => new Claim(ClaimTypes.Role, r)) ?? new List<Claim>());
+
+                return new ClaimsPrincipal(identity);
             }
-
-            var identity = new ClaimsIdentity(principal.IdentityProvider);
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, principal.UserId));
-            identity.AddClaim(new Claim(ClaimTypes.Name, principal.UserDetails));
-            identity.AddClaims(principal.UserRoles.Select(r => new Claim(ClaimTypes.Role, r)));
-
-            return new ClaimsPrincipal(identity);
+            else
+            {
+                return null;
+            }
         }
 
-        public static string GetUserId(this HttpRequest req)
+        public static string? GetUserId(this HttpRequest req)
         {
             if (req.Host.Host.Contains("localhost"))
             {
@@ -57,7 +64,7 @@ namespace SD.API.Core
             {
                 var principal = req.Parse();
 
-                return principal.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
+                return principal?.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
             }
         }
     }

@@ -66,7 +66,7 @@
                             {
                                 @foreach (var item in provider.plans)
                                 {
-                                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.name: @item.price.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture(provider.head_language.GetName(false)))</Badge>
+                                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.name: @item.price.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture(provider.head_language?.GetName(false)??""))</Badge>
                                 }
                             }
                             else
@@ -84,7 +84,7 @@
             </Tabs>
         </ModalBody>
         <ModalFooter>
-            <Button Color="Color.Secondary" Clicked="@modal.Hide">@TranslationText.Close</Button>
+            <Button Color="Color.Secondary" Clicked="@(async()=>{if (modal!=null)await modal.Hide();})">@TranslationText.Close</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -111,15 +111,17 @@
         this.provider = provider;
         this.MediaType = MediaType;
 
-        modal.Show();
+        if (modal != null) await modal.Show();
 
-        await cardPopular.LoadData(MediaType, GetExtraParameters(provider.id, "popularity.desc"), true);
-        await cardNew.LoadData(MediaType, GetExtraParameters(provider.id, "primary_release_date.desc"), true);
-        await cardTopRated.LoadData(MediaType, GetExtraParameters(provider.id, "vote_average.desc"), true);
+        if (cardPopular != null) await cardPopular.LoadData(MediaType, GetExtraParameters(provider?.id, "popularity.desc"), true);
+        if (cardNew != null) await cardNew.LoadData(MediaType, GetExtraParameters(provider?.id, "primary_release_date.desc"), true);
+        if (cardTopRated != null) await cardTopRated.LoadData(MediaType, GetExtraParameters(provider?.id, "vote_average.desc"), true);
     }
 
-    private Dictionary<string, string> GetExtraParameters(string provider_id, string sort_by)
+    private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)
     {
+        if (provider_id == null) throw new ArgumentNullException(nameof(provider_id));
+
         return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by } }; ;
     }
 }

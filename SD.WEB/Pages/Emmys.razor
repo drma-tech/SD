@@ -28,8 +28,8 @@
 
     protected async Task LoadData()
     {
-        await cardComedy.LoadData(extraParameters: GetExtraParameters("7103519"));
-        await cardDrama.LoadData(extraParameters: GetExtraParameters("7103525"));
-        await cardLimited.LoadData(extraParameters: GetExtraParameters("7103526"));
+        if (cardComedy != null) await cardComedy.LoadData(extraParameters: GetExtraParameters("7103519"));
+        if (cardDrama != null) await cardDrama.LoadData(extraParameters: GetExtraParameters("7103525"));
+        if (cardLimited != null) await cardLimited.LoadData(extraParameters: GetExtraParameters("7103526"));
     }
 }
