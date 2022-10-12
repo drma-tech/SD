@@ -18,12 +18,12 @@
         /// <summary>
         /// Single field within the container (has distinction by type)
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         /// PartitionKeyPath (Logical Partition)
         /// </summary>
-        public string Key { get; set; }
+        public string? Key { get; set; }
 
         /// <summary>
         /// Structure type (usually the class name)
@@ -63,7 +63,7 @@
         /// Set attributes of key fields (merge with Type field)
         /// </summary>
         /// <param name="IdLoggedUser">Token's captured user id</param>
-        public abstract void SetIds(string IdLoggedUser);
+        public abstract void SetIds(string? IdLoggedUser);
     }
 
     public class CosmosBaseQuery

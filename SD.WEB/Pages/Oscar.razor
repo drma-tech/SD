@@ -37,9 +37,9 @@
 
     protected async Task LoadData()
     {
-        await cardPicture.LoadData(extraParameters: GetExtraParameters("7103422"));
-        await cardAnimated.LoadData(extraParameters: GetExtraParameters("7103492"));
-        await cardInternational.LoadData(extraParameters: GetExtraParameters("7103493"));
-        await cardDocumentary.LoadData(extraParameters: GetExtraParameters("7103488"));
+        if (cardPicture != null) await cardPicture.LoadData(extraParameters: GetExtraParameters("7103422"));
+        if (cardAnimated != null) await cardAnimated.LoadData(extraParameters: GetExtraParameters("7103492"));
+        if (cardInternational != null) await cardInternational.LoadData(extraParameters: GetExtraParameters("7103493"));
+        if (cardDocumentary != null) await cardDocumentary.LoadData(extraParameters: GetExtraParameters("7103488"));
     }
 }

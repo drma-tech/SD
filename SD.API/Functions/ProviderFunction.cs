@@ -47,7 +47,7 @@ namespace SD.API.Functions
 
                 var result = await _repo.Get<AllProviders>("providers", "providers", source.Token);
 
-                return new OkObjectResult(result.Items);
+                return new OkObjectResult(result?.Items);
             }
             catch (Exception ex)
             {
@@ -71,11 +71,14 @@ namespace SD.API.Functions
                 var AllProviders = await _repo.Get<AllProviders>("providers", "providers", source.Token);
                 var providers = await req.GetParameterGenericObject<List<Provider>>(source.Token);
 
-                AllProviders.DtUpdate = DateTimeOffset.UtcNow;
-                AllProviders.Items = providers.OrderBy(o => int.Parse(o.id)).ToList();
-                await _repo.Update(AllProviders, source.Token);
+                if (AllProviders != null)
+                {
+                    AllProviders.DtUpdate = DateTimeOffset.UtcNow;
+                    AllProviders.Items = providers.OrderBy(o => int.Parse(o.id ?? "0")).ToList();
+                    await _repo.Update(AllProviders, source.Token);
+                }
 
-                return new OkObjectResult(AllProviders.Items);
+                return new OkObjectResult(AllProviders?.Items);
             }
             catch (Exception ex)
             {
@@ -99,38 +102,42 @@ namespace SD.API.Functions
                 var result = new List<Provider>();
 
                 var AllProviders = await _repo.Get<AllProviders>("providers", "providers", source.Token);
-                var details = AllProviders.Items;
 
-                foreach (var region in EnumHelper.GetArray<Region>())
+                if (AllProviders != null)
                 {
-                    var parameter = new Dictionary<string, string>()
-                {
-                    { "api_key", TmdbOptions.ApiKey },
-                    { "language", Language.enUS.GetName(false) },
-                    { "watch_region", region.ToString() }
-                };
+                    var details = AllProviders.Items;
 
-                    using (var http = new HttpClient())
+                    foreach (var region in EnumHelper.GetArray<Region>())
                     {
-                        var movies = await http.Get<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/movie".ConfigureParameters(parameter), source.Token);
-                        AddProvider(result, movies.results, details, region, MediaType.movie);
+                        var parameter = new Dictionary<string, string>()
+                        {
+                            { "api_key", TmdbOptions.ApiKey },
+                            { "language", Language.enUS.GetName(false) ?? "en-US" },
+                            { "watch_region", region.ToString() }
+                        };
 
-                        var tvs = await http.Get<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/tv".ConfigureParameters(parameter), source.Token);
-                        AddProvider(result, tvs.results, details, region, MediaType.tv);
+                        using (var http = new HttpClient())
+                        {
+                            var movies = await http.Get<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/movie".ConfigureParameters(parameter), source.Token);
+                            if (movies != null) AddProvider(result, movies.results, details, region, MediaType.movie);
+
+                            var tvs = await http.Get<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/tv".ConfigureParameters(parameter), source.Token);
+                            if (tvs != null) AddProvider(result, tvs.results, details, region, MediaType.tv);
+                        }
+                    }
+
+                    var _new = AllProviders.DtUpdate == null && AllProviders.DtInsert.AddDays(-7) > DateTimeOffset.UtcNow;
+                    var _old = AllProviders.DtUpdate != null && AllProviders.DtUpdate.Value.AddDays(-7) > DateTimeOffset.UtcNow;
+
+                    if (_new || _old)
+                    {
+                        AllProviders.DtUpdate = DateTimeOffset.UtcNow;
+                        AllProviders.Items = result.OrderBy(o => int.Parse(o.id ?? "0")).ToList();
+                        await _repo.Update(AllProviders, source.Token);
                     }
                 }
 
-                var _new = AllProviders.DtUpdate == null && AllProviders.DtInsert.AddDays(-7) > DateTimeOffset.UtcNow;
-                var _old = AllProviders.DtUpdate != null && AllProviders.DtUpdate.Value.AddDays(-7) > DateTimeOffset.UtcNow;
-
-                if (_new || _old)
-                {
-                    AllProviders.DtUpdate = DateTimeOffset.UtcNow;
-                    AllProviders.Items = result.OrderBy(o => int.Parse(o.id)).ToList();
-                    await _repo.Update(AllProviders, source.Token);
-                }
-
-                return new OkObjectResult(AllProviders.Items);
+                return new OkObjectResult(AllProviders?.Items);
             }
             catch (Exception ex)
             {

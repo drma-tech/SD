@@ -56,7 +56,7 @@ namespace SD.WEB
 
             if (sett != null)
             {
-                culture = new CultureInfo(sett.Language.GetName(false));
+                culture = new CultureInfo(sett.Language.GetName(false) ?? "en-US");
             }
             else
             {

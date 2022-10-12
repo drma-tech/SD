@@ -21,7 +21,7 @@ namespace SD.WEB.Services.IMDB
             {
                 var result = await http.Get<NewMovieData>(ImdbOptions.BaseUri + "ComingSoon".ConfigureParameters(parameter), storage.Session); //undefined numeric record
 
-                foreach (var item in result.Items)
+                foreach (var item in result?.Items ?? new List<NewMovieDataDetail>())
                 {
                     //if (item.vote_count < 100) continue; //ignore low-rated movie
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
@@ -31,7 +31,7 @@ namespace SD.WEB.Services.IMDB
                         tmdb_id = item.Id,
                         title = item.Title,
                         //plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                        release_date = DateTime.Parse(item.ReleaseState, CultureInfo.InvariantCulture),
+                        release_date = DateTime.Parse(item.ReleaseState ?? DateTime.MinValue.ToString(), CultureInfo.InvariantCulture),
                         //poster_path_small = ImdbOptions.ResizeImage + item.Image,
                         poster_path_small = item.Image,
                         rating = string.IsNullOrEmpty(item.IMDbRating) ? 0 : double.Parse(item.IMDbRating, CultureInfo.InvariantCulture),

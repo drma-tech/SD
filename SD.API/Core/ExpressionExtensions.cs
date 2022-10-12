@@ -51,14 +51,14 @@ namespace SD.API.Core
             new ParameterRebinder(map).Visit(exp);
 
         /// <inheritdoc />
-        protected override Expression VisitParameter(ParameterExpression parameter)
+        protected override Expression VisitParameter(ParameterExpression node)
         {
-            if (_map.TryGetValue(parameter, out ParameterExpression replacement))
+            if (_map.TryGetValue(node, out ParameterExpression? replacement))
             {
-                parameter = replacement;
+                node = replacement;
             }
 
-            return base.VisitParameter(parameter);
+            return base.VisitParameter(node);
         }
     }
 }

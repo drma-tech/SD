@@ -21,18 +21,18 @@ namespace SD.WEB.Services.IMDB
             {
                 var result = await http.Get<Top250Data>(ImdbOptions.BaseUri + "Top250Movies".ConfigureParameters(parameter), storage.Session); //bring 250 records
 
-                foreach (var item in result.Items)
+                foreach (var item in result?.Items ?? new List<Top250DataDetail>())
                 {
                     //if (item.vote_count < 100) continue; //ignore low-rated movie
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
-                    if (new DateTime(int.Parse(item.Year), 1, 1) < DateTime.Now.AddYears(-20)) continue;
+                    if (new DateTime(int.Parse(item.Year ?? "0"), 1, 1) < DateTime.Now.AddYears(-20)) continue;
 
                     list_media.Add(new MediaDetail
                     {
                         tmdb_id = item.Id,
                         title = item.Title,
                         //plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                        release_date = new DateTime(int.Parse(item.Year), 1, 1),
+                        release_date = new DateTime(int.Parse(item.Year ?? "0"), 1, 1),
                         poster_path_small = ImdbOptions.ResizeImage + item.Image,
                         rating = string.IsNullOrEmpty(item.IMDbRating) ? 0 : double.Parse(item.IMDbRating, CultureInfo.InvariantCulture),
                         MediaType = MediaType.movie
@@ -43,18 +43,18 @@ namespace SD.WEB.Services.IMDB
             {
                 var result = await http.Get<Top250Data>(ImdbOptions.BaseUri + "Top250TVs".ConfigureParameters(parameter), storage.Session); //bring 250 records
 
-                foreach (var item in result.Items)
+                foreach (var item in result?.Items ?? new List<Top250DataDetail>())
                 {
                     //if (item.vote_count < 100) continue; //ignore low-rated movie
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
-                    if (new DateTime(int.Parse(item.Year), 1, 1) < DateTime.Now.AddYears(-20)) continue;
+                    if (new DateTime(int.Parse(item.Year ?? "0"), 1, 1) < DateTime.Now.AddYears(-20)) continue;
 
                     list_media.Add(new MediaDetail
                     {
                         tmdb_id = item.Id,
                         title = item.Title,
                         //plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                        release_date = new DateTime(int.Parse(item.Year), 1, 1),
+                        release_date = new DateTime(int.Parse(item.Year ?? "0"), 1, 1),
                         poster_path_small = ImdbOptions.ResizeImage + item.Image,
                         rating = string.IsNullOrEmpty(item.IMDbRating) ? 0 : double.Parse(item.IMDbRating, CultureInfo.InvariantCulture),
                         MediaType = MediaType.tv

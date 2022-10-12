@@ -5,7 +5,7 @@
 <Modal @ref="modal">
     <ModalContent Centered="true" Size="ModalSize.ExtraLarge">
         <ModalHeader>
-            <ModalTitle>@provider.name (@TypeMedia.GetName())</ModalTitle>
+            <ModalTitle>@Provider?.name (@TypeMedia.GetName())</ModalTitle>
             <CloseButton />
         </ModalHeader>
         <ModalBody MaxHeight="70">
@@ -14,7 +14,7 @@
             <CardMediaList @ref="cardTopRated" Service="@DiscoverService" CardHeader="@TranslationText.TopRated"></CardMediaList>
         </ModalBody>
         <ModalFooter>
-            <Button Color="Color.Secondary" Clicked="@modal.Hide">@TranslationText.Close</Button>
+            <Button Color="Color.Secondary" Clicked="@(async()=>{if (modal!=null)await modal.Hide();})">@TranslationText.Close</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -26,32 +26,36 @@
 
     private Modal? modal;
 
-    public Provider provider { get; set; } = new();
+    public Provider? Provider { get; set; }
 
     public MediaType TypeMedia { get; set; }
 
-    private Dictionary<string, string> GetExtraParameters(string provider_id, string sort_by)
+    private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)
     {
+        if (provider_id == null) throw new ArgumentNullException(nameof(provider_id));
+
         return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by } }; ;
     }
 
-    public async Task ShowModal(Provider provider, Settings settings, MediaType typeMedia)
+    public async Task ShowModal(Provider? provider, Settings settings, MediaType typeMedia)
     {
-        this.provider = provider;
+        if (provider == null) throw new ArgumentNullException(nameof(provider));
+
+        this.Provider = provider;
         this.TypeMedia = typeMedia;
 
-        modal.Show();
+        if (modal != null) await modal.Show();
 
-        await cardPopular.LoadData(TypeMedia, GetExtraParameters(provider.id, "popularity.desc"), true);
-        await cardNew.LoadData(TypeMedia, GetExtraParameters(provider.id, "primary_release_date.desc"), true);
-        await cardTopRated.LoadData(TypeMedia, GetExtraParameters(provider.id, "vote_average.desc"), true);
+        if (cardPopular != null) await cardPopular.LoadData(TypeMedia, GetExtraParameters(provider?.id, "popularity.desc"), true);
+        if (cardNew != null) await cardNew.LoadData(TypeMedia, GetExtraParameters(provider?.id, "primary_release_date.desc"), true);
+        if (cardTopRated != null) await cardTopRated.LoadData(TypeMedia, GetExtraParameters(provider?.id, "vote_average.desc"), true);
 
-        if (!provider.empty_catalog.HasValue || provider.empty_catalog.Value == true)
+        if (!Provider.empty_catalog.HasValue || Provider.empty_catalog.Value == true)
         {
             var AllProviders = await ProviderServide.GetAllProviders(Http, StorageService.Session);
-            var provider_db = AllProviders.Single(s => s.id == provider.id);
+            var provider_db = AllProviders.Single(s => s.id == Provider.id);
 
-            provider_db.empty_catalog = cardNew.ListMedia.Count < 9;
+            provider_db.empty_catalog = cardNew?.ListMedia.Count < 9;
 
             StorageService.Local.SetItem("Data/providers.json", AllProviders);
         }

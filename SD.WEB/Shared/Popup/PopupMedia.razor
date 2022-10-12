@@ -13,7 +13,7 @@
             <CustomVisibility Loading="@Loading" NoData="(media == null)">
                 <Row HorizontalGutter="8" VerticalGutter="8">
                     <Column ColumnSize="ColumnSize.Is12.OnMobile.Is4.OnDesktop">
-                        @if (string.IsNullOrEmpty(media.poster_path_large))
+                        @if (string.IsNullOrEmpty(media?.poster_path_large))
                         {
                             <CardImage Source="nopicture.jpg" Alt="@media?.title"></CardImage>
                         }
@@ -22,25 +22,25 @@
                             <Div Style="position:relative;">
                                 @if (ShowOnlyYear)
                                 {
-                                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media.release_date?.Year</Badge>
+                                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media?.release_date?.Year</Badge>
                                 }
                                 else
                                 {
-                                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media.release_date?.ToShortDateString()</Badge>
+                                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media?.release_date?.ToShortDateString()</Badge>
                                 }
-                                @if (media.rating >= 8)
+                                @if (media?.rating >= 8)
                                 {
-                                    <Badge Color="Color.Success" Style="position: absolute; top: 5px; right: 5px;">@media.rating.ToString("#.#")</Badge>
+                                    <Badge Color="Color.Success" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
                                 }
-                                else if (media.rating >= 6)
+                                else if (media?.rating >= 6)
                                 {
-                                    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; right: 5px;">@media.rating.ToString("#.#")</Badge>
+                                    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
                                 }
-                                else if (media.rating > 0)
+                                else if (media?.rating > 0)
                                 {
-                                    <Badge Color="Color.Danger" Style="position: absolute; top: 5px; right: 5px;">@media.rating.ToString("#.#")</Badge>
+                                    <Badge Color="Color.Danger" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
                                 }
-                                <Image Source="@media.poster_path_large" Text="@media.title" Style="width: 100%;"></Image>
+                                <Image Source="@media?.poster_path_large" Text="@media?.title" Style="width: 100%;"></Image>
                             </Div>
                         }
                     </Column>
@@ -52,15 +52,15 @@
                             </Items>
                             <Content>
                                 <TabPanel Name="About" Class="mt-3">
-                                    <Badge Color="Color.Secondary" Margin="Margin.Is2.FromEnd.Is2.FromBottom">@media.runtime.FormatRuntime()</Badge>
-                                    @foreach (var item in media.Genres)
+                                    <Badge Color="Color.Secondary" Margin="Margin.Is2.FromEnd.Is2.FromBottom">@media?.runtime.FormatRuntime()</Badge>
+                                    @foreach (var item in media?.Genres ?? new List<string>())
                                     {
                                         <Badge Color="Color.Secondary" Margin="Margin.Is2.FromEnd.Is2.FromBottom">@item</Badge>
                                     }
                                     <Paragraph TextAlignment="TextAlignment.Justified">
-                                        @media.plot
+                                        @media?.plot
                                     </Paragraph>
-                                    @if (media.Videos != null && media.Videos.Any())
+                                    @if (media != null && media.Videos.Any())
                                     {
                                         <Row HorizontalGutter="4" VerticalGutter="4">
                                             <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
@@ -78,10 +78,10 @@
                                         </Row>
                                     }
                                     @{
-                                        var link = Providers.GetLink(Settings.Region);
+                                        var link = Providers?.GetLink(Settings.Region);
                                         if (string.IsNullOrEmpty(link))
                                         {
-                                            link = Providers.GetLink(Region.US);
+                                            link = Providers?.GetLink(Region.US);
                                         }
                                         @if (!string.IsNullOrEmpty(link))
                                         {
@@ -101,7 +101,7 @@
                                     @{
                                         var hasProvider = false;
 
-                                        if (Providers != null && Providers.results != null && Providers.GetFreeListProviders(Settings.Region).Any())
+                                        if (Providers?.GetFreeListProviders(Settings.Region).Any() ?? false)
                                         {
                                             hasProvider = true;
                                             <Row HorizontalGutter="4" VerticalGutter="4">
@@ -125,7 +125,7 @@
                                                 }
                                             </Row>
                                         }
-                                        if (Providers != null && Providers.results != null && Providers.GetAdsListProviders(Settings.Region).Any())
+                                        if (Providers?.GetAdsListProviders(Settings.Region).Any() ?? false)
                                         {
                                             hasProvider = true;
                                             <Row HorizontalGutter="4" VerticalGutter="4">
@@ -149,7 +149,7 @@
                                                 }
                                             </Row>
                                         }
-                                        if (Providers != null && Providers.results != null && Providers.GetFlatRateListProviders(Settings.Region).Any())
+                                        if (Providers?.GetFlatRateListProviders(Settings.Region).Any() ?? false)
                                         {
                                             hasProvider = true;
                                             <Row HorizontalGutter="4" VerticalGutter="4">
@@ -173,7 +173,7 @@
                                                 }
                                             </Row>
                                         }
-                                        if (Providers != null && Providers.results != null && Providers.GetFlatRateBuyListProviders(Settings.Region).Any())
+                                        if (Providers?.GetFlatRateBuyListProviders(Settings.Region).Any() ?? false)
                                         {
                                             hasProvider = true;
                                             <Row HorizontalGutter="4" VerticalGutter="4">
@@ -197,7 +197,7 @@
                                                 }
                                             </Row>
                                         }
-                                        if (Providers != null && Providers.results != null && Providers.GetRentListProviders(Settings.Region).Any())
+                                        if (Providers?.GetRentListProviders(Settings.Region).Any() ?? false)
                                         {
                                             hasProvider = true;
                                             <Row HorizontalGutter="4" VerticalGutter="4">
@@ -221,7 +221,7 @@
                                                 }
                                             </Row>
                                         }
-                                        if (Providers != null && Providers.results != null && Providers.GetBuyListProviders(Settings.Region).Any())
+                                        if (Providers?.GetBuyListProviders(Settings.Region).Any() ?? false)
                                         {
                                             hasProvider = true;
                                             <Row HorizontalGutter="4" VerticalGutter="4">
@@ -292,7 +292,7 @@
 @code {
     private Modal? modal;
 
-    [Parameter] public Services.TMDB.MediaDetailService? ServiceDetail { get; set; }
+    [Parameter] public Services.TMDB.MediaDetailService ServiceDetail { get; set; } = default!;
     [Parameter] public bool ShowOnlyYear { get; set; } = true;
 
     private MediaDetail? media { get; set; }
@@ -302,11 +302,11 @@
     private bool Loading;
     string selectedTab = "About";
 
-    public async Task ShowModal(string tmdb_id, MediaType type)
+    public async Task ShowModal(string? tmdb_id, MediaType? type)
     {
         try
         {
-            modal.Show();
+            modal?.Show();
 
             Loading = true;
 
@@ -324,11 +324,13 @@
 
     public void HideModal()
     {
-        modal.Hide();
+        modal?.Hide();
     }
 
     private void Atualizar()
     {
+        if (Providers == null) return;
+
         foreach (var item in Providers.GetFreeListProviders(Settings.Region))
         {
             var provider = AllProviders.SingleOrDefault(s => s.id == item.provider_id.ToString());
@@ -413,6 +415,6 @@
             }
         }
 
-        StorageService.Local.SetItem("Data/providers.json", AllProviders.OrderBy(o => int.Parse(o.id)).ToList());
+        StorageService.Local.SetItem("Data/providers.json", AllProviders.OrderBy(o => int.Parse(o.id ?? "-1")).ToList());
     }
 }

@@ -8,19 +8,19 @@ namespace SD.API.Core
 {
     public class CosmosExceptionStructure
     {
-        public string[] Errors { get; set; }
+        public string[] Errors { get; set; } = Array.Empty<string>();
     }
 
     public static class ExceptionHelper
     {
-        public static string ProcessException(this Exception ex)
+        public static string? ProcessException(this Exception ex)
         {
             if (ex is CosmosException cex)
             {
                 //var result = JsonSerializer.Deserialize<CosmosExceptionStructure>(cex.ResponseBody);
                 var result = JsonSerializer.Deserialize<CosmosExceptionStructure>("{" + cex.ResponseBody.Replace("Errors", "\"Errors\"") + "}", options: null);
 
-                return result.Errors.FirstOrDefault();
+                return result?.Errors.FirstOrDefault();
             }
             else
             {

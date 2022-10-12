@@ -98,7 +98,7 @@ namespace SD.WEB.Core
             return response;
         }
 
-        public static async Task<HttpResponseMessage> Put<T>(this HttpClient http, string requestUri, T obj, ISyncSessionStorageService? storage = null, string? urlGet = null) where T : class
+        public static async Task<HttpResponseMessage> Put<T>(this HttpClient http, string requestUri, T? obj, ISyncSessionStorageService? storage = null, string? urlGet = null) where T : class
         {
             var response = await http.PutAsJsonAsync(http.BaseApi() + requestUri, obj, GetOptions());
 

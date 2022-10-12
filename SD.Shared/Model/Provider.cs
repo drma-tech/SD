@@ -11,8 +11,10 @@ namespace SD.Shared.Modal
 
         public List<Provider> Items { get; set; } = new();
 
-        public override void SetIds(string IdLoggedUser)
+        public override void SetIds(string? IdLoggedUser)
         {
+            if (IdLoggedUser == null) return;
+
             SetId(IdLoggedUser);
             SetPartitionKey(IdLoggedUser);
         }
@@ -20,12 +22,12 @@ namespace SD.Shared.Modal
 
     public class Provider
     {
-        public string id { get; set; }
-        public string name { get; set; }
+        public string? id { get; set; }
+        public string? name { get; set; }
         public int priority { get; set; }
-        public string description { get; set; }
-        public string link { get; set; }
-        public string logo_path { get; set; }
+        public string? description { get; set; }
+        public string? link { get; set; }
+        public string? logo_path { get; set; }
         public Language? head_language { get; set; }
         public List<Region> regions { get; set; } = new();
         public List<MediaType> types { get; set; } = new();
@@ -37,7 +39,7 @@ namespace SD.Shared.Modal
 
     public class Plan
     {
-        public string name { get; set; }
+        public string? name { get; set; }
         public decimal price { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace SD.API.Core
 {
     public static class ApiCore
     {
-        public static async Task<T> Get<T>(this HttpClient http, string request_uri, CancellationToken cancellationToken) where T : class
+        public static async Task<T?> Get<T>(this HttpClient http, string request_uri, CancellationToken cancellationToken) where T : class
         {
             var response = await http.GetAsync(request_uri, cancellationToken);
 

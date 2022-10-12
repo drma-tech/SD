@@ -11,7 +11,7 @@
         <Radio TValue="int" Value="48">48</Radio>
         <Radio TValue="int" Value="1000">@TranslationText.All</Radio>
     </RadioGroup>
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="@(()=>PopupFilter.ShowModal())">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="@(async()=>{if(PopupFilter!=null)await PopupFilter.ShowModal();})">
         <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
     </Button>
 </Alert>
@@ -46,19 +46,19 @@
 
     public MediaType? MediaType { get; set; } = SD.Shared.Modal.Enum.MediaType.movie;
     public DeliveryModel? DeliveryModel { get; set; }
-    public string Content { get; set; }
+    public string? Content { get; set; }
 
     public int ProviderCount { get; set; } = 48;
 
     private List<Provider> AllProviders = new();
 
-    public IEnumerable<Provider> GetFilteredProviders(MediaType? mediaType, DeliveryModel? deliveryModel, string content) => AllProviders.Where(p =>
+    public IEnumerable<Provider> GetFilteredProviders(MediaType? mediaType, DeliveryModel? deliveryModel, string? content) => AllProviders.Where(p =>
         p.regions.Any(a => a == Settings.Region) &
         (mediaType.HasValue ? p.types.Any(a => a == mediaType.Value) : true) &
         (deliveryModel.HasValue ? p.models.Any(a => a == deliveryModel.Value) : true) &
         p.enabled &
         (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true) &
-        (string.IsNullOrEmpty(content) ? true : (p.name.Contains(content, StringComparison.InvariantCultureIgnoreCase) | (string.IsNullOrEmpty(p.description) ? true : p.description.Contains(content, StringComparison.InvariantCultureIgnoreCase))))
+        (string.IsNullOrEmpty(content) ? true : (p.name?.Contains(content, StringComparison.InvariantCultureIgnoreCase) ?? false | (string.IsNullOrEmpty(p.description) ? true : p.description.Contains(content, StringComparison.InvariantCultureIgnoreCase))))
     ).Take(ProviderCount);
 
     protected override async Task OnInitializedAsync()
@@ -86,6 +86,6 @@
     {
         var type = MediaType.HasValue ? MediaType.Value : SD.Shared.Modal.Enum.MediaType.movie;
 
-        await PopupProvider.ShowModal(item, type);
+        if (PopupProvider != null) await PopupProvider.ShowModal(item, type);
     }
 }
