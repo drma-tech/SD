@@ -14,7 +14,14 @@ namespace SD.WEB.Api
 
         public static async Task<MyProviders?> MyProviders_Get(this HttpClient http, ISyncSessionStorageService? storage)
         {
-            return await http.Get<MyProviders>(Endpoint.Get, false, storage);
+            if (ComponenteUtils.IsAuthenticated)
+            {
+                return await http.Get<MyProviders>(Endpoint.Get, false, storage);
+            }
+            else
+            {
+                return new();
+            }
         }
 
         public static async Task<HttpResponseMessage> MyProviders_Post(this HttpClient http, MyProviders? obj, ISyncSessionStorageService? storage)

@@ -14,7 +14,14 @@ namespace SD.WEB.Api
 
         public static async Task<WishList?> WishList_Get(this HttpClient http, ISyncSessionStorageService? storage)
         {
-            return await http.Get<WishList>(Endpoint.Get, false, storage);
+            if (ComponenteUtils.IsAuthenticated)
+            {
+                return await http.Get<WishList>(Endpoint.Get, false, storage);
+            }
+            else
+            {
+                return new();
+            }
         }
 
         public static async Task<HttpResponseMessage> WishList_Post(this HttpClient http, WishList? obj, ISyncSessionStorageService? storage)
