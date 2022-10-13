@@ -26,7 +26,7 @@
 
     private Modal? modal;
 
-    public Provider? Provider { get; set; }
+    public ProviderModel? Provider { get; set; }
 
     public MediaType TypeMedia { get; set; }
 
@@ -37,7 +37,7 @@
         return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by } }; ;
     }
 
-    public async Task ShowModal(Provider? provider, Settings settings, MediaType typeMedia)
+    public async Task ShowModal(ProviderModel? provider, Settings settings, MediaType typeMedia)
     {
         if (provider == null) throw new ArgumentNullException(nameof(provider));
 

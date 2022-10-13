@@ -25,11 +25,11 @@ namespace SD.WEB.Core
             return new JsonSerializerOptions();
         }
 
-        public static async Task<T?> Get<T>(this HttpClient http, string requestUri, ISyncSessionStorageService? storage = null, bool forceUpdate = false) where T : class
+        public static async Task<T?> Get<T>(this HttpClient http, string requestUri, bool externalLink, ISyncSessionStorageService? storage = null, bool forceUpdate = false) where T : class
         {
             if (storage == null)
             {
-                var response = await http.GetAsync(http.BaseApi() + requestUri);
+                var response = await http.GetAsync(http.BaseApi(externalLink) + requestUri);
 
                 return await response.ReturnResponse<T>();
             }
@@ -37,7 +37,7 @@ namespace SD.WEB.Core
             {
                 if (forceUpdate || !storage.ContainKey(requestUri))
                 {
-                    var response = await http.GetAsync(http.BaseApi() + requestUri);
+                    var response = await http.GetAsync(http.BaseApi(externalLink) + requestUri);
 
                     storage.SetItem(requestUri, await response.ReturnResponse<T>());
                 }
@@ -65,11 +65,11 @@ namespace SD.WEB.Core
             return storage.GetItem<T>(request_uri);
         }
 
-        public static async Task<List<T>> GetList<T>(this HttpClient http, string requestUri, ISyncSessionStorageService? storage = null, bool forceUpdate = false) where T : class
+        public static async Task<List<T>> GetList<T>(this HttpClient http, string requestUri, bool externalLink, ISyncSessionStorageService? storage = null, bool forceUpdate = false) where T : class
         {
             if (storage == null)
             {
-                var response = await http.GetAsync(http.BaseApi() + requestUri);
+                var response = await http.GetAsync(http.BaseApi(externalLink) + requestUri);
 
                 return await response.ReturnResponse<List<T>>() ?? new();
             }
@@ -77,7 +77,7 @@ namespace SD.WEB.Core
             {
                 if (forceUpdate || !storage.ContainKey(requestUri))
                 {
-                    var response = await http.GetAsync(http.BaseApi() + requestUri);
+                    var response = await http.GetAsync(http.BaseApi(externalLink) + requestUri);
 
                     storage.SetItem(requestUri, await response.ReturnResponse<List<T>>());
                 }
@@ -86,9 +86,9 @@ namespace SD.WEB.Core
             }
         }
 
-        public static async Task<HttpResponseMessage> Post<T>(this HttpClient http, string requestUri, T obj, ISyncSessionStorageService? storage = null, string? urlGet = null) where T : class
+        public static async Task<HttpResponseMessage> Post<T>(this HttpClient http, string requestUri, bool externalLink, T obj, ISyncSessionStorageService? storage = null, string? urlGet = null) where T : class
         {
-            var response = await http.PostAsJsonAsync(http.BaseApi() + requestUri, obj, GetOptions());
+            var response = await http.PostAsJsonAsync(http.BaseApi(externalLink) + requestUri, obj, GetOptions());
 
             if (storage != null && !string.IsNullOrWhiteSpace(urlGet) && response.IsSuccessStatusCode)
             {
@@ -98,9 +98,9 @@ namespace SD.WEB.Core
             return response;
         }
 
-        public static async Task<HttpResponseMessage> Put<T>(this HttpClient http, string requestUri, T? obj, ISyncSessionStorageService? storage = null, string? urlGet = null) where T : class
+        public static async Task<HttpResponseMessage> Put<T>(this HttpClient http, string requestUri, bool externalLink, T? obj, ISyncSessionStorageService? storage = null, string? urlGet = null) where T : class
         {
-            var response = await http.PutAsJsonAsync(http.BaseApi() + requestUri, obj, GetOptions());
+            var response = await http.PutAsJsonAsync(http.BaseApi(externalLink) + requestUri, obj, GetOptions());
 
             if (storage != null && !string.IsNullOrWhiteSpace(urlGet) && response.IsSuccessStatusCode)
             {
@@ -110,9 +110,9 @@ namespace SD.WEB.Core
             return response;
         }
 
-        public static async Task<HttpResponseMessage> Delete(this HttpClient http, string requestUri)
+        public static async Task<HttpResponseMessage> Delete(this HttpClient http, string requestUri, bool externalLink)
         {
-            return await http.DeleteAsync(http.BaseApi() + requestUri);
+            return await http.DeleteAsync(http.BaseApi(externalLink) + requestUri);
         }
     }
 }

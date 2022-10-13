@@ -8,11 +8,11 @@
 <Button Clicked="@UpdateProvidersOnClick" Color="Color.Primary">Sync Providers</Button>
 <Button Clicked="@SaveSession" Color="Color.Primary">Save Session</Button>
 
-<DataGrid @ref="DataGrid" TItem="Provider" Data="@AllProviders" Filterable="true" Editable="true" EditMode="DataGridEditMode.Form"
+<DataGrid @ref="DataGrid" TItem="ProviderModel" Data="@AllProviders" Filterable="true" Editable="true" EditMode="DataGridEditMode.Form"
           ShowPager="true" PageSize="10" FilterMethod="DataGridFilterMethod.Contains"
           RowUpdated="RowUpdated">
     <DataGridColumns>
-        <DataGridCommandColumn TItem="Provider" Width="140px">
+        <DataGridCommandColumn TItem="ProviderModel" Width="140px">
             <ClearFilterCommandTemplate>
                 <Button Color="Color.Secondary" Clicked="@context.Clicked" Size="Size.Small">
                     <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
@@ -51,8 +51,8 @@
                 </Button>
             </DeleteCommandTemplate>
         </DataGridCommandColumn>
-        <DataGridColumn TItem="Provider" Field="@nameof(Provider.name)" Caption="Name" />
-        <DataGridColumn TItem="Provider" Field="@nameof(Provider.description)" Caption="Description" Editable="true">
+        <DataGridColumn TItem="ProviderModel" Field="@nameof(ProviderModel.name)" Caption="Name" />
+        <DataGridColumn TItem="ProviderModel" Field="@nameof(ProviderModel.description)" Caption="Description" Editable="true">
             <EditTemplate>
                 <Addons>
                     <Addon AddonType="AddonType.Body">
@@ -66,8 +66,8 @@
                 </Addons>
             </EditTemplate>
         </DataGridColumn>
-        <DataGridColumn TItem="Provider" Field="@nameof(Provider.link)" Caption="Link" Editable="true"></DataGridColumn>
-        <DataGridColumn TItem="Provider" Field="@nameof(Provider.head_language)" Caption="Head Language" Editable="true">
+        <DataGridColumn TItem="ProviderModel" Field="@nameof(ProviderModel.link)" Caption="Link" Editable="true"></DataGridColumn>
+        <DataGridColumn TItem="ProviderModel" Field="@nameof(ProviderModel.head_language)" Caption="Head Language" Editable="true">
             <EditTemplate>
                 <Select TValue="Language?" SelectedValue="@((Language?)context.CellValue)" SelectedValueChanged="@((v) => context.CellValue = v)" Size="Size.Small" Style="width:auto;">
                     <SelectItem TValue="@(Language?)" Value="@((Language?)null)"></SelectItem>
@@ -78,7 +78,7 @@
                 </Select>
             </EditTemplate>
         </DataGridColumn>
-        <DataGridColumn TItem="Provider" Field="@nameof(Provider.enabled)" Caption="Enabled" Editable="true"></DataGridColumn>
+        <DataGridColumn TItem="ProviderModel" Field="@nameof(ProviderModel.enabled)" Caption="Enabled" Editable="true"></DataGridColumn>
     </DataGridColumns>
 </DataGrid>
 
@@ -89,8 +89,8 @@
 
     public MediaType MediaType { get; set; } = MediaType.movie;
 
-    public DataGrid<Provider>? DataGrid { get; set; }
-    private List<Provider> AllProviders = new();
+    public DataGrid<ProviderModel>? DataGrid { get; set; }
+    private List<ProviderModel> AllProviders = new();
 
     public IEnumerable<EnumObject> Languages { get; set; } = Array.Empty<EnumObject>();
 
@@ -117,7 +117,7 @@
         StorageService.Local.SetItem("Data/providers.json", AllProviders.OrderBy(o => int.Parse(o.id ?? "0")).ToList());
     }
 
-    protected async Task RowUpdated(SavedRowItem<Provider, Dictionary<string, object>> e)
+    protected async Task RowUpdated(SavedRowItem<ProviderModel, Dictionary<string, object>> e)
     {
         await ProviderServide.SaveProvider(Http, StorageService.Session, e.Item);
     }

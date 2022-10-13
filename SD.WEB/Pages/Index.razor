@@ -2,64 +2,63 @@
 @page "/Index"
 @inherits ComponenteCore<Index>
 @using System.Linq
+@using SD.Shared.Model
 @inject ProviderServide ProviderServide
 @inject Settings Settings
 
 <Alert Visible="true" Color="Color.Secondary">
-    <AlertMessage>@TranslationText.Providers (@Settings?.Region)</AlertMessage>
-    <RadioGroup TValue="int" @bind-CheckedValue="ProviderCount" Buttons="true" Float="Float.End" Class="btn-group-xs">
-        <Radio TValue="int" Value="48">48</Radio>
-        <Radio TValue="int" Value="1000">@TranslationText.All</Radio>
-    </RadioGroup>
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="@(async()=>{if(PopupFilter!=null)await PopupFilter.ShowModal();})">
-        <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
-    </Button>
+    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> Provedores Favoritos (@(myProviders?.Items.Count ?? 0) itens)</AlertMessage>
 </Alert>
+<AuthorizeView>
+    <Authorized>
+        <CustomVisibility NoData="(!myProviders?.Items.Any() ?? true)">
+            <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 215px; overflow: auto;">
+                @foreach (var item in myProviders?.Items ?? new List<MyProvidersItem>())
+                {
+                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                        <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1">
+                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.name" Class="w-100"></Image>
+                        </Button>
+                    </Column>
+                }
+            </Row>
+        </CustomVisibility>
+    </Authorized>
+    <NotAuthorized>
+        <Alert Visible="true" Color="Color.Warning">
+            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Info"></Blazorise.Icon> Favor, realizar login para utilizar essa funcionalidade</AlertMessage>
+        </Alert>
+    </NotAuthorized>
+</AuthorizeView>
 
-<CustomVisibility NoData="(!AllProviders.Any())">
-    <Row HorizontalGutter="4" VerticalGutter="4">
-        @foreach (var item in GetFilteredProviders(MediaType, DeliveryModel, Content))
-        {
-            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1" Clicked="@(() => ShowPopupProvider(item))">
-                    <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.name" Class="w-100"></Image>
-                    @*@if (string.IsNullOrEmpty(item.link))
-                {<p class="m-0" style="color: red">link</p>}*@
-                    @*@if (string.IsNullOrEmpty(item.description))
-                {<p class="m-0" style="color: red">description</p>}*@
-                    @*@if (!item.models.Any())
-                {<p class="m-0" style="color: red">model</p>}*@
-                    @*@if (item.models.Any(a => a == MyStream.Modal.Enum.DeliveryModel.SVOD) && !item.plans.Any())
-                {<p class="m-0" style="color: red">plan</p>}*@
-                </Button>
-            </Column>
-        }
-    </Row>
-</CustomVisibility>
-
-<PopupProvider @ref="PopupProvider"></PopupProvider>
-<PopupFilter @ref="PopupFilter" @bind-MediaTypeNull="MediaType" @bind-DeliveryModel="DeliveryModel" @bind-Content="Content"></PopupFilter>
+<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
+    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Lista de Interesses (@(wishList?.Items.Count ?? 0) itens)</AlertMessage>
+</Alert>
+<AuthorizeView>
+    <Authorized>
+        <CustomVisibility NoData="(!wishList?.Items.Any() ?? true)">
+            <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 310px; overflow: auto;">
+                @foreach (var item in wishList?.Items ?? new List<WishListItem>())
+                {
+                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                        <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1">
+                            <Image Source="@(item.logo_path)" Text="@item.name" Class="w-100"></Image>
+                        </Button>
+                    </Column>
+                }
+            </Row>
+        </CustomVisibility>
+    </Authorized>
+    <NotAuthorized>
+        <Alert Visible="true" Color="Color.Warning">
+            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Info"></Blazorise.Icon> Favor, realizar login para utilizar essa funcionalidade</AlertMessage>
+        </Alert>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
-    public PopupProvider? PopupProvider { get; set; }
-    public PopupFilter? PopupFilter { get; set; }
-
-    public MediaType? MediaType { get; set; } = SD.Shared.Modal.Enum.MediaType.movie;
-    public DeliveryModel? DeliveryModel { get; set; }
-    public string? Content { get; set; }
-
-    public int ProviderCount { get; set; } = 48;
-
-    private List<Provider> AllProviders = new();
-
-    public IEnumerable<Provider> GetFilteredProviders(MediaType? mediaType, DeliveryModel? deliveryModel, string? content) => AllProviders.Where(p =>
-        p.regions.Any(a => a == Settings.Region) &
-        (mediaType.HasValue ? p.types.Any(a => a == mediaType.Value) : true) &
-        (deliveryModel.HasValue ? p.models.Any(a => a == deliveryModel.Value) : true) &
-        p.enabled &
-        (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true) &
-        (string.IsNullOrEmpty(content) ? true : (p.name?.Contains(content, StringComparison.InvariantCultureIgnoreCase) ?? false | (string.IsNullOrEmpty(p.description) ? true : p.description.Contains(content, StringComparison.InvariantCultureIgnoreCase))))
-    ).Take(ProviderCount);
+    private MyProviders? myProviders { get; set; }
+    private WishList? wishList { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,23 +68,12 @@
 
             RefreshCore.RegionChanged = new EventCallbackFactory().Create(this, (Region value) => Settings.Region = value);
 
-            await LoadProviders();
+            myProviders = await Http.MyProviders_Get(StorageService.Session);
+            wishList = await Http.WishList_Get(StorageService.Session);
         }
         catch (Exception ex)
         {
             ex.ProcessException(Toast, Logger);
         }
-    }
-
-    private async Task LoadProviders()
-    {
-        AllProviders = await ProviderServide.GetAllProviders(Http, StorageService.Session);
-    }
-
-    private async Task ShowPopupProvider(Provider item)
-    {
-        var type = MediaType.HasValue ? MediaType.Value : SD.Shared.Modal.Enum.MediaType.movie;
-
-        if (PopupProvider != null) await PopupProvider.ShowModal(item, type);
     }
 }

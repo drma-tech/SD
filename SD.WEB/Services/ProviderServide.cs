@@ -1,38 +1,35 @@
 ﻿using Blazored.SessionStorage;
 using SD.Shared.Modal;
 using SD.WEB.Core;
-using System.Diagnostics.CodeAnalysis;
 
 namespace SD.WEB.Services
 {
     public class ProviderServide
     {
-        private List<Provider> _providers = new();
+        private List<ProviderModel> _providers = new();
 
-        public string BaseApi([NotNullWhen(true)] HttpClient http) => http.BaseAddress?.ToString().Contains("localhost") ?? true ? "http://localhost:7071/api/" : http.BaseAddress.ToString() + "api/";
-
-        public async Task<List<Provider>> GetAllProviders(HttpClient Http, ISyncSessionStorageService session)
+        public async Task<List<ProviderModel>> GetAllProviders(HttpClient Http, ISyncSessionStorageService session)
         {
             if (!_providers.Any())
             {
-                _providers = await Http.GetList<Provider>(BaseApi(Http) + "Public/Provider/GetAll", session);
+                _providers = await Http.GetList<ProviderModel>("Public/Provider/GetAll", false, session);
             }
 
             return _providers.OrderBy(o => o.priority).ToList();
         }
 
-        public async Task SaveProvider(HttpClient Http, ISyncSessionStorageService session, Provider provider)
+        public async Task SaveProvider(HttpClient Http, ISyncSessionStorageService session, ProviderModel provider)
         {
             var temp = _providers.Single(s => s.id == provider.id);
 
             temp = provider;
 
-            await Http.Post("Provider/Post", _providers, session, "Data/providers.json");
+            await Http.Post("Provider/Post", false, _providers, session, "Data/providers.json");
         }
 
         public async Task UpdateAllProvider(HttpClient Http)
         {
-            await Http.Put<AllProviders>("Provider/UpdateAllProvider", null);
+            await Http.Put<AllProviders>("Provider/UpdateAllProvider", false, null);
         }
     }
 }

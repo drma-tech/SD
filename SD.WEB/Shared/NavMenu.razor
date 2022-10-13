@@ -14,32 +14,17 @@
         <BarStart>
             <BarItem>
                 <BarLink To="/" Match="Match.All">
+                    <BarIcon IconName="FontAwesomeIcons.UserCircle" /> Home
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="/provider" Match="Match.Prefix">
                     <BarIcon IconName="FontAwesomeIcons.Th" /> @TranslationText.Providers
                 </BarLink>
             </BarItem>
-            <BarItem>
-                <BarLink To="/Imdb" Match="Match.Prefix">
-                    <Image Source="logo/imdb.png" Style="width: 26px; vertical-align: middle;"></Image> IMDB
-                </BarLink>
-            </BarItem>
-            <BarItem>
-                <BarLink To="/Tmdb" Match="Match.Prefix">
-                    <Image Source="logo/tmdb.png" Style="width: 26px; vertical-align: middle;"></Image> TMDB
-                </BarLink>
-            </BarItem>
-            <BarItem>
-                <BarLink To="/Oscar" Match="Match.Prefix">
-                    <Image Source="logo/oscar.png" Style="width: 26px; vertical-align: middle;"></Image> Oscar
-                </BarLink>
-            </BarItem>
-            <BarItem>
-                <BarLink To="/GoldenGlobes" Match="Match.Prefix">
-                    <Image Source="logo/goldenglobes.png" Style="width: 26px; vertical-align: middle;"></Image> Golden Globes
-                </BarLink>
-            </BarItem>
-            <BarItem>
-                <BarLink To="/Emmys" Match="Match.Prefix">
-                    <Image Source="logo/emmys.png" Style="width: 26px; vertical-align: middle;"></Image> Emmys
+             <BarItem>
+                <BarLink To="/list" Match="Match.Prefix">
+                    <BarIcon IconName="FontAwesomeIcons.List" /> Listas
                 </BarLink>
             </BarItem>
         </BarStart>

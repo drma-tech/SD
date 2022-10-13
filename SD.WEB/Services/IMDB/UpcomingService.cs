@@ -19,7 +19,7 @@ namespace SD.WEB.Services.IMDB
 
             if (type == MediaType.movie)
             {
-                var result = await http.Get<NewMovieData>(ImdbOptions.BaseUri + "ComingSoon".ConfigureParameters(parameter), storage.Session); //undefined numeric record
+                var result = await http.Get<NewMovieData>(ImdbOptions.BaseUri + "ComingSoon".ConfigureParameters(parameter), true, storage.Session); //undefined numeric record
 
                 foreach (var item in result?.Items ?? new List<NewMovieDataDetail>())
                 {

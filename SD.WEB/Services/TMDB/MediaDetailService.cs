@@ -25,7 +25,7 @@ namespace SD.WEB.Services.TMDB
 
             if (type == MediaType.movie)
             {
-                var item = await http.Get<MovieDetail>(TmdbOptions.BaseUri + "movie/" + tmdb_id.ConfigureParameters(parameter));
+                var item = await http.Get<MovieDetail>(TmdbOptions.BaseUri + "movie/" + tmdb_id.ConfigureParameters(parameter), true);
 
                 if (item != null)
                 {
@@ -48,7 +48,7 @@ namespace SD.WEB.Services.TMDB
             }
             else
             {
-                var item = await http.Get<TVDetail>(TmdbOptions.BaseUri + "tv/" + tmdb_id.ConfigureParameters(parameter));
+                var item = await http.Get<TVDetail>(TmdbOptions.BaseUri + "tv/" + tmdb_id.ConfigureParameters(parameter), true);
 
                 if (item != null)
                 {

@@ -28,7 +28,7 @@ namespace SD.WEB.Services.TMDB
                 {
                     page++;
                     parameter["page"] = page.ToString();
-                    var result = await http.Get<MovieUpcoming>(TmdbOptions.BaseUri + "movie/upcoming".ConfigureParameters(parameter), storage.Session);
+                    var result = await http.Get<MovieUpcoming>(TmdbOptions.BaseUri + "movie/upcoming".ConfigureParameters(parameter), true, storage.Session);
 
                     foreach (var item in result?.results ?? new List<ResultMovieUpcoming>())
                     {

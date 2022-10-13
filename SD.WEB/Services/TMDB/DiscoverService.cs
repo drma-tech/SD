@@ -54,7 +54,7 @@ namespace SD.WEB.Services.TMDB
                 {
                     page++;
                     parameter["page"] = page.ToString();
-                    var result = await http.Get<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), storage.Session);
+                    var result = await http.Get<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), true, storage.Session);
 
                     foreach (var item in result?.results ?? new List<ResultMovieDiscover>())
                     {
@@ -84,7 +84,7 @@ namespace SD.WEB.Services.TMDB
                 {
                     page++;
                     parameter["page"] = page.ToString();
-                    var result = await http.Get<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), storage.Session);
+                    var result = await http.Get<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), true, storage.Session);
 
                     foreach (var item in result?.results ?? new List<ResultTvDiscover>())
                     {

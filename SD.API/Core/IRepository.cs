@@ -10,15 +10,13 @@ namespace SD.API.Core
 {
     public interface IRepository
     {
-         Task<T?> Get<T>(string id, string partitionKeyValue, CancellationToken cancellationToken) where T : CosmosBase;
+         Task<T?> Get<T>(string? id, string? partitionKeyValue, CancellationToken cancellationToken) where T : CosmosBase;
 
         Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, string partitionKeyValue, CosmosType Type, CancellationToken cancellationToken) where T : CosmosBase;
 
         Task<List<T>> Query<T>(QueryDefinition query, CancellationToken cancellationToken) where T : CosmosBaseQuery;
 
-        Task<T> Add<T>(T item, CancellationToken cancellationToken) where T : CosmosBase;
-
-        Task<T> Update<T>(T item, CancellationToken cancellationToken) where T : CosmosBase;
+        Task<T> Upsert<T>(T item, CancellationToken cancellationToken) where T : CosmosBase;
 
         Task<T> PatchItem<T>(string id, string partitionKeyValue, List<PatchOperation> operations, CancellationToken cancellationToken) where T : CosmosBase;
 

@@ -3,7 +3,9 @@
     public enum CosmosType
     {
         Principal = 1,
-        Provider = 2
+        Provider = 2,
+        MyProvider = 3,
+        WishList = 4
     }
 
     public abstract class CosmosBase

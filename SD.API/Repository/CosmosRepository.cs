@@ -63,8 +63,11 @@ namespace SD.API.Repository
             //Container container = await database.CreateContainerIfNotExistsAsync(options, throughput: 400);
         }
 
-        public async Task<T?> Get<T>(string id, string partitionKeyValue, CancellationToken cancellationToken) where T : CosmosBase
+        public async Task<T?> Get<T>(string? id, string? partitionKeyValue, CancellationToken cancellationToken) where T : CosmosBase
         {
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
+            if (string.IsNullOrEmpty(partitionKeyValue)) throw new ArgumentNullException(nameof(partitionKeyValue));
+
             try
             {
                 var response = await Container.ReadItemAsync<T>(id, new PartitionKey(partitionKeyValue), null, cancellationToken);
@@ -130,23 +133,9 @@ namespace SD.API.Repository
             return results;
         }
 
-        public async Task<T> Add<T>(T item, CancellationToken cancellationToken) where T : CosmosBase
+        public async Task<T> Upsert<T>(T item, CancellationToken cancellationToken) where T : CosmosBase
         {
-            var response = await Container.CreateItemAsync(item, new PartitionKey(item.Key), null, cancellationToken);
-
-            if (response.RequestCharge > ru_limit_save) throw new NotificationException($"RU limit exceeded save ({response.RequestCharge})");
-
-            return response.Resource;
-        }
-
-        public async Task<T> Update<T>(T item, CancellationToken cancellationToken) where T : CosmosBase
-        {
-            //TODO: validate concurrent update conflicts
-            //string eTag = response.ETag;
-            //var options = new ItemRequestOptions { IfMatchEtag = eTag };
-            //await Container.UpsertItemAsync<T>(item, new PartitionKey(item.Key), requestOptions: options);
-
-            var response = await Container.ReplaceItemAsync(item, item.Id, new PartitionKey(item.Key), null, cancellationToken);
+            var response = await Container.UpsertItemAsync(item, new PartitionKey(item.Key), null, cancellationToken);
 
             if (response.RequestCharge > ru_limit_save) throw new NotificationException($"RU limit exceeded save ({response.RequestCharge})");
 

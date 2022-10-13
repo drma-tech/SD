@@ -19,7 +19,7 @@ namespace SD.WEB.Services.IMDB
 
             if (type == MediaType.movie)
             {
-                var result = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularMovies".ConfigureParameters(parameter), storage.Session); //bring 100 records
+                var result = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularMovies".ConfigureParameters(parameter), true, storage.Session); //bring 100 records
 
                 foreach (var item in result?.Items ?? new List<MostPopularDataDetail>())
                 {
@@ -40,7 +40,7 @@ namespace SD.WEB.Services.IMDB
             }
             else if (type == MediaType.tv)
             {
-                var result = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularTVs".ConfigureParameters(parameter), storage.Session); //bring 100 records
+                var result = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularTVs".ConfigureParameters(parameter), true, storage.Session); //bring 100 records
 
                 foreach (var item in result?.Items ?? new List<MostPopularDataDetail>())
                 {

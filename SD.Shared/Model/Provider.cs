@@ -9,7 +9,7 @@ namespace SD.Shared.Modal
         {
         }
 
-        public List<Provider> Items { get; set; } = new();
+        public List<ProviderModel> Items { get; set; } = new();
 
         public override void SetIds(string? IdLoggedUser)
         {
@@ -20,7 +20,7 @@ namespace SD.Shared.Modal
         }
     }
 
-    public class Provider
+    public class ProviderModel
     {
         public string? id { get; set; }
         public string? name { get; set; }

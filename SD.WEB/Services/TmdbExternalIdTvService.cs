@@ -9,7 +9,7 @@ namespace SD.WEB.Services
         {
             if (imdb_id == null) throw new ArgumentNullException(nameof(imdb_id));
 
-            return await Http.Get<string>($"TMDB/GetTmdbId/{imdb_id}", session);
+            return await Http.Get<string>($"TMDB/GetTmdbId/{imdb_id}", true, session);
         }
     }
 }

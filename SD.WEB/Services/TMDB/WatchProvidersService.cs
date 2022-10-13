@@ -19,11 +19,11 @@ namespace SD.WEB.Services.TMDB
 
             if (type == MediaType.movie)
             {
-                return await http.Get<MediaProviders>(TmdbOptions.BaseUri + $"movie/{tmdb_id}/watch/providers".ConfigureParameters(parameter));
+                return await http.Get<MediaProviders>(TmdbOptions.BaseUri + $"movie/{tmdb_id}/watch/providers".ConfigureParameters(parameter), true);
             }
             else //tv
             {
-                return await http.Get<MediaProviders>(TmdbOptions.BaseUri + $"tv/{tmdb_id}/watch/providers".ConfigureParameters(parameter));
+                return await http.Get<MediaProviders>(TmdbOptions.BaseUri + $"tv/{tmdb_id}/watch/providers".ConfigureParameters(parameter), true);
             }
         }
     }

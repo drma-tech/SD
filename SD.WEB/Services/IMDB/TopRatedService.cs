@@ -19,7 +19,7 @@ namespace SD.WEB.Services.IMDB
 
             if (type == MediaType.movie)
             {
-                var result = await http.Get<Top250Data>(ImdbOptions.BaseUri + "Top250Movies".ConfigureParameters(parameter), storage.Session); //bring 250 records
+                var result = await http.Get<Top250Data>(ImdbOptions.BaseUri + "Top250Movies".ConfigureParameters(parameter), true, storage.Session); //bring 250 records
 
                 foreach (var item in result?.Items ?? new List<Top250DataDetail>())
                 {
@@ -41,7 +41,7 @@ namespace SD.WEB.Services.IMDB
             }
             else if (type == MediaType.tv)
             {
-                var result = await http.Get<Top250Data>(ImdbOptions.BaseUri + "Top250TVs".ConfigureParameters(parameter), storage.Session); //bring 250 records
+                var result = await http.Get<Top250Data>(ImdbOptions.BaseUri + "Top250TVs".ConfigureParameters(parameter), true, storage.Session); //bring 250 records
 
                 foreach (var item in result?.Items ?? new List<Top250DataDetail>())
                 {

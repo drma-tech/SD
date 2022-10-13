@@ -1,4 +1,5 @@
 ﻿@using SD.Shared.Modal.Tmdb
+@using SD.Shared.Model
 @inherits ComponenteCore<PopupMedia>
 @inject ProviderServide ProviderServide
 @inject Settings Settings
@@ -280,6 +281,22 @@
                         }
                     </Column>
                     <Column ColumnSize="ColumnSize.IsAuto">
+                        <AuthorizeView>
+                            <Authorized>
+                                @if (wishList?.Items.Any(a => a.id == media?.tmdb_id) ?? false)
+                                {
+                                    <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd">
+                                        <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Remove
+                                    </Button>
+                                }
+                                else
+                                {
+                                    <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd">
+                                        <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Adicionar
+                                    </Button>
+                                }
+                            </Authorized>
+                        </AuthorizeView>
                         @*<Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false">Atualizar</Button>*@
                         <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@TranslationText.Close</Button>
                     </Column>
@@ -297,7 +314,9 @@
 
     private MediaDetail? media { get; set; }
     private MediaProviders? Providers { get; set; }
-    private List<Provider> AllProviders { get; set; } = new();
+    private List<ProviderModel> AllProviders { get; set; } = new();
+
+    private WishList? wishList { get; set; }
 
     private bool Loading;
     string selectedTab = "About";
@@ -309,6 +328,8 @@
             modal?.Show();
 
             Loading = true;
+
+            wishList = await Http.WishList_Get(StorageService.Session);
 
             media = await ServiceDetail.GetMedia(Http, StorageService, Settings, tmdb_id, type);
             Providers = await Services.TMDB.WatchProvidersService.GetProviders(Http, StorageService, Settings, tmdb_id, type);
@@ -416,5 +437,53 @@
         }
 
         StorageService.Local.SetItem("Data/providers.json", AllProviders.OrderBy(o => int.Parse(o.id ?? "-1")).ToList());
+    }
+
+    private async Task Add()
+    {
+        try
+        {
+            if (wishList == null)
+            {
+                wishList = new WishList
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+            }
+
+            wishList.Items.Add(new WishListItem() { id = media?.tmdb_id, name = media?.title, logo_path = media?.poster_path_small });
+
+            await Http.WishList_Post(wishList, StorageService.Session);
+
+            await Toast.Success("Media favoritado com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private async Task Remove()
+    {
+        try
+        {
+            if (wishList == null)
+            {
+                wishList = new WishList
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+            }
+
+            wishList.Items.Remove(wishList.Items.First(f => f.id == media?.tmdb_id));
+
+            await Http.WishList_Post(wishList, StorageService.Session);
+
+            await Toast.Success("Media removida com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 }

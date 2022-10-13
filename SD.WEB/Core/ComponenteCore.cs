@@ -15,9 +15,11 @@ namespace SD.WEB.Core
         public static ISyncSessionStorageService Storage { get; set; } = default!;
 
         //public static string GetStorageKey(string key) => string.IsNullOrEmpty(IdUser) ? throw new ArgumentException(IdUser) : $"{key}({IdUser})";
-        public static string BaseApi([NotNullWhen(true)] this HttpClient http) => "";
-
-        //public static string BaseApi([NotNullWhen(true)] this HttpClient http) => http.BaseAddress?.ToString().Contains("localhost") ?? true ? "http://localhost:7071/api/" : http.BaseAddress.ToString() + "api/";
+        public static string BaseApi([NotNullWhen(true)] this HttpClient http, bool externalLink)
+        {
+            if (externalLink) return "";
+            else return http.BaseAddress?.ToString().Contains("localhost") ?? true ? "http://localhost:7071/api/" : http.BaseAddress.ToString() + "api/";
+        }
     }
 
     /// <summary>

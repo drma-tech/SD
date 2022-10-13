@@ -28,7 +28,7 @@ namespace SD.WEB.Services.TMDB
                 {
                     page++;
                     parameter["page"] = page.ToString();
-                    var result = await http.Get<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter), storage.Session);
+                    var result = await http.Get<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter), true, storage.Session);
 
                     foreach (var item in result?.results ?? new List<ResultMoviePopular>())
                     {
@@ -59,7 +59,7 @@ namespace SD.WEB.Services.TMDB
                 {
                     page++;
                     parameter["page"] = page.ToString();
-                    var result = await http.Get<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter), storage.Session);
+                    var result = await http.Get<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter), true, storage.Session);
 
                     foreach (var item in result?.results ?? new List<ResultTVPopular>())
                     {

@@ -2,11 +2,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using SD.API.Core;
 using SD.Shared.Core;
 using SD.Shared.Helper;
@@ -17,7 +14,6 @@ using SD.WEB.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,9 +30,6 @@ namespace SD.API.Functions
         }
 
         [FunctionName("GetAll")]
-        [OpenApiOperation("GetAll", new[] { "Provider" }, Summary = "Recovery all the streamings providers")]
-        //[OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Provider>), Description = "The OK response")]
         public async Task<IActionResult> GetAll(
             [HttpTrigger(AuthorizationLevel.Anonymous, FunctionMethod.GET, Route = "Public/Provider/GetAll")] HttpRequest req,
             ILogger log, CancellationToken cancellationToken)
@@ -57,9 +50,6 @@ namespace SD.API.Functions
         }
 
         [FunctionName("Post")]
-        [OpenApiOperation("Post", new[] { "Provider" }, Summary = "Update the streamings providers")]
-        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Provider>), Description = "The OK response")]
         public async Task<IActionResult> Post(
             [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "Provider/Post")] HttpRequest req,
             ILogger log, CancellationToken cancellationToken)
@@ -69,13 +59,13 @@ namespace SD.API.Functions
                 using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
                 var AllProviders = await _repo.Get<AllProviders>("providers", "providers", source.Token);
-                var providers = await req.GetParameterGenericObject<List<Provider>>(source.Token);
+                var providers = await req.GetParameterGenericObject<List<ProviderModel>>(source.Token);
 
                 if (AllProviders != null)
                 {
                     AllProviders.DtUpdate = DateTimeOffset.UtcNow;
                     AllProviders.Items = providers.OrderBy(o => int.Parse(o.id ?? "0")).ToList();
-                    await _repo.Update(AllProviders, source.Token);
+                    await _repo.Upsert(AllProviders, source.Token);
                 }
 
                 return new OkObjectResult(AllProviders?.Items);
@@ -88,9 +78,6 @@ namespace SD.API.Functions
         }
 
         [FunctionName("UpdateAllProvider")]
-        [OpenApiOperation("UpdateAllProvider", new[] { "Provider" }, Summary = "Syncronize all providers")]
-        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Provider>), Description = "The OK response")]
         public async Task<IActionResult> UpdateAllProvider(
            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.PUT, Route = "Provider/UpdateAllProvider")] HttpRequest req,
            ILogger log, CancellationToken cancellationToken)
@@ -99,7 +86,7 @@ namespace SD.API.Functions
             {
                 using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
-                var result = new List<Provider>();
+                var result = new List<ProviderModel>();
 
                 var AllProviders = await _repo.Get<AllProviders>("providers", "providers", source.Token);
 
@@ -133,7 +120,7 @@ namespace SD.API.Functions
                     {
                         AllProviders.DtUpdate = DateTimeOffset.UtcNow;
                         AllProviders.Items = result.OrderBy(o => int.Parse(o.id ?? "0")).ToList();
-                        await _repo.Update(AllProviders, source.Token);
+                        await _repo.Upsert(AllProviders, source.Token);
                     }
                 }
 
@@ -146,7 +133,7 @@ namespace SD.API.Functions
             }
         }
 
-        private static void AddProvider(List<Provider> final_list, List<ProviderBase> new_providers, List<Provider> current_providers, Region region, MediaType type)
+        private static void AddProvider(List<ProviderModel> final_list, List<ProviderBase> new_providers, List<ProviderModel> current_providers, Region region, MediaType type)
         {
             foreach (var item in new_providers)
             {
@@ -155,7 +142,7 @@ namespace SD.API.Functions
 
                 if (new_item == null)
                 {
-                    final_list.Add(new Provider
+                    final_list.Add(new ProviderModel
                     {
                         //api
                         id = item.provider_id.ToString(),
