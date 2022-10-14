@@ -1,0 +1,32 @@
+﻿@page "/HollywoodReporter"
+@inherits ComponenteCore<Tmdb>
+@inject Services.TMDB.ListService Service
+
+<HeadPage ImageSource="logo/HollywoodReporter.png" Text="@TranslationText.thr_desc" Link="https://www.hollywoodreporter.com/"></HeadPage>
+
+<CardMediaList @ref="topMovies" Service="@Service" CardHeader="Top 100 Movies" HasFilter="false"></CardMediaList>
+<CardMediaList @ref="topShows" Service="@Service" CardHeader="Top 100 TV Shows" HasFilter="false"></CardMediaList>
+
+@code {
+    public CardMediaList? topMovies { get; set; }
+    public CardMediaList? topShows { get; set; }
+
+    private Dictionary<string, string> GetExtraParameters(string list_id)
+    {
+        return new Dictionary<string, string>() { { "list_id", list_id } }; ;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData();
+        }
+    }
+
+    protected async Task LoadData()
+    {
+        if (topMovies != null) await topMovies.LoadData(extraParameters: GetExtraParameters("8222343"));
+        if (topShows != null) await topShows.LoadData(extraParameters: GetExtraParameters("8222348"));
+    }
+}

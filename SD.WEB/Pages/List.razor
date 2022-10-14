@@ -22,11 +22,11 @@
 </CustomVisibility>
 
 <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
-    <AlertMessage>Sites Especializados (@(Outros.Count) itens)</AlertMessage>
+    <AlertMessage>Sites Especializados (@(Sites.Count) itens)</AlertMessage>
 </Alert>
-<CustomVisibility NoData="(!Outros.Any())">
+<CustomVisibility NoData="(!Sites.Any())">
     <Row HorizontalGutter="4" VerticalGutter="4">
-        @foreach (var item in Outros)
+        @foreach (var item in Sites)
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
                 <Button Type="ButtonType.Link" Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1" To="@item.link">
@@ -40,7 +40,7 @@
 
 @code {
     private List<Item> Premiacoes { get; set; } = new();
-    private List<Item> Outros { get; set; } = new();
+    private List<Item> Sites { get; set; } = new();
 
     public class Item
     {
@@ -62,8 +62,9 @@
             Premiacoes.Add(new Item() { id = 1, name = "Golden Globe", logo_path = "logo/goldenglobes.png", link = "/GoldenGlobes" });
             Premiacoes.Add(new Item() { id = 1, name = "Emmys", logo_path = "logo/emmys.png", link = "/Emmys" });
 
-            Outros.Add(new Item() { id = 1, name = "IMDB", logo_path = "logo/imdb.png", link = "/Imdb" });
-            Outros.Add(new Item() { id = 1, name = "TMDB", logo_path = "logo/tmdb.png", link = "/Tmdb" });
+            Sites.Add(new Item() { id = 1, name = "IMDB", logo_path = "logo/imdb.png", link = "/Imdb" });
+            Sites.Add(new Item() { id = 1, name = "TMDB", logo_path = "logo/tmdb.png", link = "/Tmdb" });
+            Sites.Add(new Item() { id = 1, name = "Hollywood Reporter", logo_path = "logo/HollywoodReporter.png", link = "/HollywoodReporter" });
         }
         catch (Exception ex)
         {

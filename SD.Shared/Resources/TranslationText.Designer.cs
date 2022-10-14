@@ -385,6 +385,15 @@ namespace SD.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Hollywood Reporter is the premier destination &amp; most widely trusted resource for entertainment news, reviews, videos &amp; more..
+        /// </summary>
+        public static string thr_desc {
+            get {
+                return ResourceManager.GetString("thr_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Movie Database (TMDb) is a popular, user editable database for movies and TV shows..
         /// </summary>
         public static string tmdb_desc {
