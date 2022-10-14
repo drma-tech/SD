@@ -40,9 +40,7 @@
     {
         try
         {
-            return DateTime
-               .Parse(Properties.Resources.BuildDate.ReplaceLineEndings(""))
-               .ToString("yyyy.MM.dd");
+            return Properties.Resources.BuildDate.ReplaceLineEndings("");
         }
         catch (Exception ex)
         {
