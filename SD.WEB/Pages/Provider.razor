@@ -1,7 +1,5 @@
 ﻿@page "/Provider"
 @inherits ComponenteCore<Provider>
-@using System.Linq
-@inject ProviderServide ProviderServide
 @inject Settings Settings
 
 <Alert Visible="true" Color="Color.Secondary">
@@ -15,13 +13,13 @@
     </Button>
 </Alert>
 
-<CustomVisibility NoData="(!AllProviders.Any())">
+<CustomVisibility NoData="(!AllProviders?.Items.Any()??true)">
     <Row HorizontalGutter="4" VerticalGutter="4">
         @foreach (var item in GetFilteredProviders(MediaType, DeliveryModel, Content))
         {
-                <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                    <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1" Clicked="@(() => ShowPopupProvider(item))">
-                        <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.name" Class="w-100"></Image>
+            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1" Clicked="@(() => ShowPopupProvider(item))">
+                    <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.name" Class="w-100"></Image>
                     @*@if (string.IsNullOrEmpty(item.link))
                 {<p class="m-0" style="color: red">link</p>}*@
                     @*@if (string.IsNullOrEmpty(item.description))
@@ -30,17 +28,17 @@
                 {<p class="m-0" style="color: red">model</p>}*@
                     @*@if (item.models.Any(a => a == MyStream.Modal.Enum.DeliveryModel.SVOD) && !item.plans.Any())
                 {<p class="m-0" style="color: red">plan</p>}*@
-                    </Button>
-                </Column>
+                </Button>
+            </Column>
         }
     </Row>
 </CustomVisibility>
 
-<PopupProvider @ref="PopupProvider"></PopupProvider>
 <PopupFilter @ref="PopupFilter" @bind-MediaTypeNull="MediaType" @bind-DeliveryModel="DeliveryModel" @bind-Content="Content"></PopupFilter>
 
 @code {
-    public PopupProvider? PopupProvider { get; set; }
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
     public PopupFilter? PopupFilter { get; set; }
 
     public MediaType? MediaType { get; set; } = SD.Shared.Modal.Enum.MediaType.movie;
@@ -49,16 +47,16 @@
 
     public int ProviderCount { get; set; } = 48;
 
-    private List<ProviderModel> AllProviders = new();
+    private AllProviders? AllProviders { get; set; }
 
-    public IEnumerable<ProviderModel> GetFilteredProviders(MediaType? mediaType, DeliveryModel? deliveryModel, string? content) => AllProviders.Where(p =>
+    public IEnumerable<ProviderModel> GetFilteredProviders(MediaType? mediaType, DeliveryModel? deliveryModel, string? content) => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
         p.regions.Any(a => a == Settings.Region) &
         (mediaType.HasValue ? p.types.Any(a => a == mediaType.Value) : true) &
         (deliveryModel.HasValue ? p.models.Any(a => a == deliveryModel.Value) : true) &
         p.enabled &
         (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true) &
         (string.IsNullOrEmpty(content) ? true : (p.name?.Contains(content, StringComparison.InvariantCultureIgnoreCase) ?? false | (string.IsNullOrEmpty(p.description) ? true : p.description.Contains(content, StringComparison.InvariantCultureIgnoreCase))))
-    ).Take(ProviderCount);
+    ).Take(ProviderCount) ?? Array.Empty<ProviderModel>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -78,13 +76,24 @@
 
     private async Task LoadProviders()
     {
-        AllProviders = await ProviderServide.GetAllProviders(Http, StorageService.Session);
+        AllProviders = await Http.Provider_GetAll(StorageService.Session);
     }
 
     private async Task ShowPopupProvider(ProviderModel item)
     {
         var type = MediaType.HasValue ? MediaType.Value : SD.Shared.Modal.Enum.MediaType.movie;
 
-        if (PopupProvider != null) await PopupProvider.ShowModal(item, type);
+        await ModalService.Show<ProviderPopup>(item.name,
+            x =>
+            {
+                x.Add(x => x.provider, item);
+                x.Add(x => x.mediaType, type);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.ExtraLarge,
+                });
     }
 }

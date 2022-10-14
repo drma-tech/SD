@@ -3,9 +3,9 @@ using SD.WEB.Core;
 
 namespace SD.WEB.Services
 {
-    public class TmdbExternalIdTvService
+    public static class TmdbExternalIdTvService
     {
-        public async Task<string?> GetTmdbId(HttpClient Http, ISyncSessionStorageService session, string? imdb_id)
+        public static async Task<string?> GetTmdbId(HttpClient Http, ISyncSessionStorageService session, string? imdb_id)
         {
             if (imdb_id == null) throw new ArgumentNullException(nameof(imdb_id));
 

@@ -1,9 +1,7 @@
 ﻿@page "/"
 @page "/Index"
 @inherits ComponenteCore<Index>
-@using System.Linq
 @using SD.Shared.Model
-@inject ProviderServide ProviderServide
 @inject Settings Settings
 
 <Alert Visible="true" Color="Color.Secondary">
@@ -11,12 +9,12 @@
 </Alert>
 <AuthorizeView>
     <Authorized>
-        <CustomVisibility NoData="(!myProviders?.Items.Any() ?? true)">
+        <CustomVisibility Loading="loading" NoData="(!myProviders?.Items.Any() ?? true)">
             <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 215px; overflow: auto;">
                 @foreach (var item in myProviders?.Items ?? new List<MyProvidersItem>())
                 {
                     <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                        <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1">
+                        <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1" Clicked="@(()=>ShowProviderPopup(item))">
                             <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.name" Class="w-100"></Image>
                         </Button>
                     </Column>
@@ -25,7 +23,7 @@
         </CustomVisibility>
     </Authorized>
     <NotAuthorized>
-        <Alert Visible="true" Color="Color.Warning">
+        <Alert Visible="true" Color="Color.Primary">
             <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bullhorn"></Blazorise.Icon> Favor, realizar login para utilizar essa funcionalidade</AlertMessage>
         </Alert>
     </NotAuthorized>
@@ -36,12 +34,12 @@
 </Alert>
 <AuthorizeView>
     <Authorized>
-        <CustomVisibility NoData="(!wishList?.Items.Any() ?? true)">
+        <CustomVisibility Loading="loading" NoData="(!wishList?.Items.Any() ?? true)">
             <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 310px; overflow: auto;">
                 @foreach (var item in wishList?.Items ?? new List<WishListItem>())
                 {
                     <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                        <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1">
+                        <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1" Clicked="@(async()=>await ShowMediaPopup(item))">
                             <Image Source="@(item.logo_path)" Text="@item.name" Class="w-100"></Image>
                         </Button>
                     </Column>
@@ -50,30 +48,71 @@
         </CustomVisibility>
     </Authorized>
     <NotAuthorized>
-        <Alert Visible="true" Color="Color.Warning">
+        <Alert Visible="true" Color="Color.Primary">
             <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bullhorn"></Blazorise.Icon> Favor, realizar login para utilizar essa funcionalidade</AlertMessage>
         </Alert>
     </NotAuthorized>
 </AuthorizeView>
 
 @code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
     private MyProviders? myProviders { get; set; }
     private WishList? wishList { get; set; }
+    private AllProviders? allProviders;
+
+    private bool loading { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            base.OnInitialized();
+            loading = true;
 
-            RefreshCore.RegionChanged = new EventCallbackFactory().Create(this, (Region value) => Settings.Region = value);
+            await base.OnInitializedAsync();
 
             myProviders = await Http.MyProviders_Get(StorageService.Session);
             wishList = await Http.WishList_Get(StorageService.Session);
+            allProviders = await Http.Provider_GetAll(StorageService.Session);
+
+            loading = false;
         }
         catch (Exception ex)
         {
             ex.ProcessException(Toast, Logger);
         }
+    }
+
+    public Task ShowProviderPopup(MyProvidersItem item)
+    {
+        return ModalService.Show<ProviderPopup>(item.name,
+            x =>
+            {
+                x.Add(x => x.provider, allProviders?.Items.FirstOrDefault(f => f.id == item.id));
+                x.Add(x => x.mediaType, MediaType.movie);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.ExtraLarge,
+                });
+    }
+
+    public Task ShowMediaPopup(WishListItem item)
+    {
+        return ModalService.Show<MediaPopup>(item.name,
+            x =>
+            {
+                x.Add(x => x.ServiceDetail, new Services.TMDB.MediaDetailService());
+                x.Add(x => x.tmdb_id, item.id);
+                x.Add(x => x.type, item.MediaType);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
     }
 }

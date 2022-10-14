@@ -1,14 +1,13 @@
 ﻿@page "/EditProviders"
 @inherits PageCore<EditProviders>
-@inject ProviderServide ProviderServide
 @using Blazorise.DataGrid
 @using HtmlAgilityPack
 @using System.Net.Http
 
-<Button Clicked="@UpdateProvidersOnClick" Color="Color.Primary">Sync Providers</Button>
+<Button Clicked="@SyncProvidersOnClick" Color="Color.Primary">Sync Providers</Button>
 <Button Clicked="@SaveSession" Color="Color.Primary">Save Session</Button>
 
-<DataGrid @ref="DataGrid" TItem="ProviderModel" Data="@AllProviders" Filterable="true" Editable="true" EditMode="DataGridEditMode.Form"
+<DataGrid @ref="DataGrid" TItem="ProviderModel" Data="@AllProviders?.Items" Filterable="true" Editable="true" EditMode="DataGridEditMode.Form"
           ShowPager="true" PageSize="10" FilterMethod="DataGridFilterMethod.Contains"
           RowUpdated="RowUpdated">
     <DataGridColumns>
@@ -42,7 +41,7 @@
                 @*<Button Color="Color.Danger" Clicked="@context.Clicked" Size="Size.Small">
                 <Blazorise.Icon Name="FontAwesomeIcons.Trash"></Blazorise.Icon>
                 </Button>*@
-                <Button Color="Color.Secondary" Clicked="@(async() => {if(PopupProvider!=null) await PopupProvider.ShowModal(@context.Item, @context.Item.types.First());})" Size="Size.Small">
+                <Button Color="Color.Secondary" Clicked="@(async() => await ShowPopupProvider(context.Item))" Size="Size.Small">
                     <Blazorise.Icon Name=" FontAwesomeIcons.Eye">
                     </Blazorise.Icon>
                 </Button>
@@ -82,15 +81,13 @@
     </DataGridColumns>
 </DataGrid>
 
-<PopupProvider @ref="PopupProvider"></PopupProvider>
-
 @code {
-    public PopupProvider? PopupProvider { get; set; }
+    [Inject] public IModalService ModalService { get; set; } = default!;
 
     public MediaType MediaType { get; set; } = MediaType.movie;
 
     public DataGrid<ProviderModel>? DataGrid { get; set; }
-    private List<ProviderModel> AllProviders = new();
+    private AllProviders? AllProviders { get; set; }
 
     public IEnumerable<EnumObject> Languages { get; set; } = Array.Empty<EnumObject>();
 
@@ -104,22 +101,40 @@
     protected override async Task LoadData()
     {
         Languages = EnumHelper.GetList<Language>();
-        AllProviders = await ProviderServide.GetAllProviders(Http, StorageService.Session);
+        AllProviders = await Http.Provider_GetAll(StorageService.Session);
     }
 
-    protected async Task UpdateProvidersOnClick()
+    private async Task ShowPopupProvider(ProviderModel item)
     {
-        await ProviderServide.UpdateAllProvider(Http);
+        await ModalService.Show<ProviderPopup>(item.name,
+            x =>
+            {
+                x.Add(x => x.provider, item);
+                x.Add(x => x.mediaType, item.types.First());
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.ExtraLarge,
+                });
     }
 
-    protected void SaveSession()
+    protected async Task SaveSession()
     {
-        StorageService.Local.SetItem("Data/providers.json", AllProviders.OrderBy(o => int.Parse(o.id ?? "0")).ToList());
+        await Http.Provider_Post(AllProviders, StorageService.Session);
     }
 
-    protected async Task RowUpdated(SavedRowItem<ProviderModel, Dictionary<string, object>> e)
+    protected async Task SyncProvidersOnClick()
     {
-        await ProviderServide.SaveProvider(Http, StorageService.Session, e.Item);
+        await Http.Provider_Sync(StorageService.Session);
+    }
+
+    protected void RowUpdated(SavedRowItem<ProviderModel, Dictionary<string, object>> e)
+    {
+        var item = AllProviders?.Items.FirstOrDefault(f => f.id == e.Item.id);
+
+        item = e.Item;
     }
 
     protected async Task<string> GetDescriptionOnClick(string? url)

@@ -29,7 +29,7 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
-        [FunctionName("GetAll")]
+        [FunctionName("PublicProviderGetAll")]
         public async Task<IActionResult> GetAll(
             [HttpTrigger(AuthorizationLevel.Anonymous, FunctionMethod.GET, Route = "Public/Provider/GetAll")] HttpRequest req,
             ILogger log, CancellationToken cancellationToken)
@@ -40,7 +40,7 @@ namespace SD.API.Functions
 
                 var result = await _repo.Get<AllProviders>("providers", "providers", source.Token);
 
-                return new OkObjectResult(result?.Items);
+                return new OkObjectResult(result);
             }
             catch (Exception ex)
             {
@@ -49,7 +49,7 @@ namespace SD.API.Functions
             }
         }
 
-        [FunctionName("Post")]
+        [FunctionName("ProviderPost")]
         public async Task<IActionResult> Post(
             [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "Provider/Post")] HttpRequest req,
             ILogger log, CancellationToken cancellationToken)
@@ -59,16 +59,16 @@ namespace SD.API.Functions
                 using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
                 var AllProviders = await _repo.Get<AllProviders>("providers", "providers", source.Token);
-                var providers = await req.GetParameterGenericObject<List<ProviderModel>>(source.Token);
+                var providers = await req.GetParameterGenericObject<AllProviders>(source.Token);
 
                 if (AllProviders != null)
                 {
                     AllProviders.DtUpdate = DateTimeOffset.UtcNow;
-                    AllProviders.Items = providers.OrderBy(o => int.Parse(o.id ?? "0")).ToList();
+                    AllProviders.Items = providers.Items.OrderBy(o => int.Parse(o.id ?? "0")).ToList();
                     await _repo.Upsert(AllProviders, source.Token);
                 }
 
-                return new OkObjectResult(AllProviders?.Items);
+                return new OkObjectResult(AllProviders);
             }
             catch (Exception ex)
             {
@@ -77,9 +77,9 @@ namespace SD.API.Functions
             }
         }
 
-        [FunctionName("UpdateAllProvider")]
-        public async Task<IActionResult> UpdateAllProvider(
-           [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.PUT, Route = "Provider/UpdateAllProvider")] HttpRequest req,
+        [FunctionName("ProviderSyncProviders")]
+        public async Task<IActionResult> SyncProviders(
+           [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.PUT, Route = "Provider/SyncProviders")] HttpRequest req,
            ILogger log, CancellationToken cancellationToken)
         {
             try
@@ -149,7 +149,7 @@ namespace SD.API.Functions
                         name = item.provider_name,
                         priority = item.display_priority,
                         logo_path = item.logo_path,
-                        //own data
+                        //own data (manual update)
                         description = detail?.description,
                         link = detail?.link,
                         head_language = detail?.head_language,

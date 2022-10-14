@@ -29,7 +29,6 @@ namespace SD.WEB
             collection.AddMediaQueryService();
 
             collection.AddScoped<IStorageService, StorageService>();
-            collection.AddScoped<ProviderServide>();
             collection.AddScoped<Settings>();
         }
 
@@ -41,7 +40,6 @@ namespace SD.WEB
             collection.AddScoped<Services.TMDB.PopularService>();
             collection.AddScoped<Services.TMDB.TopRatedService>();
             collection.AddScoped<Services.TMDB.UpcomingService>();
-            collection.AddScoped<Services.TmdbExternalIdTvService>();
 
             collection.AddScoped<Services.IMDB.PopularService>();
             collection.AddScoped<Services.IMDB.TopRatedService>();

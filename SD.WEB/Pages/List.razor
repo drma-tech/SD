@@ -2,7 +2,6 @@
 @inherits ComponenteCore<List>
 @using System.Linq
 @using SD.Shared.Model
-@inject ProviderServide ProviderServide
 @inject Settings Settings
 
 <Alert Visible="true" Color="Color.Secondary">
@@ -51,7 +50,7 @@
         public string? link { get; set; }
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         try
         {

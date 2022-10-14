@@ -1,7 +1,5 @@
 ﻿@inherits ComponenteCore<CardMediaList>
 @inject Settings Settings
-@inject Services.TMDB.MediaDetailService MediaDetailService
-@inject TmdbExternalIdTvService TmdbExternalIdTvService
 
 <Alert Visible="true" Color="Color.Secondary">
     <AlertMessage>@CardHeader</AlertMessage>
@@ -86,11 +84,11 @@
     </CustomVisibility>
 </Div>
 
-<PopupMedia @ref="PopupMedia" ServiceDetail="@MediaDetailService" ShowOnlyYear="ShowOnlyYear"></PopupMedia>
-
 <PopupFilter @ref="PopupFilter" MediaType="MediaType" MediaTypeChanged="TypeMediaChanged"></PopupFilter>
 
 @code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
     public PopupFilter? PopupFilter { get; set; }
 
     [Parameter] public string? CardHeader { get; set; }
@@ -104,8 +102,6 @@
     private bool Loading;
 
     public MediaType MediaType { get; set; } = MediaType.movie;
-
-    private PopupMedia? PopupMedia { get; set; }
 
     public HashSet<MediaDetail> ListMedia { get; set; } = new();
 
@@ -160,7 +156,7 @@
         Loading = false;
     }
 
-    private async Task OpenPopupMedia(MediaDetail media)
+    private async Task OpenPopupMedia(MediaDetail? media)
     {
         var tmdb_id = "";
 
@@ -170,9 +166,22 @@
         }
         else
         {
-            tmdb_id = media.tmdb_id;
+            tmdb_id = media?.tmdb_id;
         }
 
-        if (PopupMedia != null) await PopupMedia.ShowModal(tmdb_id, media?.MediaType);
+        await ModalService.Show<MediaPopup>(media?.title,
+            x =>
+            {
+                x.Add(x => x.ServiceDetail, new Services.TMDB.MediaDetailService());
+                x.Add(x => x.tmdb_id, tmdb_id);
+                x.Add(x => x.type, media?.MediaType);
+                x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
     }
 }

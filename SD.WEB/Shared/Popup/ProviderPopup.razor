@@ -1,0 +1,188 @@
+﻿@using SD.Shared.Model
+@inherits ComponenteCore<ProviderPopup>
+@inject Settings Settings
+@inject Services.TMDB.DiscoverService DiscoverService
+
+<ModalHeader>
+    <ModalTitle>@provider?.name</ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true">
+        <Items>
+            <Tab Name="About">About</Tab>
+            <Tab Name="Details">Details</Tab>
+            <Tab Name="Catalog">Catalog</Tab>
+        </Items>
+        <Content>
+            <TabPanel Name="About" Class="mt-3">
+                <Row Margin="Margin.Is2.FromBottom" HorizontalGutter="4" VerticalGutter="4">
+                    <Column ColumnSize="ColumnSize.IsAuto">
+                        @if (!string.IsNullOrEmpty(provider?.logo_path))
+                        {
+                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + provider.logo_path)" Text="@provider.name"></Image>
+                        }
+                    </Column>
+                    <Column>
+                        <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
+                            @provider?.description
+                        </Paragraph>
+                        <Paragraph>
+                            @if (string.IsNullOrEmpty(provider?.link))
+                            {
+                                <a href="@("https://www.google.com/search?q=streaming+" + provider?.name)" target="_blank" rel="noopener" style="float: left;">search on google</a>
+                            }
+                            else
+                            {
+                                <a href="@provider.link" target="_blank" rel="noopener" style="float: left;">@(new Uri(provider.link).Host)</a>
+                            }
+                        </Paragraph>
+                    </Column>
+                </Row>
+            </TabPanel>
+            <TabPanel Name="Details" Class="mt-3">
+                <Divider DividerType="DividerType.TextContent" Text="@TranslationText.MediaTypes" />
+                @foreach (var item in provider?.types ?? new List<MediaType>())
+                {
+                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
+                }
+                <Divider DividerType="DividerType.TextContent" Text="@TranslationText.Regions" />
+                @foreach (var item in provider?.regions.OrderBy(o => o.GetName()).ToList() ?? new List<Region>())
+                {
+                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
+                }
+                <Divider DividerType="DividerType.TextContent" Text="@TranslationText.DeliveryModel" />
+                @foreach (var item in provider?.models ?? new List<DeliveryModel>())
+                {
+                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" title="@item.GetDescription()" Style="cursor: help;">
+                        @item.GetName() <Blazorise.Icon Name="FontAwesomeIcons.QuestionCircle"></Blazorise.Icon>
+                    </Badge>
+                }
+                @if (provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
+                {
+                    <Divider DividerType="DividerType.TextContent" Text="@TranslationText.Plans" />
+                    @if (provider.plans.Any())
+                    {
+                        @foreach (var item in provider.plans)
+                        {
+                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.name: @item.price.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture(provider.head_language?.GetName(false)??""))</Badge>
+                        }
+                    }
+                    else
+                    {
+                        <Badge Color="Color.Danger">@TranslationText.NotFound</Badge>
+                    }
+                }
+            </TabPanel>
+            <TabPanel Name="Catalog" Class="mt-3">
+                <CardMediaList @ref="cardPopular" Service="@DiscoverService" CardHeader="@TranslationText.Popular"></CardMediaList>
+                <CardMediaList @ref="cardNew" Service="@DiscoverService" CardHeader="@TranslationText.Release"></CardMediaList>
+                <CardMediaList @ref="cardTopRated" Service="@DiscoverService" CardHeader="@TranslationText.TopRated"></CardMediaList>
+            </TabPanel>
+        </Content>
+    </Tabs>
+</ModalBody>
+<ModalFooter>
+    <AuthorizeView>
+        <Authorized>
+            @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
+            {
+                <Button Color="Color.Danger" Clicked="Remove">
+                    <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> Remove
+                </Button>
+            }
+            else
+            {
+                <Button Color="Color.Primary" Clicked="Add">
+                    <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> Adicionar
+                </Button>
+            }
+        </Authorized>
+    </AuthorizeView>
+    <Button Color="Color.Secondary" Clicked="@ModalService.Hide">@TranslationText.Close</Button>
+</ModalFooter>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    [Parameter] public ProviderModel? provider { get; set; }
+    [Parameter] public MediaType mediaType { get; set; }
+
+    string selectedTab = "About";
+
+    public CardMediaList? cardPopular { get; set; }
+    public CardMediaList? cardNew { get; set; }
+    public CardMediaList? cardTopRated { get; set; }
+
+    private MyProviders? myProviders { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        myProviders = await Http.MyProviders_Get(StorageService.Session);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (cardPopular != null) await cardPopular.LoadData(mediaType, GetExtraParameters(provider?.id, "popularity.desc"), true);
+            if (cardNew != null) await cardNew.LoadData(mediaType, GetExtraParameters(provider?.id, "primary_release_date.desc"), true);
+            if (cardTopRated != null) await cardTopRated.LoadData(mediaType, GetExtraParameters(provider?.id, "vote_average.desc"), true);
+        }
+    }
+
+    private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)
+    {
+        if (provider_id == null) throw new ArgumentNullException(nameof(provider_id));
+
+        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by } }; ;
+    }
+
+    private async Task Add()
+    {
+        try
+        {
+            if (myProviders == null)
+            {
+                myProviders = new MyProviders
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+            }
+
+            if (provider != null) myProviders.Items.Add(new MyProvidersItem() { id = provider.id, name = provider.name, logo_path = provider.logo_path });
+
+            await Http.MyProviders_Post(myProviders, StorageService.Session);
+
+            await Toast.Success("Provedor favoritado com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private async Task Remove()
+    {
+        try
+        {
+            if (myProviders == null)
+            {
+                myProviders = new MyProviders
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+            }
+
+            myProviders.Items.Remove(myProviders.Items.First(f => f.id == provider?.id));
+
+            await Http.MyProviders_Post(myProviders, StorageService.Session);
+
+            await Toast.Success("Provedor removido com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+}

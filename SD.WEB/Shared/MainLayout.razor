@@ -22,23 +22,14 @@
                 <Bar Mode="BarMode.Horizontal" Breakpoint="Breakpoint.Mobile" CollapseMode="BarCollapseMode.Small" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark"
                      Padding="Padding.Is0.FromBottom.Is0.FromTop" Style="text-align: center; display: block;">
                     <BarBrand Class="mr-0 py-1">
-                        <Button Color="GetColor(TypeButton.Providers)" To="/" Type="ButtonType.Link" title="Providers" Class="py-1 px-2">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Th" />
+                        <Button Color="GetColor(TypeButton.Home)" To="/" Type="ButtonType.Link" title="Home" Class="py-1 px-2">
+                            <Blazorise.Icon Name="FontAwesomeIcons.UserCircle" />
                         </Button>
-                        <Button Color="GetColor(TypeButton.IMDB)" To="/IMDB" Type="ButtonType.Link" title="IMDB" Class="py-1 px-2">
-                            <Image Source="logo/imdb.png" Style="width: 20px; margin-bottom: 1px;"></Image>
+                        <Button Color="GetColor(TypeButton.Providers)" To="/Provider" Type="ButtonType.Link" title="Providers" Class="py-1 px-2">
+                            <BarIcon IconName="FontAwesomeIcons.Th" />
                         </Button>
-                        <Button Color="GetColor(TypeButton.TMDB)" To="/TMDB" Type="ButtonType.Link" title="TMDB" Class="py-1 px-2">
-                            <Image Source="logo/tmdb.png" Style="width: 20px; margin-bottom: 1px;"></Image>
-                        </Button>
-                        <Button Color="GetColor(TypeButton.Oscar)" To="/Oscar" Type="ButtonType.Link" title="Oscar" Class="py-1 px-2">
-                            <Image Source="logo/oscar.png" Style="width: 20px; margin-bottom: 1px;"></Image>
-                        </Button>
-                        <Button Color="GetColor(TypeButton.GoldenGlobes)" To="/GoldenGlobes" Type="ButtonType.Link" title="Golden Globes" Class="py-1 px-2">
-                            <Image Source="logo/goldenglobes.png" Style="width: 20px; margin-bottom: 1px;"></Image>
-                        </Button>
-                        <Button Color="GetColor(TypeButton.Emmys)" To="/Emmys" Type="ButtonType.Link" title="Emmys" Class="py-1 px-2">
-                            <Image Source="logo/emmys.png" Style="width: 20px; margin-bottom: 1px;"></Image>
+                        <Button Color="GetColor(TypeButton.Lists)" To="/List" Type="ButtonType.Link" title="Lists" Class="py-1 px-2">
+                            <BarIcon IconName="FontAwesomeIcons.List" />
                         </Button>
                     </BarBrand>
                 </Bar>
@@ -53,7 +44,7 @@
 @code {
     private enum TypeButton
     {
-        Providers, TMDB, IMDB, Oscar, GoldenGlobes, Emmys
+        Home, Providers, Lists
     }
 
     private TypeButton CurrentButton;
@@ -76,12 +67,9 @@
 
     private void ChangeCurrentButton(string location)
     {
-        if (location.Contains("/TMDB")) CurrentButton = TypeButton.TMDB;
-        else if (location.Contains("/IMDB")) CurrentButton = TypeButton.IMDB;
-        else if (location.Contains("/Oscar")) CurrentButton = TypeButton.Oscar;
-        else if (location.Contains("/GoldenGlobes")) CurrentButton = TypeButton.GoldenGlobes;
-        else if (location.Contains("/Emmys")) CurrentButton = TypeButton.Emmys;
-        else CurrentButton = TypeButton.Providers;
+        if (location.Contains("/Provider")) CurrentButton = TypeButton.Providers;
+        else if (location.Contains("/List")) CurrentButton = TypeButton.Lists;
+        else CurrentButton = TypeButton.Home;
     }
 
     private Color GetColor(TypeButton type)
