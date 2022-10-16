@@ -5,7 +5,8 @@
         Principal = 1,
         Provider = 2,
         MyProvider = 3,
-        WishList = 4
+        WishList = 4,
+        WatchedList = 5
     }
 
     public abstract class CosmosBase

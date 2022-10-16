@@ -8,7 +8,7 @@
     <Row HorizontalGutter="4" VerticalGutter="4">
         @foreach (var item in Premiacoes)
         {
-            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
+            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
                 <Card>
                     <Blazorise.Link To="@item.link">
                         <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
@@ -29,7 +29,7 @@
     <Row HorizontalGutter="4" VerticalGutter="4">
         @foreach (var item in Sites)
         {
-            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
+            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
                 <Card>
                     <Blazorise.Link To="@item.link">
                         <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>

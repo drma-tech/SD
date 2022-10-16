@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazorise;
+using Microsoft.AspNetCore.Components;
 using SD.Shared.Modal.Enum;
 
 namespace SD.WEB.Core
@@ -8,6 +9,8 @@ namespace SD.WEB.Core
         public static EventCallback<Region> RegionChanged { get; set; }
 
         public static EventCallback<Language> LanguageChanged { get; set; }
+
+        public static Bar? Sidebar { get; set; }
 
         public static async Task ChangeRegion(Region value)
         {

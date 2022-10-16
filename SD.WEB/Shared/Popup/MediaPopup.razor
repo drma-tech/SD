@@ -292,6 +292,18 @@
                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Adicionar
                             </Button>
                         }
+                        @if (watchedList?.Items.Any(a => a.id == media?.tmdb_id) ?? false)
+                        {
+                            <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd">
+                                <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> Não Assistido
+                            </Button>
+                        }
+                        else
+                        {
+                            <Button Color="Color.Primary" Clicked="Watched" Margin="Margin.Is2.FromEnd">
+                                <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> Assistido
+                            </Button>
+                        }
                     </Authorized>
                 </AuthorizeView>
                 @*<Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false">Atualizar</Button>*@
@@ -314,6 +326,7 @@
     private AllProviders? AllProviders { get; set; }
 
     private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
 
     private bool Loading;
     string selectedTab = "About";
@@ -325,6 +338,7 @@
             Loading = true;
 
             wishList = await Http.WishList_Get(StorageService.Session);
+            watchedList = await Http.WatchedList_Get(StorageService.Session);
 
             media = await ServiceDetail.GetMedia(Http, StorageService, Settings, tmdb_id, type);
             Providers = await Services.TMDB.WatchProvidersService.GetProviders(Http, StorageService, Settings, tmdb_id, type);
@@ -481,6 +495,60 @@
             await Http.WishList_Post(wishList, StorageService.Session);
 
             await Toast.Success("Media removida com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private async Task Watched()
+    {
+        try
+        {
+            if (watchedList == null)
+            {
+                watchedList = new WatchedList
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+            }
+
+            watchedList.Items.Add(new WatchedListItem()
+                {
+                    id = media?.tmdb_id,
+                    //name = media?.title,
+                    //logo_path = media?.poster_path_small,
+                    MediaType = media?.MediaType ?? MediaType.movie
+                });
+
+            await Http.WatchedList_Post(watchedList, StorageService.Session);
+
+            await Toast.Success("Operação efetuada com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private async Task NotWatched()
+    {
+        try
+        {
+            if (watchedList == null)
+            {
+                watchedList = new WatchedList
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+            }
+
+            watchedList.Items.Remove(watchedList.Items.First(f => f.id == media?.tmdb_id & f.MediaType == media?.MediaType));
+
+            await Http.WatchedList_Post(watchedList, StorageService.Session);
+
+            await Toast.Success("Operação efetuada com sucesso!");
         }
         catch (Exception ex)
         {

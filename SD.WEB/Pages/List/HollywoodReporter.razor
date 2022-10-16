@@ -5,8 +5,8 @@
 
 <HeadPage ImageSource="logo/HollywoodReporter.png" Text="@TranslationText.thr_desc" Link="https://www.hollywoodreporter.com/"></HeadPage>
 
-<MediaList CardHeader="Hollywood Reporter - Top 100 Movies" Items="@ListMovies" list_id="8222343" maxItens="100"></MediaList>
-<MediaList CardHeader="Hollywood Reporter - Top 100 TV Shows" Items="@ListShows" list_id="8222348" maxItens="100"></MediaList>
+<MediaList CardHeader="Top 100 Movies" Items="@ListMovies" list_id="8222343" maxItens="100"></MediaList>
+<MediaList CardHeader="Top 100 TV Shows" Items="@ListShows" list_id="8222348" maxItens="100"></MediaList>
 
 @code {
     private HashSet<MediaDetail> ListMovies { get; set; } = new();

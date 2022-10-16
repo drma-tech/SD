@@ -4,6 +4,11 @@
 
 <Bar Mode="BarMode.Horizontal" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark">
     <Container Fluid="true" Padding="Padding.Is0.OnX">
+        <MediaQuery Media="@Breakpoints.LargeUp">
+            <Matched>
+                <BarToggler Bar="@RefreshCore.Sidebar" Background="Background.Dark" Margin="Margin.Is2.FromEnd" Padding="Padding.Is0" Style="height: 31px; width: 31px;" />
+            </Matched>
+        </MediaQuery>
         <BarBrand Padding="Padding.Is0.OnY">
             <form class="d-flex">
                 <MediaQuery Media="@Breakpoints.XSmallDown">

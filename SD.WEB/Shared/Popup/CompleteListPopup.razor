@@ -1,4 +1,5 @@
-﻿@inherits ComponenteCore<CompleteListPopup>
+﻿@using SD.Shared.Model
+@inherits ComponenteCore<CompleteListPopup>
 @inject Services.TMDB.ListService Service
 @inject Settings Settings
 
@@ -14,7 +15,7 @@
                 var item = Items.ElementAt(i - 1);
                 <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
                     <Card>
-                        <Blazorise.Link Clicked="@(() => OpenPopupMedia(item))">
+                        <Blazorise.Link Clicked="@(() => OpenPopupMedia(item))" Style="position: relative;">
                             @if (ShowOnlyYear)
                             {
                                 <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item.release_date?.Year</Badge>
@@ -45,7 +46,13 @@
                             }
                             else
                             {
-                                <CardImage Source="@(item.poster_path_small)" Alt="@item.title" Style="cursor: pointer;"></CardImage>
+                                var watched = watchedList?.Items.Any(a => a.id == item.tmdb_id & a.MediaType == item.MediaType) ?? false;
+                                if (watched)
+                                {
+                                    <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x4"
+                                        Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.7"></Blazorise.Icon>
+                                }
+                                <CardImage Source="@(item.poster_path_small)" Alt="@item.title" Style=@($"cursor: pointer; {(watched?"opacity: 0.3":"")}")></CardImage>
                             }
                         </Blazorise.Link>
                         @if (!string.IsNullOrEmpty(item.comments))
@@ -91,8 +98,17 @@
     [Parameter] public bool ShowOnlyYear { get; set; } = true;
     [Parameter] public bool DisableLoadMore { get; set; } = false;
 
+    private WatchedList? watchedList { get; set; }
+
     private string GetCustomStyle => "col-xl col-md-2 col-4";
     private int currentPage = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        watchedList = await Http.WatchedList_Get(StorageService.Session);
+    }
 
     private async Task OpenPopupMedia(MediaDetail? media)
     {
