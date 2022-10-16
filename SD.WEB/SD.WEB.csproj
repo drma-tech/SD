@@ -9,6 +9,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="Shared\Card\CardMediaList.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Include="wwwroot\.well-known\assetlinks.json" />
 	</ItemGroup>
 
@@ -55,6 +59,10 @@
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Shared\Card\" />
 	</ItemGroup>
 
 	<PropertyGroup>

@@ -7,10 +7,9 @@ using System.Globalization;
 
 namespace SD.WEB.Services.IMDB
 {
-    public class TopRatedService : IMediaListService
+    public static class TopRatedService
     {
-        public async Task PopulateListMedia(HttpClient http, IStorageService storage, Settings settings,
-            HashSet<MediaDetail> list_media, MediaType type, int qtd = 9, Dictionary<string, string>? ExtraParameters = null)
+        public static async Task PopulateIMDBTopRated(this HttpClient http, IStorageService storage, HashSet<MediaDetail> list_media, MediaType type)
         {
             var parameter = new Dictionary<string, string>()
                 {

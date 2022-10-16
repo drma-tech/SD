@@ -1,7 +1,7 @@
 ﻿@using SD.Shared.Model
 @inherits ComponenteCore<ProviderPopup>
 @inject Settings Settings
-@inject Services.TMDB.DiscoverService DiscoverService
+@using SD.WEB.Services.TMDB
 
 <ModalHeader>
     <ModalTitle>@provider?.name</ModalTitle>
@@ -75,9 +75,9 @@
                 }
             </TabPanel>
             <TabPanel Name="Catalog" Class="mt-3">
-                <CardMediaList @ref="cardPopular" Service="@DiscoverService" CardHeader="@TranslationText.Popular"></CardMediaList>
-                <CardMediaList @ref="cardNew" Service="@DiscoverService" CardHeader="@TranslationText.Release"></CardMediaList>
-                <CardMediaList @ref="cardTopRated" Service="@DiscoverService" CardHeader="@TranslationText.TopRated"></CardMediaList>
+                <MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="popularDisable" TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"></MediaList>
+                <MediaList CardHeader="@TranslationText.Release" Items="@ListNew" maxItens="50" NextPage="@(()=>LoadNew(newMedia))" DisableLoadMore="newDisable" TypeSelected="newMedia" TypeSelectedChanged="ChangeNewMediaType" ShowFilter="true" ShowOnlyYear="false"></MediaList>
+                <MediaList CardHeader="@TranslationText.TopRated" Items="@ListTopRated" maxItens="50" NextPage="@(()=>LoadTopRated(topRatedMedia))" DisableLoadMore="topRatedDisable" TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"></MediaList>
             </TabPanel>
         </Content>
     </Tabs>
@@ -108,27 +108,37 @@
     [Parameter] public ProviderModel? provider { get; set; }
     [Parameter] public MediaType mediaType { get; set; }
 
+    private MediaType popularMedia { get; set; }
+    private MediaType newMedia { get; set; }
+    private MediaType topRatedMedia { get; set; }
+
     string selectedTab = "About";
 
-    public CardMediaList? cardPopular { get; set; }
-    public CardMediaList? cardNew { get; set; }
-    public CardMediaList? cardTopRated { get; set; }
+    private HashSet<MediaDetail> ListPopular { get; set; } = new();
+    private HashSet<MediaDetail> ListNew { get; set; } = new();
+    private HashSet<MediaDetail> ListTopRated { get; set; } = new();
+
+    private int popularPage = 0;
+    private int newPage = 0;
+    private int topRatedPage = 0;
+
+    private bool popularDisable = false;
+    private bool newDisable = false;
+    private bool topRatedDisable = false;
 
     private MyProviders? myProviders { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         myProviders = await Http.MyProviders_Get(StorageService.Session);
-    }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            if (cardPopular != null) await cardPopular.LoadData(mediaType, GetExtraParameters(provider?.id, "popularity.desc"), true);
-            if (cardNew != null) await cardNew.LoadData(mediaType, GetExtraParameters(provider?.id, "primary_release_date.desc"), true);
-            if (cardTopRated != null) await cardTopRated.LoadData(mediaType, GetExtraParameters(provider?.id, "vote_average.desc"), true);
-        }
+        popularMedia = mediaType;
+        newMedia = mediaType;
+        topRatedMedia = mediaType;
+
+        await LoadPopular(mediaType);
+        await LoadNew(mediaType);
+        await LoadTopRated(mediaType);
     }
 
     private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)
@@ -136,6 +146,54 @@
         if (provider_id == null) throw new ArgumentNullException(nameof(provider_id));
 
         return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by } }; ;
+    }
+
+    private async Task ChangePopularMediaType(MediaType mediaType)
+    {
+        popularMedia = mediaType;
+
+        popularPage = 0;
+
+        ListPopular = new();
+
+        await LoadPopular(mediaType);
+    }
+
+    private async Task ChangeNewMediaType(MediaType mediaType)
+    {
+        newMedia = mediaType;
+
+        newPage = 0;
+
+        ListNew = new();
+
+        await LoadNew(mediaType);
+    }
+
+    private async Task ChangeTopRatedMediaType(MediaType mediaType)
+    {
+        topRatedMedia = mediaType;
+
+        topRatedPage = 0;
+
+        ListTopRated = new();
+
+        await LoadTopRated(mediaType);
+    }
+
+    private async Task LoadPopular(MediaType mediaType)
+    {
+        popularDisable = await Http.PopulateDiscover(StorageService, Settings, ListPopular, mediaType, ++popularPage, GetExtraParameters(provider?.id, "popularity.desc"));
+    }
+
+    private async Task LoadNew(MediaType mediaType)
+    {
+        newDisable = await Http.PopulateDiscover(StorageService, Settings, ListNew, mediaType, ++newPage, GetExtraParameters(provider?.id, "primary_release_date.desc"));
+    }
+
+    private async Task LoadTopRated(MediaType mediaType)
+    {
+        topRatedDisable = await Http.PopulateDiscover(StorageService, Settings, ListTopRated, mediaType, ++topRatedPage, GetExtraParameters(provider?.id, "vote_average.desc"));
     }
 
     private async Task Add()

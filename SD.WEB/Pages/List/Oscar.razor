@@ -1,0 +1,33 @@
+﻿@page "/List/Oscar"
+@inherits ComponenteCore<Oscar>
+@inject Services.TMDB.ListService Service
+@inject Settings Settings
+
+<HeadPage ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></HeadPage>
+
+<MediaList CardHeader="@TranslationText.MotionPicture" Items="@ListMotionPicture" list_id="7103422" maxItens="12"></MediaList>
+<MediaList CardHeader="@TranslationText.Animated" Items="@ListAnimated" list_id="7103492" maxItens="12"></MediaList>
+<MediaList CardHeader="@TranslationText.International" Items="@ListInternational" list_id="7103493" maxItens="12"></MediaList>
+<MediaList CardHeader="@TranslationText.Documentary" Items="@ListDocumentary" list_id="7103488" maxItens="12"></MediaList>
+
+@code {
+    private HashSet<MediaDetail> ListMotionPicture { get; set; } = new();
+    private HashSet<MediaDetail> ListAnimated { get; set; } = new();
+    private HashSet<MediaDetail> ListInternational { get; set; } = new();
+    private HashSet<MediaDetail> ListDocumentary { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await Service.PopulateListMedia(Http, StorageService, Settings, ListMotionPicture, 1, GetExtraParameters("7103422"));
+        await Service.PopulateListMedia(Http, StorageService, Settings, ListAnimated, 1, GetExtraParameters("7103492"));
+        await Service.PopulateListMedia(Http, StorageService, Settings, ListInternational, 1, GetExtraParameters("7103493"));
+        await Service.PopulateListMedia(Http, StorageService, Settings, ListDocumentary, 1, GetExtraParameters("7103488"));
+    }
+    
+    private Dictionary<string, string> GetExtraParameters(string list_id)
+    {
+        return new Dictionary<string, string>() { { "list_id", list_id } };
+    }
+}

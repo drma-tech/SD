@@ -14,9 +14,10 @@
                 @foreach (var item in myProviders?.Items ?? new List<MyProvidersItem>())
                 {
                     <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                        <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1" Clicked="@(()=>ShowProviderPopup(item))">
-                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.name" Class="w-100"></Image>
-                        </Button>
+                        <Card>
+                            <CardImage Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Alt="@item.name"
+                                   onclick="@(()=>ShowProviderPopup(item))" Style="cursor: pointer;"></CardImage>
+                        </Card>
                     </Column>
                 }
             </Row>
@@ -39,9 +40,10 @@
                 @foreach (var item in wishList?.Items ?? new List<WishListItem>())
                 {
                     <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                        <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1" Clicked="@(async()=>await ShowMediaPopup(item))">
-                            <Image Source="@(item.logo_path)" Text="@item.name" Class="w-100"></Image>
-                        </Button>
+                        <Card>
+                            <CardImage Source="@(item.logo_path)" Alt="@item.name"
+                                   onclick="@(async()=>await ShowMediaPopup(item))" Style="cursor: pointer;"></CardImage>
+                        </Card>
                     </Column>
                 }
             </Row>

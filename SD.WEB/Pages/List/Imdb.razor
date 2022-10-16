@@ -1,0 +1,67 @@
+﻿@page "/List/Imdb"
+@inherits ComponenteCore<Imdb>
+@using SD.WEB.Services.IMDB
+
+<HeadPage ImageSource="logo/imdb.png" Text="@TranslationText.imdb_desc" Link="https://www.imdb.com/"></HeadPage>
+
+<MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" IsIMDB="true" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="PopularDisable" TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"></MediaList>
+<MediaList CardHeader="@TranslationText.TopRated" Items="@ListTopRated" maxItens="50" IsIMDB="true" NextPage="@(()=>LoadTopRated())" DisableLoadMore="TopRatedDisable" TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"></MediaList>
+<MediaList CardHeader="@TranslationText.ComingSoon" Items="@ListUpcoming" maxItens="50" IsIMDB="true" NextPage="LoadUpcoming" DisableLoadMore="UpcomingDisable" ShowOnlyYear="false"></MediaList>
+
+@code {
+    private HashSet<MediaDetail> ListPopular { get; set; } = new();
+    private HashSet<MediaDetail> ListTopRated { get; set; } = new();
+    private HashSet<MediaDetail> ListUpcoming { get; set; } = new();
+
+    private bool PopularDisable = true;
+    private bool TopRatedDisable = true;
+    private bool UpcomingDisable = true;
+
+    private MediaType popularMedia = MediaType.movie;
+    private MediaType topRatedMedia = MediaType.movie;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await LoadPopular(popularMedia);
+        await LoadTopRated();
+        await LoadUpcoming();
+
+        if (ListPopular.Count < 10) await LoadPopular(popularMedia);
+        if (ListTopRated.Count < 10) await LoadTopRated();
+    }
+
+    private async Task ChangePopularMediaType(MediaType mediaType)
+    {
+        popularMedia = mediaType;
+
+        ListPopular = new();
+
+        await LoadPopular(mediaType);
+    }
+
+    private async Task ChangeTopRatedMediaType(MediaType mediaType)
+    {
+        topRatedMedia = mediaType;
+
+        ListTopRated = new();
+
+        await LoadTopRated(mediaType);
+    }
+
+    private async Task LoadPopular(MediaType mediaType)
+    {
+        await Http.PopulateIMDBPopular(StorageService, ListPopular, mediaType);
+    }
+
+    private async Task LoadTopRated(MediaType mediaType = MediaType.movie)
+    {
+        await Http.PopulateIMDBTopRated(StorageService, ListTopRated, mediaType);
+    }
+
+    private async Task LoadUpcoming()
+    {
+        await Http.PopulateIMDBUpcoming(StorageService, ListUpcoming, MediaType.movie);
+    }
+}

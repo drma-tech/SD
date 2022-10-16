@@ -2,7 +2,7 @@
 
 @if (Loading)
 {
-    <Alert Color="Color.Warning" Visible="true" Margin="Margin.Is0.FromBottom">
+    <Alert Color="Color.Warning" Visible="true" M>
         <AlertDescription>
             <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> Carregando...
         </AlertDescription>
@@ -10,7 +10,7 @@
 }
 else if (Invalid)
 {
-    <Alert Color="Color.Danger" Visible="true" Margin="Margin.Is0.FromBottom">
+    <Alert Color="Color.Danger" Visible="true">
         <AlertDescription>
             <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon> @(CustomError ?? "Operação inválida. Favor, tentar novamente.")
         </AlertDescription>
@@ -18,7 +18,7 @@ else if (Invalid)
 }
 else if (NoData)
 {
-    <Alert Color="Color.Primary" Visible="true" Margin="Margin.Is0.FromBottom">
+    <Alert Color="Color.Primary" Visible="true">
         <AlertDescription>
             <Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> @(CustomNoData ?? "Não há dados para mostrar")
         </AlertDescription>

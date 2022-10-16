@@ -7,7 +7,6 @@ using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using SD.Shared.Core;
 using SD.WEB.Core;
-using SD.WEB.Services;
 using System.Globalization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
@@ -34,16 +33,8 @@ namespace SD.WEB
 
         public static void ConfigureServices(this IServiceCollection collection)
         {
-            collection.AddScoped<Services.TMDB.DiscoverService>();
             collection.AddScoped<Services.TMDB.ListService>();
             collection.AddScoped<Services.TMDB.MediaDetailService>();
-            collection.AddScoped<Services.TMDB.PopularService>();
-            collection.AddScoped<Services.TMDB.TopRatedService>();
-            collection.AddScoped<Services.TMDB.UpcomingService>();
-
-            collection.AddScoped<Services.IMDB.PopularService>();
-            collection.AddScoped<Services.IMDB.TopRatedService>();
-            collection.AddScoped<Services.IMDB.UpcomingService>();
         }
 
         public static void ConfigureCulture(this WebAssemblyHost host)

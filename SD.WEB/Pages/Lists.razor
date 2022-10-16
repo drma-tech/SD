@@ -1,0 +1,77 @@
+﻿@page "/List"
+@inherits ComponenteCore<Lists>
+
+<Alert Visible="true" Color="Color.Secondary">
+    <AlertMessage>Premiações</AlertMessage>
+</Alert>
+<CustomVisibility NoData="(!Premiacoes.Any())">
+    <Row HorizontalGutter="4" VerticalGutter="4">
+        @foreach (var item in Premiacoes)
+        {
+            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
+                <Card>
+                    <Blazorise.Link To="@item.link">
+                        <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
+                    </Blazorise.Link>
+                    <CardBody Padding="Padding.Is1" Style="min-height: 46.4px">
+                        <CardTitle Size="6" Margin="Margin.Is0">@item.name</CardTitle>
+                    </CardBody>
+                </Card>
+            </Column>
+        }
+    </Row>
+</CustomVisibility>
+
+<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
+    <AlertMessage>Sites Especializados</AlertMessage>
+</Alert>
+<CustomVisibility NoData="(!Sites.Any())">
+    <Row HorizontalGutter="4" VerticalGutter="4">
+        @foreach (var item in Sites)
+        {
+            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
+                <Card>
+                    <Blazorise.Link To="@item.link">
+                        <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
+                    </Blazorise.Link>
+                    <CardBody Padding="Padding.Is1" Style="min-height: 46.4px">
+                        <CardTitle Size="6" Margin="Margin.Is0">@item.name</CardTitle>
+                    </CardBody>
+                </Card>
+            </Column>
+        }
+    </Row>
+</CustomVisibility>
+
+@code {
+    private List<Item> Premiacoes { get; set; } = new();
+    private List<Item> Sites { get; set; } = new();
+
+    public class Item
+    {
+        public int id { get; set; }
+        public string? name { get; set; }
+        public string? logo_path { get; set; }
+        public string? link { get; set; }
+    }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            base.OnInitialized();
+
+            Premiacoes.Add(new Item() { id = 1, name = "Oscar", logo_path = "logo/oscar.png", link = "/List/Oscar" });
+            Premiacoes.Add(new Item() { id = 1, name = "Golden Globe", logo_path = "logo/goldenglobes.png", link = "/List/GoldenGlobes" });
+            Premiacoes.Add(new Item() { id = 1, name = "Emmys", logo_path = "logo/emmys.png", link = "/List/Emmys" });
+
+            Sites.Add(new Item() { id = 1, name = "IMDB", logo_path = "logo/imdb.png", link = "/List/Imdb" });
+            Sites.Add(new Item() { id = 1, name = "TMDB", logo_path = "logo/tmdb.png", link = "/List/Tmdb" });
+            Sites.Add(new Item() { id = 1, name = "Hollywood Reporter", logo_path = "logo/HollywoodReporter.png", link = "/List/HollywoodReporter" });
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+}

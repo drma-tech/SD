@@ -18,17 +18,26 @@
         @foreach (var item in GetFilteredProviders(MediaType, DeliveryModel, Content))
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                <Button Color="Color.Primary" Outline="true" Block="true" Padding="Padding.Is1" Clicked="@(() => ShowPopupProvider(item))">
-                    <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.name" Class="w-100"></Image>
-                    @*@if (string.IsNullOrEmpty(item.link))
-                {<p class="m-0" style="color: red">link</p>}*@
-                    @*@if (string.IsNullOrEmpty(item.description))
-                {<p class="m-0" style="color: red">description</p>}*@
-                    @*@if (!item.models.Any())
-                {<p class="m-0" style="color: red">model</p>}*@
-                    @*@if (item.models.Any(a => a == MyStream.Modal.Enum.DeliveryModel.SVOD) && !item.plans.Any())
-                {<p class="m-0" style="color: red">plan</p>}*@
-                </Button>
+                <Card>
+                    <CardImage Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Alt="@item.name"
+                           onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;"></CardImage>
+                </Card>
+                @*@if (string.IsNullOrEmpty(item.link))
+                {
+                    <p class="m-0" style="color: red">link</p>
+                }
+                @if (string.IsNullOrEmpty(item.description))
+                {
+                    <p class="m-0" style="color: red">description</p>
+                }
+                @if (!item.models.Any())
+                {
+                    <p class="m-0" style="color: red">model</p>
+                }
+                @if (item.models.Any(a => a == SD.Shared.Modal.Enum.DeliveryModel.SVOD) && !item.plans.Any())
+                {
+                    <p class="m-0" style="color: red">plan</p>
+                }*@
             </Column>
         }
     </Row>

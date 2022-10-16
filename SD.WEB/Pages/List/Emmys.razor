@@ -1,0 +1,30 @@
+﻿@page "/List/Emmys"
+@inherits ComponenteCore<Emmys>
+@inject Services.TMDB.ListService Service
+@inject Settings Settings
+
+<HeadPage ImageSource="logo/emmys.png" Text="@TranslationText.emmys_desc" Link="https://www.emmys.com/"></HeadPage>
+
+<MediaList CardHeader="@TranslationText.Drama" Items="@ListDrama" list_id="7103525" maxItens="8"></MediaList>
+<MediaList CardHeader="@TranslationText.Comedy" Items="@ListComedy" list_id="7103519" maxItens="7"></MediaList>
+<MediaList CardHeader="@TranslationText.Limited" Items="@ListLimited" list_id="7103526" maxItens="11"></MediaList>
+
+@code {
+    private HashSet<MediaDetail> ListDrama { get; set; } = new();
+    private HashSet<MediaDetail> ListComedy { get; set; } = new();
+    private HashSet<MediaDetail> ListLimited { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await Service.PopulateListMedia(Http, StorageService, Settings, ListDrama, 1, GetExtraParameters("7103525"));
+        await Service.PopulateListMedia(Http, StorageService, Settings, ListComedy, 1, GetExtraParameters("7103519"));
+        await Service.PopulateListMedia(Http, StorageService, Settings, ListLimited, 1, GetExtraParameters("7103526"));
+    }
+
+    private Dictionary<string, string> GetExtraParameters(string list_id)
+    {
+        return new Dictionary<string, string>() { { "list_id", list_id } }; ;
+    }
+}

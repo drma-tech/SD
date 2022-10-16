@@ -8,23 +8,18 @@ using System.Text.Json;
 
 namespace SD.WEB.Services.TMDB
 {
-    public class ListService : IMediaListService
+    public class ListService
     {
         public async Task PopulateListMedia(HttpClient http, IStorageService storage, Settings settings,
-            HashSet<MediaDetail> list_media, MediaType type, int qtd = 9, Dictionary<string, string>? ExtraParameters = null)
+            HashSet<MediaDetail> list_media, int page = 1, Dictionary<string, string>? ExtraParameters = null)
         {
             if (ExtraParameters == null) throw new ArgumentNullException(nameof(ExtraParameters));
-
-            if (qtd > 9)
-            {
-                return;
-            }
 
             var parameter = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey },
                 { "language", settings.Language.GetName(false) ?? "en-US" },
-                { "page", "1" },
+                { "page", page.ToString() },
                 { "sort_by", "original_order.asc" }
             };
 
