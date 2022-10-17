@@ -31,18 +31,44 @@
 </AuthorizeView>
 
 <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
-    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Lista de Interesses (@(wishList?.Items.Count ?? 0) itens)</AlertMessage>
+    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Lista de Interesses - Filmes (@(wishList?.Movies.Count() ?? 0) itens)</AlertMessage>
 </Alert>
 <AuthorizeView>
     <Authorized>
-        <CustomVisibility Loading="loading" NoData="(!wishList?.Items.Any() ?? true)">
-            <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 310px; overflow: auto;">
-                @foreach (var item in wishList?.Items ?? new List<WishListItem>())
+        <CustomVisibility Loading="loading" NoData="(!wishList?.Movies.Any() ?? true)">
+            <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 315px; overflow: auto;">
+                @foreach (var item in wishList?.Movies ?? new List<WishListItem>())
                 {
                     <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                         <Card>
                             <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name"
-                                   onclick="@(async()=>await ShowMediaPopup(item))" Style="cursor: pointer;"></CardImage>
+                                   onclick="@(async()=>await ShowMediaPopup(item, MediaType.movie))" Style="cursor: pointer;"></CardImage>
+                        </Card>
+                    </Column>
+                }
+            </Row>
+        </CustomVisibility>
+    </Authorized>
+    <NotAuthorized>
+        <Alert Visible="true" Color="Color.Primary">
+            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
+        </Alert>
+    </NotAuthorized>
+</AuthorizeView>
+
+<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
+    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Lista de Interesses - Seriados (@(wishList?.Shows.Count() ?? 0) itens)</AlertMessage>
+</Alert>
+<AuthorizeView>
+    <Authorized>
+        <CustomVisibility Loading="loading" NoData="(!wishList?.Shows.Any() ?? true)">
+            <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 315px; overflow: auto;">
+                @foreach (var item in wishList?.Shows ?? new List<WishListItem>())
+                {
+                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                        <Card>
+                            <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name"
+                                   onclick="@(async()=>await ShowMediaPopup(item, MediaType.tv))" Style="cursor: pointer;"></CardImage>
                         </Card>
                     </Column>
                 }
@@ -60,8 +86,10 @@
     [Inject] public IModalService ModalService { get; set; } = default!;
 
     private MyProviders? myProviders { get; set; }
-    private WishList? wishList { get; set; }
     private AllProviders? allProviders;
+
+    private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
 
     private bool loading { get; set; }
 
@@ -73,8 +101,10 @@
 
             await base.OnInitializedAsync();
 
-            myProviders = await Http.MyProviders_Get(StorageService.Session);
             wishList = await Http.WishList_Get(StorageService.Session);
+            watchedList = await Http.WatchedList_Get(StorageService.Session);
+
+            myProviders = await Http.MyProviders_Get(StorageService.Session);
             allProviders = await Http.Provider_GetAll(StorageService.Session);
 
             loading = false;
@@ -92,6 +122,10 @@
             {
                 x.Add(x => x.provider, allProviders?.Items.FirstOrDefault(f => f.id == item.id));
                 x.Add(x => x.mediaType, MediaType.movie);
+                x.Add(x => x.WishList, wishList);
+                x.Add(x => x.WatchedList, watchedList);
+                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
+                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
             },
             new ModalInstanceOptions()
                 {
@@ -101,14 +135,18 @@
                 });
     }
 
-    public Task ShowMediaPopup(WishListItem item)
+    public Task ShowMediaPopup(WishListItem item, MediaType type)
     {
         return ModalService.Show<MediaPopup>(item.name,
             x =>
             {
                 x.Add(x => x.ServiceDetail, new Services.TMDB.MediaDetailService());
                 x.Add(x => x.tmdb_id, item.id);
-                x.Add(x => x.type, item.type);
+                x.Add(x => x.type, type);
+                x.Add(x => x.WishList, wishList);
+                x.Add(x => x.WatchedList, watchedList);
+                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
+                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
             },
             new ModalInstanceOptions()
                 {

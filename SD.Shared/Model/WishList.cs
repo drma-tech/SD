@@ -9,7 +9,8 @@ namespace SD.Shared.Model
         {
         }
 
-        public List<WishListItem> Items { get; set; } = new();
+        public List<WishListItem> Movies { get; set; } = new();
+        public List<WishListItem> Shows { get; set; } = new();
 
         public override void SetIds(string? IdLoggedUser)
         {
@@ -25,6 +26,5 @@ namespace SD.Shared.Model
         public string? id { get; set; }
         public string? name { get; set; }
         public string? logo { get; set; }
-        public MediaType type { get; set; }
     }
 }

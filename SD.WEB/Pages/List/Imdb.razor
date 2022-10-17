@@ -1,12 +1,22 @@
 ﻿@page "/List/Imdb"
 @inherits ComponenteCore<Imdb>
+@using SD.Shared.Model
 @using SD.WEB.Services.IMDB
 
 <HeadPage ImageSource="logo/imdb.png" Text="@TranslationText.imdb_desc" Link="https://www.imdb.com/"></HeadPage>
 
-<MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" IsIMDB="true" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="PopularDisable" TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"></MediaList>
-<MediaList CardHeader="@TranslationText.TopRated" Items="@ListTopRated" maxItens="50" IsIMDB="true" NextPage="@(()=>LoadTopRated())" DisableLoadMore="TopRatedDisable" TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"></MediaList>
-<MediaList CardHeader="@TranslationText.ComingSoon" Items="@ListUpcoming" maxItens="50" IsIMDB="true" NextPage="LoadUpcoming" DisableLoadMore="UpcomingDisable" ShowOnlyYear="false"></MediaList>
+<MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" IsIMDB="true" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="PopularDisable"
+           TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+<MediaList CardHeader="@TranslationText.TopRated" Items="@ListTopRated" maxItens="50" IsIMDB="true" NextPage="@(()=>LoadTopRated())" DisableLoadMore="TopRatedDisable"
+           TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+<MediaList CardHeader="@TranslationText.ComingSoon" Items="@ListUpcoming" maxItens="50" IsIMDB="true" NextPage="LoadUpcoming" DisableLoadMore="UpcomingDisable"
+           ShowOnlyYear="false"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
 
 @code {
     private HashSet<MediaDetail> ListPopular { get; set; } = new();
@@ -20,9 +30,15 @@
     private MediaType popularMedia = MediaType.movie;
     private MediaType topRatedMedia = MediaType.movie;
 
+    private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
+        wishList = await Http.WishList_Get(StorageService.Session);
+        watchedList = await Http.WatchedList_Get(StorageService.Session);
 
         await LoadPopular(popularMedia);
         await LoadTopRated();
@@ -41,6 +57,9 @@
         await LoadPopular(mediaType);
 
         if (ListPopular.Count < 10) await LoadPopular(popularMedia);
+
+        wishList = await Http.WishList_Get(StorageService.Session);
+        watchedList = await Http.WatchedList_Get(StorageService.Session);
     }
 
     private async Task ChangeTopRatedMediaType(MediaType mediaType)

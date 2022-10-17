@@ -75,9 +75,18 @@
                 }
             </TabPanel>
             <TabPanel Name="Catalog" Class="mt-3">
-                <MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="popularDisable" TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"></MediaList>
-                <MediaList CardHeader="@TranslationText.Release" Items="@ListNew" maxItens="50" NextPage="@(()=>LoadNew(newMedia))" DisableLoadMore="newDisable" TypeSelected="newMedia" TypeSelectedChanged="ChangeNewMediaType" ShowFilter="true" ShowOnlyYear="false"></MediaList>
-                <MediaList CardHeader="@TranslationText.TopRated" Items="@ListTopRated" maxItens="50" NextPage="@(()=>LoadTopRated(topRatedMedia))" DisableLoadMore="topRatedDisable" TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"></MediaList>
+                <MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="popularDisable"
+                           TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
+                           WishList="WishList" WishListChanged="@(async(WishList value)=>{WishList = value; await WishListChanged.InvokeAsync(value);})"
+                           WatchedList="WatchedList" WatchedListChanged="@(async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); })"></MediaList>
+                <MediaList CardHeader="@TranslationText.Release" Items="@ListNew" maxItens="50" NextPage="@(()=>LoadNew(newMedia))" DisableLoadMore="newDisable"
+                           TypeSelected="newMedia" TypeSelectedChanged="ChangeNewMediaType" ShowFilter="true" ShowOnlyYear="false"
+                           WishList="WishList" WishListChanged="@(async(WishList value)=>{WishList = value; await WishListChanged.InvokeAsync(value);})"
+                           WatchedList="WatchedList" WatchedListChanged="@(async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); })"></MediaList>
+                <MediaList CardHeader="@TranslationText.TopRated" Items="@ListTopRated" maxItens="50" NextPage="@(()=>LoadTopRated(topRatedMedia))" DisableLoadMore="topRatedDisable"
+                           TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
+                           WishList="WishList" WishListChanged="@(async(WishList value)=>{WishList = value; await WishListChanged.InvokeAsync(value);})"
+                           WatchedList="WatchedList" WatchedListChanged="@(async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); })"></MediaList>
             </TabPanel>
         </Content>
     </Tabs>
@@ -108,6 +117,11 @@
     [Parameter] public ProviderModel? provider { get; set; }
     [Parameter] public MediaType mediaType { get; set; }
 
+    [Parameter] public WishList? WishList { get; set; }
+    [Parameter] public WatchedList? WatchedList { get; set; }
+    [Parameter] public EventCallback<WishList> WishListChanged { get; set; }
+    [Parameter] public EventCallback<WatchedList> WatchedListChanged { get; set; }
+
     private MediaType popularMedia { get; set; }
     private MediaType newMedia { get; set; }
     private MediaType topRatedMedia { get; set; }
@@ -130,15 +144,28 @@
 
     protected override async Task OnInitializedAsync()
     {
-        myProviders = await Http.MyProviders_Get(StorageService.Session);
+        try
+        {
+            if (provider == null) throw new ArgumentNullException(nameof(provider));
+            if (WishList == null) throw new ArgumentNullException(nameof(WishList));
+            if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
+            if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
+            if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
 
-        popularMedia = mediaType;
-        newMedia = mediaType;
-        topRatedMedia = mediaType;
+            myProviders = await Http.MyProviders_Get(StorageService.Session);
 
-        await LoadPopular(mediaType);
-        await LoadNew(mediaType);
-        await LoadTopRated(mediaType);
+            popularMedia = mediaType;
+            newMedia = mediaType;
+            topRatedMedia = mediaType;
+
+            await LoadPopular(mediaType);
+            await LoadNew(mediaType);
+            await LoadTopRated(mediaType);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 
     private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)

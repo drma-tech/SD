@@ -68,7 +68,8 @@ namespace SD.API.Functions
 
                 myProviders.SetIds(req.GetUserId());
 
-                myProviders.Items = newItem.Items;
+                myProviders.Movies = newItem.Movies;
+                myProviders.Shows = newItem.Shows;
                 myProviders = await _repo.Upsert(myProviders, source.Token);
 
                 return new OkObjectResult(myProviders);

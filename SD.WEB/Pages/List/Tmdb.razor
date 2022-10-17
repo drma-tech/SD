@@ -1,13 +1,23 @@
 ﻿@page "/List/Tmdb"
 @inherits ComponenteCore<Tmdb>
 @inject Settings Settings
+@using SD.Shared.Model
 @using SD.WEB.Services.TMDB
 
 <HeadPage ImageSource="logo/tmdb.png" Text="@TranslationText.tmdb_desc" Link="https://www.themoviedb.org/"></HeadPage>
 
-<MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="PopularDisable" TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"></MediaList>
-<MediaList CardHeader="@($"{TranslationText.TopRated} ({Settings.Region})")" Items="@ListTopRated" maxItens="50" NextPage="@(()=>LoadTopRated())" DisableLoadMore="TopRatedDisable" TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"></MediaList>
-<MediaList CardHeader="@($"{TranslationText.ComingSoon} ({Settings.Region})")" Items="@ListUpcoming" maxItens="50" NextPage="LoadUpcoming" DisableLoadMore="UpcomingDisable" ShowOnlyYear="false"></MediaList>
+<MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="PopularDisable"
+           TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+<MediaList CardHeader="@($"{TranslationText.TopRated} ({Settings.Region})")" Items="@ListTopRated" maxItens="50" NextPage="@(()=>LoadTopRated())" DisableLoadMore="TopRatedDisable"
+           TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+<MediaList CardHeader="@($"{TranslationText.ComingSoon} ({Settings.Region})")" Items="@ListUpcoming" maxItens="50" NextPage="LoadUpcoming" DisableLoadMore="UpcomingDisable"
+           ShowOnlyYear="false"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
 
 @code {
     private HashSet<MediaDetail> ListPopular { get; set; } = new();
@@ -25,6 +35,9 @@
     private MediaType popularMedia = MediaType.movie;
     private MediaType topRatedMedia = MediaType.movie;
 
+    private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -37,6 +50,9 @@
 
         if (ListPopular.Count < 10) await LoadPopular(popularMedia);
         if (ListTopRated.Count < 10) await LoadTopRated();
+
+        wishList = await Http.WishList_Get(StorageService.Session);
+        watchedList = await Http.WatchedList_Get(StorageService.Session);
     }
 
     private async Task ChangeRegion()

@@ -280,7 +280,13 @@
             <Column ColumnSize="ColumnSize.IsAuto">
                 <AuthorizeView>
                     <Authorized>
-                        @if (wishList?.Items.Any(a => a.id == media?.tmdb_id) ?? false)
+                        @if (WishList?.Movies.Any(a => a.id == media?.tmdb_id) ?? false)
+                        {
+                            <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd">
+                                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Remove
+                            </Button>
+                        }
+                        else if (WishList?.Shows.Any(a => a.id == media?.tmdb_id) ?? false)
                         {
                             <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd">
                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Remove
@@ -292,7 +298,13 @@
                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Adicionar
                             </Button>
                         }
-                        @if (watchedList?.Items.Any(a => a.id == media?.tmdb_id) ?? false)
+                        @if (WatchedList?.Movies.Any(a => a == media?.tmdb_id) ?? false)
+                        {
+                            <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd">
+                                <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> Não Assistido
+                            </Button>
+                        }
+                        else if (WatchedList?.Shows.Any(a => a == media?.tmdb_id) ?? false)
                         {
                             <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd">
                                 <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> Não Assistido
@@ -320,13 +332,15 @@
     [Parameter] public bool ShowOnlyYear { get; set; } = true;
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
+    [Parameter] public WishList? WishList { get; set; }
+    [Parameter] public WatchedList? WatchedList { get; set; }
+
+    [Parameter] public EventCallback<WishList> WishListChanged { get; set; }
+    [Parameter] public EventCallback<WatchedList> WatchedListChanged { get; set; }
 
     private MediaDetail? media { get; set; }
     private MediaProviders? Providers { get; set; }
-    private AllProviders? AllProviders { get; set; }
-
-    private WishList? wishList { get; set; }
-    private WatchedList? watchedList { get; set; }
+    private AllProviders? AllProviders { get; set; }   
 
     private bool Loading;
     string selectedTab = "About";
@@ -335,10 +349,15 @@
     {
         try
         {
-            Loading = true;
+            if (ServiceDetail == null) throw new ArgumentNullException(nameof(ServiceDetail));
+            if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
+            if (type == null) throw new ArgumentNullException(nameof(type));
+            if (WishList == null) throw new ArgumentNullException(nameof(WishList));
+            if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
+            if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
+            if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
 
-            wishList = await Http.WishList_Get(StorageService.Session);
-            watchedList = await Http.WatchedList_Get(StorageService.Session);
+            Loading = true;
 
             media = await ServiceDetail.GetMedia(Http, StorageService, Settings, tmdb_id, type);
             Providers = await Services.TMDB.WatchProvidersService.GetProviders(Http, StorageService, Settings, tmdb_id, type);
@@ -452,23 +471,35 @@
     {
         try
         {
-            if (wishList == null)
+            if (WishList == null)
             {
-                wishList = new WishList
+                WishList = new WishList
                     {
                         DtInsert = DateTimeOffset.UtcNow
                     };
             }
 
-            wishList.Items.Add(new WishListItem()
-                {
-                    id = media?.tmdb_id,
-                    name = media?.title,
-                    logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""),
-                    type = media?.MediaType ?? MediaType.movie
-                });
+            if (media != null && media.MediaType == MediaType.movie)
+            {
+                WishList.Movies.Add(new WishListItem()
+                    {
+                        id = media?.tmdb_id,
+                        name = media?.title,
+                        logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, "")
+                    });
+            }
+            else if (media != null && media.MediaType == MediaType.tv)
+            {
+                WishList.Shows.Add(new WishListItem()
+                    {
+                        id = media?.tmdb_id,
+                        name = media?.title,
+                        logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, "")
+                    });
+            }
 
-            await Http.WishList_Post(wishList, StorageService.Session);
+            await Http.WishList_Post(WishList, StorageService.Session);
+            await WishListChanged.InvokeAsync(WishList);
 
             await Toast.Success("Media favoritado com sucesso!");
         }
@@ -482,17 +513,25 @@
     {
         try
         {
-            if (wishList == null)
+            if (WishList == null)
             {
-                wishList = new WishList
+                WishList = new WishList
                     {
                         DtInsert = DateTimeOffset.UtcNow
                     };
             }
 
-            wishList.Items.Remove(wishList.Items.First(f => f.id == media?.tmdb_id));
+            if (media != null && media.MediaType == MediaType.movie)
+            {
+                WishList.Movies.Remove(WishList.Movies.First(f => f.id == media?.tmdb_id));
+            }
+            else if (media != null && media.MediaType == MediaType.tv)
+            {
+                WishList.Shows.Remove(WishList.Shows.First(f => f.id == media?.tmdb_id));
+            }
 
-            await Http.WishList_Post(wishList, StorageService.Session);
+            await Http.WishList_Post(WishList, StorageService.Session);
+            await WishListChanged.InvokeAsync(WishList);
 
             await Toast.Success("Media removida com sucesso!");
         }
@@ -506,23 +545,25 @@
     {
         try
         {
-            if (watchedList == null)
+            if (WatchedList == null)
             {
-                watchedList = new WatchedList
+                WatchedList = new WatchedList
                     {
                         DtInsert = DateTimeOffset.UtcNow
                     };
             }
 
-            watchedList.Items.Add(new WatchedListItem()
-                {
-                    id = media?.tmdb_id,
-                    //name = media?.title,
-                    //logo = media?.poster_path_small,
-                    type = media?.MediaType ?? MediaType.movie
-                });
+            if (media != null && media.MediaType == MediaType.movie && !string.IsNullOrEmpty(media.tmdb_id))
+            {
+                WatchedList.Movies.Add(media.tmdb_id);
+            }
+            else if (media != null && media.MediaType == MediaType.tv && !string.IsNullOrEmpty(media.tmdb_id))
+            {
+                WatchedList.Shows.Add(media.tmdb_id);
+            }
 
-            await Http.WatchedList_Post(watchedList, StorageService.Session);
+            await Http.WatchedList_Post(WatchedList, StorageService.Session);
+            await WatchedListChanged.InvokeAsync(WatchedList);
 
             await Toast.Success("Operação efetuada com sucesso!");
         }
@@ -536,17 +577,25 @@
     {
         try
         {
-            if (watchedList == null)
+            if (WatchedList == null)
             {
-                watchedList = new WatchedList
+                WatchedList = new WatchedList
                     {
                         DtInsert = DateTimeOffset.UtcNow
                     };
             }
 
-            watchedList.Items.Remove(watchedList.Items.First(f => f.id == media?.tmdb_id & f.type == media?.MediaType));
+            if (media != null && media.MediaType == MediaType.movie)
+            {
+                WatchedList.Movies.Remove(WatchedList.Movies.First(f => f == media?.tmdb_id & MediaType.movie == media?.MediaType));
+            }
+            else if (media != null && media.MediaType == MediaType.tv)
+            {
+                WatchedList.Shows.Remove(WatchedList.Shows.First(f => f == media?.tmdb_id & MediaType.tv == media?.MediaType));
+            }
 
-            await Http.WatchedList_Post(watchedList, StorageService.Session);
+            await Http.WatchedList_Post(WatchedList, StorageService.Session);
+            await WatchedListChanged.InvokeAsync(WatchedList);
 
             await Toast.Success("Operação efetuada com sucesso!");
         }

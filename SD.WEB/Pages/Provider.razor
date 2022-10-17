@@ -1,4 +1,5 @@
 ﻿@page "/Provider"
+@using SD.Shared.Model
 @inherits ComponenteCore<Provider>
 @inject Settings Settings
 
@@ -57,6 +58,8 @@
     public int ProviderCount { get; set; } = 48;
 
     private AllProviders? AllProviders { get; set; }
+    private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
 
     public IEnumerable<ProviderModel> GetFilteredProviders(MediaType? mediaType, DeliveryModel? deliveryModel, string? content) => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
         p.regions.Any(a => a == Settings.Region) &
@@ -74,6 +77,9 @@
             base.OnInitialized();
 
             RefreshCore.RegionChanged = new EventCallbackFactory().Create(this, (Region value) => Settings.Region = value);
+
+            wishList = await Http.WishList_Get(StorageService.Session);
+            watchedList = await Http.WatchedList_Get(StorageService.Session);
 
             await LoadProviders();
         }
@@ -97,6 +103,10 @@
             {
                 x.Add(x => x.provider, item);
                 x.Add(x => x.mediaType, type);
+                x.Add(x => x.WishList, wishList);
+                x.Add(x => x.WatchedList, watchedList);
+                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
+                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
             },
             new ModalInstanceOptions()
                 {

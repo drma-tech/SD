@@ -1,5 +1,4 @@
 ﻿using SD.Shared.Core;
-using SD.Shared.Modal.Enum;
 
 namespace SD.Shared.Model
 {
@@ -9,7 +8,8 @@ namespace SD.Shared.Model
         {
         }
 
-        public List<WatchedListItem> Items { get; set; } = new();
+        public List<string> Movies { get; set; } = new();
+        public List<string> Shows { get; set; } = new();
 
         public override void SetIds(string? IdLoggedUser)
         {
@@ -18,13 +18,5 @@ namespace SD.Shared.Model
             SetId(IdLoggedUser);
             SetPartitionKey(IdLoggedUser);
         }
-    }
-
-    public class WatchedListItem
-    {
-        public string? id { get; set; }
-        //public string? name { get; set; }
-        //public string? logo { get; set; }
-        public MediaType type { get; set; }
     }
 }

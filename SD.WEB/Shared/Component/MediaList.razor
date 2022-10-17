@@ -53,19 +53,21 @@
                         }
                         else
                         {
-                            var watched = watchedList?.Items.Any(a => a.id == item.tmdb_id & a.type == item.MediaType) ?? false;
-                            if (watched)
+                            var watchedMovie = WatchedList?.Movies.Any(a => a == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
+                            var watchedShow = WatchedList?.Shows.Any(a => a == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
+                            if (watchedMovie | watchedShow)
                             {
                                 <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x4"
                                     Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.7;"></Blazorise.Icon>
                             }
-                            var wished = wishList?.Items.Any(a => a.id == item.tmdb_id & a.type == item.MediaType) ?? false;
-                            if (wished)
+                            var wishedMovie = WishList?.Movies.Any(a => a.id == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
+                            var wishedShow = WishList?.Shows.Any(a => a.id == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
+                            if (wishedMovie | wishedShow)
                             {
                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
                                     Style="position: absolute; bottom: 3px; right: 3px; opacity: 0.8;"></Blazorise.Icon>
                             }
-                            <CardImage Source="@(item.poster_small)" Alt="@item.title" Style=@($"cursor: pointer; {(watched?"opacity: 0.3":"")}")></CardImage>
+                            <CardImage Source="@(item.poster_small)" Alt="@item.title" Style=@($"cursor: pointer; {(watchedMovie | watchedShow?"opacity: 0.3":"")}")></CardImage>
                         }
                     </Blazorise.Link>
                     @if (!string.IsNullOrEmpty(item.comments))
@@ -109,17 +111,33 @@
     [Parameter] public EventCallback<MediaType> TypeSelectedChanged { get; set; }
     [Parameter] public bool ShowFilter { get; set; } = false;
 
-    private WishList? wishList { get; set; }
-    private WatchedList? watchedList { get; set; }
+    [Parameter] public WishList? WishList { get; set; }
+    [Parameter] public WatchedList? WatchedList { get; set; }
+    [Parameter] public EventCallback<WishList> WishListChanged { get; set; }
+    [Parameter] public EventCallback<WatchedList> WatchedListChanged { get; set; }
 
     public string GetCustomStyle => "col-xl col-md-2 col-4";
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
+       try
+        {
+            await base.OnInitializedAsync();
 
-        wishList = await Http.WishList_Get(StorageService.Session);
-        watchedList = await Http.WatchedList_Get(StorageService.Session);
+            //if (!string.IsNullOrEmpty(list_id) && !NextPage.HasDelegate) throw new ArgumentNullException(nameof(NextPage));
+            //if (NextPage.HasDelegate && string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
+            if (string.IsNullOrEmpty(CardHeader)) throw new ArgumentNullException(nameof(CardHeader));
+            if (maxItens == 0) throw new ArgumentNullException(nameof(maxItens));
+            if (ShowFilter && !TypeSelectedChanged.HasDelegate) throw new ArgumentNullException(nameof(TypeSelectedChanged));
+            if (WishList == null) throw new ArgumentNullException(nameof(WishList));
+            if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
+            if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
+            if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 
     private async Task OpenPopupMedia(MediaDetail? media)
@@ -142,6 +160,12 @@
                 x.Add(x => x.tmdb_id, tmdb_id);
                 x.Add(x => x.type, media?.MediaType);
                 x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
+                x.Add(x => x.WishList, WishList);
+                x.Add(x => x.WatchedList, WatchedList);
+                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this,
+                    async (WishList value) => { WishList = value; await WishListChanged.InvokeAsync(value); }));
+                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this,
+                    async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); }));
             },
             new ModalInstanceOptions()
                 {
@@ -164,6 +188,12 @@
                 x.Add(x => x.IsIMDB, IsIMDB);
                 x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
                 x.Add(x => x.DisableLoadMore, DisableLoadMore);
+                x.Add(x => x.WishList, WishList);
+                x.Add(x => x.WatchedList, WatchedList);
+                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this,
+                    async (WishList value) => { WishList = value; await WishListChanged.InvokeAsync(value); }));
+                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this,
+                    async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); }));
             },
             new ModalInstanceOptions()
                 {
