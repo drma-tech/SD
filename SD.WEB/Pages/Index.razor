@@ -15,7 +15,7 @@
                 {
                     <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                         <Card>
-                            <CardImage Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Alt="@item.name"
+                            <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name"
                                    onclick="@(()=>ShowProviderPopup(item))" Style="cursor: pointer;"></CardImage>
                         </Card>
                     </Column>
@@ -41,7 +41,7 @@
                 {
                     <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                         <Card>
-                            <CardImage Source="@(item.logo_path)" Alt="@item.name"
+                            <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name"
                                    onclick="@(async()=>await ShowMediaPopup(item))" Style="cursor: pointer;"></CardImage>
                         </Card>
                     </Column>
@@ -108,7 +108,7 @@
             {
                 x.Add(x => x.ServiceDetail, new Services.TMDB.MediaDetailService());
                 x.Add(x => x.tmdb_id, item.id);
-                x.Add(x => x.type, item.MediaType);
+                x.Add(x => x.type, item.type);
             },
             new ModalInstanceOptions()
                 {

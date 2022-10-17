@@ -11,7 +11,7 @@
     <CustomVisibility Loading="@Loading" NoData="(media == null)">
         <Row HorizontalGutter="8" VerticalGutter="8">
             <Column ColumnSize="ColumnSize.Is12.OnMobile.Is4.OnDesktop">
-                @if (string.IsNullOrEmpty(media?.poster_path_large))
+                @if (string.IsNullOrEmpty(media?.poster_large))
                 {
                     <CardImage Source="nopicture.jpg" Alt="@media?.title"></CardImage>
                 }
@@ -38,7 +38,7 @@
                         {
                             <Badge Color="Color.Danger" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
                         }
-                        <Image Source="@media?.poster_path_large" Text="@media?.title" Style="width: 100%;"></Image>
+                        <Image Source="@media?.poster_large" Text="@media?.title" Style="width: 100%;"></Image>
                     </Div>
                 }
             </Column>
@@ -112,7 +112,7 @@
                                             {
                                                 <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                                                     <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                        <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
                                                         @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.FREE))
                                                         {
                                                             <span>false</span>
@@ -136,7 +136,7 @@
                                             {
                                                 <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                                                     <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                        <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
                                                         @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.AVOD))
                                                         {
                                                             <span>false</span>
@@ -160,7 +160,7 @@
                                             {
                                                 <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                                                     <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                        <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
                                                         @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.SVOD))
                                                         {
                                                             <span>false</span>
@@ -184,7 +184,7 @@
                                             {
                                                 <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                                                     <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                        <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
                                                         @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.PVOD))
                                                         {
                                                             <span>false</span>
@@ -208,7 +208,7 @@
                                             {
                                                 <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                                                     <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                        <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
                                                         @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
                                                         {
                                                             <span>false</span>
@@ -232,7 +232,7 @@
                                             {
                                                 <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                                                     <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                        <Image Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
                                                         @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
                                                         {
                                                             <span>false</span>
@@ -464,8 +464,8 @@
                 {
                     id = media?.tmdb_id,
                     name = media?.title,
-                    logo_path = media?.poster_path_small,
-                    MediaType = media?.MediaType ?? MediaType.movie
+                    logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""),
+                    type = media?.MediaType ?? MediaType.movie
                 });
 
             await Http.WishList_Post(wishList, StorageService.Session);
@@ -518,8 +518,8 @@
                 {
                     id = media?.tmdb_id,
                     //name = media?.title,
-                    //logo_path = media?.poster_path_small,
-                    MediaType = media?.MediaType ?? MediaType.movie
+                    //logo = media?.poster_path_small,
+                    type = media?.MediaType ?? MediaType.movie
                 });
 
             await Http.WatchedList_Post(watchedList, StorageService.Session);
@@ -544,7 +544,7 @@
                     };
             }
 
-            watchedList.Items.Remove(watchedList.Items.First(f => f.id == media?.tmdb_id & f.MediaType == media?.MediaType));
+            watchedList.Items.Remove(watchedList.Items.First(f => f.id == media?.tmdb_id & f.type == media?.MediaType));
 
             await Http.WatchedList_Post(watchedList, StorageService.Session);
 

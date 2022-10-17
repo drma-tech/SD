@@ -24,7 +24,7 @@ namespace SD.Shared.Model
     {
         public string? id { get; set; }
         //public string? name { get; set; }
-        //public string? logo_path { get; set; }
-        public MediaType MediaType { get; set; }
+        //public string? logo { get; set; }
+        public MediaType type { get; set; }
     }
 }

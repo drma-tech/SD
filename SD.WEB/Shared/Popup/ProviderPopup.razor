@@ -20,7 +20,7 @@
                     <Column ColumnSize="ColumnSize.IsAuto">
                         @if (!string.IsNullOrEmpty(provider?.logo_path))
                         {
-                            <Image Source="@("https://www.themoviedb.org/t/p/original/" + provider.logo_path)" Text="@provider.name"></Image>
+                            <Image Source="@(TmdbOptions.OriginalPosterPath + provider.logo_path)" Text="@provider.name"></Image>
                         }
                     </Column>
                     <Column>
@@ -208,7 +208,7 @@
                     };
             }
 
-            if (provider != null) myProviders.Items.Add(new MyProvidersItem() { id = provider.id, name = provider.name, logo_path = provider.logo_path });
+            if (provider != null) myProviders.Items.Add(new MyProvidersItem() { id = provider.id, name = provider.name, logo = provider.logo_path });
 
             await Http.MyProviders_Post(myProviders, StorageService.Session);
 

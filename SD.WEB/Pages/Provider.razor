@@ -19,7 +19,7 @@
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                 <Card>
-                    <CardImage Source="@("https://www.themoviedb.org/t/p/original/" + item.logo_path)" Alt="@item.name"
+                    <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name"
                            onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;"></CardImage>
                 </Card>
                 @*@if (string.IsNullOrEmpty(item.link))

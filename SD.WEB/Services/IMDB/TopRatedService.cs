@@ -32,7 +32,7 @@ namespace SD.WEB.Services.IMDB
                         title = item.Title,
                         //plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
                         release_date = new DateTime(int.Parse(item.Year ?? "0"), 1, 1),
-                        poster_path_small = ImdbOptions.ResizeImage + item.Image,
+                        poster_small = ImdbOptions.ResizeImage + item.Image,
                         rating = string.IsNullOrEmpty(item.IMDbRating) ? 0 : double.Parse(item.IMDbRating, CultureInfo.InvariantCulture),
                         MediaType = MediaType.movie
                     });
@@ -54,7 +54,7 @@ namespace SD.WEB.Services.IMDB
                         title = item.Title,
                         //plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
                         release_date = new DateTime(int.Parse(item.Year ?? "0"), 1, 1),
-                        poster_path_small = ImdbOptions.ResizeImage + item.Image,
+                        poster_small = ImdbOptions.ResizeImage + item.Image,
                         rating = string.IsNullOrEmpty(item.IMDbRating) ? 0 : double.Parse(item.IMDbRating, CultureInfo.InvariantCulture),
                         MediaType = MediaType.tv
                     });

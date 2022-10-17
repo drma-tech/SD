@@ -12,6 +12,7 @@
         public const string ApiKey = "745ee705ec04f3be69ba3e449609f430";
         public const string SmallPosterPath = "https://www.themoviedb.org/t/p/w300/";
         public const string LargePosterPath = "https://www.themoviedb.org/t/p/w154/";
+        public const string OriginalPosterPath = "https://www.themoviedb.org/t/p/original/";
     }
 
     /// <summary>

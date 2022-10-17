@@ -42,8 +42,8 @@ namespace SD.WEB.Services.TMDB
                     title = tv ? item.name : item.title,
                     plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
                     release_date = tv ? item.first_air_date?.GetDate() : item.release_date?.GetDate(),
-                    poster_path_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
-                    poster_path_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
+                    poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
+                    poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
                     rating = item.vote_count > 10 ? item.vote_average : 0,
                     MediaType = tv ? MediaType.tv : MediaType.movie,
                     comments = value.GetString()

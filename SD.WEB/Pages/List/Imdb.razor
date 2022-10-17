@@ -39,6 +39,8 @@
         ListPopular = new();
 
         await LoadPopular(mediaType);
+
+        if (ListPopular.Count < 10) await LoadPopular(popularMedia);
     }
 
     private async Task ChangeTopRatedMediaType(MediaType mediaType)
@@ -48,6 +50,8 @@
         ListTopRated = new();
 
         await LoadTopRated(mediaType);
+
+        if (ListTopRated.Count < 10) await LoadTopRated();
     }
 
     private async Task LoadPopular(MediaType mediaType)

@@ -36,7 +36,7 @@
                             {
                                 <Badge Color="Color.Danger" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px;">@item.rating</Badge>
                             }
-                            @if (string.IsNullOrEmpty(item.poster_path_small))
+                            @if (string.IsNullOrEmpty(item.poster_small))
                             {
                                 <CardImage Source="nopicture.jpg" Alt="@item.title" Style="cursor: pointer;"></CardImage>
 
@@ -46,13 +46,19 @@
                             }
                             else
                             {
-                                var watched = watchedList?.Items.Any(a => a.id == item.tmdb_id & a.MediaType == item.MediaType) ?? false;
+                                var watched = watchedList?.Items.Any(a => a.id == item.tmdb_id & a.type == item.MediaType) ?? false;
                                 if (watched)
                                 {
                                     <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x4"
-                                        Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.7"></Blazorise.Icon>
+                                        Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.7;"></Blazorise.Icon>
                                 }
-                                <CardImage Source="@(item.poster_path_small)" Alt="@item.title" Style=@($"cursor: pointer; {(watched?"opacity: 0.3":"")}")></CardImage>
+                                var wished = wishList?.Items.Any(a => a.id == item.tmdb_id & a.type == item.MediaType) ?? false;
+                                if (wished)
+                                {
+                                    <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
+                                        Style="position: absolute; bottom: 3px; right: 3px; opacity: 0.8;"></Blazorise.Icon>
+                                }
+                                <CardImage Source="@(item.poster_small)" Alt="@item.title" Style=@($"cursor: pointer; {(watched?"opacity: 0.3":"")}")></CardImage>
                             }
                         </Blazorise.Link>
                         @if (!string.IsNullOrEmpty(item.comments))
@@ -98,6 +104,7 @@
     [Parameter] public bool ShowOnlyYear { get; set; } = true;
     [Parameter] public bool DisableLoadMore { get; set; } = false;
 
+    private WishList? wishList { get; set; }
     private WatchedList? watchedList { get; set; }
 
     private string GetCustomStyle => "col-xl col-md-2 col-4";
@@ -107,6 +114,7 @@
     {
         await base.OnInitializedAsync();
 
+        wishList = await Http.WishList_Get(StorageService.Session);
         watchedList = await Http.WatchedList_Get(StorageService.Session);
     }
 
