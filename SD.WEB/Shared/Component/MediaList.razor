@@ -129,8 +129,8 @@
             if (string.IsNullOrEmpty(CardHeader)) throw new ArgumentNullException(nameof(CardHeader));
             if (maxItens == 0) throw new ArgumentNullException(nameof(maxItens));
             if (ShowFilter && !TypeSelectedChanged.HasDelegate) throw new ArgumentNullException(nameof(TypeSelectedChanged));
-            if (WishList == null) throw new ArgumentNullException(nameof(WishList));
-            if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
+            //if (WishList == null) throw new ArgumentNullException(nameof(WishList));
+            //if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
             if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
             if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
         }

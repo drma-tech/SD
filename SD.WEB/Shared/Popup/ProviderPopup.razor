@@ -147,8 +147,8 @@
         try
         {
             if (provider == null) throw new ArgumentNullException(nameof(provider));
-            if (WishList == null) throw new ArgumentNullException(nameof(WishList));
-            if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
+            //if (WishList == null) throw new ArgumentNullException(nameof(WishList));
+            //if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
             if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
             if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
 

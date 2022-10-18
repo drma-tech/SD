@@ -352,8 +352,8 @@
             if (ServiceDetail == null) throw new ArgumentNullException(nameof(ServiceDetail));
             if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
             if (type == null) throw new ArgumentNullException(nameof(type));
-            if (WishList == null) throw new ArgumentNullException(nameof(WishList));
-            if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
+            //if (WishList == null) throw new ArgumentNullException(nameof(WishList));
+            //if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
             if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
             if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
 
