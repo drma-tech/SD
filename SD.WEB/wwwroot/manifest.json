@@ -7,7 +7,10 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#03173d",
+  "dir": "ltr",
+  "orientation": "any",
   "prefer_related_applications": false,
+  "iarc_rating_id": "2673f916-2fd7-4be8-8523-88d7588cc444",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -34,7 +37,7 @@
     "entertainment",
     "lifestyle",
     "social"
-  ],  
+  ],
   "related_applications": [
     {
       "platform": "play",

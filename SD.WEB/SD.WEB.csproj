@@ -28,12 +28,11 @@
 		<PackageReference Include="Blazorise.Components" Version="1.1.1" />
 		<PackageReference Include="Blazorise.DataGrid" Version="1.1.1" />
 		<PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.1.1" />
-		<PackageReference Include="Blazorise.Snackbar" Version="1.1.1" />
 		<PackageReference Include="BlazorPro.BlazorSize" Version="6.1.2" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.9" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.9" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.9" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.10" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
 		<PackageReference Include="Toolbelt.Blazor.PWA.Updater" Version="2.1.0" />
 	</ItemGroup>
