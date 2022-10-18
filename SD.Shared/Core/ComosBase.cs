@@ -6,7 +6,9 @@
         Provider = 2,
         MyProvider = 3,
         WishList = 4,
-        WatchedList = 5
+        WatchedList = 5,
+        Ticket = 6,
+        TicketVote = 7,
     }
 
     public abstract class CosmosBase
