@@ -485,7 +485,8 @@
                     {
                         id = media?.tmdb_id,
                         name = media?.title,
-                        logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, "")
+                        logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""),
+                        runtime = media?.runtime
                     });
             }
             else if (media != null && media.MediaType == MediaType.tv)
@@ -494,7 +495,8 @@
                     {
                         id = media?.tmdb_id,
                         name = media?.title,
-                        logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, "")
+                        logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""),
+                        runtime = media?.runtime
                     });
             }
 

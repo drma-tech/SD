@@ -73,13 +73,13 @@
                             </CardBody>
                         }
                         <CardBody Padding="Padding.Is1">
-                            @if (WishList?.Movies.Any(a => a.id == item?.tmdb_id) ?? false)
+                            @if (WishList?.Movies.Any(a => a.id == item?.tmdb_id && item?.MediaType == MediaType.movie) ?? false)
                             {
                                 <Button Color="Color.Danger" Clicked="@(()=>Remove(item))" Margin="Margin.Is1.FromEnd" Size="Size.ExtraSmall" Style="min-width: 31.5px" title="Lista de Interesses">
                                     <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon>
                                 </Button>
                             }
-                            else if (WishList?.Shows.Any(a => a.id == item?.tmdb_id) ?? false)
+                            else if (WishList?.Shows.Any(a => a.id == item?.tmdb_id && item?.MediaType == MediaType.tv) ?? false)
                             {
                                 <Button Color="Color.Danger" Clicked="@(()=>Remove(item))" Margin="Margin.Is1.FromEnd" Size="Size.ExtraSmall" Style="min-width: 31.5px" title="Lista de Interesses">
                                     <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon>
@@ -91,13 +91,13 @@
                                     <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon>
                                 </Button>
                             }
-                            @if (WatchedList?.Movies.Any(a => a == item?.tmdb_id) ?? false)
+                            @if (WatchedList?.Movies.Any(a => a == item?.tmdb_id && item?.MediaType == MediaType.movie) ?? false)
                             {
                                 <Button Color="Color.Danger" Clicked="@(()=>NotWatched(item))" Margin="Margin.Is1.FromEnd" Size="Size.ExtraSmall" title="Assistido">
                                     <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon>
                                 </Button>
                             }
-                            else if (WatchedList?.Shows.Any(a => a == item?.tmdb_id) ?? false)
+                            else if (WatchedList?.Shows.Any(a => a == item?.tmdb_id && item?.MediaType == MediaType.tv) ?? false)
                             {
                                 <Button Color="Color.Danger" Clicked="@(()=>NotWatched(item))" Margin="Margin.Is1.FromEnd" Size="Size.ExtraSmall" title="Assistido">
                                     <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon>
@@ -251,7 +251,8 @@
                     {
                         id = media?.tmdb_id,
                         name = media?.title,
-                        logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, "")
+                        logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""),
+                        runtime = media?.runtime
                     });
             }
             else if (media != null && media.MediaType == MediaType.tv)
@@ -260,7 +261,8 @@
                     {
                         id = media?.tmdb_id,
                         name = media?.title,
-                        logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, "")
+                        logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""),
+                        runtime = media?.runtime
                     });
             }
 

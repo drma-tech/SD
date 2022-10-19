@@ -1,5 +1,4 @@
 ﻿using SD.Shared.Core;
-using SD.Shared.Modal.Enum;
 
 namespace SD.Shared.Model
 {
@@ -26,5 +25,6 @@ namespace SD.Shared.Model
         public string? id { get; set; }
         public string? name { get; set; }
         public string? logo { get; set; }
+        public int? runtime { get; set; }
     }
 }
