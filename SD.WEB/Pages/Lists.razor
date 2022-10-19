@@ -56,11 +56,11 @@
         public string? link { get; set; }
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         try
         {
-            base.OnInitialized();
+            await base.OnInitializedAsync();
 
             Premiacoes.Add(new Item() { id = 1, name = "Oscar", logo_path = "logo/oscar.png", link = "/List/Oscar" });
             Premiacoes.Add(new Item() { id = 1, name = "Golden Globe", logo_path = "logo/goldenglobes.png", link = "/List/GoldenGlobes" });

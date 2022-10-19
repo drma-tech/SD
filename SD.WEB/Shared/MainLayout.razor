@@ -31,6 +31,9 @@
                         <Button Color="GetColor(TypeButton.Lists)" To="/List" Type="ButtonType.Link" title="Lists" Class="py-1 px-2">
                             <BarIcon IconName="FontAwesomeIcons.List" />
                         </Button>
+                        <Button Color="GetColor(TypeButton.Support)" To="/Support" Type="ButtonType.Link" title="Support" Class="py-1 px-2">
+                            <BarIcon IconName="FontAwesomeIcons.Bug" />
+                        </Button>
                     </BarBrand>
                 </Bar>
             </LayoutFooter>
@@ -44,7 +47,7 @@
 @code {
     private enum TypeButton
     {
-        Home, Providers, Lists
+        Home, Providers, Lists, Support
     }
 
     private TypeButton CurrentButton;

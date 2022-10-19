@@ -72,6 +72,44 @@
                                 }
                             </CardBody>
                         }
+                        <CardBody Padding="Padding.Is1">
+                            @if (WishList?.Movies.Any(a => a.id == item?.tmdb_id) ?? false)
+                            {
+                                <Button Color="Color.Danger" Clicked="@(()=>Remove(item))" Margin="Margin.Is1.FromEnd" Size="Size.ExtraSmall" Style="min-width: 31.5px" title="Lista de Interesses">
+                                    <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon>
+                                </Button>
+                            }
+                            else if (WishList?.Shows.Any(a => a.id == item?.tmdb_id) ?? false)
+                            {
+                                <Button Color="Color.Danger" Clicked="@(()=>Remove(item))" Margin="Margin.Is1.FromEnd" Size="Size.ExtraSmall" Style="min-width: 31.5px" title="Lista de Interesses">
+                                    <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon>
+                                </Button>
+                            }
+                            else
+                            {
+                                <Button Color="Color.Primary" Clicked="@(()=>Add(item))" Margin="Margin.Is1.FromEnd" Size="Size.ExtraSmall" Style="min-width: 31.5px" title="Lista de Interesses">
+                                    <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon>
+                                </Button>
+                            }
+                            @if (WatchedList?.Movies.Any(a => a == item?.tmdb_id) ?? false)
+                            {
+                                <Button Color="Color.Danger" Clicked="@(()=>NotWatched(item))" Margin="Margin.Is1.FromEnd" Size="Size.ExtraSmall" title="Assistido">
+                                    <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon>
+                                </Button>
+                            }
+                            else if (WatchedList?.Shows.Any(a => a == item?.tmdb_id) ?? false)
+                            {
+                                <Button Color="Color.Danger" Clicked="@(()=>NotWatched(item))" Margin="Margin.Is1.FromEnd" Size="Size.ExtraSmall" title="Assistido">
+                                    <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon>
+                                </Button>
+                            }
+                            else
+                            {
+                                <Button Color="Color.Primary" Clicked="@(()=>Watched(item))" Margin="Margin.Is1.FromEnd" Size="Size.ExtraSmall" title="Assistido">
+                                    <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon>
+                                </Button>
+                            }
+                        </CardBody>
                     </Card>
                 </Column>
                 if ((i % 10) == 0)
@@ -193,5 +231,143 @@
         if (string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
 
         return new Dictionary<string, string>() { { "list_id", list_id } };
+    }
+
+    private async Task Add(MediaDetail? media)
+    {
+        try
+        {
+            if (WishList == null)
+            {
+                WishList = new WishList
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+            }
+
+            if (media != null && media.MediaType == MediaType.movie)
+            {
+                WishList.Movies.Add(new WishListItem()
+                    {
+                        id = media?.tmdb_id,
+                        name = media?.title,
+                        logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, "")
+                    });
+            }
+            else if (media != null && media.MediaType == MediaType.tv)
+            {
+                WishList.Shows.Add(new WishListItem()
+                    {
+                        id = media?.tmdb_id,
+                        name = media?.title,
+                        logo = media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, "")
+                    });
+            }
+
+            await Http.WishList_Post(WishList, StorageService.Session);
+            await WishListChanged.InvokeAsync(WishList);
+
+            await Toast.Success("Media favoritado com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private async Task Remove(MediaDetail? media)
+    {
+        try
+        {
+            if (WishList == null)
+            {
+                WishList = new WishList
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+            }
+
+            if (media != null && media.MediaType == MediaType.movie)
+            {
+                WishList.Movies.Remove(WishList.Movies.First(f => f.id == media?.tmdb_id));
+            }
+            else if (media != null && media.MediaType == MediaType.tv)
+            {
+                WishList.Shows.Remove(WishList.Shows.First(f => f.id == media?.tmdb_id));
+            }
+
+            await Http.WishList_Post(WishList, StorageService.Session);
+            await WishListChanged.InvokeAsync(WishList);
+
+            await Toast.Success("Media removida com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private async Task Watched(MediaDetail? media)
+    {
+        try
+        {
+            if (WatchedList == null)
+            {
+                WatchedList = new WatchedList
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+            }
+
+            if (media != null && media.MediaType == MediaType.movie && !string.IsNullOrEmpty(media.tmdb_id))
+            {
+                WatchedList.Movies.Add(media.tmdb_id);
+            }
+            else if (media != null && media.MediaType == MediaType.tv && !string.IsNullOrEmpty(media.tmdb_id))
+            {
+                WatchedList.Shows.Add(media.tmdb_id);
+            }
+
+            await Http.WatchedList_Post(WatchedList, StorageService.Session);
+            await WatchedListChanged.InvokeAsync(WatchedList);
+
+            await Toast.Success("Operação efetuada com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private async Task NotWatched(MediaDetail? media)
+    {
+        try
+        {
+            if (WatchedList == null)
+            {
+                WatchedList = new WatchedList
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+            }
+
+            if (media != null && media.MediaType == MediaType.movie)
+            {
+                WatchedList.Movies.Remove(WatchedList.Movies.First(f => f == media?.tmdb_id & MediaType.movie == media?.MediaType));
+            }
+            else if (media != null && media.MediaType == MediaType.tv)
+            {
+                WatchedList.Shows.Remove(WatchedList.Shows.First(f => f == media?.tmdb_id & MediaType.tv == media?.MediaType));
+            }
+
+            await Http.WatchedList_Post(WatchedList, StorageService.Session);
+            await WatchedListChanged.InvokeAsync(WatchedList);
+
+            await Toast.Success("Operação efetuada com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 }

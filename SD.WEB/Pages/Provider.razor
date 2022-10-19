@@ -75,24 +75,19 @@
     {
         try
         {
-            base.OnInitialized();
+            await base.OnInitializedAsync();
 
             RefreshCore.RegionChanged = new EventCallbackFactory().Create(this, (Region value) => Settings.Region = value);
 
             wishList = await Http.WishList_Get(StorageService.Session);
             watchedList = await Http.WatchedList_Get(StorageService.Session);
 
-            await LoadProviders();
+            AllProviders = await Http.Provider_GetAll(StorageService.Session);
         }
         catch (Exception ex)
         {
             ex.ProcessException(Toast, Logger);
         }
-    }
-
-    private async Task LoadProviders()
-    {
-        AllProviders = await Http.Provider_GetAll(StorageService.Session);
     }
 
     private async Task ShowPopupProvider(ProviderModel item)
