@@ -1,6 +1,6 @@
 ﻿@page "/"
 @page "/Index"
-<PageTitle>Streaming Discovery</PageTitle>
+<PageTitle>SD - Streaming Discovery</PageTitle>
 @inherits ComponenteCore<Index>
 @using SD.Shared.Model
 @using System.Text.Json
@@ -16,7 +16,7 @@
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                 <Card>
-                    <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name"
+                    <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" title="@item.name"
                            onclick="@(()=>ShowProviderPopup(item))" Style="cursor: pointer;"></CardImage>
                 </Card>
             </Column>
@@ -36,7 +36,7 @@
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                 <Card>
                     <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
-                    <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name"
+                    <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
                            onclick="@(async()=>await ShowMediaPopup(item, MediaType.movie))" Style="cursor: pointer;"></CardImage>
                 </Card>
             </Column>
@@ -56,7 +56,7 @@
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                 <Card>
                     <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
-                    <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name"
+                    <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
                            onclick="@(async()=>await ShowMediaPopup(item, MediaType.tv))" Style="cursor: pointer;"></CardImage>
                 </Card>
             </Column>
@@ -89,15 +89,21 @@
 
             await base.OnInitializedAsync();
 
-            wishList = await Http.WishList_Get(StorageService.Session);
-            watchedList = await Http.WatchedList_Get(StorageService.Session);
+            if (Fake)
+            {
+                await GenerateFakeData();
+            }
+            else
+            {
+                wishList = await Http.WishList_Get(StorageService.Session);
+                watchedList = await Http.WatchedList_Get(StorageService.Session);
 
-            myProviders = await Http.MyProviders_Get(StorageService.Session);
+                myProviders = await Http.MyProviders_Get(StorageService.Session);
+            }
+
             allProviders = await Http.Provider_GetAll(StorageService.Session);
 
             loading = false;
-
-            if (Fake) await GenerateFakeData();
         }
         catch (Exception ex)
         {

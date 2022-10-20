@@ -46,12 +46,12 @@
         <BarMenu Style="flex-basis: unset !important;">
             <AuthorizeView>
                 <Authorized>
-                    <Button Color="Color.Danger" Type="ButtonType.Link" To="/.auth/logout" Float="Float.End" Size="Size.ExtraSmall">
+                    <Button Color="Color.Danger" Type="ButtonType.Link" To="/.auth/logout" title="Logout" Float="Float.End" Size="Size.ExtraSmall">
                         <Blazorise.Icon Name="FontAwesomeIcons.SignOutAlt" /> Sair
                     </Button>
                 </Authorized>
                 <NotAuthorized>
-                    <Button Color="Color.Primary" Type="ButtonType.Link" To="/login-providers" Float="Float.End" Size="Size.ExtraSmall">
+                    <Button Color="Color.Primary" Type="ButtonType.Link" To="/login-providers" title="Login" Float="Float.End" Size="Size.ExtraSmall">
                         <Blazorise.Icon Name="FontAwesomeIcons.SignInAlt" /> Entrar
                     </Button>
                 </NotAuthorized>
