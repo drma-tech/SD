@@ -3,14 +3,26 @@
   "short_name": "Streaming Discovery",
   "description": "Descubra os melhores streamings, filmes e seriados mais populares do momento ou os mais premiados (oscar, globo de ouro, emmys, etc)",
   "lang": "pt-BR",
-  "start_url": "./",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#03173d",
   "dir": "ltr",
   "orientation": "any",
-  "prefer_related_applications": false,
   "iarc_rating_id": "2673f916-2fd7-4be8-8523-88d7588cc444",
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa",
+      "id": "com.streamingdiscovery.www.twa"
+    }
+  ],
+  "categories": [
+    "entertainment",
+    "lifestyle",
+    "social"
+  ],
   "icons": [
     {
       "src": "/icon-192.png",
@@ -31,23 +43,6 @@
       "src": "/icon-192.png",
       "type": "image/png",
       "sizes": "192x192"
-    }
-  ],
-  "categories": [
-    "entertainment",
-    "lifestyle",
-    "social"
-  ],
-  "related_applications": [
-    {
-      "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.justwatch.justwatch",
-      "id": "com.justwatch.justwatch"
-    },
-    {
-      "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.imdb.mobile",
-      "id": "com.imdb.mobile"
     }
   ],
   "screenshots": [
