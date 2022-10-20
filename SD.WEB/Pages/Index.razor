@@ -88,8 +88,7 @@
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
-
-    //test for generate images
+    
     [Parameter]
     [SupplyParameterFromQuery(Name = "Fake")]
     public bool Fake { get; set; } = false;
@@ -110,7 +109,7 @@
 
             await base.OnInitializedAsync();
 
-            if (Fake)
+            if (Fake) //test for generate images
             {
                 await GenerateFakeData();
             }
