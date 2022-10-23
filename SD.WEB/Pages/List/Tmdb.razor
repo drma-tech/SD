@@ -11,7 +11,7 @@
            TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
            WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
-<MediaList CardHeader="@($"{TranslationText.TopRated} ({Settings.Region})")" Items="@ListTopRated" maxItens="50" NextPage="@(()=>LoadTopRated())" DisableLoadMore="TopRatedDisable"
+<MediaList CardHeader="@($"{TranslationText.TopRated} ({Settings.Region})")" Items="@ListTopRated" maxItens="50" NextPage="@(()=>LoadTopRated(topRatedMedia))" DisableLoadMore="TopRatedDisable"
            TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
            WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
@@ -46,11 +46,11 @@
         RefreshCore.RegionChanged = new EventCallbackFactory().Create(this, async (Region value) => { await ChangeRegion(); });
 
         await LoadPopular(popularMedia);
-        await LoadTopRated();
+        await LoadTopRated(topRatedMedia);
         await LoadUpcoming();
 
         if (ListPopular.Count < 10) await LoadPopular(popularMedia);
-        if (ListTopRated.Count < 10) await LoadTopRated();
+        if (ListTopRated.Count < 10) await LoadTopRated(topRatedMedia);
 
         wishList = await Http.WishList_Get(StorageService.Session);
         watchedList = await Http.WatchedList_Get(StorageService.Session);
@@ -64,10 +64,10 @@
         ListTopRated = new();
         ListUpcoming = new();
 
-        await LoadTopRated();
+        await LoadTopRated(topRatedMedia);
         await LoadUpcoming();
 
-        if (ListTopRated.Count < 10) await LoadTopRated();
+        if (ListTopRated.Count < 10) await LoadTopRated(topRatedMedia);
     }
 
     private async Task ChangePopularMediaType(MediaType mediaType)
@@ -93,7 +93,7 @@
 
         await LoadTopRated(mediaType);
 
-        if (ListTopRated.Count < 10) await LoadTopRated();
+        if (ListTopRated.Count < 10) await LoadTopRated(mediaType);
     }
 
     private async Task LoadPopular(MediaType mediaType)
@@ -101,7 +101,7 @@
         PopularDisable = await Http.PopulateTMDBPopular(StorageService, Settings, ListPopular, mediaType, ++popularPage);
     }
 
-    private async Task LoadTopRated(MediaType mediaType = MediaType.movie)
+    private async Task LoadTopRated(MediaType mediaType)
     {
         TopRatedDisable = await Http.PopulateTMDBTopRated(StorageService, Settings, ListTopRated, mediaType, ++topRatedPage);
     }

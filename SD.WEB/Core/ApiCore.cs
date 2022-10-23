@@ -2,6 +2,7 @@
 using Blazored.SessionStorage;
 using SD.Shared.Helper;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 
 namespace SD.WEB.Core
@@ -20,7 +21,7 @@ namespace SD.WEB.Core
             }
         }
 
-        private static JsonSerializerOptions GetOptions()
+        public static JsonSerializerOptions GetOptions()
         {
             return new JsonSerializerOptions();
         }
@@ -89,6 +90,25 @@ namespace SD.WEB.Core
         public static async Task<HttpResponseMessage> Post<T>(this HttpClient http, string requestUri, bool externalLink, T obj, ISyncSessionStorageService? storage = null, string? urlGet = null) where T : class
         {
             var response = await http.PostAsJsonAsync(http.BaseApi(externalLink) + requestUri, obj, GetOptions());
+
+            if (storage != null && !string.IsNullOrWhiteSpace(urlGet) && response.IsSuccessStatusCode)
+            {
+                storage.SetItem(urlGet, await response.ReturnResponse<T>());
+            }
+
+            return response;
+        }
+
+        public static async Task<HttpResponseMessage> PostNew<T>(this HttpClient http, string requestUri, bool externalLink, T obj, ISyncSessionStorageService? storage = null, string? urlGet = null) where T : class
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Post, requestUri);
+
+            request.Headers.Add("authorization", "Bearer <<access_token>>");
+            request.Headers.TryAddWithoutValidation("content-type", "application/json;charset=utf-8");
+            request.Content = new StringContent(JsonSerializer.Serialize(obj), Encoding.UTF8, "application/json");
+
+            var response = await http.SendAsync(request);
+            //var response = await http.PostAsJsonAsync(http.BaseApi(externalLink) + requestUri, obj, GetOptions());
 
             if (storage != null && !string.IsNullOrWhiteSpace(urlGet) && response.IsSuccessStatusCode)
             {

@@ -1,6 +1,8 @@
 ﻿@page "/List/Imdb"
 <PageTitle>SD - Lists - IMDB</PageTitle>
 @inherits ComponenteCore<Imdb>
+@inject Services.TMDB.ListService Service
+@inject Settings Settings
 @using SD.Shared.Model
 @using SD.WEB.Services.IMDB
 
@@ -10,7 +12,7 @@
            TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
            WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
-<MediaList CardHeader="@TranslationText.TopRated" Items="@ListTopRated" maxItens="50" IsIMDB="true" NextPage="@(()=>LoadTopRated())" DisableLoadMore="TopRatedDisable"
+<MediaList CardHeader="Top 250" Items="@ListTopRated" list_id="@(topRatedMedia== MediaType.movie?"8223821":"8223826")" maxItens="250"
            TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
            WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
@@ -25,7 +27,6 @@
     private HashSet<MediaDetail> ListUpcoming { get; set; } = new();
 
     private bool PopularDisable = true;
-    private bool TopRatedDisable = true;
     private bool UpcomingDisable = true;
 
     private MediaType popularMedia = MediaType.movie;
@@ -42,11 +43,10 @@
         watchedList = await Http.WatchedList_Get(StorageService.Session);
 
         await LoadPopular(popularMedia);
-        await LoadTopRated();
+        await LoadTopRated(popularMedia);
         await LoadUpcoming();
 
         if (ListPopular.Count < 10) await LoadPopular(popularMedia);
-        if (ListTopRated.Count < 10) await LoadTopRated();
     }
 
     private async Task ChangePopularMediaType(MediaType mediaType)
@@ -70,8 +70,6 @@
         ListTopRated = new();
 
         await LoadTopRated(mediaType);
-
-        if (ListTopRated.Count < 10) await LoadTopRated();
     }
 
     private async Task LoadPopular(MediaType mediaType)
@@ -79,13 +77,21 @@
         await Http.PopulateIMDBPopular(StorageService, ListPopular, mediaType);
     }
 
-    private async Task LoadTopRated(MediaType mediaType = MediaType.movie)
+    private async Task LoadTopRated(MediaType mediaType)
     {
-        await Http.PopulateIMDBTopRated(StorageService, ListTopRated, mediaType);
+        if (mediaType == MediaType.movie)
+            await Service.PopulateListMedia(Http, StorageService, Settings, ListTopRated, 1, GetExtraParameters("8223821"));
+        else //tv
+            await Service.PopulateListMedia(Http, StorageService, Settings, ListTopRated, 1, GetExtraParameters("8223826"));
     }
 
     private async Task LoadUpcoming()
     {
         await Http.PopulateIMDBUpcoming(StorageService, ListUpcoming, MediaType.movie);
+    }
+
+    private Dictionary<string, string> GetExtraParameters(string list_id)
+    {
+        return new Dictionary<string, string>() { { "list_id", list_id } }; ;
     }
 }
