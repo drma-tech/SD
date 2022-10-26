@@ -26,7 +26,7 @@
             <MemoEdit @bind-Text="@Ticket.Description" Rows="7" MaxLength="512" Placeholder="@CustomAttributeHelper.GetCustomAttribute(()=>Ticket.Description).Prompt"></MemoEdit>
             <ValidationMessage For="@(()=>Ticket.Description)"></ValidationMessage>
         </div>
-        <Button Type="ButtonType.Submit" Color="Color.Primary">Salvar</Button>
+        <Button Type="ButtonType.Submit" Color="Color.Primary" Disabled="!ComponenteUtils.IsAuthenticated">Salvar</Button>
         <Button Clicked="@ModalService.Hide" Color="Color.Secondary">Cancelar</Button>
         <Button Clicked="@ImportLastError" Color="Color.Danger" Float="Float.End" Disabled="(TicketType == TicketType.Improvement)">Importar último erro</Button>
     </EditForm>

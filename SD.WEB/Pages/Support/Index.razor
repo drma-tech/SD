@@ -73,7 +73,7 @@
                     </Addons>
                 </FieldBody>
                 <FieldBody ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
-                    <Button Color="Color.Primary" Block="true" Clicked="ShowModal">
+                    <Button Color="Color.Primary" Block="true" Clicked="ShowModal" Disabled="!ComponenteUtils.IsAuthenticated">
                         <Blazorise.Icon Name="@FontAwesomeIcons.Plus"></Blazorise.Icon> Novo
                     </Button>
                 </FieldBody>

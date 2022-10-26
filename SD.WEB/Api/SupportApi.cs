@@ -8,7 +8,7 @@ namespace SD.WEB.Api
     {
         private struct SupportEndpoint
         {
-            public const string GetList = "Ticket/GetList";
+            public const string GetList = "Public/Ticket/GetList";
             public const string GetMyVotes = "Ticket/GetMyVotes";
 
             public const string Insert = "Ticket/Insert";

@@ -26,7 +26,7 @@ namespace SD.API.Functions
 
         [FunctionName("TicketGetList")]
         public async Task<IActionResult> TicketGetList(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.GET, Route = "Ticket/GetList")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.GET, Route = "Public/Ticket/GetList")] HttpRequest req,
             ILogger log, CancellationToken cancellationToken)
         {
             using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
