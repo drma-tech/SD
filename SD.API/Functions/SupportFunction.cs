@@ -1,4 +1,3 @@
-using Azure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
@@ -7,7 +6,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using SD.API.Core;
 using SD.Shared.Core;
-using SD.Shared.Model;
 using SD.Shared.Model.Support;
 using System;
 using System.Collections.Generic;
