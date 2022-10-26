@@ -1,7 +1,6 @@
 ﻿@page "/Support"
 <PageTitle>SD - Support</PageTitle>
 @using SD.Shared.Model.Support
-@attribute [Authorize]
 @inherits PageCore<Support.Index>
 
 <Alert Color="Color.Secondary" Visible="true">
@@ -223,7 +222,7 @@ else if (SelectedTab == Tabs.Announcements)
         Loading = true;
 
         tickets = await Http.Ticket_GetList();
-        myVotes = await Http.Ticket_GetMyVotes();
+        if (ComponenteUtils.IsAuthenticated) myVotes = await Http.Ticket_GetMyVotes();
 
         Loading = false;
 
@@ -270,6 +269,8 @@ else if (SelectedTab == Tabs.Announcements)
             }
             else
             {
+                if (!ComponenteUtils.IsAuthenticated) throw new InvalidDataException("usuário nao autenticado");
+
                 var vote = new TicketVoteModel();
                 vote.SetKey(IdTicket);
                 vote.VoteType = voteType;
