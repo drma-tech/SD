@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <title>Streaming Discovery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <meta name="description" content="Descubra os melhores streamings, filmes e seriados mais populares do momento ou os mais premiados (oscar, globo de ouro, emmys, etc)">
     <meta name="theme-color" content="#343a40" />
 
@@ -14,12 +14,13 @@
     <meta property="og:url" content="https://www.streamingdiscovery.com/">
 
     <base href="/" />
+    <link rel="canonical" href="https://streamingdiscovery.com/" />
     <meta name="robots" content="index" />
+    <link rel="manifest" href="manifest.json" />
 
-    <link href="css/app.min.css" rel="stylesheet" />
-    <link href="css/custom_app.min.css" rel="stylesheet" />
-    <link href="SD.WEB.styles.css" rel="stylesheet" />
-    <link href="manifest.json" rel="manifest" />
+    <link rel="stylesheet" href="css/app.min.css" />
+    <link rel="stylesheet" href="css/custom_app.min.css" />
+    <link rel="stylesheet" href="SD.WEB.styles.css" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
 
@@ -47,8 +48,8 @@
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
-        <a href="" class="reload" rel="noopener">Reload</a>
-        <a class="dismiss">🗙</a>
+        <a href="#" class="reload" rel="noopener">Reload</a>
+        <a href="#" class="dismiss">🗙</a>
     </div>
 
     <script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
