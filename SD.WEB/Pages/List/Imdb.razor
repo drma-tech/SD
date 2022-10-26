@@ -6,6 +6,8 @@
 @using SD.Shared.Model
 @using SD.WEB.Services.IMDB
 
+@*nova linha aqui*@
+
 <HeadPage ImageSource="logo/imdb.png" Text="@TranslationText.imdb_desc" Link="https://www.imdb.com/"></HeadPage>
 
 <MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" IsIMDB="true" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="PopularDisable"
