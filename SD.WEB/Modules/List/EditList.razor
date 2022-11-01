@@ -1,0 +1,112 @@
+﻿@page "/EditList/{ListId}"
+@inherits PageCore<EditList>
+@inject ListService Service
+@using Blazorise.DataGrid
+@using SD.Shared.Model
+@using SD.WEB.Modules.List.Core.TMDB
+@inject Settings Settings
+
+<DataGrid @ref="DataGrid" TItem="MediaDetail" Data="@List" Filterable="true" Editable="true" EditMode="DataGridEditMode.Form"
+          ShowPager="true" PageSize="10" FilterMethod="DataGridFilterMethod.Contains"
+          RowUpdated="RowUpdated" RowInserted="RowInserted">
+    <DataGridColumns>
+        <DataGridCommandColumn TItem="MediaDetail" Width="140px">
+            <ClearFilterCommandTemplate>
+                <Button Color="Color.Secondary" Clicked="@context.Clicked" Size="Size.Small">
+                    <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
+                </Button>
+            </ClearFilterCommandTemplate>
+            <NewCommandTemplate>
+                <Button Color="Color.Success" Clicked="@context.Clicked" Size="Size.Small">
+                    <Blazorise.Icon Name="FontAwesomeIcons.Plus"></Blazorise.Icon>
+                </Button>
+            </NewCommandTemplate>
+            <EditCommandTemplate>
+                <Button Color="Color.Primary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromEnd">
+                    <Blazorise.Icon Name="FontAwesomeIcons.Edit"></Blazorise.Icon>
+                </Button>
+            </EditCommandTemplate>
+            <SaveCommandTemplate>
+                <Button Color="Color.Primary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromEnd">
+                    <Blazorise.Icon Name="FontAwesomeIcons.Save"></Blazorise.Icon>
+                </Button>
+            </SaveCommandTemplate>
+            <CancelCommandTemplate>
+                <Button Color="Color.Secondary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromEnd">
+                    <Blazorise.Icon Name="FontAwesomeIcons.Ban"></Blazorise.Icon>
+                </Button>
+            </CancelCommandTemplate>
+            <DeleteCommandTemplate>
+                <Button Color="Color.Danger" Clicked="@context.Clicked" Size="Size.Small">
+                    <Blazorise.Icon Name="FontAwesomeIcons.Trash"></Blazorise.Icon>
+                </Button>
+            </DeleteCommandTemplate>
+        </DataGridCommandColumn>
+        <DataGridColumn TItem="MediaDetail" Field="@nameof(MediaDetail.tmdb_id)" Caption="ID" Width="100px" Editable="true">
+            <EditTemplate>
+                <TextEdit Text="@((string)context.CellValue)" TextChanged="@((v) => context.CellValue = v)" Size="Size.Small" Style="width:auto;" />
+            </EditTemplate>
+        </DataGridColumn>
+        <DataGridColumn TItem="MediaDetail" Field="@nameof(MediaDetail.MediaType)" Caption="Type" Width="100px" Editable="true">
+            <EditTemplate>
+                <Select TValue="MediaType?" SelectedValue="@((MediaType?)context.CellValue)" SelectedValueChanged="@((v) => context.CellValue = v)" Size="Size.Small" Style="width:auto;">
+                    <SelectItem TValue="@(MediaType?)" Value="@((MediaType?)null)"></SelectItem>
+                    @foreach (var item in Types.Where(w => !string.IsNullOrEmpty(w.Name)).OrderBy(o => o.Name))
+                    {
+                        <SelectItem TValue="MediaType?" Value="@((MediaType)item.Value)">@item.Name</SelectItem>
+                    }
+                </Select>
+            </EditTemplate>
+        </DataGridColumn>
+        <DataGridColumn TItem="MediaDetail" Field="@nameof(MediaDetail.title)" Caption="Title" />
+        <DataGridColumn TItem="MediaDetail" Field="@nameof(MediaDetail.release_date)" Caption="Date" />
+        <DataGridColumn TItem="MediaDetail" Field="@nameof(MediaDetail.comments)" Caption="Comments" />
+    </DataGridColumns>
+</DataGrid>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+    [Parameter] public string ListId { get; set; }
+
+    private HashSet<MediaDetail> List { get; set; } = new();
+    public DataGrid<MediaDetail>? DataGrid { get; set; }
+
+    public IEnumerable<EnumObject> Types { get; set; } = Array.Empty<EnumObject>();
+
+    protected override async Task LoadData()
+    {
+        Types = EnumHelper.GetList<MediaType>();
+        await Service.PopulateListMedia(Http, Session, Settings, List, 1, GetExtraParameters(ListId));
+    }
+
+    protected async Task RowUpdated(SavedRowItem<MediaDetail, Dictionary<string, object>> e)
+    {
+        var item = List.FirstOrDefault(f => f.tmdb_id == e.Item.tmdb_id);
+
+        item = e.Item;
+    }
+
+    protected async Task RowInserted(SavedRowItem<MediaDetail, Dictionary<string, object>> e)
+    {
+        var post = new Post();
+        post.Items = new Item[] { new Item { media_id = e.Item.tmdb_id, media_type = e.Item.MediaType == MediaType.movie ? "movie" : "tv" } };
+
+        await Http.PostNew($"https://api.themoviedb.org/4/list/{ListId}/items?&api_key={TmdbOptions.ApiKey}", false, post);
+    }
+
+    private Dictionary<string, string> GetExtraParameters(string list_id)
+    {
+        return new Dictionary<string, string>() { { "list_id", list_id } }; ;
+    }
+
+    private class Post
+    {
+        public Item[] Items { get; set; }
+    }
+
+    private class Item
+    {
+        public string media_type { get; set; }
+        public string media_id { get; set; }
+    }
+}

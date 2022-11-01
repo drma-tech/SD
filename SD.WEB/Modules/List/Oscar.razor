@@ -1,0 +1,51 @@
+﻿@page "/List/Oscar"
+<PageTitle>SD - Lists - Oscar</PageTitle>
+@using SD.Shared.Model
+@using SD.WEB.Modules.List.Core.TMDB
+@using SD.WEB.Modules.Profile.Core
+@inherits ComponenteCore<Oscar>
+@inject ListService Service
+@inject Settings Settings
+
+<HeadPage ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></HeadPage>
+
+<MediaList CardHeader="@TranslationText.MotionPicture" Items="@ListMotionPicture" list_id="7103422" maxItens="12"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+<MediaList CardHeader="@TranslationText.Animated" Items="@ListAnimated" list_id="7103492" maxItens="12"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+<MediaList CardHeader="@TranslationText.International" Items="@ListInternational" list_id="7103493" maxItens="12"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+<MediaList CardHeader="@TranslationText.Documentary" Items="@ListDocumentary" list_id="7103488" maxItens="12"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+
+@code {
+    private HashSet<MediaDetail> ListMotionPicture { get; set; } = new();
+    private HashSet<MediaDetail> ListAnimated { get; set; } = new();
+    private HashSet<MediaDetail> ListInternational { get; set; } = new();
+    private HashSet<MediaDetail> ListDocumentary { get; set; } = new();
+
+    private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await Service.PopulateListMedia(Http, Session, Settings, ListMotionPicture, 1, GetExtraParameters("7103422"));
+        await Service.PopulateListMedia(Http, Session, Settings, ListAnimated, 1, GetExtraParameters("7103492"));
+        await Service.PopulateListMedia(Http, Session, Settings, ListInternational, 1, GetExtraParameters("7103493"));
+        await Service.PopulateListMedia(Http, Session, Settings, ListDocumentary, 1, GetExtraParameters("7103488"));
+
+        wishList = await Http.WishList_Get(Session);
+        watchedList = await Http.WatchedList_Get(Session);
+    }
+    
+    private Dictionary<string, string> GetExtraParameters(string list_id)
+    {
+        return new Dictionary<string, string>() { { "list_id", list_id } };
+    }
+}

@@ -1,0 +1,183 @@
+﻿@page "/"
+@page "/Index"
+<PageTitle>SD - Streaming Discovery</PageTitle>
+@inherits ComponenteCore<Index>
+@using SD.Shared.Model
+@using System.Text.Json
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Provider.Core
+@inject Settings Settings
+
+<Alert Visible="true" Color="Color.Secondary">
+    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> Provedores Favoritos (@(myProviders?.Items.Count ?? 0) itens)</AlertMessage>
+</Alert>
+<AuthorizeView>
+    <Authorized>
+        <CustomVisibility Loading="loading" NoData="(!myProviders?.Items.Any() ?? true)">
+            <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 215px; overflow: auto;">
+                @foreach (var item in myProviders?.Items ?? new List<MyProvidersItem>())
+                {
+                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                        <Card>
+                            <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                                   onclick="@(()=>ShowProviderPopup(item))" Style="cursor: pointer;"></CardImage>
+                        </Card>
+                    </Column>
+                }
+            </Row>
+        </CustomVisibility>
+    </Authorized>
+    <NotAuthorized>
+        <Alert Visible="true" Color="Color.Primary">
+            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
+        </Alert>
+    </NotAuthorized>
+</AuthorizeView>
+
+<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
+    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Lista de Interesses - Filmes (@(wishList?.Movies.Count() ?? 0) itens)</AlertMessage>
+</Alert>
+<AuthorizeView>
+    <Authorized>
+        <CustomVisibility Loading="loading" NoData="(!wishList?.Movies.Any() ?? true)">
+            <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 315px; overflow: auto;">
+                @foreach (var item in wishList?.Movies ?? new List<WishListItem>())
+                {
+                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                        <Card>
+                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
+                            <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                                   onclick="@(async()=>await ShowMediaPopup(item, MediaType.movie))" Style="cursor: pointer;"></CardImage>
+                        </Card>
+                    </Column>
+                }
+            </Row>
+        </CustomVisibility>
+    </Authorized>
+    <NotAuthorized>
+        <Alert Visible="true" Color="Color.Primary">
+            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
+        </Alert>
+    </NotAuthorized>
+</AuthorizeView>
+
+<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
+    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Lista de Interesses - Seriados (@(wishList?.Shows.Count() ?? 0) itens)</AlertMessage>
+</Alert>
+<AuthorizeView>
+    <Authorized>
+        <CustomVisibility Loading="loading" NoData="(!wishList?.Shows.Any() ?? true)">
+            <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 315px; overflow: auto;">
+                @foreach (var item in wishList?.Shows ?? new List<WishListItem>())
+                {
+                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                        <Card>
+                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
+                            <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                                   onclick="@(async()=>await ShowMediaPopup(item, MediaType.tv))" Style="cursor: pointer;"></CardImage>
+                        </Card>
+                    </Column>
+                }
+            </Row>
+        </CustomVisibility>
+    </Authorized>
+    <NotAuthorized>
+        <Alert Visible="true" Color="Color.Primary">
+            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
+        </Alert>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+    
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "Fake")]
+    public bool Fake { get; set; } = false;
+
+    private MyProviders? myProviders { get; set; }
+    private AllProviders? allProviders;
+
+    private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
+
+    private bool loading { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            loading = true;
+
+            await base.OnInitializedAsync();
+
+            if (Fake) //test for generate images
+            {
+                await GenerateFakeData();
+            }
+            else
+            {
+                wishList = await Http.WishList_Get(Session);
+                watchedList = await Http.WatchedList_Get(Session);
+
+                myProviders = await Http.MyProviders_Get(Session);
+            }
+
+            allProviders = await Http.Provider_GetAll(Session);
+
+            loading = false;
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    public Task ShowProviderPopup(MyProvidersItem item)
+    {
+        return ModalService.Show<ProviderPopup>(item.name,
+            x =>
+            {
+                x.Add(x => x.provider, allProviders?.Items.FirstOrDefault(f => f.id == item.id));
+                x.Add(x => x.mediaType, MediaType.movie);
+                x.Add(x => x.WishList, wishList);
+                x.Add(x => x.WatchedList, watchedList);
+                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
+                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.ExtraLarge,
+                });
+    }
+
+    public Task ShowMediaPopup(WishListItem item, MediaType type)
+    {
+        return ModalService.Show<MediaPopup>(item.name,
+            x =>
+            {
+                x.Add(x => x.ServiceDetail, new Modules.List.Core.TMDB.MediaDetailService());
+                x.Add(x => x.tmdb_id, item.id);
+                x.Add(x => x.type, type);
+                x.Add(x => x.WishList, wishList);
+                x.Add(x => x.WatchedList, watchedList);
+                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
+                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
+    }
+
+    private async Task GenerateFakeData()
+    {
+        myProviders = await Http.GetFromJsonAsync<MyProviders>("/Data/MyProvider.json");
+        wishList = await Http.GetFromJsonAsync<WishList>("/Data/WishList.json");
+        watchedList = await Http.GetFromJsonAsync<WatchedList>("/Data/WatchedList.json");
+    }
+}

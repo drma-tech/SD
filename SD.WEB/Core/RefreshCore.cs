@@ -1,6 +1,5 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
-using SD.Shared.Modal.Enum;
 
 namespace SD.WEB.Core
 {

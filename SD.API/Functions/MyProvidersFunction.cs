@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using SD.API.Core;
-using SD.Shared.Core;
-using SD.Shared.Model;
 using System;
 using System.Linq;
 using System.Threading;
@@ -31,7 +28,7 @@ namespace SD.API.Functions
             {
                 using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
-                var result = await _repo.Get<MyProviders>(CosmosType.MyProvider + ":" + req.GetUserId(), req.GetUserId(),  source.Token);
+                var result = await _repo.Get<MyProviders>(DocumentType.MyProvider + ":" + req.GetUserId(), req.GetUserId(), source.Token);
 
                 return new OkObjectResult(result);
             }
@@ -51,7 +48,7 @@ namespace SD.API.Functions
             {
                 using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
-                var myProviders = await _repo.Get<MyProviders>(CosmosType.MyProvider + ":" + req.GetUserId(), req.GetUserId(),source.Token);
+                var myProviders = await _repo.Get<MyProviders>(DocumentType.MyProvider + ":" + req.GetUserId(), req.GetUserId(), source.Token);
                 var newItem = await req.GetParameterGenericObject<MyProviders>(source.Token);
 
                 if (myProviders == null)

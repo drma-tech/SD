@@ -1,7 +1,8 @@
 ﻿@using SD.Shared.Model
 @inherits ComponenteCore<ProviderPopup>
 @inject Settings Settings
-@using SD.WEB.Services.TMDB
+@using SD.WEB.Modules.List.Core.TMDB
+@using SD.WEB.Modules.Profile.Core
 
 <ModalHeader>
     <ModalTitle>@provider?.name</ModalTitle>
@@ -152,7 +153,7 @@
             if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
             if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
 
-            myProviders = await Http.MyProviders_Get(StorageService.Session);
+            myProviders = await Http.MyProviders_Get(Session);
 
             popularMedia = mediaType;
             newMedia = mediaType;
@@ -210,17 +211,17 @@
 
     private async Task LoadPopular(MediaType mediaType)
     {
-        popularDisable = await Http.PopulateDiscover(StorageService, Settings, ListPopular, mediaType, ++popularPage, GetExtraParameters(provider?.id, "popularity.desc"));
+        popularDisable = await Http.PopulateDiscover(Session, Settings, ListPopular, mediaType, ++popularPage, GetExtraParameters(provider?.id, "popularity.desc"));
     }
 
     private async Task LoadNew(MediaType mediaType)
     {
-        newDisable = await Http.PopulateDiscover(StorageService, Settings, ListNew, mediaType, ++newPage, GetExtraParameters(provider?.id, "primary_release_date.desc"));
+        newDisable = await Http.PopulateDiscover(Session, Settings, ListNew, mediaType, ++newPage, GetExtraParameters(provider?.id, "primary_release_date.desc"));
     }
 
     private async Task LoadTopRated(MediaType mediaType)
     {
-        topRatedDisable = await Http.PopulateDiscover(StorageService, Settings, ListTopRated, mediaType, ++topRatedPage, GetExtraParameters(provider?.id, "vote_average.desc"));
+        topRatedDisable = await Http.PopulateDiscover(Session, Settings, ListTopRated, mediaType, ++topRatedPage, GetExtraParameters(provider?.id, "vote_average.desc"));
     }
 
     private async Task Add()
@@ -237,7 +238,7 @@
 
             if (provider != null) myProviders.Items.Add(new MyProvidersItem() { id = provider.id, name = provider.name, logo = provider.logo_path });
 
-            await Http.MyProviders_Post(myProviders, StorageService.Session);
+            await Http.MyProviders_Post(myProviders, Session);
 
             await Toast.Success("Provedor favoritado com sucesso!");
         }
@@ -261,7 +262,7 @@
 
             myProviders.Items.Remove(myProviders.Items.First(f => f.id == provider?.id));
 
-            await Http.MyProviders_Post(myProviders, StorageService.Session);
+            await Http.MyProviders_Post(myProviders, Session);
 
             await Toast.Success("Provedor removido com sucesso!");
         }

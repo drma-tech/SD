@@ -1,18 +1,22 @@
-﻿using System.Collections.Concurrent;
-using SD.Shared.Helper;
+﻿using Blazored.SessionStorage;
+using Microsoft.AspNetCore.Components;
+using System.Collections.Concurrent;
 
 namespace SD.WEB.Core
 {
-    public class LogContainer
+    public sealed class CosmosLoggerProvider : ILoggerProvider
     {
-        public string? Name { get; set; }
-        public string? State { get; set; }
-        public string? Message { get; set; }
-        public string? StackTrace { get; set; }
+        private readonly ConcurrentDictionary<string, CustomLogger> _loggers = new();
+
+        public ILogger CreateLogger(string categoryName) => _loggers.GetOrAdd(categoryName, name => new CustomLogger(name));
+
+        public void Dispose() => _loggers.Clear();
     }
 
     public class CustomLogger : ILogger
     {
+        [Inject] protected ISyncSessionStorageService Session { get; set; } = default!;
+
         private readonly string _name;
 
         public CustomLogger(string name)
@@ -36,12 +40,11 @@ namespace SD.WEB.Core
                 return;
             }
 
-            var storage = ComponenteUtils.Storage;
             var list = new List<LogContainer>();
 
-            if (storage != null && storage.ContainKey("LogErrosVD"))
+            if (Session != null && Session.ContainKey("LogErrosVD"))
             {
-                list = storage.GetItem<List<LogContainer>>("LogErrosVD");
+                list = Session.GetItem<List<LogContainer>>("LogErrosVD");
             }
 
             list.Add(new LogContainer()
@@ -52,16 +55,15 @@ namespace SD.WEB.Core
                 StackTrace = exception?.StackTrace
             });
 
-            storage?.SetItem("LogErrosVD", list);
+            Session?.SetItem("LogErrosVD", list);
         }
     }
 
-    public sealed class CosmosLoggerProvider : ILoggerProvider
+    public class LogContainer
     {
-        private readonly ConcurrentDictionary<string, CustomLogger> _loggers = new();
-
-        public ILogger CreateLogger(string categoryName) => _loggers.GetOrAdd(categoryName, name => new CustomLogger(name));
-
-        public void Dispose() => _loggers.Clear();
+        public string? Name { get; set; }
+        public string? State { get; set; }
+        public string? Message { get; set; }
+        public string? StackTrace { get; set; }
     }
 }

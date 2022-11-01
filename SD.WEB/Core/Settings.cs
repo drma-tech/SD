@@ -1,4 +1,4 @@
-﻿using SD.Shared.Modal.Enum;
+﻿using Blazored.SessionStorage;
 using System.Globalization;
 using System.Text.Json.Serialization;
 
@@ -13,9 +13,9 @@ namespace SD.WEB.Core
         public Settings()
         { }
 
-        public Settings(IStorageService StorageService)
+        public Settings(ISyncSessionStorageService session)
         {
-            var sett = StorageService.Local.GetItem<Settings>("Settings");
+            var sett = session.GetItem<Settings>("Settings");
 
             if (sett == null)
             {

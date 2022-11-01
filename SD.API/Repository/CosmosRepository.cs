@@ -1,9 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Configuration;
-using SD.API.Core;
-using SD.Shared.Core;
-using SD.Shared.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +60,7 @@ namespace SD.API.Repository
             //Container container = await database.CreateContainerIfNotExistsAsync(options, throughput: 400);
         }
 
-        public async Task<T?> Get<T>(string? id, string? partitionKeyValue, CancellationToken cancellationToken) where T : CosmosBase
+        public async Task<T?> Get<T>(string? id, string? partitionKeyValue, CancellationToken cancellationToken) where T : DocumentBase
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
             if (string.IsNullOrEmpty(partitionKeyValue)) throw new ArgumentNullException(nameof(partitionKeyValue));
@@ -82,7 +79,7 @@ namespace SD.API.Repository
             }
         }
 
-        public async Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, string partitionKeyValue, CosmosType Type, CancellationToken cancellationToken) where T : CosmosBase
+        public async Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, string partitionKeyValue, DocumentType Type, CancellationToken cancellationToken) where T : DocumentBase
         {
             IQueryable<T> query;
 
@@ -114,7 +111,7 @@ namespace SD.API.Repository
             return results;
         }
 
-        public async Task<List<T>> Query<T>(QueryDefinition query, CancellationToken cancellationToken) where T : CosmosBaseQuery
+        public async Task<List<T>> Query<T>(QueryDefinition query, CancellationToken cancellationToken) where T : DocumentBaseQuery
         {
             using var iterator = Container.GetItemQueryIterator<T>(query);
             var results = new List<T>();
@@ -133,7 +130,7 @@ namespace SD.API.Repository
             return results;
         }
 
-        public async Task<T> Upsert<T>(T item, CancellationToken cancellationToken) where T : CosmosBase
+        public async Task<T> Upsert<T>(T item, CancellationToken cancellationToken) where T : DocumentBase
         {
             var response = await Container.UpsertItemAsync(item, new PartitionKey(item.Key), null, cancellationToken);
 
@@ -142,7 +139,7 @@ namespace SD.API.Repository
             return response.Resource;
         }
 
-        public async Task<T> PatchItem<T>(string id, string partitionKeyValue, List<PatchOperation> operations, CancellationToken cancellationToken) where T : CosmosBase
+        public async Task<T> PatchItem<T>(string id, string partitionKeyValue, List<PatchOperation> operations, CancellationToken cancellationToken) where T : DocumentBase
         {
             //https://learn.microsoft.com/en-us/azure/cosmos-db/partial-document-update-getting-started?tabs=dotnet
 
@@ -153,7 +150,7 @@ namespace SD.API.Repository
             return response.Resource;
         }
 
-        public async Task<bool> Delete<T>(T item, CancellationToken cancellationToken) where T : CosmosBase
+        public async Task<bool> Delete<T>(T item, CancellationToken cancellationToken) where T : DocumentBase
         {
             var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Key), null, cancellationToken);
 

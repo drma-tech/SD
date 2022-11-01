@@ -1,12 +1,10 @@
-﻿using Blazored.LocalStorage;
-using Blazored.SessionStorage;
+﻿using Blazored.SessionStorage;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using SD.Shared.Core;
-using SD.WEB.Core;
+using SD.WEB.Modules.List.Core.TMDB;
 using System.Globalization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
@@ -22,26 +20,24 @@ namespace SD.WEB
                 .AddFontAwesomeIcons();
 
             collection.AddBlazoredSessionStorage(config => config.JsonSerializerOptions.WriteIndented = true);
-            collection.AddBlazoredLocalStorage(config => config.JsonSerializerOptions.WriteIndented = true);
 
             collection.AddPWAUpdater();
             collection.AddMediaQueryService();
 
-            collection.AddScoped<IStorageService, StorageService>();
             collection.AddScoped<Settings>();
         }
 
         public static void ConfigureServices(this IServiceCollection collection)
         {
-            collection.AddScoped<Services.TMDB.ListService>();
-            collection.AddScoped<Services.TMDB.MediaDetailService>();
+            collection.AddScoped<ListService>();
+            collection.AddScoped<MediaDetailService>();
         }
 
         public static void ConfigureCulture(this WebAssemblyHost host)
         {
             CultureInfo culture;
-            var StorageService = host.Services.GetRequiredService<IStorageService>();
-            var sett = StorageService.Local.GetItem<Settings>("Settings");
+            var session = host.Services.GetRequiredService<ISyncSessionStorageService>();
+            var sett = session.GetItem<Settings>("Settings");
 
             if (sett != null)
             {
@@ -52,8 +48,8 @@ namespace SD.WEB
                 culture = CultureInfo.CurrentCulture;
 
                 //save the new settings
-                sett = new Settings(StorageService);
-                StorageService.Local.SetItem("Settings", sett);
+                sett = new Settings(session);
+                session.SetItem("Settings", sett);
             }
 
             CultureInfo.DefaultThreadCurrentCulture = culture;

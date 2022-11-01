@@ -1,15 +1,18 @@
-﻿using SD.Shared.Core;
-
-namespace SD.Shared.Helper
+﻿namespace SD.Shared.Helper
 {
     public static class EnumHelper
     {
-        public static TEnum[] GetArray<TEnum>() where TEnum : struct, System.Enum
+        public static TEnum[] GetArray<TEnum>() where TEnum : struct, Enum
         {
-            return System.Enum.GetValues<TEnum>();
+            return Enum.GetValues<TEnum>();
         }
 
-        public static IEnumerable<EnumObject> GetList<TEnum>(bool translate = true) where TEnum : struct, System.Enum
+        public static EnumObject[] GetObjArray<TEnum>(bool translate = true) where TEnum : struct, Enum
+        {
+            return GetList<TEnum>(translate).ToArray();
+        }
+
+        public static IEnumerable<EnumObject> GetList<TEnum>(bool translate = true) where TEnum : struct, Enum
         {
             foreach (var val in GetArray<TEnum>())
             {

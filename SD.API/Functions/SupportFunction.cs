@@ -4,8 +4,6 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using SD.API.Core;
-using SD.Shared.Core;
 using SD.Shared.Model.Support;
 using System;
 using System.Collections.Generic;
@@ -33,7 +31,7 @@ namespace SD.API.Functions
 
             try
             {
-                var result = await _repo.Query<TicketModel>(null, null, CosmosType.Ticket, cancellationToken);
+                var result = await _repo.Query<TicketModel>(null, null, DocumentType.Ticket, cancellationToken);
 
                 return new OkObjectResult(result);
             }
@@ -53,7 +51,7 @@ namespace SD.API.Functions
 
             try
             {
-                var result = await _repo.Query<TicketVoteModel>(x => x.IdVotedUser == req.GetUserId(), null, CosmosType.TicketVote, cancellationToken);
+                var result = await _repo.Query<TicketVoteModel>(x => x.IdVotedUser == req.GetUserId(), null, DocumentType.TicketVote, cancellationToken);
 
                 return new OkObjectResult(result);
             }
@@ -98,10 +96,11 @@ namespace SD.API.Functions
                 var item = await req.GetParameterGenericObject<TicketVoteModel>(source.Token);
 
                 if (item.VoteType == VoteType.PlusOne)
-                    await _repo.PatchItem<TicketModel>(nameof(CosmosType.Ticket) + ":" + item.Key, item.Key, new List<PatchOperation> { PatchOperation.Increment("/totalVotes", 1) }, cancellationToken);
+                    await _repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, item.Key, new List<PatchOperation> { PatchOperation.Increment("/totalVotes", 1) }, cancellationToken);
                 else if (item.VoteType == VoteType.MinusOne)
-                    await _repo.PatchItem<TicketModel>(nameof(CosmosType.Ticket) + ":" + item.Key, item.Key, new List<PatchOperation> { PatchOperation.Increment("/totalVotes", -1) }, cancellationToken);
-                item.SetKey(item.Key);
+                    await _repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, item.Key, new List<PatchOperation> { PatchOperation.Increment("/totalVotes", -1) }, cancellationToken);
+                
+                item.SetIds(item.Key);
 
                 var result = await _repo.Upsert(item, cancellationToken);
 

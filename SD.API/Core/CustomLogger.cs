@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using SD.API.Repository;
-using SD.Shared.Helper;
 using System;
 using System.Collections.Concurrent;
 

@@ -46,7 +46,7 @@
         <BarMenu Style="flex-basis: unset !important;">
             <AuthorizeView>
                 <Authorized>
-                    <Button Color="Color.Danger" Type="ButtonType.Link" To="/.auth/logout" title="Logout" Float="Float.End" Size="Size.Small">
+                    <Button Color="Color.Danger" Clicked="Logout" title="Logout" Float="Float.End" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.SignOutAlt" /> Sair
                     </Button>
                 </Authorized>
@@ -61,20 +61,22 @@
 </Bar>
 
 @code {
-    private IEnumerable<EnumObject> Regions { get; set; } = Enumerable.Empty<EnumObject>();
-    private IEnumerable<EnumObject> Languages { get; set; } = Enumerable.Empty<EnumObject>();
+    private IReadOnlyList<EnumObject> Regions { get; set; } = Array.Empty<EnumObject>();
+    private IReadOnlyList<EnumObject> Languages { get; set; } = Array.Empty<EnumObject>();
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
 
-        LoadData();
+        Regions = EnumHelper.GetObjArray<Region>();
+        Languages = EnumHelper.GetObjArray<Language>().Where(w => !string.IsNullOrEmpty(w.Name)).ToArray();
     }
 
-    protected void LoadData()
+    private void Logout()
     {
-        Regions = EnumHelper.GetList<Region>();
-        Languages = EnumHelper.GetList<Language>().Where(w => !string.IsNullOrEmpty(w.Name));
+        Session.Clear();
+
+        Nav.NavigateTo("/.auth/logout");
     }
 
     protected async Task RegionValueChanged(Region value)
@@ -83,7 +85,7 @@
 
         sett.Region = value;
 
-        StorageService.Local.SetItem("Settings", sett);
+        Session.SetItem("Settings", sett);
 
         await RefreshCore.ChangeRegion(value);
     }
@@ -96,7 +98,7 @@
 
         var culture = System.Globalization.CultureInfo.CurrentCulture;
 
-        StorageService.Local.SetItem("Settings", sett);
+        Session.SetItem("Settings", sett);
 
         //await RefreshCore.ChangeLanguage(value);
 

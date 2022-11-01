@@ -1,6 +1,4 @@
-﻿using Blazored.LocalStorage;
-using Blazored.SessionStorage;
-using SD.Shared.Helper;
+﻿using Blazored.SessionStorage;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -47,7 +45,7 @@ namespace SD.WEB.Core
             }
         }
 
-        public static async Task<T> GetNew<T>(this HttpClient http, ISyncLocalStorageService storage, string request_uri) where T : class
+        public static async Task<T> GetNew<T>(this HttpClient http, ISyncSessionStorageService storage, string request_uri) where T : class
         {
             if (!storage.ContainKey(request_uri))
             {

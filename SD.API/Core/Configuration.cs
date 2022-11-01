@@ -1,4 +1,4 @@
-﻿namespace SD.WEB.Core
+﻿namespace SD.API.Core
 {
     /// <summary>
     /// this API is free, so it's not a big problem to expose this data

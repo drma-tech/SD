@@ -1,6 +1,9 @@
-﻿@using SD.Shared.Model
+﻿@using SD.WEB.Modules.List.Core
+@using SD.Shared.Model
+@using SD.WEB.Modules.List.Core.TMDB
+@using SD.WEB.Modules.Profile.Core
 @inherits ComponenteCore<CompleteListPopup>
-@inject Services.TMDB.ListService Service
+@inject ListService Service
 @inject Settings Settings
 
 <ModalHeader>
@@ -179,7 +182,7 @@
 
         if (IsIMDB && media?.MediaType == MediaType.tv) //for now, only tv series (imdb) need this kind of workaround
         {
-            tmdb_id = await TmdbExternalIdTvService.GetTmdbId(Http, StorageService.Session, media?.tmdb_id);
+            tmdb_id = await TmdbExternalIdTvService.GetTmdbId(Http, Session, media?.tmdb_id);
         }
         else
         {
@@ -189,7 +192,7 @@
         await ModalService.Show<MediaPopup>(media?.title,
             x =>
             {
-                x.Add(x => x.ServiceDetail, new Services.TMDB.MediaDetailService());
+                x.Add(x => x.ServiceDetail, new Modules.List.Core.TMDB.MediaDetailService());
                 x.Add(x => x.tmdb_id, tmdb_id);
                 x.Add(x => x.type, media?.MediaType);
                 x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
@@ -222,7 +225,7 @@
         }
         else
         {
-            await Service.PopulateListMedia(Http, StorageService, Settings, Items, ++currentPage, GetExtraParameters(list_id));
+            await Service.PopulateListMedia(Http, Session, Settings, Items, ++currentPage, GetExtraParameters(list_id));
         }
     }
 
@@ -266,7 +269,7 @@
                     });
             }
 
-            await Http.WishList_Post(WishList, StorageService.Session);
+            await Http.WishList_Post(WishList, Session);
             await WishListChanged.InvokeAsync(WishList);
 
             await Toast.Success("Media favoritado com sucesso!");
@@ -298,7 +301,7 @@
                 WishList.Shows.Remove(WishList.Shows.First(f => f.id == media?.tmdb_id));
             }
 
-            await Http.WishList_Post(WishList, StorageService.Session);
+            await Http.WishList_Post(WishList, Session);
             await WishListChanged.InvokeAsync(WishList);
 
             await Toast.Success("Media removida com sucesso!");
@@ -330,7 +333,7 @@
                 WatchedList.Shows.Add(media.tmdb_id);
             }
 
-            await Http.WatchedList_Post(WatchedList, StorageService.Session);
+            await Http.WatchedList_Post(WatchedList, Session);
             await WatchedListChanged.InvokeAsync(WatchedList);
 
             await Toast.Success("Operação efetuada com sucesso!");
@@ -362,7 +365,7 @@
                 WatchedList.Shows.Remove(WatchedList.Shows.First(f => f == media?.tmdb_id & MediaType.tv == media?.MediaType));
             }
 
-            await Http.WatchedList_Post(WatchedList, StorageService.Session);
+            await Http.WatchedList_Post(WatchedList, Session);
             await WatchedListChanged.InvokeAsync(WatchedList);
 
             await Toast.Success("Operação efetuada com sucesso!");

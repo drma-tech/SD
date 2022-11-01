@@ -1,0 +1,114 @@
+﻿@page "/List/Tmdb"
+<PageTitle>SD - Lists - TMDB</PageTitle>
+@inherits ComponenteCore<Tmdb>
+@inject Settings Settings
+@using SD.Shared.Model
+@using SD.WEB.Modules.List.Core.TMDB
+@using SD.WEB.Modules.Profile.Core
+
+<HeadPage ImageSource="logo/tmdb.png" Text="@TranslationText.tmdb_desc" Link="https://www.themoviedb.org/"></HeadPage>
+
+<MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="PopularDisable"
+           TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+<MediaList CardHeader="@($"{TranslationText.TopRated} ({Settings.Region})")" Items="@ListTopRated" maxItens="50" NextPage="@(()=>LoadTopRated(topRatedMedia))" DisableLoadMore="TopRatedDisable"
+           TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+<MediaList CardHeader="@($"{TranslationText.ComingSoon} ({Settings.Region})")" Items="@ListUpcoming" maxItens="50" NextPage="LoadUpcoming" DisableLoadMore="UpcomingDisable"
+           ShowOnlyYear="false"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+
+@code {
+    private HashSet<MediaDetail> ListPopular { get; set; } = new();
+    private HashSet<MediaDetail> ListTopRated { get; set; } = new();
+    private HashSet<MediaDetail> ListUpcoming { get; set; } = new();
+
+    private int popularPage = 0;
+    private int topRatedPage = 0;
+    private int upcomingPage = 0;
+
+    private bool PopularDisable = false;
+    private bool TopRatedDisable = false;
+    private bool UpcomingDisable = false;
+
+    private MediaType popularMedia = MediaType.movie;
+    private MediaType topRatedMedia = MediaType.movie;
+
+    private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        RefreshCore.RegionChanged = new EventCallbackFactory().Create(this, async (Region value) => { await ChangeRegion(); });
+
+        await LoadPopular(popularMedia);
+        await LoadTopRated(topRatedMedia);
+        await LoadUpcoming();
+
+        if (ListPopular.Count < 10) await LoadPopular(popularMedia);
+        if (ListTopRated.Count < 10) await LoadTopRated(topRatedMedia);
+
+        wishList = await Http.WishList_Get(Session);
+        watchedList = await Http.WatchedList_Get(Session);
+    }
+
+    private async Task ChangeRegion()
+    {
+        topRatedPage = 0;
+        upcomingPage = 0;
+
+        ListTopRated = new();
+        ListUpcoming = new();
+
+        await LoadTopRated(topRatedMedia);
+        await LoadUpcoming();
+
+        if (ListTopRated.Count < 10) await LoadTopRated(topRatedMedia);
+    }
+
+    private async Task ChangePopularMediaType(MediaType mediaType)
+    {
+        popularMedia = mediaType;
+
+        popularPage = 0;
+
+        ListPopular = new();
+
+        await LoadPopular(mediaType);
+
+        if (ListPopular.Count < 10) await LoadPopular(popularMedia);
+    }
+
+    private async Task ChangeTopRatedMediaType(MediaType mediaType)
+    {
+        topRatedMedia = mediaType;
+
+        topRatedPage = 0;
+
+        ListTopRated = new();
+
+        await LoadTopRated(mediaType);
+
+        if (ListTopRated.Count < 10) await LoadTopRated(mediaType);
+    }
+
+    private async Task LoadPopular(MediaType mediaType)
+    {
+        PopularDisable = await Http.PopulateTMDBPopular(Session, Settings, ListPopular, mediaType, ++popularPage);
+    }
+
+    private async Task LoadTopRated(MediaType mediaType)
+    {
+        TopRatedDisable = await Http.PopulateTMDBTopRated(Session, Settings, ListTopRated, mediaType, ++topRatedPage);
+    }
+
+    private async Task LoadUpcoming()
+    {
+        UpcomingDisable = await Http.PopulateTMDBUpcoming(Session, Settings, ListUpcoming, MediaType.movie, ++upcomingPage);
+    }
+}

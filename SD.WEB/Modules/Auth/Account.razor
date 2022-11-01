@@ -1,0 +1,115 @@
+﻿@page "/Profile/Account"
+<PageTitle>SD - Account</PageTitle>
+@attribute [Authorize]
+@inherits PageCore<Account>
+@using System.Security.Claims
+@using SD.Shared.Model.Auth
+@using SD.WEB.Modules.Auth.Core
+
+<Row HorizontalGutter="8" VerticalGutter="0">
+    <Column ColumnSize="ColumnSize.Is6.OnWidescreen">
+        <Card Margin="Margin.Is2.FromBottom">
+            <CardHeader>Dados Cadastrais</CardHeader>
+            <CardBody>
+                <Fields>
+                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <FieldLabel>Provedor de Acesso</FieldLabel>
+                        <TextEdit Text="@principal?.IdentityProvider" Disabled="true" />
+                    </Field>
+                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <FieldLabel>Identificação</FieldLabel>
+                        <TextEdit Text="@principal?.UserDetails" Disabled="true" />
+                    </Field>
+                </Fields>
+                <Fields>
+                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <FieldLabel>Email</FieldLabel>
+                        <TextEdit Text="@principal?.Email" Disabled="true" />
+                    </Field>
+                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <FieldLabel>Mobile</FieldLabel>
+                        <TextEdit Text="@principal?.Mobile" Disabled="true" />
+                    </Field>
+                </Fields>
+            </CardBody>
+        </Card>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is6.OnWidescreen">
+        <Card Margin="Margin.Is2.FromBottom">
+            <CardHeader>Dados Cadastrais</CardHeader>
+            <CardBody>
+                <Button Color="Color.Primary" Clicked="async()=>{ await ClearCache(); }" Margin="Margin.Is1.FromEnd">
+                    <Blazorise.Icon Name="FontAwesomeIcons.Eraser" /> Limpar Cache
+                </Button>
+                <Button Color="Color.Warning" Clicked="async()=>{ await ResetInteractions(); }" Disabled="true" Margin="Margin.Is1.FromEnd">
+                    <Blazorise.Icon Name="FontAwesomeIcons.FastBackward" /> Resetar Interações
+                </Button>
+                <Button Color="Color.Danger" Clicked="()=>{ DeleteAccount(principal?.IdentityProvider); }" Disabled="true">
+                    <Blazorise.Icon Name="FontAwesomeIcons.UserSlash" /> Deletar Conta
+                </Button>
+            </CardBody>
+        </Card>
+    </Column>
+</Row>
+
+@code {
+    private ClientePrincipal? principal;
+
+    protected override async Task LoadData()
+    {
+        if (ComponenteUtils.IsAuthenticated)
+        {
+            principal = await Http.Principal_Get(Session);
+
+            if (principal == null) principal = new();
+
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+            if (authState != null)
+            {
+                var user = authState.User;
+
+                if (user != null)
+                {
+                    principal.UserId = user.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
+                    principal.IdentityProvider = user.Identity?.AuthenticationType;
+                    principal.UserDetails = user.Identity?.Name;
+                    
+                    principal.UserRoles = user.Claims.Where(w => w.Type == ClaimTypes.Role).Select(s => s.Value).ToArray();
+                }
+
+                principal.Email = principal?.UserDetails;
+            }
+        }
+    }
+
+    private async Task ClearCache()
+    {
+        Session.Clear();
+
+        await Toast.Success("Operação efetuada com sucesso!");
+    }
+
+    private async Task ResetInteractions()
+    {
+        //show question: Desfaz todas as interações feitas com outros usuários (isso não afeta seus dados pessoais)
+
+        //transferir para backup
+
+        //deletar dados
+
+        await Toast.Success("Operação efetuada com sucesso!");
+    }
+
+    private void DeleteAccount(string? provider)
+    {
+        //show question: Caso queira apagar seu perfil e todas as interações feitas (seu perfil não ficará mais disponível)
+
+        //transferir para backup
+
+        //deletar dados
+
+        //await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("/.auth/purge/" + provider);
+    }
+}

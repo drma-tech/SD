@@ -3,18 +3,36 @@ using Blazorise;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
-using SD.WEB.Api;
+using SD.WEB.Modules.Auth.Core;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SD.WEB.Core
 {
     public static class ComponenteUtils
     {
-        public static string? IdUser { get; set; }
-        public static bool IsAuthenticated { get; set; }
-        public static ISyncSessionStorageService Storage { get; set; } = default!;
+        private static string? idUser;
 
-        //public static string GetStorageKey(string key) => string.IsNullOrEmpty(IdUser) ? throw new ArgumentException(IdUser) : $"{key}({IdUser})";
+        public static string GetIdUser(bool authenticating = false)
+        {
+            if (authenticating)
+            {
+                return idUser ?? string.Empty;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(idUser)) throw new InvalidOperationException("User Not Defined!");
+
+                return idUser;
+            }
+        }
+
+        public static void SetIdUser(string? value)
+        {
+            idUser = value;
+        }
+
+        public static bool IsAuthenticated { get; set; }
+
         public static string BaseApi([NotNullWhen(true)] this HttpClient http, bool externalLink)
         {
             if (externalLink) return "";
@@ -28,25 +46,23 @@ namespace SD.WEB.Core
     /// <typeparam name="TClass"></typeparam>
     public abstract class ComponenteCore<TClass> : ComponentBase where TClass : class
     {
-        [Inject] public IStorageService StorageService { get; set; } = default!;
+        [Inject] protected ISyncSessionStorageService Session { get; set; } = default!;
         [Inject] protected ILogger<TClass> Logger { get; set; } = default!;
-        [Inject] protected NavigationManager Navigation { get; set; } = default!;
         [Inject] protected INotificationService Toast { get; set; } = default!;
         [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
-        [Inject] protected HttpClient Http { get; set; } = default!;
+        [Inject] protected HttpClient Http { get; set; } = default!; //todo: move to PageCore
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                if (string.IsNullOrEmpty(ComponenteUtils.IdUser))
+                if (string.IsNullOrEmpty(ComponenteUtils.GetIdUser(authenticating: true)))
                 {
                     var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
                     var user = authState.User;
 
                     ComponenteUtils.IsAuthenticated = user.Identity != null && user.Identity.IsAuthenticated;
-                    ComponenteUtils.IdUser = user.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-                    ComponenteUtils.Storage = StorageService.Session;
+                    ComponenteUtils.SetIdUser(user.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
                 }
             }
             catch (Exception ex)
@@ -63,8 +79,7 @@ namespace SD.WEB.Core
     public abstract class PageCore<T> : ComponenteCore<T> where T : class
     {
         [Inject] protected IJSRuntime JsRuntime { get; set; } = default!;
-
-        protected abstract Task LoadData();
+        [Inject] protected NavigationManager Navigation { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -72,7 +87,7 @@ namespace SD.WEB.Core
             {
                 if (ComponenteUtils.IsAuthenticated)
                 {
-                    var principal = await Http.Principal_Get(StorageService.Session);
+                    var principal = await Http.Principal_Get(Session);
 
                     //força o cadastro, caso não tenha registrado a conta principal
                     if (principal == null)
@@ -91,9 +106,6 @@ namespace SD.WEB.Core
             }
         }
 
-        protected void FeatureUnavailable()
-        {
-            Toast.Warning("Recurso em desenvolvimento. Aguarde novidades...");
-        }
+        protected abstract Task LoadData();
     }
 }

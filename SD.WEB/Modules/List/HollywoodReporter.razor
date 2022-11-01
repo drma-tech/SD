@@ -1,0 +1,41 @@
+﻿@page "/List/HollywoodReporter"
+<PageTitle>SD - Lists - Hollywood Reporter</PageTitle>
+@using SD.Shared.Model
+@inherits ComponenteCore<Tmdb>
+@inject ListService Service
+@using SD.WEB.Modules.List.Core.TMDB
+@using SD.WEB.Modules.Profile.Core
+@inject Settings Settings
+
+<HeadPage ImageSource="logo/HollywoodReporter.png" Text="@TranslationText.thr_desc" Link="https://www.hollywoodreporter.com/"></HeadPage>
+
+<MediaList CardHeader="Top 100 Movies" Items="@ListMovies" list_id="8222343" maxItens="100"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+<MediaList CardHeader="Top 100 TV Shows" Items="@ListShows" list_id="8222348" maxItens="100"
+           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+
+@code {
+    private HashSet<MediaDetail> ListMovies { get; set; } = new();
+    private HashSet<MediaDetail> ListShows { get; set; } = new();
+
+    private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        wishList = await Http.WishList_Get(Session);
+        watchedList = await Http.WatchedList_Get(Session);
+
+        await Service.PopulateListMedia(Http, Session, Settings, ListMovies, 1, GetExtraParameters("8222343"));
+        await Service.PopulateListMedia(Http, Session, Settings, ListShows, 1, GetExtraParameters("8222348"));
+    }
+
+    private Dictionary<string, string> GetExtraParameters(string list_id)
+    {
+        return new Dictionary<string, string>() { { "list_id", list_id } }; ;
+    }
+}
