@@ -76,7 +76,7 @@
     {
         Session.Clear();
 
-        Nav.NavigateTo("/.auth/logout");
+        Nav.NavigateTo("/.auth/logout", forceLoad: true);
     }
 
     protected async Task RegionValueChanged(Region value)
