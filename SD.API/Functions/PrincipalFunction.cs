@@ -48,7 +48,7 @@ namespace SD.API.Functions
 
             try
             {
-                var item = await req.GetParameterGenericObject<ClientePrincipal>(source.Token);
+                var item = await req.GetParameterObject<ClientePrincipal>(source.Token);
 
                 var result = await _repo.Upsert(item, cancellationToken);
 

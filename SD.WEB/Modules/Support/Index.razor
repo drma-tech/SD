@@ -1,6 +1,8 @@
 ﻿@page "/Support"
 <PageTitle>SD - Support</PageTitle>
+@using SD.Shared.Model.Auth
 @using SD.Shared.Model.Support
+@using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Support.Component
 @using SD.WEB.Modules.Support.Core
 @inherits PageCore<Support.Index>
@@ -8,6 +10,12 @@
 <Alert Color="Color.Secondary" Visible="true">
     <AlertDescription>
         <Blazorise.Link To="Terms/pt">Termos de Uso</Blazorise.Link> ▪ <Blazorise.Link To="Privacy/pt">Políticas de Privacidade</Blazorise.Link> ▪ <Blazorise.Link To="Faq">Dúvidas / Perguntas</Blazorise.Link>
+    </AlertDescription>
+</Alert>
+
+<Alert Color="Color.Warning" Visible="true">
+    <AlertDescription>
+        Para usuários do aplicativo da windows store, tivemos um erro de publicação e estava apontando para nosso ambiente de desenvolvimento. Caso tenha registrado muitas coisas e queira migrar, peço que abra um ticket de erro para que possamos migrar (infelizmente não é possível migrar automaticamente). Favor, informar no ticket seu id deste ambiente (@Principal?.Key) e o id no ambiente de desenvolvimento (<Blazorise.Link To="https://dev.streamingdiscovery.com/Support" Target="Target.Blank">Clicar aqui para pegar seu antigo id</Blazorise.Link>)
     </AlertDescription>
 </Alert>
 
@@ -192,6 +200,8 @@ else if (SelectedTab == Tabs.Announcements)
     private TicketStatus? TicketStatusSel { get; set; }
     private Order OrderSel { get; set; } = Order.Last;
 
+    public ClientePrincipal? Principal { get; set; }
+
     [Inject] public IModalService ModalService { get; set; } = default!;
 
     private bool Loading;
@@ -225,6 +235,9 @@ else if (SelectedTab == Tabs.Announcements)
 
         tickets = await Http.Ticket_GetList();
         if (ComponenteUtils.IsAuthenticated) myVotes = await Http.Ticket_GetMyVotes();
+
+
+        Principal = await Http.Principal_Get(Session);
 
         Loading = false;
 

@@ -49,7 +49,7 @@ namespace SD.API.Functions
                 using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
                 var myProviders = await _repo.Get<WishList>(DocumentType.WishList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
-                var newItem = await req.GetParameterGenericObject<WishList>(source.Token);
+                var newItem = await req.GetParameterObject<WishList>(source.Token);
 
                 if (myProviders == null)
                 {

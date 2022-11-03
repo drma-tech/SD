@@ -32,11 +32,6 @@
         public string? Key { get; set; }
 
         /// <summary>
-        /// Key have the same identification as the Id (Id=type:12345, Key=12345)
-        /// </summary>
-        public bool Samekey { get; set; }
-
-        /// <summary>
         /// Structure type (usually the class name)
         /// </summary>
         public DocumentType Type { get; set; }
@@ -52,7 +47,12 @@
         public DateTimeOffset? DtUpdate { get; set; } = null;
 
         /// <summary>
-        /// 
+        /// Key have the same identification as the Id (Id=type:12345, Key=12345)
+        /// </summary>
+        private bool Samekey { get; set; }
+
+        /// <summary>
+        ///
         /// </summary>
         /// <param name="id">Unique Identification</param>
         /// <param name="key">Logical Partition</param>
@@ -61,7 +61,7 @@
         protected void SetValues(string id, string? key = null)
         {
             if (!Samekey && key == null) throw new ArgumentNullException(nameof(key));
-            if (Samekey && id != key) throw new ArgumentException("parameters must be the same");
+            if (Samekey && key != null && id != key) throw new ArgumentException("parameters must be the same");
             if (!Samekey && id == key) throw new ArgumentException("parameters must be the different");
 
             Id = $"{Type}:{id}";

@@ -49,7 +49,7 @@ namespace SD.API.Functions
                 using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
                 var myProviders = await _repo.Get<MyProviders>(DocumentType.MyProvider + ":" + req.GetUserId(), req.GetUserId(), source.Token);
-                var newItem = await req.GetParameterGenericObject<MyProviders>(source.Token);
+                var newItem = await req.GetParameterObject<MyProviders>(source.Token);
 
                 if (myProviders == null)
                 {
