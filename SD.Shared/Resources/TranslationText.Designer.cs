@@ -61,15 +61,6 @@ namespace SD.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ads.
-        /// </summary>
-        public static string Ads {
-            get {
-                return ResourceManager.GetString("Ads", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string All {
@@ -84,15 +75,6 @@ namespace SD.Shared.Resources {
         public static string Animated {
             get {
                 return ResourceManager.GetString("Animated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Buy.
-        /// </summary>
-        public static string Buy {
-            get {
-                return ResourceManager.GetString("Buy", resourceCulture);
             }
         }
         
@@ -165,33 +147,6 @@ namespace SD.Shared.Resources {
         public static string emmys_desc {
             get {
                 return ResourceManager.GetString("emmys_desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Flat Rate.
-        /// </summary>
-        public static string FlatRate {
-            get {
-                return ResourceManager.GetString("FlatRate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Flat Rate/Buy.
-        /// </summary>
-        public static string FlatRateBuy {
-            get {
-                return ResourceManager.GetString("FlatRateBuy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Free.
-        /// </summary>
-        public static string Free {
-            get {
-                return ResourceManager.GetString("Free", resourceCulture);
             }
         }
         
@@ -331,15 +286,6 @@ namespace SD.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Providers.
-        /// </summary>
-        public static string Providers {
-            get {
-                return ResourceManager.GetString("Providers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Regions.
         /// </summary>
         public static string Regions {
@@ -354,15 +300,6 @@ namespace SD.Shared.Resources {
         public static string Release {
             get {
                 return ResourceManager.GetString("Release", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rent.
-        /// </summary>
-        public static string Rent {
-            get {
-                return ResourceManager.GetString("Rent", resourceCulture);
             }
         }
         

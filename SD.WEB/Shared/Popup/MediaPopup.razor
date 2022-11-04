@@ -91,7 +91,7 @@
                                     <Row Margin="Margin.Is3.FromTop">
                                         <Column>
                                             <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
-                                                Mais informações ou Contribuições: <a href="@fomatted_link" target="_blank" rel="noopener">@(uri_link.Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+                                                @GlobalTranslations.MoreInformation: <a href="@fomatted_link" target="_blank" rel="noopener">@(uri_link.Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
                                             </Alert>
                                         </Column>
                                     </Row>
@@ -107,7 +107,7 @@
                                     hasProvider = true;
                                     <Row HorizontalGutter="4" VerticalGutter="4">
                                         <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                            <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.Free</Button>
+                                            <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFree</Button>
                                         </Column>
                                         @foreach (var item in Providers.GetFreeListProviders(Settings.Region))
                                         {
@@ -131,7 +131,7 @@
                                     hasProvider = true;
                                     <Row HorizontalGutter="4" VerticalGutter="4">
                                         <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                            <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.Ads</Button>
+                                            <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelAds</Button>
                                         </Column>
                                         @foreach (var item in Providers.GetAdsListProviders(Settings.Region))
                                         {
@@ -155,7 +155,7 @@
                                     hasProvider = true;
                                     <Row HorizontalGutter="4" VerticalGutter="4">
                                         <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                            <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.FlatRate</Button>
+                                            <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFlatRate</Button>
                                         </Column>
                                         @foreach (var item in Providers.GetFlatRateListProviders(Settings.Region))
                                         {
@@ -179,7 +179,7 @@
                                     hasProvider = true;
                                     <Row HorizontalGutter="4" VerticalGutter="4">
                                         <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                            <Button Color="Color.Warning" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.FlatRateBuy</Button>
+                                            <Button Color="Color.Warning" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFlatRateBuy</Button>
                                         </Column>
                                         @foreach (var item in Providers.GetFlatRateBuyListProviders(Settings.Region))
                                         {
@@ -203,7 +203,7 @@
                                     hasProvider = true;
                                     <Row HorizontalGutter="4" VerticalGutter="4">
                                         <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                            <Button Color="Color.Primary" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.Rent</Button>
+                                            <Button Color="Color.Primary" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelRent</Button>
                                         </Column>
                                         @foreach (var item in Providers.GetRentListProviders(Settings.Region))
                                         {
@@ -227,7 +227,7 @@
                                     hasProvider = true;
                                     <Row HorizontalGutter="4" VerticalGutter="4">
                                         <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                            <Button Color="Color.Danger" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@TranslationText.Buy</Button>
+                                            <Button Color="Color.Danger" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelBuy</Button>
                                         </Column>
                                         @foreach (var item in Providers.GetBuyListProviders(Settings.Region))
                                         {
@@ -252,7 +252,7 @@
                                     <Row Margin="Margin.Is3.FromTop">
                                         <Column>
                                             <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
-                                                Oferecimento: <a href="https://www.justwatch.com/" target="_blank" rel="noopener">@(new Uri("https://www.justwatch.com/").Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+                                                @GlobalTranslations.Offering: <a href="https://www.justwatch.com/" target="_blank" rel="noopener">@(new Uri("https://www.justwatch.com/").Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
                                             </Alert>
                                         </Column>
                                     </Row>
@@ -260,7 +260,7 @@
                                 else
                                 {
                                     <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
-                                        Infelizmente este título não está disponível em sua região
+                                        @GlobalTranslations.TitleNotAvailable
                                     </Alert>
                                 }
                             }
@@ -286,43 +286,43 @@
                         @if (WishList?.Movies.Any(a => a.id == media?.tmdb_id) ?? false)
                         {
                             <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd">
-                                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Remove
+                                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
                             </Button>
                         }
                         else if (WishList?.Shows.Any(a => a.id == media?.tmdb_id) ?? false)
                         {
                             <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd">
-                                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Remove
+                                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
                             </Button>
                         }
                         else
                         {
                             <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd">
-                                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Adicionar
+                                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
                             </Button>
                         }
                         @if (WatchedList?.Movies.Any(a => a == media?.tmdb_id) ?? false)
                         {
                             <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd">
-                                <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> Não Assistido
+                                <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
                             </Button>
                         }
                         else if (WatchedList?.Shows.Any(a => a == media?.tmdb_id) ?? false)
                         {
                             <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd">
-                                <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> Não Assistido
+                                <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
                             </Button>
                         }
                         else
                         {
                             <Button Color="Color.Primary" Clicked="Watched" Margin="Margin.Is2.FromEnd">
-                                <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> Assistido
+                                <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonWatched
                             </Button>
                         }
                     </Authorized>
                 </AuthorizeView>
                 @*<Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false">Atualizar</Button>*@
-                <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@TranslationText.Close</Button>
+                <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@GlobalTranslations.ButtonClose</Button>
             </Column>
         </Row>
     </Container>

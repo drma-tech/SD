@@ -54,31 +54,31 @@ namespace SD.Shared.Model.Support
 
     public enum TicketType
     {
-        [Custom(Name = "Erro")]
+        [Custom(Name = "BugReport", ResourceType = typeof(Models.Support.Resources.TicketType))]
         BugReport = 1,
 
-        [Custom(Name = "Melhoria")]
+        [Custom(Name = "Improvement", ResourceType = typeof(Models.Support.Resources.TicketType))]
         Improvement = 2
     }
 
     public enum TicketStatus
     {
-        [Custom(Name = "Novo")]
+        [Custom(Name = "New", ResourceType = typeof(Models.Support.Resources.TicketStatus))]
         New = 1,
 
-        [Custom(Name = "Em Análise")]
+        [Custom(Name = "UnderConsideration", ResourceType = typeof(Models.Support.Resources.TicketStatus))]
         UnderConsideration = 2,
 
-        [Custom(Name = "Planejado")]
+        [Custom(Name = "Planned", ResourceType = typeof(Models.Support.Resources.TicketStatus))]
         Planned = 3,
 
-        [Custom(Name = "Em progresso")]
+        [Custom(Name = "Progress", ResourceType = typeof(Models.Support.Resources.TicketStatus))]
         Progress = 4,
 
-        [Custom(Name = "Finalizado")]
+        [Custom(Name = "Done", ResourceType = typeof(Models.Support.Resources.TicketStatus))]
         Done = 5,
 
-        [Custom(Name = "Recusado")]
+        [Custom(Name = "Declined", ResourceType = typeof(Models.Support.Resources.TicketStatus))]
         Declined = 6
     }
 }

@@ -6,23 +6,24 @@
 @using SD.WEB.Modules.Support.Component
 @using SD.WEB.Modules.Support.Core
 @inherits PageCore<Support.Index>
+@inject Settings Settings
 
 <Alert Color="Color.Secondary" Visible="true">
     <AlertDescription>
-        <Blazorise.Link To="Terms/pt">Termos de Uso</Blazorise.Link> ▪ <Blazorise.Link To="Privacy/pt">Políticas de Privacidade</Blazorise.Link> ▪ <Blazorise.Link To="Faq">Dúvidas / Perguntas</Blazorise.Link>
+        <Blazorise.Link To="@("Terms/" + (Settings.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkTerm</Blazorise.Link> ▪ <Blazorise.Link To="@("Privacy/" + (Settings.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkPrivacy</Blazorise.Link> ▪ <Blazorise.Link To="Faq">@Resources.Translations.LinkFAQ</Blazorise.Link>
     </AlertDescription>
 </Alert>
 
 <Alert Color="Color.Warning" Visible="true">
     <AlertDescription>
-        Para usuários do aplicativo da windows store, tivemos um erro de publicação e estava apontando para nosso ambiente de desenvolvimento. Caso tenha registrado muitas coisas e queira migrar, peço que abra um ticket de erro para que possamos migrar (infelizmente não é possível migrar automaticamente). Favor, informar no ticket seu id deste ambiente (@Principal?.Key) e o id no ambiente de desenvolvimento (<Blazorise.Link To="https://dev.streamingdiscovery.com/Support" Target="Target.Blank">Clicar aqui para pegar seu antigo id</Blazorise.Link>)
+        Para usuários do aplicativo da windows store, tivemos um erro de publicação (já está corrigido) e estava apontando para nosso ambiente de desenvolvimento. Caso tenha registrado muitas coisas e queira migrar, peço que abra um ticket de erro para que possamos migrar (infelizmente não é possível migrar automaticamente). Favor, informar no ticket seu id deste ambiente (@Principal?.Key) e o id no ambiente de desenvolvimento (<Blazorise.Link To="https://dev.streamingdiscovery.com/Support" Target="Target.Blank">Clicar aqui para pegar seu antigo id</Blazorise.Link>)
     </AlertDescription>
 </Alert>
 
 <Div Margin="Margin.Is2.OnY">
-    <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Feedback)" Clicked="(() => ChangeOrder(Tabs.Feedback))">Feedback</Button>
-    <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Roadmap)" Clicked="(() => ChangeOrder(Tabs.Roadmap))">Roadmap</Button>
-    <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Announcements)" Clicked="(() => ChangeOrder(Tabs.Announcements))">Announcements</Button>
+    <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Feedback)" Clicked="(() => ChangeOrder(Tabs.Feedback))">@Resources.Translations.TabFeedback</Button>
+    <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Roadmap)" Clicked="(() => ChangeOrder(Tabs.Roadmap))">@Resources.Translations.TabRoadmap</Button>
+    <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Announcements)" Clicked="(() => ChangeOrder(Tabs.Announcements))">@Resources.Translations.TabAnnouncements</Button>
 </Div>
 
 @if (SelectedTab == Tabs.Feedback)
@@ -84,7 +85,7 @@
                 </FieldBody>
                 <FieldBody ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
                     <Button Color="Color.Primary" Block="true" Clicked="ShowModal" Disabled="!ComponenteUtils.IsAuthenticated">
-                        <Blazorise.Icon Name="@FontAwesomeIcons.Plus"></Blazorise.Icon> Novo
+                        <Blazorise.Icon Name="@FontAwesomeIcons.Plus"></Blazorise.Icon> @GlobalTranslations.ButtonNew
                     </Button>
                 </FieldBody>
             </Field>
@@ -222,10 +223,10 @@ else if (SelectedTab == Tabs.Announcements)
 
     private enum Order
     {
-        [Custom(Name = "Mais recentes")]
+        [Custom(Name = "OrderLast", ResourceType = typeof(SD.WEB.Modules.Support.Resources.Translations))]
         Last,
 
-        [Custom(Name = "Mais votados")]
+        [Custom(Name = "OrderVoted", ResourceType = typeof(SD.WEB.Modules.Support.Resources.Translations))]
         Voted
     }
 
@@ -235,7 +236,6 @@ else if (SelectedTab == Tabs.Announcements)
 
         tickets = await Http.Ticket_GetList();
         if (ComponenteUtils.IsAuthenticated) myVotes = await Http.Ticket_GetMyVotes();
-
 
         Principal = await Http.Principal_Get(Session);
 

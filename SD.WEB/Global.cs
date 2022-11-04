@@ -4,3 +4,4 @@ global using SD.Shared.Helper;
 global using SD.Shared.Model;
 
 global using SD.WEB.Core;
+global using SD.WEB.Resources;

@@ -117,100 +117,106 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="All" xml:space="preserve">
-    <value>All</value>
+  <data name="ButtonAdd" xml:space="preserve">
+    <value>Adicionar</value>
   </data>
-  <data name="Animated" xml:space="preserve">
-    <value>Animated</value>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>Cancelar</value>
   </data>
-  <data name="Catalog" xml:space="preserve">
-    <value>Catalog</value>
+  <data name="ButtonClose" xml:space="preserve">
+    <value>Fechar</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
+  <data name="ButtonLogin" xml:space="preserve">
+    <value>Entrar</value>
   </data>
-  <data name="Comedy" xml:space="preserve">
-    <value>Comedy</value>
+  <data name="ButtonLogout" xml:space="preserve">
+    <value>Sair</value>
   </data>
-  <data name="ComingSoon" xml:space="preserve">
-    <value>Coming Soon</value>
+  <data name="ButtonNew" xml:space="preserve">
+    <value>Novo</value>
   </data>
-  <data name="DeliveryModel" xml:space="preserve">
-    <value>Models</value>
+  <data name="ButtonNotWatched" xml:space="preserve">
+    <value>Não Assistido</value>
   </data>
-  <data name="Documentary" xml:space="preserve">
-    <value>Documentary</value>
+  <data name="ButtonRemove" xml:space="preserve">
+    <value>Remover</value>
   </data>
-  <data name="Drama" xml:space="preserve">
-    <value>Drama</value>
+  <data name="ButtonSave" xml:space="preserve">
+    <value>Salvar</value>
   </data>
-  <data name="emmys_desc" xml:space="preserve">
-    <value>The Primetime Emmy Award is an American award bestowed by the Academy of Television Arts &amp; Sciences in recognition of excellence in American primetime television programming.</value>
+  <data name="ButtonWatched" xml:space="preserve">
+    <value>Assistido</value>
   </data>
-  <data name="golden_desc" xml:space="preserve">
-    <value>Official site of the Golden Globes with Winners &amp; Nominees, exclusive Hollywood interviews, and historical pieces from the Hollywood Foreign Press Association.</value>
+  <data name="CustomVisibilityInvalid" xml:space="preserve">
+    <value>Operação inválida. Por favor, tente novamente.</value>
   </data>
-  <data name="imdb_desc" xml:space="preserve">
-    <value>IMDb is the world's most popular and authoritative source for movie, TV and celebrity content. Find ratings and reviews for the newest movie and TV shows.</value>
+  <data name="CustomVisibilityLoading" xml:space="preserve">
+    <value>Carregando...</value>
   </data>
-  <data name="International" xml:space="preserve">
-    <value>International</value>
+  <data name="CustomVisibilityNoData" xml:space="preserve">
+    <value>Não há dados para mostrar</value>
   </data>
-  <data name="Limited" xml:space="preserve">
-    <value>Limited</value>
+  <data name="DeliveryModelAds" xml:space="preserve">
+    <value>Anúncios</value>
   </data>
-  <data name="Loading" xml:space="preserve">
-    <value>Loading...</value>
+  <data name="DeliveryModelBuy" xml:space="preserve">
+    <value>Comprar</value>
   </data>
-  <data name="MediaTypes" xml:space="preserve">
-    <value>Media</value>
+  <data name="DeliveryModelFlatRate" xml:space="preserve">
+    <value>Taxa Fixa</value>
   </data>
-  <data name="MotionPicture" xml:space="preserve">
-    <value>Motion Picture</value>
+  <data name="DeliveryModelFlatRateBuy" xml:space="preserve">
+    <value>Taxa Fixa/Comprar</value>
   </data>
-  <data name="MusicalComedy" xml:space="preserve">
-    <value>Musical or Comedy</value>
+  <data name="DeliveryModelFree" xml:space="preserve">
+    <value>Grátis</value>
   </data>
-  <data name="NoData" xml:space="preserve">
-    <value>There is no data to show</value>
+  <data name="DeliveryModelRent" xml:space="preserve">
+    <value>Alugar</value>
   </data>
-  <data name="NoPlot" xml:space="preserve">
-    <value>overview not available in your language</value>
+  <data name="FeatureUnavailableDescription" xml:space="preserve">
+    <value>Aguarde novidades...</value>
   </data>
-  <data name="NotFound" xml:space="preserve">
-    <value>Not Found</value>
+  <data name="FeatureUnavailableMessage" xml:space="preserve">
+    <value>Em desenvolvimento</value>
   </data>
-  <data name="OK" xml:space="preserve">
-    <value>OK</value>
+  <data name="MenuHome" xml:space="preserve">
+    <value>Home</value>
   </data>
-  <data name="oscar_desc" xml:space="preserve">
-    <value>Official site of the Academy with history and general information on the Academy Awards, as well as photographs, events and screenings, and press releases.</value>
+  <data name="MenuList" xml:space="preserve">
+    <value>Listas</value>
   </data>
-  <data name="Plans" xml:space="preserve">
-    <value>Plans</value>
+  <data name="MenuProvider" xml:space="preserve">
+    <value>Provedores</value>
   </data>
-  <data name="Popular" xml:space="preserve">
-    <value>Popular</value>
+  <data name="MenuSupport" xml:space="preserve">
+    <value>Suporte</value>
   </data>
-  <data name="Regions" xml:space="preserve">
-    <value>Regions</value>
+  <data name="MoreInformation" xml:space="preserve">
+    <value>Mais informações ou Contribuições</value>
   </data>
-  <data name="Release" xml:space="preserve">
-    <value>News</value>
+  <data name="MyMovieWishlist" xml:space="preserve">
+    <value>Lista de desejos - Filmes ({0} itens)</value>
   </data>
-  <data name="RouterNotFound" xml:space="preserve">
-    <value>Sorry, there is nothing at this address.</value>
+  <data name="MyProviders" xml:space="preserve">
+    <value>Provedores favoritos ({0} itens)</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
+  <data name="MyShowWishlist" xml:space="preserve">
+    <value>Lista de desejos - Seriados ({0} itens)</value>
   </data>
-  <data name="thr_desc" xml:space="preserve">
-    <value>The Hollywood Reporter is the premier destination &amp; most widely trusted resource for entertainment news, reviews, videos &amp; more.</value>
+  <data name="Offering" xml:space="preserve">
+    <value>Oferecimento</value>
   </data>
-  <data name="tmdb_desc" xml:space="preserve">
-    <value>The Movie Database (TMDb) is a popular, user editable database for movies and TV shows.</value>
+  <data name="ProviderPopupTabAbout" xml:space="preserve">
+    <value>Sobre</value>
   </data>
-  <data name="TopRated" xml:space="preserve">
-    <value>Recommended</value>
+  <data name="ProviderPopupTabCatalog" xml:space="preserve">
+    <value>Catálogo</value>
+  </data>
+  <data name="ProviderPopupTabDetails" xml:space="preserve">
+    <value>Detalhes</value>
+  </data>
+  <data name="TitleNotAvailable" xml:space="preserve">
+    <value>Infelizmente este título não está disponível em sua região</value>
   </data>
 </root>

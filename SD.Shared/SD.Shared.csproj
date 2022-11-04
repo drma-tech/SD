@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Update="Models\Support\Resources\TicketStatus.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TicketStatus.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Models\Support\Resources\TicketType.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TicketType.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Enum\DeliveryModel.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -35,6 +45,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Models\Support\Resources\TicketStatus.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TicketStatus.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Models\Support\Resources\TicketType.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TicketType.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\TranslationText.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TranslationText.Designer.cs</LastGenOutput>

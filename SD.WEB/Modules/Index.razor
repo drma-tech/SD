@@ -9,7 +9,7 @@
 @inject Settings Settings
 
 <Alert Visible="true" Color="Color.Secondary">
-    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> Provedores Favoritos (@(myProviders?.Items.Count ?? 0) itens)</AlertMessage>
+    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.MyProviders.Format(myProviders?.Items.Count ?? 0)</AlertMessage>
 </Alert>
 <AuthorizeView>
     <Authorized>
@@ -35,7 +35,7 @@
 </AuthorizeView>
 
 <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
-    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Lista de Interesses - Filmes (@(wishList?.Movies.Count() ?? 0) itens)</AlertMessage>
+    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.MyMovieWishlist.Format(wishList?.Movies.Count() ?? 0)</AlertMessage>
 </Alert>
 <AuthorizeView>
     <Authorized>
@@ -62,7 +62,7 @@
 </AuthorizeView>
 
 <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
-    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> Lista de Interesses - Seriados (@(wishList?.Shows.Count() ?? 0) itens)</AlertMessage>
+    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.MyShowWishlist.Format(wishList?.Shows.Count() ?? 0)</AlertMessage>
 </Alert>
 <AuthorizeView>
     <Authorized>

@@ -11,9 +11,9 @@
 <ModalBody MaxHeight="70">
     <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true">
         <Items>
-            <Tab Name="About">About</Tab>
-            <Tab Name="Details">Details</Tab>
-            <Tab Name="Catalog">Catalog</Tab>
+            <Tab Name="About">@GlobalTranslations.ProviderPopupTabAbout</Tab>
+            <Tab Name="Details">@GlobalTranslations.ProviderPopupTabDetails</Tab>
+            <Tab Name="Catalog">@GlobalTranslations.ProviderPopupTabCatalog</Tab>
         </Items>
         <Content>
             <TabPanel Name="About" Class="mt-3">
@@ -98,13 +98,13 @@
             @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
             {
                 <Button Color="Color.Danger" Clicked="Remove">
-                    <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> Remove
+                    <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
                 </Button>
             }
             else
             {
                 <Button Color="Color.Primary" Clicked="Add">
-                    <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> Adicionar
+                    <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
                 </Button>
             }
         </Authorized>

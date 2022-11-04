@@ -1,13 +1,12 @@
 ﻿@page "/Provider"
 <PageTitle>SD - Provedores</PageTitle>
-@using SD.Shared.Model
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
 @inherits ComponenteCore<Provider>
 @inject Settings Settings
 
 <Alert Visible="true" Color="Color.Secondary">
-    <AlertMessage>@TranslationText.Providers (@Settings?.Region)</AlertMessage>
+    <AlertMessage>@Resources.Translations.TitleProviders.Format(Settings?.Region)</AlertMessage>
     <RadioGroup TValue="int" @bind-CheckedValue="ProviderCount" Buttons="true" Float="Float.End" Class="btn-group-xs">
         <Radio TValue="int" Value="48">48</Radio>
         <Radio TValue="int" Value="1000">@TranslationText.All</Radio>

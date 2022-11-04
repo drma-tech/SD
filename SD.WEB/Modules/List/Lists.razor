@@ -3,7 +3,7 @@
 @inherits ComponenteCore<Lists>
 
 <Alert Visible="true" Color="Color.Secondary">
-    <AlertMessage>Premiações</AlertMessage>
+    <AlertMessage>@Resources.Translations.TitleAwards</AlertMessage>
 </Alert>
 <CustomVisibility NoData="(!Premiacoes.Any())">
     <Row HorizontalGutter="4" VerticalGutter="4">
@@ -24,7 +24,7 @@
 </CustomVisibility>
 
 <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
-    <AlertMessage>Sites Especializados</AlertMessage>
+    <AlertMessage>@Resources.Translations.TitleSpecializedSites</AlertMessage>
 </Alert>
 <CustomVisibility NoData="(!Sites.Any())">
     <Row HorizontalGutter="4" VerticalGutter="4">
