@@ -268,11 +268,11 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Providers.
+        ///   Looks up a localized string similar to Profile.
         /// </summary>
-        public static string MenuProvider {
+        public static string MenuProfile {
             get {
-                return ResourceManager.GetString("MenuProvider", resourceCulture);
+                return ResourceManager.GetString("MenuProfile", resourceCulture);
             }
         }
         

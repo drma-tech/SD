@@ -7,17 +7,17 @@
 @inject ListService Service
 @inject Settings Settings
 
-<HeadPage ImageSource="logo/emmys.png" Text="@TranslationText.emmys_desc" Link="https://www.emmys.com/"></HeadPage>
+<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/emmys.png" Text="@TranslationText.emmys_desc" Link="https://www.emmys.com/"></SD.WEB.Modules.List.Components.HeadPage>
 
-<MediaList CardHeader="@TranslationText.Drama" Items="@ListDrama" list_id="7103525" maxItens="8"
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Drama" Items="@ListDrama" list_id="7103525" maxItens="8"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
-<MediaList CardHeader="@TranslationText.Comedy" Items="@ListComedy" list_id="7103519" maxItens="7"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Comedy" Items="@ListComedy" list_id="7103519" maxItens="7"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
-<MediaList CardHeader="@TranslationText.Limited" Items="@ListLimited" list_id="7103526" maxItens="11"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Limited" Items="@ListLimited" list_id="7103526" maxItens="11"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 
 @code {
     private HashSet<MediaDetail> ListDrama { get; set; } = new();

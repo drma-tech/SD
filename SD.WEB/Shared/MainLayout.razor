@@ -22,16 +22,16 @@
                 <Bar Mode="BarMode.Horizontal" Breakpoint="Breakpoint.Mobile" CollapseMode="BarCollapseMode.Small" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark"
                      Padding="Padding.Is0.FromBottom.Is0.FromTop" Style="text-align: center; display: block;">
                     <BarBrand Class="mr-0 py-1">
-                        <Button Color="GetColor(TypeButton.Home)" To="/" Type="ButtonType.Link" title="Home" Class="py-1 px-2">
+                        <Button Color="GetColor(TypeButton.Home)" To="/" Type="ButtonType.Link" title="@GlobalTranslations.MenuHome" Class="py-1 px-2">
                             <Blazorise.Icon Name="FontAwesomeIcons.UserCircle" />
                         </Button>
-                        <Button Color="GetColor(TypeButton.Providers)" To="/Provider" Type="ButtonType.Link" title="Providers" Class="py-1 px-2">
+                        <Button Color="GetColor(TypeButton.Profile)" To="/Profile" Type="ButtonType.Link" title="@GlobalTranslations.MenuProfile" Class="py-1 px-2">
                             <BarIcon IconName="FontAwesomeIcons.Th" />
                         </Button>
-                        <Button Color="GetColor(TypeButton.Lists)" To="/List" Type="ButtonType.Link" title="Lists" Class="py-1 px-2">
+                        <Button Color="GetColor(TypeButton.Lists)" To="/List" Type="ButtonType.Link" title="@GlobalTranslations.MenuList" Class="py-1 px-2">
                             <BarIcon IconName="FontAwesomeIcons.List" />
                         </Button>
-                        <Button Color="GetColor(TypeButton.Support)" To="/Support" Type="ButtonType.Link" title="Support" Class="py-1 px-2">
+                        <Button Color="GetColor(TypeButton.Support)" To="/Support" Type="ButtonType.Link" title="@GlobalTranslations.MenuSupport" Class="py-1 px-2">
                             <BarIcon IconName="FontAwesomeIcons.Bug" />
                         </Button>
                     </BarBrand>
@@ -47,7 +47,7 @@
 @code {
     private enum TypeButton
     {
-        Home, Providers, Lists, Support
+        Home, Profile, Lists, Support
     }
 
     private TypeButton CurrentButton;
@@ -70,8 +70,9 @@
 
     private void ChangeCurrentButton(string location)
     {
-        if (location.Contains("/Provider")) CurrentButton = TypeButton.Providers;
+        if (location.Contains("/Profile")) CurrentButton = TypeButton.Profile;
         else if (location.Contains("/List")) CurrentButton = TypeButton.Lists;
+        else if (location.Contains("/Support")) CurrentButton = TypeButton.Support;
         else CurrentButton = TypeButton.Home;
     }
 

@@ -4,19 +4,22 @@
 @inherits ComponenteCore<MediaList>
 @inject Settings Settings
 
-<Alert Visible="true" Color="Color.Secondary">
-    <AlertMessage>@CardHeader</AlertMessage>
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList">
-        <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
-    </Button>
-    @if (ShowFilter)
-    {
-        <RadioGroup CheckedValue="TypeSelected" CheckedValueChanged="TypeSelectedChanged" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is2.FromEnd">
-            <Radio Value="MediaType.movie">@MediaType.movie.GetName()</Radio>
-            <Radio Value="MediaType.tv">@MediaType.tv.GetName()</Radio>
-        </RadioGroup>
-    }
-</Alert>
+@if (ShowHead)
+{
+    <Alert Visible="true" Color="Color.Secondary">
+        <AlertMessage>@CardHeader</AlertMessage>
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList">
+            <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
+        </Button>
+        @if (ShowFilter)
+        {
+            <RadioGroup CheckedValue="TypeSelected" CheckedValueChanged="TypeSelectedChanged" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is2.FromEnd">
+                <Radio Value="MediaType.movie">@MediaType.movie.GetName()</Radio>
+                <Radio Value="MediaType.tv">@MediaType.tv.GetName()</Radio>
+            </RadioGroup>
+        }
+    </Alert>
+}
 <CustomVisibility NoData="(!Items.Any())">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @for (int i = 1; i <= Items.Take(10).Count(); i++)
@@ -149,6 +152,7 @@
     [Parameter] public MediaType TypeSelected { get; set; }
     [Parameter] public EventCallback<MediaType> TypeSelectedChanged { get; set; }
     [Parameter] public bool ShowFilter { get; set; } = false;
+    [Parameter] public bool ShowHead { get; set; } = true;
 
     [Parameter] public WishList? WishList { get; set; }
     [Parameter] public WatchedList? WatchedList { get; set; }

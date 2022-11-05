@@ -107,7 +107,7 @@
 
     private async Task ShowPopupProvider(ProviderModel item)
     {
-        await ModalService.Show<ProviderPopup>(item.name,
+        await ModalService.Show<Components.ProviderPopup>(item.name,
             x =>
             {
                 x.Add(x => x.provider, item);

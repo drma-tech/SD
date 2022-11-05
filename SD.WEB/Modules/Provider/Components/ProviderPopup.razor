@@ -76,18 +76,18 @@
                 }
             </TabPanel>
             <TabPanel Name="Catalog" Class="mt-3">
-                <MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="popularDisable"
+                <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="popularDisable"
                            TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
                            WishList="WishList" WishListChanged="@(async(WishList value)=>{WishList = value; await WishListChanged.InvokeAsync(value);})"
-                           WatchedList="WatchedList" WatchedListChanged="@(async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); })"></MediaList>
-                <MediaList CardHeader="@TranslationText.Release" Items="@ListNew" maxItens="50" NextPage="@(()=>LoadNew(newMedia))" DisableLoadMore="newDisable"
+                           WatchedList="WatchedList" WatchedListChanged="@(async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); })"></SD.WEB.Modules.List.Components.MediaList>
+                <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Release" Items="@ListNew" maxItens="50" NextPage="@(()=>LoadNew(newMedia))" DisableLoadMore="newDisable"
                            TypeSelected="newMedia" TypeSelectedChanged="ChangeNewMediaType" ShowFilter="true" ShowOnlyYear="false"
                            WishList="WishList" WishListChanged="@(async(WishList value)=>{WishList = value; await WishListChanged.InvokeAsync(value);})"
-                           WatchedList="WatchedList" WatchedListChanged="@(async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); })"></MediaList>
-                <MediaList CardHeader="@TranslationText.TopRated" Items="@ListTopRated" maxItens="50" NextPage="@(()=>LoadTopRated(topRatedMedia))" DisableLoadMore="topRatedDisable"
+                           WatchedList="WatchedList" WatchedListChanged="@(async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); })"></SD.WEB.Modules.List.Components.MediaList>
+                <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.TopRated" Items="@ListTopRated" maxItens="50" NextPage="@(()=>LoadTopRated(topRatedMedia))" DisableLoadMore="topRatedDisable"
                            TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
                            WishList="WishList" WishListChanged="@(async(WishList value)=>{WishList = value; await WishListChanged.InvokeAsync(value);})"
-                           WatchedList="WatchedList" WatchedListChanged="@(async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); })"></MediaList>
+                           WatchedList="WatchedList" WatchedListChanged="@(async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); })"></SD.WEB.Modules.List.Components.MediaList>
             </TabPanel>
         </Content>
     </Tabs>

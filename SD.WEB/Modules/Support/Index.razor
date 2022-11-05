@@ -1,12 +1,13 @@
 ﻿@page "/Support"
+@attribute [Authorize]
 <PageTitle>SD - Support</PageTitle>
+@inherits PageCore<Support.Index>
+@inject Settings Settings
 @using SD.Shared.Model.Auth
 @using SD.Shared.Model.Support
 @using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Support.Component
 @using SD.WEB.Modules.Support.Core
-@inherits PageCore<Support.Index>
-@inject Settings Settings
 
 <Alert Color="Color.Secondary" Visible="true">
     <AlertDescription>
@@ -235,8 +236,7 @@ else if (SelectedTab == Tabs.Announcements)
         Loading = true;
 
         tickets = await Http.Ticket_GetList();
-        if (ComponenteUtils.IsAuthenticated) myVotes = await Http.Ticket_GetMyVotes();
-
+        myVotes = await Http.Ticket_GetMyVotes();
         Principal = await Http.Principal_Get(Session);
 
         Loading = false;

@@ -7,14 +7,14 @@
 @using SD.WEB.Modules.Profile.Core
 @inject Settings Settings
 
-<HeadPage ImageSource="logo/HollywoodReporter.png" Text="@TranslationText.thr_desc" Link="https://www.hollywoodreporter.com/"></HeadPage>
+<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/HollywoodReporter.png" Text="@TranslationText.thr_desc" Link="https://www.hollywoodreporter.com/"></SD.WEB.Modules.List.Components.HeadPage>
 
-<MediaList CardHeader="Top 100 Movies" Items="@ListMovies" list_id="8222343" maxItens="100"
+<SD.WEB.Modules.List.Components.MediaList CardHeader="Top 100 Movies" Items="@ListMovies" list_id="8222343" maxItens="100"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
-<MediaList CardHeader="Top 100 TV Shows" Items="@ListShows" list_id="8222348" maxItens="100"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="Top 100 TV Shows" Items="@ListShows" list_id="8222348" maxItens="100"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 
 @code {
     private HashSet<MediaDetail> ListMovies { get; set; } = new();

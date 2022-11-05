@@ -8,20 +8,20 @@
 @using SD.WEB.Modules.List.Core.TMDB
 @using SD.WEB.Modules.List.Core.IMDB
 
-<HeadPage ImageSource="logo/imdb.png" Text="@TranslationText.imdb_desc" Link="https://www.imdb.com/"></HeadPage>
+<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/imdb.png" Text="@TranslationText.imdb_desc" Link="https://www.imdb.com/"></SD.WEB.Modules.List.Components.HeadPage>
 
-<MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" IsIMDB="true" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="PopularDisable"
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" IsIMDB="true" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="PopularDisable"
            TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
-<MediaList CardHeader="Top 250" Items="@ListTopRated" list_id="@(topRatedMedia== MediaType.movie?"8223821":"8223826")" maxItens="250"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="Top 250" Items="@ListTopRated" list_id="@(topRatedMedia== MediaType.movie?"8223821":"8223826")" maxItens="250"
            TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
-<MediaList CardHeader="@TranslationText.ComingSoon" Items="@ListUpcoming" maxItens="50" IsIMDB="true" NextPage="LoadUpcoming" DisableLoadMore="UpcomingDisable"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.ComingSoon" Items="@ListUpcoming" maxItens="50" IsIMDB="true" NextPage="LoadUpcoming" DisableLoadMore="UpcomingDisable"
            ShowOnlyYear="false"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 
 @code {
     private HashSet<MediaDetail> ListPopular { get; set; } = new();

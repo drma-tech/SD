@@ -13,22 +13,22 @@
     <BarMenu>
         <BarStart>
             <BarItem>
-                <BarLink To="/" Match="Match.All" Title="Index">
-                    <BarIcon IconName="FontAwesomeIcons.UserCircle" /> @GlobalTranslations.MenuHome
+                <BarLink To="/" Match="Match.All" Title="@GlobalTranslations.MenuHome">
+                    <BarIcon IconName="FontAwesomeIcons.Home" /> @GlobalTranslations.MenuHome
                 </BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="/Provider" Match="Match.Prefix" Title="Providers">
-                    <BarIcon IconName="FontAwesomeIcons.Th" /> @GlobalTranslations.MenuProvider
+                <BarLink To="/Profile" Match="Match.Prefix" Title="@GlobalTranslations.MenuProfile">
+                    <BarIcon IconName="FontAwesomeIcons.UserCircle" /> @GlobalTranslations.MenuProfile
                 </BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="/List" Match="Match.Prefix" Title="Lists">
+                <BarLink To="/List" Match="Match.Prefix" Title="@GlobalTranslations.MenuList">
                     <BarIcon IconName="FontAwesomeIcons.List" /> @GlobalTranslations.MenuList
                 </BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="/Support" Match="Match.Prefix" Title="Support">
+                <BarLink To="/Support" Match="Match.Prefix" Title="@GlobalTranslations.MenuSupport">
                     <BarIcon IconName="FontAwesomeIcons.Bug" /> @GlobalTranslations.MenuSupport
                 </BarLink>
             </BarItem>

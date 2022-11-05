@@ -7,20 +7,20 @@
 @inject ListService Service
 @inject Settings Settings
 
-<HeadPage ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></HeadPage>
+<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></SD.WEB.Modules.List.Components.HeadPage>
 
-<MediaList CardHeader="@TranslationText.MotionPicture" Items="@ListMotionPicture" list_id="7103422" maxItens="12"
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.MotionPicture" Items="@ListMotionPicture" list_id="7103422" maxItens="12"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
-<MediaList CardHeader="@TranslationText.Animated" Items="@ListAnimated" list_id="7103492" maxItens="12"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Animated" Items="@ListAnimated" list_id="7103492" maxItens="12"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
-<MediaList CardHeader="@TranslationText.International" Items="@ListInternational" list_id="7103493" maxItens="12"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.International" Items="@ListInternational" list_id="7103493" maxItens="12"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
-<MediaList CardHeader="@TranslationText.Documentary" Items="@ListDocumentary" list_id="7103488" maxItens="12"
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Documentary" Items="@ListDocumentary" list_id="7103488" maxItens="12"
            WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></MediaList>
+           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 
 @code {
     private HashSet<MediaDetail> ListMotionPicture { get; set; } = new();
