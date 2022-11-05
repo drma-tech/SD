@@ -10,18 +10,34 @@
 <Alert Visible="true" Color="Color.Secondary">
     <AlertMessage>@TranslationText.Popular</AlertMessage>
 
-    <RadioGroup CheckedValue="TypeSelected" CheckedValueChanged="TypeSelectedChanged" Buttons="true" Float="Float.End" Class="btn-group-xs" Disabled="true">
-        <Radio Value="1">Streaming</Radio>
-        <Radio Value="2">TV</Radio>
-        <Radio Value="3">Alugar</Radio>
-        <Radio Value="42">Cinemas</Radio>
+    <RadioGroup CheckedValue="TypeSelected" CheckedValueChanged="@(async(PopularType value)=>{await LoadLists(value); })" Buttons="true" Float="Float.End" Class="btn-group-xs">
+        <Radio Value="PopularType.Streaming">Streaming</Radio>
+        <Radio Value="PopularType.Rent">Alugar</Radio>
+        <Radio Value="PopularType.Cinema">Cinemas</Radio>
     </RadioGroup>
 </Alert>
 
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="10" ShowHead="false"
+@if (TypeSelected == PopularType.Streaming)
+{
+    <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListStreamin" maxItens="10" ShowHead="false"
                                           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
                                           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })">
-</SD.WEB.Modules.List.Components.MediaList>
+    </SD.WEB.Modules.List.Components.MediaList>
+}
+else if (TypeSelected == PopularType.Rent)
+{
+    <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListRent" maxItens="10" ShowHead="false"
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })">
+    </SD.WEB.Modules.List.Components.MediaList>
+}
+else if (TypeSelected == PopularType.Cinema)
+{
+    <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListCinema" maxItens="10" ShowHead="false"
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })">
+    </SD.WEB.Modules.List.Components.MediaList>
+}
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column>
@@ -40,7 +56,7 @@
                     <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is4.OnDesktop.Is6.OnMobile">
                         <Card>
                             <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name"
-                                   onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;"></CardImage>
+                                   onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;" title="@item.name"></CardImage>
                         </Card>
                         @*@if (string.IsNullOrEmpty(item.link))
                     {
@@ -77,10 +93,18 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    private HashSet<MediaDetail> ListPopular { get; set; } = new();
+    private HashSet<MediaDetail> ListStreamin { get; set; } = new();
+    private HashSet<MediaDetail> ListRent { get; set; } = new();
+    private HashSet<MediaDetail> ListCinema { get; set; } = new();
 
-    public int TypeSelected { get; set; } = 1;
-    public EventCallback<int> TypeSelectedChanged { get; set; }
+    public enum PopularType
+    {
+        Streaming,
+        Rent,
+        Cinema
+    }
+
+    public PopularType TypeSelected { get; set; } = PopularType.Streaming;
 
     private AllProviders? AllProviders { get; set; }
     private WishList? wishList { get; set; }
@@ -106,7 +130,7 @@
             wishList = await Http.WishList_Get(Session);
             watchedList = await Http.WatchedList_Get(Session);
 
-            await Http.PopulateTMDBPopular(Session, Settings, ListPopular, null, 1);
+            await LoadLists(TypeSelected);
 
             AllProviders = await Http.Provider_GetAll(Session);
         }
@@ -116,28 +140,67 @@
         }
     }
 
+    private async Task LoadLists(PopularType type)
+    {
+        TypeSelected = type;
+
+        switch (type)
+        {
+            case PopularType.Streaming:
+                //await Http.PopulateTMDBPopular(Session, Settings, ListStreamin, null, 1);
+                await Http.PopulateDiscover(Session, Settings, ListStreamin, null, 1, GetExtraParameters("flatrate", "popularity.desc"));
+                break;
+            case PopularType.Rent:
+                await Http.PopulateDiscover(Session, Settings, ListRent, null, 1, GetExtraParameters("rent", "popularity.desc"));
+                break;
+            case PopularType.Cinema:
+                await Http.PopulateNowPlaying(Session, Settings, ListCinema, 1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private Dictionary<string, string> GetExtraParameters(string monetization_type, string sort_by)
+    {
+        return new Dictionary<string, string>() { { "with_watch_monetization_types", monetization_type }, { "sort_by", sort_by } }; ;
+    }
+
     private async Task OpenCompleteList()
     {
-        //
+        await ModalService.Show<Modules.List.Components.CompleteListProvider>(@Provider.Resources.Translations.TitleProviders.Format(Settings?.Region),
+        x =>
+        {
+            x.Add(x => x.CardHeader, @Provider.Resources.Translations.TitleProviders.Format(Settings?.Region));
+            x.Add(x => x.AllProviders, AllProviders);
+            x.Add(x => x.WishList, wishList);
+            x.Add(x => x.WatchedList, watchedList);
+        },
+        new ModalInstanceOptions()
+            {
+                UseModalStructure = false,
+                Centered = true,
+                Size = ModalSize.ExtraLarge,
+            });
     }
 
     private async Task ShowPopupProvider(ProviderModel item)
     {
         await ModalService.Show<Provider.Components.ProviderPopup>(item.name,
-            x =>
+        x =>
+        {
+            x.Add(x => x.provider, item);
+            x.Add(x => x.mediaType, MediaType.movie); //todo: passar null
+            x.Add(x => x.WishList, wishList);
+            x.Add(x => x.WatchedList, watchedList);
+            x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
+            x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
+        },
+        new ModalInstanceOptions()
             {
-                x.Add(x => x.provider, item);
-                x.Add(x => x.mediaType, MediaType.movie); //todo: passar null
-                x.Add(x => x.WishList, wishList);
-                x.Add(x => x.WatchedList, watchedList);
-                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
-                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.ExtraLarge,
-                });
+                UseModalStructure = false,
+                Centered = true,
+                Size = ModalSize.ExtraLarge,
+            });
     }
 }
