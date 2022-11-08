@@ -13,8 +13,6 @@ using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-ConfigureComponents(builder.Services);
-
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
@@ -48,6 +46,8 @@ static void ConfigureComponents(IServiceCollection collection)
 
 static void ConfigureServices(IServiceCollection collection, string baseAddress)
 {
+    ConfigureComponents(collection);
+
     collection
         .AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) })
         .AddStaticWebAppsAuthentication();
