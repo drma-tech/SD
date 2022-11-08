@@ -1,4 +1,5 @@
-﻿using Blazored.SessionStorage;
+﻿using AzureStaticWebApps.Blazor.Authentication;
+using Blazored.SessionStorage;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
@@ -27,8 +28,12 @@ namespace SD.WEB
             collection.AddScoped<Settings>();
         }
 
-        public static void ConfigureServices(this IServiceCollection collection)
+        public static void ConfigureServices(this IServiceCollection collection, string baseAddress)
         {
+            collection
+                .AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) })
+                .AddStaticWebAppsAuthentication();
+
             collection.AddScoped<ListService>();
             collection.AddScoped<MediaDetailService>();
         }
