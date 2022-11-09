@@ -79,7 +79,7 @@ namespace SD.API.Repository
             }
         }
 
-        public async Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, string partitionKeyValue, DocumentType Type, CancellationToken cancellationToken) where T : DocumentBase
+        public async Task<List<T>> Query<T>(Expression<Func<T, bool>>? predicate, string? partitionKeyValue, DocumentType Type, CancellationToken cancellationToken) where T : DocumentBase
         {
             IQueryable<T> query;
 
@@ -139,8 +139,10 @@ namespace SD.API.Repository
             return response.Resource;
         }
 
-        public async Task<T> PatchItem<T>(string id, string partitionKeyValue, List<PatchOperation> operations, CancellationToken cancellationToken) where T : DocumentBase
+        public async Task<T> PatchItem<T>(string id, string? partitionKeyValue, List<PatchOperation> operations, CancellationToken cancellationToken) where T : DocumentBase
         {
+            if (partitionKeyValue == null) throw new ArgumentNullException(nameof(partitionKeyValue));
+
             //https://learn.microsoft.com/en-us/azure/cosmos-db/partial-document-update-getting-started?tabs=dotnet
 
             var response = await Container.PatchItemAsync<T>(id, new PartitionKey(partitionKeyValue), operations, null, cancellationToken);
@@ -171,7 +173,7 @@ namespace SD.API.Repository
 
     public static class CosmosRepositoryExtensions
     {
-        public static QueryRequestOptions? GetDefaultOptions(string partitionKeyValue)
+        public static QueryRequestOptions? GetDefaultOptions(string? partitionKeyValue)
         {
             if (string.IsNullOrEmpty(partitionKeyValue))
                 return null;

@@ -9,7 +9,7 @@
         public List<string> Movies { get; set; } = new();
         public List<string> Shows { get; set; } = new();
 
-        public override void SetIds(string id)
+        public override void SetIds(string? id)
         {
             SetValues(id);
         }

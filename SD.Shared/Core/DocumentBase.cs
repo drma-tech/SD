@@ -58,8 +58,9 @@
         /// <param name="key">Logical Partition</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        protected void SetValues(string id, string? key = null)
+        protected void SetValues(string? id, string? key = null)
         {
+            if (id == null) throw new ArgumentNullException(nameof(id));
             if (!Samekey && key == null) throw new ArgumentNullException(nameof(key));
             if (Samekey && key != null && id != key) throw new ArgumentException("parameters must be the same");
             if (!Samekey && id == key) throw new ArgumentException("parameters must be the different");

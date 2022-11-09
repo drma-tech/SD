@@ -8,7 +8,7 @@
 
         public List<MyProvidersItem> Items { get; set; } = new();
 
-        public override void SetIds(string id)
+        public override void SetIds(string? id)
         {
             SetValues(id);
         }

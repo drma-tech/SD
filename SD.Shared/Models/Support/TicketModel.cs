@@ -8,15 +8,15 @@ namespace SD.Shared.Model.Support
         {
         }
 
-        public string IdUserOwner { get; set; }
+        public string? IdUserOwner { get; set; }
 
         [Required]
         [Custom(Name = "Título", Prompt = "Uma frase que resume seu feedback")]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         [Required]
         [Custom(Name = "Descrição", Prompt = "Descreva o mais detalhado possível para que possamos entender melhor a situação")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         [Custom(Name = "Tipo")]

@@ -9,7 +9,7 @@
         public List<WishListItem> Movies { get; set; } = new();
         public List<WishListItem> Shows { get; set; } = new();
 
-        public override void SetIds(string id)
+        public override void SetIds(string? id)
         {
             SetValues(id);
         }
