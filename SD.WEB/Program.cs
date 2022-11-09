@@ -23,13 +23,13 @@ builder.Services.AddLogging(logging =>
     logging.AddProvider(new CosmosLoggerProvider());
 });
 
-var hostBuilder = builder.Build();
+//var hostBuilder = builder.Build();
 
-ConfigureCulture(hostBuilder);
+//ConfigureCulture(hostBuilder);
 
-await hostBuilder.RunAsync();
+await builder.Build().RunAsync();
 
-static void ConfigureComponents(IServiceCollection collection)
+static void ConfigureServices(IServiceCollection collection, string baseAddress)
 {
     collection
         .AddBlazorise(options => options.Immediate = true)
@@ -42,11 +42,6 @@ static void ConfigureComponents(IServiceCollection collection)
     collection.AddMediaQueryService();
 
     collection.AddScoped<Settings>();
-}
-
-static void ConfigureServices(IServiceCollection collection, string baseAddress)
-{
-    ConfigureComponents(collection);
 
     collection
         .AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) })
@@ -56,25 +51,25 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<MediaDetailService>();
 }
 
-static void ConfigureCulture(WebAssemblyHost host)
-{
-    CultureInfo culture;
-    var session = host.Services.GetRequiredService<ISyncSessionStorageService>();
-    var sett = session.GetItem<Settings>("Settings");
+//static void ConfigureCulture(WebAssemblyHost host)
+//{
+//    CultureInfo culture;
+//    var session = host.Services.GetRequiredService<ISyncSessionStorageService>();
+//    var sett = session.GetItem<Settings>("Settings");
 
-    if (sett != null)
-    {
-        culture = new CultureInfo(sett.Language.GetName(false) ?? "en-US");
-    }
-    else
-    {
-        culture = CultureInfo.CurrentCulture;
+//    if (sett != null)
+//    {
+//        culture = new CultureInfo(sett.Language.GetName(false) ?? "en-US");
+//    }
+//    else
+//    {
+//        culture = CultureInfo.CurrentCulture;
 
-        //save the new settings
-        sett = new Settings(session);
-        session.SetItem("Settings", sett);
-    }
+//        //save the new settings
+//        sett = new Settings(session);
+//        session.SetItem("Settings", sett);
+//    }
 
-    CultureInfo.DefaultThreadCurrentCulture = culture;
-    CultureInfo.DefaultThreadCurrentUICulture = culture;
-}
+//    CultureInfo.DefaultThreadCurrentCulture = culture;
+//    CultureInfo.DefaultThreadCurrentUICulture = culture;
+//}

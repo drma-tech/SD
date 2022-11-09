@@ -358,7 +358,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unfortunately this title is not available in your region..
+        ///   Looks up a localized string similar to Unfortunately this title is not available in your region.
         /// </summary>
         public static string TitleNotAvailable {
             get {
