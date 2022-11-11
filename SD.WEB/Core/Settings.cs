@@ -13,23 +13,23 @@ namespace SD.WEB.Core
         public Settings()
         { }
 
-        public Settings(ISyncSessionStorageService session)
-        {
-            var sett = session.GetItem<Settings>("Settings");
+        //public Settings(ISyncSessionStorageService session)
+        //{
+        //    var sett = session.GetItem<Settings>("Settings");
 
-            if (sett == null)
-            {
-                Enum.TryParse(typeof(Region), RegionInfo.CurrentRegion.Name, out object? region);
-                Enum.TryParse(typeof(Language), CultureInfo.CurrentCulture.Name.Replace("-", ""), out object? language);
+        //    if (sett == null)
+        //    {
+        //        Enum.TryParse(typeof(Region), RegionInfo.CurrentRegion.Name, out object? region);
+        //        Enum.TryParse(typeof(Language), CultureInfo.CurrentCulture.Name.Replace("-", ""), out object? language);
 
-                Region = (Region?)region ?? Region.US;
-                Language = (Language?)language ?? Language.enUS;
-            }
-            else
-            {
-                Region = sett.Region;
-                Language = sett.Language;
-            }
-        }
+        //        Region = (Region?)region ?? Region.US;
+        //        Language = (Language?)language ?? Language.enUS;
+        //    }
+        //    else
+        //    {
+        //        Region = sett.Region;
+        //        Language = sett.Language;
+        //    }
+        //}
     }
 }
