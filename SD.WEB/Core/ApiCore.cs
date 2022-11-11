@@ -26,6 +26,8 @@ namespace SD.WEB.Core
 
         public static async Task<T?> Get<T>(this HttpClient http, string requestUri, bool externalLink, ISyncSessionStorageService? storage = null, bool forceUpdate = false) where T : class
         {
+            storage = null;
+
             if (storage == null)
             {
                 var response = await http.GetAsync(http.BaseApi(externalLink) + requestUri);
@@ -47,6 +49,8 @@ namespace SD.WEB.Core
 
         public static async Task<T?> GetNew<T>(this HttpClient http, ISyncSessionStorageService? storage, string request_uri) where T : class
         {
+            storage = null;
+
             if (storage == null)
             {
                 using var request = new HttpRequestMessage(HttpMethod.Get, request_uri);
@@ -82,6 +86,8 @@ namespace SD.WEB.Core
 
         public static async Task<List<T>> GetList<T>(this HttpClient http, string requestUri, bool externalLink, ISyncSessionStorageService? storage = null, bool forceUpdate = false) where T : class
         {
+            storage = null;
+
             if (storage == null)
             {
                 var response = await http.GetAsync(http.BaseApi(externalLink) + requestUri);
