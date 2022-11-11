@@ -45,9 +45,9 @@ namespace SD.WEB.Core
             }
         }
 
-        public static async Task<T> GetNew<T>(this HttpClient http, ISyncSessionStorageService storage, string request_uri) where T : class
+        public static async Task<T?> GetNew<T>(this HttpClient http, ISyncSessionStorageService? storage, string request_uri) where T : class
         {
-            if (!storage.ContainKey(request_uri))
+            if (storage == null)
             {
                 using var request = new HttpRequestMessage(HttpMethod.Get, request_uri);
 
@@ -58,10 +58,26 @@ namespace SD.WEB.Core
 
                 if (!response.IsSuccessStatusCode) throw new NotificationException(response);
 
-                storage.SetItem(request_uri, await response.Content.ReadFromJsonAsync<T>());
+                return await response.Content.ReadFromJsonAsync<T>();
             }
+            else
+            {
+                if (!storage.ContainKey(request_uri))
+                {
+                    using var request = new HttpRequestMessage(HttpMethod.Get, request_uri);
 
-            return storage.GetItem<T>(request_uri);
+                    request.Headers.Add("authorization", "Bearer <<access_token>>");
+                    request.Headers.TryAddWithoutValidation("content-type", "application/json;charset=utf-8");
+
+                    var response = await http.SendAsync(request);
+
+                    if (!response.IsSuccessStatusCode) throw new NotificationException(response);
+
+                    storage.SetItem(request_uri, await response.Content.ReadFromJsonAsync<T>());
+                }
+
+                return storage.GetItem<T>(request_uri);
+            }
         }
 
         public static async Task<List<T>> GetList<T>(this HttpClient http, string requestUri, bool externalLink, ISyncSessionStorageService? storage = null, bool forceUpdate = false) where T : class
