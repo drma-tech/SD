@@ -8,24 +8,14 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using SD.WEB;
 using SD.WEB.Modules.List.Core.TMDB;
-using System.Globalization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-builder.RootComponents.Add<App>("#app");
-builder.RootComponents.Add<HeadOutlet>("head::after");
-
 ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress);
 
-builder.Services.AddLogging(logging =>
-{
-    logging.AddProvider(new CosmosLoggerProvider());
-});
-
-//var hostBuilder = builder.Build();
-
-//ConfigureCulture(hostBuilder);
+builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<HeadOutlet>("head::after");
 
 await builder.Build().RunAsync();
 
@@ -41,14 +31,18 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddPWAUpdater();
     collection.AddMediaQueryService();
 
-    collection.AddScoped<Settings>();
-
     collection
         .AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) })
         .AddStaticWebAppsAuthentication();
 
+    collection.AddScoped<Settings>();
     collection.AddScoped<ListService>();
     collection.AddScoped<MediaDetailService>();
+
+    collection.AddLogging(logging =>
+    {
+        logging.AddProvider(new CosmosLoggerProvider());
+    });
 }
 
 //static void ConfigureCulture(WebAssemblyHost host)
