@@ -5,7 +5,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
 {
     public static class NowPlayingService
     {
-        public static async Task<bool> PopulateNowPlaying(this HttpClient http, ISyncSessionStorageService storage, Settings settings,
+        public static async Task<bool> PopulateNowPlaying(this HttpClient http, ISyncSessionStorageService? storage, Settings settings,
             HashSet<MediaDetail> list_media, int page = 1)
         {
             var parameter = new Dictionary<string, string>()

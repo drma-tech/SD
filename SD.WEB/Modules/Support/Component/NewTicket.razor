@@ -20,11 +20,11 @@
             <ValidationMessage For="@(()=>Ticket.TicketType)"></ValidationMessage>
         </div>
         <div class="form-group">
-            <TextEdit @bind-Text="@Ticket.Title" MaxLength="100" Placeholder="@CustomAttributeHelper.GetCustomAttribute(()=>Ticket.Title).Prompt"></TextEdit>
+            <TextEdit @bind-Text="@Ticket.Title" MaxLength="100" Placeholder="@CustomAttributeHelper.GetCustomAttribute(()=>Ticket.Title)?.Prompt"></TextEdit>
             <ValidationMessage For="@(()=>Ticket.Title)"></ValidationMessage>
         </div>
         <div class="form-group">
-            <MemoEdit @bind-Text="@Ticket.Description" Rows="7" MaxLength="512" Placeholder="@CustomAttributeHelper.GetCustomAttribute(()=>Ticket.Description).Prompt"></MemoEdit>
+            <MemoEdit @bind-Text="@Ticket.Description" Rows="7" MaxLength="512" Placeholder="@CustomAttributeHelper.GetCustomAttribute(()=>Ticket.Description)?.Prompt"></MemoEdit>
             <ValidationMessage For="@(()=>Ticket.Description)"></ValidationMessage>
         </div>
         <Button Type="ButtonType.Submit" Color="Color.Primary" Disabled="!ComponenteUtils.IsAuthenticated">@GlobalTranslations.ButtonSave</Button>
@@ -43,7 +43,7 @@
 
     private void ImportLastError()
     {
-        if (TicketType == TicketType.BugReport && Session.ContainKey("LogErrosVD"))
+        if (TicketType == TicketType.BugReport && Session != null && Session.ContainKey("LogErrosVD"))
         {
             var list = Session.GetItem<List<LogContainer>>("LogErrosVD");
             var log = list.LastOrDefault();

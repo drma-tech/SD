@@ -46,7 +46,7 @@ namespace SD.WEB.Core
     /// <typeparam name="TClass"></typeparam>
     public abstract class ComponenteCore<TClass> : ComponentBase where TClass : class
     {
-        [Inject] protected ISyncSessionStorageService Session { get; set; } = default!;
+        [Inject] protected ISyncSessionStorageService? Session { get; set; }
         [Inject] protected ILogger<TClass> Logger { get; set; } = default!;
         [Inject] protected INotificationService Toast { get; set; } = default!;
         [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;

@@ -1,7 +1,6 @@
 ﻿@page "/List/Imdb"
 <PageTitle>SD - Lists - IMDB</PageTitle>
 @inherits ComponenteCore<Imdb>
-@inject ListService Service
 @inject Settings Settings
 @using SD.Shared.Model
 @using SD.WEB.Modules.Profile.Core
@@ -82,9 +81,9 @@
     private async Task LoadTopRated(MediaType mediaType)
     {
         if (mediaType == MediaType.movie)
-            await Service.PopulateListMedia(Http, Session, Settings, ListTopRated, 1, GetExtraParameters("8223821"));
+            await ListService.PopulateListMedia(Http, Session, Settings, ListTopRated, 1, GetExtraParameters("8223821"));
         else //tv
-            await Service.PopulateListMedia(Http, Session, Settings, ListTopRated, 1, GetExtraParameters("8223826"));
+            await ListService.PopulateListMedia(Http, Session, Settings, ListTopRated, 1, GetExtraParameters("8223826"));
     }
 
     private async Task LoadUpcoming()

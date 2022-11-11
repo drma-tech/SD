@@ -4,7 +4,6 @@
 @using SD.WEB.Modules.List.Core.TMDB
 @using SD.WEB.Modules.Profile.Core
 @inherits ComponenteCore<Emmys>
-@inject ListService Service
 @inject Settings Settings
 
 <SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/emmys.png" Text="@TranslationText.emmys_desc" Link="https://www.emmys.com/"></SD.WEB.Modules.List.Components.HeadPage>
@@ -31,9 +30,9 @@
     {
         await base.OnInitializedAsync();
 
-        await Service.PopulateListMedia(Http, Session, Settings, ListDrama, 1, GetExtraParameters("7103525"));
-        await Service.PopulateListMedia(Http, Session, Settings, ListComedy, 1, GetExtraParameters("7103519"));
-        await Service.PopulateListMedia(Http, Session, Settings, ListLimited, 1, GetExtraParameters("7103526"));
+        await ListService.PopulateListMedia(Http, Session, Settings, ListDrama, 1, GetExtraParameters("7103525"));
+        await ListService.PopulateListMedia(Http, Session, Settings, ListComedy, 1, GetExtraParameters("7103519"));
+        await ListService.PopulateListMedia(Http, Session, Settings, ListLimited, 1, GetExtraParameters("7103526"));
 
         wishList = await Http.WishList_Get(Session);
         watchedList = await Http.WatchedList_Get(Session);

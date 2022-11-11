@@ -3,7 +3,6 @@
 @using SD.WEB.Modules.List.Core.TMDB
 @using SD.WEB.Modules.Profile.Core
 @inherits ComponenteCore<CompleteListPopup>
-@inject ListService Service
 @inject Settings Settings
 
 <ModalHeader>
@@ -225,7 +224,7 @@
         }
         else
         {
-            await Service.PopulateListMedia(Http, Session, Settings, Items, ++currentPage, GetExtraParameters(list_id));
+            await ListService.PopulateListMedia(Http, Session, Settings, Items, ++currentPage, GetExtraParameters(list_id));
         }
     }
 

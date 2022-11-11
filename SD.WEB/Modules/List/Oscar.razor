@@ -4,7 +4,6 @@
 @using SD.WEB.Modules.List.Core.TMDB
 @using SD.WEB.Modules.Profile.Core
 @inherits ComponenteCore<Oscar>
-@inject ListService Service
 @inject Settings Settings
 
 <SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></SD.WEB.Modules.List.Components.HeadPage>
@@ -35,10 +34,10 @@
     {
         await base.OnInitializedAsync();
 
-        await Service.PopulateListMedia(Http, Session, Settings, ListMotionPicture, 1, GetExtraParameters("7103422"));
-        await Service.PopulateListMedia(Http, Session, Settings, ListAnimated, 1, GetExtraParameters("7103492"));
-        await Service.PopulateListMedia(Http, Session, Settings, ListInternational, 1, GetExtraParameters("7103493"));
-        await Service.PopulateListMedia(Http, Session, Settings, ListDocumentary, 1, GetExtraParameters("7103488"));
+        await ListService.PopulateListMedia(Http, Session, Settings, ListMotionPicture, 1, GetExtraParameters("7103422"));
+        await ListService.PopulateListMedia(Http, Session, Settings, ListAnimated, 1, GetExtraParameters("7103492"));
+        await ListService.PopulateListMedia(Http, Session, Settings, ListInternational, 1, GetExtraParameters("7103493"));
+        await ListService.PopulateListMedia(Http, Session, Settings, ListDocumentary, 1, GetExtraParameters("7103488"));
 
         wishList = await Http.WishList_Get(Session);
         watchedList = await Http.WatchedList_Get(Session);

@@ -74,7 +74,7 @@
 
     private void Logout()
     {
-        Session.Clear();
+        Session?.Clear();
 
         Nav.NavigateTo("/.auth/logout", forceLoad: true);
     }
@@ -85,7 +85,7 @@
 
         sett.Region = value;
 
-        Session.SetItem("Settings", sett);
+        Session?.SetItem("Settings", sett);
 
         await RefreshCore.ChangeRegion(value);
     }
@@ -98,7 +98,7 @@
 
         var culture = System.Globalization.CultureInfo.CurrentCulture;
 
-        Session.SetItem("Settings", sett);
+        Session?.SetItem("Settings", sett);
 
         //await RefreshCore.ChangeLanguage(value);
 

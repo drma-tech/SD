@@ -2,7 +2,6 @@
 <PageTitle>SD - Lists - Golden Globes</PageTitle>
 @using SD.Shared.Model
 @inherits ComponenteCore<GoldenGlobes>
-@inject ListService Service
 @using SD.WEB.Modules.List.Core.TMDB
 @using SD.WEB.Modules.Profile.Core
 @inject Settings Settings
@@ -31,9 +30,9 @@
     {
         await base.OnInitializedAsync();
 
-        await Service.PopulateListMedia(Http, Session, Settings, ListDrama, 1, GetExtraParameters("7103543"));
-        await Service.PopulateListMedia(Http, Session, Settings, ListMusicalComedy, 1, GetExtraParameters("7103545"));
-        await Service.PopulateListMedia(Http, Session, Settings, ListAnimated, 1, GetExtraParameters("7103548"));
+        await ListService.PopulateListMedia(Http, Session, Settings, ListDrama, 1, GetExtraParameters("7103543"));
+        await ListService.PopulateListMedia(Http, Session, Settings, ListMusicalComedy, 1, GetExtraParameters("7103545"));
+        await ListService.PopulateListMedia(Http, Session, Settings, ListAnimated, 1, GetExtraParameters("7103548"));
 
         wishList = await Http.WishList_Get(Session);
         watchedList = await Http.WatchedList_Get(Session);

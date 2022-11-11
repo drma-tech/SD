@@ -112,7 +112,7 @@
                         <Heading Size="HeadingSize.Is5">@item.Title</Heading>
                     </Paragraph>
                     <Paragraph Margin="Margin.Is2.FromBottom" TextAlignment="TextAlignment.Justified">
-                        @item.Description.GetResume(150)
+                        @item.Description?.GetResume(150)
                     </Paragraph>
                     <Paragraph Margin="Margin.Is2.FromBottom">
                         <Badge Color="Color.Dark" Margin="Margin.Is1.FromEnd"><Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.Clock"></Blazorise.Icon> @item?.DtInsert.GetElapsedTime()</Badge>
@@ -274,8 +274,10 @@ else if (SelectedTab == Tabs.Announcements)
                     });
     }
 
-    private async Task Vote(string IdTicket, VoteType voteType)
+    private async Task Vote(string? IdTicket, VoteType voteType)
     {
+        if (string.IsNullOrEmpty(IdTicket)) throw new ArgumentNullException(nameof(IdTicket));
+
         try
         {
             if (anyVote(IdTicket))
@@ -304,7 +306,7 @@ else if (SelectedTab == Tabs.Announcements)
         }
     }
 
-    private bool anyVote(string IdTicket)
+    private bool anyVote(string? IdTicket)
     {
         return myVotes.Any(a => a.Key == IdTicket & a.IdVotedUser == ComponenteUtils.GetIdUser());
     }

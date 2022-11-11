@@ -5,7 +5,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
 {
     public static class DiscoverService
     {
-        public static async Task<bool> PopulateDiscover(this HttpClient http, ISyncSessionStorageService storage, Settings settings,
+        public static async Task<bool> PopulateDiscover(this HttpClient http, ISyncSessionStorageService? storage, Settings settings,
             HashSet<MediaDetail> list_media, MediaType? type, int page = 1, Dictionary<string, string>? ExtraParameters = null)
         {
             if (ExtraParameters != null)

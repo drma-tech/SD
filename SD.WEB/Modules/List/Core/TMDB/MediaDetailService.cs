@@ -5,7 +5,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
 {
     public class MediaDetailService
     {
-        public async Task<MediaDetail> GetMedia(HttpClient http, ISyncSessionStorageService storage, Settings settings, string? tmdb_id, MediaType? type)
+        public async Task<MediaDetail> GetMedia(HttpClient http, ISyncSessionStorageService? storage, Settings settings, string? tmdb_id, MediaType? type)
         {
             if (tmdb_id == null) throw new ArgumentNullException(nameof(tmdb_id));
             if (type == null) throw new ArgumentNullException(nameof(type));

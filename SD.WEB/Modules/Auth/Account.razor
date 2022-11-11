@@ -85,7 +85,7 @@
 
     private async Task ClearCache()
     {
-        Session.Clear();
+        Session?.Clear();
 
         await Toast.Success("Operação efetuada com sucesso!");
     }

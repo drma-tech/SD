@@ -6,7 +6,7 @@ namespace SD.WEB.Modules.List.Core.IMDB
 {
     public static class UpcomingService
     {
-        public static async Task PopulateIMDBUpcoming(this HttpClient http, ISyncSessionStorageService storage, HashSet<MediaDetail> list_media, MediaType type)
+        public static async Task PopulateIMDBUpcoming(this HttpClient http, ISyncSessionStorageService? storage, HashSet<MediaDetail> list_media, MediaType type)
         {
             var parameter = new Dictionary<string, string>()
                 {
