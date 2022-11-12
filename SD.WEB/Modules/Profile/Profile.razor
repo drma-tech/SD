@@ -115,13 +115,13 @@
             }
             else
             {
-                wishList = await Http.WishList_Get(Session);
-                watchedList = await Http.WatchedList_Get(Session);
+                wishList = await Http.WishList_Get();
+                watchedList = await Http.WatchedList_Get();
 
-                myProviders = await Http.MyProviders_Get(Session);
+                myProviders = await Http.MyProviders_Get();
             }
 
-            allProviders = await Http.Provider_GetAll(Session);
+            allProviders = await Http.Provider_GetAll();
 
             loading = false;
         }

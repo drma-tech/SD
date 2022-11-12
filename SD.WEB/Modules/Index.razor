@@ -126,12 +126,12 @@ else if (TypeSelected == PopularType.Cinema)
     {
         try
         {
-            wishList = await Http.WishList_Get(Session);
-            watchedList = await Http.WatchedList_Get(Session);
+            wishList = await Http.WishList_Get();
+            watchedList = await Http.WatchedList_Get();
 
             await LoadLists(TypeSelected);
 
-            AllProviders = await Http.Provider_GetAll(Session);
+            AllProviders = await Http.Provider_GetAll();
         }
         catch (Exception ex)
         {
@@ -147,13 +147,13 @@ else if (TypeSelected == PopularType.Cinema)
         {
             case PopularType.Streaming:
                 //await Http.PopulateTMDBPopular(Session, Settings, ListStreamin, null, 1);
-                await Http.PopulateDiscover(Session, ListStreamin, null, 1, GetExtraParameters("flatrate", "popularity.desc"));
+                await Http.PopulateDiscover(ListStreamin, null, 1, GetExtraParameters("flatrate", "popularity.desc"));
                 break;
             case PopularType.Rent:
-                await Http.PopulateDiscover(Session, ListRent, null, 1, GetExtraParameters("rent", "popularity.desc"));
+                await Http.PopulateDiscover(ListRent, null, 1, GetExtraParameters("rent", "popularity.desc"));
                 break;
             case PopularType.Cinema:
-                await Http.PopulateNowPlaying(Session, ListCinema, 1);
+                await Http.PopulateNowPlaying(ListCinema, 1);
                 break;
             default:
                 break;

@@ -1,6 +1,4 @@
-﻿using Blazored.SessionStorage;
-using Microsoft.AspNetCore.Components;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 
 namespace SD.WEB.Core
 {
@@ -15,8 +13,6 @@ namespace SD.WEB.Core
 
     public class CustomLogger : ILogger
     {
-        [Inject] protected ISyncSessionStorageService Session { get; set; } = default!;
-
         private readonly string _name;
 
         public CustomLogger(string name)
@@ -40,22 +36,13 @@ namespace SD.WEB.Core
                 return;
             }
 
-            var list = new List<LogContainer>();
-
-            if (Session != null && Session.ContainKey("LogErrosVD"))
-            {
-                list = Session.GetItem<List<LogContainer>>("LogErrosVD");
-            }
-
-            list.Add(new LogContainer()
+            CustomSession.Logs.Add(new LogContainer()
             {
                 Name = _name,
                 State = formatter(state, exception),
                 Message = exception?.Message,
                 StackTrace = exception?.StackTrace
             });
-
-            Session?.SetItem("LogErrosVD", list);
         }
     }
 

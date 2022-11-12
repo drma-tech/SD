@@ -39,8 +39,8 @@
     {
         await base.OnInitializedAsync();
 
-        wishList = await Http.WishList_Get(Session);
-        watchedList = await Http.WatchedList_Get(Session);
+        wishList = await Http.WishList_Get();
+        watchedList = await Http.WatchedList_Get();
 
         await LoadPopular(popularMedia);
         await LoadTopRated(popularMedia);
@@ -59,8 +59,8 @@
 
         if (ListPopular.Count < 10) await LoadPopular(popularMedia);
 
-        wishList = await Http.WishList_Get(Session);
-        watchedList = await Http.WatchedList_Get(Session);
+        wishList = await Http.WishList_Get();
+        watchedList = await Http.WatchedList_Get();
     }
 
     private async Task ChangeTopRatedMediaType(MediaType mediaType)
@@ -74,20 +74,20 @@
 
     private async Task LoadPopular(MediaType mediaType)
     {
-        await Http.PopulateIMDBPopular(Session, ListPopular, mediaType);
+        await Http.PopulateIMDBPopular(ListPopular, mediaType);
     }
 
     private async Task LoadTopRated(MediaType mediaType)
     {
         if (mediaType == MediaType.movie)
-            await ListService.PopulateListMedia(Http, Session, ListTopRated, 1, GetExtraParameters("8223821"));
+            await ListService.PopulateListMedia(Http, ListTopRated, 1, GetExtraParameters("8223821"));
         else //tv
-            await ListService.PopulateListMedia(Http, Session, ListTopRated, 1, GetExtraParameters("8223826"));
+            await ListService.PopulateListMedia(Http, ListTopRated, 1, GetExtraParameters("8223826"));
     }
 
     private async Task LoadUpcoming()
     {
-        await Http.PopulateIMDBUpcoming(Session, ListUpcoming, MediaType.movie);
+        await Http.PopulateIMDBUpcoming(ListUpcoming, MediaType.movie);
     }
 
     private Dictionary<string, string> GetExtraParameters(string list_id)

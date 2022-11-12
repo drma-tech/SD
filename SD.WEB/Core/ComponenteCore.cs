@@ -1,5 +1,4 @@
-﻿using Blazored.SessionStorage;
-using Blazorise;
+﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
@@ -46,7 +45,6 @@ namespace SD.WEB.Core
     /// <typeparam name="TClass"></typeparam>
     public abstract class ComponenteCore<TClass> : ComponentBase where TClass : class
     {
-        [Inject] protected ISyncSessionStorageService? Session { get; set; }
         [Inject] protected ILogger<TClass> Logger { get; set; } = default!;
         [Inject] protected INotificationService Toast { get; set; } = default!;
         [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
@@ -87,7 +85,7 @@ namespace SD.WEB.Core
             {
                 if (ComponenteUtils.IsAuthenticated)
                 {
-                    var principal = await Http.Principal_Get(Session);
+                    var principal = await Http.Principal_Get();
 
                     //força o cadastro, caso não tenha registrado a conta principal
                     if (principal == null)

@@ -1,5 +1,4 @@
 using AzureStaticWebApps.Blazor.Authentication;
-using Blazored.SessionStorage;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
@@ -25,8 +24,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
         .AddBlazorise(options => options.Immediate = true)
         .AddBootstrapProviders()
         .AddFontAwesomeIcons();
-
-    collection.AddBlazoredSessionStorage(config => config.JsonSerializerOptions.WriteIndented = true);
 
     collection.AddPWAUpdater();
     collection.AddMediaQueryService();

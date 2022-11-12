@@ -180,7 +180,7 @@
 
         if (IsIMDB && media?.MediaType == MediaType.tv) //for now, only tv series (imdb) need this kind of workaround
         {
-            tmdb_id = await TmdbExternalIdTvService.GetTmdbId(Http, Session, media?.tmdb_id);
+            tmdb_id = await TmdbExternalIdTvService.GetTmdbId(Http, media?.tmdb_id);
         }
         else
         {
@@ -222,7 +222,7 @@
         }
         else
         {
-            await ListService.PopulateListMedia(Http, Session, Items, ++currentPage, GetExtraParameters(list_id));
+            await ListService.PopulateListMedia(Http, Items, ++currentPage, GetExtraParameters(list_id));
         }
     }
 
@@ -266,7 +266,7 @@
                     });
             }
 
-            await Http.WishList_Post(WishList, Session);
+            await Http.WishList_Post(WishList);
             await WishListChanged.InvokeAsync(WishList);
 
             await Toast.Success("Media favoritado com sucesso!");
@@ -298,7 +298,7 @@
                 WishList.Shows.Remove(WishList.Shows.First(f => f.id == media?.tmdb_id));
             }
 
-            await Http.WishList_Post(WishList, Session);
+            await Http.WishList_Post(WishList);
             await WishListChanged.InvokeAsync(WishList);
 
             await Toast.Success("Media removida com sucesso!");
@@ -330,7 +330,7 @@
                 WatchedList.Shows.Add(media.tmdb_id);
             }
 
-            await Http.WatchedList_Post(WatchedList, Session);
+            await Http.WatchedList_Post(WatchedList);
             await WatchedListChanged.InvokeAsync(WatchedList);
 
             await Toast.Success("Operação efetuada com sucesso!");
@@ -362,7 +362,7 @@
                 WatchedList.Shows.Remove(WatchedList.Shows.First(f => f == media?.tmdb_id & MediaType.tv == media?.MediaType));
             }
 
-            await Http.WatchedList_Post(WatchedList, Session);
+            await Http.WatchedList_Post(WatchedList);
             await WatchedListChanged.InvokeAsync(WatchedList);
 
             await Toast.Success("Operação efetuada com sucesso!");

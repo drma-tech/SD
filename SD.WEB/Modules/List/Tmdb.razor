@@ -52,8 +52,8 @@
         if (ListPopular.Count < 10) await LoadPopular(popularMedia);
         if (ListTopRated.Count < 10) await LoadTopRated(topRatedMedia);
 
-        wishList = await Http.WishList_Get(Session);
-        watchedList = await Http.WatchedList_Get(Session);
+        wishList = await Http.WishList_Get();
+        watchedList = await Http.WatchedList_Get();
     }
 
     private async Task ChangeRegion()
@@ -98,16 +98,16 @@
 
     private async Task LoadPopular(MediaType mediaType)
     {
-        PopularDisable = await Http.PopulateTMDBPopular(Session, ListPopular, mediaType, ++popularPage);
+        PopularDisable = await Http.PopulateTMDBPopular(ListPopular, mediaType, ++popularPage);
     }
 
     private async Task LoadTopRated(MediaType mediaType)
     {
-        TopRatedDisable = await Http.PopulateTMDBTopRated(Session, ListTopRated, mediaType, ++topRatedPage);
+        TopRatedDisable = await Http.PopulateTMDBTopRated(ListTopRated, mediaType, ++topRatedPage);
     }
 
     private async Task LoadUpcoming()
     {
-        UpcomingDisable = await Http.PopulateTMDBUpcoming(Session, ListUpcoming, MediaType.movie, ++upcomingPage);
+        UpcomingDisable = await Http.PopulateTMDBUpcoming(ListUpcoming, MediaType.movie, ++upcomingPage);
     }
 }

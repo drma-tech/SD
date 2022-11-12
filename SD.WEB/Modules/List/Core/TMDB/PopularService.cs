@@ -1,5 +1,4 @@
-﻿using Blazored.SessionStorage;
-using SD.Shared.Model.List.Tmdb;
+﻿using SD.Shared.Model.List.Tmdb;
 
 namespace SD.WEB.Modules.List.Core.TMDB
 {
@@ -12,8 +11,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
 
     public static class PopularService
     {
-        public static async Task<bool> PopulateTMDBPopular(this HttpClient http, ISyncSessionStorageService? storage,
-            HashSet<MediaDetail> list_media, MediaType? type = null, int page = 1)
+        public static async Task<bool> PopulateTMDBPopular(this HttpClient http, HashSet<MediaDetail> list_media, MediaType? type = null, int page = 1)
         {
             var parameter = new Dictionary<string, string>()
                 {
@@ -25,8 +23,8 @@ namespace SD.WEB.Modules.List.Core.TMDB
 
             if (type == null)
             {
-                var movies = await http.Get<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter), true, storage);
-                var shows = await http.Get<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter), true, storage);
+                var movies = await http.Get<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter), true);
+                var shows = await http.Get<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter), true);
 
                 var list = new List<Ordem>();
 
@@ -81,7 +79,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
             }
             else if (type == MediaType.movie)
             {
-                var result = await http.Get<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter), true, storage);
+                var result = await http.Get<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter), true);
 
                 foreach (var item in result?.results ?? new List<ResultMoviePopular>())
                 {
@@ -105,7 +103,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
             }
             else //if (type == MediaType.tv)
             {
-                var result = await http.Get<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter), true, storage);
+                var result = await http.Get<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter), true);
 
                 foreach (var item in result?.results ?? new List<ResultTVPopular>())
                 {

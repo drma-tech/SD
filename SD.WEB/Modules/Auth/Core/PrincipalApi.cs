@@ -1,5 +1,4 @@
-﻿using Blazored.SessionStorage;
-using SD.Shared.Model.Auth;
+﻿using SD.Shared.Model.Auth;
 
 namespace SD.WEB.Modules.Auth.Core
 {
@@ -11,16 +10,16 @@ namespace SD.WEB.Modules.Auth.Core
             public const string Add = "Principal/Add";
         }
 
-        public static async Task<ClientePrincipal?> Principal_Get(this HttpClient http, ISyncSessionStorageService? storage)
+        public static async Task<ClientePrincipal?> Principal_Get(this HttpClient http)
         {
-            return await http.Get<ClientePrincipal>(PrincipalEndpoint.Get, false, storage);
+            return await http.Get<ClientePrincipal>(PrincipalEndpoint.Get, false);
         }
 
-        public static async Task<HttpResponseMessage> Principal_Add(this HttpClient http, ClientePrincipal? obj, ISyncSessionStorageService? storage)
+        public static async Task<HttpResponseMessage> Principal_Add(this HttpClient http, ClientePrincipal? obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
-            return await http.Post(PrincipalEndpoint.Add, false, obj, storage, PrincipalEndpoint.Get);
+            return await http.Post(PrincipalEndpoint.Add, false, obj, PrincipalEndpoint.Get);
         }
     }
 }

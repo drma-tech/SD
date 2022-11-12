@@ -1,11 +1,10 @@
-﻿using Blazored.SessionStorage;
-using SD.Shared.Model.List.Tmdb;
+﻿using SD.Shared.Model.List.Tmdb;
 
 namespace SD.WEB.Modules.List.Core.TMDB
 {
     public static class DiscoverService
     {
-        public static async Task<bool> PopulateDiscover(this HttpClient http, ISyncSessionStorageService? storage,
+        public static async Task<bool> PopulateDiscover(this HttpClient http,
             HashSet<MediaDetail> list_media, MediaType? type, int page = 1, Dictionary<string, string>? ExtraParameters = null)
         {
             if (ExtraParameters != null)
@@ -44,8 +43,8 @@ namespace SD.WEB.Modules.List.Core.TMDB
 
             if (type == null)
             {
-                var movies = await http.Get<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), true, storage);
-                var shows = await http.Get<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), true, storage);
+                var movies = await http.Get<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), true);
+                var shows = await http.Get<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), true);
 
                 var list = new List<Ordem>();
 
@@ -98,7 +97,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
             }
             else if (type == MediaType.movie)
             {
-                var result = await http.Get<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), true, storage);
+                var result = await http.Get<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), true);
 
                 foreach (var item in result?.results ?? new List<ResultMovieDiscover>())
                 {
@@ -121,7 +120,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
             }
             else //if (type == MediaType.tv)
             {
-                var result = await http.Get<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), true, storage);
+                var result = await http.Get<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), true);
 
                 foreach (var item in result?.results ?? new List<ResultTvDiscover>())
                 {

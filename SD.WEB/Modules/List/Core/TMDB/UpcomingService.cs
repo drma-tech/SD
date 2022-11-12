@@ -1,12 +1,10 @@
-﻿using Blazored.SessionStorage;
-using SD.Shared.Model.List.Tmdb;
+﻿using SD.Shared.Model.List.Tmdb;
 
 namespace SD.WEB.Modules.List.Core.TMDB
 {
     public static class UpcomingService
     {
-        public static async Task<bool> PopulateTMDBUpcoming(this HttpClient http, ISyncSessionStorageService? storage,
-            HashSet<MediaDetail> list_media, MediaType type, int page = 1)
+        public static async Task<bool> PopulateTMDBUpcoming(this HttpClient http, HashSet<MediaDetail> list_media, MediaType type, int page = 1)
         {
             var parameter = new Dictionary<string, string>()
             {
@@ -18,7 +16,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
 
             if (type == MediaType.movie)
             {
-                var result = await http.Get<MovieUpcoming>(TmdbOptions.BaseUri + "movie/upcoming".ConfigureParameters(parameter), true, storage);
+                var result = await http.Get<MovieUpcoming>(TmdbOptions.BaseUri + "movie/upcoming".ConfigureParameters(parameter), true);
 
                 foreach (var item in result?.results ?? new List<ResultMovieUpcoming>())
                 {

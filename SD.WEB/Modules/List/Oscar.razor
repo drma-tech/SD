@@ -33,13 +33,13 @@
     {
         await base.OnInitializedAsync();
 
-        await ListService.PopulateListMedia(Http, Session, ListMotionPicture, 1, GetExtraParameters("7103422"));
-        await ListService.PopulateListMedia(Http, Session, ListAnimated, 1, GetExtraParameters("7103492"));
-        await ListService.PopulateListMedia(Http, Session, ListInternational, 1, GetExtraParameters("7103493"));
-        await ListService.PopulateListMedia(Http, Session, ListDocumentary, 1, GetExtraParameters("7103488"));
+        await ListService.PopulateListMedia(Http, ListMotionPicture, 1, GetExtraParameters("7103422"));
+        await ListService.PopulateListMedia(Http, ListAnimated, 1, GetExtraParameters("7103492"));
+        await ListService.PopulateListMedia(Http, ListInternational, 1, GetExtraParameters("7103493"));
+        await ListService.PopulateListMedia(Http, ListDocumentary, 1, GetExtraParameters("7103488"));
 
-        wishList = await Http.WishList_Get(Session);
-        watchedList = await Http.WatchedList_Get(Session);
+        wishList = await Http.WishList_Get();
+        watchedList = await Http.WatchedList_Get();
     }
 
     private Dictionary<string, string> GetExtraParameters(string list_id)

@@ -1,6 +1,4 @@
-﻿using Blazored.SessionStorage;
-
-namespace SD.WEB.Modules.Profile.Core
+﻿namespace SD.WEB.Modules.Profile.Core
 {
     public static class WishListApi
     {
@@ -10,11 +8,11 @@ namespace SD.WEB.Modules.Profile.Core
             public const string Post = "WishList/Post";
         }
 
-        public static async Task<WishList?> WishList_Get(this HttpClient http, ISyncSessionStorageService? storage)
+        public static async Task<WishList?> WishList_Get(this HttpClient http)
         {
             if (ComponenteUtils.IsAuthenticated)
             {
-                return await http.Get<WishList>(Endpoint.Get, false, storage);
+                return await http.Get<WishList>(Endpoint.Get, false);
             }
             else
             {
@@ -22,11 +20,11 @@ namespace SD.WEB.Modules.Profile.Core
             }
         }
 
-        public static async Task<HttpResponseMessage> WishList_Post(this HttpClient http, WishList? obj, ISyncSessionStorageService? storage)
+        public static async Task<HttpResponseMessage> WishList_Post(this HttpClient http, WishList? obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
-            return await http.Post(Endpoint.Post, false, obj, storage, Endpoint.Get);
+            return await http.Post(Endpoint.Post, false, obj, Endpoint.Get);
         }
     }
 }

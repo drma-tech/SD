@@ -75,7 +75,7 @@
         {
             if (ComponenteUtils.IsAuthenticated)
             {
-                principal = await Http.Principal_Get(Session);
+                principal = await Http.Principal_Get();
 
                 if (principal == null) principal = new();
 
@@ -102,11 +102,11 @@
     {
         try
         {
-            var response = await Http.Principal_Add(principal, Session);
+            var response = await Http.Principal_Add(principal);
 
             if (response.IsSuccessStatusCode)
             {
-                principal = await Http.Principal_Get(Session);
+                principal = await Http.Principal_Get();
 
                 Navigation.NavigateTo("/");
             }

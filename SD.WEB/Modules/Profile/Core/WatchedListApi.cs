@@ -1,6 +1,4 @@
-﻿using Blazored.SessionStorage;
-
-namespace SD.WEB.Modules.Profile.Core
+﻿namespace SD.WEB.Modules.Profile.Core
 {
     public static class WatchedListApi
     {
@@ -10,11 +8,11 @@ namespace SD.WEB.Modules.Profile.Core
             public const string Post = "WatchedList/Post";
         }
 
-        public static async Task<WatchedList?> WatchedList_Get(this HttpClient http, ISyncSessionStorageService? storage)
+        public static async Task<WatchedList?> WatchedList_Get(this HttpClient http)
         {
             if (ComponenteUtils.IsAuthenticated)
             {
-                return await http.Get<WatchedList>(Endpoint.Get, false, storage);
+                return await http.Get<WatchedList>(Endpoint.Get, false);
             }
             else
             {
@@ -22,11 +20,11 @@ namespace SD.WEB.Modules.Profile.Core
             }
         }
 
-        public static async Task<HttpResponseMessage> WatchedList_Post(this HttpClient http, WatchedList? obj, ISyncSessionStorageService? storage)
+        public static async Task<HttpResponseMessage> WatchedList_Post(this HttpClient http, WatchedList? obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
-            return await http.Post(Endpoint.Post, false, obj, storage, Endpoint.Get);
+            return await http.Post(Endpoint.Post, false, obj, Endpoint.Get);
         }
     }
 }

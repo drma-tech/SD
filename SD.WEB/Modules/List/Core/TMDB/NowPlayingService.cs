@@ -1,12 +1,10 @@
-﻿using Blazored.SessionStorage;
-using SD.Shared.Models.List.Tmdb;
+﻿using SD.Shared.Models.List.Tmdb;
 
 namespace SD.WEB.Modules.List.Core.TMDB
 {
     public static class NowPlayingService
     {
-        public static async Task<bool> PopulateNowPlaying(this HttpClient http, ISyncSessionStorageService? storage,
-            HashSet<MediaDetail> list_media, int page = 1)
+        public static async Task<bool> PopulateNowPlaying(this HttpClient http, HashSet<MediaDetail> list_media, int page = 1)
         {
             var parameter = new Dictionary<string, string>()
             {
@@ -16,7 +14,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
                 { "page", page.ToString() }
             };
 
-            var result = await http.Get<MovieNowPlaying>(TmdbOptions.BaseUri + "movie/now_playing".ConfigureParameters(parameter), true, storage);
+            var result = await http.Get<MovieNowPlaying>(TmdbOptions.BaseUri + "movie/now_playing".ConfigureParameters(parameter), true);
 
             foreach (var item in result?.results ?? new List<ResultMovieNowPlaying>())
             {

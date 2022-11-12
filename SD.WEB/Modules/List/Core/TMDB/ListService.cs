@@ -1,12 +1,11 @@
-﻿using Blazored.SessionStorage;
-using SD.Shared.Model.List.Tmdb;
+﻿using SD.Shared.Model.List.Tmdb;
 using System.Text.Json;
 
 namespace SD.WEB.Modules.List.Core.TMDB
 {
     public class ListService
     {
-        public static async Task PopulateListMedia(HttpClient http, ISyncSessionStorageService? storage, 
+        public static async Task PopulateListMedia(HttpClient http,
             HashSet<MediaDetail> list_media, int page = 1, Dictionary<string, string>? ExtraParameters = null)
         {
             if (ExtraParameters == null) throw new ArgumentNullException(nameof(ExtraParameters));
@@ -24,7 +23,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
                 parameter.Add(item.Key, item.Value);
             }
 
-            var result = await http.GetNew<CustomListNew>(storage, TmdbOptions.BaseUriNew + "list/" + ExtraParameters["list_id"].ToString().ConfigureParameters(parameter));
+            var result = await http.GetNew<CustomListNew>(TmdbOptions.BaseUriNew + "list/" + ExtraParameters["list_id"].ToString().ConfigureParameters(parameter));
 
             if (result != null)
             {

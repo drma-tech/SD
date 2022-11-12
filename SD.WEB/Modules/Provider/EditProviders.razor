@@ -102,7 +102,7 @@
     protected override async Task LoadData()
     {
         Languages = EnumHelper.GetList<Language>();
-        AllProviders = await Http.Provider_GetAll(Session);
+        AllProviders = await Http.Provider_GetAll();
     }
 
     private async Task ShowPopupProvider(ProviderModel item)
@@ -123,12 +123,12 @@
 
     protected async Task SaveSession()
     {
-        await Http.Provider_Post(AllProviders, Session);
+        await Http.Provider_Post(AllProviders);
     }
 
     protected async Task SyncProvidersOnClick()
     {
-        await Http.Provider_Sync(Session);
+        await Http.Provider_Sync();
     }
 
     protected void RowUpdated(SavedRowItem<ProviderModel, Dictionary<string, object>> e)

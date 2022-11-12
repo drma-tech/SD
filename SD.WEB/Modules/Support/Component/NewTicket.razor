@@ -43,9 +43,9 @@
 
     private void ImportLastError()
     {
-        if (TicketType == TicketType.BugReport && Session != null && Session.ContainKey("LogErrosVD"))
+        if (TicketType == TicketType.BugReport && CustomSession.Logs.Any())
         {
-            var list = Session.GetItem<List<LogContainer>>("LogErrosVD");
+            var list = CustomSession.Logs;
             var log = list.LastOrDefault();
 
             if (log != null)
@@ -53,8 +53,7 @@
                 Ticket.Title = log.Message ?? "erro desconhecido";
                 Ticket.Description = System.Text.Json.JsonSerializer.Serialize(log);
 
-                list.Remove(log);
-                Session.SetItem("LogErrosVD", list);
+                CustomSession.Logs.Remove(log);
             }
             else
             {

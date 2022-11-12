@@ -1,12 +1,11 @@
-﻿using Blazored.SessionStorage;
-using SD.Shared.Model.List.Imdb;
+﻿using SD.Shared.Model.List.Imdb;
 using System.Globalization;
 
 namespace SD.WEB.Modules.List.Core.IMDB
 {
     public static class UpcomingService
     {
-        public static async Task PopulateIMDBUpcoming(this HttpClient http, ISyncSessionStorageService? storage, HashSet<MediaDetail> list_media, MediaType type)
+        public static async Task PopulateIMDBUpcoming(this HttpClient http, HashSet<MediaDetail> list_media, MediaType type)
         {
             var parameter = new Dictionary<string, string>()
                 {
@@ -15,7 +14,7 @@ namespace SD.WEB.Modules.List.Core.IMDB
 
             if (type == MediaType.movie)
             {
-                var result = await http.Get<NewMovieData>(ImdbOptions.BaseUri + "ComingSoon".ConfigureParameters(parameter), true, storage); //undefined numeric record
+                var result = await http.Get<NewMovieData>(ImdbOptions.BaseUri + "ComingSoon".ConfigureParameters(parameter), true); //undefined numeric record
 
                 foreach (var item in result?.Items ?? new List<NewMovieDataDetail>())
                 {

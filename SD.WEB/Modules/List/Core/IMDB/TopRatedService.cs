@@ -1,12 +1,11 @@
-﻿using Blazored.SessionStorage;
-using SD.Shared.Model.List.Imdb;
+﻿using SD.Shared.Model.List.Imdb;
 using System.Globalization;
 
 namespace SD.WEB.Modules.List.Core.IMDB
 {
     public static class TopRatedService
     {
-        public static async Task PopulateIMDBTopRated(this HttpClient http, ISyncSessionStorageService? storage, HashSet<MediaDetail> list_media, MediaType type)
+        public static async Task PopulateIMDBTopRated(this HttpClient http, HashSet<MediaDetail> list_media, MediaType type)
         {
             var parameter = new Dictionary<string, string>()
                 {
@@ -15,7 +14,7 @@ namespace SD.WEB.Modules.List.Core.IMDB
 
             if (type == MediaType.movie)
             {
-                var result = await http.Get<Top250Data>(ImdbOptions.BaseUri + "Top250Movies".ConfigureParameters(parameter), true, storage); //bring 250 records
+                var result = await http.Get<Top250Data>(ImdbOptions.BaseUri + "Top250Movies".ConfigureParameters(parameter), true); //bring 250 records
 
                 foreach (var item in result?.Items ?? new List<Top250DataDetail>())
                 {
@@ -37,7 +36,7 @@ namespace SD.WEB.Modules.List.Core.IMDB
             }
             else if (type == MediaType.tv)
             {
-                var result = await http.Get<Top250Data>(ImdbOptions.BaseUri + "Top250TVs".ConfigureParameters(parameter), true, storage); //bring 250 records
+                var result = await http.Get<Top250Data>(ImdbOptions.BaseUri + "Top250TVs".ConfigureParameters(parameter), true); //bring 250 records
 
                 foreach (var item in result?.Items ?? new List<Top250DataDetail>())
                 {

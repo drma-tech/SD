@@ -38,9 +38,9 @@
         <Card Margin="Margin.Is2.FromBottom">
             <CardHeader>Dados Cadastrais</CardHeader>
             <CardBody>
-                <Button Color="Color.Primary" Clicked="async()=>{ await ClearCache(); }" Margin="Margin.Is1.FromEnd">
+               @* <Button Color="Color.Primary" Clicked="async()=>{ await ClearCache(); }" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.Eraser" /> Limpar Cache
-                </Button>
+                </Button>*@
                 <Button Color="Color.Warning" Clicked="async()=>{ await ResetInteractions(); }" Disabled="true" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.FastBackward" /> Resetar Interações
                 </Button>
@@ -59,7 +59,7 @@
     {
         if (ComponenteUtils.IsAuthenticated)
         {
-            principal = await Http.Principal_Get(Session);
+            principal = await Http.Principal_Get();
 
             if (principal == null) principal = new();
 
@@ -81,13 +81,6 @@
                 principal.Email = principal?.UserDetails;
             }
         }
-    }
-
-    private async Task ClearCache()
-    {
-        Session?.Clear();
-
-        await Toast.Success("Operação efetuada com sucesso!");
     }
 
     private async Task ResetInteractions()

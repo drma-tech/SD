@@ -73,8 +73,6 @@
 
     private void Logout()
     {
-        Session?.Clear();
-
         Nav.NavigateTo("/.auth/logout", forceLoad: true);
     }
 
