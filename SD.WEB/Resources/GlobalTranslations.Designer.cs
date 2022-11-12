@@ -358,6 +358,24 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UPDATE NOW.
+        /// </summary>
+        public static string PWAUpdaterButton {
+            get {
+                return ResourceManager.GetString("PWAUpdaterButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new version is available.
+        /// </summary>
+        public static string PWAUpdaterText {
+            get {
+                return ResourceManager.GetString("PWAUpdaterText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unfortunately this title is not available in your region.
         /// </summary>
         public static string TitleNotAvailable {
