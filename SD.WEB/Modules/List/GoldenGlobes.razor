@@ -4,19 +4,18 @@
 @inherits ComponenteCore<GoldenGlobes>
 @using SD.WEB.Modules.List.Core.TMDB
 @using SD.WEB.Modules.Profile.Core
-@inject Settings Settings
 
 <SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/goldenglobes.png" Text="@TranslationText.golden_desc" Link="https://www.goldenglobes.com/"></SD.WEB.Modules.List.Components.HeadPage>
 
 <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Drama" Items="@ListDrama" list_id="7103543" maxItens="12"
-           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.MusicalComedy" Items="@ListMusicalComedy" list_id="7103545" maxItens="12"
-           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Animated" Items="@ListAnimated" list_id="7103548" maxItens="12"
-           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 
 @code {
     private HashSet<MediaDetail> ListDrama { get; set; } = new();
@@ -30,9 +29,9 @@
     {
         await base.OnInitializedAsync();
 
-        await ListService.PopulateListMedia(Http, Session, Settings, ListDrama, 1, GetExtraParameters("7103543"));
-        await ListService.PopulateListMedia(Http, Session, Settings, ListMusicalComedy, 1, GetExtraParameters("7103545"));
-        await ListService.PopulateListMedia(Http, Session, Settings, ListAnimated, 1, GetExtraParameters("7103548"));
+        await ListService.PopulateListMedia(Http, Session, ListDrama, 1, GetExtraParameters("7103543"));
+        await ListService.PopulateListMedia(Http, Session, ListMusicalComedy, 1, GetExtraParameters("7103545"));
+        await ListService.PopulateListMedia(Http, Session, ListAnimated, 1, GetExtraParameters("7103548"));
 
         wishList = await Http.WishList_Get(Session);
         watchedList = await Http.WatchedList_Get(Session);

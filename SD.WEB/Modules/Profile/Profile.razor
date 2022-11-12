@@ -5,7 +5,6 @@
 @using System.Text.Json
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
-@inject Settings Settings
 
 <Alert Visible="true" Color="Color.Secondary">
     <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.MyProviders.Format(myProviders?.Items.Count ?? 0)</AlertMessage>
@@ -157,7 +156,6 @@
         return ModalService.Show<List.Components.MediaPopup>(item.name,
             x =>
             {
-                x.Add(x => x.ServiceDetail, new Modules.List.Core.TMDB.MediaDetailService());
                 x.Add(x => x.tmdb_id, item.id);
                 x.Add(x => x.type, type);
                 x.Add(x => x.WishList, wishList);

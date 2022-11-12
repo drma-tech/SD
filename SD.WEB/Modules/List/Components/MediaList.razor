@@ -2,7 +2,6 @@
 @using SD.WEB.Modules.List.Core
 @using SD.WEB.Modules.Profile.Core
 @inherits ComponenteCore<MediaList>
-@inject Settings Settings
 
 @if (ShowHead)
 {
@@ -199,7 +198,6 @@
         await ModalService.Show<MediaPopup>(media?.title,
             x =>
             {
-                x.Add(x => x.ServiceDetail, new Modules.List.Core.TMDB.MediaDetailService());
                 x.Add(x => x.tmdb_id, tmdb_id);
                 x.Add(x => x.type, media?.MediaType);
                 x.Add(x => x.ShowOnlyYear, ShowOnlyYear);

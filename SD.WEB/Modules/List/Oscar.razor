@@ -4,22 +4,21 @@
 @using SD.WEB.Modules.List.Core.TMDB
 @using SD.WEB.Modules.Profile.Core
 @inherits ComponenteCore<Oscar>
-@inject Settings Settings
 
 <SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></SD.WEB.Modules.List.Components.HeadPage>
 
 <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.MotionPicture" Items="@ListMotionPicture" list_id="7103422" maxItens="12"
-           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Animated" Items="@ListAnimated" list_id="7103492" maxItens="12"
-           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.International" Items="@ListInternational" list_id="7103493" maxItens="12"
-           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Documentary" Items="@ListDocumentary" list_id="7103488" maxItens="12"
-           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 
 @code {
     private HashSet<MediaDetail> ListMotionPicture { get; set; } = new();
@@ -34,15 +33,15 @@
     {
         await base.OnInitializedAsync();
 
-        await ListService.PopulateListMedia(Http, Session, Settings, ListMotionPicture, 1, GetExtraParameters("7103422"));
-        await ListService.PopulateListMedia(Http, Session, Settings, ListAnimated, 1, GetExtraParameters("7103492"));
-        await ListService.PopulateListMedia(Http, Session, Settings, ListInternational, 1, GetExtraParameters("7103493"));
-        await ListService.PopulateListMedia(Http, Session, Settings, ListDocumentary, 1, GetExtraParameters("7103488"));
+        await ListService.PopulateListMedia(Http, Session, ListMotionPicture, 1, GetExtraParameters("7103422"));
+        await ListService.PopulateListMedia(Http, Session, ListAnimated, 1, GetExtraParameters("7103492"));
+        await ListService.PopulateListMedia(Http, Session, ListInternational, 1, GetExtraParameters("7103493"));
+        await ListService.PopulateListMedia(Http, Session, ListDocumentary, 1, GetExtraParameters("7103488"));
 
         wishList = await Http.WishList_Get(Session);
         watchedList = await Http.WatchedList_Get(Session);
     }
-    
+
     private Dictionary<string, string> GetExtraParameters(string list_id)
     {
         return new Dictionary<string, string>() { { "list_id", list_id } };

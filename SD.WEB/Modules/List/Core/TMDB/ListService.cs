@@ -6,7 +6,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
 {
     public class ListService
     {
-        public static async Task PopulateListMedia(HttpClient http, ISyncSessionStorageService? storage, Settings settings,
+        public static async Task PopulateListMedia(HttpClient http, ISyncSessionStorageService? storage, 
             HashSet<MediaDetail> list_media, int page = 1, Dictionary<string, string>? ExtraParameters = null)
         {
             if (ExtraParameters == null) throw new ArgumentNullException(nameof(ExtraParameters));
@@ -14,7 +14,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
             var parameter = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey },
-                { "language", settings.Language.GetName(false) ?? "en-US" },
+                { "language", Settings.Language.GetName(false) ?? "en-US" },
                 { "page", page.ToString() },
                 { "sort_by", "original_order.asc" }
             };

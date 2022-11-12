@@ -12,14 +12,14 @@ namespace SD.WEB.Modules.List.Core.TMDB
 
     public static class PopularService
     {
-        public static async Task<bool> PopulateTMDBPopular(this HttpClient http, ISyncSessionStorageService? storage, Settings settings,
+        public static async Task<bool> PopulateTMDBPopular(this HttpClient http, ISyncSessionStorageService? storage,
             HashSet<MediaDetail> list_media, MediaType? type = null, int page = 1)
         {
             var parameter = new Dictionary<string, string>()
                 {
                     { "api_key", TmdbOptions.ApiKey },
                     //{ "region", settings.Region.ToString() }, //region doesnt affect popular list
-                    { "language", settings.Language.GetName(false) ?? "en-US" },
+                    { "language", Settings.Language.GetName(false) ?? "en-US" },
                     { "page", page.ToString() }
                 };
 

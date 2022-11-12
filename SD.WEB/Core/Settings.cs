@@ -1,35 +1,19 @@
-﻿using Blazored.SessionStorage;
-using System.Globalization;
-using System.Text.Json.Serialization;
+﻿using System.Globalization;
 
 namespace SD.WEB.Core
 {
-    public class Settings
+    public static class Settings
     {
-        public Region Region { get; set; }
-        public Language Language { get; set; }
+        public static Region Region { get; set; }
+        public static Language Language { get; set; }
 
-        [JsonConstructor]
-        public Settings()
-        { }
+        static Settings()
+        {
+            Enum.TryParse(typeof(Region), RegionInfo.CurrentRegion.Name, out object? region);
+            Enum.TryParse(typeof(Language), CultureInfo.CurrentCulture.Name.Replace("-", ""), out object? language);
 
-        //public Settings(ISyncSessionStorageService session)
-        //{
-        //    var sett = session.GetItem<Settings>("Settings");
-
-        //    if (sett == null)
-        //    {
-        //        Enum.TryParse(typeof(Region), RegionInfo.CurrentRegion.Name, out object? region);
-        //        Enum.TryParse(typeof(Language), CultureInfo.CurrentCulture.Name.Replace("-", ""), out object? language);
-
-        //        Region = (Region?)region ?? Region.US;
-        //        Language = (Language?)language ?? Language.enUS;
-        //    }
-        //    else
-        //    {
-        //        Region = sett.Region;
-        //        Language = sett.Language;
-        //    }
-        //}
+            Region = (Region?)region ?? Region.US;
+            Language = (Language?)language ?? Language.enUS;
+        }
     }
 }

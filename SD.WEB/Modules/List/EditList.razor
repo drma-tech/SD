@@ -4,7 +4,6 @@
 @using Blazorise.DataGrid
 @using SD.Shared.Model
 @using SD.WEB.Modules.List.Core.TMDB
-@inject Settings Settings
 
 <DataGrid @ref="DataGrid" TItem="MediaDetail" Data="@List" Filterable="true" Editable="true" EditMode="DataGridEditMode.Form"
           ShowPager="true" PageSize="10" FilterMethod="DataGridFilterMethod.Contains"
@@ -76,7 +75,7 @@
     protected override async Task LoadData()
     {
         Types = EnumHelper.GetList<MediaType>();
-        await ListService.PopulateListMedia(Http, Session, Settings, List, 1, GetExtraParameters(ListId));
+        await ListService.PopulateListMedia(Http, Session, List, 1, GetExtraParameters(ListId));
     }
 
     protected void RowUpdated(SavedRowItem<MediaDetail, Dictionary<string, object>> e)

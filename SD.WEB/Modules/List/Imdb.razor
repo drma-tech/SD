@@ -1,7 +1,6 @@
 ﻿@page "/List/Imdb"
 <PageTitle>SD - Lists - IMDB</PageTitle>
 @inherits ComponenteCore<Imdb>
-@inject Settings Settings
 @using SD.Shared.Model
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.List.Core.TMDB
@@ -10,17 +9,17 @@
 <SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/imdb.png" Text="@TranslationText.imdb_desc" Link="https://www.imdb.com/"></SD.WEB.Modules.List.Components.HeadPage>
 
 <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" IsIMDB="true" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="PopularDisable"
-           TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
-           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+                                          TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 <SD.WEB.Modules.List.Components.MediaList CardHeader="Top 250" Items="@ListTopRated" list_id="@(topRatedMedia== MediaType.movie?"8223821":"8223826")" maxItens="250"
-           TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
-           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+                                          TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.ComingSoon" Items="@ListUpcoming" maxItens="50" IsIMDB="true" NextPage="LoadUpcoming" DisableLoadMore="UpcomingDisable"
-           ShowOnlyYear="false"
-           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+                                          ShowOnlyYear="false"
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 
 @code {
     private HashSet<MediaDetail> ListPopular { get; set; } = new();
@@ -81,9 +80,9 @@
     private async Task LoadTopRated(MediaType mediaType)
     {
         if (mediaType == MediaType.movie)
-            await ListService.PopulateListMedia(Http, Session, Settings, ListTopRated, 1, GetExtraParameters("8223821"));
+            await ListService.PopulateListMedia(Http, Session, ListTopRated, 1, GetExtraParameters("8223821"));
         else //tv
-            await ListService.PopulateListMedia(Http, Session, Settings, ListTopRated, 1, GetExtraParameters("8223826"));
+            await ListService.PopulateListMedia(Http, Session, ListTopRated, 1, GetExtraParameters("8223826"));
     }
 
     private async Task LoadUpcoming()

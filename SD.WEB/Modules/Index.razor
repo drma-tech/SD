@@ -2,7 +2,6 @@
 @page "/Index"
 <PageTitle>SD - Streaming Discovery</PageTitle>
 @inherits PageCore<Index>
-@inject Settings Settings
 @using SD.WEB.Modules.List.Core.TMDB
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
@@ -42,7 +41,7 @@ else if (TypeSelected == PopularType.Cinema)
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column>
         <Alert Visible="true" Color="Color.Secondary">
-            <AlertMessage>@Provider.Resources.Translations.TitleProviders.Format(Settings?.Region)</AlertMessage>
+            <AlertMessage>@Provider.Resources.Translations.TitleProviders.Format(Settings.Region)</AlertMessage>
 
             <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList">
                 <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
@@ -148,13 +147,13 @@ else if (TypeSelected == PopularType.Cinema)
         {
             case PopularType.Streaming:
                 //await Http.PopulateTMDBPopular(Session, Settings, ListStreamin, null, 1);
-                await Http.PopulateDiscover(Session, Settings, ListStreamin, null, 1, GetExtraParameters("flatrate", "popularity.desc"));
+                await Http.PopulateDiscover(Session, ListStreamin, null, 1, GetExtraParameters("flatrate", "popularity.desc"));
                 break;
             case PopularType.Rent:
-                await Http.PopulateDiscover(Session, Settings, ListRent, null, 1, GetExtraParameters("rent", "popularity.desc"));
+                await Http.PopulateDiscover(Session, ListRent, null, 1, GetExtraParameters("rent", "popularity.desc"));
                 break;
             case PopularType.Cinema:
-                await Http.PopulateNowPlaying(Session, Settings, ListCinema, 1);
+                await Http.PopulateNowPlaying(Session, ListCinema, 1);
                 break;
             default:
                 break;
@@ -168,10 +167,10 @@ else if (TypeSelected == PopularType.Cinema)
 
     private async Task OpenCompleteList()
     {
-        await ModalService.Show<Modules.List.Components.CompleteListProvider>(@Provider.Resources.Translations.TitleProviders.Format(Settings?.Region),
+        await ModalService.Show<Modules.List.Components.CompleteListProvider>(@Provider.Resources.Translations.TitleProviders.Format(Settings.Region),
         x =>
         {
-            x.Add(x => x.CardHeader, @Provider.Resources.Translations.TitleProviders.Format(Settings?.Region));
+            x.Add(x => x.CardHeader, @Provider.Resources.Translations.TitleProviders.Format(Settings.Region));
             x.Add(x => x.AllProviders, AllProviders);
             x.Add(x => x.WishList, wishList);
             x.Add(x => x.WatchedList, watchedList);

@@ -4,7 +4,6 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
 @inherits ComponenteCore<MediaPopup>
-@inject Settings Settings
 
 <ModalHeader>
     <ModalTitle>@media?.title</ModalTitle>
@@ -331,7 +330,6 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter] public MediaDetailService ServiceDetail { get; set; } = default!;
     [Parameter] public bool ShowOnlyYear { get; set; } = true;
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
@@ -343,7 +341,7 @@
 
     private MediaDetail? media { get; set; }
     private MediaProviders? Providers { get; set; }
-    private AllProviders? AllProviders { get; set; }   
+    private AllProviders? AllProviders { get; set; }
 
     private bool Loading;
     string selectedTab = "About";
@@ -352,7 +350,6 @@
     {
         try
         {
-            if (ServiceDetail == null) throw new ArgumentNullException(nameof(ServiceDetail));
             if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
             if (type == null) throw new ArgumentNullException(nameof(type));
             //if (WishList == null) throw new ArgumentNullException(nameof(WishList));
@@ -362,7 +359,7 @@
 
             Loading = true;
 
-            media = await ServiceDetail.GetMedia(Http, Session, Settings, tmdb_id, type);
+            media = await MediaDetailService.GetMedia(Http, tmdb_id, type);
             Providers = await WatchProvidersService.GetProviders(Http, tmdb_id, type);
             AllProviders = await Http.Provider_GetAll(Session);
 

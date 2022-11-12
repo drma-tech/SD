@@ -1,6 +1,5 @@
 ﻿@inherits ComponenteCore<HeadLayout>
 @inject NavigationManager Nav
-@inject Settings Settings
 
 <Bar Mode="BarMode.Horizontal" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark">
     <Container Fluid="true" Padding="Padding.Is0.OnX">
@@ -81,24 +80,16 @@
 
     protected async Task RegionValueChanged(Region value)
     {
-        var sett = Settings;
-
-        sett.Region = value;
-
-        Session?.SetItem("Settings", sett);
+        Settings.Region = value;
 
         await RefreshCore.ChangeRegion(value);
     }
 
     protected void LanguageValueChanged(Language value)
     {
-        var sett = Settings;
+        Settings.Language = value;
 
-        sett.Language = value;
-
-        var culture = System.Globalization.CultureInfo.CurrentCulture;
-
-        Session?.SetItem("Settings", sett);
+        //var culture = System.Globalization.CultureInfo.CurrentCulture;
 
         //await RefreshCore.ChangeLanguage(value);
 

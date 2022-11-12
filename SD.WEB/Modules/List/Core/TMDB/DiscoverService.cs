@@ -5,7 +5,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
 {
     public static class DiscoverService
     {
-        public static async Task<bool> PopulateDiscover(this HttpClient http, ISyncSessionStorageService? storage, Settings settings,
+        public static async Task<bool> PopulateDiscover(this HttpClient http, ISyncSessionStorageService? storage,
             HashSet<MediaDetail> list_media, MediaType? type, int page = 1, Dictionary<string, string>? ExtraParameters = null)
         {
             if (ExtraParameters != null)
@@ -29,8 +29,8 @@ namespace SD.WEB.Modules.List.Core.TMDB
             var parameter = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey },
-                { "language", settings.Language.GetName(false) ?? "en-US" },
-                { "watch_region", settings.Region.ToString() },
+                { "language", Settings.Language.GetName(false) ?? "en-US" },
+                { "watch_region", Settings.Region.ToString() },
                 { "page", page.ToString() }
             };
 

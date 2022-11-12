@@ -1,11 +1,10 @@
-﻿using Blazored.SessionStorage;
-using SD.Shared.Model.List.Tmdb;
+﻿using SD.Shared.Model.List.Tmdb;
 
 namespace SD.WEB.Modules.List.Core.TMDB
 {
     public class MediaDetailService
     {
-        public async Task<MediaDetail> GetMedia(HttpClient http, ISyncSessionStorageService? storage, Settings settings, string? tmdb_id, MediaType? type)
+        public static async Task<MediaDetail> GetMedia(HttpClient http, string? tmdb_id, MediaType? type)
         {
             if (tmdb_id == null) throw new ArgumentNullException(nameof(tmdb_id));
             if (type == null) throw new ArgumentNullException(nameof(type));
@@ -13,7 +12,7 @@ namespace SD.WEB.Modules.List.Core.TMDB
             var parameter = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey },
-                { "language", settings.Language.GetName(false) ?? "en-US" },
+                { "language", Settings.Language.GetName(false) ?? "en-US" },
                 { "append_to_response", "videos" }
             };
 

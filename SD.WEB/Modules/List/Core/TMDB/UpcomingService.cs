@@ -5,14 +5,14 @@ namespace SD.WEB.Modules.List.Core.TMDB
 {
     public static class UpcomingService
     {
-        public static async Task<bool> PopulateTMDBUpcoming(this HttpClient http, ISyncSessionStorageService? storage, Settings settings,
+        public static async Task<bool> PopulateTMDBUpcoming(this HttpClient http, ISyncSessionStorageService? storage,
             HashSet<MediaDetail> list_media, MediaType type, int page = 1)
         {
             var parameter = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey },
-                { "region", settings.Region.ToString() },
-                { "language", settings.Language.GetName(false) ?? "en-US" },
+                { "region", Settings.Region.ToString() },
+                { "language", Settings.Language.GetName(false) ?? "en-US" },
                 { "page", page.ToString() }
             };
 

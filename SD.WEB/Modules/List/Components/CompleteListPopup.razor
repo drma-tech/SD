@@ -3,7 +3,6 @@
 @using SD.WEB.Modules.List.Core.TMDB
 @using SD.WEB.Modules.Profile.Core
 @inherits ComponenteCore<CompleteListPopup>
-@inject Settings Settings
 
 <ModalHeader>
     <ModalTitle>@CardHeader</ModalTitle>
@@ -191,7 +190,6 @@
         await ModalService.Show<MediaPopup>(media?.title,
             x =>
             {
-                x.Add(x => x.ServiceDetail, new Modules.List.Core.TMDB.MediaDetailService());
                 x.Add(x => x.tmdb_id, tmdb_id);
                 x.Add(x => x.type, media?.MediaType);
                 x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
@@ -224,7 +222,7 @@
         }
         else
         {
-            await ListService.PopulateListMedia(Http, Session, Settings, Items, ++currentPage, GetExtraParameters(list_id));
+            await ListService.PopulateListMedia(Http, Session, Items, ++currentPage, GetExtraParameters(list_id));
         }
     }
 

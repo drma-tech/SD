@@ -35,7 +35,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
         .AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) })
         .AddStaticWebAppsAuthentication();
 
-    collection.AddScoped<Settings>();
     collection.AddScoped<ListService>();
     collection.AddScoped<MediaDetailService>();
 
@@ -44,26 +43,3 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
         logging.AddProvider(new CosmosLoggerProvider());
     });
 }
-
-//static void ConfigureCulture(WebAssemblyHost host)
-//{
-//    CultureInfo culture;
-//    var session = host.Services.GetRequiredService<ISyncSessionStorageService>();
-//    var sett = session.GetItem<Settings>("Settings");
-
-//    if (sett != null)
-//    {
-//        culture = new CultureInfo(sett.Language.GetName(false) ?? "en-US");
-//    }
-//    else
-//    {
-//        culture = CultureInfo.CurrentCulture;
-
-//        //save the new settings
-//        sett = new Settings(session);
-//        session.SetItem("Settings", sett);
-//    }
-
-//    CultureInfo.DefaultThreadCurrentCulture = culture;
-//    CultureInfo.DefaultThreadCurrentUICulture = culture;
-//}
