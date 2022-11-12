@@ -11,6 +11,7 @@
         public VoteType VoteType { get; set; }
 
 #pragma warning disable S927 // Parameter names should match base declaration and other partial definitions
+
         public override void SetIds(string? TicketId)
 #pragma warning restore S927 // Parameter names should match base declaration and other partial definitions
         {
