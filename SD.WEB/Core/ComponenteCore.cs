@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using SD.WEB.Modules.Auth.Core;
-using System.Diagnostics.CodeAnalysis;
 
 namespace SD.WEB.Core
 {
@@ -31,12 +30,6 @@ namespace SD.WEB.Core
         }
 
         public static bool IsAuthenticated { get; set; }
-
-        public static string BaseApi([NotNullWhen(true)] this HttpClient http, bool externalLink)
-        {
-            if (externalLink) return "";
-            else return http.BaseAddress?.ToString().Contains("localhost") ?? true ? "http://localhost:7071/api/" : http.BaseAddress.ToString() + "api/";
-        }
     }
 
     /// <summary>
@@ -78,6 +71,7 @@ namespace SD.WEB.Core
     {
         [Inject] protected IJSRuntime JsRuntime { get; set; } = default!;
         [Inject] protected NavigationManager Navigation { get; set; } = default!;
+        [Inject] protected PrincipalApi PrincipalApi { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -85,7 +79,7 @@ namespace SD.WEB.Core
             {
                 if (ComponenteUtils.IsAuthenticated)
                 {
-                    var principal = await Http.Principal_Get();
+                    var principal = await PrincipalApi.Get();
 
                     //força o cadastro, caso não tenha registrado a conta principal
                     if (principal == null)

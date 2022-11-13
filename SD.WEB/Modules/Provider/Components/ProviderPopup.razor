@@ -1,7 +1,9 @@
 ﻿@using SD.Shared.Model
 @inherits ComponenteCore<ProviderPopup>
-@using SD.WEB.Modules.List.Core.TMDB
+@using SD.WEB.Modules.List.Core
 @using SD.WEB.Modules.Profile.Core
+@inject MyProvidersApi MyProvidersApi
+@inject TmdbApi TmdbApi
 
 <ModalHeader>
     <ModalTitle>@provider?.name</ModalTitle>
@@ -152,7 +154,7 @@
             if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
             if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
 
-            myProviders = await Http.MyProviders_Get();
+            myProviders = await MyProvidersApi.Get();
 
             popularMedia = mediaType;
             newMedia = mediaType;
@@ -210,17 +212,23 @@
 
     private async Task LoadPopular(MediaType mediaType)
     {
-        popularDisable = await Http.PopulateDiscover(ListPopular, mediaType, ++popularPage, GetExtraParameters(provider?.id, "popularity.desc"));
+        var result = await TmdbApi.GetDiscoverList(mediaType, ++popularPage, GetExtraParameters(provider?.id, "popularity.desc"));
+        popularDisable = result.lastPage;
+        ListPopular = result.list;
     }
 
     private async Task LoadNew(MediaType mediaType)
     {
-        newDisable = await Http.PopulateDiscover(ListNew, mediaType, ++newPage, GetExtraParameters(provider?.id, "primary_release_date.desc"));
+        var result = await TmdbApi.GetDiscoverList(mediaType, ++newPage, GetExtraParameters(provider?.id, "primary_release_date.desc"));
+        newDisable = result.lastPage;
+        ListNew = result.list;
     }
 
     private async Task LoadTopRated(MediaType mediaType)
     {
-        topRatedDisable = await Http.PopulateDiscover(ListTopRated, mediaType, ++topRatedPage, GetExtraParameters(provider?.id, "vote_average.desc"));
+        var result = await TmdbApi.GetDiscoverList(mediaType, ++topRatedPage, GetExtraParameters(provider?.id, "vote_average.desc"));
+        topRatedDisable = result.lastPage;
+        ListTopRated = result.list;
     }
 
     private async Task Add()
@@ -237,7 +245,7 @@
 
             if (provider != null) myProviders.Items.Add(new MyProvidersItem() { id = provider.id, name = provider.name, logo = provider.logo_path });
 
-            await Http.MyProviders_Post(myProviders);
+            await MyProvidersApi.Post(myProviders);
 
             await Toast.Success("Provedor favoritado com sucesso!");
         }
@@ -261,7 +269,7 @@
 
             myProviders.Items.Remove(myProviders.Items.First(f => f.id == provider?.id));
 
-            await Http.MyProviders_Post(myProviders);
+            await MyProvidersApi.Post(myProviders);
 
             await Toast.Success("Provedor removido com sucesso!");
         }

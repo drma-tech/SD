@@ -1,18 +1,24 @@
-﻿namespace SD.WEB.Modules.Profile.Core
+﻿using Microsoft.Extensions.Caching.Memory;
+
+namespace SD.WEB.Modules.Profile.Core
 {
-    public static class MyProvidersApi
+    public class MyProvidersApi : ApiServices
     {
+        public MyProvidersApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
+        {
+        }
+
         private struct Endpoint
         {
             public const string Get = "MyProviders/Get";
             public const string Post = "MyProviders/Post";
         }
 
-        public static async Task<MyProviders?> MyProviders_Get(this HttpClient http)
+        public async Task<MyProviders?> Get()
         {
             if (ComponenteUtils.IsAuthenticated)
             {
-                return await http.Get<MyProviders>(Endpoint.Get, false);
+                return await GetAsync<MyProviders>(Endpoint.Get, false);
             }
             else
             {
@@ -20,11 +26,11 @@
             }
         }
 
-        public static async Task<HttpResponseMessage> MyProviders_Post(this HttpClient http, MyProviders? obj)
+        public async Task<MyProviders?> Post(MyProviders? obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
-            return await http.Post(Endpoint.Post, false, obj, Endpoint.Get);
+            return await PostAsync(Endpoint.Post, false, obj, Endpoint.Get);
         }
     }
 }

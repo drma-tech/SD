@@ -1,25 +1,30 @@
-﻿using SD.Shared.Model.Auth;
+﻿using Microsoft.Extensions.Caching.Memory;
+using SD.Shared.Model.Auth;
 
 namespace SD.WEB.Modules.Auth.Core
 {
-    public static class PrincipalApi
+    public class PrincipalApi : ApiServices
     {
-        private struct PrincipalEndpoint
+        public PrincipalApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
+        {
+        }
+
+        private struct Endpoint
         {
             public const string Get = "Principal/Get";
             public const string Add = "Principal/Add";
         }
 
-        public static async Task<ClientePrincipal?> Principal_Get(this HttpClient http)
+        public async Task<ClientePrincipal?> Get()
         {
-            return await http.Get<ClientePrincipal>(PrincipalEndpoint.Get, false);
+            return await GetAsync<ClientePrincipal>(Endpoint.Get, false);
         }
 
-        public static async Task<HttpResponseMessage> Principal_Add(this HttpClient http, ClientePrincipal? obj)
+        public async Task<ClientePrincipal?> Add(ClientePrincipal? obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
-            return await http.Post(PrincipalEndpoint.Add, false, obj, PrincipalEndpoint.Get);
+            return await PostAsync<ClientePrincipal>(Endpoint.Add, false, obj, Endpoint.Get);
         }
     }
 }

@@ -5,6 +5,11 @@
 @using System.Text.Json
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
+@inject WatchedListApi WatchedListApi
+@inject WishListApi WishListApi
+@inject MyProvidersApi MyProvidersApi
+@inject AllProvidersApi AllProvidersApi
+
 
 <Alert Visible="true" Color="Color.Secondary">
     <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.MyProviders.Format(myProviders?.Items.Count ?? 0)</AlertMessage>
@@ -115,13 +120,13 @@
             }
             else
             {
-                wishList = await Http.WishList_Get();
-                watchedList = await Http.WatchedList_Get();
+                wishList = await WishListApi.Get();
+                watchedList = await WatchedListApi.Get();
 
-                myProviders = await Http.MyProviders_Get();
+                myProviders = await MyProvidersApi.Get();
             }
 
-            allProviders = await Http.Provider_GetAll();
+            allProviders = await AllProvidersApi.GetAll();
 
             loading = false;
         }

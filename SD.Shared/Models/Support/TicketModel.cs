@@ -50,6 +50,16 @@ namespace SD.Shared.Model.Support
 
             DtUpdate = DateTime.UtcNow;
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is TicketModel q && q.Id == Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id?.GetHashCode() ?? 0;
+        }
     }
 
     public enum TicketType

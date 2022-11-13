@@ -1,7 +1,7 @@
 ﻿@using SD.Shared.Model.Support;
 @using SD.WEB.Modules.Support.Core
 @inherits ComponenteCore<NewTicket>
-@inject HttpClient Http
+@inject TicketApi TicketApi
 
 <ModalHeader>
     <ModalTitle>@Resources.Translations.NewTicketTitle</ModalTitle>
@@ -76,7 +76,9 @@
             Ticket.TicketStatus = TicketStatus.New;
             Ticket.SetIds(ComponenteUtils.GetIdUser());
 
-            await Http.Ticket_Insert(Ticket, Toast);
+            await TicketApi.Insert(Ticket);
+
+            await Toast.Success("Salvo com sucesso");
 
             Ticket = new();
             await ModalService.Hide();

@@ -6,7 +6,11 @@ using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using SD.WEB;
-using SD.WEB.Modules.List.Core.TMDB;
+using SD.WEB.Modules.Auth.Core;
+using SD.WEB.Modules.List.Core;
+using SD.WEB.Modules.Profile.Core;
+using SD.WEB.Modules.Provider.Core;
+using SD.WEB.Modules.Support.Core;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -27,13 +31,24 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
 
     collection.AddPWAUpdater();
     collection.AddMediaQueryService();
+    collection.AddMemoryCache();
 
     collection
         .AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) })
         .AddStaticWebAppsAuthentication();
 
-    collection.AddScoped<ListService>();
-    collection.AddScoped<MediaDetailService>();
+    collection.AddScoped<PrincipalApi>();
+    collection.AddScoped<WatchedListApi>();
+    collection.AddScoped<WishListApi>();
+    collection.AddScoped<MyProvidersApi>();
+    collection.AddScoped<AllProvidersApi>();
+    collection.AddScoped<TicketApi>();
+    collection.AddScoped<TicketVoteApi>();
+
+    collection.AddScoped<ExternalIdApi>();
+
+    collection.AddScoped<ImdbApi>();
+    collection.AddScoped<TmdbApi>();
 
     collection.AddLogging(logging =>
     {

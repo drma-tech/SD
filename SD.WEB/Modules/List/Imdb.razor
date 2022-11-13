@@ -2,9 +2,12 @@
 <PageTitle>SD - Lists - IMDB</PageTitle>
 @inherits ComponenteCore<Imdb>
 @using SD.Shared.Model
+@using SD.WEB.Modules.List.Core;
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.List.Core.TMDB
-@using SD.WEB.Modules.List.Core.IMDB
+@inject WatchedListApi WatchedListApi
+@inject WishListApi WishListApi
+@inject ImdbApi ImdbApi
+@inject TmdbApi TmdbApi
 
 <SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/imdb.png" Text="@TranslationText.imdb_desc" Link="https://www.imdb.com/"></SD.WEB.Modules.List.Components.HeadPage>
 
@@ -39,8 +42,8 @@
     {
         await base.OnInitializedAsync();
 
-        wishList = await Http.WishList_Get();
-        watchedList = await Http.WatchedList_Get();
+        wishList = await WishListApi.Get();
+        watchedList = await WatchedListApi.Get();
 
         await LoadPopular(popularMedia);
         await LoadTopRated(popularMedia);
@@ -59,8 +62,8 @@
 
         if (ListPopular.Count < 10) await LoadPopular(popularMedia);
 
-        wishList = await Http.WishList_Get();
-        watchedList = await Http.WatchedList_Get();
+        wishList = await WishListApi.Get();
+        watchedList = await WatchedListApi.Get();
     }
 
     private async Task ChangeTopRatedMediaType(MediaType mediaType)
@@ -74,20 +77,20 @@
 
     private async Task LoadPopular(MediaType mediaType)
     {
-        await Http.PopulateIMDBPopular(ListPopular, mediaType);
+        ListPopular = await ImdbApi.GetPopularList(mediaType);
     }
 
     private async Task LoadTopRated(MediaType mediaType)
     {
         if (mediaType == MediaType.movie)
-            await ListService.PopulateListMedia(Http, ListTopRated, 1, GetExtraParameters("8223821"));
+            ListTopRated = await TmdbApi.GetListList(1, GetExtraParameters("8223821"));
         else //tv
-            await ListService.PopulateListMedia(Http, ListTopRated, 1, GetExtraParameters("8223826"));
+            ListTopRated = await TmdbApi.GetListList(1, GetExtraParameters("8223826"));
     }
 
     private async Task LoadUpcoming()
     {
-        await Http.PopulateIMDBUpcoming(ListUpcoming, MediaType.movie);
+        ListUpcoming = await ImdbApi.GetUpcomingList(MediaType.movie);
     }
 
     private Dictionary<string, string> GetExtraParameters(string list_id)

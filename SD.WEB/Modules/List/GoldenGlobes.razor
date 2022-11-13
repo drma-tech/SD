@@ -2,8 +2,11 @@
 <PageTitle>SD - Lists - Golden Globes</PageTitle>
 @using SD.Shared.Model
 @inherits ComponenteCore<GoldenGlobes>
-@using SD.WEB.Modules.List.Core.TMDB
+@using SD.WEB.Modules.List.Core
 @using SD.WEB.Modules.Profile.Core
+@inject WatchedListApi WatchedListApi
+@inject WishListApi WishListApi
+@inject TmdbApi TmdbApi
 
 <SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/goldenglobes.png" Text="@TranslationText.golden_desc" Link="https://www.goldenglobes.com/"></SD.WEB.Modules.List.Components.HeadPage>
 
@@ -29,12 +32,12 @@
     {
         await base.OnInitializedAsync();
 
-        await ListService.PopulateListMedia(Http, ListDrama, 1, GetExtraParameters("7103543"));
-        await ListService.PopulateListMedia(Http, ListMusicalComedy, 1, GetExtraParameters("7103545"));
-        await ListService.PopulateListMedia(Http, ListAnimated, 1, GetExtraParameters("7103548"));
+        ListDrama = await TmdbApi.GetListList(1, GetExtraParameters("7103543"));
+        ListMusicalComedy = await TmdbApi.GetListList(1, GetExtraParameters("7103545"));
+        ListAnimated = await TmdbApi.GetListList(1, GetExtraParameters("7103548"));
 
-        wishList = await Http.WishList_Get();
-        watchedList = await Http.WatchedList_Get();
+        wishList = await WishListApi.Get();
+        watchedList = await WatchedListApi.Get();
     }
 
     private Dictionary<string, string> GetExtraParameters(string list_id)

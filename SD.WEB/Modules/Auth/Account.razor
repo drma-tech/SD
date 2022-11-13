@@ -59,7 +59,7 @@
     {
         if (ComponenteUtils.IsAuthenticated)
         {
-            principal = await Http.Principal_Get();
+            principal = await PrincipalApi.Get();
 
             if (principal == null) principal = new();
 

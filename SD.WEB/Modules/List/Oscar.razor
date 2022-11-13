@@ -1,9 +1,12 @@
 ﻿@page "/List/Oscar"
 <PageTitle>SD - Lists - Oscar</PageTitle>
 @using SD.Shared.Model
-@using SD.WEB.Modules.List.Core.TMDB
+@using SD.WEB.Modules.List.Core
 @using SD.WEB.Modules.Profile.Core
 @inherits ComponenteCore<Oscar>
+@inject WatchedListApi WatchedListApi
+@inject WishListApi WishListApi
+@inject TmdbApi TmdbApi
 
 <SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></SD.WEB.Modules.List.Components.HeadPage>
 
@@ -33,13 +36,13 @@
     {
         await base.OnInitializedAsync();
 
-        await ListService.PopulateListMedia(Http, ListMotionPicture, 1, GetExtraParameters("7103422"));
-        await ListService.PopulateListMedia(Http, ListAnimated, 1, GetExtraParameters("7103492"));
-        await ListService.PopulateListMedia(Http, ListInternational, 1, GetExtraParameters("7103493"));
-        await ListService.PopulateListMedia(Http, ListDocumentary, 1, GetExtraParameters("7103488"));
+        ListMotionPicture = await TmdbApi.GetListList(1, GetExtraParameters("7103422"));
+        ListAnimated = await TmdbApi.GetListList(1, GetExtraParameters("7103492"));
+        ListInternational = await TmdbApi.GetListList(1, GetExtraParameters("7103493"));
+        ListDocumentary = await TmdbApi.GetListList(1, GetExtraParameters("7103488"));
 
-        wishList = await Http.WishList_Get();
-        watchedList = await Http.WatchedList_Get();
+        wishList = await WishListApi.Get();
+        watchedList = await WatchedListApi.Get();
     }
 
     private Dictionary<string, string> GetExtraParameters(string list_id)

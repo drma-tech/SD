@@ -2,8 +2,11 @@
 <PageTitle>SD - Lists - TMDB</PageTitle>
 @inherits ComponenteCore<Tmdb>
 @using SD.Shared.Model
-@using SD.WEB.Modules.List.Core.TMDB
+@using SD.WEB.Modules.List.Core
 @using SD.WEB.Modules.Profile.Core
+@inject WatchedListApi WatchedListApi
+@inject WishListApi WishListApi
+@inject TmdbApi TmdbApi
 
 <SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/tmdb.png" Text="@TranslationText.tmdb_desc" Link="https://www.themoviedb.org/"></SD.WEB.Modules.List.Components.HeadPage>
 
@@ -52,8 +55,8 @@
         if (ListPopular.Count < 10) await LoadPopular(popularMedia);
         if (ListTopRated.Count < 10) await LoadTopRated(topRatedMedia);
 
-        wishList = await Http.WishList_Get();
-        watchedList = await Http.WatchedList_Get();
+        wishList = await WishListApi.Get();
+        watchedList = await WatchedListApi.Get();
     }
 
     private async Task ChangeRegion()
@@ -98,16 +101,25 @@
 
     private async Task LoadPopular(MediaType mediaType)
     {
-        PopularDisable = await Http.PopulateTMDBPopular(ListPopular, mediaType, ++popularPage);
+        var result = await TmdbApi.GetPopularList(mediaType, ++popularPage);
+
+        ListPopular = result.list;
+        PopularDisable = result.lastPage;
     }
 
     private async Task LoadTopRated(MediaType mediaType)
     {
-        TopRatedDisable = await Http.PopulateTMDBTopRated(ListTopRated, mediaType, ++topRatedPage);
+        var result = await TmdbApi.GetTopRatedList(mediaType, ++topRatedPage);
+
+        ListTopRated = result.list;
+        TopRatedDisable = result.lastPage;
     }
 
     private async Task LoadUpcoming()
     {
-        UpcomingDisable = await Http.PopulateTMDBUpcoming(ListUpcoming, MediaType.movie, ++upcomingPage);
+        var result = await TmdbApi.GetUpcomingList(MediaType.movie, ++upcomingPage);
+
+        ListUpcoming = result.list;
+        UpcomingDisable = result.lastPage;
     }
 }

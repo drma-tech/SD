@@ -7,6 +7,8 @@
 @using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Support.Component
 @using SD.WEB.Modules.Support.Core
+@inject TicketApi TicketApi
+@inject TicketVoteApi TicketVoteApi
 
 <Alert Color="Color.Secondary" Visible="true">
     <AlertDescription>
@@ -188,8 +190,8 @@ else if (SelectedTab == Tabs.Announcements)
 }
 
 @code {
-    private List<TicketModel> tickets = new();
-    private List<TicketVoteModel> myVotes = new();
+    private HashSet<TicketModel> tickets = new();
+    private HashSet<TicketVoteModel> myVotes = new();
 
     private TicketType TicketTypeSel { get; set; } = TicketType.Improvement;
     private TicketStatus? TicketStatusSel { get; set; }
@@ -226,8 +228,8 @@ else if (SelectedTab == Tabs.Announcements)
     {
         Loading = true;
 
-        tickets = await Http.Ticket_GetList();
-        myVotes = await Http.Ticket_GetMyVotes();
+        tickets = await TicketApi.GetList();
+        myVotes = await TicketVoteApi.GetMyVotes();
 
         Loading = false;
 
@@ -284,10 +286,12 @@ else if (SelectedTab == Tabs.Announcements)
                 vote.VoteType = voteType;
                 vote.IdVotedUser = ComponenteUtils.GetIdUser();
 
-                await Http.Ticket_Vote(vote, Toast);
+                await TicketVoteApi.Vote(vote);
                 tickets.Single(s => s.Key == IdTicket.ToString()).Vote(voteType);
 
                 myVotes.Add(vote);
+
+                await Toast.Success("Voto registrado com sucesso");
             }
         }
         catch (Exception ex)

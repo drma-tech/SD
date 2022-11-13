@@ -4,6 +4,8 @@
 @using HtmlAgilityPack
 @using System.Net.Http
 @using SD.WEB.Modules.Provider.Core
+@inject AllProvidersApi AllProvidersApi
+
 
 <Button Clicked="@SyncProvidersOnClick" Color="Color.Primary">Sync Providers</Button>
 <Button Clicked="@SaveSession" Color="Color.Primary">Save Session</Button>
@@ -102,7 +104,7 @@
     protected override async Task LoadData()
     {
         Languages = EnumHelper.GetList<Language>();
-        AllProviders = await Http.Provider_GetAll();
+        AllProviders = await AllProvidersApi.GetAll();
     }
 
     private async Task ShowPopupProvider(ProviderModel item)
@@ -123,12 +125,12 @@
 
     protected async Task SaveSession()
     {
-        await Http.Provider_Post(AllProviders);
+        await AllProvidersApi.Post(AllProviders);
     }
 
     protected async Task SyncProvidersOnClick()
     {
-        await Http.Provider_Sync();
+        await AllProvidersApi.Sync();
     }
 
     protected void RowUpdated(SavedRowItem<ProviderModel, Dictionary<string, object>> e)

@@ -2,9 +2,13 @@
 @page "/Index"
 <PageTitle>SD - Streaming Discovery</PageTitle>
 @inherits PageCore<Index>
-@using SD.WEB.Modules.List.Core.TMDB
+@using SD.WEB.Modules.List.Core;
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
+@inject WatchedListApi WatchedListApi
+@inject WishListApi WishListApi
+@inject AllProvidersApi AllProvidersApi
+@inject TmdbApi TmdbApi
 
 <Alert Visible="true" Color="Color.Secondary">
     <AlertMessage>@TranslationText.Popular</AlertMessage>
@@ -126,12 +130,12 @@ else if (TypeSelected == PopularType.Cinema)
     {
         try
         {
-            wishList = await Http.WishList_Get();
-            watchedList = await Http.WatchedList_Get();
+            wishList = await WishListApi.Get();
+            watchedList = await WatchedListApi.Get();
 
             await LoadLists(TypeSelected);
 
-            AllProviders = await Http.Provider_GetAll();
+            AllProviders = await AllProvidersApi.GetAll();
         }
         catch (Exception ex)
         {
@@ -147,13 +151,16 @@ else if (TypeSelected == PopularType.Cinema)
         {
             case PopularType.Streaming:
                 //await Http.PopulateTMDBPopular(Session, Settings, ListStreamin, null, 1);
-                await Http.PopulateDiscover(ListStreamin, null, 1, GetExtraParameters("flatrate", "popularity.desc"));
+                var resultS = await TmdbApi.GetDiscoverList(null, 1, GetExtraParameters("flatrate", "popularity.desc"));
+                ListStreamin = resultS.list;
                 break;
             case PopularType.Rent:
-                await Http.PopulateDiscover(ListRent, null, 1, GetExtraParameters("rent", "popularity.desc"));
+                var resultR = await TmdbApi.GetDiscoverList(null, 1, GetExtraParameters("rent", "popularity.desc"));
+                ListRent = resultR.list;
                 break;
             case PopularType.Cinema:
-                await Http.PopulateNowPlaying(ListCinema, 1);
+                var resultC = await TmdbApi.GetNowPlayingList(1);
+                ListCinema = resultC.list;
                 break;
             default:
                 break;

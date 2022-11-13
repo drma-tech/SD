@@ -1,9 +1,13 @@
-﻿@using SD.WEB.Modules.List.Core.TMDB
-@using SD.Shared.Model.List.Tmdb
+﻿@using SD.Shared.Model.List.Tmdb
 @using SD.Shared.Model
+@using SD.WEB.Modules.List.Core;
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
 @inherits ComponenteCore<MediaPopup>
+@inject WatchedListApi WatchedListApi
+@inject WishListApi WishListApi
+@inject AllProvidersApi AllProvidersApi
+@inject TmdbApi TmdbApi
 
 <ModalHeader>
     <ModalTitle>@media?.title</ModalTitle>
@@ -359,9 +363,9 @@
 
             Loading = true;
 
-            media = await MediaDetailService.GetMedia(Http, tmdb_id, type);
-            Providers = await WatchProvidersService.GetProviders(Http, tmdb_id, type);
-            AllProviders = await Http.Provider_GetAll();
+            media = await TmdbApi.GetMediaDetail(tmdb_id, type);
+            Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
+            AllProviders = await AllProvidersApi.GetAll();
 
             Loading = false;
         }
@@ -464,7 +468,7 @@
             }
         }
 
-        await Http.Provider_Post(AllProviders);
+        await AllProvidersApi.Post(AllProviders);
     }
 
     private async Task Add()
@@ -500,7 +504,7 @@
                     });
             }
 
-            await Http.WishList_Post(WishList);
+            await WishListApi.Post(WishList);
             await WishListChanged.InvokeAsync(WishList);
 
             await Toast.Success("Media favoritado com sucesso!");
@@ -532,7 +536,7 @@
                 WishList.Shows.Remove(WishList.Shows.First(f => f.id == media?.tmdb_id));
             }
 
-            await Http.WishList_Post(WishList);
+            await WishListApi.Post(WishList);
             await WishListChanged.InvokeAsync(WishList);
 
             await Toast.Success("Media removida com sucesso!");
@@ -564,7 +568,7 @@
                 WatchedList.Shows.Add(media.tmdb_id);
             }
 
-            await Http.WatchedList_Post(WatchedList);
+            await WatchedListApi.Post(WatchedList);
             await WatchedListChanged.InvokeAsync(WatchedList);
 
             await Toast.Success("Operação efetuada com sucesso!");
@@ -596,7 +600,7 @@
                 WatchedList.Shows.Remove(WatchedList.Shows.First(f => f == media?.tmdb_id & MediaType.tv == media?.MediaType));
             }
 
-            await Http.WatchedList_Post(WatchedList);
+            await WatchedListApi.Post(WatchedList);
             await WatchedListChanged.InvokeAsync(WatchedList);
 
             await Toast.Success("Operação efetuada com sucesso!");

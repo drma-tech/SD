@@ -1,18 +1,24 @@
-﻿namespace SD.WEB.Modules.Profile.Core
+﻿using Microsoft.Extensions.Caching.Memory;
+
+namespace SD.WEB.Modules.Profile.Core
 {
-    public static class WishListApi
+    public class WishListApi : ApiServices
     {
+        public WishListApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
+        {
+        }
+
         private struct Endpoint
         {
             public const string Get = "WishList/Get";
             public const string Post = "WishList/Post";
         }
 
-        public static async Task<WishList?> WishList_Get(this HttpClient http)
+        public async Task<WishList?> Get()
         {
             if (ComponenteUtils.IsAuthenticated)
             {
-                return await http.Get<WishList>(Endpoint.Get, false);
+                return await GetAsync<WishList>(Endpoint.Get, false);
             }
             else
             {
@@ -20,11 +26,11 @@
             }
         }
 
-        public static async Task<HttpResponseMessage> WishList_Post(this HttpClient http, WishList? obj)
+        public async Task<WishList?> Post(WishList? obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
-            return await http.Post(Endpoint.Post, false, obj, Endpoint.Get);
+            return await PostAsync(Endpoint.Post, false, obj, Endpoint.Get);
         }
     }
 }

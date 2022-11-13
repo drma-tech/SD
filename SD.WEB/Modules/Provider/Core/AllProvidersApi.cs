@@ -1,7 +1,13 @@
-﻿namespace SD.WEB.Modules.Provider.Core
+﻿using Microsoft.Extensions.Caching.Memory;
+
+namespace SD.WEB.Modules.Provider.Core
 {
-    public static class AllProvidersApi
+    public class AllProvidersApi : ApiServices
     {
+        public AllProvidersApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
+        {
+        }
+
         private struct Endpoint
         {
             public const string GetAll = "Public/Provider/GetAll";
@@ -9,21 +15,21 @@
             public const string Sync = "Provider/SyncProviders";
         }
 
-        public static async Task<AllProviders?> Provider_GetAll(this HttpClient http)
+        public async Task<AllProviders?> GetAll()
         {
-            return await http.Get<AllProviders>(Endpoint.GetAll, false);
+            return await GetAsync<AllProviders>(Endpoint.GetAll, false);
         }
 
-        public static async Task<HttpResponseMessage> Provider_Post(this HttpClient http, AllProviders? obj)
+        public async Task<AllProviders?> Post(AllProviders? obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
-            return await http.Post(Endpoint.Post, false, obj, Endpoint.GetAll);
+            return await PostAsync(Endpoint.Post, false, obj, Endpoint.GetAll);
         }
 
-        public static async Task<HttpResponseMessage> Provider_Sync(this HttpClient http)
+        public async Task<AllProviders?> Sync()
         {
-            return await http.Put<AllProviders>(Endpoint.Sync, false, null, Endpoint.GetAll);
+            return await PutAsync<AllProviders>(Endpoint.Sync, false, null, Endpoint.GetAll);
         }
     }
 }
