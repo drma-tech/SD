@@ -75,7 +75,7 @@
     protected override async Task LoadData()
     {
         Types = EnumHelper.GetList<MediaType>();
-        List = await TmdbApi.GetListList(1, GetExtraParameters(ListId));
+        List = await TmdbApi.GetListList(GetExtraParameters(ListId), List);
     }
 
     protected void RowUpdated(SavedRowItem<MediaDetail, Dictionary<string, object>> e)

@@ -101,7 +101,7 @@
 
     private async Task LoadPopular(MediaType mediaType)
     {
-        var result = await TmdbApi.GetPopularList(mediaType, ++popularPage);
+        var result = await TmdbApi.GetPopularList(mediaType, ListPopular, ++popularPage);
 
         ListPopular = result.list;
         PopularDisable = result.lastPage;
@@ -109,7 +109,7 @@
 
     private async Task LoadTopRated(MediaType mediaType)
     {
-        var result = await TmdbApi.GetTopRatedList(mediaType, ++topRatedPage);
+        var result = await TmdbApi.GetTopRatedList(mediaType, ListTopRated, ++topRatedPage);
 
         ListTopRated = result.list;
         TopRatedDisable = result.lastPage;
@@ -117,7 +117,7 @@
 
     private async Task LoadUpcoming()
     {
-        var result = await TmdbApi.GetUpcomingList(MediaType.movie, ++upcomingPage);
+        var result = await TmdbApi.GetUpcomingList(MediaType.movie, ListUpcoming, ++upcomingPage);
 
         ListUpcoming = result.list;
         UpcomingDisable = result.lastPage;

@@ -36,10 +36,10 @@
     {
         await base.OnInitializedAsync();
 
-        ListMotionPicture = await TmdbApi.GetListList(1, GetExtraParameters("7103422"));
-        ListAnimated = await TmdbApi.GetListList(1, GetExtraParameters("7103492"));
-        ListInternational = await TmdbApi.GetListList(1, GetExtraParameters("7103493"));
-        ListDocumentary = await TmdbApi.GetListList(1, GetExtraParameters("7103488"));
+        ListMotionPicture = await TmdbApi.GetListList(GetExtraParameters("7103422"), ListMotionPicture);
+        ListAnimated = await TmdbApi.GetListList(GetExtraParameters("7103492"), ListAnimated);
+        ListInternational = await TmdbApi.GetListList(GetExtraParameters("7103493"), ListInternational);
+        ListDocumentary = await TmdbApi.GetListList(GetExtraParameters("7103488"), ListDocumentary);
 
         wishList = await WishListApi.Get();
         watchedList = await WatchedListApi.Get();

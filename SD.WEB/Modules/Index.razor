@@ -151,15 +151,15 @@ else if (TypeSelected == PopularType.Cinema)
         {
             case PopularType.Streaming:
                 //await Http.PopulateTMDBPopular(Session, Settings, ListStreamin, null, 1);
-                var resultS = await TmdbApi.GetDiscoverList(null, 1, GetExtraParameters("flatrate", "popularity.desc"));
+                var resultS = await TmdbApi.GetDiscoverList(null, GetExtraParameters("flatrate", "popularity.desc"), ListStreamin);
                 ListStreamin = resultS.list;
                 break;
             case PopularType.Rent:
-                var resultR = await TmdbApi.GetDiscoverList(null, 1, GetExtraParameters("rent", "popularity.desc"));
+                var resultR = await TmdbApi.GetDiscoverList(null, GetExtraParameters("rent", "popularity.desc"), ListRent);
                 ListRent = resultR.list;
                 break;
             case PopularType.Cinema:
-                var resultC = await TmdbApi.GetNowPlayingList(1);
+                var resultC = await TmdbApi.GetNowPlayingList(ListCinema);
                 ListCinema = resultC.list;
                 break;
             default:

@@ -32,9 +32,9 @@
     {
         await base.OnInitializedAsync();
 
-        ListDrama = await TmdbApi.GetListList(1, GetExtraParameters("7103543"));
-        ListMusicalComedy = await TmdbApi.GetListList(1, GetExtraParameters("7103545"));
-        ListAnimated = await TmdbApi.GetListList(1, GetExtraParameters("7103548"));
+        ListDrama = await TmdbApi.GetListList(GetExtraParameters("7103543"), ListDrama);
+        ListMusicalComedy = await TmdbApi.GetListList(GetExtraParameters("7103545"), ListMusicalComedy);
+        ListAnimated = await TmdbApi.GetListList(GetExtraParameters("7103548"), ListAnimated);
 
         wishList = await WishListApi.Get();
         watchedList = await WatchedListApi.Get();

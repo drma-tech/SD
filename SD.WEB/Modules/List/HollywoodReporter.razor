@@ -31,8 +31,8 @@
         wishList = await WishListApi.Get();
         watchedList = await WatchedListApi.Get();
 
-        ListMovies = await TmdbApi.GetListList(1, GetExtraParameters("8222343"));
-        ListShows = await TmdbApi.GetListList(1, GetExtraParameters("8222348"));
+        ListMovies = await TmdbApi.GetListList(GetExtraParameters("8222343"), ListMovies);
+        ListShows = await TmdbApi.GetListList(GetExtraParameters("8222348"), ListShows);
     }
 
     private Dictionary<string, string> GetExtraParameters(string list_id)

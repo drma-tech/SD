@@ -225,7 +225,7 @@
         }
         else
         {
-            Items = await TmdbApi.GetListList(++currentPage, GetExtraParameters(list_id));
+            Items = await TmdbApi.GetListList(GetExtraParameters(list_id), Items, ++currentPage);
         }
     }
 

@@ -212,21 +212,21 @@
 
     private async Task LoadPopular(MediaType mediaType)
     {
-        var result = await TmdbApi.GetDiscoverList(mediaType, ++popularPage, GetExtraParameters(provider?.id, "popularity.desc"));
+        var result = await TmdbApi.GetDiscoverList(mediaType, GetExtraParameters(provider?.id, "popularity.desc"), ListPopular, ++popularPage);
         popularDisable = result.lastPage;
         ListPopular = result.list;
     }
 
     private async Task LoadNew(MediaType mediaType)
     {
-        var result = await TmdbApi.GetDiscoverList(mediaType, ++newPage, GetExtraParameters(provider?.id, "primary_release_date.desc"));
+        var result = await TmdbApi.GetDiscoverList(mediaType, GetExtraParameters(provider?.id, "primary_release_date.desc"), ListNew, ++newPage);
         newDisable = result.lastPage;
         ListNew = result.list;
     }
 
     private async Task LoadTopRated(MediaType mediaType)
     {
-        var result = await TmdbApi.GetDiscoverList(mediaType, ++topRatedPage, GetExtraParameters(provider?.id, "vote_average.desc"));
+        var result = await TmdbApi.GetDiscoverList(mediaType, GetExtraParameters(provider?.id, "vote_average.desc"), ListTopRated, ++topRatedPage);
         topRatedDisable = result.lastPage;
         ListTopRated = result.list;
     }

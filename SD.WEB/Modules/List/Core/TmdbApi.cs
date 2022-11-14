@@ -11,7 +11,7 @@ namespace SD.WEB.Modules.List.Core
         {
         }
 
-        public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetDiscoverList(MediaType? type, int page = 1, Dictionary<string, string>? ExtraParameters = null)
+        public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetDiscoverList(MediaType? type, Dictionary<string, string> ExtraParameters, HashSet<MediaDetail> currentList, int page = 1)
         {
             if (ExtraParameters != null)
             {
@@ -53,7 +53,6 @@ namespace SD.WEB.Modules.List.Core
                 var shows = await GetAsync<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), true);
 
                 var list = new List<Ordem>();
-                var list_media = new HashSet<MediaDetail>();
 
                 list.AddRange(movies?.results.Select(s => new Ordem { id = s.id, type = MediaType.movie, Popularity = s.popularity }) ?? new List<Ordem>());
                 list.AddRange(shows?.results.Select(s => new Ordem { id = s.id, type = MediaType.tv, Popularity = s.popularity }) ?? new List<Ordem>());
@@ -67,7 +66,7 @@ namespace SD.WEB.Modules.List.Core
 
                         //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
 
-                        list_media.Add(new MediaDetail
+                        currentList.Add(new MediaDetail
                         {
                             tmdb_id = item.id.ToString(),
                             title = item.title,
@@ -86,7 +85,7 @@ namespace SD.WEB.Modules.List.Core
 
                         if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
 
-                        list_media.Add(new MediaDetail
+                        currentList.Add(new MediaDetail
                         {
                             tmdb_id = item.id.ToString(),
                             title = item.name,
@@ -100,18 +99,17 @@ namespace SD.WEB.Modules.List.Core
                     }
                 }
 
-                return new(list_media, true);
+                return new(currentList, true);
             }
             else if (type == MediaType.movie)
             {
                 var result = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), true);
-                var list_media = new HashSet<MediaDetail>();
 
                 foreach (var item in result?.results ?? new List<ResultMovieDiscover>())
                 {
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
 
-                    list_media.Add(new MediaDetail
+                    currentList.Add(new MediaDetail
                     {
                         tmdb_id = item.id.ToString(),
                         title = item.title,
@@ -124,18 +122,17 @@ namespace SD.WEB.Modules.List.Core
                     });
                 }
 
-                return new(list_media, page >= result?.total_pages);
+                return new(currentList, page >= result?.total_pages);
             }
             else //if (type == MediaType.tv)
             {
                 var result = await GetAsync<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), true);
-                var list_media = new HashSet<MediaDetail>();
 
                 foreach (var item in result?.results ?? new List<ResultTvDiscover>())
                 {
                     if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
 
-                    list_media.Add(new MediaDetail
+                    currentList.Add(new MediaDetail
                     {
                         tmdb_id = item.id.ToString(),
                         title = item.name,
@@ -148,11 +145,11 @@ namespace SD.WEB.Modules.List.Core
                     });
                 }
 
-                return new(list_media, page >= result?.total_pages);
+                return new(currentList, page >= result?.total_pages);
             }
         }
 
-        public async Task<HashSet<MediaDetail>> GetListList(int page = 1, Dictionary<string, string>? ExtraParameters = null)
+        public async Task<HashSet<MediaDetail>> GetListList(Dictionary<string, string> ExtraParameters, HashSet<MediaDetail> currentList, int page = 1)
         {
             if (ExtraParameters == null) throw new ArgumentNullException(nameof(ExtraParameters));
 
@@ -163,8 +160,6 @@ namespace SD.WEB.Modules.List.Core
                 { "page", page.ToString() },
                 { "sort_by", "original_order.asc" }
             };
-
-            var list_media = new HashSet<MediaDetail>();
 
             foreach (var item in ExtraParameters)
             {
@@ -181,7 +176,7 @@ namespace SD.WEB.Modules.List.Core
 
                     result.comments.TryGetProperty($"{(tv ? "tv" : "movie")}:{item.id}", out JsonElement value);
 
-                    list_media.Add(new MediaDetail
+                    currentList.Add(new MediaDetail
                     {
                         tmdb_id = item.id.ToString(),
                         title = tv ? item.name : item.title,
@@ -196,7 +191,7 @@ namespace SD.WEB.Modules.List.Core
                 }
             }
 
-            return list_media;
+            return currentList;
         }
 
         public async Task<MediaDetail> GetMediaDetail(string? tmdb_id, MediaType? type)
@@ -263,7 +258,7 @@ namespace SD.WEB.Modules.List.Core
             return obj_return;
         }
 
-        public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetNowPlayingList(int page = 1)
+        public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetNowPlayingList(HashSet<MediaDetail> currentList, int page = 1)
         {
             var parameter = new Dictionary<string, string>()
             {
@@ -273,7 +268,6 @@ namespace SD.WEB.Modules.List.Core
                 { "page", page.ToString() }
             };
 
-            var list_media = new HashSet<MediaDetail>();
             var result = await GetAsync<MovieNowPlaying>(TmdbOptions.BaseUri + "movie/now_playing".ConfigureParameters(parameter), true);
 
             foreach (var item in result?.results ?? new List<ResultMovieNowPlaying>())
@@ -281,7 +275,7 @@ namespace SD.WEB.Modules.List.Core
                 //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
                 if (item.release_date?.GetDate() > DateTime.Today.AddDays(1)) continue; //only accepts titles that will be released no later than one day after today
 
-                list_media.Add(new MediaDetail
+                currentList.Add(new MediaDetail
                 {
                     tmdb_id = item.id.ToString(),
                     title = item.title,
@@ -294,10 +288,10 @@ namespace SD.WEB.Modules.List.Core
                 });
             }
 
-            return new(list_media, page >= result?.total_pages);
+            return new(currentList, page >= result?.total_pages);
         }
 
-        public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetTopRatedList(MediaType type, int page = 1)
+        public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetTopRatedList(MediaType type, HashSet<MediaDetail> currentList, int page = 1)
         {
             var parameter = new Dictionary<string, string>()
             {
@@ -306,8 +300,6 @@ namespace SD.WEB.Modules.List.Core
                 { "language", Settings.Language.GetName(false) ?? "en-US" },
                 { "page", page.ToString() }
             };
-
-            var list_media = new HashSet<MediaDetail>();
 
             if (type == MediaType.movie)
             {
@@ -319,7 +311,7 @@ namespace SD.WEB.Modules.List.Core
                     if (item.vote_count < 1000) continue;
                     //if (string.IsNullOrEmpty(item.poster_path)) continue;
 
-                    list_media.Add(new MediaDetail
+                    currentList.Add(new MediaDetail
                     {
                         tmdb_id = item.id.ToString(),
                         title = item.title,
@@ -332,7 +324,7 @@ namespace SD.WEB.Modules.List.Core
                     });
                 }
 
-                return new(list_media, page >= result?.total_pages);
+                return new(currentList, page >= result?.total_pages);
             }
             else// if (type == MediaType.tv)
             {
@@ -344,7 +336,7 @@ namespace SD.WEB.Modules.List.Core
                     if (item.vote_count < 1000) continue;
                     if (string.IsNullOrEmpty(item.poster_path)) continue;
 
-                    list_media.Add(new MediaDetail
+                    currentList.Add(new MediaDetail
                     {
                         tmdb_id = item.id.ToString(),
                         title = item.name,
@@ -357,7 +349,7 @@ namespace SD.WEB.Modules.List.Core
                     });
                 }
 
-                return new(list_media, page >= result?.total_pages);
+                return new(currentList, page >= result?.total_pages);
             }
         }
 
@@ -381,7 +373,7 @@ namespace SD.WEB.Modules.List.Core
             }
         }
 
-        public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetUpcomingList(MediaType type, int page = 1)
+        public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetUpcomingList(MediaType type, HashSet<MediaDetail> currentList, int page = 1)
         {
             var parameter = new Dictionary<string, string>()
             {
@@ -391,8 +383,6 @@ namespace SD.WEB.Modules.List.Core
                 { "page", page.ToString() }
             };
 
-            var list_media = new HashSet<MediaDetail>();
-
             if (type == MediaType.movie)
             {
                 var result = await GetAsync<MovieUpcoming>(TmdbOptions.BaseUri + "movie/upcoming".ConfigureParameters(parameter), true);
@@ -401,7 +391,7 @@ namespace SD.WEB.Modules.List.Core
                 {
                     //if (string.IsNullOrEmpty(item.poster_path)) continue;
 
-                    list_media.Add(new MediaDetail
+                    currentList.Add(new MediaDetail
                     {
                         tmdb_id = item.id.ToString(),
                         title = item.title,
@@ -414,7 +404,7 @@ namespace SD.WEB.Modules.List.Core
                     });
                 }
 
-                return new(list_media, page >= result?.total_pages);
+                return new(currentList, page >= result?.total_pages);
             }
             else// if (type == MediaType.tv)
             {
@@ -422,7 +412,7 @@ namespace SD.WEB.Modules.List.Core
             }
         }
 
-        public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetPopularList(MediaType? type = null, int page = 1)
+        public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetPopularList(MediaType? type, HashSet<MediaDetail> currentList, int page = 1)
         {
             var parameter = new Dictionary<string, string>()
                 {
@@ -438,7 +428,6 @@ namespace SD.WEB.Modules.List.Core
                 var shows = await GetAsync<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter), true);
 
                 var list = new List<Ordem>();
-                var list_media = new HashSet<MediaDetail>();
 
                 list.AddRange(movies?.results.Select(s => new Ordem { id = s.id, type = MediaType.movie, Popularity = s.popularity }) ?? new List<Ordem>());
                 list.AddRange(shows?.results.Select(s => new Ordem { id = s.id, type = MediaType.tv, Popularity = s.popularity }) ?? new List<Ordem>());
@@ -453,7 +442,7 @@ namespace SD.WEB.Modules.List.Core
                         if (item.vote_count < 50) continue; //ignore low-rated movie
                         //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
 
-                        list_media.Add(new MediaDetail
+                        currentList.Add(new MediaDetail
                         {
                             tmdb_id = item.id.ToString(),
                             title = item.title,
@@ -473,7 +462,7 @@ namespace SD.WEB.Modules.List.Core
                         if (item.vote_count < 50) continue; //ignore low-rated movie
                         if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
 
-                        list_media.Add(new MediaDetail
+                        currentList.Add(new MediaDetail
                         {
                             tmdb_id = item.id.ToString(),
                             title = item.name,
@@ -487,19 +476,18 @@ namespace SD.WEB.Modules.List.Core
                     }
                 }
 
-                return new(list_media, true);
+                return new(currentList, true);
             }
             else if (type == MediaType.movie)
             {
                 var result = await GetAsync<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter), true);
-                var list_media = new HashSet<MediaDetail>();
 
                 foreach (var item in result?.results ?? new List<ResultMoviePopular>())
                 {
                     if (item.vote_count < 50) continue; //ignore low-rated movie
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
 
-                    list_media.Add(new MediaDetail
+                    currentList.Add(new MediaDetail
                     {
                         tmdb_id = item.id.ToString(),
                         title = item.title,
@@ -512,19 +500,18 @@ namespace SD.WEB.Modules.List.Core
                     });
                 }
 
-                return new(list_media, page >= result?.total_pages);
+                return new(currentList, page >= result?.total_pages);
             }
             else //if (type == MediaType.tv)
             {
                 var result = await GetAsync<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter), true);
-                var list_media = new HashSet<MediaDetail>();
 
                 foreach (var item in result?.results ?? new List<ResultTVPopular>())
                 {
                     if (item.vote_count < 50) continue; //ignore low-rated movie
                     if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
 
-                    list_media.Add(new MediaDetail
+                    currentList.Add(new MediaDetail
                     {
                         tmdb_id = item.id.ToString(),
                         title = item.name,
@@ -537,7 +524,7 @@ namespace SD.WEB.Modules.List.Core
                     });
                 }
 
-                return new(list_media, page >= result?.total_pages);
+                return new(currentList, page >= result?.total_pages);
             }
         }
     }

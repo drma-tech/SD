@@ -83,9 +83,9 @@
     private async Task LoadTopRated(MediaType mediaType)
     {
         if (mediaType == MediaType.movie)
-            ListTopRated = await TmdbApi.GetListList(1, GetExtraParameters("8223821"));
+            ListTopRated = await TmdbApi.GetListList(GetExtraParameters("8223821"), ListTopRated);
         else //tv
-            ListTopRated = await TmdbApi.GetListList(1, GetExtraParameters("8223826"));
+            ListTopRated = await TmdbApi.GetListList(GetExtraParameters("8223826"), ListTopRated);
     }
 
     private async Task LoadUpcoming()
