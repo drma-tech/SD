@@ -35,15 +35,11 @@
 
 <body style="overflow: hidden;">
     <div id="app">
-        <div style="position:absolute; top:30vh; width:100%; text-align:center">
-            <h2>Streaming Discovery</h2>
-            <p>
-                <div class="spinner-border spinner-border-sm" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-                Loading...
-            </p>
-        </div>
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
     </div>
 
     <div id="blazor-error-ui">
