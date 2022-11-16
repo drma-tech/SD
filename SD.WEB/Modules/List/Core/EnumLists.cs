@@ -60,6 +60,12 @@
         SpiritBestInternationalFilm = 8228263,
 
         [Custom(Name = "Best Documentary")]
-        SpiritBestDocumentary = 8228262
+        SpiritBestDocumentary = 8228262,
+
+        [Custom(Name = "Best Picture")]
+        CriticsChoiceBestPicture = 8228330,
+
+        [Custom(Name = "Best Limited Series")]
+        CriticsChoiceBestLimitedSeries = 8228331
     }
 }

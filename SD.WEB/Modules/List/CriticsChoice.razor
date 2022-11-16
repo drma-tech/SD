@@ -1,6 +1,37 @@
 ﻿@page "/List/CriticsChoice"
 <PageTitle>SD - Lists - Critics Choice</PageTitle>
+@using SD.Shared.Model
+@using SD.WEB.Modules.List.Core
+@using SD.WEB.Modules.Profile.Core
+@inherits ComponenteCore<Spirit>
+@inject WatchedListApi WatchedListApi
+@inject WishListApi WishListApi
+@inject TmdbApi TmdbApi
 
-<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/critics.png" Text="..." Link="https://www.criticschoice.com/"></SD.WEB.Modules.List.Components.HeadPage>
+<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/critics.png" Text="The Critics Choice Association (CCA) is a group of broadcast, radio and online critics as well as entertainment journalists who review films and documentaries as well as scripted and unscripted television." Link="https://www.criticschoice.com/"></SD.WEB.Modules.List.Components.HeadPage>
 
-<FeatureUnavailable></FeatureUnavailable>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.CriticsChoiceBestPicture.GetName()" Items="@ListPicture" list_id="@EnumLists.CriticsChoiceBestPicture" maxItens="10"
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.CriticsChoiceBestLimitedSeries.GetName()" Items="@ListLimitedSeries" list_id="@EnumLists.CriticsChoiceBestLimitedSeries" maxItens="5"
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+
+@code {
+    private HashSet<MediaDetail> ListPicture { get; set; } = new();
+    private HashSet<MediaDetail> ListLimitedSeries { get; set; } = new();
+
+    private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        ListPicture = await TmdbApi.GetListList(EnumLists.CriticsChoiceBestPicture, ListPicture);
+        ListLimitedSeries = await TmdbApi.GetListList(EnumLists.CriticsChoiceBestLimitedSeries, ListLimitedSeries);
+
+        wishList = await WishListApi.Get();
+        watchedList = await WatchedListApi.Get();
+    }
+}
