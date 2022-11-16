@@ -10,12 +10,12 @@
 
 <SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/HollywoodReporter.png" Text="@TranslationText.thr_desc" Link="https://www.hollywoodreporter.com/"></SD.WEB.Modules.List.Components.HeadPage>
 
-<SD.WEB.Modules.List.Components.MediaList CardHeader="Top 100 Movies" Items="@ListMovies" list_id="8222343" maxItens="100"
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.HollywoodReporterTop100Movies.GetName()" Items="@ListMovies" list_id="@EnumLists.HollywoodReporterTop100Movies" maxItens="100"
                                           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="Top 100 TV Shows" Items="@ListShows" list_id="8222348" maxItens="100"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value; })"></SD.WEB.Modules.List.Components.MediaList>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.HollywoodReporterTop100TVShows.GetName()" Items="@ListShows" list_id="@EnumLists.HollywoodReporterTop100TVShows" maxItens="100"
                                           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value; })"></SD.WEB.Modules.List.Components.MediaList>
 
 @code {
     private HashSet<MediaDetail> ListMovies { get; set; } = new();
@@ -31,12 +31,7 @@
         wishList = await WishListApi.Get();
         watchedList = await WatchedListApi.Get();
 
-        ListMovies = await TmdbApi.GetListList(GetExtraParameters("8222343"), ListMovies);
-        ListShows = await TmdbApi.GetListList(GetExtraParameters("8222348"), ListShows);
-    }
-
-    private Dictionary<string, string> GetExtraParameters(string list_id)
-    {
-        return new Dictionary<string, string>() { { "list_id", list_id } }; ;
+        ListMovies = await TmdbApi.GetListList(EnumLists.HollywoodReporterTop100Movies, ListMovies);
+        ListShows = await TmdbApi.GetListList(EnumLists.HollywoodReporterTop100TVShows, ListShows);
     }
 }

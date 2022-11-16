@@ -149,10 +149,8 @@ namespace SD.WEB.Modules.List.Core
             }
         }
 
-        public async Task<HashSet<MediaDetail>> GetListList(Dictionary<string, string> ExtraParameters, HashSet<MediaDetail> currentList, int page = 1)
+        public async Task<HashSet<MediaDetail>> GetListList(EnumLists list, HashSet<MediaDetail> currentList, int page = 1)
         {
-            if (ExtraParameters == null) throw new ArgumentNullException(nameof(ExtraParameters));
-
             var parameter = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey },
@@ -161,12 +159,7 @@ namespace SD.WEB.Modules.List.Core
                 { "sort_by", "original_order.asc" }
             };
 
-            foreach (var item in ExtraParameters)
-            {
-                parameter.Add(item.Key, item.Value);
-            }
-
-            var result = await GetByRequest<CustomListNew>(TmdbOptions.BaseUriNew + "list/" + ExtraParameters["list_id"].ToString().ConfigureParameters(parameter));
+            var result = await GetByRequest<CustomListNew>(TmdbOptions.BaseUriNew + "list/" + ((int)list).ToString().ConfigureParameters(parameter));
 
             if (result != null)
             {

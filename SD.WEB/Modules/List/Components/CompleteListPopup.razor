@@ -142,7 +142,7 @@
     [Parameter] public EventCallback NextPage { get; set; }
     [Parameter] public string? CardHeader { get; set; }
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
-    [Parameter] public string? list_id { get; set; }
+    [Parameter] public EnumLists list_id { get; set; }
     [Parameter] public int maxItens { get; set; } = 10;
     [Parameter] public bool IsIMDB { get; set; } = false;
     [Parameter] public bool ShowOnlyYear { get; set; } = true;
@@ -225,15 +225,8 @@
         }
         else
         {
-            Items = await TmdbApi.GetListList(GetExtraParameters(list_id), Items, ++currentPage);
+            Items = await TmdbApi.GetListList(list_id, Items, ++currentPage);
         }
-    }
-
-    private Dictionary<string, string> GetExtraParameters(string? list_id)
-    {
-        if (string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
-
-        return new Dictionary<string, string>() { { "list_id", list_id } };
     }
 
     private async Task Add(MediaDetail? media)

@@ -86,7 +86,7 @@
                             }
                         </CardBody>
                     }
-                    <CardBody Padding="Padding.Is1">
+                    @*<CardBody Padding="Padding.Is1">
                         @if (WishList?.Movies.Any(a => a.id == item?.tmdb_id && item?.MediaType == MediaType.movie) ?? false)
                         {
                             <Button Color="Color.Danger" Clicked="@(()=>Remove(item))" Margin="Margin.Is1.FromEnd" Size="Size.ExtraSmall" Style="min-width: 31.5px" title="Lista de Interesses">
@@ -123,7 +123,7 @@
                                 <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon>
                             </Button>
                         }
-                    </CardBody>
+                    </CardBody>*@
                 </Card>
             </Column>
             if ((i % 10) == 0)
@@ -146,7 +146,7 @@
     [Parameter] public EventCallback NextPage { get; set; }
     [Parameter] public string? CardHeader { get; set; }
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
-    [Parameter] public string? list_id { get; set; }
+    [Parameter] public EnumLists list_id { get; set; }
     [Parameter] public int maxItens { get; set; } = 10;
     [Parameter] public bool IsIMDB { get; set; } = false;
     [Parameter] public bool ShowOnlyYear { get; set; } = true;

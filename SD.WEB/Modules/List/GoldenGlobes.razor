@@ -10,13 +10,13 @@
 
 <SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/goldenglobes.png" Text="@TranslationText.golden_desc" Link="https://www.goldenglobes.com/"></SD.WEB.Modules.List.Components.HeadPage>
 
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Drama" Items="@ListDrama" list_id="7103543" maxItens="12"
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.GoldenGlobesBestMotionPictureDrama.GetName()" Items="@ListDrama" list_id="@EnumLists.GoldenGlobesBestMotionPictureDrama" maxItens="12"
                                           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
                                           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.MusicalComedy" Items="@ListMusicalComedy" list_id="7103545" maxItens="12"
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.GoldenGlobesBestMotionPictureMusicalComedy.GetName()" Items="@ListMusicalComedy" list_id="@EnumLists.GoldenGlobesBestMotionPictureMusicalComedy" maxItens="12"
                                           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
                                           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Animated" Items="@ListAnimated" list_id="7103548" maxItens="12"
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.GoldenGlobesBestMotionPictureAnimated.GetName()" Items="@ListAnimated" list_id="@EnumLists.GoldenGlobesBestMotionPictureAnimated" maxItens="12"
                                           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
                                           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 
@@ -32,16 +32,11 @@
     {
         await base.OnInitializedAsync();
 
-        ListDrama = await TmdbApi.GetListList(GetExtraParameters("7103543"), ListDrama);
-        ListMusicalComedy = await TmdbApi.GetListList(GetExtraParameters("7103545"), ListMusicalComedy);
-        ListAnimated = await TmdbApi.GetListList(GetExtraParameters("7103548"), ListAnimated);
+        ListDrama = await TmdbApi.GetListList(EnumLists.GoldenGlobesBestMotionPictureDrama, ListDrama);
+        ListMusicalComedy = await TmdbApi.GetListList(EnumLists.GoldenGlobesBestMotionPictureMusicalComedy, ListMusicalComedy);
+        ListAnimated = await TmdbApi.GetListList(EnumLists.GoldenGlobesBestMotionPictureAnimated, ListAnimated);
 
         wishList = await WishListApi.Get();
         watchedList = await WatchedListApi.Get();
-    }
-
-    private Dictionary<string, string> GetExtraParameters(string list_id)
-    {
-        return new Dictionary<string, string>() { { "list_id", list_id } }; ;
     }
 }

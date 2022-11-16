@@ -15,7 +15,7 @@
                                           TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
                                           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
                                           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="Top 250" Items="@ListTopRated" list_id="@(topRatedMedia== MediaType.movie?"8223821":"8223826")" maxItens="250"
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@(topRatedMedia== MediaType.movie?EnumLists.ImdbTop250Movies.GetName():EnumLists.ImdbTop250Shows.GetName())" Items="@ListTopRated" list_id="@(topRatedMedia== MediaType.movie?EnumLists.ImdbTop250Movies:EnumLists.ImdbTop250Shows)" maxItens="250"
                                           TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
                                           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
                                           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
@@ -83,18 +83,13 @@
     private async Task LoadTopRated(MediaType mediaType)
     {
         if (mediaType == MediaType.movie)
-            ListTopRated = await TmdbApi.GetListList(GetExtraParameters("8223821"), ListTopRated);
+            ListTopRated = await TmdbApi.GetListList(EnumLists.ImdbTop250Movies, ListTopRated);
         else //tv
-            ListTopRated = await TmdbApi.GetListList(GetExtraParameters("8223826"), ListTopRated);
+            ListTopRated = await TmdbApi.GetListList(EnumLists.ImdbTop250Shows, ListTopRated);
     }
 
     private async Task LoadUpcoming()
     {
         ListUpcoming = await ImdbApi.GetUpcomingList(MediaType.movie);
-    }
-
-    private Dictionary<string, string> GetExtraParameters(string list_id)
-    {
-        return new Dictionary<string, string>() { { "list_id", list_id } }; ;
     }
 }

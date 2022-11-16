@@ -79,15 +79,6 @@ namespace SD.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Animated.
-        /// </summary>
-        public static string Animated {
-            get {
-                return ResourceManager.GetString("Animated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Buy.
         /// </summary>
         public static string Buy {
@@ -115,15 +106,6 @@ namespace SD.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Comedy.
-        /// </summary>
-        public static string Comedy {
-            get {
-                return ResourceManager.GetString("Comedy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Coming Soon.
         /// </summary>
         public static string ComingSoon {
@@ -138,24 +120,6 @@ namespace SD.Shared.Resources {
         public static string DeliveryModel {
             get {
                 return ResourceManager.GetString("DeliveryModel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Documentary.
-        /// </summary>
-        public static string Documentary {
-            get {
-                return ResourceManager.GetString("Documentary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Drama.
-        /// </summary>
-        public static string Drama {
-            get {
-                return ResourceManager.GetString("Drama", resourceCulture);
             }
         }
         
@@ -214,24 +178,6 @@ namespace SD.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to International.
-        /// </summary>
-        public static string International {
-            get {
-                return ResourceManager.GetString("International", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Limited.
-        /// </summary>
-        public static string Limited {
-            get {
-                return ResourceManager.GetString("Limited", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Loading....
         /// </summary>
         public static string Loading {
@@ -246,24 +192,6 @@ namespace SD.Shared.Resources {
         public static string MediaTypes {
             get {
                 return ResourceManager.GetString("MediaTypes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Motion Picture.
-        /// </summary>
-        public static string MotionPicture {
-            get {
-                return ResourceManager.GetString("MotionPicture", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Musical or Comedy.
-        /// </summary>
-        public static string MusicalComedy {
-            get {
-                return ResourceManager.GetString("MusicalComedy", resourceCulture);
             }
         }
         

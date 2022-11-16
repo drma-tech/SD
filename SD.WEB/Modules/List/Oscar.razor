@@ -10,16 +10,16 @@
 
 <SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></SD.WEB.Modules.List.Components.HeadPage>
 
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.MotionPicture" Items="@ListMotionPicture" list_id="7103422" maxItens="12"
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.OscarBestMotionPicture.GetName()" Items="@ListMotionPicture" list_id="@EnumLists.OscarBestMotionPicture" maxItens="12"
                                           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
                                           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Animated" Items="@ListAnimated" list_id="7103492" maxItens="12"
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.OscarBestAnimatedFeatureFilm.GetName()" Items="@ListAnimated" list_id="@EnumLists.OscarBestAnimatedFeatureFilm" maxItens="12"
                                           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
                                           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.International" Items="@ListInternational" list_id="7103493" maxItens="12"
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.OscarInternationalFeatureFilm.GetName()" Items="@ListInternational" list_id="@EnumLists.OscarInternationalFeatureFilm" maxItens="12"
                                           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
                                           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Documentary" Items="@ListDocumentary" list_id="7103488" maxItens="12"
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.OscarDocumentaryFeature.GetName()" Items="@ListDocumentary" list_id="@EnumLists.OscarDocumentaryFeature" maxItens="12"
                                           WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
                                           WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
 
@@ -36,17 +36,12 @@
     {
         await base.OnInitializedAsync();
 
-        ListMotionPicture = await TmdbApi.GetListList(GetExtraParameters("7103422"), ListMotionPicture);
-        ListAnimated = await TmdbApi.GetListList(GetExtraParameters("7103492"), ListAnimated);
-        ListInternational = await TmdbApi.GetListList(GetExtraParameters("7103493"), ListInternational);
-        ListDocumentary = await TmdbApi.GetListList(GetExtraParameters("7103488"), ListDocumentary);
+        ListMotionPicture = await TmdbApi.GetListList(EnumLists.OscarBestMotionPicture, ListMotionPicture);
+        ListAnimated = await TmdbApi.GetListList(EnumLists.OscarBestAnimatedFeatureFilm, ListAnimated);
+        ListInternational = await TmdbApi.GetListList(EnumLists.OscarInternationalFeatureFilm, ListInternational);
+        ListDocumentary = await TmdbApi.GetListList(EnumLists.OscarDocumentaryFeature, ListDocumentary);
 
         wishList = await WishListApi.Get();
         watchedList = await WatchedListApi.Get();
-    }
-
-    private Dictionary<string, string> GetExtraParameters(string list_id)
-    {
-        return new Dictionary<string, string>() { { "list_id", list_id } };
     }
 }
