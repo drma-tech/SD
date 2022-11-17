@@ -1,6 +1,37 @@
 ﻿@page "/List/RollingStone"
 <PageTitle>SD - Lists - Rolling Stone</PageTitle>
+@using SD.Shared.Model
+@using SD.WEB.Modules.List.Core
+@using SD.WEB.Modules.Profile.Core
+@inherits ComponenteCore<RollingStone>
+@inject WatchedListApi WatchedListApi
+@inject WishListApi WishListApi
+@inject TmdbApi TmdbApi
 
-<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/rollingstone.png" Text="..." Link="https://www.rollingstone.com/"></SD.WEB.Modules.List.Components.HeadPage>
+<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/rollingstone.png" Text="insights, announcements, music biz commentary, rs recommends lists, music biz lists, music country videos, music latin lists, music country pictures, politics pictures, tv & movies pictures, (sub)culture videos, politics videos, cultural commentary, tv & movies videos, finance, rs recommends pictures, books, smart home, expert panels, (sub)culture pictures" Link="https://www.rollingstone.com/"></SD.WEB.Modules.List.Components.HeadPage>
 
-<FeatureUnavailable></FeatureUnavailable>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.RollingStoneBestMoviesofAllTime.GetName()" Items="@ListBestMoviesofAllTime" list_id="@EnumLists.RollingStoneBestMoviesofAllTime" maxItens="10"
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.RollingStoneBestTVShowsofAllTime.GetName()" Items="@ListBestTVShowsofAllTime" list_id="@EnumLists.RollingStoneBestTVShowsofAllTime" maxItens="5"
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+
+@code {
+    private HashSet<MediaDetail> ListBestMoviesofAllTime { get; set; } = new();
+    private HashSet<MediaDetail> ListBestTVShowsofAllTime { get; set; } = new();
+
+    private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        ListBestMoviesofAllTime = await TmdbApi.GetListList(EnumLists.RollingStoneBestMoviesofAllTime, ListBestMoviesofAllTime);
+        ListBestTVShowsofAllTime = await TmdbApi.GetListList(EnumLists.RollingStoneBestTVShowsofAllTime, ListBestTVShowsofAllTime);
+
+        wishList = await WishListApi.Get();
+        watchedList = await WatchedListApi.Get();
+    }
+}

@@ -1,6 +1,37 @@
 ﻿@page "/List/Metacritic"
 <PageTitle>SD - Lists - Metacritic</PageTitle>
+@using SD.Shared.Model
+@using SD.WEB.Modules.List.Core
+@using SD.WEB.Modules.Profile.Core
+@inherits ComponenteCore<Metacritic>
+@inject WatchedListApi WatchedListApi
+@inject WishListApi WishListApi
+@inject TmdbApi TmdbApi
 
-<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/metacritic.png" Text="..." Link="https://www.metacritic.com/"></SD.WEB.Modules.List.Components.HeadPage>
+<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/metacritic.png" Text="Metacritic aggregates music, game, tv, and movie reviews from the leading critics. Only Metacritic.com uses METASCORES, which let you know at a glance how each item was reviewed." Link="https://www.metacritic.com/"></SD.WEB.Modules.List.Components.HeadPage>
 
-<FeatureUnavailable></FeatureUnavailable>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.MetacriticBestMoviesofAllTime.GetName()" Items="@ListBestMoviesofAllTime" list_id="@EnumLists.MetacriticBestMoviesofAllTime" maxItens="10"
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.MetacriticBestTVShowsofAllTime.GetName()" Items="@ListBestTVShowsofAllTime" list_id="@EnumLists.MetacriticBestTVShowsofAllTime" maxItens="10"
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+
+@code {
+    private HashSet<MediaDetail> ListBestMoviesofAllTime { get; set; } = new();
+    private HashSet<MediaDetail> ListBestTVShowsofAllTime { get; set; } = new();
+
+    private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        ListBestMoviesofAllTime = await TmdbApi.GetListList(EnumLists.MetacriticBestMoviesofAllTime, ListBestMoviesofAllTime);
+        ListBestTVShowsofAllTime = await TmdbApi.GetListList(EnumLists.MetacriticBestTVShowsofAllTime, ListBestTVShowsofAllTime);
+
+        wishList = await WishListApi.Get();
+        watchedList = await WatchedListApi.Get();
+    }
+}

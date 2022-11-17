@@ -107,8 +107,8 @@ namespace SD.API.Functions
                         }
                     }
 
-                    var _new = AllProviders.DtUpdate == null && AllProviders.DtInsert.AddDays(-7) > DateTimeOffset.UtcNow;
-                    var _old = AllProviders.DtUpdate != null && AllProviders.DtUpdate.Value.AddDays(-7) > DateTimeOffset.UtcNow;
+                    var _new = AllProviders.DtUpdate == null && AllProviders.DtInsert < DateTimeOffset.UtcNow.AddDays(-7);
+                    var _old = AllProviders.DtUpdate != null && AllProviders.DtUpdate.Value < DateTimeOffset.UtcNow.AddDays(-7);
 
                     if (_new || _old)
                     {
@@ -118,7 +118,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                return new OkObjectResult(AllProviders?.Items);
+                return new OkObjectResult(AllProviders);
             }
             catch (Exception ex)
             {

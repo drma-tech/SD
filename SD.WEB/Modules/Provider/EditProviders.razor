@@ -130,7 +130,16 @@
 
     protected async Task SyncProvidersOnClick()
     {
-        await AllProvidersApi.Sync();
+        try
+        {
+            await AllProvidersApi.Sync();
+
+            await Toast.Success("Synchronization Finished");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 
     protected void RowUpdated(SavedRowItem<ProviderModel, Dictionary<string, object>> e)

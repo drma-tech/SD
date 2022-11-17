@@ -1,4 +1,6 @@
-﻿namespace SD.WEB.Modules.List.Core
+﻿using System.Xml.Linq;
+
+namespace SD.WEB.Modules.List.Core
 {
     public enum EnumLists
     {
@@ -75,6 +77,30 @@
         FestivalCannesGrandPrix = 8228362,
 
         [Custom(Name = "Palme d'Or - Short Film")]
-        FestivalCannesPalmeShortFilm = 8228361
+        FestivalCannesPalmeShortFilm = 8228361,
+
+        [Custom(Name = "Movies - Tomato Meter")]
+        RottenTomatoesMoviesTOMATOMETER = 8228415,
+
+        [Custom(Name = "Movies - Audience Score")]
+        RottenTomatoesMoviesAUDIENCESCORE = 8228416,
+
+        [Custom(Name = "Best Movies of All Time")]
+        MetacriticBestMoviesofAllTime = 8228420,
+
+        [Custom(Name = "Best TV Shows of All Time")]
+        MetacriticBestTVShowsofAllTime = 8228423,
+
+        [Custom(Name = "The 100 Best Movies Of All Time")]
+        EmpireThe100BestMoviesOfAllTime = 8228434,
+
+        [Custom(Name = "The 100 Best TV Shows Of All Time")]
+        EmpireThe100BestTVShowsOfAllTime = 8228435,
+
+        [Custom(Name = "Best Movies of All Time")]
+        RollingStoneBestMoviesofAllTime = 8228447,
+
+        [Custom(Name = "Best TV Shows of All Time")]
+        RollingStoneBestTVShowsofAllTime = 8228448
     }
 }

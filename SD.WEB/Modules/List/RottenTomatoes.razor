@@ -1,6 +1,37 @@
 ﻿@page "/List/RottenTomatoes"
 <PageTitle>SD - Lists - Rotten Tomatoes</PageTitle>
+@using SD.Shared.Model
+@using SD.WEB.Modules.List.Core
+@using SD.WEB.Modules.Profile.Core
+@inherits ComponenteCore<RottenTomatoes>
+@inject WatchedListApi WatchedListApi
+@inject WishListApi WishListApi
+@inject TmdbApi TmdbApi
 
-<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/RottenTomatoes.png" Text="..." Link="https://www.rottentomatoes.com/"></SD.WEB.Modules.List.Components.HeadPage>
+<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/RottenTomatoes.png" Text="Rotten Tomatoes, home of the Tomatometer, is the most trusted measurement of quality for Movies & TV. The definitive site for Reviews, Trailers, Showtimes, and Tickets" Link="https://www.rottentomatoes.com/"></SD.WEB.Modules.List.Components.HeadPage>
 
-<FeatureUnavailable></FeatureUnavailable>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.RottenTomatoesMoviesTOMATOMETER.GetName()" Items="@ListMoviesTOMATOMETER" list_id="@EnumLists.RottenTomatoesMoviesTOMATOMETER" maxItens="10"
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.RottenTomatoesMoviesAUDIENCESCORE.GetName()" Items="@ListMoviesAUDIENCESCORE" list_id="@EnumLists.RottenTomatoesMoviesAUDIENCESCORE" maxItens="10"
+                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+
+@code {
+    private HashSet<MediaDetail> ListMoviesTOMATOMETER { get; set; } = new();
+    private HashSet<MediaDetail> ListMoviesAUDIENCESCORE { get; set; } = new();
+
+    private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        ListMoviesTOMATOMETER = await TmdbApi.GetListList(EnumLists.RottenTomatoesMoviesTOMATOMETER, ListMoviesTOMATOMETER);
+        ListMoviesAUDIENCESCORE = await TmdbApi.GetListList(EnumLists.RottenTomatoesMoviesAUDIENCESCORE, ListMoviesAUDIENCESCORE);
+
+        wishList = await WishListApi.Get();
+        watchedList = await WatchedListApi.Get();
+    }
+}
