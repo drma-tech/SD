@@ -66,6 +66,15 @@
         CriticsChoiceBestPicture = 8228330,
 
         [Custom(Name = "Best Limited Series")]
-        CriticsChoiceBestLimitedSeries = 8228331
+        CriticsChoiceBestLimitedSeries = 8228331,
+
+        [Custom(Name = "Palme d'Or")]
+        FestivalCannesPalme = 8228360,
+
+        [Custom(Name = "Grand Prix")]
+        FestivalCannesGrandPrix = 8228362,
+
+        [Custom(Name = "Palme d'Or - Short Film")]
+        FestivalCannesPalmeShortFilm = 8228361
     }
 }
