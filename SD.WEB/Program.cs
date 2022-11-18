@@ -44,6 +44,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<AllProvidersApi>();
     collection.AddScoped<TicketApi>();
     collection.AddScoped<TicketVoteApi>();
+    collection.AddScoped<AnnouncementApi>();
 
     collection.AddScoped<ExternalIdApi>();
 

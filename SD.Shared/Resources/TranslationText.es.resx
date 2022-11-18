@@ -117,133 +117,97 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AE" xml:space="preserve">
-    <value>Emirados Árabes Unidos</value>
+  <data name="All" xml:space="preserve">
+    <value>Todos</value>
   </data>
-  <data name="AR" xml:space="preserve">
-    <value>Argentina</value>
+  <data name="Catalog" xml:space="preserve">
+    <value>Catálogo</value>
   </data>
-  <data name="AT" xml:space="preserve">
-    <value>Áustria</value>
+  <data name="Close" xml:space="preserve">
+    <value>Cerrar</value>
   </data>
-  <data name="AU" xml:space="preserve">
-    <value>Austrália</value>
+  <data name="ComingSoon" xml:space="preserve">
+    <value>Pronto</value>
   </data>
-  <data name="BE" xml:space="preserve">
-    <value>Bélgica</value>
+  <data name="DeliveryModel" xml:space="preserve">
+    <value>Plantillas</value>
   </data>
-  <data name="BG" xml:space="preserve">
-    <value>Bulgária</value>
+  <data name="emmys_desc" xml:space="preserve">
+    <value>El Primetime Emmy Award es un premio estadounidense otorgado por la Academia de Artes y Ciencias de la Televisión en reconocimiento a la excelencia en la programación televisiva estadounidense en horario estelar.</value>
   </data>
-  <data name="BR" xml:space="preserve">
-    <value>Brasil</value>
+  <data name="golden_desc" xml:space="preserve">
+    <value>Sitio web oficial de los Globos de Oro con ganadores y nominados, entrevistas exclusivas de Hollywood y piezas históricas de la Asociación de la Prensa Extranjera de Hollywood.</value>
   </data>
-  <data name="CA" xml:space="preserve">
-    <value>Canadá</value>
+  <data name="imdb_desc" xml:space="preserve">
+    <value>IMDb es la fuente más popular y confiable del mundo para contenido de películas, televisión y celebridades. Encuentra clasificaciones y clasificaciones de las últimas películas y programas de TV.</value>
   </data>
-  <data name="CH" xml:space="preserve">
-    <value>Suíça</value>
+  <data name="Loading" xml:space="preserve">
+    <value>Llevar...</value>
   </data>
-  <data name="CI" xml:space="preserve">
-    <value>Costa do Marfim</value>
+  <data name="MediaTypes" xml:space="preserve">
+    <value>Medio</value>
   </data>
-  <data name="CZ" xml:space="preserve">
-    <value>República Tcheca</value>
+  <data name="NoData" xml:space="preserve">
+    <value>No se mostrarán datos</value>
   </data>
-  <data name="DE" xml:space="preserve">
-    <value>Alemanha</value>
+  <data name="NoPlot" xml:space="preserve">
+    <value>Descripción general no disponible en su idioma</value>
   </data>
-  <data name="DK" xml:space="preserve">
-    <value>Dinamarca</value>
+  <data name="NotFound" xml:space="preserve">
+    <value>No encontrado</value>
   </data>
-  <data name="EE" xml:space="preserve">
-    <value>Estônia</value>
+  <data name="OK" xml:space="preserve">
+    <value>De acuerdo</value>
   </data>
-  <data name="ES" xml:space="preserve">
-    <value>Espanha</value>
+  <data name="oscar_desc" xml:space="preserve">
+    <value>Sitio web oficial de la academia con historia e información general sobre los Oscar, así como fotografías, eventos y exposiciones, y comunicados de prensa.</value>
   </data>
-  <data name="FI" xml:space="preserve">
-    <value>Finlândia</value>
+  <data name="Plans" xml:space="preserve">
+    <value>Planes</value>
   </data>
-  <data name="FR" xml:space="preserve">
-    <value>França</value>
+  <data name="Popular" xml:space="preserve">
+    <value>Popular</value>
   </data>
-  <data name="GB" xml:space="preserve">
-    <value>Reino Unido</value>
+  <data name="Regions" xml:space="preserve">
+    <value>Regiones</value>
   </data>
-  <data name="HK" xml:space="preserve">
-    <value>Hong Kong</value>
+  <data name="Release" xml:space="preserve">
+    <value>Novedades</value>
   </data>
-  <data name="HR" xml:space="preserve">
-    <value>Croácia</value>
+  <data name="RouterNotFound" xml:space="preserve">
+    <value>Lo sentimos, no hay nada en esta dirección.</value>
   </data>
-  <data name="HU" xml:space="preserve">
-    <value>Hungria</value>
+  <data name="Search" xml:space="preserve">
+    <value>Buscar</value>
   </data>
-  <data name="ID" xml:space="preserve">
-    <value>Indonésia</value>
+  <data name="thr_desc" xml:space="preserve">
+    <value>Hollywood Reporter es el principal destino y el recurso más confiable para noticias de entretenimiento, reseñas, videos y más.</value>
   </data>
-  <data name="IE" xml:space="preserve">
-    <value>Irlanda</value>
+  <data name="tmdb_desc" xml:space="preserve">
+    <value>La base de datos de películas (TMDb) es una popular base de datos editable por el usuario para películas y programas de televisión.</value>
   </data>
-  <data name="IN" xml:space="preserve">
-    <value>Índia</value>
+  <data name="TopRated" xml:space="preserve">
+    <value>Recomendado</value>
   </data>
-  <data name="IT" xml:space="preserve">
-    <value>Itália</value>
+  <data name="Rent" xml:space="preserve">
+    <value>Alquilar</value>
   </data>
-  <data name="JP" xml:space="preserve">
-    <value>Japão</value>
+  <data name="Providers" xml:space="preserve">
+    <value>Proveedores</value>
   </data>
-  <data name="KE" xml:space="preserve">
-    <value>Quênia</value>
+  <data name="FlatRate" xml:space="preserve">
+    <value>Tasa fija</value>
   </data>
-  <data name="KR" xml:space="preserve">
-    <value>Coreia do Sul</value>
+  <data name="FlatRateBuy" xml:space="preserve">
+    <value>Tasa fija / Compra</value>
   </data>
-  <data name="LT" xml:space="preserve">
-    <value>Lituânia</value>
+  <data name="Free" xml:space="preserve">
+    <value>Gratis</value>
   </data>
-  <data name="MX" xml:space="preserve">
-    <value>México</value>
+  <data name="Buy" xml:space="preserve">
+    <value>Compra</value>
   </data>
-  <data name="NL" xml:space="preserve">
-    <value>Países Baixos</value>
-  </data>
-  <data name="NO" xml:space="preserve">
-    <value>Noruega</value>
-  </data>
-  <data name="NZ" xml:space="preserve">
-    <value>Nova Zelândia</value>
-  </data>
-  <data name="PH" xml:space="preserve">
-    <value>Filipinas</value>
-  </data>
-  <data name="PL" xml:space="preserve">
-    <value>Polônia</value>
-  </data>
-  <data name="PT" xml:space="preserve">
-    <value>Portugal</value>
-  </data>
-  <data name="RS" xml:space="preserve">
-    <value>Sérvia e Montenegro</value>
-  </data>
-  <data name="RU" xml:space="preserve">
-    <value>Rússia</value>
-  </data>
-  <data name="SE" xml:space="preserve">
-    <value>Suécia</value>
-  </data>
-  <data name="SK" xml:space="preserve">
-    <value>Eslováquia</value>
-  </data>
-  <data name="TR" xml:space="preserve">
-    <value>Turquia</value>
-  </data>
-  <data name="US" xml:space="preserve">
-    <value>Estados Unidos</value>
-  </data>
-  <data name="ZA" xml:space="preserve">
-    <value>África do Sul</value>
+  <data name="Ads" xml:space="preserve">
+    <value>Anuncios</value>
   </data>
 </root>

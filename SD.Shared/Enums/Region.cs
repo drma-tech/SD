@@ -3,6 +3,8 @@
     public enum Region
     {
         //AE-United Arab Emirates
+        [Custom(Name = "AE", ResourceType = typeof(Resources.Enum.Region))]
+        AE = 9991,
 
         [Custom(Name = "AR", ResourceType = typeof(Resources.Enum.Region))]
         AR = 1,
@@ -29,6 +31,8 @@
         CH = 8,
 
         //CI-Cote D'Ivoire
+        [Custom(Name = "CI", ResourceType = typeof(Resources.Enum.Region))]
+        CI = 9999,
 
         [Custom(Name = "CZ", ResourceType = typeof(Resources.Enum.Region))]
         CZ = 9,
@@ -55,8 +59,12 @@
         GB = 16,
 
         //HK-Hong Kong
+        [Custom(Name = "HK", ResourceType = typeof(Resources.Enum.Region))]
+        HK = 99917,
 
         //HR-Croatia
+        [Custom(Name = "HR", ResourceType = typeof(Resources.Enum.Region))]
+        HR = 999917,
 
         [Custom(Name = "HU", ResourceType = typeof(Resources.Enum.Region))]
         HU = 17,
@@ -77,6 +85,8 @@
         JP = 22,
 
         //KE-Kenya
+        [Custom(Name = "KE", ResourceType = typeof(Resources.Enum.Region))]
+        KE = 99923,
 
         [Custom(Name = "KR", ResourceType = typeof(Resources.Enum.Region))]
         KR = 23,
@@ -106,6 +116,8 @@
         PT = 31,
 
         //RS-Serbia
+        [Custom(Name = "RS", ResourceType = typeof(Resources.Enum.Region))]
+        RS = 99932,
 
         [Custom(Name = "RU", ResourceType = typeof(Resources.Enum.Region))]
         RU = 32,
@@ -114,6 +126,8 @@
         SE = 33,
 
         //SK-Slovakia
+        [Custom(Name = "SK", ResourceType = typeof(Resources.Enum.Region))]
+        SK = 99934,
 
         [Custom(Name = "TR", ResourceType = typeof(Resources.Enum.Region))]
         TR = 34,

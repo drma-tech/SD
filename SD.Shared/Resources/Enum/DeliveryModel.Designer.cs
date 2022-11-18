@@ -61,7 +61,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ad-based video on demand (AVOD) doesn’t require a subscription or transactional fee, as it’s ad-supported content..
+        ///   Looks up a localized string similar to Ad-based video on demand doesn’t require a subscription or transactional fee, as it’s ad-supported content..
         /// </summary>
         public static string AVODDescription {
             get {
@@ -97,7 +97,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Premium video on demand (PVOD) is a newer concept, where film studios and other providers offer premium video content, like access to a movie premiere, at a higher price point..
+        ///   Looks up a localized string similar to Premium video on demand is a newer concept, where film studios and other providers offer premium video content, like access to a movie premiere, at a higher price point..
         /// </summary>
         public static string PVODDescription {
             get {
@@ -115,7 +115,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subscription video on demand (SVOD) is content accessible to consumers who have signed up for a subscription to a particular service, allowing them to view as much as they want for a flat rate per month..
+        ///   Looks up a localized string similar to Subscription video on demand is content accessible to consumers who have signed up for a subscription to a particular service, allowing them to view as much as they want for a flat rate per month..
         /// </summary>
         public static string SVODDescription {
             get {
@@ -133,7 +133,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transactional video on demand (TVOD) content is purchased through a pay-per-view model. Viewers can either purchase the content for repeated viewing, or rent it for a single-time use..
+        ///   Looks up a localized string similar to Transactional video on demand content is purchased through a pay-per-view model. Viewers can either purchase the content for repeated viewing, or rent it for a single-time use..
         /// </summary>
         public static string TVODDescription {
             get {

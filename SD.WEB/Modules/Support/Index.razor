@@ -3,12 +3,13 @@
 <PageTitle>SD - Support</PageTitle>
 @inherits PageCore<Support.Index>
 @using SD.Shared.Model.Auth
-@using SD.Shared.Model.Support
+@using SD.Shared.Models.Support;
 @using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Support.Component
 @using SD.WEB.Modules.Support.Core
 @inject TicketApi TicketApi
 @inject TicketVoteApi TicketVoteApi
+@inject AnnouncementApi AnnouncementApi
 
 <Alert Color="Color.Secondary" Visible="true">
     <AlertDescription>
@@ -17,12 +18,28 @@
 </Alert>
 
 <Div Margin="Margin.Is2.OnY">
-    <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Feedback)" Clicked="(() => ChangeOrder(Tabs.Feedback))">@Resources.Translations.TabFeedback</Button>
-    <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Roadmap)" Clicked="(() => ChangeOrder(Tabs.Roadmap))">@Resources.Translations.TabRoadmap</Button>
     <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Announcements)" Clicked="(() => ChangeOrder(Tabs.Announcements))">@Resources.Translations.TabAnnouncements</Button>
+    <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Feedback)" Clicked="(() => ChangeOrder(Tabs.Feedback))">@Resources.Translations.TabFeedback</Button>
+    @*<Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Roadmap)" Clicked="(() => ChangeOrder(Tabs.Roadmap))">@Resources.Translations.TabRoadmap</Button>*@
 </Div>
 
-@if (SelectedTab == Tabs.Feedback)
+@if (SelectedTab == Tabs.Announcements)
+{
+    <CustomVisibility Loading="Loading" NoData="!announcements.Any()">
+        @foreach (var item in announcements)
+        {
+            <Alert Color="Color.Info" Visible="true">
+                <Heading Size="HeadingSize.Is4" TextColor="TextColor.Success">
+                    @item.Title
+                </Heading>
+                <Paragraph>
+                    @((MarkupString)(item.Description ?? ""))
+                </Paragraph>
+            </Alert>
+        }
+    </CustomVisibility>
+}
+else if (SelectedTab == Tabs.Feedback)
 {
     <Row HorizontalGutter="8" VerticalGutter="0">
         <Column ColumnSize="ColumnSize.Is12">
@@ -184,14 +201,11 @@ else if (SelectedTab == Tabs.Roadmap)
         </Card>
     </CardDeck>*@
 }
-else if (SelectedTab == Tabs.Announcements)
-{
-    <FeatureUnavailable></FeatureUnavailable>
-}
 
 @code {
     private HashSet<TicketModel> tickets = new();
     private HashSet<TicketVoteModel> myVotes = new();
+    private HashSet<AnnouncementModel> announcements = new();
 
     private TicketType TicketTypeSel { get; set; } = TicketType.Improvement;
     private TicketStatus? TicketStatusSel { get; set; }
@@ -203,12 +217,12 @@ else if (SelectedTab == Tabs.Announcements)
 
     private enum Tabs
     {
+        Announcements,
         Feedback,
-        Roadmap,
-        Announcements
+        Roadmap
     }
 
-    private Tabs SelectedTab = Tabs.Feedback;
+    private Tabs SelectedTab = Tabs.Announcements;
 
     private void ChangeOrder(Tabs tab)
     {
@@ -230,6 +244,7 @@ else if (SelectedTab == Tabs.Announcements)
 
         tickets = await TicketApi.GetList();
         myVotes = await TicketVoteApi.GetMyVotes();
+        announcements = await AnnouncementApi.GetList();
 
         Loading = false;
 

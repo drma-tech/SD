@@ -42,7 +42,10 @@
       33,
       34,
       35,
-      36
+      36,
+      9991,
+      99917,
+      99934
     ],
     "types": [
       1,
@@ -98,7 +101,11 @@
       33,
       34,
       35,
-      36
+      36,
+      9991,
+      99917,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -176,7 +183,14 @@
       33,
       34,
       35,
-      36
+      36,
+      9991,
+      9999,
+      99917,
+      99923,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -276,7 +290,7 @@
   {
     "id": "11",
     "name": "Mubi",
-    "priority": 6,
+    "priority": 4,
     "description": "Watch truly great cinema. Wherever you are. With no ads. Ever. From new directors to award-winners. Beautiful, interesting, incredible movies — a new film every single day. Stream Now. Download to watch Offline. Start your free 7 day trial now.",
     "link": "https://mubi.com/",
     "logo_path": "/bVR4Z1LCHY7gidXAJF5pMa4QrDS.jpg",
@@ -317,7 +331,14 @@
       33,
       34,
       35,
-      36
+      36,
+      9991,
+      9999,
+      99917,
+      99923,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1
@@ -667,7 +688,8 @@
       26,
       27,
       31,
-      33
+      33,
+      99932
     ],
     "types": [
       1,
@@ -912,13 +934,15 @@
   {
     "id": "55",
     "name": "ShowMax",
-    "priority": 4,
+    "priority": 10,
     "description": "Stream or download the best movies, series and more. Available on web, smartphones, tablets and smart TV's. Start your free trial today.",
     "link": "https://www.showmax.com",
     "logo_path": "/okiQZMXnqwv0aD3QDYmu5DBNLce.jpg",
     "head_language": 70,
     "regions": [
-      36
+      36,
+      9999,
+      99923
     ],
     "types": [
       1,
@@ -1633,7 +1657,10 @@
       32,
       33,
       35,
-      36
+      36,
+      99917,
+      99934,
+      999917
     ],
     "types": [
       1
@@ -1718,6 +1745,28 @@
     "plans": [],
     "enabled": true,
     "empty_catalog": false
+  },
+  {
+    "id": "113",
+    "name": "Ivi",
+    "priority": 5,
+    "description": null,
+    "link": null,
+    "logo_path": "/o9ExgOSLF3OTwR6T3DJOuwOKJgq.jpg",
+    "head_language": null,
+    "regions": [
+      99917,
+      99934,
+      999917
+    ],
+    "types": [
+      1,
+      2
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
   },
   {
     "id": "115",
@@ -1825,7 +1874,14 @@
       31,
       33,
       34,
-      36
+      36,
+      9991,
+      9999,
+      99917,
+      99923,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -2085,7 +2141,8 @@
       7
     ],
     "types": [
-      1
+      1,
+      2
     ],
     "models": [
       3
@@ -2359,7 +2416,8 @@
     "head_language": null,
     "regions": [
       18,
-      29
+      29,
+      99917
     ],
     "types": [
       1,
@@ -2632,7 +2690,8 @@
       32,
       33,
       34,
-      35
+      35,
+      99917
     ],
     "types": [
       1,
@@ -2710,7 +2769,12 @@
       33,
       34,
       35,
-      36
+      36,
+      9999,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -3331,7 +3395,8 @@
       26,
       27,
       29,
-      33
+      33,
+      99917
     ],
     "types": [
       2
@@ -3390,13 +3455,20 @@
   {
     "id": "232",
     "name": "Zee5",
-    "priority": 3,
+    "priority": 2,
     "description": "Watch premieres of your favourite TV show episodes a day before telecast on ZEE5 & explore blockbuster movies, 100+ original content, music videos, live TV channels, news in HD quality & language of your choice.",
     "link": "https://www.zee5.com/",
     "logo_path": "/ajbCmwvZ8HiePHZaOVEgm9MzyuA.jpg",
     "head_language": null,
     "regions": [
-      20
+      20,
+      9991,
+      9999,
+      99917,
+      99923,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -4229,7 +4301,12 @@
       33,
       34,
       35,
-      36
+      36,
+      9991,
+      9999,
+      99917,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -4614,7 +4691,7 @@
   {
     "id": "300",
     "name": "Pluto TV",
-    "priority": 25,
+    "priority": 27,
     "description": "Pluto TV - Drop in. Watch Free. Watch 250+ channels of free TV and 1000's of on-demand movies and TV shows.",
     "link": "https://pluto.tv/",
     "logo_path": "/t6N57S17sdXRXmZDAkaGP0NHNG0.jpg",
@@ -4762,7 +4839,7 @@
   {
     "id": "309",
     "name": "Sun Nxt",
-    "priority": 11,
+    "priority": 3,
     "description": "Watch latest Tamil, Malayalam and Telugu TV Serials & Shows Online on Sun NXT, the one-stop right way for Watch Tamil TV Channels Live Online Streaming. You can browse for movies, Serials, shows and news today at sunnxt.com.",
     "link": "https://www.sunnxt.com/",
     "logo_path": "/uW4dPCcbXaaFTyfL5HwhuDt5akK.jpg",
@@ -4803,7 +4880,14 @@
       33,
       34,
       35,
-      36
+      36,
+      9991,
+      9999,
+      99917,
+      99923,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -4971,7 +5055,12 @@
       33,
       34,
       35,
-      36
+      36,
+      9999,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -5310,7 +5399,11 @@
       33,
       34,
       35,
-      36
+      36,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -5455,7 +5548,7 @@
   {
     "id": "344",
     "name": "Rakuten Viki",
-    "priority": 24,
+    "priority": 26,
     "description": "Watch Asian TV shows and movies online for FREE! Korean dramas, Chinese dramas, Taiwanese dramas, Japanese dramas, Kpop & Kdrama news and events by Soompi, and original productions -- subtitled in English and other languages.",
     "link": "https://www.viki.com/",
     "logo_path": "/qjtOUIUnk4kRpcZmaddjqDHM0dR.jpg",
@@ -5463,7 +5556,12 @@
     "regions": [
       7,
       10,
-      35
+      35,
+      9999,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -5562,7 +5660,10 @@
       32,
       33,
       35,
-      36
+      36,
+      9991,
+      99917,
+      99934
     ],
     "types": [
       1,
@@ -6013,7 +6114,7 @@
   {
     "id": "384",
     "name": "HBO Max",
-    "priority": 8,
+    "priority": 30,
     "description": "Say hello to HBO Max, the streaming platform that bundles all of HBO together with even more of your favorite movies and TV series, plus new Max Originals.",
     "link": "https://www.hbomax.com",
     "logo_path": "/Ajqyt5aNxNGjmF9uOfxArGrdf3X.jpg",
@@ -6033,7 +6134,9 @@
       30,
       31,
       33,
-      35
+      35,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -6184,13 +6287,17 @@
   {
     "id": "393",
     "name": "FlixOlé",
-    "priority": 2,
+    "priority": 4,
     "description": null,
     "link": null,
     "logo_path": "/9mmdMwWkDh12sIeSbEvsFWzmDX2.jpg",
     "head_language": null,
     "regions": [
-      13
+      13,
+      9999,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -6762,7 +6869,8 @@
     "head_language": null,
     "regions": [
       18,
-      29
+      29,
+      99917
     ],
     "types": [
       1,
@@ -6826,14 +6934,19 @@
   {
     "id": "428",
     "name": "CONtv",
-    "priority": 8,
+    "priority": 11,
     "description": "Watch  Free Movies, TV shows and Comic Con Panels Online | CONtv",
     "link": "https://www.contv.com/",
     "logo_path": "/m6p38R4AlEo1ub7QnZtirXDIUF5.jpg",
     "head_language": null,
     "regions": [
       10,
-      26
+      26,
+      9999,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -7219,7 +7332,12 @@
       33,
       34,
       35,
-      36
+      36,
+      9999,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -7235,7 +7353,7 @@
   {
     "id": "445",
     "name": "Classix",
-    "priority": 31,
+    "priority": 5,
     "description": "Watch Classix movies & TV shows streaming right to your iPhone, iPad and Apple TV.",
     "link": "https://www.classixapp.com/",
     "logo_path": "/iaMw6nOyxUzXSacrLQ0Au6CfZkc.jpg",
@@ -7276,7 +7394,14 @@
       33,
       34,
       35,
-      36
+      36,
+      9991,
+      9999,
+      99917,
+      99923,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -7511,7 +7636,7 @@
   {
     "id": "457",
     "name": "VIX ",
-    "priority": 11,
+    "priority": 14,
     "description": "Más de 100 canales de TV con miles de películas, series y novelas, el mejor fútbol en directo y noticias 24 horas para mantenerte informado",
     "link": "https://www.vix.com/tv/on-demand",
     "logo_path": "/58aUMVWJRolhWpi4aJCkGHwfKdg.jpg",
@@ -7524,7 +7649,11 @@
       13,
       25,
       31,
-      35
+      35,
+      9999,
+      99917,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -7914,7 +8043,9 @@
       32,
       33,
       34,
-      35
+      35,
+      99934,
+      999917
     ],
     "types": [
       1
@@ -8126,14 +8257,21 @@
   {
     "id": "485",
     "name": "Rooster Teeth",
-    "priority": 23,
+    "priority": 6,
     "description": "Rooster Teeth is your home for the best in gaming, comedy, and animation! Watch live and join us in chat, or stream new episodes and old favorites on demand from your home and mobile devices.",
     "link": "https://roosterteeth.com/series?order=desc",
     "logo_path": "/3MflXNopMv3EFKbVgJGoEkJEnnF.jpg",
     "head_language": null,
     "regions": [
       20,
-      35
+      35,
+      9991,
+      9999,
+      99917,
+      99923,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       2
@@ -8616,7 +8754,10 @@
     "logo_path": "/zEuYa2328KQlbpOr4W0tVNpCGtZ.jpg",
     "head_language": null,
     "regions": [
-      29
+      29,
+      99917,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -8828,7 +8969,12 @@
       33,
       34,
       35,
-      36
+      36,
+      9999,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1
@@ -8987,7 +9133,7 @@
   {
     "id": "531",
     "name": "Paramount Plus",
-    "priority": 7,
+    "priority": 3,
     "description": "Watch thousands of episodes of your favorite shows on any device. Paramount+ includes on-demand and live content from CBS, BET, Comedy Central, Nickelodeon, MTV, VH1, Paramount, and more.",
     "link": "https://www.paramountplus.com",
     "logo_path": "/xbhHHa1YgtpwhC8lb1NQ3ACVcLd.jpg",
@@ -9035,7 +9181,7 @@
   {
     "id": "532",
     "name": "aha",
-    "priority": 12,
+    "priority": 15,
     "description": "Watch Movies Online - Watch unlimited exclusive movies and originals online on aha. Stream movies and originals on your internet enabled devices from aha app.",
     "link": "https://www.aha.video/",
     "logo_path": "/m3NWxxR23l1w1e156fyTuw931gx.jpg",
@@ -9043,7 +9189,12 @@
     "regions": [
       7,
       20,
-      35
+      35,
+      9999,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -9059,7 +9210,7 @@
   {
     "id": "533",
     "name": "Amazon Arthaus Channel",
-    "priority": 61,
+    "priority": 62,
     "description": null,
     "link": null,
     "logo_path": "/1h8etYGesCuldkQGoUDyDJr92EB.jpg",
@@ -9078,6 +9229,29 @@
     "plans": [],
     "enabled": true,
     "empty_catalog": false
+  },
+  {
+    "id": "534",
+    "name": "Argo",
+    "priority": 10,
+    "description": null,
+    "link": null,
+    "logo_path": "/tgKw3lckZULebs3cMLAbMRqir7G.jpg",
+    "head_language": null,
+    "regions": [
+      9999,
+      99917,
+      99932,
+      99934,
+      999917
+    ],
+    "types": [
+      1
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
   },
   {
     "id": "536",
@@ -9295,13 +9469,18 @@
   {
     "id": "545",
     "name": "Spuul",
-    "priority": 14,
+    "priority": 16,
     "description": null,
     "link": null,
     "logo_path": "/iJGVfWTDddgipZ7mJCCEYzmRYrP.jpg",
     "head_language": null,
     "regions": [
-      20
+      20,
+      9991,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1
@@ -9356,7 +9535,9 @@
       33,
       34,
       35,
-      36
+      36,
+      9999,
+      99932
     ],
     "types": [
       1,
@@ -9499,7 +9680,11 @@
       33,
       34,
       35,
-      36
+      36,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -9614,7 +9799,12 @@
       33,
       34,
       35,
-      36
+      36,
+      9999,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -9758,7 +9948,12 @@
       33,
       34,
       35,
-      36
+      36,
+      9999,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1
@@ -9944,7 +10139,12 @@
       33,
       34,
       35,
-      36
+      36,
+      9999,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1
@@ -9997,7 +10197,10 @@
       32,
       33,
       34,
-      35
+      35,
+      99917,
+      99934,
+      999917
     ],
     "types": [
       1
@@ -10062,7 +10265,8 @@
     "logo_path": "/xrHrIraInfRXnrz1zHhY1tXJowg.jpg",
     "head_language": null,
     "regions": [
-      4
+      4,
+      999917
     ],
     "types": [
       1,
@@ -10258,14 +10462,19 @@
   {
     "id": "581",
     "name": "iQIYI",
-    "priority": 25,
+    "priority": 28,
     "description": "iQiyi is the world's leading movie and video streaming website, offering OTT services including a variety of TV dramas, movies, shows, animation, and other quality content. Our excellent content and services let you watch to your heart's content, anytime and anywhere.",
     "link": "https://www.iq.com/",
     "logo_path": "/8MXYXzZGoPAEQU13GWk1GVvKNUS.jpg",
     "head_language": null,
     "regions": [
       7,
-      35
+      35,
+      9999,
+      99917,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -10330,13 +10539,14 @@
   },
   {
     "id": "584",
-    "name": "Discovery+ Amazon Channel",
+    "name": "Discovery Plus Amazon Channel",
     "priority": 19,
     "description": "Enhance your Prime Video experience with a subscription to discovery+ — Watch real-life entertainment. Please note that Amazon will share with Discovery Digital Ventures, LLC.",
     "link": "https://www.primevideo.com/gp/video/offers?benefitId=discoveryplusbr",
     "logo_path": "/a2OcajC4bM5ItniQdjyOV7tgthW.jpg",
     "head_language": null,
     "regions": [
+      10,
       16,
       21,
       35
@@ -10977,7 +11187,7 @@
   {
     "id": "616",
     "name": "HBO Max Free",
-    "priority": 31,
+    "priority": 29,
     "description": "site indisponivel",
     "link": "",
     "logo_path": "/rIvQ4zuxvVirsNNVarYmOTunBD2.jpg",
@@ -11045,7 +11255,7 @@
   {
     "id": "619",
     "name": "Star Plus",
-    "priority": 6,
+    "priority": 2,
     "description": "More with Star+. More goals, more Originals, more drama and more thrills.",
     "link": "https://www.starplus.com/",
     "logo_path": "/hR9vWd8hWEVQKD6eOnBneKRFEW3.jpg",
@@ -11128,6 +11338,185 @@
     "models": [
       2
     ],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
+    "id": "623",
+    "name": "WeTV",
+    "priority": 35,
+    "description": null,
+    "link": null,
+    "logo_path": "/fDZtWPwSiKjVbbuZOVtlZAiH0rE.jpg",
+    "head_language": null,
+    "regions": [
+      99917
+    ],
+    "types": [
+      1,
+      2
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
+    "id": "624",
+    "name": "KKTV",
+    "priority": 36,
+    "description": null,
+    "link": null,
+    "logo_path": "/iGDZ6zPbVcngc0BQEsZX13Z7I07.jpg",
+    "head_language": null,
+    "regions": [
+      99917
+    ],
+    "types": [
+      1,
+      2
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
+    "id": "625",
+    "name": "LINE TV",
+    "priority": 37,
+    "description": null,
+    "link": null,
+    "logo_path": "/wLZCjEAlCKjEkQQM75bITfqL7D0.jpg",
+    "head_language": null,
+    "regions": [
+      99917
+    ],
+    "types": [
+      1,
+      2
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
+    "id": "626",
+    "name": "Otta",
+    "priority": 30,
+    "description": null,
+    "link": null,
+    "logo_path": "/9CHdbyMXYgFk9oM7H4t1FlrULHs.jpg",
+    "head_language": null,
+    "regions": [
+      99934
+    ],
+    "types": [
+      1,
+      2
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
+    "id": "627",
+    "name": "Voyo",
+    "priority": 31,
+    "description": null,
+    "link": null,
+    "logo_path": "/ujkJsUqk59ZdN6fCslGV3dZDSHr.jpg",
+    "head_language": null,
+    "regions": [
+      99934
+    ],
+    "types": [
+      1,
+      2
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
+    "id": "628",
+    "name": "Edisonline",
+    "priority": 33,
+    "description": null,
+    "link": null,
+    "logo_path": "/3OYkWKdWFgmRNiAp2kPgRN9wWd3.jpg",
+    "head_language": null,
+    "regions": [
+      99934
+    ],
+    "types": [
+      1
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
+    "id": "629",
+    "name": "OSN",
+    "priority": 27,
+    "description": null,
+    "link": null,
+    "logo_path": "/xEPXbwbfABzPrUTWbgtDFH1NOa.jpg",
+    "head_language": null,
+    "regions": [
+      9991
+    ],
+    "types": [
+      1,
+      2
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
+    "id": "630",
+    "name": "STARZPLAY",
+    "priority": 26,
+    "description": null,
+    "link": null,
+    "logo_path": "/uOTEObCZtolNGDA7A4Wrb47cxNn.jpg",
+    "head_language": null,
+    "regions": [
+      9991
+    ],
+    "types": [
+      1,
+      2
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
+    "id": "631",
+    "name": "HRTi",
+    "priority": 29,
+    "description": null,
+    "link": null,
+    "logo_path": "/h9vCGR4GF42HjXNvGQoBcuiZAvG.jpg",
+    "head_language": null,
+    "regions": [
+      999917
+    ],
+    "types": [
+      1,
+      2
+    ],
+    "models": [],
     "plans": [],
     "enabled": true,
     "empty_catalog": null
@@ -11243,15 +11632,41 @@
     "empty_catalog": null
   },
   {
+    "id": "637",
+    "name": "Pickbox NOW",
+    "priority": 31,
+    "description": null,
+    "link": null,
+    "logo_path": "/kHx8k4ixfSZdj45FAYP2P9r4FUO.jpg",
+    "head_language": null,
+    "regions": [
+      999917
+    ],
+    "types": [
+      1,
+      2
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
     "id": "638",
     "name": "Public Domain Movies",
-    "priority": 26,
+    "priority": 7,
     "description": "Public Domain Movies - Feature Movies in the Public Domain",
     "link": "http://publicdomainmovies.net/",
     "logo_path": "/liEIj6CkvojVDiMWeexGvflSPZT.jpg",
     "head_language": null,
     "regions": [
-      35
+      35,
+      9991,
+      9999,
+      99923,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1
@@ -11350,7 +11765,7 @@
   {
     "id": "677",
     "name": "Eventive",
-    "priority": 24,
+    "priority": 8,
     "description": "Stream independent film from film festivals, art house cinemas, virtual cinema screenings, classic repertory catalogs, and special events. Easily search the entire Eventive catalog for the freshest content anywhere.",
     "link": "https://watch.eventive.org/",
     "logo_path": "/fadQYOyKL0tqfyj012nYJxm3N2I.jpg",
@@ -11391,7 +11806,14 @@
       33,
       34,
       35,
-      36
+      36,
+      9991,
+      9999,
+      99917,
+      99923,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1
@@ -11406,7 +11828,7 @@
   {
     "id": "678",
     "name": "Filmlegenden Amazon Channel",
-    "priority": 78,
+    "priority": 77,
     "description": null,
     "link": null,
     "logo_path": "/wblLDecRE2PG2c2rdSkGtkqhgHr.jpg",
@@ -11580,7 +12002,7 @@
   {
     "id": "687",
     "name": "Arthouse CNMA Amazon Channel",
-    "priority": 62,
+    "priority": 61,
     "description": null,
     "link": null,
     "logo_path": "/3OoJykZgg9frZwIta01EJAocKjY.jpg",
@@ -11691,7 +12113,7 @@
   {
     "id": "692",
     "name": "Cultpix",
-    "priority": 25,
+    "priority": 9,
     "description": "Streaming classic cult, exploitation, grindhouse and genre films that other sites are afraid to show you. Join for $6.66 a month or $59 for full year.",
     "link": "https://www.cultpix.com/",
     "logo_path": "/59azlQKUgFdYq6QI5QEAxIeecyL.jpg",
@@ -11732,7 +12154,14 @@
       33,
       34,
       35,
-      36
+      36,
+      9991,
+      9999,
+      99917,
+      99923,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -11837,7 +12266,7 @@
   {
     "id": "701",
     "name": "FilmBox+",
-    "priority": 26,
+    "priority": 11,
     "description": "Filmbox+ is an entertainment service that you can watch hundreds of movies and videos online with a single subscription.",
     "link": "https://www.filmbox.com/",
     "logo_path": "/4FqTBYsUSZgS9z9UGKgxSDBbtc8.jpg",
@@ -11878,7 +12307,14 @@
       33,
       34,
       35,
-      36
+      36,
+      9991,
+      9999,
+      99917,
+      99923,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1,
@@ -11892,15 +12328,36 @@
     "empty_catalog": null
   },
   {
+    "id": "702",
+    "name": "iBAKATV",
+    "priority": 28,
+    "description": null,
+    "link": null,
+    "logo_path": "/yiU8I1FrrXJkq4bVpjmoVqBXDuc.jpg",
+    "head_language": null,
+    "regions": [
+      99923
+    ],
+    "types": [
+      1
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
     "id": "704",
     "name": "IROKOTV",
-    "priority": 27,
+    "priority": 12,
     "description": "Watch thousands of Nollywood movies and series right on your PC, Mac, tablet or smartphone. Subscribe and watch today.",
     "link": "https://irokotv.com/",
     "logo_path": "/r4q36I2Xts1SqhLWd6XsnbSAQJ4.jpg",
     "head_language": null,
     "regions": [
-      36
+      36,
+      9999,
+      99923
     ],
     "types": [
       1,
@@ -12112,7 +12569,7 @@
   {
     "id": "1711",
     "name": "MTV Plus Amazon Channel",
-    "priority": 96,
+    "priority": 95,
     "description": null,
     "link": null,
     "logo_path": "/4YpUbpRqJELtahMRXZAYphl0o9S.jpg",
@@ -12199,13 +12656,16 @@
   {
     "id": "1715",
     "name": "Shahid VIP",
-    "priority": 29,
+    "priority": 13,
     "description": "Shahid is the number one Arabic VOD service in the world with premium originals, exclusive series and movies, Live TV, Sports & much more",
     "link": "https://shahid.mbc.net/",
     "logo_path": "/uurfHKuprPDeKfIs7FYd5lQzw0L.jpg",
     "head_language": null,
     "regions": [
-      36
+      36,
+      9991,
+      9999,
+      99923
     ],
     "types": [
       1,
@@ -12299,6 +12759,25 @@
     "models": [
       0
     ],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
+    "id": "1725",
+    "name": "AVA BGB",
+    "priority": 28,
+    "description": null,
+    "link": null,
+    "logo_path": "/s2xiuAFth0RZAuTasKpxQMFsRQc.jpg",
+    "head_language": null,
+    "regions": [
+      99932
+    ],
+    "types": [
+      1
+    ],
+    "models": [],
     "plans": [],
     "enabled": true,
     "empty_catalog": null
@@ -12458,7 +12937,7 @@
   {
     "id": "1733",
     "name": "Action Max Amazon Channel",
-    "priority": 64,
+    "priority": 63,
     "description": null,
     "link": null,
     "logo_path": "/9FH7tewU23chp628XZcY66UOovi.jpg",
@@ -12480,7 +12959,7 @@
   {
     "id": "1734",
     "name": "Filmo Amazon Channel",
-    "priority": 63,
+    "priority": 64,
     "description": null,
     "link": null,
     "logo_path": "/xO3KmmiYYol5jNsRZNJ7Sow7eUy.jpg",
@@ -12780,6 +13259,26 @@
     "empty_catalog": null
   },
   {
+    "id": "1750",
+    "name": "TOD",
+    "priority": 30,
+    "description": null,
+    "link": null,
+    "logo_path": "/eXxCDzaz4F7bkkgkZ8p6AbNQ8Dk.jpg",
+    "head_language": null,
+    "regions": [
+      9991
+    ],
+    "types": [
+      1,
+      2
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
     "id": "1756",
     "name": "filmingo",
     "priority": 47,
@@ -12869,6 +13368,25 @@
     "empty_catalog": null
   },
   {
+    "id": "1768",
+    "name": "Espn Plus",
+    "priority": 208,
+    "description": null,
+    "link": null,
+    "logo_path": "/iJBj5b4HYbjEPiwKJWQfcRr3nP2.jpg",
+    "head_language": null,
+    "regions": [
+      35
+    ],
+    "types": [
+      1
+    ],
+    "models": [],
+    "plans": [],
+    "enabled": true,
+    "empty_catalog": null
+  },
+  {
     "id": "1770",
     "name": "Paramount+ Showtime",
     "priority": 210,
@@ -12894,7 +13412,7 @@
   {
     "id": "1771",
     "name": "Takflix",
-    "priority": 30,
+    "priority": 14,
     "description": null,
     "link": null,
     "logo_path": "/cnIHBy3uLWhHRR7VeWQhK3ZsYP0.jpg",
@@ -12935,7 +13453,14 @@
       33,
       34,
       35,
-      36
+      36,
+      9991,
+      9999,
+      99917,
+      99923,
+      99932,
+      99934,
+      999917
     ],
     "types": [
       1

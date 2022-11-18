@@ -117,133 +117,112 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AE" xml:space="preserve">
-    <value>Emirados Árabes Unidos</value>
+  <data name="ButtonAdd" xml:space="preserve">
+    <value>Agregar</value>
   </data>
-  <data name="AR" xml:space="preserve">
-    <value>Argentina</value>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>Cancelar</value>
   </data>
-  <data name="AT" xml:space="preserve">
-    <value>Áustria</value>
+  <data name="ButtonClose" xml:space="preserve">
+    <value>Cerrar</value>
   </data>
-  <data name="AU" xml:space="preserve">
-    <value>Austrália</value>
+  <data name="ButtonLogin" xml:space="preserve">
+    <value>Entrar</value>
   </data>
-  <data name="BE" xml:space="preserve">
-    <value>Bélgica</value>
+  <data name="ButtonLogout" xml:space="preserve">
+    <value>Salir</value>
   </data>
-  <data name="BG" xml:space="preserve">
-    <value>Bulgária</value>
+  <data name="ButtonNew" xml:space="preserve">
+    <value>Nuevo</value>
   </data>
-  <data name="BR" xml:space="preserve">
-    <value>Brasil</value>
+  <data name="ButtonNotWatched" xml:space="preserve">
+    <value>Sin ayuda</value>
   </data>
-  <data name="CA" xml:space="preserve">
-    <value>Canadá</value>
+  <data name="ButtonRemove" xml:space="preserve">
+    <value>Eliminar</value>
   </data>
-  <data name="CH" xml:space="preserve">
-    <value>Suíça</value>
+  <data name="ButtonSave" xml:space="preserve">
+    <value>Salvar</value>
   </data>
-  <data name="CI" xml:space="preserve">
-    <value>Costa do Marfim</value>
+  <data name="ButtonWatched" xml:space="preserve">
+    <value>Asistida</value>
   </data>
-  <data name="CZ" xml:space="preserve">
-    <value>República Tcheca</value>
+  <data name="CustomVisibilityInvalid" xml:space="preserve">
+    <value>Operación no válida. Inténtalo de nuevo.</value>
   </data>
-  <data name="DE" xml:space="preserve">
-    <value>Alemanha</value>
+  <data name="CustomVisibilityLoading" xml:space="preserve">
+    <value>Llevar...</value>
   </data>
-  <data name="DK" xml:space="preserve">
-    <value>Dinamarca</value>
+  <data name="CustomVisibilityNoData" xml:space="preserve">
+    <value>No hay datos para mostrar</value>
   </data>
-  <data name="EE" xml:space="preserve">
-    <value>Estônia</value>
+  <data name="DeliveryModelAds" xml:space="preserve">
+    <value>Anuncios</value>
   </data>
-  <data name="ES" xml:space="preserve">
-    <value>Espanha</value>
+  <data name="DeliveryModelBuy" xml:space="preserve">
+    <value>Comprar</value>
   </data>
-  <data name="FI" xml:space="preserve">
-    <value>Finlândia</value>
+  <data name="DeliveryModelFlatRate" xml:space="preserve">
+    <value>Tasa fija</value>
   </data>
-  <data name="FR" xml:space="preserve">
-    <value>França</value>
+  <data name="DeliveryModelFlatRateBuy" xml:space="preserve">
+    <value>Tasa fija/Comprar</value>
   </data>
-  <data name="GB" xml:space="preserve">
-    <value>Reino Unido</value>
+  <data name="DeliveryModelFree" xml:space="preserve">
+    <value>Gratis</value>
   </data>
-  <data name="HK" xml:space="preserve">
-    <value>Hong Kong</value>
+  <data name="DeliveryModelRent" xml:space="preserve">
+    <value>Alquilar</value>
   </data>
-  <data name="HR" xml:space="preserve">
-    <value>Croácia</value>
+  <data name="FeatureUnavailableDescription" xml:space="preserve">
+    <value>Espera noticias...</value>
   </data>
-  <data name="HU" xml:space="preserve">
-    <value>Hungria</value>
+  <data name="FeatureUnavailableMessage" xml:space="preserve">
+    <value>En desarrollo</value>
   </data>
-  <data name="ID" xml:space="preserve">
-    <value>Indonésia</value>
+  <data name="MenuHome" xml:space="preserve">
+    <value>Hogar</value>
   </data>
-  <data name="IE" xml:space="preserve">
-    <value>Irlanda</value>
+  <data name="MenuList" xml:space="preserve">
+    <value>Listas</value>
   </data>
-  <data name="IN" xml:space="preserve">
-    <value>Índia</value>
+  <data name="MenuProfile" xml:space="preserve">
+    <value>Perfil</value>
   </data>
-  <data name="IT" xml:space="preserve">
-    <value>Itália</value>
+  <data name="MenuSupport" xml:space="preserve">
+    <value>Apoyo</value>
   </data>
-  <data name="JP" xml:space="preserve">
-    <value>Japão</value>
+  <data name="MoreInformation" xml:space="preserve">
+    <value>Más información o Contribuciones</value>
   </data>
-  <data name="KE" xml:space="preserve">
-    <value>Quênia</value>
+  <data name="MyMovieWishlist" xml:space="preserve">
+    <value>Añadir a la lista de deseos - Películas ({0} artículos)</value>
   </data>
-  <data name="KR" xml:space="preserve">
-    <value>Coreia do Sul</value>
+  <data name="MyProviders" xml:space="preserve">
+    <value>Proveedores favoritos ({0} artículos)</value>
   </data>
-  <data name="LT" xml:space="preserve">
-    <value>Lituânia</value>
+  <data name="MyShowWishlist" xml:space="preserve">
+    <value>Lista de deseos - Serials ({0} artículos)</value>
   </data>
-  <data name="MX" xml:space="preserve">
-    <value>México</value>
+  <data name="Offering" xml:space="preserve">
+    <value>Ofrenda</value>
   </data>
-  <data name="NL" xml:space="preserve">
-    <value>Países Baixos</value>
+  <data name="ProviderPopupTabAbout" xml:space="preserve">
+    <value>Sobre</value>
   </data>
-  <data name="NO" xml:space="preserve">
-    <value>Noruega</value>
+  <data name="ProviderPopupTabCatalog" xml:space="preserve">
+    <value>Catálogo</value>
   </data>
-  <data name="NZ" xml:space="preserve">
-    <value>Nova Zelândia</value>
+  <data name="ProviderPopupTabDetails" xml:space="preserve">
+    <value>Detalles</value>
   </data>
-  <data name="PH" xml:space="preserve">
-    <value>Filipinas</value>
+  <data name="PWAUpdaterButton" xml:space="preserve">
+    <value>ACTUALIZA AHORA</value>
   </data>
-  <data name="PL" xml:space="preserve">
-    <value>Polônia</value>
+  <data name="PWAUpdaterText" xml:space="preserve">
+    <value>Una nueva versión está disponible</value>
   </data>
-  <data name="PT" xml:space="preserve">
-    <value>Portugal</value>
-  </data>
-  <data name="RS" xml:space="preserve">
-    <value>Sérvia e Montenegro</value>
-  </data>
-  <data name="RU" xml:space="preserve">
-    <value>Rússia</value>
-  </data>
-  <data name="SE" xml:space="preserve">
-    <value>Suécia</value>
-  </data>
-  <data name="SK" xml:space="preserve">
-    <value>Eslováquia</value>
-  </data>
-  <data name="TR" xml:space="preserve">
-    <value>Turquia</value>
-  </data>
-  <data name="US" xml:space="preserve">
-    <value>Estados Unidos</value>
-  </data>
-  <data name="ZA" xml:space="preserve">
-    <value>África do Sul</value>
+  <data name="TitleNotAvailable" xml:space="preserve">
+    <value>Desafortunadamente, este título no está disponible en su región</value>
   </data>
 </root>

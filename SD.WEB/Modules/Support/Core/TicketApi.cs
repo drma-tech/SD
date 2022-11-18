@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Model.Support;
+using SD.Shared.Models.Support;
 
 namespace SD.WEB.Modules.Support.Core
 {

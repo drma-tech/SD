@@ -9,6 +9,7 @@
         WatchedList = 5,
         Ticket = 6,
         TicketVote = 7,
+        Announcement = 8
     }
 
     public abstract class DocumentBase

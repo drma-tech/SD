@@ -61,6 +61,15 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Afrikaans (ZA).
+        /// </summary>
+        public static string af_ZA {
+            get {
+                return ResourceManager.GetString("af-ZA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arabic (AE).
         /// </summary>
         public static string ar_AE {
@@ -97,7 +106,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Bangla (BD).
         /// </summary>
         public static string bn_BD {
             get {
@@ -115,7 +124,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Chamorro (GU).
         /// </summary>
         public static string ch_GU {
             get {
@@ -124,7 +133,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Cantonese (CN).
         /// </summary>
         public static string cn_CN {
             get {
@@ -138,6 +147,15 @@ namespace SD.Shared.Resources.Enum {
         public static string cs_CZ {
             get {
                 return ResourceManager.GetString("cs-CZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welsh (GB).
+        /// </summary>
+        public static string cy_GB {
+            get {
+                return ResourceManager.GetString("cy-GB", resourceCulture);
             }
         }
         
@@ -241,7 +259,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Esperanto.
         /// </summary>
         public static string eo_EO {
             get {
@@ -322,6 +340,15 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Irish (IE).
+        /// </summary>
+        public static string ga_IE {
+            get {
+                return ResourceManager.GetString("ga-IE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Galician (ES).
         /// </summary>
         public static string gl_ES {
@@ -345,6 +372,15 @@ namespace SD.Shared.Resources.Enum {
         public static string hi_IN {
             get {
                 return ResourceManager.GetString("hi-IN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Croatian (RH).
+        /// </summary>
+        public static string hr_HR {
+            get {
+                return ResourceManager.GetString("hr-HR", resourceCulture);
             }
         }
         
@@ -421,6 +457,15 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kirghiz (KG).
+        /// </summary>
+        public static string ky_KG {
+            get {
+                return ResourceManager.GetString("ky-KG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lithuanian (LT).
         /// </summary>
         public static string lt_LT {
@@ -439,11 +484,20 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Malayalam (IN).
         /// </summary>
         public static string ml_IN {
             get {
                 return ResourceManager.GetString("ml-IN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Marathi (IN).
+        /// </summary>
+        public static string mr_IN {
+            get {
+                return ResourceManager.GetString("mr-IN", resourceCulture);
             }
         }
         
@@ -457,7 +511,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Malay (SG).
         /// </summary>
         public static string ms_SG {
             get {
@@ -475,6 +529,15 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dutch (BE).
+        /// </summary>
+        public static string nl_BE {
+            get {
+                return ResourceManager.GetString("nl-BE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dutch (NL).
         /// </summary>
         public static string nl_NL {
@@ -484,11 +547,20 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Norwegian (NO).
         /// </summary>
         public static string no_NO {
             get {
                 return ResourceManager.GetString("no-NO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Panjabi (IN).
+        /// </summary>
+        public static string pa_IN {
+            get {
+                return ResourceManager.GetString("pa-IN", resourceCulture);
             }
         }
         
@@ -511,7 +583,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Portuguese (PO).
+        ///   Looks up a localized string similar to Portuguese (PT).
         /// </summary>
         public static string pt_PT {
             get {
@@ -538,7 +610,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Sinhala (LK).
         /// </summary>
         public static string si_LK {
             get {
@@ -574,7 +646,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Serbian (RS).
         /// </summary>
         public static string sr_RS {
             get {
@@ -669,6 +741,15 @@ namespace SD.Shared.Resources.Enum {
         public static string zh_HK {
             get {
                 return ResourceManager.GetString("zh-HK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chinese (SG).
+        /// </summary>
+        public static string zh_SG {
+            get {
+                return ResourceManager.GetString("zh-SG", resourceCulture);
             }
         }
         

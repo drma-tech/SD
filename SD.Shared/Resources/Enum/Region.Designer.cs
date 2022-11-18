@@ -61,6 +61,15 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to United Arab Emirates.
+        /// </summary>
+        public static string AE {
+            get {
+                return ResourceManager.GetString("AE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Argentina.
         /// </summary>
         public static string AR {
@@ -129,6 +138,15 @@ namespace SD.Shared.Resources.Enum {
         public static string CH {
             get {
                 return ResourceManager.GetString("CH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cote D&apos;Ivoire.
+        /// </summary>
+        public static string CI {
+            get {
+                return ResourceManager.GetString("CI", resourceCulture);
             }
         }
         
@@ -205,6 +223,24 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hong Kong.
+        /// </summary>
+        public static string HK {
+            get {
+                return ResourceManager.GetString("HK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Croatia.
+        /// </summary>
+        public static string HR {
+            get {
+                return ResourceManager.GetString("HR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hungary.
         /// </summary>
         public static string HU {
@@ -255,6 +291,15 @@ namespace SD.Shared.Resources.Enum {
         public static string JP {
             get {
                 return ResourceManager.GetString("JP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kenya.
+        /// </summary>
+        public static string KE {
+            get {
+                return ResourceManager.GetString("KE", resourceCulture);
             }
         }
         
@@ -340,6 +385,15 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Serbia.
+        /// </summary>
+        public static string RS {
+            get {
+                return ResourceManager.GetString("RS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Russia.
         /// </summary>
         public static string RU {
@@ -354,6 +408,15 @@ namespace SD.Shared.Resources.Enum {
         public static string SE {
             get {
                 return ResourceManager.GetString("SE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slovakia.
+        /// </summary>
+        public static string SK {
+            get {
+                return ResourceManager.GetString("SK", resourceCulture);
             }
         }
         

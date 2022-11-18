@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Model.Support
+﻿namespace SD.Shared.Models.Support
 {
     public class TicketVoteModel : DocumentBase
     {

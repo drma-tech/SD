@@ -1,8 +1,14 @@
 ﻿namespace SD.Shared.Enums
 {
+    /// <summary>
+    /// https://developers.themoviedb.org/3/configuration/get-primary-translations
+    /// http://www.i18nguy.com/unicode/language-identifiers.html
+    /// </summary>
     public enum Language
     {
-        //"af-ZA"
+        //"af-ZA" - Afrikaans (South Africa)
+        [Custom(Name = "af-ZA", ResourceType = typeof(Resources.Enum.Language))]
+        afZA = 9991,
 
         [Custom(Name = "ar-AE", ResourceType = typeof(Resources.Enum.Language))]
         arAE = 1,
@@ -31,7 +37,9 @@
         [Custom(Name = "cs-CZ", ResourceType = typeof(Resources.Enum.Language))]
         csCZ = 9,
 
-        //"cy-GB"
+        //"cy-GB" - Welsh (United Kingdom)
+        [Custom(Name = "cy-GB", ResourceType = typeof(Resources.Enum.Language))]
+        cyGB = 99910,
 
         [Custom(Name = "da-DK", ResourceType = typeof(Resources.Enum.Language))]
         daDK = 10,
@@ -93,7 +101,9 @@
         [Custom(Name = "fr-FR", ResourceType = typeof(Resources.Enum.Language))]
         frFR = 29,
 
-        //"ga-IE"
+        //"ga-IE" - Irish
+        [Custom(Name = "ga-IE", ResourceType = typeof(Resources.Enum.Language))]
+        gaIE = 99930,
 
         [Custom(Name = "gl-ES", ResourceType = typeof(Resources.Enum.Language))]
         glES = 30,
@@ -104,7 +114,9 @@
         [Custom(Name = "hi-IN", ResourceType = typeof(Resources.Enum.Language))]
         hiIN = 32,
 
-        //"hr-HR"
+        //"hr-HR" - Croatian
+        [Custom(Name = "hr-HR", ResourceType = typeof(Resources.Enum.Language))]
+        hrHR = 99933,
 
         [Custom(Name = "hu-HU", ResourceType = typeof(Resources.Enum.Language))]
         huHU = 33,
@@ -131,6 +143,8 @@
         koKR = 40,
 
         //"ky-KG"
+        [Custom(Name = "ky-KG", ResourceType = typeof(Resources.Enum.Language))]
+        kyKG = 99941,
 
         [Custom(Name = "lt-LT", ResourceType = typeof(Resources.Enum.Language))]
         ltLT = 41,
@@ -142,6 +156,8 @@
         mlIN = 43,
 
         //"mr-IN"
+        [Custom(Name = "mr-IN", ResourceType = typeof(Resources.Enum.Language))]
+        mrIN = 99944,
 
         [Custom(Name = "ms-MY", ResourceType = typeof(Resources.Enum.Language))]
         msMY = 44,
@@ -153,6 +169,8 @@
         nbNO = 46,
 
         //"nl-BE"
+        [Custom(Name = "nl-BE", ResourceType = typeof(Resources.Enum.Language))]
+        nlBE = 99947,
 
         [Custom(Name = "nl-NL", ResourceType = typeof(Resources.Enum.Language))]
         nlNL = 47,
@@ -161,6 +179,8 @@
         noNO = 48,
 
         //"pa-IN"
+        [Custom(Name = "pa-IN", ResourceType = typeof(Resources.Enum.Language))]
+        paIN = 99949,
 
         [Custom(Name = "pl-PL", ResourceType = typeof(Resources.Enum.Language))]
         plPL = 49,
@@ -223,6 +243,8 @@
         zhHK = 68,
 
         //"zh-SG"
+        [Custom(Name = "zh-SG", ResourceType = typeof(Resources.Enum.Language))]
+        zhSG = 99969,
 
         [Custom(Name = "zh-TW", ResourceType = typeof(Resources.Enum.Language))]
         zhTW = 69,

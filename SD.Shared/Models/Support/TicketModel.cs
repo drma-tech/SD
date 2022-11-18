@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SD.Shared.Model.Support
+namespace SD.Shared.Models.Support
 {
     public class TicketModel : DocumentBase
     {
@@ -64,31 +64,31 @@ namespace SD.Shared.Model.Support
 
     public enum TicketType
     {
-        [Custom(Name = "BugReport", ResourceType = typeof(Models.Support.Resources.TicketType))]
+        [Custom(Name = "BugReport", ResourceType = typeof(Resources.TicketType))]
         BugReport = 1,
 
-        [Custom(Name = "Improvement", ResourceType = typeof(Models.Support.Resources.TicketType))]
+        [Custom(Name = "Improvement", ResourceType = typeof(Resources.TicketType))]
         Improvement = 2
     }
 
     public enum TicketStatus
     {
-        [Custom(Name = "New", ResourceType = typeof(Models.Support.Resources.TicketStatus))]
+        [Custom(Name = "New", ResourceType = typeof(Resources.TicketStatus))]
         New = 1,
 
-        [Custom(Name = "UnderConsideration", ResourceType = typeof(Models.Support.Resources.TicketStatus))]
+        [Custom(Name = "UnderConsideration", ResourceType = typeof(Resources.TicketStatus))]
         UnderConsideration = 2,
 
-        [Custom(Name = "Planned", ResourceType = typeof(Models.Support.Resources.TicketStatus))]
+        [Custom(Name = "Planned", ResourceType = typeof(Resources.TicketStatus))]
         Planned = 3,
 
-        [Custom(Name = "Progress", ResourceType = typeof(Models.Support.Resources.TicketStatus))]
+        [Custom(Name = "Progress", ResourceType = typeof(Resources.TicketStatus))]
         Progress = 4,
 
-        [Custom(Name = "Done", ResourceType = typeof(Models.Support.Resources.TicketStatus))]
+        [Custom(Name = "Done", ResourceType = typeof(Resources.TicketStatus))]
         Done = 5,
 
-        [Custom(Name = "Declined", ResourceType = typeof(Models.Support.Resources.TicketStatus))]
+        [Custom(Name = "Declined", ResourceType = typeof(Resources.TicketStatus))]
         Declined = 6
     }
 }
