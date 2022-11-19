@@ -91,7 +91,7 @@ namespace SD.API.Functions
 
             try
             {
-                var item = await req.GetParameterObject<TicketModel>(source.Token);
+                var item = await req.GetParameterObjectPublic<TicketModel>(source.Token);
 
                 var result = await _repo.Upsert(item, cancellationToken);
 
@@ -113,7 +113,7 @@ namespace SD.API.Functions
 
             try
             {
-                var item = await req.GetParameterObject<TicketVoteModel>(source.Token);
+                var item = await req.GetParameterObjectPublic<TicketVoteModel>(source.Token);
 
                 if (item.VoteType == VoteType.PlusOne)
                     await _repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, item.Key, new List<PatchOperation> { PatchOperation.Increment("/totalVotes", 1) }, cancellationToken);

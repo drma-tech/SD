@@ -271,7 +271,7 @@ else if (SelectedTab == Tabs.Roadmap)
         return ModalService.Show<NewTicket>("",
                 x =>
                 {
-                    x.Add(x => x.Inserted, new EventCallbackFactory().Create<bool>(this, LoadData));
+                    x.Add(x => x.Inserted, new EventCallbackFactory().Create<TicketModel>(this, (TicketModel model) => tickets.Add(model)));
                 },
                 new ModalInstanceOptions()
                     {

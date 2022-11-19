@@ -2,13 +2,18 @@
 @page "/Index"
 <PageTitle>SD - Streaming Discovery</PageTitle>
 @inherits PageCore<Index>
+@using SD.Shared.Models.News;
 @using SD.WEB.Modules.List.Core;
+@using SD.WEB.Modules.News.Core;
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
+@using System.Text.Json;
 @inject WatchedListApi WatchedListApi
 @inject WishListApi WishListApi
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbApi TmdbApi
+@inject NewsApi NewsApi
+@inject CacheApi CacheApi
 
 <Alert Visible="true" Color="Color.Secondary">
     <AlertMessage>@TranslationText.Popular</AlertMessage>
@@ -43,7 +48,7 @@ else if (TypeSelected == PopularType.Cinema)
 }
 
 <Row HorizontalGutter="8" VerticalGutter="8">
-    <Column>
+    <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
         <Alert Visible="true" Color="Color.Secondary">
             <AlertMessage>@Provider.Resources.Translations.TitleProviders.Format(Settings.Region)</AlertMessage>
 
@@ -56,7 +61,7 @@ else if (TypeSelected == PopularType.Cinema)
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in GetFilteredProviders())
                 {
-                    <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is4.OnDesktop.Is6.OnMobile">
+                    <Column ColumnSize="ColumnSize.Is3.OnMobile.Is2.OnDesktop">
                         <Card>
                             <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name"
                                    onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;" title="@item.name"></CardImage>
@@ -81,14 +86,26 @@ else if (TypeSelected == PopularType.Cinema)
                 }
             </Row>
         </CustomVisibility>
-    </Column>
-    <Column>
+    </Column >
+    <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
         <Alert Visible="true" Color="Color.Secondary">
-            <AlertMessage>Últimos Trailers</AlertMessage>
+            <AlertMessage>Últimas Notícias</AlertMessage>
         </Alert>
 
-        <CustomVisibility NoData="true">
-
+        <CustomVisibility NoData="News==null">
+            <Carousel @bind-SelectedSlide="@selectedSlide">
+                @foreach (var item in News?.data?.newsStories.Take(15) ?? Enumerable.Empty<NewsStory>())
+                {
+                    <CarouselSlide Name="@item.id">
+                        <div style="position: absolute; top: 10px; left: 10px; margin-right: 10px; background-color: lime; opacity: 80%;">
+                            @((MarkupString)item.title)
+                        </div>
+                        <Blazorise.Link To="@item.link" Target="Target.Blank">
+                            <Image Source="@item.mainImage.url" Text="@item.title" Display="Display.Block" Width="Width.Is100" />
+                        </Blazorise.Link>
+                    </CarouselSlide>
+                }
+            </Carousel>
         </CustomVisibility>
     </Column>
 </Row>
@@ -99,6 +116,9 @@ else if (TypeSelected == PopularType.Cinema)
     private HashSet<MediaDetail> ListStreamin { get; set; } = new();
     private HashSet<MediaDetail> ListRent { get; set; } = new();
     private HashSet<MediaDetail> ListCinema { get; set; } = new();
+    private Flixster? News { get; set; }
+
+    public string selectedSlide { get; set; }
 
     public enum PopularType
     {
@@ -117,7 +137,7 @@ else if (TypeSelected == PopularType.Cinema)
         p.regions.Any(a => a == Settings.Region) &
         p.enabled &
         (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true))
-        .Take(12) ?? Array.Empty<ProviderModel>();
+        .Take(18) ?? Array.Empty<ProviderModel>();
 
     protected override Task OnInitializedAsync()
     {
@@ -136,6 +156,18 @@ else if (TypeSelected == PopularType.Cinema)
             await LoadLists(TypeSelected);
 
             AllProviders = await AllProvidersApi.GetAll();
+
+            var cache = await CacheApi.Get("lastnews");
+
+            if (cache == null)
+            {
+                News = await NewsApi.Get();
+                await CacheApi.Add(new SD.Shared.Models.CacheModel("lastnews", News));
+            }
+            else
+            {
+                News = (Flixster?)cache.Value;
+            }
         }
         catch (Exception ex)
         {

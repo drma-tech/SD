@@ -31,7 +31,7 @@ namespace SD.API.Core
                 return;
             }
 
-            _ = _log.Add(new LogContainer()
+            _ = _log.Add(new LogModel()
             {
                 Name = _name,
                 State = formatter(state, exception),

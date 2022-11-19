@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace SD.API.Repository
 {
-    public class LogContainer
+    public class LogModel
     {
-        public LogContainer()
+        public LogModel()
         {
             Id = Guid.NewGuid().ToString();
             Key = DateTime.UtcNow.ToShortDateString();
@@ -42,7 +42,7 @@ namespace SD.API.Repository
             Container = _client.GetContainer(databaseId, containerId);
         }
 
-        public async Task Add(LogContainer log)
+        public async Task Add(LogModel log)
         {
             await Container.CreateItemAsync(log, new PartitionKey(log.Key), null);
         }

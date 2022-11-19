@@ -37,7 +37,7 @@
     [Parameter] public TicketType TicketType { get; set; } = TicketType.BugReport;
 
     public TicketModel Ticket { get; set; } = new();
-    [Parameter] public EventCallback<bool> Inserted { get; set; }
+    [Parameter] public EventCallback<TicketModel> Inserted { get; set; }
 
     [Inject] public IModalService ModalService { get; set; } = default!;
 
@@ -76,14 +76,14 @@
             Ticket.TicketStatus = TicketStatus.New;
             Ticket.SetIds(ComponenteUtils.GetIdUser());
 
-            await TicketApi.Insert(Ticket);
+            Ticket = await TicketApi.Insert(Ticket) ?? new();
 
             await Toast.Success("Salvo com sucesso");
 
+            await Inserted.InvokeAsync(Ticket);
+
             Ticket = new();
             await ModalService.Hide();
-
-            await Inserted.InvokeAsync();
         }
         catch (Exception ex)
         {

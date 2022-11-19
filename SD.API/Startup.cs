@@ -2,8 +2,6 @@
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SD.API.Core;
-using SD.API.Repository;
 
 [assembly: FunctionsStartup(typeof(SD.API.Startup))]
 
@@ -28,9 +26,11 @@ namespace SD.API
                 return new CosmosRepository(config);
             });
 
+            builder.Services.AddSingleton<CosmosCacheRepository>();
+
             builder.Services.AddLogging(logging =>
             {
-                logging.AddProvider(new CosmosLoggerProvider(new Repository.CosmosLogRepository(config)));
+                logging.AddProvider(new CosmosLoggerProvider(new CosmosLogRepository(config)));
                 //logging.AddAzureWebAppDiagnostics();
             });
         }
