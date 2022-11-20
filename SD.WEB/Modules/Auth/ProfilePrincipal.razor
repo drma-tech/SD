@@ -66,7 +66,7 @@
 </EditForm>
 
 @code {
-    private ClientePrincipal? principal { get; set; }
+    private ClientePrincipal? principal { get; set; } = new();
     private bool termsAccepted;
 
     protected override async Task LoadData()

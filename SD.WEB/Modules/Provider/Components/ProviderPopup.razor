@@ -94,22 +94,18 @@
     </Tabs>
 </ModalBody>
 <ModalFooter>
-    <AuthorizeView>
-        <Authorized>
-            @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
-            {
-                <Button Color="Color.Danger" Clicked="Remove">
-                    <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
-                </Button>
-            }
-            else
-            {
-                <Button Color="Color.Primary" Clicked="Add">
-                    <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
-                </Button>
-            }
-        </Authorized>
-    </AuthorizeView>
+    @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
+    {
+        <Button Color="Color.Danger" Clicked="Remove" Disabled="!ComponenteUtils.IsAuthenticated">
+            <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
+        </Button>
+    }
+    else
+    {
+        <Button Color="Color.Primary" Clicked="Add" Disabled="!ComponenteUtils.IsAuthenticated">
+            <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
+        </Button>
+    }
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide">@TranslationText.Close</Button>
 </ModalFooter>
 

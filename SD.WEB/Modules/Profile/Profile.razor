@@ -1,6 +1,6 @@
 ﻿@page "/Profile"
 <PageTitle>SD - Profile</PageTitle>
-@inherits ComponenteCore<Profile>
+@inherits PageCore<Profile>
 @using SD.Shared.Model
 @using System.Text.Json
 @using SD.WEB.Modules.Profile.Core
@@ -9,7 +9,6 @@
 @inject WishListApi WishListApi
 @inject MyProvidersApi MyProvidersApi
 @inject AllProvidersApi AllProvidersApi
-
 
 <Alert Visible="true" Color="Color.Secondary">
     <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.MyProviders.Format(myProviders?.Items.Count ?? 0)</AlertMessage>
@@ -93,7 +92,7 @@
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
-    
+
     [Parameter]
     [SupplyParameterFromQuery(Name = "Fake")]
     public bool Fake { get; set; } = false;
@@ -106,13 +105,11 @@
 
     private bool loading { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task LoadData()
     {
         try
         {
             loading = true;
-
-            await base.OnInitializedAsync();
 
             if (Fake) //test for generate images
             {

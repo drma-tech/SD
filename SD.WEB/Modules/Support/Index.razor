@@ -1,5 +1,4 @@
 ﻿@page "/Support"
-@attribute [Authorize]
 <PageTitle>SD - Support</PageTitle>
 @inherits PageCore<Support.Index>
 @using SD.Shared.Model.Auth
@@ -110,11 +109,11 @@ else if (SelectedTab == Tabs.Feedback)
             <Row>
                 <Column ColumnSize="ColumnSize.IsAuto">
                     <Div Style="width: 50px; height: 100px;" TextAlignment="TextAlignment.Center" TextWeight="TextWeight.Bold">
-                        <Button Size=" Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Key, VoteType.PlusOne)" Disabled="anyVote(item.Key)">
+                        <Button Size=" Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Key, VoteType.PlusOne)" Disabled="anyVote(item.Key) || !ComponenteUtils.IsAuthenticated">
                             <Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.AngleUp"></Blazorise.Icon>
                         </Button>
                         @item.TotalVotes
-                        <Button Size="Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Key, VoteType.MinusOne)" Disabled="anyVote(item.Key)">
+                        <Button Size="Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Key, VoteType.MinusOne)" Disabled="anyVote(item.Key) || !ComponenteUtils.IsAuthenticated">
                             <Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.AngleDown"></Blazorise.Icon>
                         </Button>
                     </Div>
@@ -243,7 +242,7 @@ else if (SelectedTab == Tabs.Roadmap)
         Loading = true;
 
         tickets = await TicketApi.GetList();
-        myVotes = await TicketVoteApi.GetMyVotes();
+        if (ComponenteUtils.IsAuthenticated) myVotes = await TicketVoteApi.GetMyVotes();
         announcements = await AnnouncementApi.GetList();
 
         Loading = false;

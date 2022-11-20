@@ -1,6 +1,6 @@
 ﻿@page "/List"
 <PageTitle>SD - Lists</PageTitle>
-@inherits ComponenteCore<Lists>
+@inherits PageCore<Lists>
 
 <Alert Visible="true" Color="Color.Secondary">
     <AlertMessage>@Resources.Translations.TitleAwards</AlertMessage>
@@ -55,12 +55,10 @@
         public string? link { get; set; }
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task LoadData()
     {
-        try
+         try
         {
-            await base.OnInitializedAsync();
-
             Awards.Add(new Item() { name = "Oscar", logo_path = "logo/oscar.png", link = "/List/Oscar" });
             Awards.Add(new Item() { name = "Golden Globe", logo_path = "logo/goldenglobes.png", link = "/List/GoldenGlobes" });
             Awards.Add(new Item() { name = "Emmys", logo_path = "logo/emmys.png", link = "/List/Emmys" });
