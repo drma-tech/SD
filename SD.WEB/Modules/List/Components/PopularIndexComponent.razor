@@ -1,0 +1,104 @@
+﻿@using SD.WEB.Modules.List.Core;
+
+@inherits ComponenteCore<PopularIndexComponent>
+
+@inject TmdbApi TmdbApi
+
+<Alert Visible="true" Color="Color.Secondary">
+    <AlertMessage>@TranslationText.Popular</AlertMessage>
+
+    <RadioGroup CheckedValue="TypeSelected" CheckedValueChanged="@(async(PopularType value)=>{await LoadLists(value); })" Buttons="true" Float="Float.End" Class="btn-group-xs">
+        <Radio Value="PopularType.Streaming">Streaming</Radio>
+        <Radio Value="PopularType.Rent">Alugar</Radio>
+        <Radio Value="PopularType.Cinema">Cinemas</Radio>
+    </RadioGroup>
+</Alert>
+<Loading @ref="LoadingPopular">
+    @if (TypeSelected == PopularType.Streaming)
+    {
+        <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListStreaming" maxItens="10" ShowHead="false"
+                                              WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                              WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })">
+        </SD.WEB.Modules.List.Components.MediaList>
+    }
+    else if (TypeSelected == PopularType.Rent)
+    {
+        <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListRent" maxItens="10" ShowHead="false"
+                                              WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                              WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })">
+        </SD.WEB.Modules.List.Components.MediaList>
+    }
+    else if (TypeSelected == PopularType.Cinema)
+    {
+        <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListCinema" maxItens="10" ShowHead="false"
+                                              WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
+                                              WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })">
+        </SD.WEB.Modules.List.Components.MediaList>
+    }
+</Loading>
+
+@code {
+    [Parameter] public WishList? wishList { get; set; }
+    [Parameter] public WatchedList? watchedList { get; set; }
+
+    private HashSet<MediaDetail> ListStreaming { get; set; } = new();
+    private HashSet<MediaDetail> ListRent { get; set; } = new();
+    private HashSet<MediaDetail> ListCinema { get; set; } = new();
+
+    public Loading? LoadingPopular { get; set; }
+
+    public enum PopularType
+    {
+        Streaming,
+        Rent,
+        Cinema
+    }
+
+    public PopularType TypeSelected { get; set; } = PopularType.Streaming;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                LoadingPopular?.Start();
+                var listHasData = await LoadLists(TypeSelected);
+                LoadingPopular?.Finish(!listHasData);
+            }
+            catch (Exception ex)
+            {
+                ex.ProcessException(Toast, Logger);
+            }
+        }
+    }
+
+    private async Task<bool> LoadLists(PopularType type)
+    {
+        TypeSelected = type;
+
+        switch (type)
+        {
+            case PopularType.Streaming:
+                //await Http.PopulateTMDBPopular(Session, Settings, ListStreamin, null, 1);
+                var resultS = await TmdbApi.GetDiscoverList(null, GetExtraParameters("flatrate", "popularity.desc"), ListStreaming);
+                ListStreaming = resultS.list;
+                return ListStreaming.Any();
+            case PopularType.Rent:
+                var resultR = await TmdbApi.GetDiscoverList(null, GetExtraParameters("rent", "popularity.desc"), ListRent);
+                ListRent = resultR.list;
+                return ListRent.Any();
+            case PopularType.Cinema:
+                var resultC = await TmdbApi.GetNowPlayingList(ListCinema);
+                ListCinema = resultC.list;
+                return ListCinema.Any();
+            default:
+                return false;
+        }
+    }
+
+    private Dictionary<string, string> GetExtraParameters(string monetization_type, string sort_by)
+    {
+        return new Dictionary<string, string>() { { "with_watch_monetization_types", monetization_type }, { "sort_by", sort_by } }; ;
+    }
+}

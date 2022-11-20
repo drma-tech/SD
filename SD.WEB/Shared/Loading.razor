@@ -1,0 +1,54 @@
+﻿@inherits ComponenteCore<Loading>
+
+@if (IsLoading)
+{
+    <Alert Color="Color.Warning" Visible="true">
+        <AlertDescription>
+            <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @GlobalTranslations.CustomVisibilityLoading
+        </AlertDescription>
+    </Alert>
+}
+else if (IsInvalid)
+{
+    <Alert Color="Color.Danger" Visible="true">
+        <AlertDescription>
+            <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon> @(CustomInvalid ?? @GlobalTranslations.CustomVisibilityInvalid)
+        </AlertDescription>
+    </Alert>
+}
+else if (IsEmpty)
+{
+    <Alert Color="Color.Primary" Visible="true">
+        <AlertDescription>
+            <Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> @(CustomNoData ?? @GlobalTranslations.CustomVisibilityNoData)
+        </AlertDescription>
+    </Alert>
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter] public string? CustomInvalid { get; set; } = null;
+    [Parameter] public string? CustomNoData { get; set; } = null;
+
+    public bool IsLoading { get; set; }
+    public bool IsInvalid { get; set; }
+    public bool IsEmpty { get; set; } = true;
+
+    public void Start()
+    {
+        IsLoading = true;
+        StateHasChanged();
+    }
+
+    public void Finish(bool isEmpty)
+    {
+        IsLoading = false;
+        IsEmpty = isEmpty;
+        StateHasChanged();
+    }
+}

@@ -77,6 +77,8 @@ namespace SD.WEB.Core
         {
             try
             {
+                await base.OnInitializedAsync();
+
                 if (ComponenteUtils.IsAuthenticated)
                 {
                     var principal = await PrincipalApi.Get();
@@ -87,8 +89,6 @@ namespace SD.WEB.Core
                         Navigation.NavigateTo("/ProfilePrincipal");
                     }
                 }
-
-                await base.OnInitializedAsync();
 
                 await LoadData();
             }

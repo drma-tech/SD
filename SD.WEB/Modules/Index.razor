@@ -2,243 +2,55 @@
 @page "/Index"
 <PageTitle>SD - Streaming Discovery</PageTitle>
 @inherits PageCore<Index>
-@using SD.Shared.Models.News;
-@using SD.WEB.Modules.List.Core;
-@using SD.WEB.Modules.News.Core;
-@using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Provider.Core
-@using System.Text.Json;
+
+@using SD.WEB.Modules.Profile.Core;
+@using SD.WEB.Modules.List.Components;
+@using SD.WEB.Modules.Provider.Components;
+@using SD.WEB.Modules.News.Components;
+
 @inject WatchedListApi WatchedListApi
 @inject WishListApi WishListApi
-@inject AllProvidersApi AllProvidersApi
-@inject TmdbApi TmdbApi
-@inject NewsApi NewsApi
-@inject CacheApi CacheApi
 
-<Alert Visible="true" Color="Color.Secondary">
-    <AlertMessage>@TranslationText.Popular</AlertMessage>
-
-    <RadioGroup CheckedValue="TypeSelected" CheckedValueChanged="@(async(PopularType value)=>{await LoadLists(value); })" Buttons="true" Float="Float.End" Class="btn-group-xs">
-        <Radio Value="PopularType.Streaming">Streaming</Radio>
-        <Radio Value="PopularType.Rent">Alugar</Radio>
-        <Radio Value="PopularType.Cinema">Cinemas</Radio>
-    </RadioGroup>
-</Alert>
-
-@if (TypeSelected == PopularType.Streaming)
-{
-    <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListStreamin" maxItens="10" ShowHead="false"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })">
-    </SD.WEB.Modules.List.Components.MediaList>
-}
-else if (TypeSelected == PopularType.Rent)
-{
-    <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListRent" maxItens="10" ShowHead="false"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })">
-    </SD.WEB.Modules.List.Components.MediaList>
-}
-else if (TypeSelected == PopularType.Cinema)
-{
-    <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListCinema" maxItens="10" ShowHead="false"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })">
-    </SD.WEB.Modules.List.Components.MediaList>
-}
+<PopularIndexComponent wishList="wishList" watchedList="watchedList"></PopularIndexComponent>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <Alert Visible="true" Color="Color.Secondary">
-            <AlertMessage>@Provider.Resources.Translations.TitleProviders.Format(Settings.Region)</AlertMessage>
-
-            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList">
-                <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
-            </Button>
-        </Alert>
-
-        <CustomVisibility NoData="(!AllProviders?.Items.Any()??true)">
-            <Row HorizontalGutter="4" VerticalGutter="4">
-                @foreach (var item in GetFilteredProviders())
-                {
-                    <Column ColumnSize="ColumnSize.Is3.OnMobile.Is2.OnDesktop">
-                        <Card>
-                            <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name"
-                                   onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;" title="@item.name"></CardImage>
-                        </Card>
-                        @*@if (string.IsNullOrEmpty(item.link))
-                    {
-                    <p class="m-0" style="color: red">link</p>
-                    }
-                    @if (string.IsNullOrEmpty(item.description))
-                    {
-                    <p class="m-0" style="color: red">description</p>
-                    }
-                    @if (!item.models.Any())
-                    {
-                    <p class="m-0" style="color: red">model</p>
-                    }
-                    @if (item.models.Any(a => a == SD.Shared.Modal.Enum.DeliveryModel.SVOD) && !item.plans.Any())
-                    {
-                    <p class="m-0" style="color: red">plan</p>
-                    }*@
-                    </Column>
-                }
-            </Row>
-        </CustomVisibility>
-    </Column >
+        <ProviderComponent wishList="wishList" watchedList="watchedList"></ProviderComponent>
+    </Column>
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <Alert Visible="true" Color="Color.Secondary">
-            <AlertMessage>Últimas Notícias</AlertMessage>
-        </Alert>
-
-        <CustomVisibility NoData="News==null">
-            <Carousel @bind-SelectedSlide="@selectedSlide">
-                @foreach (var item in News?.data?.newsStories.Take(15) ?? Enumerable.Empty<NewsStory>())
-                {
-                    <CarouselSlide Name="@item.id">
-                        <div style="position: absolute; top: 10px; left: 10px; margin-right: 10px; background-color: lime; opacity: 80%;">
-                            @((MarkupString)item.title)
-                        </div>
-                        <Blazorise.Link To="@item.link" Target="Target.Blank">
-                            <Image Source="@item.mainImage.url" Text="@item.title" Display="Display.Block" Width="Width.Is100" />
-                        </Blazorise.Link>
-                    </CarouselSlide>
-                }
-            </Carousel>
-        </CustomVisibility>
+        <NewsComponent></NewsComponent>
     </Column>
 </Row>
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
-
-    private HashSet<MediaDetail> ListStreamin { get; set; } = new();
-    private HashSet<MediaDetail> ListRent { get; set; } = new();
-    private HashSet<MediaDetail> ListCinema { get; set; } = new();
-    private Flixster? News { get; set; }
-
-    public string selectedSlide { get; set; }
-
-    public enum PopularType
-    {
-        Streaming,
-        Rent,
-        Cinema
-    }
-
-    public PopularType TypeSelected { get; set; } = PopularType.Streaming;
-
-    private AllProviders? AllProviders { get; set; }
     private WishList? wishList { get; set; }
     private WatchedList? watchedList { get; set; }
 
-    public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
-        p.regions.Any(a => a == Settings.Region) &
-        p.enabled &
-        (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true))
-        .Take(18) ?? Array.Empty<ProviderModel>();
-
-    protected override Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         RefreshCore.RegionChanged = new EventCallbackFactory().Create(this, (Region value) => Settings.Region = value);
 
-        return base.OnInitializedAsync();
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                wishList = await WishListApi.Get();
+                watchedList = await WatchedListApi.Get();
+            }
+            catch (Exception ex)
+            {
+                ex.ProcessException(Toast, Logger);
+            }
+        }
     }
 
     protected override async Task LoadData()
     {
-        try
-        {
-            wishList = await WishListApi.Get();
-            watchedList = await WatchedListApi.Get();
-
-            await LoadLists(TypeSelected);
-
-            AllProviders = await AllProvidersApi.GetAll();
-
-            var cache = await CacheApi.Get("lastnews");
-
-            if (cache == null)
-            {
-                News = await NewsApi.Get();
-                await CacheApi.Add(new SD.Shared.Models.CacheModel("lastnews", News));
-            }
-            else
-            {
-                News = (Flixster?)cache.Value;
-            }
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
-    }
-
-    private async Task LoadLists(PopularType type)
-    {
-        TypeSelected = type;
-
-        switch (type)
-        {
-            case PopularType.Streaming:
-                //await Http.PopulateTMDBPopular(Session, Settings, ListStreamin, null, 1);
-                var resultS = await TmdbApi.GetDiscoverList(null, GetExtraParameters("flatrate", "popularity.desc"), ListStreamin);
-                ListStreamin = resultS.list;
-                break;
-            case PopularType.Rent:
-                var resultR = await TmdbApi.GetDiscoverList(null, GetExtraParameters("rent", "popularity.desc"), ListRent);
-                ListRent = resultR.list;
-                break;
-            case PopularType.Cinema:
-                var resultC = await TmdbApi.GetNowPlayingList(ListCinema);
-                ListCinema = resultC.list;
-                break;
-            default:
-                break;
-        }
-    }
-
-    private Dictionary<string, string> GetExtraParameters(string monetization_type, string sort_by)
-    {
-        return new Dictionary<string, string>() { { "with_watch_monetization_types", monetization_type }, { "sort_by", sort_by } }; ;
-    }
-
-    private async Task OpenCompleteList()
-    {
-        await ModalService.Show<Modules.List.Components.CompleteListProvider>(@Provider.Resources.Translations.TitleProviders.Format(Settings.Region),
-        x =>
-        {
-            x.Add(x => x.CardHeader, @Provider.Resources.Translations.TitleProviders.Format(Settings.Region));
-            x.Add(x => x.AllProviders, AllProviders);
-            x.Add(x => x.WishList, wishList);
-            x.Add(x => x.WatchedList, watchedList);
-        },
-        new ModalInstanceOptions()
-            {
-                UseModalStructure = false,
-                Centered = true,
-                Size = ModalSize.ExtraLarge,
-            });
-    }
-
-    private async Task ShowPopupProvider(ProviderModel item)
-    {
-        await ModalService.Show<Provider.Components.ProviderPopup>(item.name,
-        x =>
-        {
-            x.Add(x => x.provider, item);
-            x.Add(x => x.mediaType, MediaType.movie); //todo: passar null
-            x.Add(x => x.WishList, wishList);
-            x.Add(x => x.WatchedList, watchedList);
-            x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
-            x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
-        },
-        new ModalInstanceOptions()
-            {
-                UseModalStructure = false,
-                Centered = true,
-                Size = ModalSize.ExtraLarge,
-            });
+        //
     }
 }

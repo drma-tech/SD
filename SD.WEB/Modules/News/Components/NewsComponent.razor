@@ -1,0 +1,59 @@
+﻿@using SD.Shared.Models.News;
+@using SD.WEB.Modules.News.Core;
+@inherits ComponenteCore<NewsComponent>
+
+@inject NewsApi NewsApi
+@inject CacheApi CacheApi
+
+<Alert Visible="true" Color="Color.Secondary">
+    <AlertMessage>Últimas Notícias</AlertMessage>
+</Alert>
+<Loading @ref="LoadingNews">
+    <Carousel @bind-SelectedSlide="@selectedSlide">
+        @foreach (var item in News?.data?.newsStories.Take(15) ?? Enumerable.Empty<NewsStory>())
+        {
+            <CarouselSlide Name="@item.id">
+                <div style="position: absolute; top: 10px; left: 10px; margin-right: 10px; background-color: lime; opacity: 80%;">
+                    @((MarkupString)item.title)
+                </div>
+                <Blazorise.Link To="@item.link" Target="Target.Blank">
+                    <Image data-src="@item.mainImage.url" class="lazyload" Text="@item.title" Display="Display.Block" Width="Width.Is100" />
+                </Blazorise.Link>
+            </CarouselSlide>
+        }
+    </Carousel>
+</Loading>
+
+@code {
+    public Loading? LoadingNews { get; set; }
+    private Flixster? News { get; set; }
+    public string? selectedSlide { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                LoadingNews?.Start();
+
+                var cache = await CacheApi.Get("lastnews");
+                if (cache == null)
+                {
+                    News = await NewsApi.Get();
+                    await CacheApi.Add(new SD.Shared.Models.CacheModel("lastnews", News));
+                }
+                else
+                {
+                    News = (Flixster?)cache.Value;
+                }
+
+                LoadingNews?.Finish(News == null);
+            }
+            catch (Exception ex)
+            {
+                ex.ProcessException(Toast, Logger);
+            }
+        }
+    }
+}

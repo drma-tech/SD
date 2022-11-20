@@ -1,0 +1,114 @@
+﻿@using SD.WEB.Modules.Provider.Core;
+
+@inherits ComponenteCore<ProviderComponent>
+
+@inject AllProvidersApi AllProvidersApi
+
+<Alert Visible="true" Color="Color.Secondary">
+    <AlertMessage>@Provider.Resources.Translations.TitleProviders.Format(Settings.Region)</AlertMessage>
+
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList">
+        <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
+    </Button>
+</Alert>
+
+<Loading @ref="LoadingProvider">
+    <Row HorizontalGutter="4" VerticalGutter="4">
+        @foreach (var item in GetFilteredProviders())
+        {
+            <Column ColumnSize="ColumnSize.Is3.OnMobile.Is2.OnDesktop">
+                <Card>
+                    <CardImage data-src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" class="lazyload" Alt="@item.name"
+                           onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;" title="@item.name"></CardImage>
+                </Card>
+                @*@if (string.IsNullOrEmpty(item.link))
+            {
+            <p class="m-0" style="color: red">link</p>
+            }
+            @if (string.IsNullOrEmpty(item.description))
+            {
+            <p class="m-0" style="color: red">description</p>
+            }
+            @if (!item.models.Any())
+            {
+            <p class="m-0" style="color: red">model</p>
+            }
+            @if (item.models.Any(a => a == SD.Shared.Modal.Enum.DeliveryModel.SVOD) && !item.plans.Any())
+            {
+            <p class="m-0" style="color: red">plan</p>
+            }*@
+            </Column>
+        }
+    </Row>
+</Loading>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    [Parameter] public WishList? wishList { get; set; }
+    [Parameter] public WatchedList? watchedList { get; set; }
+
+    private AllProviders? AllProviders { get; set; }
+    public Loading? LoadingProvider { get; set; }
+
+    public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
+        p.regions.Any(a => a == Settings.Region) &
+        p.enabled &
+        (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true))
+        .Take(18) ?? Array.Empty<ProviderModel>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                LoadingProvider?.Start();
+                AllProviders = await AllProvidersApi.GetAll();
+                LoadingProvider?.Finish(AllProviders == null);
+            }
+            catch (Exception ex)
+            {
+                ex.ProcessException(Toast, Logger);
+            }
+        }
+    }
+
+    private async Task OpenCompleteList()
+    {
+        await ModalService.Show<Modules.List.Components.CompleteListProvider>(@Provider.Resources.Translations.TitleProviders.Format(Settings.Region),
+        x =>
+        {
+            x.Add(x => x.CardHeader, @Provider.Resources.Translations.TitleProviders.Format(Settings.Region));
+            x.Add(x => x.AllProviders, AllProviders);
+            x.Add(x => x.WishList, wishList);
+            x.Add(x => x.WatchedList, watchedList);
+        },
+        new ModalInstanceOptions()
+            {
+                UseModalStructure = false,
+                Centered = true,
+                Size = ModalSize.ExtraLarge,
+            });
+    }
+
+    private async Task ShowPopupProvider(ProviderModel item)
+    {
+        await ModalService.Show<Provider.Components.ProviderPopup>(item.name,
+        x =>
+        {
+            x.Add(x => x.provider, item);
+            x.Add(x => x.mediaType, MediaType.movie); //todo: passar null
+            x.Add(x => x.WishList, wishList);
+            x.Add(x => x.WatchedList, watchedList);
+            x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
+            x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
+        },
+        new ModalInstanceOptions()
+            {
+                UseModalStructure = false,
+                Centered = true,
+                Size = ModalSize.ExtraLarge,
+            });
+    }
+}

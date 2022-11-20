@@ -52,7 +52,7 @@
                         }
                         @if (string.IsNullOrEmpty(item.poster_small))
                         {
-                            <CardImage Source="nopicture.jpg" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
+                            <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
 
                             <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
                                 @item.title
@@ -74,7 +74,7 @@
                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
                                     Style="position: absolute; bottom: 3px; right: 3px; opacity: 0.8;"></Blazorise.Icon>
                             }
-                            <CardImage Source="@(item.poster_small)" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(watchedMovie | watchedShow?"opacity: 0.5":"")}")></CardImage>
+                            <CardImage data-src="@item.poster_small" class="lazyload" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(watchedMovie | watchedShow?"opacity: 0.5":"")}")></CardImage>
                         }
                     </Blazorise.Link>
                     @if (!string.IsNullOrEmpty(item.comments))
