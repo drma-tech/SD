@@ -11,8 +11,8 @@ namespace SD.WEB.Core
 
         private struct Endpoint
         {
-            public const string Get = "Cache/Get?key={0}";
-            public const string Add = "Cache/Add";
+            public const string Get = "Public/Cache/Get?key={0}";
+            public const string Add = "Public/Cache/Add";
         }
 
         public async Task<CacheModel?> Get(string key)

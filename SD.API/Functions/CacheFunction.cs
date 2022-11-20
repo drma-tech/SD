@@ -24,7 +24,7 @@ namespace SD.API.Functions
 
         [FunctionName("CacheGet")]
         public async Task<IActionResult> Get(
-           [HttpTrigger(AuthorizationLevel.Anonymous, FunctionMethod.GET, Route = "Cache/Get")] HttpRequest req,
+           [HttpTrigger(AuthorizationLevel.Anonymous, FunctionMethod.GET, Route = "Public/Cache/Get")] HttpRequest req,
            ILogger log, CancellationToken cancellationToken)
         {
             using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
@@ -44,7 +44,7 @@ namespace SD.API.Functions
 
         [FunctionName("CacheAdd")]
         public async Task<IActionResult> Add(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "Cache/Add")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "Public/Cache/Add")] HttpRequest req,
             ILogger log, CancellationToken cancellationToken)
         {
             using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
