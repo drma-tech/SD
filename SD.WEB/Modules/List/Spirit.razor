@@ -1,42 +1,11 @@
 ﻿@page "/List/Spirit"
 <PageTitle>SD - Lists - FI Spirit</PageTitle>
-@using SD.Shared.Model
 @using SD.WEB.Modules.List.Core
-@using SD.WEB.Modules.Profile.Core
-@inherits ComponenteCore<Spirit>
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
-@inject TmdbApi TmdbApi
+@using SD.WEB.Modules.List.Components
+@inject TmdbListApi TmdbListApi
 
-<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/spirit.png" Text="A non-profit arts organization that champions the independent filmmaker." Link="https://www.filmindependent.org/"></SD.WEB.Modules.List.Components.HeadPage>
+<HeadPage ImageSource="logo/spirit.png" Text="A non-profit arts organization that champions the independent filmmaker." Link="https://www.filmindependent.org/"></HeadPage>
 
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.SpiritBestFeature.GetName()" Items="@ListFeature" list_id="@EnumLists.SpiritBestFeature" maxItens="10"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.SpiritBestInternationalFilm.GetName()" Items="@ListInternationalFilm" list_id="@EnumLists.SpiritBestInternationalFilm" maxItens="10"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.SpiritBestDocumentary.GetName()" Items="@ListDocumentary" list_id="@EnumLists.SpiritBestDocumentary" maxItens="10"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-
-@code {
-    private HashSet<MediaDetail> ListFeature { get; set; } = new();
-    private HashSet<MediaDetail> ListInternationalFilm { get; set; } = new();
-    private HashSet<MediaDetail> ListDocumentary { get; set; } = new();
-
-    private WishList? wishList { get; set; }
-    private WatchedList? watchedList { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        ListFeature = await TmdbApi.GetListList(EnumLists.SpiritBestFeature, ListFeature);
-        ListInternationalFilm = await TmdbApi.GetListList(EnumLists.SpiritBestInternationalFilm, ListInternationalFilm);
-        ListDocumentary = await TmdbApi.GetListList(EnumLists.SpiritBestDocumentary, ListDocumentary);
-
-        wishList = await WishListApi.Get();
-        watchedList = await WatchedListApi.Get();
-    }
-}
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.SpiritBestFeature" MaxItens="10"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.SpiritBestInternationalFilm" MaxItens="10"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.SpiritBestDocumentary" MaxItens="10"></MediaList>

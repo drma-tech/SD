@@ -29,31 +29,28 @@
     private Flixster? News { get; set; }
     public string? selectedSlide { get; set; }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task LoadData()
     {
-        if (firstRender)
+        try
         {
-            try
-            {
-                LoadingNews?.Start();
+            LoadingNews?.Start();
 
-                var cache = await CacheApi.Get("lastnews");
-                if (cache == null)
-                {
-                    News = await NewsApi.Get();
-                    await CacheApi.Add(new SD.Shared.Models.CacheModel("lastnews", News));
-                }
-                else
-                {
-                    News = (Flixster?)cache.Value;
-                }
-
-                LoadingNews?.Finish(News == null);
-            }
-            catch (Exception ex)
+            var cache = await CacheApi.Get("lastnews");
+            if (cache == null)
             {
-                ex.ProcessException(Toast, Logger);
+                News = await NewsApi.Get();
+                await CacheApi.Add(new SD.Shared.Models.CacheModel("lastnews", News));
             }
+            else
+            {
+                News = (Flixster?)cache.Value;
+            }
+
+            LoadingNews?.Finish(News == null);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
         }
     }
 }

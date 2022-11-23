@@ -1,37 +1,10 @@
 ﻿@page "/List/HollywoodReporter"
 <PageTitle>SD - Lists - Hollywood Reporter</PageTitle>
-@using SD.Shared.Model
-@inherits ComponenteCore<HollywoodReporter>
 @using SD.WEB.Modules.List.Core
-@using SD.WEB.Modules.Profile.Core
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
-@inject TmdbApi TmdbApi
+@using SD.WEB.Modules.List.Components
+@inject TmdbListApi TmdbListApi
 
-<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/HollywoodReporter.png" Text="@TranslationText.thr_desc" Link="https://www.hollywoodreporter.com/"></SD.WEB.Modules.List.Components.HeadPage>
+<HeadPage ImageSource="logo/HollywoodReporter.png" Text="@TranslationText.thr_desc" Link="https://www.hollywoodreporter.com/"></HeadPage>
 
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.HollywoodReporterTop100Movies.GetName()" Items="@ListMovies" list_id="@EnumLists.HollywoodReporterTop100Movies" maxItens="100"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value; })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.HollywoodReporterTop100TVShows.GetName()" Items="@ListShows" list_id="@EnumLists.HollywoodReporterTop100TVShows" maxItens="100"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value; })"></SD.WEB.Modules.List.Components.MediaList>
-
-@code {
-    private HashSet<MediaDetail> ListMovies { get; set; } = new();
-    private HashSet<MediaDetail> ListShows { get; set; } = new();
-
-    private WishList? wishList { get; set; }
-    private WatchedList? watchedList { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        wishList = await WishListApi.Get();
-        watchedList = await WatchedListApi.Get();
-
-        ListMovies = await TmdbApi.GetListList(EnumLists.HollywoodReporterTop100Movies, ListMovies);
-        ListShows = await TmdbApi.GetListList(EnumLists.HollywoodReporterTop100TVShows, ListShows);
-    }
-}
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100Movies" MaxItens="100"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100TVShows" MaxItens="100"></MediaList>

@@ -51,8 +51,18 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<CacheApi>();
     collection.AddScoped<NewsApi>();
 
-    collection.AddScoped<ImdbApi>();
     collection.AddScoped<TmdbApi>();
+
+    collection.AddScoped<TmdbListApi>();
+    collection.AddScoped<TmdbDiscoveryApi>();
+    collection.AddScoped<TmdbNowPlayingApi>();
+    collection.AddScoped<TmdbPopularApi>();
+    collection.AddScoped<TmdbTopRatedApi>();
+    collection.AddScoped<TmdbUpcomingApi>();
+
+    collection.AddScoped<ImdbPopularApi>();
+    collection.AddScoped<ImdbTopRatedApi>();
+    collection.AddScoped<ImdbUpcomingApi>();
 
     collection.AddLogging(logging =>
     {

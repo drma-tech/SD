@@ -1,42 +1,11 @@
 ﻿@page "/List/Emmys"
 <PageTitle>SD - Lists - Emmys</PageTitle>
-@using SD.Shared.Model
 @using SD.WEB.Modules.List.Core
-@using SD.WEB.Modules.Profile.Core
-@inherits ComponenteCore<Emmys>
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
-@inject TmdbApi TmdbApi
+@using SD.WEB.Modules.List.Components
+@inject TmdbListApi TmdbListApi
 
-<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/emmys.png" Text="@TranslationText.emmys_desc" Link="https://www.emmys.com/"></SD.WEB.Modules.List.Components.HeadPage>
+<HeadPage ImageSource="logo/emmys.png" Text="@TranslationText.emmys_desc" Link="https://www.emmys.com/"></HeadPage>
 
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.EmmysOutstandingDramaSeries.GetName()" Items="@ListDrama" list_id="@EnumLists.EmmysOutstandingDramaSeries" maxItens="8"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.EmmysOutstandingComedySeries.GetName()" Items="@ListComedy" list_id="@EnumLists.EmmysOutstandingComedySeries" maxItens="7"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.EmmysOutstandingLimitedSeries.GetName()" Items="@ListLimited" list_id="@EnumLists.EmmysOutstandingLimitedSeries" maxItens="11"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-
-@code {
-    private HashSet<MediaDetail> ListDrama { get; set; } = new();
-    private HashSet<MediaDetail> ListComedy { get; set; } = new();
-    private HashSet<MediaDetail> ListLimited { get; set; } = new();
-
-    private WishList? wishList { get; set; }
-    private WatchedList? watchedList { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        ListDrama = await TmdbApi.GetListList(EnumLists.EmmysOutstandingDramaSeries, ListDrama);
-        ListComedy = await TmdbApi.GetListList(EnumLists.EmmysOutstandingComedySeries, ListComedy);
-        ListLimited = await TmdbApi.GetListList(EnumLists.EmmysOutstandingLimitedSeries, ListLimited);
-
-        wishList = await WishListApi.Get();
-        watchedList = await WatchedListApi.Get();
-    }
-}
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingDramaSeries" MaxItens="8"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingComedySeries" MaxItens="7"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingLimitedSeries" MaxItens="11"></MediaList>

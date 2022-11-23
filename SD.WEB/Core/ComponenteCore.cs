@@ -32,16 +32,11 @@ namespace SD.WEB.Core
         public static bool IsAuthenticated { get; set; }
     }
 
-    /// <summary>
-    /// if you implement the OnInitializedAsync method, call 'await base.OnInitializedAsync();'
-    /// </summary>
-    /// <typeparam name="TClass"></typeparam>
-    public abstract class ComponenteCore<TClass> : ComponentBase where TClass : class
+    public abstract class ComponenteNoDataCore<T> : ComponentBase where T : class
     {
-        [Inject] protected ILogger<TClass> Logger { get; set; } = default!;
+        [Inject] protected ILogger<T> Logger { get; set; } = default!;
         [Inject] protected INotificationService Toast { get; set; } = default!;
         [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
-        [Inject] protected HttpClient Http { get; set; } = default!; //todo: move to PageCore
 
         protected override async Task OnInitializedAsync()
         {
@@ -67,11 +62,29 @@ namespace SD.WEB.Core
     /// if you implement the OnInitializedAsync method, call 'await base.OnInitializedAsync();'
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    public abstract class ComponenteCore<T> : ComponenteNoDataCore<T> where T : class
+    {
+        protected abstract Task LoadData();
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await LoadData();
+            }
+        }
+    }
+
+    /// <summary>
+    /// if you implement the OnInitializedAsync method, call 'await base.OnInitializedAsync();'
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class PageCore<T> : ComponenteCore<T> where T : class
     {
         [Inject] protected IJSRuntime JsRuntime { get; set; } = default!;
         [Inject] protected NavigationManager Navigation { get; set; } = default!;
         [Inject] protected PrincipalApi PrincipalApi { get; set; } = default!;
+        [Inject] protected HttpClient Http { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -89,15 +102,11 @@ namespace SD.WEB.Core
                         Navigation.NavigateTo("/ProfilePrincipal");
                     }
                 }
-
-                await LoadData();
             }
             catch (Exception ex)
             {
                 ex.ProcessException(Toast, Logger);
             }
         }
-
-        protected abstract Task LoadData();
     }
 }

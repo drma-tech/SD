@@ -1,95 +1,22 @@
 ﻿@page "/List/Imdb"
 <PageTitle>SD - Lists - IMDB</PageTitle>
-@inherits ComponenteCore<Imdb>
-@using SD.Shared.Model
+@inherits PageCore<Imdb>
 @using SD.WEB.Modules.List.Core;
 @using SD.WEB.Modules.Profile.Core
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
-@inject ImdbApi ImdbApi
-@inject TmdbApi TmdbApi
+@using SD.WEB.Modules.List.Components
+@inject ImdbTopRatedApi ImdbTopRatedApi
+@inject ImdbPopularApi ImdbPopularApi
+@inject ImdbUpcomingApi ImdbUpcomingApi
 
-<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/imdb.png" Text="@TranslationText.imdb_desc" Link="https://www.imdb.com/"></SD.WEB.Modules.List.Components.HeadPage>
+<HeadPage ImageSource="logo/imdb.png" Text="@TranslationText.imdb_desc" Link="https://www.imdb.com/"></HeadPage>
 
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" IsIMDB="true" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="PopularDisable"
-                                          TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@(topRatedMedia== MediaType.movie?EnumLists.ImdbTop250Movies.GetName():EnumLists.ImdbTop250Shows.GetName())" Items="@ListTopRated" list_id="@(topRatedMedia== MediaType.movie?EnumLists.ImdbTop250Movies:EnumLists.ImdbTop250Shows)" maxItens="250"
-                                          TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.ComingSoon" Items="@ListUpcoming" maxItens="50" IsIMDB="true" NextPage="LoadUpcoming" DisableLoadMore="UpcomingDisable"
-                                          ShowOnlyYear="false"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="50" IsIMDB="true" ShowFilter="true"></MediaList>
+<MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" MaxItens="250" ShowFilter="true"></MediaList>
+<MediaList TitleHead="@TranslationText.ComingSoon" MediaListApi="ImdbUpcomingApi" MaxItens="50" IsIMDB="true" ShowOnlyYear="false"></MediaList>
 
 @code {
-    private HashSet<MediaDetail> ListPopular { get; set; } = new();
-    private HashSet<MediaDetail> ListTopRated { get; set; } = new();
-    private HashSet<MediaDetail> ListUpcoming { get; set; } = new();
-
-    private bool PopularDisable = true;
-    private bool UpcomingDisable = true;
-
-    private MediaType popularMedia = MediaType.movie;
-    private MediaType topRatedMedia = MediaType.movie;
-
-    private WishList? wishList { get; set; }
-    private WatchedList? watchedList { get; set; }
-
-    protected override async Task OnInitializedAsync()
+    protected override async Task LoadData()
     {
-        await base.OnInitializedAsync();
-
-        wishList = await WishListApi.Get();
-        watchedList = await WatchedListApi.Get();
-
-        await LoadPopular(popularMedia);
-        await LoadTopRated(popularMedia);
-        await LoadUpcoming();
-
-        if (ListPopular.Count < 10) await LoadPopular(popularMedia);
-    }
-
-    private async Task ChangePopularMediaType(MediaType mediaType)
-    {
-        popularMedia = mediaType;
-
-        ListPopular = new();
-
-        await LoadPopular(mediaType);
-
-        if (ListPopular.Count < 10) await LoadPopular(popularMedia);
-
-        wishList = await WishListApi.Get();
-        watchedList = await WatchedListApi.Get();
-    }
-
-    private async Task ChangeTopRatedMediaType(MediaType mediaType)
-    {
-        topRatedMedia = mediaType;
-
-        ListTopRated = new();
-
-        await LoadTopRated(mediaType);
-    }
-
-    private async Task LoadPopular(MediaType mediaType)
-    {
-        ListPopular = await ImdbApi.GetPopularList(mediaType);
-    }
-
-    private async Task LoadTopRated(MediaType mediaType)
-    {
-        if (mediaType == MediaType.movie)
-            ListTopRated = await TmdbApi.GetListList(EnumLists.ImdbTop250Movies, ListTopRated);
-        else //tv
-            ListTopRated = await TmdbApi.GetListList(EnumLists.ImdbTop250Shows, ListTopRated);
-    }
-
-    private async Task LoadUpcoming()
-    {
-        ListUpcoming = await ImdbApi.GetUpcomingList(MediaType.movie);
+        //
     }
 }

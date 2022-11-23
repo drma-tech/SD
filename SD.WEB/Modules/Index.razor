@@ -1,21 +1,17 @@
 ﻿@page "/"
 @page "/Index"
 <PageTitle>SD - Streaming Discovery</PageTitle>
-@inherits PageCore<Index>
 
 @using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.List.Components;
 @using SD.WEB.Modules.Provider.Components;
 @using SD.WEB.Modules.News.Components;
 
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
-
-<PopularIndexComponent wishList="wishList" watchedList="watchedList"></PopularIndexComponent>
+<PopularIndexComponent></PopularIndexComponent>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <ProviderComponent wishList="wishList" watchedList="watchedList"></ProviderComponent>
+        <ProviderComponent></ProviderComponent>
     </Column>
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
         <NewsComponent></NewsComponent>
@@ -23,34 +19,10 @@
 </Row>
 
 @code {
-    private WishList? wishList { get; set; }
-    private WatchedList? watchedList { get; set; }
-
     protected override void OnInitialized()
     {
         RefreshCore.RegionChanged = new EventCallbackFactory().Create(this, (Region value) => Settings.Region = value);
 
         base.OnInitialized();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            try
-            {
-                wishList = await WishListApi.Get();
-                watchedList = await WatchedListApi.Get();
-            }
-            catch (Exception ex)
-            {
-                ex.ProcessException(Toast, Logger);
-            }
-        }
-    }
-
-    protected override async Task LoadData()
-    {
-        //
     }
 }

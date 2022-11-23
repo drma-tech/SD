@@ -1,41 +1,11 @@
 ﻿@page "/List/Bafta"
 <PageTitle>SD - Lists - Bafta</PageTitle>
-@inherits ComponenteCore<Bafta>
 @using SD.WEB.Modules.List.Core
-@using SD.WEB.Modules.Profile.Core
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
-@inject TmdbApi TmdbApi
+@using SD.WEB.Modules.List.Components
+@inject TmdbListApi TmdbListApi
 
-<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/bafta.png" Text="An independent British charity that supports, develops & promotes the art forms of the moving image" Link="https://www.bafta.org/"></SD.WEB.Modules.List.Components.HeadPage>
+<HeadPage ImageSource="logo/bafta.png" Text="An independent British charity that supports, develops & promotes the art forms of the moving image" Link="https://www.bafta.org/"></HeadPage>
 
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.BaftaBestFilm.GetName()" Items="@ListBestFilm" list_id="@EnumLists.BaftaBestFilm" maxItens="10"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.BaftaBestAnimatedFeatureFilm.GetName()" Items="@ListAnimated" list_id="@EnumLists.BaftaBestAnimatedFeatureFilm" maxItens="10"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.BaftaBestDocumentary.GetName()" Items="@ListDocumentary" list_id="@EnumLists.BaftaBestDocumentary" maxItens="10"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-
-@code {
-    private HashSet<MediaDetail> ListBestFilm { get; set; } = new();
-    private HashSet<MediaDetail> ListAnimated { get; set; } = new();
-    private HashSet<MediaDetail> ListDocumentary { get; set; } = new();
-
-    private WishList? wishList { get; set; }
-    private WatchedList? watchedList { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        ListBestFilm = await TmdbApi.GetListList(EnumLists.BaftaBestFilm, ListBestFilm);
-        ListAnimated = await TmdbApi.GetListList(EnumLists.BaftaBestAnimatedFeatureFilm, ListAnimated);
-        ListDocumentary = await TmdbApi.GetListList(EnumLists.BaftaBestDocumentary, ListDocumentary);
-
-        wishList = await WishListApi.Get();
-        watchedList = await WatchedListApi.Get();
-    }
-}
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestFilm" MaxItens="10"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestAnimatedFeatureFilm" MaxItens="10"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestDocumentary" MaxItens="10"></MediaList>

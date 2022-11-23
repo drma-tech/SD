@@ -63,12 +63,17 @@
     private IReadOnlyList<EnumObject> Regions { get; set; } = Array.Empty<EnumObject>();
     private IReadOnlyList<EnumObject> Languages { get; set; } = Array.Empty<EnumObject>();
 
-    protected override void OnInitialized()
+    protected override async Task LoadData()
     {
-        base.OnInitialized();
-
-        Regions = EnumHelper.GetObjArray<Region>();
-        Languages = EnumHelper.GetObjArray<Language>().Where(w => !string.IsNullOrEmpty(w.Name)).ToArray();
+        try
+        {
+            Regions = EnumHelper.GetObjArray<Region>();
+            Languages = EnumHelper.GetObjArray<Language>().Where(w => !string.IsNullOrEmpty(w.Name)).ToArray();
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 
     private void Logout()

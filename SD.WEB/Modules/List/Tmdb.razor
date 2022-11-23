@@ -1,125 +1,30 @@
 ﻿@page "/List/Tmdb"
 <PageTitle>SD - Lists - TMDB</PageTitle>
-@inherits ComponenteCore<Tmdb>
+@inherits PageCore<Tmdb>
 @using SD.Shared.Model
 @using SD.WEB.Modules.List.Core
 @using SD.WEB.Modules.Profile.Core
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
-@inject TmdbApi TmdbApi
+@using SD.WEB.Modules.List.Components
+@inject TmdbPopularApi TmdbPopularApi
+@inject TmdbTopRatedApi TmdbTopRatedApi
+@inject TmdbUpcomingApi TmdbUpcomingApi
 
-<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/tmdb.png" Text="@TranslationText.tmdb_desc" Link="https://www.themoviedb.org/"></SD.WEB.Modules.List.Components.HeadPage>
+<HeadPage ImageSource="logo/tmdb.png" Text="@TranslationText.tmdb_desc" Link="https://www.themoviedb.org/"></HeadPage>
 
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="PopularDisable"
-                                          TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@($"{TranslationText.TopRated} ({Settings.Region})")" Items="@ListTopRated" maxItens="50" NextPage="@(()=>LoadTopRated(topRatedMedia))" DisableLoadMore="TopRatedDisable"
-                                          TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@($"{TranslationText.ComingSoon} ({Settings.Region})")" Items="@ListUpcoming" maxItens="50" NextPage="LoadUpcoming" DisableLoadMore="UpcomingDisable"
-                                          ShowOnlyYear="false"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
+<MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbPopularApi" MaxItens="50" ShowFilter="true"></MediaList>
+<MediaList TitleHead="@($"{TranslationText.TopRated} ({Settings.Region})")" MediaListApi="TmdbTopRatedApi" MaxItens="50" ShowFilter="true"></MediaList>
+<MediaList TitleHead="@($"{TranslationText.ComingSoon} ({Settings.Region})")" MediaListApi="TmdbUpcomingApi" MaxItens="50" ShowOnlyYear="false"></MediaList>
 
 @code {
-    private HashSet<MediaDetail> ListPopular { get; set; } = new();
-    private HashSet<MediaDetail> ListTopRated { get; set; } = new();
-    private HashSet<MediaDetail> ListUpcoming { get; set; } = new();
-
-    private int popularPage = 0;
-    private int topRatedPage = 0;
-    private int upcomingPage = 0;
-
-    private bool PopularDisable = false;
-    private bool TopRatedDisable = false;
-    private bool UpcomingDisable = false;
-
-    private MediaType popularMedia = MediaType.movie;
-    private MediaType topRatedMedia = MediaType.movie;
-
-    private WishList? wishList { get; set; }
-    private WatchedList? watchedList { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-        RefreshCore.RegionChanged = new EventCallbackFactory().Create(this, async (Region value) => { await ChangeRegion(); });
-
-        await LoadPopular(popularMedia);
-        await LoadTopRated(topRatedMedia);
-        await LoadUpcoming();
-
-        if (ListPopular.Count < 10) await LoadPopular(popularMedia);
-        if (ListTopRated.Count < 10) await LoadTopRated(topRatedMedia);
-
-        wishList = await WishListApi.Get();
-        watchedList = await WatchedListApi.Get();
+        //RefreshCore.RegionChanged = new EventCallbackFactory().Create(this, async (Region value) => { await ChangeRegion(); });
     }
 
-    private async Task ChangeRegion()
+    protected override async Task LoadData()
     {
-        topRatedPage = 0;
-        upcomingPage = 0;
-
-        ListTopRated = new();
-        ListUpcoming = new();
-
-        await LoadTopRated(topRatedMedia);
-        await LoadUpcoming();
-
-        if (ListTopRated.Count < 10) await LoadTopRated(topRatedMedia);
-    }
-
-    private async Task ChangePopularMediaType(MediaType mediaType)
-    {
-        popularMedia = mediaType;
-
-        popularPage = 0;
-
-        ListPopular = new();
-
-        await LoadPopular(mediaType);
-
-        if (ListPopular.Count < 10) await LoadPopular(popularMedia);
-    }
-
-    private async Task ChangeTopRatedMediaType(MediaType mediaType)
-    {
-        topRatedMedia = mediaType;
-
-        topRatedPage = 0;
-
-        ListTopRated = new();
-
-        await LoadTopRated(mediaType);
-
-        if (ListTopRated.Count < 10) await LoadTopRated(mediaType);
-    }
-
-    private async Task LoadPopular(MediaType mediaType)
-    {
-        var result = await TmdbApi.GetPopularList(mediaType, ListPopular, ++popularPage);
-
-        ListPopular = result.list;
-        PopularDisable = result.lastPage;
-    }
-
-    private async Task LoadTopRated(MediaType mediaType)
-    {
-        var result = await TmdbApi.GetTopRatedList(mediaType, ListTopRated, ++topRatedPage);
-
-        ListTopRated = result.list;
-        TopRatedDisable = result.lastPage;
-    }
-
-    private async Task LoadUpcoming()
-    {
-        var result = await TmdbApi.GetUpcomingList(MediaType.movie, ListUpcoming, ++upcomingPage);
-
-        ListUpcoming = result.list;
-        UpcomingDisable = result.lastPage;
+        //
     }
 }

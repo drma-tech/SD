@@ -1,39 +1,37 @@
-﻿@inherits ComponenteCore<CompleteListProvider>
+﻿@inherits ComponenteNoDataCore<CompleteListProvider>
 
 <ModalHeader>
     <ModalTitle>@CardHeader</ModalTitle>
     <CloseButton Clicked="HideModal" />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <CustomVisibility NoData="(!AllProviders?.Items.Any()??true)">
-        <Row HorizontalGutter="4" VerticalGutter="4">
-            @foreach (var item in GetFilteredProviders())
+    <Row HorizontalGutter="4" VerticalGutter="4">
+        @foreach (var item in GetFilteredProviders())
+        {
+            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                <Card>
+                    <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name"
+                           onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;" title="@item.name"></CardImage>
+                </Card>
+                @*@if (string.IsNullOrEmpty(item.link))
             {
-                <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                    <Card>
-                        <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name"
-                               onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;" title="@item.name"></CardImage>
-                    </Card>
-                    @*@if (string.IsNullOrEmpty(item.link))
-                {
-                <p class="m-0" style="color: red">link</p>
-                }
-                @if (string.IsNullOrEmpty(item.description))
-                {
-                <p class="m-0" style="color: red">description</p>
-                }
-                @if (!item.models.Any())
-                {
-                <p class="m-0" style="color: red">model</p>
-                }
-                @if (item.models.Any(a => a == SD.Shared.Modal.Enum.DeliveryModel.SVOD) && !item.plans.Any())
-                {
-                <p class="m-0" style="color: red">plan</p>
-                }*@
-                </Column>
+            <p class="m-0" style="color: red">link</p>
             }
-        </Row>
-    </CustomVisibility>
+            @if (string.IsNullOrEmpty(item.description))
+            {
+            <p class="m-0" style="color: red">description</p>
+            }
+            @if (!item.models.Any())
+            {
+            <p class="m-0" style="color: red">model</p>
+            }
+            @if (item.models.Any(a => a == SD.Shared.Modal.Enum.DeliveryModel.SVOD) && !item.plans.Any())
+            {
+            <p class="m-0" style="color: red">plan</p>
+            }*@
+            </Column>
+        }
+    </Row>
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@TranslationText.Close</Button>
@@ -44,8 +42,6 @@
 
     [Parameter] public string? CardHeader { get; set; }
     [Parameter] public AllProviders? AllProviders { get; set; }
-    [Parameter] public WishList? WishList { get; set; }
-    [Parameter] public WatchedList? WatchedList { get; set; }
 
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
         p.regions.Any(a => a == Settings.Region) &
@@ -63,11 +59,6 @@
         x =>
         {
             x.Add(x => x.provider, item);
-            x.Add(x => x.mediaType, MediaType.movie); //todo: passar null
-            x.Add(x => x.WishList, WishList);
-            x.Add(x => x.WatchedList, WatchedList);
-            x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { WishList = value; }));
-            x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { WatchedList = value; }));
         },
         new ModalInstanceOptions()
             {

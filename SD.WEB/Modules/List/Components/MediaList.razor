@@ -1,28 +1,28 @@
-﻿@using SD.Shared.Model
-@using SD.WEB.Modules.List.Core
-@using SD.WEB.Modules.Profile.Core
+﻿@using SD.WEB.Modules.List.Core
+@using SD.WEB.Modules.List.Interface;
+@using SD.WEB.Modules.Profile.Core;
 @inherits ComponenteCore<MediaList>
+@inject ExternalIdApi ExternalIdApi
 @inject WatchedListApi WatchedListApi
 @inject WishListApi WishListApi
-@inject ExternalIdApi ExternalIdApi
 
 @if (ShowHead)
 {
     <Alert Visible="true" Color="Color.Secondary">
-        <AlertMessage>@CardHeader</AlertMessage>
+        <AlertMessage>@Title</AlertMessage>
         <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList">
             <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
         </Button>
         @if (ShowFilter)
         {
-            <RadioGroup CheckedValue="TypeSelected" CheckedValueChanged="TypeSelectedChanged" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is2.FromEnd">
+            <RadioGroup CheckedValue="TypeSelected" CheckedValueChanged="@(async(MediaType type)=>await TypeSelectedChanged(type))" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is2.FromEnd">
                 <Radio Value="MediaType.movie">@MediaType.movie.GetName()</Radio>
                 <Radio Value="MediaType.tv">@MediaType.tv.GetName()</Radio>
             </RadioGroup>
         }
     </Alert>
 }
-<CustomVisibility NoData="(!Items.Any())">
+<Loading @ref="LoadingList">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
         @for (int i = 1; i <= Items.Take(10).Count(); i++)
         {
@@ -60,15 +60,15 @@
                         }
                         else
                         {
-                            var watchedMovie = WatchedList?.Movies.Any(a => a == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
-                            var watchedShow = WatchedList?.Shows.Any(a => a == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
+                            var watchedMovie = watchedList?.Movies.Any(a => a == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
+                            var watchedShow = watchedList?.Shows.Any(a => a == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
                             if (watchedMovie | watchedShow)
                             {
                                 <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x4"
                                     Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.8;"></Blazorise.Icon>
                             }
-                            var wishedMovie = WishList?.Movies.Any(a => a.id == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
-                            var wishedShow = WishList?.Shows.Any(a => a.id == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
+                            var wishedMovie = wishList?.Movies.Any(a => a.id == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
+                            var wishedShow = wishList?.Shows.Any(a => a.id == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
                             if (wishedMovie | wishedShow)
                             {
                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
@@ -85,7 +85,7 @@
                                 <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item</Badge>
                             }
                         </CardBody>
-                    }                    
+                    }
                 </Card>
             </Column>
             if ((i % 10) == 0)
@@ -100,28 +100,30 @@
             </Column>
         }
     </Row>
-</CustomVisibility>
+</Loading>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter] public EventCallback NextPage { get; set; }
-    [Parameter] public string? CardHeader { get; set; }
-    [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
-    [Parameter] public EnumLists list_id { get; set; }
-    [Parameter] public int maxItens { get; set; } = 10;
-    [Parameter] public bool IsIMDB { get; set; } = false;
-    [Parameter] public bool ShowOnlyYear { get; set; } = true;
-    [Parameter] public bool DisableLoadMore { get; set; } = false;
-    [Parameter] public MediaType TypeSelected { get; set; }
-    [Parameter] public EventCallback<MediaType> TypeSelectedChanged { get; set; }
-    [Parameter] public bool ShowFilter { get; set; } = false;
     [Parameter] public bool ShowHead { get; set; } = true;
+    [Parameter] public string? TitleHead { get; set; }
+    [Parameter] public bool ShowFilter { get; set; } = false;
 
-    [Parameter] public WishList? WishList { get; set; }
-    [Parameter] public WatchedList? WatchedList { get; set; }
-    [Parameter] public EventCallback<WishList> WishListChanged { get; set; }
-    [Parameter] public EventCallback<WatchedList> WatchedListChanged { get; set; }
+    [Parameter] public IMediaListApi? MediaListApi { get; set; }
+    [Parameter] public EnumLists? List { get; set; } = null;
+    [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
+    [Parameter] public int MaxItens { get; set; } = 10;
+    [Parameter] public bool ShowOnlyYear { get; set; } = true;
+    [Parameter] public bool IsIMDB { get; set; } = false;
+
+    public MediaType TypeSelected { get; set; } = MediaType.movie;
+    private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
+
+    public HashSet<MediaDetail> Items { get; set; } = new();
+    private WishList? wishList { get; set; }
+    private WatchedList? watchedList { get; set; }
+
+    public Loading? LoadingList { get; set; }
 
     public string GetCustomStyle => "col-xl col-md-2 col-4";
 
@@ -131,20 +133,76 @@
         {
             await base.OnInitializedAsync();
 
-            //if (!string.IsNullOrEmpty(list_id) && !NextPage.HasDelegate) throw new ArgumentNullException(nameof(NextPage));
-            //if (NextPage.HasDelegate && string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
-            if (string.IsNullOrEmpty(CardHeader)) throw new ArgumentNullException(nameof(CardHeader));
-            if (maxItens == 0) throw new ArgumentNullException(nameof(maxItens));
-            if (ShowFilter && !TypeSelectedChanged.HasDelegate) throw new ArgumentNullException(nameof(TypeSelectedChanged));
-            //if (WishList == null) throw new ArgumentNullException(nameof(WishList));
-            //if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
-            if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
-            if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
+            if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
+            if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
+            if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));
         }
         catch (Exception ex)
         {
             ex.ProcessException(Toast, Logger);
         }
+    }
+
+    private async Task TypeSelectedChanged(MediaType type)
+    {
+        TypeSelected = type;
+        await LoadItems(type);
+    }
+
+    private async Task LoadItems(MediaType type)
+    {
+        LoadingList?.Start();
+        if (MediaListApi != null)
+        {
+            var result = await MediaListApi.GetList(new(), TypeSelected, StringParameters, List, 1);
+            await Task.Delay(1); //for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
+            Items = result.list;
+
+            if (Items.Count < 10) //force reload, if the filters bring few records
+            {
+                var result2 = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, 2);
+                foreach (var item in result2.list)
+                {
+                    Items.Add(item);
+                }
+            }
+        }
+        LoadingList?.Finish(!Items.Any());
+    }
+
+    protected override async Task LoadData()
+    {
+        await LoadItems(MediaType.movie);
+
+        if (wishList == null) wishList = await WishListApi.Get();
+        if (watchedList == null) watchedList = await WatchedListApi.Get();
+    }
+
+    private async Task OpenCompleteList()
+    {
+        await ModalService.Show<CompleteListPopup>(null,
+            x =>
+            {
+                x.Add(x => x.MediaListApi, MediaListApi);
+                x.Add(x => x.TitleHead, TitleHead);
+                x.Add(x => x.Items, Items);
+                x.Add(x => x.List, List);
+                x.Add(x => x.MaxItens, MaxItens);
+                x.Add(x => x.IsIMDB, IsIMDB);
+                x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
+                x.Add(x => x.TypeSelected, TypeSelected);
+                x.Add(x => x.StringParameters, StringParameters);
+                x.Add(x => x.WishList, wishList);
+                x.Add(x => x.WatchedList, watchedList);
+                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
+                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.ExtraLarge,
+                });
     }
 
     private async Task OpenPopupMedia(MediaDetail? media)
@@ -166,12 +224,10 @@
                 x.Add(x => x.tmdb_id, tmdb_id);
                 x.Add(x => x.type, media?.MediaType);
                 x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
-                x.Add(x => x.WishList, WishList);
-                x.Add(x => x.WatchedList, WatchedList);
-                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this,
-                    async (WishList value) => { WishList = value; await WishListChanged.InvokeAsync(value); }));
-                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this,
-                    async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); }));
+                x.Add(x => x.WishList, wishList);
+                x.Add(x => x.WatchedList, watchedList);
+                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
+                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
             },
             new ModalInstanceOptions()
                 {
@@ -180,32 +236,4 @@
                     Size = ModalSize.Large,
                 });
     }
-
-    private async Task OpenCompleteList()
-    {
-        await ModalService.Show<CompleteListPopup>(null,
-            x =>
-            {
-                x.Add(x => x.NextPage, NextPage);
-                x.Add(x => x.CardHeader, CardHeader);
-                x.Add(x => x.Items, Items);
-                x.Add(x => x.list_id, list_id);
-                x.Add(x => x.maxItens, maxItens);
-                x.Add(x => x.IsIMDB, IsIMDB);
-                x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
-                x.Add(x => x.DisableLoadMore, DisableLoadMore);
-                x.Add(x => x.WishList, WishList);
-                x.Add(x => x.WatchedList, WatchedList);
-                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this,
-                    async (WishList value) => { WishList = value; await WishListChanged.InvokeAsync(value); }));
-                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this,
-                    async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); }));
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.ExtraLarge,
-                });
-    }    
 }

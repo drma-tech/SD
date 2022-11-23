@@ -2,8 +2,9 @@
 @inherits ComponenteCore<ProviderPopup>
 @using SD.WEB.Modules.List.Core
 @using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.List.Components
 @inject MyProvidersApi MyProvidersApi
-@inject TmdbApi TmdbApi
+@inject TmdbDiscoveryApi TmdbDiscoveryApi
 
 <ModalHeader>
     <ModalTitle>@provider?.name</ModalTitle>
@@ -77,18 +78,9 @@
                 }
             </TabPanel>
             <TabPanel Name="Catalog" Class="mt-3">
-                <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Popular" Items="@ListPopular" maxItens="50" NextPage="@(()=>LoadPopular(popularMedia))" DisableLoadMore="popularDisable"
-                                                          TypeSelected="popularMedia" TypeSelectedChanged="ChangePopularMediaType" ShowFilter="true"
-                                                          WishList="WishList" WishListChanged="@(async(WishList value)=>{WishList = value; await WishListChanged.InvokeAsync(value);})"
-                                                          WatchedList="WatchedList" WatchedListChanged="@(async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); })"></SD.WEB.Modules.List.Components.MediaList>
-                <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.Release" Items="@ListNew" maxItens="50" NextPage="@(()=>LoadNew(newMedia))" DisableLoadMore="newDisable"
-                                                          TypeSelected="newMedia" TypeSelectedChanged="ChangeNewMediaType" ShowFilter="true" ShowOnlyYear="false"
-                                                          WishList="WishList" WishListChanged="@(async(WishList value)=>{WishList = value; await WishListChanged.InvokeAsync(value);})"
-                                                          WatchedList="WatchedList" WatchedListChanged="@(async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); })"></SD.WEB.Modules.List.Components.MediaList>
-                <SD.WEB.Modules.List.Components.MediaList CardHeader="@TranslationText.TopRated" Items="@ListTopRated" maxItens="50" NextPage="@(()=>LoadTopRated(topRatedMedia))" DisableLoadMore="topRatedDisable"
-                                                          TypeSelected="topRatedMedia" TypeSelectedChanged="ChangeTopRatedMediaType" ShowFilter="true"
-                                                          WishList="WishList" WishListChanged="@(async(WishList value)=>{WishList = value; await WishListChanged.InvokeAsync(value);})"
-                                                          WatchedList="WatchedList" WatchedListChanged="@(async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); })"></SD.WEB.Modules.List.Components.MediaList>
+                <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc")" MaxItens="50" ShowFilter="true"></MediaList>
+                <MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc")" MaxItens="50" ShowFilter="true" ShowOnlyYear="false"></MediaList>
+                <MediaList TitleHead="@TranslationText.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc")" MaxItens="50" ShowFilter="true"></MediaList>
             </TabPanel>
         </Content>
     </Tabs>
@@ -113,52 +105,25 @@
     [Inject] public IModalService ModalService { get; set; } = default!;
 
     [Parameter] public ProviderModel? provider { get; set; }
-    [Parameter] public MediaType mediaType { get; set; }
-
-    [Parameter] public WishList? WishList { get; set; }
-    [Parameter] public WatchedList? WatchedList { get; set; }
-    [Parameter] public EventCallback<WishList> WishListChanged { get; set; }
-    [Parameter] public EventCallback<WatchedList> WatchedListChanged { get; set; }
-
-    private MediaType popularMedia { get; set; }
-    private MediaType newMedia { get; set; }
-    private MediaType topRatedMedia { get; set; }
 
     string selectedTab = "About";
 
-    private HashSet<MediaDetail> ListPopular { get; set; } = new();
-    private HashSet<MediaDetail> ListNew { get; set; } = new();
-    private HashSet<MediaDetail> ListTopRated { get; set; } = new();
-
-    private int popularPage = 0;
-    private int newPage = 0;
-    private int topRatedPage = 0;
-
-    private bool popularDisable = false;
-    private bool newDisable = false;
-    private bool topRatedDisable = false;
-
     private MyProviders? myProviders { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        if (provider == null) throw new ArgumentNullException(nameof(provider));
+
+    }
+
+    protected override async Task LoadData()
     {
         try
         {
-            if (provider == null) throw new ArgumentNullException(nameof(provider));
-            //if (WishList == null) throw new ArgumentNullException(nameof(WishList));
-            //if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
-            if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
-            if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
-
             myProviders = await MyProvidersApi.Get();
 
-            popularMedia = mediaType;
-            newMedia = mediaType;
-            topRatedMedia = mediaType;
-
-            await LoadPopular(mediaType);
-            await LoadNew(mediaType);
-            await LoadTopRated(mediaType);
         }
         catch (Exception ex)
         {
@@ -171,60 +136,6 @@
         if (provider_id == null) throw new ArgumentNullException(nameof(provider_id));
 
         return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by } }; ;
-    }
-
-    private async Task ChangePopularMediaType(MediaType mediaType)
-    {
-        popularMedia = mediaType;
-
-        popularPage = 0;
-
-        ListPopular = new();
-
-        await LoadPopular(mediaType);
-    }
-
-    private async Task ChangeNewMediaType(MediaType mediaType)
-    {
-        newMedia = mediaType;
-
-        newPage = 0;
-
-        ListNew = new();
-
-        await LoadNew(mediaType);
-    }
-
-    private async Task ChangeTopRatedMediaType(MediaType mediaType)
-    {
-        topRatedMedia = mediaType;
-
-        topRatedPage = 0;
-
-        ListTopRated = new();
-
-        await LoadTopRated(mediaType);
-    }
-
-    private async Task LoadPopular(MediaType mediaType)
-    {
-        var result = await TmdbApi.GetDiscoverList(mediaType, GetExtraParameters(provider?.id, "popularity.desc"), ListPopular, ++popularPage);
-        popularDisable = result.lastPage;
-        ListPopular = result.list;
-    }
-
-    private async Task LoadNew(MediaType mediaType)
-    {
-        var result = await TmdbApi.GetDiscoverList(mediaType, GetExtraParameters(provider?.id, "primary_release_date.desc"), ListNew, ++newPage);
-        newDisable = result.lastPage;
-        ListNew = result.list;
-    }
-
-    private async Task LoadTopRated(MediaType mediaType)
-    {
-        var result = await TmdbApi.GetDiscoverList(mediaType, GetExtraParameters(provider?.id, "vote_average.desc"), ListTopRated, ++topRatedPage);
-        topRatedDisable = result.lastPage;
-        ListTopRated = result.list;
     }
 
     private async Task Add()

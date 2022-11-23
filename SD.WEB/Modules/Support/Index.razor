@@ -24,7 +24,7 @@
 
 @if (SelectedTab == Tabs.Announcements)
 {
-    <CustomVisibility Loading="Loading" NoData="!announcements.Any()">
+    <Loading @ref="LoadingAnnouncements">
         @foreach (var item in announcements)
         {
             <Alert Color="Color.Info" Visible="true">
@@ -36,7 +36,7 @@
                 </Paragraph>
             </Alert>
         }
-    </CustomVisibility>
+    </Loading>
 }
 else if (SelectedTab == Tabs.Feedback)
 {
@@ -103,7 +103,7 @@ else if (SelectedTab == Tabs.Feedback)
             </Field>
         </Column>
     </Row>
-    <CustomVisibility Loading="Loading" NoData="!GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel).Any()">
+    <Loading @ref="LoadingTicket">
         @foreach (var item in GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel))
         {
             <Row>
@@ -160,7 +160,7 @@ else if (SelectedTab == Tabs.Feedback)
                 <Divider Margin="Margin.Is0.FromTop.Is2.FromBottom" />
             }
         }
-    </CustomVisibility>
+    </Loading>
 }
 else if (SelectedTab == Tabs.Roadmap)
 {
@@ -202,6 +202,8 @@ else if (SelectedTab == Tabs.Roadmap)
 }
 
 @code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
     private HashSet<TicketModel> tickets = new();
     private HashSet<TicketVoteModel> myVotes = new();
     private HashSet<AnnouncementModel> announcements = new();
@@ -210,9 +212,8 @@ else if (SelectedTab == Tabs.Roadmap)
     private TicketStatus? TicketStatusSel { get; set; }
     private Order OrderSel { get; set; } = Order.Last;
 
-    [Inject] public IModalService ModalService { get; set; } = default!;
-
-    private bool Loading;
+    public Loading? LoadingAnnouncements { get; set; }
+    public Loading? LoadingTicket { get; set; }
 
     private enum Tabs
     {
@@ -239,13 +240,15 @@ else if (SelectedTab == Tabs.Roadmap)
 
     protected override async Task<bool> LoadData()
     {
-        Loading = true;
-
+        LoadingTicket?.Start();
         tickets = await TicketApi.GetList();
-        if (ComponenteUtils.IsAuthenticated) myVotes = await TicketVoteApi.GetMyVotes();
-        announcements = await AnnouncementApi.GetList();
+        LoadingTicket?.Finish(!GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel).Any());
 
-        Loading = false;
+        if (ComponenteUtils.IsAuthenticated) myVotes = await TicketVoteApi.GetMyVotes();
+
+        LoadingAnnouncements?.Start();
+        announcements = await AnnouncementApi.GetList();
+        LoadingAnnouncements?.Finish(!announcements.Any());
 
         return true;
     }

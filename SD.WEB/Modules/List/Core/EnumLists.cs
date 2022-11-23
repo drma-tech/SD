@@ -40,10 +40,10 @@ namespace SD.WEB.Modules.List.Core
         [Custom(Name = "Top 100 Movies")]
         HollywoodReporterTop100Movies = 8222343,
 
-        [Custom(Name = "Top 250 Movies")]
+        [Custom(Name = "Top 250")]
         ImdbTop250Movies = 8223821,
 
-        [Custom(Name = "Top 250 Shows")]
+        [Custom(Name = "Top 250")]
         ImdbTop250Shows = 8223826,
 
         [Custom(Name = "Best Film")]

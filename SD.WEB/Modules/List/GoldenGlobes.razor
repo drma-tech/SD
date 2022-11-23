@@ -1,42 +1,11 @@
 ﻿@page "/List/GoldenGlobes"
 <PageTitle>SD - Lists - Golden Globes</PageTitle>
-@using SD.Shared.Model
-@inherits ComponenteCore<GoldenGlobes>
 @using SD.WEB.Modules.List.Core
-@using SD.WEB.Modules.Profile.Core
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
-@inject TmdbApi TmdbApi
+@using SD.WEB.Modules.List.Components
+@inject TmdbListApi TmdbListApi
 
-<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/goldenglobes.png" Text="@TranslationText.golden_desc" Link="https://www.goldenglobes.com/"></SD.WEB.Modules.List.Components.HeadPage>
+<HeadPage ImageSource="logo/goldenglobes.png" Text="@TranslationText.golden_desc" Link="https://www.goldenglobes.com/"></HeadPage>
 
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.GoldenGlobesBestMotionPictureDrama.GetName()" Items="@ListDrama" list_id="@EnumLists.GoldenGlobesBestMotionPictureDrama" maxItens="12"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.GoldenGlobesBestMotionPictureMusicalComedy.GetName()" Items="@ListMusicalComedy" list_id="@EnumLists.GoldenGlobesBestMotionPictureMusicalComedy" maxItens="12"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.GoldenGlobesBestMotionPictureAnimated.GetName()" Items="@ListAnimated" list_id="@EnumLists.GoldenGlobesBestMotionPictureAnimated" maxItens="12"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-
-@code {
-    private HashSet<MediaDetail> ListDrama { get; set; } = new();
-    private HashSet<MediaDetail> ListMusicalComedy { get; set; } = new();
-    private HashSet<MediaDetail> ListAnimated { get; set; } = new();
-
-    private WishList? wishList { get; set; }
-    private WatchedList? watchedList { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        ListDrama = await TmdbApi.GetListList(EnumLists.GoldenGlobesBestMotionPictureDrama, ListDrama);
-        ListMusicalComedy = await TmdbApi.GetListList(EnumLists.GoldenGlobesBestMotionPictureMusicalComedy, ListMusicalComedy);
-        ListAnimated = await TmdbApi.GetListList(EnumLists.GoldenGlobesBestMotionPictureAnimated, ListAnimated);
-
-        wishList = await WishListApi.Get();
-        watchedList = await WatchedListApi.Get();
-    }
-}
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureDrama" MaxItens="12"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureMusicalComedy" MaxItens="12"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureAnimated" MaxItens="12"></MediaList>

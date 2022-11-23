@@ -1,42 +1,11 @@
 ﻿@page "/List/FestivalCannes"
 <PageTitle>SD - Lists - Festival de Cannes</PageTitle>
-@using SD.Shared.Model
 @using SD.WEB.Modules.List.Core
-@using SD.WEB.Modules.Profile.Core
-@inherits ComponenteCore<FestivalCannes>
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
-@inject TmdbApi TmdbApi
+@using SD.WEB.Modules.List.Components
+@inject TmdbListApi TmdbListApi
 
-<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/festival-cannes.png" Text="..." Link="https://www.festival-cannes.com/en/"></SD.WEB.Modules.List.Components.HeadPage>
+<HeadPage ImageSource="logo/festival-cannes.png" Text="All the news from the 1st film festival in the world." Link="https://www.festival-cannes.com/en/"></HeadPage>
 
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.FestivalCannesPalme.GetName()" Items="@ListPalme" list_id="@EnumLists.FestivalCannesPalme" maxItens="10"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.FestivalCannesGrandPrix.GetName()" Items="@ListGrandPrix" list_id="@EnumLists.FestivalCannesGrandPrix" maxItens="10"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.FestivalCannesPalmeShortFilm.GetName()" Items="@ListPalmeShortFilm" list_id="@EnumLists.FestivalCannesPalmeShortFilm" maxItens="10"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-
-@code {
-    private HashSet<MediaDetail> ListPalme { get; set; } = new();
-    private HashSet<MediaDetail> ListGrandPrix { get; set; } = new();
-    private HashSet<MediaDetail> ListPalmeShortFilm { get; set; } = new();
-
-    private WishList? wishList { get; set; }
-    private WatchedList? watchedList { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        ListPalme = await TmdbApi.GetListList(EnumLists.FestivalCannesPalme, ListPalme);
-        ListGrandPrix = await TmdbApi.GetListList(EnumLists.FestivalCannesGrandPrix, ListGrandPrix);
-        ListPalmeShortFilm = await TmdbApi.GetListList(EnumLists.FestivalCannesPalmeShortFilm, ListPalmeShortFilm);
-
-        wishList = await WishListApi.Get();
-        watchedList = await WatchedListApi.Get();
-    }
-}
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesPalme" MaxItens="10"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesGrandPrix" MaxItens="10"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesPalmeShortFilm" MaxItens="10"></MediaList>

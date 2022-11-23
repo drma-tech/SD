@@ -15,7 +15,7 @@
 </Alert>
 <AuthorizeView>
     <Authorized>
-        <CustomVisibility Loading="loading" NoData="(!myProviders?.Items.Any() ?? true)">
+        <Loading @ref="LoadingProvider">
             <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 215px; overflow: auto;">
                 @foreach (var item in myProviders?.Items ?? new List<MyProvidersItem>())
                 {
@@ -27,7 +27,7 @@
                     </Column>
                 }
             </Row>
-        </CustomVisibility>
+        </Loading>
     </Authorized>
     <NotAuthorized>
         <Alert Visible="true" Color="Color.Primary">
@@ -41,7 +41,7 @@
 </Alert>
 <AuthorizeView>
     <Authorized>
-        <CustomVisibility Loading="loading" NoData="(!wishList?.Movies.Any() ?? true)">
+        <Loading @ref="LoadingWishlistMovie">
             <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 315px; overflow: auto;">
                 @foreach (var item in wishList?.Movies ?? new List<WishListItem>())
                 {
@@ -54,7 +54,7 @@
                     </Column>
                 }
             </Row>
-        </CustomVisibility>
+        </Loading>
     </Authorized>
     <NotAuthorized>
         <Alert Visible="true" Color="Color.Primary">
@@ -68,7 +68,7 @@
 </Alert>
 <AuthorizeView>
     <Authorized>
-        <CustomVisibility Loading="loading" NoData="(!wishList?.Shows.Any() ?? true)">
+        <Loading @ref="LoadingWishlistShow">
             <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 315px; overflow: auto;">
                 @foreach (var item in wishList?.Shows ?? new List<WishListItem>())
                 {
@@ -81,7 +81,7 @@
                     </Column>
                 }
             </Row>
-        </CustomVisibility>
+        </Loading>
     </Authorized>
     <NotAuthorized>
         <Alert Visible="true" Color="Color.Primary">
@@ -103,29 +103,34 @@
     private WishList? wishList { get; set; }
     private WatchedList? watchedList { get; set; }
 
-    private bool loading { get; set; }
+    public Loading? LoadingProvider { get; set; }
+    public Loading? LoadingWishlistMovie { get; set; }
+    public Loading? LoadingWishlistShow { get; set; }
 
     protected override async Task LoadData()
     {
         try
         {
-            loading = true;
-
             if (Fake) //test for generate images
             {
                 await GenerateFakeData();
             }
             else
             {
-                wishList = await WishListApi.Get();
-                watchedList = await WatchedListApi.Get();
-
+                LoadingProvider?.Start();
                 myProviders = await MyProvidersApi.Get();
+                LoadingProvider?.Finish(!myProviders?.Items.Any() ?? true);
+
+                LoadingWishlistMovie?.Start();
+                LoadingWishlistShow?.Start();
+                wishList = await WishListApi.Get();
+                LoadingWishlistMovie?.Finish(!wishList?.Movies.Any() ?? true);
+                LoadingWishlistShow?.Finish(!wishList?.Shows.Any() ?? true);
+
+                watchedList = await WatchedListApi.Get();
             }
 
             allProviders = await AllProvidersApi.GetAll();
-
-            loading = false;
         }
         catch (Exception ex)
         {
@@ -139,11 +144,6 @@
             x =>
             {
                 x.Add(x => x.provider, allProviders?.Items.FirstOrDefault(f => f.id == item.id));
-                x.Add(x => x.mediaType, MediaType.movie);
-                x.Add(x => x.WishList, wishList);
-                x.Add(x => x.WatchedList, watchedList);
-                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
-                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
             },
             new ModalInstanceOptions()
                 {

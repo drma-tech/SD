@@ -1,37 +1,10 @@
 ﻿@page "/List/Empire"
 <PageTitle>SD - Lists - Empire</PageTitle>
-@using SD.Shared.Model
 @using SD.WEB.Modules.List.Core
-@using SD.WEB.Modules.Profile.Core
-@inherits ComponenteCore<Empire>
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
-@inject TmdbApi TmdbApi
+@using SD.WEB.Modules.List.Components
+@inject TmdbListApi TmdbListApi
 
-<SD.WEB.Modules.List.Components.HeadPage ImageSource="logo/empire.png" Text="Find the latest film reviews, news and celebrity interviews from Empire, the world's biggest movie destination. Discover our new TV and gaming content." Link="https://www.empireonline.com/"></SD.WEB.Modules.List.Components.HeadPage>
+<HeadPage ImageSource="logo/empire.png" Text="Find the latest film reviews, news and celebrity interviews from Empire, the world's biggest movie destination. Discover our new TV and gaming content." Link="https://www.empireonline.com/"></HeadPage>
 
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.EmpireThe100BestMoviesOfAllTime.GetName()" Items="@ListThe100BestMoviesOfAllTime" list_id="@EnumLists.EmpireThe100BestMoviesOfAllTime" maxItens="10"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-<SD.WEB.Modules.List.Components.MediaList CardHeader="@EnumLists.EmpireThe100BestTVShowsOfAllTime.GetName()" Items="@ListThe100BestTVShowsOfAllTime" list_id="@EnumLists.EmpireThe100BestTVShowsOfAllTime" maxItens="5"
-                                          WishList="wishList" WishListChanged="@(async(WishList value)=>{wishList = value; })"
-                                          WatchedList="watchedList" WatchedListChanged="@(async (WatchedList value) => { watchedList = value;  })"></SD.WEB.Modules.List.Components.MediaList>
-
-@code {
-    private HashSet<MediaDetail> ListThe100BestMoviesOfAllTime { get; set; } = new();
-    private HashSet<MediaDetail> ListThe100BestTVShowsOfAllTime { get; set; } = new();
-
-    private WishList? wishList { get; set; }
-    private WatchedList? watchedList { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        ListThe100BestMoviesOfAllTime = await TmdbApi.GetListList(EnumLists.EmpireThe100BestMoviesOfAllTime, ListThe100BestMoviesOfAllTime);
-        ListThe100BestTVShowsOfAllTime = await TmdbApi.GetListList(EnumLists.EmpireThe100BestTVShowsOfAllTime, ListThe100BestTVShowsOfAllTime);
-
-        wishList = await WishListApi.Get();
-        watchedList = await WatchedListApi.Get();
-    }
-}
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestMoviesOfAllTime" MaxItens="10"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestTVShowsOfAllTime" MaxItens="5"></MediaList>

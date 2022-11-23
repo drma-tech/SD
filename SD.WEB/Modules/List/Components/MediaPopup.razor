@@ -14,7 +14,7 @@
     <CloseButton Clicked="HideModal" />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <CustomVisibility Loading="@Loading" NoData="(media == null)">
+    <Loading @ref="LoadingList">
         <Row HorizontalGutter="8" VerticalGutter="8">
             <Column ColumnSize="ColumnSize.Is12.OnMobile.Is4.OnDesktop">
                 @if (string.IsNullOrEmpty(media?.poster_large))
@@ -272,7 +272,7 @@
                 </Tabs>
             </Column>
         </Row>
-    </CustomVisibility>
+    </Loading>
 </ModalBody>
 <ModalFooter>
     <Container Fluid="true" Margin="Margin.Is0">
@@ -339,31 +339,37 @@
     [Parameter] public EventCallback<WishList> WishListChanged { get; set; }
     [Parameter] public EventCallback<WatchedList> WatchedListChanged { get; set; }
 
+    public Loading? LoadingList { get; set; }
+
     private MediaDetail? media { get; set; }
     private MediaProviders? Providers { get; set; }
     private AllProviders? AllProviders { get; set; }
 
-    private bool Loading;
     string selectedTab = "About";
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
+        if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
+        if (type == null) throw new ArgumentNullException(nameof(type));
+        //if (WishList == null) throw new ArgumentNullException(nameof(WishList));
+        //if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
+        if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
+        if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
+    }
+
+    protected override async Task LoadData()
+    {
         try
         {
-            if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            //if (WishList == null) throw new ArgumentNullException(nameof(WishList));
-            //if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
-            if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
-            if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
-
-            Loading = true;
+            LoadingList?.Start();
 
             media = await TmdbApi.GetMediaDetail(tmdb_id, type);
             Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
             AllProviders = await AllProvidersApi.GetAll();
 
-            Loading = false;
+            LoadingList?.Finish(media == null);
         }
         catch (Exception ex)
         {
