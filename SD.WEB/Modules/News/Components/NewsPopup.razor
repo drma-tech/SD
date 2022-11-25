@@ -1,0 +1,68 @@
+﻿@using SD.Shared.Models.News;
+@using SD.WEB.Modules.News.Core;
+@inherits ComponenteCore<NewsPopup>
+
+@inject NewsApi NewsApi
+@inject CacheApi CacheApi
+
+<ModalHeader>
+    <ModalTitle>Últimas Notícias</ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    <Loading @ref="LoadingNews">
+        <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
+            @foreach (var item in News?.data?.newsStories ?? Enumerable.Empty<NewsStory>())
+            {
+                <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
+                    <Card>
+                        <CardImage Source="@item.mainImage.url" Alt="@item.title">
+                        </CardImage>
+                        <CardBody>
+                            <CardText>
+                                @((MarkupString)item.title)
+                            </CardText>
+                            <Button Color="Color.Primary" Type="ButtonType.Link" To="@item.link" Target="Target.Blank" Size="Size.Small" Class="mt-2">Ler mais</Button>
+                        </CardBody>
+                    </Card>
+                </Column>
+            }
+        </Row>
+    </Loading>
+</ModalBody>
+<ModalFooter>
+    <Button Color="Color.Secondary" Clicked="@ModalService.Hide">@TranslationText.Close</Button>
+</ModalFooter>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    public Loading? LoadingNews { get; set; }
+    private Flixster? News { get; set; }
+    public string? selectedSlide { get; set; }
+
+    protected override async Task LoadData()
+    {
+        try
+        {
+            LoadingNews?.Start();
+
+            var cache = await CacheApi.Get("lastnews");
+            if (cache == null)
+            {
+                News = await NewsApi.Get();
+                await CacheApi.Add(new SD.Shared.Models.CacheModel("lastnews", News));
+            }
+            else
+            {
+                News = (Flixster?)cache.Value;
+            }
+
+            LoadingNews?.Finish(News == null);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+}

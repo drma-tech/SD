@@ -143,6 +143,14 @@
         }
     }
 
+    protected override async Task LoadData()
+    {
+        await LoadItems(MediaType.movie);
+
+        wishList = await WishListApi.Get();
+        watchedList = await WatchedListApi.Get();
+    }
+
     private async Task TypeSelectedChanged(MediaType type)
     {
         TypeSelected = type;
@@ -168,14 +176,6 @@
             }
         }
         LoadingList?.Finish(!Items.Any());
-    }
-
-    protected override async Task LoadData()
-    {
-        await LoadItems(MediaType.movie);
-
-        if (wishList == null) wishList = await WishListApi.Get();
-        if (watchedList == null) watchedList = await WatchedListApi.Get();
     }
 
     private async Task OpenCompleteList()

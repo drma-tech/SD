@@ -53,9 +53,13 @@
                     <Items>
                         <Tab Name="About">About</Tab>
                         <Tab Name="Streaming">Streaming (@Settings.Region.GetName(false))</Tab>
+                        @if (media?.Collection.Any() ?? false)
+                        {
+                            <Tab Name="Collection">Collection</Tab>
+                        }
                     </Items>
                     <Content>
-                        <TabPanel Name="About" Class="mt-3">
+                        <TabPanel Name="About" Class="mt-2">
                             <Badge Color="Color.Secondary" Margin="Margin.Is2.FromEnd.Is2.FromBottom">@media?.runtime.FormatRuntime()</Badge>
                             @foreach (var item in media?.Genres ?? new List<string>())
                             {
@@ -101,7 +105,7 @@
                                 }
                             }
                         </TabPanel>
-                        <TabPanel Name="Streaming" Class="mt-3">
+                        <TabPanel Name="Streaming" Class="mt-2">
                             @{
                                 var hasProvider = false;
 
@@ -268,6 +272,73 @@
                                 }
                             }
                         </TabPanel>
+                        @if (media?.Collection.Any() ?? false)
+                        {
+                            <TabPanel Name="Collection" Class="mt-2">
+                                <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
+                                    @foreach (var item in media.Collection.OrderBy(o => o.release_date))
+                                    {
+                                        <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
+                                            <Card>
+                                                <Blazorise.Link Clicked="@(async() =>{if (media.MediaType== MediaType.movie)await OpenPopupMedia(item, media.MediaType);else await Toast.Warning("Not Available");})" Style="position: relative;">
+                                                    @if (ShowOnlyYear)
+                                                    {
+                                                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@item.release_date?.Year</Badge>
+                                                    }
+                                                    else
+                                                    {
+                                                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@item.release_date?.ToShortDateString()</Badge>
+                                                    }
+                                                    @*@if (item.rating >= 8)
+                                            {
+                                            <Badge Color="Color.Success" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">@item.rating</Badge>
+                                            }
+                                            else if (item.rating >= 6)
+                                            {
+                                            <Badge Color="Color.Warning" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">@item.rating</Badge>
+                                            }
+                                            else if (item.rating > 0)
+                                            {
+                                            <Badge Color="Color.Danger" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">@item.rating</Badge>
+                                            }*@
+                                                    @if (string.IsNullOrEmpty(item.poster_small))
+                                                    {
+                                                        <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
+
+                                                        <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
+                                                            @item.title
+                                                        </Div>
+                                                    }
+                                                    else
+                                                    {
+                                                        @*var watchedMovie = WatchedList?.Movies.Any(a => a == item.id & MediaType.movie == item.MediaType) ?? false;
+                                            var watchedShow = WatchedList?.Shows.Any(a => a == item.id & MediaType.tv == item.MediaType) ?? false;
+                                            if (watchedMovie | watchedShow)
+                                            {
+                                            <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x4"
+                                            Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.8;"></Blazorise.Icon>
+                                            }
+                                            var wishedMovie = WishList?.Movies.Any(a => a.id == item.id & MediaType.movie == item.MediaType) ?? false;
+                                            var wishedShow = WishList?.Shows.Any(a => a.id == item.id & MediaType.tv == item.MediaType) ?? false;
+                                            if (wishedMovie | wishedShow)
+                                            {
+                                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
+                                            Style="position: absolute; bottom: 3px; right: 3px; opacity: 0.8;"></Blazorise.Icon>
+                                            }*@
+                                                        @*<CardImage Source="@item.poster_small" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(watchedMovie | watchedShow?"opacity: 0.5":"")}")></CardImage>*@
+                                                        <CardImage Source="@item.poster_small" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer;")></CardImage>
+
+                                                        <CardBody Class="py-1">
+                                                            @item.title
+                                                        </CardBody>
+                                                    }
+                                                </Blazorise.Link>
+                                            </Card>
+                                        </Column>
+                                    }
+                                </Row>
+                            </TabPanel>
+                        }
                     </Content>
                 </Tabs>
             </Column>
@@ -611,5 +682,26 @@
         {
             ex.ProcessException(Toast, Logger);
         }
+    }
+
+    private async Task OpenPopupMedia(Collection? collection, MediaType mediaType)
+    {
+        await ModalService.Show<MediaPopup>(collection?.title,
+            x =>
+            {
+                x.Add(x => x.tmdb_id, collection?.id?.ToString());
+                x.Add(x => x.type, mediaType);
+                x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
+                x.Add(x => x.WishList, WishList);
+                x.Add(x => x.WatchedList, WatchedList);
+                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { WishList = value; }));
+                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { WatchedList = value; }));
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
     }
 }

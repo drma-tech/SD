@@ -15,6 +15,7 @@
 
         public List<Video> Videos { get; set; } = new();
         public List<string> Genres { get; set; } = new();
+        public List<Collection> Collection { get; set; } = new();
 
         public MediaType MediaType { get; set; }
 
@@ -34,5 +35,13 @@
         public string? id { get; set; }
         public string? key { get; set; }
         public string? name { get; set; }
+    }
+
+    public class Collection
+    {
+        public string? id { get; set; }
+        public string? title { get; set; }
+        public DateTime? release_date { get; set; }
+        public string? poster_small { get; set; }
     }
 }

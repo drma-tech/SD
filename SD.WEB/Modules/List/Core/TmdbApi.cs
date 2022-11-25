@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using SD.Shared.Model.List.Tmdb;
+using SD.Shared.Models.List.Tmdb;
 
 namespace SD.WEB.Modules.List.Core
 {
@@ -44,6 +45,22 @@ namespace SD.WEB.Modules.List.Core
                         Genres = item.genres.Select(s => s.name ?? "").ToList(),
                         MediaType = MediaType.movie
                     };
+
+                    if (item.belongs_to_collection != null)
+                    {
+                        var collection = await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" + item.belongs_to_collection.id.ToString().ConfigureParameters(parameter), true);
+
+                        foreach (var part in collection?.parts ?? new())
+                        {
+                            obj_return.Collection.Add(new Collection
+                            {
+                                id = part.id.ToString(),
+                                title = part.title,
+                                release_date = part.release_date.GetDate(),
+                                poster_small= string.IsNullOrEmpty(part.poster_path) ? null : TmdbOptions.SmallPosterPath + part.poster_path
+                            });
+                        }
+                    }
                 }
             }
             else
@@ -67,6 +84,17 @@ namespace SD.WEB.Modules.List.Core
                         Genres = item.genres.Select(s => s.name ?? "").ToList(),
                         MediaType = MediaType.tv
                     };
+
+                    foreach (var season in item.seasons)
+                    {
+                        obj_return.Collection.Add(new Collection
+                        {
+                            id = season.id.ToString(),
+                            title = season.name,
+                            release_date = season.air_date?.GetDate(),
+                            poster_small = string.IsNullOrEmpty(season.poster_path) ? null : TmdbOptions.SmallPosterPath + season.poster_path
+                        });
+                    }
                 }
             }
 
