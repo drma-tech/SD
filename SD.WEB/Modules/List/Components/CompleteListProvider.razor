@@ -44,7 +44,7 @@
     [Parameter] public AllProviders? AllProviders { get; set; }
 
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
-        p.regions.Any(a => a == Settings.Region) &
+        p.regions.Any(a => a == AppStateStatic.Region) &
         p.enabled &
         (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true)) ?? Array.Empty<ProviderModel>();
 

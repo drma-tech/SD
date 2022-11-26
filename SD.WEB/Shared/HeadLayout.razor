@@ -5,20 +5,20 @@
     <Container Fluid="true" Padding="Padding.Is0.OnX">
         <MediaQuery Media="@Breakpoints.LargeUp">
             <Matched>
-                <BarToggler Bar="@RefreshCore.Sidebar" Background="Background.Dark" Margin="Margin.Is2.FromEnd" Padding="Padding.Is0" Style="height: 31px; width: 31px;" />
+                <BarToggler Bar="@AppStateStatic.Sidebar" Background="Background.Dark" Margin="Margin.Is2.FromEnd" Padding="Padding.Is0" Style="height: 31px; width: 31px;" />
             </Matched>
         </MediaQuery>
         <BarBrand Padding="Padding.Is0.OnY">
             <form class="d-flex">
                 <MediaQuery Media="@Breakpoints.XSmallDown">
                     <Matched>
-                        <Select TValue="Region" SelectedValue="@Settings.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromEnd">
+                        <Select TValue="Region" SelectedValue="@AppStateStatic.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromEnd">
                             @foreach (var item in Regions.OrderBy(o => o.Name))
                             {
                                 <SelectItem Value="@item.ValueObject">@(((Region)item.ValueObject).GetCustomAttribute(false)?.Name)</SelectItem>
                             }
                         </Select>
-                        <Select TValue="Language" SelectedValue="@Settings.Language" SelectedValueChanged="LanguageValueChanged" Size="Size.Small" Style="width:auto;">
+                        <Select TValue="Language" SelectedValue="@AppStateStatic.Language" SelectedValueChanged="LanguageValueChanged" Size="Size.Small" Style="width:auto;">
                             @foreach (var item in Languages.OrderBy(o => o.Name))
                             {
                                 <SelectItem Value="@item.ValueObject">@(((Language)item.ValueObject).GetCustomAttribute(false)?.Name)</SelectItem>
@@ -26,13 +26,13 @@
                         </Select>
                     </Matched>
                     <Unmatched>
-                        <Select TValue="Region" SelectedValue="@Settings.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromEnd">
+                        <Select TValue="Region" SelectedValue="@AppStateStatic.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromEnd">
                             @foreach (var item in Regions.OrderBy(o => o.Name))
                             {
                                 <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>
                             }
                         </Select>
-                        <Select TValue="Language" SelectedValue="@Settings.Language" SelectedValueChanged="LanguageValueChanged" Size="Size.Small" Style="width:auto;">
+                        <Select TValue="Language" SelectedValue="@AppStateStatic.Language" SelectedValueChanged="LanguageValueChanged" Size="Size.Small" Style="width:auto;">
                             @foreach (var item in Languages.OrderBy(o => o.Name))
                             {
                                 <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>
@@ -81,21 +81,15 @@
         Nav.NavigateTo("/.auth/logout", forceLoad: true);
     }
 
-    protected async Task RegionValueChanged(Region value)
+    protected void RegionValueChanged(Region value)
     {
-        Settings.Region = value;
-
-        await RefreshCore.ChangeRegion(value);
+        AppStateStatic.ChangeRegion(value);
     }
 
     protected void LanguageValueChanged(Language value)
     {
-        Settings.Language = value;
+        AppStateStatic.ChangeLanguage(value);
 
-        //var culture = System.Globalization.CultureInfo.CurrentCulture;
-
-        //await RefreshCore.ChangeLanguage(value);
-
-        Nav.NavigateTo(Nav.Uri, forceLoad: true);
+        //Nav.NavigateTo(Nav.Uri, forceLoad: true);
     }
 }

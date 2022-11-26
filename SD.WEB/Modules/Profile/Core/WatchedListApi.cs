@@ -24,7 +24,7 @@
             }
         }
 
-        public async Task<WatchedList?> Post(WatchedList? obj)
+        public async Task<WatchedList?> Post(WatchedList obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 

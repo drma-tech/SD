@@ -36,7 +36,7 @@ namespace SD.WEB.Core
                 return;
             }
 
-            CustomSession.Logs.Add(new LogContainer()
+            AppStateStatic.Logs.Add(new LogContainer()
             {
                 Name = _name,
                 State = formatter(state, exception),

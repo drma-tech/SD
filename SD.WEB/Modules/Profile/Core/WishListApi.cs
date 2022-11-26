@@ -26,7 +26,7 @@ namespace SD.WEB.Modules.Profile.Core
             }
         }
 
-        public async Task<WishList?> Post(WishList? obj)
+        public async Task<WishList?> Post(WishList obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 

@@ -5,7 +5,7 @@
 @inject AllProvidersApi AllProvidersApi
 
 <Alert Visible="true" Color="Color.Secondary">
-    <AlertMessage>@Provider.Resources.Translations.TitleProviders.Format(Settings.Region)</AlertMessage>
+    <AlertMessage>@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region)</AlertMessage>
 
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
@@ -49,7 +49,7 @@
     public Loading? LoadingProvider { get; set; }
 
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
-        p.regions.Any(a => a == Settings.Region) &
+        p.regions.Any(a => a == AppStateStatic.Region) &
         p.enabled &
         (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true))
         .Take(18) ?? Array.Empty<ProviderModel>();
@@ -70,10 +70,10 @@
 
     private async Task OpenCompleteList()
     {
-        await ModalService.Show<Modules.List.Components.CompleteListProvider>(@Provider.Resources.Translations.TitleProviders.Format(Settings.Region),
+        await ModalService.Show<Modules.List.Components.CompleteListProvider>(@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region),
         x =>
         {
-            x.Add(x => x.CardHeader, @Provider.Resources.Translations.TitleProviders.Format(Settings.Region));
+            x.Add(x => x.CardHeader, @Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region));
             x.Add(x => x.AllProviders, AllProviders);
         },
         new ModalInstanceOptions()

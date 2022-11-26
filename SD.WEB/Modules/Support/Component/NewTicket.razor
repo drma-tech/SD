@@ -43,9 +43,9 @@
 
     private void ImportLastError()
     {
-        if (TicketType == TicketType.BugReport && CustomSession.Logs.Any())
+        if (TicketType == TicketType.BugReport && AppStateStatic.Logs.Any())
         {
-            var list = CustomSession.Logs;
+            var list = AppStateStatic.Logs;
             var log = list.LastOrDefault();
 
             if (log != null)
@@ -53,7 +53,7 @@
                 Ticket.Title = log.Message ?? "erro desconhecido";
                 Ticket.Description = System.Text.Json.JsonSerializer.Serialize(log);
 
-                CustomSession.Logs.Remove(log);
+                AppStateStatic.Logs.Remove(log);
             }
             else
             {

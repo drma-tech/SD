@@ -15,8 +15,8 @@ namespace SD.WEB.Modules.List.Core
             var parameter = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey },
-                { "region", Settings.Region.ToString() },
-                { "language", Settings.Language.GetName(false) ?? "en-US" },
+                { "region", AppStateStatic.Region.ToString() },
+                { "language", AppStateStatic.Language.GetName(false) ?? "en-US" },
                 { "page", page.ToString() }
             };
 

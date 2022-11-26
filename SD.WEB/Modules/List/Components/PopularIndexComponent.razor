@@ -16,17 +16,17 @@
 </Alert>
 @if (TypeSelected == PopularType.Streaming)
 {
-    <MediaList ShowHead="false" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters("flatrate", "popularity.desc")" MaxItens="10">
+    <MediaList ShowHead="false" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters("flatrate", "popularity.desc")" MaxItens="10" MultiplesRegions="true">
     </MediaList>
 }
 else if (TypeSelected == PopularType.Rent)
 {
-    <MediaList ShowHead="false" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters("rent", "popularity.desc")" MaxItens="10">
+    <MediaList ShowHead="false" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters("rent", "popularity.desc")" MaxItens="10" MultiplesRegions="true">
     </MediaList>
 }
 else if (TypeSelected == PopularType.Cinema)
 {
-    <MediaList ShowHead="false" MediaListApi="TmdbNowPlayingApi" MaxItens="10">
+    <MediaList ShowHead="false" MediaListApi="TmdbNowPlayingApi" MaxItens="10" MultiplesRegions="true">
     </MediaList>
 }
 

@@ -7,6 +7,10 @@
 @using SD.WEB.Modules.Provider.Components;
 @using SD.WEB.Modules.News.Components;
 
+@inject WatchedListApi WatchedListApi
+@inject WishListApi WishListApi
+@inject AppState AppState
+
 <PopularIndexComponent></PopularIndexComponent>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
@@ -19,10 +23,11 @@
 </Row>
 
 @code {
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        RefreshCore.RegionChanged = new EventCallbackFactory().Create(this, (Region value) => Settings.Region = value);
+        AppState.ChangeWishList(await WishListApi.Get());
+        AppState.ChangeWatchedList(await WatchedListApi.Get());
 
-        base.OnInitialized();
+        await base.OnInitializedAsync();
     }
 }

@@ -33,8 +33,8 @@ namespace SD.WEB.Modules.List.Core
             var parameter = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey },
-                { "language", Settings.Language.GetName(false) ?? "en-US" },
-                { "watch_region", Settings.Region.ToString() },
+                { "language", AppStateStatic.Language.GetName(false) ?? "en-US" },
+                { "watch_region", AppStateStatic.Region.ToString() },
                 { "page", page.ToString() }
             };
 

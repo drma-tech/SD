@@ -5,6 +5,7 @@
 @inject ExternalIdApi ExternalIdApi
 @inject WatchedListApi WatchedListApi
 @inject WishListApi WishListApi
+@inject AppState AppState
 
 @if (ShowHead)
 {
@@ -60,15 +61,15 @@
                         }
                         else
                         {
-                            var watchedMovie = watchedList?.Movies.Any(a => a == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
-                            var watchedShow = watchedList?.Shows.Any(a => a == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
+                            var watchedMovie = AppState.WatchedList?.Movies.Any(a => a == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
+                            var watchedShow = AppState.WatchedList?.Shows.Any(a => a == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
                             if (watchedMovie | watchedShow)
                             {
                                 <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x4"
                                     Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.8;"></Blazorise.Icon>
                             }
-                            var wishedMovie = wishList?.Movies.Any(a => a.id == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
-                            var wishedShow = wishList?.Shows.Any(a => a.id == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
+                            var wishedMovie = AppState.WishList?.Movies.Any(a => a.id == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
+                            var wishedShow = AppState.WishList?.Shows.Any(a => a.id == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
                             if (wishedMovie | wishedShow)
                             {
                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
@@ -116,12 +117,13 @@
     [Parameter] public bool ShowOnlyYear { get; set; } = true;
     [Parameter] public bool IsIMDB { get; set; } = false;
 
+    [Parameter] public bool MultiplesRegions { get; set; } = false;
+    [Parameter] public bool MultipleLanguages { get; set; } = true;    
+
     public MediaType TypeSelected { get; set; } = MediaType.movie;
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
 
     public HashSet<MediaDetail> Items { get; set; } = new();
-    private WishList? wishList { get; set; }
-    private WatchedList? watchedList { get; set; }
 
     public Loading? LoadingList { get; set; }
 
@@ -131,11 +133,16 @@
     {
         try
         {
-            await base.OnInitializedAsync();
-
             if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
             if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
             if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));
+
+            AppState.WishListChanged += StateHasChanged;
+            AppState.WatchedListChanged += StateHasChanged;
+            if (MultiplesRegions) AppStateStatic.RegionChanged += LoadDataVoid;
+            if (MultipleLanguages) AppStateStatic.LanguageChanged += LoadDataVoid;
+
+            await base.OnInitializedAsync();
         }
         catch (Exception ex)
         {
@@ -145,10 +152,12 @@
 
     protected override async Task LoadData()
     {
-        await LoadItems(MediaType.movie);
+        await LoadItems(TypeSelected);
+    }
 
-        wishList = await WishListApi.Get();
-        watchedList = await WatchedListApi.Get();
+    protected async void LoadDataVoid()
+    {
+        await LoadItems(TypeSelected);
     }
 
     private async Task TypeSelectedChanged(MediaType type)
@@ -192,10 +201,6 @@
                 x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
                 x.Add(x => x.TypeSelected, TypeSelected);
                 x.Add(x => x.StringParameters, StringParameters);
-                x.Add(x => x.WishList, wishList);
-                x.Add(x => x.WatchedList, watchedList);
-                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
-                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
             },
             new ModalInstanceOptions()
                 {
@@ -224,10 +229,6 @@
                 x.Add(x => x.tmdb_id, tmdb_id);
                 x.Add(x => x.type, media?.MediaType);
                 x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
-                x.Add(x => x.WishList, wishList);
-                x.Add(x => x.WatchedList, watchedList);
-                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { wishList = value; }));
-                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { watchedList = value; }));
             },
             new ModalInstanceOptions()
                 {

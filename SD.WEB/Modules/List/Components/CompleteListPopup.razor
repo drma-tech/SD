@@ -6,6 +6,7 @@
 @inject WatchedListApi WatchedListApi
 @inject WishListApi WishListApi
 @inject ExternalIdApi ExternalIdApi
+@inject AppState AppState
 
 <ModalHeader>
     <ModalTitle>@(List != null ? List.GetName() : TitleHead)</ModalTitle>
@@ -49,15 +50,15 @@
                         }
                         else
                         {
-                            var watchedMovie = WatchedList?.Movies.Any(a => a == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
-                            var watchedShow = WatchedList?.Shows.Any(a => a == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
+                            var watchedMovie = AppState.WatchedList?.Movies.Any(a => a == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
+                            var watchedShow = AppState.WatchedList?.Shows.Any(a => a == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
                             if (watchedMovie | watchedShow)
                             {
                                 <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x4"
                                     Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.8;"></Blazorise.Icon>
                             }
-                            var wishedMovie = WishList?.Movies.Any(a => a.id == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
-                            var wishedShow = WishList?.Shows.Any(a => a.id == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
+                            var wishedMovie = AppState.WishList?.Movies.Any(a => a.id == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
+                            var wishedShow = AppState.WishList?.Shows.Any(a => a.id == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
                             if (wishedMovie | wishedShow)
                             {
                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
@@ -106,13 +107,8 @@
     [Parameter] public int MaxItens { get; set; } = 10;
     [Parameter] public bool IsIMDB { get; set; } = false;
     [Parameter] public bool ShowOnlyYear { get; set; } = true;
-    [Parameter] public WishList? WishList { get; set; }
-    [Parameter] public WatchedList? WatchedList { get; set; }
     [Parameter] public MediaType? TypeSelected { get; set; }
     [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
-
-    [Parameter] public EventCallback<WishList> WishListChanged { get; set; }
-    [Parameter] public EventCallback<WatchedList> WatchedListChanged { get; set; }
 
     private string GetCustomStyle => "col-xl col-md-2 col-4";
 
@@ -122,18 +118,17 @@
     protected override async Task OnInitializedAsync()
     {
         try
-        {
-            await base.OnInitializedAsync();
-
+        {           
             if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
             //if (!string.IsNullOrEmpty(list_id) && !NextPage.HasDelegate) throw new ArgumentNullException(nameof(NextPage));
             //if (NextPage.HasDelegate && string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
             if (List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
             if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));
-            //if (WishList == null) throw new ArgumentNullException(nameof(WishList));
-            //if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
-            if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
-            if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
+
+            AppState.WishListChanged += StateHasChanged;
+            AppState.WatchedListChanged += StateHasChanged;
+
+            await base.OnInitializedAsync();
         }
         catch (Exception ex)
         {
@@ -160,12 +155,6 @@
                 x.Add(x => x.tmdb_id, tmdb_id);
                 x.Add(x => x.type, media?.MediaType);
                 x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
-                x.Add(x => x.WishList, WishList);
-                x.Add(x => x.WatchedList, WatchedList);
-                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this,
-                    async (WishList value) => { WishList = value; await WishListChanged.InvokeAsync(value); }));
-                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this,
-                    async (WatchedList value) => { WatchedList = value; await WatchedListChanged.InvokeAsync(value); }));
             },
             new ModalInstanceOptions()
                 {

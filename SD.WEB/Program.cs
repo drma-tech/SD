@@ -64,6 +64,8 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<ImdbTopRatedApi>();
     collection.AddScoped<ImdbUpcomingApi>();
 
+    collection.AddSingleton<AppState>();
+
     collection.AddLogging(logging =>
     {
         logging.AddProvider(new CosmosLoggerProvider());

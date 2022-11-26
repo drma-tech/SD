@@ -8,6 +8,7 @@
 @inject WishListApi WishListApi
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbApi TmdbApi
+@inject AppState AppState
 
 <ModalHeader>
     <ModalTitle>@media?.title</ModalTitle>
@@ -52,7 +53,7 @@
                 <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true">
                     <Items>
                         <Tab Name="About">About</Tab>
-                        <Tab Name="Streaming">Streaming (@Settings.Region.GetName(false))</Tab>
+                        <Tab Name="Streaming">Streaming (@AppStateStatic.Region.GetName(false))</Tab>
                         @if (media?.Collection.Any() ?? false)
                         {
                             <Tab Name="Collection">Collection</Tab>
@@ -86,7 +87,7 @@
                                 </Row>
                             }
                             @{
-                                var link = Providers?.GetLink(Settings.Region);
+                                var link = Providers?.GetLink(AppStateStatic.Region);
                                 if (string.IsNullOrEmpty(link))
                                 {
                                     link = Providers?.GetLink(Region.US);
@@ -109,14 +110,14 @@
                             @{
                                 var hasProvider = false;
 
-                                if (Providers?.GetFreeListProviders(Settings.Region).Any() ?? false)
+                                if (Providers?.GetFreeListProviders(AppStateStatic.Region).Any() ?? false)
                                 {
                                     hasProvider = true;
                                     <Row HorizontalGutter="4" VerticalGutter="4">
                                         <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                                             <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFree</Button>
                                         </Column>
-                                        @foreach (var item in Providers.GetFreeListProviders(Settings.Region))
+                                        @foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
                                         {
                                             @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                                             {
@@ -133,14 +134,14 @@
                                         }
                                     </Row>
                                 }
-                                if (Providers?.GetAdsListProviders(Settings.Region).Any() ?? false)
+                                if (Providers?.GetAdsListProviders(AppStateStatic.Region).Any() ?? false)
                                 {
                                     hasProvider = true;
                                     <Row HorizontalGutter="4" VerticalGutter="4">
                                         <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                                             <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelAds</Button>
                                         </Column>
-                                        @foreach (var item in Providers.GetAdsListProviders(Settings.Region))
+                                        @foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
                                         {
                                             @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                                             {
@@ -157,14 +158,14 @@
                                         }
                                     </Row>
                                 }
-                                if (Providers?.GetFlatRateListProviders(Settings.Region).Any() ?? false)
+                                if (Providers?.GetFlatRateListProviders(AppStateStatic.Region).Any() ?? false)
                                 {
                                     hasProvider = true;
                                     <Row HorizontalGutter="4" VerticalGutter="4">
                                         <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                                             <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFlatRate</Button>
                                         </Column>
-                                        @foreach (var item in Providers.GetFlatRateListProviders(Settings.Region))
+                                        @foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
                                         {
                                             @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                                             {
@@ -181,14 +182,14 @@
                                         }
                                     </Row>
                                 }
-                                if (Providers?.GetFlatRateBuyListProviders(Settings.Region).Any() ?? false)
+                                if (Providers?.GetFlatRateBuyListProviders(AppStateStatic.Region).Any() ?? false)
                                 {
                                     hasProvider = true;
                                     <Row HorizontalGutter="4" VerticalGutter="4">
                                         <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                                             <Button Color="Color.Warning" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFlatRateBuy</Button>
                                         </Column>
-                                        @foreach (var item in Providers.GetFlatRateBuyListProviders(Settings.Region))
+                                        @foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
                                         {
                                             @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                                             {
@@ -205,14 +206,14 @@
                                         }
                                     </Row>
                                 }
-                                if (Providers?.GetRentListProviders(Settings.Region).Any() ?? false)
+                                if (Providers?.GetRentListProviders(AppStateStatic.Region).Any() ?? false)
                                 {
                                     hasProvider = true;
                                     <Row HorizontalGutter="4" VerticalGutter="4">
                                         <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                                             <Button Color="Color.Primary" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelRent</Button>
                                         </Column>
-                                        @foreach (var item in Providers.GetRentListProviders(Settings.Region))
+                                        @foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
                                         {
                                             @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                                             {
@@ -229,14 +230,14 @@
                                         }
                                     </Row>
                                 }
-                                if (Providers?.GetBuyListProviders(Settings.Region).Any() ?? false)
+                                if (Providers?.GetBuyListProviders(AppStateStatic.Region).Any() ?? false)
                                 {
                                     hasProvider = true;
                                     <Row HorizontalGutter="4" VerticalGutter="4">
                                         <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                                             <Button Color="Color.Danger" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelBuy</Button>
                                         </Column>
-                                        @foreach (var item in Providers.GetBuyListProviders(Settings.Region))
+                                        @foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
                                         {
                                             @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                                             {
@@ -355,13 +356,13 @@
                 }
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                @if (WishList?.Movies.Any(a => a.id == media?.tmdb_id) ?? false)
+                @if (AppState.WishList?.Movies.Any(a => a.id == media?.tmdb_id) ?? false)
                 {
                     <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!ComponenteUtils.IsAuthenticated">
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
                     </Button>
                 }
-                else if (WishList?.Shows.Any(a => a.id == media?.tmdb_id) ?? false)
+                else if (AppState.WishList?.Shows.Any(a => a.id == media?.tmdb_id) ?? false)
                 {
                     <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!ComponenteUtils.IsAuthenticated">
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
@@ -373,13 +374,13 @@
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
                     </Button>
                 }
-                @if (WatchedList?.Movies.Any(a => a == media?.tmdb_id) ?? false)
+                @if (AppState.WatchedList?.Movies.Any(a => a == media?.tmdb_id) ?? false)
                 {
                     <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!ComponenteUtils.IsAuthenticated">
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
                     </Button>
                 }
-                else if (WatchedList?.Shows.Any(a => a == media?.tmdb_id) ?? false)
+                else if (AppState.WatchedList?.Shows.Any(a => a == media?.tmdb_id) ?? false)
                 {
                     <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!ComponenteUtils.IsAuthenticated">
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
@@ -404,11 +405,6 @@
     [Parameter] public bool ShowOnlyYear { get; set; } = true;
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
-    [Parameter] public WishList? WishList { get; set; }
-    [Parameter] public WatchedList? WatchedList { get; set; }
-
-    [Parameter] public EventCallback<WishList> WishListChanged { get; set; }
-    [Parameter] public EventCallback<WatchedList> WatchedListChanged { get; set; }
 
     public Loading? LoadingList { get; set; }
 
@@ -420,14 +416,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-
         if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
-        //if (WishList == null) throw new ArgumentNullException(nameof(WishList));
-        //if (WatchedList == null) throw new ArgumentNullException(nameof(WatchedList));
-        if (!WishListChanged.HasDelegate) throw new ArgumentNullException(nameof(WishListChanged));
-        if (!WatchedListChanged.HasDelegate) throw new ArgumentNullException(nameof(WatchedListChanged));
+
+        AppState.WishListChanged += StateHasChanged;
+        AppState.WatchedListChanged += StateHasChanged;
+
+        await base.OnInitializedAsync();
     }
 
     protected override async Task LoadData()
@@ -457,7 +452,7 @@
     {
         if (Providers == null) return;
 
-        foreach (var item in Providers.GetFreeListProviders(Settings.Region))
+        foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
@@ -471,7 +466,7 @@
             }
         }
 
-        foreach (var item in Providers.GetAdsListProviders(Settings.Region))
+        foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
@@ -485,7 +480,7 @@
             }
         }
 
-        foreach (var item in Providers.GetFlatRateListProviders(Settings.Region))
+        foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
@@ -499,7 +494,7 @@
             }
         }
 
-        foreach (var item in Providers.GetBuyListProviders(Settings.Region))
+        foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
@@ -513,7 +508,7 @@
             }
         }
 
-        foreach (var item in Providers.GetRentListProviders(Settings.Region))
+        foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
@@ -527,7 +522,7 @@
             }
         }
 
-        foreach (var item in Providers.GetFlatRateBuyListProviders(Settings.Region))
+        foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
@@ -548,9 +543,11 @@
     {
         try
         {
-            if (WishList == null)
+            var list = AppState.WishList;
+
+            if (list == null)
             {
-                WishList = new WishList
+                list = new WishList
                     {
                         DtInsert = DateTimeOffset.UtcNow
                     };
@@ -558,7 +555,7 @@
 
             if (media != null && media.MediaType == MediaType.movie)
             {
-                WishList.Movies.Add(new WishListItem()
+                list.Movies.Add(new WishListItem()
                     {
                         id = media?.tmdb_id,
                         name = media?.title,
@@ -568,7 +565,7 @@
             }
             else if (media != null && media.MediaType == MediaType.tv)
             {
-                WishList.Shows.Add(new WishListItem()
+                list.Shows.Add(new WishListItem()
                     {
                         id = media?.tmdb_id,
                         name = media?.title,
@@ -577,8 +574,9 @@
                     });
             }
 
-            await WishListApi.Post(WishList);
-            await WishListChanged.InvokeAsync(WishList);
+            await WishListApi.Post(list);
+
+            AppState.ChangeWishList(list);
 
             await Toast.Success("Media favoritado com sucesso!");
         }
@@ -592,9 +590,11 @@
     {
         try
         {
-            if (WishList == null)
+            var list = AppState.WishList;
+
+            if (list == null)
             {
-                WishList = new WishList
+                list = new WishList
                     {
                         DtInsert = DateTimeOffset.UtcNow
                     };
@@ -602,15 +602,16 @@
 
             if (media != null && media.MediaType == MediaType.movie)
             {
-                WishList.Movies.Remove(WishList.Movies.First(f => f.id == media?.tmdb_id));
+                list.Movies.Remove(list.Movies.First(f => f.id == media?.tmdb_id));
             }
             else if (media != null && media.MediaType == MediaType.tv)
             {
-                WishList.Shows.Remove(WishList.Shows.First(f => f.id == media?.tmdb_id));
+                list.Shows.Remove(list.Shows.First(f => f.id == media?.tmdb_id));
             }
 
-            await WishListApi.Post(WishList);
-            await WishListChanged.InvokeAsync(WishList);
+            await WishListApi.Post(list);
+
+            AppState.ChangeWishList(list);
 
             await Toast.Success("Media removida com sucesso!");
         }
@@ -624,9 +625,11 @@
     {
         try
         {
-            if (WatchedList == null)
+            var list = AppState.WatchedList;
+
+            if (list == null)
             {
-                WatchedList = new WatchedList
+                list = new WatchedList
                     {
                         DtInsert = DateTimeOffset.UtcNow
                     };
@@ -634,15 +637,16 @@
 
             if (media != null && media.MediaType == MediaType.movie && !string.IsNullOrEmpty(media.tmdb_id))
             {
-                WatchedList.Movies.Add(media.tmdb_id);
+                list.Movies.Add(media.tmdb_id);
             }
             else if (media != null && media.MediaType == MediaType.tv && !string.IsNullOrEmpty(media.tmdb_id))
             {
-                WatchedList.Shows.Add(media.tmdb_id);
+                list.Shows.Add(media.tmdb_id);
             }
 
-            await WatchedListApi.Post(WatchedList);
-            await WatchedListChanged.InvokeAsync(WatchedList);
+            await WatchedListApi.Post(list);
+
+            AppState.ChangeWatchedList(list);
 
             await Toast.Success("Operação efetuada com sucesso!");
         }
@@ -656,9 +660,11 @@
     {
         try
         {
-            if (WatchedList == null)
+            var list = AppState.WatchedList;
+
+            if (list == null)
             {
-                WatchedList = new WatchedList
+                list = new WatchedList
                     {
                         DtInsert = DateTimeOffset.UtcNow
                     };
@@ -666,15 +672,16 @@
 
             if (media != null && media.MediaType == MediaType.movie)
             {
-                WatchedList.Movies.Remove(WatchedList.Movies.First(f => f == media?.tmdb_id & MediaType.movie == media?.MediaType));
+                list.Movies.Remove(list.Movies.First(f => f == media?.tmdb_id & MediaType.movie == media?.MediaType));
             }
             else if (media != null && media.MediaType == MediaType.tv)
             {
-                WatchedList.Shows.Remove(WatchedList.Shows.First(f => f == media?.tmdb_id & MediaType.tv == media?.MediaType));
+                list.Shows.Remove(list.Shows.First(f => f == media?.tmdb_id & MediaType.tv == media?.MediaType));
             }
 
-            await WatchedListApi.Post(WatchedList);
-            await WatchedListChanged.InvokeAsync(WatchedList);
+            await WatchedListApi.Post(list);
+
+            AppState.ChangeWatchedList(list);
 
             await Toast.Success("Operação efetuada com sucesso!");
         }
@@ -692,10 +699,6 @@
                 x.Add(x => x.tmdb_id, collection?.id?.ToString());
                 x.Add(x => x.type, mediaType);
                 x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
-                x.Add(x => x.WishList, WishList);
-                x.Add(x => x.WatchedList, WatchedList);
-                x.Add(x => x.WishListChanged, new EventCallbackFactory().Create(this, (WishList value) => { WishList = value; }));
-                x.Add(x => x.WatchedListChanged, new EventCallbackFactory().Create(this, (WatchedList value) => { WatchedList = value; }));
             },
             new ModalInstanceOptions()
                 {
