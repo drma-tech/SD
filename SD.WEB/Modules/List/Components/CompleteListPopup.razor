@@ -3,10 +3,7 @@
 @using SD.WEB.Modules.List.Interface;
 @using SD.WEB.Modules.Profile.Core
 @inherits ComponenteNoDataCore<CompleteListPopup>
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
 @inject ExternalIdApi ExternalIdApi
-@inject AppState AppState
 
 <ModalHeader>
     <ModalTitle>@(List != null ? List.GetName() : TitleHead)</ModalTitle>

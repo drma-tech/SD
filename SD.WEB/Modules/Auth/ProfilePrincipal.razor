@@ -1,10 +1,11 @@
 ﻿@page "/ProfilePrincipal"
+@inherits PageCore<ProfilePrincipal>
 @attribute [Authorize]
+
 @using System.Security.Claims
 @using SD.Shared.Model.Auth
 @using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Profile.Core
-@inherits PageCore<ProfilePrincipal>
 
 <EditForm Model="@principal" OnValidSubmit="HandleValidSubmit">
     <FluentValidationValidator />

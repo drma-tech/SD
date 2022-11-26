@@ -1,6 +1,7 @@
 ﻿@page "/List/Imdb"
 <PageTitle>SD - Lists - IMDB</PageTitle>
-@inherits PageCore<Imdb>
+@inherits PageNoDataCore<Imdb>
+
 @using SD.WEB.Modules.List.Core;
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.List.Components
@@ -13,10 +14,3 @@
 <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="50" IsIMDB="true" ShowFilter="true" MultipleLanguages="false"></MediaList>
 <MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" MaxItens="250" ShowFilter="true"></MediaList>
 <MediaList TitleHead="@TranslationText.ComingSoon" MediaListApi="ImdbUpcomingApi" MaxItens="50" IsIMDB="true" ShowOnlyYear="false" MultipleLanguages="false"></MediaList>
-
-@code {
-    protected override async Task LoadData()
-    {
-        //
-    }
-}

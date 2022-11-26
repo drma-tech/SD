@@ -1,14 +1,10 @@
 ﻿@using SD.Shared.Model.List.Tmdb
-@using SD.Shared.Model
 @using SD.WEB.Modules.List.Core;
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
 @inherits ComponenteCore<MediaPopup>
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbApi TmdbApi
-@inject AppState AppState
 
 <ModalHeader>
     <ModalTitle>@media?.title</ModalTitle>
@@ -356,13 +352,13 @@
                 }
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                @if (AppState.WishList?.Movies.Any(a => a.id == media?.tmdb_id) ?? false)
+                @if (AppState.WishList?.Movies.Any(a => a.id == tmdb_id) ?? false)
                 {
                     <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!ComponenteUtils.IsAuthenticated">
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
                     </Button>
                 }
-                else if (AppState.WishList?.Shows.Any(a => a.id == media?.tmdb_id) ?? false)
+                else if (AppState.WishList?.Shows.Any(a => a.id == tmdb_id) ?? false)
                 {
                     <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!ComponenteUtils.IsAuthenticated">
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
@@ -374,13 +370,13 @@
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
                     </Button>
                 }
-                @if (AppState.WatchedList?.Movies.Any(a => a == media?.tmdb_id) ?? false)
+                @if (AppState.WatchedList?.Movies.Any(a => a == tmdb_id) ?? false)
                 {
                     <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!ComponenteUtils.IsAuthenticated">
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
                     </Button>
                 }
-                else if (AppState.WatchedList?.Shows.Any(a => a == media?.tmdb_id) ?? false)
+                else if (AppState.WatchedList?.Shows.Any(a => a == tmdb_id) ?? false)
                 {
                     <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!ComponenteUtils.IsAuthenticated">
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
@@ -577,8 +573,6 @@
             await WishListApi.Post(list);
 
             AppState.ChangeWishList(list);
-
-            await Toast.Success("Media favoritado com sucesso!");
         }
         catch (Exception ex)
         {
@@ -612,8 +606,6 @@
             await WishListApi.Post(list);
 
             AppState.ChangeWishList(list);
-
-            await Toast.Success("Media removida com sucesso!");
         }
         catch (Exception ex)
         {
@@ -647,8 +639,6 @@
             await WatchedListApi.Post(list);
 
             AppState.ChangeWatchedList(list);
-
-            await Toast.Success("Operação efetuada com sucesso!");
         }
         catch (Exception ex)
         {
@@ -682,8 +672,6 @@
             await WatchedListApi.Post(list);
 
             AppState.ChangeWatchedList(list);
-
-            await Toast.Success("Operação efetuada com sucesso!");
         }
         catch (Exception ex)
         {

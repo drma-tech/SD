@@ -1,9 +1,8 @@
 ﻿@page "/List/Tmdb"
 <PageTitle>SD - Lists - TMDB</PageTitle>
-@inherits PageCore<Tmdb>
-@using SD.Shared.Model
+@inherits PageNoDataCore<Tmdb>
+
 @using SD.WEB.Modules.List.Core
-@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.List.Components
 @inject TmdbPopularApi TmdbPopularApi
 @inject TmdbTopRatedApi TmdbTopRatedApi
@@ -21,10 +20,5 @@
         await base.OnInitializedAsync();
 
         AppStateStatic.RegionChanged += StateHasChanged;
-    }
-
-    protected override async Task LoadData()
-    {
-        //
     }
 }

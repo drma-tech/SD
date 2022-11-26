@@ -1,11 +1,11 @@
 ﻿@page "/EditProviders"
 @inherits PageCore<EditProviders>
+
 @using Blazorise.DataGrid
 @using HtmlAgilityPack
 @using System.Net.Http
 @using SD.WEB.Modules.Provider.Core
 @inject AllProvidersApi AllProvidersApi
-
 
 <Button Clicked="@SyncProvidersOnClick" Color="Color.Primary">Sync Providers</Button>
 <Button Clicked="@SaveSession" Color="Color.Primary">Save Session</Button>

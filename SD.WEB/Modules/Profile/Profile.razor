@@ -1,15 +1,13 @@
 ﻿@page "/Profile"
 <PageTitle>SD - Profile</PageTitle>
 @inherits PageCore<Profile>
+
 @using SD.Shared.Model
 @using System.Text.Json
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
 @inject MyProvidersApi MyProvidersApi
 @inject AllProvidersApi AllProvidersApi
-@inject AppState AppState
 
 <Alert Visible="true" Color="Color.Secondary">
     <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.MyProviders.Format(myProviders?.Items.Count ?? 0)</AlertMessage>

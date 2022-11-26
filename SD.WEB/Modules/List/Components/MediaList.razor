@@ -3,9 +3,6 @@
 @using SD.WEB.Modules.Profile.Core;
 @inherits ComponenteCore<MediaList>
 @inject ExternalIdApi ExternalIdApi
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
-@inject AppState AppState
 
 @if (ShowHead)
 {
@@ -172,7 +169,7 @@
         if (MediaListApi != null)
         {
             var result = await MediaListApi.GetList(new(), TypeSelected, StringParameters, List, 1);
-            await Task.Delay(1); //for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
+            await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
             Items = result.list;
 
             if (Items.Count < 10) //force reload, if the filters bring few records

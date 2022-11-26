@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using SD.WEB.Modules.Auth.Core;
+using SD.WEB.Modules.Profile.Core;
 
 namespace SD.WEB.Core
 {
@@ -37,6 +38,9 @@ namespace SD.WEB.Core
         [Inject] protected ILogger<T> Logger { get; set; } = default!;
         [Inject] protected INotificationService Toast { get; set; } = default!;
         [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+        [Inject] protected WatchedListApi WatchedListApi { get; set; } = default!;
+        [Inject] protected WishListApi WishListApi { get; set; } = default!;
+        [Inject] protected AppState AppState { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -102,6 +106,43 @@ namespace SD.WEB.Core
                         Navigation.NavigateTo("/ProfilePrincipal");
                     }
                 }
+
+                AppState.ChangeWishList(await WishListApi.Get());
+                AppState.ChangeWatchedList(await WatchedListApi.Get());
+            }
+            catch (Exception ex)
+            {
+                ex.ProcessException(Toast, Logger);
+            }
+        }
+    }
+
+    public abstract class PageNoDataCore<T> : ComponenteNoDataCore<T> where T : class
+    {
+        [Inject] protected NavigationManager Navigation { get; set; } = default!;
+        [Inject] protected PrincipalApi PrincipalApi { get; set; } = default!;
+        [Inject] protected WatchedListApi WatchedListApi { get; set; } = default!;
+        [Inject] protected WishListApi WishListApi { get; set; } = default!;
+
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                await base.OnInitializedAsync();
+
+                if (ComponenteUtils.IsAuthenticated)
+                {
+                    var principal = await PrincipalApi.Get();
+
+                    //força o cadastro, caso não tenha registrado a conta principal
+                    if (principal == null)
+                    {
+                        Navigation.NavigateTo("/ProfilePrincipal");
+                    }
+                }
+
+                AppState.ChangeWishList(await WishListApi.Get());
+                AppState.ChangeWatchedList(await WatchedListApi.Get());
             }
             catch (Exception ex)
             {

@@ -54,6 +54,21 @@
         (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true))
         .Take(18) ?? Array.Empty<ProviderModel>();
 
+    protected override async Task OnInitializedAsync()
+    {
+        AppStateStatic.RegionChanged += ChangeRegion;
+
+        await base.OnInitializedAsync();
+    }
+
+    private async void ChangeRegion()
+    {
+        LoadingProvider?.Start();
+        await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
+        StateHasChanged(); //reload title
+        LoadingProvider?.Finish(AllProviders == null);
+    }
+
     protected override async Task LoadData()
     {
         try

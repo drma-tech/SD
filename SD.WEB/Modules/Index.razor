@@ -1,15 +1,12 @@
 ﻿@page "/"
 @page "/Index"
 <PageTitle>SD - Streaming Discovery</PageTitle>
+@inherits PageNoDataCore<Index>
 
 @using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.List.Components;
 @using SD.WEB.Modules.Provider.Components;
 @using SD.WEB.Modules.News.Components;
-
-@inject WatchedListApi WatchedListApi
-@inject WishListApi WishListApi
-@inject AppState AppState
 
 <PopularIndexComponent></PopularIndexComponent>
 
@@ -21,13 +18,3 @@
         <NewsComponent></NewsComponent>
     </Column>
 </Row>
-
-@code {
-    protected override async Task OnInitializedAsync()
-    {
-        AppState.ChangeWishList(await WishListApi.Get());
-        AppState.ChangeWatchedList(await WatchedListApi.Get());
-
-        await base.OnInitializedAsync();
-    }
-}
