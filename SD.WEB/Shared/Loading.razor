@@ -16,7 +16,7 @@ else if (IsInvalid)
         </AlertDescription>
     </Alert>
 }
-else if (IsEmpty)
+else if (IsEmpty | IsEmptyFilter)
 {
     <Alert Color="Color.Primary" Visible="true">
         <AlertDescription>
@@ -34,6 +34,7 @@ else
 
     [Parameter] public string? CustomInvalid { get; set; } = null;
     [Parameter] public string? CustomNoData { get; set; } = null;
+    [Parameter] public bool IsEmptyFilter { get; set; } = false;
 
     public bool IsLoading { get; set; }
     public bool IsInvalid { get; set; }
@@ -49,6 +50,7 @@ else
     {
         IsLoading = false;
         IsEmpty = isEmpty;
+        IsEmptyFilter = isEmpty; //parameters are executed before LoadData, so this property can contain a wrong value
         StateHasChanged();
     }
 }

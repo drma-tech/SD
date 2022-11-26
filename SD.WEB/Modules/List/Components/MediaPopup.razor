@@ -570,7 +570,7 @@
                     });
             }
 
-            await WishListApi.Post(list);
+            list = await WishListApi.Post(list);
 
             AppState.ChangeWishList(list);
         }
@@ -603,7 +603,7 @@
                 list.Shows.Remove(list.Shows.First(f => f.id == media?.tmdb_id));
             }
 
-            await WishListApi.Post(list);
+            list = await WishListApi.Post(list);
 
             AppState.ChangeWishList(list);
         }
@@ -636,7 +636,7 @@
                 list.Shows.Add(media.tmdb_id);
             }
 
-            await WatchedListApi.Post(list);
+            list = await WatchedListApi.Post(list);
 
             AppState.ChangeWatchedList(list);
         }
@@ -669,7 +669,7 @@
                 list.Shows.Remove(list.Shows.First(f => f == media?.tmdb_id & MediaType.tv == media?.MediaType));
             }
 
-            await WatchedListApi.Post(list);
+            list = await WatchedListApi.Post(list);
 
             AppState.ChangeWatchedList(list);
         }

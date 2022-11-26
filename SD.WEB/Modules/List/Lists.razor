@@ -10,7 +10,7 @@
         @foreach (var item in Awards)
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
-                <Card>
+                <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
                     <Blazorise.Link To="@item.link">
                         <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
                     </Blazorise.Link>
@@ -23,7 +23,6 @@
     </Row>
 </Loading>
 
-
 <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
     <AlertMessage>@Resources.Translations.TitleSpecializedSites</AlertMessage>
 </Alert>
@@ -32,7 +31,7 @@
         @foreach (var item in Sites)
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
-                <Card>
+                <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
                     <Blazorise.Link To="@item.link">
                         <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
                     </Blazorise.Link>

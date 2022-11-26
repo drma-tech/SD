@@ -1,0 +1,31 @@
+﻿@using SD.Shared.Models.Support;
+@using SD.WEB.Modules.Support.Core;
+@inherits ComponenteCore<AnnouncementComponent>
+@inject AnnouncementApi AnnouncementApi
+
+<Loading @ref="LoadingAnnouncements">
+    @foreach (var item in announcements)
+    {
+        <Alert Color="Color.Info" Visible="true">
+            <Heading Size="HeadingSize.Is4" TextColor="TextColor.Success">
+                @item.Title
+            </Heading>
+            <Paragraph>
+                @((MarkupString)(item.Description ?? ""))
+            </Paragraph>
+        </Alert>
+    }
+</Loading>
+
+@code {
+    private HashSet<AnnouncementModel> announcements = new();
+
+    public Loading? LoadingAnnouncements { get; set; }
+
+    protected override async Task LoadData()
+    {
+        LoadingAnnouncements?.Start();
+        announcements = await AnnouncementApi.GetList();
+        LoadingAnnouncements?.Finish(!announcements.Any());
+    }
+}

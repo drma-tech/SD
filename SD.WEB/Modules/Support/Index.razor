@@ -1,15 +1,7 @@
 ﻿@page "/Support"
 <PageTitle>SD - Support</PageTitle>
-@inherits PageCore<Support.Index>
-
-@using SD.Shared.Model.Auth
-@using SD.Shared.Models.Support;
-@using SD.WEB.Modules.Auth.Core
+@inherits PageNoDataCore<Support.Index>
 @using SD.WEB.Modules.Support.Component
-@using SD.WEB.Modules.Support.Core
-@inject TicketApi TicketApi
-@inject TicketVoteApi TicketVoteApi
-@inject AnnouncementApi AnnouncementApi
 
 <Alert Color="Color.Secondary" Visible="true">
     <AlertDescription>
@@ -21,147 +13,16 @@
     <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Announcements)" Clicked="(() => ChangeOrder(Tabs.Announcements))">@Resources.Translations.TabAnnouncements</Button>
     <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Feedback)" Clicked="(() => ChangeOrder(Tabs.Feedback))">@Resources.Translations.TabFeedback</Button>
     @*<Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Roadmap)" Clicked="(() => ChangeOrder(Tabs.Roadmap))">@Resources.Translations.TabRoadmap</Button>*@
+    <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Downloads)" Clicked="(() => ChangeOrder(Tabs.Downloads))">Downloads</Button>
 </Div>
 
 @if (SelectedTab == Tabs.Announcements)
 {
-    <Loading @ref="LoadingAnnouncements">
-        @foreach (var item in announcements)
-        {
-            <Alert Color="Color.Info" Visible="true">
-                <Heading Size="HeadingSize.Is4" TextColor="TextColor.Success">
-                    @item.Title
-                </Heading>
-                <Paragraph>
-                    @((MarkupString)(item.Description ?? ""))
-                </Paragraph>
-            </Alert>
-        }
-    </Loading>
+    <AnnouncementComponent></AnnouncementComponent>
 }
 else if (SelectedTab == Tabs.Feedback)
 {
-    <Row HorizontalGutter="8" VerticalGutter="0">
-        <Column ColumnSize="ColumnSize.Is12">
-            <Field Horizontal="true">
-                <FieldBody ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
-                    <Addons>
-                        <Addon AddonType="AddonType.Start" VerticalAlignment="VerticalAlignment.Middle">
-                            <Button Color="Color.Primary" Disabled="true">
-                                <Blazorise.Icon Name="@FontAwesomeIcons.Filter"></Blazorise.Icon>
-                            </Button>
-                        </Addon>
-                        <Addon AddonType="AddonType.Body">
-                            <Select TValue="TicketType" @bind-SelectedValue="@TicketTypeSel">
-                                @foreach (var item in EnumHelper.GetArray<TicketType>())
-                                {
-                                    <SelectItem Value="@item">@item.GetName()</SelectItem>
-                                }
-                            </Select>
-                        </Addon>
-                    </Addons>
-                </FieldBody>
-                <FieldBody ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
-                    <Addons>
-                        <Addon AddonType="AddonType.Start">
-                            <Button Color="Color.Primary" Disabled="true">
-                                <Blazorise.Icon Name="@FontAwesomeIcons.Filter"></Blazorise.Icon>
-                            </Button>
-                        </Addon>
-                        <Addon AddonType="AddonType.Body">
-                            <Select TValue="TicketStatus?" @bind-SelectedValue="@TicketStatusSel">
-                                <SelectItem></SelectItem>
-                                @foreach (var item in EnumHelper.GetArray<TicketStatus>())
-                                {
-                                    <SelectItem Value="@item">@item.GetName()</SelectItem>
-                                }
-                            </Select>
-                        </Addon>
-                    </Addons>
-                </FieldBody>
-                <FieldBody ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
-                    <Addons>
-                        <Addon AddonType="AddonType.Start">
-                            <Button Color="Color.Primary" Disabled="true">
-                                <Blazorise.Icon Name="@FontAwesomeIcons.SortAmountDown"></Blazorise.Icon>
-                            </Button>
-                        </Addon>
-                        <Addon AddonType="AddonType.Body">
-                            <Select TValue="Order" @bind-SelectedValue="@OrderSel">
-                                @foreach (var item in EnumHelper.GetArray<Order>())
-                                {
-                                    <SelectItem Value="@item">@item.GetName()</SelectItem>
-                                }
-                            </Select>
-                        </Addon>
-                    </Addons>
-                </FieldBody>
-                <FieldBody ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
-                    <Button Color="Color.Primary" Block="true" Clicked="ShowModal" Disabled="!ComponenteUtils.IsAuthenticated">
-                        <Blazorise.Icon Name="@FontAwesomeIcons.Plus"></Blazorise.Icon> @GlobalTranslations.ButtonNew
-                    </Button>
-                </FieldBody>
-            </Field>
-        </Column>
-    </Row>
-    <Loading @ref="LoadingTicket">
-        @foreach (var item in GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel))
-        {
-            <Row>
-                <Column ColumnSize="ColumnSize.IsAuto">
-                    <Div Style="width: 50px; height: 100px;" TextAlignment="TextAlignment.Center" TextWeight="TextWeight.Bold">
-                        <Button Size=" Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Key, VoteType.PlusOne)" Disabled="anyVote(item.Key) || !ComponenteUtils.IsAuthenticated">
-                            <Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.AngleUp"></Blazorise.Icon>
-                        </Button>
-                        @item.TotalVotes
-                        <Button Size="Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Key, VoteType.MinusOne)" Disabled="anyVote(item.Key) || !ComponenteUtils.IsAuthenticated">
-                            <Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.AngleDown"></Blazorise.Icon>
-                        </Button>
-                    </Div>
-                </Column>
-                <Column Margin="Margin.Is1.FromBottom">
-                    <Paragraph Margin="Margin.Is2.FromBottom" TextAlignment="TextAlignment.Justified">
-                        <Heading Size="HeadingSize.Is5">@item.Title</Heading>
-                    </Paragraph>
-                    <Paragraph Margin="Margin.Is2.FromBottom" TextAlignment="TextAlignment.Justified">
-                        @item.Description?.GetResume(150)
-                    </Paragraph>
-                    <Paragraph Margin="Margin.Is2.FromBottom">
-                        <Badge Color="Color.Dark" Margin="Margin.Is1.FromEnd"><Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.Clock"></Blazorise.Icon> @item?.DtInsert.GetElapsedTime()</Badge>
-                        <Badge Color="Color.Dark" Margin="Margin.Is2.FromEnd">@item.TicketType.GetName()</Badge>
-                        @if (item.TicketStatus == TicketStatus.New)
-                        {
-                            <Badge Color="Color.Info"><Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.InfoCircle"></Blazorise.Icon> @item.TicketStatus.GetName()</Badge>
-                        }
-                        else if (item.TicketStatus == TicketStatus.UnderConsideration)
-                        {
-                            <Badge Color="Color.Secondary"><Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.InfoCircle"></Blazorise.Icon> @item.TicketStatus.GetName()</Badge>
-                        }
-                        else if (item.TicketStatus == TicketStatus.Planned)
-                        {
-                            <Badge Color="Color.Primary"><Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.InfoCircle"></Blazorise.Icon> @item.TicketStatus.GetName()</Badge>
-                        }
-                        else if (item.TicketStatus == TicketStatus.Progress)
-                        {
-                            <Badge Color="Color.Warning">@item.TicketStatus.GetName()</Badge>
-                        }
-                        else if (item.TicketStatus == TicketStatus.Done)
-                        {
-                            <Badge Color="Color.Success">@item.TicketStatus.GetName()</Badge>
-                        }
-                        else //Declined
-                        {
-                            <Badge Color="Color.Danger">@item.TicketStatus.GetName()</Badge>
-                        }
-                    </Paragraph>
-                </Column>
-            </Row>
-            @if (item != GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel).Last())
-            {
-                <Divider Margin="Margin.Is0.FromTop.Is2.FromBottom" />
-            }
-        }
-    </Loading>
+    <FeedbackComponent></FeedbackComponent>
 }
 else if (SelectedTab == Tabs.Roadmap)
 {
@@ -201,26 +62,18 @@ else if (SelectedTab == Tabs.Roadmap)
         </Card>
     </CardDeck>*@
 }
+else if (SelectedTab == Tabs.Downloads)
+{
+    <DownloadComponent></DownloadComponent>
+}
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
-
-    private HashSet<TicketModel> tickets = new();
-    private HashSet<TicketVoteModel> myVotes = new();
-    private HashSet<AnnouncementModel> announcements = new();
-
-    private TicketType TicketTypeSel { get; set; } = TicketType.Improvement;
-    private TicketStatus? TicketStatusSel { get; set; }
-    private Order OrderSel { get; set; } = Order.Last;
-
-    public Loading? LoadingAnnouncements { get; set; }
-    public Loading? LoadingTicket { get; set; }
-
     private enum Tabs
     {
         Announcements,
         Feedback,
-        Roadmap
+        Roadmap,
+        Downloads
     }
 
     private Tabs SelectedTab = Tabs.Announcements;
@@ -228,98 +81,5 @@ else if (SelectedTab == Tabs.Roadmap)
     private void ChangeOrder(Tabs tab)
     {
         SelectedTab = tab;
-    }
-
-    private enum Order
-    {
-        [Custom(Name = "OrderLast", ResourceType = typeof(SD.WEB.Modules.Support.Resources.Translations))]
-        Last,
-
-        [Custom(Name = "OrderVoted", ResourceType = typeof(SD.WEB.Modules.Support.Resources.Translations))]
-        Voted
-    }
-
-    protected override async Task<bool> LoadData()
-    {
-        LoadingTicket?.Start();
-        tickets = await TicketApi.GetList();
-        LoadingTicket?.Finish(!GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel).Any());
-
-        if (ComponenteUtils.IsAuthenticated) myVotes = await TicketVoteApi.GetMyVotes();
-
-        LoadingAnnouncements?.Start();
-        announcements = await AnnouncementApi.GetList();
-        LoadingAnnouncements?.Finish(!announcements.Any());
-
-        return true;
-    }
-
-    private List<TicketModel> GetTicketList(TicketType ticketType, TicketStatus? ticketStatus, Order order)
-    {
-        IEnumerable<TicketModel> result;
-
-        if (ticketStatus.HasValue)
-            result = tickets.Where(w => w.TicketType == ticketType & w.TicketStatus == ticketStatus);
-        else
-            result = tickets.Where(w => w.TicketType == ticketType);
-
-        if (order == Order.Last)
-            return result.OrderByDescending(o => o.DtInsert).ToList();
-        else
-            return result.OrderByDescending(o => o.TotalVotes).ToList();
-    }
-
-    public Task ShowModal()
-    {
-        return ModalService.Show<NewTicket>("",
-                x =>
-                {
-                    x.Add(x => x.Inserted, new EventCallbackFactory().Create<TicketModel>(this, (TicketModel model) => tickets.Add(model)));
-                },
-                new ModalInstanceOptions()
-                    {
-                        UseModalStructure = false,
-                        Centered = true,
-                        Size = ModalSize.Default,
-                    });
-    }
-
-    private async Task Vote(string? IdTicket, VoteType voteType)
-    {
-        if (string.IsNullOrEmpty(IdTicket)) throw new ArgumentNullException(nameof(IdTicket));
-
-        try
-        {
-            if (anyVote(IdTicket))
-            {
-                await Toast.Error("Você já votou neste ticket");
-            }
-            else
-            {
-                if (!ComponenteUtils.IsAuthenticated) throw new InvalidDataException("usuário nao autenticado");
-
-                var vote = new TicketVoteModel();
-                vote.SetIds(IdTicket);
-
-                vote.VoteType = voteType;
-                vote.IdVotedUser = ComponenteUtils.GetIdUser();
-
-                await TicketVoteApi.Vote(vote);
-                tickets.Single(s => s.Key == IdTicket.ToString()).Vote(voteType);
-
-                myVotes.Add(vote);
-
-                await Toast.Success("Voto registrado com sucesso");
-            }
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
-    }
-
-    private bool anyVote(string? IdTicket)
-    {
-        return myVotes.Any(a => a.Key == IdTicket & a.IdVotedUser == ComponenteUtils.GetIdUser());
     }
 }
