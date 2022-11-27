@@ -25,7 +25,9 @@
     protected override async Task LoadData()
     {
         LoadingAnnouncements?.Start();
+
         announcements = await AnnouncementApi.GetList();
+
         LoadingAnnouncements?.Finish(!announcements.Any());
     }
 }

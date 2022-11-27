@@ -74,11 +74,11 @@
         <Row>
             <Column ColumnSize="ColumnSize.IsAuto">
                 <Div Style="width: 50px; height: 100px;" TextAlignment="TextAlignment.Center" TextWeight="TextWeight.Bold">
-                    <Button Size=" Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Key, VoteType.PlusOne)" Disabled="anyVote(item.Key) || !IsUserAuthenticated">
+                    <Button Size=" Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Key, VoteType.PlusOne)" Disabled="anyVote(item.Key, IdUser) || !IsUserAuthenticated">
                         <Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.AngleUp"></Blazorise.Icon>
                     </Button>
                     @item.TotalVotes
-                    <Button Size="Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Key, VoteType.MinusOne)" Disabled="anyVote(item.Key) || !IsUserAuthenticated">
+                    <Button Size="Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Key, VoteType.MinusOne)" Disabled="anyVote(item.Key, IdUser) || !IsUserAuthenticated">
                         <Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.AngleDown"></Blazorise.Icon>
                     </Button>
                 </Div>
@@ -151,13 +151,14 @@
 
     protected override async Task LoadData()
     {
+        LoadingTicket?.Start();
+
         IsUserAuthenticated = await AppState.IsUserAuthenticated();
         IdUser = await AppState.GetIdUser();
-
-        LoadingTicket?.Start();
         tickets = await TicketApi.GetList();
-        LoadingTicket?.Finish(!GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel).Any());
         if (IsUserAuthenticated) myVotes = await TicketVoteApi.GetMyVotes();
+
+        LoadingTicket?.Finish(!GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel).Any());
     }
 
     private List<TicketModel> GetTicketList(TicketType ticketType, TicketStatus? ticketStatus, Order order)
@@ -196,7 +197,7 @@
 
         try
         {
-            if (anyVote(IdTicket))
+            if (anyVote(IdTicket, IdUser))
             {
                 await Toast.Error("Você já votou neste ticket");
             }
@@ -222,8 +223,5 @@
         }
     }
 
-    private bool anyVote(string? IdTicket)
-    {
-        return myVotes.Any(a => a.Key == IdTicket & a.IdVotedUser == IdUser);
-    }
+    private bool anyVote(string? IdTicket, string IdUser) => myVotes.Any(a => a.Key == IdTicket & a.IdVotedUser == IdUser);
 }

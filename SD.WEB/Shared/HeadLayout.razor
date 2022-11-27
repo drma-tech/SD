@@ -1,4 +1,4 @@
-﻿@inherits ComponenteCore<HeadLayout>
+﻿@inherits ComponenteNoDataCore<HeadLayout>
 @inject NavigationManager Nav
 
 <Bar Mode="BarMode.Horizontal" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark">
@@ -63,17 +63,12 @@
     private IReadOnlyList<EnumObject> Regions { get; set; } = Array.Empty<EnumObject>();
     private IReadOnlyList<EnumObject> Languages { get; set; } = Array.Empty<EnumObject>();
 
-    protected override async Task LoadData()
+    protected override void OnInitialized()
     {
-        try
-        {
-            Regions = EnumHelper.GetObjArray<Region>();
-            Languages = EnumHelper.GetObjArray<Language>().Where(w => !string.IsNullOrEmpty(w.Name)).ToArray();
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
+        base.OnInitialized();
+
+        Regions = EnumHelper.GetObjArray<Region>();
+        Languages = EnumHelper.GetObjArray<Language>().Where(w => !string.IsNullOrEmpty(w.Name)).ToArray();
     }
 
     private void Logout()

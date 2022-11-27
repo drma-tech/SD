@@ -56,13 +56,10 @@ namespace SD.WEB.Core
             }
         }
 
-        public async Task<string> GetIdUser()
+        public async Task<string?> GetIdUser()
         {
             if (Authenticated.HasValue)
             {
-                if (string.IsNullOrEmpty(User)) throw new InvalidOperationException("user not found");
-                if (Authenticated.HasValue && !Authenticated.Value) throw new InvalidOperationException("user not authenticated");
-
                 return User;
             }
             else
@@ -72,9 +69,6 @@ namespace SD.WEB.Core
 
                 Authenticated = user.Identity != null && user.Identity.IsAuthenticated;
                 User = user.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
-                if (string.IsNullOrEmpty(User)) throw new InvalidOperationException("user not found");
-                if (Authenticated.HasValue && !Authenticated.Value) throw new InvalidOperationException("user not authenticated");
 
                 return User;
             }

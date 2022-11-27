@@ -37,27 +37,20 @@
 
     protected override async Task LoadData()
     {
-        try
-        {
-            LoadingNews?.Start();
+        LoadingNews?.Start();
 
-            var cache = await CacheApi.Get("lastnews");
-            if (cache == null)
-            {
-                News = await NewsApi.Get();
-                await CacheApi.Add(new SD.Shared.Models.CacheModel("lastnews", News));
-            }
-            else
-            {
-                News = (Flixster?)cache.Value;
-            }
-
-            LoadingNews?.Finish(News == null);
-        }
-        catch (Exception ex)
+        var cache = await CacheApi.Get("lastnews");
+        if (cache == null)
         {
-            ex.ProcessException(Toast, Logger);
+            News = await NewsApi.Get();
+            await CacheApi.Add(new SD.Shared.Models.CacheModel("lastnews", News));
         }
+        else
+        {
+            News = (Flixster?)cache.Value;
+        }
+
+        LoadingNews?.Finish(News == null);
     }
 
     private async Task OpenCompleteList()

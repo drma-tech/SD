@@ -66,23 +66,20 @@
     private async void ChangeRegion()
     {
         LoadingProvider?.Start();
+
         await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
         StateHasChanged(); //reload title
+
         LoadingProvider?.Finish(AllProviders == null);
     }
 
     protected override async Task LoadData()
     {
-        try
-        {
-            LoadingProvider?.Start();
-            AllProviders = await AllProvidersApi.GetAll();
-            LoadingProvider?.Finish(AllProviders == null);
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
+        LoadingProvider?.Start();
+
+        AllProviders = await AllProvidersApi.GetAll();
+
+        LoadingProvider?.Finish(AllProviders == null);
     }
 
     private async Task OpenCompleteList()

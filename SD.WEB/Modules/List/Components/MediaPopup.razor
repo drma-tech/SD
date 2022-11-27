@@ -426,20 +426,13 @@
 
     protected override async Task LoadData()
     {
-        try
-        {
-            LoadingList?.Start();
+        LoadingList?.Start();
 
-            media = await TmdbApi.GetMediaDetail(tmdb_id, type);
-            Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
-            AllProviders = await AllProvidersApi.GetAll();
+        media = await TmdbApi.GetMediaDetail(tmdb_id, type);
+        Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
+        AllProviders = await AllProvidersApi.GetAll();
 
-            LoadingList?.Finish(media == null);
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
+        LoadingList?.Finish(media == null);
     }
 
     public async Task HideModal()

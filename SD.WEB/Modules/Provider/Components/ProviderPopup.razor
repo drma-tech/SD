@@ -122,14 +122,7 @@
 
     protected override async Task LoadData()
     {
-        try
-        {
-            myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
+        myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
     }
 
     private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)
