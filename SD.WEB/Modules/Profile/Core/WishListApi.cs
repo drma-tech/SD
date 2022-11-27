@@ -14,9 +14,9 @@ namespace SD.WEB.Modules.Profile.Core
             public const string Post = "WishList/Post";
         }
 
-        public async Task<WishList?> Get()
+        public async Task<WishList?> Get(bool IsUserAuthenticated)
         {
-            if (ComponenteUtils.IsAuthenticated)
+            if (IsUserAuthenticated)
             {
                 return await GetAsync<WishList>(Endpoint.Get, false);
             }

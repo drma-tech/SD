@@ -1,187 +1,20 @@
 ﻿@page "/Profile"
 <PageTitle>SD - Profile</PageTitle>
-@inherits PageCore<Profile>
+@inherits PageNoDataCore<Profile>
 
-@using SD.Shared.Model
-@using System.Text.Json
-@using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Provider.Core
-@inject MyProvidersApi MyProvidersApi
-@inject AllProvidersApi AllProvidersApi
+<MyProviderComponent></MyProviderComponent>
 
-<Alert Visible="true" Color="Color.Secondary">
-    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.MyProviders.Format(myProviders?.Items.Count ?? 0)</AlertMessage>
-</Alert>
-<AuthorizeView>
-    <Authorized>
-        <Loading @ref="LoadingProvider">
-            <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 215px; overflow: auto;">
-                @foreach (var item in myProviders?.Items ?? new List<MyProvidersItem>())
-                {
-                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                        <Card>
-                            <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                   onclick="@(()=>ShowProviderPopup(item))" Style="cursor: pointer;"></CardImage>
-                        </Card>
-                    </Column>
-                }
-            </Row>
-        </Loading>
-    </Authorized>
-    <NotAuthorized>
-        <Alert Visible="true" Color="Color.Primary">
-            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
-        </Alert>
-    </NotAuthorized>
-</AuthorizeView>
-
-<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
-    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.MyMovieWishlist.Format(AppState.WishList?.Movies.Count() ?? 0)</AlertMessage>
-</Alert>
-<AuthorizeView>
-    <Authorized>
-        <Loading @ref="LoadingWishlistMovie">
-            <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 315px; overflow: auto;">
-                @foreach (var item in AppState.WishList?.Movies ?? new List<WishListItem>())
-                {
-                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                        <Card>
-                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
-                            <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowMediaPopup(item, MediaType.movie))" Style="cursor: pointer;"></CardImage>
-                        </Card>
-                    </Column>
-                }
-            </Row>
-        </Loading>
-    </Authorized>
-    <NotAuthorized>
-        <Alert Visible="true" Color="Color.Primary">
-            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
-        </Alert>
-    </NotAuthorized>
-</AuthorizeView>
-
-<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
-    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.MyShowWishlist.Format(AppState.WishList?.Shows.Count() ?? 0)</AlertMessage>
-</Alert>
-<AuthorizeView>
-    <Authorized>
-        <Loading @ref="LoadingWishlistShow">
-            <Row HorizontalGutter="4" VerticalGutter="4" Style="max-height: 315px; overflow: auto;">
-                @foreach (var item in AppState.WishList?.Shows ?? new List<WishListItem>())
-                {
-                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                        <Card>
-                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
-                            <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowMediaPopup(item, MediaType.tv))" Style="cursor: pointer;"></CardImage>
-                        </Card>
-                    </Column>
-                }
-            </Row>
-        </Loading>
-    </Authorized>
-    <NotAuthorized>
-        <Alert Visible="true" Color="Color.Primary">
-            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
-        </Alert>
-    </NotAuthorized>
-</AuthorizeView>
+<MyWishListComponent></MyWishListComponent>
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
+    //[Parameter]
+    //[SupplyParameterFromQuery(Name = "Fake")]
+    //public bool Fake { get; set; } = false;
 
-    [Parameter]
-    [SupplyParameterFromQuery(Name = "Fake")]
-    public bool Fake { get; set; } = false;
-
-    private MyProviders? myProviders { get; set; }
-    private AllProviders? allProviders;
-
-    public Loading? LoadingProvider { get; set; }
-    public Loading? LoadingWishlistMovie { get; set; }
-    public Loading? LoadingWishlistShow { get; set; }
-
-    protected override void OnInitialized()
-    {
-        AppState.WishListChanged += () =>
-        {
-            LoadingWishlistMovie?.Finish(!AppState.WishList?.Movies.Any() ?? true);
-            LoadingWishlistShow?.Finish(!AppState.WishList?.Shows.Any() ?? true);
-            StateHasChanged();
-        };
-        AppState.WatchedListChanged += StateHasChanged;
-
-        base.OnInitialized();
-    }
-
-    protected override async Task LoadData()
-    {
-        try
-        {
-            if (Fake) //test for generate images
-            {
-                await GenerateFakeData();
-            }
-            else
-            {
-                LoadingProvider?.Start();
-                myProviders = await MyProvidersApi.Get();
-                LoadingProvider?.Finish(!myProviders?.Items.Any() ?? true);
-
-                LoadingWishlistMovie?.Start();
-                LoadingWishlistShow?.Start();
-                AppState.ChangeWishList(await WishListApi.Get());
-                LoadingWishlistMovie?.Finish(!AppState.WishList?.Movies.Any() ?? true);
-                LoadingWishlistShow?.Finish(!AppState.WishList?.Shows.Any() ?? true);
-
-                AppState.ChangeWatchedList(await WatchedListApi.Get());
-            }
-
-            allProviders = await AllProvidersApi.GetAll();
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
-    }
-
-    public Task ShowProviderPopup(MyProvidersItem item)
-    {
-        return ModalService.Show<Provider.Components.ProviderPopup>(item.name,
-            x =>
-            {
-                x.Add(x => x.provider, allProviders?.Items.FirstOrDefault(f => f.id == item.id));
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.ExtraLarge,
-                });
-    }
-
-    public Task ShowMediaPopup(WishListItem item, MediaType type)
-    {
-        return ModalService.Show<List.Components.MediaPopup>(item.name,
-            x =>
-            {
-                x.Add(x => x.tmdb_id, item.id);
-                x.Add(x => x.type, type);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.Large,
-                });
-    }
-
-    private async Task GenerateFakeData()
-    {
-        myProviders = await Http.GetFromJsonAsync<MyProviders>("/Data/MyProvider.json");
-        AppState.ChangeWishList(await Http.GetFromJsonAsync<WishList>("/Data/WishList.json"));
-        AppState.ChangeWatchedList(await Http.GetFromJsonAsync<WatchedList>("/Data/WatchedList.json"));
-    }
+    //private async Task GenerateFakeData()
+    //{
+    //    myProviders = await Http.GetFromJsonAsync<MyProviders>("/Data/MyProvider.json");
+    //    AppState.ChangeWishList(await Http.GetFromJsonAsync<WishList>("/Data/WishList.json"));
+    //    AppState.ChangeWatchedList(await Http.GetFromJsonAsync<WatchedList>("/Data/WatchedList.json"));
+    //}
 }

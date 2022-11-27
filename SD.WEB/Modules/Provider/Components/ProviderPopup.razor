@@ -88,13 +88,13 @@
 <ModalFooter>
     @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
     {
-        <Button Color="Color.Danger" Clicked="Remove" Disabled="!ComponenteUtils.IsAuthenticated">
+        <Button Color="Color.Danger" Clicked="Remove" Disabled="!IsUserAuthenticated">
             <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
         </Button>
     }
     else
     {
-        <Button Color="Color.Primary" Clicked="Add" Disabled="!ComponenteUtils.IsAuthenticated">
+        <Button Color="Color.Primary" Clicked="Add" Disabled="!IsUserAuthenticated">
             <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
         </Button>
     }
@@ -109,21 +109,22 @@
     string selectedTab = "About";
 
     private MyProviders? myProviders { get; set; }
+    public bool IsUserAuthenticated { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await base.OnInitializedAsync();
 
         if (provider == null) throw new ArgumentNullException(nameof(provider));
 
+        IsUserAuthenticated = await AppState.IsUserAuthenticated();
     }
 
     protected override async Task LoadData()
     {
         try
         {
-            myProviders = await MyProvidersApi.Get();
-
+            myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
         }
         catch (Exception ex)
         {

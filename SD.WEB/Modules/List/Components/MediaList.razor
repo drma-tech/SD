@@ -22,7 +22,7 @@
 }
 <Loading @ref="LoadingList">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
-        @for (int i = 1; i <= Items.Take(10).Count(); i++)
+        @for (int i = 1; i <= Items.Take(GetTotalItems).Count(); i++)
         {
             var item = Items.ElementAt(i - 1);
             <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
@@ -86,12 +86,12 @@
                     }
                 </Card>
             </Column>
-            if ((i % 10) == 0)
+            if ((i % GetTotalItems) == 0)
             {
                 <div class="w-100"></div>
             }
         }
-        @for (int i = 1; i <= (10 - Items.Count % 10); i++)
+        @for (int i = 1; i <= (GetTotalItems - Items.Count % GetTotalItems); i++)
         {
             <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
 
@@ -115,10 +115,11 @@
     [Parameter] public bool IsIMDB { get; set; } = false;
 
     [Parameter] public bool MultiplesRegions { get; set; } = false;
-    [Parameter] public bool MultipleLanguages { get; set; } = true;    
+    [Parameter] public bool MultipleLanguages { get; set; } = true;
 
     public MediaType TypeSelected { get; set; } = MediaType.movie;
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
+    private int GetTotalItems => AppStateStatic.OnFullHD ? 10 : 6;
 
     public HashSet<MediaDetail> Items { get; set; } = new();
 

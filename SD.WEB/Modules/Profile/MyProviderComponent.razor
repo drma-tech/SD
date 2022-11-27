@@ -1,0 +1,66 @@
+﻿@using SD.WEB.Modules.Profile.Core;
+@using SD.WEB.Modules.Provider.Core;
+@inherits ComponenteCore<MyProviderComponent>
+
+@inject MyProvidersApi MyProvidersApi
+@inject AllProvidersApi AllProvidersApi
+
+<Alert Visible="true" Color="Color.Secondary">
+    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.MyProviders.Format(myProviders?.Items.Count ?? 0)</AlertMessage>
+</Alert>
+<AuthorizeView>
+    <Authorized>
+        <Loading @ref="LoadingProvider">
+            <Row HorizontalGutter="4" VerticalGutter="4">
+                @foreach (var item in myProviders?.Items.Take(GetTotalItems) ?? new List<MyProvidersItem>())
+                {
+                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                        <Card>
+                            <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                                   onclick="@(()=>ShowProviderPopup(item))" Style="cursor: pointer;"></CardImage>
+                        </Card>
+                    </Column>
+                }
+            </Row>
+        </Loading>
+    </Authorized>
+    <NotAuthorized>
+        <Alert Visible="true" Color="Color.Primary">
+            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
+        </Alert>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    private AllProviders? allProviders { get; set; }
+    private MyProviders? myProviders { get; set; }
+    public Loading? LoadingProvider { get; set; }
+
+    private int GetTotalItems => AppStateStatic.OnFullHD ? 12 : 6;
+
+    protected override async Task LoadData()
+    {
+        LoadingProvider?.Start();
+        myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
+        LoadingProvider?.Finish(!myProviders?.Items.Any() ?? true);
+    }
+
+    public async Task ShowProviderPopup(MyProvidersItem item)
+    {
+        if (allProviders == null) allProviders = await AllProvidersApi.GetAll();
+
+        await ModalService.Show<Provider.Components.ProviderPopup>(item.name,
+            x =>
+            {
+                x.Add(x => x.provider, allProviders?.Items.FirstOrDefault(f => f.id == item.id));
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.ExtraLarge,
+                });
+    }
+}

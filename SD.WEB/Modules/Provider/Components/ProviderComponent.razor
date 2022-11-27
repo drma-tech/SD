@@ -52,7 +52,7 @@
         p.regions.Any(a => a == AppStateStatic.Region) &
         p.enabled &
         (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true))
-        .Take(18) ?? Array.Empty<ProviderModel>();
+        .Take(GetTotalItems) ?? Array.Empty<ProviderModel>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -60,6 +60,8 @@
 
         await base.OnInitializedAsync();
     }
+
+    private int GetTotalItems => AppStateStatic.OnMobile ? 8 : 18;
 
     private async void ChangeRegion()
     {

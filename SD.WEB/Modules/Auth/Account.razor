@@ -57,7 +57,7 @@
 
     protected override async Task LoadData()
     {
-        if (ComponenteUtils.IsAuthenticated)
+        if (await AppState.IsUserAuthenticated())
         {
             principal = await PrincipalApi.Get();
 

@@ -14,9 +14,9 @@ namespace SD.WEB.Modules.Profile.Core
             public const string Post = "MyProviders/Post";
         }
 
-        public async Task<MyProviders?> Get()
+        public async Task<MyProviders?> Get(bool IsUserAuthenticated)
         {
-            if (ComponenteUtils.IsAuthenticated)
+            if (IsUserAuthenticated)
             {
                 return await GetAsync<MyProviders>(Endpoint.Get, false);
             }

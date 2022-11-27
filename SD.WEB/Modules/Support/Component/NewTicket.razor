@@ -27,7 +27,7 @@
             <MemoEdit @bind-Text="@Ticket.Description" Rows="7" MaxLength="512" Placeholder="@CustomAttributeHelper.GetCustomAttribute(()=>Ticket.Description)?.Prompt"></MemoEdit>
             <ValidationMessage For="@(()=>Ticket.Description)"></ValidationMessage>
         </div>
-        <Button Type="ButtonType.Submit" Color="Color.Primary" Disabled="!ComponenteUtils.IsAuthenticated">@GlobalTranslations.ButtonSave</Button>
+        <Button Type="ButtonType.Submit" Color="Color.Primary" Disabled="!IsUserAuthenticated">@GlobalTranslations.ButtonSave</Button>
         <Button Clicked="@ModalService.Hide" Color="Color.Secondary">@GlobalTranslations.ButtonCancel</Button>
         <Button Clicked="@ImportLastError" Color="Color.Danger" Float="Float.End" Disabled="(TicketType == TicketType.Improvement)">@Resources.Translations.ImportLastError</Button>
     </EditForm>
@@ -40,6 +40,15 @@
     [Parameter] public EventCallback<TicketModel> Inserted { get; set; }
 
     [Inject] public IModalService ModalService { get; set; } = default!;
+
+    public bool IsUserAuthenticated { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        IsUserAuthenticated = await AppState.IsUserAuthenticated();
+    }
 
     private void ImportLastError()
     {
@@ -70,11 +79,9 @@
     {
         try
         {
-            if (!ComponenteUtils.IsAuthenticated) throw new InvalidDataException("usuário nao autenticado");
-
             Ticket.TicketType = TicketType;
             Ticket.TicketStatus = TicketStatus.New;
-            Ticket.SetIds(ComponenteUtils.GetIdUser());
+            Ticket.SetIds(await AppState.GetIdUser());
 
             Ticket = await TicketApi.Insert(Ticket) ?? new();
 

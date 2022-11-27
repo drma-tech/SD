@@ -14,6 +14,12 @@ namespace SD.WEB.Core
         public static Action? RegionChanged { get; set; }
         public static Action? LanguageChanged { get; set; }
 
+        public static bool OnMobile { get; set; }
+        public static bool OnTablet { get; set; }
+        public static bool OnDesktop { get; set; }
+        public static bool OnWidescreen { get; set; }
+        public static bool OnFullHD { get; set; }
+
         static AppStateStatic()
         {
             Enum.TryParse(typeof(Region), RegionInfo.CurrentRegion.Name, out object? region);

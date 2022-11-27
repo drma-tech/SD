@@ -12,9 +12,9 @@
             public const string Post = "WatchedList/Post";
         }
 
-        public async Task<WatchedList?> Get()
+        public async Task<WatchedList?> Get(bool IsUserAuthenticated)
         {
-            if (ComponenteUtils.IsAuthenticated)
+            if (IsUserAuthenticated)
             {
                 return await GetAsync<WatchedList>(Endpoint.Get, false);
             }

@@ -64,7 +64,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<ImdbTopRatedApi>();
     collection.AddScoped<ImdbUpcomingApi>();
 
-    collection.AddSingleton<AppState>();
+    collection.AddScoped<AppState>();
 
     collection.AddLogging(logging =>
     {
