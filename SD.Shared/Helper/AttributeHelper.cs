@@ -4,10 +4,10 @@ namespace SD.Shared.Helper
 {
     public static class AttributeHelper
     {
-        public static DateTime? GetDate(this string value)
+        public static DateTime? GetDate(this string? value)
         {
             if (string.IsNullOrEmpty(value))
-                return null;
+                return DateTime.MaxValue;
             else if (!DateTime.TryParse(value, out _))
                 return DateTime.MinValue;
             else

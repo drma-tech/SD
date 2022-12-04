@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace SD.WEB.Modules.List.Core
+﻿namespace SD.WEB.Modules.List.Core
 {
     public enum EnumLists
     {

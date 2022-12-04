@@ -35,8 +35,10 @@ namespace SD.Shared.Models.Support
             DtUpdate = DateTime.UtcNow;
         }
 
-        public override void SetIds(string id)
+        public override void SetIds(string? id)
         {
+            if (id == null) throw new ArgumentNullException(nameof(id));
+
             SetValues(Guid.NewGuid().ToString());
             IdUserOwner = id.ToString();
         }

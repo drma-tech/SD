@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Model
+﻿namespace SD.Shared.Models
 {
     public class MediaDetail
     {
@@ -12,6 +12,10 @@
         public int? runtime { get; set; }
         public string? homepage { get; set; }
         public string? comments { get; set; }
+
+        public int? collectionId { get; set; }
+        public string? collectionName { get; set; }
+        public string? collectionLogo { get; set; }
 
         public List<Video> Videos { get; set; } = new();
         public List<string> Genres { get; set; } = new();

@@ -5,21 +5,24 @@
 <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
     <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.MyMovieWishlist.Format(AppState.WishList?.Movies.Count() ?? 0)</AlertMessage>
 
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))" Disabled="(!AppState.WishList?.Movies.Any()??true)" Class="ml-1">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
+    </Button>
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.movie))" Disabled="(!AppState.WishList?.Movies.Any()??true)">
+        <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
 </Alert>
 <AuthorizeView>
     <Authorized>
-        <Loading @ref="LoadingWishlistMovie">
+        <Loading @ref="LoadingMovie">
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in AppState.WishList?.Movies.Take(GetTotalItems) ?? new List<WishListItem>())
                 {
-                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                    <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is4.OnDesktop.Is6.OnMobile">
                         <Card>
                             <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
                             <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowMediaPopup(item, MediaType.movie))" Style="cursor: pointer;"></CardImage>
+                                   onclick="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.movie))" Style="cursor: pointer;"></CardImage>
                         </Card>
                     </Column>
                 }
@@ -36,21 +39,24 @@
 <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
     <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.MyShowWishlist.Format(AppState.WishList?.Shows.Count() ?? 0)</AlertMessage>
 
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))" Disabled="(!AppState.WishList?.Shows.Any()??true)" Class="ml-1">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
+    </Button>
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.tv))" Disabled="(!AppState.WishList?.Shows.Any()??true)">
+        <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
 </Alert>
 <AuthorizeView>
     <Authorized>
-        <Loading @ref="LoadingWishlistShow">
+        <Loading @ref="LoadingShow">
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in AppState.WishList?.Shows.Take(GetTotalItems) ?? new List<WishListItem>())
                 {
-                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                    <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is4.OnDesktop.Is6.OnMobile">
                         <Card>
                             <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
                             <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowMediaPopup(item, MediaType.tv))" Style="cursor: pointer;"></CardImage>
+                                   onclick="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.tv))" Style="cursor: pointer;"></CardImage>
                         </Card>
                     </Column>
                 }
@@ -67,17 +73,17 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    public Loading? LoadingWishlistMovie { get; set; }
-    public Loading? LoadingWishlistShow { get; set; }
+    public Loading? LoadingMovie { get; set; }
+    public Loading? LoadingShow { get; set; }
 
-    private int GetTotalItems => AppStateStatic.OnFullHD ? 12 : (AppStateStatic.OnTablet ? 6 : 8);
+    private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : (AppStateStatic.OnTablet ? 6 : 8);
 
     protected override void OnInitialized()
     {
         AppState.WishListChanged += () =>
         {
-            LoadingWishlistMovie?.Finish(!AppState.WishList?.Movies.Any() ?? true);
-            LoadingWishlistShow?.Finish(!AppState.WishList?.Shows.Any() ?? true);
+            LoadingMovie?.Finish(!AppState.WishList?.Movies.Any() ?? true);
+            LoadingShow?.Finish(!AppState.WishList?.Shows.Any() ?? true);
             StateHasChanged();
         };
         AppState.WatchedListChanged += StateHasChanged;
@@ -87,14 +93,14 @@
 
     protected override async Task LoadData()
     {
-        LoadingWishlistMovie?.Start();
-        LoadingWishlistShow?.Start();
+        LoadingMovie?.Start();
+        LoadingShow?.Start();
 
         AppState.ChangeWishList(await WishListApi.Get(await AppState.IsUserAuthenticated()));
         AppState.ChangeWatchedList(await WatchedListApi.Get(await AppState.IsUserAuthenticated()));
 
-        LoadingWishlistMovie?.Finish(!AppState.WishList?.Movies.Any() ?? true);
-        LoadingWishlistShow?.Finish(!AppState.WishList?.Shows.Any() ?? true);
+        LoadingMovie?.Finish(!AppState.WishList?.Movies.Any() ?? true);
+        LoadingShow?.Finish(!AppState.WishList?.Shows.Any() ?? true);
     }
 
     private async Task OpenCompleteList(MediaType mediaType)
@@ -112,12 +118,34 @@
             });
     }
 
-    public Task ShowMediaPopup(WishListItem item, MediaType type)
+    public async Task ChooseRandomTitle(MediaType type)
     {
-        return ModalService.Show<List.Components.MediaPopup>(item.name,
+        if (AppState.WishList == null) return;
+
+        var random = new Random();
+
+        if (type == MediaType.movie)
+        {
+            var index = random.Next(AppState.WishList.Movies.Count);
+            var media = AppState.WishList.Movies.ToList()[index];
+            await ShowMediaPopup(media?.id, media?.name, MediaType.movie);
+        }
+        else
+        {
+            var index = random.Next(AppState.WishList.Shows.Count);
+            var media = AppState.WishList.Shows.ToList()[index];
+            await ShowMediaPopup(media?.id, media?.name, MediaType.tv);
+        }
+    }
+
+    public Task ShowMediaPopup(string? tmdb_id, string? name, MediaType type)
+    {
+        if (string.IsNullOrEmpty(tmdb_id)) return default!;
+
+        return ModalService.Show<List.Components.MediaPopup>(name,
             x =>
             {
-                x.Add(x => x.tmdb_id, item.id);
+                x.Add(x => x.tmdb_id, tmdb_id);
                 x.Add(x => x.type, type);
             },
             new ModalInstanceOptions()

@@ -4,7 +4,14 @@
 
 <MyProviderComponent></MyProviderComponent>
 
-<MyWishListComponent></MyWishListComponent>
+<Row HorizontalGutter="8" VerticalGutter="8">
+    <Column ColumnSize="ColumnSize.IsHalf">
+        <MyWishListComponent></MyWishListComponent>
+    </Column>
+    <Column ColumnSize="ColumnSize.IsHalf">
+        <MyWatchingListComponent></MyWatchingListComponent>
+    </Column>
+</Row>
 
 @code {
     //[Parameter]

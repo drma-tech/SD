@@ -1,5 +1,5 @@
 ﻿@using SD.WEB.Modules.List.Core
-@using SD.Shared.Model
+@using SD.Shared.Models
 @using SD.WEB.Modules.List.Interface;
 @using SD.WEB.Modules.Profile.Core
 @inherits ComponenteNoDataCore<CompleteListPopup>
@@ -7,7 +7,7 @@
 
 <ModalHeader>
     <ModalTitle>@(List != null ? List.GetName() : TitleHead)</ModalTitle>
-        <CloseButton Clicked="HideModal" />
+        <CloseButton />
     </ModalHeader>
     <ModalBody MaxHeight="70">
         <Row HorizontalGutter="4" VerticalGutter="4">
@@ -116,7 +116,7 @@
     protected override async Task OnInitializedAsync()
     {
         try
-        {           
+        {
             if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
             //if (!string.IsNullOrEmpty(list_id) && !NextPage.HasDelegate) throw new ArgumentNullException(nameof(NextPage));
             //if (NextPage.HasDelegate && string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));

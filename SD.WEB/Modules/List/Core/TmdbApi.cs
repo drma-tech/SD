@@ -48,17 +48,24 @@ namespace SD.WEB.Modules.List.Core
 
                     if (item.belongs_to_collection != null)
                     {
-                        var collection = await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" + item.belongs_to_collection.id.ToString().ConfigureParameters(parameter), true);
+                        var collection = await GetCollection(item.belongs_to_collection.id.ToString(), parameter);// await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" + item.belongs_to_collection.id.ToString().ConfigureParameters(parameter), true);
 
-                        foreach (var part in collection?.parts ?? new())
+                        if (collection != null)
                         {
-                            obj_return.Collection.Add(new Collection
+                            obj_return.collectionId = collection.id;
+                            obj_return.collectionName = collection.name;
+                            obj_return.collectionLogo = collection.poster_path;
+
+                            foreach (var part in collection.parts ?? new())
                             {
-                                id = part.id.ToString(),
-                                title = part.title,
-                                release_date = part.release_date.GetDate(),
-                                poster_small= string.IsNullOrEmpty(part.poster_path) ? null : TmdbOptions.SmallPosterPath + part.poster_path
-                            });
+                                obj_return.Collection.Add(new Collection
+                                {
+                                    id = part.id.ToString(),
+                                    title = part.title,
+                                    release_date = part.release_date.GetDate(),
+                                    poster_small = string.IsNullOrEmpty(part.poster_path) ? null : TmdbOptions.SmallPosterPath + part.poster_path
+                                });
+                            }
                         }
                     }
                 }
@@ -99,6 +106,13 @@ namespace SD.WEB.Modules.List.Core
             }
 
             return obj_return;
+        }
+
+        public async Task<TmdbCollection?> GetCollection(string? collectionId, Dictionary<string, string> parameters)
+        {
+            if (collectionId == null) return default;
+
+            return await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" + collectionId.ConfigureParameters(parameters), true);
         }
 
         public async Task<MediaProviders?> GetWatchProvidersList(string? tmdb_id, MediaType? type)

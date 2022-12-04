@@ -44,12 +44,12 @@
         base.OnInitialized();
     }
 
-    private List<WishListItem> GetWishList()
+    private HashSet<WishListItem> GetWishList()
     {
         if (MediaType == MediaType.movie)
-            return AppState.WishList?.Movies ?? new List<WishListItem>();
+            return AppState.WishList?.Movies ?? new HashSet<WishListItem>();
         else
-            return AppState.WishList?.Shows ?? new List<WishListItem>();
+            return AppState.WishList?.Shows ?? new HashSet<WishListItem>();
     }
 
     protected override async Task LoadData()

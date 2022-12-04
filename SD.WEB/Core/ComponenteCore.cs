@@ -13,6 +13,7 @@ namespace SD.WEB.Core
         [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
         [Inject] protected WatchedListApi WatchedListApi { get; set; } = default!;
         [Inject] protected WishListApi WishListApi { get; set; } = default!;
+        [Inject] protected WatchingListApi WatchingListApi { get; set; } = default!;
         [Inject] protected AppState AppState { get; set; } = default!;
     }
 
@@ -62,9 +63,6 @@ namespace SD.WEB.Core
                         Navigation.NavigateTo("/ProfilePrincipal");
                     }
                 }
-
-                AppState.ChangeWishList(await WishListApi.Get(await AppState.IsUserAuthenticated()));
-                AppState.ChangeWatchedList(await WatchedListApi.Get(await AppState.IsUserAuthenticated()));
             }
             catch (Exception ex)
             {
@@ -91,9 +89,6 @@ namespace SD.WEB.Core
                         Navigation.NavigateTo("/ProfilePrincipal");
                     }
                 }
-
-                AppState.ChangeWishList(await WishListApi.Get(await AppState.IsUserAuthenticated()));
-                AppState.ChangeWatchedList(await WatchedListApi.Get(await AppState.IsUserAuthenticated()));
             }
             catch (Exception ex)
             {

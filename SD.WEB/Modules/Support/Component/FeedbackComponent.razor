@@ -223,5 +223,5 @@
         }
     }
 
-    private bool anyVote(string? IdTicket, string IdUser) => myVotes.Any(a => a.Key == IdTicket & a.IdVotedUser == IdUser);
+    private bool anyVote(string? IdTicket, string? IdUser) => myVotes.Any(a => a.Key == IdTicket & a.IdVotedUser == IdUser);
 }

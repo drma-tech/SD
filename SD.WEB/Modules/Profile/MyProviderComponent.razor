@@ -45,6 +45,7 @@
         LoadingProvider?.Start();
 
         myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
+        StateHasChanged();
 
         LoadingProvider?.Finish(!myProviders?.Items.Any() ?? true);
     }

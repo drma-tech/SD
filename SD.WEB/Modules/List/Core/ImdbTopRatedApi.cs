@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Model.List.Imdb;
 using SD.WEB.Modules.List.Interface;
-using System.Globalization;
 
 namespace SD.WEB.Modules.List.Core
 {

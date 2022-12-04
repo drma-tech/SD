@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using SD.Shared.Models;
-using SD.Shared.Models.News;
 using System;
 using System.Linq;
 using System.Threading;

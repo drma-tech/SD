@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Model
+﻿namespace SD.Shared.Models
 {
     public class AllProviders : DocumentBase
     {

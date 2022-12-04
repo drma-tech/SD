@@ -8,9 +8,11 @@ namespace SD.WEB.Core
 
         public WishList? WishList { get; private set; }
         public WatchedList? WatchedList { get; private set; }
+        public WatchingList? WatchingList { get; private set; }
 
         public Action? WishListChanged { get; set; }
         public Action? WatchedListChanged { get; set; }
+        public Action? WatchingListChanged { get; set; }
 
         public void ChangeWishList(WishList? list)
         {
@@ -22,6 +24,12 @@ namespace SD.WEB.Core
         {
             WatchedList = list;
             WatchedListChanged?.Invoke();
+        }
+
+        public void ChangeWatchingList(WatchingList? list)
+        {
+            WatchingList = list;
+            WatchingListChanged?.Invoke();
         }
 
         #endregion PROFILE DATA

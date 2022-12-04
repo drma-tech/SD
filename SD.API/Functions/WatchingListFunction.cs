@@ -10,25 +10,25 @@ using System.Threading.Tasks;
 
 namespace SD.API.Functions
 {
-    public class WatchedListFunction
+    public class WatchingListFunction
     {
         private readonly IRepository _repo;
 
-        public WatchedListFunction(IRepository repo)
+        public WatchingListFunction(IRepository repo)
         {
             _repo = repo;
         }
 
-        [FunctionName("WatchedListGet")]
+        [FunctionName("WatchingListGet")]
         public async Task<IActionResult> Get(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.GET, Route = "WatchedList/Get")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.GET, Route = "WatchingList/Get")] HttpRequest req,
             ILogger log, CancellationToken cancellationToken)
         {
             try
             {
                 using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
-                var result = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
+                var result = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
 
                 return new OkObjectResult(result);
             }
@@ -39,37 +39,38 @@ namespace SD.API.Functions
             }
         }
 
-        [FunctionName("WatchedListPost")]
+        [FunctionName("WatchingListPost")]
         public async Task<IActionResult> Post(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "WatchedList/Post")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "WatchingList/Post")] HttpRequest req,
             ILogger log, CancellationToken cancellationToken)
         {
             try
             {
                 using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
-                var myProviders = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
-                var newItem = await req.GetParameterObject<WatchedList>(source.Token);
+                var item = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
+                var newItem = await req.GetParameterObject<WatchingList>(source.Token);
 
-                if (myProviders == null)
+                if (item == null)
                 {
-                    myProviders = new WatchedList
+                    item = new WatchingList
                     {
                         DtInsert = DateTimeOffset.UtcNow
                     };
                 }
                 else
                 {
-                    myProviders.DtUpdate = DateTimeOffset.UtcNow;
+                    item.DtUpdate = DateTimeOffset.UtcNow;
                 }
 
-                myProviders.SetIds(req.GetUserId());
+                item.SetIds(req.GetUserId());
 
-                myProviders.SetItem(MediaType.movie, newItem.Movies);
-                myProviders.SetItem(MediaType.tv, newItem.Shows);
-                myProviders = await _repo.Upsert(myProviders, source.Token);
+                item.SetCollection(MediaType.movie, newItem.Movies);
+                item.SetCollection(MediaType.tv, newItem.Shows);
 
-                return new OkObjectResult(myProviders);
+                item = await _repo.Upsert(item, source.Token);
+
+                return new OkObjectResult(item);
             }
             catch (Exception ex)
             {

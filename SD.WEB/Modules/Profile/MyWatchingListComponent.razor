@@ -1,0 +1,217 @@
+﻿@using SD.WEB.Modules.List.Core;
+@using SD.WEB.Modules.Profile.Core;
+@using SD.WEB.Modules.Provider.Core;
+@inherits ComponenteCore<MyWatchingListComponent>
+@inject TmdbApi TmdbApi
+
+<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
+    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> Watching - Movies (@(AppState.WatchingList?.Movies.Count() ?? 0))</AlertMessage>
+
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))" Disabled="(!AppState.WatchingList?.Movies.Any()??true)" Class="ml-1">
+        <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
+    </Button>
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.movie))" Disabled="(!AppState.WatchingList?.Movies.Any()??true)">
+        <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
+    </Button>
+</Alert>
+<AuthorizeView>
+    <Authorized>
+        @if (AppState.WatchingList == null && AppState.WatchedList != null && AppState.WatchedList.Movies.Any()) //only for old users (before this funcionality)
+        {
+            <Button Color="Color.Primary" Clicked="()=>ImportFromWatched()">Procurar pendências de filmes já assistidos</Button>
+        }
+        else
+        {
+            <Loading @ref="LoadingMovie">
+                <Row HorizontalGutter="4" VerticalGutter="4">
+                    @foreach (var item in AppState.WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
+                    {
+                        <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is4.OnDesktop.Is6.OnMobile">
+                            <Card>
+                                <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                                   onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.movie))" Style="cursor: pointer;"></CardImage>
+                            </Card>
+                        </Column>
+                    }
+                </Row>
+            </Loading>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <Alert Visible="true" Color="Color.Primary">
+            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
+        </Alert>
+    </NotAuthorized>
+</AuthorizeView>
+
+<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
+    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> Watching - Shows (@(AppState.WatchingList?.Shows.Count() ?? 0))</AlertMessage>
+
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))" Disabled="(!AppState.WatchingList?.Shows.Any()??true)" Class="ml-1">
+        <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
+    </Button>
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.tv))" Disabled="(!AppState.WatchingList?.Shows.Any()??true)">
+        <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
+    </Button>
+</Alert>
+<AuthorizeView>
+    <Authorized>
+        @if (AppState.WatchingList == null && AppState.WatchedList != null && AppState.WatchedList.Shows.Any()) //only for old users (before this funcionality)
+        {
+            <Button Color="Color.Primary" Clicked="()=>ImportFromWatched()">Procurar pendências de seriados já assistidos</Button>
+        }
+        else
+        {
+            <Loading @ref="LoadingShow">
+                <Row HorizontalGutter="4" VerticalGutter="4">
+                    @foreach (var item in AppState.WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
+                    {
+                        <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is4.OnDesktop.Is6.OnMobile">
+                            <Card>
+                                <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                                   onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.tv))" Style="cursor: pointer;"></CardImage>
+                            </Card>
+                        </Column>
+                    }
+                </Row>
+            </Loading>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <Alert Visible="true" Color="Color.Primary">
+            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
+        </Alert>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    public Loading? LoadingMovie { get; set; }
+    public Loading? LoadingShow { get; set; }
+
+    private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : (AppStateStatic.OnTablet ? 6 : 8);
+
+    protected override void OnInitialized()
+    {
+        AppState.WatchingListChanged += () =>
+        {
+            LoadingMovie?.Finish(!AppState.WatchingList?.Movies.Any() ?? true);
+            LoadingShow?.Finish(!AppState.WatchingList?.Shows.Any() ?? true);
+            StateHasChanged();
+        };
+        AppState.WatchedListChanged += StateHasChanged;
+        AppState.WishListChanged += StateHasChanged;
+
+        base.OnInitialized();
+    }
+
+    protected override async Task LoadData()
+    {
+        LoadingMovie?.Start();
+        LoadingShow?.Start();
+
+        AppState.ChangeWatchingList(await WatchingListApi.Get(await AppState.IsUserAuthenticated()));
+        AppState.ChangeWishList(await WishListApi.Get(await AppState.IsUserAuthenticated()));
+        AppState.ChangeWatchedList(await WatchedListApi.Get(await AppState.IsUserAuthenticated()));
+
+        LoadingMovie?.Finish(!AppState.WatchingList?.Movies.Any() ?? true);
+        LoadingShow?.Finish(!AppState.WatchingList?.Shows.Any() ?? true);
+    }
+
+    private async Task OpenCompleteList(MediaType mediaType)
+    {
+        //await ModalService.Show<MyWishListPopup>(null,
+        //x =>
+        //{
+        //    x.Add(x => x.MediaType, mediaType);
+        //},
+        //new ModalInstanceOptions()
+        //    {
+        //        UseModalStructure = false,
+        //        Centered = true,
+        //        Size = ModalSize.ExtraLarge,
+        //    });
+    }
+
+    public async Task ChooseRandomTitle(MediaType type)
+    {
+        if (AppState.WatchingList == null) return;
+
+        var random = new Random();
+
+        if (type == MediaType.movie)
+        {
+            var index = random.Next(AppState.WatchingList.Movies.Count);
+            var media = AppState.WatchingList.Movies.ToList()[index];
+            await ShowCollectionPopup(media?.id, media?.name, MediaType.movie);
+        }
+        else
+        {
+            var index = random.Next(AppState.WatchingList.Shows.Count);
+            var media = AppState.WatchingList.Shows.ToList()[index];
+            await ShowCollectionPopup(media?.id, media?.name, MediaType.tv);
+        }
+    }
+
+    public Task ShowCollectionPopup(string? tmdb_id, string? name, MediaType type)
+    {
+        if (string.IsNullOrEmpty(tmdb_id)) return default!;
+
+        return ModalService.Show<List.Components.CollectionPopup>(name,
+            x =>
+            {
+                x.Add(x => x.tmdb_id, tmdb_id);
+                x.Add(x => x.type, type);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
+    }
+
+    private async Task ImportFromWatched()
+    {
+        foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.movie) ?? new())
+        {
+            var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.movie);
+            var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
+
+            if (hasCollection)
+            {
+                var items = new HashSet<string>();
+                items.Add(tmdb_id);
+
+                var watching = AppState.WatchingList ?? new WatchingList();
+
+                watching.AddCollection(media.MediaType, media?.collectionId?.ToString(), media?.collectionName, media?.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+
+                watching = await WatchingListApi.Post(watching);
+
+                AppState.ChangeWatchingList(watching);
+            }
+        }
+
+        foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.tv) ?? new())
+        {
+            var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.tv);
+            var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
+
+            if (hasCollection)
+            {
+                var items = new HashSet<string>();
+                items.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+
+                var watching = AppState.WatchingList ?? new WatchingList();
+
+                watching.AddCollection(media.MediaType, media?.tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+
+                watching = await WatchingListApi.Post(watching);
+
+                AppState.ChangeWatchingList(watching);
+            }
+        }
+    }
+}
