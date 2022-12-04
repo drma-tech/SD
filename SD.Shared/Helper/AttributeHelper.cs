@@ -11,7 +11,7 @@ namespace SD.Shared.Helper
             else if (!DateTime.TryParse(value, out _))
                 return DateTime.MinValue;
             else
-                return DateTime.Parse(value, CultureInfo.InvariantCulture);
+                return DateTime.Parse(value, CultureInfo.CurrentCulture);
         }
 
         public static string FormatRuntime(this int? runtime)
