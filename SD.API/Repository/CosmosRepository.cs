@@ -14,10 +14,6 @@ namespace SD.API.Repository
     {
         public Container Container { get; private set; }
 
-        private const double ru_limit_get = 25;
-        private const double ru_limit_query = 25;
-        private const double ru_limit_save = 25;
-
         public CosmosRepository(IConfiguration config)
         {
             var connString = config.GetValue<string>("RepositoryOptions_CosmosConnectionString");
@@ -69,8 +65,6 @@ namespace SD.API.Repository
             {
                 var response = await Container.ReadItemAsync<T>(id, new PartitionKey(partitionKeyValue), null, cancellationToken);
 
-                if (response.RequestCharge > ru_limit_get) throw new NotificationException($"RU limit exceeded get ({response.RequestCharge})");
-
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -103,7 +97,6 @@ namespace SD.API.Repository
                 var response = await iterator.ReadNextAsync(cancellationToken);
 
                 count += response.RequestCharge;
-                if (count > ru_limit_query) throw new NotificationException($"RU limit exceeded query ({response.RequestCharge})");
 
                 results.AddRange(response.Resource);
             }
@@ -122,7 +115,6 @@ namespace SD.API.Repository
                 var response = await iterator.ReadNextAsync(cancellationToken);
 
                 count += response.RequestCharge;
-                if (count > ru_limit_query) throw new NotificationException($"RU limit exceeded query ({response.RequestCharge})");
 
                 results.AddRange(response.Resource);
             }
@@ -133,8 +125,6 @@ namespace SD.API.Repository
         public async Task<T> Upsert<T>(T item, CancellationToken cancellationToken) where T : DocumentBase
         {
             var response = await Container.UpsertItemAsync(item, new PartitionKey(item.Key), null, cancellationToken);
-
-            if (response.RequestCharge > ru_limit_save) throw new NotificationException($"RU limit exceeded save ({response.RequestCharge})");
 
             return response.Resource;
         }
@@ -147,16 +137,12 @@ namespace SD.API.Repository
 
             var response = await Container.PatchItemAsync<T>(id, new PartitionKey(partitionKeyValue), operations, null, cancellationToken);
 
-            if (response.RequestCharge > ru_limit_save) throw new NotificationException($"RU limit exceeded save ({response.RequestCharge})");
-
             return response.Resource;
         }
 
         public async Task<bool> Delete<T>(T item, CancellationToken cancellationToken) where T : DocumentBase
         {
             var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Key), null, cancellationToken);
-
-            if (response.RequestCharge > ru_limit_save) throw new NotificationException($"RU limit exceeded save ({response.RequestCharge})");
 
             return response.StatusCode == System.Net.HttpStatusCode.OK;
         }

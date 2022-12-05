@@ -290,7 +290,7 @@
   {
     "id": "11",
     "name": "MUBI",
-    "priority": 4,
+    "priority": 6,
     "description": "Watch truly great cinema. Wherever you are. With no ads. Ever. From new directors to award-winners. Beautiful, interesting, incredible movies — a new film every single day. Stream Now. Download to watch Offline. Start your free 7 day trial now.",
     "link": "https://mubi.com/",
     "logo_path": "/bVR4Z1LCHY7gidXAJF5pMa4QrDS.jpg",
@@ -385,7 +385,7 @@
   {
     "id": "14",
     "name": "realeyz",
-    "priority": 63,
+    "priority": 64,
     "description": null,
     "link": null,
     "logo_path": "/10BQc1kYmgjXFrFKb3xsRcDDn14.jpg",
@@ -579,7 +579,7 @@
   {
     "id": "30",
     "name": "WOW",
-    "priority": 8,
+    "priority": 5,
     "description": "WOW – Dein neues Zuhause für Entertainment, das du liebst | Filme, Serien & Live-Sport sofort streamen | WOW",
     "link": "https://www.wowtv.de/",
     "logo_path": "/MiVcYLkztM6qqLeVSYWHFCUcXx.jpg",
@@ -668,7 +668,7 @@
   {
     "id": "35",
     "name": "Rakuten TV",
-    "priority": 9,
+    "priority": 17,
     "description": "We offer the latest Hollywood blockbusters, the mostpopular TV series, and the best films fromindependent filmmakers.All this, easily accessible from your computer,Smart TV, tablet, phone and gaming console.Sign up now to be notified when we launch inyour country and you'll get an early accessplus special discounts.If you feel this message is appearing to you by mistake, please contact us at help@rakuten.tv",
     "link": "https://rakuten.tv/uk",
     "logo_path": "/5GEbAhFW2S5T8zVc1MNvz00pIzM.jpg",
@@ -753,7 +753,7 @@
     "priority": 9,
     "description": null,
     "link": null,
-    "logo_path": "/rsXaDmBzlHgYrtv1o2NsRFctM5t.jpg",
+    "logo_path": "/r5ABqHn8tLdrd0pO0KslEHWwA4L.jpg",
     "head_language": null,
     "regions": [
       16,
@@ -830,16 +830,6 @@
     "logo_path": "/eWp5LdR4p4uKL0wACBBXapDV2lB.jpg",
     "head_language": null,
     "regions": [
-      1,
-      6,
-      10,
-      13,
-      15,
-      16,
-      19,
-      21,
-      25,
-      26,
       35
     ],
     "types": [
@@ -934,7 +924,7 @@
   {
     "id": "55",
     "name": "ShowMax",
-    "priority": 10,
+    "priority": 4,
     "description": "Stream or download the best movies, series and more. Available on web, smartphones, tablets and smart TV's. Start your free trial today.",
     "link": "https://www.showmax.com",
     "logo_path": "/okiQZMXnqwv0aD3QDYmu5DBNLce.jpg",
@@ -1309,7 +1299,6 @@
     "regions": [
       11,
       14,
-      27,
       33
     ],
     "types": [
@@ -1473,28 +1462,6 @@
     "empty_catalog": false
   },
   {
-    "id": "86",
-    "name": "GYAO",
-    "priority": 5,
-    "description": "ヤフーの無料動画サービスGYAO!(ギャオ)では、見逃したテレビ番組、今期のアニメやドラマ、映画が見放題！ほかにも、オリジナル番組、韓国ドラマ、バラエティー番組など、ラインアップも豊富",
-    "link": "https://gyao.yahoo.co.jp/",
-    "logo_path": "/zES0qHTB5ZU1Cb3NYwZ56mgZ3Bc.jpg",
-    "head_language": 36,
-    "regions": [
-      22
-    ],
-    "types": [
-      1,
-      2
-    ],
-    "models": [
-      2
-    ],
-    "plans": [],
-    "enabled": true,
-    "empty_catalog": false
-  },
-  {
     "id": "87",
     "name": "Acorn TV",
     "priority": 9,
@@ -1596,7 +1563,7 @@
   {
     "id": "99",
     "name": "Shudder",
-    "priority": 64,
+    "priority": 63,
     "description": "Stream the largest uncut, ad-free selection of horrors, thrillers, and suspense on all your favorite devices.",
     "link": "https://www.shudder.com/",
     "logo_path": "/pheENW1BxlexXX1CKJ4GyWudyMA.jpg",
@@ -2135,7 +2102,7 @@
     "priority": 13,
     "description": "Browse from over 8500 HD movies including the latest releases and earn SCENE points every time you rent or buy. Watch online or look for the Cineplex Store app on your Samsung or LG Smart TV, Roku, Android, iOS, or Xbox One and enjoy movies from anywhere! ",
     "link": "https://store.cineplex.com/",
-    "logo_path": "/sN8B7EweqmOmWm5ALdOAxCquuv1.jpg",
+    "logo_path": "/yNr05VQlKK4dI0Ncwf9InIVGKs9.jpg",
     "head_language": 16,
     "regions": [
       7
@@ -2290,11 +2257,11 @@
   },
   {
     "id": "150",
-    "name": "SwissCom",
+    "name": "blue TV",
     "priority": 3,
     "description": null,
     "link": null,
-    "logo_path": "/2LS6g6iE5DiAIDiZTAK8mbQQTuE.jpg",
+    "logo_path": "/rVOOhp6V8FheEAKtFAJMLMbnaMZ.jpg",
     "head_language": null,
     "regions": [
       8
@@ -2596,7 +2563,7 @@
   {
     "id": "178",
     "name": "MagentaTV",
-    "priority": 23,
+    "priority": 24,
     "description": "Über 100 TV Sender online gucken. Sendungen aufnehmen und später ansehen. Filme und Serien in Top HD-Qualität als Stream oder zum Download.",
     "link": "https://web.magentatv.de/",
     "logo_path": "/uULoezj2skPc6amfwru72UPjYXV.jpg",
@@ -2663,7 +2630,7 @@
   {
     "id": "188",
     "name": "YouTube Premium",
-    "priority": 30,
+    "priority": 31,
     "description": "Enjoy the new YouTube Music app and your favorite videos on YouTube — ad-free. Services: No ads, Downloads, Background play.",
     "link": "https://www.youtube.com/premium",
     "logo_path": "/6IPjvnYl6WWkIwN158qBFXCr2Ne.jpg",
@@ -2915,7 +2882,7 @@
   {
     "id": "195",
     "name": "Animax Plus Amazon Channel",
-    "priority": 43,
+    "priority": 42,
     "description": null,
     "link": null,
     "logo_path": "/9TteoCidgcwT28Zs9yeAX7HdkwO.jpg",
@@ -3645,6 +3612,7 @@
       35
     ],
     "types": [
+      1,
       2
     ],
     "models": [
@@ -4080,7 +4048,7 @@
     "priority": 15,
     "description": "Stream and buy official anime including My Hero Academia, Drifters and Fairy Tail. Watch free anime online or subscribe for more. Start your free trial today.",
     "link": "https://www.funimation.com/",
-    "logo_path": "/o252SN51PdMx8UvyUkX00MAtooX.jpg",
+    "logo_path": "/fWq61Fy4onav0wZJTA3c2fs0G66.jpg",
     "head_language": null,
     "regions": [
       3,
@@ -4357,7 +4325,7 @@
   {
     "id": "285",
     "name": "BBC Player Amazon Channel",
-    "priority": 39,
+    "priority": 38,
     "description": null,
     "link": null,
     "logo_path": "/wUe8sI0PyRNNaWTSIDUoRADytvR.jpg",
@@ -4379,7 +4347,7 @@
   {
     "id": "286",
     "name": "ZDF Herzkino Amazon Channel",
-    "priority": 38,
+    "priority": 37,
     "description": null,
     "link": null,
     "logo_path": "/7cXdK4ExORmhkJl9wX1q3Yqs8lV.jpg",
@@ -4599,7 +4567,7 @@
   {
     "id": "296",
     "name": "Hayu Amazon Channel",
-    "priority": 55,
+    "priority": 54,
     "description": "Find, shop for and buy  at Amazon.co.uk",
     "link": "https://www.amazon.co.uk/gp/video/storefront/ref=atv_hm_hom_5_c_Mg0bCY_HSe00c6a_2_2?contentType=subscription&contentId=hayu",
     "logo_path": "/7RJrotCrvD0oUjG0udv9on6CDKX.jpg",
@@ -4839,7 +4807,7 @@
   {
     "id": "309",
     "name": "Sun Nxt",
-    "priority": 3,
+    "priority": 11,
     "description": "Watch latest Tamil, Malayalam and Telugu TV Serials & Shows Online on Sun NXT, the one-stop right way for Watch Tamil TV Channels Live Online Streaming. You can browse for movies, Serials, shows and news today at sunnxt.com.",
     "link": "https://www.sunnxt.com/",
     "logo_path": "/uW4dPCcbXaaFTyfL5HwhuDt5akK.jpg",
@@ -5340,7 +5308,7 @@
   {
     "id": "334",
     "name": "Filmtastic Amazon Channel",
-    "priority": 44,
+    "priority": 43,
     "description": null,
     "link": null,
     "logo_path": "/gmXeSpaYVJcb49SAzYcVHgQKQWM.jpg",
@@ -5549,7 +5517,7 @@
   {
     "id": "344",
     "name": "Rakuten Viki",
-    "priority": 24,
+    "priority": 26,
     "description": "Watch Asian TV shows and movies online for FREE! Korean dramas, Chinese dramas, Taiwanese dramas, Japanese dramas, Kpop & Kdrama news and events by Soompi, and original productions -- subtitled in English and other languages.",
     "link": "https://www.viki.com/",
     "logo_path": "/qjtOUIUnk4kRpcZmaddjqDHM0dR.jpg",
@@ -5599,7 +5567,7 @@
   {
     "id": "349",
     "name": "Kino on Demand",
-    "priority": 48,
+    "priority": 47,
     "description": null,
     "link": null,
     "logo_path": "/sXixZNwjBjMoBR97alHOKVerKf4.jpg",
@@ -6264,7 +6232,7 @@
   {
     "id": "392",
     "name": "wedotv",
-    "priority": 46,
+    "priority": 45,
     "description": null,
     "link": null,
     "logo_path": "/stlPdMKeVA4xb4eQGab3bIN2Qib.jpg",
@@ -6288,7 +6256,7 @@
   {
     "id": "393",
     "name": "FlixOlé",
-    "priority": 2,
+    "priority": 4,
     "description": null,
     "link": null,
     "logo_path": "/9mmdMwWkDh12sIeSbEvsFWzmDX2.jpg",
@@ -6794,7 +6762,7 @@
   {
     "id": "421",
     "name": "Joyn Plus",
-    "priority": 50,
+    "priority": 49,
     "description": "Teste jetzt Joyn PLUS+ ✓unbegrenzt Serien und Filme ✓Serien vor TV-Ausstrahlung ✓Originals & Exclusives ✓über 70 Live TV Sender ✓als App oder im Web",
     "link": "https://www.joyn.de/plus",
     "logo_path": "/2joD3S2goOB6lmepX35A8dmaqgM.jpg",
@@ -6935,7 +6903,7 @@
   {
     "id": "428",
     "name": "CONtv",
-    "priority": 8,
+    "priority": 11,
     "description": "Watch  Free Movies, TV shows and Comic Con Panels Online | CONtv",
     "link": "https://www.contv.com/",
     "logo_path": "/m6p38R4AlEo1ub7QnZtirXDIUF5.jpg",
@@ -7008,7 +6976,7 @@
   {
     "id": "431",
     "name": "SumoTV",
-    "priority": 21,
+    "priority": 20,
     "description": null,
     "link": null,
     "logo_path": "/5nECaP8nhtrzZfx7oG0yoFMfqiA.jpg",
@@ -7250,7 +7218,7 @@
   {
     "id": "442",
     "name": "NRK TV",
-    "priority": 18,
+    "priority": 17,
     "description": "sem catalogo",
     "link": null,
     "logo_path": "/y1PDXoEMqReA1uX1aF8rnVgSYBS.jpg",
@@ -7354,7 +7322,7 @@
   {
     "id": "445",
     "name": "Classix",
-    "priority": 5,
+    "priority": 31,
     "description": "Watch Classix movies & TV shows streaming right to your iPhone, iPad and Apple TV.",
     "link": "https://www.classixapp.com/",
     "logo_path": "/iaMw6nOyxUzXSacrLQ0Au6CfZkc.jpg",
@@ -8104,7 +8072,7 @@
   {
     "id": "478",
     "name": "History Play",
-    "priority": 25,
+    "priority": 26,
     "description": "O History Play reúne todas as suas atrações favoritas do HISTORY: séries completas e os melhores documentários. Assista como, onde e quando quiser",
     "link": "https://www.historyplay.tv/br/",
     "logo_path": "/73ms51HSpkD0OOXwj2EeiZeSqSt.jpg",
@@ -8149,7 +8117,7 @@
   {
     "id": "480",
     "name": "Filmtastic",
-    "priority": 55,
+    "priority": 54,
     "description": null,
     "link": null,
     "logo_path": "/u04LR9vGEhc8B1ml4HSj1RCbqTG.jpg",
@@ -8171,7 +8139,7 @@
   {
     "id": "481",
     "name": "ArthouseCNMA",
-    "priority": 56,
+    "priority": 55,
     "description": null,
     "link": null,
     "logo_path": "/xtfU2pO6YjnU0qrPaDi30IjaQGR.jpg",
@@ -8236,7 +8204,7 @@
   {
     "id": "484",
     "name": "NOW",
-    "priority": 26,
+    "priority": 28,
     "description": "Assista agora os seus programas, séries de TV preferidas e os lançamentos recém saídos do cinema pra curtir pela TV, pela web ou pelo celular.",
     "link": "https://www.nowonline.com.br/",
     "logo_path": "/cQQYtdaCg7vDo28JPru4v8Ypi8x.jpg",
@@ -8509,7 +8477,7 @@
   {
     "id": "499",
     "name": "Oldflix",
-    "priority": 28,
+    "priority": 25,
     "description": "Assista a séries de TV e Filmes online. Os maiores e melhores clássicos retrô do cinema e TV estão aqui.",
     "link": "https://www.oldflix.com.br/",
     "logo_path": "/1bbExrGyEuUFAEWMBSN76bwacQ0.jpg",
@@ -8990,7 +8958,7 @@
   {
     "id": "522",
     "name": "Popcorntimes",
-    "priority": 57,
+    "priority": 56,
     "description": null,
     "link": null,
     "logo_path": "/sTwowAulL7eZpgJORBKPKepIbxw.jpg",
@@ -9182,7 +9150,7 @@
   {
     "id": "532",
     "name": "aha",
-    "priority": 12,
+    "priority": 15,
     "description": "Watch Movies Online - Watch unlimited exclusive movies and originals online on aha. Stream movies and originals on your internet enabled devices from aha app.",
     "link": "https://www.aha.video/",
     "logo_path": "/m3NWxxR23l1w1e156fyTuw931gx.jpg",
@@ -9211,7 +9179,7 @@
   {
     "id": "533",
     "name": "Amazon Arthaus Channel",
-    "priority": 62,
+    "priority": 60,
     "description": null,
     "link": null,
     "logo_path": "/1h8etYGesCuldkQGoUDyDJr92EB.jpg",
@@ -9234,7 +9202,7 @@
   {
     "id": "534",
     "name": "Argo",
-    "priority": 7,
+    "priority": 10,
     "description": null,
     "link": null,
     "logo_path": "/tgKw3lckZULebs3cMLAbMRqir7G.jpg",
@@ -9283,7 +9251,7 @@
   {
     "id": "537",
     "name": "ZDF",
-    "priority": 63,
+    "priority": 62,
     "description": null,
     "link": null,
     "logo_path": "/dKH9TB94EIbnaWnjO6vX0snaNVP.jpg",
@@ -9404,7 +9372,7 @@
   {
     "id": "542",
     "name": "filmfriend",
-    "priority": 66,
+    "priority": 65,
     "description": null,
     "link": null,
     "logo_path": "/q6hCkmhpK5cDUURb4i6yWXNfpZz.jpg",
@@ -9470,7 +9438,7 @@
   {
     "id": "545",
     "name": "Spuul",
-    "priority": 14,
+    "priority": 16,
     "description": null,
     "link": null,
     "logo_path": "/iJGVfWTDddgipZ7mJCCEYzmRYrP.jpg",
@@ -9969,7 +9937,7 @@
   {
     "id": "560",
     "name": "Filmoteket",
-    "priority": 29,
+    "priority": 28,
     "description": "sem catalogo",
     "link": null,
     "logo_path": "/aTUaeAdFmNfjcm7FRWaM49Ds7Gj.jpg",
@@ -10056,7 +10024,7 @@
   {
     "id": "564",
     "name": "SALTO",
-    "priority": 28,
+    "priority": 29,
     "description": null,
     "link": null,
     "logo_path": "/5uUdbTzTj4N2Wso1FTt2rRoJ5Da.jpg",
@@ -10397,7 +10365,7 @@
   {
     "id": "578",
     "name": "Strim",
-    "priority": 33,
+    "priority": 32,
     "description": null,
     "link": null,
     "logo_path": "/gKno1uvHwHyhQTKMflDvEqj5oGJ.jpg",
@@ -10463,7 +10431,7 @@
   {
     "id": "581",
     "name": "iQIYI",
-    "priority": 25,
+    "priority": 28,
     "description": "iQiyi is the world's leading movie and video streaming website, offering OTT services including a variety of TV dramas, movies, shows, animation, and other quality content. Our excellent content and services let you watch to your heart's content, anytime and anywhere.",
     "link": "https://www.iq.com/",
     "logo_path": "/8MXYXzZGoPAEQU13GWk1GVvKNUS.jpg",
@@ -10608,7 +10576,7 @@
   {
     "id": "588",
     "name": "MGM Amazon Channel",
-    "priority": 45,
+    "priority": 44,
     "description": "Prime Video Channels is the Prime benefit that **lets you choose your channels.** Only members can add MGM and 100+ more channels — no cable required. Cancel anytime.",
     "link": "https://www.primevideo.com/ref=atv_dp_ch_lo?contentId=mgmbr&benefitId=mgmbr",
     "logo_path": "/fUUgfrOfvvPKx9vhFBd6IMdkfLy.jpg",
@@ -10985,7 +10953,7 @@
   {
     "id": "607",
     "name": "OUTtv Amazon Channel",
-    "priority": 42,
+    "priority": 41,
     "description": "Diverse. Vibrant. Bold. OUTtv is the world’s first LGBTQ+ television network and the leading LGBTQ+ streaming service with over 2,000 hours of content, including RuPaul's Drag Race.  OUTtv offers a compelling mix of drama, comedy, reality, talk and award-winning movies.",
     "link": "https://outtv.ca/",
     "logo_path": "/bCQVIO5iEjfstObco3fuhFB7sbs.jpg",
@@ -11008,7 +10976,7 @@
   {
     "id": "608",
     "name": "Love Nature Amazon Channel",
-    "priority": 43,
+    "priority": 42,
     "description": "Prime Video Channels is the Prime benefit that **lets you choose your channels.** Only members can add Love Nature and 100+ more channels — no cable required. Cancel anytime.",
     "link": "https://www.primevideo.com/ref=atv_dp_ch_lo?contentId=lovenaturebr&benefitId=lovenaturebr",
     "logo_path": "/tQL30UKe7OykrtkYQCmYEFrdIMC.jpg",
@@ -11235,7 +11203,7 @@
   {
     "id": "618",
     "name": "Paus",
-    "priority": 80,
+    "priority": 79,
     "description": "",
     "link": null,
     "logo_path": "/chOSZtRhgwzrMyMa5Hx8QG0Vwx7.jpg",
@@ -11655,7 +11623,7 @@
   {
     "id": "638",
     "name": "Public Domain Movies",
-    "priority": 26,
+    "priority": 7,
     "description": "Public Domain Movies - Feature Movies in the Public Domain",
     "link": "http://publicdomainmovies.net/",
     "logo_path": "/liEIj6CkvojVDiMWeexGvflSPZT.jpg",
@@ -11682,7 +11650,7 @@
   {
     "id": "639",
     "name": "CineMember",
-    "priority": 41,
+    "priority": 40,
     "description": null,
     "link": null,
     "logo_path": "/hRqG400ljOAbbQkoos4W4gq2uPN.jpg",
@@ -11725,7 +11693,7 @@
   {
     "id": "641",
     "name": "Nexo Plus",
-    "priority": 19,
+    "priority": 20,
     "description": null,
     "link": null,
     "logo_path": "/98gXEOnALxMcSTuAkzrx8OKKErx.jpg",
@@ -11766,7 +11734,7 @@
   {
     "id": "677",
     "name": "Eventive",
-    "priority": 8,
+    "priority": 24,
     "description": "Stream independent film from film festivals, art house cinemas, virtual cinema screenings, classic repertory catalogs, and special events. Easily search the entire Eventive catalog for the freshest content anywhere.",
     "link": "https://watch.eventive.org/",
     "logo_path": "/fadQYOyKL0tqfyj012nYJxm3N2I.jpg",
@@ -11850,7 +11818,7 @@
   {
     "id": "679",
     "name": "Cinema of Hearts Amazon Channel",
-    "priority": 79,
+    "priority": 78,
     "description": null,
     "link": null,
     "logo_path": "/u0x5jHjdhvlNtFrfb63XDJvFwFu.jpg",
@@ -11871,7 +11839,7 @@
   {
     "id": "680",
     "name": "Bloody Movies Amazon Channel",
-    "priority": 81,
+    "priority": 80,
     "description": null,
     "link": null,
     "logo_path": "/97AOkkJyYajWLHgKGpK5NZOQ22O.jpg",
@@ -11893,7 +11861,7 @@
   {
     "id": "681",
     "name": "Film Total Amazon Channel",
-    "priority": 82,
+    "priority": 81,
     "description": null,
     "link": null,
     "logo_path": "/4Q3nrYFVeOaSB76JlH2Ep08AQxA.jpg",
@@ -11915,7 +11883,7 @@
   {
     "id": "683",
     "name": "Looke Amazon Channel",
-    "priority": 47,
+    "priority": 46,
     "description": null,
     "link": null,
     "logo_path": "/3gTVbIj15Amgz5Qqg5dPDpgMW9V.jpg",
@@ -11937,7 +11905,7 @@
   {
     "id": "684",
     "name": "FlixOlé Amazon Channel",
-    "priority": 46,
+    "priority": 45,
     "description": null,
     "link": null,
     "logo_path": "/yJflQpWbgaiqYEVsFrE18lIEbaG.jpg",
@@ -11959,7 +11927,7 @@
   {
     "id": "685",
     "name": "OCS Amazon Channel ",
-    "priority": 50,
+    "priority": 49,
     "description": null,
     "link": null,
     "logo_path": "/42Cj5KNEteBRpfWnGWQbTJpJDGV.jpg",
@@ -11981,7 +11949,7 @@
   {
     "id": "686",
     "name": "Home of Horror Amazon Channel",
-    "priority": 80,
+    "priority": 79,
     "description": null,
     "link": null,
     "logo_path": "/jTvkFUHvHsUoOzZRZ8WpmkiZD1v.jpg",
@@ -12049,7 +12017,7 @@
   {
     "id": "689",
     "name": "TVCortos Amazon Channel",
-    "priority": 47,
+    "priority": 46,
     "description": null,
     "link": null,
     "logo_path": "/yELuKENa93S31x4Mlkk4jp5PThi.jpg",
@@ -12070,7 +12038,7 @@
   {
     "id": "690",
     "name": "Pongalo Amazon Channel  ",
-    "priority": 48,
+    "priority": 47,
     "description": null,
     "link": null,
     "logo_path": "/l6boVLijqAZLYXlZpkzzeNC4mvg.jpg",
@@ -12114,7 +12082,7 @@
   {
     "id": "692",
     "name": "Cultpix",
-    "priority": 9,
+    "priority": 25,
     "description": "Streaming classic cult, exploitation, grindhouse and genre films that other sites are afraid to show you. Join for $6.66 a month or $59 for full year.",
     "link": "https://www.cultpix.com/",
     "logo_path": "/59azlQKUgFdYq6QI5QEAxIeecyL.jpg",
@@ -12179,7 +12147,7 @@
   {
     "id": "693",
     "name": "Turk On Video Amazon Channel",
-    "priority": 83,
+    "priority": 82,
     "description": null,
     "link": null,
     "logo_path": "/7BVWcGgkBBVpqg7RdoxlhIgb3s4.jpg",
@@ -12225,7 +12193,7 @@
   {
     "id": "696",
     "name": "Serially",
-    "priority": 45,
+    "priority": 44,
     "description": null,
     "link": null,
     "logo_path": "/bWczrFt9FD6DchYLQMMj2ga2iRA.jpg",
@@ -12246,7 +12214,7 @@
   {
     "id": "697",
     "name": "meJane",
-    "priority": 48,
+    "priority": 47,
     "description": null,
     "link": null,
     "logo_path": "/jWKX6kO7JqQbqVnu9QtEO6FC85n.jpg",
@@ -12267,7 +12235,7 @@
   {
     "id": "701",
     "name": "FilmBox+",
-    "priority": 11,
+    "priority": 26,
     "description": "Filmbox+ is an entertainment service that you can watch hundreds of movies and videos online with a single subscription.",
     "link": "https://www.filmbox.com/",
     "logo_path": "/4FqTBYsUSZgS9z9UGKgxSDBbtc8.jpg",
@@ -12350,7 +12318,7 @@
   {
     "id": "704",
     "name": "IROKOTV",
-    "priority": 12,
+    "priority": 27,
     "description": "Watch thousands of Nollywood movies and series right on your PC, Mac, tablet or smartphone. Subscribe and watch today.",
     "link": "https://irokotv.com/",
     "logo_path": "/r4q36I2Xts1SqhLWd6XsnbSAQJ4.jpg",
@@ -12462,7 +12430,7 @@
   {
     "id": "1706",
     "name": "Comedy Central Plus Amazon Channel",
-    "priority": 92,
+    "priority": 91,
     "description": null,
     "link": null,
     "logo_path": "/v6JyYgqVCb9rXvyTDQ091WaFtCD.jpg",
@@ -12484,7 +12452,7 @@
   {
     "id": "1707",
     "name": "BluTV Amazon Channel",
-    "priority": 91,
+    "priority": 90,
     "description": null,
     "link": null,
     "logo_path": "/1zYseT9ZlMt5sepAAYzRArMme1D.jpg",
@@ -12506,7 +12474,7 @@
   {
     "id": "1708",
     "name": "Discovery Amazon Channel",
-    "priority": 90,
+    "priority": 89,
     "description": null,
     "link": null,
     "logo_path": "/OCuQsLYnjRCY1DWnUEOXnZiIQr.jpg",
@@ -12527,7 +12495,7 @@
   {
     "id": "1709",
     "name": "GRJNGO Amazon Channel",
-    "priority": 94,
+    "priority": 93,
     "description": null,
     "link": null,
     "logo_path": "/n8jt2T4IUa7lQE7k6xtLV5oQUa9.jpg",
@@ -12548,7 +12516,7 @@
   {
     "id": "1710",
     "name": "HistoryPlay Amazon Channel",
-    "priority": 56,
+    "priority": 55,
     "description": null,
     "link": null,
     "logo_path": "/gHO264aR3zRJjPpKMZF8Svrhczo.jpg",
@@ -12570,7 +12538,7 @@
   {
     "id": "1711",
     "name": "MTV Plus Amazon Channel",
-    "priority": 95,
+    "priority": 94,
     "description": null,
     "link": null,
     "logo_path": "/4YpUbpRqJELtahMRXZAYphl0o9S.jpg",
@@ -12592,7 +12560,7 @@
   {
     "id": "1712",
     "name": "RTL Passion Amazon Channel",
-    "priority": 99,
+    "priority": 98,
     "description": null,
     "link": null,
     "logo_path": "/oGFzJgHj9IEc87l8aTRIa6OJMWk.jpg",
@@ -12614,7 +12582,7 @@
   {
     "id": "1713",
     "name": "Silverline Amazon Channel",
-    "priority": 97,
+    "priority": 96,
     "description": null,
     "link": null,
     "logo_path": "/u17KW7aRwqTowOSdATZYoG21zZt.jpg",
@@ -12635,7 +12603,7 @@
   {
     "id": "1714",
     "name": "Sony AXN Amazon Channel",
-    "priority": 98,
+    "priority": 97,
     "description": null,
     "link": null,
     "logo_path": "/tr1ZL0LyNQjYBxQgAC0w8zW2GOC.jpg",
@@ -12657,7 +12625,7 @@
   {
     "id": "1715",
     "name": "Shahid VIP",
-    "priority": 13,
+    "priority": 29,
     "description": "Shahid is the number one Arabic VOD service in the world with premium originals, exclusive series and movies, Live TV, Sports & much more",
     "link": "https://shahid.mbc.net/",
     "logo_path": "/uurfHKuprPDeKfIs7FYd5lQzw0L.jpg",
@@ -12682,7 +12650,7 @@
   {
     "id": "1717",
     "name": "Acontra Plus",
-    "priority": 50,
+    "priority": 49,
     "description": null,
     "link": null,
     "logo_path": "/wdbbz8SsamximWXn0AR5f5U3fOw.jpg",
@@ -12704,7 +12672,7 @@
   {
     "id": "1722",
     "name": "AVA VOBB",
-    "priority": 88,
+    "priority": 87,
     "description": null,
     "link": null,
     "logo_path": "/xaaR4xSFoLYZPdwGitzySbG3DBe.jpg",
@@ -12725,7 +12693,7 @@
   {
     "id": "1723",
     "name": "AVA HBZ",
-    "priority": 89,
+    "priority": 88,
     "description": null,
     "link": null,
     "logo_path": "/lZ0oqNoDepVrrXtkPncWBuShkJV.jpg",
@@ -12786,7 +12754,7 @@
   {
     "id": "1726",
     "name": "Infinity Selection Amazon Channel",
-    "priority": 48,
+    "priority": 47,
     "description": null,
     "link": null,
     "logo_path": "/tdJqKoJVBtYSQUe4zIADZOgqsH7.jpg",
@@ -12808,7 +12776,7 @@
   {
     "id": "1727",
     "name": "CG Collection Amazon channel",
-    "priority": 49,
+    "priority": 48,
     "description": null,
     "link": null,
     "logo_path": "/qheMcicpi3qUrA9dNEKqCi4WjOp.jpg",
@@ -12829,7 +12797,7 @@
   {
     "id": "1728",
     "name": "iWonder Full Amazon channel",
-    "priority": 50,
+    "priority": 49,
     "description": null,
     "link": null,
     "logo_path": "/7rqYm9lEFgdK6UXCmUAQqmHOLow.jpg",
@@ -12851,7 +12819,7 @@
   {
     "id": "1729",
     "name": "Full Action Amazon Channel",
-    "priority": 51,
+    "priority": 50,
     "description": null,
     "link": null,
     "logo_path": "/8Dc9zjan5cNnNvbVdMY3CRjtdD6.jpg",
@@ -12873,7 +12841,7 @@
   {
     "id": "1730",
     "name": "Cine Comico Amazon Channel",
-    "priority": 52,
+    "priority": 51,
     "description": null,
     "link": null,
     "logo_path": "/i7Z8X0N38GRHo2SpaCw7vUdRWej.jpg",
@@ -12894,7 +12862,7 @@
   {
     "id": "1731",
     "name": "Salto Amazon Channel",
-    "priority": 61,
+    "priority": 60,
     "description": null,
     "link": null,
     "logo_path": "/3boZfmOm36QssW1VllChtZL6P50.jpg",
@@ -12916,7 +12884,7 @@
   {
     "id": "1732",
     "name": "Universcine Amazon Channel",
-    "priority": 62,
+    "priority": 61,
     "description": null,
     "link": null,
     "logo_path": "/yUjwJAMDmkTmPrQAlR3Kw0jlnVm.jpg",
@@ -12938,7 +12906,7 @@
   {
     "id": "1733",
     "name": "Action Max Amazon Channel",
-    "priority": 64,
+    "priority": 63,
     "description": null,
     "link": null,
     "logo_path": "/9FH7tewU23chp628XZcY66UOovi.jpg",
@@ -12960,7 +12928,7 @@
   {
     "id": "1734",
     "name": "Filmo Amazon Channel",
-    "priority": 63,
+    "priority": 62,
     "description": null,
     "link": null,
     "logo_path": "/xO3KmmiYYol5jNsRZNJ7Sow7eUy.jpg",
@@ -12981,7 +12949,7 @@
   {
     "id": "1735",
     "name": "Insomnia Amazon Channel",
-    "priority": 65,
+    "priority": 64,
     "description": null,
     "link": null,
     "logo_path": "/ptn8fYXxAQrlMQAoESOo1dJ2TPV.jpg",
@@ -13002,7 +12970,7 @@
   {
     "id": "1736",
     "name": "Shadowz Amazon Channel",
-    "priority": 66,
+    "priority": 65,
     "description": null,
     "link": null,
     "logo_path": "/k8RBvbxANThdziMeuAH22Z26NPX.jpg",
@@ -13023,7 +12991,7 @@
   {
     "id": "1737",
     "name": "INA  madelen Amazon Channel",
-    "priority": 67,
+    "priority": 66,
     "description": null,
     "link": null,
     "logo_path": "/3QaRTn9zLUT3vVLTIomvk3XBFaP.jpg",
@@ -13045,7 +13013,7 @@
   {
     "id": "1738",
     "name": "Benshi Amazon Channel",
-    "priority": 68,
+    "priority": 67,
     "description": null,
     "link": null,
     "logo_path": "/bO7nSuzaFq3qRTHHQfvNuDCSOCc.jpg",
@@ -13067,7 +13035,7 @@
   {
     "id": "1739",
     "name": "Pash Amazon Channel",
-    "priority": 54,
+    "priority": 53,
     "description": null,
     "link": null,
     "logo_path": "/zkoP6bG6zH15keymXl21z3pJMjG.jpg",
@@ -13088,7 +13056,7 @@
   {
     "id": "1740",
     "name": "Planet Horror Amazon Channel",
-    "priority": 55,
+    "priority": 54,
     "description": null,
     "link": null,
     "logo_path": "/suchZNPjJggZlzSDEMHGGQQU0hc.jpg",
@@ -13109,7 +13077,7 @@
   {
     "id": "1741",
     "name": "Dizi Amazon Channel",
-    "priority": 56,
+    "priority": 55,
     "description": null,
     "link": null,
     "logo_path": "/7xyx4YMqN34LLpjzlDJVj2IuNNl.jpg",
@@ -13131,7 +13099,7 @@
   {
     "id": "1742",
     "name": "Acontra Plus Amazon Channel",
-    "priority": 57,
+    "priority": 56,
     "description": null,
     "link": null,
     "logo_path": "/9Z8yJfc0peWhzeC9qQtrNGMBANE.jpg",
@@ -13153,7 +13121,7 @@
   {
     "id": "1743",
     "name": "Historia y Actualidad Amazon Channel",
-    "priority": 58,
+    "priority": 57,
     "description": null,
     "link": null,
     "logo_path": "/taCDYXG8HUn7UHuBkU11O1yvIXd.jpg",
@@ -13175,7 +13143,7 @@
   {
     "id": "1744",
     "name": "Icon Film Amazon Channel",
-    "priority": 91,
+    "priority": 90,
     "description": null,
     "link": null,
     "logo_path": "/oiqAiGXWCdURPbkUphljiikGbCc.jpg",
@@ -13197,7 +13165,7 @@
   {
     "id": "1745",
     "name": "Curzon Amazon Channel",
-    "priority": 92,
+    "priority": 91,
     "description": null,
     "link": null,
     "logo_path": "/qy7Xb74ewuL2QRfdaA97yfyz3Lr.jpg",
@@ -13218,7 +13186,7 @@
   {
     "id": "1746",
     "name": "Hallmark TV Amazon Channel",
-    "priority": 93,
+    "priority": 92,
     "description": null,
     "link": null,
     "logo_path": "/3jKNxpK1q6ogtoCcw0ud8fgwtym.jpg",
@@ -13240,7 +13208,7 @@
   {
     "id": "1747",
     "name": "Studiocanal Presents Amazon Channel",
-    "priority": 94,
+    "priority": 93,
     "description": null,
     "link": null,
     "logo_path": "/1gQQZ1J88vksp0QxoFQ6PLnCHic.jpg",
@@ -13304,7 +13272,7 @@
   {
     "id": "1757",
     "name": "Realeyz Amazon Channel",
-    "priority": 98,
+    "priority": 97,
     "description": null,
     "link": null,
     "logo_path": "/cyZ2scye65pYTHCG0azRpAlj2X.jpg",
@@ -13350,7 +13318,7 @@
   {
     "id": "1764",
     "name": "Yorck on Demand",
-    "priority": 108,
+    "priority": 107,
     "description": null,
     "link": null,
     "logo_path": "/qlUBOb1hWjNQVTcL99bznrYZEfA.jpg",
@@ -13413,7 +13381,7 @@
   {
     "id": "1771",
     "name": "Takflix",
-    "priority": 14,
+    "priority": 30,
     "description": null,
     "link": null,
     "logo_path": "/cnIHBy3uLWhHRR7VeWQhK3ZsYP0.jpg",
@@ -13503,7 +13471,7 @@
   {
     "id": "1788",
     "name": "Love and Passion Amazon Channel",
-    "priority": 112,
+    "priority": 111,
     "description": null,
     "link": null,
     "logo_path": "/m6uJSUKWFuZRgRmnqPlJZ08BbGp.jpg",
@@ -13627,7 +13595,7 @@
   {
     "id": "1805",
     "name": "Studiocanal Presents MOVIECULT Amazon Channel",
-    "priority": 120,
+    "priority": 119,
     "description": null,
     "link": null,
     "logo_path": "/uSsVDJNPxQHVA1wrn0ecHmrBI9k.jpg",
@@ -13646,7 +13614,7 @@
   {
     "id": "1806",
     "name": "Studiocanal Presents ALLSTARS Amazon Channel",
-    "priority": 121,
+    "priority": 120,
     "description": null,
     "link": null,
     "logo_path": "/SUjtDqbuBONrkI0SQYW7jC0JQa.jpg",
