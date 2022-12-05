@@ -6,12 +6,13 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    @foreach (var item in ItemsCollection.OrderBy(o => o.release_date))
+    @foreach (var item in ItemsCollection.OrderBy(o => o.release_date ?? DateTime.MaxValue))
     {
         <Check TValue="bool" Checked="@SelectedItems.Any(a=>a==item.id)" CheckedChanged="(bool value)=>CheckedChanged(item.id, value)">@item.title (@item.release_date?.Year)</Check>
     }
 </ModalBody>
 <ModalFooter>
+    <Button Color="Color.Primary" Clicked="SelectAll">All</Button>
     <Button Color="Color.Primary" Clicked="@Confirm" Disabled="(!SelectedItems.Any())">@GlobalTranslations.ButtonOk</Button>
     <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@GlobalTranslations.ButtonCancel</Button>
 </ModalFooter>
@@ -31,6 +32,15 @@
             SelectedItems.Add(id);
         else
             SelectedItems.Remove(id);
+    }
+
+    private void SelectAll()
+    {
+        foreach (var item in ItemsCollection)
+        {
+            if (!string.IsNullOrEmpty(item?.id))
+                SelectedItems.Add(item.id);
+        }
     }
 
     private async Task Confirm()
