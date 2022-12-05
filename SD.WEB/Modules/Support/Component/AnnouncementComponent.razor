@@ -4,10 +4,10 @@
 @inject AnnouncementApi AnnouncementApi
 
 <Loading @ref="LoadingAnnouncements">
-    @foreach (var item in announcements)
+    @foreach (var item in announcements.OrderByDescending(o => o.DtInsert))
     {
         <Alert Color="Color.Info" Visible="true">
-            <Heading Size="HeadingSize.Is4" TextColor="TextColor.Success">
+            <Heading Size="HeadingSize.Is5" TextColor="TextColor.Success">
                 @item.Title
             </Heading>
             <Paragraph>

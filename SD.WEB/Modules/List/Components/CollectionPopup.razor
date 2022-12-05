@@ -55,7 +55,7 @@
     </Loading>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Primary" Clicked="@WatchedAll" Float="Float.Start" title="Mark all these items as watched">Watched All</Button>
+    <Button Color="Color.Primary" Clicked="@Watched" Float="Float.Start" title="Mark all these items as watched">Watched</Button>
     <Button Color="Color.Danger" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">Remove Collection</Button>
     <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@GlobalTranslations.ButtonClose</Button>
 </ModalFooter>
@@ -145,22 +145,73 @@
                 });
     }
 
-    private async Task WatchedAll()
+    private async Task Watched()
     {
-        if (collection == null) return;
+        var watching = AppState.WatchingList ?? new WatchingList();
+
+        await ModalService.Show<SelectItemsCollection>(null,
+            x =>
+            {
+                x.Add(x => x.ItemsCollection, collection?.parts.Select(s => TmdbApi.ConvertToCollection(s)).ToList());
+                x.Add(x => x.SelectedItems, watching.GetWatchedItems(type, collection?.id.ToString()));
+                x.Add(x => x.SelectedItemsChanged,
+                    new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(type, collection, tmdb_id, list, collection?.parts.Count ?? 0)));
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Default,
+                });
+    }
+
+    private async Task SelectedItemsChanged(MediaType? type, TmdbCollection? collection, string? tmdb_id, HashSet<string> items, int collectionItemsCount)
+    {
+        //watched list
 
         if (type == MediaType.movie)
         {
             var watched = AppState.WatchedList ?? new WatchedList();
 
-            watched.AddItem(type, collection.parts.Select(s => s.id.ToString()).ToHashSet<string>());
+            watched.AddItem(type, items);
 
             watched = await WatchedListApi.Post(watched);
 
             AppState.ChangeWatchedList(watched);
         }
 
-        await RemoveCollection();
+        //watching list
+
+        var watching = AppState.WatchingList ?? new WatchingList();
+
+        if (items.Count < collectionItemsCount)
+        {
+            if (type == MediaType.movie)
+            {
+                watching.AddCollection(type, collection?.id.ToString(), collection?.name, collection?.poster_path?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+            }
+            else if (type == MediaType.tv)
+            {
+                var media = await TmdbApi.GetMediaDetail(tmdb_id, type);
+
+                watching.AddCollection(type, tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+            }
+        }
+        else
+        {
+            if (type == MediaType.movie)
+            {
+                watching.RemoveCollection(type, collection?.id.ToString(), null);
+            }
+            else
+            {
+                watching.RemoveCollection(type, tmdb_id, null);
+            }
+        }
+
+        watching = await WatchingListApi.Post(watching);
+
+        AppState.ChangeWatchingList(watching);
     }
 
     private async Task RemoveCollection()

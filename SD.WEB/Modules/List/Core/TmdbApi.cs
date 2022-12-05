@@ -58,13 +58,7 @@ namespace SD.WEB.Modules.List.Core
 
                             foreach (var part in collection.parts ?? new())
                             {
-                                obj_return.Collection.Add(new Collection
-                                {
-                                    id = part.id.ToString(),
-                                    title = part.title,
-                                    release_date = part.release_date.GetDate(),
-                                    poster_small = string.IsNullOrEmpty(part.poster_path) ? null : TmdbOptions.SmallPosterPath + part.poster_path
-                                });
+                                obj_return.Collection.Add(ConvertToCollection(part));
                             }
                         }
                     }
@@ -94,18 +88,34 @@ namespace SD.WEB.Modules.List.Core
 
                     foreach (var season in item.seasons)
                     {
-                        obj_return.Collection.Add(new Collection
-                        {
-                            id = season.id.ToString(),
-                            title = season.name,
-                            release_date = season.air_date?.GetDate(),
-                            poster_small = string.IsNullOrEmpty(season.poster_path) ? null : TmdbOptions.SmallPosterPath + season.poster_path
-                        });
+                        obj_return.Collection.Add(ConvertToCollection(season));
                     }
                 }
             }
 
             return obj_return;
+        }
+
+        public static Collection ConvertToCollection(Part part)
+        {
+            return new Collection
+            {
+                id = part.id.ToString(),
+                title = part.title,
+                release_date = part.release_date.GetDate(),
+                poster_small = string.IsNullOrEmpty(part.poster_path) ? null : TmdbOptions.SmallPosterPath + part.poster_path
+            };
+        }
+
+        public static Collection ConvertToCollection(Season season)
+        {
+            return new Collection
+            {
+                id = season.id.ToString(),
+                title = season.name,
+                release_date = season.air_date?.GetDate(),
+                poster_small = string.IsNullOrEmpty(season.poster_path) ? null : TmdbOptions.SmallPosterPath + season.poster_path
+            };
         }
 
         public async Task<TmdbCollection?> GetCollection(string? collectionId, Dictionary<string, string> parameters)
