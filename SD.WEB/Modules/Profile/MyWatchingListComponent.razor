@@ -121,17 +121,17 @@
 
     private async Task OpenCompleteList(MediaType mediaType)
     {
-        //await ModalService.Show<MyWishListPopup>(null,
-        //x =>
-        //{
-        //    x.Add(x => x.MediaType, mediaType);
-        //},
-        //new ModalInstanceOptions()
-        //    {
-        //        UseModalStructure = false,
-        //        Centered = true,
-        //        Size = ModalSize.ExtraLarge,
-        //    });
+        await ModalService.Show<MyWatchingListPopup>(null,
+        x =>
+        {
+            x.Add(x => x.MediaType, mediaType);
+        },
+        new ModalInstanceOptions()
+            {
+                UseModalStructure = false,
+                Centered = true,
+                Size = ModalSize.ExtraLarge,
+            });
     }
 
     public async Task ChooseRandomTitle(MediaType type)

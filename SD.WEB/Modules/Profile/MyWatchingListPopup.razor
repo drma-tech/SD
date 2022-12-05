@@ -1,0 +1,82 @@
+﻿@inherits ComponenteCore<MyWatchingListPopup>
+
+<ModalHeader>
+    <ModalTitle>@Title.Format(GetList().Count())</ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    <Loading @ref="Loading">
+        <Row HorizontalGutter="4" VerticalGutter="4">
+            @foreach (var item in GetList())
+            {
+                <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                    <Card>
+                        <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                               onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType))" Style="cursor: pointer;"></CardImage>
+                    </Card>
+                </Column>
+            }
+        </Row>
+    </Loading>
+</ModalBody>
+<ModalFooter>
+    <Button Color="Color.Secondary" Clicked="@ModalService.Hide">@TranslationText.Close</Button>
+</ModalFooter>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    [Parameter] public MediaType MediaType { get; set; }
+
+    public Loading? Loading { get; set; }
+    public string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWishlist : GlobalTranslations.MyShowWishlist;
+
+    protected override void OnInitialized()
+    {
+        AppState.WishListChanged += () =>
+        {
+            Loading?.Finish(!GetList().Any());
+            StateHasChanged();
+        };
+        AppState.WatchedListChanged += StateHasChanged;
+
+        base.OnInitialized();
+    }
+
+    private HashSet<WatchingListItem> GetList()
+    {
+        if (MediaType == MediaType.movie)
+            return AppState.WatchingList?.Movies ?? new HashSet<WatchingListItem>();
+        else
+            return AppState.WatchingList?.Shows ?? new HashSet<WatchingListItem>();
+    }
+
+    protected override async Task LoadData()
+    {
+        Loading?.Start();
+
+        AppState.ChangeWatchingList(await WatchingListApi.Get(await AppState.IsUserAuthenticated()));
+        AppState.ChangeWishList(await WishListApi.Get(await AppState.IsUserAuthenticated()));
+        AppState.ChangeWatchedList(await WatchedListApi.Get(await AppState.IsUserAuthenticated()));
+
+        Loading?.Finish(!GetList().Any());
+    }
+
+    public Task ShowCollectionPopup(string? tmdb_id, string? name, MediaType type)
+    {
+        if (string.IsNullOrEmpty(tmdb_id)) return default!;
+
+        return ModalService.Show<List.Components.CollectionPopup>(name,
+            x =>
+            {
+                x.Add(x => x.tmdb_id, tmdb_id);
+                x.Add(x => x.type, type);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
+    }
+}

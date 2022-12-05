@@ -31,14 +31,13 @@
                                     <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x4"
                                         Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.8;"></Blazorise.Icon>
                                 }
-                                
                                 if (type == MediaType.movie) //you don't put seasons as wishes
                                 {
                                     var wishedMovie = AppState.WishList?.Contains(MediaType.movie, item.id.ToString()) ?? false;
                                     if (wishedMovie)
                                     {
                                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
-                                            Style="position: absolute; bottom: 3px; right: 3px; opacity: 0.8;"></Blazorise.Icon>
+                                        Style="position: absolute; bottom: 3px; right: 3px; opacity: 0.8;"></Blazorise.Icon>
                                     }
                                 }
 
@@ -56,6 +55,8 @@
     </Loading>
 </ModalBody>
 <ModalFooter>
+    <Button Color="Color.Primary" Clicked="@WatchedAll" Float="Float.Start" title="Mark all these items as watched">Watched All</Button>
+    <Button Color="Color.Danger" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">Remove Collection</Button>
     <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@GlobalTranslations.ButtonClose</Button>
 </ModalFooter>
 
@@ -118,6 +119,7 @@
             }
         }
 
+        StateHasChanged();
         LoadingList?.Finish(false);
     }
 
@@ -141,5 +143,36 @@
                     Centered = true,
                     Size = ModalSize.Large,
                 });
+    }
+
+    private async Task WatchedAll()
+    {
+        if (collection == null) return;
+
+        if (type == MediaType.movie)
+        {
+            var watched = AppState.WatchedList ?? new WatchedList();
+
+            watched.AddItem(type, collection.parts.Select(s => s.id.ToString()).ToHashSet<string>());
+
+            watched = await WatchedListApi.Post(watched);
+
+            AppState.ChangeWatchedList(watched);
+        }
+
+        await RemoveCollection();
+    }
+
+    private async Task RemoveCollection()
+    {
+        var watching = AppState.WatchingList ?? new WatchingList();
+
+        watching.RemoveCollection(type, collection?.id.ToString(), null);
+
+        watching = await WatchingListApi.Post(watching);
+
+        AppState.ChangeWatchingList(watching);
+
+        await HideModal();
     }
 }
