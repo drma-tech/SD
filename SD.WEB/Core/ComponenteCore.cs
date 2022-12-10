@@ -1,4 +1,5 @@
 ﻿using Blazorise;
+using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using SD.WEB.Modules.Auth.Core;
@@ -15,6 +16,28 @@ namespace SD.WEB.Core
         [Inject] protected WishListApi WishListApi { get; set; } = default!;
         [Inject] protected WatchingListApi WatchingListApi { get; set; } = default!;
         [Inject] protected AppState AppState { get; set; } = default!;
+        [Inject] protected IResizeListener listener { get; set; } = default!;
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            base.OnAfterRender(firstRender);
+
+            if (firstRender)
+            {
+                listener.OnResized += WindowResized;
+            }
+        }
+
+        private async void WindowResized(object obj, BrowserWindowSize window)
+        {
+            AppStateStatic.OnMobile = await listener.MatchMedia(Breakpoints.XSmallDown);
+            AppStateStatic.OnTablet = await listener.MatchMedia(Breakpoints.SmallUp);
+            AppStateStatic.OnDesktop = await listener.MatchMedia(Breakpoints.MediumUp);
+            AppStateStatic.OnWidescreen = await listener.MatchMedia(Breakpoints.LargeUp);
+            AppStateStatic.OnFullHD = await listener.MatchMedia(Breakpoints.XLargeUp);
+
+            StateHasChanged();
+        }
     }
 
     /// <summary>

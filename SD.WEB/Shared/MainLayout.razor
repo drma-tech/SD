@@ -3,12 +3,6 @@
 @inject NavigationManager Navigation
 
 <MediaQueryList>
-    <MediaQuery Media="@Breakpoints.XSmallDown" @bind-Matches="AppStateStatic.OnMobile" />
-    <MediaQuery Media="@Breakpoints.SmallUp" @bind-Matches="AppStateStatic.OnTablet" />
-    <MediaQuery Media="@Breakpoints.MediumUp" @bind-Matches="AppStateStatic.OnDesktop" />
-    <MediaQuery Media="@Breakpoints.LargeUp" @bind-Matches="AppStateStatic.OnWidescreen" />
-    <MediaQuery Media="@Breakpoints.XLargeUp" @bind-Matches="AppStateStatic.OnFullHD" />
-
     <Layout Sider="true" Style="height: var(--app-height);">
         <LayoutSider>
             <LayoutSiderContent>

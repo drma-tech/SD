@@ -67,6 +67,8 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
 
     collection.AddScoped<AppState>();
 
+    collection.AddResizeListener();
+
     collection.AddLogging(logging =>
     {
         logging.AddProvider(new CosmosLoggerProvider());

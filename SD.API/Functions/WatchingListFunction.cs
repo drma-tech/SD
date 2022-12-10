@@ -39,38 +39,75 @@ namespace SD.API.Functions
             }
         }
 
-        [FunctionName("WatchingListPost")]
-        public async Task<IActionResult> Post(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "WatchingList/Post")] HttpRequest req,
-            ILogger log, CancellationToken cancellationToken)
+        [FunctionName("WatchingListAdd")]
+        public async Task<IActionResult> Add(
+            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "WatchingList/Add/{MediaType}")] HttpRequest req,
+            string MediaType, ILogger log, CancellationToken cancellationToken)
         {
             try
             {
                 using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
-                var item = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
-                var newItem = await req.GetParameterObject<WatchingList>(source.Token);
+                var obj = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
+                var newItem = await req.GetParameterObjectPublic<WatchingListItem>(source.Token);
 
-                if (item == null)
+                if (obj == null)
                 {
-                    item = new WatchingList
+                    obj = new WatchingList
                     {
                         DtInsert = DateTimeOffset.UtcNow
                     };
+
+                    obj.SetIds(req.GetUserId());
                 }
                 else
                 {
-                    item.DtUpdate = DateTimeOffset.UtcNow;
+                    obj.DtUpdate = DateTimeOffset.UtcNow;
                 }
 
-                item.SetIds(req.GetUserId());
+                obj.AddItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), newItem);
 
-                item.SetCollection(MediaType.movie, newItem.Movies);
-                item.SetCollection(MediaType.tv, newItem.Shows);
+                obj = await _repo.Upsert(obj, source.Token);
 
-                item = await _repo.Upsert(item, source.Token);
+                return new OkObjectResult(obj);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
+                return new BadRequestObjectResult(ex.ProcessException());
+            }
+        }
 
-                return new OkObjectResult(item);
+        [FunctionName("WatchingListRemove")]
+        public async Task<IActionResult> Remove(
+            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "WatchingList/Remove/{MediaType}/{CollectionId}/{TmdbId}")] HttpRequest req,
+            string MediaType, string CollectionId, string TmdbId, ILogger log, CancellationToken cancellationToken)
+        {
+            try
+            {
+                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
+
+                var obj = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
+
+                if (obj == null)
+                {
+                    obj = new WatchingList
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+
+                    obj.SetIds(req.GetUserId());
+                }
+                else
+                {
+                    obj.DtUpdate = DateTimeOffset.UtcNow;
+                }
+
+                obj.RemoveItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), CollectionId, TmdbId == "null" ? null : TmdbId);
+
+                obj = await _repo.Upsert(obj, source.Token);
+
+                return new OkObjectResult(obj);
             }
             catch (Exception ex)
             {

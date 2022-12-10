@@ -1,7 +1,4 @@
-﻿using SD.Shared.Model.List.Tmdb;
-using System.Collections.Generic;
-
-namespace SD.Shared.Models
+﻿namespace SD.Shared.Models
 {
     public class WishList : DocumentBase
     {
@@ -13,9 +10,9 @@ namespace SD.Shared.Models
 
         public HashSet<WishListItem> Shows { get; init; } = new();
 
-        public void AddCollection(MediaType? type, string? id, string? name, string? logo, int? runtime)
+        public WishListItem? GetItem(MediaType? type, string? id)
         {
-            Items(type).Add(new WishListItem(id, name, logo, runtime));
+            return Items(type).FirstOrDefault(f => f.id == id);
         }
 
         public bool Contains(MediaType? type, string? id)
@@ -25,35 +22,17 @@ namespace SD.Shared.Models
             return Items(type).Contains(new WishListItem(id, null, null, null));
         }
 
-        public WishListItem? GetItem(MediaType? type, string? id)
+        public void AddItem(MediaType? type, WishListItem item)
         {
-            return Items(type).FirstOrDefault(f => f.id == id);
+            Items(type).Add(item);
         }
+
         public void RemoveItem(MediaType? type, string? id)
         {
             if (id == null) return;
 
             var item = GetItem(type, id);
             if (item != null) Items(type).Remove(item);
-        }
-        public void SetItems(MediaType? type, HashSet<WishListItem> items)
-        {
-            if (type == MediaType.movie)
-            {
-                Movies.Clear();
-                foreach (var item in items)
-                {
-                    Movies.Add(item);
-                }
-            }
-            else
-            {
-                Shows.Clear();
-                foreach (var item in items)
-                {
-                    Shows.Add(item);
-                }
-            }
         }
 
         public override void SetIds(string? id)

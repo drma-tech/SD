@@ -11,7 +11,10 @@ namespace SD.WEB.Modules.Profile.Core
         private struct Endpoint
         {
             public const string Get = "WishList/Get";
-            public const string Post = "WishList/Post";
+
+            public static string Add(MediaType? type) => $"WishList/Add/{type}";
+
+            public static string Remove(MediaType? type, string TmdbId) => $"WishList/Remove/{type}/{TmdbId}";
         }
 
         public async Task<WishList?> Get(bool IsUserAuthenticated)
@@ -22,15 +25,24 @@ namespace SD.WEB.Modules.Profile.Core
             }
             else
             {
-                return new();
+                return default;
             }
         }
 
-        public async Task<WishList?> Post(WishList obj)
+        public async Task<WishList?> Add(MediaType? mediaType, WishListItem? item)
         {
-            if (obj == null) throw new ArgumentNullException(nameof(obj));
+            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
-            return await PostAsync(Endpoint.Post, false, obj, Endpoint.Get);
+            return await PostAsync<WishListItem, WishList>(Endpoint.Add(mediaType), false, item, Endpoint.Get);
+        }
+
+        public async Task<WishList?> Remove(MediaType? mediaType, string? TmdbId)
+        {
+            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
+            if (TmdbId == null) throw new ArgumentNullException(nameof(TmdbId));
+
+            return await PostAsync<WishList>(Endpoint.Remove(mediaType, TmdbId), false, null, Endpoint.Get);
         }
     }
 }

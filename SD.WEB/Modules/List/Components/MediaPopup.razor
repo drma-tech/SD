@@ -526,9 +526,9 @@
         {
             var list = AppState.WishList ?? new WishList();
 
-            list.AddCollection(media.MediaType, media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.runtime);
+            var item = new WishListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.runtime);
 
-            list = await WishListApi.Post(list);
+            list = await WishListApi.Add(media.MediaType, item);
 
             AppState.ChangeWishList(list);
         }
@@ -546,9 +546,7 @@
         {
             var list = AppState.WishList ?? new WishList();
 
-            list.RemoveItem(media.MediaType, media.tmdb_id);
-
-            list = await WishListApi.Post(list);
+            list = await WishListApi.Remove(media.MediaType, media.tmdb_id);
 
             AppState.ChangeWishList(list);
         }
@@ -588,13 +586,11 @@
             }
             else
             {
-                var list = AppState.WatchedList ?? new WatchedList();
+                var watched = AppState.WatchedList ?? new WatchedList();
 
-                list.AddItem(media.MediaType, media.tmdb_id);
+                watched = await WatchedListApi.Add(media.MediaType, media.tmdb_id);
 
-                list = await WatchedListApi.Post(list);
-
-                AppState.ChangeWatchedList(list);
+                AppState.ChangeWatchedList(watched);
             }
         }
         catch (Exception ex)
@@ -611,14 +607,12 @@
 
         if (media.MediaType == MediaType.movie)
         {
-            watched.AddItem(media.MediaType, items);
+            watched = await WatchedListApi.Add(MediaType.movie, string.Join(',', items));
         }
         else
         {
-            if (media.tmdb_id != null) watched.AddItem(media.MediaType, media.tmdb_id);
+            watched = await WatchedListApi.Add(MediaType.tv, media.tmdb_id);
         }
-
-        watched = await WatchedListApi.Post(watched);
 
         AppState.ChangeWatchedList(watched);
 
@@ -628,28 +622,30 @@
 
         if (items.Count < collectionItemsCount)
         {
+            WatchingListItem item;
+
             if (media.MediaType == MediaType.movie)
             {
-                watching.AddCollection(media.MediaType, media?.collectionId?.ToString(), media?.collectionName, media?.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+                item = new WatchingListItem(media?.collectionId?.ToString(), media?.collectionName, media?.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), items);
             }
-            else if (media.MediaType == MediaType.tv)
+            else
             {
-                watching.AddCollection(media.MediaType, media?.tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+                item = new WatchingListItem(media?.tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), items);
             }
+
+            watching = await WatchingListApi.Add(type, item);
         }
         else
         {
             if (media.MediaType == MediaType.movie)
             {
-                watching.RemoveCollection(media.MediaType, media?.collectionId?.ToString(), null);
+                watching = await WatchingListApi.Remove(media?.MediaType, media?.collectionId?.ToString());
             }
             else
             {
-                watching.RemoveCollection(media.MediaType, media?.tmdb_id, null);
+                watching = await WatchingListApi.Remove(media?.MediaType, media?.tmdb_id);
             }
         }
-
-        watching = await WatchingListApi.Post(watching);
 
         AppState.ChangeWatchingList(watching);
     }
@@ -664,35 +660,29 @@
 
             var watched = AppState.WatchedList ?? new WatchedList();
 
-            if (media.MediaType == MediaType.movie)
-            {
-                watched.Movies.Remove(watched.Movies.First(f => f == media.tmdb_id & MediaType.movie == media.MediaType));
-            }
-            else if (media.MediaType == MediaType.tv)
-            {
-                watched.Shows.Remove(watched.Shows.First(f => f == media.tmdb_id & MediaType.tv == media.MediaType));
-            }
-
-            watched = await WatchedListApi.Post(watched);
+            watched = await WatchedListApi.Remove(media.MediaType, media.tmdb_id);
 
             AppState.ChangeWatchedList(watched);
 
             //watching
 
-            var watching = AppState.WatchingList ?? new WatchingList();
+            var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-            if (media.MediaType == MediaType.movie)
+            if (hasCollection)
             {
-                watching.RemoveCollection(media.MediaType, media.collectionId?.ToString(), media.tmdb_id);
-            }
-            else if (media.MediaType == MediaType.tv)
-            {
-                watching.RemoveCollection(media.MediaType, media.tmdb_id, null);
-            }
+                var watching = AppState.WatchingList ?? new WatchingList();
 
-            watching = await WatchingListApi.Post(watching);
+                if (media.MediaType == MediaType.movie)
+                {
+                    watching = await WatchingListApi.Remove(media.MediaType, media.collectionId?.ToString(), media.tmdb_id);
+                }
+                else if (media.MediaType == MediaType.tv)
+                {
+                    watching = await WatchingListApi.Remove(media.MediaType, media.tmdb_id);
+                }
 
-            AppState.ChangeWatchingList(watching);
+                AppState.ChangeWatchingList(watching);
+            }
         }
         catch (Exception ex)
         {

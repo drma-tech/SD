@@ -167,13 +167,18 @@ namespace SD.WEB.Core
             }
         }
 
-        protected async Task<T?> PostAsync<T>(string requestUri, bool isExternalLink, T obj, string? urlGet = null, CacheSettings? cacheSettings = null) where T : class
+        protected async Task<T?> PostAsync<T>(string requestUri, bool isExternalLink, T? obj, string? urlGet = null, CacheSettings? cacheSettings = null) where T : class
+        {
+            return await PostAsync<T, T>(requestUri, isExternalLink, obj, urlGet, cacheSettings);
+        }
+
+        protected async Task<O?> PostAsync<I, O>(string requestUri, bool isExternalLink, I? obj, string? urlGet = null, CacheSettings? cacheSettings = null) where I : class where O : class
         {
             var response = await Http.PostAsJsonAsync(BaseApi(isExternalLink) + requestUri, obj, new JsonSerializerOptions());
 
             if (response.IsSuccessStatusCode)
             {
-                var result = await response.Content.ReadFromJsonAsync<T>();
+                var result = await response.Content.ReadFromJsonAsync<O>();
 
                 if (MemoryCache != null && !string.IsNullOrEmpty(urlGet))
                 {

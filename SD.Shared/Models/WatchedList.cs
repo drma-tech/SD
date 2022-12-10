@@ -9,26 +9,6 @@
         public HashSet<string> Movies { get; init; } = new();
         public HashSet<string> Shows { get; init; } = new();
 
-        public void SetItem(MediaType? type, HashSet<string> collection)
-        {
-            if (type == MediaType.movie)
-            {
-                Movies.Clear();
-                foreach (var item in collection)
-                {
-                    Movies.Add(item);
-                }
-            }
-            else
-            {
-                Shows.Clear();
-                foreach (var item in collection)
-                {
-                    Shows.Add(item);
-                }
-            }
-        }
-
         public HashSet<string> GetItems(MediaType? type)
         {
             return Items(type);
@@ -41,16 +21,9 @@
             return Items(type).Contains(item);
         }
 
-        public void AddItem(MediaType? type, string? item)
+        public void AddItem(MediaType? type, HashSet<string> items)
         {
-            if (item == null) return;
-
-            Items(type).Add(item);
-        }
-
-        public void AddItem(MediaType? type, HashSet<string> collection)
-        {
-            foreach (var item in collection)
+            foreach (var item in items)
             {
                 Items(type).Add(item);
             }

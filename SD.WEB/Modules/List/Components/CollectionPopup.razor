@@ -153,7 +153,7 @@
             x =>
             {
                 x.Add(x => x.ItemsCollection, collection?.parts.Select(s => TmdbApi.ConvertToCollection(s)).ToList());
-                x.Add(x => x.SelectedItems, watching.GetWatchedItems(type, collection?.id.ToString()));
+                x.Add(x => x.SelectedItems, watching.GetWatchedItems(type, collection?.id.ToString()).ToHashSet()); //ToHashSet = clone to not reference
                 x.Add(x => x.SelectedItemsChanged,
                     new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(type, collection, tmdb_id, list, collection?.parts.Count ?? 0)));
             },
@@ -167,15 +167,15 @@
 
     private async Task SelectedItemsChanged(MediaType? type, TmdbCollection? collection, string? tmdb_id, HashSet<string> items, int collectionItemsCount)
     {
+        if (type == null) throw new ArgumentNullException(nameof(type));
+
         //watched list
 
         if (type == MediaType.movie)
         {
             var watched = AppState.WatchedList ?? new WatchedList();
 
-            watched.AddItem(type, items);
-
-            watched = await WatchedListApi.Post(watched);
+            watched = await WatchedListApi.Add(type, string.Join(',', items));
 
             AppState.ChangeWatchedList(watched);
         }
@@ -186,41 +186,43 @@
 
         if (items.Count < collectionItemsCount)
         {
+            WatchingListItem item;
+
             if (type == MediaType.movie)
             {
-                watching.AddCollection(type, collection?.id.ToString(), collection?.name, collection?.poster_path?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+                item = new WatchingListItem(collection?.id.ToString(), collection?.name, collection?.poster_path?.Replace(TmdbOptions.SmallPosterPath, ""), items);
             }
-            else if (type == MediaType.tv)
+            else
             {
                 var media = await TmdbApi.GetMediaDetail(tmdb_id, type);
 
-                watching.AddCollection(type, tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+                item = new WatchingListItem(tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), items);
             }
+
+            watching = await WatchingListApi.Add(type, item);
         }
         else
         {
             if (type == MediaType.movie)
             {
-                watching.RemoveCollection(type, collection?.id.ToString(), null);
+                watching = await WatchingListApi.Remove(type, collection?.id.ToString());
             }
             else
             {
-                watching.RemoveCollection(type, tmdb_id, null);
+                watching = await WatchingListApi.Remove(type, tmdb_id);
             }
         }
 
-        watching = await WatchingListApi.Post(watching);
-
         AppState.ChangeWatchingList(watching);
+
+        await HideModal();
     }
 
     private async Task RemoveCollection()
     {
         var watching = AppState.WatchingList ?? new WatchingList();
 
-        watching.RemoveCollection(type, collection?.id.ToString(), null);
-
-        watching = await WatchingListApi.Post(watching);
+        watching = await WatchingListApi.Remove(type, collection?.id.ToString());
 
         AppState.ChangeWatchingList(watching);
 

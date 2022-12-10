@@ -9,31 +9,7 @@
         public HashSet<WatchingListItem> Movies { get; init; } = new();
         public HashSet<WatchingListItem> Shows { get; init; } = new();
 
-        public void AddCollection(MediaType? type, string? collectionId, string? collectionName, string? collectionLogo, HashSet<string> watched)
-        {
-            var item = new WatchingListItem(collectionId, collectionName, collectionLogo, watched);
-
-            if (Contains(type, item))
-            {
-                foreach (var id in watched)
-                {
-                    GetCollection(type, collectionId)?.watched.Add(id);
-                }
-            }
-            else
-            {
-                Items(type).Add(item);
-            }
-        }
-
-        public bool Contains(MediaType? type, WatchingListItem? item)
-        {
-            if (item == null) return false;
-
-            return Items(type).Contains(item);
-        }
-
-        public WatchingListItem? GetCollection(MediaType? type, string? id)
+        public WatchingListItem? GetItem(MediaType? type, string? id)
         {
             return Items(type).FirstOrDefault(f => f.id == id);
         }
@@ -43,7 +19,31 @@
             return Items(type).FirstOrDefault(f => f.id == collectionId)?.watched ?? new();
         }
 
-        public void RemoveCollection(MediaType? type, string? collectionId, string? itemId)
+        public bool Contains(MediaType? type, WatchingListItem? item)
+        {
+            if (item == null) return false;
+
+            return Items(type).Contains(item);
+        }
+
+        public void AddItem(MediaType? type, WatchingListItem item)
+        {
+            if (Contains(type, item))
+            {
+                GetItem(type, item.id)?.watched.Clear();
+
+                foreach (var id in item.watched)
+                {
+                    GetItem(type, item.id)?.watched.Add(id);
+                }
+            }
+            else
+            {
+                Items(type).Add(item);
+            }
+        }
+
+        public void RemoveItem(MediaType? type, string? collectionId, string? itemId)
         {
             if (collectionId == null) throw new ArgumentNullException(nameof(collectionId));
 
@@ -63,25 +63,6 @@
             }
         }
 
-        public void SetCollection(MediaType? type, HashSet<WatchingListItem> collection)
-        {
-            if (type == MediaType.movie)
-            {
-                Movies.Clear();
-                foreach (var item in collection)
-                {
-                    Movies.Add(item);
-                }
-            }
-            else
-            {
-                Shows.Clear();
-                foreach (var item in collection)
-                {
-                    Shows.Add(item);
-                }
-            }
-        }
         public override void SetIds(string? id)
         {
             SetValues(id);

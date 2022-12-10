@@ -39,37 +39,75 @@ namespace SD.API.Functions
             }
         }
 
-        [FunctionName("WishListPost")]
-        public async Task<IActionResult> Post(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "WishList/Post")] HttpRequest req,
-            ILogger log, CancellationToken cancellationToken)
+        [FunctionName("WishListAdd")]
+        public async Task<IActionResult> Add(
+            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "WishList/Add/{MediaType}")] HttpRequest req,
+            string MediaType, ILogger log, CancellationToken cancellationToken)
         {
             try
             {
                 using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
 
-                var myProviders = await _repo.Get<WishList>(DocumentType.WishList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
-                var newItem = await req.GetParameterObject<WishList>(source.Token);
+                var obj = await _repo.Get<WishList>(DocumentType.WishList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
+                var newItem = await req.GetParameterObjectPublic<WishListItem>(source.Token);
 
-                if (myProviders == null)
+                if (obj == null)
                 {
-                    myProviders = new WishList
+                    obj = new WishList
                     {
                         DtInsert = DateTimeOffset.UtcNow
                     };
+
+                    obj.SetIds(req.GetUserId());
                 }
                 else
                 {
-                    myProviders.DtUpdate = DateTimeOffset.UtcNow;
+                    obj.DtUpdate = DateTimeOffset.UtcNow;
                 }
 
-                myProviders.SetIds(req.GetUserId());
+                obj.AddItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), newItem);
 
-                myProviders.SetItems(MediaType.movie, newItem.Movies);
-                myProviders.SetItems(MediaType.tv, newItem.Shows);
-                myProviders = await _repo.Upsert(myProviders, source.Token);
+                obj = await _repo.Upsert(obj, source.Token);
 
-                return new OkObjectResult(myProviders);
+                return new OkObjectResult(obj);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
+                return new BadRequestObjectResult(ex.ProcessException());
+            }
+        }
+
+        [FunctionName("WishListRemove")]
+        public async Task<IActionResult> Remove(
+            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "WishList/Remove/{MediaType}/{TmdbId}")] HttpRequest req,
+            string MediaType, string TmdbId, ILogger log, CancellationToken cancellationToken)
+        {
+            try
+            {
+                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
+
+                var obj = await _repo.Get<WishList>(DocumentType.WishList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
+
+                if (obj == null)
+                {
+                    obj = new WishList
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+
+                    obj.SetIds(req.GetUserId());
+                }
+                else
+                {
+                    obj.DtUpdate = DateTimeOffset.UtcNow;
+                }
+
+                obj.RemoveItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), TmdbId);
+
+                obj = await _repo.Upsert(obj, source.Token);
+
+                return new OkObjectResult(obj);
             }
             catch (Exception ex)
             {
