@@ -1,6 +1,4 @@
-﻿@inject NavigationManager nav
-
-<PageTitle>@GetTitle()</PageTitle>
+﻿<PageTitle>@GetTitle()</PageTitle>
 <HeadContent>
     <meta Property="og:title" Content="@GetTitle()" />
     <meta Name="twitter:title" Content="@GetTitle()" />
@@ -12,14 +10,16 @@
     }
     <meta Name="keywords" Content="@GetKeywords()" />
 </HeadContent>
-<meta property="og:url" content="@nav.Uri">
-<link rel="canonical" href="@nav.Uri" />
+<meta property="og:url" content="@GetCanonicalUrl()">
+<link rel="canonical" href="@GetCanonicalUrl()" />
 
 @code {
     private const string ProjectName = "Streaming Discovery";
+    private const string ProjectUrl = "https://www.streamingdiscovery.com";
 
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Description { get; set; }
+    [Parameter] public string? Url { get; set; }
     [Parameter] public IEnumerable<string> Keywords { get; set; } = new List<string>();
 
     string GetTitle() => Title is null ? ProjectName : $"{ProjectName} | {Title}";
@@ -40,5 +40,10 @@
         keywords.Add(ProjectName);
 
         return string.Join(", ", keywords);
+    }
+
+    string GetCanonicalUrl()
+    {
+        return ProjectUrl + Url;
     }
 }
