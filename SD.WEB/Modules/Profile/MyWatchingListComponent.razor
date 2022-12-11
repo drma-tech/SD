@@ -28,8 +28,19 @@
                     {
                         <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is4.OnDesktop.Is6.OnMobile">
                             <Card>
-                                <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                                @if (string.IsNullOrEmpty(item.logo))
+                                {
+                                    <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"></CardImage>
+
+                                    <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
+                                        @item.name
+                                    </Div>
+                                }
+                                else
+                                {
+                                    <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
                                    onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.movie))" Style="cursor: pointer;"></CardImage>
+                                }
                             </Card>
                         </Column>
                     }

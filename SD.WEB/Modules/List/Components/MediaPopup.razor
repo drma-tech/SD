@@ -278,7 +278,7 @@
                                     {
                                         <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
                                             <Card>
-                                                <Blazorise.Link Clicked="@(async() =>{ if (media.MediaType == MediaType.movie) await OpenPopupMedia(item, media.MediaType);else await Toast.Warning("Not Available");})" Style="position: relative;">
+                                                <Blazorise.Link Clicked="@(async() => await CollectionClicked(item))" Style="position: relative;">
                                                     @if (ShowOnlyYear)
                                                     {
                                                         <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@(item.release_date?.Year ?? DateTime.MaxValue.Year)</Badge>
@@ -425,6 +425,14 @@
     public async Task HideModal()
     {
         await ModalService.Hide();
+    }
+
+    private async Task CollectionClicked(Collection? item)
+    {
+        if (type == MediaType.movie)
+            await OpenPopupMedia(item, type);
+        else
+            await OpenPopupSeason(item);
     }
 
     private async Task Atualizar()
@@ -690,14 +698,32 @@
         }
     }
 
-    private async Task OpenPopupMedia(Collection? media, MediaType mediaType)
+    private async Task OpenPopupMedia(Collection? collection, MediaType? mediaType)
     {
-        await ModalService.Show<MediaPopup>(media?.title,
+        await ModalService.Show<MediaPopup>(collection?.title,
             x =>
             {
-                x.Add(x => x.tmdb_id, media?.id?.ToString());
+                x.Add(x => x.tmdb_id, collection?.id?.ToString());
                 x.Add(x => x.type, mediaType);
                 x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
+    }
+
+    private async Task OpenPopupSeason(Collection? collection)
+    {
+        await ModalService.Show<SeasonPopup>(null,
+            x =>
+            {
+                x.Add(x => x.ShowTitle, media?.title);
+                x.Add(x => x.ShowSeasonName, collection?.title);
+                x.Add(x => x.tmdb_id, tmdb_id);
+                x.Add(x => x.season_number, collection?.SeasonNumber);
             },
             new ModalInstanceOptions()
                 {

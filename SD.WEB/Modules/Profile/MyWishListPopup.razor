@@ -12,8 +12,20 @@
                 <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                     <Card>
                         <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
-                        <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                               onclick="@(async()=>await ShowMediaPopup(item, MediaType.movie))" Style="cursor: pointer;"></CardImage>
+                        @if (string.IsNullOrEmpty(item.logo))
+                        {
+                            <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"
+                               onclick="@(async()=>await ShowMediaPopup(item, MediaType))"></CardImage>
+
+                            <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
+                                @item.name
+                            </Div>
+                        }
+                        else
+                        {
+                            <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                               onclick="@(async()=>await ShowMediaPopup(item, MediaType))" Style="cursor: pointer;"></CardImage>
+                        }
                     </Card>
                 </Column>
             }

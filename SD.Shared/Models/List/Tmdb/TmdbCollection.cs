@@ -1,4 +1,6 @@
-﻿namespace SD.Shared.Models.List.Tmdb
+﻿using System.Text.Json.Serialization;
+
+namespace SD.Shared.Models.List.Tmdb
 {
     public class Part
     {
@@ -16,6 +18,9 @@
         public bool video { get; set; }
         public double vote_average { get; set; }
         public int vote_count { get; set; }
+
+        [JsonIgnore]
+        public int? season_number { get; set;}
     }
 
     public class TmdbCollection

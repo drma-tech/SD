@@ -113,6 +113,7 @@ namespace SD.WEB.Modules.List.Core
             {
                 id = season.id.ToString(),
                 title = season.name,
+                SeasonNumber = season.season_number,
                 release_date = season.air_date?.GetDate(),
                 poster_small = string.IsNullOrEmpty(season.poster_path) ? null : TmdbOptions.SmallPosterPath + season.poster_path
             };
@@ -123,6 +124,14 @@ namespace SD.WEB.Modules.List.Core
             if (collectionId == null) return default;
 
             return await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" + collectionId.ConfigureParameters(parameters), true);
+        }
+
+        public async Task<TmdbSeason?> GetSeason(string? tmdbId, int? seasonNumber, Dictionary<string, string> parameters)
+        {
+            if (tmdbId == null) return default;
+            if (seasonNumber == null) return default;
+
+            return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri + $"/tv/{tmdbId}/season/{seasonNumber}".ConfigureParameters(parameters), true);
         }
 
         public async Task<MediaProviders?> GetWatchProvidersList(string? tmdb_id, MediaType? type)

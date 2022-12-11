@@ -44,6 +44,7 @@
     public class Collection
     {
         public string? id { get; set; }
+        public int? SeasonNumber { get; set; }
         public string? title { get; set; }
         public DateTime? release_date { get; set; }
         public string? poster_small { get; set; }

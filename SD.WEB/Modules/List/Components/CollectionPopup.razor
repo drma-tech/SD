@@ -14,7 +14,7 @@
             {
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is3.OnWidescreen.Is2.OnFullHD">
                     <Card>
-                        <Blazorise.Link Clicked="@(async() =>{if (type == MediaType.movie)await OpenPopupMedia(item, type);else await Toast.Warning("Not Available");})" Style="position: relative;">
+                        <Blazorise.Link Clicked="@(async() => await CollectionClicked(item))" Style="position: relative;">
 
                             <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@item.release_date.GetDate()?.Year</Badge>
 
@@ -112,6 +112,7 @@
                 collection.parts.Add(new Part
                     {
                         id = int.Parse(season.id ?? "0"),
+                        season_number = season.SeasonNumber,
                         title = season.title ?? "error",
                         release_date = season.release_date.ToString() ?? "",
                         poster_path = string.IsNullOrEmpty(season.poster_small) ? "" : TmdbOptions.SmallPosterPath + season.poster_small
@@ -128,6 +129,14 @@
         await ModalService.Hide();
     }
 
+    private async Task CollectionClicked(Part? item)
+    {
+        if (type == MediaType.movie)
+            await OpenPopupMedia(item, type);
+        else
+            await OpenPopupSeason(item);
+    }
+
     private async Task OpenPopupMedia(Part? part, MediaType? mediaType)
     {
         await ModalService.Show<MediaPopup>(part?.title,
@@ -136,6 +145,24 @@
                 x.Add(x => x.tmdb_id, part?.id.ToString());
                 x.Add(x => x.type, mediaType);
                 x.Add(x => x.ShowOnlyYear, true);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
+    }
+
+    private async Task OpenPopupSeason(Part? part)
+    {
+        await ModalService.Show<SeasonPopup>(null,
+            x =>
+            {
+                x.Add(x => x.ShowTitle, collection?.name);
+                x.Add(x => x.ShowSeasonName, part?.title);
+                x.Add(x => x.tmdb_id, tmdb_id);
+                x.Add(x => x.season_number, part?.season_number);
             },
             new ModalInstanceOptions()
                 {
