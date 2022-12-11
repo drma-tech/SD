@@ -1,0 +1,52 @@
+﻿@using SD.WEB.Modules.Suggestions.Core;
+@using SD.WEB.Modules.Suggestions.Components;
+
+@inherits ComponenteNoDataCore<PopularIndexComponent>
+
+@inject TmdbDiscoveryApi TmdbDiscoveryApi
+@inject TmdbNowPlayingApi TmdbNowPlayingApi
+
+<Alert Visible="true" Color="Color.Secondary">
+    <AlertMessage>@TranslationText.Popular</AlertMessage>
+    <RadioGroup @bind-CheckedValue="TypeSelected" Buttons="true" Float="Float.End" Class="btn-group-xs">
+        <Radio Value="PopularType.Streaming">@PopularType.Streaming.GetName()</Radio>
+        <Radio Value="PopularType.Rent">@PopularType.Rent.GetName()</Radio>
+        <Radio Value="PopularType.Cinema">@PopularType.Cinema.GetName()</Radio>
+    </RadioGroup>
+</Alert>
+@if (TypeSelected == PopularType.Streaming)
+{
+    <MediaList ShowHead="false" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters("flatrate", "popularity.desc")" MaxItens="10" MultiplesRegions="true">
+    </MediaList>
+}
+else if (TypeSelected == PopularType.Rent)
+{
+    <MediaList ShowHead="false" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters("rent", "popularity.desc")" MaxItens="10" MultiplesRegions="true">
+    </MediaList>
+}
+else if (TypeSelected == PopularType.Cinema)
+{
+    <MediaList ShowHead="false" MediaListApi="TmdbNowPlayingApi" MaxItens="10" MultiplesRegions="true">
+    </MediaList>
+}
+
+@code {
+    public enum PopularType
+    {
+        [Custom(Name = "Streaming")]
+        Streaming,
+
+        [Custom(Name = "Rent")]
+        Rent,
+
+        [Custom(Name = "Cinema")]
+        Cinema
+    }
+
+    public PopularType TypeSelected { get; set; } = PopularType.Streaming;
+
+    private Dictionary<string, string> GetExtraParameters(string monetization_type, string sort_by)
+    {
+        return new Dictionary<string, string>() { { "with_watch_monetization_types", monetization_type }, { "sort_by", sort_by } }; ;
+    }
+}

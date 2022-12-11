@@ -1,0 +1,12 @@
+﻿@page "/Suggestions/Metacritic"
+<SeoHeader Title="Suggestions | Metacritic" Keywords="@(new []{"Metacritic"})"></SeoHeader>
+
+@inherits PageNoDataCore<Metacritic>
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+
+<HeadPage ImageSource="logo/metacritic.png" Text="Metacritic aggregates music, game, tv, and movie reviews from the leading critics. Only Metacritic.com uses METASCORES, which let you know at a glance how each item was reviewed." Link="https://www.metacritic.com/"></HeadPage>
+
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestMoviesofAllTime" MaxItens="10"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestTVShowsofAllTime" MaxItens="10"></MediaList>

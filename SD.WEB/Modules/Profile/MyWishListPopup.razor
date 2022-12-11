@@ -76,7 +76,7 @@
 
     public Task ShowMediaPopup(WishListItem item, MediaType type)
     {
-        return ModalService.Show<List.Components.MediaPopup>(item.name,
+        return ModalService.Show<Suggestions.Components.MediaPopup>(item.name,
             x =>
             {
                 x.Add(x => x.tmdb_id, item.id);

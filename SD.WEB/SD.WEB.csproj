@@ -45,7 +45,7 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>Translations.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Modules\List\Resources\Translations.Designer.cs">
+		<Compile Update="Modules\Suggestions\Resources\Translations.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>Translations.resx</DependentUpon>
@@ -70,6 +70,11 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>GlobalTranslations.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Resources\SeoTranslations.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>SeoTranslations.resx</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -77,7 +82,7 @@
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>Translations.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Modules\List\Resources\Translations.resx">
+		<EmbeddedResource Update="Modules\Suggestions\Resources\Translations.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>Translations.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
@@ -96,6 +101,10 @@
 		<EmbeddedResource Update="Resources\GlobalTranslations.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>GlobalTranslations.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\SeoTranslations.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>SeoTranslations.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
 

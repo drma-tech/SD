@@ -1,0 +1,258 @@
+﻿@using SD.Shared.Models.List.Tmdb;
+@using SD.WEB.Modules.Suggestions.Core;
+@inherits ComponenteCore<CollectionPopup>
+@inject TmdbApi TmdbApi
+
+<ModalHeader>
+    <ModalTitle>@collection?.name</ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    <Loading @ref="LoadingList">
+        <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
+            @foreach (var item in collection?.parts.OrderBy(o => o.release_date.GetDate()) ?? Enumerable.Empty<Part>())
+            {
+                <Column ColumnSize="ColumnSize.Is4.OnMobile.Is3.OnWidescreen.Is2.OnFullHD">
+                    <Card>
+                        <Blazorise.Link Clicked="@(async() => await CollectionClicked(item))" Style="position: relative;">
+
+                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@item.release_date.GetDate()?.Year</Badge>
+
+                            @if (string.IsNullOrEmpty(item.poster_path))
+                            {
+                                <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
+                            }
+                            else
+                            {
+                                var watched = AppState.WatchingList?.GetWatchedItems(type, collection?.id.ToString()).Any(a => a == item.id.ToString()) ?? false;
+
+                                if (watched)
+                                {
+                                    <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x4"
+                                        Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.8;"></Blazorise.Icon>
+                                }
+                                if (type == MediaType.movie) //you don't put seasons as wishes
+                                {
+                                    var wishedMovie = AppState.WishList?.Contains(MediaType.movie, item.id.ToString()) ?? false;
+                                    if (wishedMovie)
+                                    {
+                                        <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
+                                        Style="position: absolute; bottom: 3px; right: 3px; opacity: 0.8;"></Blazorise.Icon>
+                                    }
+                                }
+
+                                <CardImage Source="@(TmdbOptions.SmallPosterPath +  item.poster_path)" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(watched?"opacity: 0.5":"")}")></CardImage>
+                            }
+                        </Blazorise.Link>
+
+                        <CardBody Class="py-1">
+                            @item.title
+                        </CardBody>
+                    </Card>
+                </Column>
+            }
+        </Row>
+    </Loading>
+</ModalBody>
+<ModalFooter>
+    <Button Color="Color.Primary" Clicked="@Watched" Float="Float.Start" title="Mark all these items as watched">Watched</Button>
+    <Button Color="Color.Danger" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">Remove Collection</Button>
+    <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@GlobalTranslations.ButtonClose</Button>
+</ModalFooter>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    [Parameter] public string? tmdb_id { get; set; }
+    [Parameter] public MediaType? type { get; set; }
+
+    public Loading? LoadingList { get; set; }
+
+    private TmdbCollection? collection { get; set; }
+
+    public bool IsUserAuthenticated { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
+        if (type == null) throw new ArgumentNullException(nameof(type));
+
+        AppState.WishListChanged += StateHasChanged;
+        AppState.WatchedListChanged += StateHasChanged;
+
+        IsUserAuthenticated = await AppState.IsUserAuthenticated();
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task LoadData()
+    {
+        LoadingList?.Start();
+
+        if (type == MediaType.movie)
+        {
+            var parameters = new Dictionary<string, string>()
+            {
+                { "api_key", TmdbOptions.ApiKey },
+                { "language", AppStateStatic.Language.GetName(false) ?? "en-US" }
+            };
+
+            collection = await TmdbApi.GetCollection(tmdb_id, parameters);
+        }
+        else
+        {
+            var show = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.tv);
+
+            collection = new TmdbCollection();
+            collection.id = int.Parse(show.tmdb_id ?? "0");
+            collection.name = show.title ?? "error";
+
+            foreach (var season in show.Collection)
+            {
+                collection.parts.Add(new Part
+                    {
+                        id = int.Parse(season.id ?? "0"),
+                        season_number = season.SeasonNumber,
+                        title = season.title ?? "error",
+                        release_date = season.release_date.ToString() ?? "",
+                        poster_path = string.IsNullOrEmpty(season.poster_small) ? "" : TmdbOptions.SmallPosterPath + season.poster_small
+                    });
+            }
+        }
+
+        StateHasChanged();
+        LoadingList?.Finish(false);
+    }
+
+    public async Task HideModal()
+    {
+        await ModalService.Hide();
+    }
+
+    private async Task CollectionClicked(Part? item)
+    {
+        if (type == MediaType.movie)
+            await OpenPopupMedia(item, type);
+        else
+            await OpenPopupSeason(item);
+    }
+
+    private async Task OpenPopupMedia(Part? part, MediaType? mediaType)
+    {
+        await ModalService.Show<MediaPopup>(part?.title,
+            x =>
+            {
+                x.Add(x => x.tmdb_id, part?.id.ToString());
+                x.Add(x => x.type, mediaType);
+                x.Add(x => x.ShowOnlyYear, true);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
+    }
+
+    private async Task OpenPopupSeason(Part? part)
+    {
+        await ModalService.Show<SeasonPopup>(null,
+            x =>
+            {
+                x.Add(x => x.ShowTitle, collection?.name);
+                x.Add(x => x.ShowSeasonName, part?.title);
+                x.Add(x => x.tmdb_id, tmdb_id);
+                x.Add(x => x.season_number, part?.season_number);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
+    }
+
+    private async Task Watched()
+    {
+        var watching = AppState.WatchingList ?? new WatchingList();
+
+        await ModalService.Show<SelectItemsCollection>(null,
+            x =>
+            {
+                x.Add(x => x.ItemsCollection, collection?.parts.Select(s => TmdbApi.ConvertToCollection(s)).ToList());
+                x.Add(x => x.SelectedItems, watching.GetWatchedItems(type, collection?.id.ToString()).ToHashSet()); //ToHashSet = clone to not reference
+                x.Add(x => x.SelectedItemsChanged,
+                    new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(type, collection, tmdb_id, list, collection?.parts.Count ?? 0)));
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Default,
+                });
+    }
+
+    private async Task SelectedItemsChanged(MediaType? type, TmdbCollection? collection, string? tmdb_id, HashSet<string> items, int collectionItemsCount)
+    {
+        if (type == null) throw new ArgumentNullException(nameof(type));
+
+        //watched list
+
+        if (type == MediaType.movie)
+        {
+            var watched = AppState.WatchedList ?? new WatchedList();
+
+            watched = await WatchedListApi.Add(type, string.Join(',', items));
+
+            AppState.ChangeWatchedList(watched);
+        }
+
+        //watching list
+
+        var watching = AppState.WatchingList ?? new WatchingList();
+
+        if (items.Count < collectionItemsCount)
+        {
+            WatchingListItem item;
+
+            if (type == MediaType.movie)
+            {
+                item = new WatchingListItem(collection?.id.ToString(), collection?.name, collection?.poster_path?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+            }
+            else
+            {
+                var media = await TmdbApi.GetMediaDetail(tmdb_id, type);
+
+                item = new WatchingListItem(tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+            }
+
+            watching = await WatchingListApi.Add(type, item);
+        }
+        else
+        {
+            if (type == MediaType.movie)
+            {
+                watching = await WatchingListApi.Remove(type, collection?.id.ToString());
+            }
+            else
+            {
+                watching = await WatchingListApi.Remove(type, tmdb_id);
+            }
+        }
+
+        AppState.ChangeWatchingList(watching);
+
+        await HideModal();
+    }
+
+    private async Task RemoveCollection()
+    {
+        var watching = AppState.WatchingList ?? new WatchingList();
+
+        watching = await WatchingListApi.Remove(type, collection?.id.ToString());
+
+        AppState.ChangeWatchingList(watching);
+
+        await HideModal();
+    }
+}

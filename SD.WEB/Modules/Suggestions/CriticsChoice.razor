@@ -1,0 +1,12 @@
+﻿@page "/Suggestions/CriticsChoice"
+<SeoHeader Title="Suggestions | Critics Choice" Keywords="@(new []{"Critics Choice"})"></SeoHeader>
+@inherits PageNoDataCore<CriticsChoice>
+
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+
+<HeadPage ImageSource="logo/critics.png" Text="The Critics Choice Association (CCA) is a group of broadcast, radio and online critics as well as entertainment journalists who review films and documentaries as well as scripted and unscripted television." Link="https://www.criticschoice.com/"></HeadPage>
+
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CriticsChoiceBestPicture" MaxItens="10"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CriticsChoiceBestLimitedSeries" MaxItens="5"></MediaList>

@@ -1,0 +1,24 @@
+﻿@page "/Suggestions/Tmdb"
+<SeoHeader Title="Suggestions | TMDB" Keywords="@(new []{"TMDB"})"></SeoHeader>
+@inherits PageNoDataCore<Tmdb>
+
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbPopularApi TmdbPopularApi
+@inject TmdbTopRatedApi TmdbTopRatedApi
+@inject TmdbUpcomingApi TmdbUpcomingApi
+
+<HeadPage ImageSource="logo/tmdb.png" Text="@TranslationText.tmdb_desc" Link="https://www.themoviedb.org/"></HeadPage>
+
+<MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbPopularApi" MaxItens="50" ShowFilter="true"></MediaList>
+<MediaList TitleHead="@($"{TranslationText.TopRated} ({AppStateStatic.Region})")" MediaListApi="TmdbTopRatedApi" MaxItens="50" ShowFilter="true" MultiplesRegions="true"></MediaList>
+<MediaList TitleHead="@($"{TranslationText.ComingSoon} ({AppStateStatic.Region})")" MediaListApi="TmdbUpcomingApi" MaxItens="50" ShowOnlyYear="false" MultiplesRegions="true"></MediaList>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        AppStateStatic.RegionChanged += StateHasChanged;
+    }
+}

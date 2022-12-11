@@ -1,0 +1,13 @@
+﻿@page "/Suggestions/Emmys"
+<SeoHeader Title="Suggestions | Emmys" Keywords="@(new []{"Emmys"})"></SeoHeader>
+@inherits PageNoDataCore<Emmys>
+
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+
+<HeadPage ImageSource="logo/emmys.png" Text="@TranslationText.emmys_desc" Link="https://www.emmys.com/"></HeadPage>
+
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingDramaSeries" MaxItens="8"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingComedySeries" MaxItens="7"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingLimitedSeries" MaxItens="11"></MediaList>

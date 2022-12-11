@@ -1,0 +1,735 @@
+﻿@using SD.Shared.Model.List.Tmdb
+@using SD.Shared.Models;
+@using SD.WEB.Modules.Suggestions.Core;
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Provider.Core
+@inherits ComponenteCore<MediaPopup>
+@inject AllProvidersApi AllProvidersApi
+@inject TmdbApi TmdbApi
+
+<ModalHeader>
+    <ModalTitle>@media?.title</ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    <Loading @ref="LoadingList">
+        <Row HorizontalGutter="8" VerticalGutter="8">
+            <Column ColumnSize="ColumnSize.Is12.OnMobile.Is4.OnDesktop">
+                @if (string.IsNullOrEmpty(media?.poster_large))
+                {
+                    <CardImage Source="nopicture.jpg" Alt="@media?.title"></CardImage>
+                }
+                else
+                {
+                    <Div Style="position:relative;">
+                        @if (ShowOnlyYear)
+                        {
+                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media?.release_date?.Year</Badge>
+                        }
+                        else
+                        {
+                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media?.release_date?.ToShortDateString()</Badge>
+                        }
+                        @if (media?.rating >= 8)
+                        {
+                            <Badge Color="Color.Success" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
+                        }
+                        else if (media?.rating >= 6)
+                        {
+                            <Badge Color="Color.Warning" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
+                        }
+                        else if (media?.rating > 0)
+                        {
+                            <Badge Color="Color.Danger" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
+                        }
+                        <Image Source="@media?.poster_large" Text="@media?.title" Style="width: 100%;"></Image>
+                    </Div>
+                }
+            </Column>
+            <Column ColumnSize="ColumnSize.Is12.OnMobile.Is8.OnDesktop">
+                <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true">
+                    <Items>
+                        <Tab Name="About">About</Tab>
+                        <Tab Name="Streaming">Streaming (@AppStateStatic.Region.GetName(false))</Tab>
+                        @if (media?.Collection.Any() ?? false)
+                        {
+                            <Tab Name="Collection">Collection</Tab>
+                        }
+                    </Items>
+                    <Content>
+                        <TabPanel Name="About" Class="mt-2">
+                            <Badge Color="Color.Secondary" Margin="Margin.Is2.FromEnd.Is2.FromBottom">@media?.runtime.FormatRuntime()</Badge>
+                            @foreach (var item in media?.Genres ?? new List<string>())
+                            {
+                                <Badge Color="Color.Secondary" Margin="Margin.Is2.FromEnd.Is2.FromBottom">@item</Badge>
+                            }
+                            <Paragraph TextAlignment="TextAlignment.Justified">
+                                @media?.plot
+                            </Paragraph>
+                            @if (media != null && media.Videos.Any())
+                            {
+                                <Row HorizontalGutter="4" VerticalGutter="4">
+                                    <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                        <Button Color="Color.Dark" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">Trailers</Button>
+                                    </Column>
+                                    @foreach (var item in media.Videos)
+                                    {
+                                        <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                            <Button Type="ButtonType.Link" To="@("https://www.youtube.com/watch?v=" + item.key)" Target="Target.Blank" Color="Color.Light"
+                                            Padding="Padding.Is1" title="@item.name" Block="true">
+                                                <Blazorise.Icon Name="FontAwesomeIcons.Video"></Blazorise.Icon>
+                                            </Button>
+                                        </Column>
+                                    }
+                                </Row>
+                            }
+                            @{
+                                var link = Providers?.GetLink(AppStateStatic.Region);
+                                if (string.IsNullOrEmpty(link))
+                                {
+                                    link = Providers?.GetLink(Region.US);
+                                }
+                                @if (!string.IsNullOrEmpty(link))
+                                {
+                                    var uri_link = new Uri(link);
+                                    var fomatted_link = "https://" + uri_link.Host + string.Join("", uri_link.Segments.SkipLast(1));
+                                    <Row Margin="Margin.Is3.FromTop">
+                                        <Column>
+                                            <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
+                                                @GlobalTranslations.MoreInformation: <a href="@fomatted_link" target="_blank" rel="noopener">@(uri_link.Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+                                            </Alert>
+                                        </Column>
+                                    </Row>
+                                }
+                            }
+                        </TabPanel>
+                        <TabPanel Name="Streaming" Class="mt-2">
+                            @{
+                                var hasProvider = false;
+
+                                if (Providers?.GetFreeListProviders(AppStateStatic.Region).Any() ?? false)
+                                {
+                                    hasProvider = true;
+                                    <Row HorizontalGutter="4" VerticalGutter="4">
+                                        <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                            <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFree</Button>
+                                        </Column>
+                                        @foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
+                                        {
+                                            @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
+                                            {
+                                                <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                    <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.FREE))
+                                                        {
+                                                            <span>false</span>
+                                                        }
+                                                    </Button>
+                                                </Column>
+                                            }
+                                        }
+                                    </Row>
+                                }
+                                if (Providers?.GetAdsListProviders(AppStateStatic.Region).Any() ?? false)
+                                {
+                                    hasProvider = true;
+                                    <Row HorizontalGutter="4" VerticalGutter="4">
+                                        <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                            <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelAds</Button>
+                                        </Column>
+                                        @foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
+                                        {
+                                            @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
+                                            {
+                                                <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                    <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.AVOD))
+                                                        {
+                                                            <span>false</span>
+                                                        }
+                                                    </Button>
+                                                </Column>
+                                            }
+                                        }
+                                    </Row>
+                                }
+                                if (Providers?.GetFlatRateListProviders(AppStateStatic.Region).Any() ?? false)
+                                {
+                                    hasProvider = true;
+                                    <Row HorizontalGutter="4" VerticalGutter="4">
+                                        <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                            <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFlatRate</Button>
+                                        </Column>
+                                        @foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
+                                        {
+                                            @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
+                                            {
+                                                <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                    <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.SVOD))
+                                                        {
+                                                            <span>false</span>
+                                                        }
+                                                    </Button>
+                                                </Column>
+                                            }
+                                        }
+                                    </Row>
+                                }
+                                if (Providers?.GetFlatRateBuyListProviders(AppStateStatic.Region).Any() ?? false)
+                                {
+                                    hasProvider = true;
+                                    <Row HorizontalGutter="4" VerticalGutter="4">
+                                        <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                            <Button Color="Color.Warning" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFlatRateBuy</Button>
+                                        </Column>
+                                        @foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
+                                        {
+                                            @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
+                                            {
+                                                <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                    <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.PVOD))
+                                                        {
+                                                            <span>false</span>
+                                                        }
+                                                    </Button>
+                                                </Column>
+                                            }
+                                        }
+                                    </Row>
+                                }
+                                if (Providers?.GetRentListProviders(AppStateStatic.Region).Any() ?? false)
+                                {
+                                    hasProvider = true;
+                                    <Row HorizontalGutter="4" VerticalGutter="4">
+                                        <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                            <Button Color="Color.Primary" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelRent</Button>
+                                        </Column>
+                                        @foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
+                                        {
+                                            @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
+                                            {
+                                                <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                    <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
+                                                        {
+                                                            <span>false</span>
+                                                        }
+                                                    </Button>
+                                                </Column>
+                                            }
+                                        }
+                                    </Row>
+                                }
+                                if (Providers?.GetBuyListProviders(AppStateStatic.Region).Any() ?? false)
+                                {
+                                    hasProvider = true;
+                                    <Row HorizontalGutter="4" VerticalGutter="4">
+                                        <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
+                                            <Button Color="Color.Danger" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelBuy</Button>
+                                        </Column>
+                                        @foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
+                                        {
+                                            @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
+                                            {
+                                                <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
+                                                    <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
+                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
+                                                        {
+                                                            <span>false</span>
+                                                        }
+                                                    </Button>
+                                                </Column>
+                                            }
+                                        }
+                                    </Row>
+                                }
+
+                                if (hasProvider)
+                                {
+                                    <Row Margin="Margin.Is3.FromTop">
+                                        <Column>
+                                            <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
+                                                @GlobalTranslations.Offering: <a href="https://www.justwatch.com/" target="_blank" rel="noopener">@(new Uri("https://www.justwatch.com/").Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+                                            </Alert>
+                                        </Column>
+                                    </Row>
+                                }
+                                else
+                                {
+                                    <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
+                                        @GlobalTranslations.TitleNotAvailable
+                                    </Alert>
+                                }
+                            }
+                        </TabPanel>
+                        @if (media?.Collection.Any() ?? false)
+                        {
+                            <TabPanel Name="Collection" Class="mt-2">
+                                <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
+                                    @foreach (var item in media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue))
+                                    {
+                                        <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
+                                            <Card>
+                                                <Blazorise.Link Clicked="@(async() => await CollectionClicked(item))" Style="position: relative;">
+                                                    @if (ShowOnlyYear)
+                                                    {
+                                                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@(item.release_date?.Year ?? DateTime.MaxValue.Year)</Badge>
+                                                    }
+                                                    else
+                                                    {
+                                                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@(item.release_date?.ToShortDateString() ?? DateTime.MaxValue.ToShortDateString())</Badge>
+                                                    }
+                                                    @if (string.IsNullOrEmpty(item.poster_small))
+                                                    {
+                                                        <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
+                                                    }
+                                                    else
+                                                    {
+                                                        var movieWatched = AppState.WatchedList?.Contains(MediaType.movie, item.id) ?? false;
+                                                        var showWatched = AppState.WatchingList?.GetWatchedItems(MediaType.tv, media.tmdb_id).Any(a => a == item.id) ?? false;
+
+                                                        if (movieWatched | showWatched)
+                                                        {
+                                                            <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x4" Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.8;"></Blazorise.Icon>
+                                                        }
+
+                                                        if (type == MediaType.movie) //you don't put seasons as wishes
+                                                        {
+                                                            var wishedMovie = AppState.WishList?.Contains(MediaType.movie, item.id) ?? false;
+                                                            if (wishedMovie)
+                                                            {
+                                                                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light" Style="position: absolute; bottom: 3px; right: 3px; opacity: 0.8;"></Blazorise.Icon>
+                                                            }
+                                                        }
+
+                                                        <CardImage Source="@item.poster_small" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(movieWatched | showWatched?"opacity: 0.5":"")}")></CardImage>
+                                                    }
+                                                </Blazorise.Link>
+
+                                                <CardBody Class="py-1">
+                                                    @item.title
+                                                </CardBody>
+                                            </Card>
+                                        </Column>
+                                    }
+                                </Row>
+                            </TabPanel>
+                        }
+                    </Content>
+                </Tabs>
+            </Column>
+        </Row>
+    </Loading>
+</ModalBody>
+<ModalFooter>
+    <Container Fluid="true" Margin="Margin.Is0">
+        <Row HorizontalGutter="4" VerticalGutter="4">
+            <Column VerticalAlignment="VerticalAlignment.Middle">
+                @if (!string.IsNullOrEmpty(media?.homepage))
+                {
+                    <a href="@media.homepage" target="_blank" rel="noopener" style="float: left;">@(new Uri(media.homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+                }
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                @if (AppState.WishList?.Movies.Any(a => a.id == tmdb_id) ?? false)
+                {
+                    <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated">
+                        <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
+                    </Button>
+                }
+                else if (AppState.WishList?.Shows.Any(a => a.id == tmdb_id) ?? false)
+                {
+                    <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated">
+                        <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
+                    </Button>
+                }
+                else
+                {
+                    <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated">
+                        <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
+                    </Button>
+                }
+                @if (AppState.WatchedList?.Movies.Any(a => a == tmdb_id) ?? false)
+                {
+                    <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated">
+                        <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
+                    </Button>
+                }
+                else if (AppState.WatchedList?.Shows.Any(a => a == tmdb_id) ?? false)
+                {
+                    <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated">
+                        <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
+                    </Button>
+                }
+                else
+                {
+                    <Button Color="Color.Primary" Clicked="Watched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated">
+                        <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonWatched
+                    </Button>
+                }
+                @*<Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false">Atualizar</Button>*@
+                <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@GlobalTranslations.ButtonClose</Button>
+            </Column>
+        </Row>
+    </Container>
+</ModalFooter>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    [Parameter] public bool ShowOnlyYear { get; set; } = true;
+    [Parameter] public string? tmdb_id { get; set; }
+    [Parameter] public MediaType? type { get; set; }
+
+    public Loading? LoadingList { get; set; }
+
+    private MediaDetail? media { get; set; }
+    private MediaProviders? Providers { get; set; }
+    private AllProviders? AllProviders { get; set; }
+
+    public bool IsUserAuthenticated { get; set; }
+    string selectedTab = "About";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
+        if (type == null) throw new ArgumentNullException(nameof(type));
+
+        AppState.WishListChanged += StateHasChanged;
+        AppState.WatchedListChanged += StateHasChanged;
+
+        IsUserAuthenticated = await AppState.IsUserAuthenticated();
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task LoadData()
+    {
+        LoadingList?.Start();
+
+        media = await TmdbApi.GetMediaDetail(tmdb_id, type);
+        Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
+        AllProviders = await AllProvidersApi.GetAll();
+        StateHasChanged();
+        LoadingList?.Finish(media == null);
+    }
+
+    public async Task HideModal()
+    {
+        await ModalService.Hide();
+    }
+
+    private async Task CollectionClicked(Collection? item)
+    {
+        if (type == MediaType.movie)
+            await OpenPopupMedia(item, type);
+        else
+            await OpenPopupSeason(item);
+    }
+
+    private async Task Atualizar()
+    {
+        if (Providers == null) return;
+
+        foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
+        {
+            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+            var model = DeliveryModel.FREE;
+
+            if (provider != null && !provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
+        {
+            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+            var model = DeliveryModel.AVOD;
+
+            if (provider != null && !provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
+        {
+            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+            var model = DeliveryModel.SVOD;
+
+            if (provider != null && !provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
+        {
+            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+            var model = DeliveryModel.TVOD;
+
+            if (provider != null && !provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
+        {
+            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+            var model = DeliveryModel.TVOD;
+
+            if (provider != null && !provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
+        {
+            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+            var model = DeliveryModel.PVOD;
+
+            if (provider != null && !provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        await AllProvidersApi.Post(AllProviders);
+    }
+
+    private async Task Add()
+    {
+        if (media == null) throw new ArgumentNullException(nameof(media));
+
+        try
+        {
+            var list = AppState.WishList ?? new WishList();
+
+            var item = new WishListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.runtime);
+
+            list = await WishListApi.Add(media.MediaType, item);
+
+            AppState.ChangeWishList(list);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private async Task Remove()
+    {
+        if (media == null) throw new ArgumentNullException(nameof(media));
+
+        try
+        {
+            var list = AppState.WishList ?? new WishList();
+
+            list = await WishListApi.Remove(media.MediaType, media.tmdb_id);
+
+            AppState.ChangeWishList(list);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private async Task Watched()
+    {
+        if (media == null) throw new ArgumentNullException(nameof(media));
+
+        try
+        {
+            var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
+
+            if (hasCollection)
+            {
+                var watching = AppState.WatchingList ?? new WatchingList();
+                var collectionId = media.MediaType == MediaType.movie ? media.collectionId?.ToString() : media.tmdb_id;
+
+                await ModalService.Show<SelectItemsCollection>(null,
+                    x =>
+                    {
+                        x.Add(x => x.ItemsCollection, media.Collection);
+                        x.Add(x => x.SelectedItems, watching.GetWatchedItems(media.MediaType, collectionId));
+                        x.Add(x => x.SelectedItemsChanged,
+                            new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(media, list, media.Collection.Count)));
+                    },
+                    new ModalInstanceOptions()
+                        {
+                            UseModalStructure = false,
+                            Centered = true,
+                            Size = ModalSize.Default,
+                        });
+            }
+            else
+            {
+                var watched = AppState.WatchedList ?? new WatchedList();
+
+                watched = await WatchedListApi.Add(media.MediaType, media.tmdb_id);
+
+                AppState.ChangeWatchedList(watched);
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private async Task SelectedItemsChanged(MediaDetail media, HashSet<string> items, int collectionItemsCount)
+    {
+        //watched list
+
+        var watched = AppState.WatchedList ?? new WatchedList();
+
+        if (media.MediaType == MediaType.movie)
+        {
+            watched = await WatchedListApi.Add(MediaType.movie, string.Join(',', items));
+        }
+        else
+        {
+            watched = await WatchedListApi.Add(MediaType.tv, media.tmdb_id);
+        }
+
+        AppState.ChangeWatchedList(watched);
+
+        //watching list
+
+        var watching = AppState.WatchingList ?? new WatchingList();
+
+        if (items.Count < collectionItemsCount)
+        {
+            WatchingListItem item;
+
+            if (media.MediaType == MediaType.movie)
+            {
+                item = new WatchingListItem(media?.collectionId?.ToString(), media?.collectionName, media?.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+            }
+            else
+            {
+                item = new WatchingListItem(media?.tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+            }
+
+            watching = await WatchingListApi.Add(type, item);
+        }
+        else
+        {
+            if (media.MediaType == MediaType.movie)
+            {
+                watching = await WatchingListApi.Remove(media?.MediaType, media?.collectionId?.ToString());
+            }
+            else
+            {
+                watching = await WatchingListApi.Remove(media?.MediaType, media?.tmdb_id);
+            }
+        }
+
+        AppState.ChangeWatchingList(watching);
+    }
+
+    private async Task NotWatched()
+    {
+        if (media == null) throw new ArgumentNullException(nameof(media));
+
+        try
+        {
+            //watched
+
+            var watched = AppState.WatchedList ?? new WatchedList();
+
+            watched = await WatchedListApi.Remove(media.MediaType, media.tmdb_id);
+
+            AppState.ChangeWatchedList(watched);
+
+            //watching
+
+            var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
+
+            if (hasCollection)
+            {
+                var watching = AppState.WatchingList ?? new WatchingList();
+
+                if (media.MediaType == MediaType.movie)
+                {
+                    watching = await WatchingListApi.Remove(media.MediaType, media.collectionId?.ToString(), media.tmdb_id);
+                }
+                else if (media.MediaType == MediaType.tv)
+                {
+                    watching = await WatchingListApi.Remove(media.MediaType, media.tmdb_id);
+                }
+
+                AppState.ChangeWatchingList(watching);
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private async Task OpenPopupMedia(Collection? collection, MediaType? mediaType)
+    {
+        await ModalService.Show<MediaPopup>(collection?.title,
+            x =>
+            {
+                x.Add(x => x.tmdb_id, collection?.id?.ToString());
+                x.Add(x => x.type, mediaType);
+                x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
+    }
+
+    private async Task OpenPopupSeason(Collection? collection)
+    {
+        await ModalService.Show<SeasonPopup>(null,
+            x =>
+            {
+                x.Add(x => x.ShowTitle, media?.title);
+                x.Add(x => x.ShowSeasonName, collection?.title);
+                x.Add(x => x.tmdb_id, tmdb_id);
+                x.Add(x => x.season_number, collection?.SeasonNumber);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
+    }
+}

@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using SD.WEB;
 using SD.WEB.Modules.Auth.Core;
-using SD.WEB.Modules.List.Core;
 using SD.WEB.Modules.News.Core;
 using SD.WEB.Modules.Profile.Core;
 using SD.WEB.Modules.Provider.Core;
+using SD.WEB.Modules.Suggestions.Core;
 using SD.WEB.Modules.Support.Core;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 

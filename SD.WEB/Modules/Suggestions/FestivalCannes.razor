@@ -1,0 +1,13 @@
+﻿@page "/Suggestions/FestivalCannes"
+<SeoHeader Title="Suggestions | Festival de Cannes" Keywords="@(new []{"Festival de Cannes"})"></SeoHeader>
+@inherits PageNoDataCore<FestivalCannes>
+
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+
+<HeadPage ImageSource="logo/festival-cannes.png" Text="All the news from the 1st film festival in the world." Link="https://www.festival-cannes.com/en/"></HeadPage>
+
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesPalme" MaxItens="10"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesGrandPrix" MaxItens="10"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesPalmeShortFilm" MaxItens="10"></MediaList>

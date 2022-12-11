@@ -77,7 +77,7 @@
     {
         if (string.IsNullOrEmpty(tmdb_id)) return default!;
 
-        return ModalService.Show<List.Components.CollectionPopup>(name,
+        return ModalService.Show<Suggestions.Components.CollectionPopup>(name,
             x =>
             {
                 x.Add(x => x.tmdb_id, tmdb_id);

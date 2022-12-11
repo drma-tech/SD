@@ -84,7 +84,7 @@
 
     private async Task OpenCompleteList()
     {
-        await ModalService.Show<Modules.List.Components.CompleteListProvider>(@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region),
+        await ModalService.Show<Modules.Suggestions.Components.CompleteListProvider>(@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region),
         x =>
         {
             x.Add(x => x.CardHeader, @Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region));

@@ -1,0 +1,14 @@
+﻿@page "/Suggestions/Oscar"
+<SeoHeader Title="Suggestions | Oscar" Keywords="@(new []{"Oscar"})"></SeoHeader>
+@inherits PageNoDataCore<Oscar>
+
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+
+<HeadPage ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></HeadPage>
+
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestMotionPicture" MaxItens="12"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestAnimatedFeatureFilm" MaxItens="12"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarInternationalFeatureFilm" MaxItens="12"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarDocumentaryFeature" MaxItens="12"></MediaList>

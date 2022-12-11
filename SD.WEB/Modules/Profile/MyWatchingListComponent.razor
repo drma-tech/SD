@@ -1,4 +1,4 @@
-﻿@using SD.WEB.Modules.List.Core;
+﻿@using SD.WEB.Modules.Suggestions.Core;
 @using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.Provider.Core;
 @inherits ComponenteCore<MyWatchingListComponent>
@@ -169,7 +169,7 @@
     {
         if (string.IsNullOrEmpty(tmdb_id)) return default!;
 
-        return ModalService.Show<List.Components.CollectionPopup>(name,
+        return ModalService.Show<Suggestions.Components.CollectionPopup>(name,
             x =>
             {
                 x.Add(x => x.tmdb_id, tmdb_id);

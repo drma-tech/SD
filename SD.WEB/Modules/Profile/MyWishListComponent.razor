@@ -155,7 +155,7 @@
     {
         if (string.IsNullOrEmpty(tmdb_id)) return default!;
 
-        return ModalService.Show<List.Components.MediaPopup>(name,
+        return ModalService.Show<Suggestions.Components.MediaPopup>(name,
             x =>
             {
                 x.Add(x => x.tmdb_id, tmdb_id);

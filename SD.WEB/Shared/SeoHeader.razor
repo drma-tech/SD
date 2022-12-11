@@ -1,8 +1,7 @@
-﻿@inject NavigationManager MyNavigationManager
+﻿@inject NavigationManager nav
 
 <PageTitle>@GetTitle()</PageTitle>
 <HeadContent>
-    @*<meta Name="keywords" Content="@GetKeywords()" />*@
     <meta Property="og:title" Content="@GetTitle()" />
     <meta Name="twitter:title" Content="@GetTitle()" />
     @if (!string.IsNullOrEmpty(Description))
@@ -11,18 +10,19 @@
         <meta Property="og:description" Content="@GetDescription()" />
         <meta Name="twitter:description" Content="@GetDescription()" />
     }
+    <meta Name="keywords" Content="@GetKeywords()" />
 </HeadContent>
-<meta property="og:url" content="@MyNavigationManager.Uri">
-<link rel="canonical" href="@MyNavigationManager.Uri" />
+<meta property="og:url" content="@nav.Uri">
+<link rel="canonical" href="@nav.Uri" />
 
 @code {
+    private const string ProjectName = "Streaming Discovery";
+
     [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public IEnumerable<string> Keywords { get; set; } = new List<string>();
 
-    [Parameter] public string? Description { get; set; } = "Descubra os melhores streamings, filmes e seriados mais populares do momento ou os mais premiados (oscar, globo de ouro, emmys, etc)";
-
-    //[Parameter] public IEnumerable<string> Keywords { get; set; } = new List<string>();
-
-    string GetTitle() => Title is null ? "Streaming Discovery" : $"Streaming Discovery | {Title}";
+    string GetTitle() => Title is null ? ProjectName : $"{ProjectName} | {Title}";
 
     string GetDescription()
     {
@@ -31,14 +31,14 @@
         return Description.TrimEnd('.') + ".";
     }
 
-    //string GetKeywords()
-    //{
-    //    var keywords = new List<string>();
+    string GetKeywords()
+    {
+        var keywords = new List<string>();
 
-    //    keywords.AddRange(Keywords);
+        keywords.AddRange(Keywords);
 
-    //    keywords.Add("[YOUR NAME or BRAND]");
+        keywords.Add(ProjectName);
 
-    //    return string.Join(", ", keywords);
-    //}
+        return string.Join(", ", keywords);
+    }
 }

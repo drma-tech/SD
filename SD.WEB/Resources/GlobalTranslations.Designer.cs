@@ -268,20 +268,20 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lists.
-        /// </summary>
-        public static string MenuList {
-            get {
-                return ResourceManager.GetString("MenuList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Profile.
         /// </summary>
         public static string MenuProfile {
             get {
                 return ResourceManager.GetString("MenuProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Suggestions.
+        /// </summary>
+        public static string MenuSuggestions {
+            get {
+                return ResourceManager.GetString("MenuSuggestions", resourceCulture);
             }
         }
         
