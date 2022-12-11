@@ -11,7 +11,7 @@
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
                 <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
-                    <Blazorise.Link To="@item.link">
+                    <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
                         <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
                     </Blazorise.Link>
                     <CardBody Padding="Padding.Is1" Style="min-height: 46.4px">
@@ -32,7 +32,7 @@
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
                 <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
-                    <Blazorise.Link To="@item.link">
+                    <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
                         <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
                     </Blazorise.Link>
                     <CardBody Padding="Padding.Is1" Style="min-height: 46.4px">

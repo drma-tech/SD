@@ -1,4 +1,6 @@
-﻿<PageTitle>@GetTitle()</PageTitle>
+﻿@inject NavigationManager MyNavigationManager
+
+<PageTitle>@GetTitle()</PageTitle>
 <HeadContent>
     @*<meta Name="keywords" Content="@GetKeywords()" />*@
     <meta Property="og:title" Content="@GetTitle()" />
@@ -10,20 +12,16 @@
         <meta Name="twitter:description" Content="@GetDescription()" />
     }
 </HeadContent>
-
-<!--<meta property="og:title" content="Streaming Discovery">
-<meta property="og:type" content="website" />
-<meta property="og:description" content="Descubra os melhores streamings, filmes e seriados mais populares do momento ou os mais premiados (oscar, globo de ouro, emmys, etc)">
-<meta property="og:url" content="https://www.streamingdiscovery.com/">-->
+<meta property="og:url" content="@MyNavigationManager.Uri">
 
 @code {
     [Parameter] public string? Title { get; set; }
 
-    [Parameter] public string? Description { get; set; }
+    [Parameter] public string? Description { get; set; } = "Descubra os melhores streamings, filmes e seriados mais populares do momento ou os mais premiados (oscar, globo de ouro, emmys, etc)";
 
     //[Parameter] public IEnumerable<string> Keywords { get; set; } = new List<string>();
 
-    string GetTitle() => Title is null ? "Streaming Discovery" : $"SD | {Title}";
+    string GetTitle() => Title is null ? "Streaming Discovery" : $"Streaming Discovery | {Title}";
 
     string GetDescription()
     {
