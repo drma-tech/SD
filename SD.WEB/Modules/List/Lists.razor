@@ -1,55 +1,48 @@
 ﻿@page "/List"
 <SeoHeader Title="List"></SeoHeader>
-@inherits PageCore<Lists>
+@inherits PageNoDataCore<Lists>
 
 <Alert Visible="true" Color="Color.Secondary">
     <AlertMessage>@Resources.Translations.TitleAwards</AlertMessage>
 </Alert>
-<Loading @ref="LoadingAwards">
-    <Row HorizontalGutter="4" VerticalGutter="4">
-        @foreach (var item in Awards)
-        {
-            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
-                <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
-                    <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
-                        <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
-                    </Blazorise.Link>
-                    <CardBody Padding="Padding.Is1" Style="min-height: 46.4px">
-                        <CardTitle Size="6" Margin="Margin.Is0">@item.name</CardTitle>
-                    </CardBody>
-                </Card>
-            </Column>
-        }
-    </Row>
-</Loading>
+<Row HorizontalGutter="4" VerticalGutter="4">
+    @foreach (var item in Awards)
+    {
+        <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
+            <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
+                <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
+                    <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
+                </Blazorise.Link>
+                <CardBody Padding="Padding.Is1" Style="min-height: 46.4px">
+                    <CardTitle Size="6" Margin="Margin.Is0">@item.name</CardTitle>
+                </CardBody>
+            </Card>
+        </Column>
+    }
+</Row>
 
 <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
     <AlertMessage>@Resources.Translations.TitleSpecializedSites</AlertMessage>
 </Alert>
-<Loading @ref="LoadingSites">
-    <Row HorizontalGutter="4" VerticalGutter="4">
-        @foreach (var item in Sites)
-        {
-            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
-                <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
-                    <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
-                        <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
-                    </Blazorise.Link>
-                    <CardBody Padding="Padding.Is1" Style="min-height: 46.4px">
-                        <CardTitle Size="6" Margin="Margin.Is0">@item.name</CardTitle>
-                    </CardBody>
-                </Card>
-            </Column>
-        }
-    </Row>
-</Loading>
+<Row HorizontalGutter="4" VerticalGutter="4">
+    @foreach (var item in Sites)
+    {
+        <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
+            <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
+                <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
+                    <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
+                </Blazorise.Link>
+                <CardBody Padding="Padding.Is1" Style="min-height: 46.4px">
+                    <CardTitle Size="6" Margin="Margin.Is0">@item.name</CardTitle>
+                </CardBody>
+            </Card>
+        </Column>
+    }
+</Row>
 
 @code {
     private List<Item> Awards { get; set; } = new();
     private List<Item> Sites { get; set; } = new();
-
-    public Loading? LoadingAwards { get; set; }
-    public Loading? LoadingSites { get; set; }
 
     public class Item
     {
@@ -58,9 +51,10 @@
         public string? link { get; set; }
     }
 
-    protected override async Task LoadData()
+    protected override void OnInitialized()
     {
-        LoadingAwards?.Start();
+        base.OnInitialized();
+
         Awards.Add(new Item() { name = "Oscar", logo_path = "logo/oscar.png", link = "/List/Oscar" });
         Awards.Add(new Item() { name = "Golden Globe", logo_path = "logo/goldenglobes.png", link = "/List/GoldenGlobes" });
         Awards.Add(new Item() { name = "Emmys", logo_path = "logo/emmys.png", link = "/List/Emmys" });
@@ -68,9 +62,7 @@
         Awards.Add(new Item() { name = "FI Spirit", logo_path = "logo/spirit.png", link = "/List/Spirit" });
         Awards.Add(new Item() { name = "Critics Choice", logo_path = "logo/critics.png", link = "/List/CriticsChoice" });
         Awards.Add(new Item() { name = "Festival de Cannes", logo_path = "logo/festival-cannes.png", link = "/List/FestivalCannes" });
-        LoadingAwards?.Finish(!Awards.Any());
 
-        LoadingSites?.Start();
         Sites.Add(new Item() { name = "IMDB", logo_path = "logo/imdb.png", link = "/List/Imdb" });
         Sites.Add(new Item() { name = "TMDB", logo_path = "logo/tmdb.png", link = "/List/Tmdb" });
         Sites.Add(new Item() { name = "Hollywood Reporter", logo_path = "logo/HollywoodReporter.png", link = "/List/HollywoodReporter" });
@@ -78,6 +70,5 @@
         Sites.Add(new Item() { name = "Metacritic", logo_path = "logo/metacritic.png", link = "/List/Metacritic" });
         Sites.Add(new Item() { name = "Empire", logo_path = "logo/empire.png", link = "/List/Empire" });
         Sites.Add(new Item() { name = "Rolling Stone", logo_path = "logo/rollingstone.png", link = "/List/RollingStone" });
-        LoadingSites?.Finish(!Sites.Any());
     }
 }
