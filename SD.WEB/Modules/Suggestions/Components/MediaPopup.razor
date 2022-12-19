@@ -1,11 +1,15 @@
 ﻿@using SD.Shared.Model.List.Tmdb
 @using SD.Shared.Models;
+@using SD.Shared.Models.List.Imdb;
 @using SD.WEB.Modules.Suggestions.Core;
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
 @inherits ComponenteCore<MediaPopup>
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbApi TmdbApi
+@inject ImdbApi ImdbApi
+@inject CacheApi CacheApi
+@inject ExternalIdApi ExternalIdApi
 
 <ModalHeader>
     <ModalTitle>@media?.title</ModalTitle>
@@ -30,18 +34,18 @@
                         {
                             <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media?.release_date?.ToShortDateString()</Badge>
                         }
-                        @if (media?.rating >= 8)
-                        {
-                            <Badge Color="Color.Success" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
-                        }
-                        else if (media?.rating >= 6)
-                        {
-                            <Badge Color="Color.Warning" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
-                        }
-                        else if (media?.rating > 0)
-                        {
-                            <Badge Color="Color.Danger" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
-                        }
+                        @*@if (media?.rating >= 8)
+                    {
+                    <Badge Color="Color.Success" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
+                    }
+                    else if (media?.rating >= 6)
+                    {
+                    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
+                    }
+                    else if (media?.rating > 0)
+                    {
+                    <Badge Color="Color.Danger" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
+                    }*@
                         <Image Source="@media?.poster_large" Text="@media?.title" Style="width: 100%;"></Image>
                     </Div>
                 }
@@ -63,6 +67,24 @@
                             {
                                 <Badge Color="Color.Secondary" Margin="Margin.Is2.FromEnd.Is2.FromBottom">@item</Badge>
                             }
+
+                            <Paragraph>
+                                <Badge Color="GetColorByRating(Ratings?.imDb)">IMDB: @Ratings?.imDb</Badge>
+                                <Badge Color="GetColorByRating(media?.rating.ToString())">TMDB: @media?.rating.ToString("#.#")</Badge>
+                                @if (!string.IsNullOrEmpty(Ratings?.metacritic))
+                                {
+                                    <Badge Color="GetColorByRating(Ratings?.metacritic)" Margin="Margin.Is1.FromStart">Metacritic: @Ratings?.metacritic</Badge>
+                                }
+                                @if (!string.IsNullOrEmpty(Ratings?.rottenTomatoes))
+                                {
+                                    <Badge Color="GetColorByRating(Ratings?.rottenTomatoes)" Margin="Margin.Is1.FromStart">Rotten Tomatoes: @Ratings?.rottenTomatoes</Badge>
+                                }
+                                @if (!string.IsNullOrEmpty(Ratings?.filmAffinity))
+                                {
+                                    <Badge Color="GetColorByRating(Ratings?.filmAffinity)" Margin="Margin.Is1.FromStart">Filme Affinity: @Ratings?.filmAffinity</Badge>
+                                }
+                            </Paragraph>
+
                             <Paragraph TextAlignment="TextAlignment.Justified">
                                 @media?.plot
                             </Paragraph>
@@ -330,7 +352,7 @@
     </Loading>
 </ModalBody>
 <ModalFooter>
-    <Container Fluid="true" Margin="Margin.Is0">
+    <Container Fluid="true" Margin="Margin.Is0" Padding="Padding.Is0.OnX">
         <Row HorizontalGutter="4" VerticalGutter="4">
             <Column VerticalAlignment="VerticalAlignment.Middle">
                 @if (!string.IsNullOrEmpty(media?.homepage))
@@ -393,6 +415,7 @@
 
     private MediaDetail? media { get; set; }
     private MediaProviders? Providers { get; set; }
+    private Ratings? Ratings { get; set; }
     private AllProviders? AllProviders { get; set; }
 
     public bool IsUserAuthenticated { get; set; }
@@ -418,8 +441,46 @@
         media = await TmdbApi.GetMediaDetail(tmdb_id, type);
         Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
         AllProviders = await AllProvidersApi.GetAll();
+
+        var imdb_id = await ExternalIdApi.GetImdbId(type, tmdb_id);
+        if (!string.IsNullOrEmpty(imdb_id))
+        {
+            var cache = await CacheApi.GetRatings(imdb_id);
+            if (cache == null)
+            {
+                Ratings = await ImdbApi.GetRatings(imdb_id);
+                if (Ratings != null) await CacheApi.AddRatings(new RatingsCache($"rating_{imdb_id}", Ratings), imdb_id);
+            }
+            else
+            {
+                Ratings = (Ratings?)cache?.Data;
+            }
+        }
+
         StateHasChanged();
         LoadingList?.Finish(media == null);
+    }
+
+    private Color GetColorByRating(string? rating)
+    {
+        if (string.IsNullOrEmpty(rating)) return Color.Secondary;
+
+        var val = double.Parse(rating);
+
+        if (val > 10) val = val / 10;
+
+        if (val >= 8)
+        {
+            return Color.Success;
+        }
+        else if (val >= 6)
+        {
+            return Color.Warning;
+        }
+        else
+        {
+            return Color.Danger;
+        }
     }
 
     public async Task HideModal()

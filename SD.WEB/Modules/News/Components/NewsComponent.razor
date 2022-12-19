@@ -20,8 +20,8 @@
                 <div style="position: absolute; top: 0px; left: 0px; background-color: lime; opacity: 80%;" class="px-1 m-2">
                     @((MarkupString)item.title)
                 </div>
-                <Blazorise.Link To="@item.link" Target="Target.Blank">
-                    <Image data-src="@item.mainImage.url" class="lazyload" Text="@item.title" Display="Display.Block" Width="Width.Is100" />
+                <Blazorise.Link To="@item?.link" Target="Target.Blank">
+                    <Image data-src="@item?.mainImage?.url" class="lazyload" Text="@item?.title" Display="Display.Block" Width="Width.Is100" />
                 </Blazorise.Link>
             </CarouselSlide>
         }
@@ -39,15 +39,15 @@
     {
         LoadingNews?.Start();
 
-        var cache = await CacheApi.Get("lastnews");
+        var cache = await CacheApi.GetNews();
         if (cache == null)
         {
             News = await NewsApi.Get();
-            await CacheApi.Add(new SD.Shared.Models.CacheModel("lastnews", News));
+            await CacheApi.AddNews(new FlixsterCache("lastnews", News));
         }
         else
         {
-            News = (Flixster?)cache.Value;
+            News = (Flixster?)cache?.Data;
         }
 
         LoadingNews?.Finish(News == null);

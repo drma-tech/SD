@@ -1,5 +1,6 @@
 ﻿@using SD.Shared.Models.News;
 @using SD.WEB.Modules.News.Core;
+@using System.Text.Json;
 @inherits ComponenteCore<NewsPopup>
 
 @inject NewsApi NewsApi
@@ -45,15 +46,15 @@
     {
         LoadingNews?.Start();
 
-        var cache = await CacheApi.Get("lastnews");
+        var cache = await CacheApi.GetNews();
         if (cache == null)
         {
             News = await NewsApi.Get();
-            await CacheApi.Add(new SD.Shared.Models.CacheModel("lastnews", News));
+            await CacheApi.AddNews(new FlixsterCache("lastnews", News));
         }
         else
         {
-            News = (Flixster?)cache.Value;
+            News = (Flixster?)cache.Data;
         }
 
         LoadingNews?.Finish(News == null);

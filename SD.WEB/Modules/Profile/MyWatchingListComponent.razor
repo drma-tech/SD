@@ -26,7 +26,7 @@
                 <Row HorizontalGutter="4" VerticalGutter="4">
                     @foreach (var item in AppState.WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
                     {
-                        <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is4.OnDesktop.Is6.OnMobile">
+                        <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
                             <Card>
                                 @if (string.IsNullOrEmpty(item.logo))
                                 {
@@ -77,7 +77,7 @@
                 <Row HorizontalGutter="4" VerticalGutter="4">
                     @foreach (var item in AppState.WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
                     {
-                        <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is4.OnDesktop.Is6.OnMobile">
+                        <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
                             <Card>
                                 <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
                                    onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.tv))" Style="cursor: pointer;"></CardImage>

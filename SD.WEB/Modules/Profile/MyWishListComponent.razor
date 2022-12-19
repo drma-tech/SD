@@ -18,7 +18,7 @@
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in AppState.WishList?.Movies.Take(GetTotalItems) ?? new List<WishListItem>())
                 {
-                    <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is4.OnDesktop.Is6.OnMobile">
+                    <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
                         <Card>
                             <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
 
@@ -65,7 +65,7 @@
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in AppState.WishList?.Shows.Take(GetTotalItems) ?? new List<WishListItem>())
                 {
-                    <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is4.OnDesktop.Is6.OnMobile">
+                    <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
                         <Card>
                             <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
                             <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"

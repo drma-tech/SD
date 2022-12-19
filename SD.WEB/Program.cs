@@ -52,6 +52,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<CacheApi>();
     collection.AddScoped<NewsApi>();
 
+    collection.AddScoped<ImdbApi>();
     collection.AddScoped<TmdbApi>();
 
     collection.AddScoped<TmdbListApi>();

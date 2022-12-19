@@ -18,7 +18,7 @@ namespace SD.WEB.Core
         private HttpClient Http { get; set; }
         private IMemoryCache MemoryCache { get; set; }
 
-        public ApiServices(HttpClient http, IMemoryCache memoryCache)
+        protected ApiServices(HttpClient http, IMemoryCache memoryCache)
         {
             Http = http;
             MemoryCache = memoryCache;

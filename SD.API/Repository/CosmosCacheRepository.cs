@@ -1,6 +1,5 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
-using SD.Shared.Models;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,11 +26,11 @@ namespace SD.API.Repository
             Container = _client.GetContainer(databaseId, containerId);
         }
 
-        public async Task<CacheModel?> Get(string key, CancellationToken cancellationToken)
+        public async Task<CacheModel<TData>?> Get<TData>(string key, CancellationToken cancellationToken) where TData : class
         {
             try
             {
-                var response = await Container.ReadItemAsync<CacheModel>(key, new PartitionKey(key), null, cancellationToken);
+                var response = await Container.ReadItemAsync<CacheModel<TData>>(key, new PartitionKey(key), null, cancellationToken);
 
                 return response.Resource;
             }
@@ -41,7 +40,7 @@ namespace SD.API.Repository
             }
         }
 
-        public async Task<CacheModel?> Add(CacheModel cache, CancellationToken cancellationToken)
+        public async Task<CacheModel<TData>?> Add<TData>(CacheModel<TData> cache, CancellationToken cancellationToken) where TData : class
         {
             var response = await Container.UpsertItemAsync(cache, new PartitionKey(cache.Key), null, cancellationToken);
 

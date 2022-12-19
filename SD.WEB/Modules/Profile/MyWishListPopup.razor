@@ -9,7 +9,7 @@
         <Row HorizontalGutter="4" VerticalGutter="4">
             @foreach (var item in GetWishList())
             {
-                <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile">
                     <Card>
                         <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
                         @if (string.IsNullOrEmpty(item.logo))
