@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using SD.Shared.Model.List.Tmdb;
 using SD.Shared.Models.List.Tmdb;
-using System.Reflection.Metadata;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
@@ -17,10 +17,13 @@ namespace SD.WEB.Modules.Suggestions.Core
             var parameter = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey },
-                { "language", AppStateStatic.Language.GetName(false) ?? "en-US" }
+                { "language", AppStateStatic.Language.GetName(false) ?? "en-US" },
+                { "external_source", "imdb_id" }
             };
 
-            return await GetAsync<string>($"TMDB/GetTmdbId/{imdb_id}".ConfigureParameters(parameter), true);
+            var result = await GetAsync<FindByImdb>($"find/{imdb_id}".ConfigureParameters(parameter), true);
+
+            return result?.tv_results.FirstOrDefault()?.id.ToString();
         }
 
         public async Task<string?> GetImdbId(MediaType? type, string? tmdb_id)

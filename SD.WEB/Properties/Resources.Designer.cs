@@ -61,7 +61,7 @@ namespace SD.WEB.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 07/10/2022 
+        ///   Looks up a localized string similar to 2022.12.18 
         ///.
         /// </summary>
         internal static string BuildDate {
