@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using SD.Shared.Models.List.Tmdb;
+using System.Reflection.Metadata;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
@@ -7,6 +8,19 @@ namespace SD.WEB.Modules.Suggestions.Core
     {
         public ExternalIdApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
         {
+        }
+
+        public async Task<string?> GetTmdbId(string? imdb_id)
+        {
+            if (imdb_id == null) throw new ArgumentNullException(nameof(imdb_id));
+
+            var parameter = new Dictionary<string, string>()
+            {
+                { "api_key", TmdbOptions.ApiKey },
+                { "language", AppStateStatic.Language.GetName(false) ?? "en-US" }
+            };
+
+            return await GetAsync<string>($"TMDB/GetTmdbId/{imdb_id}".ConfigureParameters(parameter), true);
         }
 
         public async Task<string?> GetImdbId(MediaType? type, string? tmdb_id)
