@@ -40,9 +40,29 @@
     }
 </Row>
 
+<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
+    <AlertMessage>Specials</AlertMessage>
+</Alert>
+<Row HorizontalGutter="4" VerticalGutter="4">
+    @foreach (var item in Specials)
+    {
+        <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
+            <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
+                <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
+                    <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
+                </Blazorise.Link>
+                <CardBody Padding="Padding.Is1" Style="min-height: 46.4px">
+                    <CardTitle Size="6" Margin="Margin.Is0">@item.name</CardTitle>
+                </CardBody>
+            </Card>
+        </Column>
+    }
+</Row>
+
 @code {
     private List<Item> Awards { get; set; } = new();
     private List<Item> Sites { get; set; } = new();
+    private List<Item> Specials { get; set; } = new();
 
     public class Item
     {
@@ -70,5 +90,8 @@
         Sites.Add(new Item() { name = "Metacritic", logo_path = "logo/metacritic.png", link = "/Suggestions/Metacritic" });
         Sites.Add(new Item() { name = "Empire", logo_path = "logo/empire.png", link = "/Suggestions/Empire" });
         Sites.Add(new Item() { name = "Rolling Stone", logo_path = "logo/rollingstone.png", link = "/Suggestions/RollingStone" });
+
+        Specials.Add(new Item() { name = "Expected Movies of 2023", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2023" });
+        Specials.Add(new Item() { name = "Expected Movies of 2024", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2024" });
     }
 }

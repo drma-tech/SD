@@ -34,18 +34,6 @@
                         {
                             <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media?.release_date?.ToShortDateString()</Badge>
                         }
-                        @*@if (media?.rating >= 8)
-                    {
-                    <Badge Color="Color.Success" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
-                    }
-                    else if (media?.rating >= 6)
-                    {
-                    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
-                    }
-                    else if (media?.rating > 0)
-                    {
-                    <Badge Color="Color.Danger" Style="position: absolute; top: 5px; right: 5px;">@media?.rating.ToString("#.#")</Badge>
-                    }*@
                         <Image Source="@media?.poster_large" Text="@media?.title" Style="width: 100%;"></Image>
                     </Div>
                 }
@@ -69,8 +57,14 @@
                             }
 
                             <Paragraph>
-                                <Badge Color="GetColorByRating(Ratings?.imDb)">IMDB: @Ratings?.imDb</Badge>
-                                <Badge Color="GetColorByRating(media?.rating.ToString())">TMDB: @media?.rating.ToString("#.#")</Badge>
+                                @if (!string.IsNullOrEmpty(Ratings?.imDb))
+                                {
+                                    <Badge Color="GetColorByRating(Ratings?.imDb)" Margin="Margin.Is1.FromStart">IMDB: @Ratings?.imDb</Badge>
+                                }
+                                @if (media?.rating != null && media?.rating != 0)
+                                {
+                                    <Badge Color="GetColorByRating(media?.rating.ToString())" Margin="Margin.Is1.FromStart">TMDB: @media?.rating.ToString("#.#")</Badge>
+                                }
                                 @if (!string.IsNullOrEmpty(Ratings?.metacritic))
                                 {
                                     <Badge Color="GetColorByRating(Ratings?.metacritic)" Margin="Margin.Is1.FromStart">Metacritic: @Ratings?.metacritic</Badge>

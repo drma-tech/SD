@@ -1,0 +1,9 @@
+﻿@page "/Suggestions/Movies2023"
+<SeoHeader Title="Suggestions | Expected Movies of 2023" Keywords="@(new []{"Rotten Tomatoes"})" Url="/Suggestions/Movies2023"></SeoHeader>
+@inherits PageNoDataCore<Movies2023>
+
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2023" MaxItens="34" ShowOnlyYear="false"></MediaList>
