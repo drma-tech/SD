@@ -16,7 +16,14 @@
                     <Card>
                         <Blazorise.Link Clicked="@(async() => await CollectionClicked(item))" Style="position: relative;">
 
-                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@item.release_date.GetDate()?.Year</Badge>
+                            @if (@item.release_date.GetDate() < DateTime.Now.AddDays(-30))
+                            {
+                                <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@item.release_date.GetDate()?.Year</Badge>
+                            }
+                            else
+                            {
+                                <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@item.release_date.GetDate()?.ToShortDateString()</Badge>
+                            }
 
                             @if (string.IsNullOrEmpty(item.poster_path))
                             {
@@ -144,7 +151,6 @@
             {
                 x.Add(x => x.tmdb_id, part?.id.ToString());
                 x.Add(x => x.type, mediaType);
-                x.Add(x => x.ShowOnlyYear, true);
             },
             new ModalInstanceOptions()
                 {

@@ -39,7 +39,7 @@
                                 else
                                 {
                                     <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.movie))" Style="cursor: pointer;"></CardImage>
+                                        onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.movie))" Style="cursor: pointer;"></CardImage>
                                 }
                             </Card>
                         </Column>

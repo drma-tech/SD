@@ -105,6 +105,15 @@
         ExpectedMovieOf2023 = 8232488,
 
         [Custom(Name = "Expected Movies of 2024")]
-        ExpectedMovieOf2024 = 8232490
+        ExpectedMovieOf2024 = 8232490,
+
+        [Custom(Name = "Best Movies")]
+        FilmaffinityBestMovies = 8232832,
+
+        [Custom(Name = "Best Series and TV")]
+        FilmaffinityBestSeriesandTV = 8232834,
+
+        [Custom(Name = "Best Animation")]
+        FilmaffinityBestAnimation = 8232840,
     }
 }

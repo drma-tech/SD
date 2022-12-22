@@ -26,7 +26,7 @@
                 else
                 {
                     <Div Style="position:relative;">
-                        @if (ShowOnlyYear)
+                        @if (@media?.release_date < DateTime.Now.AddDays(-30))
                         {
                             <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media?.release_date?.Year</Badge>
                         }
@@ -59,23 +59,23 @@
                             <Paragraph>
                                 @if (!string.IsNullOrEmpty(Ratings?.imDb))
                                 {
-                                    <Badge Color="GetColorByRating(Ratings?.imDb)" Margin="Margin.Is1.FromStart">IMDB: @Ratings?.imDb</Badge>
+                                    <Badge Color="GetColorByRating(Ratings?.imDb)" Margin="Margin.Is1.FromEnd">IMDB: @Ratings?.imDb</Badge>
                                 }
                                 @if (media?.rating != null && media?.rating != 0)
                                 {
-                                    <Badge Color="GetColorByRating(media?.rating.ToString())" Margin="Margin.Is1.FromStart">TMDB: @media?.rating.ToString("#.#")</Badge>
+                                    <Badge Color="GetColorByRating(media?.rating.ToString())" Margin="Margin.Is1.FromEnd">TMDB: @media?.rating.ToString("#.#")</Badge>
                                 }
                                 @if (!string.IsNullOrEmpty(Ratings?.metacritic))
                                 {
-                                    <Badge Color="GetColorByRating(Ratings?.metacritic)" Margin="Margin.Is1.FromStart">Metacritic: @Ratings?.metacritic</Badge>
+                                    <Badge Color="GetColorByRating(Ratings?.metacritic)" Margin="Margin.Is1.FromEnd">Metacritic: @Ratings?.metacritic</Badge>
                                 }
                                 @if (!string.IsNullOrEmpty(Ratings?.rottenTomatoes))
                                 {
-                                    <Badge Color="GetColorByRating(Ratings?.rottenTomatoes)" Margin="Margin.Is1.FromStart">Rotten Tomatoes: @Ratings?.rottenTomatoes</Badge>
+                                    <Badge Color="GetColorByRating(Ratings?.rottenTomatoes)" Margin="Margin.Is1.FromEnd">Rotten Tomatoes: @Ratings?.rottenTomatoes</Badge>
                                 }
                                 @if (!string.IsNullOrEmpty(Ratings?.filmAffinity))
                                 {
-                                    <Badge Color="GetColorByRating(Ratings?.filmAffinity)" Margin="Margin.Is1.FromStart">Filme Affinity: @Ratings?.filmAffinity</Badge>
+                                    <Badge Color="GetColorByRating(Ratings?.filmAffinity)" Margin="Margin.Is1.FromEnd">Filme Affinity: @Ratings?.filmAffinity</Badge>
                                 }
                             </Paragraph>
 
@@ -295,7 +295,7 @@
                                         <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
                                             <Card>
                                                 <Blazorise.Link Clicked="@(async() => await CollectionClicked(item))" Style="position: relative;">
-                                                    @if (ShowOnlyYear)
+                                                    @if (@item.release_date < DateTime.Now.AddDays(-30))
                                                     {
                                                         <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@(item.release_date?.Year ?? DateTime.MaxValue.Year)</Badge>
                                                     }
@@ -401,7 +401,6 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter] public bool ShowOnlyYear { get; set; } = true;
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
@@ -760,7 +759,6 @@
             {
                 x.Add(x => x.tmdb_id, collection?.id?.ToString());
                 x.Add(x => x.type, mediaType);
-                x.Add(x => x.ShowOnlyYear, ShowOnlyYear);
             },
             new ModalInstanceOptions()
                 {

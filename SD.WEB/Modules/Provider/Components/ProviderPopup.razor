@@ -79,7 +79,7 @@
             </TabPanel>
             <TabPanel Name="Catalog" Class="mt-3">
                 <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc")" MaxItens="50" ShowFilter="true"></MediaList>
-                <MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc")" MaxItens="50" ShowFilter="true" ShowOnlyYear="false"></MediaList>
+                <MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc")" MaxItens="50" ShowFilter="true"></MediaList>
                 <MediaList TitleHead="@TranslationText.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc")" MaxItens="50" ShowFilter="true"></MediaList>
             </TabPanel>
         </Content>

@@ -12,7 +12,7 @@
 
 <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbPopularApi" MaxItens="50" ShowFilter="true"></MediaList>
 <MediaList TitleHead="@($"{TranslationText.TopRated} ({AppStateStatic.Region})")" MediaListApi="TmdbTopRatedApi" MaxItens="50" ShowFilter="true" MultiplesRegions="true"></MediaList>
-<MediaList TitleHead="@($"{TranslationText.ComingSoon} ({AppStateStatic.Region})")" MediaListApi="TmdbUpcomingApi" MaxItens="50" ShowOnlyYear="false" MultiplesRegions="true"></MediaList>
+<MediaList TitleHead="@($"{TranslationText.ComingSoon} ({AppStateStatic.Region})")" MediaListApi="TmdbUpcomingApi" MaxItens="50" MultiplesRegions="true"></MediaList>
 
 @code {
     protected override async Task OnInitializedAsync()

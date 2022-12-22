@@ -1,29 +1,20 @@
-﻿@using SD.WEB.Modules.Suggestions.Core
+﻿@inherits ComponenteCore<MediaListFull>
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.Shared.Models
 @using SD.WEB.Modules.Suggestions.Interface;
-@using SD.WEB.Modules.Profile.Core;
-@using SD.Shared.Models;
-@inherits ComponenteCore<MediaList>
+@using SD.WEB.Modules.Profile.Core
+
 @inject ExternalIdApi ExternalIdApi
 
 @if (ShowHead)
 {
     <Alert Visible="true" Color="Color.Secondary">
-        <AlertMessage>@Title</AlertMessage>
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList">
-            <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
-        </Button>
-        @if (ShowFilter)
-        {
-            <RadioGroup CheckedValue="TypeSelected" CheckedValueChanged="@(async(MediaType type)=>await TypeSelectedChanged(type))" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is2.FromEnd">
-                <Radio Value="MediaType.movie">@MediaType.movie.GetName()</Radio>
-                <Radio Value="MediaType.tv">@MediaType.tv.GetName()</Radio>
-            </RadioGroup>
-        }
+        <AlertMessage>@GetTitle</AlertMessage>
     </Alert>
 }
 <Loading @ref="LoadingList">
-    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
-        @for (int i = 1; i <= Items.Take(GetTotalItems).Count(); i++)
+    <Row HorizontalGutter="4" VerticalGutter="4">
+        @for (int i = 1; i <= Items.Count; i++)
         {
             var item = Items.ElementAt(i - 1);
             <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
@@ -51,7 +42,7 @@
                         }
                         @if (string.IsNullOrEmpty(item.poster_small))
                         {
-                            <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
+                            <CardImage Source="nopicture.jpg" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
 
                             <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
                                 @item.title
@@ -73,7 +64,7 @@
                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
                                     Style="position: absolute; bottom: 3px; right: 3px; opacity: 0.8;"></Blazorise.Icon>
                             }
-                            <CardImage data-src="@item.poster_small" class="lazyload" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(watchedMovie | watchedShow?"opacity: 0.5":"")}")></CardImage>
+                            <CardImage Source="@(item.poster_small)" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(watchedMovie | watchedShow?"opacity: 0.5":"")}")></CardImage>
                         }
                     </Blazorise.Link>
                     @if (!string.IsNullOrEmpty(item.comments))
@@ -95,50 +86,46 @@
         @for (int i = 1; i <= (GetTotalItems - Items.Count % GetTotalItems); i++)
         {
             <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
-
             </Column>
         }
     </Row>
 </Loading>
+<Div TextAlignment="TextAlignment.Center">
+    <Button Color="Color.Secondary" Margin="Margin.Is2" Clicked="LoadMore" Disabled="@(Items.Count>=MaxItens|DisableLoadMore)">Carregar mais</Button>
+</Div>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
-    [Parameter] public bool ShowFilter { get; set; } = false;
-
-    [Parameter] public IMediaListApi? MediaListApi { get; set; }
-    [Parameter] public EnumLists? List { get; set; } = null;
-    [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
-    [Parameter] public int MaxItens { get; set; } = 10;
+    [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
     [Parameter] public bool IsIMDB { get; set; } = false;
-
-    [Parameter] public bool MultiplesRegions { get; set; } = false;
-    [Parameter] public bool MultipleLanguages { get; set; } = true;
-
-    public MediaType TypeSelected { get; set; } = MediaType.movie;
-    private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
-    private int GetTotalItems => AppStateStatic.OnFullHD ? 10 : 6;
-
-    public HashSet<MediaDetail> Items { get; set; } = new();
+    [Parameter] public int MaxItens { get; set; } = 10;
+    [Parameter] public IMediaListApi? MediaListApi { get; set; }
+    [Parameter] public MediaType? TypeSelected { get; set; }
+    [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
+    [Parameter] public EnumLists? List { get; set; }
 
     public Loading? LoadingList { get; set; }
 
-    public string GetCustomStyle => "col-xl col-md-2 col-4";
+    private string? GetTitle => List != null ? List.GetName() : TitleHead;
+    private string GetCustomStyle => "col-xl col-md-2 col-4";
+    private int GetTotalItems => AppStateStatic.OnFullHD ? 10 : 6;
+    public bool DisableLoadMore { get; set; } = false;
+    private int currentPage = 1;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
-            if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
+            //if (!string.IsNullOrEmpty(list_id) && !NextPage.HasDelegate) throw new ArgumentNullException(nameof(NextPage));
+            //if (NextPage.HasDelegate && string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
             if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));
 
             AppState.WishListChanged += StateHasChanged;
             AppState.WatchedListChanged += StateHasChanged;
-            if (MultiplesRegions) AppStateStatic.RegionChanged += LoadDataVoid;
-            if (MultipleLanguages) AppStateStatic.LanguageChanged += LoadDataVoid;
 
             await base.OnInitializedAsync();
         }
@@ -153,18 +140,7 @@
         await LoadItems(TypeSelected);
     }
 
-    protected async void LoadDataVoid()
-    {
-        await LoadItems(TypeSelected);
-    }
-
-    private async Task TypeSelectedChanged(MediaType type)
-    {
-        TypeSelected = type;
-        await LoadItems(type);
-    }
-
-    private async Task LoadItems(MediaType type)
+    private async Task LoadItems(MediaType? type)
     {
         LoadingList?.Start();
         if (MediaListApi != null)
@@ -175,7 +151,7 @@
 
             if (Items.Count < 10) //force reload, if the filters bring few records
             {
-                var result2 = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, 2);
+                var result2 = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++currentPage);
                 foreach (var item in result2.list)
                 {
                     Items.Add(item);
@@ -185,35 +161,12 @@
         LoadingList?.Finish(!Items.Any());
     }
 
-    private async Task OpenCompleteList()
-    {
-        await ModalService.Show<CompleteListPopup>(null,
-            x =>
-            {
-                x.Add(x => x.MediaListApi, MediaListApi);
-                x.Add(x => x.TitleHead, TitleHead);
-                x.Add(x => x.Items, Items);
-                x.Add(x => x.List, List);
-                x.Add(x => x.MaxItens, MaxItens);
-                x.Add(x => x.IsIMDB, IsIMDB);
-                x.Add(x => x.TypeSelected, TypeSelected);
-                x.Add(x => x.StringParameters, StringParameters);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.ExtraLarge,
-                });
-    }
-
     private async Task OpenPopupMedia(MediaDetail? media)
     {
         var tmdb_id = "";
 
-        if (IsIMDB && media?.MediaType == MediaType.tv)
+        if (IsIMDB && media?.MediaType == MediaType.tv) //for now, only tv series (imdb) need this kind of workaround
         {
-            //for now, only tv series (imdb) need this kind of workaround (tmdb api only work with imdb id from movies - not documented)
             tmdb_id = await ExternalIdApi.GetTmdbId(media?.tmdb_id);
         }
         else
@@ -233,5 +186,15 @@
                     Centered = true,
                     Size = ModalSize.Large,
                 });
+    }
+
+    private async Task LoadMore()
+    {
+        if (MediaListApi != null)
+        {
+            var result = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++currentPage);
+            Items = result.list;
+            DisableLoadMore = result.lastPage;
+        }
     }
 }
