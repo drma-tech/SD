@@ -12,12 +12,12 @@
         <ListGroup Flush>
             @foreach (var item in Season?.episodes ?? new())
             {
-                <ListGroupItem>
+                <ListGroupItem Padding="Padding.Is2">
                     <Row VerticalGutter="8" HorizontalGutter="8">
                         <Column ColumnSize="ColumnSize.Is3">
                             @if (string.IsNullOrEmpty(item.still_path))
                             {
-                                <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="height: 100px;"></CardImage>
+                                <CardImage data-src="noimage.png" class="lazyload" Alt="@item.name" title="@item.name" Style="height: 100px;"></CardImage>
                             }
                             else
                             {

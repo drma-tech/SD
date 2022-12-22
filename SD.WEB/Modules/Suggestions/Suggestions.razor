@@ -2,10 +2,8 @@
 <SeoHeader Title="@SeoTranslations.SuggestionsTitle" Description="@SeoTranslations.SuggestionsDescription" Url="/Suggestions"></SeoHeader>
 @inherits PageNoDataCore<Suggestions>
 
-<Alert Visible="true" Color="Color.Secondary">
-    <AlertMessage>@Resources.Translations.TitleAwards</AlertMessage>
-</Alert>
-<Row HorizontalGutter="4" VerticalGutter="4">
+<HeaderComponent Title="@Resources.Translations.TitleAwards"></HeaderComponent>
+<Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
     @foreach (var item in Awards)
     {
         <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
@@ -21,10 +19,8 @@
     }
 </Row>
 
-<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
-    <AlertMessage>@Resources.Translations.TitleSpecializedSites</AlertMessage>
-</Alert>
-<Row HorizontalGutter="4" VerticalGutter="4">
+<HeaderComponent Title="@Resources.Translations.TitleSpecializedSites"></HeaderComponent>
+<Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
     @foreach (var item in Sites)
     {
         <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
@@ -40,10 +36,8 @@
     }
 </Row>
 
-<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
-    <AlertMessage>Specials</AlertMessage>
-</Alert>
-<Row HorizontalGutter="4" VerticalGutter="4">
+<HeaderComponent Title="Specials"></HeaderComponent>
+<Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
     @foreach (var item in Specials)
     {
         <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">

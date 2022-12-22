@@ -4,16 +4,14 @@
 @inherits ComponenteCore<MyWatchingListComponent>
 @inject TmdbApi TmdbApi
 
-<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
-    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> Watching - Movies (@(AppState.WatchingList?.Movies.Count() ?? 0))</AlertMessage>
-
+<HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@GlobalTranslations.MyMovieWatching.Format(AppState.WatchingList?.Movies.Count() ?? 0)">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))" title="See all items" Disabled="(!AppState.WatchingList?.Movies.Any()??true)" Class="ml-1">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.movie))" title="Pick a random item for me" Disabled="(!AppState.WatchingList?.Movies.Any()??true)">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
-</Alert>
+</HeaderComponent>
 <AuthorizeView>
     <Authorized>
         @if (AppState.WatchingList == null && AppState.WatchedList != null && AppState.WatchedList.Movies.Any()) //only for old users (before this funcionality)
@@ -23,7 +21,7 @@
         else
         {
             <Loading @ref="LoadingMovie">
-                <Row HorizontalGutter="4" VerticalGutter="4">
+                <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
                     @foreach (var item in AppState.WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
                     {
                         <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
@@ -39,7 +37,7 @@
                                 else
                                 {
                                     <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                        onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.movie))" Style="cursor: pointer;"></CardImage>
+                                   onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.movie))" Style="cursor: pointer;"></CardImage>
                                 }
                             </Card>
                         </Column>
@@ -55,16 +53,14 @@
     </NotAuthorized>
 </AuthorizeView>
 
-<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
-    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> Watching - Shows (@(AppState.WatchingList?.Shows.Count() ?? 0))</AlertMessage>
-
+<HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@GlobalTranslations.MyShowWatching.Format(AppState.WatchingList?.Shows.Count() ?? 0)">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))" title="See all items" Disabled="(!AppState.WatchingList?.Shows.Any()??true)" Class="ml-1">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.tv))" title="Pick a random item for me" Disabled="(!AppState.WatchingList?.Shows.Any()??true)">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
-</Alert>
+</HeaderComponent>
 <AuthorizeView>
     <Authorized>
         @if (AppState.WatchingList == null && AppState.WatchedList != null && AppState.WatchedList.Shows.Any()) //only for old users (before this funcionality)
@@ -74,7 +70,7 @@
         else
         {
             <Loading @ref="LoadingShow">
-                <Row HorizontalGutter="4" VerticalGutter="4">
+                <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
                     @foreach (var item in AppState.WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
                     {
                         <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
@@ -101,7 +97,7 @@
     public Loading? LoadingMovie { get; set; }
     public Loading? LoadingShow { get; set; }
 
-    private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : (AppStateStatic.OnTablet ? 6 : 8);
+    private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : 3;
 
     protected override void OnInitialized()
     {

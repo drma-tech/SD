@@ -2,40 +2,25 @@
 @using SD.WEB.Modules.Provider.Core;
 @inherits ComponenteCore<MyWishListComponent>
 
-<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
-    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.MyMovieWishlist.Format(AppState.WishList?.Movies.Count() ?? 0)</AlertMessage>
-
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))" title="See all items" Disabled="(!AppState.WishList?.Movies.Any()??true)" Class="ml-1">
+<HeaderComponent IconName="@FontAwesomeIcons.Bookmark" Title="@GlobalTranslations.MyMovieWishlist.Format(AppState.WishList?.Movies.Count() ?? 0)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))" title="@GlobalTranslations.SeeAllItems" Disabled="(!AppState.WishList?.Movies.Any()??true)" Class="ml-1">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.movie))" title="Pick a random item for me" Disabled="(!AppState.WishList?.Movies.Any()??true)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.movie))" title="@GlobalTranslations.PickARandom" Disabled="(!AppState.WishList?.Movies.Any()??true)">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
-</Alert>
+</HeaderComponent>
 <AuthorizeView>
     <Authorized>
         <Loading @ref="LoadingMovie">
-            <Row HorizontalGutter="4" VerticalGutter="4">
+            <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
                 @foreach (var item in AppState.WishList?.Movies.Take(GetTotalItems) ?? new List<WishListItem>())
                 {
+                    var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                     <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
                         <Card>
-                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
-
-                            @if (string.IsNullOrEmpty(item.logo))
-                            {
-                                <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"
-                                   onclick="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.movie))"></CardImage>
-
-                                <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
-                                    @item.name
-                                </Div>
-                            }
-                            else
-                            {
-                                <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.movie))" Style="cursor: pointer;"></CardImage>
-                            }
+                            <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="@MediaType.movie"
+                                         Clicked="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.movie))"></PosterComponent>
                         </Card>
                     </Column>
                 }
@@ -49,27 +34,25 @@
     </NotAuthorized>
 </AuthorizeView>
 
-<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromTop">
-    <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.MyShowWishlist.Format(AppState.WishList?.Shows.Count() ?? 0)</AlertMessage>
-
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))" title="See all items" Disabled="(!AppState.WishList?.Shows.Any()??true)" Class="ml-1">
+<HeaderComponent IconName="@FontAwesomeIcons.Bookmark" Title="@GlobalTranslations.MyShowWishlist.Format(AppState.WishList?.Shows.Count() ?? 0)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))" title="@GlobalTranslations.SeeAllItems" Disabled="(!AppState.WishList?.Shows.Any()??true)" Class="ml-1">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.tv))" title="Pick a random item for me" Disabled="(!AppState.WishList?.Shows.Any()??true)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.tv))" title="@GlobalTranslations.PickARandom" Disabled="(!AppState.WishList?.Shows.Any()??true)">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
-</Alert>
+</HeaderComponent>
 <AuthorizeView>
     <Authorized>
         <Loading @ref="LoadingShow">
-            <Row HorizontalGutter="4" VerticalGutter="4">
+            <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
                 @foreach (var item in AppState.WishList?.Shows.Take(GetTotalItems) ?? new List<WishListItem>())
                 {
+                    var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                     <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
                         <Card>
-                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@item?.runtime.FormatRuntime()</Badge>
-                            <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.tv))" Style="cursor: pointer;"></CardImage>
+                            <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="@MediaType.movie"
+                                         Clicked="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.tv))"></PosterComponent>
                         </Card>
                     </Column>
                 }
@@ -89,7 +72,7 @@
     public Loading? LoadingMovie { get; set; }
     public Loading? LoadingShow { get; set; }
 
-    private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : (AppStateStatic.OnTablet ? 6 : 8);
+    private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : 3;
 
     protected override void OnInitialized()
     {

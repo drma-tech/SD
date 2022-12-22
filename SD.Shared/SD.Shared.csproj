@@ -32,6 +32,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MediaType.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Enum\PopularType.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PopularType.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Enum\Region.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -52,6 +57,10 @@
     <EmbeddedResource Update="Models\Support\Resources\TicketType.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TicketType.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Enum\PopularType.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PopularType.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\TranslationText.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

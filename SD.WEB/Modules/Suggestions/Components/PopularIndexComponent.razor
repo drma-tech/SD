@@ -6,14 +6,13 @@
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject TmdbNowPlayingApi TmdbNowPlayingApi
 
-<Alert Visible="true" Color="Color.Secondary">
-    <AlertMessage>@TranslationText.Popular</AlertMessage>
+<HeaderComponent Title="@TranslationText.Popular">
     <RadioGroup @bind-CheckedValue="TypeSelected" Buttons="true" Float="Float.End" Class="btn-group-xs">
         <Radio Value="PopularType.Streaming">@PopularType.Streaming.GetName()</Radio>
         <Radio Value="PopularType.Rent">@PopularType.Rent.GetName()</Radio>
         <Radio Value="PopularType.Cinema">@PopularType.Cinema.GetName()</Radio>
     </RadioGroup>
-</Alert>
+</HeaderComponent>
 @if (TypeSelected == PopularType.Streaming)
 {
     <MediaList ShowHead="false" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters("flatrate", "popularity.desc")" MaxItens="10" MultiplesRegions="true">
@@ -31,18 +30,6 @@ else if (TypeSelected == PopularType.Cinema)
 }
 
 @code {
-    public enum PopularType
-    {
-        [Custom(Name = "Streaming")]
-        Streaming,
-
-        [Custom(Name = "Rent")]
-        Rent,
-
-        [Custom(Name = "Cinema")]
-        Cinema
-    }
-
     public PopularType TypeSelected { get; set; } = PopularType.Streaming;
 
     private Dictionary<string, string> GetExtraParameters(string monetization_type, string sort_by)

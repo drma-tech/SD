@@ -88,6 +88,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load More.
+        /// </summary>
+        public static string ButtonLoadMore {
+            get {
+                return ResourceManager.GetString("ButtonLoadMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string ButtonLogin {
@@ -129,6 +138,15 @@ namespace SD.WEB.Resources {
         public static string ButtonOk {
             get {
                 return ResourceManager.GetString("ButtonOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read More.
+        /// </summary>
+        public static string ButtonReadMore {
+            get {
+                return ResourceManager.GetString("ButtonReadMore", resourceCulture);
             }
         }
         
@@ -304,6 +322,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Watching - Movies ({0} items).
+        /// </summary>
+        public static string MyMovieWatching {
+            get {
+                return ResourceManager.GetString("MyMovieWatching", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wishlist - Movies ({0} items).
         /// </summary>
         public static string MyMovieWishlist {
@@ -322,6 +349,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Watching - Shows ({0} items).
+        /// </summary>
+        public static string MyShowWatching {
+            get {
+                return ResourceManager.GetString("MyShowWatching", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wishlist - Shows ({0} items).
         /// </summary>
         public static string MyShowWishlist {
@@ -331,11 +367,29 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last News.
+        /// </summary>
+        public static string NewsTitle {
+            get {
+                return ResourceManager.GetString("NewsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offering.
         /// </summary>
         public static string Offering {
             get {
                 return ResourceManager.GetString("Offering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick a random item for me.
+        /// </summary>
+        public static string PickARandom {
+            get {
+                return ResourceManager.GetString("PickARandom", resourceCulture);
             }
         }
         
@@ -381,6 +435,51 @@ namespace SD.WEB.Resources {
         public static string PWAUpdaterText {
             get {
                 return ResourceManager.GetString("PWAUpdaterText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Collection.
+        /// </summary>
+        public static string RemoveCollection {
+            get {
+                return ResourceManager.GetString("RemoveCollection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to See all items.
+        /// </summary>
+        public static string SeeAllItems {
+            get {
+                return ResourceManager.GetString("SeeAllItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string TabAbout {
+            get {
+                return ResourceManager.GetString("TabAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collection.
+        /// </summary>
+        public static string TabCollection {
+            get {
+                return ResourceManager.GetString("TabCollection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Streaming ({0}).
+        /// </summary>
+        public static string TabStreaming {
+            get {
+                return ResourceManager.GetString("TabStreaming", resourceCulture);
             }
         }
         

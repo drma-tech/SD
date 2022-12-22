@@ -7,8 +7,7 @@
 
 @if (ShowHead)
 {
-    <Alert Visible="true" Color="Color.Secondary">
-        <AlertMessage>@Title</AlertMessage>
+    <HeaderComponent Title="@Title">
         <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList">
             <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
         </Button>
@@ -19,7 +18,7 @@
                 <Radio Value="MediaType.tv">@MediaType.tv.GetName()</Radio>
             </RadioGroup>
         }
-    </Alert>
+    </HeaderComponent>
 }
 <Loading @ref="LoadingList">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
@@ -28,63 +27,8 @@
             var item = Items.ElementAt(i - 1);
             <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
                 <Card>
-                    <Blazorise.Link Clicked="@(() => OpenPopupMedia(item))" Style="position: relative;">
-                        @if (@item.release_date < DateTime.Now.AddDays(-30))
-                        {
-                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@item.release_date?.Year</Badge>
-                        }
-                        else
-                        {
-                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@item.release_date?.ToShortDateString()</Badge>
-                        }
-                        @if (item.rating >= 8)
-                        {
-                            <Badge Color="Color.Success" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">@item.rating</Badge>
-                        }
-                        else if (item.rating >= 6)
-                        {
-                            <Badge Color="Color.Warning" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">@item.rating</Badge>
-                        }
-                        else if (item.rating > 0)
-                        {
-                            <Badge Color="Color.Danger" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">@item.rating</Badge>
-                        }
-                        @if (string.IsNullOrEmpty(item.poster_small))
-                        {
-                            <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
-
-                            <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
-                                @item.title
-                            </Div>
-                        }
-                        else
-                        {
-                            var watchedMovie = AppState.WatchedList?.Movies.Any(a => a == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
-                            var watchedShow = AppState.WatchedList?.Shows.Any(a => a == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
-                            if (watchedMovie | watchedShow)
-                            {
-                                <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x4"
-                                    Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.8;"></Blazorise.Icon>
-                            }
-                            var wishedMovie = AppState.WishList?.Movies.Any(a => a.id == item.tmdb_id & MediaType.movie == item.MediaType) ?? false;
-                            var wishedShow = AppState.WishList?.Shows.Any(a => a.id == item.tmdb_id & MediaType.tv == item.MediaType) ?? false;
-                            if (wishedMovie | wishedShow)
-                            {
-                                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
-                                    Style="position: absolute; bottom: 3px; right: 3px; opacity: 0.8;"></Blazorise.Icon>
-                            }
-                            <CardImage data-src="@item.poster_small" class="lazyload" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(watchedMovie | watchedShow?"opacity: 0.5":"")}")></CardImage>
-                        }
-                    </Blazorise.Link>
-                    @if (!string.IsNullOrEmpty(item.comments))
-                    {
-                        <CardBody Padding="Padding.Is1">
-                            @foreach (var item in item.comments.Split(","))
-                            {
-                                <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item</Badge>
-                            }
-                        </CardBody>
-                    }
+                    <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
+                                 TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))"></PosterComponent>
                 </Card>
             </Column>
             if ((i % GetTotalItems) == 0)

@@ -5,13 +5,11 @@
 @inject NewsApi NewsApi
 @inject CacheApi CacheApi
 
-<Alert Visible="true" Color="Color.Secondary">
-    <AlertMessage>Últimas Notícias</AlertMessage>
-
+<HeaderComponent Title="@GlobalTranslations.NewsTitle">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
-</Alert>
+</HeaderComponent>
 <Loading @ref="LoadingNews">
     <Carousel @bind-SelectedSlide="@selectedSlide">
         @foreach (var item in News?.data?.newsStories.Take(15) ?? Enumerable.Empty<NewsStory>())

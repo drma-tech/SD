@@ -1,0 +1,20 @@
+﻿<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromBottom">
+    <AlertMessage>
+        @if (!string.IsNullOrEmpty(IconName))
+        {
+            <Blazorise.Icon Name="@IconName" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>
+        }
+        @Title
+    </AlertMessage>
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+</Alert>
+
+@code {
+    [Parameter] public string? IconName { get; set; }
+    [Parameter] public string? Title { get; set; }
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

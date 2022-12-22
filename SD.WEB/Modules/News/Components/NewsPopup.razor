@@ -7,7 +7,7 @@
 @inject CacheApi CacheApi
 
 <ModalHeader>
-    <ModalTitle>Últimas Notícias</ModalTitle>
+    <ModalTitle>@GlobalTranslations.NewsTitle</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
@@ -17,13 +17,13 @@
             {
                 <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
                     <Card>
-                        <CardImage Source="@item.mainImage.url" Alt="@item.title">
+                        <CardImage Source="@item.mainImage?.url" Alt="@item.title">
                         </CardImage>
                         <CardBody>
                             <CardText>
                                 @((MarkupString)item.title)
                             </CardText>
-                            <Button Color="Color.Primary" Type="ButtonType.Link" To="@item.link" Target="Target.Blank" Size="Size.Small" Class="mt-2">Ler mais</Button>
+                            <Button Color="Color.Primary" Type="ButtonType.Link" To="@item.link" Target="Target.Blank" Size="Size.Small" Class="mt-2">@GlobalTranslations.ButtonReadMore</Button>
                         </CardBody>
                     </Card>
                 </Column>

@@ -15,40 +15,44 @@
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is3.OnWidescreen.Is2.OnFullHD">
                     <Card>
                         <Blazorise.Link Clicked="@(async() => await CollectionClicked(item))" Style="position: relative;">
-
-                            @if (@item.release_date.GetDate() < DateTime.Now.AddDays(-30))
-                            {
-                                <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@item.release_date.GetDate()?.Year</Badge>
+                            @{
+                                var release_date = item.release_date.GetDate();
                             }
-                            else
+                            @if (release_date.HasValue)
                             {
-                                <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@item.release_date.GetDate()?.ToShortDateString()</Badge>
+                                if (release_date.Value < DateTime.Now.AddDays(-30))
+                                {
+                                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@release_date.Value.Year</Badge>
+                                }
+                                else
+                                {
+                                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@release_date.Value.ToShortDateString()</Badge>
+                                }
                             }
-
                             @if (string.IsNullOrEmpty(item.poster_path))
                             {
-                                <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
+                                <CardImage data-src="noimage.png" class="lazyload" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
                             }
                             else
                             {
-                                var watched = AppState.WatchingList?.GetWatchedItems(type, collection?.id.ToString()).Any(a => a == item.id.ToString()) ?? false;
-
-                                if (watched)
-                                {
-                                    <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x4"
-                                        Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.8;"></Blazorise.Icon>
-                                }
                                 if (type == MediaType.movie) //you don't put seasons as wishes
                                 {
                                     var wishedMovie = AppState.WishList?.Contains(MediaType.movie, item.id.ToString()) ?? false;
                                     if (wishedMovie)
                                     {
                                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
-                                        Style="position: absolute; bottom: 3px; right: 3px; opacity: 0.8;"></Blazorise.Icon>
+                                        Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
                                     }
                                 }
 
-                                <CardImage Source="@(TmdbOptions.SmallPosterPath +  item.poster_path)" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(watched?"opacity: 0.5":"")}")></CardImage>
+                                var watched = AppState.WatchingList?.GetWatchedItems(type, collection?.id.ToString()).Any(a => a == item.id.ToString()) ?? false;
+                                if (watched)
+                                {
+                                    <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x2" TextColor="TextColor.Light"
+                                        Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
+                                }
+
+                                <CardImage Source="@(TmdbOptions.SmallPosterPath + item.poster_path)" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(watched ? "filter: grayscale(100%);" : "")}")></CardImage>
                             }
                         </Blazorise.Link>
 
@@ -62,8 +66,8 @@
     </Loading>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Primary" Clicked="@Watched" Float="Float.Start" title="Mark all these items as watched">Watched</Button>
-    <Button Color="Color.Danger" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">Remove Collection</Button>
+    <Button Color="Color.Primary" Clicked="@Watched" Float="Float.Start" title="Mark all these items as watched">@GlobalTranslations.ButtonWatched</Button>
+    <Button Color="Color.Danger" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">@GlobalTranslations.RemoveCollection</Button>
     <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@GlobalTranslations.ButtonClose</Button>
 </ModalFooter>
 

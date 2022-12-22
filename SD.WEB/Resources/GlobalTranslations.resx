@@ -126,6 +126,9 @@
   <data name="ButtonClose" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="ButtonLoadMore" xml:space="preserve">
+    <value>Load More</value>
+  </data>
   <data name="ButtonLogin" xml:space="preserve">
     <value>Login</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="ButtonOk" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="ButtonReadMore" xml:space="preserve">
+    <value>Read More</value>
   </data>
   <data name="ButtonRemove" xml:space="preserve">
     <value>Remove</value>
@@ -198,17 +204,29 @@
   <data name="MoreInformation" xml:space="preserve">
     <value>More information or Contributions</value>
   </data>
+  <data name="MyMovieWatching" xml:space="preserve">
+    <value>Watching - Movies ({0} items)</value>
+  </data>
   <data name="MyMovieWishlist" xml:space="preserve">
     <value>Wishlist - Movies ({0} items)</value>
   </data>
   <data name="MyProviders" xml:space="preserve">
     <value>Favorite Providers ({0} items)</value>
   </data>
+  <data name="MyShowWatching" xml:space="preserve">
+    <value>Watching - Shows ({0} items)</value>
+  </data>
   <data name="MyShowWishlist" xml:space="preserve">
     <value>Wishlist - Shows ({0} items)</value>
   </data>
+  <data name="NewsTitle" xml:space="preserve">
+    <value>Last News</value>
+  </data>
   <data name="Offering" xml:space="preserve">
     <value>Offering</value>
+  </data>
+  <data name="PickARandom" xml:space="preserve">
+    <value>Pick a random item for me</value>
   </data>
   <data name="ProviderPopupTabAbout" xml:space="preserve">
     <value>About</value>
@@ -224,6 +242,21 @@
   </data>
   <data name="PWAUpdaterText" xml:space="preserve">
     <value>A new version is available</value>
+  </data>
+  <data name="RemoveCollection" xml:space="preserve">
+    <value>Remove Collection</value>
+  </data>
+  <data name="SeeAllItems" xml:space="preserve">
+    <value>See all items</value>
+  </data>
+  <data name="TabAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="TabCollection" xml:space="preserve">
+    <value>Collection</value>
+  </data>
+  <data name="TabStreaming" xml:space="preserve">
+    <value>Streaming ({0})</value>
   </data>
   <data name="TitleNotAvailable" xml:space="preserve">
     <value>Unfortunately this title is not available in your region</value>

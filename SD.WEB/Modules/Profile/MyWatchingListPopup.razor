@@ -9,21 +9,11 @@
         <Row HorizontalGutter="4" VerticalGutter="4">
             @foreach (var item in GetList())
             {
+                var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                 <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile">
                     <Card>
-                        @if (string.IsNullOrEmpty(item.logo))
-                        {
-                            <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"></CardImage>
-
-                            <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
-                                @item.name
-                            </Div>
-                        }
-                        else
-                        {
-                            <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                               onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType))" Style="cursor: pointer;"></CardImage>
-                        }
+                        <PosterComponent Poster="@logo" Title="@item.name" TmdbId="@item.id" MediaType="@MediaType.movie"
+                                     Clicked="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType))"></PosterComponent>
                     </Card>
                 </Column>
             }
@@ -40,7 +30,7 @@
     [Parameter] public MediaType MediaType { get; set; }
 
     public Loading? Loading { get; set; }
-    public string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWishlist : GlobalTranslations.MyShowWishlist;
+    public string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWatching : GlobalTranslations.MyShowWatching;
 
     protected override void OnInitialized()
     {

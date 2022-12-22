@@ -21,7 +21,7 @@
             <Column ColumnSize="ColumnSize.Is12.OnMobile.Is4.OnDesktop">
                 @if (string.IsNullOrEmpty(media?.poster_large))
                 {
-                    <CardImage Source="nopicture.jpg" Alt="@media?.title"></CardImage>
+                    <CardImage Source="noimage.png" Alt="@media?.title"></CardImage>
                 }
                 else
                 {
@@ -41,19 +41,19 @@
             <Column ColumnSize="ColumnSize.Is12.OnMobile.Is8.OnDesktop">
                 <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true">
                     <Items>
-                        <Tab Name="About">About</Tab>
-                        <Tab Name="Streaming">Streaming (@AppStateStatic.Region.GetName(false))</Tab>
+                        <Tab Name="About">@GlobalTranslations.TabAbout</Tab>
+                        <Tab Name="Streaming">@GlobalTranslations.TabStreaming.Format(@AppStateStatic.Region.GetName(false))</Tab>
                         @if (media?.Collection.Any() ?? false)
                         {
-                            <Tab Name="Collection">Collection</Tab>
+                            <Tab Name="Collection">@GlobalTranslations.TabCollection</Tab>
                         }
                     </Items>
                     <Content>
                         <TabPanel Name="About" Class="mt-2">
-                            <Badge Color="Color.Secondary" Margin="Margin.Is2.FromEnd.Is2.FromBottom">@media?.runtime.FormatRuntime()</Badge>
+                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd.Is1.FromBottom">@media?.runtime.FormatRuntime()</Badge>
                             @foreach (var item in media?.Genres ?? new List<string>())
                             {
-                                <Badge Color="Color.Secondary" Margin="Margin.Is2.FromEnd.Is2.FromBottom">@item</Badge>
+                                <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd.Is1.FromBottom">@item</Badge>
                             }
 
                             <Paragraph>
@@ -109,7 +109,7 @@
                                 {
                                     var uri_link = new Uri(link);
                                     var fomatted_link = "https://" + uri_link.Host + string.Join("", uri_link.Segments.SkipLast(1));
-                                    <Row Margin="Margin.Is3.FromTop">
+                                    <Row Margin="Margin.Is2.FromTop">
                                         <Column>
                                             <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
                                                 @GlobalTranslations.MoreInformation: <a href="@fomatted_link" target="_blank" rel="noopener">@(uri_link.Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
@@ -295,38 +295,42 @@
                                         <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
                                             <Card>
                                                 <Blazorise.Link Clicked="@(async() => await CollectionClicked(item))" Style="position: relative;">
-                                                    @if (@item.release_date < DateTime.Now.AddDays(-30))
+                                                    @if (item.release_date.HasValue)
                                                     {
-                                                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@(item.release_date?.Year ?? DateTime.MaxValue.Year)</Badge>
-                                                    }
-                                                    else
-                                                    {
-                                                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@(item.release_date?.ToShortDateString() ?? DateTime.MaxValue.ToShortDateString())</Badge>
+                                                        if (item.release_date.Value < DateTime.Now.AddDays(-30))
+                                                        {
+                                                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@item.release_date.Value.Year</Badge>
+                                                        }
+                                                        else
+                                                        {
+                                                            <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@item.release_date.Value.ToShortDateString()</Badge>
+                                                        }
                                                     }
                                                     @if (string.IsNullOrEmpty(item.poster_small))
                                                     {
-                                                        <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
+                                                        <CardImage data-src="noimage.png" class="lazyload" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
                                                     }
                                                     else
                                                     {
-                                                        var movieWatched = AppState.WatchedList?.Contains(MediaType.movie, item.id) ?? false;
-                                                        var showWatched = AppState.WatchingList?.GetWatchedItems(MediaType.tv, media.tmdb_id).Any(a => a == item.id) ?? false;
-
-                                                        if (movieWatched | showWatched)
-                                                        {
-                                                            <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x4" Style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.8;"></Blazorise.Icon>
-                                                        }
-
                                                         if (type == MediaType.movie) //you don't put seasons as wishes
                                                         {
                                                             var wishedMovie = AppState.WishList?.Contains(MediaType.movie, item.id) ?? false;
                                                             if (wishedMovie)
                                                             {
-                                                                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light" Style="position: absolute; bottom: 3px; right: 3px; opacity: 0.8;"></Blazorise.Icon>
+                                                                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
+                                                            Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
                                                             }
                                                         }
 
-                                                        <CardImage Source="@item.poster_small" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(movieWatched | showWatched?"opacity: 0.5":"")}")></CardImage>
+                                                        var movieWatched = AppState.WatchedList?.Contains(MediaType.movie, item.id) ?? false;
+                                                        var showWatched = AppState.WatchingList?.GetWatchedItems(MediaType.tv, media.tmdb_id).Any(a => a == item.id) ?? false;
+                                                        if (movieWatched | showWatched)
+                                                        {
+                                                            <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x2" TextColor="TextColor.Light"
+                                                            Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
+                                                        }
+
+                                                        <CardImage data-src="@item.poster_small" class="lazyload" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer;")></CardImage>
                                                     }
                                                 </Blazorise.Link>
 
