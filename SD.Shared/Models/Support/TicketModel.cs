@@ -23,7 +23,7 @@ namespace SD.Shared.Models.Support
         public TicketType TicketType { get; set; }
 
         [Custom(Name = "Status")]
-        public TicketStatus TicketStatus { get; set; }
+        public TicketStatus TicketStatus { get; set; } = TicketStatus.New;
 
         [Custom(Name = "Total de Votos")]
         public int TotalVotes { get; set; }

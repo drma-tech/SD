@@ -16,7 +16,7 @@ else if (IsInvalid)
         </AlertDescription>
     </Alert>
 }
-else if (IsEmpty | IsEmptyFilter)
+else if (IsEmptyFilter.HasValue ? IsEmptyFilter.Value : IsEmpty)
 {
     <Alert Color="Color.Primary" Visible="true">
         <AlertDescription>
@@ -34,7 +34,7 @@ else
 
     [Parameter] public string? CustomInvalid { get; set; } = null;
     [Parameter] public string? CustomNoData { get; set; } = null;
-    [Parameter] public bool IsEmptyFilter { get; set; } = false;
+    [Parameter] public bool? IsEmptyFilter { get; set; }
 
     public bool IsLoading { get; set; }
     public bool IsInvalid { get; set; }

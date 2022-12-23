@@ -1,6 +1,12 @@
-﻿@using Toolbelt.Blazor.PWA.Updater
+﻿@using SD.Shared.Models.Support;
+@using SD.WEB.Modules.Support.Core;
+@using Toolbelt.Blazor.PWA.Updater
 @inherits LayoutComponentBase
 @inject NavigationManager Navigation
+@inject ILogger<MainLayout> Logger
+@inject INotificationService Toast
+@inject TicketApi TicketApi
+@inject AppState AppState
 
 <MediaQueryList>
     <Layout Sider="true" Style="height: var(--app-height);">
@@ -15,7 +21,29 @@
             </LayoutHeader>
             <LayoutContent Style="overflow: auto;">
                 <Container Fluid="true" Padding="Padding.Is2">
-                    @Body
+                    <ErrorBoundary @ref="boundary">
+                        <ChildContent>
+                            @Body
+                        </ChildContent>
+                        <ErrorContent Context="ex">
+                            @if (AppStateStatic.Language == Language.ptBR | AppStateStatic.Language == Language.ptPT)
+                            {
+                                <Alert Color="Color.Danger" Visible="true">
+                                    <AlertDescription>
+                                        <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon> Não foi possível processar essa operação. Para abrir um ticket de suporte, <Blazorise.Link onclick="@(()=>SubmitForm(ex))" style="cursor: pointer;">clique aqui</Blazorise.Link>
+                                    </AlertDescription>
+                                </Alert>
+                            }
+                            else
+                            {
+                                <Alert Color="Color.Danger" Visible="true">
+                                    <AlertDescription>
+                                        <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon> This operation could not be processed. To open a support ticket, <Blazorise.Link onclick="@(()=>SubmitForm(ex))" style="cursor: pointer;">click here</Blazorise.Link>
+                                    </AlertDescription>
+                                </Alert>
+                            }
+                        </ErrorContent>
+                    </ErrorBoundary>
                 </Container>
             </LayoutContent>
             <LayoutFooter Fixed="true" Display="Display.Block.None.OnWidescreen">
@@ -82,5 +110,33 @@
             return Color.Dark;
         else
             return Color.Secondary;
+    }
+
+    ErrorBoundary? boundary;
+
+    protected override void OnParametersSet()
+    {
+        boundary?.Recover();
+    }
+
+    public async Task SubmitForm(Exception exc)
+    {
+        try
+        {
+            var Ticket = new TicketModel();
+
+            Ticket.TicketType = TicketType.BugReport;
+            Ticket.SetIds(await AppState.GetIdUser());
+            Ticket.Title = exc.Message ?? "erro desconhecido";
+            Ticket.Description = exc.StackTrace;
+
+            await TicketApi.Insert(Ticket);
+
+            await Toast.Success("Ticket gerado com sucesso");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 }
