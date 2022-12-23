@@ -20,7 +20,7 @@
                     <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
                         <Card>
                             <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="@MediaType.movie"
-                                         Clicked="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.movie))"></PosterComponent>
+                                         Clicked="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.movie))" ShowWished="false"></PosterComponent>
                         </Card>
                     </Column>
                 }
@@ -52,7 +52,7 @@
                     <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
                         <Card>
                             <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="@MediaType.movie"
-                                         Clicked="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.tv))"></PosterComponent>
+                                         Clicked="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.tv))" ShowWished="false"></PosterComponent>
                         </Card>
                     </Column>
                 }

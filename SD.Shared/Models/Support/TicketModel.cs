@@ -11,11 +11,11 @@ namespace SD.Shared.Models.Support
         public string? IdUserOwner { get; set; }
 
         [Required]
-        [Custom(Name = "Título", Prompt = "Uma frase que resume seu feedback")]
+        [Custom(Name = "TitleName", Prompt = "TitlePrompt", ResourceType = typeof(Resources.TicketModel))]
         public string? Title { get; set; }
 
         [Required]
-        [Custom(Name = "Descrição", Prompt = "Descreva o mais detalhado possível para que possamos entender melhor a situação")]
+        [Custom(Name = "DescriptionName", Prompt = "DescriptionPrompt", ResourceType = typeof(Resources.TicketModel))]
         public string? Description { get; set; }
 
         [Required]

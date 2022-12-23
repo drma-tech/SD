@@ -5,75 +5,79 @@
 @inject TicketVoteApi TicketVoteApi
 @inject IModalService ModalService
 
-<Row HorizontalGutter="8" VerticalGutter="0">
-    <Column ColumnSize="ColumnSize.Is12">
-        <Field Horizontal="true">
-            <FieldBody ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
-                <Addons>
-                    <Addon AddonType="AddonType.Start" VerticalAlignment="VerticalAlignment.Middle">
-                        <Button Color="Color.Primary" Disabled="true">
-                            <Blazorise.Icon Name="@FontAwesomeIcons.Filter"></Blazorise.Icon>
-                        </Button>
-                    </Addon>
-                    <Addon AddonType="AddonType.Body">
-                        <Select TValue="TicketType" @bind-SelectedValue="@TicketTypeSel">
-                            @foreach (var item in EnumHelper.GetArray<TicketType>())
-                            {
-                                <SelectItem Value="@item">@item.GetName()</SelectItem>
-                            }
-                        </Select>
-                    </Addon>
-                </Addons>
-            </FieldBody>
-            <FieldBody ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
-                <Addons>
-                    <Addon AddonType="AddonType.Start">
-                        <Button Color="Color.Primary" Disabled="true">
-                            <Blazorise.Icon Name="@FontAwesomeIcons.Filter"></Blazorise.Icon>
-                        </Button>
-                    </Addon>
-                    <Addon AddonType="AddonType.Body">
-                        <Select TValue="TicketStatus?" @bind-SelectedValue="@TicketStatusSel">
-                            <SelectItem></SelectItem>
-                            @foreach (var item in EnumHelper.GetArray<TicketStatus>())
-                            {
-                                <SelectItem Value="@item">@item.GetName()</SelectItem>
-                            }
-                        </Select>
-                    </Addon>
-                </Addons>
-            </FieldBody>
-            <FieldBody ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
-                <Addons>
-                    <Addon AddonType="AddonType.Start">
-                        <Button Color="Color.Primary" Disabled="true">
-                            <Blazorise.Icon Name="@FontAwesomeIcons.SortAmountDown"></Blazorise.Icon>
-                        </Button>
-                    </Addon>
-                    <Addon AddonType="AddonType.Body">
-                        <Select TValue="Order" @bind-SelectedValue="@OrderSel">
-                            @foreach (var item in EnumHelper.GetArray<Order>())
-                            {
-                                <SelectItem Value="@item">@item.GetName()</SelectItem>
-                            }
-                        </Select>
-                    </Addon>
-                </Addons>
-            </FieldBody>
-            <FieldBody ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
-                <Button Color="Color.Primary" Block="true" Clicked="ShowModal" Disabled="!IsUserAuthenticated">
-                    <Blazorise.Icon Name="@FontAwesomeIcons.Plus"></Blazorise.Icon> @GlobalTranslations.ButtonNew
-                </Button>
-            </FieldBody>
-        </Field>
-    </Column>
-</Row>
+<Fields>
+    <Field ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
+        <FieldBody>
+            <Addons>
+                <Addon AddonType="AddonType.Start" VerticalAlignment="VerticalAlignment.Middle">
+                    <Button Color="Color.Primary" Disabled="true">
+                        <Blazorise.Icon Name="@FontAwesomeIcons.Filter"></Blazorise.Icon>
+                    </Button>
+                </Addon>
+                <Addon AddonType="AddonType.Body">
+                    <Select TValue="TicketType" @bind-SelectedValue="@TicketTypeSel">
+                        @foreach (var item in EnumHelper.GetArray<TicketType>())
+                        {
+                            <SelectItem Value="@item">@item.GetName()</SelectItem>
+                        }
+                    </Select>
+                </Addon>
+            </Addons>
+        </FieldBody>
+    </Field>
+    <Field ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
+        <FieldBody>
+            <Addons>
+                <Addon AddonType="AddonType.Start">
+                    <Button Color="Color.Primary" Disabled="true">
+                        <Blazorise.Icon Name="@FontAwesomeIcons.Filter"></Blazorise.Icon>
+                    </Button>
+                </Addon>
+                <Addon AddonType="AddonType.Body">
+                    <Select TValue="TicketStatus?" @bind-SelectedValue="@TicketStatusSel">
+                        <SelectItem></SelectItem>
+                        @foreach (var item in EnumHelper.GetArray<TicketStatus>())
+                        {
+                            <SelectItem Value="@item">@item.GetName()</SelectItem>
+                        }
+                    </Select>
+                </Addon>
+            </Addons>
+        </FieldBody>
+    </Field>
+    <Field ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
+        <FieldBody>
+            <Addons>
+                <Addon AddonType="AddonType.Start">
+                    <Button Color="Color.Primary" Disabled="true">
+                        <Blazorise.Icon Name="@FontAwesomeIcons.SortAmountDown"></Blazorise.Icon>
+                    </Button>
+                </Addon>
+                <Addon AddonType="AddonType.Body">
+                    <Select TValue="Order" @bind-SelectedValue="@OrderSel">
+                        @foreach (var item in EnumHelper.GetArray<Order>())
+                        {
+                            <SelectItem Value="@item">@item.GetName()</SelectItem>
+                        }
+                    </Select>
+                </Addon>
+            </Addons>
+        </FieldBody>
+    </Field>
+    <Field ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
+        <FieldBody>
+            <Button Color="Color.Primary" Block="true" Clicked="ShowModal" Disabled="!IsUserAuthenticated">
+                <Blazorise.Icon Name="@FontAwesomeIcons.Plus"></Blazorise.Icon> @GlobalTranslations.ButtonNew
+            </Button>
+        </FieldBody>
+    </Field>
+</Fields>
 <Loading @ref="LoadingTicket" IsEmptyFilter="(!GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel).Any())">
     @foreach (var item in GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel))
     {
-        <Row>
-            <Column ColumnSize="ColumnSize.IsAuto">
-                <Div Style="width: 50px; height: 100px;" TextAlignment="TextAlignment.Center" TextWeight="TextWeight.Bold">
+        <Row HorizontalGutter="8" VerticalGutter="8">
+            <Column Margin="Margin.Is1.FromBottom" ColumnSize="ColumnSize.Is2" Overflow="Overflow.Auto">
+                <Div Style="height: 100px;" TextAlignment="TextAlignment.Center" TextWeight="TextWeight.Bold">
                     <Button Size=" Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Key, VoteType.PlusOne)" Disabled="anyVote(item.Key, IdUser) || !IsUserAuthenticated">
                         <Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.AngleUp"></Blazorise.Icon>
                     </Button>
@@ -83,12 +87,12 @@
                     </Button>
                 </Div>
             </Column>
-            <Column Margin="Margin.Is1.FromBottom">
-                <Paragraph Margin="Margin.Is2.FromBottom" TextAlignment="TextAlignment.Justified">
-                    <Heading Size="HeadingSize.Is5">@item.Title</Heading>
+            <Column Margin="Margin.Is1.FromBottom" ColumnSize="ColumnSize.Is10">
+                <Paragraph Margin="Margin.Is2.FromBottom" TextAlignment="TextAlignment.Justified" Overflow="Overflow.Auto">
+                    <Heading Size="HeadingSize.Is5">@item.Title.GetResume(150)</Heading>
                 </Paragraph>
-                <Paragraph Margin="Margin.Is2.FromBottom" TextAlignment="TextAlignment.Justified">
-                    @item.Description?.GetResume(150)
+                <Paragraph Margin="Margin.Is2.FromBottom" TextAlignment="TextAlignment.Justified" Overflow="Overflow.Auto">
+                    @item.Description.GetResume(150)
                 </Paragraph>
                 <Paragraph Margin="Margin.Is2.FromBottom">
                     <Badge Color="Color.Dark" Margin="Margin.Is1.FromEnd"><Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.Clock"></Blazorise.Icon> @item?.DtInsert.GetElapsedTime()</Badge>
@@ -158,6 +162,7 @@
         tickets = await TicketApi.GetList();
         if (IsUserAuthenticated) myVotes = await TicketVoteApi.GetMyVotes();
 
+        StateHasChanged();
         LoadingTicket?.Finish(!GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel).Any());
     }
 

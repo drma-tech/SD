@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SD.WEB.Modules.Suggestions.Resources {
+namespace SD.Shared.Models.Support.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace SD.WEB.Modules.Suggestions.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Translations {
+    public class TicketModel {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Translations() {
+        internal TicketModel() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.WEB.Modules.Suggestions.Resources.Translations", typeof(Translations).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.Shared.Models.Support.Resources.TicketModel", typeof(TicketModel).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,38 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Awards.
+        ///   Looks up a localized string similar to Description.
         /// </summary>
-        public static string TitleAwards {
+        public static string DescriptionName {
             get {
-                return ResourceManager.GetString("TitleAwards", resourceCulture);
+                return ResourceManager.GetString("DescriptionName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specialized Sites.
+        ///   Looks up a localized string similar to Please describe in as much detail as possible so that we can better understand the situation..
         /// </summary>
-        public static string TitleSpecializedSites {
+        public static string DescriptionPrompt {
             get {
-                return ResourceManager.GetString("TitleSpecializedSites", resourceCulture);
+                return ResourceManager.GetString("DescriptionPrompt", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specials.
+        ///   Looks up a localized string similar to Title.
         /// </summary>
-        public static string TitleSpecials {
+        public static string TitleName {
             get {
-                return ResourceManager.GetString("TitleSpecials", resourceCulture);
+                return ResourceManager.GetString("TitleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One sentence that sums up your feedback.
+        /// </summary>
+        public static string TitlePrompt {
+            get {
+                return ResourceManager.GetString("TitlePrompt", resourceCulture);
             }
         }
     }

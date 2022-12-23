@@ -124,11 +124,29 @@ namespace SD.WEB.Modules.Support.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Platform versions available.
+        /// </summary>
+        public static string PlatformVersionsAvailable {
+            get {
+                return ResourceManager.GetString("PlatformVersionsAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Announcements.
         /// </summary>
         public static string TabAnnouncements {
             get {
                 return ResourceManager.GetString("TabAnnouncements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloads.
+        /// </summary>
+        public static string TabDownloads {
+            get {
+                return ResourceManager.GetString("TabDownloads", resourceCulture);
             }
         }
         

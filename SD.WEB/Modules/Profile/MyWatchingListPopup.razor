@@ -13,7 +13,7 @@
                 <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile">
                     <Card>
                         <PosterComponent Poster="@logo" Title="@item.name" TmdbId="@item.id" MediaType="@MediaType.movie"
-                                     Clicked="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType))"></PosterComponent>
+                                     Clicked="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType))" ShowWatched="false"></PosterComponent>
                     </Card>
                 </Column>
             }

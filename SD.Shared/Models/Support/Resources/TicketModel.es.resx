@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,40 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ImportLastError" xml:space="preserve">
-    <value>Import Last Error</value>
+  <data name="TitleName" xml:space="preserve">
+    <value>Título</value>
   </data>
-  <data name="LinkFAQ" xml:space="preserve">
-    <value>Questions</value>
+  <data name="DescriptionName" xml:space="preserve">
+    <value>Descripción</value>
   </data>
-  <data name="LinkPrivacy" xml:space="preserve">
-    <value>Privacy Policies</value>
+  <data name="TitlePrompt" xml:space="preserve">
+    <value>Una frase que resume tus comentarios</value>
   </data>
-  <data name="LinkTerm" xml:space="preserve">
-    <value>Terms of Use</value>
-  </data>
-  <data name="NewTicketTitle" xml:space="preserve">
-    <value>New Ticket</value>
-  </data>
-  <data name="OrderLast" xml:space="preserve">
-    <value>Last</value>
-  </data>
-  <data name="OrderVoted" xml:space="preserve">
-    <value>Voted</value>
-  </data>
-  <data name="PlatformVersionsAvailable" xml:space="preserve">
-    <value>Platform versions available</value>
-  </data>
-  <data name="TabAnnouncements" xml:space="preserve">
-    <value>Announcements</value>
-  </data>
-  <data name="TabDownloads" xml:space="preserve">
-    <value>Downloads</value>
-  </data>
-  <data name="TabFeedback" xml:space="preserve">
-    <value>Feedback</value>
-  </data>
-  <data name="TabRoadmap" xml:space="preserve">
-    <value>Roadmap</value>
+  <data name="DescriptionPrompt" xml:space="preserve">
+    <value>Por favor, describa con el mayor detalle posible para que podamos comprender mejor la situación.</value>
   </data>
 </root>

@@ -8,7 +8,7 @@
     }
     @if (Date.HasValue)
     {
-        if (Date.Value < DateTime.Now.AddDays(-30))
+        if (Date.Value < DateTime.Now.AddMonths(-3))
         {
             <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@Date.Value.Year</Badge>
         }
@@ -42,22 +42,28 @@
     }
     else
     {
-        var wishedMovie = AppState.WishList?.Movies.Any(a => a.id == TmdbId & MediaType.movie == MediaType) ?? false;
-        var wishedShow = AppState.WishList?.Shows.Any(a => a.id == TmdbId & MediaType.tv == MediaType) ?? false;
-        if (wishedMovie | wishedShow)
+        if (ShowWished)
         {
-            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
+            var wishedMovie = AppState.WishList?.Contains(MediaType.movie, TmdbId) ?? false;
+            var wishedShow = AppState.WishList?.Contains(MediaType.tv, TmdbId) ?? false;
+            if (wishedMovie | wishedShow)
+            {
+                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
                     Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
+            }
         }
-
-        var watchedMovie = AppState.WatchedList?.Movies.Any(a => a == TmdbId & MediaType.movie == MediaType) ?? false;
-        var watchedShow = AppState.WatchedList?.Shows.Any(a => a == TmdbId & MediaType.tv == MediaType) ?? false;
-        if (watchedMovie | watchedShow)
+        bool watchedMovie = false;
+        bool watchedShow = false;
+        if (ShowWatched)
         {
-            <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x2" TextColor="TextColor.Light"
+            watchedMovie = AppState.WatchedList?.Contains(MediaType.movie, TmdbId) ?? false;
+            watchedShow = AppState.WatchedList?.Contains(MediaType.tv, TmdbId) ?? false;
+            if (watchedMovie | watchedShow)
+            {
+                <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x2" TextColor="TextColor.Light"
                     Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
+            }
         }
-
         <CardImage data-src="@Poster" class="lazyload" Alt="@Title" title="@Title" Style=@($"cursor: pointer; {(watchedMovie | watchedShow ? "filter: grayscale(100%);" : "")}")></CardImage>
     }
 </Blazorise.Link>
@@ -81,4 +87,6 @@
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType MediaType { get; set; }
     [Parameter] public int? Runtime { get; set; }
+    [Parameter] public bool ShowWished { get; set; } = true;
+    [Parameter] public bool ShowWatched { get; set; } = true;
 }
