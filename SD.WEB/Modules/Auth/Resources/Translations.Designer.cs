@@ -68,5 +68,14 @@ namespace SD.WEB.Modules.Auth.Resources {
                 return ResourceManager.GetString("LoginProvidersTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login with.
+        /// </summary>
+        public static string LoginWith {
+            get {
+                return ResourceManager.GetString("LoginWith", resourceCulture);
+            }
+        }
     }
 }

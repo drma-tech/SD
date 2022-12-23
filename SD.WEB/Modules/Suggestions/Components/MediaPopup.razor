@@ -1,6 +1,7 @@
 ﻿@using SD.Shared.Model.List.Tmdb
 @using SD.Shared.Models;
 @using SD.Shared.Models.List.Imdb;
+@using SD.Shared.Models.List.Tmdb;
 @using SD.WEB.Modules.Suggestions.Core;
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
@@ -10,6 +11,7 @@
 @inject ImdbApi ImdbApi
 @inject CacheApi CacheApi
 @inject ExternalIdApi ExternalIdApi
+@inject TmdbCreditApi TmdbCreditApi
 
 <ModalHeader>
     <ModalTitle>@media?.title</ModalTitle>
@@ -43,6 +45,7 @@
                     <Items>
                         <Tab Name="About">@GlobalTranslations.TabAbout</Tab>
                         <Tab Name="Streaming">@GlobalTranslations.TabStreaming.Format(@AppStateStatic.Region.GetName(false))</Tab>
+                        <Tab Name="Credits">@GlobalTranslations.TabCredits</Tab>
                         @if (media?.Collection.Any() ?? false)
                         {
                             <Tab Name="Collection">@GlobalTranslations.TabCollection</Tab>
@@ -286,6 +289,71 @@
                                 }
                             }
                         </TabPanel>
+                        <TabPanel Name="Credits" Class="mt-2">
+                            @if (type == MediaType.movie)
+                            {
+                                <Divider DividerType="DividerType.TextContent" Text="@GlobalTranslations.Direction" />
+                                <Row HorizontalGutter="4" VerticalGutter="4">
+                                    @foreach (var item in Credits?.crew.Where(w => w.job == "Director") ?? new List<Crew>())
+                                    {
+                                        <Column ColumnSize="ColumnSize.Is2">
+                                            @if (string.IsNullOrEmpty(item.profile_path))
+                                            {
+                                                <Image Source="no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
+                                            }
+                                            else
+                                            {
+                                                <Image Source="@(TmdbOptions.FacePath + item.profile_path)" Text="@item.original_name" Style="width: 100%"></Image>
+                                            }
+                                        </Column>
+                                        <Column ColumnSize="ColumnSize.Is4">
+                                            <Paragraph Margin="Margin.Is0.FromBottom" TextWeight="TextWeight.Bold">@item.original_name</Paragraph>
+                                            @*<Paragraph Margin="Margin.Is0.FromBottom">@item.character</Paragraph>*@
+                                        </Column>
+                                    }
+                                </Row>
+                                <Divider DividerType="DividerType.TextContent" Text="@GlobalTranslations.Screenplay" />
+                                <Row HorizontalGutter="4" VerticalGutter="4">
+                                    @foreach (var item in Credits?.crew.Where(w => w.job == "Writer" || w.job == "Screenplay") ?? new List<Crew>())
+                                    {
+                                        <Column ColumnSize="ColumnSize.Is2">
+                                            @if (string.IsNullOrEmpty(item.profile_path))
+                                            {
+                                                <Image Source="no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
+                                            }
+                                            else
+                                            {
+                                                <Image Source="@(TmdbOptions.FacePath + item.profile_path)" Text="@item.original_name" Style="width: 100%"></Image>
+                                            }
+                                        </Column>
+                                        <Column ColumnSize="ColumnSize.Is4">
+                                            <Paragraph Margin="Margin.Is0.FromBottom" TextWeight="TextWeight.Bold">@item.original_name</Paragraph>
+                                            <Paragraph Margin="Margin.Is0.FromBottom">@item.job</Paragraph>
+                                        </Column>
+                                    }
+                                </Row>
+                            }
+                            <Divider DividerType="DividerType.TextContent" Text="@GlobalTranslations.Cast" />
+                            <Row HorizontalGutter="4" VerticalGutter="4">
+                                @foreach (var item in Credits?.cast.OrderBy(o => o.order).Take(24) ?? new List<Cast>())
+                                {
+                                    <Column ColumnSize="ColumnSize.Is2">
+                                        @if (string.IsNullOrEmpty(item.profile_path))
+                                        {
+                                            <Image Source="no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
+                                        }
+                                        else
+                                        {
+                                            <Image Source="@(TmdbOptions.FacePath + item.profile_path)" Text="@item.original_name" Style="width: 100%"></Image>
+                                        }
+                                    </Column>
+                                    <Column ColumnSize="ColumnSize.Is4">
+                                        <Paragraph Margin="Margin.Is0.FromBottom" TextWeight="TextWeight.Bold">@item.original_name</Paragraph>
+                                        <Paragraph Margin="Margin.Is0.FromBottom">@item.character</Paragraph>
+                                    </Column>
+                                }
+                            </Row>
+                        </TabPanel>
                         @if (media?.Collection.Any() ?? false)
                         {
                             <TabPanel Name="Collection" Class="mt-2">
@@ -414,6 +482,7 @@
     private MediaProviders? Providers { get; set; }
     private Ratings? Ratings { get; set; }
     private AllProviders? AllProviders { get; set; }
+    private Credits? Credits { get; set; }
 
     public bool IsUserAuthenticated { get; set; }
     string selectedTab = "About";
@@ -453,6 +522,8 @@
                 Ratings = (Ratings?)cache?.Data;
             }
         }
+
+        Credits = await TmdbCreditApi.GetList(type, tmdb_id);
 
         StateHasChanged();
         LoadingList?.Finish(media == null);

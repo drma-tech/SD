@@ -13,6 +13,7 @@
         public const string SmallPosterPath = "https://www.themoviedb.org/t/p/w185/";
         public const string LargePosterPath = "https://www.themoviedb.org/t/p/w300/";
         public const string OriginalPosterPath = "https://www.themoviedb.org/t/p/original/";
+        public const string FacePath = "https://www.themoviedb.org/t/p/w66_and_h66_face/";
     }
 
     /// <summary>

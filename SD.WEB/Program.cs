@@ -61,6 +61,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<TmdbPopularApi>();
     collection.AddScoped<TmdbTopRatedApi>();
     collection.AddScoped<TmdbUpcomingApi>();
+    collection.AddScoped<TmdbCreditApi>();
 
     collection.AddScoped<ImdbPopularApi>();
     collection.AddScoped<ImdbTopRatedApi>();

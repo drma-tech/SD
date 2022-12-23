@@ -178,6 +178,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cast.
+        /// </summary>
+        public static string Cast {
+            get {
+                return ResourceManager.GetString("Cast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid operation. Please try again..
         /// </summary>
         public static string CustomVisibilityInvalid {
@@ -255,6 +264,15 @@ namespace SD.WEB.Resources {
         public static string DeliveryModelRent {
             get {
                 return ResourceManager.GetString("DeliveryModelRent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Direction.
+        /// </summary>
+        public static string Direction {
+            get {
+                return ResourceManager.GetString("Direction", resourceCulture);
             }
         }
         
@@ -448,6 +466,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Screenplay.
+        /// </summary>
+        public static string Screenplay {
+            get {
+                return ResourceManager.GetString("Screenplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to See all items.
         /// </summary>
         public static string SeeAllItems {
@@ -471,6 +498,15 @@ namespace SD.WEB.Resources {
         public static string TabCollection {
             get {
                 return ResourceManager.GetString("TabCollection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credits.
+        /// </summary>
+        public static string TabCredits {
+            get {
+                return ResourceManager.GetString("TabCredits", resourceCulture);
             }
         }
         
