@@ -33,9 +33,12 @@
         }
     </Row>
 </Loading>
-<Div TextAlignment="TextAlignment.Center">
-    <Button Color="Color.Secondary" Margin="Margin.Is2" Clicked="LoadMore" Disabled="@(Items.Count>=MaxItens|DisableLoadMore)">@GlobalTranslations.ButtonLoadMore</Button>
-</Div>
+@if (MediaListApi != null)
+{
+    <Div TextAlignment="TextAlignment.Center">
+        <Button Color="Color.Secondary" Margin="Margin.Is2" Clicked="LoadMore" Disabled="@(Items.Count>=MaxItens|DisableLoadMore)">@GlobalTranslations.ButtonLoadMore</Button>
+    </Div>
+}
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
@@ -62,7 +65,7 @@
     {
         try
         {
-            if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
+            //if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
             //if (!string.IsNullOrEmpty(list_id) && !NextPage.HasDelegate) throw new ArgumentNullException(nameof(NextPage));
             //if (NextPage.HasDelegate && string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
             if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));

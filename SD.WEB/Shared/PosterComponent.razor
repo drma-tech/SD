@@ -21,15 +21,15 @@
     {
         if (Rating >= 8)
         {
-            <Badge Color="Color.Success" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">@Rating.Value</Badge>
+            <Badge Color="Color.Success" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">@Rating.Value.ToString("#.#")</Badge>
         }
         else if (Rating >= 6)
         {
-            <Badge Color="Color.Warning" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">@Rating.Value</Badge>
+            <Badge Color="Color.Warning" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">@Rating.Value.ToString("#.#")</Badge>
         }
         else if (Rating > 0)
         {
-            <Badge Color="Color.Danger" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">@Rating.Value</Badge>
+            <Badge Color="Color.Danger" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">@Rating.Value.ToString("#.#")</Badge>
         }
     }
     @if (string.IsNullOrEmpty(Poster))

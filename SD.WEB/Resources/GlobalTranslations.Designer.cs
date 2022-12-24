@@ -268,11 +268,11 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Direction.
+        ///   Looks up a localized string similar to Directing.
         /// </summary>
-        public static string Direction {
+        public static string Directing {
             get {
-                return ResourceManager.GetString("Direction", resourceCulture);
+                return ResourceManager.GetString("Directing", resourceCulture);
             }
         }
         
@@ -466,15 +466,6 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Screenplay.
-        /// </summary>
-        public static string Screenplay {
-            get {
-                return ResourceManager.GetString("Screenplay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to See all items.
         /// </summary>
         public static string SeeAllItems {
@@ -525,6 +516,15 @@ namespace SD.WEB.Resources {
         public static string TitleNotAvailable {
             get {
                 return ResourceManager.GetString("TitleNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Writing.
+        /// </summary>
+        public static string Writing {
+            get {
+                return ResourceManager.GetString("Writing", resourceCulture);
             }
         }
     }
