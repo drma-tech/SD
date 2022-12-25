@@ -178,6 +178,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string ButtoSearch {
+            get {
+                return ResourceManager.GetString("ButtoSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cast.
         /// </summary>
         public static string Cast {
@@ -516,6 +525,24 @@ namespace SD.WEB.Resources {
         public static string TitleNotAvailable {
             get {
                 return ResourceManager.GetString("TitleNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type Something.
+        /// </summary>
+        public static string TypeSomething {
+            get {
+                return ResourceManager.GetString("TypeSomething", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unauthenticated User.
+        /// </summary>
+        public static string UnauthenticatedUser {
+            get {
+                return ResourceManager.GetString("UnauthenticatedUser", resourceCulture);
             }
         }
         

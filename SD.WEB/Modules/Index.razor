@@ -8,6 +8,25 @@
 @using SD.WEB.Modules.Provider.Components;
 @using SD.WEB.Modules.News.Components;
 
+@*<Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
+    <Column ColumnSize="ColumnSize.IsAuto">
+        <Select TValue="MediaType" @bind-SelectedValue="SearchType">
+            @foreach (var item in EnumHelper.GetObjArray<MediaType>())
+            {
+                <SelectItem Value="@((MediaType)item.ValueObject)">@item.Name</SelectItem>
+            }
+        </Select>
+    </Column>
+    <Column>
+        <TextEdit @bind-Text="@Search" Placeholder="@GlobalTranslations.TypeSomething" />
+    </Column>
+    <Column ColumnSize="ColumnSize.IsAuto">
+        <Button Color="Color.Primary" Block="true" Clicked="ShowSearchPopup">
+            <Blazorise.Icon Name="@FontAwesomeIcons.Search" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@GlobalTranslations.ButtoSearch
+        </Button>
+    </Column>
+</Row>*@
+
 <PopularIndexComponent></PopularIndexComponent>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
@@ -18,3 +37,27 @@
         <NewsComponent></NewsComponent>
     </Column>
 </Row>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    public MediaType SearchType { get; set; } = MediaType.movie;
+    public string? Search { get; set; }
+
+    public async Task ShowSearchPopup()
+    {
+        await ModalService.Show<SearchPopup>(null,
+            x =>
+            {
+                x.Add(x => x.TitleHead, "Busca por " + Search);
+                x.Add(x => x.SearchType, SearchType);
+                x.Add(x => x.Search, Search);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.ExtraLarge,
+                });
+    }
+}

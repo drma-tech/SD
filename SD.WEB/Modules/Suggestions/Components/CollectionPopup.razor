@@ -227,13 +227,13 @@
 
             if (type == MediaType.movie)
             {
-                item = new WatchingListItem(collection?.id.ToString(), collection?.name, collection?.poster_path?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+                item = new WatchingListItem(collection?.id.ToString(), collection?.name, collection?.poster_path?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
             }
             else
             {
                 var media = await TmdbApi.GetMediaDetail(tmdb_id, type);
 
-                item = new WatchingListItem(tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+                item = new WatchingListItem(tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
             }
 
             watching = await WatchingListApi.Add(type, item);

@@ -1,7 +1,7 @@
 ﻿@using SD.WEB.Modules.Suggestions.Core;
 @using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.Provider.Core;
-@inherits ComponenteCore<MyWatchingListComponent>
+@inherits ComponenteNoDataCore<MyWatchingListComponent>
 @inject TmdbApi TmdbApi
 
 <HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@GlobalTranslations.MyMovieWatching.Format(AppState.WatchingList?.Movies.Count() ?? 0)">
@@ -14,18 +14,22 @@
 </HeaderComponent>
 <AuthorizeView>
     <Authorized>
-        @if (AppState.WatchingList == null && AppState.WatchedList != null && AppState.WatchedList.Movies.Any()) //only for old users (before this funcionality)
+        @if (AppState.WatchingList == null && AppState.WatchedList != null) //only for old users (before this funcionality)
         {
-            <Button Color="Color.Primary" Clicked="()=>ImportFromWatched()">Procurar pendências de filmes já assistidos</Button>
+            <Button Color="Color.Primary" Clicked="()=>ImportFromWatched()" Margin="Margin.Is2.FromBottom" Disabled="!AppState.WatchedList.Movies.Any()">Procurar pendências de filmes já assistidos</Button>
         }
         else
         {
-            <Loading @ref="LoadingMovie">
+            <Loading IsEmptyFilter="@(AppState.WatchingList != null && !AppState.WatchingList.Movies.Any())">
                 <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
                     @foreach (var item in AppState.WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
                     {
+                        int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                        var resultPerc = $"{percentComplete}%";
+
                         <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
-                            <Card>
+                            <Card Style="position: relative;">
+                                <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
                                 @if (string.IsNullOrEmpty(item.logo))
                                 {
                                     <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"></CardImage>
@@ -37,7 +41,7 @@
                                 else
                                 {
                                     <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                        onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.movie))" Style="cursor: pointer;"></CardImage>
+                                   onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.movie))" Style="cursor: pointer;"></CardImage>
                                 }
                             </Card>
                         </Column>
@@ -48,7 +52,7 @@
     </Authorized>
     <NotAuthorized>
         <Alert Visible="true" Color="Color.Primary">
-            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
+            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> @GlobalTranslations.UnauthenticatedUser</AlertMessage>
         </Alert>
     </NotAuthorized>
 </AuthorizeView>
@@ -63,20 +67,36 @@
 </HeaderComponent>
 <AuthorizeView>
     <Authorized>
-        @if (AppState.WatchingList == null && AppState.WatchedList != null && AppState.WatchedList.Shows.Any()) //only for old users (before this funcionality)
+        @if (AppState.WatchingList == null && AppState.WatchedList != null) //only for old users (before this funcionality)
         {
-            <Button Color="Color.Primary" Clicked="()=>ImportFromWatched()">Procurar pendências de seriados já assistidos</Button>
+            <Button Color="Color.Primary" Clicked="()=>ImportFromWatched()" Margin="Margin.Is2.FromBottom" Disabled="!AppState.WatchedList.Shows.Any()">Procurar pendências de seriados já assistidos</Button>
         }
         else
         {
-            <Loading @ref="LoadingShow">
+            <Loading IsEmptyFilter="@(AppState.WatchingList != null && !AppState.WatchingList.Shows.Any())">
                 <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
                     @foreach (var item in AppState.WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
                     {
+                        int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                        var resultPerc = $"{percentComplete}%";
+
                         <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
-                            <Card>
-                                <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                            <Card Style="position: relative;">
+                                <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+
+                                @if (string.IsNullOrEmpty(item.logo))
+                                {
+                                    <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"></CardImage>
+
+                                    <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
+                                        @item.name
+                                    </Div>
+                                }
+                                else
+                                {
+                                    <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
                                    onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.tv))" Style="cursor: pointer;"></CardImage>
+                                }
                             </Card>
                         </Column>
                     }
@@ -86,7 +106,7 @@
     </Authorized>
     <NotAuthorized>
         <Alert Visible="true" Color="Color.Primary">
-            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
+            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> @GlobalTranslations.UnauthenticatedUser</AlertMessage>
         </Alert>
     </NotAuthorized>
 </AuthorizeView>
@@ -94,36 +114,15 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    public Loading? LoadingMovie { get; set; }
-    public Loading? LoadingShow { get; set; }
-
     private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : 3;
 
     protected override void OnInitialized()
     {
-        AppState.WatchingListChanged += () =>
-        {
-            LoadingMovie?.Finish(!AppState.WatchingList?.Movies.Any() ?? true);
-            LoadingShow?.Finish(!AppState.WatchingList?.Shows.Any() ?? true);
-            StateHasChanged();
-        };
+        AppState.WatchingListChanged += StateHasChanged;
         AppState.WatchedListChanged += StateHasChanged;
         AppState.WishListChanged += StateHasChanged;
 
         base.OnInitialized();
-    }
-
-    protected override async Task LoadData()
-    {
-        LoadingMovie?.Start();
-        LoadingShow?.Start();
-
-        AppState.ChangeWatchingList(await WatchingListApi.Get(await AppState.IsUserAuthenticated()));
-        AppState.ChangeWishList(await WishListApi.Get(await AppState.IsUserAuthenticated()));
-        AppState.ChangeWatchedList(await WatchedListApi.Get(await AppState.IsUserAuthenticated()));
-
-        LoadingMovie?.Finish(!AppState.WatchingList?.Movies.Any() ?? true);
-        LoadingShow?.Finish(!AppState.WatchingList?.Shows.Any() ?? true);
     }
 
     private async Task OpenCompleteList(MediaType mediaType)
@@ -181,9 +180,13 @@
 
     private async Task ImportFromWatched()
     {
+        AppState.WatchingList?.Movies.Clear();
+        AppState.WatchingList?.Shows.Clear();
+
         foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.movie) ?? new())
         {
             var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.movie);
+            if (media == null) continue;
             var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
             if (hasCollection)
@@ -193,7 +196,7 @@
 
                 var watching = AppState.WatchingList ?? new WatchingList();
 
-                var item = new WatchingListItem(media?.collectionId?.ToString(), media?.collectionName, media?.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+                var item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
 
                 watching = await WatchingListApi.Add(MediaType.movie, item);
 
@@ -204,6 +207,7 @@
         foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.tv) ?? new())
         {
             var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.tv);
+            if (media == null) continue;
             var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
             if (hasCollection)
@@ -213,7 +217,7 @@
 
                 var watching = AppState.WatchingList ?? new WatchingList();
 
-                var item = new WatchingListItem(media?.tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), items);
+                var item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
 
                 watching = await WatchingListApi.Add(MediaType.tv, item);
 

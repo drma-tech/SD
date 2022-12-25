@@ -73,23 +73,26 @@
 
     public sealed class WatchingListItem : IEquatable<WatchingListItem>
     {
-        public WatchingListItem(string? id, string? name, string? logo, HashSet<string> watched)
+        public WatchingListItem(string? id, string? name, string? logo, int maxItems, HashSet<string> watched)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
             if (string.IsNullOrEmpty(logo)) throw new ArgumentNullException(nameof(logo));
+            if (maxItems == 0) throw new ArgumentNullException(nameof(maxItems));
             if (watched.Count == 0) throw new ArgumentNullException(nameof(watched));
 
             this.id = id;
             this.name = name;
             this.logo = logo;
+            this.maxItems = maxItems;
             this.watched = watched;
         }
 
-        public string? id { get; init; }
-        public string? logo { get; init; }
-        public string? name { get; init; }
-        public HashSet<string> watched { get; init; }
+        public string id { get; init; }
+        public string logo { get; init; }
+        public string name { get; init; }
+        public int maxItems { get; init; }
+        public HashSet<string> watched { get; init; } = new();
 
         public bool Equals(WatchingListItem? other)
         {

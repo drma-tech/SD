@@ -70,6 +70,15 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Person.
+        /// </summary>
+        public static string personName {
+            get {
+                return ResourceManager.GetString("personName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TV Shows.
         /// </summary>
         public static string tvName {

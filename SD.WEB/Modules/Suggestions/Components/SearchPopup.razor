@@ -1,0 +1,49 @@
+﻿@using SD.WEB.Modules.Suggestions.Core;
+@inherits ComponenteCore<SearchPopup>
+
+@inject TmdbSearchApi TmdbSearch
+
+<ModalHeader>
+    <ModalTitle>@TitleHead</ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    @if (SearchType == MediaType.movie || SearchType == MediaType.tv)
+    {
+        <MediaListFull @ref="MediaListFull" MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" TypeSelected="Type" MaxItens="50" ShowHead="false"></MediaListFull>
+    }
+    else
+    {
+        <div>nothing here</div>
+    }
+</ModalBody>
+<ModalFooter>
+    <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@TranslationText.Close</Button>
+</ModalFooter>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    [Parameter] public string? TitleHead { get; set; }
+    [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
+    [Parameter] public MediaType SearchType { get; set; }
+    [Parameter] public string? Search { get; set; }
+
+    private MediaListFull? MediaListFull;
+    public MediaType Type => SearchType == MediaType.movie ? MediaType.movie : MediaType.tv;
+    private Dictionary<string, string> StringParameters => new Dictionary<string, string>() { { "query", Search ?? "" } };
+
+    protected override async Task LoadData()
+    {
+        var result = await TmdbSearch.GetList(Items, Type, StringParameters);
+
+        Items = result.list;
+
+        MediaListFull?.LoadingList?.Finish(!Items.Any());
+    }
+
+    public async Task HideModal()
+    {
+        await ModalService.Hide();
+    }
+}

@@ -1,6 +1,6 @@
 ﻿@using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.Provider.Core;
-@inherits ComponenteCore<MyWishListComponent>
+@inherits ComponenteNoDataCore<MyWishListComponent>
 
 <HeaderComponent IconName="@FontAwesomeIcons.Bookmark" Title="@GlobalTranslations.MyMovieWishlist.Format(AppState.WishList?.Movies.Count() ?? 0)">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))" title="@GlobalTranslations.SeeAllItems" Disabled="(!AppState.WishList?.Movies.Any()??true)" Class="ml-1">
@@ -12,7 +12,7 @@
 </HeaderComponent>
 <AuthorizeView>
     <Authorized>
-        <Loading @ref="LoadingMovie">
+        <Loading IsEmptyFilter="@(AppState.WishList != null && !AppState.WishList.Movies.Any())">
             <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
                 @foreach (var item in AppState.WishList?.Movies.Take(GetTotalItems) ?? new List<WishListItem>())
                 {
@@ -29,7 +29,7 @@
     </Authorized>
     <NotAuthorized>
         <Alert Visible="true" Color="Color.Primary">
-            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
+            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> @GlobalTranslations.UnauthenticatedUser</AlertMessage>
         </Alert>
     </NotAuthorized>
 </AuthorizeView>
@@ -44,7 +44,7 @@
 </HeaderComponent>
 <AuthorizeView>
     <Authorized>
-        <Loading @ref="LoadingShow">
+        <Loading IsEmptyFilter="@(AppState.WishList != null && !AppState.WishList.Shows.Any())">
             <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
                 @foreach (var item in AppState.WishList?.Shows.Take(GetTotalItems) ?? new List<WishListItem>())
                 {
@@ -61,7 +61,7 @@
     </Authorized>
     <NotAuthorized>
         <Alert Visible="true" Color="Color.Primary">
-            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Realizar login para utilizar essa funcionalidade</AlertMessage>
+            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> @GlobalTranslations.UnauthenticatedUser</AlertMessage>
         </Alert>
     </NotAuthorized>
 </AuthorizeView>
@@ -69,34 +69,14 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    public Loading? LoadingMovie { get; set; }
-    public Loading? LoadingShow { get; set; }
-
     private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : 3;
 
     protected override void OnInitialized()
     {
-        AppState.WishListChanged += () =>
-        {
-            LoadingMovie?.Finish(!AppState.WishList?.Movies.Any() ?? true);
-            LoadingShow?.Finish(!AppState.WishList?.Shows.Any() ?? true);
-            StateHasChanged();
-        };
+        AppState.WishListChanged += StateHasChanged;
         AppState.WatchedListChanged += StateHasChanged;
 
         base.OnInitialized();
-    }
-
-    protected override async Task LoadData()
-    {
-        LoadingMovie?.Start();
-        LoadingShow?.Start();
-
-        AppState.ChangeWishList(await WishListApi.Get(await AppState.IsUserAuthenticated()));
-        AppState.ChangeWatchedList(await WatchedListApi.Get(await AppState.IsUserAuthenticated()));
-
-        LoadingMovie?.Finish(!AppState.WishList?.Movies.Any() ?? true);
-        LoadingShow?.Finish(!AppState.WishList?.Shows.Any() ?? true);
     }
 
     private async Task OpenCompleteList(MediaType mediaType)

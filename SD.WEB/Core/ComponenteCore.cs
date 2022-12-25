@@ -85,6 +85,10 @@ namespace SD.WEB.Core
                     {
                         Navigation.NavigateTo("/ProfilePrincipal");
                     }
+
+                    AppState.ChangeWatchingList(await WatchingListApi.Get(await AppState.IsUserAuthenticated()));
+                    AppState.ChangeWishList(await WishListApi.Get(await AppState.IsUserAuthenticated()));
+                    AppState.ChangeWatchedList(await WatchedListApi.Get(await AppState.IsUserAuthenticated()));
                 }
             }
             catch (Exception ex)
@@ -111,6 +115,10 @@ namespace SD.WEB.Core
                     {
                         Navigation.NavigateTo("/ProfilePrincipal");
                     }
+
+                    AppState.ChangeWatchingList(await WatchingListApi.Get(await AppState.IsUserAuthenticated()));
+                    AppState.ChangeWishList(await WishListApi.Get(await AppState.IsUserAuthenticated()));
+                    AppState.ChangeWatchedList(await WatchedListApi.Get(await AppState.IsUserAuthenticated()));
                 }
             }
             catch (Exception ex)

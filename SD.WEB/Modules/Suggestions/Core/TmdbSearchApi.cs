@@ -1,38 +1,40 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Model.List.Tmdb;
+using SD.Shared.Models.List.Tmdb;
 using SD.WEB.Modules.Suggestions.Interface;
-using System.Text.Json;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class TmdbListApi : ApiServices, IMediaListApi
+    public class TmdbSearchApi : ApiServices, IMediaListApi
     {
-        public TmdbListApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
+        public TmdbSearchApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
         {
         }
 
         public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
         {
-            if (list == null) throw new ArgumentException(null, nameof(list));
-
             var parameter = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey },
                 { "language", AppStateStatic.Language.GetName(false) ?? "en-US" },
                 { "page", page.ToString() },
-                //{ "sort_by", "original_order.asc" }
+                { "include_adult", "false" }
             };
 
-            var result = await GetByRequest<CustomListNew>(TmdbOptions.BaseUriNew + "list/" + ((int)list).ToString().ConfigureParameters(parameter));
+            if (stringParameters != null)
+            {
+                foreach (var item in stringParameters)
+                {
+                    parameter.TryAdd(item.Key, item.Value);
+                }
+            }
+
+            var tv = type == MediaType.tv;
+            var result = await GetByRequest<TmdbSearch>(TmdbOptions.BaseUriNew + $"search/{(tv ? "tv" : "movie")}".ConfigureParameters(parameter));
 
             if (result != null)
             {
                 foreach (var item in result.results)
                 {
-                    var tv = item.media_type == "tv";
-
-                    result.comments.TryGetProperty($"{(tv ? "tv" : "movie")}:{item.id}", out JsonElement value);
-
                     currentList.Add(new MediaDetail
                     {
                         tmdb_id = item.id.ToString(),
@@ -42,8 +44,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                         poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                         poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
                         rating = item.vote_count > 10 ? item.vote_average : 0,
-                        MediaType = tv ? MediaType.tv : MediaType.movie,
-                        comments = value.GetString()
+                        MediaType = tv ? MediaType.tv : MediaType.movie
                     });
                 }
             }

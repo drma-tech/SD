@@ -1,24 +1,22 @@
-﻿@inherits ComponenteCore<MyWishListPopup>
+﻿@inherits ComponenteNoDataCore<MyWishListPopup>
 
 <ModalHeader>
     <ModalTitle>@Title.Format(GetWishList().Count())</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <Loading @ref="LoadingWishlist">
-        <Row HorizontalGutter="4" VerticalGutter="4">
-            @foreach (var item in GetWishList())
-            {
-                var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-                <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile">
-                    <Card>
-                        <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="@MediaType.movie"
-                                     Clicked="@(async()=>await ShowMediaPopup(item, MediaType))" ShowWished="false"></PosterComponent>
-                    </Card>
-                </Column>
-            }
-        </Row>
-    </Loading>
+    <Row HorizontalGutter="4" VerticalGutter="4">
+        @foreach (var item in GetWishList())
+        {
+            var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile">
+                <Card>
+                    <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="@MediaType.movie"
+                                 Clicked="@(async()=>await ShowMediaPopup(item, MediaType))" ShowWished="false"></PosterComponent>
+                </Card>
+            </Column>
+        }
+    </Row>
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide">@TranslationText.Close</Button>
@@ -29,16 +27,11 @@
 
     [Parameter] public MediaType MediaType { get; set; }
 
-    public Loading? LoadingWishlist { get; set; }
     public string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWishlist : GlobalTranslations.MyShowWishlist;
 
     protected override void OnInitialized()
     {
-        AppState.WishListChanged += () =>
-        {
-            LoadingWishlist?.Finish(!GetWishList().Any());
-            StateHasChanged();
-        };
+        AppState.WishListChanged += StateHasChanged;
         AppState.WatchedListChanged += StateHasChanged;
 
         base.OnInitialized();
@@ -50,16 +43,6 @@
             return AppState.WishList?.Movies ?? new HashSet<WishListItem>();
         else
             return AppState.WishList?.Shows ?? new HashSet<WishListItem>();
-    }
-
-    protected override async Task LoadData()
-    {
-        LoadingWishlist?.Start();
-
-        AppState.ChangeWishList(await WishListApi.Get(await AppState.IsUserAuthenticated()));
-        AppState.ChangeWatchedList(await WatchedListApi.Get(await AppState.IsUserAuthenticated()));
-
-        LoadingWishlist?.Finish(!GetWishList().Any());
     }
 
     public Task ShowMediaPopup(WishListItem item, MediaType type)

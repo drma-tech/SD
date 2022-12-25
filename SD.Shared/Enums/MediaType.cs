@@ -6,6 +6,9 @@
         movie = 1,
 
         [Custom(Name = "tvName", ResourceType = typeof(Resources.Enum.MediaType))]
-        tv = 2
+        tv = 2,
+
+        //[Custom(Name = "personName", ResourceType = typeof(Resources.Enum.MediaType))]
+        //person = 3
     }
 }
