@@ -183,6 +183,8 @@
         AppState.WatchingList?.Movies.Clear();
         AppState.WatchingList?.Shows.Clear();
 
+        var watching = AppState.WatchingList ?? new WatchingList();
+
         foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.movie) ?? new())
         {
             var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.movie);
@@ -191,14 +193,28 @@
 
             if (hasCollection)
             {
-                var items = new HashSet<string>();
-                items.Add(tmdb_id);
+                var item = watching?.GetItem(MediaType.movie, media.collectionId?.ToString());
 
-                var watching = AppState.WatchingList ?? new WatchingList();
+                if (item == null)
+                {
+                    var items = new HashSet<string>();
+                    items.Add(tmdb_id);
 
-                var item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                    item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                }
+                else
+                {
+                    item.watched.Add(tmdb_id);
+                }
 
-                watching = await WatchingListApi.Add(MediaType.movie, item);
+                if (item.watched.Count < item.maxItems)
+                {
+                    watching = await WatchingListApi.Add(MediaType.movie, item);
+                }
+                else
+                {
+                    watching = await WatchingListApi.Remove(MediaType.movie, media.collectionId?.ToString());
+                }
 
                 AppState.ChangeWatchingList(watching);
             }
@@ -212,12 +228,19 @@
 
             if (hasCollection)
             {
-                var items = new HashSet<string>();
-                items.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+                var item = watching?.GetItem(MediaType.tv, media.tmdb_id);
 
-                var watching = AppState.WatchingList ?? new WatchingList();
+                if (item == null)
+                {
+                    var items = new HashSet<string>();
+                    items.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
 
-                var item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                    item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                }
+                else
+                {
+                    item.watched.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+                }
 
                 watching = await WatchingListApi.Add(MediaType.tv, item);
 
