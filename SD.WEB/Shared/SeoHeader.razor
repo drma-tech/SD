@@ -9,9 +9,11 @@
         <meta Name="twitter:description" Content="@GetDescription()" />
     }
     <meta Name="keywords" Content="@GetKeywords()" />
+    <meta property="og:url" content="@GetCanonicalUrl()">
+    <link rel="canonical" href="@GetCanonicalUrl()" />
 </HeadContent>
-<meta property="og:url" content="@GetCanonicalUrl()">
-<link rel="canonical" href="@GetCanonicalUrl()" />
+
+<Heading Size="HeadingSize.Is1" Display="Display.None">@Title</Heading>
 
 @code {
     private const string ProjectName = "Streaming Discovery";
