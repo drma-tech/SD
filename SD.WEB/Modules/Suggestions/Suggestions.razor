@@ -65,10 +65,8 @@
         public string? link { get; set; }
     }
 
-    protected override void OnInitialized()
+    public Suggestions()
     {
-        base.OnInitialized();
-
         Awards.Add(new Item() { name = "Oscar", logo_path = "logo/oscar.png", link = "/Suggestions/Oscar" });
         Awards.Add(new Item() { name = "Golden Globe", logo_path = "logo/goldenglobes.png", link = "/Suggestions/GoldenGlobes" });
         Awards.Add(new Item() { name = "Emmys", logo_path = "logo/emmys.png", link = "/Suggestions/Emmys" });
