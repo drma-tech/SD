@@ -6,7 +6,7 @@
 @inject CacheApi CacheApi
 
 <HeaderComponent Title="@GlobalTranslations.NewsTitle">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList" title="Show all news">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
@@ -18,8 +18,8 @@
                 <div style="position: absolute; top: 0px; left: 0px; background-color: lime; opacity: 80%;" class="px-1 m-2">
                     @((MarkupString)item.title)
                 </div>
-                <Blazorise.Link To="@item?.link" Target="Target.Blank">
-                    <Image data-src="@item?.mainImage?.url" class="lazyload" Text="@item?.title" Display="Display.Block" Width="Width.Is100" />
+                <Blazorise.Link To="@item?.link" Target="Target.Blank" Title="@item?.title">
+                    <Image data-src="@item?.mainImage?.url" class="lazyload" title="@item?.title" Text="@item?.title" Display="Display.Block" Width="Width.Is100" />
                 </Blazorise.Link>
             </CarouselSlide>
         }
