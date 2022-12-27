@@ -71,7 +71,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<AppState>();
 
     collection.AddResizeListener();
-    collection.AddHeadElementHelper();
 
     collection.AddLogging(logging =>
     {
