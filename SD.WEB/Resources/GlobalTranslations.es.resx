@@ -192,14 +192,8 @@
   <data name="MoreInformation" xml:space="preserve">
     <value>Más información o Contribuciones</value>
   </data>
-  <data name="MyMovieWishlist" xml:space="preserve">
-    <value>Añadir a la lista de deseos - Películas ({0} artículos)</value>
-  </data>
   <data name="MyProviders" xml:space="preserve">
     <value>Proveedores favoritos ({0} artículos)</value>
-  </data>
-  <data name="MyShowWishlist" xml:space="preserve">
-    <value>Lista de deseos - Serials ({0} artículos)</value>
   </data>
   <data name="Offering" xml:space="preserve">
     <value>Ofrenda</value>
@@ -227,12 +221,6 @@
   </data>
   <data name="MenuSuggestions" xml:space="preserve">
     <value>Sugerencias</value>
-  </data>
-  <data name="MyMovieWatching" xml:space="preserve">
-    <value>Viendo - Películas ({0} artículos)</value>
-  </data>
-  <data name="MyShowWatching" xml:space="preserve">
-    <value>Viendo - Serie ({0} artículos)</value>
   </data>
   <data name="TabAbout" xml:space="preserve">
     <value>Sobre</value>
@@ -281,5 +269,17 @@
   </data>
   <data name="ButtoSearch" xml:space="preserve">
     <value>Buscar</value>
+  </data>
+  <data name="MyMovieWatching" xml:space="preserve">
+    <value>Viendo - Películas ({0} artículos)</value>
+  </data>
+  <data name="MyMovieWishlist" xml:space="preserve">
+    <value>Lista de deseos - Películas ({0} artículos)</value>
+  </data>
+  <data name="MyShowWatching" xml:space="preserve">
+    <value>Viendo - Serie ({0} artículos)</value>
+  </data>
+  <data name="MyShowWishlist" xml:space="preserve">
+    <value>Lista de deseos - Serie ({0} artículos)</value>
   </data>
 </root>
