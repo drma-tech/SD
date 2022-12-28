@@ -51,8 +51,7 @@
     {
         if (!string.IsNullOrEmpty(language) && language != AppStateStatic.Language.GetName(false))
         {
-            var js = (IJSInProcessRuntime)JS;
-            js.InvokeVoid("blazorLanguage.set", language);
+            await JS.InvokeVoidAsync("blazorLanguage.set", language);
 
             Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
         }

@@ -88,10 +88,10 @@ static async Task ConfigureCulture(WebAssemblyHost? host)
 {
     if (host != null)
     {
-        var js = host.Services.GetRequiredService<IJSRuntime>();
+        var JS = host.Services.GetRequiredService<IJSRuntime>();
 
         CultureInfo cultureInfo;
-        var language = await js.InvokeAsync<string>("blazorLanguage.get");
+        var language = await JS.InvokeAsync<string>("blazorLanguage.get");
         if (language != null)
         {
             cultureInfo = new CultureInfo(language ?? "en-US");
@@ -99,13 +99,13 @@ static async Task ConfigureCulture(WebAssemblyHost? host)
         else
         {
             cultureInfo = new CultureInfo("en-US");
-            await js.InvokeVoidAsync("blazorLanguage.set", "en-US");
+            await JS.InvokeVoidAsync("blazorLanguage.set", "en-US");
         }
         CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
         CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-        var region = await js.InvokeAsync<string>("blazorRegion.get");
+        var region = await JS.InvokeAsync<string>("blazorRegion.get");
         if (region == null)
-            await js.InvokeVoidAsync("blazorRegion.set", "US");
+            await JS.InvokeVoidAsync("blazorRegion.set", "US");
     }
 }

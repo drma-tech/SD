@@ -71,8 +71,7 @@
         Regions = EnumHelper.GetObjArray<Region>();
         Languages = EnumHelper.GetObjArray<Language>().Where(w => !string.IsNullOrEmpty(w.Name)).ToArray();
 
-        var js = (IJSInProcessRuntime)JS;
-        var region = await js.InvokeAsync<string>("blazorRegion.get");
+        var region = await JS.InvokeAsync<string>("blazorRegion.get");
 
         if (!string.IsNullOrEmpty(region))
         {
@@ -85,18 +84,16 @@
         Navigation.NavigateTo("/.auth/logout", forceLoad: true);
     }
 
-    protected void RegionValueChanged(Region value)
+    protected async Task RegionValueChanged(Region value)
     {
         AppStateStatic.ChangeRegion(value);
 
-        var js = (IJSInProcessRuntime)JS;
-        js.InvokeVoid("blazorRegion.set", value.GetName(false));
+        await JS.InvokeVoidAsync("blazorRegion.set", value.GetName(false));
     }
 
-    protected void LanguageValueChanged(Language value)
+    protected async Task LanguageValueChanged(Language value)
     {
-        var js = (IJSInProcessRuntime)JS;
-        js.InvokeVoid("blazorLanguage.set", value.GetName(false));
+        await JS.InvokeVoidAsync("blazorLanguage.set", value.GetName(false));
 
         Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
     }
