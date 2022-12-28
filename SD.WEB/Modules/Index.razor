@@ -8,7 +8,7 @@
 @using SD.WEB.Modules.Provider.Components;
 @using SD.WEB.Modules.News.Components;
 
-@*<Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
+<Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
     <Column ColumnSize="ColumnSize.IsAuto">
         <Select TValue="MediaType" @bind-SelectedValue="SearchType">
             @foreach (var item in EnumHelper.GetObjArray<MediaType>())
@@ -22,10 +22,10 @@
     </Column>
     <Column ColumnSize="ColumnSize.IsAuto">
         <Button Color="Color.Primary" Block="true" Clicked="ShowSearchPopup">
-            <Blazorise.Icon Name="@FontAwesomeIcons.Search" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@GlobalTranslations.ButtoSearch
+            @GlobalTranslations.ButtoSearch
         </Button>
     </Column>
-</Row>*@
+</Row>
 
 <PopularIndexComponent></PopularIndexComponent>
 
