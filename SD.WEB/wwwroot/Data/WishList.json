@@ -1,56 +1,118 @@
 {
-    "movies": [
-        {
-            "id": "354912",
-            "name": "Viva: A Vida é uma Festa",
-            "logo": "/6oNm06TPz2vGiPc2I52oXW3JwPS.jpg"
-        },
-        {
-            "id": "324857",
-            "name": "Homem-Aranha no Aranhaverso",
-            "logo": "/ybQSBSrINtjWsJQ6Ih8sva8HlEZ.jpg"
-        },
-        {
-            "id": "508442",
-            "name": "Soul",
-            "logo": "/bzDAfXoqNAvWUe7uss2NE3BmRqy.jpg"
-        },
-        {
-            "id": "629176",
-            "name": "Samaritano",
-            "logo": "/7xP0NhjE6AOJ1RTx5vh3Jw1aNCe.jpg"
-        }
-    ],
-    "shows": [
-        {
-            "id": "90802",
-            "name": "Sandman",
-            "logo": "/q54qEgagGOYCq5D1903eBVMNkbo.jpg"
-        },
-        {
-            "id": "84773",
-            "name": "O Senhor dos Anéis: Os Anéis de Poder",
-            "logo": "/b5pl6GmQmTCHmZKEBhXPN0gmoAq.jpg"
-        },
-        {
-            "id": "113988",
-            "name": "Dahmer: Um Canibal Americano",
-            "logo": "/67ujv4O6AalmGu3UaVSNdcw8juT.jpg"
-        },
-        {
-            "id": "60574",
-            "name": "Peaky Blinders: Sangue, Apostas e Navalhas",
-            "logo": "/i0uajcHH9yogXMfDHpOXexIukG9.jpg"
-        }
-    ],
-    "id": "WishList:59a50fe40b2c49da8dd24442e009a625",
-    "key": "59a50fe40b2c49da8dd24442e009a625",
-    "type": 4,
-    "dtInsert": "2022-10-19T12:23:00.7927332+00:00",
-    "dtUpdate": "2022-10-20T14:04:51.103733+00:00",
-    "_rid": "lehxAJ6-BYoFAAAAAAAAAA==",
-    "_self": "dbs/lehxAA==/colls/lehxAJ6-BYo=/docs/lehxAJ6-BYoFAAAAAAAAAA==/",
-    "_etag": "\"74008eaa-0000-0300-0000-635155830000\"",
-    "_attachments": "attachments/",
-    "_ts": 1666274691
+  "movies": [
+    {
+      "id": "829280",
+      "name": "Enola Holmes 2",
+      "logo": "/tegBpjM5ODoYoM1NjaiHVLEA0QM.jpg",
+      "runtime": 129
+    },
+    {
+      "id": "1417",
+      "name": "Pan's Labyrinth",
+      "logo": "/s8C4whhKtDaJvMDcyiMvx3BIF5F.jpg",
+      "runtime": 118
+    },
+    {
+      "id": "337404",
+      "name": "Cruella",
+      "logo": "/rRYNGhcAZlTfIUS7iFoF4H9iDbc.jpg",
+      "runtime": 134
+    },
+    {
+      "id": "424",
+      "name": "A Lista de Schindler",
+      "logo": "/bGhhNzJYDsuLruNN5bJ2PvLcMiq.jpg",
+      "runtime": 195
+    },
+    {
+      "id": "466272",
+      "name": "Era Uma Vez em… Hollywood",
+      "logo": "/h30FdikGNkrT6loajaO9G1HHjz0.jpg",
+      "runtime": 162
+    },
+    {
+      "id": "359724",
+      "name": "Ford vs Ferrari",
+      "logo": "/t8L9dqNMclXJHP0TesPsPS2RvB1.jpg",
+      "runtime": 153
+    }
+  ],
+  "shows": [
+    {
+      "id": "95403",
+      "name": "The Peripheral",
+      "logo": "/ccBe5BVeibdBEQU7l6P6BubajWV.jpg",
+      "runtime": 60
+    },
+    {
+      "id": "84773",
+      "name": "The Lord of the Rings: The Rings of Power",
+      "logo": "/mYLOqiStMxDK3fYZFirgrMt8z5d.jpg",
+      "runtime": 60
+    },
+    {
+      "id": "90669",
+      "name": "1899",
+      "logo": "/8KGvYHQNOamON6ufQGjyhkiVn1V.jpg",
+      "runtime": 50
+    },
+    {
+      "id": "113988",
+      "name": "Dahmer – Monster: The Jeffrey Dahmer Story",
+      "logo": "/f2PVrphK0u81ES256lw3oAZuF3x.jpg",
+      "runtime": 0
+    },
+    {
+      "id": "119051",
+      "name": "Wandinha",
+      "logo": "/ctI52NGXwDluCmAY9kOLqGg9hb5.jpg",
+      "runtime": 0
+    },
+    {
+      "id": "69478",
+      "name": "O Conto da Aia",
+      "logo": "/2rK53k6Lg6IDqHM7xp8OTzzzpz7.jpg",
+      "runtime": 50
+    },
+    {
+      "id": "94997",
+      "name": "A Casa do Dragão",
+      "logo": "/ruHPkmmAwBTCzNXtHot18rs6ctN.jpg",
+      "runtime": 60
+    },
+    {
+      "id": "95396",
+      "name": "Ruptura",
+      "logo": "/d09X5AzxBq4GkHL6j8pmkDPySfA.jpg",
+      "runtime": 50
+    },
+    {
+      "id": "83867",
+      "name": "Star Wars: Andor",
+      "logo": "/59SVNwLfoMnZPPB6ukW6dlPxAdI.jpg",
+      "runtime": 40
+    },
+    {
+      "id": "74313",
+      "name": "Planeta Azul II",
+      "logo": "/j1NsoYYDYHnPkRr7Enqr8tlexgO.jpg",
+      "runtime": 60
+    },
+    {
+      "id": "79788",
+      "name": "Watchmen",
+      "logo": "/m8rWq3j73ZGhDuSCZWMMoE9ePH1.jpg",
+      "runtime": 60
+    }
+  ],
+  "id": "WishList:59a50fe40b2c49da8dd24442e009a625",
+  "key": "59a50fe40b2c49da8dd24442e009a625",
+  "type": 4,
+  "dtInsert": "2022-11-05T21:13:49.6302376+00:00",
+  "dtUpdate": "2022-12-20T00:09:03.7964456+00:00",
+  "_rid": "lehxAJ6-BYoNAAAAAAAAAA==",
+  "_self": "dbs/lehxAA==/colls/lehxAJ6-BYo=/docs/lehxAJ6-BYoNAAAAAAAAAA==/",
+  "_etag": "\"09009a30-0000-0300-0000-63a0fd1f0000\"",
+  "_attachments": "attachments/",
+  "_ts": 1671494943
 }

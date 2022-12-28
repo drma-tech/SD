@@ -3,6 +3,7 @@
 @using SD.WEB.Modules.Provider.Core;
 @inherits ComponenteNoDataCore<MyWatchingListComponent>
 @inject TmdbApi TmdbApi
+@inject AppState State
 
 <HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@GlobalTranslations.MyMovieWatching.Format(AppState.WatchingList?.Movies.Count() ?? 0)">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))" title="@GlobalTranslations.SeeAllItems" Disabled="(!AppState.WatchingList?.Movies.Any()??true)" Class="ml-1">
@@ -12,50 +13,42 @@
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-<AuthorizeView>
-    <Authorized>
-        @if (AppState.WatchingList == null && AppState.WatchedList != null) //only for old users (before this funcionality)
-        {
-            <Button Color="Color.Primary" Clicked="()=>ImportFromWatched()" Margin="Margin.Is2.FromBottom" Disabled="!AppState.WatchedList.Movies.Any()">Procurar pendências de filmes já assistidos</Button>
-        }
-        else
-        {
-            <Loading IsEmptyFilter="@(AppState.WatchingList != null && !AppState.WatchingList.Movies.Any())">
-                <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-                    @foreach (var item in AppState.WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
-                    {
-                        int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
-                        var resultPerc = $"{percentComplete}%";
 
-                        <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
-                            <Card Style="position: relative;">
-                                <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
-                                @if (string.IsNullOrEmpty(item.logo))
-                                {
-                                    <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"></CardImage>
+@if (AppState.WatchingList == null && AppState.WatchedList != null) //only for old users (before this funcionality)
+{
+    <Button Color="Color.Primary" Clicked="()=>ImportFromWatched()" Margin="Margin.Is2.FromBottom" Disabled="!AppState.WatchedList.Movies.Any()">Procurar pendências de filmes já assistidos</Button>
+}
+else
+{
+    <Loading IsEmptyFilter="@(AppState.WatchingList != null && !AppState.WatchingList.Movies.Any())" UnauthenticatedUser="!IsUserAuthenticated">
+        <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
+            @foreach (var item in AppState.WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
+            {
+                int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                var resultPerc = $"{percentComplete}%";
 
-                                    <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
-                                        @item.name
-                                    </Div>
-                                }
-                                else
-                                {
-                                    <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.movie))" Style="cursor: pointer;"></CardImage>
-                                }
-                            </Card>
-                        </Column>
-                    }
-                </Row>
-            </Loading>
-        }
-    </Authorized>
-    <NotAuthorized>
-        <Alert Visible="true" Color="Color.Primary">
-            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> @GlobalTranslations.UnauthenticatedUser</AlertMessage>
-        </Alert>
-    </NotAuthorized>
-</AuthorizeView>
+                <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
+                    <Card Style="position: relative;">
+                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+                        @if (string.IsNullOrEmpty(item.logo))
+                        {
+                            <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"></CardImage>
+
+                            <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
+                                @item.name
+                            </Div>
+                        }
+                        else
+                        {
+                            <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                           onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.movie))" Style="cursor: pointer;"></CardImage>
+                        }
+                    </Card>
+                </Column>
+            }
+        </Row>
+    </Loading>
+}
 
 <HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@GlobalTranslations.MyShowWatching.Format(AppState.WatchingList?.Shows.Count() ?? 0)">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))" title="@GlobalTranslations.SeeAllItems" Disabled="(!AppState.WatchingList?.Shows.Any()??true)" Class="ml-1">
@@ -65,64 +58,63 @@
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-<AuthorizeView>
-    <Authorized>
-        @if (AppState.WatchingList == null && AppState.WatchedList != null) //only for old users (before this funcionality)
-        {
-            <Button Color="Color.Primary" Clicked="()=>ImportFromWatched()" Margin="Margin.Is2.FromBottom" Disabled="!AppState.WatchedList.Shows.Any()">Procurar pendências de seriados já assistidos</Button>
-        }
-        else
-        {
-            <Loading IsEmptyFilter="@(AppState.WatchingList != null && !AppState.WatchingList.Shows.Any())">
-                <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-                    @foreach (var item in AppState.WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
-                    {
-                        int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
-                        var resultPerc = $"{percentComplete}%";
+@if (AppState.WatchingList == null && AppState.WatchedList != null) //only for old users (before this funcionality)
+{
+    <Button Color="Color.Primary" Clicked="()=>ImportFromWatched()" Margin="Margin.Is2.FromBottom" Disabled="!AppState.WatchedList.Shows.Any()">Procurar pendências de seriados já assistidos</Button>
+}
+else
+{
+    <Loading IsEmptyFilter="@(AppState.WatchingList != null && !AppState.WatchingList.Shows.Any())" UnauthenticatedUser="!IsUserAuthenticated">
+        <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
+            @foreach (var item in AppState.WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
+            {
+                int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                var resultPerc = $"{percentComplete}%";
 
-                        <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
-                            <Card Style="position: relative;">
-                                <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+                <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
+                    <Card Style="position: relative;">
+                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
 
-                                @if (string.IsNullOrEmpty(item.logo))
-                                {
-                                    <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"></CardImage>
+                        @if (string.IsNullOrEmpty(item.logo))
+                        {
+                            <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"></CardImage>
 
-                                    <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
-                                        @item.name
-                                    </Div>
-                                }
-                                else
-                                {
-                                    <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.tv))" Style="cursor: pointer;"></CardImage>
-                                }
-                            </Card>
-                        </Column>
-                    }
-                </Row>
-            </Loading>
-        }
-    </Authorized>
-    <NotAuthorized>
-        <Alert Visible="true" Color="Color.Primary">
-            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> @GlobalTranslations.UnauthenticatedUser</AlertMessage>
-        </Alert>
-    </NotAuthorized>
-</AuthorizeView>
+                            <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
+                                @item.name
+                            </Div>
+                        }
+                        else
+                        {
+                            <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                           onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.tv))" Style="cursor: pointer;"></CardImage>
+                        }
+                    </Card>
+                </Column>
+            }
+        </Row>
+    </Loading>
+}
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : 3;
+    [Parameter] public bool Fake { get; set; } = false;
 
-    protected override void OnInitialized()
+    private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : 3;
+    private bool IsUserAuthenticated { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
         AppState.WatchingListChanged += StateHasChanged;
         AppState.WatchedListChanged += StateHasChanged;
         AppState.WishListChanged += StateHasChanged;
 
-        base.OnInitialized();
+        if (Fake)
+            IsUserAuthenticated = true;
+        else
+            IsUserAuthenticated = await State.IsUserAuthenticated();
+
+        await base.OnInitializedAsync();
     }
 
     private async Task OpenCompleteList(MediaType mediaType)

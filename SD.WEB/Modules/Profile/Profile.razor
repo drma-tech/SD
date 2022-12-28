@@ -1,27 +1,31 @@
 ﻿@page "/Profile"
 <SeoHeader Title="@SeoTranslations.ProfileTitle" Description="@SeoTranslations.ProfileDescription" Url="/Profile"></SeoHeader>
 @inherits PageNoDataCore<Profile>
+@inject HttpClient http
 
-<MyProviderComponent></MyProviderComponent>
+<MyProviderComponent Fake="Fake"></MyProviderComponent>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWishListComponent></MyWishListComponent>
+        <MyWishListComponent Fake="Fake"></MyWishListComponent>
     </Column>
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWatchingListComponent></MyWatchingListComponent>
+        <MyWatchingListComponent Fake="Fake"></MyWatchingListComponent>
     </Column>
 </Row>
 
 @code {
-    //[Parameter]
-    //[SupplyParameterFromQuery(Name = "Fake")]
-    //public bool Fake { get; set; } = false;
+    [Parameter][SupplyParameterFromQuery(Name = "Fake")] public bool Fake { get; set; } = false;
 
-    //private async Task GenerateFakeData()
-    //{
-    //    myProviders = await Http.GetFromJsonAsync<MyProviders>("/Data/MyProvider.json");
-    //    AppState.ChangeWishList(await Http.GetFromJsonAsync<WishList>("/Data/WishList.json"));
-    //    AppState.ChangeWatchedList(await Http.GetFromJsonAsync<WatchedList>("/Data/WatchedList.json"));
-    //}
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (Fake)
+        {
+            AppState.ChangeWishList(await http.GetFromJsonAsync<WishList>("/Data/WishList.json"));
+            AppState.ChangeWatchedList(await http.GetFromJsonAsync<WatchedList>("/Data/WatchedList.json"));
+            AppState.ChangeWatchingList(await http.GetFromJsonAsync<WatchingList>("/Data/WatchingList.json"));
+        }
+    }
 }

@@ -4,37 +4,34 @@
 
 @inject MyProvidersApi MyProvidersApi
 @inject AllProvidersApi AllProvidersApi
+@inject HttpClient http
+@inject AppState State
 
 <HeaderComponent IconName="@FontAwesomeIcons.Heart" Title="@GlobalTranslations.MyProviders.Format(myProviders?.Items.Count ?? 0)"></HeaderComponent>
-<AuthorizeView>
-    <Authorized>
-        <Loading @ref="LoadingProvider">
-            <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-                @foreach (var item in myProviders?.Items.Take(GetTotalItems) ?? new List<MyProvidersItem>())
-                {
-                    <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                        <Card>
-                            <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                   onclick="@(()=>ShowProviderPopup(item))" Style="cursor: pointer;"></CardImage>
-                        </Card>
-                    </Column>
-                }
-            </Row>
-        </Loading>
-    </Authorized>
-    <NotAuthorized>
-        <Alert Visible="true" Color="Color.Primary">
-            <AlertMessage><Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> @GlobalTranslations.UnauthenticatedUser</AlertMessage>
-        </Alert>
-    </NotAuthorized>
-</AuthorizeView>
+
+<Loading @ref="LoadingProvider" UnauthenticatedUser="!IsUserAuthenticated">
+    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
+        @foreach (var item in myProviders?.Items.Take(GetTotalItems) ?? new List<MyProvidersItem>())
+        {
+            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                <Card>
+                    <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                           onclick="@(()=>ShowProviderPopup(item))" Style="cursor: pointer;"></CardImage>
+                </Card>
+            </Column>
+        }
+    </Row>
+</Loading>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
+    [Parameter] public bool Fake { get; set; } = false;
+
     private AllProviders? allProviders { get; set; }
     private MyProviders? myProviders { get; set; }
     public Loading? LoadingProvider { get; set; }
+    private bool IsUserAuthenticated { get; set; }
 
     private int GetTotalItems => AppStateStatic.OnFullHD ? 12 : 4;
 
@@ -42,10 +39,29 @@
     {
         LoadingProvider?.Start();
 
-        myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
-        StateHasChanged();
+        if (Fake)
+        {
+            IsUserAuthenticated = true;
 
-        LoadingProvider?.Finish(!myProviders?.Items.Any() ?? true);
+            myProviders = await http.GetFromJsonAsync<MyProviders>("/Data/MyProvider.json");
+            LoadingProvider?.Finish(!myProviders?.Items.Any() ?? true);
+        }
+        else
+        {
+            IsUserAuthenticated = await State.IsUserAuthenticated();
+
+            if (IsUserAuthenticated)
+            {
+                myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
+                LoadingProvider?.Finish(!myProviders?.Items.Any() ?? true);
+            }
+            else
+            {
+                LoadingProvider?.Finish(true);
+            }
+        }
+
+        StateHasChanged();
     }
 
     public async Task ShowProviderPopup(MyProvidersItem item)
