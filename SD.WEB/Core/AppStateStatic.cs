@@ -12,7 +12,6 @@ namespace SD.WEB.Core
         public static Bar? Sidebar { get; set; }
 
         public static Action? RegionChanged { get; set; }
-        public static Action? LanguageChanged { get; set; }
 
         public static bool OnMobile { get; set; }
         public static bool OnTablet { get; set; }
@@ -33,12 +32,6 @@ namespace SD.WEB.Core
         {
             Region = value;
             RegionChanged?.Invoke();
-        }
-
-        public static void ChangeLanguage(Language value)
-        {
-            Language = value;
-            LanguageChanged?.Invoke();
         }
     }
 }

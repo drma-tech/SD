@@ -5,6 +5,7 @@ using Blazorise.Icons.FontAwesome;
 using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.JSInterop;
 using SD.WEB;
 using SD.WEB.Modules.Auth.Core;
 using SD.WEB.Modules.News.Core;
@@ -12,6 +13,7 @@ using SD.WEB.Modules.Profile.Core;
 using SD.WEB.Modules.Provider.Core;
 using SD.WEB.Modules.Suggestions.Core;
 using SD.WEB.Modules.Support.Core;
+using System.Globalization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -21,7 +23,11 @@ ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-await builder.Build().RunAsync();
+var host = builder.Build();
+
+await ConfigureCulture(host);
+
+await host.RunAsync();
 
 static void ConfigureServices(IServiceCollection collection, string baseAddress)
 {
@@ -76,4 +82,30 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     {
         logging.AddProvider(new CosmosLoggerProvider());
     });
+}
+
+static async Task ConfigureCulture(WebAssemblyHost? host)
+{
+    if (host != null)
+    {
+        var js = host.Services.GetRequiredService<IJSRuntime>();
+
+        CultureInfo cultureInfo;
+        var language = await js.InvokeAsync<string>("blazorLanguage.get");
+        if (language != null)
+        {
+            cultureInfo = new CultureInfo(language ?? "en-US");
+        }
+        else
+        {
+            cultureInfo = new CultureInfo("en-US");
+            await js.InvokeVoidAsync("blazorLanguage.set", "en-US");
+        }
+        CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+        CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+        var region = await js.InvokeAsync<string>("blazorRegion.get");
+        if (region == null)
+            await js.InvokeVoidAsync("blazorRegion.set", "US");
+    }
 }

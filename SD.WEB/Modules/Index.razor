@@ -2,6 +2,7 @@
 @page "/Index"
 <SeoHeader Title="Home" Description="@SeoTranslations.Description" Url="/"></SeoHeader>
 @inherits PageNoDataCore<Index>
+@inject IJSRuntime JS
 
 @using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.Suggestions.Components;
@@ -41,8 +42,23 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
+    [Parameter][SupplyParameterFromQuery(Name = "language")] public string? language { get; set; }
+
     public MediaType SearchType { get; set; } = MediaType.movie;
     public string? Search { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(language) && language != AppStateStatic.Language.GetName(false))
+        {
+            var js = (IJSInProcessRuntime)JS;
+            js.InvokeVoid("blazorLanguage.set", language);
+
+            Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
+        }
+
+        await base.OnInitializedAsync();
+    }
 
     public async Task ShowSearchPopup()
     {

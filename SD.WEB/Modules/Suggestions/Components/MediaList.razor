@@ -82,7 +82,6 @@
             AppState.WishListChanged += StateHasChanged;
             AppState.WatchedListChanged += StateHasChanged;
             if (MultiplesRegions) AppStateStatic.RegionChanged += LoadDataVoid;
-            if (MultipleLanguages) AppStateStatic.LanguageChanged += LoadDataVoid;
 
             await base.OnInitializedAsync();
         }

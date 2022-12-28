@@ -1,5 +1,6 @@
 ﻿@inherits ComponenteNoDataCore<HeadLayout>
-@inject NavigationManager Nav
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
 
 <Bar Mode="BarMode.Horizontal" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark" Padding="Padding.Is2">
     <Container Fluid="true" Padding="Padding.Is0.OnX">
@@ -63,28 +64,40 @@
     private IReadOnlyList<EnumObject> Regions { get; set; } = Array.Empty<EnumObject>();
     private IReadOnlyList<EnumObject> Languages { get; set; } = Array.Empty<EnumObject>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
 
         Regions = EnumHelper.GetObjArray<Region>();
         Languages = EnumHelper.GetObjArray<Language>().Where(w => !string.IsNullOrEmpty(w.Name)).ToArray();
+
+        var js = (IJSInProcessRuntime)JS;
+        var region = await js.InvokeAsync<string>("blazorRegion.get");
+
+        if (!string.IsNullOrEmpty(region))
+        {
+            AppStateStatic.ChangeRegion((Region)Enum.Parse(typeof(Region), region));
+        }
     }
 
     private void Logout()
     {
-        Nav.NavigateTo("/.auth/logout", forceLoad: true);
+        Navigation.NavigateTo("/.auth/logout", forceLoad: true);
     }
 
     protected void RegionValueChanged(Region value)
     {
         AppStateStatic.ChangeRegion(value);
+
+        var js = (IJSInProcessRuntime)JS;
+        js.InvokeVoid("blazorRegion.set", value.GetName(false));
     }
 
     protected void LanguageValueChanged(Language value)
     {
-        AppStateStatic.ChangeLanguage(value);
+        var js = (IJSInProcessRuntime)JS;
+        js.InvokeVoid("blazorLanguage.set", value.GetName(false));
 
-        //Nav.NavigateTo(Nav.Uri, forceLoad: true);
+        Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
     }
 }

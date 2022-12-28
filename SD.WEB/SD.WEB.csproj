@@ -113,6 +113,7 @@
 	</ItemGroup>
 
 	<PropertyGroup>
+		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
 		<CurrentDate>$([System.DateTime]::Now.ToString(yyyy.MM.dd))</CurrentDate>
 		<BlazorWasmPrerenderingUrlPathToExplicitFetch>/Suggestions;/Suggestions/Oscar</BlazorWasmPrerenderingUrlPathToExplicitFetch>
 	</PropertyGroup>
