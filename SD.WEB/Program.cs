@@ -3,9 +3,9 @@ using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using BlazorPro.BlazorSize;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.JSInterop;
 using SD.WEB;
 using SD.WEB.Modules.Auth.Core;
 using SD.WEB.Modules.News.Core;
@@ -25,7 +25,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 var host = builder.Build();
 
-await ConfigureCulture(host);
+ConfigureCulture(host);
 
 await host.RunAsync();
 
@@ -84,28 +84,28 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     });
 }
 
-static async Task ConfigureCulture(WebAssemblyHost? host)
+static void ConfigureCulture(WebAssemblyHost? host)
 {
     if (host != null)
     {
-        var JS = host.Services.GetRequiredService<IJSRuntime>();
+        var nav = host.Services.GetService<NavigationManager>();
+        var language = nav?.QueryString("language");
 
-        CultureInfo cultureInfo;
-        var language = await JS.InvokeAsync<string>("blazorLanguage.get");
-        if (language != null)
+        if (!string.IsNullOrEmpty(language))
         {
-            cultureInfo = new CultureInfo(language ?? "en-US");
-        }
-        else
-        {
-            cultureInfo = new CultureInfo("en-US");
-            await JS.InvokeVoidAsync("blazorLanguage.set", "en-US");
-        }
-        CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-        CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+            CultureInfo cultureInfo;
 
-        var region = await JS.InvokeAsync<string>("blazorRegion.get");
-        if (region == null)
-            await JS.InvokeVoidAsync("blazorRegion.set", "US");
+            try
+            {
+                cultureInfo = new CultureInfo(language);
+            }
+            catch (Exception)
+            {
+                cultureInfo = CultureInfo.CurrentCulture;
+            }
+
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+        }
     }
 }

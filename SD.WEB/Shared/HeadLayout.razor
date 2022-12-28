@@ -1,6 +1,5 @@
 ﻿@inherits ComponenteNoDataCore<HeadLayout>
 @inject NavigationManager Navigation
-@inject IJSRuntime JS
 
 <Bar Mode="BarMode.Horizontal" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark" Padding="Padding.Is2">
     <Container Fluid="true" Padding="Padding.Is0.OnX">
@@ -64,14 +63,14 @@
     private IReadOnlyList<EnumObject> Regions { get; set; } = Array.Empty<EnumObject>();
     private IReadOnlyList<EnumObject> Languages { get; set; } = Array.Empty<EnumObject>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         base.OnInitialized();
 
         Regions = EnumHelper.GetObjArray<Region>();
         Languages = EnumHelper.GetObjArray<Language>().Where(w => !string.IsNullOrEmpty(w.Name)).ToArray();
 
-        var region = await JS.InvokeAsync<string>("blazorRegion.get");
+        var region = Navigation?.QueryString("region");
 
         if (!string.IsNullOrEmpty(region))
         {
@@ -84,17 +83,15 @@
         Navigation.NavigateTo("/.auth/logout", forceLoad: true);
     }
 
-    protected async Task RegionValueChanged(Region value)
+    protected void RegionValueChanged(Region value)
     {
         AppStateStatic.ChangeRegion(value);
 
-        await JS.InvokeVoidAsync("blazorRegion.set", value.GetName(false));
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("region", value.GetName(false)));
     }
 
-    protected async Task LanguageValueChanged(Language value)
+    protected void LanguageValueChanged(Language value)
     {
-        await JS.InvokeVoidAsync("blazorLanguage.set", value.GetName(false));
-
-        Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("language", value.GetName(false)), forceLoad: true);
     }
 }
