@@ -116,6 +116,7 @@
 		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
 		<CurrentDate>$([System.DateTime]::Now.ToString(yyyy.MM.dd))</CurrentDate>
 		<BlazorWasmPrerenderingUrlPathToExplicitFetch>/Suggestions;/Suggestions/Oscar</BlazorWasmPrerenderingUrlPathToExplicitFetch>
+		<!--workaround to solve a memory problem that occurs in android 8.0 and below - test if in newer versions of blazor, this has already been resolved-->
 		<EmccTotalMemory>16777216</EmccTotalMemory>
 	</PropertyGroup>
 
