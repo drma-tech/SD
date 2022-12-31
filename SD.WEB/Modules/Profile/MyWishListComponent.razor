@@ -11,7 +11,7 @@
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-<Loading IsEmptyFilter="@(AppState.WishList != null && !AppState.WishList.Movies.Any())" UnauthenticatedUser="!IsUserAuthenticated">
+<Loading IsEmptyFilter="@(AppState.WishList == null || !AppState.WishList.Movies.Any())" UnauthenticatedUser="!IsUserAuthenticated">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in AppState.WishList?.Movies.Take(GetTotalItems) ?? new List<WishListItem>())
         {
@@ -34,7 +34,7 @@
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-<Loading IsEmptyFilter="@(AppState.WishList != null && !AppState.WishList.Shows.Any())" UnauthenticatedUser="!IsUserAuthenticated">
+<Loading IsEmptyFilter="@(AppState.WishList == null || !AppState.WishList.Shows.Any())" UnauthenticatedUser="!IsUserAuthenticated">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in AppState.WishList?.Shows.Take(GetTotalItems) ?? new List<WishListItem>())
         {

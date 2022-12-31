@@ -20,7 +20,7 @@
 }
 else
 {
-    <Loading IsEmptyFilter="@(AppState.WatchingList != null && !AppState.WatchingList.Movies.Any())" UnauthenticatedUser="!IsUserAuthenticated">
+    <Loading IsEmptyFilter="@(AppState.WatchingList == null || !AppState.WatchingList.Movies.Any())" UnauthenticatedUser="!IsUserAuthenticated">
         <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
             @foreach (var item in AppState.WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
             {
@@ -64,7 +64,7 @@ else
 }
 else
 {
-    <Loading IsEmptyFilter="@(AppState.WatchingList != null && !AppState.WatchingList.Shows.Any())" UnauthenticatedUser="!IsUserAuthenticated">
+    <Loading IsEmptyFilter="@(AppState.WatchingList == null || !AppState.WatchingList.Shows.Any())" UnauthenticatedUser="!IsUserAuthenticated">
         <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
             @foreach (var item in AppState.WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
             {

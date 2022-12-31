@@ -318,7 +318,7 @@
                                         }
                                     </Row>
                                 }
-                                var writers = Credits?.crew.Where(w => w.job == "Writer" || w.job == "Screenplay").ToList() ?? new List<Crew>();
+                                var writers = Credits?.crew.Where(w => w.job == "Writer" || w.job == "Screenplay" || w.job == "Author" || w.job == "Story").ToList() ?? new List<Crew>();
                                 if (writers.Any())
                                 {
                                     <Divider DividerType="DividerType.TextContent" Text="@GlobalTranslations.Writing" />
