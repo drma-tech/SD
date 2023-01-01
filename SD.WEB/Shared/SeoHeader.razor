@@ -13,7 +13,10 @@
     <link rel="canonical" href="@GetCanonicalUrl()" />
 </HeadContent>
 
-<Heading Size="HeadingSize.Is1" Display="Display.None">@Title</Heading>
+@if (ShowH1)
+{
+    <Heading Size="HeadingSize.Is1" Display="Display.None">@Title</Heading>
+}
 
 @code {
     private const string ProjectName = "Streaming Discovery";
@@ -23,6 +26,7 @@
     [Parameter] public string? Description { get; set; }
     [Parameter] public string? Url { get; set; }
     [Parameter] public IEnumerable<string> Keywords { get; set; } = new List<string>();
+    [Parameter] public bool ShowH1 { get; set; } = true;
 
     string GetTitle() => Title is null ? ProjectName : $"{ProjectName} | {Title}";
 

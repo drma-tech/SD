@@ -35,6 +35,8 @@ namespace SD.WEB.Modules.Suggestions.Core
                 { "api_key", TmdbOptions.ApiKey },
                 { "language", AppStateStatic.Language.GetName(false) ?? "en-US" },
                 { "watch_region", AppStateStatic.Region.ToString() },
+                { "include_adult", "false" },
+                { "include_video", "false" },
                 { "page", page.ToString() }
             };
 

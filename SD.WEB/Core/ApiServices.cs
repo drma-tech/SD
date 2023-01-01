@@ -282,5 +282,51 @@ namespace SD.WEB.Core
                 return result;
             }
         }
+
+        protected async Task<T?> GetByRapidYoutubeApi<T>(string requestUri, CacheSettings? cacheSettings = null) where T : class
+        {
+            if (MemoryCache == null)
+            {
+                using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+
+                request.Headers.TryAddWithoutValidation("X-RapidAPI-Key", "36af8735e3msh39423dcd3a94067p1975bdjsn4536c4c2ed8a");
+                request.Headers.TryAddWithoutValidation("X-RapidAPI-Host", "youtube-search-and-download.p.rapidapi.com");
+
+                var response = await Http.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode) throw new NotificationException(response);
+
+                return await response.Content.ReadFromJsonAsync<T>();
+            }
+            else
+            {
+                cacheSettings ??= new CacheSettings();
+
+                var result = MemoryCache.Get<T>(requestUri);
+
+                if (result == null)
+                {
+                    using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+
+                    request.Headers.TryAddWithoutValidation("X-RapidAPI-Key", "36af8735e3msh39423dcd3a94067p1975bdjsn4536c4c2ed8a");
+                    request.Headers.TryAddWithoutValidation("X-RapidAPI-Host", "youtube-search-and-download.p.rapidapi.com");
+
+                    var response = await Http.SendAsync(request);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = await response.Content.ReadFromJsonAsync<T>();
+
+                        MemoryCache.Set(requestUri, result, cacheSettings);
+                    }
+                    else
+                    {
+                        throw new NotificationException(response);
+                    }
+                }
+
+                return result;
+            }
+        }
     }
 }

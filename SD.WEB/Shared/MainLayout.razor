@@ -56,8 +56,11 @@
                         <Button Color="GetColor(TypeButton.Profile)" To="/Profile" Type="ButtonType.Link" title="@GlobalTranslations.MenuProfile" Size="Size.Small">
                             <BarIcon IconName="FontAwesomeIcons.UserCircle" />
                         </Button>
-                        <Button Color="GetColor(TypeButton.Suggestions)" To="/Suggestions" Type="ButtonType.Link" title="@GlobalTranslations.MenuSuggestions" Size="Size.Small">
-                            <BarIcon IconName="FontAwesomeIcons.List" />
+                        <Button Color="GetColor(TypeButton.Providers)" To="/Providers" Type="ButtonType.Link" title="@GlobalTranslations.MenuProviders" Size="Size.Small">
+                            <BarIcon IconName="FontAwesomeIcons.Tv" />
+                        </Button>
+                         <Button Color="GetColor(TypeButton.Suggestions)" To="/Suggestions" Type="ButtonType.Link" title="@GlobalTranslations.MenuSuggestions" Size="Size.Small">
+                           <BarIcon IconName="FontAwesomeIcons.List" />
                         </Button>
                         <Button Color="GetColor(TypeButton.Support)" To="/Support" Type="ButtonType.Link" title="@GlobalTranslations.MenuSupport" Size="Size.Small">
                             <BarIcon IconName="FontAwesomeIcons.Bug" />
@@ -75,7 +78,7 @@
 @code {
     private enum TypeButton
     {
-        Home, Profile, Suggestions, Support
+        Home, Profile, Providers, Suggestions, Support
     }
 
     private TypeButton CurrentButton;
@@ -99,6 +102,7 @@
     private void ChangeCurrentButton(string location)
     {
         if (location.Contains("/Profile")) CurrentButton = TypeButton.Profile;
+        else if (location.Contains("/Providers")) CurrentButton = TypeButton.Providers;
         else if (location.Contains("/Suggestions")) CurrentButton = TypeButton.Suggestions;
         else if (location.Contains("/Support")) CurrentButton = TypeButton.Support;
         else CurrentButton = TypeButton.Home;

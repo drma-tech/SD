@@ -1,0 +1,63 @@
+﻿@using SD.Shared.Models.News;
+@using SD.Shared.Models.Trailers;
+@using SD.WEB.Modules.News.Core;
+@using System.Text.Json;
+@inherits ComponenteCore<TrailersPopup>
+
+@inject TrailersApi TrailersApi
+@inject CacheApi CacheApi
+
+<ModalHeader>
+    <ModalTitle>@GlobalTranslations.TrailersTitle</ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    <Loading @ref="Loading">
+    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
+        @foreach (var item in YoutubeChanel?.contents ?? Enumerable.Empty<Content>())
+        {
+            <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
+                <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.video?.videoId}")">
+                    <Card>
+                        <CardImage Source="@item?.video?.thumbnails[2]?.url" Alt="@item?.video?.title">
+                        </CardImage>
+                        <CardBody>
+                            <CardText Style="line-height: normal;">
+                                @item?.video?.title
+                            </CardText>
+                        </CardBody>
+                    </Card>
+                </Blazorise.Link>
+            </Column>
+        }
+    </Row>
+</Loading>
+</ModalBody>
+<ModalFooter>
+    <Button Color="Color.Secondary" Clicked="@ModalService.Hide">@TranslationText.Close</Button>
+</ModalFooter>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    public Loading? Loading { get; set; }
+    private Youtube? YoutubeChanel { get; set; }
+
+    protected override async Task LoadData()
+    {
+        Loading?.Start();
+
+        var cache = await CacheApi.GetTrailers();
+        if (cache == null)
+        {
+            YoutubeChanel = await TrailersApi.Get();
+            await CacheApi.AddTrailers(new YoutubeCache("lasttrailers", YoutubeChanel));
+        }
+        else
+        {
+            YoutubeChanel = (Youtube?)cache?.Data;
+        }
+
+        Loading?.Finish(YoutubeChanel == null);
+    }
+}

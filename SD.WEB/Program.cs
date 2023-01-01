@@ -57,6 +57,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<ExternalIdApi>();
     collection.AddScoped<CacheApi>();
     collection.AddScoped<NewsApi>();
+    collection.AddScoped<TrailersApi>();
 
     collection.AddScoped<ImdbApi>();
     collection.AddScoped<TmdbApi>();

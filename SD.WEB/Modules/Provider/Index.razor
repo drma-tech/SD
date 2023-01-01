@@ -1,0 +1,92 @@
+﻿@page "/Providers"
+@using SD.WEB.Modules.Provider.Components
+@using SD.WEB.Modules.Provider.Core;
+<SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/Providers"></SeoHeader>
+@inherits PageCore<Provider.Index>
+
+@inject AllProvidersApi AllProvidersApi
+
+<HeaderComponent Title="@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region)">
+</HeaderComponent>
+<Loading @ref="LoadingProvider">
+    <Row HorizontalGutter="4" VerticalGutter="4">
+        @foreach (var item in GetFilteredProviders())
+        {
+            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+                <Card>
+                    <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name"
+                           onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;" title="@item.name"></CardImage>
+                </Card>
+               @* @if (string.IsNullOrEmpty(item.link))
+                {
+                    <p class="m-0" style="color: red">link</p>
+                }
+                @if (string.IsNullOrEmpty(item.description))
+                {
+                    <p class="m-0" style="color: red">description</p>
+                }
+                @if (!item.models.Any())
+                {
+                    <p class="m-0" style="color: red">model</p>
+                }
+                @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && !item.plans.Any())
+                {
+                    <p class="m-0" style="color: red">plan</p>
+                }*@
+            </Column>
+        }
+    </Row>
+</Loading>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    private AllProviders? AllProviders { get; set; }
+    public Loading? LoadingProvider { get; set; }
+
+    public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
+        p.regions.Any(a => a == AppStateStatic.Region) &
+        p.enabled &
+        (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true)) ?? Array.Empty<ProviderModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppStateStatic.RegionChanged += ChangeRegion;
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task LoadData()
+    {
+        LoadingProvider?.Start();
+
+        AllProviders = await AllProvidersApi.GetAll();
+
+        LoadingProvider?.Finish(AllProviders == null);
+    }
+
+    private async void ChangeRegion()
+    {
+        LoadingProvider?.Start();
+
+        await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
+        StateHasChanged(); //reload title
+
+        LoadingProvider?.Finish(AllProviders == null);
+    }
+
+    private async Task ShowPopupProvider(ProviderModel item)
+    {
+        await ModalService.Show<Provider.Components.ProviderPopup>(item.name,
+        x =>
+        {
+            x.Add(x => x.provider, item);
+        },
+        new ModalInstanceOptions()
+            {
+                UseModalStructure = false,
+                Centered = true,
+                Size = ModalSize.ExtraLarge,
+            });
+    }
+}

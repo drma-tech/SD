@@ -88,6 +88,24 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to bla bla bla.
+        /// </summary>
+        public static string ProvidersDescription {
+            get {
+                return ResourceManager.GetString("ProvidersDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Providers.
+        /// </summary>
+        public static string ProvidersTitle {
+            get {
+                return ResourceManager.GetString("ProvidersTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to See suggestions for movies and series from different awards (Oscar, Golden Globes, Emmys, etc) or specialized websites (IMDB, TMDB, Rotten Tomatoes, etc)..
         /// </summary>
         public static string SuggestionsDescription {

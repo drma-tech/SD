@@ -322,6 +322,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Providers.
+        /// </summary>
+        public static string MenuProviders {
+            get {
+                return ResourceManager.GetString("MenuProviders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Suggestions.
         /// </summary>
         public static string MenuSuggestions {
@@ -525,6 +534,15 @@ namespace SD.WEB.Resources {
         public static string TitleNotAvailable {
             get {
                 return ResourceManager.GetString("TitleNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Trailers.
+        /// </summary>
+        public static string TrailersTitle {
+            get {
+                return ResourceManager.GetString("TrailersTitle", resourceCulture);
             }
         }
         

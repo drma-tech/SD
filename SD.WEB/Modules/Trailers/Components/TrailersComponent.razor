@@ -1,0 +1,72 @@
+﻿@using SD.Shared.Models.News;
+@using SD.Shared.Models.Trailers;
+@using SD.WEB.Modules.News.Core;
+@inherits ComponenteCore<TrailersComponent>
+
+@inject TrailersApi TrailersApi
+@inject CacheApi CacheApi
+
+<HeaderComponent Title="@($"{GlobalTranslations.TrailersTitle} - {Language.enUS.GetName()}")">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList" title="Show all news">
+        <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
+    </Button>
+</HeaderComponent>
+<Loading @ref="Loading">
+    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
+        @foreach (var item in YoutubeChanel?.contents.Take(8) ?? Enumerable.Empty<Content>())
+        {
+            <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
+                <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.video?.videoId}")">
+                    <Card>
+                        <CardImage Source="@item?.video?.thumbnails.FirstOrDefault()?.url" Alt="@item?.video?.title">
+                        </CardImage>
+                        <CardBody>
+                            <CardText Style="line-height: normal;">
+                                @item?.video?.title.GetResume(50)
+                            </CardText>
+                        </CardBody>
+                    </Card>
+                </Blazorise.Link>
+            </Column>
+        }
+    </Row>
+</Loading>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    public Loading? Loading { get; set; }
+    private Youtube? YoutubeChanel { get; set; }
+
+    protected override async Task LoadData()
+    {
+        Loading?.Start();
+
+        var cache = await CacheApi.GetTrailers();
+        if (cache == null)
+        {
+            YoutubeChanel = await TrailersApi.Get();
+            await CacheApi.AddTrailers(new YoutubeCache("lasttrailers", YoutubeChanel));
+        }
+        else
+        {
+            YoutubeChanel = (Youtube?)cache?.Data;
+        }
+
+        Loading?.Finish(YoutubeChanel == null);
+    }
+
+    private async Task OpenCompleteList()
+    {
+        await ModalService.Show<TrailersPopup>(null,
+        x =>
+        {
+        },
+        new ModalInstanceOptions()
+            {
+                UseModalStructure = false,
+                Centered = true,
+                Size = ModalSize.ExtraLarge,
+            });
+    }
+}
