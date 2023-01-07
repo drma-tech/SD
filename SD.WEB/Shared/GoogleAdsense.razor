@@ -1,0 +1,40 @@
+﻿<div @key="@Guid.NewGuid()">
+    @if (Ads is not null)
+    {
+        @Ads
+    }
+</div>
+
+@code {
+    [Parameter] public string Slot { get; set; } = "4069520508";
+    [Parameter] public string Style { get; set; } = "display:block";
+    [Parameter] public string Adsformat { get; set; } = "auto";
+
+    private RenderFragment Ads
+    {
+        get
+        {
+            RenderFragment form = b =>
+            {
+                b.OpenElement(0, "script");
+                b.AddAttribute(0, "async", true);
+                b.AddAttribute(0, "src", "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3885428939386350");
+                b.AddAttribute(0, "crossorigin", "anonymous");
+                b.CloseElement();
+
+                b.OpenElement(0, "ins");
+                b.AddAttribute(0, "class", "adsbygoogle");
+                b.AddAttribute(1, "style", "display:block");
+                b.AddAttribute(2, "data-ad-client", "ca-pub-3885428939386350");
+                b.AddAttribute(3, "data-ad-slot", "6906513109");
+                b.AddAttribute(4, "data-full-width-responsive", true);
+
+                b.CloseElement();
+                b.OpenElement(0, "script");
+                b.AddContent(0, "(adsbygoogle = window.adsbygoogle || []).push({});");
+                b.CloseElement();
+            };
+            return form;
+        }
+    }
+}
