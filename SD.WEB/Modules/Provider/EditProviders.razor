@@ -1,6 +1,6 @@
 ﻿@page "/EditProviders"
 @inherits PageCore<EditProviders>
-@attribute [Authorize]
+@attribute [Authorize(Roles = "administrator")]
 
 @using Blazorise.DataGrid
 @using HtmlAgilityPack
