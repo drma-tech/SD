@@ -1,0 +1,9 @@
+﻿@page "/Suggestions/UpcomingDC"
+<SeoHeader Title="Suggestions | Upcoming DC Movies & TV Shows" Keywords="@(new []{"Upcoming DC Movies & TV Shows"})" Url="/Suggestions/UpcomingDC"></SeoHeader>
+@inherits PageNoDataCore<UpcomingDC>
+
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingDCMoviesTVShows" MaxItens="13"></MediaListFull>

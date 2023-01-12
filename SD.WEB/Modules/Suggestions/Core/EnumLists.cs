@@ -115,5 +115,14 @@
 
         [Custom(Name = "Best Animation")]
         FilmaffinityBestAnimation = 8232840,
+
+        [Custom(Name = "Upcoming DC Movies & TV Shows")]
+        UpcomingDCMoviesTVShows = 8235453,
+
+        [Custom(Name = "Upcoming Marvel Movies & TV Shows")]
+        UpcomingMarvelMoviesTVShows = 8235458,
+
+        [Custom(Name = "Upcoming Star Wars Movies & TV Shows")]
+        UpcomingStarWarsMoviesTVShows = 8235460,
     }
 }

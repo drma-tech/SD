@@ -1,0 +1,9 @@
+﻿@page "/Suggestions/UpcomingStarWars"
+<SeoHeader Title="Suggestions | Upcoming Star Wars Movies & TV Shows" Keywords="@(new []{"Upcoming Star Wars Movies & TV Shows"})" Url="/Suggestions/UpcomingStarWars"></SeoHeader>
+@inherits PageNoDataCore<UpcomingStarWars>
+
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingStarWarsMoviesTVShows" MaxItens="9"></MediaListFull>
