@@ -6,7 +6,7 @@
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
 
-<HeadPage ImageSource="logo/bafta.png" Text="An independent British charity that supports, develops & promotes the art forms of the moving image" Link="https://www.bafta.org/"></HeadPage>
+<HeadPage Title="Bafta" ImageSource="logo/bafta.png" Text="An independent British charity that supports, develops & promotes the art forms of the moving image" Link="https://www.bafta.org/"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestFilm" MaxItens="10"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestAnimatedFeatureFilm" MaxItens="10"></MediaList>

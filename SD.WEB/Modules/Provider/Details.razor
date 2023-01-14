@@ -1,0 +1,44 @@
+﻿@page "/Providers/{id}"
+@using SD.WEB.Modules.Provider.Components
+@using SD.WEB.Modules.Provider.Core;
+@using SD.WEB.Modules.Suggestions.Components
+@using SD.WEB.Modules.Suggestions.Core;
+<SeoHeader Title="@($"{@SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/Providers/{Provider?.id}")"></SeoHeader>
+@inherits PageCore<Provider.Details>
+
+@inject AllProvidersApi AllProvidersApi
+@inject TmdbDiscoveryApi TmdbDiscoveryApi
+
+@if (Provider != null)
+{
+    <HeadPage ImageSource="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Text="@Provider.description" Link="@Provider.link" provider="Provider"></HeadPage>
+}
+
+<MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "popularity.desc")" MaxItens="50" ShowFilter="true"></MediaList>
+<MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "primary_release_date.desc")" MaxItens="50" ShowFilter="true"></MediaList>
+<MediaList TitleHead="@TranslationText.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "vote_average.desc")" MaxItens="50" ShowFilter="true"></MediaList>
+
+@code {
+    [Parameter] public string? id { get; set; }
+    [Parameter] public ProviderModel? Provider { get; set; }
+
+    private AllProviders? AllProviders { get; set; }
+
+    protected override async Task LoadData()
+    {
+        if (Provider == null)
+        {
+            AllProviders = await AllProvidersApi.GetAll();
+            Provider = AllProviders?.Items.SingleOrDefault(s => s.id == id);
+
+            StateHasChanged();
+        }
+    }
+
+    private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)
+    {
+        if (provider_id == null) throw new ArgumentNullException(nameof(provider_id));
+
+        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by } }; ;
+    }
+}

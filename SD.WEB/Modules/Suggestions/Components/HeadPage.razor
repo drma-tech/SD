@@ -1,27 +1,175 @@
-﻿<Alert Color="Color.Info" Visible="true" Padding="Padding.Is2">
+﻿@using SD.WEB.Modules.Profile.Core;
+@inherits ComponenteCore<HeadPage>
+
+@inject MyProvidersApi MyProvidersApi
+
+<Alert Color="Color.Info" Visible="true" Padding="Padding.Is2">
     <AlertDescription>
-        <Row HorizontalGutter="8" VerticalGutter="8" Style="margin-left: -4px; margin-right: -4px; margin-top: -4px; margin-bottom: -4px;">
+        <Row HorizontalGutter="8" VerticalGutter="8">
             <Column ColumnSize="ColumnSize.IsAuto">
-                <Image Source="@ImageSource" Style="height: 26px;"></Image>
+                <Image Source="@ImageSource" Style="height: 60px;"></Image>
             </Column>
             <Column>
-                <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is0.FromBottom">
-                    <a href="@Link" target="_blank" rel="noopener">@(new Uri(Link ?? "").Host)</a>
-                </Paragraph>
+                <MediaQuery Media="@Breakpoints.XSmallDown">
+                    <Matched>
+                        <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
+                            @if (string.IsNullOrEmpty(Link))
+                            {
+                                @Title
+                            }
+                            else
+                            {
+                                <Div>@Title</Div>
+                                <a href="@Link" target="_blank" rel="noopener">@(new Uri(Link ?? "").Host)</a>
+                            }
+                        </Paragraph>
+                    </Matched>
+                    <Unmatched>
+                        <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
+                            @if (string.IsNullOrEmpty(Link))
+                            {
+                                @Title
+                            }
+                            else
+                            {
+                                @($"{Title} ▪ ")
+
+                                <a href="@Link" target="_blank" rel="noopener">@(new Uri(Link ?? "").Host)</a>
+                            }
+                        </Paragraph>
+                        <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is0.FromBottom">
+                            @Text
+                        </Paragraph>
+                    </Unmatched>
+                </MediaQuery>
             </Column>
-            <Column ColumnSize="ColumnSize.IsAuto">
-                <Button Size="Size.ExtraSmall" Color="Color.Info" Clicked="@(()=>Toast.Info(Text, $"About {(new Uri(Link??"").Host)}"))">
-                    <Blazorise.Icon Name="FontAwesomeIcons.QuestionCircle"></Blazorise.Icon>
-                </Button>
-            </Column>
+            @if (provider != null)
+            {
+                <Column ColumnSize="ColumnSize.IsAuto">
+                    @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
+                    {
+                        <Button Color="Color.Danger" Clicked="Remove" Size="Size.Small" Disabled="!IsUserAuthenticated">
+                            <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
+                        </Button>
+                    }
+                    else
+                    {
+                        <Button Color="Color.Primary" Clicked="Add" Size="Size.Small" Disabled="!IsUserAuthenticated">
+                            <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
+                        </Button>
+                    }
+                </Column>
+            }
         </Row>
+        @if (provider != null)
+        {
+            <Row HorizontalGutter="8" VerticalGutter="8">
+                <Column>
+                    <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">
+                        @TranslationText.DeliveryModel:
+                    </Badge>
+                    @foreach (var item in provider?.models ?? new List<DeliveryModel>())
+                    {
+                        <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" title="@item.GetDescription()" Style="cursor: help;">
+                            @item.GetName() <Blazorise.Icon Name="FontAwesomeIcons.QuestionCircle"></Blazorise.Icon>
+                        </Badge>
+                    }
+                    @if (provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
+                    {
+                        <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">
+                            @TranslationText.Plans:
+                        </Badge>
+                        @if (provider.plans.Any())
+                        {
+                            @foreach (var item in provider.plans)
+                            {
+                                <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.name: @item.price.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture(provider.head_language?.GetName(false)??""))</Badge>
+                            }
+                        }
+                        else
+                        {
+                            <Badge Color="Color.Danger">@TranslationText.NotFound</Badge>
+                        }
+                    }
+                </Column>
+            </Row>
+        }
     </AlertDescription>
 </Alert>
 
 @code {
-    [Inject] protected INotificationService Toast { get; set; } = default!;
-
     [Parameter] public string? ImageSource { get; set; }
+    [Parameter] public string? Title { get; set; }
     [Parameter] public string? Text { get; set; }
     [Parameter] public string? Link { get; set; }
+
+    [Parameter] public ProviderModel? provider { get; set; }
+    [Parameter] public MyProviders? myProviders { get; set; }
+
+    public bool IsUserAuthenticated { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (provider != null) IsUserAuthenticated = await AppState.IsUserAuthenticated();
+    }
+
+    protected override async Task LoadData()
+    {
+        if (provider != null)
+        {
+            myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
+
+            StateHasChanged();
+        }
+    }
+
+    private async Task Add()
+    {
+        try
+        {
+            if (myProviders == null)
+            {
+                myProviders = new MyProviders
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+            }
+
+            if (provider != null) myProviders.Items.Add(new MyProvidersItem() { id = provider.id, name = provider.name, logo = provider.logo_path });
+
+            await MyProvidersApi.Post(myProviders);
+
+            await Toast.Success("Provedor favoritado com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private async Task Remove()
+    {
+        try
+        {
+            if (myProviders == null)
+            {
+                myProviders = new MyProviders
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+            }
+
+            myProviders.Items.Remove(myProviders.Items.First(f => f.id == provider?.id));
+
+            await MyProvidersApi.Post(myProviders);
+
+            await Toast.Success("Provedor removido com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
 }

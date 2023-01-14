@@ -6,7 +6,7 @@
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
 
-<HeadPage ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></HeadPage>
+<HeadPage Title="Oscar" ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestMotionPicture" MaxItens="12"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestAnimatedFeatureFilm" MaxItens="12"></MediaList>

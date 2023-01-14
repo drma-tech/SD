@@ -14,25 +14,26 @@
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                 <Card>
-                    <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name"
-                           onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;" title="@item.name"></CardImage>
+                    <Blazorise.Link To="@($"/Providers/{item.id}")">
+                        <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" Style="cursor: pointer;" title="@item.name"></CardImage>
+                    </Blazorise.Link>
                 </Card>
-               @* @if (string.IsNullOrEmpty(item.link))
-                {
-                    <p class="m-0" style="color: red">link</p>
-                }
-                @if (string.IsNullOrEmpty(item.description))
-                {
-                    <p class="m-0" style="color: red">description</p>
-                }
-                @if (!item.models.Any())
-                {
-                    <p class="m-0" style="color: red">model</p>
-                }
-                @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && !item.plans.Any())
-                {
-                    <p class="m-0" style="color: red">plan</p>
-                }*@
+                @* @if (string.IsNullOrEmpty(item.link))
+            {
+            <p class="m-0" style="color: red">link</p>
+            }
+            @if (string.IsNullOrEmpty(item.description))
+            {
+            <p class="m-0" style="color: red">description</p>
+            }
+            @if (!item.models.Any())
+            {
+            <p class="m-0" style="color: red">model</p>
+            }
+            @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && !item.plans.Any())
+            {
+            <p class="m-0" style="color: red">plan</p>
+            }*@
             </Column>
         }
     </Row>
@@ -73,20 +74,5 @@
         StateHasChanged(); //reload title
 
         LoadingProvider?.Finish(AllProviders == null);
-    }
-
-    private async Task ShowPopupProvider(ProviderModel item)
-    {
-        await ModalService.Show<Provider.Components.ProviderPopup>(item.name,
-        x =>
-        {
-            x.Add(x => x.provider, item);
-        },
-        new ModalInstanceOptions()
-            {
-                UseModalStructure = false,
-                Centered = true,
-                Size = ModalSize.ExtraLarge,
-            });
     }
 }

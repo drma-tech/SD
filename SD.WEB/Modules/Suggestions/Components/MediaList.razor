@@ -27,7 +27,7 @@
             var item = Items.ElementAt(i - 1);
             <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
                 <Card>
-                    <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
+                    <PosterComponent Date="@(item.release_date??DateTime.MaxValue)" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
                                  TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))"></PosterComponent>
                 </Card>
             </Column>

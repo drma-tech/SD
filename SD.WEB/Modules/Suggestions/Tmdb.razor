@@ -8,7 +8,7 @@
 @inject TmdbTopRatedApi TmdbTopRatedApi
 @inject TmdbUpcomingApi TmdbUpcomingApi
 
-<HeadPage ImageSource="logo/tmdb.png" Text="@TranslationText.tmdb_desc" Link="https://www.themoviedb.org/"></HeadPage>
+<HeadPage Title="TMDB" ImageSource="logo/tmdb.png" Text="@TranslationText.tmdb_desc" Link="https://www.themoviedb.org/"></HeadPage>
 
 <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbPopularApi" MaxItens="50" ShowFilter="true"></MediaList>
 <MediaList TitleHead="@($"{TranslationText.TopRated} ({AppStateStatic.Region})")" MediaListApi="TmdbTopRatedApi" MaxItens="50" ShowFilter="true" MultiplesRegions="true"></MediaList>
