@@ -57,6 +57,8 @@
 
     protected override async Task LoadData()
     {
+        //TODO: twitter doesnt load email
+
         if (await AppState.IsUserAuthenticated())
         {
             principal = await PrincipalApi.Get();
