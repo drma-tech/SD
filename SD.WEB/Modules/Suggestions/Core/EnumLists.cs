@@ -124,5 +124,8 @@
 
         [Custom(Name = "Upcoming Star Wars Movies & TV Shows")]
         UpcomingStarWarsMoviesTVShows = 8235460,
+
+        [Custom(Name = "Upcoming Netflix Movies")]
+        UpcomingNetflixMovies = 8236371,
     }
 }

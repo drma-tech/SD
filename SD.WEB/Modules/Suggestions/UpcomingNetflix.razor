@@ -1,0 +1,9 @@
+﻿@page "/Suggestions/UpcomingNetflix"
+<SeoHeader Title="Suggestions | Upcoming Netflix Movies" Keywords="@(new []{"Upcoming Netflix Movies"})" Url="/Suggestions/UpcomingNetflix"></SeoHeader>
+@inherits PageNoDataCore<UpcomingNetflix>
+
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingNetflixMovies" MaxItens="46"></MediaListFull>
