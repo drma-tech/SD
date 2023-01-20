@@ -6,13 +6,11 @@
         {
         }
 
-        public RatingsCache(string key, Ratings data, int? ttl = one_month)
+        public RatingsCache(string key, Ratings data, ttlCache ttl)
         {
-            ttl ??= one_month;
-
             Id = key;
             Key = key;
-            Ttl = ttl.Value;
+            Ttl = (int)ttl;
             Data = data;
         }
     }

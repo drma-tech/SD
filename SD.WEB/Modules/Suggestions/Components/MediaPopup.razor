@@ -529,7 +529,25 @@
             if (cache == null)
             {
                 Ratings = await ImdbApi.GetRatings(imdb_id);
-                if (Ratings != null) await CacheApi.AddRatings(new RatingsCache($"rating_{imdb_id}", Ratings), imdb_id);
+                if (Ratings != null && string.IsNullOrEmpty(Ratings.errorMessage))
+                {
+                    if (!media.release_date.HasValue)
+                    {
+                        await CacheApi.AddRatings(new RatingsCache($"rating_{imdb_id}", Ratings, ttlCache.one_day), imdb_id);
+                    }
+                    else if (media.release_date.Value > DateTime.Now.AddMonths(-1))
+                    {
+                        await CacheApi.AddRatings(new RatingsCache($"rating_{imdb_id}", Ratings, ttlCache.one_week), imdb_id);
+                    }
+                    else if (media.release_date.Value > DateTime.Now.AddMonths(-6))
+                    {
+                        await CacheApi.AddRatings(new RatingsCache($"rating_{imdb_id}", Ratings, ttlCache.one_month), imdb_id);
+                    }
+                    else
+                    {
+                        await CacheApi.AddRatings(new RatingsCache($"rating_{imdb_id}", Ratings, ttlCache.one_year), imdb_id);
+                    }
+                }
             }
             else
             {

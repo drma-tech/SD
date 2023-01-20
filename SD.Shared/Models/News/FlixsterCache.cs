@@ -6,13 +6,11 @@
         {
         }
 
-        public FlixsterCache(string key, Flixster data, int? ttl = one_day)
+        public FlixsterCache(string key, Flixster data, ttlCache ttl)
         {
-            ttl ??= one_day;
-
             Id = key;
             Key = key;
-            Ttl = ttl.Value;
+            Ttl = (int)ttl;
             Data = data;
         }
     }
