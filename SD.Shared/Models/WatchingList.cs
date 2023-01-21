@@ -6,8 +6,14 @@
         {
         }
 
+        public DateTime? MovieSyncDate { get; set; }
+        public DateTime? ShowSyncDate { get; set; }
+
         public HashSet<WatchingListItem> Movies { get; init; } = new();
         public HashSet<WatchingListItem> Shows { get; init; } = new();
+
+        public bool MovieCanSync => !MovieSyncDate.HasValue || MovieSyncDate.Value < DateTime.Now.AddMonths(-1);
+        public bool ShowCanSync => !ShowSyncDate.HasValue || ShowSyncDate.Value < DateTime.Now.AddMonths(-1);
 
         public WatchingListItem? GetItem(MediaType? type, string? id)
         {

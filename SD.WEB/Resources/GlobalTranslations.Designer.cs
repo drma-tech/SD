@@ -169,6 +169,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string ButtonUpdate {
+            get {
+                return ResourceManager.GetString("ButtonUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Watched.
         /// </summary>
         public static string ButtonWatched {

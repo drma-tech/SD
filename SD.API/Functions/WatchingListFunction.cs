@@ -115,5 +115,52 @@ namespace SD.API.Functions
                 return new BadRequestObjectResult(ex.ProcessException());
             }
         }
+
+        [FunctionName("WatchingListSync")]
+        public async Task<IActionResult> Sync(
+            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "WatchingList/Sync/{MediaType}")] HttpRequest req,
+            string MediaType, ILogger log, CancellationToken cancellationToken)
+        {
+            try
+            {
+                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
+
+                var obj = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
+
+                if (obj == null)
+                {
+                    obj = new WatchingList
+                    {
+                        DtInsert = DateTimeOffset.UtcNow
+                    };
+
+                    obj.SetIds(req.GetUserId());
+                }
+                else
+                {
+                    obj.DtUpdate = DateTimeOffset.UtcNow;
+                }
+
+                var type = (MediaType)Enum.Parse(typeof(MediaType), MediaType);
+
+                if (type == Shared.Enums.MediaType.movie)
+                {
+                    obj.MovieSyncDate = DateTime.Now;
+                }
+                else
+                {
+                    obj.ShowSyncDate = DateTime.Now;
+                }
+
+                obj = await _repo.Upsert(obj, source.Token);
+
+                return new OkObjectResult(obj);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
+                return new BadRequestObjectResult(ex.ProcessException());
+            }
+        }
     }
 }

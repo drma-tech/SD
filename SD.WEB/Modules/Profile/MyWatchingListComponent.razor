@@ -12,43 +12,41 @@
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.movie))" title="@GlobalTranslations.PickARandom" Disabled="(!AppState.WatchingList?.Movies.Any()??true)">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
+    @if (AppState.WatchingList?.MovieCanSync ?? false)
+    {
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched(MediaType.movie)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!AppState.WatchedList?.Movies.Any()??true)">
+            @GlobalTranslations.ButtonUpdate
+        </Button>
+    }
 </HeaderComponent>
+<Loading IsEmptyFilter="@(AppState.WatchingList == null || !AppState.WatchingList.Movies.Any())" UnauthenticatedUser="!IsUserAuthenticated">
+    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
+        @foreach (var item in AppState.WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
+        {
+            int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+            var resultPerc = $"{percentComplete}%";
 
-@if (AppState.WatchingList == null && AppState.WatchedList != null) //only for old users (before this funcionality)
-{
-    <Button Color="Color.Primary" Clicked="()=>ImportFromWatched()" Margin="Margin.Is2.FromBottom" Disabled="!AppState.WatchedList.Movies.Any()">Procurar pendências de filmes já assistidos</Button>
-}
-else
-{
-    <Loading IsEmptyFilter="@(AppState.WatchingList == null || !AppState.WatchingList.Movies.Any())" UnauthenticatedUser="!IsUserAuthenticated">
-        <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-            @foreach (var item in AppState.WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
-            {
-                int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
-                var resultPerc = $"{percentComplete}%";
+            <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
+                <Card Style="position: relative;">
+                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+                    @if (string.IsNullOrEmpty(item.logo))
+                    {
+                        <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"></CardImage>
 
-                <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
-                    <Card Style="position: relative;">
-                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
-                        @if (string.IsNullOrEmpty(item.logo))
-                        {
-                            <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"></CardImage>
-
-                            <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
-                                @item.name
-                            </Div>
-                        }
-                        else
-                        {
-                            <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                        <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
+                            @item.name
+                        </Div>
+                    }
+                    else
+                    {
+                        <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
                            onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.movie))" Style="cursor: pointer;"></CardImage>
-                        }
-                    </Card>
-                </Column>
-            }
-        </Row>
-    </Loading>
-}
+                    }
+                </Card>
+            </Column>
+        }
+    </Row>
+</Loading>
 
 <HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@GlobalTranslations.MyShowWatching.Format(AppState.WatchingList?.Shows.Count() ?? 0)">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))" title="@GlobalTranslations.SeeAllItems" Disabled="(!AppState.WatchingList?.Shows.Any()??true)" Class="ml-1">
@@ -57,43 +55,42 @@ else
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.tv))" title="@GlobalTranslations.PickARandom" Disabled="(!AppState.WatchingList?.Shows.Any()??true)">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
+    @if (AppState.WatchingList?.ShowCanSync ?? false)
+    {
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched(MediaType.tv)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!AppState.WatchedList?.Shows.Any()??true)">
+            @GlobalTranslations.ButtonUpdate
+        </Button>
+    }
 </HeaderComponent>
-@if (AppState.WatchingList == null && AppState.WatchedList != null) //only for old users (before this funcionality)
-{
-    <Button Color="Color.Primary" Clicked="()=>ImportFromWatched()" Margin="Margin.Is2.FromBottom" Disabled="!AppState.WatchedList.Shows.Any()">Procurar pendências de seriados já assistidos</Button>
-}
-else
-{
-    <Loading IsEmptyFilter="@(AppState.WatchingList == null || !AppState.WatchingList.Shows.Any())" UnauthenticatedUser="!IsUserAuthenticated">
-        <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-            @foreach (var item in AppState.WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
-            {
-                int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
-                var resultPerc = $"{percentComplete}%";
+<Loading IsEmptyFilter="@(AppState.WatchingList == null || !AppState.WatchingList.Shows.Any())" UnauthenticatedUser="!IsUserAuthenticated">
+    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
+        @foreach (var item in AppState.WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
+        {
+            int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+            var resultPerc = $"{percentComplete}%";
 
-                <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
-                    <Card Style="position: relative;">
-                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+            <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
+                <Card Style="position: relative;">
+                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
 
-                        @if (string.IsNullOrEmpty(item.logo))
-                        {
-                            <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"></CardImage>
+                    @if (string.IsNullOrEmpty(item.logo))
+                    {
+                        <CardImage data-src="nopicture.jpg" class="lazyload" Alt="@item.name" title="@item.name" Style="cursor: pointer;"></CardImage>
 
-                            <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
-                                @item.name
-                            </Div>
-                        }
-                        else
-                        {
-                            <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                        <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 115px;">
+                            @item.name
+                        </Div>
+                    }
+                    else
+                    {
+                        <CardImage Source="@(TmdbOptions.SmallPosterPath + item.logo)" Alt="@item.name" title="@item.name"
                            onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType.tv))" Style="cursor: pointer;"></CardImage>
-                        }
-                    </Card>
-                </Column>
-            }
-        </Row>
-    </Loading>
-}
+                    }
+                </Card>
+            </Column>
+        }
+    </Row>
+</Loading>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
@@ -170,74 +167,88 @@ else
                 });
     }
 
-    private async Task ImportFromWatched()
+    private async Task ImportFromWatched(MediaType type)
     {
-        AppState.WatchingList?.Movies.Clear();
-        AppState.WatchingList?.Shows.Clear();
-
         var watching = AppState.WatchingList ?? new WatchingList();
 
-        foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.movie) ?? new())
+        if (type == MediaType.movie)
         {
-            var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.movie);
-            if (media == null) continue;
-            var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
+            AppState.WatchingList?.Movies.Clear();
 
-            if (hasCollection)
+            foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.movie) ?? new())
             {
-                var item = watching?.GetItem(MediaType.movie, media.collectionId?.ToString());
+                var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.movie);
+                if (media == null) continue;
+                var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-                if (item == null)
+                if (hasCollection)
                 {
-                    var items = new HashSet<string>();
-                    items.Add(tmdb_id);
+                    var item = watching?.GetItem(MediaType.movie, media.collectionId?.ToString());
 
-                    item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
-                }
-                else
-                {
-                    item.watched.Add(tmdb_id);
-                }
+                    if (item == null)
+                    {
+                        var items = new HashSet<string>();
+                        items.Add(tmdb_id);
 
-                if (item.watched.Count < item.maxItems)
-                {
-                    watching = await WatchingListApi.Add(MediaType.movie, item);
-                }
-                else
-                {
-                    watching = await WatchingListApi.Remove(MediaType.movie, media.collectionId?.ToString());
-                }
+                        item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                    }
+                    else
+                    {
+                        item.watched.Add(tmdb_id);
+                    }
 
-                AppState.ChangeWatchingList(watching);
+                    if (item.watched.Count < item.maxItems)
+                    {
+                        watching = await WatchingListApi.Add(MediaType.movie, item);
+                    }
+                    else
+                    {
+                        watching = await WatchingListApi.Remove(MediaType.movie, media.collectionId?.ToString());
+                    }
+
+                    AppState.ChangeWatchingList(watching);
+                }
             }
+
+            watching = await WatchingListApi.Sync(MediaType.movie);
+
+            AppState.ChangeWatchingList(watching);
         }
-
-        foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.tv) ?? new())
+        else
         {
-            var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.tv);
-            if (media == null) continue;
-            var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
+            AppState.WatchingList?.Shows.Clear();
 
-            if (hasCollection)
+            foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.tv) ?? new())
             {
-                var item = watching?.GetItem(MediaType.tv, media.tmdb_id);
+                var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.tv);
+                if (media == null) continue;
+                var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-                if (item == null)
+                if (hasCollection)
                 {
-                    var items = new HashSet<string>();
-                    items.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+                    var item = watching?.GetItem(MediaType.tv, media.tmdb_id);
 
-                    item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                    if (item == null)
+                    {
+                        var items = new HashSet<string>();
+                        items.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+
+                        item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                    }
+                    else
+                    {
+                        item.watched.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+                    }
+
+                    watching = await WatchingListApi.Add(MediaType.tv, item);
+
+                    AppState.ChangeWatchingList(watching);
                 }
-                else
-                {
-                    item.watched.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
-                }
-
-                watching = await WatchingListApi.Add(MediaType.tv, item);
-
-                AppState.ChangeWatchingList(watching);
             }
+
+            watching = await WatchingListApi.Sync(MediaType.tv);
+
+            AppState.ChangeWatchingList(watching);
         }
 
         StateHasChanged();

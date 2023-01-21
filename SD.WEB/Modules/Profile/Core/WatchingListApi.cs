@@ -15,6 +15,8 @@ namespace SD.WEB.Modules.Profile.Core
             public static string Add(MediaType? type) => $"WatchingList/Add/{type}";
 
             public static string Remove(MediaType? type, string CollectionId, string TmdbId) => $"WatchingList/Remove/{type}/{CollectionId}/{TmdbId}";
+
+            public static string Sync(MediaType? type) => $"WatchingList/Sync/{type}";
         }
 
         public async Task<WatchingList?> Get(bool IsUserAuthenticated)
@@ -44,6 +46,13 @@ namespace SD.WEB.Modules.Profile.Core
             //if (TmdbId == null) throw new ArgumentNullException(nameof(TmdbId));
 
             return await PostAsync<WatchingList>(Endpoint.Remove(mediaType, CollectionId, TmdbId), false, null, Endpoint.Get);
+        }
+
+        public async Task<WatchingList?> Sync(MediaType? mediaType)
+        {
+            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
+
+            return await PostAsync<WatchingList>(Endpoint.Sync(mediaType), false, null);
         }
     }
 }
