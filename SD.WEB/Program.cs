@@ -14,7 +14,6 @@ using SD.WEB.Modules.Provider.Core;
 using SD.WEB.Modules.Suggestions.Core;
 using SD.WEB.Modules.Support.Core;
 using System.Globalization;
-using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -39,7 +38,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
         .AddBootstrapProviders()
         .AddFontAwesomeIcons();
 
-    collection.AddPWAUpdater();
     collection.AddMediaQueryService();
     collection.AddMemoryCache();
 
