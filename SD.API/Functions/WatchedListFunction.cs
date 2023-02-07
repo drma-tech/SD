@@ -44,7 +44,7 @@ namespace SD.API.Functions
                 {
                     obj = new();
 
-                    obj.SetIds(req.GetUserId(), req.GetUserId());
+                    obj.Initialize(req.GetUserId());
                 }
                 else
                 {
@@ -77,7 +77,7 @@ namespace SD.API.Functions
                 {
                     obj = new();
 
-                    obj.SetIds(req.GetUserId(), req.GetUserId());
+                    obj.Initialize(req.GetUserId());
                 }
                 else
                 {

@@ -21,15 +21,16 @@ namespace SD.API.Functions
         {
             try
             {
-                var model = await _repo.Get<MyProviders>(DocumentType.MyProvider + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
+                MyProviders? model;
 
-                if (req.Method == Method.POST)
+                if (req.Method == Method.GET)
                 {
-                    var body = await req.GetBody<MyProviders>(cancellationToken);
-
-                    model ??= new();
-
-                    model.Items = body.Items;
+                    model = await _repo.Get<MyProviders>(DocumentType.MyProvider + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
+                }
+                else
+                {
+                    model = await req.GetBody<MyProviders>(cancellationToken);
+                    
                     model = await _repo.Upsert(model, cancellationToken);
                 }
 

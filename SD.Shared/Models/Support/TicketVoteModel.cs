@@ -12,9 +12,9 @@ namespace SD.Shared.Models.Support
 
         public VoteType VoteType { get; set; }
 
-        public void Initialize(string userId)
+        public override void Initialize(string id, string key)
         {
-            base.Initialize(Guid.NewGuid().ToString(), userId);
+            base.Initialize(Guid.NewGuid().ToString(), key);
         }
 
         public override bool HasValidData()

@@ -20,7 +20,7 @@
             Type = type;
         }
 
-        protected MainDocument(string id, string key, DocumentType type) : base(id, key)
+        protected MainDocument(string id, string key, DocumentType type) : base($"{type}:{id}", key)
         {
             Type = type;
         }
@@ -33,17 +33,21 @@
     /// </summary>
     public abstract class ProtectedMainDocument : MainDocument
     {
+        private readonly DocumentType type;
+
         protected ProtectedMainDocument(DocumentType type) : base(type)
         {
+            this.type = type;
         }
 
-        protected ProtectedMainDocument(string id, string key, DocumentType type) : base(id, key, type)
+        protected ProtectedMainDocument(string id, string key, DocumentType type) : base($"{type}:{id}", key, type)
         {
+            this.type = type;
         }
 
-        protected virtual void Initialize(string id, string key)
+        public virtual void Initialize(string id, string key)
         {
-            SetIds(id, key);
+            SetIds($"{type}:{id}", key);
         }
     }
 
@@ -52,13 +56,16 @@
     /// </summary>
     public abstract class PrivateMainDocument : MainDocument
     {
+        private readonly DocumentType type;
+
         protected PrivateMainDocument(DocumentType type) : base(type)
         {
+            this.type = type;
         }
 
-        protected virtual void Initialize(string userId)
+        public virtual void Initialize(string userId)
         {
-            SetIds(userId, userId);
+            SetIds($"{type}:{userId}", userId);
         }
     }
 }

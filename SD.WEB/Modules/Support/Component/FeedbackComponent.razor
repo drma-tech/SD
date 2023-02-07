@@ -209,7 +209,7 @@
             else
             {
                 var vote = new TicketVoteModel();
-                vote.Initialize(IdTicket);
+                vote.Initialize("", IdTicket);
 
                 vote.VoteType = voteType;
                 vote.IdVotedUser = await AppState.GetIdUser();

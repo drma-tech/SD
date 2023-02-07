@@ -61,6 +61,33 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Access Provider.
+        /// </summary>
+        public static string AccessProvider {
+            get {
+                return ResourceManager.GetString("AccessProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identification.
+        /// </summary>
+        public static string Identification {
+            get {
+                return ResourceManager.GetString("Identification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login / Register.
         /// </summary>
         public static string LoginProvidersTitle {
@@ -75,6 +102,15 @@ namespace SD.WEB.Modules.Auth.Resources {
         public static string LoginWith {
             get {
                 return ResourceManager.GetString("LoginWith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Information.
+        /// </summary>
+        public static string RegistrationInformation {
+            get {
+                return ResourceManager.GetString("RegistrationInformation", resourceCulture);
             }
         }
     }

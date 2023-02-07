@@ -17,7 +17,7 @@ namespace SD.Shared.Model.Auth
         [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
 
-        protected override void Initialize(string userId)
+        public override void Initialize(string userId)
         {
             base.Initialize(userId);
             UserId = userId;

@@ -88,14 +88,14 @@ namespace SD.API.Functions
         {
             try
             {
-                var item = await req.GetBody<TicketVoteModel>(cancellationToken);
+                var item = await req.GetPublicBody<TicketVoteModel>(cancellationToken);
 
                 if (item.VoteType == VoteType.PlusOne)
                     await _repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, new PartitionKey(item.Key), new List<PatchOperation> { PatchOperation.Increment("/totalVotes", 1) }, cancellationToken);
                 else if (item.VoteType == VoteType.MinusOne)
                     await _repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, new PartitionKey(item.Key), new List<PatchOperation> { PatchOperation.Increment("/totalVotes", -1) }, cancellationToken);
 
-                item.SetIds("", item.Key);
+                item.IdVotedUser = req.GetUserId();
 
                 var result = await _repo.Upsert(item, cancellationToken);
 

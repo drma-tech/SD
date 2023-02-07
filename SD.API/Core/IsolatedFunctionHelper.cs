@@ -2,6 +2,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using SD.Shared.Core.Models;
 using System.Collections.Specialized;
 using System.Text.Json;
 using System.Web;
@@ -10,7 +11,7 @@ namespace SD.API.Core
 {
     public static class IsolatedFunctionHelper
     {
-        public static async Task<T> GetBody<T>(this HttpRequestData req, CancellationToken cancellationToken) where T : CosmosDocument, new()
+        public static async Task<T> GetBody<T>(this HttpRequestData req, CancellationToken cancellationToken) where T : MainDocument, new()
         {
             var model = await JsonSerializer.DeserializeAsync<T>(req.Body, cancellationToken: cancellationToken);
 
@@ -27,7 +28,14 @@ namespace SD.API.Core
 
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
 
-            model.SetIds(userId, userId);
+            if (model is ProtectedMainDocument prot)
+            {
+                prot.Initialize(userId, userId);
+            }
+            else if (model is PrivateMainDocument priv)
+            {
+                priv.Initialize(userId);
+            }
 
             return model;
         }

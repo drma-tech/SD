@@ -5,6 +5,7 @@
 @using System.Security.Claims
 @using SD.Shared.Model.Auth
 @using SD.WEB.Modules.Auth.Core
+@using SD.WEB.Modules.Auth.Resources
 @using SD.WEB.Modules.Profile.Core
 
 <EditForm Model="@principal" OnValidSubmit="HandleValidSubmit">
@@ -13,15 +14,15 @@
     <Row HorizontalGutter="8" VerticalGutter="8">
         <Column ColumnSize="ColumnSize.Is6.OnWidescreen">
             <Card Margin="Margin.Is3.FromBottom">
-                <CardHeader>Dados Cadastrais</CardHeader>
+                <CardHeader>@Translations.RegistrationInformation</CardHeader>
                 <CardBody>
                     <Fields>
                         <Field ColumnSize="ColumnSize.Is6.OnDesktop">
-                            <FieldLabel>Provedor de Acesso</FieldLabel>
+                            <FieldLabel>@Translations.AccessProvider</FieldLabel>
                             <TextEdit Text="@principal?.IdentityProvider" Disabled="true" />
                         </Field>
                         <Field ColumnSize="ColumnSize.Is6.OnDesktop">
-                            <FieldLabel>Identificação</FieldLabel>
+                            <FieldLabel>@Translations.Identification</FieldLabel>
                             <TextEdit Text="@principal?.UserDetails" Disabled="true" />
                         </Field>
                     </Fields>
@@ -29,7 +30,7 @@
                     {
                         <Fields>
                             <Field ColumnSize="ColumnSize.Is6.OnDesktop">
-                                <FieldLabel>Email</FieldLabel>
+                                <FieldLabel>@Translations.Email</FieldLabel>
                                 <TextEdit @bind-Text="@principal.Email" Role="TextRole.Email" />
                                 <ValidationMessage For="@(() => principal.Email)"></ValidationMessage>
                             </Field>
@@ -43,24 +44,23 @@
                 </CardBody>
             </Card>
         </Column>
-        <Column ColumnSize="ColumnSize.Is6.OnWidescreen">
-            <Card Margin="Margin.Is3.FromBottom">
-                <CardHeader>Nossas Premissas</CardHeader>
-                <CardBody>
-                    Under Construction
-                </CardBody>
-            </Card>
-        </Column>
     </Row>
     <Row Margin="Margin.Is3.FromBottom">
         <Column>
-            <Check TValue="bool" @bind-Checked="@termsAccepted">Aceito os <Blazorise.Link To="Terms/pt" Target="Target.Blank">Termos de Uso</Blazorise.Link></Check>
+            @if (AppStateStatic.Language == Language.ptBR || AppStateStatic.Language == Language.ptPT)
+            {
+                <Check TValue="bool" @bind-Checked="@termsAccepted">Aceito os <Blazorise.Link To="Terms/pt" Target="Target.Blank">Termos de Uso</Blazorise.Link></Check>
+            }
+            else
+            {
+                <Check TValue="bool" @bind-Checked="@termsAccepted">I accept the <Blazorise.Link To="Terms/pt" Target="Target.Blank">Terms of Use</Blazorise.Link></Check>
+            }            
         </Column>
     </Row>
     <Row>
         <Column>
             <Button Type="ButtonType.Submit" Color="Color.Primary" Disabled="@(!termsAccepted)">
-                <Blazorise.Icon Name="FontAwesomeIcons.Save"></Blazorise.Icon> Salvar Dados
+                <Blazorise.Icon Name="FontAwesomeIcons.Save"></Blazorise.Icon> @GlobalTranslations.ButtonSave
             </Button>
         </Column>
     </Row>

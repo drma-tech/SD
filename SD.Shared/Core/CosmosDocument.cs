@@ -33,7 +33,7 @@ namespace SD.Shared.Core
 
         public abstract bool HasValidData();
 
-        public void SetIds(string id, string key)
+        protected void SetIds(string id, string key)
         {
             if (FixedId) throw new InvalidOperationException();
 
