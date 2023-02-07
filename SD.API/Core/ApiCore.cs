@@ -1,7 +1,4 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Json;
 
 namespace SD.API.Core
 {
@@ -11,7 +8,7 @@ namespace SD.API.Core
         {
             var response = await http.GetAsync(request_uri, cancellationToken);
 
-            if (!response.IsSuccessStatusCode) throw new NotificationException(response);
+            if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
 
             return await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken);
         }

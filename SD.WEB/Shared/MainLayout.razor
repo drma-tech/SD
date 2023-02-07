@@ -130,7 +130,7 @@
             var Ticket = new TicketModel();
 
             Ticket.TicketType = TicketType.BugReport;
-            Ticket.SetIds(await AppState.GetIdUser());
+            Ticket.Initialize(await AppState.GetIdUser());
             Ticket.Title = exc.Message ?? "erro desconhecido";
             Ticket.Description = exc.StackTrace;
 

@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SD.Shared.Core.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace SD.Shared.Models.Support
 {
-    public class TicketModel : DocumentBase
+    public class TicketModel : ProtectedMainDocument
     {
-        public TicketModel() : base(DocumentType.Ticket, true)
+        public TicketModel() : base(DocumentType.Ticket)
         {
         }
 
@@ -32,15 +33,16 @@ namespace SD.Shared.Models.Support
         {
             TicketStatus = ticketStatus;
 
-            DtUpdate = DateTime.UtcNow;
+            Update();
         }
 
-        public override void SetIds(string? id)
+        public void Initialize(string idUserOwner)
         {
-            if (id == null) throw new ArgumentNullException(nameof(id));
+            IdUserOwner = idUserOwner;
 
-            SetValues(Guid.NewGuid().ToString());
-            IdUserOwner = id.ToString();
+            var id = Guid.NewGuid().ToString();
+
+            base.Initialize(id, id);
         }
 
         public void Vote(VoteType voteType)
@@ -50,7 +52,7 @@ namespace SD.Shared.Models.Support
             else
                 TotalVotes--;
 
-            DtUpdate = DateTime.UtcNow;
+            Update();
         }
 
         public override bool Equals(object? obj)
@@ -61,6 +63,11 @@ namespace SD.Shared.Models.Support
         public override int GetHashCode()
         {
             return Id?.GetHashCode() ?? 0;
+        }
+
+        public override bool HasValidData()
+        {
+            return !string.IsNullOrEmpty(Title) && !string.IsNullOrEmpty(Description);
         }
     }
 

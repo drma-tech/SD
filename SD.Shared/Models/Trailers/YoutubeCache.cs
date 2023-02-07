@@ -1,17 +1,13 @@
-﻿namespace SD.Shared.Models.Trailers
+﻿using SD.Shared.Core.Models;
+
+namespace SD.Shared.Models.Trailers
 {
-    public class YoutubeCache : CacheModel<Youtube>
+    public class YoutubeCache : CacheDocument<Youtube>
     {
         public YoutubeCache()
-        {
-        }
+        { }
 
-        public YoutubeCache(string key, Youtube data, ttlCache ttl)
-        {
-            Id = key;
-            Key = key;
-            Ttl = (int)ttl;
-            Data = data;
-        }
+        public YoutubeCache(Youtube data) : base("lasttrailers", data, ttlCache.one_day)
+        { }
     }
 }

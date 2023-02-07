@@ -1,18 +1,17 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Concurrent;
 
 namespace SD.API.Core
 {
-    public class CustomLogger : ILogger
+    public class CosmosLogger : ILogger
     {
         private readonly string _name;
-        private readonly CosmosLogRepository _log;
+        private readonly CosmosLogRepository _repo;
 
-        public CustomLogger(string name, CosmosLogRepository log)
+        public CosmosLogger(string name, CosmosLogRepository repo)
         {
             _name = name;
-            _log = log;
+            _repo = repo;
         }
 
         public IDisposable BeginScope<TState>(TState state) => default!;
@@ -31,7 +30,7 @@ namespace SD.API.Core
                 return;
             }
 
-            _ = _log.Add(new LogModel()
+            _ = _repo.Add(new LogModel()
             {
                 Name = _name,
                 State = formatter(state, exception),
@@ -43,15 +42,15 @@ namespace SD.API.Core
 
     public sealed class CosmosLoggerProvider : ILoggerProvider
     {
-        private readonly CosmosLogRepository _log;
-        private readonly ConcurrentDictionary<string, CustomLogger> _loggers = new ConcurrentDictionary<string, CustomLogger>();
+        private readonly CosmosLogRepository _repo;
+        private readonly ConcurrentDictionary<string, CosmosLogger> _loggers = new();
 
-        public CosmosLoggerProvider(CosmosLogRepository log)
+        public CosmosLoggerProvider(CosmosLogRepository repo)
         {
-            _log = log;
+            _repo = repo;
         }
 
-        public ILogger CreateLogger(string categoryName) => _loggers.GetOrAdd(categoryName, name => new CustomLogger(name, _log));
+        public ILogger CreateLogger(string categoryName) => _loggers.GetOrAdd(categoryName, name => new CosmosLogger(name, _repo));
 
         public void Dispose() => _loggers.Clear();
     }

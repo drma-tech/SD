@@ -1,30 +1,43 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Azure.Functions.Worker.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 
 namespace SD.API.Core
 {
+    public class ClientPrincipal
+    {
+        public string? IdentityProvider { get; set; }
+        public string? UserId { get; set; }
+        public string? UserDetails { get; set; }
+        public IEnumerable<string> UserRoles { get; set; } = Enumerable.Empty<string>();
+    }
+
     public static class StaticWebAppsAuth
     {
-        private sealed class ClientPrincipal
+        public static string? GetUserId(this HttpRequestData req)
         {
-            public string? IdentityProvider { get; set; }
-            public string? UserId { get; set; }
-            public string? UserDetails { get; set; }
-            public IEnumerable<string> UserRoles { get; set; } = Array.Empty<string>();
+            if (req.Url.Host.Contains("localhost"))
+            {
+                var local_id = "b9a10c8be2f244c0a625b78f05e30812";
+
+                return local_id;
+            }
+            else
+            {
+                var principal = req.Parse();
+
+                return principal?.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
+            }
         }
 
-        public static ClaimsPrincipal? Parse(this HttpRequest req)
+        private static ClaimsPrincipal? Parse(this HttpRequestData req)
         {
             var principal = new ClientPrincipal();
 
-            if (req.Headers.TryGetValue("x-ms-client-principal", out var header))
+            if (req.Headers.TryGetValues("x-ms-client-principal", out var header))
             {
-                var data = header[0];
+                var data = header.First();
                 var decoded = Convert.FromBase64String(data);
                 var json = Encoding.ASCII.GetString(decoded);
                 principal = JsonSerializer.Deserialize<ClientPrincipal>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -49,22 +62,6 @@ namespace SD.API.Core
             else
             {
                 return null;
-            }
-        }
-
-        public static string? GetUserId(this HttpRequest req)
-        {
-            if (req.Host.Host.Contains("localhost"))
-            {
-                var local_id = "b9a10c8be2f244c0a625b78f05e30812";
-
-                return local_id;
-            }
-            else
-            {
-                var principal = req.Parse();
-
-                return principal?.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
             }
         }
     }

@@ -51,7 +51,7 @@
         if (cache == null)
         {
             YoutubeChanel = await TrailersApi.Get();
-            await CacheApi.AddTrailers(new YoutubeCache("lasttrailers", YoutubeChanel, ttlCache.one_day));
+            await CacheApi.AddTrailers(new YoutubeCache(YoutubeChanel));
         }
         else
         {

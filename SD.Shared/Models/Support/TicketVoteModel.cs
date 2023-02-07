@@ -1,8 +1,10 @@
-﻿namespace SD.Shared.Models.Support
+﻿using SD.Shared.Core.Models;
+
+namespace SD.Shared.Models.Support
 {
-    public class TicketVoteModel : DocumentBase
+    public class TicketVoteModel : ProtectedMainDocument
     {
-        public TicketVoteModel() : base(DocumentType.TicketVote, false)
+        public TicketVoteModel() : base(DocumentType.TicketVote)
         {
         }
 
@@ -10,11 +12,14 @@
 
         public VoteType VoteType { get; set; }
 
-#pragma warning disable S927 // Parameter names should match base declaration and other partial definitions
-        public override void SetIds(string? TicketId)
-#pragma warning restore S927 // Parameter names should match base declaration and other partial definitions
+        public void Initialize(string userId)
         {
-            SetValues(Guid.NewGuid().ToString(), TicketId);
+            base.Initialize(Guid.NewGuid().ToString(), userId);
+        }
+
+        public override bool HasValidData()
+        {
+            return !string.IsNullOrEmpty(IdVotedUser);
         }
 
         public override bool Equals(object? obj)

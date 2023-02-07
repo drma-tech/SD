@@ -9,19 +9,15 @@ namespace SD.Shared.Helper
         {
         }
 
-        public NotificationException(string message) : base(message)
+        public NotificationException(string? message) : base(message)
         {
         }
 
-        public NotificationException(string message, Exception innerException) : base(message, innerException)
+        public NotificationException(string? message, Exception? innerException) : base(message, innerException)
         {
         }
 
-        public NotificationException(HttpResponseMessage response) : base(response?.Content.ReadAsStringAsync().Result)
-        {
-        }
-
-        protected NotificationException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected NotificationException(SerializationInfo serializationInfo, StreamingContext streamingContext) : base(serializationInfo, streamingContext)
         {
         }
     }

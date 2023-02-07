@@ -1,8 +1,10 @@
-﻿namespace SD.Shared.Models
+﻿using SD.Shared.Core.Models;
+
+namespace SD.Shared.Models
 {
-    public class WishList : DocumentBase
+    public class WishList : PrivateMainDocument
     {
-        public WishList() : base(DocumentType.WishList, true)
+        public WishList() : base(DocumentType.WishList)
         {
         }
 
@@ -35,20 +37,19 @@
             if (item != null) Items(type).Remove(item);
         }
 
-        public override void SetIds(string? id)
-        {
-            SetValues(id);
-        }
-
         private HashSet<WishListItem> Items(MediaType? type) => type == MediaType.movie ? Movies : Shows;
+
+        public override bool HasValidData()
+        {
+            return Movies.Any() || Shows.Any();
+        }
     }
 
-    public sealed class WishListItem : IEquatable<WishListItem>
+    public class WishListItem : IEquatable<WishListItem>
     {
-        public string? id { get; init; }
-        public string? name { get; init; }
-        public string? logo { get; init; }
-        public int? runtime { get; init; }
+        public WishListItem()
+        {
+        }
 
         public WishListItem(string? id, string? name, string? logo, int? runtime)
         {
@@ -57,6 +58,11 @@
             this.logo = logo;
             this.runtime = runtime;
         }
+
+        public string? id { get; init; }
+        public string? name { get; init; }
+        public string? logo { get; init; }
+        public int? runtime { get; init; }
 
         public bool Equals(WishListItem? other)
         {

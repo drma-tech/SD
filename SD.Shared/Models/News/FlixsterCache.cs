@@ -1,17 +1,13 @@
-﻿namespace SD.Shared.Models.News
+﻿using SD.Shared.Core.Models;
+
+namespace SD.Shared.Models.News
 {
-    public class FlixsterCache : CacheModel<Flixster>
+    public class FlixsterCache : CacheDocument<Flixster>
     {
         public FlixsterCache()
-        {
-        }
+        { }
 
-        public FlixsterCache(string key, Flixster data, ttlCache ttl)
-        {
-            Id = key;
-            Key = key;
-            Ttl = (int)ttl;
-            Data = data;
-        }
+        public FlixsterCache(Flixster data) : base("lastnews", data, ttlCache.one_day)
+        { }
     }
 }

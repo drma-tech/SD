@@ -41,7 +41,7 @@
         if (cache == null)
         {
             News = await NewsApi.Get();
-            await CacheApi.AddNews(new FlixsterCache("lastnews", News, ttlCache.one_day));
+            await CacheApi.AddNews(new FlixsterCache(News));
         }
         else
         {

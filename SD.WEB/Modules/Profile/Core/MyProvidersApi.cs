@@ -10,15 +10,14 @@ namespace SD.WEB.Modules.Profile.Core
 
         private struct Endpoint
         {
-            public const string Get = "MyProviders/Get";
-            public const string Post = "MyProviders/Post";
+            public const string MyProviders = "MyProviders";
         }
 
         public async Task<MyProviders?> Get(bool IsUserAuthenticated)
         {
             if (IsUserAuthenticated)
             {
-                return await GetAsync<MyProviders>(Endpoint.Get, false);
+                return await GetAsync<MyProviders>(Endpoint.MyProviders, false);
             }
             else
             {
@@ -30,7 +29,7 @@ namespace SD.WEB.Modules.Profile.Core
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
-            return await PostAsync(Endpoint.Post, false, obj, Endpoint.Get);
+            return await PostAsync(Endpoint.MyProviders, false, obj, Endpoint.MyProviders);
         }
     }
 }

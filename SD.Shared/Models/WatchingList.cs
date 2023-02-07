@@ -1,8 +1,10 @@
-﻿namespace SD.Shared.Models
+﻿using SD.Shared.Core.Models;
+
+namespace SD.Shared.Models
 {
-    public class WatchingList : DocumentBase
+    public class WatchingList : PrivateMainDocument
     {
-        public WatchingList() : base(DocumentType.WatchingList, true)
+        public WatchingList() : base(DocumentType.WatchingList)
         {
         }
 
@@ -69,16 +71,20 @@
             }
         }
 
-        public override void SetIds(string? id)
-        {
-            SetValues(id);
-        }
-
         private HashSet<WatchingListItem> Items(MediaType? type) => type == MediaType.movie ? Movies : Shows;
+
+        public override bool HasValidData()
+        {
+            return Movies.Any() || Shows.Any();
+        }
     }
 
-    public sealed class WatchingListItem : IEquatable<WatchingListItem>
+    public class WatchingListItem : IEquatable<WatchingListItem>
     {
+        public WatchingListItem()
+        {
+        }
+
         public WatchingListItem(string? id, string? name, string? logo, int maxItems, HashSet<string> watched)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
@@ -94,9 +100,9 @@
             this.watched = watched;
         }
 
-        public string id { get; init; }
-        public string logo { get; init; }
-        public string name { get; init; }
+        public string? id { get; init; }
+        public string? logo { get; init; }
+        public string? name { get; init; }
         public int maxItems { get; init; }
         public HashSet<string> watched { get; init; } = new();
 

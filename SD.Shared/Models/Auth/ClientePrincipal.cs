@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SD.Shared.Core.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace SD.Shared.Model.Auth
 {
-    public class ClientePrincipal : DocumentBase
+    public class ClientePrincipal : PrivateMainDocument
     {
-        public ClientePrincipal() : base(DocumentType.Principal, true)
+        public ClientePrincipal() : base(DocumentType.Principal)
         {
         }
 
@@ -16,15 +17,21 @@ namespace SD.Shared.Model.Auth
         [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
 
-        [DataType(DataType.PhoneNumber)]
-        public string? Mobile { get; set; }
-
-        public bool Blocked { get; set; }
-
-        public override void SetIds(string id)
+        protected override void Initialize(string userId)
         {
-            SetValues(id);
-            UserId = id.ToString();
+            base.Initialize(userId);
+            UserId = userId;
+        }
+
+        public override bool HasValidData()
+        {
+            if (string.IsNullOrEmpty(UserId)) return false;
+            if (string.IsNullOrEmpty(IdentityProvider)) return false;
+            if (string.IsNullOrEmpty(UserDetails)) return false;
+            if (!UserRoles.Any()) return false;
+            if (UserId != Key) return false;
+
+            return true;
         }
     }
 }

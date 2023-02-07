@@ -13,26 +13,23 @@ namespace SD.WEB.Core
 
         private struct Endpoint
         {
-            public const string GetNews = "Public/Cache/News/Get";
-            public const string AddNews = "Public/Cache/News/Add";
+            public const string News = "Public/Cache/News";
+            public const string Trailers = "Public/Cache/Trailers";
+            public const string Ratings = "Public/Cache/Ratings";
 
-            public static string GetRatings(string id) => $"Public/Cache/Ratings/Get?id={id}";
-
-            public const string AddRatings = "Public/Cache/Ratings/Add";
-            public const string GetTrailers = "Public/Cache/Trailers/Get";
-            public const string AddTrailers = "Public/Cache/Trailers/Add";
+            public static string GetRatings(string id) => $"Public/Cache/Ratings?id={id}";
         }
 
         public async Task<FlixsterCache?> GetNews()
         {
-            return await GetAsync<FlixsterCache>(Endpoint.GetNews, false);
+            return await GetAsync<FlixsterCache>(Endpoint.News, false);
         }
 
         public async Task<FlixsterCache?> AddNews(FlixsterCache? obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
-            return await PostAsync(Endpoint.AddNews, false, obj, Endpoint.GetNews);
+            return await PostAsync(Endpoint.News, false, obj, Endpoint.News);
         }
 
         public async Task<RatingsCache?> GetRatings(string id)
@@ -44,19 +41,19 @@ namespace SD.WEB.Core
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
-            return await PostAsync(Endpoint.AddRatings, false, obj, Endpoint.GetRatings(id));
+            return await PostAsync(Endpoint.Ratings, false, obj, Endpoint.GetRatings(id));
         }
 
         public async Task<YoutubeCache?> GetTrailers()
         {
-            return await GetAsync<YoutubeCache>(Endpoint.GetTrailers, false);
+            return await GetAsync<YoutubeCache>(Endpoint.Trailers, false);
         }
 
         public async Task<YoutubeCache?> AddTrailers(YoutubeCache? obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
-            return await PostAsync(Endpoint.AddTrailers, false, obj, Endpoint.GetTrailers);
+            return await PostAsync(Endpoint.Trailers, false, obj, Endpoint.Trailers);
         }
     }
 }

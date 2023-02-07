@@ -1,20 +1,22 @@
-﻿namespace SD.Shared.Models
+﻿using SD.Shared.Core.Models;
+
+namespace SD.Shared.Models
 {
-    public class MyProviders : DocumentBase
+    public class MyProviders : PrivateMainDocument
     {
-        public MyProviders() : base(DocumentType.MyProvider, true)
+        public MyProviders() : base(DocumentType.MyProvider)
         {
         }
 
         public List<MyProvidersItem> Items { get; set; } = new();
 
-        public override void SetIds(string? id)
+        public override bool HasValidData()
         {
-            SetValues(id);
+            return Items.Any();
         }
     }
 
-    public class MyProvidersItem
+    public sealed class MyProvidersItem
     {
         public string? id { get; set; }
         public string? name { get; set; }

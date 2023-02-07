@@ -1,13 +1,9 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
+using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using SD.API.Repository.Core;
+using SD.Shared.Core.Models;
 using SD.Shared.Model.Auth;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace SD.API.Functions
 {
@@ -20,44 +16,37 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
-        [FunctionName("PrincipalGet")]
-        public async Task<IActionResult> Get(
-           [HttpTrigger(AuthorizationLevel.Anonymous, FunctionMethod.GET, Route = "Principal/Get")] HttpRequest req,
-           ILogger log, CancellationToken cancellationToken)
+        [Function("PrincipalGet")]
+        public async Task<HttpResponseData> Get(
+           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Principal/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
-            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
             try
             {
-                var result = await _repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + req.GetUserId(), req.GetUserId(), cancellationToken);
+                var result = await _repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
 
-                return new OkObjectResult(result);
+                return await req.ProcessObject(result, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
 
-        [FunctionName("PrincipalAdd")]
-        public async Task<IActionResult> Add(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "Principal/Add")] HttpRequest req,
-            ILogger log, CancellationToken cancellationToken)
+        [Function("PrincipalAdd")]
+        public async Task<HttpResponseData> Add(
+            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "Principal/Add")] HttpRequestData req, CancellationToken cancellationToken)
         {
-            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
-
             try
             {
-                var item = await req.GetParameterObject<ClientePrincipal>(source.Token);
+                var body = await req.GetBody<ClientePrincipal>(cancellationToken);
 
-                var result = await _repo.Upsert(item, cancellationToken);
+                var result = await _repo.Upsert(body, cancellationToken);
 
-                return new OkObjectResult(result);
+                return await req.ProcessObject(result, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
     }

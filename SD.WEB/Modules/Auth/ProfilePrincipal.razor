@@ -33,11 +33,11 @@
                                 <TextEdit @bind-Text="@principal.Email" Role="TextRole.Email" />
                                 <ValidationMessage For="@(() => principal.Email)"></ValidationMessage>
                             </Field>
-                            <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                            @*<Field ColumnSize="ColumnSize.Is6.OnDesktop">
                                 <FieldLabel>Mobile</FieldLabel>
                                 <TextEdit @bind-Text="@principal.Mobile" Disabled="true" />
                                 <ValidationMessage For="@(() => principal.Mobile)"></ValidationMessage>
-                            </Field>
+                            </Field>*@
                         </Fields>
                     }
                 </CardBody>

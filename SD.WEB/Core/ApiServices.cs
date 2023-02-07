@@ -51,7 +51,7 @@ namespace SD.WEB.Core
                 }
                 else
                 {
-                    throw new NotificationException(response);
+                    throw new NotificationException(response.ReasonPhrase);
                 }
             }
             else
@@ -72,7 +72,7 @@ namespace SD.WEB.Core
                     }
                     else
                     {
-                        throw new NotificationException(response);
+                        throw new NotificationException(response.ReasonPhrase);
                     }
                 }
 
@@ -92,7 +92,7 @@ namespace SD.WEB.Core
                 }
                 else
                 {
-                    throw new NotificationException(response);
+                    throw new NotificationException(response.ReasonPhrase);
                 }
             }
             else
@@ -113,7 +113,7 @@ namespace SD.WEB.Core
                     }
                     else
                     {
-                        throw new NotificationException(response);
+                        throw new NotificationException(response.ReasonPhrase);
                     }
                 }
 
@@ -132,7 +132,7 @@ namespace SD.WEB.Core
 
                 var response = await Http.SendAsync(request);
 
-                if (!response.IsSuccessStatusCode) throw new NotificationException(response);
+                if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
 
                 return await response.Content.ReadFromJsonAsync<T>();
             }
@@ -159,7 +159,7 @@ namespace SD.WEB.Core
                     }
                     else
                     {
-                        throw new NotificationException(response);
+                        throw new NotificationException(response.ReasonPhrase);
                     }
                 }
 
@@ -191,7 +191,7 @@ namespace SD.WEB.Core
             }
             else
             {
-                throw new NotificationException(response);
+                throw new NotificationException(response.ReasonPhrase);
             }
         }
 
@@ -214,7 +214,7 @@ namespace SD.WEB.Core
             }
             else
             {
-                throw new NotificationException(response);
+                throw new NotificationException(response.ReasonPhrase);
             }
         }
 
@@ -233,7 +233,7 @@ namespace SD.WEB.Core
             }
             else
             {
-                throw new NotificationException(response);
+                throw new NotificationException(response.ReasonPhrase);
             }
         }
 
@@ -248,7 +248,7 @@ namespace SD.WEB.Core
 
                 var response = await Http.SendAsync(request);
 
-                if (!response.IsSuccessStatusCode) throw new NotificationException(response);
+                if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
 
                 return await response.Content.ReadFromJsonAsync<T>();
             }
@@ -275,7 +275,7 @@ namespace SD.WEB.Core
                     }
                     else
                     {
-                        throw new NotificationException(response);
+                        throw new NotificationException(response.ReasonPhrase);
                     }
                 }
 
@@ -294,7 +294,7 @@ namespace SD.WEB.Core
 
                 var response = await Http.SendAsync(request);
 
-                if (!response.IsSuccessStatusCode) throw new NotificationException(response);
+                if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
 
                 return await response.Content.ReadFromJsonAsync<T>();
             }
@@ -321,7 +321,7 @@ namespace SD.WEB.Core
                     }
                     else
                     {
-                        throw new NotificationException(response);
+                        throw new NotificationException(response.ReasonPhrase);
                     }
                 }
 

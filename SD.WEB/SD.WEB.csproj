@@ -115,7 +115,7 @@
 	<PropertyGroup>
 		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
 		<CurrentDate>$([System.DateTime]::Now.ToString(yyyy.MM.dd))</CurrentDate>
-		<BlazorWasmPrerenderingMode>WebAssemblyPrerendered</BlazorWasmPrerenderingMode>
+		<!--<BlazorWasmPrerenderingMode>WebAssemblyPrerendered</BlazorWasmPrerenderingMode>-->
 		<BlazorWasmPrerenderingUrlPathToExplicitFetch>/Suggestions/Oscar;/Suggestions/GoldenGlobes;/Suggestions/Emmys;/Suggestions/Bafta;/Suggestions/Spirit;/Suggestions/CriticsChoice;/Suggestions/FestivalCannes;/Suggestions/Imdb;/Suggestions/Tmdb;/Suggestions/HollywoodReporter;/Suggestions/RottenTomatoes;/Suggestions/Metacritic;/Suggestions/Empire;/Suggestions/RollingStone;/Suggestions/Filmaffinity;/Suggestions/Movies2023;/Suggestions/Movies2024;/Suggestions/UpcomingMarvel;/Suggestions/UpcomingDC;/Suggestions/UpcomingStarWars;/Suggestions/UpcomingNetflix</BlazorWasmPrerenderingUrlPathToExplicitFetch>
 		<!--workaround to solve a memory problem that occurs in android 8.0 and below - test if in newer versions of blazor, this has already been resolved-->
 		<EmccTotalMemory>16777216</EmccTotalMemory>

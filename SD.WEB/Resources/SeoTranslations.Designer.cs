@@ -61,7 +61,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discover the best streaming platforms, most popular movies and series of the moment or the most awarded (Oscar, Golden Globe, Emmys, etc.).
+        ///   Looks up a localized string similar to Manage your streams, what you&apos;ve watched, are watching and want to watch. All in one place..
         /// </summary>
         public static string Description {
             get {
@@ -88,7 +88,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to bla bla bla.
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string ProvidersDescription {
             get {

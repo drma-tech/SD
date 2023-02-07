@@ -1,12 +1,8 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using SD.API.Repository.Core;
+using SD.Shared.Core.Models;
 
 namespace SD.API.Functions
 {
@@ -19,61 +15,29 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
-        [FunctionName("MyProvidersGet")]
-        public async Task<IActionResult> Get(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.GET, Route = "MyProviders/Get")] HttpRequest req,
-            ILogger log, CancellationToken cancellationToken)
+        [Function("MyProviders")]
+        public async Task<HttpResponseData> MyProviders(
+            [HttpTrigger(AuthorizationLevel.Function, Method.GET, Method.POST, Route = "MyProviders")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
+                var model = await _repo.Get<MyProviders>(DocumentType.MyProvider + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
 
-                var result = await _repo.Get<MyProviders>(DocumentType.MyProvider + ":" + req.GetUserId(), req.GetUserId(), source.Token);
+                if (req.Method == Method.POST)
+                {
+                    var body = await req.GetBody<MyProviders>(cancellationToken);
 
-                return new OkObjectResult(result);
+                    model ??= new();
+
+                    model.Items = body.Items;
+                    model = await _repo.Upsert(model, cancellationToken);
+                }
+
+                return await req.ProcessObject(model, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
-            }
-        }
-
-        [FunctionName("MyProvidersPost")]
-        public async Task<IActionResult> Post(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "MyProviders/Post")] HttpRequest req,
-            ILogger log, CancellationToken cancellationToken)
-        {
-            try
-            {
-                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
-
-                var myProviders = await _repo.Get<MyProviders>(DocumentType.MyProvider + ":" + req.GetUserId(), req.GetUserId(), source.Token);
-                var newItem = await req.GetParameterObject<MyProviders>(source.Token);
-
-                if (myProviders == null)
-                {
-                    myProviders = new MyProviders
-                    {
-                        DtInsert = DateTimeOffset.UtcNow
-                    };
-                }
-                else
-                {
-                    myProviders.DtUpdate = DateTimeOffset.UtcNow;
-                }
-
-                myProviders.SetIds(req.GetUserId());
-
-                myProviders.Items = newItem.Items;
-                myProviders = await _repo.Upsert(myProviders, source.Token);
-
-                return new OkObjectResult(myProviders);
-            }
-            catch (Exception ex)
-            {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
     }

@@ -1,13 +1,8 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using SD.API.Repository.Core;
+using SD.Shared.Core.Models;
 
 namespace SD.API.Functions
 {
@@ -20,100 +15,84 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
-        [FunctionName("WatchedListGet")]
-        public async Task<IActionResult> Get(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.GET, Route = "WatchedList/Get")] HttpRequest req,
-            ILogger log, CancellationToken cancellationToken)
+        [Function("WatchedListGet")]
+        public async Task<HttpResponseData> Get(
+            [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "WatchedList/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
+                var result = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
 
-                var result = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
-
-                return new OkObjectResult(result);
+                return await req.ProcessObject(result, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
 
-        [FunctionName("WatchedListAdd")]
-        public async Task<IActionResult> Add(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "WatchedList/Add/{MediaType}/{TmdbId}")] HttpRequest req,
-            string MediaType, string TmdbId, ILogger log, CancellationToken cancellationToken)
+        [Function("WatchedListAdd")]
+        public async Task<HttpResponseData> Add(
+            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WatchedList/Add/{MediaType}/{TmdbId}")] HttpRequestData req,
+            string MediaType, string TmdbId, CancellationToken cancellationToken)
         {
             try
             {
-                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
-
-                var obj = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
+                var obj = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
 
                 if (obj == null)
                 {
-                    obj = new WatchedList
-                    {
-                        DtInsert = DateTimeOffset.UtcNow
-                    };
+                    obj = new();
 
-                    obj.SetIds(req.GetUserId());
+                    obj.SetIds(req.GetUserId(), req.GetUserId());
                 }
                 else
                 {
-                    obj.DtUpdate = DateTimeOffset.UtcNow;
+                    obj.Update();
                 }
 
                 var ids = TmdbId.Split(',');
                 obj.AddItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), new HashSet<string>(ids));
 
-                obj = await _repo.Upsert(obj, source.Token);
+                obj = await _repo.Upsert(obj, cancellationToken);
 
-                return new OkObjectResult(obj);
+                return await req.ProcessObject(obj, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
 
-        [FunctionName("WatchedListRemove")]
-        public async Task<IActionResult> Remove(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "WatchedList/Remove/{MediaType}/{TmdbId}")] HttpRequest req,
-            string MediaType, string TmdbId, ILogger log, CancellationToken cancellationToken)
+        [Function("WatchedListRemove")]
+        public async Task<HttpResponseData> Remove(
+            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WatchedList/Remove/{MediaType}/{TmdbId}")] HttpRequestData req,
+            string MediaType, string TmdbId, CancellationToken cancellationToken)
         {
             try
             {
-                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
-
-                var obj = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + req.GetUserId(), req.GetUserId(), source.Token);
+                var obj = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
 
                 if (obj == null)
                 {
-                    obj = new WatchedList
-                    {
-                        DtInsert = DateTimeOffset.UtcNow
-                    };
+                    obj = new();
 
-                    obj.SetIds(req.GetUserId());
+                    obj.SetIds(req.GetUserId(), req.GetUserId());
                 }
                 else
                 {
-                    obj.DtUpdate = DateTimeOffset.UtcNow;
+                    obj.Update();
                 }
 
                 obj.RemoveItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), TmdbId);
 
-                obj = await _repo.Upsert(obj, source.Token);
+                obj = await _repo.Upsert(obj, cancellationToken);
 
-                return new OkObjectResult(obj);
+                return await req.ProcessObject(obj, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
     }

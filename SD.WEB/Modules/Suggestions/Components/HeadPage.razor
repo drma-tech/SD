@@ -129,13 +129,7 @@
     {
         try
         {
-            if (myProviders == null)
-            {
-                myProviders = new MyProviders
-                    {
-                        DtInsert = DateTimeOffset.UtcNow
-                    };
-            }
+            myProviders ??= new();
 
             if (provider != null) myProviders.Items.Add(new MyProvidersItem() { id = provider.id, name = provider.name, logo = provider.logo_path });
 
@@ -153,13 +147,7 @@
     {
         try
         {
-            if (myProviders == null)
-            {
-                myProviders = new MyProviders
-                    {
-                        DtInsert = DateTimeOffset.UtcNow
-                    };
-            }
+            myProviders ??= new();
 
             myProviders.Items.Remove(myProviders.Items.First(f => f.id == provider?.id));
 

@@ -1,25 +1,32 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SD.Shared.Core.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace SD.Shared.Models.Support
 {
-    public class AnnouncementModel : DocumentBase
+    public class AnnouncementModel : ProtectedMainDocument
     {
-        public AnnouncementModel() : base(DocumentType.Announcement, true)
+        public AnnouncementModel() : base(DocumentType.Announcement)
         {
         }
 
         [Required]
-        [Custom(Name = "Título", Prompt = "Uma frase que resume seu feedback")]
+        [Custom(Name = "Title", Prompt = "...")]
         public string? Title { get; set; }
 
         [Required]
-        [Custom(Name = "Descrição", Prompt = "Descreva o mais detalhado possível para que possamos entender melhor a situação")]
+        [Custom(Name = "Description", Prompt = "...")]
         public string? Description { get; set; }
 
-        public override void SetIds(string id)
+        protected void Initialize()
         {
-            SetValues(Guid.NewGuid().ToString());
-            //IdUserOwner = id.ToString();
+            var id = Guid.NewGuid().ToString();
+
+            base.Initialize(id, id);
+        }
+
+        public override bool HasValidData()
+        {
+            return !string.IsNullOrEmpty(Title) && !string.IsNullOrEmpty(Description);
         }
 
         public override bool Equals(object? obj)

@@ -81,7 +81,7 @@
         {
             Ticket.TicketType = TicketType;
             Ticket.TicketStatus = TicketStatus.New;
-            Ticket.SetIds(await AppState.GetIdUser());
+            Ticket.Initialize(await AppState.GetIdUser());
 
             Ticket = await TicketApi.Insert(Ticket) ?? new();
 

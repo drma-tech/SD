@@ -33,10 +33,10 @@ namespace SD.WEB.Core
 
         public static void ProcessException(this Exception ex, INotificationService toast, ILogger logger)
         {
-            if (ex is NotificationException)
+            if (ex is NotificationException exc)
             {
-                logger.LogWarning(ex, null);
-                toast.Warning(ex.Message);
+                logger.LogWarning(exc, null);
+                toast.Warning(exc.Message);
             }
             else
             {

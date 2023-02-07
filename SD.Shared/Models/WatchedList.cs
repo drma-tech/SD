@@ -1,8 +1,10 @@
-﻿namespace SD.Shared.Models
+﻿using SD.Shared.Core.Models;
+
+namespace SD.Shared.Models
 {
-    public class WatchedList : DocumentBase
+    public class WatchedList : PrivateMainDocument
     {
-        public WatchedList() : base(DocumentType.WatchedList, true)
+        public WatchedList() : base(DocumentType.WatchedList)
         {
         }
 
@@ -34,11 +36,11 @@
             Items(type).Remove(item);
         }
 
-        public override void SetIds(string? id)
-        {
-            SetValues(id);
-        }
-
         private HashSet<string> Items(MediaType? type) => type == MediaType.movie ? Movies : Shows;
+
+        public override bool HasValidData()
+        {
+            return Movies.Any() || Shows.Any();
+        }
     }
 }

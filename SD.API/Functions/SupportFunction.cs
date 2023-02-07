@@ -1,15 +1,9 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using SD.API.Repository.Core;
+using SD.Shared.Core.Models;
 using SD.Shared.Models.Support;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace SD.API.Functions
 {
@@ -22,114 +16,94 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
-        [FunctionName("AnnouncementGetList")]
-        public async Task<IActionResult> AnnouncementGetList(
-           [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.GET, Route = "Public/Announcements/GetList")] HttpRequest req,
-           ILogger log, CancellationToken cancellationToken)
+        [Function("AnnouncementGetList")]
+        public async Task<HttpResponseData> AnnouncementGetList(
+           [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "Public/Announcements/GetList")] HttpRequestData req, CancellationToken cancellationToken)
         {
-            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
-
             try
             {
                 var result = await _repo.Query<AnnouncementModel>(null, null, DocumentType.Announcement, cancellationToken);
 
-                return new OkObjectResult(result);
+                return await req.ProcessObject(result, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
 
-        [FunctionName("TicketGetList")]
-        public async Task<IActionResult> TicketGetList(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.GET, Route = "Public/Ticket/GetList")] HttpRequest req,
-            ILogger log, CancellationToken cancellationToken)
+        [Function("TicketGetList")]
+        public async Task<HttpResponseData> TicketGetList(
+            [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "Public/Ticket/GetList")] HttpRequestData req, CancellationToken cancellationToken)
         {
-            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
-
             try
             {
                 var result = await _repo.Query<TicketModel>(null, null, DocumentType.Ticket, cancellationToken);
 
-                return new OkObjectResult(result);
+                return await req.ProcessObject(result, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
 
-        [FunctionName("TicketGetMyVotes")]
-        public async Task<IActionResult> TicketGetMyVotes(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.GET, Route = "Ticket/GetMyVotes")] HttpRequest req,
-            ILogger log, CancellationToken cancellationToken)
+        [Function("TicketGetMyVotes")]
+        public async Task<HttpResponseData> TicketGetMyVotes(
+            [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "Ticket/GetMyVotes")] HttpRequestData req, CancellationToken cancellationToken)
         {
-            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
-
             try
             {
                 var result = await _repo.Query<TicketVoteModel>(x => x.IdVotedUser == req.GetUserId(), null, DocumentType.TicketVote, cancellationToken);
 
-                return new OkObjectResult(result);
+                return await req.ProcessObject(result, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
 
-        [FunctionName("TicketInsert")]
-        public async Task<IActionResult> TicketInsert(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "Ticket/Insert")] HttpRequest req,
-            ILogger log, CancellationToken cancellationToken)
+        [Function("TicketInsert")]
+        public async Task<HttpResponseData> TicketInsert(
+            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "Ticket/Insert")] HttpRequestData req, CancellationToken cancellationToken)
         {
-            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
-
             try
             {
-                var item = await req.GetParameterObjectPublic<TicketModel>(source.Token);
+                var item = await req.GetPublicBody<TicketModel>(cancellationToken);
 
                 var result = await _repo.Upsert(item, cancellationToken);
 
-                return new OkObjectResult(result);
+                return await req.ProcessObject(result, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
 
-        [FunctionName("TicketVote")]
-        public async Task<IActionResult> TicketVote(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "Ticket/Vote")] HttpRequest req,
-            ILogger log, CancellationToken cancellationToken)
+        [Function("TicketVote")]
+        public async Task<HttpResponseData> TicketVote(
+            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "Ticket/Vote")] HttpRequestData req, CancellationToken cancellationToken)
         {
-            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
-
             try
             {
-                var item = await req.GetParameterObjectPublic<TicketVoteModel>(source.Token);
+                var item = await req.GetBody<TicketVoteModel>(cancellationToken);
 
                 if (item.VoteType == VoteType.PlusOne)
-                    await _repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, item.Key, new List<PatchOperation> { PatchOperation.Increment("/totalVotes", 1) }, cancellationToken);
+                    await _repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, new PartitionKey(item.Key), new List<PatchOperation> { PatchOperation.Increment("/totalVotes", 1) }, cancellationToken);
                 else if (item.VoteType == VoteType.MinusOne)
-                    await _repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, item.Key, new List<PatchOperation> { PatchOperation.Increment("/totalVotes", -1) }, cancellationToken);
-                
-                item.SetIds(item.Key);
+                    await _repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, new PartitionKey(item.Key), new List<PatchOperation> { PatchOperation.Increment("/totalVotes", -1) }, cancellationToken);
+
+                item.SetIds("", item.Key);
 
                 var result = await _repo.Upsert(item, cancellationToken);
 
-                return new OkObjectResult(result);
+                return await req.ProcessObject(result, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
     }

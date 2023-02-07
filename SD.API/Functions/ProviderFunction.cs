@@ -1,16 +1,9 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using SD.API.Repository.Core;
 using SD.Shared.Model.List.Tmdb;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace SD.API.Functions
 {
@@ -23,66 +16,55 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
-        [FunctionName("PublicProviderGetAll")]
-        public async Task<IActionResult> GetAll(
-            [HttpTrigger(AuthorizationLevel.Anonymous, FunctionMethod.GET, Route = "Public/Provider/GetAll")] HttpRequest req,
-            ILogger log, CancellationToken cancellationToken)
+        [Function("PublicProviderGetAll")]
+        public async Task<HttpResponseData> GetAll(
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Provider/GetAll")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
+                var result = await _repo.Get<AllProviders>("providers", new PartitionKey("providers"), cancellationToken);
 
-                var result = await _repo.Get<AllProviders>("providers", "providers", source.Token);
-
-                return new OkObjectResult(result);
+                return await req.ProcessObject(result, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
 
-        [FunctionName("ProviderPost")]
-        public async Task<IActionResult> Post(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.POST, Route = "Provider/Post")] HttpRequest req,
-            ILogger log, CancellationToken cancellationToken)
+        [Function("ProviderPost")]
+        public async Task<HttpResponseData> Post(
+            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "Provider/Post")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
-
-                var AllProviders = await _repo.Get<AllProviders>("providers", "providers", source.Token);
-                var providers = await req.GetParameterObjectPublic<AllProviders>(source.Token);
+                var AllProviders = await _repo.Get<AllProviders>("providers", new PartitionKey("providers"), cancellationToken);
+                var providers = await req.GetPublicBody<AllProviders>(cancellationToken);
 
                 if (AllProviders != null)
                 {
-                    AllProviders.DtUpdate = DateTimeOffset.UtcNow;
+                    AllProviders.Update();
                     AllProviders.Items = providers.Items.OrderBy(o => int.Parse(o.id ?? "0")).ToList();
-                    await _repo.Upsert(AllProviders, source.Token);
+                    await _repo.Upsert(AllProviders, cancellationToken);
                 }
 
-                return new OkObjectResult(AllProviders);
+                return await req.ProcessObject(AllProviders, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
 
-        [FunctionName("ProviderSyncProviders")]
-        public async Task<IActionResult> SyncProviders(
-           [HttpTrigger(AuthorizationLevel.Function, FunctionMethod.PUT, Route = "Provider/SyncProviders")] HttpRequest req,
-           ILogger log, CancellationToken cancellationToken)
+        [Function("ProviderSyncProviders")]
+        public async Task<HttpResponseData> SyncProviders(
+           [HttpTrigger(AuthorizationLevel.Function, Method.PUT, Route = "Provider/SyncProviders")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, req.HttpContext.RequestAborted);
-
                 var result = new List<ProviderModel>();
 
-                var AllProviders = await _repo.Get<AllProviders>("providers", "providers", source.Token);
+                var AllProviders = await _repo.Get<AllProviders>("providers", new PartitionKey("providers"), cancellationToken);
 
                 if (AllProviders != null)
                 {
@@ -99,10 +81,10 @@ namespace SD.API.Functions
 
                         using (var http = new HttpClient())
                         {
-                            var movies = await http.Get<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/movie".ConfigureParameters(parameter), source.Token);
+                            var movies = await http.Get<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/movie".ConfigureParameters(parameter), cancellationToken);
                             if (movies != null) AddProvider(result, movies.results, details, region, MediaType.movie);
 
-                            var tvs = await http.Get<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/tv".ConfigureParameters(parameter), source.Token);
+                            var tvs = await http.Get<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/tv".ConfigureParameters(parameter), cancellationToken);
                             if (tvs != null) AddProvider(result, tvs.results, details, region, MediaType.tv);
                         }
                     }
@@ -112,18 +94,17 @@ namespace SD.API.Functions
 
                     if (_new || _old)
                     {
-                        AllProviders.DtUpdate = DateTimeOffset.UtcNow;
+                        AllProviders.Update();
                         AllProviders.Items = result.OrderBy(o => int.Parse(o.id ?? "0")).ToList();
-                        await _repo.Upsert(AllProviders, source.Token);
+                        await _repo.Upsert(AllProviders, cancellationToken);
                     }
                 }
 
-                return new OkObjectResult(AllProviders);
+                return await req.ProcessObject(AllProviders, cancellationToken);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, req.Query.BuildMessage(), req.Query.ToList());
-                return new BadRequestObjectResult(ex.ProcessException());
+                return req.ProcessException(ex);
             }
         }
 
