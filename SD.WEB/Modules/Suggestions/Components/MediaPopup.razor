@@ -947,7 +947,7 @@
                 var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
 
                 if (type == MediaType.movie && item.order > 24) continue;
-                if (type == MediaType.tv && item.episode_count < 5) continue;
+                if (type == MediaType.tv && item.episode_count < 3) continue;
 
                 items.Add(new MediaDetail
                     {

@@ -27,7 +27,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                 foreach (var item in result?.results ?? new List<ResultMovieTopRated>())
                 {
                     if (item.release_date?.GetDate() < DateTime.Now.AddYears(-20)) continue;
-                    if (item.vote_count < 1000) continue;
+                    if (item.vote_count < 500) continue;
                     //if (string.IsNullOrEmpty(item.poster_path)) continue;
 
                     currentList.Add(new MediaDetail
@@ -52,7 +52,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                 foreach (var item in result?.results ?? new List<ResultTVTopRated>())
                 {
                     if (item.first_air_date?.GetDate() < DateTime.Now.AddYears(-20)) continue;
-                    if (item.vote_count < 1000) continue;
+                    if (item.vote_count < 500) continue;
                     if (string.IsNullOrEmpty(item.poster_path)) continue;
 
                     currentList.Add(new MediaDetail
