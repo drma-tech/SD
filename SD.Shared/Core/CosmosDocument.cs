@@ -26,7 +26,7 @@ namespace SD.Shared.Core
         public string Key { get; set; } = string.Empty;
 
         [JsonInclude]
-        public DateTimeOffset DtInsert { get; } = DateTimeOffset.UtcNow;
+        public DateTimeOffset DtInsert { get; set; } = DateTimeOffset.UtcNow;
 
         [JsonInclude]
         public DateTimeOffset? DtUpdate { get; set; } = null;

@@ -25,7 +25,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                 if (stringParameters.ContainsValue("vote_average.desc")) //topRatedMedia
                 {
                     stringParameters.TryAdd("primary_release_date.gte", DateTime.Now.AddYears(-20).ToString("yyyy-MM-dd")); //only recent releases
-                    stringParameters.TryAdd("vote_count.gte", "1000"); //ignore low-rated movie
+                    stringParameters.TryAdd("vote_count.gte", "500"); //ignore low-rated movie
                     stringParameters.TryAdd("vote_average.gte", "7.4"); //only the best
                 }
             }
