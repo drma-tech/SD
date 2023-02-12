@@ -11,7 +11,7 @@
     @foreach (var item in Awards.Take(GetTotalItems(expand_awards)))
     {
         <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
-            <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
+            <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
                 <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
                     <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
                 </Blazorise.Link>
@@ -32,7 +32,7 @@
     @foreach (var item in Sites.Take(GetTotalItems(expand_sites)))
     {
         <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
-            <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
+            <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
                 <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
                     <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
                 </Blazorise.Link>
@@ -53,7 +53,7 @@
     @foreach (var item in Specials.Take(GetTotalItems(expand_specials)))
     {
         <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
-            <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
+            <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
                 <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
                     <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
                 </Blazorise.Link>
@@ -70,8 +70,8 @@
     private List<Item> Sites { get; set; } = new();
     private List<Item> Specials { get; set; } = new();
 
-    private int GetTotalItems(bool expand) => AppStateStatic.OnMobile && !expand ? 3 : 10;
-    
+    private int GetTotalItems(bool expand) => AppStateStatic.OnMobile && !expand ? 3 : 12;
+
     private bool expand_awards { get; set; }
     private bool expand_sites { get; set; }
     private bool expand_specials { get; set; }
@@ -87,26 +87,43 @@
     {
         Awards.Add(new Item() { name = "Oscar", logo_path = "logo/oscar.png", link = "/Suggestions/Oscar" });
         Awards.Add(new Item() { name = "Golden Globe", logo_path = "logo/goldenglobes.png", link = "/Suggestions/GoldenGlobes" });
-        Awards.Add(new Item() { name = "Emmys", logo_path = "logo/emmys.png", link = "/Suggestions/Emmys" });
         Awards.Add(new Item() { name = "Bafta", logo_path = "logo/bafta.png", link = "/Suggestions/Bafta" });
-        Awards.Add(new Item() { name = "FI Spirit", logo_path = "logo/spirit.png", link = "/Suggestions/Spirit" });
-        Awards.Add(new Item() { name = "Critics Choice", logo_path = "logo/critics.png", link = "/Suggestions/CriticsChoice" });
+        Awards.Add(new Item() { name = "Emmys", logo_path = "logo/emmys.png", link = "/Suggestions/Emmys" });
         Awards.Add(new Item() { name = "Festival de Cannes", logo_path = "logo/festival-cannes.png", link = "/Suggestions/FestivalCannes" });
+        //Awards.Add(new Item() { name = "Venice Film Festival", logo_path = "", link = "/" });
+        //Awards.Add(new Item() { name = "Berlin International Film Festival", logo_path = "logo/berlin.png", link = "/Suggestions/Berlin" });
+        //Awards.Add(new Item() { name = "Sundance Film Festival", logo_path = "logo/sundance.png", link = "/Suggestions/Sundance" });
+        //Awards.Add(new Item() { name = "Toronto International Film Festival", logo_path = "logo/tiff.png", link = "/Suggestions/Tiff" });
+        Awards.Add(new Item() { name = "Critics Choice", logo_path = "logo/critics.png", link = "/Suggestions/CriticsChoice" });
+        Awards.Add(new Item() { name = "FI Spirit", logo_path = "logo/spirit.png", link = "/Suggestions/Spirit" });
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Sites.Add(new Item() { name = "IMDB", logo_path = "logo/imdb.png", link = "/Suggestions/Imdb" });
         Sites.Add(new Item() { name = "TMDB", logo_path = "logo/tmdb.png", link = "/Suggestions/Tmdb" });
-        Sites.Add(new Item() { name = "Hollywood Reporter", logo_path = "logo/HollywoodReporter.png", link = "/Suggestions/HollywoodReporter" });
         Sites.Add(new Item() { name = "Rotten Tomatoes", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/RottenTomatoes" });
         Sites.Add(new Item() { name = "Metacritic", logo_path = "logo/metacritic.png", link = "/Suggestions/Metacritic" });
+        //Letterboxd - there is no way to filter only shows
+        //MovieBuff - no one rates movies. and no way to order by ratings
+        //Trakt
+        //https://trakt.tv/shows/recommended/all
+        //https://trakt.tv/movies/recommended/all
+        //Flixster - no rating. nor order.
+        //CineFix - youtube channel
+        Sites.Add(new Item() { name = "Filmaffinity", logo_path = "logo/filmaffinity.png", link = "/Suggestions/Filmaffinity" });
+        //ScreenRant - no order
+        Sites.Add(new Item() { name = "Hollywood Reporter", logo_path = "logo/HollywoodReporter.png", link = "/Suggestions/HollywoodReporter" });
         Sites.Add(new Item() { name = "Empire", logo_path = "logo/empire.png", link = "/Suggestions/Empire" });
         Sites.Add(new Item() { name = "Rolling Stone", logo_path = "logo/rollingstone.png", link = "/Suggestions/RollingStone" });
-        Sites.Add(new Item() { name = "Filmaffinity", logo_path = "logo/filmaffinity.png", link = "/Suggestions/Filmaffinity" });
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Specials.Add(new Item() { name = "Expected Movies of 2023", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2023" });
         Specials.Add(new Item() { name = "Expected Movies of 2024", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2024" });
         Specials.Add(new Item() { name = "Upcoming Marvel Movies", logo_path = "logo/marvel.png", link = "/Suggestions/UpcomingMarvel" });
-        Specials.Add(new Item() { name = "Upcoming DC Movies", logo_path = "logo/dc.png", link = "/Suggestions/UpcomingDC" });        
+        Specials.Add(new Item() { name = "Upcoming DC Movies", logo_path = "logo/dc.png", link = "/Suggestions/UpcomingDC" });
         Specials.Add(new Item() { name = "Upcoming Star Wars Movies", logo_path = "logo/StarWars.png", link = "/Suggestions/UpcomingStarWars" });
         Specials.Add(new Item() { name = "Upcoming Netflix Movies", logo_path = "logo/Netflix.png", link = "/Suggestions/UpcomingNetflix" });
+        Specials.Add(new Item() { name = "Upcoming Walt Disney Pictures", logo_path = "logo/disney.png", link = "/Suggestions/UpcomingDisney" });
     }
 }

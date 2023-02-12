@@ -1,0 +1,14 @@
+﻿@page "/Suggestions/Tiff"
+<SeoHeader Title="Suggestions | Tiff" Keywords="@(new []{"Tiff"})" Url="/Suggestions/Tiff"></SeoHeader>
+@inherits PageNoDataCore<Emmys>
+
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+
+<HeadPage Title="Tiff" ImageSource="logo/tiff.png" Text="TIFF is a charitable cultural organization with a mission to transform the way people see the world, through film." Link="https://www.tiff.net/"></HeadPage>
+
+@*https://www.imdb.com/event/ev0000659/2022/1*@
+@*<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingDramaSeries" MaxItens="8"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingComedySeries" MaxItens="7"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingLimitedSeries" MaxItens="11"></MediaList>*@

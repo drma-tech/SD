@@ -1,0 +1,10 @@
+﻿@page "/Suggestions/UpcomingDisney"
+<SeoHeader Title="Suggestions | Upcoming Walt Disney Pictures" Keywords="@(new []{"Upcoming Walt Disney Pictures"})" Url="/Suggestions/UpcomingDisney"></SeoHeader>
+@inherits PageNoDataCore<UpcomingMarvel>
+
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+
+@*https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films*@
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingWaltDisneyPictures" MaxItens="12"></MediaListFull>
