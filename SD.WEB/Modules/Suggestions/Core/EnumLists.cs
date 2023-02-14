@@ -136,5 +136,26 @@
 
         [Custom(Name = "Best Short Film")]
         BerlinBestShortFilm = 8240314,
+
+        [Custom(Name = "Grand Jury Prize: Documentary")]
+        SundanceGrandJuryPrizeDocumentary = 8240577,
+
+        [Custom(Name = "Grand Jury Prize: Dramatic")]
+        SundanceGrandJuryPrizeDramatic = 8240576,
+
+        [Custom(Name = "People's Choice - Best Film")]
+        TorontoPeoplesChoiceBestFilm = 8240630,
+
+        [Custom(Name = "People's Choice - Documentary")]
+        TorontoPeoplesChoiceDocumentary = 8240631,
+
+        [Custom(Name = "People's Choice - Midnight Madness")]
+        TorontoPeoplesChoiceMidnightMadness = 8240632,
+
+        [Custom(Name = "Recommended Movies")]
+        TraktRecommendedMovies = 8240654,
+
+        [Custom(Name = "Recommended TV Shows")]
+        TraktRecommendedTVShows = 8240660
     }
 }

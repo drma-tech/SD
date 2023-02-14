@@ -1,0 +1,14 @@
+﻿@page "/Suggestions/Trakt"
+<SeoHeader Title="Suggestions | Trakt" Keywords="@(new []{"Trakt"})" Url="/Suggestions/Trakt"></SeoHeader>
+@inherits PageNoDataCore<Emmys>
+
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+
+<HeadPage Title="Trakt" ImageSource="logo/trakt.png" Text="Track what you watch and when. Discover what's hot and where you can watch it. Share comments, ratings and recommendations." Link="https://trakt.tv/"></HeadPage>
+
+@*https://trakt.tv/movies/recommended/all*@
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedMovies" MaxItens="100"></MediaList>
+@*https://trakt.tv/shows/recommended/all*@
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedTVShows" MaxItens="100"></MediaList>
