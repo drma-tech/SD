@@ -44,13 +44,13 @@
     }
 </Row>
 
-<HeaderComponent Title="@Resources.Translations.TitleSpecials">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand_specials = !expand_specials; })" title="Show all awards">
+<HeaderComponent Title="@Resources.Translations.TitleUpcoming">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand_upcoming = !expand_upcoming; })" title="Show all awards">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
 <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-    @foreach (var item in Specials.Take(GetTotalItems(expand_specials)))
+    @foreach (var item in Upcoming.Take(GetTotalItems(expand_upcoming)))
     {
         <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
             <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
@@ -68,13 +68,13 @@
 @code {
     private List<Item> Awards { get; set; } = new();
     private List<Item> Sites { get; set; } = new();
-    private List<Item> Specials { get; set; } = new();
+    private List<Item> Upcoming { get; set; } = new();
 
     private int GetTotalItems(bool expand) => AppStateStatic.OnMobile && !expand ? 3 : 12;
 
     private bool expand_awards { get; set; }
     private bool expand_sites { get; set; }
-    private bool expand_specials { get; set; }
+    private bool expand_upcoming { get; set; }
 
     public class Item
     {
@@ -91,7 +91,7 @@
         Awards.Add(new Item() { name = "Emmys", logo_path = "logo/emmys.png", link = "/Suggestions/Emmys" });
         Awards.Add(new Item() { name = "Festival de Cannes", logo_path = "logo/festival-cannes.png", link = "/Suggestions/FestivalCannes" });
         //Awards.Add(new Item() { name = "Venice Film Festival", logo_path = "", link = "/" });
-        //Awards.Add(new Item() { name = "Berlin International Film Festival", logo_path = "logo/berlin.png", link = "/Suggestions/Berlin" });
+        Awards.Add(new Item() { name = "The Berlinale", logo_path = "logo/berlin.png", link = "/Suggestions/Berlin" });
         //Awards.Add(new Item() { name = "Sundance Film Festival", logo_path = "logo/sundance.png", link = "/Suggestions/Sundance" });
         //Awards.Add(new Item() { name = "Toronto International Film Festival", logo_path = "logo/tiff.png", link = "/Suggestions/Tiff" });
         Awards.Add(new Item() { name = "Critics Choice", logo_path = "logo/critics.png", link = "/Suggestions/CriticsChoice" });
@@ -118,12 +118,12 @@
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        Specials.Add(new Item() { name = "Expected Movies of 2023", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2023" });
-        Specials.Add(new Item() { name = "Expected Movies of 2024", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2024" });
-        Specials.Add(new Item() { name = "Upcoming Marvel Movies", logo_path = "logo/marvel.png", link = "/Suggestions/UpcomingMarvel" });
-        Specials.Add(new Item() { name = "Upcoming DC Movies", logo_path = "logo/dc.png", link = "/Suggestions/UpcomingDC" });
-        Specials.Add(new Item() { name = "Upcoming Star Wars Movies", logo_path = "logo/StarWars.png", link = "/Suggestions/UpcomingStarWars" });
-        Specials.Add(new Item() { name = "Upcoming Netflix Movies", logo_path = "logo/Netflix.png", link = "/Suggestions/UpcomingNetflix" });
-        Specials.Add(new Item() { name = "Upcoming Walt Disney Pictures", logo_path = "logo/disney.png", link = "/Suggestions/UpcomingDisney" });
+        Upcoming.Add(new Item() { name = "2023 (Rotten Tomatoes)", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2023" });
+        Upcoming.Add(new Item() { name = "2024 (Rotten Tomatoes)", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2024" });
+        Upcoming.Add(new Item() { name = "Marvel", logo_path = "logo/marvel.png", link = "/Suggestions/UpcomingMarvel" });
+        Upcoming.Add(new Item() { name = "DC", logo_path = "logo/dc.png", link = "/Suggestions/UpcomingDC" });
+        Upcoming.Add(new Item() { name = "Star Wars", logo_path = "logo/StarWars.png", link = "/Suggestions/UpcomingStarWars" });
+        Upcoming.Add(new Item() { name = "Netflix", logo_path = "logo/Netflix.png", link = "/Suggestions/UpcomingNetflix" });
+        Upcoming.Add(new Item() { name = "Walt Disney Pictures", logo_path = "logo/disney.png", link = "/Suggestions/UpcomingDisney" });
     }
 }

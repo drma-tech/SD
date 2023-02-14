@@ -130,5 +130,11 @@
 
         [Custom(Name = "Upcoming Walt Disney Pictures")]
         UpcomingWaltDisneyPictures = 8239943,
+
+        [Custom(Name = "Best Film")]
+        BerlinBestFilm = 8240313,
+
+        [Custom(Name = "Best Short Film")]
+        BerlinBestShortFilm = 8240314,
     }
 }
