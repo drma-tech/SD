@@ -8,7 +8,6 @@
 @inherits ComponenteCore<MediaPopup>
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbApi TmdbApi
-@inject ImdbApi ImdbApi
 @inject CacheApi CacheApi
 @inject ExternalIdApi ExternalIdApi
 @inject TmdbCreditApi TmdbCreditApi
@@ -525,34 +524,9 @@
         var imdb_id = await ExternalIdApi.GetImdbId(type, tmdb_id);
         if (!string.IsNullOrEmpty(imdb_id))
         {
-            var cache = await CacheApi.GetRatings(imdb_id);
-            if (cache == null)
-            {
-                Ratings = await ImdbApi.GetRatings(imdb_id);
-                if (Ratings != null && string.IsNullOrEmpty(Ratings.errorMessage))
-                {
-                    if (!media.release_date.HasValue)
-                    {
-                        await CacheApi.AddRatings(new RatingsCache($"rating_{imdb_id}", Ratings, ttlCache.one_day), imdb_id);
-                    }
-                    else if (media.release_date.Value > DateTime.Now.AddMonths(-1))
-                    {
-                        await CacheApi.AddRatings(new RatingsCache($"rating_{imdb_id}", Ratings, ttlCache.one_week), imdb_id);
-                    }
-                    else if (media.release_date.Value > DateTime.Now.AddMonths(-6))
-                    {
-                        await CacheApi.AddRatings(new RatingsCache($"rating_{imdb_id}", Ratings, ttlCache.one_month), imdb_id);
-                    }
-                    else
-                    {
-                        await CacheApi.AddRatings(new RatingsCache($"rating_{imdb_id}", Ratings, ttlCache.one_year), imdb_id);
-                    }
-                }
-            }
-            else
-            {
-                Ratings = (Ratings?)cache?.Data;
-            }
+            var cache = await CacheApi.GetRatings(imdb_id, media?.release_date);
+
+            Ratings = (Ratings?)cache?.Data;
         }
 
         Credits = await TmdbCreditApi.GetList(type, tmdb_id);

@@ -18,20 +18,19 @@ namespace SD.API.Functions
 
         [Function("CacheNew")]
         public async Task<HttpResponseData> CacheNew(
-           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Method.POST, Route = "Public/Cache/News")] HttpRequestData req, CancellationToken cancellationToken)
+           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/News")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                CacheDocument<Flixster>? model;
+                var model = await _cacheRepo.Get<Flixster>("lastnews", cancellationToken);
 
-                if (req.Method == Method.GET)
+                if (model == null)
                 {
-                    model = await _cacheRepo.Get<Flixster>("lastnews", cancellationToken);
-                }
-                else
-                {
-                    var body = await req.GetPublicBody<FlixsterCache>(cancellationToken);
-                    model = await _cacheRepo.Add(body, cancellationToken);
+                    using var http = new HttpClient();
+                    var obj = await http.GetNewsByFlixter<Flixster>(cancellationToken);
+                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+
+                    model = await _cacheRepo.Add(new FlixsterCache(obj), cancellationToken);
                 }
 
                 return await req.ProcessObject(model, cancellationToken);
@@ -44,21 +43,45 @@ namespace SD.API.Functions
 
         [Function("CacheRatings")]
         public async Task<HttpResponseData> CacheRatings(
-           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Method.POST, Route = "Public/Cache/Ratings")] HttpRequestData req, CancellationToken cancellationToken)
+           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Ratings")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
                 CacheDocument<Ratings>? model;
 
-                if (req.Method == Method.GET)
+                var id = req.GetQueryParameters()["id"];
+                _ = DateTime.TryParse(req.GetQueryParameters()["release_date"], out DateTime release_date);
+                model = await _cacheRepo.Get<Ratings>($"rating_{id}", cancellationToken);
+
+                if (model == null)
                 {
-                    var id = req.GetQueryParameters()["id"];
-                    model = await _cacheRepo.Get<Ratings>($"rating_{id}", cancellationToken);
-                }
-                else
-                {
-                    var body = await req.GetPublicBody<RatingsCache>(cancellationToken);
-                    model = await _cacheRepo.Add(body, cancellationToken);
+                    using var http = new HttpClient();
+                    var obj = await http.Get<Ratings>(ImdbOptions.BaseUri + $"Ratings/{ImdbOptions.ApiKey}/{id}", cancellationToken);
+                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+
+                    if (string.IsNullOrEmpty(obj.errorMessage))
+                    {
+                        if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date)
+                        {
+                            model = await _cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
+                        }
+                        else if (release_date > DateTime.Now.AddMonths(-1))
+                        {
+                            model = await _cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_week), cancellationToken);
+                        }
+                        else if (release_date > DateTime.Now.AddMonths(-6))
+                        {
+                            model = await _cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_month), cancellationToken);
+                        }
+                        else
+                        {
+                            model = await _cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_year), cancellationToken);
+                        }
+                    }
+                    else
+                    {
+                        model = new RatingsCache(id, obj, ttlCache.one_day);
+                    }
                 }
 
                 return await req.ProcessObject(model, cancellationToken);
@@ -71,20 +94,19 @@ namespace SD.API.Functions
 
         [Function("CacheTrailers")]
         public async Task<HttpResponseData> CacheTrailers(
-           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Method.POST, Route = "Public/Cache/Trailers")] HttpRequestData req, CancellationToken cancellationToken)
+           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Trailers")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                CacheDocument<Youtube>? model = null;
+                var model = await _cacheRepo.Get<Youtube>("lasttrailers", cancellationToken);
 
-                if (req.Method == Method.GET)
+                if (model == null)
                 {
-                    model = await _cacheRepo.Get<Youtube>("lasttrailers", cancellationToken);
-                }
-                else
-                {
-                    var body = await req.GetPublicBody<YoutubeCache>(cancellationToken);
-                    model = await _cacheRepo.Add(body, cancellationToken);
+                    using var http = new HttpClient();
+                    var obj = await http.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
+                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+
+                    model = await _cacheRepo.Add(new YoutubeCache(obj), cancellationToken);
                 }
 
                 return await req.ProcessObject(model, cancellationToken);

@@ -79,7 +79,7 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upcoming Movies.
+        ///   Looks up a localized string similar to Next Releases.
         /// </summary>
         public static string TitleUpcoming {
             get {

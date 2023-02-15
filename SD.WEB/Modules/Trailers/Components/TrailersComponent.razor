@@ -1,9 +1,7 @@
 ﻿@using SD.Shared.Models.News;
 @using SD.Shared.Models.Trailers;
-@using SD.WEB.Modules.News.Core;
 @inherits ComponenteCore<TrailersComponent>
 
-@inject TrailersApi TrailersApi
 @inject CacheApi CacheApi
 
 <HeaderComponent Title="@($"{GlobalTranslations.TrailersTitle} - {Language.enUS.GetName()}")">
@@ -43,15 +41,8 @@
         Loading?.Start();
 
         var cache = await CacheApi.GetTrailers();
-        if (cache == null)
-        {
-            YoutubeChanel = await TrailersApi.Get();
-            await CacheApi.AddTrailers(new YoutubeCache(YoutubeChanel));
-        }
-        else
-        {
-            YoutubeChanel = (Youtube?)cache?.Data;
-        }
+
+        YoutubeChanel = (Youtube?)cache?.Data;
 
         Loading?.Finish(YoutubeChanel == null);
     }
@@ -61,6 +52,7 @@
         await ModalService.Show<TrailersPopup>(null,
         x =>
         {
+            //
         },
         new ModalInstanceOptions()
             {

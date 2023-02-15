@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using SD.WEB;
 using SD.WEB.Modules.Auth.Core;
-using SD.WEB.Modules.News.Core;
 using SD.WEB.Modules.Profile.Core;
 using SD.WEB.Modules.Provider.Core;
 using SD.WEB.Modules.Suggestions.Core;
@@ -59,10 +58,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
 
     collection.AddScoped<ExternalIdApi>();
     collection.AddScoped<CacheApi>();
-    collection.AddScoped<NewsApi>();
-    collection.AddScoped<TrailersApi>();
 
-    collection.AddScoped<ImdbApi>();
     collection.AddScoped<TmdbApi>();
 
     collection.AddScoped<TmdbListApi>();

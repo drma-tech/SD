@@ -1,8 +1,6 @@
 ﻿@using SD.Shared.Models.News;
-@using SD.WEB.Modules.News.Core;
 @inherits ComponenteCore<NewsComponent>
 
-@inject NewsApi NewsApi
 @inject CacheApi CacheApi
 
 <HeaderComponent Title="@($"{GlobalTranslations.NewsTitle} - {Language.enUS.GetName()}")">
@@ -38,15 +36,8 @@
         LoadingNews?.Start();
 
         var cache = await CacheApi.GetNews();
-        if (cache == null)
-        {
-            News = await NewsApi.Get();
-            await CacheApi.AddNews(new FlixsterCache(News));
-        }
-        else
-        {
-            News = (Flixster?)cache?.Data;
-        }
+
+        News = (Flixster?)cache?.Data;
 
         LoadingNews?.Finish(News == null);
     }
@@ -56,6 +47,7 @@
         await ModalService.Show<NewsPopup>(null,
         x =>
         {
+            //
         },
         new ModalInstanceOptions()
             {
