@@ -29,7 +29,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             }
 
             var tv = type == MediaType.tv;
-            var result = await GetByRequest<TmdbSearch>(TmdbOptions.BaseUriNew + $"search/{(tv ? "tv" : "movie")}".ConfigureParameters(parameter));
+            var result = await GetByRequest<TmdbSearch>(TmdbOptions.BaseUri + $"search/{(tv ? "tv" : "movie")}".ConfigureParameters(parameter));
 
             if (result != null)
             {

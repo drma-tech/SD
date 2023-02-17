@@ -70,20 +70,20 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rent.
+        ///   Looks up a localized string similar to Movies.
         /// </summary>
-        internal static string RentName {
+        internal static string MovieName {
             get {
-                return ResourceManager.GetString("RentName", resourceCulture);
+                return ResourceManager.GetString("MovieName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Streaming.
+        ///   Looks up a localized string similar to TV Shows.
         /// </summary>
-        internal static string StreamingName {
+        internal static string ShowName {
             get {
-                return ResourceManager.GetString("StreamingName", resourceCulture);
+                return ResourceManager.GetString("ShowName", resourceCulture);
             }
         }
     }

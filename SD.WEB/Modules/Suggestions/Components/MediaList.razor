@@ -28,7 +28,7 @@
             <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
                 <Card>
                     <PosterComponent Date="@(item.release_date??DateTime.MaxValue)" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
-                                 TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))"></PosterComponent>
+                                 TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" RankUpDown="@item.RankUpDown"></PosterComponent>
                 </Card>
             </Column>
             if ((i % GetTotalItems) == 0)
@@ -61,7 +61,7 @@
     [Parameter] public bool MultiplesRegions { get; set; } = false;
     [Parameter] public bool MultipleLanguages { get; set; } = true;
 
-    public MediaType TypeSelected { get; set; } = MediaType.movie;
+    [Parameter] public MediaType TypeSelected { get; set; } = MediaType.movie;
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
     private int GetTotalItems => AppStateStatic.OnFullHD ? 10 : 6;
 

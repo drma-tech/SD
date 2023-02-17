@@ -3,25 +3,23 @@
 
 @inherits ComponenteNoDataCore<PopularIndexComponent>
 
-@inject TmdbDiscoveryApi TmdbDiscoveryApi
+@inject ImdbPopularApi ImdbPopularApi
 @inject TmdbNowPlayingApi TmdbNowPlayingApi
 
 <HeaderComponent Title="@TranslationText.Popular">
     <RadioGroup @bind-CheckedValue="TypeSelected" Buttons="true" Float="Float.End" Class="btn-group-xs">
-        <Radio Value="PopularType.Streaming">@PopularType.Streaming.GetName()</Radio>
-        <Radio Value="PopularType.Rent">@PopularType.Rent.GetName()</Radio>
+        <Radio Value="PopularType.Movie">@PopularType.Movie.GetName()</Radio>
+        <Radio Value="PopularType.Show">@PopularType.Show.GetName()</Radio>
         <Radio Value="PopularType.Cinema">@PopularType.Cinema.GetName()</Radio>
     </RadioGroup>
 </HeaderComponent>
-@if (TypeSelected == PopularType.Streaming)
+@if (TypeSelected == PopularType.Movie)
 {
-    <MediaList ShowHead="false" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters("flatrate", "popularity.desc")" MaxItens="10" MultiplesRegions="true">
-    </MediaList>
+    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false"></MediaList>
 }
-else if (TypeSelected == PopularType.Rent)
+else if (TypeSelected == PopularType.Show)
 {
-    <MediaList ShowHead="false" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters("rent", "popularity.desc")" MaxItens="10" MultiplesRegions="true">
-    </MediaList>
+    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false" TypeSelected="MediaType.tv"></MediaList>
 }
 else if (TypeSelected == PopularType.Cinema)
 {
@@ -30,10 +28,5 @@ else if (TypeSelected == PopularType.Cinema)
 }
 
 @code {
-    public PopularType TypeSelected { get; set; } = PopularType.Streaming;
-
-    private Dictionary<string, string> GetExtraParameters(string monetization_type, string sort_by)
-    {
-        return new Dictionary<string, string>() { { "with_watch_monetization_types", monetization_type }, { "sort_by", sort_by } }; ;
-    }
+    public PopularType TypeSelected { get; set; } = PopularType.Movie;
 }

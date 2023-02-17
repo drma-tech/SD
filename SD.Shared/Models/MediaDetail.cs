@@ -23,6 +23,8 @@
 
         public MediaType MediaType { get; set; }
 
+        public string? RankUpDown { get; set; }
+
         public override bool Equals(object? obj)
         {
             return obj is MediaDetail q && q.tmdb_id == tmdb_id;

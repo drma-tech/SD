@@ -17,7 +17,7 @@
             <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px; z-index: 1;">@Date.Value.ToShortDateString()</Badge>
         }
     }
-    @if (Rating.HasValue)
+    @if (Rating.HasValue && string.IsNullOrEmpty(RankUpDown))
     {
         if (Rating >= 8)
         {
@@ -30,6 +30,21 @@
         else if (Rating > 0)
         {
             <Badge Color="Color.Danger" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">@Rating.Value.ToString("#.#")</Badge>
+        }
+    }
+    @if (!string.IsNullOrEmpty(RankUpDown) && RankUpDown != "0")
+    {
+        @if (RankUpDown.Contains("+"))
+        {
+            <Badge Color="Color.Success" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">
+                <Blazorise.Icon Name="FontAwesomeIcons.ArrowUp" TextColor="TextColor.Light"></Blazorise.Icon> @RankUpDown.Replace("+","")
+            </Badge>
+        }
+        else
+        {
+            <Badge Color="Color.Danger" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; right: 3px; z-index: 1;">
+                <Blazorise.Icon Name="FontAwesomeIcons.ArrowDown" TextColor="TextColor.Light"></Blazorise.Icon> @RankUpDown.Replace("-","")
+            </Badge>
         }
     }
     @if (string.IsNullOrEmpty(Poster))
@@ -89,4 +104,5 @@
     [Parameter] public int? Runtime { get; set; }
     [Parameter] public bool ShowWished { get; set; } = true;
     [Parameter] public bool ShowWatched { get; set; } = true;
+    [Parameter] public string? RankUpDown { get; set; }
 }

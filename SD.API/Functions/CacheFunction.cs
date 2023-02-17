@@ -1,6 +1,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.Shared.Core.Models;
+using SD.Shared.Model.List.Imdb;
 using SD.Shared.Models.List.Imdb;
 using SD.Shared.Models.News;
 using SD.Shared.Models.Trailers;
@@ -107,6 +108,66 @@ namespace SD.API.Functions
                     if (obj == null) return await req.ProcessObject(obj, cancellationToken);
 
                     model = await _cacheRepo.Add(new YoutubeCache(obj), cancellationToken);
+                }
+
+                return await req.ProcessObject(model, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                return req.ProcessException(ex);
+            }
+        }
+
+        [Function("ImdbPopularMovies")]
+        public async Task<HttpResponseData> ImdbPopularMovies(
+           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/ImdbPopularMovies")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var model = await _cacheRepo.Get<MostPopularData>("popularmovies", cancellationToken);
+
+                if (model == null)
+                {
+                    var parameter = new Dictionary<string, string>() { { "apiKey", ImdbOptions.ApiKey } };
+
+                    using var http = new HttpClient();
+                    var obj = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularMovies".ConfigureParameters(parameter), cancellationToken);
+
+                    //processar as imagens
+
+                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+
+                    model = await _cacheRepo.Add(new MostPopularDataCache(obj, "popularmovies"), cancellationToken);
+                }
+
+                return await req.ProcessObject(model, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                return req.ProcessException(ex);
+            }
+        }
+
+        [Function("ImdbPopularTVs")]
+        public async Task<HttpResponseData> ImdbPopularTVs(
+           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/ImdbPopularTVs")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var model = await _cacheRepo.Get<MostPopularData>("populartvs", cancellationToken);
+
+                if (model == null)
+                {
+                    var parameter = new Dictionary<string, string>() { { "apiKey", ImdbOptions.ApiKey } };
+
+                    using var http = new HttpClient();
+                    var obj = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularTVs".ConfigureParameters(parameter), cancellationToken);
+
+                    //processar as imagens
+
+                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+
+                    model = await _cacheRepo.Add(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
                 }
 
                 return await req.ProcessObject(model, cancellationToken);

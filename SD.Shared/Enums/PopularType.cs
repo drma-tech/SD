@@ -2,11 +2,11 @@
 {
     public enum PopularType
     {
-        [Custom(Name = "StreamingName", ResourceType = typeof(Resources.Enum.PopularType))]
-        Streaming,
+        [Custom(Name = "MovieName", ResourceType = typeof(Resources.Enum.PopularType))]
+        Movie,
 
-        [Custom(Name = "RentName", ResourceType = typeof(Resources.Enum.PopularType))]
-        Rent,
+        [Custom(Name = "ShowName", ResourceType = typeof(Resources.Enum.PopularType))]
+        Show,
 
         [Custom(Name = "CinemaName", ResourceType = typeof(Resources.Enum.PopularType))]
         Cinema
