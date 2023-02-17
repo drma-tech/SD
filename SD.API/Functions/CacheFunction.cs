@@ -132,9 +132,6 @@ namespace SD.API.Functions
 
                     using var http = new HttpClient();
                     var obj = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularMovies".ConfigureParameters(parameter), cancellationToken);
-
-                    //processar as imagens
-
                     if (obj == null) return await req.ProcessObject(obj, cancellationToken);
 
                     model = await _cacheRepo.Add(new MostPopularDataCache(obj, "popularmovies"), cancellationToken);
@@ -162,12 +159,36 @@ namespace SD.API.Functions
 
                     using var http = new HttpClient();
                     var obj = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularTVs".ConfigureParameters(parameter), cancellationToken);
-
-                    //processar as imagens
-
                     if (obj == null) return await req.ProcessObject(obj, cancellationToken);
 
                     model = await _cacheRepo.Add(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
+                }
+
+                return await req.ProcessObject(model, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                return req.ProcessException(ex);
+            }
+        }
+
+        [Function("ImdbComingMovies")]
+        public async Task<HttpResponseData> ImdbComingMovies(
+           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/ImdbComingMovies")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var model = await _cacheRepo.Get<NewMovieData>("comingmovies", cancellationToken);
+
+                if (model == null)
+                {
+                    var parameter = new Dictionary<string, string>() { { "apiKey", ImdbOptions.ApiKey } };
+
+                    using var http = new HttpClient();
+                    var obj = await http.Get<NewMovieData>(ImdbOptions.BaseUri + "ComingSoon".ConfigureParameters(parameter), cancellationToken);
+                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+
+                    model = await _cacheRepo.Add(new NewMovieDataCache(obj, "comingmovies"), cancellationToken);
                 }
 
                 return await req.ProcessObject(model, cancellationToken);

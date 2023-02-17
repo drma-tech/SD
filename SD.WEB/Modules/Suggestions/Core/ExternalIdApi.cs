@@ -21,7 +21,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                 { "external_source", "imdb_id" }
             };
 
-            var result = await GetAsync<FindByImdb>($"find/{imdb_id}".ConfigureParameters(parameter), true);
+            var result = await GetAsync<FindByImdb>(TmdbOptions.BaseUri + $"find/{imdb_id}".ConfigureParameters(parameter), true);
 
             return result?.tv_results.FirstOrDefault()?.id.ToString();
         }

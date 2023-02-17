@@ -48,7 +48,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
 
                     //TODO: tv api has wrong poster definitions
-                    var shortImage = item.Image?.Remove(item.Image.IndexOf("_V1_")) + "_V1_UX128_CR0,12,128,176_AL_.jpg";
+                    var shortImage = !string.IsNullOrEmpty(item.Image) && item.Image.Contains("_V1_") ? item.Image?.Remove(item.Image.IndexOf("_V1_")) + "_V1_UX128_CR0,12,128,176_AL_.jpg" : item.Image;
 
                     list_media.Add(new MediaDetail
                     {
