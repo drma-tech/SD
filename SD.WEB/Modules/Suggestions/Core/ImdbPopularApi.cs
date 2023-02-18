@@ -18,12 +18,15 @@ namespace SD.WEB.Modules.Suggestions.Core
 
             if (type == MediaType.movie)
             {
-                var result = await GetAsync<MostPopularDataCache>("Public/Cache/ImdbPopularMovies", false);
+                var result = await GetAsync<MostPopularDataCache>("Public/Cache/ImdbPopularMovies".ConfigureParameters(stringParameters), false);
 
                 foreach (var item in result?.Data?.Items ?? new List<MostPopularDataDetail>())
                 {
                     //if (item.IMDbRatingCount == "0") continue; //ignore low-rated movie
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
+
+                    //TODO: tv api has wrong poster definitions
+                    var shortImage = !string.IsNullOrEmpty(item.Image) && item.Image.Contains("_V1_") ? item.Image?.Remove(item.Image.IndexOf("_V1_")) + "_V1_UX128_CR0,12,128,176_AL_.jpg" : item.Image;
 
                     list_media.Add(new MediaDetail
                     {
@@ -31,7 +34,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                         title = item.Title,
                         //plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
                         release_date = new DateTime(int.Parse(item.Year ?? "0"), 1, 1),
-                        poster_small = item.Image,
+                        poster_small = shortImage,
                         rating = string.IsNullOrEmpty(item.IMDbRating) ? 0 : double.Parse(item.IMDbRating, CultureInfo.InvariantCulture),
                         MediaType = MediaType.movie,
                         RankUpDown = item.RankUpDown,
@@ -40,7 +43,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             }
             else if (type == MediaType.tv)
             {
-                var result = await GetAsync<MostPopularDataCache>("Public/Cache/ImdbPopularTVs", false);
+                var result = await GetAsync<MostPopularDataCache>("Public/Cache/ImdbPopularTVs".ConfigureParameters(stringParameters), false);
 
                 foreach (var item in result?.Data?.Items ?? new List<MostPopularDataDetail>())
                 {

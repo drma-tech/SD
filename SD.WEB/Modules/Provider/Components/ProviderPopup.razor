@@ -129,7 +129,7 @@
     {
         if (provider_id == null) throw new ArgumentNullException(nameof(provider_id));
 
-        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by } }; ;
+        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by } };
     }
 
     private async Task Add()

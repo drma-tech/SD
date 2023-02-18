@@ -15,11 +15,13 @@
 </HeaderComponent>
 @if (TypeSelected == PopularType.Movie)
 {
-    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false"></MediaList>
+    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false" 
+    StringParameters="Params"></MediaList>
 }
 else if (TypeSelected == PopularType.Show)
 {
-    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false" TypeSelected="MediaType.tv"></MediaList>
+    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false" 
+    StringParameters="Params" TypeSelected="MediaType.tv"></MediaList>
 }
 else if (TypeSelected == PopularType.Cinema)
 {
@@ -29,4 +31,6 @@ else if (TypeSelected == PopularType.Cinema)
 
 @code {
     public PopularType TypeSelected { get; set; } = PopularType.Movie;
+
+    public Dictionary<string, string> Params { get; set; } = new Dictionary<string, string>() { { "mode", "compact" } };
 }

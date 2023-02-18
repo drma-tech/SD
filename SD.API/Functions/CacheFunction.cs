@@ -23,7 +23,8 @@ namespace SD.API.Functions
         {
             try
             {
-                var model = await _cacheRepo.Get<Flixster>("lastnews", cancellationToken);
+                var mode = req.GetQueryParameters()["mode"];
+                var model = await _cacheRepo.Get<NewsModel>($"lastnews_{mode}", cancellationToken);
 
                 if (model == null)
                 {
@@ -31,10 +32,39 @@ namespace SD.API.Functions
                     var obj = await http.GetNewsByFlixter<Flixster>(cancellationToken);
                     if (obj == null) return await req.ProcessObject(obj, cancellationToken);
 
-                    model = await _cacheRepo.Add(new FlixsterCache(obj), cancellationToken);
-                }
+                    //compact
 
-                return await req.ProcessObject(model, cancellationToken);
+                    var compactModels = new NewsModel();
+
+                    foreach (var item in obj.data?.newsStories.Take(8) ?? Enumerable.Empty<NewsStory>())
+                    {
+                        if (item == null) continue;
+                        compactModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
+                    }
+
+                    var compactResult = await _cacheRepo.Add(new FlixsterCache(compactModels, "lastnews_compact"), cancellationToken);
+
+                    //full
+
+                    var fullModels = new NewsModel();
+
+                    foreach (var item in obj.data?.newsStories ?? Enumerable.Empty<NewsStory>())
+                    {
+                        if (item == null) continue;
+                        fullModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
+                    }
+
+                    var fullResult = await _cacheRepo.Add(new FlixsterCache(fullModels, "lastnews_full"), cancellationToken);
+
+                    if (mode == "compact")
+                        return await req.ProcessObject(compactResult, cancellationToken);
+                    else
+                        return await req.ProcessObject(fullResult, cancellationToken);
+                }
+                else
+                {
+                    return await req.ProcessObject(model, cancellationToken);
+                }
             }
             catch (Exception ex)
             {
@@ -99,7 +129,8 @@ namespace SD.API.Functions
         {
             try
             {
-                var model = await _cacheRepo.Get<Youtube>("lasttrailers", cancellationToken);
+                var mode = req.GetQueryParameters()["mode"];
+                var model = await _cacheRepo.Get<TrailerModel>($"lasttrailers_{mode}", cancellationToken);
 
                 if (model == null)
                 {
@@ -107,10 +138,39 @@ namespace SD.API.Functions
                     var obj = await http.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
                     if (obj == null) return await req.ProcessObject(obj, cancellationToken);
 
-                    model = await _cacheRepo.Add(new YoutubeCache(obj), cancellationToken);
-                }
+                    //compact
 
-                return await req.ProcessObject(model, cancellationToken);
+                    var compactModels = new TrailerModel();
+
+                    foreach (var item in obj.contents.Take(8).Select(s => s.video))
+                    {
+                        if (item == null) continue;
+                        compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails.First().url));
+                    }
+
+                    var compactResult = await _cacheRepo.Add(new YoutubeCache(compactModels, "lasttrailers_compact"), cancellationToken);
+
+                    //full
+
+                    var fullModels = new TrailerModel();
+
+                    foreach (var item in obj.contents.Select(s => s.video))
+                    {
+                        if (item == null) continue;
+                        fullModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[2].url));
+                    }
+
+                    var fullResult = await _cacheRepo.Add(new YoutubeCache(fullModels, "lasttrailers_full"), cancellationToken);
+
+                    if (mode == "compact")
+                        return await req.ProcessObject(compactResult, cancellationToken);
+                    else
+                        return await req.ProcessObject(fullResult, cancellationToken);
+                }
+                else
+                {
+                    return await req.ProcessObject(model, cancellationToken);
+                }
             }
             catch (Exception ex)
             {
@@ -124,7 +184,8 @@ namespace SD.API.Functions
         {
             try
             {
-                var model = await _cacheRepo.Get<MostPopularData>("popularmovies", cancellationToken);
+                var mode = req.GetQueryParameters()["mode"];
+                var model = await _cacheRepo.Get<MostPopularData>($"popularmovies_{mode}", cancellationToken);
 
                 if (model == null)
                 {
@@ -134,10 +195,39 @@ namespace SD.API.Functions
                     var obj = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularMovies".ConfigureParameters(parameter), cancellationToken);
                     if (obj == null) return await req.ProcessObject(obj, cancellationToken);
 
-                    model = await _cacheRepo.Add(new MostPopularDataCache(obj, "popularmovies"), cancellationToken);
-                }
+                    //compact
 
-                return await req.ProcessObject(model, cancellationToken);
+                    var compactModels = new MostPopularData();
+
+                    foreach (var item in obj.Items.Take(10))
+                    {
+                        if (item == null) continue;
+                        compactModels.Items.Add(item);
+                    }
+
+                    var compactResult = await _cacheRepo.Add(new MostPopularDataCache(compactModels, "popularmovies_compact"), cancellationToken);
+
+                    //full
+
+                    var fullModels = new MostPopularData();
+
+                    foreach (var item in obj.Items)
+                    {
+                        if (item == null) continue;
+                        fullModels.Items.Add(item);
+                    }
+
+                    var fullResult = await _cacheRepo.Add(new MostPopularDataCache(fullModels, "popularmovies_full"), cancellationToken);
+
+                    if (mode == "compact")
+                        return await req.ProcessObject(compactResult, cancellationToken);
+                    else
+                        return await req.ProcessObject(fullResult, cancellationToken);
+                }
+                else
+                {
+                    return await req.ProcessObject(model, cancellationToken);
+                }
             }
             catch (Exception ex)
             {

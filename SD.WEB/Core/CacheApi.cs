@@ -13,20 +13,21 @@ namespace SD.WEB.Core
 
         private struct Endpoint
         {
-            public const string News = "Public/Cache/News";
-            public const string Trailers = "Public/Cache/Trailers";
+            public static string News(string mode) => $"Public/Cache/News?mode={mode}";
+
+            public static string Trailers(string mode) => $"Public/Cache/Trailers?mode={mode}";
 
             public static string GetRatings(string id, DateTime? date) => $"Public/Cache/Ratings?id={id}&release_date={date}";
         }
 
-        public async Task<FlixsterCache?> GetNews()
+        public async Task<FlixsterCache?> GetNews(string mode)
         {
-            return await GetAsync<FlixsterCache>(Endpoint.News, false);
+            return await GetAsync<FlixsterCache>(Endpoint.News(mode), false);
         }
 
-        public async Task<YoutubeCache?> GetTrailers()
+        public async Task<YoutubeCache?> GetTrailers(string mode)
         {
-            return await GetAsync<YoutubeCache>(Endpoint.Trailers, false);
+            return await GetAsync<YoutubeCache>(Endpoint.Trailers(mode), false);
         }
 
         public async Task<RatingsCache?> GetRatings(string id, DateTime? releaseDate)

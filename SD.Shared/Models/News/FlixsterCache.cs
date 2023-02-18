@@ -2,12 +2,12 @@
 
 namespace SD.Shared.Models.News
 {
-    public class FlixsterCache : CacheDocument<Flixster>
+    public class FlixsterCache : CacheDocument<NewsModel>
     {
         public FlixsterCache()
         { }
 
-        public FlixsterCache(Flixster data) : base("lastnews", data, ttlCache.one_day)
+        public FlixsterCache(NewsModel data, string key) : base(key, data, ttlCache.one_day)
         { }
     }
 }
