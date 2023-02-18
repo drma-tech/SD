@@ -4,7 +4,7 @@
 @inject AnnouncementApi AnnouncementApi
 
 <Loading @ref="LoadingAnnouncements">
-    @foreach (var item in announcements.OrderByDescending(o => o.DtInsert))
+    @foreach (var item in announcement?.Items.OrderByDescending(o => o.Date) ?? Enumerable.Empty<AnnouncementItem>())
     {
         <Alert Color="Color.Info" Visible="true">
             <Heading Size="HeadingSize.Is5" TextColor="TextColor.Success">
@@ -18,7 +18,7 @@
 </Loading>
 
 @code {
-    private HashSet<AnnouncementModel> announcements = new();
+    private AnnouncementModel? announcement;
 
     public Loading? LoadingAnnouncements { get; set; }
 
@@ -26,8 +26,8 @@
     {
         LoadingAnnouncements?.Start();
 
-        announcements = await AnnouncementApi.GetList();
+        announcement = await AnnouncementApi.Get();
 
-        LoadingAnnouncements?.Finish(!announcements.Any());
+        LoadingAnnouncements?.Finish(announcement == null);
     }
 }

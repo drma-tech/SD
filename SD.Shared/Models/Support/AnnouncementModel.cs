@@ -9,13 +9,7 @@ namespace SD.Shared.Models.Support
         {
         }
 
-        [Required]
-        [Custom(Name = "Title", Prompt = "...")]
-        public string? Title { get; set; }
-
-        [Required]
-        [Custom(Name = "Description", Prompt = "...")]
-        public string? Description { get; set; }
+        public List<AnnouncementItem> Items { get; set; } = new();
 
         protected void Initialize()
         {
@@ -26,7 +20,7 @@ namespace SD.Shared.Models.Support
 
         public override bool HasValidData()
         {
-            return !string.IsNullOrEmpty(Title) && !string.IsNullOrEmpty(Description);
+            return Items.Any();
         }
 
         public override bool Equals(object? obj)
@@ -38,5 +32,18 @@ namespace SD.Shared.Models.Support
         {
             return Id?.GetHashCode() ?? 0;
         }
+    }
+
+    public class AnnouncementItem
+    {
+        [Required]
+        [Custom(Name = "Title", Prompt = "...")]
+        public string? Title { get; set; }
+
+        [Required]
+        [Custom(Name = "Description", Prompt = "...")]
+        public string? Description { get; set; }
+
+        public DateTime Date { get; set; }
     }
 }

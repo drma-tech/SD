@@ -16,13 +16,13 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
-        [Function("AnnouncementGetList")]
-        public async Task<HttpResponseData> AnnouncementGetList(
-           [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "Public/Announcements/GetList")] HttpRequestData req, CancellationToken cancellationToken)
+        [Function("AnnouncementGet")]
+        public async Task<HttpResponseData> AnnouncementGet(
+           [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "Public/Announcements/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _repo.Query<AnnouncementModel>(null, null, DocumentType.Announcement, cancellationToken);
+                var result = await _repo.Get<AnnouncementModel>("Announcement", new PartitionKey("Announcement"), cancellationToken);
 
                 return await req.ProcessObject(result, cancellationToken);
             }

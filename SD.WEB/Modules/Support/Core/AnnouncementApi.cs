@@ -11,12 +11,12 @@ namespace SD.WEB.Modules.Support.Core
 
         private struct Endpoint
         {
-            public const string GetList = "Public/Announcements/GetList";
+            public const string Get = "Public/Announcements/Get";
         }
 
-        public async Task<HashSet<AnnouncementModel>> GetList()
+        public async Task<AnnouncementModel?> Get()
         {
-            return await GetListAsync<AnnouncementModel>(Endpoint.GetList, false);
+            return await GetAsync<AnnouncementModel>(Endpoint.Get, false);
         }
     }
 }
