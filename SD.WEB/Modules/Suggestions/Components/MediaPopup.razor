@@ -10,7 +10,6 @@
 @inject TmdbApi TmdbApi
 @inject CacheApi CacheApi
 @inject ExternalIdApi ExternalIdApi
-@inject TmdbCreditApi TmdbCreditApi
 
 <ModalHeader>
     <ModalTitle>@media?.title</ModalTitle>
@@ -43,12 +42,13 @@
                 <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true">
                     <Items>
                         <Tab Name="About">@GlobalTranslations.TabAbout</Tab>
-                        <Tab Name="Streaming">@GlobalTranslations.TabStreaming.Format(@AppStateStatic.Region.GetName(false))</Tab>
+                        <Tab Name="Streaming">@GlobalTranslations.TabStreaming</Tab>
                         <Tab Name="Credits">@GlobalTranslations.TabCredits</Tab>
                         @if (media?.Collection.Any() ?? false)
                         {
                             <Tab Name="Collection">@GlobalTranslations.TabCollection</Tab>
                         }
+                        <Tab Name="Reviews">Reviews</Tab>
                     </Items>
                     <Content>
                         <TabPanel Name="About" Class="mt-2">
@@ -289,83 +289,7 @@
                             }
                         </TabPanel>
                         <TabPanel Name="Credits" Class="mt-2">
-                            @if (type == MediaType.movie)
-                            {
-                                var directors = Credits?.crew.Where(w => w.job == "Director").ToList() ?? new List<Crew>();
-                                if (directors.Any())
-                                {
-                                    <Divider DividerType="DividerType.TextContent" Text="@GlobalTranslations.Directing" />
-                                    <Row HorizontalGutter="4" VerticalGutter="4">
-                                        @foreach (var item in directors)
-                                        {
-                                            <Column ColumnSize="ColumnSize.Is2">
-                                                <Blazorise.Link Clicked="@(async() => await OpenCompleteList(item))" Style="cursor: pointer;">
-                                                    @if (string.IsNullOrEmpty(item.profile_path))
-                                                    {
-                                                        <Image Source="no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
-                                                    }
-                                                    else
-                                                    {
-                                                        <Image Source="@(TmdbOptions.FacePath + item.profile_path)" Text="@item.original_name" Style="width: 100%"></Image>
-                                                    }
-                                                </Blazorise.Link>
-                                            </Column>
-                                            <Column ColumnSize="ColumnSize.Is4">
-                                                <Paragraph Margin="Margin.Is0.FromBottom" TextWeight="TextWeight.Bold">@item.original_name</Paragraph>
-                                                <Paragraph Margin="Margin.Is0.FromBottom">@item.job</Paragraph>
-                                            </Column>
-                                        }
-                                    </Row>
-                                }
-                                var writers = Credits?.crew.Where(w => w.job == "Writer" || w.job == "Screenplay" || w.job == "Author" || w.job == "Story").ToList() ?? new List<Crew>();
-                                if (writers.Any())
-                                {
-                                    <Divider DividerType="DividerType.TextContent" Text="@GlobalTranslations.Writing" />
-                                    <Row HorizontalGutter="4" VerticalGutter="4">
-                                        @foreach (var item in writers)
-                                        {
-                                            <Column ColumnSize="ColumnSize.Is2">
-                                                <Blazorise.Link Clicked="@(async() => await OpenCompleteList(item))" Style="cursor: pointer;">
-                                                    @if (string.IsNullOrEmpty(item.profile_path))
-                                                    {
-                                                        <Image Source="no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
-                                                    }
-                                                    else
-                                                    {
-                                                        <Image Source="@(TmdbOptions.FacePath + item.profile_path)" Text="@item.original_name" Style="width: 100%"></Image>
-                                                    }
-                                                </Blazorise.Link>
-                                            </Column>
-                                            <Column ColumnSize="ColumnSize.Is4">
-                                                <Paragraph Margin="Margin.Is0.FromBottom" TextWeight="TextWeight.Bold">@item.original_name</Paragraph>
-                                                <Paragraph Margin="Margin.Is0.FromBottom">@item.job</Paragraph>
-                                            </Column>
-                                        }
-                                    </Row>
-                                }
-                            }
-                            <Divider DividerType="DividerType.TextContent" Text="@GlobalTranslations.Cast" />
-                            <Row HorizontalGutter="4" VerticalGutter="4">
-                                @foreach (var item in Credits?.cast.OrderBy(o => o.order).Take(24) ?? new List<Cast>())
-                                {
-                                    <Column ColumnSize="ColumnSize.Is2">
-                                        <Blazorise.Link Clicked="@(async() => await OpenCompleteList(item))" Style="cursor: pointer;">
-                                            @if (string.IsNullOrEmpty(item.profile_path))
-                                            {
-                                                <Image Source="no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
-                                            }
-                                            else
-                                            {
-                                                <Image Source="@(TmdbOptions.FacePath + item.profile_path)" Text="@item.original_name" Style="width: 100%"></Image>
-                                            }
-                                        </Blazorise.Link>
-                                    </Column>
-                                    <Column ColumnSize="ColumnSize.Is4">
-                                        <Paragraph Margin="Margin.Is0.FromBottom" TextWeight="TextWeight.Bold">@item.original_name</Paragraph>
-                                        <Paragraph Margin="Margin.Is0.FromBottom">@item.character</Paragraph>
-                                    </Column>
-                                }
-                            </Row>
+                            <CreditsComponent tmdb_id="@tmdb_id" type="@type"></CreditsComponent>
                         </TabPanel>
                         @if (media?.Collection.Any() ?? false)
                         {
@@ -424,6 +348,9 @@
                                 </Row>
                             </TabPanel>
                         }
+                        <TabPanel Name="Reviews" Class="mt-2">
+                            <ReviewComponent imdb_id="@imdb_id" type="@type"></ReviewComponent>
+                        </TabPanel>
                     </Content>
                 </Tabs>
             </Column>
@@ -495,7 +422,7 @@
     private MediaProviders? Providers { get; set; }
     private Ratings? Ratings { get; set; }
     private AllProviders? AllProviders { get; set; }
-    private Credits? Credits { get; set; }
+    public string imdb_id { get; set; }
 
     public bool IsUserAuthenticated { get; set; }
     string selectedTab = "About";
@@ -521,15 +448,13 @@
         Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
         AllProviders = await AllProvidersApi.GetAll();
 
-        var imdb_id = await ExternalIdApi.GetImdbId(type, tmdb_id);
+        imdb_id = await ExternalIdApi.GetImdbId(type, tmdb_id);
         if (!string.IsNullOrEmpty(imdb_id))
         {
             var cache = await CacheApi.GetRatings(imdb_id, media?.release_date);
 
             Ratings = (Ratings?)cache?.Data;
         }
-
-        Credits = await TmdbCreditApi.GetList(type, tmdb_id);
 
         StateHasChanged();
         LoadingList?.Finish(media == null);
@@ -865,94 +790,5 @@
                     Centered = true,
                     Size = ModalSize.Large,
                 });
-    }
-
-    private async Task OpenCompleteList(Crew crew)
-    {
-        try
-        {
-            var result = await TmdbCreditApi.GetListByPerson(crew.id.ToString());
-            var items = new HashSet<MediaDetail>();
-
-            foreach (var item in result?.crew.Where(w => w.job == crew.job) ?? Enumerable.Empty<CrewByPerson>())
-            {
-                var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
-                items.Add(new MediaDetail
-                    {
-                        tmdb_id = item.id.ToString(),
-                        title = type == MediaType.movie ? item.title : item.name,
-                        plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                        release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
-                        poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
-                        poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
-                        rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
-                        MediaType = type
-                    });
-            }
-
-            await ModalService.Show<CompleteListPopup>(null,
-                x =>
-                {
-                    x.Add(x => x.TitleHead, $"{crew.original_name} ({crew.job})");
-                    x.Add(x => x.Items, items.OrderByDescending(o => o.release_date).ToHashSet());
-                },
-                new ModalInstanceOptions()
-                    {
-                        UseModalStructure = false,
-                        Centered = true,
-                        Size = ModalSize.ExtraLarge,
-                    });
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
-    }
-
-    private async Task OpenCompleteList(Cast cast)
-    {
-        try
-        {
-            var result = await TmdbCreditApi.GetListByPerson(cast.id.ToString());
-            var items = new HashSet<MediaDetail>();
-
-            foreach (var item in result?.cast ?? new List<CastByPerson>())
-            {
-                var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
-
-                if (type == MediaType.movie && item.order > 24) continue;
-                if (type == MediaType.tv && item.episode_count < 3) continue;
-
-                items.Add(new MediaDetail
-                    {
-                        tmdb_id = item.id.ToString(),
-                        title = type == MediaType.movie ? item.title : item.name,
-                        plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                        release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
-                        poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
-                        poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
-                        rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
-                        MediaType = type,
-                        comments = type == MediaType.tv ? $"{item.episode_count} episodes" : ""
-                    });
-            }
-
-            await ModalService.Show<CompleteListPopup>(null,
-                x =>
-                {
-                    x.Add(x => x.TitleHead, $"{cast.original_name}");
-                    x.Add(x => x.Items, items.OrderByDescending(o => o.release_date).ToHashSet());
-                },
-                new ModalInstanceOptions()
-                    {
-                        UseModalStructure = false,
-                        Centered = true,
-                        Size = ModalSize.ExtraLarge,
-                    });
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
     }
 }

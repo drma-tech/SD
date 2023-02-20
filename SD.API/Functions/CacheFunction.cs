@@ -4,6 +4,7 @@ using SD.Shared.Core.Models;
 using SD.Shared.Model.List.Imdb;
 using SD.Shared.Models.List.Imdb;
 using SD.Shared.Models.News;
+using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
 
 namespace SD.API.Functions
@@ -279,6 +280,43 @@ namespace SD.API.Functions
                     if (obj == null) return await req.ProcessObject(obj, cancellationToken);
 
                     model = await _cacheRepo.Add(new NewMovieDataCache(obj, "comingmovies"), cancellationToken);
+                }
+
+                return await req.ProcessObject(model, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                return req.ProcessException(ex);
+            }
+        }
+
+        [Function("CacheReviews")]
+        public async Task<HttpResponseData> CacheReviews(
+           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Reviews")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                CacheDocument<ReviewModel>? model;
+
+                var id = req.GetQueryParameters()["id"];
+                _ = DateTime.TryParse(req.GetQueryParameters()["release_date"], out DateTime release_date);
+                model = await _cacheRepo.Get<ReviewModel>($"review_{id}", cancellationToken);
+
+                if (model == null)
+                {
+                    using var http = new HttpClient();
+                    var obj = await http.GetReviewsByImdb8<MetaCritic>(id, cancellationToken);
+                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+
+                    var newModel = new ReviewModel();
+
+                    foreach (var item in obj.reviews)
+                    {
+                        if (item == null) continue;
+                        newModel.Items.Add(new Shared.Models.Reviews.Item(item.reviewSite, item.reviewUrl, item.reviewer, item.score, item.quote));
+                    }
+
+                    model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}"), cancellationToken);
                 }
 
                 return await req.ProcessObject(model, cancellationToken);

@@ -1,0 +1,64 @@
+﻿@using SD.Shared.Models.Reviews;
+@using SD.WEB.Modules.Suggestions.Core;
+
+@inherits ComponenteCore<ReviewComponent>
+
+@inject ExternalIdApi ExternalIdApi
+@inject CacheApi CacheApi
+
+<Loading @ref="Loading">
+    <ListGroup Flush>
+        @foreach (var item in Model?.Items ?? new())
+        {
+            <ListGroupItem Padding="Padding.Is2">
+                <Heading Size="HeadingSize.Is6" Margin="Margin.Is1.FromBottom">
+                    <Badge Color="GetColorByRating(item?.score)" Margin="Margin.Is2.FromEnd">@item?.score</Badge> @(item?.reviewSite + (string.IsNullOrEmpty(item?.reviewer) ? "" : " | " + item?.reviewer))
+                </Heading>
+                <Small TextAlignment="TextAlignment.Justified">@item.quote</Small>
+                <Blazorise.Link To="@item.reviewUrl" Target="Target.Blank">Read More</Blazorise.Link>
+            </ListGroupItem>
+        }
+    </ListGroup>
+</Loading>
+
+@code {
+    [Parameter] public string? imdb_id { get; set; }
+    [Parameter] public MediaType? type { get; set; }
+
+    public Loading? Loading { get; set; }
+    public ReviewModel? Model { get; set; }
+
+    protected override async Task LoadData()
+    {
+        Loading?.Start();
+
+        if (!string.IsNullOrEmpty(imdb_id))
+        {
+            var cache = await CacheApi.GetReviews(imdb_id, null);
+
+            Model = (ReviewModel?)cache?.Data;
+        }
+
+        Loading?.Finish(Model == null || !Model.Items.Any());
+    }
+
+    private Color GetColorByRating(int? val)
+    {
+        if (!val.HasValue) return Color.Secondary;
+
+        if (val > 10) val = val / 10;
+
+        if (val >= 8)
+        {
+            return Color.Success;
+        }
+        else if (val >= 6)
+        {
+            return Color.Warning;
+        }
+        else
+        {
+            return Color.Danger;
+        }
+    }
+}

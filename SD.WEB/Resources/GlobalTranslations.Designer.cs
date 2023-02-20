@@ -529,7 +529,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Streaming ({0}).
+        ///   Looks up a localized string similar to Streaming.
         /// </summary>
         public static string TabStreaming {
             get {

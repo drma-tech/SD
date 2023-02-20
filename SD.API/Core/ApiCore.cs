@@ -41,5 +41,19 @@ namespace SD.API.Core
 
             return await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken);
         }
+
+        public static async Task<T?> GetReviewsByImdb8<T>(this HttpClient http, string tconst, CancellationToken cancellationToken) where T : class
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"https://imdb8.p.rapidapi.com/title/get-metacritic?tconst={tconst}");
+
+            request.Headers.TryAddWithoutValidation("X-RapidAPI-Key", "36af8735e3msh39423dcd3a94067p1975bdjsn4536c4c2ed8a");
+            request.Headers.TryAddWithoutValidation("X-RapidAPI-Host", "imdb8.p.rapidapi.com");
+
+            var response = await http.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
+
+            return await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken);
+        }
     }
 }
