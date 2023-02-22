@@ -25,38 +25,38 @@ namespace SD.API.Core
             {
                 _logger.LogError(ex, "Error processing invocation");
 
-                //var httpReqData = await context.GetHttpRequestDataAsync();
+                var httpReqData = await context.GetHttpRequestDataAsync();
 
-                //if (httpReqData != null)
-                //{
-                //    // Create an instance of HttpResponseData with 500 status code.
-                //    var newHttpResponse = httpReqData.CreateResponse(HttpStatusCode.InternalServerError);
-                //    // You need to explicitly pass the status code in WriteAsJsonAsync method.
-                //    // https://github.com/Azure/azure-functions-dotnet-worker/issues/776
-                //    await newHttpResponse.WriteAsJsonAsync(new { FooStatus = "Invocation failed!" }, newHttpResponse.StatusCode);
+                if (httpReqData != null)
+                {
+                    // Create an instance of HttpResponseData with 500 status code.
+                    var newHttpResponse = httpReqData.CreateResponse(HttpStatusCode.InternalServerError);
+                    // You need to explicitly pass the status code in WriteAsJsonAsync method.
+                    // https://github.com/Azure/azure-functions-dotnet-worker/issues/776
+                    await newHttpResponse.WriteAsJsonAsync(new { FooStatus = "Invocation failed!" }, newHttpResponse.StatusCode);
 
-                //    var invocationResult = context.GetInvocationResult();
+                    var invocationResult = context.GetInvocationResult();
 
-                //    var httpOutputBindingFromMultipleOutputBindings = GetHttpOutputBindingFromMultipleOutputBinding(context);
-                //    if (httpOutputBindingFromMultipleOutputBindings is not null)
-                //    {
-                //        httpOutputBindingFromMultipleOutputBindings.Value = newHttpResponse;
-                //    }
-                //    else
-                //    {
-                //        invocationResult.Value = newHttpResponse;
-                //    }
-                //}
+                    var httpOutputBindingFromMultipleOutputBindings = GetHttpOutputBindingFromMultipleOutputBinding(context);
+                    if (httpOutputBindingFromMultipleOutputBindings is not null)
+                    {
+                        httpOutputBindingFromMultipleOutputBindings.Value = newHttpResponse;
+                    }
+                    else
+                    {
+                        invocationResult.Value = newHttpResponse;
+                    }
+                }
             }
         }
 
-        //private OutputBindingData<HttpResponseData> GetHttpOutputBindingFromMultipleOutputBinding(FunctionContext context)
-        //{
-        //    // The output binding entry name will be "$return" only when the function return type is HttpResponseData
-        //    var httpOutputBinding = context.GetOutputBindings<HttpResponseData>()
-        //        .FirstOrDefault(b => b.BindingType == "http" && b.Name != "$return");
+        private OutputBindingData<HttpResponseData> GetHttpOutputBindingFromMultipleOutputBinding(FunctionContext context)
+        {
+            // The output binding entry name will be "$return" only when the function return type is HttpResponseData
+            var httpOutputBinding = context.GetOutputBindings<HttpResponseData>()
+                .FirstOrDefault(b => b.BindingType == "http" && b.Name != "$return");
 
-        //    return httpOutputBinding;
-        //}
+            return httpOutputBinding;
+        }
     }
 }
