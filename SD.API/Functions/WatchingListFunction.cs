@@ -21,7 +21,9 @@ namespace SD.API.Functions
         {
             try
             {
-                return await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
+                var userId = req.GetUserId();
+
+                return await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, new PartitionKey(userId), cancellationToken);
             }
             catch (Exception ex)
             {
@@ -37,14 +39,16 @@ namespace SD.API.Functions
         {
             try
             {
-                var obj = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
+                var userId = req.GetUserId();
+
+                var obj = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, new PartitionKey(userId), cancellationToken);
                 var newItem = await req.GetPublicBody<WatchingListItem>(cancellationToken);
 
                 if (obj == null)
                 {
                     obj = new();
 
-                    obj.Initialize(req.GetUserId());
+                    obj.Initialize(userId);
                 }
                 else
                 {
@@ -69,13 +73,15 @@ namespace SD.API.Functions
         {
             try
             {
-                var obj = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
+                var userId = req.GetUserId();
+
+                var obj = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, new PartitionKey(userId), cancellationToken);
 
                 if (obj == null)
                 {
                     obj = new();
 
-                    obj.Initialize(req.GetUserId());
+                    obj.Initialize(userId);
                 }
                 else
                 {
@@ -100,13 +106,15 @@ namespace SD.API.Functions
         {
             try
             {
-                var obj = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
+                var userId = req.GetUserId();
+
+                var obj = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, new PartitionKey(userId), cancellationToken);
 
                 if (obj == null)
                 {
                     obj = new();
 
-                    obj.Initialize(req.GetUserId());
+                    obj.Initialize(userId);
                 }
                 else
                 {

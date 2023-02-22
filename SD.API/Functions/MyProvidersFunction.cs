@@ -22,10 +22,11 @@ namespace SD.API.Functions
             try
             {
                 MyProviders? model;
+                var userId = req.GetUserId();
 
                 if (req.Method == Method.GET)
                 {
-                    model = await _repo.Get<MyProviders>(DocumentType.MyProvider + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
+                    model = await _repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, new PartitionKey(userId), cancellationToken);
                 }
                 else
                 {
