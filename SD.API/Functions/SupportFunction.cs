@@ -52,9 +52,7 @@ namespace SD.API.Functions
         {
             try
             {
-                var userId = req.GetUserId();
-
-                return await _repo.Query<TicketVoteModel>(x => x.IdVotedUser == userId, null, DocumentType.TicketVote, cancellationToken);
+                return await _repo.Query<TicketVoteModel>(x => x.IdVotedUser == req.GetUserId(), null, DocumentType.TicketVote, cancellationToken);
             }
             catch (Exception ex)
             {

@@ -22,9 +22,7 @@ namespace SD.API.Functions
         {
             try
             {
-                var userId = req.GetUserId();
-
-                return await _repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + userId, new PartitionKey(userId), cancellationToken);
+                return await _repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
             }
             catch (Exception ex)
             {

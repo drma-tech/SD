@@ -21,9 +21,7 @@ namespace SD.API.Functions
         {
             try
             {
-                var userId = req.GetUserId();
-
-                return await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + userId, new PartitionKey(userId), cancellationToken);
+                return await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
             }
             catch (Exception ex)
             {
@@ -39,15 +37,13 @@ namespace SD.API.Functions
         {
             try
             {
-                var userId = req.GetUserId();
-
-                var obj = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + userId, new PartitionKey(userId), cancellationToken);
+                var obj = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
 
                 if (obj == null)
                 {
                     obj = new();
 
-                    obj.Initialize(userId);
+                    obj.Initialize(req.GetUserId());
                 }
                 else
                 {
@@ -73,15 +69,13 @@ namespace SD.API.Functions
         {
             try
             {
-                var userId = req.GetUserId();
-
-                var obj = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + userId, new PartitionKey(userId), cancellationToken);
+                var obj = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
 
                 if (obj == null)
                 {
                     obj = new();
 
-                    obj.Initialize(userId);
+                    obj.Initialize(req.GetUserId());
                 }
                 else
                 {
