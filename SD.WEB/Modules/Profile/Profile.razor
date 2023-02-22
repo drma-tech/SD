@@ -1,7 +1,12 @@
 ﻿@page "/Profile"
+@using SD.WEB.Modules.Profile.Core;
 <SeoHeader Title="@SeoTranslations.ProfileTitle" Description="@SeoTranslations.ProfileDescription" Url="/Profile"></SeoHeader>
 @inherits PageNoDataCore<Profile>
 @inject HttpClient http
+
+@inject MyProvidersApi MyProvidersApi
+
+<Div>UserId: @UserId</Div>
 
 <MyProviderComponent Fake="Fake"></MyProviderComponent>
 
@@ -17,9 +22,14 @@
 @code {
     [Parameter][SupplyParameterFromQuery(Name = "Fake")] public bool Fake { get; set; } = false;
 
+    public string? UserId { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
+        var response = await http.GetAsync("http://localhost:7071/api/Principal/GetUserId");
+        UserId = await response.Content.ReadAsStringAsync();
 
         if (Fake)
         {

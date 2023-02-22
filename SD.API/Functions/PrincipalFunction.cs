@@ -16,6 +16,21 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
+        [Function("PrincipalGetUserId")]
+        public static string? GetUserId(
+          [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Principal/GetUserId")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                return req.GetUserId();
+            }
+            catch (Exception ex)
+            {
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
+            }
+        }
+
         [Function("PrincipalGet")]
         public async Task<ClientePrincipal?> Get(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Principal/Get")] HttpRequestData req, CancellationToken cancellationToken)
