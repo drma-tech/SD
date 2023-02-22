@@ -64,23 +64,10 @@ namespace SD.API.Core
             return dictionary;
         }
 
-        public static HttpResponseData ProcessException(this HttpRequestData req, Exception ex)
+        public static void ProcessException(this HttpRequestData req, Exception ex)
         {
-            //logger
             var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
             logger?.LogError(ex, req.BuildState(), req.BuildParams());
-
-            //response data
-            var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
-            errorResponse.WriteString(ex.BuildException() ?? "");
-            return errorResponse;
-        }
-
-        public static async Task<HttpResponseData> ProcessObject<T>(this HttpRequestData req, T instance, CancellationToken cancellationToken)
-        {
-            var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
-            await response.WriteAsJsonAsync(instance, cancellationToken);
-            return response;
         }
 
         private static string[] BuildParams(this HttpRequestData req)
@@ -97,7 +84,7 @@ namespace SD.API.Core
             return string.Join("", valueCollection.AllKeys.Select((key) => $"{key?.ToLowerInvariant()}={{{key?.ToLowerInvariant()}}}|"));
         }
 
-        private static string? BuildException(this Exception ex)
+        public static string? BuildException(this Exception ex)
         {
             if (ex is CosmosException cex)
             {

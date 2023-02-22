@@ -16,23 +16,22 @@ namespace SD.API.Functions
         }
 
         [Function("WatchingListGet")]
-        public async Task<HttpResponseData> Get(
+        public async Task<WatchingList?> Get(
             [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "WatchingList/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
-
-                return await req.ProcessObject(result, cancellationToken);
+                return await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("WatchingListAdd")]
-        public async Task<HttpResponseData> Add(
+        public async Task<WatchingList?> Add(
             [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WatchingList/Add/{MediaType}")] HttpRequestData req,
             string MediaType, CancellationToken cancellationToken)
         {
@@ -54,18 +53,17 @@ namespace SD.API.Functions
 
                 obj.AddItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), newItem);
 
-                obj = await _repo.Upsert(obj, cancellationToken);
-
-                return await req.ProcessObject(obj, cancellationToken);
+                return await _repo.Upsert(obj, cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("WatchingListRemove")]
-        public async Task<HttpResponseData> Remove(
+        public async Task<WatchingList?> Remove(
             [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WatchingList/Remove/{MediaType}/{CollectionId}/{TmdbId}")] HttpRequestData req,
             string MediaType, string CollectionId, string TmdbId, CancellationToken cancellationToken)
         {
@@ -86,18 +84,17 @@ namespace SD.API.Functions
 
                 obj.RemoveItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), CollectionId, TmdbId == "null" ? null : TmdbId);
 
-                obj = await _repo.Upsert(obj, cancellationToken);
-
-                return await req.ProcessObject(obj, cancellationToken);
+                return await _repo.Upsert(obj, cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("WatchingListSync")]
-        public async Task<HttpResponseData> Sync(
+        public async Task<WatchingList?> Sync(
             [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WatchingList/Sync/{MediaType}")] HttpRequestData req,
             string MediaType, CancellationToken cancellationToken)
         {
@@ -127,13 +124,12 @@ namespace SD.API.Functions
                     obj.ShowSyncDate = DateTime.Now;
                 }
 
-                obj = await _repo.Upsert(obj, cancellationToken);
-
-                return await req.ProcessObject(obj, cancellationToken);
+                return await _repo.Upsert(obj, cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
     }

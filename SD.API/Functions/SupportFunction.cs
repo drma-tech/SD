@@ -17,73 +17,69 @@ namespace SD.API.Functions
         }
 
         [Function("AnnouncementGet")]
-        public async Task<HttpResponseData> AnnouncementGet(
+        public async Task<AnnouncementModel?> AnnouncementGet(
            [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "Public/Announcements/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _repo.Get<AnnouncementModel>("Announcement", new PartitionKey("Announcement"), cancellationToken);
-
-                return await req.ProcessObject(result, cancellationToken);
+                return await _repo.Get<AnnouncementModel>("Announcement", new PartitionKey("Announcement"), cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("TicketGetList")]
-        public async Task<HttpResponseData> TicketGetList(
+        public async Task<List<TicketModel>> TicketGetList(
             [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "Public/Ticket/GetList")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _repo.Query<TicketModel>(null, null, DocumentType.Ticket, cancellationToken);
-
-                return await req.ProcessObject(result, cancellationToken);
+                return await _repo.Query<TicketModel>(null, null, DocumentType.Ticket, cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("TicketGetMyVotes")]
-        public async Task<HttpResponseData> TicketGetMyVotes(
+        public async Task<List<TicketVoteModel>> TicketGetMyVotes(
             [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "Ticket/GetMyVotes")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _repo.Query<TicketVoteModel>(x => x.IdVotedUser == req.GetUserId(), null, DocumentType.TicketVote, cancellationToken);
-
-                return await req.ProcessObject(result, cancellationToken);
+                return await _repo.Query<TicketVoteModel>(x => x.IdVotedUser == req.GetUserId(), null, DocumentType.TicketVote, cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("TicketInsert")]
-        public async Task<HttpResponseData> TicketInsert(
+        public async Task<TicketModel?> TicketInsert(
             [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "Ticket/Insert")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
                 var item = await req.GetPublicBody<TicketModel>(cancellationToken);
 
-                var result = await _repo.Upsert(item, cancellationToken);
-
-                return await req.ProcessObject(result, cancellationToken);
+                return await _repo.Upsert(item, cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("TicketVote")]
-        public async Task<HttpResponseData> TicketVote(
+        public async Task<TicketVoteModel?> TicketVote(
             [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "Ticket/Vote")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -97,13 +93,12 @@ namespace SD.API.Functions
 
                 item.IdVotedUser = req.GetUserId();
 
-                var result = await _repo.Upsert(item, cancellationToken);
-
-                return await req.ProcessObject(result, cancellationToken);
+                return await _repo.Upsert(item, cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
     }

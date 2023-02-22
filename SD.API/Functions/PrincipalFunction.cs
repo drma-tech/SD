@@ -17,36 +17,34 @@ namespace SD.API.Functions
         }
 
         [Function("PrincipalGet")]
-        public async Task<HttpResponseData> Get(
+        public async Task<ClientePrincipal?> Get(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Principal/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
-
-                return await req.ProcessObject(result, cancellationToken);
+                return await _repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("PrincipalAdd")]
-        public async Task<HttpResponseData> Add(
+        public async Task<ClientePrincipal?> Add(
             [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "Principal/Add")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
                 var body = await req.GetBody<ClientePrincipal>(cancellationToken);
 
-                var result = await _repo.Upsert(body, cancellationToken);
-
-                return await req.ProcessObject(result, cancellationToken);
+                return await _repo.Upsert(body, cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
     }

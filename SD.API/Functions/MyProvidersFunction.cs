@@ -16,7 +16,7 @@ namespace SD.API.Functions
         }
 
         [Function("MyProviders")]
-        public async Task<HttpResponseData> MyProviders(
+        public async Task<MyProviders?> MyProviders(
             [HttpTrigger(AuthorizationLevel.Function, Method.GET, Method.POST, Route = "MyProviders")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -34,11 +34,12 @@ namespace SD.API.Functions
                     model = await _repo.Upsert(model, cancellationToken);
                 }
 
-                return await req.ProcessObject(model, cancellationToken);
+                return model;
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
     }

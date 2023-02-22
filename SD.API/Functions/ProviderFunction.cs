@@ -17,23 +17,22 @@ namespace SD.API.Functions
         }
 
         [Function("PublicProviderGetAll")]
-        public async Task<HttpResponseData> GetAll(
+        public async Task<AllProviders?> GetAll(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Provider/GetAll")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _repo.Get<AllProviders>("providers", new PartitionKey("providers"), cancellationToken);
-
-                return await req.ProcessObject(result, cancellationToken);
+                return await _repo.Get<AllProviders>("providers", new PartitionKey("providers"), cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("ProviderPost")]
-        public async Task<HttpResponseData> Post(
+        public async Task<AllProviders?> Post(
             [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "Provider/Post")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -48,16 +47,17 @@ namespace SD.API.Functions
                     await _repo.Upsert(AllProviders, cancellationToken);
                 }
 
-                return await req.ProcessObject(AllProviders, cancellationToken);
+                return AllProviders;
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("ProviderSyncProviders")]
-        public async Task<HttpResponseData> SyncProviders(
+        public async Task<AllProviders?> SyncProviders(
            [HttpTrigger(AuthorizationLevel.Function, Method.PUT, Route = "Provider/SyncProviders")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -100,11 +100,12 @@ namespace SD.API.Functions
                     }
                 }
 
-                return await req.ProcessObject(AllProviders, cancellationToken);
+                return AllProviders;
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 

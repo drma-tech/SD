@@ -19,7 +19,7 @@ namespace SD.API.Functions
         }
 
         [Function("CacheNew")]
-        public async Task<HttpResponseData> CacheNew(
+        public async Task<CacheDocument<NewsModel>?> CacheNew(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/News")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -31,7 +31,7 @@ namespace SD.API.Functions
                 {
                     using var http = new HttpClient();
                     var obj = await http.GetNewsByFlixter<Flixster>(cancellationToken);
-                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+                    if (obj == null) return null;
 
                     //compact
 
@@ -58,23 +58,24 @@ namespace SD.API.Functions
                     var fullResult = await _cacheRepo.Add(new FlixsterCache(fullModels, "lastnews_full"), cancellationToken);
 
                     if (mode == "compact")
-                        return await req.ProcessObject(compactResult, cancellationToken);
+                        return compactResult;
                     else
-                        return await req.ProcessObject(fullResult, cancellationToken);
+                        return fullResult;
                 }
                 else
                 {
-                    return await req.ProcessObject(model, cancellationToken);
+                    return model;
                 }
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("CacheRatings")]
-        public async Task<HttpResponseData> CacheRatings(
+        public async Task<CacheDocument<Ratings>?> CacheRatings(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Ratings")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -89,7 +90,7 @@ namespace SD.API.Functions
                 {
                     using var http = new HttpClient();
                     var obj = await http.Get<Ratings>(ImdbOptions.BaseUri + $"Ratings/{ImdbOptions.ApiKey}/{id}", cancellationToken);
-                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+                    if (obj == null) return null;
 
                     if (string.IsNullOrEmpty(obj.errorMessage))
                     {
@@ -116,16 +117,17 @@ namespace SD.API.Functions
                     }
                 }
 
-                return await req.ProcessObject(model, cancellationToken);
+                return model;
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("CacheTrailers")]
-        public async Task<HttpResponseData> CacheTrailers(
+        public async Task<CacheDocument<TrailerModel>?> CacheTrailers(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Trailers")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -137,7 +139,7 @@ namespace SD.API.Functions
                 {
                     using var http = new HttpClient();
                     var obj = await http.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
-                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+                    if (obj == null) return null;
 
                     //compact
 
@@ -164,23 +166,24 @@ namespace SD.API.Functions
                     var fullResult = await _cacheRepo.Add(new YoutubeCache(fullModels, "lasttrailers_full"), cancellationToken);
 
                     if (mode == "compact")
-                        return await req.ProcessObject(compactResult, cancellationToken);
+                        return compactResult;
                     else
-                        return await req.ProcessObject(fullResult, cancellationToken);
+                        return fullResult;
                 }
                 else
                 {
-                    return await req.ProcessObject(model, cancellationToken);
+                    return model;
                 }
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("ImdbPopularMovies")]
-        public async Task<HttpResponseData> ImdbPopularMovies(
+        public async Task<CacheDocument<MostPopularData>?> ImdbPopularMovies(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/ImdbPopularMovies")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -194,7 +197,7 @@ namespace SD.API.Functions
 
                     using var http = new HttpClient();
                     var obj = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularMovies".ConfigureParameters(parameter), cancellationToken);
-                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+                    if (obj == null) return null;
 
                     //compact
 
@@ -221,23 +224,24 @@ namespace SD.API.Functions
                     var fullResult = await _cacheRepo.Add(new MostPopularDataCache(fullModels, "popularmovies_full"), cancellationToken);
 
                     if (mode == "compact")
-                        return await req.ProcessObject(compactResult, cancellationToken);
+                        return compactResult;
                     else
-                        return await req.ProcessObject(fullResult, cancellationToken);
+                        return fullResult;
                 }
                 else
                 {
-                    return await req.ProcessObject(model, cancellationToken);
+                    return model;
                 }
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("ImdbPopularTVs")]
-        public async Task<HttpResponseData> ImdbPopularTVs(
+        public async Task<CacheDocument<MostPopularData>?> ImdbPopularTVs(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/ImdbPopularTVs")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -250,21 +254,22 @@ namespace SD.API.Functions
 
                     using var http = new HttpClient();
                     var obj = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularTVs".ConfigureParameters(parameter), cancellationToken);
-                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+                    if (obj == null) return null;
 
                     model = await _cacheRepo.Add(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
                 }
 
-                return await req.ProcessObject(model, cancellationToken);
+                return model;
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("ImdbComingMovies")]
-        public async Task<HttpResponseData> ImdbComingMovies(
+        public async Task<CacheDocument<NewMovieData>?> ImdbComingMovies(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/ImdbComingMovies")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -277,21 +282,22 @@ namespace SD.API.Functions
 
                     using var http = new HttpClient();
                     var obj = await http.Get<NewMovieData>(ImdbOptions.BaseUri + "ComingSoon".ConfigureParameters(parameter), cancellationToken);
-                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+                    if (obj == null) return null;
 
                     model = await _cacheRepo.Add(new NewMovieDataCache(obj, "comingmovies"), cancellationToken);
                 }
 
-                return await req.ProcessObject(model, cancellationToken);
+                return model;
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("CacheReviews")]
-        public async Task<HttpResponseData> CacheReviews(
+        public async Task<CacheDocument<ReviewModel>?> CacheReviews(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Reviews")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -306,7 +312,7 @@ namespace SD.API.Functions
                 {
                     using var http = new HttpClient();
                     var obj = await http.GetReviewsByImdb8<MetaCritic>(id, cancellationToken);
-                    if (obj == null) return await req.ProcessObject(obj, cancellationToken);
+                    if (obj == null) return null;
 
                     var newModel = new ReviewModel();
 
@@ -319,11 +325,12 @@ namespace SD.API.Functions
                     model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}"), cancellationToken);
                 }
 
-                return await req.ProcessObject(model, cancellationToken);
+                return model;
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
     }

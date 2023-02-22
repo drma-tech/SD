@@ -16,23 +16,22 @@ namespace SD.API.Functions
         }
 
         [Function("WishListGet")]
-        public async Task<HttpResponseData> Get(
+        public async Task<WishList?> Get(
             [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "WishList/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _repo.Get<WishList>(DocumentType.WishList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
-
-                return await req.ProcessObject(result, cancellationToken);
+                return await _repo.Get<WishList>(DocumentType.WishList + ":" + req.GetUserId(), new PartitionKey(req.GetUserId()), cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("WishListAdd")]
-        public async Task<HttpResponseData> Add(
+        public async Task<WishList?> Add(
             [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WishList/Add/{MediaType}")] HttpRequestData req,
             string MediaType, CancellationToken cancellationToken)
         {
@@ -54,18 +53,17 @@ namespace SD.API.Functions
 
                 obj.AddItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), newItem);
 
-                obj = await _repo.Upsert(obj, cancellationToken);
-
-                return await req.ProcessObject(obj, cancellationToken);
+                return await _repo.Upsert(obj, cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
 
         [Function("WishListRemove")]
-        public async Task<HttpResponseData> Remove(
+        public async Task<WishList?> Remove(
             [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WishList/Remove/{MediaType}/{TmdbId}")] HttpRequestData req,
             string MediaType, string TmdbId, CancellationToken cancellationToken)
         {
@@ -86,13 +84,12 @@ namespace SD.API.Functions
 
                 obj.RemoveItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), TmdbId);
 
-                obj = await _repo.Upsert(obj, cancellationToken);
-
-                return await req.ProcessObject(obj, cancellationToken);
+                return await _repo.Upsert(obj, cancellationToken);
             }
             catch (Exception ex)
             {
-                return req.ProcessException(ex);
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
             }
         }
     }
