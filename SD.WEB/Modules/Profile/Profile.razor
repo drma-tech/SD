@@ -28,7 +28,7 @@
     {
         await base.OnInitializedAsync();
 
-        var response = await http.GetAsync("http://localhost:7071/api/Principal/GetUserId");
+        var response = await http.GetAsync(BaseApi(false) + "Principal/GetUserId");
         UserId = await response.Content.ReadAsStringAsync();
 
         if (Fake)
@@ -37,5 +37,11 @@
             AppState.ChangeWatchedList(await http.GetFromJsonAsync<WatchedList>("/Data/WatchedList.json"));
             AppState.ChangeWatchingList(await http.GetFromJsonAsync<WatchingList>("/Data/WatchingList.json"));
         }
+    }
+
+    private string BaseApi(bool isExternalLink)
+    {
+        if (isExternalLink) return "";
+        else return http.BaseAddress?.ToString().Contains("localhost") ?? true ? "http://localhost:7071/api/" : http.BaseAddress.ToString() + "api/";
     }
 }
