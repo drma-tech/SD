@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -23,6 +24,8 @@ namespace SD.WEB.Core
             {
                 try
                 {
+                    if (response.StatusCode == HttpStatusCode.NoContent) return null;
+
                     return await response.Content.ReadFromJsonAsync<T>();
                 }
                 catch (NotSupportedException ex) // When content type is not valid
@@ -48,6 +51,8 @@ namespace SD.WEB.Core
             {
                 try
                 {
+                    if (response.StatusCode == HttpStatusCode.NoContent) return null;
+
                     return await response.Content.ReadFromJsonAsync<T>();
                 }
                 catch (NotSupportedException ex) // When content type is not valid
