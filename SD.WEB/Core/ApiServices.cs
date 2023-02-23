@@ -13,6 +13,59 @@ namespace SD.WEB.Core
         }
     }
 
+    public static class ApiServicesHelper
+    {
+        public static async Task<T?> GetJsonFromApi<T>(this HttpClient httpClient, string uri) where T : class
+        {
+            var response = await httpClient.GetAsync(uri);
+
+            if (response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    return await response.Content.ReadFromJsonAsync<T>();
+                }
+                catch (NotSupportedException ex) // When content type is not valid
+                {
+                    throw new InvalidDataException("The content type is not supported", ex.InnerException ?? ex);
+                }
+                catch (JsonException ex) // Invalid JSON
+                {
+                    throw new InvalidDataException("invalid json", ex.InnerException ?? ex);
+                }
+            }
+            else
+            {
+                throw new NotificationException(response.ReasonPhrase);
+            }
+        }
+
+        public static async Task<T?> GetJsonFromApi<T>(this HttpClient httpClient, HttpRequestMessage request) where T : class
+        {
+            var response = await httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    return await response.Content.ReadFromJsonAsync<T>();
+                }
+                catch (NotSupportedException ex) // When content type is not valid
+                {
+                    throw new InvalidDataException("The content type is not supported", ex.InnerException ?? ex);
+                }
+                catch (JsonException ex) // Invalid JSON
+                {
+                    throw new InvalidDataException("invalid json", ex.InnerException ?? ex);
+                }
+            }
+            else
+            {
+                throw new NotificationException(response.ReasonPhrase);
+            }
+        }
+    }
+
     public abstract class ApiServices
     {
         private HttpClient Http { get; set; }
@@ -43,16 +96,7 @@ namespace SD.WEB.Core
         {
             if (MemoryCache == null)
             {
-                var response = await Http.GetAsync(BaseApi(isExternalLink) + requestUri);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return await response.Content.ReadFromJsonAsync<HashSet<T>>() ?? new();
-                }
-                else
-                {
-                    throw new NotificationException(response.ReasonPhrase);
-                }
+                return await Http.GetJsonFromApi<HashSet<T>>(BaseApi(isExternalLink) + requestUri) ?? new();
             }
             else
             {
@@ -62,18 +106,9 @@ namespace SD.WEB.Core
 
                 if (result == null)
                 {
-                    var response = await Http.GetAsync(BaseApi(isExternalLink) + requestUri);
+                    result = await Http.GetJsonFromApi<HashSet<T>>(BaseApi(isExternalLink) + requestUri) ?? new();
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        result = await response.Content.ReadFromJsonAsync<HashSet<T>>() ?? new();
-
-                        MemoryCache.Set(requestUri, result, cacheSettings);
-                    }
-                    else
-                    {
-                        throw new NotificationException(response.ReasonPhrase);
-                    }
+                    MemoryCache.Set(requestUri, result, cacheSettings);
                 }
 
                 return result;
@@ -84,16 +119,7 @@ namespace SD.WEB.Core
         {
             if (MemoryCache == null)
             {
-                var response = await Http.GetAsync(BaseApi(isExternalLink) + requestUri);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return await response.Content.ReadFromJsonAsync<T>();
-                }
-                else
-                {
-                    throw new NotificationException(response.ReasonPhrase);
-                }
+                return await Http.GetJsonFromApi<T>(BaseApi(isExternalLink) + requestUri);
             }
             else
             {
@@ -103,18 +129,9 @@ namespace SD.WEB.Core
 
                 if (result == null)
                 {
-                    var response = await Http.GetAsync(BaseApi(isExternalLink) + requestUri);
+                    result = await Http.GetJsonFromApi<T>(BaseApi(isExternalLink) + requestUri);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        result = await response.Content.ReadFromJsonAsync<T>();
-
-                        MemoryCache.Set(requestUri, result, cacheSettings);
-                    }
-                    else
-                    {
-                        throw new NotificationException(response.ReasonPhrase);
-                    }
+                    MemoryCache.Set(requestUri, result, cacheSettings);
                 }
 
                 return result;
@@ -130,11 +147,7 @@ namespace SD.WEB.Core
                 //request.Headers.Add("authorization", "Bearer <<access_token>>");
                 request.Headers.TryAddWithoutValidation("content-type", "application/json;charset=utf-8");
 
-                var response = await Http.SendAsync(request);
-
-                if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
-
-                return await response.Content.ReadFromJsonAsync<T>();
+                return await Http.GetJsonFromApi<T>(request);
             }
             else
             {
@@ -149,18 +162,9 @@ namespace SD.WEB.Core
                     //request.Headers.Add("authorization", "Bearer <<access_token>>");
                     request.Headers.TryAddWithoutValidation("content-type", "application/json;charset=utf-8");
 
-                    var response = await Http.SendAsync(request);
+                    result = await Http.GetJsonFromApi<T>(request);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        result = await response.Content.ReadFromJsonAsync<T>();
-
-                        MemoryCache.Set(requestUri, result, cacheSettings);
-                    }
-                    else
-                    {
-                        throw new NotificationException(response.ReasonPhrase);
-                    }
+                    MemoryCache.Set(requestUri, result, cacheSettings);
                 }
 
                 return result;
