@@ -19,6 +19,7 @@ namespace SD.API.Functions
         }
 
         [Function("CacheNew")]
+        //[FixedDelayRetry(5, "00:00:10")] //TODO: still not available in isolated function
         public async Task<CacheDocument<NewsModel>?> CacheNew(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/News")] HttpRequestData req, CancellationToken cancellationToken)
         {
