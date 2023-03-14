@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Model.List.Tmdb;
 using SD.Shared.Models.List.Tmdb;
 
 namespace SD.WEB.Modules.Suggestions.Core

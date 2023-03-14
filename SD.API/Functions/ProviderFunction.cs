@@ -3,7 +3,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
 using SD.API.Repository.Core;
-using SD.Shared.Model.List.Tmdb;
+using SD.Shared.Models.List.Tmdb;
 
 namespace SD.API.Functions
 {

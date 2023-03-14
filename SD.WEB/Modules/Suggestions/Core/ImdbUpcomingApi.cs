@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Model.List.Imdb;
 using SD.Shared.Models.List.Imdb;
 using SD.WEB.Modules.Suggestions.Interface;
 using System.Globalization;

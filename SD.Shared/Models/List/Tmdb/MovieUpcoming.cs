@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Model.List.Tmdb
+﻿namespace SD.Shared.Models.List.Tmdb
 {
     public class ResultMovieUpcoming
     {
@@ -18,7 +18,7 @@
         public double vote_average { get; set; }
     }
 
-    public class Dates
+    public class DatesMovieUpcoming
     {
         public string? maximum { get; set; }
         public string? minimum { get; set; }
@@ -28,7 +28,7 @@
     {
         public int page { get; set; }
         public List<ResultMovieUpcoming> results { get; set; } = new();
-        public Dates? dates { get; set; }
+        public DatesMovieUpcoming? dates { get; set; }
         public int total_pages { get; set; }
         public int total_results { get; set; }
     }

@@ -31,7 +31,7 @@ namespace SD.API.Functions
                 else
                 {
                     model = await req.GetBody<MyProviders>(cancellationToken);
-                    
+
                     model = await _repo.Upsert(model, cancellationToken);
                 }
 

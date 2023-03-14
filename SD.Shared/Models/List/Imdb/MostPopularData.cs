@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Model.List.Imdb
+﻿namespace SD.Shared.Models.List.Imdb
 {
     public class MostPopularData
     {

@@ -3,7 +3,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
-using SD.Shared.Model.Auth;
+using SD.Shared.Models.Auth;
 
 namespace SD.API.Functions
 {

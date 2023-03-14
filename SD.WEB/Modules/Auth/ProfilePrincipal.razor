@@ -3,10 +3,9 @@
 @attribute [Authorize]
 
 @using System.Security.Claims
-@using SD.Shared.Model.Auth
+@using SD.Shared.Models.Auth
 @using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Auth.Resources
-@using SD.WEB.Modules.Profile.Core
 
 <EditForm Model="@principal" OnValidSubmit="HandleValidSubmit">
     <FluentValidationValidator />

@@ -26,6 +26,9 @@ namespace SD.WEB.Core
                 {
                     if (response.StatusCode == HttpStatusCode.NoContent) return null;
 
+                    //TODO: do it or not?
+                    //await response.ProcessResponse(toast: null, msgSuccess: "", msgInfo: "");
+
                     return await response.Content.ReadFromJsonAsync<T>();
                 }
                 catch (NotSupportedException ex) // When content type is not valid

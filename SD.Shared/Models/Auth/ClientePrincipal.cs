@@ -1,7 +1,7 @@
 ﻿using SD.Shared.Core.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace SD.Shared.Model.Auth
+namespace SD.Shared.Models.Auth
 {
     public class ClientePrincipal : PrivateMainDocument
     {

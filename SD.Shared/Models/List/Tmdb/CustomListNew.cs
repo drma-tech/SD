@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace SD.Shared.Model.List.Tmdb
+namespace SD.Shared.Models.List.Tmdb
 {
     public class CreatedByCustomListNew
     {

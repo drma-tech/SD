@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Model.List.Tmdb
+﻿namespace SD.Shared.Models.List.Tmdb
 {
     public class BelongsToCollection
     {

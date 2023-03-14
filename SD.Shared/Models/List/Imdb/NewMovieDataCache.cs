@@ -1,5 +1,4 @@
 ﻿using SD.Shared.Core.Models;
-using SD.Shared.Model.List.Imdb;
 
 namespace SD.Shared.Models.List.Imdb
 {

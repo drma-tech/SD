@@ -1,6 +1,6 @@
 ﻿namespace SD.Shared.Models.List.Tmdb
 {
-    public class Result
+    public class TmdbResult
     {
         public bool? adult { get; set; }
         public string? backdrop_path { get; set; }
@@ -25,7 +25,7 @@
     public class TmdbSearch
     {
         public int page { get; set; }
-        public List<Result> results { get; set; } = new();
+        public List<TmdbResult> results { get; set; } = new();
         public int total_pages { get; set; }
         public int total_results { get; set; }
     }
