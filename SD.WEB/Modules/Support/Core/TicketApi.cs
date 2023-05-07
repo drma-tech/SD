@@ -5,7 +5,7 @@ namespace SD.WEB.Modules.Support.Core
 {
     public class TicketApi : ApiServices
     {
-        public TicketApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
+        public TicketApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
         {
         }
 

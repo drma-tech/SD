@@ -5,7 +5,7 @@ namespace SD.WEB.Modules.Auth.Core
 {
     public class LoginApi : ApiServices
     {
-        public LoginApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
+        public LoginApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
         {
         }
 

@@ -6,6 +6,8 @@ using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Polly;
+using Polly.Extensions.Http;
 using SD.WEB;
 using SD.WEB.Modules.Auth.Core;
 using SD.WEB.Modules.Profile.Core;
@@ -13,6 +15,7 @@ using SD.WEB.Modules.Provider.Core;
 using SD.WEB.Modules.Suggestions.Core;
 using SD.WEB.Modules.Support.Core;
 using System.Globalization;
+using System.Net;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -42,9 +45,10 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddMediaQueryService();
     collection.AddMemoryCache();
 
-    collection
-        .AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) })
-        .AddStaticWebAppsAuthentication();
+    collection.AddHttpClient("RetryHttpClient", c => { c.BaseAddress = new Uri(baseAddress); })
+        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
+
+    collection.AddStaticWebAppsAuthentication();
 
     collection.AddScoped<PrincipalApi>();
     collection.AddScoped<LoginApi>();
@@ -109,4 +113,14 @@ static void ConfigureCulture(WebAssemblyHost? host)
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         }
     }
+}
+
+//https://github.com/App-vNext/Polly/wiki/Polly-and-HttpClientFactory
+static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+{
+    return HttpPolicyExtensions
+        .HandleTransientHttpError() // 408,5xx
+        .OrResult(msg => msg.StatusCode == HttpStatusCode.NotFound) // 404
+        .OrResult(msg => msg.StatusCode == HttpStatusCode.Unauthorized) // 401
+        .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))); // Retry 3 times, with wait 1, 2 and 4 seconds.
 }

@@ -5,7 +5,7 @@ namespace SD.WEB.Modules.Suggestions.Core
 {
     public class TmdbApi : ApiServices
     {
-        public TmdbApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
+        public TmdbApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
         {
         }
 

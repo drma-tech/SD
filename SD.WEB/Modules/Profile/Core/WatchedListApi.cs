@@ -2,7 +2,7 @@
 {
     public class WatchedListApi : ApiServices
     {
-        public WatchedListApi(HttpClient http, Microsoft.Extensions.Caching.Memory.IMemoryCache memoryCache) : base(http, memoryCache)
+        public WatchedListApi(IHttpClientFactory http, Microsoft.Extensions.Caching.Memory.IMemoryCache memoryCache) : base(http, memoryCache)
         {
         }
 

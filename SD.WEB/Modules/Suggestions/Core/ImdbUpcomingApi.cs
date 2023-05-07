@@ -7,7 +7,7 @@ namespace SD.WEB.Modules.Suggestions.Core
 {
     public class ImdbUpcomingApi : ApiServices, IMediaListApi
     {
-        public ImdbUpcomingApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
+        public ImdbUpcomingApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
         {
         }
 

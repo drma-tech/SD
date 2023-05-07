@@ -4,7 +4,7 @@ namespace SD.WEB.Modules.Profile.Core
 {
     public class MyProvidersApi : ApiServices
     {
-        public MyProvidersApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
+        public MyProvidersApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
         {
         }
 
