@@ -47,6 +47,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
         .AddStaticWebAppsAuthentication();
 
     collection.AddScoped<PrincipalApi>();
+    collection.AddScoped<LoginApi>();
     collection.AddScoped<WatchedListApi>();
     collection.AddScoped<WishListApi>();
     collection.AddScoped<WatchingListApi>();

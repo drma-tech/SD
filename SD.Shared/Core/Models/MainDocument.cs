@@ -10,7 +10,8 @@
         Ticket = 6,
         TicketVote = 7,
         Announcement = 8,
-        WatchingList = 9
+        WatchingList = 9,
+        Login = 10
     }
 
     public abstract class MainDocument : CosmosDocument

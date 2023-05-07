@@ -188,7 +188,11 @@ namespace SD.WEB.Core
         {
             var response = await Http.PostAsJsonAsync(BaseApi(isExternalLink) + requestUri, obj, new JsonSerializerOptions());
 
-            if (response.IsSuccessStatusCode)
+            if (response.StatusCode == HttpStatusCode.NoContent)
+            {
+                return default;
+            }
+            else if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<O>();
 
@@ -211,7 +215,11 @@ namespace SD.WEB.Core
         {
             var response = await Http.PutAsJsonAsync(BaseApi(isExternalLink) + requestUri, obj, new JsonSerializerOptions());
 
-            if (response.IsSuccessStatusCode)
+            if (response.StatusCode == HttpStatusCode.NoContent)
+            {
+                return default;
+            }
+            else if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<T>();
 
