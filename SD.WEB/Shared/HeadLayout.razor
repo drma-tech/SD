@@ -15,13 +15,13 @@
                         <Select TValue="Region" SelectedValue="@AppStateStatic.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromEnd">
                             @foreach (var item in Regions.OrderBy(o => o.Name))
                             {
-                                <SelectItem Value="@item.ValueObject">@(((Region)item.ValueObject).GetCustomAttribute(false)?.Name)</SelectItem>
+                                <SelectItem Value="@item.Value">@(item.Value.GetCustomAttribute(false)?.Name)</SelectItem>
                             }
                         </Select>
                         <Select TValue="Language" SelectedValue="@AppStateStatic.Language" SelectedValueChanged="LanguageValueChanged" Size="Size.Small" Style="width:auto;">
                             @foreach (var item in Languages.OrderBy(o => o.Name))
                             {
-                                <SelectItem Value="@item.ValueObject">@(((Language)item.ValueObject).GetCustomAttribute(false)?.Name)</SelectItem>
+                                <SelectItem Value="@item.Value">@(item.Value.GetCustomAttribute(false)?.Name)</SelectItem>
                             }
                         </Select>
                     </Matched>
@@ -29,13 +29,13 @@
                         <Select TValue="Region" SelectedValue="@AppStateStatic.Region" SelectedValueChanged="RegionValueChanged" Size="Size.Small" Style="width:auto;" Margin="Margin.Is2.FromEnd">
                             @foreach (var item in Regions.OrderBy(o => o.Name))
                             {
-                                <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>
+                                <SelectItem Value="@item.Value">@item.Name</SelectItem>
                             }
                         </Select>
                         <Select TValue="Language" SelectedValue="@AppStateStatic.Language" SelectedValueChanged="LanguageValueChanged" Size="Size.Small" Style="width:auto;">
                             @foreach (var item in Languages.OrderBy(o => o.Name))
                             {
-                                <SelectItem Value="@item.ValueObject">@item.Name</SelectItem>
+                                <SelectItem Value="@item.Value">@item.Name</SelectItem>
                             }
                         </Select>
                     </Unmatched>

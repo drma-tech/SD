@@ -16,7 +16,7 @@
         <Select TValue="MediaType" @bind-SelectedValue="SearchType">
             @foreach (var item in EnumHelper.GetObjArray<MediaType>())
             {
-                <SelectItem Value="@((MediaType)item.ValueObject)">@item.Name</SelectItem>
+                <SelectItem Value="@item.Value">@item.Name</SelectItem>
             }
         </Select>
     </Column>
