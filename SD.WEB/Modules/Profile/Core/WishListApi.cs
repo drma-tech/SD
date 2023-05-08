@@ -4,7 +4,7 @@ namespace SD.WEB.Modules.Profile.Core
 {
     public class WishListApi : ApiServices
     {
-        public WishListApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
+        public WishListApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
         {
         }
 
