@@ -5,7 +5,7 @@ namespace SD.WEB.Modules.Suggestions.Core
 {
     public class ExternalIdApi : ApiServices
     {
-        public ExternalIdApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
+        public ExternalIdApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
         {
         }
 
