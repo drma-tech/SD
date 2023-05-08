@@ -7,7 +7,7 @@ namespace SD.WEB.Modules.Suggestions.Core
     {
         private readonly TmdbListApi _tmdbListApi;
 
-        public ImdbTopRatedApi(IHttpClientFactory http, IMemoryCache memoryCache, TmdbListApi tmdbListApi) : base(http, memoryCache)
+        public ImdbTopRatedApi(HttpClient http, IMemoryCache memoryCache, TmdbListApi tmdbListApi) : base(http, memoryCache)
         {
             _tmdbListApi = tmdbListApi;
         }

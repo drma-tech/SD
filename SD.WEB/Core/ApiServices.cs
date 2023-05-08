@@ -79,9 +79,9 @@ namespace SD.WEB.Core
         private HttpClient Http { get; set; }
         private IMemoryCache MemoryCache { get; set; }
 
-        protected ApiServices(IHttpClientFactory httpClientFactory, IMemoryCache memoryCache)
+        protected ApiServices(HttpClient http, IMemoryCache memoryCache)
         {
-            Http = httpClientFactory.CreateClient("RetryHttpClient");
+            Http = http;
             MemoryCache = memoryCache;
         }
 

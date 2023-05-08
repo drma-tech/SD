@@ -5,7 +5,7 @@ namespace SD.WEB.Modules.Support.Core
 {
     public class AnnouncementApi : ApiServices
     {
-        public AnnouncementApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
+        public AnnouncementApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
         {
         }
 

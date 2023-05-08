@@ -8,7 +8,7 @@ namespace SD.WEB.Core
 {
     public class CacheApi : ApiServices
     {
-        public CacheApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
+        public CacheApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
         {
         }
 

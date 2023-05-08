@@ -4,7 +4,7 @@ namespace SD.WEB.Modules.Profile.Core
 {
     public class WatchingListApi : ApiServices
     {
-        public WatchingListApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
+        public WatchingListApi(HttpClient http, IMemoryCache memoryCache) : base(http, memoryCache)
         {
         }
 
