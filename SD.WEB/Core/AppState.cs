@@ -43,43 +43,18 @@ namespace SD.WEB.Core
             AuthenticationStateProvider = authenticationStateProvider;
         }
 
-        private bool? Authenticated { get; set; }
-        private string? User { get; set; }
-
         public async Task<bool> IsUserAuthenticated()
         {
-            if (Authenticated.HasValue)
-            {
-                return Authenticated.Value;
-            }
-            else
-            {
-                var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-                var user = authState.User;
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
-                Authenticated = user.Identity != null && user.Identity.IsAuthenticated;
-                User = user.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
-                return Authenticated.Value;
-            }
+            return authState.User.Identity != null && authState.User.Identity.IsAuthenticated;
         }
 
         public async Task<string?> GetIdUser()
         {
-            if (Authenticated.HasValue)
-            {
-                return User;
-            }
-            else
-            {
-                var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-                var user = authState.User;
-
-                Authenticated = user.Identity != null && user.Identity.IsAuthenticated;
-                User = user.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
-                return User;
-            }
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            
+            return authState.User.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
         }
 
         #endregion USER SESSION

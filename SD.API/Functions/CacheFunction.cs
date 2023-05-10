@@ -305,7 +305,7 @@ namespace SD.API.Functions
                 CacheDocument<ReviewModel>? model;
 
                 var id = req.GetQueryParameters()["id"];
-                _ = DateTime.TryParse(req.GetQueryParameters()["release_date"], out DateTime release_date);
+                //_ = DateTime.TryParse(req.GetQueryParameters()["release_date"], out DateTime release_date);
                 model = await _cacheRepo.Get<ReviewModel>($"review_{id}", cancellationToken);
 
                 if (model == null)
