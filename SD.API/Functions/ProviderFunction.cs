@@ -131,8 +131,6 @@ namespace SD.API.Functions
                         head_language = detail?.head_language,
                         plans = detail?.plans ?? new(),
                         models = detail?.models ?? new(),
-                        empty_catalog = detail?.empty_catalog,
-                        enabled = detail?.enabled ?? true,
                         //api by regions
                         regions = new List<Region> { region },
                         types = new List<MediaType> { type }

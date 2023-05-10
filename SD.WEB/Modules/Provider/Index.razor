@@ -18,22 +18,22 @@
                         <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" Style="cursor: pointer;" title="@item.name"></CardImage>
                     </Blazorise.Link>
                 </Card>
-                @* @if (string.IsNullOrEmpty(item.link))
-            {
-            <p class="m-0" style="color: red">link</p>
-            }
-            @if (string.IsNullOrEmpty(item.description))
-            {
-            <p class="m-0" style="color: red">description</p>
-            }
-            @if (!item.models.Any())
-            {
-            <p class="m-0" style="color: red">model</p>
-            }
-            @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && !item.plans.Any())
-            {
-            <p class="m-0" style="color: red">plan</p>
-            }*@
+                @*@if (string.IsNullOrEmpty(item.link))
+                {
+                    <p class="m-0" style="color: red">link</p>
+                }*@
+               @* @if (string.IsNullOrEmpty(item.description))
+                {
+                    <p class="m-0" style="color: red">description</p>
+                }*@
+                @*@if (!item.models.Any())
+                {
+                    <p class="m-0" style="color: red">model</p>
+                }*@
+                @*@if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && !item.plans.Any())
+                {
+                    <p class="m-0" style="color: red">plan</p>
+                }*@
             </Column>
         }
     </Row>
@@ -46,9 +46,7 @@
     public Loading? LoadingProvider { get; set; }
 
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
-        p.regions.Any(a => a == AppStateStatic.Region) &
-        p.enabled &
-        (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true)) ?? Array.Empty<ProviderModel>();
+        p.regions.Any(a => a == AppStateStatic.Region)) ?? Array.Empty<ProviderModel>();
 
     protected override async Task OnInitializedAsync()
     {

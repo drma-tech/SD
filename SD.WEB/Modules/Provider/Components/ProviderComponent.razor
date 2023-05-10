@@ -46,9 +46,7 @@
     public Loading? LoadingProvider { get; set; }
 
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
-        p.regions.Any(a => a == AppStateStatic.Region) &
-        p.enabled &
-        (p.empty_catalog.HasValue ? p.empty_catalog.Value == false : true))
+        p.regions.Any(a => a == AppStateStatic.Region))
         .Take(GetTotalItems) ?? Array.Empty<ProviderModel>();
 
     protected override async Task OnInitializedAsync()
