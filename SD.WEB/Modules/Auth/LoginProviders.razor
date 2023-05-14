@@ -2,9 +2,17 @@
 @inherits PageNoDataCore<LoginProviders>
 <SeoHeader Title="@Resources.Translations.LoginProvidersTitle" Url="/login-providers" ShowH1="false"></SeoHeader>
 
-<h1>@Resources.Translations.LoginProvidersTitle</h1>
-<br />
+<h1 class="mb-3">@Resources.Translations.LoginProvidersTitle</h1>
 
+<Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
+    <Column ColumnSize="ColumnSize.IsAuto.OnMobile.Is1.OnDesktop.Is2.OnFullHD"></Column>
+    <Column ColumnSize="ColumnSize.Is12.OnMobile.Is10.OnDesktop.Is8.OnFullHD">
+        <Alert Visible="true" Color="Color.Info" Class="mb-3">
+            <AlertMessage>@GlobalTranslations.BetaVersion</AlertMessage>
+            <AlertDescription TextAlignment="TextAlignment.Justified">@GlobalTranslations.ProductUnderDevelopment</AlertDescription>
+        </Alert>
+    </Column>
+</Row>
 <Row HorizontalGutter="4" VerticalGutter="4">
     <Column ColumnSize="ColumnSize.IsAuto.OnMobile.Is1.OnDesktop.Is2.OnFullHD"></Column>
     <Column ColumnSize="ColumnSize.Is12.OnMobile.Is10.OnDesktop.Is8.OnFullHD">

@@ -65,13 +65,14 @@ else
         StateHasChanged();
     }
 
-    public void Finish(bool isEmpty)
+    public void Finish(bool isEmpty, string? customNoData = null)
     {
         Reset();
 
         IsLoading = false;
         IsEmpty = isEmpty;
         IsEmptyFilter = isEmpty; //parameters are executed before LoadData, so this property can contain a wrong value
+        if (isEmpty) CustomNoData = customNoData;
         StateHasChanged();
     }
 

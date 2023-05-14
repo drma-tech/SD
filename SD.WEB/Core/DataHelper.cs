@@ -16,6 +16,11 @@
             }
         }
 
+        public static string GetElapsedTime(this DateTime date)
+        {
+            return GetElapsedTime((DateTimeOffset)date);
+        }
+
         public static string GetElapsedTime(this DateTimeOffset date)
         {
             const int SECOND = 1;

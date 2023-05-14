@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BetaVersion" xml:space="preserve">
+    <value>Beta Version!</value>
+  </data>
   <data name="ButtonAdd" xml:space="preserve">
     <value>Add</value>
   </data>
@@ -237,11 +240,17 @@
   <data name="NewsTitle" xml:space="preserve">
     <value>Last News</value>
   </data>
+  <data name="NothingThisAddress" xml:space="preserve">
+    <value>Sorry, there's nothing at this address.</value>
+  </data>
   <data name="Offering" xml:space="preserve">
     <value>Offering</value>
   </data>
   <data name="PickARandom" xml:space="preserve">
     <value>Pick a random item for me</value>
+  </data>
+  <data name="ProductUnderDevelopment" xml:space="preserve">
+    <value>Product still under development, so a lot will still improve. If you have suggestions to make, please ask in the app's support section.</value>
   </data>
   <data name="ProviderPopupTabAbout" xml:space="preserve">
     <value>About</value>

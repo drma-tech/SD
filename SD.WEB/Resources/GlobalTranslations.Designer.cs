@@ -61,6 +61,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Beta Version!.
+        /// </summary>
+        public static string BetaVersion {
+            get {
+                return ResourceManager.GetString("BetaVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string ButtonAdd {
@@ -421,6 +430,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, there&apos;s nothing at this address..
+        /// </summary>
+        public static string NothingThisAddress {
+            get {
+                return ResourceManager.GetString("NothingThisAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offering.
         /// </summary>
         public static string Offering {
@@ -435,6 +453,15 @@ namespace SD.WEB.Resources {
         public static string PickARandom {
             get {
                 return ResourceManager.GetString("PickARandom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product still under development, so a lot will still improve. If you have suggestions to make, please ask in the app&apos;s support section..
+        /// </summary>
+        public static string ProductUnderDevelopment {
+            get {
+                return ResourceManager.GetString("ProductUnderDevelopment", resourceCulture);
             }
         }
         
