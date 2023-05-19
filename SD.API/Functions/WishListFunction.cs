@@ -17,7 +17,7 @@ namespace SD.API.Functions
 
         [Function("WishListGet")]
         public async Task<WishList?> Get(
-            [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "WishList/Get")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "WishList/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace SD.API.Functions
 
         [Function("WishListAdd")]
         public async Task<WishList?> Add(
-            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WishList/Add/{MediaType}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WishList/Add/{MediaType}")] HttpRequestData req,
             string MediaType, CancellationToken cancellationToken)
         {
             try
@@ -68,7 +68,7 @@ namespace SD.API.Functions
 
         [Function("WishListRemove")]
         public async Task<WishList?> Remove(
-            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WishList/Remove/{MediaType}/{TmdbId}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WishList/Remove/{MediaType}/{TmdbId}")] HttpRequestData req,
             string MediaType, string TmdbId, CancellationToken cancellationToken)
         {
             try

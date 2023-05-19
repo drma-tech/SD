@@ -17,7 +17,7 @@ namespace SD.API.Functions
 
         [Function("MyProviders")]
         public async Task<MyProviders?> MyProviders(
-            [HttpTrigger(AuthorizationLevel.Function, Method.GET, Method.POST, Route = "MyProviders")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Method.POST, Route = "MyProviders")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {

@@ -35,7 +35,7 @@ namespace SD.API.Functions
 
         [Function("PrincipalAdd")]
         public async Task<ClientePrincipal?> Add(
-            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "Principal/Add")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Principal/Add")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {

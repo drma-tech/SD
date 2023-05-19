@@ -18,7 +18,7 @@ namespace SD.API.Functions
 
         [Function("AnnouncementGet")]
         public async Task<AnnouncementModel?> AnnouncementGet(
-           [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "Public/Announcements/Get")] HttpRequestData req, CancellationToken cancellationToken)
+           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Announcements/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace SD.API.Functions
 
         [Function("TicketGetList")]
         public async Task<List<TicketModel>> TicketGetList(
-            [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "Public/Ticket/GetList")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Ticket/GetList")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace SD.API.Functions
 
         [Function("TicketGetMyVotes")]
         public async Task<List<TicketVoteModel>> TicketGetMyVotes(
-            [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "Ticket/GetMyVotes")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Ticket/GetMyVotes")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace SD.API.Functions
 
         [Function("TicketInsert")]
         public async Task<TicketModel?> TicketInsert(
-            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "Ticket/Insert")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Ticket/Insert")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace SD.API.Functions
 
         [Function("TicketVote")]
         public async Task<TicketVoteModel?> TicketVote(
-            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "Ticket/Vote")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Ticket/Vote")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {

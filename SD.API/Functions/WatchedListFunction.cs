@@ -17,7 +17,7 @@ namespace SD.API.Functions
 
         [Function("WatchedListGet")]
         public async Task<WatchedList?> Get(
-            [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "WatchedList/Get")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "WatchedList/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace SD.API.Functions
 
         [Function("WatchedListAdd")]
         public async Task<WatchedList?> Add(
-            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WatchedList/Add/{MediaType}/{TmdbId}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WatchedList/Add/{MediaType}/{TmdbId}")] HttpRequestData req,
             string MediaType, string TmdbId, CancellationToken cancellationToken)
         {
             try
@@ -68,7 +68,7 @@ namespace SD.API.Functions
 
         [Function("WatchedListRemove")]
         public async Task<WatchedList?> Remove(
-            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WatchedList/Remove/{MediaType}/{TmdbId}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WatchedList/Remove/{MediaType}/{TmdbId}")] HttpRequestData req,
             string MediaType, string TmdbId, CancellationToken cancellationToken)
         {
             try

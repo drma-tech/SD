@@ -18,7 +18,7 @@ namespace SD.API.Functions
 
         [Function("LoginAdd")]
         public async Task Add(
-            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "Login/Add")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Login/Add")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {

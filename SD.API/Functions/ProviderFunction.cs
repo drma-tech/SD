@@ -33,7 +33,7 @@ namespace SD.API.Functions
 
         [Function("ProviderPost")]
         public async Task<AllProviders?> Post(
-            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "Provider/Post")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Provider/Post")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace SD.API.Functions
 
         [Function("ProviderSyncProviders")]
         public async Task<AllProviders?> SyncProviders(
-           [HttpTrigger(AuthorizationLevel.Function, Method.PUT, Route = "Provider/SyncProviders")] HttpRequestData req, CancellationToken cancellationToken)
+           [HttpTrigger(AuthorizationLevel.Anonymous, Method.PUT, Route = "Provider/SyncProviders")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {

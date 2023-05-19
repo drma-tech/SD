@@ -11,7 +11,8 @@ var host = new HostBuilder()
         builder.AddJsonFile("appsettings.json", true, true)
             .AddUserSecrets(Assembly.GetExecutingAssembly(), true);
     })
-    .ConfigureFunctionsWorkerDefaults(app => {
+    .ConfigureFunctionsWorkerDefaults(app =>
+    {
         app.UseMiddleware<ExceptionHandlingMiddleware>();
     })
     .ConfigureServices(ConfigureServices)

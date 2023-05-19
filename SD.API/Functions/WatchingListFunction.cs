@@ -17,7 +17,7 @@ namespace SD.API.Functions
 
         [Function("WatchingListGet")]
         public async Task<WatchingList?> Get(
-            [HttpTrigger(AuthorizationLevel.Function, Method.GET, Route = "WatchingList/Get")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "WatchingList/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace SD.API.Functions
 
         [Function("WatchingListAdd")]
         public async Task<WatchingList?> Add(
-            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WatchingList/Add/{MediaType}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WatchingList/Add/{MediaType}")] HttpRequestData req,
             string MediaType, CancellationToken cancellationToken)
         {
             try
@@ -68,7 +68,7 @@ namespace SD.API.Functions
 
         [Function("WatchingListRemove")]
         public async Task<WatchingList?> Remove(
-            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WatchingList/Remove/{MediaType}/{CollectionId}/{TmdbId}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WatchingList/Remove/{MediaType}/{CollectionId}/{TmdbId}")] HttpRequestData req,
             string MediaType, string CollectionId, string TmdbId, CancellationToken cancellationToken)
         {
             try
@@ -101,7 +101,7 @@ namespace SD.API.Functions
 
         [Function("WatchingListSync")]
         public async Task<WatchingList?> Sync(
-            [HttpTrigger(AuthorizationLevel.Function, Method.POST, Route = "WatchingList/Sync/{MediaType}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WatchingList/Sync/{MediaType}")] HttpRequestData req,
             string MediaType, CancellationToken cancellationToken)
         {
             try
