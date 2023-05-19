@@ -53,7 +53,7 @@
             else
             {
                 <Check TValue="bool" @bind-Checked="@termsAccepted">I accept the <Blazorise.Link To="Terms/pt" Target="Target.Blank">Terms of Use</Blazorise.Link></Check>
-            }            
+            }
         </Column>
     </Row>
     <Row>
@@ -71,23 +71,23 @@
 
     protected override async Task LoadData()
     {
-        if (await AppState.IsUserAuthenticated())
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        if (authState != null && await AppState.IsUserAuthenticated(authState))
         {
             principal = await PrincipalApi.Get();
 
-            if (principal == null) principal = new();
-
-            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-
-            if (authState != null)
+            if (principal == null)
             {
+                principal = new();
+
                 principal.UserId = authState.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
                 principal.IdentityProvider = authState.User.Identity?.AuthenticationType;
                 principal.UserDetails = authState.User.Identity?.Name;
                 principal.UserRoles = authState.User.Claims.Where(w => w.Type == ClaimTypes.Role)?.Select(s => s.Value).ToArray() ?? Array.Empty<string>();
-            }
 
-            principal.Email = principal.UserDetails;
+                principal.Email = principal.UserDetails;
+            }
         }
     }
 

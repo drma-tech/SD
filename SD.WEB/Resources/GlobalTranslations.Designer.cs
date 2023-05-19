@@ -61,6 +61,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authentication in progress....
+        /// </summary>
+        public static string AuthenticationInProgress {
+            get {
+                return ResourceManager.GetString("AuthenticationInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beta Version!.
         /// </summary>
         public static string BetaVersion {

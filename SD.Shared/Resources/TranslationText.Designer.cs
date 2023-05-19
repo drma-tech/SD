@@ -295,15 +295,6 @@ namespace SD.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, there is nothing at this address..
-        /// </summary>
-        public static string RouterNotFound {
-            get {
-                return ResourceManager.GetString("RouterNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string Search {

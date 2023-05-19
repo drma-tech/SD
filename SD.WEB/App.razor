@@ -9,9 +9,9 @@
                     <Authorizing>
                         <div class="alert alert-warning" role="alert">
                             <div class="spinner-border spinner-border-sm" role="status">
-                                <span class="sr-only">Authentication in progress...</span>
+                                <span class="sr-only">@Resources.GlobalTranslations.AuthenticationInProgress</span>
                             </div>
-                            Authentication in progress...
+                            @Resources.GlobalTranslations.AuthenticationInProgress
                         </div>
                     </Authorizing>
                 </AuthorizeRouteView>
@@ -21,7 +21,7 @@
                 <PageTitle>Not found</PageTitle>
                 <LayoutView Layout="@typeof(MainLayout)">
                     <div class="alert alert-danger" role="alert">
-                        @SD.Shared.Resources.TranslationText.RouterNotFound
+                        @Resources.GlobalTranslations.NothingThisAddress
                     </div>
                 </LayoutView>
             </NotFound>

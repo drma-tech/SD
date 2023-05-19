@@ -43,17 +43,17 @@ namespace SD.WEB.Core
             AuthenticationStateProvider = authenticationStateProvider;
         }
 
-        public async Task<bool> IsUserAuthenticated()
+        public async Task<bool> IsUserAuthenticated(AuthenticationState? authState = null)
         {
-            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            authState ??= await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
             return authState.User.Identity != null && authState.User.Identity.IsAuthenticated;
         }
 
-        public async Task<string?> GetIdUser()
+        public async Task<string?> GetIdUser(AuthenticationState? authState = null)
         {
-            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            
+            authState ??= await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
             return authState.User.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
         }
 
