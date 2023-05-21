@@ -89,13 +89,13 @@
     @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
     {
         <Button Color="Color.Danger" Clicked="Remove" Disabled="!IsUserAuthenticated">
-            <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
+            <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
         </Button>
     }
     else
     {
         <Button Color="Color.Primary" Clicked="Add" Disabled="!IsUserAuthenticated">
-            <Blazorise.Icon Name="FontAwesomeIcons.Heart"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
+            <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
         </Button>
     }
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide">@TranslationText.Close</Button>

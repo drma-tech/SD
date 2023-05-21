@@ -13,7 +13,7 @@
         @foreach (var item in News?.Items ?? new())
         {
             <CarouselSlide Name="@item.id">
-                <div style="position: absolute; top: 0px; left: 0px; background-color: lime; opacity: 80%;" class="px-1 m-2">
+                <div style="position: absolute; top: 0px; left: 0px; background-color: lime; opacity: 70%; font: caption;" class="px-1 m-2">
                     @((MarkupString)item.title)
                 </div>
                 <Blazorise.Link To="@item?.link" Target="Target.Blank" Title="@item?.title">

@@ -7,7 +7,7 @@
 @inject HttpClient http
 @inject AppState State
 
-<HeaderComponent IconName="@FontAwesomeIcons.Heart" Title="@GlobalTranslations.MyProviders.Format(myProviders?.Items.Count ?? 0)"></HeaderComponent>
+<HeaderComponent IconName="@FontAwesomeIcons.Star" Title="@GlobalTranslations.MyProviders.Format(myProviders?.Items.Count ?? 0)"></HeaderComponent>
 
 <Loading @ref="LoadingProvider" UnauthenticatedUser="!IsUserAuthenticated">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">

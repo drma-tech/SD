@@ -56,6 +56,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<WishListApi>();
     collection.AddScoped<WatchingListApi>();
     collection.AddScoped<MyProvidersApi>();
+    collection.AddScoped<MySuggestionsApi>();
     collection.AddScoped<AllProvidersApi>();
     collection.AddScoped<TicketApi>();
     collection.AddScoped<TicketVoteApi>();

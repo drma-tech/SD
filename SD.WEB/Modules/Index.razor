@@ -24,7 +24,7 @@
         <TextEdit @bind-Text="@Search" Placeholder="@GlobalTranslations.TypeSomething" />
     </Column>
     <Column ColumnSize="ColumnSize.IsAuto">
-        <Button Color="Color.Primary" Block="true" Clicked="ShowSearchPopup">
+        <Button Color="Color.Primary" Block="true" Clicked="ShowSearchPopup" Disabled="string.IsNullOrEmpty(Search)">
             @GlobalTranslations.ButtoSearch
         </Button>
     </Column>

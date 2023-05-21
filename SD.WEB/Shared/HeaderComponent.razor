@@ -1,15 +1,23 @@
 ﻿<Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromBottom">
-    <AlertMessage>
-        @if (!string.IsNullOrEmpty(IconName))
-        {
-            <Blazorise.Icon Name="@IconName" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>
-        }
-        <Heading Size="HeadingSize.Is2" Style="font: inherit; display: inherit;">@Title</Heading>
-    </AlertMessage>
-    @if (ChildContent != null)
-    {
-        @ChildContent
-    }
+    <Row>
+        <Column>
+            <AlertMessage>
+                @if (!string.IsNullOrEmpty(IconName))
+                {
+                    <Blazorise.Icon Name="@IconName" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>
+                }
+                <Heading Size="HeadingSize.Is2" Style="font: inherit; display: inherit;">
+                    @Title
+                </Heading>
+            </AlertMessage>
+        </Column>
+        <Column ColumnSize="ColumnSize.IsAuto">
+            @if (ChildContent != null)
+            {
+                @ChildContent
+            }
+        </Column>
+    </Row>
 </Alert>
 
 @code {
