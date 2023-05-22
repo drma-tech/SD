@@ -142,23 +142,25 @@
 
             foreach (var item in titles.OrderByDescending(o => o.rating))
             {
-                if (AppState.WatchedList.Movies.Any(a => a == item.tmdb_id)) continue;
-                if (AppState.WishList.Movies.Any(a => a.id == item.tmdb_id)) continue;
+                if (AppState.WatchedList != null && AppState.WatchedList.Movies.Any(a => a == item.tmdb_id)) continue;
+                if (AppState.WishList != null && AppState.WishList.Movies.Any(a => a.id == item.tmdb_id)) continue;
 
                 if (mySuggestions.Movies.Count < 12)
                 {
                     var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.movie);
+                    if (providers != null && myProviders != null)
+                    {
+                        var FreeList = providers.GetFreeListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                        var AdsList = providers.GetAdsListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                        var FlatRateList = providers.GetFlatRateListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                        var FlatRateBuyList = providers.GetFlatRateBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                        var RentList = providers.GetRentListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                        var BuyList = providers.GetBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
 
-                    var FreeList = providers.GetFreeListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                    var AdsList = providers.GetAdsListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                    var FlatRateList = providers.GetFlatRateListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                    var FlatRateBuyList = providers.GetFlatRateBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                    var RentList = providers.GetRentListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                    var BuyList = providers.GetBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                        var allProviders = FreeList.Concat(AdsList).Concat(FlatRateList).Concat(FlatRateBuyList).Concat(RentList).Concat(BuyList) ?? new List<SD.Shared.Models.List.Tmdb.ProviderBase>();
 
-                    var allProviders = FreeList.Concat(AdsList).Concat(FlatRateList).Concat(FlatRateBuyList).Concat(RentList).Concat(BuyList);
-
-                    mySuggestions.Items(MediaType.movie).Add(new SuggestionListItem(item.tmdb_id, item.title, item.poster_small, allProviders.Select(s => s.logo_path).Distinct().ToArray()));
+                        mySuggestions.Items(MediaType.movie).Add(new SuggestionListItem(item.tmdb_id, item.title, item.poster_small, allProviders.Select(s => s.logo_path ?? "").Distinct().ToArray()));
+                    }
                 }
             }
 
@@ -183,23 +185,25 @@
 
             foreach (var item in titles.OrderByDescending(o => o.rating))
             {
-                if (AppState.WatchedList.Shows.Any(a => a == item.tmdb_id)) continue;
-                if (AppState.WishList.Shows.Any(a => a.id == item.tmdb_id)) continue;
+                if (AppState.WatchedList != null && AppState.WatchedList.Shows.Any(a => a == item.tmdb_id)) continue;
+                if (AppState.WishList != null && AppState.WishList.Shows.Any(a => a.id == item.tmdb_id)) continue;
 
                 if (mySuggestions.Shows.Count < 12)
                 {
                     var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.tv);
+                    if (providers != null && myProviders != null)
+                    {
+                        var FreeList = providers.GetFreeListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                        var AdsList = providers.GetAdsListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                        var FlatRateList = providers.GetFlatRateListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                        var FlatRateBuyList = providers.GetFlatRateBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                        var RentList = providers.GetRentListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                        var BuyList = providers.GetBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
 
-                    var FreeList = providers.GetFreeListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                    var AdsList = providers.GetAdsListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                    var FlatRateList = providers.GetFlatRateListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                    var FlatRateBuyList = providers.GetFlatRateBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                    var RentList = providers.GetRentListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                    var BuyList = providers.GetBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                        var allProviders = FreeList.Concat(AdsList).Concat(FlatRateList).Concat(FlatRateBuyList).Concat(RentList).Concat(BuyList) ?? new List<SD.Shared.Models.List.Tmdb.ProviderBase>(); ;
 
-                    var allProviders = FreeList.Concat(AdsList).Concat(FlatRateList).Concat(FlatRateBuyList).Concat(RentList).Concat(BuyList);
-
-                    mySuggestions.Items(MediaType.tv).Add(new SuggestionListItem(item.tmdb_id, item.title, item.poster_small, allProviders.Select(s => s.logo_path).Distinct().ToArray()));
+                        mySuggestions.Items(MediaType.tv).Add(new SuggestionListItem(item.tmdb_id, item.title, item.poster_small, allProviders.Select(s => s.logo_path ?? "").Distinct().ToArray()));
+                    }
                 }
             }
 

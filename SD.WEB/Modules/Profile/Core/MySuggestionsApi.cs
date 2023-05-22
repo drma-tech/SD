@@ -31,7 +31,7 @@ namespace SD.WEB.Modules.Profile.Core
         {
             if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
 
-            return await PostAsync<SD.Shared.Models.MySuggestions>(Endpoint.Sync(mediaType), false, obj);
+            return await PostAsync(Endpoint.Sync(mediaType), false, obj);
         }
     }
 }
