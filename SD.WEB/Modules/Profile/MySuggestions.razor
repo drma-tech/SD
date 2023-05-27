@@ -33,7 +33,7 @@
 
 <Loading @ref="LoadingProvider" UnauthenticatedUser="!IsUserAuthenticated" IsEmptyFilter="@(mySuggestions == null || !mySuggestions.Items(SearchType).Any())">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-        @foreach (var item in mySuggestions?.Items(SearchType).Take(GetTotalItems) ?? new List<SuggestionListItem>())
+        @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !Watched(SearchType, w)).Take(GetTotalItems) ?? new List<SuggestionListItem>())
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                 <Card>
@@ -66,6 +66,14 @@
     private int GetTotalItems => AppStateStatic.OnFullHD ? 12 : 8;
 
     private bool GenresChanged => mySuggestions?.MovieGenres.Any() ?? false | mySuggestions?.TvGenres.Any() ?? false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.WatchedListChanged += StateHasChanged;
+        AppState.WishListChanged += StateHasChanged;
+
+        await base.OnInitializedAsync();
+    }
 
     protected override async Task LoadData()
     {
@@ -162,7 +170,7 @@
                 if (AppState.WatchedList != null && AppState.WatchedList.Movies.Any(a => a == item.tmdb_id)) continue;
                 if (AppState.WishList != null && AppState.WishList.Movies.Any(a => a.id == item.tmdb_id)) continue;
 
-                if (mySuggestions.Movies.Count < 12)
+                if (mySuggestions.Movies.Count < 16)
                 {
                     var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.movie);
                     if (providers != null && myProviders != null)
@@ -205,7 +213,7 @@
                 if (AppState.WatchedList != null && AppState.WatchedList.Shows.Any(a => a == item.tmdb_id)) continue;
                 if (AppState.WishList != null && AppState.WishList.Shows.Any(a => a.id == item.tmdb_id)) continue;
 
-                if (mySuggestions.Shows.Count < 12)
+                if (mySuggestions.Shows.Count < 16)
                 {
                     var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.tv);
                     if (providers != null && myProviders != null)
@@ -227,6 +235,24 @@
             LoadingProvider?.Finish(!mySuggestions.Items(MediaType.tv).Any());
 
             mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions);
+        }
+    }
+
+    private bool Watched(MediaType type, SuggestionListItem item)
+    {
+        if (type == MediaType.movie)
+        {
+            if (AppState.WatchedList != null && AppState.WatchedList.Movies.Any(a => a == item.id)) return true;
+            if (AppState.WishList != null && AppState.WishList.Movies.Any(a => a.id == item.id)) return true;
+
+            return false;
+        }
+        else
+        {
+            if (AppState.WatchedList != null && AppState.WatchedList.Shows.Any(a => a == item.id)) return true;
+            if (AppState.WishList != null && AppState.WishList.Shows.Any(a => a.id == item.id)) return true;
+
+            return false;
         }
     }
 

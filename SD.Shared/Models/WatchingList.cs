@@ -89,7 +89,7 @@ namespace SD.Shared.Models
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
-            if (string.IsNullOrEmpty(logo)) throw new ArgumentNullException(nameof(logo));
+            //if (string.IsNullOrEmpty(logo)) throw new ArgumentNullException(nameof(logo)); //some collection has no logo
             if (maxItems == 0) throw new ArgumentNullException(nameof(maxItems));
             if (watched.Count == 0) throw new ArgumentNullException(nameof(watched));
 
