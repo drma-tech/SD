@@ -1,6 +1,5 @@
 ﻿using SD.Shared.Core.Models;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace SD.Shared.Models
@@ -16,6 +15,12 @@ namespace SD.Shared.Models
 
         public HashSet<SuggestionListItem> Movies { get; init; } = new();
         public HashSet<SuggestionListItem> Shows { get; init; } = new();
+
+        [Custom(Name = "Movie Genres")]
+        public IReadOnlyList<MovieGenre> MovieGenres { get; set; } = Array.Empty<MovieGenre>();
+
+        [Custom(Name = "TV Genres")]
+        public IReadOnlyList<TvGenre> TvGenres { get; set; } = Array.Empty<TvGenre>();
 
         [JsonIgnore]
         [NotMapped]

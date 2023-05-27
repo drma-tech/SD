@@ -37,6 +37,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MediaType.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Enum\MovieGenre.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MovieGenre.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Enum\PopularType.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -46,6 +51,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Region.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Enum\TvGenre.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TvGenre.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\TranslationText.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -67,9 +77,17 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TicketType.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Enum\MovieGenre.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MovieGenre.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Enum\PopularType.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PopularType.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Enum\TvGenre.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TvGenre.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\TranslationText.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

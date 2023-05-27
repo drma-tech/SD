@@ -3,6 +3,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
+using SD.Shared.Models.Auth;
 
 namespace SD.API.Functions
 {
@@ -69,6 +70,23 @@ namespace SD.API.Functions
                 }
 
                 return await _repo.Upsert(obj, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
+            }
+        }
+
+        [Function("MySuggestionsAdd")]
+        public async Task<MySuggestions?> Add(
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "MySuggestions/Add")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var body = await req.GetBody<MySuggestions>(cancellationToken);
+
+                return await _repo.Upsert(body, cancellationToken);
             }
             catch (Exception ex)
             {

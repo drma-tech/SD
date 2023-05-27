@@ -11,6 +11,7 @@ namespace SD.WEB.Modules.Profile.Core
         private struct Endpoint
         {
             public const string Get = "MySuggestions/Get";
+            public const string Add = "MySuggestions/Add";
 
             public static string Sync(MediaType? type) => $"MySuggestions/Sync/{type}";
         }
@@ -31,7 +32,12 @@ namespace SD.WEB.Modules.Profile.Core
         {
             if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
 
-            return await PostAsync(Endpoint.Sync(mediaType), false, obj);
+            return await PostAsync(Endpoint.Sync(mediaType), false, obj, Endpoint.Get);
+        }
+
+        public async Task Add(SD.Shared.Models.MySuggestions obj)
+        {
+            await PostAsync(Endpoint.Add, false, obj, Endpoint.Get);
         }
     }
 }

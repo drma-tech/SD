@@ -10,19 +10,22 @@
 @inject TmdbApi TmdbApi
 
 <HeaderComponent IconName="@FontAwesomeIcons.ThumbsUp" Title="Minhas Sugestões">
-    <RadioGroup @bind-CheckedValue="SearchType" Buttons="true" Float="Float.End" Class="btn-group-xs">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="(GenresChanged ? Color.Secondary : Color.Primary)" Clicked="@(async()=>await OpenConfigurations())" title="Settings">
+        <Blazorise.Icon Name="FontAwesomeIcons.Cog"></Blazorise.Icon>
+    </Button>
+    <RadioGroup @bind-CheckedValue="SearchType" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is1.FromEnd">
         <Radio Value="MediaType.movie">@MediaType.movie.GetName()</Radio>
         <Radio Value="MediaType.tv">@MediaType.tv.GetName()</Radio>
     </RadioGroup>
     @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync))
     {
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.movie)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!myProviders?.Items.Any()??true)">
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.movie)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!myProviders?.Items.Any()??true)">
             @GlobalTranslations.ButtonUpdate
         </Button>
     }
     @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync))
     {
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.tv)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!myProviders?.Items.Any()??true)">
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.tv)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!myProviders?.Items.Any()??true)">
             @GlobalTranslations.ButtonUpdate
         </Button>
     }
@@ -60,7 +63,9 @@
     public Loading? LoadingProvider { get; set; }
     private bool IsUserAuthenticated { get; set; }
     public MediaType SearchType { get; set; } = MediaType.movie;
-    private int GetTotalItems => AppStateStatic.OnFullHD ? 12 : 6;
+    private int GetTotalItems => AppStateStatic.OnFullHD ? 12 : 8;
+
+    private bool GenresChanged => mySuggestions?.MovieGenres.Any() ?? false | mySuggestions?.TvGenres.Any() ?? false;
 
     protected override async Task LoadData()
     {
@@ -74,7 +79,7 @@
 
             if (myProviders == null || !myProviders.Items.Any())
             {
-                LoadingProvider?.Finish(true, "Nossas sugestões são baseadas na lista de recomendados dos providers que você adicionou aos favoritos");
+                LoadingProvider?.Finish(true, Resources.GlobalTranslations.OurSuggestions1);
             }
             else
             {
@@ -82,7 +87,7 @@
 
                 if (mySuggestions == null || !mySuggestions.Items(SearchType).Any())
                 {
-                    LoadingProvider?.Finish(true, "Nossas sugestões são baseadas na lista de recomendados dos providers que você adicionou aos favoritos, exceto títulos já assistidos ou presentes em alguma lista pessoal. (Poderá ser atualizada uma vez por semana)");
+                    LoadingProvider?.Finish(true, Resources.GlobalTranslations.OurSuggestions2);
                 }
                 else
                 {
@@ -118,12 +123,24 @@
     {
         if (provider_id == null) throw new ArgumentNullException(nameof(provider_id));
 
-        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by } }; ;
+        var genres = "";
+
+        if (SearchType == MediaType.movie)
+        {
+            genres = string.Join("|,", mySuggestions.MovieGenres.Select(s => (int)s));
+        }
+        else
+        {
+            genres = string.Join("|,", mySuggestions.TvGenres.Select(s => (int)s));
+        }
+
+        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by }, { "with_genres", genres } };
     }
 
     private async Task ImportFromProviders(MediaType type)
     {
         mySuggestions ??= new();
+        LoadingProvider?.Start();
 
         if (type == MediaType.movie)
         {
@@ -211,5 +228,32 @@
 
             mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions);
         }
+    }
+
+    private async Task OpenConfigurations()
+    {
+        await ModalService.Show<MySuggestionsPopup>(null,
+        x =>
+        {
+            x.Add(x => x.MySuggestions, mySuggestions);
+            x.Add(x => x.MySuggestionsChanged, new EventCallbackFactory().Create(this, async (SD.Shared.Models.MySuggestions value) => await UpdateMySuggestions(value)));
+        },
+        new ModalInstanceOptions()
+            {
+                UseModalStructure = false,
+                Centered = true,
+                Size = ModalSize.Default,
+            });
+    }
+
+    private async Task UpdateMySuggestions(SD.Shared.Models.MySuggestions obj)
+    {
+        mySuggestions = obj;
+
+        await MySuggestionsApi.Add(obj);
+
+        StateHasChanged();
+
+        await Toast.Warning("Suas preferências surtirão efeito na próxima atualização desta lista!");
     }
 }

@@ -14,7 +14,7 @@
     </Button>
     @if (AppState.WatchingList?.MovieCanSync ?? false)
     {
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched(MediaType.movie)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!AppState.WatchedList?.Movies.Any()??true)">
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched(MediaType.movie)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!AppState.WatchedList?.Movies.Any()??true)">
             @GlobalTranslations.ButtonUpdate
         </Button>
     }
@@ -57,7 +57,7 @@
     </Button>
     @if (AppState.WatchingList?.ShowCanSync ?? false)
     {
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched(MediaType.tv)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!AppState.WatchedList?.Shows.Any()??true)">
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched(MediaType.tv)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!AppState.WatchedList?.Shows.Any()??true)">
             @GlobalTranslations.ButtonUpdate
         </Button>
     }

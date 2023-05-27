@@ -457,6 +457,24 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Our suggestions are based on the providers you&apos;ve favorited.
+        /// </summary>
+        public static string OurSuggestions1 {
+            get {
+                return ResourceManager.GetString("OurSuggestions1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Our suggestions are based on the providers you&apos;ve added to your favorites, excluding titles that you&apos;ve watched or are on your personal list. (It may be updated once a week).
+        /// </summary>
+        public static string OurSuggestions2 {
+            get {
+                return ResourceManager.GetString("OurSuggestions2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pick a random item for me.
         /// </summary>
         public static string PickARandom {
@@ -606,6 +624,15 @@ namespace SD.WEB.Resources {
         public static string UnauthenticatedUser {
             get {
                 return ResourceManager.GetString("UnauthenticatedUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your preferences will take effect in the next update of this list.
+        /// </summary>
+        public static string UpdateMySuggestions {
+            get {
+                return ResourceManager.GetString("UpdateMySuggestions", resourceCulture);
             }
         }
         
