@@ -6,7 +6,7 @@
 
 @inject AllProvidersApi AllProvidersApi
 
-<HeaderComponent Title="@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region)">
+<HeaderComponent Title="@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region.GetName())">
 </HeaderComponent>
 <Loading @ref="LoadingProvider">
     <Row HorizontalGutter="4" VerticalGutter="4">

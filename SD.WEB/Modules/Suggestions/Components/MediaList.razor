@@ -63,13 +63,13 @@
 
     [Parameter] public MediaType TypeSelected { get; set; } = MediaType.movie;
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
-    private int GetTotalItems => AppStateStatic.OnFullHD ? 10 : 6;
+    private int GetTotalItems => AppStateStatic.OnFullHD ? 10 : 8;
 
     public HashSet<MediaDetail> Items { get; set; } = new();
 
     public Loading? LoadingList { get; set; }
 
-    public string GetCustomStyle => "col-xl col-md-2 col-4";
+    public string GetCustomStyle => "col-xl col-md-2 col-3";
 
     protected override async Task OnInitializedAsync()
     {

@@ -10,13 +10,13 @@
 <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
     @foreach (var item in Awards.Take(GetTotalItems(expand_awards)))
     {
-        <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
+        <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
             <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
                 <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
                     <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
                 </Blazorise.Link>
-                <CardBody Padding="Padding.Is1" Style="min-height: 46.4px">
-                    <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 1rem;">@item.name</CardTitle>
+                <CardBody Padding="Padding.Is1" Style="min-height: 38px">
+                    <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 0.75rem;">@item.name</CardTitle>
                 </CardBody>
             </Card>
         </Column>
@@ -31,13 +31,13 @@
 <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
     @foreach (var item in Sites.Take(GetTotalItems(expand_sites)))
     {
-        <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
+        <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
             <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
                 <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
                     <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
                 </Blazorise.Link>
-                <CardBody Padding="Padding.Is1" Style="min-height: 46.4px">
-                    <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 1rem;">@item.name</CardTitle>
+                <CardBody Padding="Padding.Is1" Style="min-height: 38px">
+                    <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 0.75rem;">@item.name</CardTitle>
                 </CardBody>
             </Card>
         </Column>
@@ -52,13 +52,13 @@
 <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
     @foreach (var item in Upcoming.Take(GetTotalItems(expand_upcoming)))
     {
-        <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile" TextAlignment="TextAlignment.Center">
+        <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
             <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
                 <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
                     <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
                 </Blazorise.Link>
-                <CardBody Padding="Padding.Is1" Style="min-height: 46.4px">
-                    <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 1rem;">@item.name</CardTitle>
+                <CardBody Padding="Padding.Is1" Style="min-height: 38px">
+                    <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 0.75rem;">@item.name</CardTitle>
                 </CardBody>
             </Card>
         </Column>
@@ -70,7 +70,7 @@
     private List<Item> Sites { get; set; } = new();
     private List<Item> Upcoming { get; set; } = new();
 
-    private int GetTotalItems(bool expand) => AppStateStatic.OnMobile && !expand ? 3 : 12;
+    private int GetTotalItems(bool expand) => AppStateStatic.OnMobile && !expand ? 4 : 12;
 
     private bool expand_awards { get; set; }
     private bool expand_sites { get; set; }

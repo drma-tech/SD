@@ -50,20 +50,25 @@
                 <Bar Mode="BarMode.Horizontal" Breakpoint="Breakpoint.Mobile" CollapseMode="BarCollapseMode.Small" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark"
                      Padding="Padding.Is0.FromBottom.Is0.FromTop" Style="text-align: center; display: block;">
                     <BarBrand Class="mr-0">
-                        <Button Color="GetColor(TypeButton.Home)" To="/" Type="ButtonType.Link" title="@GlobalTranslations.MenuHome" Size="Size.Small">
+                        <Button Color="GetColor(TypeButton.Home)" To="/" Type="ButtonType.Link" title="@GlobalTranslations.MenuHome" Size="Size.Small" Style="line-height: 1.2;">
                             <Blazorise.Icon Name="FontAwesomeIcons.Home" />
+                            <span style="display: block; font-size: 0.60rem;">@GlobalTranslations.MenuHome</span>
                         </Button>
-                        <Button Color="GetColor(TypeButton.Profile)" To="/Profile" Type="ButtonType.Link" title="@GlobalTranslations.MenuProfile" Size="Size.Small">
+                        <Button Color="GetColor(TypeButton.Profile)" To="/Profile" Type="ButtonType.Link" title="@GlobalTranslations.MenuProfile" Size="Size.Small" Style="line-height: 1.2;">
                             <BarIcon IconName="FontAwesomeIcons.UserCircle" />
+                            <span style="display: block; font-size: 0.60rem;">@GlobalTranslations.MenuProfile</span>
                         </Button>
-                        <Button Color="GetColor(TypeButton.Providers)" To="/Providers" Type="ButtonType.Link" title="@GlobalTranslations.MenuProviders" Size="Size.Small">
+                        <Button Color="GetColor(TypeButton.Providers)" To="/Providers" Type="ButtonType.Link" title="@GlobalTranslations.MenuProviders" Size="Size.Small" Style="line-height: 1.2;">
                             <BarIcon IconName="FontAwesomeIcons.PlayCircle" />
+                            <span style="display: block; font-size: 0.60rem;">@GlobalTranslations.MenuProviders</span>
                         </Button>
-                         <Button Color="GetColor(TypeButton.Suggestions)" To="/Suggestions" Type="ButtonType.Link" title="@GlobalTranslations.MenuSuggestions" Size="Size.Small">
+                        <Button Color="GetColor(TypeButton.Suggestions)" To="/Suggestions" Type="ButtonType.Link" title="@GlobalTranslations.MenuSuggestions" Size="Size.Small" Style="line-height: 1.2;">
                            <BarIcon IconName="FontAwesomeIcons.ListOl" />
+                            <span style="display: block; font-size: 0.60rem;">@GlobalTranslations.MenuSuggestions</span>
                         </Button>
-                        <Button Color="GetColor(TypeButton.Support)" To="/Support" Type="ButtonType.Link" title="@GlobalTranslations.MenuSupport" Size="Size.Small">
+                        <Button Color="GetColor(TypeButton.Support)" To="/Support" Type="ButtonType.Link" title="@GlobalTranslations.MenuSupport" Size="Size.Small" Style="line-height: 1.2;">
                             <BarIcon IconName="FontAwesomeIcons.Headset" />
+                            <span style="display: block; font-size: 0.60rem;">@GlobalTranslations.MenuSupport</span>
                         </Button>
                     </BarBrand>
                 </Bar>

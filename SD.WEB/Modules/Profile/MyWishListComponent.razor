@@ -16,7 +16,7 @@
         @foreach (var item in AppState.WishList?.Movies.Take(GetTotalItems) ?? new List<WishListItem>())
         {
             var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-            <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
+            <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile">
                 <Card>
                     <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="@MediaType.movie"
                                  Clicked="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.movie))" ShowWished="false"></PosterComponent>
@@ -39,7 +39,7 @@
         @foreach (var item in AppState.WishList?.Shows.Take(GetTotalItems) ?? new List<WishListItem>())
         {
             var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-            <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is4.OnMobile">
+            <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile">
                 <Card>
                     <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="@MediaType.movie"
                                  Clicked="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.tv))" ShowWished="false"></PosterComponent>
@@ -54,7 +54,7 @@
 
     [Parameter] public bool Fake { get; set; } = false;
 
-    private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : 3;
+    private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : 4;
     private bool IsUserAuthenticated { get; set; }
 
     protected override async Task OnInitializedAsync()
