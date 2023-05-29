@@ -610,7 +610,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type Something.
+        ///   Looks up a localized string similar to Type something to search.
         /// </summary>
         public static string TypeSomething {
             get {

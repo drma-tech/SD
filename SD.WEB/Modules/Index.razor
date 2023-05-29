@@ -12,14 +12,6 @@
 @*<GoogleAdsense></GoogleAdsense>*@
 
 <Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
-    <Column ColumnSize="ColumnSize.IsAuto">
-        <Select TValue="MediaType" @bind-SelectedValue="SearchType">
-            @foreach (var item in EnumHelper.GetObjArray<MediaType>())
-            {
-                <SelectItem Value="@item.Value">@item.Name</SelectItem>
-            }
-        </Select>
-    </Column>
     <Column>
         <TextEdit @bind-Text="@Search" Placeholder="@GlobalTranslations.TypeSomething" />
     </Column>
@@ -46,7 +38,6 @@
 
     [Parameter][SupplyParameterFromQuery(Name = "language")] public string? language { get; set; }
 
-    public MediaType SearchType { get; set; } = MediaType.movie;
     public string? Search { get; set; }
 
     public async Task ShowSearchPopup()
@@ -55,7 +46,6 @@
             x =>
             {
                 x.Add(x => x.TitleHead, "Busca por " + Search);
-                x.Add(x => x.SearchType, SearchType);
                 x.Add(x => x.Search, Search);
             },
             new ModalInstanceOptions()

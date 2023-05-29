@@ -1,10 +1,12 @@
 ﻿@inherits ComponenteCore<MediaListFull>
+@using SD.Shared.Models.List.Tmdb;
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.Shared.Models
 @using SD.WEB.Modules.Suggestions.Interface;
 @using SD.WEB.Modules.Profile.Core
 
 @inject ExternalIdApi ExternalIdApi
+@inject TmdbCreditApi TmdbCreditApi
 
 @if (ShowHead)
 {
@@ -17,8 +19,8 @@
             var item = Items.ElementAt(i - 1);
             <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
                 <Card>
-                    <PosterComponent Date="@(item.release_date??DateTime.MaxValue)" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
-                                 TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))"></PosterComponent>
+                    <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
+                                     TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))"></PosterComponent>
                 </Card>
             </Column>
             if ((i % GetTotalItems) == 0)
@@ -93,6 +95,7 @@
         {
             var result = await MediaListApi.GetList(new(), TypeSelected, StringParameters, List, 1);
             await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
+
             Items = result.list;
 
             if (Items.Count < 10) //force reload, if the filters bring few records
@@ -120,7 +123,63 @@
             tmdb_id = media?.tmdb_id;
         }
 
-        await ModalService.Show<MediaPopup>(media?.title,
+        if (media?.MediaType == MediaType.person)
+        {
+            var result = await TmdbCreditApi.GetListByPerson(tmdb_id);
+            var items = new HashSet<MediaDetail>();
+
+            foreach (var item in result?.crew ?? Enumerable.Empty<CrewByPerson>())
+            {
+                var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
+                items.Add(new MediaDetail
+                    {
+                        tmdb_id = item.id.ToString(),
+                        title = type == MediaType.movie ? item.title : item.name,
+                        plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
+                        release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
+                        poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
+                        poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
+                        rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
+                        MediaType = type
+                    });
+            }
+            foreach (var item in result?.cast ?? new List<CastByPerson>())
+            {
+                var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
+
+                if (type == MediaType.movie && item.order > 24) continue;
+                if (type == MediaType.tv && item.episode_count < 3) continue;
+
+                items.Add(new MediaDetail
+                    {
+                        tmdb_id = item.id.ToString(),
+                        title = type == MediaType.movie ? item.title : item.name,
+                        plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
+                        release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
+                        poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
+                        poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
+                        rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
+                        MediaType = type,
+                        comments = type == MediaType.tv ? $"{item.episode_count} episodes" : ""
+                    });
+            }
+
+            await ModalService.Show<CompleteListPopup>(null,
+                x =>
+                {
+                    x.Add(x => x.TitleHead, $"{media?.title}");
+                    x.Add(x => x.Items, items.OrderByDescending(o => o.release_date).ToHashSet());
+                },
+                new ModalInstanceOptions()
+                    {
+                        UseModalStructure = false,
+                        Centered = true,
+                        Size = ModalSize.ExtraLarge,
+                    });
+        }
+        else
+        {
+            await ModalService.Show<MediaPopup>(media?.title,
             x =>
             {
                 x.Add(x => x.tmdb_id, tmdb_id);
@@ -132,6 +191,7 @@
                     Centered = true,
                     Size = ModalSize.Large,
                 });
+        }
     }
 
     private async Task LoadMore()

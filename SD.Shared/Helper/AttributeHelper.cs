@@ -6,12 +6,10 @@ namespace SD.Shared.Helper
     {
         public static DateTime? GetDate(this string? value)
         {
-            if (string.IsNullOrEmpty(value))
-                return DateTime.MaxValue;
-            else if (!DateTime.TryParse(value, out _))
-                return DateTime.MinValue;
-            else
+            if (!string.IsNullOrEmpty(value) && DateTime.TryParse(value, out _))
                 return DateTime.Parse(value, CultureInfo.CurrentCulture);
+            else
+                return null;
         }
 
         public static string FormatRuntime(this int? runtime)
