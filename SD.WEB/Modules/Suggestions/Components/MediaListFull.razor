@@ -38,7 +38,7 @@
 @if (MediaListApi != null)
 {
     <Div TextAlignment="TextAlignment.Center">
-        <Button Color="Color.Secondary" Margin="Margin.Is2" Clicked="LoadMore" Disabled="@(Items.Count>=MaxItens|DisableLoadMore)">@GlobalTranslations.ButtonLoadMore</Button>
+        <Button Color="Color.Secondary" Size="Size.Small" Margin="Margin.Is2" Clicked="LoadMore" Disabled="@(Items.Count>=MaxItens|DisableLoadMore)">@GlobalTranslations.ButtonLoadMore</Button>
     </Div>
 }
 
@@ -58,8 +58,8 @@
     public Loading? LoadingList { get; set; }
 
     private string? GetTitle => List != null ? List.GetName() : TitleHead;
-    private string GetCustomStyle => "col-xl col-md-2 col-4";
-    private int GetTotalItems => AppStateStatic.OnFullHD ? 10 : 6;
+    private string GetCustomStyle => "col-xl col-md-2 col-3";
+    private int GetTotalItems => AppStateStatic.OnFullHD ? 10 : 8;
     public bool DisableLoadMore { get; set; } = false;
     private int currentPage = 1;
 

@@ -7,11 +7,15 @@
 @inject HttpClient http
 @inject AppState State
 
-<HeaderComponent IconName="@FontAwesomeIcons.Star" Title="@GlobalTranslations.MyProviders.Format(myProviders?.Items.Count ?? 0)"></HeaderComponent>
+<HeaderComponent IconName="@FontAwesomeIcons.Star" Title="@GlobalTranslations.MyProviders.Format(myProviders?.Items.Count ?? 0)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand = !expand; })" title="Show all providers">
+        <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
+    </Button>
+</HeaderComponent>
 
 <Loading @ref="LoadingProvider" UnauthenticatedUser="!IsUserAuthenticated">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-        @foreach (var item in myProviders?.Items.Take(GetTotalItems) ?? new List<MyProvidersItem>())
+        @foreach (var item in myProviders?.Items.Take(GetTotalItems(expand)) ?? new List<MyProvidersItem>())
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                 <Card>
@@ -30,10 +34,11 @@
 
     private AllProviders? allProviders { get; set; }
     private MyProviders? myProviders { get; set; }
-    public Loading? LoadingProvider { get; set; }
+    private Loading? LoadingProvider { get; set; }
     private bool IsUserAuthenticated { get; set; }
+    private bool expand { get; set; }
 
-    private int GetTotalItems => AppStateStatic.OnFullHD ? 12 : 4;
+    private int GetTotalItems(bool expand) => AppStateStatic.OnMobile && !expand ? 4 : 12;
 
     protected override async Task LoadData()
     {

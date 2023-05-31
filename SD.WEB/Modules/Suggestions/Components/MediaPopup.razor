@@ -11,7 +11,7 @@
 @inject ExternalIdApi ExternalIdApi
 
 <ModalHeader>
-    <ModalTitle>@media?.title</ModalTitle>
+    <ModalTitle Size="HeadingSize.Is5">@media?.title</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
@@ -93,7 +93,7 @@
                                     {
                                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                                             <Button Type="ButtonType.Link" To="@("https://www.youtube.com/watch?v=" + item.key)" Target="Target.Blank" Color="Color.Light"
-                                            Padding="Padding.Is1" title="@item.name" Block="true">
+                                                    Padding="Padding.Is1" title="@item.name" Block="true">
                                                 <Blazorise.Icon Name="FontAwesomeIcons.Video"></Blazorise.Icon>
                                             </Button>
                                         </Column>
@@ -322,7 +322,7 @@
                                                             if (wishedMovie)
                                                             {
                                                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
-                                                            Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
+                                                                                Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
                                                             }
                                                         }
 
@@ -331,7 +331,7 @@
                                                         if (movieWatched | showWatched)
                                                         {
                                                             <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x2" TextColor="TextColor.Light"
-                                                            Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
+                                                                            Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
                                                         }
 
                                                         <CardImage data-src="@item.poster_small" class="lazyload" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer;")></CardImage>
@@ -368,42 +368,42 @@
             <Column ColumnSize="ColumnSize.IsAuto">
                 @if (AppState.WishList?.Movies.Any(a => a.id == tmdb_id) ?? false)
                 {
-                    <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated">
+                    <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
                     </Button>
                 }
                 else if (AppState.WishList?.Shows.Any(a => a.id == tmdb_id) ?? false)
                 {
-                    <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated">
+                    <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
                     </Button>
                 }
                 else
                 {
-                    <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated">
+                    <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
                     </Button>
                 }
                 @if (AppState.WatchedList?.Movies.Any(a => a == tmdb_id) ?? false)
                 {
-                    <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated">
+                    <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
                     </Button>
                 }
                 else if (AppState.WatchedList?.Shows.Any(a => a == tmdb_id) ?? false)
                 {
-                    <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated">
+                    <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
                     </Button>
                 }
                 else
                 {
-                    <Button Color="Color.Primary" Clicked="Watched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated">
+                    <Button Color="Color.Primary" Clicked="Watched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonWatched
                     </Button>
                 }
                 @*<Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false">Atualizar</Button>*@
-                <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@GlobalTranslations.ButtonClose</Button>
+                <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">@GlobalTranslations.ButtonClose</Button>
             </Column>
         </Row>
     </Container>

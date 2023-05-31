@@ -1,7 +1,7 @@
 ﻿@inherits ComponenteNoDataCore<MyWishListPopup>
 
 <ModalHeader>
-    <ModalTitle>@Title.Format(GetWishList().Count())</ModalTitle>
+    <ModalTitle Size="HeadingSize.Is5">@Title.Format(GetWishList().Count())</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
@@ -19,7 +19,7 @@
     </Row>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@ModalService.Hide">@TranslationText.Close</Button>
+    <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">@TranslationText.Close</Button>
 </ModalFooter>
 
 @code {

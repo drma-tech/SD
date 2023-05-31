@@ -4,7 +4,7 @@
 @inject TmdbApi TmdbApi
 
 <ModalHeader>
-    <ModalTitle>@collection?.name</ModalTitle>
+    <ModalTitle Size="HeadingSize.Is5">@collection?.name</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
@@ -41,7 +41,7 @@
                                     if (wishedMovie)
                                     {
                                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
-                                        Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
+                                                        Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
                                     }
                                 }
 
@@ -49,7 +49,7 @@
                                 if (watched)
                                 {
                                     <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x2" TextColor="TextColor.Light"
-                                        Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
+                                                    Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
                                 }
 
                                 <CardImage Source="@(TmdbOptions.SmallPosterPath + item.poster_path)" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(watched ? "filter: grayscale(100%);" : "")}")></CardImage>
@@ -66,9 +66,9 @@
     </Loading>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Primary" Clicked="@Watched" Float="Float.Start" title="Mark all these items as watched">@GlobalTranslations.ButtonWatched</Button>
-    <Button Color="Color.Danger" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">@GlobalTranslations.RemoveCollection</Button>
-    <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@GlobalTranslations.ButtonClose</Button>
+    <Button Color="Color.Primary" Size="Size.Small" Clicked="@Watched" Float="Float.Start" title="Mark all these items as watched">@GlobalTranslations.ButtonWatched</Button>
+    <Button Color="Color.Danger" Size="Size.Small" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">@GlobalTranslations.RemoveCollection</Button>
+    <Button Color="Color.Secondary" Size="Size.Small" Clicked="@HideModal" Float="Float.End">@GlobalTranslations.ButtonClose</Button>
 </ModalFooter>
 
 @code {

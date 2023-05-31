@@ -4,7 +4,7 @@
 @inject TmdbApi TmdbApi
 
 <ModalHeader>
-    <ModalTitle>@ShowTitle (@ShowSeasonName)</ModalTitle>
+    <ModalTitle Size="HeadingSize.Is5">@ShowTitle (@ShowSeasonName)</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
@@ -35,7 +35,7 @@
     </Loading>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@GlobalTranslations.ButtonClose</Button>
+    <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">@GlobalTranslations.ButtonClose</Button>
 </ModalFooter>
 
 @code {

@@ -15,13 +15,13 @@
 </HeaderComponent>
 @if (TypeSelected == PopularType.Movie)
 {
-    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false" 
-    StringParameters="Params"></MediaList>
+    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false"
+               StringParameters="Params"></MediaList>
 }
 else if (TypeSelected == PopularType.Show)
 {
-    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false" 
-    StringParameters="Params" TypeSelected="MediaType.tv"></MediaList>
+    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false"
+               StringParameters="Params" TypeSelected="MediaType.tv"></MediaList>
 }
 else if (TypeSelected == PopularType.Cinema)
 {

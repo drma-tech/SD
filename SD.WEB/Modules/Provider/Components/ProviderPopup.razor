@@ -7,7 +7,7 @@
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 
 <ModalHeader>
-    <ModalTitle>@provider?.name</ModalTitle>
+    <ModalTitle Size="HeadingSize.Is5">@provider?.name</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
@@ -88,17 +88,17 @@
 <ModalFooter>
     @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
     {
-        <Button Color="Color.Danger" Clicked="Remove" Disabled="!IsUserAuthenticated">
+        <Button Color="Color.Danger" Clicked="Remove" Disabled="!IsUserAuthenticated" Size="Size.Small">
             <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
         </Button>
     }
     else
     {
-        <Button Color="Color.Primary" Clicked="Add" Disabled="!IsUserAuthenticated">
+        <Button Color="Color.Primary" Clicked="Add" Disabled="!IsUserAuthenticated" Size="Size.Small">
             <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
         </Button>
     }
-    <Button Color="Color.Secondary" Clicked="@ModalService.Hide">@TranslationText.Close</Button>
+    <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">@TranslationText.Close</Button>
 </ModalFooter>
 
 @code {

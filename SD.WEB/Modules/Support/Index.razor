@@ -5,16 +5,17 @@
 @using SD.WEB.Modules.Support.Component
 
 <Alert Color="Color.Secondary" Visible="true">
-    <AlertDescription>
-        <Blazorise.Link To="@("Terms/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkTerm</Blazorise.Link> ▪ <Blazorise.Link To="@("Privacy/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkPrivacy</Blazorise.Link> ▪ <Blazorise.Link To="Faq">@Resources.Translations.LinkFAQ</Blazorise.Link>
+    <AlertDescription >
+        @*<Blazorise.Link To="@("Terms/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkTerm</Blazorise.Link> ▪ <Blazorise.Link To="@("Privacy/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkPrivacy</Blazorise.Link> ▪ <Blazorise.Link To="Faq">@Resources.Translations.LinkFAQ</Blazorise.Link>*@
+        <Blazorise.Link To="@("Terms/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkTerm</Blazorise.Link> ▪ <Blazorise.Link To="@("Privacy/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkPrivacy</Blazorise.Link>
     </AlertDescription>
 </Alert>
 
 <Div Margin="Margin.Is2.OnY">
-    <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Announcements)" Clicked="(() => ChangeOrder(Tabs.Announcements))">@Resources.Translations.TabAnnouncements</Button>
-    <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Feedback)" Clicked="(() => ChangeOrder(Tabs.Feedback))">@Resources.Translations.TabFeedback</Button>
-    @*<Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Roadmap)" Clicked="(() => ChangeOrder(Tabs.Roadmap))">@Resources.Translations.TabRoadmap</Button>*@
-    <Button Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Downloads)" Clicked="(() => ChangeOrder(Tabs.Downloads))">@Resources.Translations.TabDownloads</Button>
+    <Button Size="Size.Small" Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Announcements)" Clicked="(() => ChangeOrder(Tabs.Announcements))">@Resources.Translations.TabAnnouncements</Button>
+    <Button Size="Size.Small" Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Feedback)" Clicked="(() => ChangeOrder(Tabs.Feedback))">@Resources.Translations.TabFeedback</Button>
+    @*<Button Size="Size.Small"  Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Roadmap)" Clicked="(() => ChangeOrder(Tabs.Roadmap))">@Resources.Translations.TabRoadmap</Button>*@
+    <Button Size="Size.Small" Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Downloads)" Clicked="(() => ChangeOrder(Tabs.Downloads))">@Resources.Translations.TabDownloads</Button>
 </Div>
 
 @if (SelectedTab == Tabs.Announcements)

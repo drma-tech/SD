@@ -79,8 +79,11 @@
     border-color: #efe696;
 }
 
-/*BLAZORIZE - BOOTSTRAP*/
+.badge {
+    padding: 0.15rem !important;
+}
 
+/*BLAZORIZE - BOOTSTRAP*/
 /*.alert-primary {
     color: #004085 !important;
     background-color: #cce5ff !important;
@@ -128,7 +131,17 @@
     background-color: #d6d8d9 !important;
     border-color: #c6c8ca !important;
 }*/
-
 body .pwa-updater[b-pwa-updater] {
     --pwa-updater-bar-backcolor: forestgreen;
+}
+
+
+dl, ol, ul {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+p {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
 }

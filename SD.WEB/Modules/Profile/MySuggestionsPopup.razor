@@ -1,7 +1,7 @@
 ﻿@inherits ComponenteNoDataCore<MySuggestionsPopup>
 
 <ModalHeader>
-    <ModalTitle>Settings</ModalTitle>
+    <ModalTitle Size="HeadingSize.Is5">Settings</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
@@ -11,7 +11,7 @@
                  CssIcon="@FontAwesomeIcons.Tv" Multiple="true" Order="(o)=>o.Name"></FieldSelect>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@(()=>{ModalService.Hide();MySuggestionsChanged?.InvokeAsync(MySuggestions);})">@TranslationText.OK</Button>
+    <Button Color="Color.Secondary" Clicked="@(()=>{ModalService.Hide();MySuggestionsChanged?.InvokeAsync(MySuggestions);})" Size="Size.Small">@TranslationText.OK</Button>
 </ModalFooter>
 
 @code {

@@ -10,12 +10,12 @@
         <FieldBody>
             <Addons>
                 <Addon AddonType="AddonType.Start" VerticalAlignment="VerticalAlignment.Middle">
-                    <Button Color="Color.Primary" Disabled="true">
+                    <Button Color="Color.Primary" Disabled="true" Size="Size.Small">
                         <Blazorise.Icon Name="@FontAwesomeIcons.Filter"></Blazorise.Icon>
                     </Button>
                 </Addon>
                 <Addon AddonType="AddonType.Body">
-                    <Select TValue="TicketType" @bind-SelectedValue="@TicketTypeSel">
+                    <Select TValue="TicketType" @bind-SelectedValue="@TicketTypeSel" Size="Size.Small">
                         @foreach (var item in EnumHelper.GetArray<TicketType>())
                         {
                             <SelectItem Value="@item">@item.GetName()</SelectItem>
@@ -28,13 +28,13 @@
     <Field ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
         <FieldBody>
             <Addons>
-                <Addon AddonType="AddonType.Start">
-                    <Button Color="Color.Primary" Disabled="true">
+                <Addon AddonType="AddonType.Start" Size="Size.Small">
+                    <Button Color="Color.Primary" Disabled="true" Size="Size.Small">
                         <Blazorise.Icon Name="@FontAwesomeIcons.Filter"></Blazorise.Icon>
                     </Button>
                 </Addon>
                 <Addon AddonType="AddonType.Body">
-                    <Select TValue="TicketStatus?" @bind-SelectedValue="@TicketStatusSel">
+                    <Select TValue="TicketStatus?" @bind-SelectedValue="@TicketStatusSel" Size="Size.Small">
                         <SelectItem></SelectItem>
                         @foreach (var item in EnumHelper.GetArray<TicketStatus>())
                         {
@@ -49,12 +49,12 @@
         <FieldBody>
             <Addons>
                 <Addon AddonType="AddonType.Start">
-                    <Button Color="Color.Primary" Disabled="true">
+                    <Button Color="Color.Primary" Disabled="true" Size="Size.Small">
                         <Blazorise.Icon Name="@FontAwesomeIcons.SortAmountDown"></Blazorise.Icon>
                     </Button>
                 </Addon>
                 <Addon AddonType="AddonType.Body">
-                    <Select TValue="Order" @bind-SelectedValue="@OrderSel">
+                    <Select TValue="Order" @bind-SelectedValue="@OrderSel" Size="Size.Small">
                         @foreach (var item in EnumHelper.GetArray<Order>())
                         {
                             <SelectItem Value="@item">@item.GetName()</SelectItem>
@@ -66,7 +66,7 @@
     </Field>
     <Field ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
         <FieldBody>
-            <Button Color="Color.Primary" Block="true" Clicked="ShowModal" Disabled="!IsUserAuthenticated">
+            <Button Color="Color.Primary" Block="true" Clicked="ShowModal" Disabled="!IsUserAuthenticated" Size="Size.Small">
                 <Blazorise.Icon Name="@FontAwesomeIcons.Plus"></Blazorise.Icon> @GlobalTranslations.ButtonNew
             </Button>
         </FieldBody>

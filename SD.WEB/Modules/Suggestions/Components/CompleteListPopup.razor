@@ -6,7 +6,7 @@
 @inject ExternalIdApi ExternalIdApi
 
 <ModalHeader>
-    <ModalTitle>@GetTitle</ModalTitle>
+    <ModalTitle Size="HeadingSize.Is5">@GetTitle</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
@@ -14,7 +14,7 @@
                    StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false"></MediaListFull>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">@TranslationText.Close</Button>
+    <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">@TranslationText.Close</Button>
 </ModalFooter>
 
 @code {

@@ -6,7 +6,7 @@
 @inject CacheApi CacheApi
 
 <ModalHeader>
-    <ModalTitle>@GlobalTranslations.TrailersTitle</ModalTitle>
+    <ModalTitle Size="HeadingSize.Is5">@GlobalTranslations.TrailersTitle</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
@@ -20,7 +20,7 @@
                             <CardImage Source="@item?.url" Alt="@item?.title">
                             </CardImage>
                             <CardBody>
-                                <CardText Style="line-height: normal; font-size: 0.75rem;">
+                                <CardText Style="line-height: normal; font-size: 0.8rem;">
                                     @item?.title
                                 </CardText>
                             </CardBody>
@@ -32,7 +32,7 @@
     </Loading>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@ModalService.Hide">@TranslationText.Close</Button>
+    <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">@TranslationText.Close</Button>
 </ModalFooter>
 
 @code {
