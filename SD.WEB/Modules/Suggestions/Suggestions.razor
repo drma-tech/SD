@@ -3,7 +3,7 @@
 @inherits PageNoDataCore<Suggestions>
 
 <HeaderComponent Title="@Resources.Translations.TitleAwards">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand_awards = !expand_awards; })" title="Show all awards">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand_awards = !expand_awards; })" title="Show all">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
@@ -24,7 +24,7 @@
 </Row>
 
 <HeaderComponent Title="@Resources.Translations.TitleSpecializedSites">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand_sites = !expand_sites; })" title="Show all awards">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand_sites = !expand_sites; })" title="Show all">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
@@ -44,13 +44,13 @@
     }
 </Row>
 
-<HeaderComponent Title="@Resources.Translations.TitleUpcoming">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand_upcoming = !expand_upcoming; })" title="Show all awards">
+<HeaderComponent Title="@Resources.Translations.TitleSpecials">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand_specials = !expand_specials; })" title="Show all">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
 <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-    @foreach (var item in Upcoming.Take(GetTotalItems(expand_upcoming)))
+    @foreach (var item in Specials.Take(GetTotalItems(expand_specials)))
     {
         <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
             <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
@@ -68,13 +68,13 @@
 @code {
     private List<Item> Awards { get; set; } = new();
     private List<Item> Sites { get; set; } = new();
-    private List<Item> Upcoming { get; set; } = new();
+    private List<Item> Specials { get; set; } = new();
 
     private int GetTotalItems(bool expand) => AppStateStatic.OnMobile && !expand ? 4 : 12;
 
     private bool expand_awards { get; set; }
     private bool expand_sites { get; set; }
-    private bool expand_upcoming { get; set; }
+    private bool expand_specials { get; set; }
 
     public class Item
     {
@@ -100,29 +100,24 @@
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Sites.Add(new Item() { name = "IMDB", logo_path = "logo/imdb.png", link = "/Suggestions/Imdb" });
-        Sites.Add(new Item() { name = "TMDB", logo_path = "logo/tmdb.png", link = "/Suggestions/Tmdb" });
         Sites.Add(new Item() { name = "Rotten Tomatoes", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/RottenTomatoes" });
         Sites.Add(new Item() { name = "Metacritic", logo_path = "logo/metacritic.png", link = "/Suggestions/Metacritic" });
-        //Letterboxd - there is no way to filter only shows
-        //MovieBuff - no one rates movies. and no way to order by ratings
+        Sites.Add(new Item() { name = "TMDB", logo_path = "logo/tmdb.png", link = "/Suggestions/Tmdb" });
         Sites.Add(new Item() { name = "Trakt", logo_path = "logo/trakt.png", link = "/Suggestions/Trakt" });
-        //Flixster - no rating. nor order.
-        //CineFix - youtube channel
-        Sites.Add(new Item() { name = "Filmaffinity", logo_path = "logo/filmaffinity.png", link = "/Suggestions/Filmaffinity" });
-        //ScreenRant - no order
         Sites.Add(new Item() { name = "Hollywood Reporter", logo_path = "logo/HollywoodReporter.png", link = "/Suggestions/HollywoodReporter" });
         Sites.Add(new Item() { name = "Empire", logo_path = "logo/empire.png", link = "/Suggestions/Empire" });
         Sites.Add(new Item() { name = "Rolling Stone", logo_path = "logo/rollingstone.png", link = "/Suggestions/RollingStone" });
+        Sites.Add(new Item() { name = "Filmaffinity", logo_path = "logo/filmaffinity.png", link = "/Suggestions/Filmaffinity" });
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        Upcoming.Add(new Item() { name = "2023 (Rotten Tomatoes)", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2023" });
-        Upcoming.Add(new Item() { name = "2024 (Rotten Tomatoes)", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2024" });
-        Upcoming.Add(new Item() { name = "Marvel", logo_path = "logo/marvel.png", link = "/Suggestions/UpcomingMarvel" });
-        Upcoming.Add(new Item() { name = "DC", logo_path = "logo/dc.png", link = "/Suggestions/UpcomingDC" });
-        Upcoming.Add(new Item() { name = "Star Wars", logo_path = "logo/StarWars.png", link = "/Suggestions/UpcomingStarWars" });
-        Upcoming.Add(new Item() { name = "Netflix", logo_path = "logo/Netflix.png", link = "/Suggestions/UpcomingNetflix" });
-        Upcoming.Add(new Item() { name = "Walt Disney Pictures", logo_path = "logo/disney.png", link = "/Suggestions/UpcomingDisney" });
-        //most profitable movies
+        
+        Specials.Add(new Item() { name = "Marvel", logo_path = "logo/marvel.png", link = "/Suggestions/UpcomingMarvel" });
+        Specials.Add(new Item() { name = "DC", logo_path = "logo/dc.png", link = "/Suggestions/UpcomingDC" });
+        Specials.Add(new Item() { name = "Star Wars", logo_path = "logo/StarWars.png", link = "/Suggestions/UpcomingStarWars" });
+        Specials.Add(new Item() { name = "Netflix", logo_path = "logo/Netflix.png", link = "/Suggestions/UpcomingNetflix" });
+        Specials.Add(new Item() { name = "Walt Disney Pictures", logo_path = "logo/disney.png", link = "/Suggestions/UpcomingDisney" });
+        Specials.Add(new Item() { name = "Highest grossing movies", logo_path = "logo/GrossingMovies.png", link = "/Suggestions/GrossingMovies" });
+        Specials.Add(new Item() { name = "Most Expected Movies of 2023", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2023" });
+        Specials.Add(new Item() { name = "Most Expected Movies of 2024", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2024" });
     }
 }

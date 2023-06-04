@@ -101,10 +101,10 @@
         [Custom(Name = "Best TV Shows of All Time")]
         RollingStoneBestTVShowsofAllTime = 8228448,
 
-        [Custom(Name = "Expected Movies of 2023")]
+        [Custom(Name = "Most Expected Movies of 2023")]
         ExpectedMovieOf2023 = 8232488,
 
-        [Custom(Name = "Expected Movies of 2024")]
+        [Custom(Name = "Most Expected Movies of 2024")]
         ExpectedMovieOf2024 = 8232490,
 
         [Custom(Name = "Best Movies")]
@@ -156,6 +156,9 @@
         TraktRecommendedMovies = 8240654,
 
         [Custom(Name = "Recommended TV Shows")]
-        TraktRecommendedTVShows = 8240660
+        TraktRecommendedTVShows = 8240660,
+
+        [Custom(Name = "Highest grossing movies")]
+        GrossingMovies = 8255415,
     }
 }

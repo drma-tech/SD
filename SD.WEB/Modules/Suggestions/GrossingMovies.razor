@@ -1,0 +1,9 @@
+﻿@page "/Suggestions/GrossingMovies"
+<SeoHeader Title="Suggestions | Highest grossing movies" Keywords="@(new []{"Highest grossing movies"})" Url="/Suggestions/GrossingMovies"></SeoHeader>
+@inherits PageNoDataCore<UpcomingNetflix>
+
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.GrossingMovies" MaxItens="50" CommentsSeparator="|"></MediaListFull>

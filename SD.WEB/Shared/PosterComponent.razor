@@ -89,7 +89,7 @@
 @if (!string.IsNullOrEmpty(Comments))
 {
     <CardBody Padding="Padding.Is1">
-        @foreach (var item in Comments.Split(","))
+        @foreach (var item in Comments.Split(CommentsSeparator))
         {
             <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" Style="white-space: inherit; font-size: 0.65rem;">@item</Badge>
         }
@@ -103,6 +103,7 @@
     [Parameter] public string? Poster { get; set; }
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Comments { get; set; }
+    [Parameter] public string? CommentsSeparator { get; set; } = ",";
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType MediaType { get; set; }
     [Parameter] public int? Runtime { get; set; }

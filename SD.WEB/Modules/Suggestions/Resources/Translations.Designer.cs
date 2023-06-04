@@ -79,11 +79,11 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next Releases.
+        ///   Looks up a localized string similar to Specials.
         /// </summary>
-        public static string TitleUpcoming {
+        public static string TitleSpecials {
             get {
-                return ResourceManager.GetString("TitleUpcoming", resourceCulture);
+                return ResourceManager.GetString("TitleSpecials", resourceCulture);
             }
         }
     }
