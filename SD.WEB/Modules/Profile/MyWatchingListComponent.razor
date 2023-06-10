@@ -28,7 +28,15 @@
 
             <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile">
                 <Card Style="position: relative;">
-                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+                    @if (percentComplete == 100)
+                    {
+                        <Badge Color="Color.Success" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+                    }
+                    else
+                    {
+                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+                    }
+
                     @if (string.IsNullOrEmpty(item.logo))
                     {
                         <CardImage data-src="noimage.png" class="lazyload" Alt="@item.name" title="@item.name"
@@ -72,7 +80,14 @@
 
             <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile">
                 <Card Style="position: relative;">
-                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+                    @if (percentComplete == 100)
+                    {
+                        <Badge Color="Color.Success" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+                    }
+                    else
+                    {
+                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+                    }
 
                     @if (string.IsNullOrEmpty(item.logo))
                     {
