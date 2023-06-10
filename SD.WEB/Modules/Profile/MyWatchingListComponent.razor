@@ -183,7 +183,7 @@
                 if (media == null) continue;
                 var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-                if (hasCollection)
+                if (hasCollection && !watching.DeletedMovies.Any(a => a == media.collectionId.ToString()))
                 {
                     var item = watching?.GetItem(MediaType.movie, media.collectionId?.ToString());
 
@@ -226,7 +226,7 @@
                 if (media == null) continue;
                 var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-                if (hasCollection)
+                if (hasCollection && !watching.DeletedShows.Any(a => a == media.tmdb_id))
                 {
                     var item = watching?.GetItem(MediaType.tv, media.tmdb_id);
 

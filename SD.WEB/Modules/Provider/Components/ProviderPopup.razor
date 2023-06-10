@@ -11,7 +11,7 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true">
+    <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true" RenderMode="TabsRenderMode.LazyLoad">
         <Items>
             <Tab Name="About">@GlobalTranslations.ProviderPopupTabAbout</Tab>
             <Tab Name="Details">@GlobalTranslations.ProviderPopupTabDetails</Tab>

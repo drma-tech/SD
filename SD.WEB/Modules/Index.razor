@@ -13,7 +13,7 @@
 
 <Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
     <Column>
-        <TextEdit @bind-Text="@Search" Placeholder="@GlobalTranslations.TypeSomething" Size="Size.Small" />
+        <TextEdit @bind-Text="@Search" Placeholder="@GlobalTranslations.TypeSomething" Size="Size.Small" KeyPress="KeyPress" />
     </Column>
     <Column ColumnSize="ColumnSize.IsAuto">
         <Button Color="Color.Primary" Block="true" Clicked="ShowSearchPopup" Disabled="string.IsNullOrEmpty(Search)" Size="Size.Small">
@@ -54,5 +54,13 @@
                     Centered = true,
                     Size = ModalSize.ExtraLarge,
                 });
+    }
+
+    private async Task KeyPress(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            await ShowSearchPopup();
+        }
     }
 }

@@ -5,7 +5,6 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
 @inherits ComponenteCore<MediaPopup>
-@inject AllProvidersApi AllProvidersApi
 @inject TmdbApi TmdbApi
 @inject CacheApi CacheApi
 @inject ExternalIdApi ExternalIdApi
@@ -38,7 +37,7 @@
                 }
             </Column>
             <Column ColumnSize="ColumnSize.Is12.OnMobile.Is8.OnDesktop">
-                <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true">
+                <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true" RenderMode="TabsRenderMode.LazyLoad">
                     <Items>
                         <Tab Name="About">@GlobalTranslations.TabAbout</Tab>
                         <Tab Name="Streaming">@GlobalTranslations.TabStreaming</Tab>
@@ -100,192 +99,9 @@
                                     }
                                 </Row>
                             }
-                            @{
-                                var link = Providers?.GetLink(AppStateStatic.Region);
-                                if (string.IsNullOrEmpty(link))
-                                {
-                                    link = Providers?.GetLink(Region.US);
-                                }
-                                @if (!string.IsNullOrEmpty(link))
-                                {
-                                    var uri_link = new Uri(link);
-                                    var fomatted_link = "https://" + uri_link.Host + string.Join("", uri_link.Segments.SkipLast(1));
-                                    <Row Margin="Margin.Is2.FromTop">
-                                        <Column>
-                                            <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
-                                                @GlobalTranslations.MoreInformation: <a href="@fomatted_link" target="_blank" rel="noopener">@(uri_link.Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
-                                            </Alert>
-                                        </Column>
-                                    </Row>
-                                }
-                            }
                         </TabPanel>
                         <TabPanel Name="Streaming" Class="mt-2">
-                            @{
-                                var hasProvider = false;
-
-                                if (Providers?.GetFreeListProviders(AppStateStatic.Region).Any() ?? false)
-                                {
-                                    hasProvider = true;
-                                    <Row HorizontalGutter="4" VerticalGutter="4">
-                                        <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                            <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFree</Button>
-                                        </Column>
-                                        @foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
-                                        {
-                                            @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
-                                            {
-                                                <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                                    <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.FREE))
-                                                        {
-                                                            <span>false</span>
-                                                        }
-                                                    </Button>
-                                                </Column>
-                                            }
-                                        }
-                                    </Row>
-                                }
-                                if (Providers?.GetAdsListProviders(AppStateStatic.Region).Any() ?? false)
-                                {
-                                    hasProvider = true;
-                                    <Row HorizontalGutter="4" VerticalGutter="4">
-                                        <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                            <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelAds</Button>
-                                        </Column>
-                                        @foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
-                                        {
-                                            @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
-                                            {
-                                                <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                                    <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.AVOD))
-                                                        {
-                                                            <span>false</span>
-                                                        }
-                                                    </Button>
-                                                </Column>
-                                            }
-                                        }
-                                    </Row>
-                                }
-                                if (Providers?.GetFlatRateListProviders(AppStateStatic.Region).Any() ?? false)
-                                {
-                                    hasProvider = true;
-                                    <Row HorizontalGutter="4" VerticalGutter="4">
-                                        <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                            <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFlatRate</Button>
-                                        </Column>
-                                        @foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
-                                        {
-                                            @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
-                                            {
-                                                <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                                    <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.SVOD))
-                                                        {
-                                                            <span>false</span>
-                                                        }
-                                                    </Button>
-                                                </Column>
-                                            }
-                                        }
-                                    </Row>
-                                }
-                                if (Providers?.GetFlatRateBuyListProviders(AppStateStatic.Region).Any() ?? false)
-                                {
-                                    hasProvider = true;
-                                    <Row HorizontalGutter="4" VerticalGutter="4">
-                                        <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                            <Button Color="Color.Warning" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFlatRateBuy</Button>
-                                        </Column>
-                                        @foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
-                                        {
-                                            @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
-                                            {
-                                                <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                                    <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.PVOD))
-                                                        {
-                                                            <span>false</span>
-                                                        }
-                                                    </Button>
-                                                </Column>
-                                            }
-                                        }
-                                    </Row>
-                                }
-                                if (Providers?.GetRentListProviders(AppStateStatic.Region).Any() ?? false)
-                                {
-                                    hasProvider = true;
-                                    <Row HorizontalGutter="4" VerticalGutter="4">
-                                        <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                            <Button Color="Color.Primary" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelRent</Button>
-                                        </Column>
-                                        @foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
-                                        {
-                                            @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
-                                            {
-                                                <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                                    <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
-                                                        {
-                                                            <span>false</span>
-                                                        }
-                                                    </Button>
-                                                </Column>
-                                            }
-                                        }
-                                    </Row>
-                                }
-                                if (Providers?.GetBuyListProviders(AppStateStatic.Region).Any() ?? false)
-                                {
-                                    hasProvider = true;
-                                    <Row HorizontalGutter="4" VerticalGutter="4">
-                                        <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                            <Button Color="Color.Danger" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelBuy</Button>
-                                        </Column>
-                                        @foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
-                                        {
-                                            @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
-                                            {
-                                                <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                                    <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                                        <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
-                                                        {
-                                                            <span>false</span>
-                                                        }
-                                                    </Button>
-                                                </Column>
-                                            }
-                                        }
-                                    </Row>
-                                }
-
-                                if (hasProvider)
-                                {
-                                    <Row Margin="Margin.Is3.FromTop">
-                                        <Column>
-                                            <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
-                                                @GlobalTranslations.Offering: <a href="https://www.justwatch.com/" target="_blank" rel="noopener">@(new Uri("https://www.justwatch.com/").Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
-                                            </Alert>
-                                        </Column>
-                                    </Row>
-                                }
-                                else
-                                {
-                                    <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
-                                        @GlobalTranslations.TitleNotAvailable
-                                    </Alert>
-                                }
-                            }
+                            <StreamingComponent tmdb_id="@tmdb_id" type="@type"></StreamingComponent>
                         </TabPanel>
                         <TabPanel Name="Credits" Class="mt-2">
                             <CreditsComponent tmdb_id="@tmdb_id" type="@type"></CreditsComponent>
@@ -402,7 +218,6 @@
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonWatched
                     </Button>
                 }
-                @*<Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false">Atualizar</Button>*@
                 <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">@GlobalTranslations.ButtonClose</Button>
             </Column>
         </Row>
@@ -418,9 +233,7 @@
     public Loading? LoadingList { get; set; }
 
     private MediaDetail? media { get; set; }
-    private MediaProviders? Providers { get; set; }
     private Ratings? Ratings { get; set; }
-    private AllProviders? AllProviders { get; set; }
     public string? imdb_id { get; set; }
 
     public bool IsUserAuthenticated { get; set; }
@@ -444,8 +257,6 @@
         LoadingList?.Start();
 
         media = await TmdbApi.GetMediaDetail(tmdb_id, type);
-        Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
-        AllProviders = await AllProvidersApi.GetAll();
 
         imdb_id = await ExternalIdApi.GetImdbId(type, tmdb_id);
         if (!string.IsNullOrEmpty(imdb_id))
@@ -492,98 +303,7 @@
             await OpenPopupMedia(item, type);
         else
             await OpenPopupSeason(item);
-    }
-
-    private async Task Atualizar()
-    {
-        if (Providers == null) return;
-
-        foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
-        {
-            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
-
-            var model = DeliveryModel.FREE;
-
-            if (provider != null && !provider.models.Contains(model))
-            {
-                provider.models.Add(model);
-
-                provider.models = provider.models.OrderBy(o => o).ToList();
-            }
-        }
-
-        foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
-        {
-            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
-
-            var model = DeliveryModel.AVOD;
-
-            if (provider != null && !provider.models.Contains(model))
-            {
-                provider.models.Add(model);
-
-                provider.models = provider.models.OrderBy(o => o).ToList();
-            }
-        }
-
-        foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
-        {
-            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
-
-            var model = DeliveryModel.SVOD;
-
-            if (provider != null && !provider.models.Contains(model))
-            {
-                provider.models.Add(model);
-
-                provider.models = provider.models.OrderBy(o => o).ToList();
-            }
-        }
-
-        foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
-        {
-            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
-
-            var model = DeliveryModel.TVOD;
-
-            if (provider != null && !provider.models.Contains(model))
-            {
-                provider.models.Add(model);
-
-                provider.models = provider.models.OrderBy(o => o).ToList();
-            }
-        }
-
-        foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
-        {
-            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
-
-            var model = DeliveryModel.TVOD;
-
-            if (provider != null && !provider.models.Contains(model))
-            {
-                provider.models.Add(model);
-
-                provider.models = provider.models.OrderBy(o => o).ToList();
-            }
-        }
-
-        foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
-        {
-            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
-
-            var model = DeliveryModel.PVOD;
-
-            if (provider != null && !provider.models.Contains(model))
-            {
-                provider.models.Add(model);
-
-                provider.models = provider.models.OrderBy(o => o).ToList();
-            }
-        }
-
-        await AllProvidersApi.Post(AllProviders);
-    }
+    }   
 
     private async Task Add()
     {
