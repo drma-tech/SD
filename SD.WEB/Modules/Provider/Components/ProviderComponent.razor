@@ -15,7 +15,7 @@
         {
             <Column ColumnSize="ColumnSize.Is3.OnMobile.Is2.OnDesktop">
                 <Card>
-                    <CardImage data-src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" class="lazyload" Alt="@item.name"
+                    <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name"
                            onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;" title="@item.name"></CardImage>
                 </Card>
                 @*@if (string.IsNullOrEmpty(item.link))

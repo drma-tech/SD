@@ -128,7 +128,7 @@
                                                     }
                                                     @if (string.IsNullOrEmpty(item.poster_small))
                                                     {
-                                                        <CardImage data-src="noimage.png" class="lazyload" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
+                                                        <CardImage Source="noimage.png" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
                                                     }
                                                     else
                                                     {
@@ -150,7 +150,7 @@
                                                                             Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
                                                         }
 
-                                                        <CardImage data-src="@item.poster_small" class="lazyload" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer;")></CardImage>
+                                                        <CardImage Source="@item.poster_small" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer;")></CardImage>
                                                     }
                                                 </Blazorise.Link>
 
