@@ -41,8 +41,9 @@ namespace SD.Shared.Models
         {
             if (Contains(type, item))
             {
-                GetItem(type, item.id)?.watched.Clear();
+                GetItem(type, item.id).watched.Clear();
 
+                GetItem(type, item.id).maxItems = item.maxItems;
                 foreach (var id in item.watched)
                 {
                     GetItem(type, item.id)?.watched.Add(id);
@@ -111,7 +112,7 @@ namespace SD.Shared.Models
         public string? id { get; init; }
         public string? logo { get; init; }
         public string? name { get; init; }
-        public int maxItems { get; init; }
+        public int maxItems { get; set; }
         public HashSet<string> watched { get; init; } = new();
 
         public bool Equals(WatchingListItem? other)

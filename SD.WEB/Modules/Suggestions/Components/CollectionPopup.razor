@@ -221,34 +221,20 @@
 
         var watching = AppState.WatchingList ?? new WatchingList();
 
-        if (items.Count < collectionItemsCount)
+        WatchingListItem item;
+
+        if (type == MediaType.movie)
         {
-            WatchingListItem item;
-
-            if (type == MediaType.movie)
-            {
-                item = new WatchingListItem(collection?.id.ToString(), collection?.name, collection?.poster_path?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
-            }
-            else
-            {
-                var media = await TmdbApi.GetMediaDetail(tmdb_id, type);
-
-                item = new WatchingListItem(tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
-            }
-
-            watching = await WatchingListApi.Add(type, item);
+            item = new WatchingListItem(collection?.id.ToString(), collection?.name, collection?.poster_path?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
         }
         else
         {
-            if (type == MediaType.movie)
-            {
-                watching = await WatchingListApi.Remove(type, collection?.id.ToString());
-            }
-            else
-            {
-                watching = await WatchingListApi.Remove(type, tmdb_id);
-            }
+            var media = await TmdbApi.GetMediaDetail(tmdb_id, type);
+
+            item = new WatchingListItem(tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
         }
+
+        watching = await WatchingListApi.Add(type, item);
 
         AppState.ChangeWatchingList(watching);
 

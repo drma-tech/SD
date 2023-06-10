@@ -196,17 +196,11 @@
                     }
                     else
                     {
+                        item.maxItems = media.Collection.Count;
                         item.watched.Add(tmdb_id);
                     }
 
-                    if (item.watched.Count < item.maxItems)
-                    {
-                        watching = await WatchingListApi.Add(MediaType.movie, item);
-                    }
-                    else
-                    {
-                        watching = await WatchingListApi.Remove(MediaType.movie, media.collectionId?.ToString());
-                    }
+                    watching = await WatchingListApi.Add(MediaType.movie, item);
 
                     AppState.ChangeWatchingList(watching);
                 }
@@ -239,6 +233,7 @@
                     }
                     else
                     {
+                        item.maxItems = media.Collection.Count;
                         item.watched.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
                     }
 
