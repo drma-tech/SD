@@ -1,10 +1,12 @@
 ﻿@page "/Providers"
+@using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.Provider.Components
 @using SD.WEB.Modules.Provider.Core;
 <SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/Providers"></SeoHeader>
 @inherits PageCore<Provider.Index>
 
 @inject AllProvidersApi AllProvidersApi
+@inject MyProvidersApi MyProvidersApi
 
 <HeaderComponent Title="@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region.GetName())">
 </HeaderComponent>
@@ -12,28 +14,36 @@
     <Row HorizontalGutter="4" VerticalGutter="4">
         @foreach (var item in GetFilteredProviders())
         {
+            var favorite = myProviders?.Items.Any(a => a.id == item.id) ?? false;
+
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                <Card>
+                <Card Background="(favorite ? Background.Success : Background.Transparent)" Style="@(favorite ? "padding: 3px;" : "")">
                     <Blazorise.Link To="@($"/Providers/{item.id}")">
                         <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" Style="cursor: pointer;" title="@item.name"></CardImage>
+                        @if (favorite)
+                        {
+                            <Badge Color="Color.Light" Style="padding: 0.15rem; font-size: 1rem; position: absolute; top: 6px; right: 6px; z-index: 1;">
+                                <Blazorise.Icon Name="FontAwesomeIcons.Star" TextColor="TextColor.Success"></Blazorise.Icon>
+                            </Badge>
+                        }
                     </Blazorise.Link>
                 </Card>
                 @*@if (string.IsNullOrEmpty(item.link))
-                {
-                    <p class="m-0" style="color: red">link</p>
-                }*@
-               @* @if (string.IsNullOrEmpty(item.description))
-                {
-                    <p class="m-0" style="color: red">description</p>
-                }*@
+            {
+            <p class="m-0" style="color: red">link</p>
+            }*@
+                @* @if (string.IsNullOrEmpty(item.description))
+            {
+            <p class="m-0" style="color: red">description</p>
+            }*@
                 @*@if (!item.models.Any())
-                {
-                    <p class="m-0" style="color: red">model</p>
-                }*@
+            {
+            <p class="m-0" style="color: red">model</p>
+            }*@
                 @*@if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && !item.plans.Any())
-                {
-                    <p class="m-0" style="color: red">plan</p>
-                }*@
+            {
+            <p class="m-0" style="color: red">plan</p>
+            }*@
             </Column>
         }
     </Row>
@@ -43,6 +53,8 @@
     [Inject] public IModalService ModalService { get; set; } = default!;
 
     private AllProviders? AllProviders { get; set; }
+    private MyProviders? myProviders { get; set; }
+
     public Loading? LoadingProvider { get; set; }
 
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
@@ -60,6 +72,7 @@
         LoadingProvider?.Start();
 
         AllProviders = await AllProvidersApi.GetAll();
+        myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
 
         LoadingProvider?.Finish(AllProviders == null);
     }

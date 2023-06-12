@@ -466,7 +466,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Our suggestions are based on the providers you&apos;ve added to your favorites, excluding titles that you&apos;ve watched or are on your personal list. (It may be updated once a week).
+        ///   Looks up a localized string similar to Our suggestions are based on the providers you&apos;ve added to your favorites, excluding titles that you&apos;ve watched or are on your personal list. (It may be updated once a day).
         /// </summary>
         public static string OurSuggestions2 {
             get {
