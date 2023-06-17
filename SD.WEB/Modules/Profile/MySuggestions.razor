@@ -10,7 +10,7 @@
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject TmdbApi TmdbApi
 
-<HeaderComponent IconName="@FontAwesomeIcons.ThumbsUp" Title="Minhas Sugestões">
+<HeaderComponent IconName="@FontAwesomeIcons.ThumbsUp" Title="@GlobalTranslations.MySuggestions">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="(GenresChanged ? Color.Secondary : Color.Primary)" Clicked="@(async()=>await OpenConfigurations())" title="Settings">
         <Blazorise.Icon Name="FontAwesomeIcons.Cog"></Blazorise.Icon>
     </Button>

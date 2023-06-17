@@ -430,6 +430,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to My Suggestions.
+        /// </summary>
+        public static string MySuggestions {
+            get {
+                return ResourceManager.GetString("MySuggestions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last News.
         /// </summary>
         public static string NewsTitle {
