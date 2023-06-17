@@ -98,6 +98,8 @@
                 {
                     var http = httpClientFactory.CreateClient("RetryHttpClient");
 
+                    IsUserAuthenticated = true;
+
                     mySuggestions = await http.GetFromJsonAsync<SD.Shared.Models.MySuggestions>("/Data/MySuggestions.json");
                 }
                 {
