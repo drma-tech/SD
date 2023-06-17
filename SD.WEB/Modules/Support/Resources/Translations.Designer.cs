@@ -124,7 +124,7 @@ namespace SD.WEB.Modules.Support.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Platform versions available.
+        ///   Looks up a localized string similar to Platform versions available (click or scan).
         /// </summary>
         public static string PlatformVersionsAvailable {
             get {

@@ -82,43 +82,46 @@
     {
         LoadingProvider?.Start();
 
-        IsUserAuthenticated = await State.IsUserAuthenticated();
-
-        if (IsUserAuthenticated)
+        if (Fake)
         {
-            myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
+            var http = httpClientFactory.CreateClient("RetryHttpClient");
 
-            if (myProviders == null || !myProviders.Items.Any())
-            {
-                LoadingProvider?.Finish(true, Resources.GlobalTranslations.OurSuggestions1);
-            }
-            else
-            {
-                if (Fake)
-                {
-                    var http = httpClientFactory.CreateClient("RetryHttpClient");
+            IsUserAuthenticated = true;
 
-                    IsUserAuthenticated = true;
+            mySuggestions = await http.GetFromJsonAsync<SD.Shared.Models.MySuggestions>("/Data/MySuggestions.json");
 
-                    mySuggestions = await http.GetFromJsonAsync<SD.Shared.Models.MySuggestions>("/Data/MySuggestions.json");
-                }
-                {
-                    mySuggestions = await MySuggestionsApi.Get(IsUserAuthenticated);
-                }                
-
-                if (mySuggestions == null || !mySuggestions.Items(SearchType).Any())
-                {
-                    LoadingProvider?.Finish(true, Resources.GlobalTranslations.OurSuggestions2);
-                }
-                else
-                {
-                    LoadingProvider?.Finish(false);
-                }
-            }
+            LoadingProvider?.Finish(false);
         }
         else
         {
-            LoadingProvider?.Finish(true);
+            IsUserAuthenticated = await State.IsUserAuthenticated();
+
+            if (IsUserAuthenticated)
+            {
+                myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
+
+                if (myProviders == null || !myProviders.Items.Any())
+                {
+                    LoadingProvider?.Finish(true, Resources.GlobalTranslations.OurSuggestions1);
+                }
+                else
+                {
+                    mySuggestions = await MySuggestionsApi.Get(IsUserAuthenticated);
+
+                    if (mySuggestions == null || !mySuggestions.Items(SearchType).Any())
+                    {
+                        LoadingProvider?.Finish(true, Resources.GlobalTranslations.OurSuggestions2);
+                    }
+                    else
+                    {
+                        LoadingProvider?.Finish(false);
+                    }
+                }
+            }
+            else
+            {
+                LoadingProvider?.Finish(true);
+            }
         }
     }
 
