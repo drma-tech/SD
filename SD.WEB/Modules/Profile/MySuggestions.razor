@@ -3,6 +3,7 @@
 @inherits ComponenteCore<MySuggestions>
 
 @inject AppState State
+@inject IHttpClientFactory httpClientFactory
 
 @inject MyProvidersApi MyProvidersApi
 @inject MySuggestionsApi MySuggestionsApi
@@ -65,6 +66,8 @@
     public MediaType SearchType { get; set; } = MediaType.movie;
     private int GetTotalItems => AppStateStatic.OnFullHD ? 12 : 8;
 
+    [Parameter] public bool Fake { get; set; } = false;
+
     private bool GenresChanged => mySuggestions?.MovieGenres.Any() ?? false | mySuggestions?.TvGenres.Any() ?? false;
 
     protected override async Task OnInitializedAsync()
@@ -91,7 +94,15 @@
             }
             else
             {
-                mySuggestions = await MySuggestionsApi.Get(IsUserAuthenticated);
+                if (Fake)
+                {
+                    var http = httpClientFactory.CreateClient("RetryHttpClient");
+
+                    mySuggestions = await http.GetFromJsonAsync<SD.Shared.Models.MySuggestions>("/Data/MySuggestions.json");
+                }
+                {
+                    mySuggestions = await MySuggestionsApi.Get(IsUserAuthenticated);
+                }                
 
                 if (mySuggestions == null || !mySuggestions.Items(SearchType).Any())
                 {

@@ -1,7 +1,7 @@
 ﻿@page "/Profile"
 <SeoHeader Title="@SeoTranslations.ProfileTitle" Description="@SeoTranslations.ProfileDescription" Url="/Profile"></SeoHeader>
 @inherits PageNoDataCore<Profile>
-@inject HttpClient http
+@inject IHttpClientFactory httpClientFactory
 
 <MyProviderComponent Fake="Fake"></MyProviderComponent>
 
@@ -25,6 +25,8 @@
 
         if (Fake)
         {
+            var http = httpClientFactory.CreateClient("RetryHttpClient");
+
             AppState.ChangeWishList(await http.GetFromJsonAsync<WishList>("/Data/WishList.json"));
             AppState.ChangeWatchedList(await http.GetFromJsonAsync<WatchedList>("/Data/WatchedList.json"));
             AppState.ChangeWatchingList(await http.GetFromJsonAsync<WatchingList>("/Data/WatchingList.json"));

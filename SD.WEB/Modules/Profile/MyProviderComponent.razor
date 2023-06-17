@@ -4,7 +4,7 @@
 
 @inject MyProvidersApi MyProvidersApi
 @inject AllProvidersApi AllProvidersApi
-@inject HttpClient http
+@inject IHttpClientFactory httpClientFactory
 @inject AppState State
 
 <HeaderComponent IconName="@FontAwesomeIcons.Star" Title="@GlobalTranslations.MyProviders.Format(myProviders?.Items.Count ?? 0)">
@@ -46,6 +46,8 @@
 
         if (Fake)
         {
+            var http = httpClientFactory.CreateClient("RetryHttpClient");
+
             IsUserAuthenticated = true;
 
             myProviders = await http.GetFromJsonAsync<MyProviders>("/Data/MyProvider.json");
