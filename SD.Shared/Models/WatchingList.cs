@@ -17,8 +17,8 @@ namespace SD.Shared.Models
         public HashSet<string> DeletedMovies { get; init; } = new();
         public HashSet<string> DeletedShows { get; init; } = new();
 
-        public bool MovieCanSync => !MovieSyncDate.HasValue || MovieSyncDate.Value < DateTime.Now.AddDays(-7);
-        public bool ShowCanSync => !ShowSyncDate.HasValue || ShowSyncDate.Value < DateTime.Now.AddDays(-7);
+        public bool MovieCanSync => !MovieSyncDate.HasValue || MovieSyncDate.Value < DateTime.Now.AddDays(-14);
+        public bool ShowCanSync => !ShowSyncDate.HasValue || ShowSyncDate.Value < DateTime.Now.AddDays(-14);
 
         public WatchingListItem? GetItem(MediaType? type, string? id)
         {

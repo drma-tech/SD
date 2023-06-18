@@ -24,11 +24,11 @@ namespace SD.Shared.Models
 
         [JsonIgnore]
         [NotMapped]
-        public bool MovieCanSync => !MovieSyncDate.HasValue || MovieSyncDate.Value < DateTime.Now.AddDays(-1);
+        public bool MovieCanSync => !MovieSyncDate.HasValue || MovieSyncDate.Value < DateTime.Now.AddDays(-4);
 
         [JsonIgnore]
         [NotMapped]
-        public bool ShowCanSync => !ShowSyncDate.HasValue || ShowSyncDate.Value < DateTime.Now.AddDays(-1);
+        public bool ShowCanSync => !ShowSyncDate.HasValue || ShowSyncDate.Value < DateTime.Now.AddDays(-4);
 
         public HashSet<SuggestionListItem> Items(MediaType? type) => type == MediaType.movie ? Movies : Shows;
 

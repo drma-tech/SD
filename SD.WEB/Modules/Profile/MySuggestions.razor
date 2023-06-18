@@ -18,15 +18,15 @@
         <Radio Value="MediaType.movie">@MediaType.movie.GetName()</Radio>
         <Radio Value="MediaType.tv">@MediaType.tv.GetName()</Radio>
     </RadioGroup>
-    @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync))
+    @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (myProviders?.Items.Any() ?? false))
     {
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.movie)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!myProviders?.Items.Any()??true)">
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.movie)" title="@GlobalTranslations.ButtonUpdate" Disabled="MovieUpdating">
             @GlobalTranslations.ButtonUpdate
         </Button>
     }
-    @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync))
+    @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync) && (myProviders?.Items.Any() ?? false))
     {
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.tv)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!myProviders?.Items.Any()??true)">
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.tv)" title="@GlobalTranslations.ButtonUpdate" Disabled="ShowUpdating">
             @GlobalTranslations.ButtonUpdate
         </Button>
     }
@@ -67,6 +67,9 @@
     private int GetTotalItems => AppStateStatic.OnFullHD ? 12 : 8;
 
     [Parameter] public bool Fake { get; set; } = false;
+
+    public bool MovieUpdating { get; set; } = false;
+    public bool ShowUpdating { get; set; } = false;
 
     private bool GenresChanged => mySuggestions?.MovieGenres.Any() ?? false | mySuggestions?.TvGenres.Any() ?? false;
 
@@ -163,94 +166,107 @@
 
     private async Task ImportFromProviders(MediaType type)
     {
-        mySuggestions ??= new();
-        LoadingProvider?.Start();
-
-        if (type == MediaType.movie)
+        try
         {
-            mySuggestions.Movies.Clear();
+            mySuggestions ??= new();
+            LoadingProvider?.Start();
 
-            var titles = new HashSet<MediaDetail>();
-            foreach (var provider in myProviders?.Items ?? new())
+            if (type == MediaType.movie)
             {
-                var result = await TmdbDiscoveryApi.GetList(new(), MediaType.movie, GetExtraParameters(provider.id, "vote_average.desc"));
+                mySuggestions.Movies.Clear();
+                MovieUpdating = true;
 
-                foreach (var item in result.list)
+                var titles = new HashSet<MediaDetail>();
+                foreach (var provider in myProviders?.Items ?? new())
                 {
-                    titles.Add(item);
-                }
-            }
+                    var result = await TmdbDiscoveryApi.GetList(new(), MediaType.movie, GetExtraParameters(provider.id, "vote_average.desc"));
 
-            foreach (var item in titles.OrderByDescending(o => o.rating))
-            {
-                if (AppState.WatchedList != null && AppState.WatchedList.Movies.Any(a => a == item.tmdb_id)) continue;
-                if (AppState.WishList != null && AppState.WishList.Movies.Any(a => a.id == item.tmdb_id)) continue;
-
-                if (mySuggestions.Movies.Count < 16)
-                {
-                    var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.movie);
-                    if (providers != null && myProviders != null)
+                    foreach (var item in result.list)
                     {
-                        var FreeList = providers.GetFreeListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                        var AdsList = providers.GetAdsListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                        var FlatRateList = providers.GetFlatRateListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                        var FlatRateBuyList = providers.GetFlatRateBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                        var RentList = providers.GetRentListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                        var BuyList = providers.GetBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-
-                        var allProviders = FreeList.Concat(AdsList).Concat(FlatRateList).Concat(FlatRateBuyList).Concat(RentList).Concat(BuyList) ?? new List<SD.Shared.Models.List.Tmdb.ProviderBase>();
-
-                        mySuggestions.Items(MediaType.movie).Add(new SuggestionListItem(item.tmdb_id, item.title, item.poster_small, allProviders.Select(s => s.logo_path ?? "").Distinct().ToArray()));
+                        titles.Add(item);
                     }
                 }
+
+                foreach (var item in titles.OrderByDescending(o => o.rating))
+                {
+                    if (AppState.WatchedList != null && AppState.WatchedList.Movies.Any(a => a == item.tmdb_id)) continue;
+                    if (AppState.WishList != null && AppState.WishList.Movies.Any(a => a.id == item.tmdb_id)) continue;
+
+                    if (mySuggestions.Movies.Count < 16)
+                    {
+                        var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.movie);
+                        if (providers != null && myProviders != null)
+                        {
+                            var FreeList = providers.GetFreeListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                            var AdsList = providers.GetAdsListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                            var FlatRateList = providers.GetFlatRateListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                            var FlatRateBuyList = providers.GetFlatRateBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                            var RentList = providers.GetRentListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                            var BuyList = providers.GetBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+
+                            var allProviders = FreeList.Concat(AdsList).Concat(FlatRateList).Concat(FlatRateBuyList).Concat(RentList).Concat(BuyList) ?? new List<SD.Shared.Models.List.Tmdb.ProviderBase>();
+
+                            mySuggestions.Items(MediaType.movie).Add(new SuggestionListItem(item.tmdb_id, item.title, item.poster_small, allProviders.Select(s => s.logo_path ?? "").Distinct().ToArray()));
+                        }
+                    }
+                }
+
+                LoadingProvider?.Finish(!mySuggestions.Items(MediaType.movie).Any());
+
+                mySuggestions = await MySuggestionsApi.Sync(MediaType.movie, mySuggestions);
+                MovieUpdating = false;
             }
+            else
+            {
+                mySuggestions.Shows.Clear();
+                ShowUpdating = true;
 
-            LoadingProvider?.Finish(!mySuggestions.Items(MediaType.movie).Any());
+                var titles = new HashSet<MediaDetail>();
+                foreach (var provider in myProviders?.Items ?? new())
+                {
+                    var result = await TmdbDiscoveryApi.GetList(new(), MediaType.tv, GetExtraParameters(provider.id, "vote_average.desc"));
 
-            mySuggestions = await MySuggestionsApi.Sync(MediaType.movie, mySuggestions);
+                    foreach (var item in result.list)
+                    {
+                        titles.Add(item);
+                    }
+                }
+
+                foreach (var item in titles.OrderByDescending(o => o.rating))
+                {
+                    if (AppState.WatchedList != null && AppState.WatchedList.Shows.Any(a => a == item.tmdb_id)) continue;
+                    if (AppState.WishList != null && AppState.WishList.Shows.Any(a => a.id == item.tmdb_id)) continue;
+
+                    if (mySuggestions.Shows.Count < 16)
+                    {
+                        var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.tv);
+                        if (providers != null && myProviders != null)
+                        {
+                            var FreeList = providers.GetFreeListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                            var AdsList = providers.GetAdsListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                            var FlatRateList = providers.GetFlatRateListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                            var FlatRateBuyList = providers.GetFlatRateBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                            var RentList = providers.GetRentListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                            var BuyList = providers.GetBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+
+                            var allProviders = FreeList.Concat(AdsList).Concat(FlatRateList).Concat(FlatRateBuyList).Concat(RentList).Concat(BuyList) ?? new List<SD.Shared.Models.List.Tmdb.ProviderBase>(); ;
+
+                            mySuggestions.Items(MediaType.tv).Add(new SuggestionListItem(item.tmdb_id, item.title, item.poster_small, allProviders.Select(s => s.logo_path ?? "").Distinct().ToArray()));
+                        }
+                    }
+                }
+
+                LoadingProvider?.Finish(!mySuggestions.Items(MediaType.tv).Any());
+
+                mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions);
+                ShowUpdating = false;
+            }
         }
-        else
+        catch (Exception ex)
         {
-            mySuggestions.Shows.Clear();
-
-            var titles = new HashSet<MediaDetail>();
-            foreach (var provider in myProviders?.Items ?? new())
-            {
-                var result = await TmdbDiscoveryApi.GetList(new(), MediaType.tv, GetExtraParameters(provider.id, "vote_average.desc"));
-
-                foreach (var item in result.list)
-                {
-                    titles.Add(item);
-                }
-            }
-
-            foreach (var item in titles.OrderByDescending(o => o.rating))
-            {
-                if (AppState.WatchedList != null && AppState.WatchedList.Shows.Any(a => a == item.tmdb_id)) continue;
-                if (AppState.WishList != null && AppState.WishList.Shows.Any(a => a.id == item.tmdb_id)) continue;
-
-                if (mySuggestions.Shows.Count < 16)
-                {
-                    var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.tv);
-                    if (providers != null && myProviders != null)
-                    {
-                        var FreeList = providers.GetFreeListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                        var AdsList = providers.GetAdsListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                        var FlatRateList = providers.GetFlatRateListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                        var FlatRateBuyList = providers.GetFlatRateBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                        var RentList = providers.GetRentListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-                        var BuyList = providers.GetBuyListProviders(AppStateStatic.Region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
-
-                        var allProviders = FreeList.Concat(AdsList).Concat(FlatRateList).Concat(FlatRateBuyList).Concat(RentList).Concat(BuyList) ?? new List<SD.Shared.Models.List.Tmdb.ProviderBase>(); ;
-
-                        mySuggestions.Items(MediaType.tv).Add(new SuggestionListItem(item.tmdb_id, item.title, item.poster_small, allProviders.Select(s => s.logo_path ?? "").Distinct().ToArray()));
-                    }
-                }
-            }
-
-            LoadingProvider?.Finish(!mySuggestions.Items(MediaType.tv).Any());
-
-            mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions);
+            MovieUpdating = false;
+            ShowUpdating = false;
+            ex.ProcessException(Toast, Logger);
         }
     }
 
@@ -296,6 +312,6 @@
 
         StateHasChanged();
 
-        await Toast.Warning("Suas preferências surtirão efeito na próxima atualização desta lista!");
+        await Toast.Warning(GlobalTranslations.UpdateMySuggestions);
     }
 }

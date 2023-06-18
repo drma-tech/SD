@@ -12,9 +12,9 @@
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.movie))" title="@GlobalTranslations.PickARandom" Disabled="(!AppState.WatchingList?.Movies.Any()??true)">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
-    @if (AppState.WatchingList?.MovieCanSync ?? false)
+    @if ((AppState.WatchingList?.MovieCanSync ?? false) && (AppState.WatchedList?.Movies.Any() ?? false))
     {
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched(MediaType.movie)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!AppState.WatchedList?.Movies.Any()??true)">
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched(MediaType.movie)" title="@GlobalTranslations.ButtonUpdate" Disabled="MovieUpdating">
             @GlobalTranslations.ButtonUpdate
         </Button>
     }
@@ -64,9 +64,9 @@
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.tv))" title="@GlobalTranslations.PickARandom" Disabled="(!AppState.WatchingList?.Shows.Any()??true)">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
-    @if (AppState.WatchingList?.ShowCanSync ?? false)
+    @if ((AppState.WatchingList?.ShowCanSync ?? false) && (AppState.WatchedList?.Shows.Any() ?? false))
     {
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched(MediaType.tv)" title="@GlobalTranslations.ButtonUpdate" Disabled="(!AppState.WatchedList?.Shows.Any()??true)">
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched(MediaType.tv)" title="@GlobalTranslations.ButtonUpdate" Disabled="ShowUpdating">
             @GlobalTranslations.ButtonUpdate
         </Button>
     }
@@ -116,6 +116,9 @@
 
     private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : 4;
     private bool IsUserAuthenticated { get; set; }
+
+    public bool MovieUpdating { get; set; } = false;
+    public bool ShowUpdating { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -186,83 +189,96 @@
 
     private async Task ImportFromWatched(MediaType type)
     {
-        var watching = AppState.WatchingList ?? new WatchingList();
-
-        if (type == MediaType.movie)
+        try
         {
-            AppState.WatchingList?.Movies.Clear();
+            var watching = AppState.WatchingList ?? new WatchingList();
 
-            foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.movie) ?? new())
+            if (type == MediaType.movie)
             {
-                var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.movie);
-                if (media == null) continue;
-                var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
+                AppState.WatchingList?.Movies.Clear();
+                MovieUpdating = true;
 
-                if (hasCollection && !watching.DeletedMovies.Any(a => a == media.collectionId.ToString()))
+                foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.movie) ?? new())
                 {
-                    var item = watching?.GetItem(MediaType.movie, media.collectionId?.ToString());
+                    var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.movie);
+                    if (media == null) continue;
+                    var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-                    if (item == null)
+                    if (hasCollection && !watching.DeletedMovies.Any(a => a == media.collectionId.ToString()))
                     {
-                        var items = new HashSet<string>();
-                        items.Add(tmdb_id);
+                        var item = watching?.GetItem(MediaType.movie, media.collectionId?.ToString());
 
-                        item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                        if (item == null)
+                        {
+                            var items = new HashSet<string>();
+                            items.Add(tmdb_id);
+
+                            item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                        }
+                        else
+                        {
+                            item.maxItems = media.Collection.Count;
+                            item.watched.Add(tmdb_id);
+                        }
+
+                        watching = await WatchingListApi.Add(MediaType.movie, item);
+
+                        AppState.ChangeWatchingList(watching);
                     }
-                    else
-                    {
-                        item.maxItems = media.Collection.Count;
-                        item.watched.Add(tmdb_id);
-                    }
-
-                    watching = await WatchingListApi.Add(MediaType.movie, item);
-
-                    AppState.ChangeWatchingList(watching);
                 }
+
+                watching = await WatchingListApi.Sync(MediaType.movie);
+
+                AppState.ChangeWatchingList(watching);
+                MovieUpdating = false;
+            }
+            else
+            {
+                AppState.WatchingList?.Shows.Clear();
+                ShowUpdating = true;
+
+                foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.tv) ?? new())
+                {
+                    var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.tv);
+                    if (media == null) continue;
+                    var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
+
+                    if (hasCollection && !watching.DeletedShows.Any(a => a == media.tmdb_id))
+                    {
+                        var item = watching?.GetItem(MediaType.tv, media.tmdb_id);
+
+                        if (item == null)
+                        {
+                            var items = new HashSet<string>();
+                            items.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+
+                            item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                        }
+                        else
+                        {
+                            item.maxItems = media.Collection.Count;
+                            item.watched.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+                        }
+
+                        watching = await WatchingListApi.Add(MediaType.tv, item);
+
+                        AppState.ChangeWatchingList(watching);
+                    }
+                }
+
+                watching = await WatchingListApi.Sync(MediaType.tv);
+
+                AppState.ChangeWatchingList(watching);
+                ShowUpdating = false;
             }
 
-            watching = await WatchingListApi.Sync(MediaType.movie);
-
-            AppState.ChangeWatchingList(watching);
+            StateHasChanged();
         }
-        else
+        catch (Exception ex)
         {
-            AppState.WatchingList?.Shows.Clear();
-
-            foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.tv) ?? new())
-            {
-                var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.tv);
-                if (media == null) continue;
-                var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
-
-                if (hasCollection && !watching.DeletedShows.Any(a => a == media.tmdb_id))
-                {
-                    var item = watching?.GetItem(MediaType.tv, media.tmdb_id);
-
-                    if (item == null)
-                    {
-                        var items = new HashSet<string>();
-                        items.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
-
-                        item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
-                    }
-                    else
-                    {
-                        item.maxItems = media.Collection.Count;
-                        item.watched.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
-                    }
-
-                    watching = await WatchingListApi.Add(MediaType.tv, item);
-
-                    AppState.ChangeWatchingList(watching);
-                }
-            }
-
-            watching = await WatchingListApi.Sync(MediaType.tv);
-
-            AppState.ChangeWatchingList(watching);
+            MovieUpdating = false;
+            ShowUpdating = false;
+            ex.ProcessException(Toast, Logger);
         }
-
-        StateHasChanged();
     }
 }
