@@ -6,6 +6,10 @@
                 {
                     <Blazorise.Icon Name="@IconName" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>
                 }
+                @if (!string.IsNullOrEmpty(IconImage))
+                {
+                    <Image Source="@IconImage" Style="height: 20px; vertical-align: sub;" Margin="Margin.Is1.FromEnd"></Image>
+                }
                 <Heading Size="HeadingSize.Is5" Style="font: inherit; display: inherit;">
                     @Title
                 </Heading>
@@ -22,6 +26,7 @@
 
 @code {
     [Parameter] public string? IconName { get; set; }
+    [Parameter] public string? IconImage { get; set; }
     [Parameter] public string? Title { get; set; }
 
     [Parameter] public RenderFragment? ChildContent { get; set; }
