@@ -19,6 +19,8 @@ namespace SD.WEB.Modules.Suggestions.Core
             {
                 var result = await GetAsync<NewMovieDataCache>("Public/Cache/ImdbComingMovies", false); //undefined numeric record
 
+                if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(result?.Data?.ErrorMessage);
+
                 foreach (var item in result?.Data?.Items ?? new List<NewMovieDataDetail>())
                 {
                     //if (item.vote_count < 100) continue; //ignore low-rated movie

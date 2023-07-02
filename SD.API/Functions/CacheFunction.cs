@@ -200,7 +200,7 @@ namespace SD.API.Functions
 
                     //compact
 
-                    var compactModels = new MostPopularData();
+                    var compactModels = new MostPopularData() { ErrorMessage = obj.ErrorMessage };
 
                     foreach (var item in obj.Items.Take(10))
                     {
@@ -212,7 +212,7 @@ namespace SD.API.Functions
 
                     //full
 
-                    var fullModels = new MostPopularData();
+                    var fullModels = new MostPopularData() { ErrorMessage = obj.ErrorMessage };
 
                     foreach (var item in obj.Items)
                     {

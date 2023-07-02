@@ -19,6 +19,8 @@ namespace SD.WEB.Modules.Suggestions.Core
             {
                 var result = await GetAsync<MostPopularDataCache>("Public/Cache/ImdbPopularMovies".ConfigureParameters(stringParameters), false);
 
+                if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(result?.Data?.ErrorMessage);
+
                 foreach (var item in result?.Data?.Items ?? new List<MostPopularDataDetail>())
                 {
                     //if (item.IMDbRatingCount == "0") continue; //ignore low-rated movie
@@ -43,6 +45,8 @@ namespace SD.WEB.Modules.Suggestions.Core
             else if (type == MediaType.tv)
             {
                 var result = await GetAsync<MostPopularDataCache>("Public/Cache/ImdbPopularTVs".ConfigureParameters(stringParameters), false);
+
+                if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(result?.Data?.ErrorMessage);
 
                 foreach (var item in result?.Data?.Items ?? new List<MostPopularDataDetail>())
                 {

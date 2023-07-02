@@ -28,7 +28,7 @@
             <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
                 <Card>
                     <PosterComponent Date="@(item.release_date??DateTime.MaxValue)" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
-                                 TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" RankUpDown="@item.RankUpDown"></PosterComponent>
+                                     TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" RankUpDown="@item.RankUpDown"></PosterComponent>
                 </Card>
             </Column>
             if ((i % GetTotalItems) == 0)
@@ -109,23 +109,30 @@
 
     private async Task LoadItems(MediaType type)
     {
-        LoadingList?.Start();
-        if (MediaListApi != null)
+        try
         {
-            var result = await MediaListApi.GetList(new(), TypeSelected, StringParameters, List, 1);
-            await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
-            Items = result.list;
-
-            if (Items.Count < 10) //force reload, if the filters bring few records
+            LoadingList?.Start();
+            if (MediaListApi != null)
             {
-                var result2 = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, 2);
-                foreach (var item in result2.list)
+                var result = await MediaListApi.GetList(new(), TypeSelected, StringParameters, List, 1);
+                await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
+                Items = result.list;
+
+                if (Items.Count < 10) //force reload, if the filters bring few records
                 {
-                    Items.Add(item);
+                    var result2 = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, 2);
+                    foreach (var item in result2.list)
+                    {
+                        Items.Add(item);
+                    }
                 }
             }
+            LoadingList?.Finish(!Items.Any());
         }
-        LoadingList?.Finish(!Items.Any());
+        catch (Exception ex)
+        {
+            LoadingList?.Invalid(ex.Message);
+        }
     }
 
     private async Task OpenCompleteList()

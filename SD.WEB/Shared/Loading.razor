@@ -76,11 +76,12 @@ else
         StateHasChanged();
     }
 
-    public void Invalid()
+    public void Invalid(string? customInvalid)
     {
         Reset();
 
         IsInvalid = true;
+        CustomInvalid = customInvalid;
         StateHasChanged();
     }
 }
