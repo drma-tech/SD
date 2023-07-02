@@ -637,6 +637,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unavailable service. We will be replacing as soon as possible..
+        /// </summary>
+        public static string UnavailableService {
+            get {
+                return ResourceManager.GetString("UnavailableService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your preferences will take effect in the next update of this list.
         /// </summary>
         public static string UpdateMySuggestions {

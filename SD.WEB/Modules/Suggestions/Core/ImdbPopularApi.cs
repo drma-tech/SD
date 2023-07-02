@@ -19,7 +19,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             {
                 var result = await GetAsync<MostPopularDataCache>("Public/Cache/ImdbPopularMovies".ConfigureParameters(stringParameters), false);
 
-                if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(result?.Data?.ErrorMessage);
+                if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(GlobalTranslations.UnavailableService);
 
                 foreach (var item in result?.Data?.Items ?? new List<MostPopularDataDetail>())
                 {
@@ -46,7 +46,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             {
                 var result = await GetAsync<MostPopularDataCache>("Public/Cache/ImdbPopularTVs".ConfigureParameters(stringParameters), false);
 
-                if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(result?.Data?.ErrorMessage);
+                if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(GlobalTranslations.UnavailableService);
 
                 foreach (var item in result?.Data?.Items ?? new List<MostPopularDataDetail>())
                 {

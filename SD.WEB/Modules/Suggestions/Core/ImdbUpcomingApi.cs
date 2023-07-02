@@ -19,7 +19,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             {
                 var result = await GetAsync<NewMovieDataCache>("Public/Cache/ImdbComingMovies", false); //undefined numeric record
 
-                if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(result?.Data?.ErrorMessage);
+                if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(GlobalTranslations.UnavailableService);
 
                 foreach (var item in result?.Data?.Items ?? new List<NewMovieDataDetail>())
                 {
