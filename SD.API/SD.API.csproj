@@ -9,10 +9,11 @@
 		<UserSecretsId>8e76a79d-32e2-4465-8c7b-c6305b0d5e6f</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.34.0" />
-		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.14.1" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.11.49" />
+		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.35.1" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.17.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
-		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.10.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.11.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
 	</ItemGroup>
 	<ItemGroup>

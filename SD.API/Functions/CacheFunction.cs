@@ -1,5 +1,6 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using SD.API.Core.Scraping;
 using SD.Shared.Core.Models;
 using SD.Shared.Models.List.Imdb;
 using SD.Shared.Models.News;
@@ -192,10 +193,12 @@ namespace SD.API.Functions
 
                 if (model == null)
                 {
-                    var parameter = new Dictionary<string, string>() { { "apiKey", ImdbOptions.ApiKey } };
+                    //var parameter = new Dictionary<string, string>() { { "apiKey", ImdbOptions.ApiKey } };
 
                     using var http = new HttpClient();
-                    var obj = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularMovies".ConfigureParameters(parameter), cancellationToken);
+                    var scraping = new MostPopularMovies();
+                    //var obj = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularMovies".ConfigureParameters(parameter), cancellationToken);
+                    var obj = await scraping.GetMovieData();
                     if (obj == null) return null;
 
                     //compact
@@ -249,10 +252,12 @@ namespace SD.API.Functions
 
                 if (model == null)
                 {
-                    var parameter = new Dictionary<string, string>() { { "apiKey", ImdbOptions.ApiKey } };
+                    //var parameter = new Dictionary<string, string>() { { "apiKey", ImdbOptions.ApiKey } };
 
                     using var http = new HttpClient();
-                    var obj = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularTVs".ConfigureParameters(parameter), cancellationToken);
+                    var scraping = new MostPopularMovies();
+                    //var obj = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularTVs".ConfigureParameters(parameter), cancellationToken);
+                    var obj = await scraping.GetTvData();
                     if (obj == null) return null;
 
                     model = await _cacheRepo.Add(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
