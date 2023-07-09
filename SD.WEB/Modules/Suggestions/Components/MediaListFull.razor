@@ -115,9 +115,9 @@
     {
         var tmdb_id = "";
 
-        if (IsIMDB && media?.MediaType == MediaType.tv) //for now, only tv series (imdb) need this kind of workaround
+        if (IsIMDB) //for now, only tv series (imdb) need this kind of workaround
         {
-            tmdb_id = await ExternalIdApi.GetTmdbId(media?.tmdb_id);
+            tmdb_id = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id);
         }
         else
         {

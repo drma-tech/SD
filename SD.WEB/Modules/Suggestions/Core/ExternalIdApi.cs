@@ -9,7 +9,7 @@ namespace SD.WEB.Modules.Suggestions.Core
         {
         }
 
-        public async Task<string?> GetTmdbId(string? imdb_id)
+        public async Task<string?> GetTmdbId(MediaType? type, string? imdb_id)
         {
             if (imdb_id == null) throw new ArgumentNullException(nameof(imdb_id));
 
@@ -21,8 +21,10 @@ namespace SD.WEB.Modules.Suggestions.Core
             };
 
             var result = await GetAsync<FindByImdb>(TmdbOptions.BaseUri + $"find/{imdb_id}".ConfigureParameters(parameter), true);
-
-            return result?.tv_results.FirstOrDefault()?.id.ToString();
+            if (type == MediaType.movie)
+                return result?.movie_results.FirstOrDefault()?.id.ToString();
+            else
+                return result?.tv_results.FirstOrDefault()?.id.ToString();
         }
 
         public async Task<string?> GetImdbId(MediaType? type, string? tmdb_id)
