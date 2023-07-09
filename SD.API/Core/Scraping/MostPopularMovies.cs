@@ -42,20 +42,22 @@ namespace SD.API.Core.Scraping
 
             if (ul != null)
             {
-                foreach (var node in ul.ChildNodes)
+                foreach (var node in ul.ChildNodes.Take(40))
                 {
                     var rank = node.SelectNodes($"div[2]/div/div/div[1]").Single().InnerText;
                     var imageRank = node.SelectNodes($"div[2]/div/div/div[1]/span/svg").Single().ChildAttributes("id").First().Value;
                     var rankRegex = Regex.Match(rank, "(?<=\\()([0-9]+)(?=\\))");
                     var id = node.SelectSingleNode($"div[1]/div/a").ChildAttributes("href").First().Value;
                     var idRegex = Regex.Match(id, "(?<=\\/tt)(\\w*)(?=\\/)");
+                    var year = node.SelectNodes($"div[2]/div/div/div[3]/span[1]").Single().InnerText.Trim().Split("–")[0];
+                    _ = int.TryParse(year, out int year_fix);
 
                     var item = new MostPopularDataDetail
                     {
                         Id = $"tt{idRegex.Value}",
                         RankUpDown = imageRank == "iconContext-dash" ? "0" : imageRank.Contains("-up") ? $"+{rankRegex.Value}" : $"-{rankRegex.Value}",
                         Title = node.SelectNodes($"div[2]/div/div/div[2]/a/h3/text()").Single().InnerText,
-                        Year = node.SelectNodes($"div[2]/div/div/div[3]/span[1]").Single().InnerText.Trim().Split("–")[0],
+                        Year = year_fix == 0 ? "" : year_fix.ToString(),
                         Image = node.SelectSingleNode($"div[1]/div/div[2]/img").ChildAttributes("src").First().Value,
                         IMDbRating = node.SelectNodes($"div[2]/div/div/span/div/span").Single().InnerText
                     };
