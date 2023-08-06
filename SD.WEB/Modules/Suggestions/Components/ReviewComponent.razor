@@ -15,7 +15,7 @@
                     <Badge Color="GetColorByRating(item?.score)" Margin="Margin.Is2.FromEnd">@item?.score</Badge> @(item?.reviewSite + (string.IsNullOrEmpty(item?.reviewer) ? "" : " | " + item?.reviewer))
                 </Heading>
                 <Small TextAlignment="TextAlignment.Justified">@item.quote</Small>
-                <Blazorise.Link To="@item.reviewUrl" Target="Target.Blank">Read More</Blazorise.Link>
+                <Blazorise.Link To="@item.reviewUrl" Target="Target.Blank" Style="font-size: 80%;">Read full review</Blazorise.Link>
             </ListGroupItem>
         }
     </ListGroup>
@@ -23,6 +23,8 @@
 
 @code {
     [Parameter] public string? imdb_id { get; set; }
+    [Parameter] public string? title { get; set; }
+    [Parameter] public string? original_title { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
     public Loading? Loading { get; set; }
@@ -34,9 +36,18 @@
 
         if (!string.IsNullOrEmpty(imdb_id))
         {
-            var cache = await CacheApi.GetReviews(imdb_id, null);
+            if (type == MediaType.movie)
+            {
+                var cache = await CacheApi.GetMovieReviews(imdb_id, null);
 
-            Model = (ReviewModel?)cache?.Data;
+                Model = (ReviewModel?)cache?.Data;
+            }
+            else
+            {
+                var cache = await CacheApi.GetShowReviews(imdb_id, original_title, null);
+
+                Model = (ReviewModel?)cache?.Data;
+            }
         }
 
         Loading?.Finish(Model == null || !Model.Items.Any());

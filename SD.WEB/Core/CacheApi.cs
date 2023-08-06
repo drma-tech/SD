@@ -20,7 +20,9 @@ namespace SD.WEB.Core
 
             public static string GetRatings(string id, DateTime? date) => $"Public/Cache/Ratings?id={id}&release_date={date}";
 
-            public static string GetReviews(string id, DateTime? date) => $"Public/Cache/Reviews?id={id}&release_date={date}";
+            public static string GetMovieReviews(string id, DateTime? date) => $"Public/Cache/Reviews/Movies?id={id}&release_date={date}";
+
+            public static string GetShowReviews(string id, string title, DateTime? date) => $"Public/Cache/Reviews/Shows?id={id}&title={title}&release_date={date}";
         }
 
         public async Task<FlixsterCache?> GetNews(string mode)
@@ -38,9 +40,14 @@ namespace SD.WEB.Core
             return await GetAsync<RatingsCache>(Endpoint.GetRatings(id, releaseDate), false);
         }
 
-        public async Task<MetaCriticCache?> GetReviews(string id, DateTime? releaseDate)
+        public async Task<MetaCriticCache?> GetMovieReviews(string id, DateTime? releaseDate)
         {
-            return await GetAsync<MetaCriticCache>(Endpoint.GetReviews(id, releaseDate), false);
+            return await GetAsync<MetaCriticCache>(Endpoint.GetMovieReviews(id, releaseDate), false);
+        }
+
+        public async Task<MetaCriticCache?> GetShowReviews(string id, string title, DateTime? releaseDate)
+        {
+            return await GetAsync<MetaCriticCache>(Endpoint.GetShowReviews(id, title, releaseDate), false);
         }
     }
 }

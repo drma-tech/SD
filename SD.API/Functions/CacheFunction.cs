@@ -195,7 +195,7 @@ namespace SD.API.Functions
                 {
                     //var parameter = new Dictionary<string, string>() { { "apiKey", ImdbOptions.ApiKey } };
 
-                    using var http = new HttpClient();
+                    //using var http = new HttpClient();
                     var scraping = new MostPopularMovies();
                     //var obj = await http.Get<MostPopularData>(ImdbOptions.BaseUri + "MostPopularMovies".ConfigureParameters(parameter), cancellationToken);
                     var obj = await scraping.GetMovieData();
@@ -300,9 +300,9 @@ namespace SD.API.Functions
             }
         }
 
-        [Function("CacheReviews")]
-        public async Task<CacheDocument<ReviewModel>?> CacheReviews(
-           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Reviews")] HttpRequestData req, CancellationToken cancellationToken)
+        [Function("CacheMovieReviews")]
+        public async Task<CacheDocument<ReviewModel>?> CacheMovieReviews(
+           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Reviews/Movies")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
@@ -316,6 +316,45 @@ namespace SD.API.Functions
                 {
                     using var http = new HttpClient();
                     var obj = await http.GetReviewsByImdb8<MetaCritic>(id, cancellationToken);
+                    if (obj == null) return null;
+
+                    var newModel = new ReviewModel();
+
+                    foreach (var item in obj.reviews)
+                    {
+                        if (item == null) continue;
+                        newModel.Items.Add(new Shared.Models.Reviews.Item(item.reviewSite, item.reviewUrl, item.reviewer, item.score, item.quote));
+                    }
+
+                    model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}"), cancellationToken);
+                }
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
+            }
+        }
+
+        [Function("CacheShowReviews")]
+        public async Task<CacheDocument<ReviewModel>?> CacheShowReviews(
+          [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Reviews/Shows")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                CacheDocument<ReviewModel>? model;
+
+                var id = req.GetQueryParameters()["id"];
+                var title = req.GetQueryParameters()["title"];
+                //_ = DateTime.TryParse(req.GetQueryParameters()["release_date"], out DateTime release_date);
+                model = await _cacheRepo.Get<ReviewModel>($"review_{id}", cancellationToken);
+
+                if (model == null)
+                {
+                    var scraping = new ShowsReview();
+                    var obj = await scraping.GetTvReviews(title);
                     if (obj == null) return null;
 
                     var newModel = new ReviewModel();
