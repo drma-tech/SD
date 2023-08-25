@@ -51,6 +51,8 @@ namespace SD.API.Core.Scraping
                     var idRegex = Regex.Match(id, "(?<=\\/tt)(\\w*)(?=\\/)");
                     var year = node.SelectNodes($"div[2]/div/div/div[3]/span[1]")?.FirstOrDefault()?.InnerText.Trim().Split("–")[0];
                     _ = int.TryParse(year, out int year_fix);
+                    var rating = node.SelectNodes($"div[2]/div/div/span/div/span/text()")?.FirstOrDefault()?.InnerText;
+                    //*[@id="__next"]/main/div/div[3]/section/div/div[2]/div/ul/li[1]/div[2]/div/div/span/div/span/text()
 
                     var item = new MostPopularDataDetail
                     {
@@ -59,7 +61,7 @@ namespace SD.API.Core.Scraping
                         Title = node.SelectNodes($"div[2]/div/div/div[2]/a/h3/text()")?.FirstOrDefault()?.InnerText,
                         Year = year_fix == 0 ? "" : year_fix.ToString(),
                         Image = node.SelectNodes($"div[1]/div/div[2]/img")?.FirstOrDefault()?.ChildAttributes("src").FirstOrDefault()?.Value,
-                        IMDbRating = node.SelectNodes($"div[2]/div/div/span/div/span")?.FirstOrDefault()?.InnerText
+                        IMDbRating = rating
                     };
 
                     data.Items.Add(item);

@@ -662,5 +662,14 @@ namespace SD.WEB.Resources {
                 return ResourceManager.GetString("Writing", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not authorized to access this resource..
+        /// </summary>
+        public static string YouAreNotAuthorized {
+            get {
+                return ResourceManager.GetString("YouAreNotAuthorized", resourceCulture);
+            }
+        }
     }
 }
