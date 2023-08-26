@@ -1,14 +1,22 @@
 {
+  //INFO
+  "id": "streamingdiscovery",
   "name": "Streaming Discovery",
   "short_name": "Streaming Discovery",
   "description": "Manage your streaming platforms, what you watched, are watching and want to watch. All in one place.",
-  "lang": "en-US",
-  "start_url": "/",
-  "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#03173d",
+  //SETTINGS
+  "start_url": "/",
   "dir": "ltr",
+  "lang": "en-US",
   "orientation": "any",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "window-controls-overlay"
+  ],
+  //PLATAFORM
   "iarc_rating_id": "2673f916-2fd7-4be8-8523-88d7588cc444",
   "prefer_related_applications": true,
   "related_applications": [
@@ -33,6 +41,7 @@
     "lifestyle",
     "social"
   ],
+  //ICONS
   "icons": [
     {
       "src": "icon/icon-114.png",
@@ -54,5 +63,12 @@
       "type": "image/png",
       "sizes": "512x512"
     }
+  ],
+  //HANDLES
+  "launch_handler": {
+    "client_mode": [ "navigate-existing, auto" ]
+  },
+  "scope_extensions": [
+    { "origin": "*.streamingdiscovery.com" }
   ]
 }
