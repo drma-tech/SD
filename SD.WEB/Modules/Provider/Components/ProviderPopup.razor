@@ -120,7 +120,7 @@
         IsUserAuthenticated = await AppState.IsUserAuthenticated();
     }
 
-    protected override async Task LoadData()
+    protected override async Task LoadDataRender()
     {
         myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
     }

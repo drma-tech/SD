@@ -1,53 +1,53 @@
 ﻿@using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.Provider.Core;
-@inherits ComponenteNoDataCore<MyWishListComponent>
+@inherits ComponenteCore<MyWishListComponent>
 @inject AppState State
 
-<HeaderComponent IconName="@FontAwesomeIcons.Bookmark" Title="@GlobalTranslations.MyMovieWishlist.Format(AppState.WishList?.Movies.Count() ?? 0)">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))" title="@GlobalTranslations.SeeAllItems" Disabled="(!AppState.WishList?.Movies.Any()??true)" Class="ml-1">
+<HeaderComponent IconName="@FontAwesomeIcons.Bookmark" Title="@GlobalTranslations.MyMovieWishlist.Format(WishList?.Movies.Count() ?? 0)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))" title="@GlobalTranslations.SeeAllItems" Disabled="(!WishList?.Movies.Any()??true)" Class="ml-1">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.movie))" title="@GlobalTranslations.PickARandom" Disabled="(!AppState.WishList?.Movies.Any()??true)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.movie))" title="@GlobalTranslations.PickARandom" Disabled="(!WishList?.Movies.Any()??true)">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-<Loading IsEmptyFilter="@(AppState.WishList == null || !AppState.WishList.Movies.Any())" UnauthenticatedUser="!IsUserAuthenticated">
+<RenderControl Task="LoadWishListMovies" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-        @foreach (var item in AppState.WishList?.Movies.Take(GetTotalItems) ?? new List<WishListItem>())
+        @foreach (var item in WishList?.Movies.Take(GetTotalItems) ?? new List<WishListItem>())
         {
             var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
             <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile">
                 <Card>
                     <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="@MediaType.movie"
-                                 Clicked="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.movie))" ShowWished="false"></PosterComponent>
+                                     Clicked="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.movie))" ShowWished="false"></PosterComponent>
                 </Card>
             </Column>
         }
     </Row>
-</Loading>
+</RenderControl>
 
-<HeaderComponent IconName="@FontAwesomeIcons.Bookmark" Title="@GlobalTranslations.MyShowWishlist.Format(AppState.WishList?.Shows.Count() ?? 0)">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))" title="@GlobalTranslations.SeeAllItems" Disabled="(!AppState.WishList?.Shows.Any()??true)" Class="ml-1">
+<HeaderComponent IconName="@FontAwesomeIcons.Bookmark" Title="@GlobalTranslations.MyShowWishlist.Format(WishList?.Shows.Count() ?? 0)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))" title="@GlobalTranslations.SeeAllItems" Disabled="(!WishList?.Shows.Any()??true)" Class="ml-1">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.tv))" title="@GlobalTranslations.PickARandom" Disabled="(!AppState.WishList?.Shows.Any()??true)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.tv))" title="@GlobalTranslations.PickARandom" Disabled="(!WishList?.Shows.Any()??true)">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-<Loading IsEmptyFilter="@(AppState.WishList == null || !AppState.WishList.Shows.Any())" UnauthenticatedUser="!IsUserAuthenticated">
+<RenderControl Task="LoadWishListShows" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-        @foreach (var item in AppState.WishList?.Shows.Take(GetTotalItems) ?? new List<WishListItem>())
+        @foreach (var item in WishList?.Shows.Take(GetTotalItems) ?? new List<WishListItem>())
         {
             var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
             <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile">
                 <Card>
                     <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="@MediaType.movie"
-                                 Clicked="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.tv))" ShowWished="false"></PosterComponent>
+                                     Clicked="@(async()=>await ShowMediaPopup(item.id, item.name, MediaType.tv))" ShowWished="false"></PosterComponent>
                 </Card>
             </Column>
         }
     </Row>
-</Loading>
+</RenderControl>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
@@ -57,10 +57,11 @@
     private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : 4;
     private bool IsUserAuthenticated { get; set; }
 
+    private WishList? WishList;
+
     protected override async Task OnInitializedAsync()
     {
-        AppState.WishListChanged += StateHasChanged;
-        AppState.WatchedListChanged += StateHasChanged;
+        AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); };
 
         if (Fake)
             IsUserAuthenticated = true;
@@ -68,6 +69,20 @@
             IsUserAuthenticated = await State.IsUserAuthenticated();
 
         await base.OnInitializedAsync();
+    }
+
+    protected async Task<bool> LoadWishListMovies()
+    {
+        WishList ??= await AppState.GetWishList(true);
+
+        return WishList == null || !WishList.Movies.Any();
+    }
+
+    protected async Task<bool> LoadWishListShows()
+    {
+        WishList ??= await AppState.GetWishList(true);
+
+        return WishList == null || !WishList.Shows.Any();
     }
 
     private async Task OpenCompleteList(MediaType mediaType)
@@ -87,20 +102,20 @@
 
     public async Task ChooseRandomTitle(MediaType type)
     {
-        if (AppState.WishList == null) return;
+        if (WishList == null) return;
 
         var random = new Random();
 
         if (type == MediaType.movie)
         {
-            var index = random.Next(AppState.WishList.Movies.Count);
-            var media = AppState.WishList.Movies.ToList()[index];
+            var index = random.Next(WishList.Movies.Count);
+            var media = WishList.Movies.ToList()[index];
             await ShowMediaPopup(media?.id, media?.name, MediaType.movie);
         }
         else
         {
-            var index = random.Next(AppState.WishList.Shows.Count);
-            var media = AppState.WishList.Shows.ToList()[index];
+            var index = random.Next(WishList.Shows.Count);
+            var media = WishList.Shows.ToList()[index];
             await ShowMediaPopup(media?.id, media?.name, MediaType.tv);
         }
     }

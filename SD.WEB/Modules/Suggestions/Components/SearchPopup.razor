@@ -8,7 +8,9 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <MediaListFull @ref="MediaListFull" MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" MaxItens="100" ShowHead="false"></MediaListFull>
+    <RenderControl Task="LoadItems">
+        <MediaListFull @ref="MediaListFull" MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" MaxItens="100" ShowHead="false"></MediaListFull>
+    </RenderControl>    
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">@TranslationText.Close</Button>
@@ -24,13 +26,12 @@
     private MediaListFull? MediaListFull;
     private Dictionary<string, string> StringParameters => new Dictionary<string, string>() { { "query", Search ?? "" } };
 
-    protected override async Task LoadData()
+    protected async Task<bool> LoadItems()
     {
         var result = await TmdbSearch.GetList(Items, null, StringParameters);
-
         Items = result.list;
 
-        MediaListFull?.LoadingList?.Finish(!Items.Any());
+        return !Items.Any();
     }
 
     public async Task HideModal()

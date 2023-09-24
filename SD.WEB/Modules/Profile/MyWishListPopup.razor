@@ -1,4 +1,4 @@
-﻿@inherits ComponenteNoDataCore<MyWishListPopup>
+﻿@inherits ComponenteCore<MyWishListPopup>
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@Title.Format(GetWishList().Count())</ModalTitle>
@@ -12,7 +12,7 @@
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                 <Card>
                     <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="@MediaType.movie"
-                                 Clicked="@(async()=>await ShowMediaPopup(item, MediaType))" ShowWished="false"></PosterComponent>
+                                     Clicked="@(async()=>await ShowMediaPopup(item, MediaType))" ShowWished="false"></PosterComponent>
                 </Card>
             </Column>
         }
@@ -27,22 +27,28 @@
 
     [Parameter] public MediaType MediaType { get; set; }
 
+    private WishList? WishList;
+
     public string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWishlist : GlobalTranslations.MyShowWishlist;
 
     protected override void OnInitialized()
     {
-        AppState.WishListChanged += StateHasChanged;
-        AppState.WatchedListChanged += StateHasChanged;
+        AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); };
 
         base.OnInitialized();
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WishList = await AppState.GetWishList(true);
     }
 
     private HashSet<WishListItem> GetWishList()
     {
         if (MediaType == MediaType.movie)
-            return AppState.WishList?.Movies ?? new HashSet<WishListItem>();
+            return WishList?.Movies ?? new HashSet<WishListItem>();
         else
-            return AppState.WishList?.Shows ?? new HashSet<WishListItem>();
+            return WishList?.Shows ?? new HashSet<WishListItem>();
     }
 
     public Task ShowMediaPopup(WishListItem item, MediaType type)

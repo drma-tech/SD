@@ -3,7 +3,7 @@
 @inherits ComponenteCore<AnnouncementComponent>
 @inject AnnouncementApi AnnouncementApi
 
-<Loading @ref="LoadingAnnouncements">
+<RenderControl Task="Loadannouncement">
     @foreach (var item in announcement?.Items.OrderByDescending(o => o.Date) ?? Enumerable.Empty<AnnouncementItem>())
     {
         <Alert Color="Color.Info" Visible="true">
@@ -15,19 +15,14 @@
             </Paragraph>
         </Alert>
     }
-</Loading>
+</RenderControl>
 
 @code {
     private AnnouncementModel? announcement;
 
-    public Loading? LoadingAnnouncements { get; set; }
-
-    protected override async Task LoadData()
+    protected async Task<bool> Loadannouncement()
     {
-        LoadingAnnouncements?.Start();
-
         announcement = await AnnouncementApi.Get();
-
-        LoadingAnnouncements?.Finish(announcement == null);
+        return announcement == null;
     }
 }

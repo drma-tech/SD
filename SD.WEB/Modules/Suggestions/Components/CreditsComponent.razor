@@ -5,7 +5,7 @@
 
 @inject TmdbCreditApi TmdbCreditApi
 
-<Loading @ref="Loading">
+<RenderControl Task="LoadCredits">
     @if (type == MediaType.movie)
     {
         var directors = Credits?.crew.Where(w => w.job == "Director").ToList() ?? new List<Crew>();
@@ -83,7 +83,7 @@
             </Column>
         }
     </Row>
-</Loading>
+</RenderControl>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
@@ -91,16 +91,12 @@
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
-    public Loading? Loading { get; set; }
     private Credits? Credits { get; set; }
 
-    protected override async Task LoadData()
+    protected async Task<bool> LoadCredits()
     {
-        Loading?.Start();
-
         Credits = await TmdbCreditApi.GetList(type, tmdb_id);
-
-        Loading?.Finish(Credits == null);
+        return Credits == null;
     }
 
     private async Task OpenCompleteList(Crew crew)

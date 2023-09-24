@@ -98,10 +98,10 @@
     {
         base.OnInitialized();
 
-        await LoadData();
+        await LoadDataRender();
     }
 
-    protected override async Task LoadData()
+    protected override async Task LoadDataRender()
     {
         Languages = EnumHelper.GetList<Language>();
         AllProviders = await AllProvidersApi.GetAll();

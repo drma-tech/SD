@@ -69,7 +69,7 @@
     private ClientePrincipal? principal { get; set; } = new();
     private bool termsAccepted;
 
-    protected override async Task LoadData()
+    protected override async Task LoadDataRender()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 

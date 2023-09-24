@@ -1,6 +1,6 @@
 ﻿@page "/Profile"
 <SeoHeader Title="@SeoTranslations.ProfileTitle" Description="@SeoTranslations.ProfileDescription" Url="/Profile"></SeoHeader>
-@inherits PageNoDataCore<Profile>
+@inherits PageCore<Profile>
 @inject IHttpClientFactory httpClientFactory
 
 <MyProviderComponent Fake="Fake"></MyProviderComponent>

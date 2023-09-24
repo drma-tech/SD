@@ -1,4 +1,5 @@
-﻿@inherits ComponenteNoDataCore<DownloadComponent>
+﻿@using Blazorise.QRCode
+@inherits ComponenteCore<DownloadComponent>
 
 <Alert Color="Color.Info" Visible="true">
     <AlertMessage>
@@ -11,7 +12,7 @@
         <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is4.OnDesktop.Is6.OnMobile" TextAlignment="TextAlignment.Center">
             <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
                 <Blazorise.Link To="@item.link" Target="Target.Blank">
-                    <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
+                    <QRCode Value="@item.link" Alt="@item.name" EccLevel="EccLevel.H" Icon="@item.logo_path" Style="width: 100%" />
                 </Blazorise.Link>
                 <CardBody Padding="Padding.Is1">
                     <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 0.75rem;">@item.name</CardTitle>

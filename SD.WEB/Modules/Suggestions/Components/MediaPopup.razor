@@ -5,16 +5,20 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
 @inherits ComponenteCore<MediaPopup>
+
 @inject TmdbApi TmdbApi
 @inject CacheApi CacheApi
 @inject ExternalIdApi ExternalIdApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@media?.title</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <Loading @ref="LoadingList">
+    <RenderControl Task="LoadMedia">
         <Row HorizontalGutter="8" VerticalGutter="8">
             <Column ColumnSize="ColumnSize.Is12.OnMobile.Is4.OnDesktop">
                 @if (string.IsNullOrEmpty(media?.poster_large))
@@ -134,7 +138,7 @@
                                                     {
                                                         if (type == MediaType.movie) //you don't put seasons as wishes
                                                         {
-                                                            var wishedMovie = AppState.WishList?.Contains(MediaType.movie, item.id) ?? false;
+                                                            var wishedMovie = WishList?.Contains(MediaType.movie, item.id) ?? false;
                                                             if (wishedMovie)
                                                             {
                                                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
@@ -142,8 +146,8 @@
                                                             }
                                                         }
 
-                                                        var movieWatched = AppState.WatchedList?.Contains(MediaType.movie, item.id) ?? false;
-                                                        var showWatched = AppState.WatchingList?.GetWatchedItems(MediaType.tv, media.tmdb_id).Any(a => a == item.id) ?? false;
+                                                        var movieWatched = WatchedList?.Contains(MediaType.movie, item.id) ?? false;
+                                                        var showWatched = WatchingList?.GetWatchedItems(MediaType.tv, media.tmdb_id).Any(a => a == item.id) ?? false;
                                                         if (movieWatched | showWatched)
                                                         {
                                                             <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x2" TextColor="TextColor.Light"
@@ -170,7 +174,7 @@
                 </Tabs>
             </Column>
         </Row>
-    </Loading>
+    </RenderControl>
 </ModalBody>
 <ModalFooter>
     <Container Fluid="true" Margin="Margin.Is0" Padding="Padding.Is0.OnX">
@@ -182,13 +186,13 @@
                 }
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                @if (AppState.WishList?.Movies.Any(a => a.id == tmdb_id) ?? false)
+                @if (WishList?.Movies.Any(a => a.id == tmdb_id) ?? false)
                 {
                     <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
                     </Button>
                 }
-                else if (AppState.WishList?.Shows.Any(a => a.id == tmdb_id) ?? false)
+                else if (WishList?.Shows.Any(a => a.id == tmdb_id) ?? false)
                 {
                     <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
@@ -200,13 +204,13 @@
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
                     </Button>
                 }
-                @if (AppState.WatchedList?.Movies.Any(a => a == tmdb_id) ?? false)
+                @if (WatchedList?.Movies.Any(a => a == tmdb_id) ?? false)
                 {
                     <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
                     </Button>
                 }
-                else if (AppState.WatchedList?.Shows.Any(a => a == tmdb_id) ?? false)
+                else if (WatchedList?.Shows.Any(a => a == tmdb_id) ?? false)
                 {
                     <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
@@ -230,8 +234,6 @@
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
-    public Loading? LoadingList { get; set; }
-
     private MediaDetail? media { get; set; }
     private Ratings? Ratings { get; set; }
     public string? imdb_id { get; set; }
@@ -239,23 +241,24 @@
     public bool IsUserAuthenticated { get; set; }
     string selectedTab = "About";
 
+    private WatchedList? WatchedList;
+    private WatchingList? WatchingList;
+    private WishList? WishList;
+
     protected override async Task OnInitializedAsync()
     {
         if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
 
-        AppState.WishListChanged += StateHasChanged;
-        AppState.WatchedListChanged += StateHasChanged;
-
-        IsUserAuthenticated = await AppState.IsUserAuthenticated();
+        AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); };
+        AppState.WatchingListChanged += (WatchingList? list) => { WatchingList = list; StateHasChanged(); };
+        AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); };
 
         await base.OnInitializedAsync();
     }
 
-    protected override async Task LoadData()
+    public async Task<bool> LoadMedia()
     {
-        LoadingList?.Start();
-
         media = await TmdbApi.GetMediaDetail(tmdb_id, type);
 
         imdb_id = await ExternalIdApi.GetImdbId(type, tmdb_id);
@@ -266,8 +269,16 @@
             Ratings = (Ratings?)cache?.Data;
         }
 
-        StateHasChanged();
-        LoadingList?.Finish(media == null);
+        return media == null;
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        IsUserAuthenticated = await AppState.IsUserAuthenticated();
+
+        WatchedList = await AppState.GetWatchedList(false);
+        WatchingList = await AppState.GetWatchingList(false);
+        WishList = await AppState.GetWishList(false);
     }
 
     private Color GetColorByRating(string? rating)
@@ -311,7 +322,7 @@
 
         try
         {
-            var list = AppState.WishList ?? new WishList();
+            var list = WishList ?? new WishList();
 
             var item = new WishListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.runtime);
 
@@ -331,7 +342,7 @@
 
         try
         {
-            var list = AppState.WishList ?? new WishList();
+            var list = WishList ?? new WishList();
 
             list = await WishListApi.Remove(media.MediaType, media.tmdb_id);
 
@@ -353,7 +364,7 @@
 
             if (hasCollection)
             {
-                var watching = AppState.WatchingList ?? new WatchingList();
+                var watching = WatchingList ?? new WatchingList();
                 var collectionId = media.MediaType == MediaType.movie ? media.collectionId?.ToString() : media.tmdb_id;
 
                 await ModalService.Show<SelectItemsCollection>(null,
@@ -373,7 +384,7 @@
             }
             else
             {
-                var watched = AppState.WatchedList ?? new WatchedList();
+                var watched = WatchedList ?? new WatchedList();
 
                 watched = await WatchedListApi.Add(media.MediaType, media.tmdb_id);
 
@@ -390,7 +401,7 @@
     {
         //watched list
 
-        var watched = AppState.WatchedList ?? new WatchedList();
+        var watched = WatchedList ?? new WatchedList();
 
         if (media.MediaType == MediaType.movie)
         {
@@ -405,7 +416,7 @@
 
         //watching list
 
-        var watching = AppState.WatchingList ?? new WatchingList();
+        var watching = WatchingList ?? new WatchingList();
 
         WatchingListItem item;
 
@@ -431,7 +442,7 @@
         {
             //watched
 
-            var watched = AppState.WatchedList ?? new WatchedList();
+            var watched = WatchedList ?? new WatchedList();
 
             watched = await WatchedListApi.Remove(media.MediaType, media.tmdb_id);
 
@@ -443,7 +454,7 @@
 
             if (hasCollection)
             {
-                var watching = AppState.WatchingList ?? new WatchingList();
+                var watching = WatchingList ?? new WatchingList();
 
                 if (media.MediaType == MediaType.movie)
                 {

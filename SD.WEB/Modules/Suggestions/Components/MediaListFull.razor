@@ -12,7 +12,7 @@
 {
     <HeaderComponent Title="@GetTitle"></HeaderComponent>
 }
-<Loading @ref="LoadingList">
+<RenderControl Task="LoadGeneric">
     <Row HorizontalGutter="4" VerticalGutter="4">
         @for (int i = 1; i <= Items.Count; i++)
         {
@@ -34,7 +34,7 @@
             </Column>
         }
     </Row>
-</Loading>
+</RenderControl>
 @if (MediaListApi != null)
 {
     <Div TextAlignment="TextAlignment.Center">
@@ -56,8 +56,6 @@
     [Parameter] public EnumLists? List { get; set; }
     [Parameter] public string? CommentsSeparator { get; set; } = ",";
 
-    public Loading? LoadingList { get; set; }
-
     private string? GetTitle => List != null ? List.GetName() : TitleHead;
     private string GetCustomStyle => "col-xl col-md-2 col-3";
     private int GetTotalItems => AppStateStatic.OnFullHD ? 10 : 8;
@@ -73,8 +71,9 @@
             //if (NextPage.HasDelegate && string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
             if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));
 
-            AppState.WishListChanged += StateHasChanged;
-            AppState.WatchedListChanged += StateHasChanged;
+            //TODO: analisar isso
+            // AppState.WishListChanged += StateHasChanged;
+            // AppState.WatchedListChanged += StateHasChanged;
 
             await base.OnInitializedAsync();
         }
@@ -84,14 +83,15 @@
         }
     }
 
-    protected override async Task LoadData()
+    protected async Task<bool> LoadGeneric()
     {
         await LoadItems(TypeSelected);
+
+        return !Items.Any();
     }
 
     private async Task LoadItems(MediaType? type)
     {
-        LoadingList?.Start();
         if (MediaListApi != null)
         {
             var result = await MediaListApi.GetList(new(), TypeSelected, StringParameters, List, 1);
@@ -108,7 +108,6 @@
                 }
             }
         }
-        LoadingList?.Finish(!Items.Any());
     }
 
     private async Task OpenPopupMedia(MediaDetail? media)

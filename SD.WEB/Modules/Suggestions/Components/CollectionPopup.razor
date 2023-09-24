@@ -1,14 +1,18 @@
 ﻿@using SD.Shared.Models.List.Tmdb;
+@using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.Suggestions.Core;
 @inherits ComponenteCore<CollectionPopup>
+
 @inject TmdbApi TmdbApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@collection?.name</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <Loading @ref="LoadingList">
+    <RenderControl Task="Loadcollection">
         <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
             @foreach (var item in collection?.parts.OrderBy(o => o.release_date.GetDate()) ?? Enumerable.Empty<Part>())
             {
@@ -37,7 +41,7 @@
                             {
                                 if (type == MediaType.movie) //you don't put seasons as wishes
                                 {
-                                    var wishedMovie = AppState.WishList?.Contains(MediaType.movie, item.id.ToString()) ?? false;
+                                    var wishedMovie = WishList?.Contains(MediaType.movie, item.id.ToString()) ?? false;
                                     if (wishedMovie)
                                     {
                                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
@@ -45,7 +49,7 @@
                                     }
                                 }
 
-                                var watched = AppState.WatchingList?.GetWatchedItems(type, collection?.id.ToString()).Any(a => a == item.id.ToString()) ?? false;
+                                var watched = WatchingList?.GetWatchedItems(type, collection?.id.ToString()).Any(a => a == item.id.ToString()) ?? false;
                                 if (watched)
                                 {
                                     <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x2" TextColor="TextColor.Light"
@@ -63,7 +67,7 @@
                 </Column>
             }
         </Row>
-    </Loading>
+    </RenderControl>
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Primary" Size="Size.Small" Clicked="@Watched" Float="Float.Start" title="Mark all these items as watched">@GlobalTranslations.ButtonWatched</Button>
@@ -77,9 +81,11 @@
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
-    public Loading? LoadingList { get; set; }
-
     private TmdbCollection? collection { get; set; }
+
+    private WatchedList? WatchedList;
+    private WatchingList? WatchingList;
+    private WishList? WishList;
 
     public bool IsUserAuthenticated { get; set; }
 
@@ -88,18 +94,24 @@
         if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
 
-        AppState.WishListChanged += StateHasChanged;
-        AppState.WatchedListChanged += StateHasChanged;
+        AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); };
+        AppState.WatchingListChanged += (WatchingList? list) => { WatchingList = list; StateHasChanged(); };
+        AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); };
 
         IsUserAuthenticated = await AppState.IsUserAuthenticated();
 
         await base.OnInitializedAsync();
     }
 
-    protected override async Task LoadData()
+    protected override async Task LoadDataRender()
     {
-        LoadingList?.Start();
+        WatchedList = await AppState.GetWatchedList(false);
+        WatchingList = await AppState.GetWatchingList(false);
+        WishList = await AppState.GetWishList(false);
+    }
 
+    protected async Task<bool> Loadcollection()
+    {
         if (type == MediaType.movie)
         {
             var parameters = new Dictionary<string, string>()
@@ -131,8 +143,7 @@
             }
         }
 
-        StateHasChanged();
-        LoadingList?.Finish(false);
+        return collection == null;
     }
 
     public async Task HideModal()
@@ -184,13 +195,11 @@
 
     private async Task Watched()
     {
-        var watching = AppState.WatchingList ?? new WatchingList();
-
         await ModalService.Show<SelectItemsCollection>(null,
             x =>
             {
                 x.Add(x => x.ItemsCollection, collection?.parts.Select(s => TmdbApi.ConvertToCollection(s)).ToList());
-                x.Add(x => x.SelectedItems, watching.GetWatchedItems(type, collection?.id.ToString()).ToHashSet()); //ToHashSet = clone to not reference
+                x.Add(x => x.SelectedItems, WatchingList?.GetWatchedItems(type, collection?.id.ToString()).ToHashSet()); //ToHashSet = clone to not reference
                 x.Add(x => x.SelectedItemsChanged,
                     new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(type, collection, tmdb_id, list, collection?.parts.Count ?? 0)));
             },
@@ -210,16 +219,12 @@
 
         if (type == MediaType.movie)
         {
-            var watched = AppState.WatchedList ?? new WatchedList();
+            WatchedList = await WatchedListApi.Add(type, string.Join(',', items));
 
-            watched = await WatchedListApi.Add(type, string.Join(',', items));
-
-            AppState.ChangeWatchedList(watched);
+            AppState.ChangeWatchedList(WatchedList);
         }
 
         //watching list
-
-        var watching = AppState.WatchingList ?? new WatchingList();
 
         WatchingListItem item;
 
@@ -234,16 +239,16 @@
             item = new WatchingListItem(tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
         }
 
-        watching = await WatchingListApi.Add(type, item);
+        WatchingList = await WatchingListApi.Add(type, item);
 
-        AppState.ChangeWatchingList(watching);
+        AppState.ChangeWatchingList(WatchingList);
 
         await HideModal();
     }
 
     private async Task RemoveCollection()
     {
-        var watching = AppState.WatchingList ?? new WatchingList();
+        var watching = await AppState.GetWatchingList(false) ?? new WatchingList();
 
         watching = await WatchingListApi.Remove(type, collection?.id.ToString());
 

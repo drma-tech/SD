@@ -20,7 +20,8 @@
         }
     </HeaderComponent>
 }
-<Loading @ref="LoadingList">
+
+<RenderControl @ref="RenderControl" Task="LoadGeneric">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
         @for (int i = 1; i <= Items.Take(GetTotalItems).Count(); i++)
         {
@@ -43,7 +44,7 @@
             </Column>
         }
     </Row>
-</Loading>
+</RenderControl>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
@@ -65,9 +66,9 @@
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
     private int GetTotalItems => AppStateStatic.OnFullHD ? 10 : 8;
 
-    public HashSet<MediaDetail> Items { get; set; } = new();
+    public RenderControl? RenderControl { get; set; }
 
-    public Loading? LoadingList { get; set; }
+    public HashSet<MediaDetail> Items { get; set; } = new();
 
     public string GetCustomStyle => "col-xl col-md-2 col-3";
 
@@ -79,9 +80,10 @@
             if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
             if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));
 
-            AppState.WishListChanged += StateHasChanged;
-            AppState.WatchedListChanged += StateHasChanged;
-            if (MultiplesRegions) AppStateStatic.RegionChanged += LoadDataVoid;
+            //TODO: analisar isso
+            // AppState.WishListChanged += StateHasChanged;
+            // AppState.WatchedListChanged += StateHasChanged;
+            if (MultiplesRegions) AppStateStatic.RegionChanged += LoadGenericVoid;
 
             await base.OnInitializedAsync();
         }
@@ -91,27 +93,31 @@
         }
     }
 
-    protected override async Task LoadData()
+    protected async Task<bool> LoadGeneric()
     {
         await LoadItems(TypeSelected);
+        return !Items.Any();
     }
 
-    protected async void LoadDataVoid()
+    protected async void LoadGenericVoid()
     {
+        RenderControl?.ShowLoading();
         await LoadItems(TypeSelected);
+        RenderControl?.ShowContent(!Items.Any());
     }
 
     private async Task TypeSelectedChanged(MediaType type)
     {
+        RenderControl?.ShowLoading();
         TypeSelected = type;
         await LoadItems(type);
+        RenderControl?.ShowContent(!Items.Any());
     }
 
     private async Task LoadItems(MediaType type)
     {
         try
         {
-            LoadingList?.Start();
             if (MediaListApi != null)
             {
                 var result = await MediaListApi.GetList(new(), TypeSelected, StringParameters, List, 1);
@@ -127,11 +133,10 @@
                     }
                 }
             }
-            LoadingList?.Finish(!Items.Any());
         }
         catch (Exception ex)
         {
-            LoadingList?.Invalid(ex.Message);
+            RenderControl?.ShowError(ex.Message);
         }
     }
 

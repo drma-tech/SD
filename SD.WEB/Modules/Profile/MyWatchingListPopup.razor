@@ -1,4 +1,4 @@
-﻿@inherits ComponenteNoDataCore<MyWatchingListPopup>
+﻿@inherits ComponenteCore<MyWatchingListPopup>
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@Title.Format(GetList().Count())</ModalTitle>
@@ -53,20 +53,26 @@
 
     public string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWatching : GlobalTranslations.MyShowWatching;
 
+    private WatchingList? WatchingList;
+
     protected override void OnInitialized()
     {
-        AppState.WishListChanged += StateHasChanged;
-        AppState.WatchedListChanged += StateHasChanged;
+        AppState.WatchingListChanged += (WatchingList? list) => { WatchingList = list; StateHasChanged(); };
 
         base.OnInitialized();
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchingList = await AppState.GetWatchingList(true);
     }
 
     private HashSet<WatchingListItem> GetList()
     {
         if (MediaType == MediaType.movie)
-            return AppState.WatchingList?.Movies ?? new HashSet<WatchingListItem>();
+            return WatchingList?.Movies ?? new HashSet<WatchingListItem>();
         else
-            return AppState.WatchingList?.Shows ?? new HashSet<WatchingListItem>();
+            return WatchingList?.Shows ?? new HashSet<WatchingListItem>();
     }
 
     public Task ShowCollectionPopup(string? tmdb_id, string? name, MediaType type)

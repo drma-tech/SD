@@ -13,19 +13,19 @@
     </Button>
 </HeaderComponent>
 
-<Loading @ref="LoadingProvider" UnauthenticatedUser="!IsUserAuthenticated">
+<RenderControl Task="LoadmyProviders" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in myProviders?.Items.Take(GetTotalItems(expand)) ?? new List<MyProvidersItem>())
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                 <Card>
                     <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                           onclick="@(()=>ShowProviderPopup(item))" Style="cursor: pointer;"></CardImage>
+                               onclick="@(()=>ShowProviderPopup(item))" Style="cursor: pointer;"></CardImage>
                 </Card>
             </Column>
         }
     </Row>
-</Loading>
+</RenderControl>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
@@ -34,41 +34,24 @@
 
     private AllProviders? allProviders { get; set; }
     private MyProviders? myProviders { get; set; }
-    private Loading? LoadingProvider { get; set; }
-    private bool IsUserAuthenticated { get; set; }
     private bool expand { get; set; }
 
     private int GetTotalItems(bool expand) => AppStateStatic.OnMobile && !expand ? 4 : 12;
 
-    protected override async Task LoadData()
+    protected async Task<bool> LoadmyProviders()
     {
-        LoadingProvider?.Start();
-
         if (Fake)
         {
             var http = httpClientFactory.CreateClient("RetryHttpClient");
 
-            IsUserAuthenticated = true;
-
             myProviders = await http.GetFromJsonAsync<MyProviders>("/Data/MyProvider.json");
-            LoadingProvider?.Finish(!myProviders?.Items.Any() ?? true);
         }
         else
         {
-            IsUserAuthenticated = await State.IsUserAuthenticated();
-
-            if (IsUserAuthenticated)
-            {
-                myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
-                LoadingProvider?.Finish(!myProviders?.Items.Any() ?? true);
-            }
-            else
-            {
-                LoadingProvider?.Finish(true);
-            }
+            myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
         }
 
-        StateHasChanged();
+        return !myProviders?.Items.Any() ?? true;
     }
 
     public async Task ShowProviderPopup(MyProvidersItem item)

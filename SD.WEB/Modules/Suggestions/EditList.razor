@@ -72,7 +72,7 @@
 
     public IEnumerable<EnumObject> Types { get; set; } = Array.Empty<EnumObject>();
 
-    protected override async Task LoadData()
+    protected override async Task LoadDataRender()
     {
         Types = EnumHelper.GetList<MediaType>();
         var result = await TmdbListApi.GetList(List, null, null, ListId, 1);

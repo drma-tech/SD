@@ -32,7 +32,7 @@
     }
 </HeaderComponent>
 
-<Loading @ref="LoadingProvider" UnauthenticatedUser="!IsUserAuthenticated" IsEmptyFilter="@(mySuggestions == null || !mySuggestions.Items(SearchType).Any())">
+<RenderControl Task="LoadmySuggestions" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !Watched(SearchType, w)).Take(GetTotalItems) ?? new List<SuggestionListItem>())
         {
@@ -54,15 +54,14 @@
             </Column>
         }
     </Row>
-</Loading>
+</RenderControl>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
+    public RenderControl? RenderControl { get; set; }
     private MyProviders? myProviders { get; set; }
     private SD.Shared.Models.MySuggestions? mySuggestions { get; set; }
-    public Loading? LoadingProvider { get; set; }
-    private bool IsUserAuthenticated { get; set; }
     public MediaType SearchType { get; set; } = MediaType.movie;
     private int GetTotalItems => AppStateStatic.OnFullHD ? 12 : 8;
 
@@ -71,61 +70,53 @@
     public bool MovieUpdating { get; set; } = false;
     public bool ShowUpdating { get; set; } = false;
 
+    private WatchedList? WatchedList;
+    private WishList? WishList;
+
     private bool GenresChanged => mySuggestions?.MovieGenres.Any() ?? false | mySuggestions?.TvGenres.Any() ?? false;
 
     protected override async Task OnInitializedAsync()
     {
-        AppState.WatchedListChanged += StateHasChanged;
-        AppState.WishListChanged += StateHasChanged;
+        AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); RenderControl?.ShowContent(mySuggestions == null); };
+        AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); RenderControl?.ShowContent(mySuggestions == null); };
 
         await base.OnInitializedAsync();
     }
 
-    protected override async Task LoadData()
+    protected override async Task LoadDataRender()
     {
-        LoadingProvider?.Start();
+        WatchedList = await AppState.GetWatchedList(true);
+        WishList = await AppState.GetWishList(true);
+    }
 
+    protected async Task<bool> LoadmySuggestions()
+    {
         if (Fake)
         {
             var http = httpClientFactory.CreateClient("RetryHttpClient");
 
-            IsUserAuthenticated = true;
-
             mySuggestions = await http.GetFromJsonAsync<SD.Shared.Models.MySuggestions>("/Data/MySuggestions.json");
-
-            LoadingProvider?.Finish(false);
         }
         else
         {
-            IsUserAuthenticated = await State.IsUserAuthenticated();
+            myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
 
-            if (IsUserAuthenticated)
+            if (myProviders == null || !myProviders.Items.Any())
             {
-                myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
-
-                if (myProviders == null || !myProviders.Items.Any())
-                {
-                    LoadingProvider?.Finish(true, Resources.GlobalTranslations.OurSuggestions1);
-                }
-                else
-                {
-                    mySuggestions = await MySuggestionsApi.Get(IsUserAuthenticated);
-
-                    if (mySuggestions == null || !mySuggestions.Items(SearchType).Any())
-                    {
-                        LoadingProvider?.Finish(true, Resources.GlobalTranslations.OurSuggestions2);
-                    }
-                    else
-                    {
-                        LoadingProvider?.Finish(false);
-                    }
-                }
+                RenderControl?.ShowWarning(Resources.GlobalTranslations.OurSuggestions1);
             }
             else
             {
-                LoadingProvider?.Finish(true);
+                mySuggestions = await MySuggestionsApi.Get();
+
+                if (mySuggestions == null || !mySuggestions.Items(SearchType).Any())
+                {
+                    RenderControl?.ShowWarning(Resources.GlobalTranslations.OurSuggestions2);
+                }
             }
         }
+
+        return mySuggestions == null;
     }
 
     public Task ShowMediaPopup(string? tmdb_id, string? name, MediaType type)
@@ -154,11 +145,11 @@
 
         if (SearchType == MediaType.movie)
         {
-            genres = string.Join("|,", mySuggestions.MovieGenres.Select(s => (int)s));
+            genres = string.Join("|,", mySuggestions?.MovieGenres.Select(s => (int)s) ?? Enumerable.Empty<int>());
         }
         else
         {
-            genres = string.Join("|,", mySuggestions.TvGenres.Select(s => (int)s));
+            genres = string.Join("|,", mySuggestions?.TvGenres.Select(s => (int)s) ?? Enumerable.Empty<int>());
         }
 
         return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by }, { "with_genres", genres } };
@@ -169,12 +160,12 @@
         try
         {
             mySuggestions ??= new();
-            LoadingProvider?.Start();
 
             if (type == MediaType.movie)
             {
                 mySuggestions.Movies.Clear();
                 MovieUpdating = true;
+                RenderControl?.ShowLoading();
 
                 var titles = new HashSet<MediaDetail>();
                 foreach (var provider in myProviders?.Items ?? new())
@@ -189,8 +180,8 @@
 
                 foreach (var item in titles.OrderByDescending(o => o.rating))
                 {
-                    if (AppState.WatchedList != null && AppState.WatchedList.Movies.Any(a => a == item.tmdb_id)) continue;
-                    if (AppState.WishList != null && AppState.WishList.Movies.Any(a => a.id == item.tmdb_id)) continue;
+                    if (WatchedList != null && WatchedList.Movies.Any(a => a == item.tmdb_id)) continue;
+                    if (WishList != null && WishList.Movies.Any(a => a.id == item.tmdb_id)) continue;
 
                     if (mySuggestions.Movies.Count < 16)
                     {
@@ -211,15 +202,17 @@
                     }
                 }
 
-                LoadingProvider?.Finish(!mySuggestions.Items(MediaType.movie).Any());
+                if (!mySuggestions.Items(MediaType.movie).Any()) RenderControl?.ShowWarning(null);
 
                 mySuggestions = await MySuggestionsApi.Sync(MediaType.movie, mySuggestions);
                 MovieUpdating = false;
+                RenderControl?.ShowContent(mySuggestions == null || !mySuggestions.Movies.Any());
             }
             else
             {
                 mySuggestions.Shows.Clear();
                 ShowUpdating = true;
+                RenderControl?.ShowLoading();
 
                 var titles = new HashSet<MediaDetail>();
                 foreach (var provider in myProviders?.Items ?? new())
@@ -234,8 +227,8 @@
 
                 foreach (var item in titles.OrderByDescending(o => o.rating))
                 {
-                    if (AppState.WatchedList != null && AppState.WatchedList.Shows.Any(a => a == item.tmdb_id)) continue;
-                    if (AppState.WishList != null && AppState.WishList.Shows.Any(a => a.id == item.tmdb_id)) continue;
+                    if (WatchedList != null && WatchedList.Shows.Any(a => a == item.tmdb_id)) continue;
+                    if (WishList != null && WishList.Shows.Any(a => a.id == item.tmdb_id)) continue;
 
                     if (mySuggestions.Shows.Count < 16)
                     {
@@ -256,16 +249,18 @@
                     }
                 }
 
-                LoadingProvider?.Finish(!mySuggestions.Items(MediaType.tv).Any());
+                if (!mySuggestions.Items(MediaType.tv).Any()) RenderControl?.ShowWarning(null);
 
                 mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions);
                 ShowUpdating = false;
+                RenderControl?.ShowContent(mySuggestions == null || !mySuggestions.Shows.Any());
             }
         }
         catch (Exception ex)
         {
             MovieUpdating = false;
             ShowUpdating = false;
+            RenderControl?.ShowError(ex.Message);
             ex.ProcessException(Toast, Logger);
         }
     }
@@ -274,15 +269,15 @@
     {
         if (type == MediaType.movie)
         {
-            if (AppState.WatchedList != null && AppState.WatchedList.Movies.Any(a => a == item.id)) return true;
-            if (AppState.WishList != null && AppState.WishList.Movies.Any(a => a.id == item.id)) return true;
+            if (WatchedList != null && WatchedList.Movies.Any(a => a == item.id)) return true;
+            if (WishList != null && WishList.Movies.Any(a => a.id == item.id)) return true;
 
             return false;
         }
         else
         {
-            if (AppState.WatchedList != null && AppState.WatchedList.Shows.Any(a => a == item.id)) return true;
-            if (AppState.WishList != null && AppState.WishList.Shows.Any(a => a.id == item.id)) return true;
+            if (WatchedList != null && WatchedList.Shows.Any(a => a == item.id)) return true;
+            if (WishList != null && WishList.Shows.Any(a => a.id == item.id)) return true;
 
             return false;
         }

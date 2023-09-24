@@ -8,7 +8,7 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <Loading @ref="Loading">
+    <RenderControl Task="LoadSeason">
         <ListGroup Flush>
             @foreach (var item in Season?.episodes ?? new())
             {
@@ -32,7 +32,7 @@
                 </ListGroupItem>
             }
         </ListGroup>
-    </Loading>
+    </RenderControl>
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">@GlobalTranslations.ButtonClose</Button>
@@ -46,13 +46,10 @@
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public int? season_number { get; set; }
 
-    public Loading? Loading { get; set; }
     public TmdbSeason? Season { get; set; }
 
-    protected override async Task LoadData()
+    protected async Task<bool> LoadSeason()
     {
-        Loading?.Start();
-
         var parameters = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey },
@@ -61,7 +58,7 @@
 
         Season = await TmdbApi.GetSeason(tmdb_id, season_number, parameters);
 
-        Loading?.Finish(Season == null);
+        return Season == null;
     }
 
     public async Task HideModal()

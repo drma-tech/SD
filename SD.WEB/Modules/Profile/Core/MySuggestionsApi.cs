@@ -16,16 +16,9 @@ namespace SD.WEB.Modules.Profile.Core
             public static string Sync(MediaType? type) => $"MySuggestions/Sync/{type}";
         }
 
-        public async Task<SD.Shared.Models.MySuggestions?> Get(bool IsUserAuthenticated)
+        public async Task<SD.Shared.Models.MySuggestions?> Get()
         {
-            if (IsUserAuthenticated)
-            {
-                return await GetAsync<SD.Shared.Models.MySuggestions>(Endpoint.Get, false);
-            }
-            else
-            {
-                return default;
-            }
+            return await GetAsync<SD.Shared.Models.MySuggestions>(Endpoint.Get, false);
         }
 
         public async Task<SD.Shared.Models.MySuggestions?> Sync(MediaType? mediaType, SD.Shared.Models.MySuggestions obj)

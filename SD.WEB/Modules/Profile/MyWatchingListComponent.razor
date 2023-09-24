@@ -1,27 +1,30 @@
 ﻿@using SD.WEB.Modules.Suggestions.Core;
 @using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.Provider.Core;
-@inherits ComponenteNoDataCore<MyWatchingListComponent>
+@inherits ComponenteCore<MyWatchingListComponent>
+
 @inject TmdbApi TmdbApi
 @inject AppState State
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
 
-<HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@GlobalTranslations.MyMovieWatching.Format(AppState.WatchingList?.Movies.Count() ?? 0)">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))" title="@GlobalTranslations.SeeAllItems" Disabled="(!AppState.WatchingList?.Movies.Any()??true)" Class="ml-1">
+<HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@GlobalTranslations.MyMovieWatching.Format(WatchingList?.Movies.Count() ?? 0)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))" title="@GlobalTranslations.SeeAllItems" Disabled="(!WatchingList?.Movies.Any()??true)" Class="ml-1">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.movie))" title="@GlobalTranslations.PickARandom" Disabled="(!AppState.WatchingList?.Movies.Any()??true)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.movie))" title="@GlobalTranslations.PickARandom" Disabled="(!WatchingList?.Movies.Any()??true)">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
-    @if ((AppState.WatchingList?.MovieCanSync ?? false) && (AppState.WatchedList?.Movies.Any() ?? false))
+    @if ((WatchingList?.MovieCanSync ?? false) && (WatchedList?.Movies.Any() ?? false))
     {
         <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched(MediaType.movie)" title="@GlobalTranslations.ButtonUpdate" Disabled="MovieUpdating">
             @GlobalTranslations.ButtonUpdate
         </Button>
     }
 </HeaderComponent>
-<Loading IsEmptyFilter="@(AppState.WatchingList == null || !AppState.WatchingList.Movies.Any())" UnauthenticatedUser="!IsUserAuthenticated">
+<RenderControl @ref="RenderControlMovies" Task="LoadWatchingListMovies" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-        @foreach (var item in AppState.WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
+        @foreach (var item in WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
         {
             int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
             var resultPerc = $"{percentComplete}%";
@@ -55,25 +58,25 @@
             </Column>
         }
     </Row>
-</Loading>
+</RenderControl>
 
-<HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@GlobalTranslations.MyShowWatching.Format(AppState.WatchingList?.Shows.Count() ?? 0)">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))" title="@GlobalTranslations.SeeAllItems" Disabled="(!AppState.WatchingList?.Shows.Any()??true)" Class="ml-1">
+<HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@GlobalTranslations.MyShowWatching.Format(WatchingList?.Shows.Count() ?? 0)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))" title="@GlobalTranslations.SeeAllItems" Disabled="(!WatchingList?.Shows.Any()??true)" Class="ml-1">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.tv))" title="@GlobalTranslations.PickARandom" Disabled="(!AppState.WatchingList?.Shows.Any()??true)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.tv))" title="@GlobalTranslations.PickARandom" Disabled="(!WatchingList?.Shows.Any()??true)">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
-    @if ((AppState.WatchingList?.ShowCanSync ?? false) && (AppState.WatchedList?.Shows.Any() ?? false))
+    @if ((WatchingList?.ShowCanSync ?? false) && (WatchedList?.Shows.Any() ?? false))
     {
         <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched(MediaType.tv)" title="@GlobalTranslations.ButtonUpdate" Disabled="ShowUpdating">
             @GlobalTranslations.ButtonUpdate
         </Button>
     }
 </HeaderComponent>
-<Loading IsEmptyFilter="@(AppState.WatchingList == null || !AppState.WatchingList.Shows.Any())" UnauthenticatedUser="!IsUserAuthenticated">
+<RenderControl @ref="RenderControlShows" Task="LoadWatchingListShows" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-        @foreach (var item in AppState.WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
+        @foreach (var item in WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
         {
             int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
             var resultPerc = $"{percentComplete}%";
@@ -107,7 +110,7 @@
             </Column>
         }
     </Row>
-</Loading>
+</RenderControl>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
@@ -120,11 +123,16 @@
     public bool MovieUpdating { get; set; } = false;
     public bool ShowUpdating { get; set; } = false;
 
+    private WatchedList? WatchedList;
+    private WatchingList? WatchingList;
+
+    private RenderControl? RenderControlMovies;
+    private RenderControl? RenderControlShows;
+
     protected override async Task OnInitializedAsync()
     {
-        AppState.WatchingListChanged += StateHasChanged;
-        AppState.WatchedListChanged += StateHasChanged;
-        AppState.WishListChanged += StateHasChanged;
+        AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); };
+        AppState.WatchingListChanged += (WatchingList? list) => { WatchingList = list; StateHasChanged(); };
 
         if (Fake)
             IsUserAuthenticated = true;
@@ -132,6 +140,26 @@
             IsUserAuthenticated = await State.IsUserAuthenticated();
 
         await base.OnInitializedAsync();
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        await base.LoadDataRender();
+        WatchedList ??= await AppState.GetWatchedList(true);
+    }
+
+    protected async Task<bool> LoadWatchingListMovies()
+    {
+        WatchingList ??= await AppState.GetWatchingList(true);
+
+        return WatchingList == null || !WatchingList.Movies.Any();
+    }
+
+    protected async Task<bool> LoadWatchingListShows()
+    {
+        WatchingList ??= await AppState.GetWatchingList(true);
+
+        return WatchingList == null || !WatchingList.Shows.Any();
     }
 
     private async Task OpenCompleteList(MediaType mediaType)
@@ -151,20 +179,20 @@
 
     public async Task ChooseRandomTitle(MediaType type)
     {
-        if (AppState.WatchingList == null) return;
+        if (WatchingList == null) return;
 
         var random = new Random();
 
         if (type == MediaType.movie)
         {
-            var index = random.Next(AppState.WatchingList.Movies.Count);
-            var media = AppState.WatchingList.Movies.ToList()[index];
+            var index = random.Next(WatchingList.Movies.Count);
+            var media = WatchingList.Movies.ToList()[index];
             await ShowCollectionPopup(media?.id, media?.name, MediaType.movie);
         }
         else
         {
-            var index = random.Next(AppState.WatchingList.Shows.Count);
-            var media = AppState.WatchingList.Shows.ToList()[index];
+            var index = random.Next(WatchingList.Shows.Count);
+            var media = WatchingList.Shows.ToList()[index];
             await ShowCollectionPopup(media?.id, media?.name, MediaType.tv);
         }
     }
@@ -191,14 +219,15 @@
     {
         try
         {
-            var watching = AppState.WatchingList ?? new WatchingList();
+            var watching = WatchingList ?? new WatchingList();
 
             if (type == MediaType.movie)
             {
-                AppState.WatchingList?.Movies.Clear();
+                WatchingList?.Movies.Clear();
                 MovieUpdating = true;
+                RenderControlMovies?.ShowLoading();
 
-                foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.movie) ?? new())
+                foreach (var tmdb_id in WatchedList?.GetItems(MediaType.movie) ?? new())
                 {
                     var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.movie);
                     if (media == null) continue;
@@ -231,13 +260,15 @@
 
                 AppState.ChangeWatchingList(watching);
                 MovieUpdating = false;
+                RenderControlMovies?.ShowContent(watching == null || !watching.Movies.Any());
             }
             else
             {
-                AppState.WatchingList?.Shows.Clear();
+                WatchingList?.Shows.Clear();
                 ShowUpdating = true;
+                RenderControlShows?.ShowLoading();
 
-                foreach (var tmdb_id in AppState.WatchedList?.GetItems(MediaType.tv) ?? new())
+                foreach (var tmdb_id in WatchedList?.GetItems(MediaType.tv) ?? new())
                 {
                     var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.tv);
                     if (media == null) continue;
@@ -270,6 +301,7 @@
 
                 AppState.ChangeWatchingList(watching);
                 ShowUpdating = false;
+                RenderControlShows?.ShowContent(watching == null || !watching.Shows.Any());
             }
 
             StateHasChanged();
@@ -278,6 +310,8 @@
         {
             MovieUpdating = false;
             ShowUpdating = false;
+            RenderControlMovies?.ShowError(ex.Message);
+            RenderControlShows?.ShowError(ex.Message);
             ex.ProcessException(Toast, Logger);
         }
     }

@@ -1,4 +1,4 @@
-﻿@inherits ComponenteNoDataCore<PosterComponent>
+﻿@inherits ComponenteCore<PosterComponent>
 @using SD.Shared.Helper;
 
 <Blazorise.Link Clicked="@Clicked" Style="position: relative;">
@@ -63,8 +63,8 @@
     {
         if (ShowWished)
         {
-            var wishedMovie = AppState.WishList?.Contains(MediaType.movie, TmdbId) ?? false;
-            var wishedShow = AppState.WishList?.Contains(MediaType.tv, TmdbId) ?? false;
+            var wishedMovie = WishList?.Contains(MediaType.movie, TmdbId) ?? false;
+            var wishedShow = WishList?.Contains(MediaType.tv, TmdbId) ?? false;
             if (wishedMovie | wishedShow)
             {
                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.Large" TextColor="TextColor.Light"
@@ -75,8 +75,8 @@
         bool watchedShow = false;
         if (ShowWatched)
         {
-            watchedMovie = AppState.WatchedList?.Contains(MediaType.movie, TmdbId) ?? false;
-            watchedShow = AppState.WatchedList?.Contains(MediaType.tv, TmdbId) ?? false;
+            watchedMovie = WatchedList?.Contains(MediaType.movie, TmdbId) ?? false;
+            watchedShow = WatchedList?.Contains(MediaType.tv, TmdbId) ?? false;
             if (watchedMovie | watchedShow)
             {
                 <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.Large" TextColor="TextColor.Light"
@@ -110,4 +110,21 @@
     [Parameter] public bool ShowWished { get; set; } = true;
     [Parameter] public bool ShowWatched { get; set; } = true;
     [Parameter] public string? RankUpDown { get; set; }
+
+    private WatchedList? WatchedList;
+    private WishList? WishList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); };
+        AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); };
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await AppState.GetWatchedList(false);
+        WishList = await AppState.GetWishList(false);
+    }
 }

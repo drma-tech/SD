@@ -6,7 +6,7 @@
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbApi TmdbApi
 
-<Loading @ref="LoadingList">
+<RenderControl Task="LoadAllProviders">
     @{
         var hasProvider = false;
 
@@ -188,11 +188,11 @@
                     </Alert>
                 </Column>
             </Row>
-        }        
+        }
 
         //<Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false" Margin="Margin.Is2.FromTop">Atualizar</Button>
     }
-</Loading>
+</RenderControl>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
@@ -200,20 +200,15 @@
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
-    public Loading? LoadingList { get; set; }
-
     private MediaProviders? Providers { get; set; }
     private AllProviders? AllProviders { get; set; }
 
-    protected override async Task LoadData()
+    protected async Task<bool> LoadAllProviders()
     {
-        LoadingList?.Start();
-
         Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
         AllProviders = await AllProvidersApi.GetAll();
 
-        StateHasChanged();
-        LoadingList?.Finish(Providers == null);
+        return AllProviders == null;
     }
 
     private async Task Atualizar()

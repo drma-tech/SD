@@ -1,6 +1,6 @@
 ﻿@page "/Suggestions"
 <SeoHeader Title="@SeoTranslations.SuggestionsTitle" Description="@SeoTranslations.SuggestionsDescription" Url="/Suggestions"></SeoHeader>
-@inherits PageNoDataCore<Suggestions>
+@inherits PageCore<Suggestions>
 
 <HeaderComponent Title="@Resources.Translations.TitleAwards">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand_awards = !expand_awards; })" title="Show all">

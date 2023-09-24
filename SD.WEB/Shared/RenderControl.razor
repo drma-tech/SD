@@ -1,0 +1,187 @@
+﻿@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@if (Status == LoadingStatus.Loading)
+{
+    <Alert Color="Color.Warning" Visible="true">
+        <AlertDescription>
+            <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @GlobalTranslations.CustomVisibilityLoading
+        </AlertDescription>
+    </Alert>
+}
+else if (Status == LoadingStatus.Locked)
+{
+    <Alert Color="Color.Primary" Visible="true">
+        <AlertDescription>
+            <Blazorise.Icon Name="FontAwesomeIcons.UserLock"></Blazorise.Icon> @GlobalTranslations.UnauthenticatedUser
+        </AlertDescription>
+    </Alert>
+}
+else if (Status == LoadingStatus.Error)
+{
+    <Alert Color="Color.Danger" Visible="true">
+        <AlertDescription>
+            <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon> @(MessageError ?? @GlobalTranslations.CustomVisibilityInvalid)
+        </AlertDescription>
+    </Alert>
+}
+else if (Status == LoadingStatus.Warning)
+{
+    <Alert Color="Color.Primary" Visible="true">
+        <AlertDescription>
+            <Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> @(MessageWarning ?? @GlobalTranslations.CustomVisibilityNoData)
+        </AlertDescription>
+    </Alert>
+}
+else if (Status == LoadingStatus.ShowContent)
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter][EditorRequired] public RenderFragment? ChildContent { get; set; }
+    [Parameter][EditorRequired] public Func<Task<bool>>? Task { get; set; }
+
+    [Parameter] public bool PrivateContent { get; set; } = false;
+    [Parameter] public string? CustomMessageError { get; set; } = null;
+    [Parameter] public string? CustomMessageWarning { get; set; } = null;
+
+    private Action? StartLoading { get; set; }
+    private Action<bool>? StopLoading { get; set; }
+    private Action<string?>? LoadingError { get; set; }
+    private Action<string?>? LoadingWarning { get; set; }
+
+    private string? MessageError { get; set; } = null;
+    private string? MessageWarning { get; set; } = null;
+
+    private LoadingStatus Status { get; set; } = LoadingStatus.Loading;
+
+    private enum LoadingStatus
+    {
+        Loading,
+        Locked,
+        Error,
+        Warning,
+        ShowContent
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ChildContent == null) throw new ArgumentNullException(nameof(ChildContent));
+
+        StartLoading = () => ShowLoading();
+        StopLoading = (bool isEmpty) => ShowContent(isEmpty);
+        LoadingError = (string? msg) => ShowError(msg);
+        LoadingWarning = (string? msg) => ShowWarning(msg);
+
+        if (!PrivateContent)
+        {
+            var isEmpty = true;
+
+            try
+            {
+                StartLoading.Invoke();
+                if (Task != null) isEmpty = await Task.Invoke();
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.Message);
+            }
+            finally
+            {
+                StopLoading.Invoke(isEmpty);
+            }
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender && PrivateContent)
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+            if (authState?.User?.Identity?.IsAuthenticated ?? false)
+            {
+                var isEmpty = true;
+
+                try
+                {
+                    StartLoading?.Invoke();
+                    if (Task != null) isEmpty = await Task.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    ShowError(ex.Message);
+                }
+                finally
+                {
+                    StopLoading?.Invoke(isEmpty);
+                }
+            }
+            else
+            {
+                Status = LoadingStatus.Locked;
+            }
+        }
+    }
+
+    private void Reset()
+    {
+        MessageError = null;
+        MessageWarning = null;
+
+        StateHasChanged();
+    }
+
+    public void ShowLoading()
+    {
+        Reset();
+
+        Status = LoadingStatus.Loading;
+
+        StateHasChanged();
+    }
+
+    public void ShowContent(bool isEmpty)
+    {
+        Reset();
+
+        if (isEmpty)
+            Status = LoadingStatus.Warning;
+        else
+            Status = LoadingStatus.ShowContent;
+
+        StateHasChanged();
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="msg">Default: invalid operation</param>
+    public void ShowError(string? msg)
+    {
+        Reset();
+
+        Status = LoadingStatus.Error;
+        MessageError = CustomMessageError ?? msg;
+
+        StateHasChanged();
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="msg">Default: no data</param>
+    public void ShowWarning(string? msg)
+    {
+        Reset();
+
+        Status = LoadingStatus.Warning;
+        MessageWarning = CustomMessageWarning ?? msg;
+
+        StateHasChanged();
+    }
+}

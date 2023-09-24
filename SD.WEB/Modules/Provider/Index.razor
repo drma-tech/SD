@@ -10,7 +10,7 @@
 
 <HeaderComponent Title="@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region.GetName())">
 </HeaderComponent>
-<Loading @ref="LoadingProvider">
+<RenderControl Task="LoadAllProviders">
     <Row HorizontalGutter="4" VerticalGutter="4">
         @foreach (var item in GetFilteredProviders())
         {
@@ -47,7 +47,7 @@
             </Column>
         }
     </Row>
-</Loading>
+</RenderControl>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
@@ -55,35 +55,25 @@
     private AllProviders? AllProviders { get; set; }
     private MyProviders? myProviders { get; set; }
 
-    public Loading? LoadingProvider { get; set; }
-
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
         p.regions.Any(a => a == AppStateStatic.Region)) ?? Array.Empty<ProviderModel>();
 
     protected override async Task OnInitializedAsync()
     {
-        AppStateStatic.RegionChanged += ChangeRegion;
+        AppStateStatic.RegionChanged += StateHasChanged;
 
         await base.OnInitializedAsync();
     }
 
-    protected override async Task LoadData()
+    protected async Task<bool> LoadAllProviders()
     {
-        LoadingProvider?.Start();
-
         AllProviders = await AllProvidersApi.GetAll();
-        myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
 
-        LoadingProvider?.Finish(AllProviders == null);
+        return AllProviders == null;
     }
 
-    private async void ChangeRegion()
+    protected override async Task LoadDataRender()
     {
-        LoadingProvider?.Start();
-
-        await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
-        StateHasChanged(); //reload title
-
-        LoadingProvider?.Finish(AllProviders == null);
+        myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
     }
 }

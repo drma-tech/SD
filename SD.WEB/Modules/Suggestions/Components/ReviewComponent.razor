@@ -6,7 +6,7 @@
 @inject ExternalIdApi ExternalIdApi
 @inject CacheApi CacheApi
 
-<Loading @ref="Loading">
+<RenderControl Task="LoadReview">
     <ListGroup Flush>
         @foreach (var item in Model?.Items ?? new())
         {
@@ -19,7 +19,7 @@
             </ListGroupItem>
         }
     </ListGroup>
-</Loading>
+</RenderControl>
 
 @code {
     [Parameter] public string? imdb_id { get; set; }
@@ -27,13 +27,10 @@
     [Parameter] public string? original_title { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
-    public Loading? Loading { get; set; }
     public ReviewModel? Model { get; set; }
 
-    protected override async Task LoadData()
+    protected async Task<bool> LoadReview()
     {
-        Loading?.Start();
-
         if (!string.IsNullOrEmpty(imdb_id))
         {
             if (type == MediaType.movie)
@@ -50,7 +47,7 @@
             }
         }
 
-        Loading?.Finish(Model == null || !Model.Items.Any());
+        return Model == null || !Model.Items.Any();
     }
 
     private Color GetColorByRating(int? val)

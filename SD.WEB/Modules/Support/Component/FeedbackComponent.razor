@@ -28,7 +28,7 @@
     <Field ColumnSize="ColumnSize.Is6.Is3.OnTablet.Is2.OnFullHD">
         <FieldBody>
             <Addons>
-                <Addon AddonType="AddonType.Start" Size="Size.Small">
+                <Addon AddonType="AddonType.Start">
                     <Button Color="Color.Primary" Disabled="true" Size="Size.Small">
                         <Blazorise.Icon Name="@FontAwesomeIcons.Filter"></Blazorise.Icon>
                     </Button>
@@ -72,7 +72,7 @@
         </FieldBody>
     </Field>
 </Fields>
-<Loading @ref="LoadingTicket" IsEmptyFilter="(!GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel).Any())">
+<RenderControl Task="Loadtickets">
     @foreach (var item in GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel))
     {
         <Row HorizontalGutter="8" VerticalGutter="8">
@@ -129,13 +129,11 @@
             <Divider Margin="Margin.Is0.FromTop.Is2.FromBottom" />
         }
     }
-</Loading>
+</RenderControl>
 
 @code {
     private HashSet<TicketModel> tickets = new();
     private HashSet<TicketVoteModel> myVotes = new();
-
-    public Loading? LoadingTicket { get; set; }
 
     private TicketType TicketTypeSel { get; set; } = TicketType.Improvement;
     private TicketStatus? TicketStatusSel { get; set; }
@@ -153,17 +151,17 @@
         Voted
     }
 
-    protected override async Task LoadData()
+    protected async Task<bool> Loadtickets()
     {
-        LoadingTicket?.Start();
+        tickets = await TicketApi.GetList();
+        return (!GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel).Any());
+    }
 
+    protected override async Task LoadDataRender()
+    {
         IsUserAuthenticated = await AppState.IsUserAuthenticated();
         IdUser = await AppState.GetIdUser();
-        tickets = await TicketApi.GetList();
         if (IsUserAuthenticated) myVotes = await TicketVoteApi.GetMyVotes();
-
-        StateHasChanged();
-        LoadingTicket?.Finish(!GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel).Any());
     }
 
     private List<TicketModel> GetTicketList(TicketType ticketType, TicketStatus? ticketStatus, Order order)

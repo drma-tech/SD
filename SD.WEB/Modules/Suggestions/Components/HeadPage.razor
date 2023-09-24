@@ -46,18 +46,20 @@
             @if (provider != null)
             {
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
-                    {
-                        <Button Color="Color.Danger" Clicked="Remove" Size="Size.Small" Disabled="!IsUserAuthenticated">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
-                        </Button>
-                    }
-                    else
-                    {
-                        <Button Color="Color.Primary" Clicked="Add" Size="Size.Small" Disabled="!IsUserAuthenticated">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
-                        </Button>
-                    }
+                    <RenderControl Task="LoadmyProviders">
+                        @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
+                        {
+                            <Button Color="Color.Danger" Clicked="Remove" Size="Size.Small" Disabled="!IsUserAuthenticated">
+                                <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
+                            </Button>
+                        }
+                        else
+                        {
+                            <Button Color="Color.Primary" Clicked="Add" Size="Size.Small" Disabled="!IsUserAuthenticated">
+                                <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
+                            </Button>
+                        }
+                    </RenderControl>                    
                 </Column>
             }
         </Row>
@@ -108,21 +110,19 @@
 
     public bool IsUserAuthenticated { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        if (provider != null) IsUserAuthenticated = await AppState.IsUserAuthenticated();
-    }
-
-    protected override async Task LoadData()
+    protected async Task<bool> LoadmyProviders()
     {
         if (provider != null)
         {
             myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
-
-            StateHasChanged();
         }
+
+        return myProviders == null;
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        if (provider != null) IsUserAuthenticated = await AppState.IsUserAuthenticated();
     }
 
     private async Task Add()
