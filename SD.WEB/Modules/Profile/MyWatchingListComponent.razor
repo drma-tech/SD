@@ -143,14 +143,14 @@
     protected async Task<bool> LoadWatchingListMovies()
     {
         WatchingList ??= await AppState.GetWatchingList(true);
-
+        StateHasChanged();
         return WatchingList == null || !WatchingList.Movies.Any();
     }
 
     protected async Task<bool> LoadWatchingListShows()
     {
         WatchingList ??= await AppState.GetWatchingList(true);
-
+        StateHasChanged();
         return WatchingList == null || !WatchingList.Shows.Any();
     }
 

@@ -66,14 +66,14 @@
     protected async Task<bool> LoadWishListMovies()
     {
         WishList ??= await AppState.GetWishList(true);
-
+        StateHasChanged();
         return WishList == null || !WishList.Movies.Any();
     }
 
     protected async Task<bool> LoadWishListShows()
     {
         WishList ??= await AppState.GetWishList(true);
-
+        StateHasChanged();
         return WishList == null || !WishList.Shows.Any();
     }
 
