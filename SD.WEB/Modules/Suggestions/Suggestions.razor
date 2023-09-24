@@ -12,7 +12,7 @@
     {
         <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
             <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
-                <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
+                <Blazorise.Link To="@item.link" Title="@item.name">
                     <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
                 </Blazorise.Link>
                 <CardBody Padding="Padding.Is1" Style="min-height: 38px">
@@ -33,7 +33,7 @@
     {
         <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
             <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
-                <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
+                <Blazorise.Link To="@item.link" Title="@item.name">
                     <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
                 </Blazorise.Link>
                 <CardBody Padding="Padding.Is1" Style="min-height: 38px">
@@ -54,7 +54,7 @@
     {
         <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
             <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
-                <Blazorise.Link To="@item.link" Target="Target.Self" Title="@item.name">
+                <Blazorise.Link To="@item.link" Title="@item.name">
                     <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
                 </Blazorise.Link>
                 <CardBody Padding="Padding.Is1" Style="min-height: 38px">
@@ -83,7 +83,7 @@
         public string? link { get; set; }
     }
 
-    public Suggestions()
+    protected override void OnInitialized()
     {
         Awards.Add(new Item() { name = "Oscar", logo_path = "logo/oscar.png", link = "/Suggestions/Oscar" });
         Awards.Add(new Item() { name = "Golden Globe", logo_path = "logo/goldenglobes.png", link = "/Suggestions/GoldenGlobes" });
@@ -110,7 +110,7 @@
         Sites.Add(new Item() { name = "Filmaffinity", logo_path = "logo/filmaffinity.png", link = "/Suggestions/Filmaffinity" });
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         Specials.Add(new Item() { name = "Marvel", logo_path = "logo/marvel.png", link = "/Suggestions/UpcomingMarvel" });
         Specials.Add(new Item() { name = "DC", logo_path = "logo/dc.png", link = "/Suggestions/UpcomingDC" });
         Specials.Add(new Item() { name = "Star Wars", logo_path = "logo/StarWars.png", link = "/Suggestions/UpcomingStarWars" });
