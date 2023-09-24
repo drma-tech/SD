@@ -34,6 +34,8 @@
             Provider = AllProviders?.Items.SingleOrDefault(s => s.id == id);
         }
 
+        StateHasChanged(); //load SeoHeader
+
         return Provider == null;
     }
 
