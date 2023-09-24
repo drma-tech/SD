@@ -58,11 +58,9 @@
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
         p.regions.Any(a => a == AppStateStatic.Region)) ?? Array.Empty<ProviderModel>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         AppStateStatic.RegionChanged += StateHasChanged;
-
-        await base.OnInitializedAsync();
     }
 
     protected async Task<bool> LoadAllProviders()

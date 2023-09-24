@@ -43,10 +43,8 @@
 
     public bool IsUserAuthenticated { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task LoadDataRender()
     {
-        await base.OnInitializedAsync();
-
         IsUserAuthenticated = await AppState.IsUserAuthenticated();
     }
 

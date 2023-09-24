@@ -114,12 +114,10 @@
     private WatchedList? WatchedList;
     private WishList? WishList;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); };
         AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); };
-
-        await base.OnInitializedAsync();
     }
 
     protected override async Task LoadDataRender()

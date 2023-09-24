@@ -48,11 +48,9 @@
         p.regions.Any(a => a == AppStateStatic.Region))
         .Take(GetTotalItems) ?? Array.Empty<ProviderModel>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         AppStateStatic.RegionChanged += StateHasChanged;
-
-        await base.OnInitializedAsync();
     }
 
     private int GetTotalItems => AppStateStatic.OnMobile ? 8 : 18;

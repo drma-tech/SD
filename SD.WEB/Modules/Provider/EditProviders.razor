@@ -94,16 +94,13 @@
 
     public IEnumerable<EnumObject> Languages { get; set; } = Array.Empty<EnumObject>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        base.OnInitialized();
-
-        await LoadDataRender();
+        Languages = EnumHelper.GetList<Language>();
     }
 
     protected override async Task LoadDataRender()
     {
-        Languages = EnumHelper.GetList<Language>();
         AllProviders = await AllProvidersApi.GetAll();
     }
 

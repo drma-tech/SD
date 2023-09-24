@@ -72,7 +72,7 @@
 
     public string GetCustomStyle => "col-xl col-md-2 col-3";
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         try
         {
@@ -84,8 +84,6 @@
             // AppState.WishListChanged += StateHasChanged;
             // AppState.WatchedListChanged += StateHasChanged;
             if (MultiplesRegions) AppStateStatic.RegionChanged += LoadGenericVoid;
-
-            await base.OnInitializedAsync();
         }
         catch (Exception ex)
         {

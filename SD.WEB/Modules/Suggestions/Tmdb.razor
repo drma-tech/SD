@@ -15,10 +15,8 @@
 <MediaList TitleHead="@($"{TranslationText.ComingSoon} ({AppStateStatic.Region})")" MediaListApi="TmdbUpcomingApi" MaxItens="50" MultiplesRegions="true"></MediaList>
 
 @code {
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await base.OnInitializedAsync();
-
         AppStateStatic.RegionChanged += StateHasChanged;
     }
 }

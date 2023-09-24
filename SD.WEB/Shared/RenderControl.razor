@@ -64,7 +64,7 @@ else if (Status == LoadingStatus.ShowContent)
         ShowContent
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         if (ChildContent == null) throw new ArgumentNullException(nameof(ChildContent));
 
@@ -72,14 +72,17 @@ else if (Status == LoadingStatus.ShowContent)
         StopLoading = (bool isEmpty) => ShowContent(isEmpty);
         LoadingError = (string? msg) => ShowError(msg);
         LoadingWarning = (string? msg) => ShowWarning(msg);
+    }
 
+    protected override async Task OnInitializedAsync()
+    {
         if (!PrivateContent)
         {
             var isEmpty = true;
 
             try
             {
-                StartLoading.Invoke();
+                StartLoading?.Invoke();
                 if (Task != null) isEmpty = await Task.Invoke();
             }
             catch (Exception ex)
@@ -88,7 +91,7 @@ else if (Status == LoadingStatus.ShowContent)
             }
             finally
             {
-                StopLoading.Invoke(isEmpty);
+                StopLoading?.Invoke(isEmpty);
             }
         }
 

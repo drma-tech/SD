@@ -75,12 +75,10 @@
 
     private bool GenresChanged => mySuggestions?.MovieGenres.Any() ?? false | mySuggestions?.TvGenres.Any() ?? false;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); RenderControl?.ShowContent(mySuggestions == null); };
         AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); RenderControl?.ShowContent(mySuggestions == null); };
-
-        await base.OnInitializedAsync();
     }
 
     protected override async Task LoadDataRender()

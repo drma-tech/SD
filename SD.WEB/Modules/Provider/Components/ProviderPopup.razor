@@ -113,8 +113,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-
         if (provider == null) throw new ArgumentNullException(nameof(provider));
 
         IsUserAuthenticated = await AppState.IsUserAuthenticated();

@@ -31,18 +31,9 @@
 
     private string? GetTitle => List != null ? List.GetName() : TitleHead;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        try
-        {
-            if (List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
-
-            await base.OnInitializedAsync();
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
+        if (List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
     }
 
     public async Task HideModal()

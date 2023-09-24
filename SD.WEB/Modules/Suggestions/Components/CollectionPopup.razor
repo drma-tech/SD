@@ -87,9 +87,7 @@
     private WatchingList? WatchingList;
     private WishList? WishList;
 
-    public bool IsUserAuthenticated { get; set; }
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
@@ -97,10 +95,6 @@
         AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); };
         AppState.WatchingListChanged += (WatchingList? list) => { WatchingList = list; StateHasChanged(); };
         AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); };
-
-        IsUserAuthenticated = await AppState.IsUserAuthenticated();
-
-        await base.OnInitializedAsync();
     }
 
     protected override async Task LoadDataRender()

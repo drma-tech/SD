@@ -69,7 +69,7 @@ namespace SD.WEB.Core
     }
 
     /// <summary>
-    /// if you implement the OnInitializedAsync method, call 'await base.OnInitializedAsync();'
+    /// if you implement the OnAfterRenderAsync method, call 'await base.OnAfterRenderAsync(firstRender);'
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class PageCore<T> : ComponenteCore<T> where T : class

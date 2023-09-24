@@ -21,8 +21,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-
         if (Fake)
         {
             var http = httpClientFactory.CreateClient("RetryHttpClient");

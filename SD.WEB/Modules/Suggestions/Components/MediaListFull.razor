@@ -62,25 +62,16 @@
     public bool DisableLoadMore { get; set; } = false;
     private int currentPage = 1;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        try
-        {
-            //if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
-            //if (!string.IsNullOrEmpty(list_id) && !NextPage.HasDelegate) throw new ArgumentNullException(nameof(NextPage));
-            //if (NextPage.HasDelegate && string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
-            if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));
+        //if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
+        //if (!string.IsNullOrEmpty(list_id) && !NextPage.HasDelegate) throw new ArgumentNullException(nameof(NextPage));
+        //if (NextPage.HasDelegate && string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
+        if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));
 
-            //TODO: analisar isso
-            // AppState.WishListChanged += StateHasChanged;
-            // AppState.WatchedListChanged += StateHasChanged;
-
-            await base.OnInitializedAsync();
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
+        //TODO: analisar isso
+        // AppState.WishListChanged += StateHasChanged;
+        // AppState.WatchedListChanged += StateHasChanged;
     }
 
     protected async Task<bool> LoadGeneric()

@@ -118,7 +118,6 @@
     [Parameter] public bool Fake { get; set; } = false;
 
     private int GetTotalItems => AppStateStatic.OnFullHD ? 6 : 4;
-    private bool IsUserAuthenticated { get; set; }
 
     public bool MovieUpdating { get; set; } = false;
     public bool ShowUpdating { get; set; } = false;
@@ -129,17 +128,10 @@
     private RenderControl? RenderControlMovies;
     private RenderControl? RenderControlShows;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); };
         AppState.WatchingListChanged += (WatchingList? list) => { WatchingList = list; StateHasChanged(); };
-
-        if (Fake)
-            IsUserAuthenticated = true;
-        else
-            IsUserAuthenticated = await State.IsUserAuthenticated();
-
-        await base.OnInitializedAsync();
     }
 
     protected override async Task LoadDataRender()
