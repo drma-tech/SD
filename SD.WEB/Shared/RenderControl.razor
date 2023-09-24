@@ -53,7 +53,7 @@ else if (Status == LoadingStatus.ShowContent)
     private string? MessageError { get; set; } = null;
     private string? MessageWarning { get; set; } = null;
 
-    private LoadingStatus Status { get; set; } = LoadingStatus.Loading;
+    private LoadingStatus Status { get; set; }
 
     private enum LoadingStatus
     {
@@ -67,6 +67,8 @@ else if (Status == LoadingStatus.ShowContent)
     protected override void OnInitialized()
     {
         if (ChildContent == null) throw new ArgumentNullException(nameof(ChildContent));
+
+        Status = PrivateContent ? LoadingStatus.Locked : LoadingStatus.Loading;
 
         StartLoading = () => ShowLoading();
         StopLoading = (bool isEmpty) => ShowContent(isEmpty);

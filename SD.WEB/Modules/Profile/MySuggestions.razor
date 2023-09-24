@@ -11,7 +11,7 @@
 @inject TmdbApi TmdbApi
 
 <HeaderComponent IconName="@FontAwesomeIcons.ThumbsUp" Title="@GlobalTranslations.MySuggestions">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="(GenresChanged ? Color.Secondary : Color.Primary)" Clicked="@(async()=>await OpenConfigurations())" title="Settings">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="(GenresChanged ? Color.Secondary : Color.Primary)" Clicked="@(async()=>await OpenConfigurations())" Disabled="(!myProviders?.Items.Any()??true)" title="Settings">
         <Blazorise.Icon Name="FontAwesomeIcons.Cog"></Blazorise.Icon>
     </Button>
     <RadioGroup @bind-CheckedValue="SearchType" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is1.FromEnd">
@@ -83,8 +83,11 @@
 
     protected override async Task LoadDataRender()
     {
-        WatchedList = await AppState.GetWatchedList(true);
-        WishList = await AppState.GetWishList(true);
+        if (await AppState.IsUserAuthenticated())
+        {
+            WatchedList = await AppState.GetWatchedList(true);
+            WishList = await AppState.GetWishList(true);
+        }
     }
 
     protected async Task<bool> LoadmySuggestions()

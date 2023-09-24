@@ -99,9 +99,12 @@
 
     protected override async Task LoadDataRender()
     {
-        WatchedList = await AppState.GetWatchedList(false);
-        WatchingList = await AppState.GetWatchingList(false);
-        WishList = await AppState.GetWishList(false);
+        if (await AppState.IsUserAuthenticated())
+        {
+            WatchedList = await AppState.GetWatchedList(false);
+            WatchingList = await AppState.GetWatchingList(false);
+            WishList = await AppState.GetWishList(false);
+        }        
     }
 
     protected async Task<bool> Loadcollection()

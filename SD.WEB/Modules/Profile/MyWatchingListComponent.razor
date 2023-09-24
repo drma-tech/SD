@@ -137,7 +137,7 @@
     protected override async Task LoadDataRender()
     {
         await base.LoadDataRender();
-        WatchedList ??= await AppState.GetWatchedList(true);
+        if (await AppState.IsUserAuthenticated()) WatchedList ??= await AppState.GetWatchedList(true);
     }
 
     protected async Task<bool> LoadWatchingListMovies()

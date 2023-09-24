@@ -274,9 +274,12 @@
     {
         IsUserAuthenticated = await AppState.IsUserAuthenticated();
 
-        WatchedList = await AppState.GetWatchedList(false);
-        WatchingList = await AppState.GetWatchingList(false);
-        WishList = await AppState.GetWishList(false);
+        if (IsUserAuthenticated)
+        {
+            WatchedList = await AppState.GetWatchedList(false);
+            WatchingList = await AppState.GetWatchingList(false);
+            WishList = await AppState.GetWishList(false);
+        }
     }
 
     private Color GetColorByRating(string? rating)
