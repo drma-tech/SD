@@ -154,6 +154,8 @@ else if (Status == LoadingStatus.ShowContent)
     {
         Reset();
 
+        if (Status == LoadingStatus.Error | Status == LoadingStatus.Warning) return;
+
         if (isEmpty)
             Status = LoadingStatus.Warning;
         else
