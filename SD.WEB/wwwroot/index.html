@@ -46,7 +46,8 @@
 
     <script>
         //avoid google search console execute this
-        if (location.protocol == 'https:') {
+        if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex/i.test(window.navigator.userAgent) &&
+            window.navigator.serviceWorker && window.navigator.serviceWorker.register) {
             navigator.serviceWorker.register('service-worker.js');
         }
     </script>
