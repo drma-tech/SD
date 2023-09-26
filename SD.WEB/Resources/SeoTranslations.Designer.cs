@@ -88,7 +88,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to See streaming providers for movies, series and documentaries from around the world..
         /// </summary>
         public static string ProvidersDescription {
             get {
