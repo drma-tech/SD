@@ -7,11 +7,11 @@
     {
       "route": "/api/*",
       "allowedRoles": [ "authenticated" ]
-    },
-    {
-      "navigationFallback": {
-        "rewrite": "/index.html"
-      }
     }
-  ]
+  ],
+  {
+    "navigationFallback": {
+      "rewrite": "/index.html"
+    }
+  }
 }
