@@ -152,7 +152,7 @@
                             </TabPanel>
                         }
                         <TabPanel Name="Reviews" Class="mt-2">
-                            <ReviewComponent imdb_id="@imdb_id" title="@media?.title?.Replace(" ","-").ToLower()" original_title="@media?.original_title?.Replace(" ","-").ToLower()" type="@type"></ReviewComponent>
+                            <ReviewComponent imdb_id="@imdb_id" title="@media?.title?.RemoveSpecialCharacters().Replace(" ","-").ToLower()" original_title="@media?.original_title?.RemoveSpecialCharacters().Replace(" ","-").ToLower()" type="@type"></ReviewComponent>
                         </TabPanel>
                     </Content>
                 </Tabs>

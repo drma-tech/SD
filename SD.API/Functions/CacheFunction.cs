@@ -271,6 +271,9 @@ namespace SD.API.Functions
         {
             try
             {
+                //https://fandom-prod.apigee.net/v1/xapi/shows/metacritic/game-of-thrones/web?apiKey=1MOZgmNFxvmljaQR1X9KAij9Mo4xAY3u
+                //https://fandom-prod.apigee.net/v1/xapi/reviews/metacritic/critic/shows/game-of-thrones/web?apiKey=1MOZgmNFxvmljaQR1X9KAij9Mo4xAY3u
+
                 CacheDocument<ReviewModel>? model;
 
                 var id = req.GetQueryParameters()["id"];
@@ -280,16 +283,20 @@ namespace SD.API.Functions
 
                 if (model == null)
                 {
-                    var scraping = new ShowsReview();
-                    var obj = await scraping.GetTvReviews(title);
+                    //var scraping = new ShowsReview();
+                    //var obj = await scraping.GetTvReviews(title);
+                    //if (obj == null) return null;
+
+                    using var http = new HttpClient();
+                    var obj = await http.Get<MetaCriticScraping>($"https://fandom-prod.apigee.net/v1/xapi/reviews/metacritic/critic/shows/{title}/web?apiKey=1MOZgmNFxvmljaQR1X9KAij9Mo4xAY3u", cancellationToken);
                     if (obj == null) return null;
 
                     var newModel = new ReviewModel();
 
-                    foreach (var item in obj.reviews)
+                    foreach (var item in obj.data?.items ?? new())
                     {
                         if (item == null) continue;
-                        newModel.Items.Add(new Shared.Models.Reviews.Item(item.reviewSite, item.reviewUrl, item.reviewer, item.score, item.quote));
+                        newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));
                     }
 
                     model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}"), cancellationToken);
