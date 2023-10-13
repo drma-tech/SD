@@ -1,8 +1,10 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
+using System.Net;
 
 namespace SD.API.Functions
 {
@@ -15,6 +17,8 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
+        [OpenApiOperation("WatchingListGet", "Azure (Cosmos DB)")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchingList))]
         [Function("WatchingListGet")]
         public async Task<WatchingList?> Get(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "WatchingList/Get")] HttpRequestData req, CancellationToken cancellationToken)
@@ -32,6 +36,8 @@ namespace SD.API.Functions
             }
         }
 
+        [OpenApiOperation("WatchingListAdd", "Azure (Cosmos DB)")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchingList))]
         [Function("WatchingListAdd")]
         public async Task<WatchingList?> Add(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WatchingList/Add/{MediaType}")] HttpRequestData req,
@@ -66,6 +72,8 @@ namespace SD.API.Functions
             }
         }
 
+        [OpenApiOperation("WatchingListRemove", "Azure (Cosmos DB)")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchingList))]
         [Function("WatchingListRemove")]
         public async Task<WatchingList?> Remove(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WatchingList/Remove/{MediaType}/{CollectionId}/{TmdbId}")] HttpRequestData req,
@@ -99,6 +107,8 @@ namespace SD.API.Functions
             }
         }
 
+        [OpenApiOperation("WatchingListSync", "Azure (Cosmos DB)")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchingList))]
         [Function("WatchingListSync")]
         public async Task<WatchingList?> Sync(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WatchingList/Sync/{MediaType}")] HttpRequestData req,

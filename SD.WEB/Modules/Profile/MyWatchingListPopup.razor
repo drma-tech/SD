@@ -75,14 +75,14 @@
             return WatchingList?.Shows ?? new HashSet<WatchingListItem>();
     }
 
-    public Task ShowCollectionPopup(string? tmdb_id, string? name, MediaType type)
+    public Task ShowCollectionPopup(string? collection_id, string? name, MediaType type)
     {
-        if (string.IsNullOrEmpty(tmdb_id)) return default!;
+        if (string.IsNullOrEmpty(collection_id)) return default!;
 
         return ModalService.Show<Suggestions.Components.CollectionPopup>(name,
             x =>
             {
-                x.Add(x => x.tmdb_id, tmdb_id);
+                x.Add(x => x.collection_id, collection_id);
                 x.Add(x => x.type, type);
             },
             new ModalInstanceOptions()

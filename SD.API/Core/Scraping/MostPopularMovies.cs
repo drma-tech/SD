@@ -6,37 +6,25 @@ namespace SD.API.Core.Scraping
 {
     public class MostPopularMovies
     {
-        private readonly string? movie_url = "https://www.imdb.com/chart/moviemeter";
-        private readonly string? tv_url = "https://www.imdb.com/chart/tvmeter";
+        private readonly string movie_url = "https://www.imdb.com/chart/moviemeter";
+        private readonly string tv_url = "https://www.imdb.com/chart/tvmeter";
 
-        public async Task<MostPopularData> GetMovieData()
+        public MostPopularData GetMovieData()
         {
-            using var client = new HttpClient();
-            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, movie_url);
-            var response = await client.SendAsync(requestMessage);
-            using HttpContent content = response.Content;
-            var sourcedata = await content.ReadAsStringAsync();
-
-            return ProcessHtml(sourcedata);
+            return ProcessHtml(movie_url);
         }
 
-        public async Task<MostPopularData> GetTvData()
+        public MostPopularData GetTvData()
         {
-            using var client = new HttpClient();
-            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, tv_url);
-            var response = await client.SendAsync(requestMessage);
-            using HttpContent content = response.Content;
-            var sourcedata = await content.ReadAsStringAsync();
-
-            return ProcessHtml(sourcedata);
+            return ProcessHtml(tv_url);
         }
 
-        private static MostPopularData ProcessHtml(string html)
+        private static MostPopularData ProcessHtml(string path)
         {
-            var doc = new HtmlDocument();
+            var web = new HtmlWeb();
+            var doc = web.Load(path);
+
             var data = new MostPopularData();
-
-            doc.LoadHtml(html);
 
             var ul = doc.DocumentNode.SelectNodes("//ul[starts-with(@class,'ipc-metadata-list')]")?.FirstOrDefault();
 

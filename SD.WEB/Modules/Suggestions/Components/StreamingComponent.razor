@@ -181,7 +181,7 @@
         {
             var uri_link = new Uri(link);
             var fomatted_link = "https://" + uri_link.Host + string.Join("", uri_link.Segments.SkipLast(1));
-            <Row Margin="Margin.Is3.FromTop">
+            <Row Margin="Margin.Is2.FromTop">
                 <Column>
                     <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
                         @GlobalTranslations.MoreInformation: <a href="@fomatted_link" target="_blank" rel="noopener">@(uri_link.Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
@@ -189,6 +189,22 @@
                 </Column>
             </Row>
         }
+
+        <Row Margin="Margin.Is2.FromTop">
+            <Column>
+                <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
+                    <a target="_blank" href="@dvdLink">@dvdText</a>
+                </Alert>
+            </Column>
+        </Row>
+
+        <Row Margin="Margin.Is2.FromTop">
+            <Column>
+                <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
+                    <a target="_blank" href="@bookLink">@bookText</a>
+                </Alert>
+            </Column>
+        </Row>
 
         //<Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false" Margin="Margin.Is2.FromTop">Atualizar</Button>
     }
@@ -198,10 +214,18 @@
     [Inject] public IModalService ModalService { get; set; } = default!;
 
     [Parameter] public string? tmdb_id { get; set; }
+    [Parameter] public string? MediaTitle { get; set; }
+    [Parameter] public string? MediaYear { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
     private MediaProviders? Providers { get; set; }
     private AllProviders? AllProviders { get; set; }
+
+    private string dvdLink => $"https://www.amazon.com/gp/search?ie=UTF8&tag=streamingdi0d-20&camp=1789&creative=9325&index=dvd&keywords={MediaTitle} {MediaYear}";
+    private string dvdText => $"{GlobalTranslations.BuyDVD}: {MediaTitle}";
+
+    private string bookLink => $"https://www.amazon.com/gp/search?ie=UTF8&tag=streamingdi0d-20&camp=1789&creative=9325&index=books&keywords={MediaTitle}";
+    private string bookText => $"{GlobalTranslations.BuyBook}: {MediaTitle}";
 
     protected async Task<bool> LoadAllProviders()
     {

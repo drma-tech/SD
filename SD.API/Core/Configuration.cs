@@ -14,14 +14,4 @@
         public const string LargePosterPath = "https://www.themoviedb.org/t/p/w154/";
         public const string OriginalPosterPath = "https://www.themoviedb.org/t/p/original/";
     }
-
-    /// <summary>
-    /// this API is free, so it's not a big problem to expose this data
-    /// </summary>
-    public static class ImdbOptions
-    {
-        public const string Section = "IMDB";
-        public const string BaseUri = "https://imdb-api.com/en/API/";
-        public const string ApiKey = "k_0fc2gbsu";
-    }
 }

@@ -214,6 +214,24 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Buy Books.
+        /// </summary>
+        public static string BuyBook {
+            get {
+                return ResourceManager.GetString("BuyBook", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buy Blu-ray/DVD.
+        /// </summary>
+        public static string BuyDVD {
+            get {
+                return ResourceManager.GetString("BuyDVD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cast.
         /// </summary>
         public static string Cast {
@@ -592,11 +610,11 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Streaming.
+        ///   Looks up a localized string similar to Where to Watch.
         /// </summary>
-        public static string TabStreaming {
+        public static string TabWhereToWatch {
             get {
-                return ResourceManager.GetString("TabStreaming", resourceCulture);
+                return ResourceManager.GetString("TabWhereToWatch", resourceCulture);
             }
         }
         

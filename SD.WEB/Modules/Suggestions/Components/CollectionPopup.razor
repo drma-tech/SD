@@ -78,7 +78,7 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter] public string? tmdb_id { get; set; }
+    [Parameter] public string? collection_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
     private TmdbCollection? collection { get; set; }
@@ -89,7 +89,7 @@
 
     protected override void OnInitialized()
     {
-        if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
+        if (string.IsNullOrEmpty(collection_id)) throw new ArgumentNullException(nameof(collection_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
 
         AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); };
@@ -117,11 +117,11 @@
                 { "language", AppStateStatic.Language.GetName(false) ?? "en-US" }
             };
 
-            collection = await TmdbApi.GetCollection(tmdb_id, parameters);
+            collection = await TmdbApi.GetCollection(collection_id, parameters);
         }
         else
         {
-            var show = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.tv);
+            var show = await TmdbApi.GetMediaDetail(collection_id, MediaType.tv);
 
             collection = new TmdbCollection();
             collection.id = int.Parse(show.tmdb_id ?? "0");
@@ -179,7 +179,7 @@
             {
                 x.Add(x => x.ShowTitle, collection?.name);
                 x.Add(x => x.ShowSeasonName, part?.title);
-                x.Add(x => x.tmdb_id, tmdb_id);
+                x.Add(x => x.tmdb_id, collection_id);
                 x.Add(x => x.season_number, part?.season_number);
             },
             new ModalInstanceOptions()
@@ -198,7 +198,7 @@
                 x.Add(x => x.ItemsCollection, collection?.parts.Select(s => TmdbApi.ConvertToCollection(s)).ToList());
                 x.Add(x => x.SelectedItems, WatchingList?.GetWatchedItems(type, collection?.id.ToString()).ToHashSet()); //ToHashSet = clone to not reference
                 x.Add(x => x.SelectedItemsChanged,
-                    new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(type, collection, tmdb_id, list, collection?.parts.Count ?? 0)));
+                    new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(type, collection, collection_id, list, collection?.parts.Count ?? 0)));
             },
             new ModalInstanceOptions()
                 {
@@ -247,7 +247,7 @@
     {
         var watching = await AppState.GetWatchingList(false) ?? new WatchingList();
 
-        watching = await WatchingListApi.Remove(type, collection?.id.ToString());
+        watching = await WatchingListApi.Remove(type, collection_id);
 
         AppState.ChangeWatchingList(watching);
 
