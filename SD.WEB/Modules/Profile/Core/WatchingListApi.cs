@@ -43,9 +43,8 @@ namespace SD.WEB.Modules.Profile.Core
         {
             if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
             if (CollectionId == null) throw new ArgumentNullException(nameof(CollectionId));
-            //if (TmdbId == null) throw new ArgumentNullException(nameof(TmdbId));
 
-            return await PostAsync<WatchingList>(Endpoint.Remove(mediaType, CollectionId, TmdbId), false, null, Endpoint.Get);
+            return await PostAsync<WatchingList>(Endpoint.Remove(mediaType, CollectionId, TmdbId ?? "null"), false, null, Endpoint.Get);
         }
 
         public async Task<WatchingList?> Sync(MediaType? mediaType)

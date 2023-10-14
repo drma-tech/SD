@@ -20,7 +20,10 @@ namespace SD.WEB.Core
             _name = name;
         }
 
-        public IDisposable BeginScope<TState>(TState state) => default!;
+        public IDisposable? BeginScope<TState>(TState state) where TState : notnull
+        {
+            return default;
+        }
 
         public bool IsEnabled(LogLevel logLevel) => logLevel >= LogLevel.Warning;
 

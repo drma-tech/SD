@@ -41,7 +41,7 @@ namespace SD.Shared.Models
         {
             if (Contains(type, item))
             {
-                GetItem(type, item.id).watched.Clear();
+                GetItem(type, item.id)?.watched.Clear();
 
                 GetItem(type, item.id).maxItems = item.maxItems;
                 foreach (var id in item.watched)

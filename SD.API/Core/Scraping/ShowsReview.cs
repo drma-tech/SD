@@ -5,9 +5,9 @@ namespace SD.API.Core.Scraping
 {
     public class ShowsReview
     {
-        private readonly string? tv_url = "https://www.metacritic.com/tv/{0}/critic-reviews";
+        private readonly string tv_url = "https://www.metacritic.com/tv/{0}/critic-reviews";
 
-        public async Task<MetaCritic> GetTvReviews(string tv_name)
+        public MetaCritic GetTvReviews(string tv_name)
         {
             return ProcessHtml(string.Format(tv_url, tv_name));
         }
