@@ -1,6 +1,7 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
 using System.Net;
@@ -16,6 +17,8 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
+        [OpenApiOperation("WishListGet", "Azure (Cosmos DB)")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WishList))]
         [Function("WishListGet")]
         public async Task<WishList?> Get(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "WishList/Get")] HttpRequestData req, CancellationToken cancellationToken)
@@ -33,6 +36,8 @@ namespace SD.API.Functions
             }
         }
 
+        [OpenApiOperation("WishListAdd", "Azure (Cosmos DB)")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WishList))]
         [Function("WishListAdd")]
         public async Task<WishList?> Add(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WishList/Add/{MediaType}")] HttpRequestData req,
@@ -67,6 +72,8 @@ namespace SD.API.Functions
             }
         }
 
+        [OpenApiOperation("WishListRemove", "Azure (Cosmos DB)")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WishList))]
         [Function("WishListRemove")]
         public async Task<WishList?> Remove(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WishList/Remove/{MediaType}/{TmdbId}")] HttpRequestData req,

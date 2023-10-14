@@ -1,6 +1,7 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
 using SD.Shared.Models.Auth;
@@ -17,6 +18,8 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
+        [OpenApiOperation("LoginAdd", "Azure (Cosmos DB)")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(void))]
         [Function("LoginAdd")]
         public async Task Add(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Login/Add")] HttpRequestData req, CancellationToken cancellationToken)

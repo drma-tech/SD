@@ -1,6 +1,7 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
 using System.Net;
@@ -16,6 +17,8 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
+        [OpenApiOperation("MyProviders", "Azure (Cosmos DB)")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MyProviders))]
         [Function("MyProviders")]
         public async Task<MyProviders?> MyProviders(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Method.POST, Route = "MyProviders")] HttpRequestData req, CancellationToken cancellationToken)

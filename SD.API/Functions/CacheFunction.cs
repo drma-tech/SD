@@ -1,11 +1,13 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using SD.API.Core.Scraping;
 using SD.Shared.Core.Models;
 using SD.Shared.Models.List.Imdb;
 using SD.Shared.Models.News;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
+using System.Net;
 
 namespace SD.API.Functions
 {
@@ -18,6 +20,8 @@ namespace SD.API.Functions
             _cacheRepo = cacheRepo;
         }
 
+        [OpenApiOperation("CacheNew", "Rapid API (json)", Description = "flixster / cached - one_day")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<NewsModel>))]
         [Function("CacheNew")]
         public async Task<CacheDocument<NewsModel>?> CacheNew(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/News")] HttpRequestData req, CancellationToken cancellationToken)
@@ -74,6 +78,8 @@ namespace SD.API.Functions
             }
         }
 
+        [OpenApiOperation("CacheTrailers", "Rapid API (json)", Description = "youtube-search-and-download / cached - one_day")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<TrailerModel>))]
         [Function("CacheTrailers")]
         public async Task<CacheDocument<TrailerModel>?> CacheTrailers(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Trailers")] HttpRequestData req, CancellationToken cancellationToken)
@@ -130,6 +136,8 @@ namespace SD.API.Functions
             }
         }
 
+        [OpenApiOperation("ImdbPopularMovies", "IMDB (scraping)", Description = "scraping / cached - one_day")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<MostPopularData>))]
         [Function("ImdbPopularMovies")]
         public async Task<CacheDocument<MostPopularData>?> ImdbPopularMovies(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/ImdbPopularMovies")] HttpRequestData req, CancellationToken cancellationToken)
@@ -186,6 +194,8 @@ namespace SD.API.Functions
             }
         }
 
+        [OpenApiOperation("ImdbPopularTVs", "IMDB (scraping)", Description = "scraping / cached - one_day")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<MostPopularData>))]
         [Function("ImdbPopularTVs")]
         public async Task<CacheDocument<MostPopularData>?> ImdbPopularTVs(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/ImdbPopularTVs")] HttpRequestData req, CancellationToken cancellationToken)
@@ -213,6 +223,8 @@ namespace SD.API.Functions
             }
         }
 
+        [OpenApiOperation("CacheMovieReviews", "Rapid API (json)", Description = "imdb8 / cached - one_month")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<ReviewModel>))]
         [Function("CacheMovieReviews")]
         public async Task<CacheDocument<ReviewModel>?> CacheMovieReviews(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Reviews/Movies")] HttpRequestData req, CancellationToken cancellationToken)
@@ -251,6 +263,8 @@ namespace SD.API.Functions
             }
         }
 
+        [OpenApiOperation("CacheMovieReviews", "Metacritic (scraping)", Description = "scraping / cached - one_month")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<ReviewModel>))]
         [Function("CacheShowReviews")]
         public async Task<CacheDocument<ReviewModel>?> CacheShowReviews(
           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Reviews/Shows")] HttpRequestData req, CancellationToken cancellationToken)
