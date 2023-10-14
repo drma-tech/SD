@@ -1,7 +1,6 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
 using System.Net;
@@ -17,8 +16,6 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
-        [OpenApiOperation("WatchedListGet", "Azure (Cosmos DB)")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchedList))]
         [Function("WatchedListGet")]
         public async Task<WatchedList?> Get(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "WatchedList/Get")] HttpRequestData req, CancellationToken cancellationToken)
@@ -36,8 +33,6 @@ namespace SD.API.Functions
             }
         }
 
-        [OpenApiOperation("WatchedListAdd", "Azure (Cosmos DB)")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchedList))]
         [Function("WatchedListAdd")]
         public async Task<WatchedList?> Add(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WatchedList/Add/{MediaType}/{TmdbId}")] HttpRequestData req,
@@ -72,8 +67,6 @@ namespace SD.API.Functions
             }
         }
 
-        [OpenApiOperation("WatchedListRemove", "Azure (Cosmos DB)")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchedList))]
         [Function("WatchedListRemove")]
         public async Task<WatchedList?> Remove(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WatchedList/Remove/{MediaType}/{TmdbId}")] HttpRequestData req,

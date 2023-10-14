@@ -1,7 +1,6 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
 using System.Net;
@@ -17,8 +16,6 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
-        [OpenApiOperation("MySuggestionsGet", "Azure (Cosmos DB)")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MySuggestions))]
         [Function("MySuggestionsGet")]
         public async Task<MySuggestions?> Get(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "MySuggestions/Get")] HttpRequestData req, CancellationToken cancellationToken)
@@ -36,8 +33,6 @@ namespace SD.API.Functions
             }
         }
 
-        [OpenApiOperation("MySuggestionsSync", "Azure (Cosmos DB)")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MySuggestions))]
         [Function("MySuggestionsSync")]
         public async Task<MySuggestions?> Sync(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "MySuggestions/Sync/{MediaType}")] HttpRequestData req,
@@ -83,8 +78,6 @@ namespace SD.API.Functions
             }
         }
 
-        [OpenApiOperation("MySuggestionsAdd", "Azure (Cosmos DB)")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MySuggestions))]
         [Function("MySuggestionsAdd")]
         public async Task<MySuggestions?> Add(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "MySuggestions/Add")] HttpRequestData req, CancellationToken cancellationToken)
