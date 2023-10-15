@@ -1,7 +1,6 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Configuration;
 using SD.API.Repository.Core;
 using SD.Shared.Models.List.Tmdb;
@@ -18,8 +17,8 @@ namespace SD.API.Functions
             _repo = repo;
         }
 
-        [OpenApiOperation("ProviderPost", "Azure (Cosmos DB)")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(AllProviders))]
+        //[OpenApiOperation("ProviderPost", "Azure (Cosmos DB)")]
+        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(AllProviders))]
         [Function("ProviderPost")]
         public async Task<AllProviders?> Post(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Provider/Post")] HttpRequestData req, CancellationToken cancellationToken)
@@ -45,8 +44,8 @@ namespace SD.API.Functions
             }
         }
 
-        [OpenApiOperation("ProviderSyncProviders", "Azure (Cosmos DB)")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(AllProviders))]
+        //[OpenApiOperation("ProviderSyncProviders", "Azure (Cosmos DB)")]
+        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(AllProviders))]
         [Function("ProviderSyncProviders")]
         public async Task<AllProviders?> SyncProviders(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.PUT, Route = "Provider/SyncProviders")] HttpRequestData req, CancellationToken cancellationToken)

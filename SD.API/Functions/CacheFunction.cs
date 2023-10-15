@@ -1,13 +1,12 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using SD.API.Core.Scraping;
 using SD.Shared.Core.Models;
+using SD.Shared.Models.List;
 using SD.Shared.Models.List.Imdb;
 using SD.Shared.Models.News;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
-using System.Net;
 
 namespace SD.API.Functions
 {
@@ -20,8 +19,8 @@ namespace SD.API.Functions
             _cacheRepo = cacheRepo;
         }
 
-        [OpenApiOperation("CacheNew", "Rapid API (json)", Description = "flixster / cached - one_day")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<NewsModel>))]
+        //[OpenApiOperation("CacheNew", "Rapid API (json)", Description = "flixster / cached - one_day")]
+        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<NewsModel>))]
         [Function("CacheNew")]
         public async Task<CacheDocument<NewsModel>?> CacheNew(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/News")] HttpRequestData req, CancellationToken cancellationToken)
@@ -78,8 +77,8 @@ namespace SD.API.Functions
             }
         }
 
-        [OpenApiOperation("CacheTrailers", "Rapid API (json)", Description = "youtube-search-and-download / cached - one_day")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<TrailerModel>))]
+        //[OpenApiOperation("CacheTrailers", "Rapid API (json)", Description = "youtube-search-and-download / cached - one_day")]
+        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<TrailerModel>))]
         [Function("CacheTrailers")]
         public async Task<CacheDocument<TrailerModel>?> CacheTrailers(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Trailers")] HttpRequestData req, CancellationToken cancellationToken)
@@ -136,8 +135,8 @@ namespace SD.API.Functions
             }
         }
 
-        [OpenApiOperation("ImdbPopularMovies", "IMDB (scraping)", Description = "scraping / cached - one_day")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<MostPopularData>))]
+        //[OpenApiOperation("ImdbPopularMovies", "IMDB (scraping)", Description = "scraping / cached - one_day")]
+        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<MostPopularData>))]
         [Function("ImdbPopularMovies")]
         public async Task<CacheDocument<MostPopularData>?> ImdbPopularMovies(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/ImdbPopularMovies")] HttpRequestData req, CancellationToken cancellationToken)
@@ -149,7 +148,7 @@ namespace SD.API.Functions
 
                 if (model == null)
                 {
-                    var scraping = new MostPopularMovies();
+                    var scraping = new ScrapingPopular();
                     var obj = scraping.GetMovieData();
                     if (obj == null) return null;
 
@@ -194,8 +193,8 @@ namespace SD.API.Functions
             }
         }
 
-        [OpenApiOperation("ImdbPopularTVs", "IMDB (scraping)", Description = "scraping / cached - one_day")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<MostPopularData>))]
+        //[OpenApiOperation("ImdbPopularTVs", "IMDB (scraping)", Description = "scraping / cached - one_day")]
+        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<MostPopularData>))]
         [Function("ImdbPopularTVs")]
         public async Task<CacheDocument<MostPopularData>?> ImdbPopularTVs(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/ImdbPopularTVs")] HttpRequestData req, CancellationToken cancellationToken)
@@ -207,7 +206,7 @@ namespace SD.API.Functions
                 if (model == null)
                 {
                     using var http = new HttpClient();
-                    var scraping = new MostPopularMovies();
+                    var scraping = new ScrapingPopular();
                     var obj = scraping.GetTvData();
                     if (obj == null) return null;
 
@@ -223,8 +222,109 @@ namespace SD.API.Functions
             }
         }
 
-        [OpenApiOperation("CacheMovieReviews", "Rapid API (json)", Description = "imdb8 / cached - one_month")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<ReviewModel>))]
+        [Function("CacheMovieRatings")]
+        public async Task<CacheDocument<Ratings>?> CacheMovieRatings(
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Ratings/Movie")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                CacheDocument<Ratings>? model;
+
+                var id = req.GetQueryParameters()["id"];
+                var tmdb_rating = req.GetQueryParameters()["tmdb_rating"];
+                _ = DateTime.TryParse(req.GetQueryParameters()["release_date"], out DateTime release_date);
+                model = await _cacheRepo.Get<Ratings>($"rating_new_{id}", cancellationToken);
+
+                if (model == null)
+                {
+                    var scraping = new ScrapingRatings();
+                    var obj = scraping.GetMovieData(id, tmdb_rating);
+                    if (obj == null) return null;
+
+                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date)
+                    {
+                        //invalid date
+                        model = await _cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
+                    }
+                    else if (release_date > DateTime.Now.AddMonths(-1))
+                    {
+                        // < 1 month launch
+                        model = await _cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_week), cancellationToken);
+                    }
+                    else if (release_date > DateTime.Now.AddMonths(-6))
+                    {
+                        // < 6 month launch
+                        model = await _cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_month), cancellationToken);
+                    }
+                    else
+                    {
+                        // > 6 month launch
+                        model = await _cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_year), cancellationToken);
+                    }
+                }
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
+            }
+        }
+
+        [Function("CacheShowRatings")]
+        public async Task<CacheDocument<Ratings>?> CacheShowRatings(
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Ratings/Show")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                CacheDocument<Ratings>? model;
+
+                var id = req.GetQueryParameters()["id"];
+                var tmdb_rating = req.GetQueryParameters()["tmdb_rating"];
+                var title = req.GetQueryParameters()["title"];
+                _ = DateTime.TryParse(req.GetQueryParameters()["release_date"], out DateTime release_date);
+                model = await _cacheRepo.Get<Ratings>($"rating_new_{id}", cancellationToken);
+
+                if (model == null)
+                {
+                    var scraping = new ScrapingRatings();
+                    var obj = scraping.GetShowData(id, tmdb_rating, title);
+                    if (obj == null) return null;
+
+                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date)
+                    {
+                        //invalid date
+                        model = await _cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
+                    }
+                    else if (release_date > DateTime.Now.AddMonths(-1))
+                    {
+                        // < 1 month launch
+                        model = await _cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_week), cancellationToken);
+                    }
+                    else if (release_date > DateTime.Now.AddMonths(-6))
+                    {
+                        // < 6 month launch
+                        model = await _cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_month), cancellationToken);
+                    }
+                    else
+                    {
+                        // > 6 month launch
+                        model = await _cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_year), cancellationToken);
+                    }
+                }
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
+            }
+        }
+
+        //[OpenApiOperation("CacheMovieReviews", "Rapid API (json)", Description = "imdb8 / cached - one_month")]
+        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<ReviewModel>))]
         [Function("CacheMovieReviews")]
         public async Task<CacheDocument<ReviewModel>?> CacheMovieReviews(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Reviews/Movies")] HttpRequestData req, CancellationToken cancellationToken)
@@ -263,8 +363,8 @@ namespace SD.API.Functions
             }
         }
 
-        [OpenApiOperation("CacheMovieReviews", "Metacritic (scraping)", Description = "scraping / cached - one_month")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<ReviewModel>))]
+        //[OpenApiOperation("CacheMovieReviews", "Metacritic (scraping)", Description = "scraping / cached - one_month")]
+        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<ReviewModel>))]
         [Function("CacheShowReviews")]
         public async Task<CacheDocument<ReviewModel>?> CacheShowReviews(
           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Reviews/Shows")] HttpRequestData req, CancellationToken cancellationToken)

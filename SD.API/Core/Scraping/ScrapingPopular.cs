@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace SD.API.Core.Scraping
 {
-    public class MostPopularMovies
+    public class ScrapingPopular
     {
         private readonly string movie_url = "https://www.imdb.com/chart/moviemeter";
         private readonly string tv_url = "https://www.imdb.com/chart/tvmeter";

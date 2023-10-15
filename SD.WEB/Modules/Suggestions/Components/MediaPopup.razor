@@ -1,6 +1,7 @@
 ﻿@using SD.Shared.Models;
 @using SD.Shared.Models.List.Imdb;
 @using SD.Shared.Models.List.Tmdb;
+@using SD.Shared.Models.List;
 @using SD.WEB.Modules.Suggestions.Core;
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core
@@ -61,10 +62,21 @@
                             }
 
                             <Paragraph>
-                                @if (media?.rating != null && media?.rating != 0)
-                                {
-                                    <Badge Color="GetColorByRating(media?.rating.ToString())" Margin="Margin.Is1.FromEnd">TMDB: @media?.rating.ToString("#.#")</Badge>
-                                }
+                                <RenderControl Task="LoadRating" PartialComponent="true">
+                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.imdb))
+                                    {
+                                        <Badge Color="GetColorByRating(ratingsCache.Data?.imdb)" Margin="Margin.Is1.FromEnd">IMDB: @ratingsCache.Data?.imdb</Badge>
+                                    }
+                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.tmdb))
+                                    {
+                                        <Badge Color="GetColorByRating(ratingsCache.Data?.tmdb)" Margin="Margin.Is1.FromEnd">TMDB: @ratingsCache.Data?.tmdb</Badge>
+                                    }
+                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.metacritic))
+                                    {
+                                        <Badge Color="GetColorByRating(ratingsCache.Data?.metacritic)" Margin="Margin.Is1.FromEnd">Metacritic: @ratingsCache.Data?.metacritic</Badge>
+                                    }
+                                </RenderControl>
+
                             </Paragraph>
 
                             <Paragraph TextAlignment="TextAlignment.Justified">
@@ -227,6 +239,7 @@
     private WatchedList? WatchedList;
     private WatchingList? WatchingList;
     private WishList? WishList;
+    private RatingsCache? ratingsCache;
 
     protected override void OnInitialized()
     {
@@ -247,6 +260,21 @@
         StateHasChanged();
 
         return media == null;
+    }
+
+    private async Task<bool> LoadRating()
+    {
+        if (media.MediaType == MediaType.movie)
+        {
+            ratingsCache = await CacheApi.GetMovieRatings(imdb_id, media.release_date, media.rating.ToString("#.#"));
+        }            
+        else
+        {
+            var title = media?.title?.RemoveSpecialCharacters().Replace(" ", "-").ToLower();
+            ratingsCache = await CacheApi.GetShowRatings(imdb_id, media?.release_date, media?.rating.ToString("#.#"), title);
+        }            
+
+        return ratingsCache != null;
     }
 
     protected override async Task LoadDataRender()

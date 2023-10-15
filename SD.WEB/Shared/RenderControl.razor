@@ -2,13 +2,22 @@
 
 @if (Status == LoadingStatus.Loading)
 {
-    <Alert Color="Color.Warning" Visible="true">
-        <AlertDescription>
+    if (PartialComponent)
+    {
+        <Blazorise.Text TextColor="TextColor.Secondary">
             <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @GlobalTranslations.CustomVisibilityLoading
-        </AlertDescription>
-    </Alert>
+        </Blazorise.Text>
+    }
+    else
+    {
+        <Alert Color="Color.Warning" Visible="true">
+            <AlertDescription>
+                <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @GlobalTranslations.CustomVisibilityLoading
+            </AlertDescription>
+        </Alert>
+    }
 }
-else if (Status == LoadingStatus.Locked)
+else if (Status == LoadingStatus.Locked && !PartialComponent)
 {
     <Alert Color="Color.Primary" Visible="true">
         <AlertDescription>
@@ -16,7 +25,7 @@ else if (Status == LoadingStatus.Locked)
         </AlertDescription>
     </Alert>
 }
-else if (Status == LoadingStatus.Error)
+else if (Status == LoadingStatus.Error && !PartialComponent)
 {
     <Alert Color="Color.Danger" Visible="true">
         <AlertDescription>
@@ -24,7 +33,7 @@ else if (Status == LoadingStatus.Error)
         </AlertDescription>
     </Alert>
 }
-else if (Status == LoadingStatus.Warning)
+else if (Status == LoadingStatus.Warning && !PartialComponent)
 {
     <Alert Color="Color.Primary" Visible="true">
         <AlertDescription>
@@ -44,6 +53,7 @@ else if (Status == LoadingStatus.ShowContent)
     [Parameter] public bool PrivateContent { get; set; } = false;
     [Parameter] public string? CustomMessageError { get; set; } = null;
     [Parameter] public string? CustomMessageWarning { get; set; } = null;
+    [Parameter] public bool PartialComponent { get; set; } = false;
 
     private Action? StartLoading { get; set; }
     private Action<bool>? StopLoading { get; set; }
@@ -153,6 +163,13 @@ else if (Status == LoadingStatus.ShowContent)
     public void ShowContent(bool isEmpty)
     {
         Reset();
+
+        if (PartialComponent)
+        {
+            Status = LoadingStatus.ShowContent;
+            StateHasChanged();
+            return;
+        }
 
         if (Status == LoadingStatus.Error | Status == LoadingStatus.Warning) return;
 

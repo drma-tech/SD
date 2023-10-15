@@ -3,7 +3,7 @@ using SD.Shared.Models.Reviews;
 
 namespace SD.API.Core.Scraping
 {
-    public class ShowsReview
+    public class ScrapingReview
     {
         private readonly string tv_url = "https://www.metacritic.com/tv/{0}/critic-reviews";
 
