@@ -18,13 +18,13 @@ namespace SD.WEB.Core
 
             public static string Trailers(string mode) => $"Public/Cache/Trailers?mode={mode}";
 
-            public static string GetMovieRatings(string id, DateTime? date, string? tmdb_rating) => $"Public/Cache/Ratings/Movie?id={id}&release_date={date}&tmdb_rating={tmdb_rating}";
+            public static string GetMovieRatings(string? id, string? title, DateTime? date, string? tmdb_rating) => $"Public/Cache/Ratings/Movie?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdb_rating}";
 
-            public static string GetShowRatings(string id, DateTime? date, string? tmdb_rating, string? title) => $"Public/Cache/Ratings/Show?id={id}&release_date={date}&tmdb_rating={tmdb_rating}&title={title}";
+            public static string GetShowRatings(string? id, string? title, DateTime? date, string? tmdb_rating) => $"Public/Cache/Ratings/Show?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdb_rating}";
 
-            public static string GetMovieReviews(string id, DateTime? date) => $"Public/Cache/Reviews/Movies?id={id}&release_date={date}";
+            public static string GetMovieReviews(string? id, string? title, DateTime? date) => $"Public/Cache/Reviews/Movies?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}";
 
-            public static string GetShowReviews(string id, string title, DateTime? date) => $"Public/Cache/Reviews/Shows?id={id}&title={title}&release_date={date}";
+            public static string GetShowReviews(string? id, string? title, DateTime? date) => $"Public/Cache/Reviews/Shows?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}";
         }
 
         public async Task<FlixsterCache?> GetNews(string mode)
@@ -37,22 +37,22 @@ namespace SD.WEB.Core
             return await GetAsync<YoutubeCache>(Endpoint.Trailers(mode), false);
         }
 
-        public async Task<RatingsCache?> GetMovieRatings(string id, DateTime? releaseDate, string tmdb_rating)
+        public async Task<RatingsCache?> GetMovieRatings(string? id, string? title, DateTime? releaseDate, string? tmdb_rating)
         {
-            return await GetAsync<RatingsCache>(Endpoint.GetMovieRatings(id, releaseDate, tmdb_rating), false);
+            return await GetAsync<RatingsCache>(Endpoint.GetMovieRatings(id, title, releaseDate, tmdb_rating), false);
         }
 
-        public async Task<RatingsCache?> GetShowRatings(string id, DateTime? releaseDate, string? tmdb_rating, string? title)
+        public async Task<RatingsCache?> GetShowRatings(string? id, string? title, DateTime? releaseDate, string? tmdb_rating)
         {
-            return await GetAsync<RatingsCache>(Endpoint.GetShowRatings(id, releaseDate, tmdb_rating, title), false);
+            return await GetAsync<RatingsCache>(Endpoint.GetShowRatings(id, title, releaseDate, tmdb_rating), false);
         }
 
-        public async Task<MetaCriticCache?> GetMovieReviews(string id, DateTime? releaseDate)
+        public async Task<MetaCriticCache?> GetMovieReviews(string? id, string? title, DateTime? releaseDate)
         {
-            return await GetAsync<MetaCriticCache>(Endpoint.GetMovieReviews(id, releaseDate), false);
+            return await GetAsync<MetaCriticCache>(Endpoint.GetMovieReviews(id, title, releaseDate), false);
         }
 
-        public async Task<MetaCriticCache?> GetShowReviews(string id, string title, DateTime? releaseDate)
+        public async Task<MetaCriticCache?> GetShowReviews(string? id, string? title, DateTime? releaseDate)
         {
             return await GetAsync<MetaCriticCache>(Endpoint.GetShowReviews(id, title, releaseDate), false);
         }

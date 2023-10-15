@@ -75,6 +75,10 @@
                                     {
                                         <Badge Color="GetColorByRating(ratingsCache.Data?.metacritic)" Margin="Margin.Is1.FromEnd">Metacritic: @ratingsCache.Data?.metacritic</Badge>
                                     }
+                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.trakt))
+                                    {
+                                        <Badge Color="GetColorByRating(ratingsCache.Data?.trakt)" Margin="Margin.Is1.FromEnd">Trakt: @ratingsCache.Data?.trakt</Badge>
+                                    }
                                 </RenderControl>
 
                             </Paragraph>
@@ -164,7 +168,7 @@
                             </TabPanel>
                         }
                         <TabPanel Name="Reviews" Class="mt-2">
-                            <ReviewComponent imdb_id="@imdb_id" title="@media?.title?.RemoveSpecialCharacters().Replace(" ","-").ToLower()" original_title="@media?.original_title?.RemoveSpecialCharacters().Replace(" ","-").ToLower()" type="@type"></ReviewComponent>
+                            <ReviewComponent imdb_id="@imdb_id" title="@media?.title?.RemoveSpecialCharacters().Replace(" ","-").ToLower()" original_title="@media?.original_title?.RemoveSpecialCharacters().Replace(" ","-").ToLower()" type="@type" release_date="@media?.release_date"></ReviewComponent>
                         </TabPanel>
                     </Content>
                 </Tabs>
@@ -264,15 +268,17 @@
 
     private async Task<bool> LoadRating()
     {
+        //TODO: must be english_title, not original_title
+        var title = media?.original_title?.RemoveSpecialCharacters().Replace(" ", "-").ToLower();
+
         if (media.MediaType == MediaType.movie)
         {
-            ratingsCache = await CacheApi.GetMovieRatings(imdb_id, media.release_date, media.rating.ToString("#.#"));
-        }            
+            ratingsCache = await CacheApi.GetMovieRatings(imdb_id, title, media.release_date, media.rating.ToString("#.#"));
+        }
         else
         {
-            var title = media?.title?.RemoveSpecialCharacters().Replace(" ", "-").ToLower();
-            ratingsCache = await CacheApi.GetShowRatings(imdb_id, media?.release_date, media?.rating.ToString("#.#"), title);
-        }            
+            ratingsCache = await CacheApi.GetShowRatings(imdb_id, title, media?.release_date, media?.rating.ToString("#.#"));
+        }
 
         return ratingsCache != null;
     }

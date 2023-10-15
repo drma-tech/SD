@@ -6,20 +6,24 @@ namespace SD.API.Core.Scraping
     public class ScrapingRatings
     {
         private readonly string imdb_url = "https://www.imdb.com/title/{0}";
-        private readonly string metacritic_url = "https://www.metacritic.com/tv/{0}";
+        private readonly string metacritic_tv_url = "https://www.metacritic.com/tv/{0}";
+        private readonly string trakt_movie_url = "https://trakt.tv/movies/{0}-{1}";
+        private readonly string trakt_show_url = "https://trakt.tv/shows/{0}";
 
-        public Ratings GetMovieData(string imdb_id, string tmdb_rating)
+        public Ratings GetMovieData(string imdb_id, string tmdb_rating, string title, string year)
         {
             var data = new Ratings() { imdbId = imdb_id, type = MediaType.movie, tmdb = tmdb_rating };
             ProcessMovieImdb(data, string.Format(imdb_url, imdb_id));
+            ProcessTrack(data, string.Format(trakt_movie_url, title, year));
             return data;
         }
 
-        public Ratings GetShowData(string imdb_id, string tmdb_rating, string title)
+        public Ratings GetShowData(string imdb_id, string tmdb_rating, string title, string year)
         {
             var data = new Ratings() { imdbId = imdb_id, type = MediaType.tv, tmdb = tmdb_rating };
             ProcessShowImdb(data, string.Format(imdb_url, imdb_id));
-            ProcessShowMetacritic(data, string.Format(metacritic_url, title));
+            ProcessShowMetacritic(data, string.Format(metacritic_tv_url, title));
+            ProcessTrack(data, string.Format(trakt_show_url, title));
             return data;
         }
 
@@ -69,6 +73,21 @@ namespace SD.API.Core.Scraping
             try
             {
                 data.metacritic = doc.DocumentNode.SelectNodes("html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[1]/div/div[1]/div[2]/div/div/span").FirstOrDefault()?.InnerText;
+            }
+            catch
+            {
+                //do nothing
+            }
+        }
+
+        private static void ProcessTrack(Ratings data, string trakt_url)
+        {
+            var web = new HtmlWeb();
+            var doc = web.Load(trakt_url);
+
+            try
+            {
+                data.trakt = doc.DocumentNode.SelectNodes("//*[@id=\"summary-ratings-wrapper\"]/div/div/div/ul[1]/li[1]/a/div[2]/div[1]").FirstOrDefault()?.InnerText.Replace("%", "");
             }
             catch
             {

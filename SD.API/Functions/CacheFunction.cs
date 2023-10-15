@@ -7,6 +7,7 @@ using SD.Shared.Models.List.Imdb;
 using SD.Shared.Models.News;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
+using System.Globalization;
 
 namespace SD.API.Functions
 {
@@ -222,6 +223,8 @@ namespace SD.API.Functions
             }
         }
 
+        //[OpenApiOperation("CacheMovieRatings", "Metacritic (scraping)", Description = "scraping / cached - one_day x one_year")]
+        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<Ratings>))]
         [Function("CacheMovieRatings")]
         public async Task<CacheDocument<Ratings>?> CacheMovieRatings(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Ratings/Movie")] HttpRequestData req, CancellationToken cancellationToken)
@@ -232,13 +235,14 @@ namespace SD.API.Functions
 
                 var id = req.GetQueryParameters()["id"];
                 var tmdb_rating = req.GetQueryParameters()["tmdb_rating"];
-                _ = DateTime.TryParse(req.GetQueryParameters()["release_date"], out DateTime release_date);
+                var title = req.GetQueryParameters()["title"];
+                DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime release_date);
                 model = await _cacheRepo.Get<Ratings>($"rating_new_{id}", cancellationToken);
 
                 if (model == null)
                 {
                     var scraping = new ScrapingRatings();
-                    var obj = scraping.GetMovieData(id, tmdb_rating);
+                    var obj = scraping.GetMovieData(id, tmdb_rating, title, release_date.Year.ToString());
                     if (obj == null) return null;
 
                     if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date)
@@ -272,6 +276,8 @@ namespace SD.API.Functions
             }
         }
 
+        //[OpenApiOperation("CacheShowRatings", "Metacritic (scraping)", Description = "scraping / cached - one_day x one_year")]
+        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<Ratings>))]
         [Function("CacheShowRatings")]
         public async Task<CacheDocument<Ratings>?> CacheShowRatings(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Ratings/Show")] HttpRequestData req, CancellationToken cancellationToken)
@@ -283,13 +289,13 @@ namespace SD.API.Functions
                 var id = req.GetQueryParameters()["id"];
                 var tmdb_rating = req.GetQueryParameters()["tmdb_rating"];
                 var title = req.GetQueryParameters()["title"];
-                _ = DateTime.TryParse(req.GetQueryParameters()["release_date"], out DateTime release_date);
+                DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime release_date);
                 model = await _cacheRepo.Get<Ratings>($"rating_new_{id}", cancellationToken);
 
                 if (model == null)
                 {
                     var scraping = new ScrapingRatings();
-                    var obj = scraping.GetShowData(id, tmdb_rating, title);
+                    var obj = scraping.GetShowData(id, tmdb_rating, title, release_date.Year.ToString());
                     if (obj == null) return null;
 
                     if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date)
@@ -323,7 +329,7 @@ namespace SD.API.Functions
             }
         }
 
-        //[OpenApiOperation("CacheMovieReviews", "Rapid API (json)", Description = "imdb8 / cached - one_month")]
+        //[OpenApiOperation("CacheMovieReviews", "Rapid API (json)", Description = "imdb8 / cached - one_day x one_year")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<ReviewModel>))]
         [Function("CacheMovieReviews")]
         public async Task<CacheDocument<ReviewModel>?> CacheMovieReviews(
@@ -334,7 +340,7 @@ namespace SD.API.Functions
                 CacheDocument<ReviewModel>? model;
 
                 var id = req.GetQueryParameters()["id"];
-                //_ = DateTime.TryParse(req.GetQueryParameters()["release_date"], out DateTime release_date);
+                DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime release_date);
                 model = await _cacheRepo.Get<ReviewModel>($"review_{id}", cancellationToken);
 
                 if (model == null)
@@ -351,7 +357,26 @@ namespace SD.API.Functions
                         newModel.Items.Add(new Shared.Models.Reviews.Item(item.reviewSite, item.reviewUrl, item.reviewer, item.score, item.quote));
                     }
 
-                    model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}"), cancellationToken);
+                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date)
+                    {
+                        //invalid date
+                        model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
+                    }
+                    else if (release_date > DateTime.Now.AddMonths(-1))
+                    {
+                        // < 1 month launch
+                        model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_week), cancellationToken);
+                    }
+                    else if (release_date > DateTime.Now.AddMonths(-6))
+                    {
+                        // < 6 month launch
+                        model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_month), cancellationToken);
+                    }
+                    else
+                    {
+                        // > 6 month launch
+                        model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_year), cancellationToken);
+                    }
                 }
 
                 return model;
@@ -363,7 +388,7 @@ namespace SD.API.Functions
             }
         }
 
-        //[OpenApiOperation("CacheMovieReviews", "Metacritic (scraping)", Description = "scraping / cached - one_month")]
+        //[OpenApiOperation("CacheMovieReviews", "Metacritic (scraping)", Description = "scraping / cached - one_day x one_year")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<ReviewModel>))]
         [Function("CacheShowReviews")]
         public async Task<CacheDocument<ReviewModel>?> CacheShowReviews(
@@ -378,15 +403,11 @@ namespace SD.API.Functions
 
                 var id = req.GetQueryParameters()["id"];
                 var title = req.GetQueryParameters()["title"];
-                //_ = DateTime.TryParse(req.GetQueryParameters()["release_date"], out DateTime release_date);
+                DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime release_date);
                 model = await _cacheRepo.Get<ReviewModel>($"review_{id}", cancellationToken);
 
                 if (model == null)
                 {
-                    //var scraping = new ShowsReview();
-                    //var obj = await scraping.GetTvReviews(title);
-                    //if (obj == null) return null;
-
                     using var http = new HttpClient();
                     var obj = await http.Get<MetaCriticScraping>($"https://fandom-prod.apigee.net/v1/xapi/reviews/metacritic/critic/shows/{title}/web?apiKey=1MOZgmNFxvmljaQR1X9KAij9Mo4xAY3u", cancellationToken);
                     if (obj == null) return null;
@@ -399,7 +420,26 @@ namespace SD.API.Functions
                         newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));
                     }
 
-                    model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}"), cancellationToken);
+                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date)
+                    {
+                        //invalid date
+                        model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
+                    }
+                    else if (release_date > DateTime.Now.AddMonths(-1))
+                    {
+                        // < 1 month launch
+                        model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_week), cancellationToken);
+                    }
+                    else if (release_date > DateTime.Now.AddMonths(-6))
+                    {
+                        // < 6 month launch
+                        model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_month), cancellationToken);
+                    }
+                    else
+                    {
+                        // > 6 month launch
+                        model = await _cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_year), cancellationToken);
+                    }
                 }
 
                 return model;

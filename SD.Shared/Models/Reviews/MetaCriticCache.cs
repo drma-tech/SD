@@ -7,7 +7,7 @@ namespace SD.Shared.Models.Reviews
         public MetaCriticCache()
         { }
 
-        public MetaCriticCache(ReviewModel data, string key) : base(key, data, ttlCache.one_month)
+        public MetaCriticCache(ReviewModel data, string key, ttlCache ttl) : base(key, data, ttl)
         { }
     }
 }
