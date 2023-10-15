@@ -45,7 +45,7 @@
     <script src="_framework/blazor.webassembly.js"></script>
 
     <script>
-        //avoid google search console execute this
+        //avoid google (and others) search console execute this
         if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex/i.test(window.navigator.userAgent) &&
             window.navigator.serviceWorker && window.navigator.serviceWorker.register) {
             navigator.serviceWorker.register('service-worker.js');
@@ -61,6 +61,23 @@
         const appHeight = () => document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`)
         window.addEventListener('resize', appHeight)
         appHeight()
+    </script>
+
+    <script>
+        function share(title, text, url) {
+            if (!("share" in navigator)) {
+                alert('Web Share API not supported.');
+                return;
+            }
+
+            navigator.share({
+                title: title,
+                text: text,
+                url: url
+            })
+            .then(() => console.log('Successful share'))
+            .catch(error => console.log('Error sharing:', error));
+        }
     </script>
 
     <!--<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3885428939386350" crossorigin="anonymous"></script>-->
