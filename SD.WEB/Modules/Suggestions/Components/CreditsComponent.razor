@@ -19,7 +19,7 @@
                         <Blazorise.Link Clicked="@(async() => await OpenCompleteList(item))" Style="cursor: pointer;">
                             @if (string.IsNullOrEmpty(item.profile_path))
                             {
-                                <Image Source="no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
+                                <Image Source="images/no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
                             }
                             else
                             {
@@ -45,7 +45,7 @@
                         <Blazorise.Link Clicked="@(async() => await OpenCompleteList(item))" Style="cursor: pointer;">
                             @if (string.IsNullOrEmpty(item.profile_path))
                             {
-                                <Image Source="no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
+                                <Image Source="images/no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
                             }
                             else
                             {
@@ -69,7 +69,7 @@
                 <Blazorise.Link Clicked="@(async() => await OpenCompleteList(item))" Style="cursor: pointer;">
                     @if (string.IsNullOrEmpty(item.profile_path))
                     {
-                        <Image Source="no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
+                        <Image Source="images/no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
                     }
                     else
                     {

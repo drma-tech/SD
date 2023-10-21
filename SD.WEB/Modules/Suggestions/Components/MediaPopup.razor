@@ -24,7 +24,7 @@
             <Column ColumnSize="ColumnSize.Is12.OnMobile.Is4.OnDesktop">
                 @if (string.IsNullOrEmpty(media?.poster_large))
                 {
-                    <CardImage Source="noimage.png" Alt="@media?.title"></CardImage>
+                    <CardImage Source="images/noimage.png" Alt="@media?.title"></CardImage>
                 }
                 else
                 {
@@ -132,7 +132,7 @@
                                                     }
                                                     @if (string.IsNullOrEmpty(item.poster_small))
                                                     {
-                                                        <CardImage Source="noimage.png" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
+                                                        <CardImage Source="images/noimage.png" Alt="@item.title" title="@item.title" Style="cursor: pointer;"></CardImage>
                                                     }
                                                     else
                                                     {
