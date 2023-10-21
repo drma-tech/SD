@@ -1,5 +1,5 @@
-﻿@page "/Profile"
-<SeoHeader Title="@SeoTranslations.ProfileTitle" Description="@SeoTranslations.ProfileDescription" Url="/Profile"></SeoHeader>
+﻿@page "/profile"
+<SeoHeader Title="@SeoTranslations.ProfileTitle" Description="@SeoTranslations.ProfileDescription" Url="/profile"></SeoHeader>
 @inherits PageCore<Profile>
 @inject IHttpClientFactory httpClientFactory
 
@@ -9,7 +9,7 @@
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWishListComponent Fake="Fake"></MyWishListComponent>
+        <MyWishListComponent></MyWishListComponent>
     </Column>
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
         <MyWatchingListComponent Fake="Fake"></MyWatchingListComponent>

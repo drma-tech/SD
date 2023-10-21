@@ -1,4 +1,4 @@
-﻿@page "/ProfilePrincipal"
+﻿@page "/profile-principal"
 @inherits PageCore<ProfilePrincipal>
 @attribute [Authorize]
 
@@ -48,11 +48,11 @@
         <Column>
             @if (AppStateStatic.Language == Language.ptBR || AppStateStatic.Language == Language.ptPT)
             {
-                <Check TValue="bool" @bind-Checked="@termsAccepted">Aceito os <Blazorise.Link To="Terms/pt" Target="Target.Blank">Termos de Uso</Blazorise.Link></Check>
+                <Check TValue="bool" @bind-Checked="@termsAccepted">Aceito os <Blazorise.Link To="terms/pt" Target="Target.Blank">Termos de Uso</Blazorise.Link></Check>
             }
             else
             {
-                <Check TValue="bool" @bind-Checked="@termsAccepted">I accept the <Blazorise.Link To="Terms/pt" Target="Target.Blank">Terms of Use</Blazorise.Link></Check>
+                <Check TValue="bool" @bind-Checked="@termsAccepted">I accept the <Blazorise.Link To="terms/pt" Target="Target.Blank">Terms of Use</Blazorise.Link></Check>
             }
         </Column>
     </Row>

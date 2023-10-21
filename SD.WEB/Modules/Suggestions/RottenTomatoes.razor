@@ -1,12 +1,12 @@
-﻿@page "/Suggestions/RottenTomatoes"
-<SeoHeader Title="Suggestions | Rotten Tomatoes" Keywords="@(new []{"Rotten Tomatoes"})" Url="/Suggestions/RottenTomatoes"></SeoHeader>
+﻿@page "/suggestions/rotten-tomatoes"
+<SeoHeader Title="Suggestions | Rotten Tomatoes" Keywords="@(new []{"Rotten Tomatoes"})" Url="/suggestions/rotten-tomatoes"></SeoHeader>
 @inherits PageCore<RottenTomatoes>
 
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
 
-<HeadPage Title="Rotten Tomatoes" ImageSource="logo/RottenTomatoes.png" Text="Rotten Tomatoes, home of the Tomatometer, is the most trusted measurement of quality for Movies & TV. The definitive site for Reviews, Trailers, Showtimes, and Tickets" Link="https://www.rottentomatoes.com/"></HeadPage>
+<HeadPage Title="Rotten Tomatoes" ImageSource="logo/rotten-tomatoes.png" Text="Rotten Tomatoes, home of the Tomatometer, is the most trusted measurement of quality for Movies & TV. The definitive site for Reviews, Trailers, Showtimes, and Tickets" Link="https://www.rottentomatoes.com/"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesTOMATOMETER" MaxItens="100"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesAUDIENCESCORE" MaxItens="100"></MediaList>

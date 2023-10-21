@@ -1,13 +1,12 @@
-﻿@page "/Support/"
-@page "/Support/Index"
-<SeoHeader Title="@SeoTranslations.SupportTitle" Description="@SeoTranslations.SupportDescription" Url="/Support"></SeoHeader>
+﻿@page "/support/"
+@page "/support/index"
+<SeoHeader Title="@SeoTranslations.SupportTitle" Description="@SeoTranslations.SupportDescription" Url="/support"></SeoHeader>
 @inherits PageCore<Support.Index>
 @using SD.WEB.Modules.Support.Component
 
 <Alert Color="Color.Secondary" Visible="true">
     <AlertDescription >
-        @*<Blazorise.Link To="@("Terms/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkTerm</Blazorise.Link> ▪ <Blazorise.Link To="@("Privacy/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkPrivacy</Blazorise.Link> ▪ <Blazorise.Link To="Faq">@Resources.Translations.LinkFAQ</Blazorise.Link>*@
-        <Blazorise.Link To="@("Terms/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkTerm</Blazorise.Link> ▪ <Blazorise.Link To="@("Privacy/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkPrivacy</Blazorise.Link>
+        <Blazorise.Link To="@("support/terms/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkTerm</Blazorise.Link> ▪ <Blazorise.Link To="@("support/privacy/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkPrivacy</Blazorise.Link>
     </AlertDescription>
 </Alert>
 

@@ -1,12 +1,12 @@
-﻿@page "/Suggestions/GoldenGlobes"
-<SeoHeader Title="Suggestions | Golden Globes" Keywords="@(new []{"Golden Globes"})" Url="/Suggestions/GoldenGlobes"></SeoHeader>
+﻿@page "/suggestions/golden-globes"
+<SeoHeader Title="Suggestions | Golden Globes" Keywords="@(new []{"Golden Globes"})" Url="/suggestions/golden-globes"></SeoHeader>
 @inherits PageCore<GoldenGlobes>
 
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
 
-<HeadPage Title="Golden Globes" ImageSource="logo/goldenglobes.png" Text="@TranslationText.golden_desc" Link="https://www.goldenglobes.com/"></HeadPage>
+<HeadPage Title="Golden Globes" ImageSource="logo/golden-globes.png" Text="@TranslationText.golden_desc" Link="https://www.goldenglobes.com/"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureDrama" MaxItens="12"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureMusicalComedy" MaxItens="12"></MediaList>

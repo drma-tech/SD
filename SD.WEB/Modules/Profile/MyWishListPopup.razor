@@ -1,22 +1,12 @@
-﻿@inherits ComponenteCore<MyWishListPopup>
+﻿@using SD.WEB.Modules.Profile.Components
+@inherits ComponenteCore<MyWishListPopup>
 
 <ModalHeader>
-    <ModalTitle Size="HeadingSize.Is5">@Title.Format(GetWishList().Count())</ModalTitle>
+    <ModalTitle Size="HeadingSize.Is5">@Title.Format(LocalQuantity)</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <Row HorizontalGutter="4" VerticalGutter="4">
-        @foreach (var item in GetWishList())
-        {
-            var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                <Card>
-                    <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="@MediaType.movie"
-                                     Clicked="@(async()=>await ShowMediaPopup(item, MediaType))" ShowWished="false"></PosterComponent>
-                </Card>
-            </Column>
-        }
-    </Row>
+    <Wishlist MediaType="MediaType" Private="true" ShowHeader="false" FullScreen="true"></Wishlist>
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">@TranslationText.Close</Button>
@@ -26,44 +16,14 @@
     [Inject] public IModalService ModalService { get; set; } = default!;
 
     [Parameter] public MediaType MediaType { get; set; }
+    [Parameter] public int Quantity { get; set; }
 
-    private WishList? WishList;
-
-    public string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWishlist : GlobalTranslations.MyShowWishlist;
+    private string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWishlist : GlobalTranslations.MyShowWishlist;
+    public int LocalQuantity { get; set; }
 
     protected override void OnInitialized()
     {
-        AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); };
-
-        base.OnInitialized();
-    }
-
-    protected override async Task LoadDataRender()
-    {
-        WishList = await AppState.GetWishList(true);
-    }
-
-    private HashSet<WishListItem> GetWishList()
-    {
-        if (MediaType == MediaType.movie)
-            return WishList?.Movies ?? new HashSet<WishListItem>();
-        else
-            return WishList?.Shows ?? new HashSet<WishListItem>();
-    }
-
-    public Task ShowMediaPopup(WishListItem item, MediaType type)
-    {
-        return ModalService.Show<Suggestions.Components.MediaPopup>(item.name,
-            x =>
-            {
-                x.Add(x => x.tmdb_id, item.id);
-                x.Add(x => x.type, type);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.Large,
-                });
+        LocalQuantity = Quantity;
+        AppState.WishListChanged += (WishList? list) => { LocalQuantity = MediaType == MediaType.movie ? list?.Movies.Count ?? 0 : list?.Shows.Count ?? 0; StateHasChanged(); };
     }
 }

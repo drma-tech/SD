@@ -50,6 +50,7 @@
     [Inject] public IModalService ModalService { get; set; } = default!;
 
     [Parameter] public MediaType MediaType { get; set; }
+    [Parameter] public int Quantity { get; set; }
 
     public string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWatching : GlobalTranslations.MyShowWatching;
 

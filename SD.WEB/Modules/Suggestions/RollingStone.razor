@@ -1,12 +1,12 @@
-﻿@page "/Suggestions/RollingStone"
-<SeoHeader Title="Suggestions | Rolling Stone" Keywords="@(new []{"Rolling Stone"})" Url="/Suggestions/RollingStone"></SeoHeader>
+﻿@page "/suggestions/rolling-stone"
+<SeoHeader Title="Suggestions | Rolling Stone" Keywords="@(new []{"Rolling Stone"})" Url="/suggestions/rolling-stone"></SeoHeader>
 @inherits PageCore<RollingStone>
 
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
 
-<HeadPage Title="Rolling Stone" ImageSource="logo/rollingstone.png" Text="insights, announcements, music biz commentary, rs recommends lists, music biz lists, music country videos, music latin lists, music country pictures, politics pictures, tv & movies pictures, (sub)culture videos, politics videos, cultural commentary, tv & movies videos, finance, rs recommends pictures, books, smart home, expert panels, (sub)culture pictures" Link="https://www.rollingstone.com/tv-movies/"></HeadPage>
+<HeadPage Title="Rolling Stone" ImageSource="logo/rolling-stone.png" Text="insights, announcements, music biz commentary, rs recommends lists, music biz lists, music country videos, music latin lists, music country pictures, politics pictures, tv & movies pictures, (sub)culture videos, politics videos, cultural commentary, tv & movies videos, finance, rs recommends pictures, books, smart home, expert panels, (sub)culture pictures" Link="https://www.rollingstone.com/tv-movies/"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.RollingStoneBestMoviesofAllTime" MaxItens="100"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.RollingStoneBestTVShowsofAllTime" MaxItens="100"></MediaList>

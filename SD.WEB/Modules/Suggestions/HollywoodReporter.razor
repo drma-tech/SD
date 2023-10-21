@@ -1,12 +1,12 @@
-﻿@page "/Suggestions/HollywoodReporter"
-<SeoHeader Title="Suggestions | Hollywood Reporter" Keywords="@(new []{"Hollywood Reporter"})" Url="/Suggestions/HollywoodReporter"></SeoHeader>
+﻿@page "/suggestions/hollywood-reporter"
+<SeoHeader Title="Suggestions | Hollywood Reporter" Keywords="@(new []{"Hollywood Reporter"})" Url="/suggestions/hollywood-reporter"></SeoHeader>
 @inherits PageCore<HollywoodReporter>
 
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
 
-<HeadPage Title="Hollywood Reporter" ImageSource="logo/HollywoodReporter.png" Text="@TranslationText.thr_desc" Link="https://www.hollywoodreporter.com/"></HeadPage>
+<HeadPage Title="Hollywood Reporter" ImageSource="logo/hollywood-reporter.png" Text="@TranslationText.thr_desc" Link="https://www.hollywoodreporter.com/"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100Movies" MaxItens="100"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100TVShows" MaxItens="100"></MediaList>

@@ -1,8 +1,8 @@
-﻿@page "/Providers"
+﻿@page "/providers"
 @using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.Provider.Components
 @using SD.WEB.Modules.Provider.Core;
-<SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/Providers"></SeoHeader>
+<SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/providers"></SeoHeader>
 @inherits PageCore<Provider.Index>
 
 @inject AllProvidersApi AllProvidersApi
@@ -18,7 +18,7 @@
 
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                 <Card Background="(favorite ? Background.Success : Background.Transparent)" Style="@(favorite ? "padding: 3px;" : "")">
-                    <Blazorise.Link To="@($"/Providers/{item.id}")">
+                    <Blazorise.Link To="@($"/providers/{item.id}")">
                         <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" Style="cursor: pointer;" title="@item.name"></CardImage>
                         @if (favorite)
                         {

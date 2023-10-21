@@ -95,7 +95,7 @@ namespace SD.WEB.Core
 
                     if (principal == null) //force the registration, if the main account does not exist yet
                     {
-                        Navigation.NavigateTo("/ProfilePrincipal");
+                        Navigation.NavigateTo("/profile-principal");
                     }
                 }
             }

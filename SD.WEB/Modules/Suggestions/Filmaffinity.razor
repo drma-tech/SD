@@ -1,12 +1,12 @@
-﻿@page "/Suggestions/Filmaffinity"
-<SeoHeader Title="Suggestions | Filmaffinity" Keywords="@(new []{"Filmaffinity"})" Url="/Suggestions/Filmaffinity"></SeoHeader>
+﻿@page "/suggestions/film-affinity"
+<SeoHeader Title="Suggestions | Filmaffinity" Keywords="@(new []{"Filmaffinity"})" Url="/suggestions/film-affinity"></SeoHeader>
 @inherits PageCore<Filmaffinity>
 
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
 
-<HeadPage Title="Filmaffinity" ImageSource="logo/goldenglobes.png" Text="Filmaffinity: Rate Movies and TV Shows & Find Movie Recommendations" Link="https://www.filmaffinity.com/"></HeadPage>
+<HeadPage Title="Filmaffinity" ImageSource="logo/film-affinity.png" Text="Filmaffinity: Rate Movies and TV Shows & Find Movie Recommendations" Link="https://www.filmaffinity.com/"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestMovies" MaxItens="100"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestSeriesandTV" MaxItens="100"></MediaList>

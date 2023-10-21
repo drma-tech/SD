@@ -1,5 +1,5 @@
-﻿@page "/Suggestions"
-<SeoHeader Title="@SeoTranslations.SuggestionsTitle" Description="@SeoTranslations.SuggestionsDescription" Url="/Suggestions"></SeoHeader>
+﻿@page "/suggestions"
+<SeoHeader Title="@SeoTranslations.SuggestionsTitle" Description="@SeoTranslations.SuggestionsDescription" Url="/suggestions"></SeoHeader>
 @inherits PageCore<Suggestions>
 
 <HeaderComponent Title="@Resources.Translations.TitleAwards">
@@ -85,39 +85,39 @@
 
     protected override void OnInitialized()
     {
-        Awards.Add(new Item() { name = "Oscar", logo_path = "logo/oscar.png", link = "/Suggestions/Oscar" });
-        Awards.Add(new Item() { name = "Golden Globe", logo_path = "logo/goldenglobes.png", link = "/Suggestions/GoldenGlobes" });
-        Awards.Add(new Item() { name = "Bafta", logo_path = "logo/bafta.png", link = "/Suggestions/Bafta" });
-        Awards.Add(new Item() { name = "Emmys", logo_path = "logo/emmys.png", link = "/Suggestions/Emmys" });
-        Awards.Add(new Item() { name = "Festival de Cannes", logo_path = "logo/festival-cannes.png", link = "/Suggestions/FestivalCannes" });
+        Awards.Add(new Item() { name = "Oscar", logo_path = "logo/oscar.png", link = "/suggestions/oscar" });
+        Awards.Add(new Item() { name = "Golden Globe", logo_path = "logo/golden-globes.png", link = "/suggestions/golden-globes" });
+        Awards.Add(new Item() { name = "Bafta", logo_path = "logo/bafta.png", link = "/suggestions/bafta" });
+        Awards.Add(new Item() { name = "Emmys", logo_path = "logo/emmys.png", link = "/suggestions/emmys" });
+        Awards.Add(new Item() { name = "Festival de Cannes", logo_path = "logo/festival-cannes.png", link = "/suggestions/festival-cannes" });
         //Awards.Add(new Item() { name = "Venice Film Festival", logo_path = "", link = "/" });
-        Awards.Add(new Item() { name = "The Berlinale", logo_path = "logo/berlin.png", link = "/Suggestions/Berlin" });
-        Awards.Add(new Item() { name = "Sundance Film Festival", logo_path = "logo/sundance.png", link = "/Suggestions/Sundance" });
-        Awards.Add(new Item() { name = "TIFF", logo_path = "logo/tiff.png", link = "/Suggestions/Tiff" });
-        Awards.Add(new Item() { name = "Critics Choice", logo_path = "logo/critics.png", link = "/Suggestions/CriticsChoice" });
-        Awards.Add(new Item() { name = "FI Spirit", logo_path = "logo/spirit.png", link = "/Suggestions/Spirit" });
+        Awards.Add(new Item() { name = "The Berlinale", logo_path = "logo/berlin.png", link = "/suggestions/berlin" });
+        Awards.Add(new Item() { name = "Sundance Film Festival", logo_path = "logo/sundance.png", link = "/suggestions/sundance" });
+        Awards.Add(new Item() { name = "TIFF", logo_path = "logo/tiff.png", link = "/suggestions/tiff" });
+        Awards.Add(new Item() { name = "Critics Choice", logo_path = "logo/critics.png", link = "/suggestions/critics-choice" });
+        Awards.Add(new Item() { name = "FI Spirit", logo_path = "logo/spirit.png", link = "/suggestions/spirit" });
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        Sites.Add(new Item() { name = "IMDB", logo_path = "logo/imdb.png", link = "/Suggestions/Imdb" });
-        Sites.Add(new Item() { name = "Rotten Tomatoes", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/RottenTomatoes" });
-        Sites.Add(new Item() { name = "Metacritic", logo_path = "logo/metacritic.png", link = "/Suggestions/Metacritic" });
-        Sites.Add(new Item() { name = "TMDB", logo_path = "logo/tmdb.png", link = "/Suggestions/Tmdb" });
-        Sites.Add(new Item() { name = "Trakt", logo_path = "logo/trakt.png", link = "/Suggestions/Trakt" });
-        Sites.Add(new Item() { name = "Hollywood Reporter", logo_path = "logo/HollywoodReporter.png", link = "/Suggestions/HollywoodReporter" });
-        Sites.Add(new Item() { name = "Empire", logo_path = "logo/empire.png", link = "/Suggestions/Empire" });
-        Sites.Add(new Item() { name = "Rolling Stone", logo_path = "logo/rollingstone.png", link = "/Suggestions/RollingStone" });
-        Sites.Add(new Item() { name = "Filmaffinity", logo_path = "logo/filmaffinity.png", link = "/Suggestions/Filmaffinity" });
+        Sites.Add(new Item() { name = "IMDB", logo_path = "logo/imdb.png", link = "/suggestions/imdb" });
+        Sites.Add(new Item() { name = "Rotten Tomatoes", logo_path = "logo/rotten-tomatoes.png", link = "/suggestions/rotten-tomatoes" });
+        Sites.Add(new Item() { name = "Metacritic", logo_path = "logo/metacritic.png", link = "/suggestions/metacritic" });
+        Sites.Add(new Item() { name = "TMDB", logo_path = "logo/tmdb.png", link = "/suggestions/tmdb" });
+        Sites.Add(new Item() { name = "Trakt", logo_path = "logo/trakt.png", link = "/suggestions/Trakt" });
+        Sites.Add(new Item() { name = "Hollywood Reporter", logo_path = "logo/hollywood-reporter.png", link = "/suggestions/hollywood-reporter" });
+        Sites.Add(new Item() { name = "Empire", logo_path = "logo/empire.png", link = "/suggestions/empire" });
+        Sites.Add(new Item() { name = "Rolling Stone", logo_path = "logo/rolling-stone.png", link = "/suggestions/rolling-stone" });
+        Sites.Add(new Item() { name = "Filmaffinity", logo_path = "logo/film-affinity.png", link = "/suggestions/film-affinity" });
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        Specials.Add(new Item() { name = "Marvel", logo_path = "logo/marvel.png", link = "/Suggestions/UpcomingMarvel" });
-        Specials.Add(new Item() { name = "DC", logo_path = "logo/dc.png", link = "/Suggestions/UpcomingDC" });
-        Specials.Add(new Item() { name = "Star Wars", logo_path = "logo/StarWars.png", link = "/Suggestions/UpcomingStarWars" });
-        Specials.Add(new Item() { name = "Netflix", logo_path = "logo/Netflix.png", link = "/Suggestions/UpcomingNetflix" });
-        Specials.Add(new Item() { name = "Walt Disney Pictures", logo_path = "logo/disney.png", link = "/Suggestions/UpcomingDisney" });
-        Specials.Add(new Item() { name = "Highest grossing movies", logo_path = "logo/GrossingMovies.png", link = "/Suggestions/GrossingMovies" });
-        Specials.Add(new Item() { name = "Most Expected Movies of 2023", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2023" });
-        Specials.Add(new Item() { name = "Most Expected Movies of 2024", logo_path = "logo/RottenTomatoes.png", link = "/Suggestions/Movies2024" });
+        Specials.Add(new Item() { name = "Marvel", logo_path = "logo/marvel.png", link = "/suggestions/upcoming-marvel" });
+        Specials.Add(new Item() { name = "DC", logo_path = "logo/dc.png", link = "/suggestions/upcoming-dc" });
+        Specials.Add(new Item() { name = "Star Wars", logo_path = "logo/star-wars.png", link = "/suggestions/upcoming-star-wars" });
+        Specials.Add(new Item() { name = "Netflix", logo_path = "logo/netflix.png", link = "/suggestions/upcoming-netflix" });
+        Specials.Add(new Item() { name = "Walt Disney Pictures", logo_path = "logo/disney.png", link = "/suggestions/upcoming-disney" });
+        Specials.Add(new Item() { name = "Highest grossing movies", logo_path = "logo/grossing-movies.png", link = "/suggestions/grossing-movies" });
+        Specials.Add(new Item() { name = "Most Expected Movies of 2023", logo_path = "logo/rotten-tomatoes.png", link = "/suggestions/movies-2023" });
+        Specials.Add(new Item() { name = "Most Expected Movies of 2024", logo_path = "logo/rotten-tomatoes.png", link = "/suggestions/movies-2024" });
     }
 }
