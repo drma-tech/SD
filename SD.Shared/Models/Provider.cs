@@ -1,19 +1,8 @@
-﻿using SD.Shared.Core.Models;
-
-namespace SD.Shared.Models
+﻿namespace SD.Shared.Models
 {
-    public class AllProviders : ProtectedMainDocument
+    public class AllProviders
     {
-        public AllProviders() : base("providers", "providers", DocumentType.Provider)
-        {
-        }
-
         public List<ProviderModel> Items { get; set; } = new();
-
-        public override bool HasValidData()
-        {
-            return Items.Any();
-        }
     }
 
     public class ProviderModel

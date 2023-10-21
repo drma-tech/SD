@@ -96,7 +96,7 @@
         {
             var http = httpClientFactory.CreateClient("RetryHttpClient");
 
-            mySuggestions = await http.GetFromJsonAsync<SD.Shared.Models.MySuggestions>("/Data/MySuggestions.json");
+            mySuggestions = await http.GetFromJsonAsync<SD.Shared.Models.MySuggestions>("/data/MySuggestions.json");
         }
         else
         {

@@ -44,7 +44,7 @@
         {
             var http = httpClientFactory.CreateClient("RetryHttpClient");
 
-            myProviders = await http.GetFromJsonAsync<MyProviders>("/Data/MyProvider.json");
+            myProviders = await http.GetFromJsonAsync<MyProviders>("/data/MyProvider.json");
         }
         else
         {

@@ -3,7 +3,7 @@
     public enum DocumentType
     {
         Principal = 1,
-        Provider = 2,
+        //Provider = 2,
         MyProvider = 3,
         WishList = 4,
         WatchedList = 5,

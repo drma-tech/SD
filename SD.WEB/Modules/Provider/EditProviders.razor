@@ -5,8 +5,11 @@
 @using Blazorise.DataGrid
 @using HtmlAgilityPack
 @using System.Net.Http
+@using SD.Shared.Models.List.Tmdb;
 @using SD.WEB.Modules.Provider.Core
+@using System.Text.Json;
 @inject AllProvidersApi AllProvidersApi
+@inject IJSRuntime JS
 
 <Button Clicked="@SyncProvidersOnClick" Color="Color.Primary">Sync Providers</Button>
 <Button Clicked="@SaveSession" Color="Color.Primary">Save Session</Button>
@@ -121,20 +124,96 @@
 
     protected async Task SaveSession()
     {
-        await AllProvidersApi.Post(AllProviders);
+        if (AllProviders != null)
+        {
+            await JS.InvokeVoidAsync("window.localStorage.setItem",
+                new object[] { "AllProviders", JsonSerializer.Serialize(AllProviders, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) });
+        }
     }
 
     protected async Task SyncProvidersOnClick()
     {
         try
         {
-            await AllProvidersApi.Sync();
+            var result = new List<ProviderModel>();
+
+            if (AllProviders != null)
+            {
+                var details = AllProviders.Items;
+
+                foreach (var region in EnumHelper.GetArray<Region>())
+                {
+                    var parameter = new Dictionary<string, string>()
+                        {
+                            { "api_key", TmdbOptions.ApiKey },
+                            { "language", Language.enUS.GetName(false) ?? "en-US" },
+                            { "watch_region", region.ToString() }
+                        };
+
+                    using (var http = new HttpClient())
+                    {
+                        var movies = await http.GetFromJsonAsync<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/movie".ConfigureParameters(parameter));
+                        if (movies != null) AddProvider(result, movies.results, details, region, MediaType.movie);
+
+                        var tvs = await http.GetFromJsonAsync<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/tv".ConfigureParameters(parameter));
+                        if (tvs != null) AddProvider(result, tvs.results, details, region, MediaType.tv);
+                    }
+                }
+
+                AllProviders.Items = result.OrderBy(o => int.Parse(o.id ?? "0")).ToList();
+
+                await SaveSession();
+            }
 
             await Toast.Success("Synchronization Finished");
         }
         catch (Exception ex)
         {
             ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private static void AddProvider(List<ProviderModel> final_list, List<ProviderBase> new_providers, List<ProviderModel> current_providers, Region region, MediaType type)
+    {
+        foreach (var item in new_providers)
+        {
+            var detail = current_providers.FirstOrDefault(f => f.id == item.provider_id.ToString());
+            var new_item = final_list.FirstOrDefault(f => f.id == item.provider_id.ToString());
+
+            if (new_item == null)
+            {
+                final_list.Add(new ProviderModel
+                    {
+                        //api
+                        id = item.provider_id.ToString(),
+                        name = item.provider_name,
+                        priority = item.display_priority,
+                        logo_path = item.logo_path,
+                        //own data (manual update)
+                        description = detail?.description,
+                        link = detail?.link,
+                        head_language = detail?.head_language,
+                        plans = detail?.plans ?? new(),
+                        models = detail?.models ?? new(),
+                        //api by regions
+                        regions = new List<Region> { region },
+                        types = new List<MediaType> { type }
+                    });
+            }
+            else
+            {
+                if (!new_item.regions.Any(a => a == region))
+                {
+                    new_item.regions.Add(region);
+                }
+                new_item.regions = new_item.regions.OrderBy(o => o).ToList();
+
+                if (!new_item.types.Any(a => a == type))
+                {
+                    new_item.types.Add(type);
+                }
+                new_item.types = new_item.types.OrderBy(o => o).ToList();
+            }
         }
     }
 

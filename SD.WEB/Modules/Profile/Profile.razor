@@ -25,9 +25,9 @@
         {
             var http = httpClientFactory.CreateClient("RetryHttpClient");
 
-            AppState.ChangeWishList(await http.GetFromJsonAsync<WishList>("/Data/WishList.json"));
-            AppState.ChangeWatchedList(await http.GetFromJsonAsync<WatchedList>("/Data/WatchedList.json"));
-            AppState.ChangeWatchingList(await http.GetFromJsonAsync<WatchingList>("/Data/WatchingList.json"));
+            AppState.ChangeWishList(await http.GetFromJsonAsync<WishList>("/data/WishList.json"));
+            AppState.ChangeWatchedList(await http.GetFromJsonAsync<WatchedList>("/data/WatchedList.json"));
+            AppState.ChangeWatchingList(await http.GetFromJsonAsync<WatchingList>("/data/WatchingList.json"));
         }
     }
 }

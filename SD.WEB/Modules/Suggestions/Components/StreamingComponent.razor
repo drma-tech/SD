@@ -5,6 +5,7 @@
 
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbApi TmdbApi
+@inject IJSRuntime JS
 
 <RenderControl Task="LoadAllProviders">
     @{
@@ -323,6 +324,9 @@
             }
         }
 
-        await AllProvidersApi.Post(AllProviders);
+        if (AllProviders != null)
+        {
+            await JS.InvokeVoidAsync("window.localStorage.setItem", new object[] { "AllProviders", System.Text.Json.JsonSerializer.Serialize(AllProviders) });
+        }
     }
 }
