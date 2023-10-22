@@ -1,7 +1,8 @@
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
-* binary
+* text=auto
+staticwebapp.config.json text eol=crlf
 
 ###############################################################################
 # Set default behavior for command prompt diff.
