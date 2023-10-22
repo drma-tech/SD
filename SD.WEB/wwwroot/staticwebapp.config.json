@@ -1,0 +1,16 @@
+{
+  "routes": [
+    {
+      "route": "/api/Public/*",
+      "allowedRoles": [ "anonymous" ]
+    },
+    {
+      "route": "/api/*",
+      "allowedRoles": [ "authenticated" ]
+    }
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [ "/images/*.{png,jpg,gif}", "/logo/*.{png,jpg,gif}", "/css/*" ]
+  }
+}
