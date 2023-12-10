@@ -3,19 +3,11 @@ using System.Net.Http.Json;
 
 namespace SD.WEB.Modules.Provider.Core
 {
-    public class AllProvidersApi : ApiServices
+    public class AllProvidersApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<AllProviders>(factory, memoryCache, "AllProviders")
     {
-        public IHttpClientFactory _factory { get; set; }
-
-        public AllProvidersApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-            _factory = http;
-        }
-
         public async Task<AllProviders?> GetAll()
         {
-            var http = _factory.CreateClient("RetryHttpClient");
-            return await http.GetFromJsonAsync<AllProviders>("/data/providers.json");
+            return await _http.GetFromJsonAsync<AllProviders>("/data/providers.json");
         }
     }
 }

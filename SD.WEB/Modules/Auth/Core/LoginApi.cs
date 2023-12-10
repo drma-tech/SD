@@ -3,12 +3,8 @@ using SD.Shared.Models.Auth;
 
 namespace SD.WEB.Modules.Auth.Core
 {
-    public class LoginApi : ApiServices
+    public class LoginApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache)
     {
-        public LoginApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         private struct Endpoint
         {
             public const string Add = "Login/Add";

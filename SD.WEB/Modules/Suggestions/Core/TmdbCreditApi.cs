@@ -3,12 +3,8 @@ using SD.Shared.Models.List.Tmdb;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class TmdbCreditApi : ApiServices
+    public class TmdbCreditApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache)
     {
-        public TmdbCreditApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         public async Task<Credits?> GetList(MediaType? type, string? tmdb_id)
         {
             if (string.IsNullOrEmpty(tmdb_id)) return default;

@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class ImdbPopularApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiServices(http, memoryCache), IMediaListApi
+    public class ImdbPopularApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache), IMediaListApi
     {
         public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
         {

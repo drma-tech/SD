@@ -3,26 +3,29 @@ using SD.Shared.Models.Support;
 
 namespace SD.WEB.Modules.Support.Core
 {
-    public class TicketVoteApi : ApiServices
+    public class TicketVoteApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<TicketVoteModel>(http, memoryCache, "TicketVoteModel")
     {
-        public TicketVoteApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         private struct Endpoint
         {
             public const string GetMyVotes = "Ticket/GetMyVotes";
             public const string Vote = "Ticket/Vote";
         }
 
-        public async Task<HashSet<TicketVoteModel>> GetMyVotes()
+        public async Task<HashSet<TicketVoteModel>> GetMyVotes(bool IsUserAuthenticated)
         {
-            return await GetListAsync<TicketVoteModel>(Endpoint.GetMyVotes, false);
+            if (IsUserAuthenticated)
+            {
+                return await GetListAsync(Endpoint.GetMyVotes, false);
+            }
+            else
+            {
+                return [];
+            }
         }
 
         public async Task<TicketVoteModel?> Vote(TicketVoteModel obj)
         {
-            return await PostAsync(Endpoint.Vote, false, obj);
+            return await PostAsync(Endpoint.Vote, obj);
         }
     }
 }

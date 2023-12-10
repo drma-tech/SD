@@ -5,12 +5,8 @@ using System.Text.Json;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class TmdbListApi : ApiServices, IMediaListApi
+    public class TmdbListApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache), IMediaListApi
     {
-        public TmdbListApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
         {
             if (list == null) throw new ArgumentException(null, nameof(list));

@@ -3,12 +3,8 @@ using SD.Shared.Models.Auth;
 
 namespace SD.WEB.Modules.Auth.Core
 {
-    public class PrincipalApi : ApiServices
+    public class PrincipalApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache)
     {
-        public PrincipalApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         private struct Endpoint
         {
             public const string Get = "Principal/Get";

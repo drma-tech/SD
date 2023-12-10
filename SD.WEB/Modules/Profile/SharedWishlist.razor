@@ -26,7 +26,7 @@
 
     protected override async Task LoadDataRender()
     {
-        WatchedList = await WatchedListApi.Get();
-        WishList = await WishListApi.Get();
+        WatchedList = await WatchedListApi.Get(IsUserAuthenticated, id);
+        WishList = await WishListApi.Get(IsUserAuthenticated, id);
     }
 }

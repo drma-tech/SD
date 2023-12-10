@@ -350,7 +350,7 @@
         {
             var list = WishList ?? new WishList();
 
-            list = await WishListApi.Remove(media.MediaType, media.tmdb_id);
+            list = await WishListApi.Remove(media.MediaType, media?.tmdb_id);
         }
         catch (Exception ex)
         {

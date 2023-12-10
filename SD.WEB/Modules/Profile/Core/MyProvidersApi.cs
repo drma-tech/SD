@@ -2,12 +2,8 @@
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class MyProvidersApi : ApiServices
+    public class MyProvidersApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<MyProviders>(factory, memoryCache, "MyProviders")
     {
-        public MyProvidersApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         private struct Endpoint
         {
             public const string MyProviders = "MyProviders";
@@ -17,7 +13,7 @@ namespace SD.WEB.Modules.Profile.Core
         {
             if (IsUserAuthenticated)
             {
-                return await GetAsync<MyProviders>(Endpoint.MyProviders, false);
+                return await GetAsync(Endpoint.MyProviders);
             }
             else
             {
@@ -27,9 +23,9 @@ namespace SD.WEB.Modules.Profile.Core
 
         public async Task<MyProviders?> Post(MyProviders? obj)
         {
-            if (obj == null) throw new ArgumentNullException(nameof(obj));
+            ArgumentNullException.ThrowIfNull(obj);
 
-            return await PostAsync(Endpoint.MyProviders, false, obj, Endpoint.MyProviders);
+            return await PostAsync(Endpoint.MyProviders, obj);
         }
     }
 }

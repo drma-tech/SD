@@ -3,12 +3,12 @@ using SD.Shared.Models.List.Tmdb;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class TmdbApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiServices(http, memoryCache)
+    public class TmdbApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache)
     {
         public async Task<MediaDetail> GetMediaDetail(string? tmdb_id, MediaType? type)
         {
-            if (tmdb_id == null) throw new ArgumentNullException(nameof(tmdb_id));
-            if (type == null) throw new ArgumentNullException(nameof(type));
+            ArgumentNullException.ThrowIfNull(tmdb_id);
+            ArgumentNullException.ThrowIfNull(type);
 
             var parameter = new Dictionary<string, string>()
             {

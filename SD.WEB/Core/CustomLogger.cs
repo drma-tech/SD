@@ -11,15 +11,8 @@ namespace SD.WEB.Core
         public void Dispose() => _loggers.Clear();
     }
 
-    public class CustomLogger : ILogger
+    public class CustomLogger(string name) : ILogger
     {
-        private readonly string _name;
-
-        public CustomLogger(string name)
-        {
-            _name = name;
-        }
-
         public IDisposable? BeginScope<TState>(TState state) where TState : notnull
         {
             return default;
@@ -41,7 +34,7 @@ namespace SD.WEB.Core
 
             AppStateStatic.Logs.Add(new LogContainer()
             {
-                Name = _name,
+                Name = name,
                 State = formatter(state, exception),
                 Message = exception?.Message,
                 StackTrace = exception?.StackTrace

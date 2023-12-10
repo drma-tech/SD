@@ -4,12 +4,8 @@ using SD.WEB.Modules.Suggestions.Interface;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class TmdbDiscoveryApi : ApiServices, IMediaListApi
+    public class TmdbDiscoveryApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache), IMediaListApi
     {
-        public TmdbDiscoveryApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
         {
             if (stringParameters != null)

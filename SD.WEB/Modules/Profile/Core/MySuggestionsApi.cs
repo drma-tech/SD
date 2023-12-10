@@ -2,12 +2,8 @@
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class MySuggestionsApi : ApiServices
+    public class MySuggestionsApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<SD.Shared.Models.MySuggestions>(factory, memoryCache, "MySuggestions")
     {
-        public MySuggestionsApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         private struct Endpoint
         {
             public const string Get = "MySuggestions/Get";
@@ -16,21 +12,29 @@ namespace SD.WEB.Modules.Profile.Core
             public static string Sync(MediaType? type) => $"MySuggestions/Sync/{type}";
         }
 
-        public async Task<SD.Shared.Models.MySuggestions?> Get()
+        public async Task<SD.Shared.Models.MySuggestions?> Get(bool IsUserAuthenticated)
         {
-            return await GetAsync<SD.Shared.Models.MySuggestions>(Endpoint.Get, false);
+            if (IsUserAuthenticated)
+            {
+                return await GetAsync(Endpoint.Get);
+            }
+            else
+            {
+                return new();
+            }
         }
 
         public async Task<SD.Shared.Models.MySuggestions?> Sync(MediaType? mediaType, SD.Shared.Models.MySuggestions obj)
         {
-            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
+            ArgumentNullException.ThrowIfNull(mediaType);
+            ArgumentNullException.ThrowIfNull(obj);
 
-            return await PostAsync(Endpoint.Sync(mediaType), false, obj, Endpoint.Get);
+            return await PostAsync(Endpoint.Sync(mediaType), obj);
         }
 
         public async Task Add(SD.Shared.Models.MySuggestions obj)
         {
-            await PostAsync(Endpoint.Add, false, obj, Endpoint.Get);
+            await PostAsync(Endpoint.Add, obj);
         }
     }
 }

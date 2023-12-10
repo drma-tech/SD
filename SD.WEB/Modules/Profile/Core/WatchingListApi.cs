@@ -2,7 +2,7 @@
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class WatchingListApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<WatchingList>(http, memoryCache, "WatchingList")
+    public class WatchingListApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<WatchingList>(factory, memoryCache, "WatchingList")
     {
         private struct Endpoint
         {
@@ -15,15 +15,19 @@ namespace SD.WEB.Modules.Profile.Core
             public static string Sync(MediaType? type) => $"watchinglist/sync/{type}";
         }
 
-        public async Task<WatchingList?> Get(string? id = null)
+        public async Task<WatchingList?> Get(bool IsUserAuthenticated, string? id = null)
         {
             if (!string.IsNullOrEmpty(id))
             {
                 return await GetAsync($"{Endpoint.Get}?id={id}");
             }
-            else
+            else if (IsUserAuthenticated)
             {
                 return await GetAsync(Endpoint.Get);
+            }
+            else
+            {
+                return new();
             }
         }
 

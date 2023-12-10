@@ -3,12 +3,8 @@ using SD.Shared.Models.Support;
 
 namespace SD.WEB.Modules.Support.Core
 {
-    public class AnnouncementApi : ApiServices
+    public class AnnouncementApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<AnnouncementModel>(http, memoryCache, "AnnouncementModel")
     {
-        public AnnouncementApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         private struct Endpoint
         {
             public const string Get = "Public/Announcements/Get";
@@ -16,7 +12,7 @@ namespace SD.WEB.Modules.Support.Core
 
         public async Task<AnnouncementModel?> Get()
         {
-            return await GetAsync<AnnouncementModel>(Endpoint.Get, false);
+            return await GetAsync(Endpoint.Get);
         }
     }
 }

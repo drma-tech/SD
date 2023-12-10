@@ -2,7 +2,7 @@
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class WatchedListApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<WatchedList>(http, memoryCache, "WatchedList")
+    public class WatchedListApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<WatchedList>(factory, memoryCache, "WatchedList")
     {
         private struct Endpoint
         {
@@ -13,15 +13,19 @@ namespace SD.WEB.Modules.Profile.Core
             public static string Remove(MediaType? type, string TmdbId) => $"watchedlist/remove/{type}/{TmdbId}";
         }
 
-        public async Task<WatchedList?> Get(string? id = null)
+        public async Task<WatchedList?> Get(bool IsUserAuthenticated, string? id = null)
         {
             if (!string.IsNullOrEmpty(id))
             {
                 return await GetAsync($"{Endpoint.Get}?id={id}");
             }
-            else
+            else if (IsUserAuthenticated)
             {
                 return await GetAsync(Endpoint.Get);
+            }
+            else
+            {
+                return new();
             }
         }
 
@@ -35,8 +39,8 @@ namespace SD.WEB.Modules.Profile.Core
 
         public async Task<WatchedList?> Remove(MediaType? mediaType, string? TmdbId)
         {
-            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
-            if (TmdbId == null) throw new ArgumentNullException(nameof(TmdbId));
+            ArgumentNullException.ThrowIfNull(mediaType);
+            ArgumentNullException.ThrowIfNull(TmdbId);
 
             return await PostAsync<WatchedList>(Endpoint.Remove(mediaType, TmdbId), null);
         }

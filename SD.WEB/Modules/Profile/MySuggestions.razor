@@ -94,7 +94,7 @@
             }
             else
             {
-                mySuggestions = await MySuggestionsApi.Get();
+                mySuggestions = await MySuggestionsApi.Get(IsUserAuthenticated);
 
                 if (mySuggestions == null || !mySuggestions.Items(SearchType).Any())
                 {

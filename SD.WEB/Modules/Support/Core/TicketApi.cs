@@ -3,12 +3,8 @@ using SD.Shared.Models.Support;
 
 namespace SD.WEB.Modules.Support.Core
 {
-    public class TicketApi : ApiServices
+    public class TicketApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<TicketModel>(http, memoryCache, "TicketModel")
     {
-        public TicketApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         private struct Endpoint
         {
             public const string GetList = "Public/Ticket/GetList";
@@ -17,12 +13,12 @@ namespace SD.WEB.Modules.Support.Core
 
         public async Task<HashSet<TicketModel>> GetList()
         {
-            return await GetListAsync<TicketModel>(Endpoint.GetList, false);
+            return await GetListAsync(Endpoint.GetList);
         }
 
         public async Task<TicketModel?> Insert(TicketModel obj)
         {
-            return await PostAsync(Endpoint.Insert, false, obj);
+            return await PostAsync(Endpoint.Insert, obj);
         }
     }
 }

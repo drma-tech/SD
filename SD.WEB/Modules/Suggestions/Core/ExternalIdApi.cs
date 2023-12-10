@@ -3,15 +3,11 @@ using SD.Shared.Models.List.Tmdb;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class ExternalIdApi : ApiServices
+    public class ExternalIdApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache)
     {
-        public ExternalIdApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         public async Task<string?> GetTmdbId(MediaType? type, string? imdb_id)
         {
-            if (imdb_id == null) throw new ArgumentNullException(nameof(imdb_id));
+            ArgumentNullException.ThrowIfNull(imdb_id);
 
             var parameter = new Dictionary<string, string>()
             {
