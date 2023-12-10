@@ -1,15 +1,18 @@
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SD.API.Repository.Core;
-using System.Reflection;
 
 var host = new HostBuilder()
-    .ConfigureAppConfiguration(builder =>
+    .ConfigureAppConfiguration((hostContext, config) =>
     {
-        builder.AddJsonFile("appsettings.json", true, true)
-            .AddUserSecrets(Assembly.GetExecutingAssembly(), true);
+        if (hostContext.HostingEnvironment.IsDevelopment())
+        {
+            config.AddJsonFile("local.settings.json");
+            config.AddUserSecrets<Program>();
+        }
     })
     .ConfigureFunctionsWorkerDefaults(worker =>
     {
@@ -25,14 +28,14 @@ host.Run();
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
-    //builder.Services.AddHttpClient();
-
     services.AddSingleton<IRepository>((s) =>
     {
         return new CosmosRepository(context.Configuration);
     });
 
     services.AddSingleton<CosmosCacheRepository>();
+    services.AddApplicationInsightsTelemetryWorkerService();
+    services.ConfigureFunctionsApplicationInsights();
 }
 
 static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder builder)

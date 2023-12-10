@@ -7,6 +7,7 @@
   "theme_color": "#03173d",
   "start_url": "/",
   "dir": "ltr",
+  "scope": ".",
   "lang": "en-US",
   "orientation": "any",
   "display": "standalone",
@@ -58,6 +59,50 @@
       "src": "icon/icon-512.png",
       "type": "image/png",
       "sizes": "512x512"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/en/index_desktop.png",
+      "type": "image/jpg",
+      "sizes": "1280x800",
+      "form_factor": "wide",
+      "label": "Index"
+    },
+    {
+      "src": "/screenshots/en/index_mobile.png",
+      "type": "image/jpg",
+      "sizes": "750x1334",
+      "form_factor": "narrow",
+      "label": "Index"
+    },
+    {
+      "src": "/screenshots/en/profile_desktop.png",
+      "type": "image/jpg",
+      "sizes": "1280x800",
+      "form_factor": "wide",
+      "label": "Profile"
+    },
+    {
+      "src": "/screenshots/en/profile_mobile.png",
+      "type": "image/jpg",
+      "sizes": "750x1334",
+      "form_factor": "narrow",
+      "label": "Profile"
+    },
+    {
+      "src": "/screenshots/en/suggestions_desktop.png",
+      "type": "image/jpg",
+      "sizes": "1280x800",
+      "form_factor": "wide",
+      "label": "Suggestions"
+    },
+    {
+      "src": "/screenshots/en/suggestions_mobile.png",
+      "type": "image/jpg",
+      "sizes": "750x1334",
+      "form_factor": "narrow",
+      "label": "Suggestions"
     }
   ],
   "launch_handler": {

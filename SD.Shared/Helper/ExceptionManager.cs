@@ -1,11 +1,8 @@
-﻿using System.Runtime.Serialization;
-
-namespace SD.Shared.Helper
+﻿namespace SD.Shared.Helper
 {
-    [Serializable]
     public class UnhandledException : Exception
     {
-        public UnhandledException() : base()
+        public UnhandledException()
         {
         }
 
@@ -16,16 +13,11 @@ namespace SD.Shared.Helper
         public UnhandledException(string? message, Exception? innerException) : base(message, innerException)
         {
         }
-
-        protected UnhandledException(SerializationInfo serializationInfo, StreamingContext streamingContext) : base(serializationInfo, streamingContext)
-        {
-        }
     }
 
-    [Serializable]
     public class NotificationException : Exception
     {
-        public NotificationException() : base()
+        public NotificationException()
         {
         }
 
@@ -34,10 +26,6 @@ namespace SD.Shared.Helper
         }
 
         public NotificationException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
-
-        protected NotificationException(SerializationInfo serializationInfo, StreamingContext streamingContext) : base(serializationInfo, streamingContext)
         {
         }
     }
