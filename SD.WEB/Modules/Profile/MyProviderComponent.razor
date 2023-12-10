@@ -12,7 +12,7 @@
     </Button>
 </HeaderComponent>
 
-<RenderControl Core="Core" Model="myProviders" ExpressionEmpty="((MyProviders? obj)=>!obj?.Items.Any()??true)" PrivateContent="true">
+<RenderControl Core="Core" Model="myProviders" ExpressionEmpty="((MyProviders? obj)=>obj==null||!obj.Items.Any())" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in myProviders?.Items.Take(GetTotalItems(expand)) ?? new List<MyProvidersItem>())
         {

@@ -12,7 +12,8 @@
         }
     </HeaderComponent>
 }
-<RenderControl Core="Core" PrivateContent="Private" Model="WishList" ExpressionEmpty="@((WishList? list)=>MediaType==MediaType.movie?!list?.Movies.Any()??true:!list?.Shows.Any()??true)">
+<RenderControl Core="Core" PrivateContent="Private" Model="WishList"
+               ExpressionEmpty="@((WishList? list)=>MediaType==MediaType.movie ? list==null||!list.Movies.Any() : list==null||!list.Shows.Any())">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in Items.Take(GetTotalItems) ?? new List<WishListItem>())
         {

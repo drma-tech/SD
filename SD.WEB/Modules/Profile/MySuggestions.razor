@@ -31,7 +31,7 @@
     }
 </HeaderComponent>
 
-<RenderControl Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj)=>!obj?.Items(SearchType).Any()??true)" PrivateContent="true">
+<RenderControl Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj)=>obj==null||!obj.Items(SearchType).Any())" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !Watched(SearchType, w)).Take(GetTotalItems) ?? new List<SuggestionListItem>())
         {

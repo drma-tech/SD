@@ -20,7 +20,7 @@
         </Button>
     }
 </HeaderComponent>
-<RenderControl Core="Core" Model="WatchingList" ExpressionEmpty="@((WatchingList? list)=>!list?.Movies.Any()??true)" PrivateContent="true">
+<RenderControl Core="Core" Model="WatchingList" ExpressionEmpty="@((WatchingList? list)=>list==null||!list.Movies.Any())" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
         {
@@ -72,7 +72,7 @@
         </Button>
     }
 </HeaderComponent>
-<RenderControl Core="Core" Model="WatchingList" ExpressionEmpty="@((WatchingList? list)=>!list?.Shows.Any()??true)">
+<RenderControl Core="Core" Model="WatchingList" ExpressionEmpty="@((WatchingList? list)=>list==null||!list.Shows.Any())">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
         {

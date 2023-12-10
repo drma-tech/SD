@@ -89,7 +89,8 @@ else //ShowContent
         if (firstRender && PrivateContent && authenticationState is not null)
         {
             var authState = await authenticationState;
-            var isAuthenticated = authState?.User?.Identity?.IsAuthenticated ?? false;
+            var user = authState?.User;
+            var isAuthenticated = user?.Identity is not null && user.Identity.IsAuthenticated;
 
             if (!isAuthenticated)
             {
