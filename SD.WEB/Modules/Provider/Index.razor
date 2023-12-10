@@ -10,7 +10,7 @@
 
 <HeaderComponent Title="@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region.GetName())">
 </HeaderComponent>
-<RenderControl Task="LoadAllProviders">
+<RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj)=>obj==null||!obj.Items.Any())">
     <Row HorizontalGutter="4" VerticalGutter="4">
         @foreach (var item in GetFilteredProviders())
         {
@@ -52,7 +52,9 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
+    public RenderControlCore<AllProviders?>? Core { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
+
     private MyProviders? myProviders { get; set; }
 
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
@@ -63,15 +65,12 @@
         AppStateStatic.RegionChanged += StateHasChanged;
     }
 
-    protected async Task<bool> LoadAllProviders()
-    {
-        AllProviders = await AllProvidersApi.GetAll();
-
-        return AllProviders == null;
-    }
-
     protected override async Task LoadDataRender()
     {
-        myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
+        Core?.LoadingStarted?.Invoke();
+        AllProviders = await AllProvidersApi.GetAll();
+        Core?.LoadingFinished?.Invoke(AllProviders);
+
+        myProviders = await MyProvidersApi.Get(IsUserAuthenticated);
     }
 }

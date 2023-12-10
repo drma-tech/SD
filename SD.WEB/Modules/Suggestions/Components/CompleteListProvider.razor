@@ -2,16 +2,16 @@
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@CardHeader</ModalTitle>
-    <CloseButton />
-</ModalHeader>
-<ModalBody MaxHeight="70">
-    <Row HorizontalGutter="4" VerticalGutter="4">
-        @foreach (var item in GetFilteredProviders())
+        <CloseButton />
+    </ModalHeader>
+    <ModalBody MaxHeight="70">
+        <Row HorizontalGutter="4" VerticalGutter="4">
+            @foreach (var item in GetFilteredProviders())
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                 <Card>
                     <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name"
-                           onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;" title="@item.name"></CardImage>
+                               onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;" title="@item.name"></CardImage>
                 </Card>
                 @*@if (string.IsNullOrEmpty(item.link))
             {
@@ -34,11 +34,16 @@
     </Row>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">@TranslationText.Close</Button>
+    <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">
+        @TranslationText.Close
+    </Button>
 </ModalFooter>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
+
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
     [Parameter] public string? CardHeader { get; set; }
     [Parameter] public AllProviders? AllProviders { get; set; }
@@ -57,6 +62,8 @@
         x =>
         {
             x.Add(x => x.provider, item);
+            x.Add(x => x.WatchedList, WatchedList);
+            x.Add(x => x.WishList, WishList);
         },
         new ModalInstanceOptions()
             {

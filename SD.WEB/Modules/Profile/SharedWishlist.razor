@@ -1,0 +1,32 @@
+﻿@page "/shared/wishlist/{type}/{id}"
+@page "/shared/wishlist/{type}"
+
+@using SD.WEB.Modules.Profile.Components
+@using SD.WEB.Modules.Profile.Core
+
+@inherits PageCore<SharedWishlist>
+@inject WishListApi WishListApi
+@inject WatchedListApi WatchedListApi
+
+<Wishlist Core="CoreWishlist" MediaType="MediaType.movie" Private="Private" ShowHeader="true" FullScreen="true" Id="@id" WatchedList="WatchedList" WishList="WishList"></Wishlist>
+
+@code {
+    [Parameter] public string? type { get; set; }
+    [Parameter] public string? id { get; set; }
+
+    public RenderControlCore<WishList> CoreWishlist { get; set; } = new();
+    public bool Private => string.IsNullOrEmpty(id);
+    public WatchedList? WatchedList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        WishListApi.SetRenderCore(CoreWishlist);
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get();
+        WishList = await WishListApi.Get();
+    }
+}

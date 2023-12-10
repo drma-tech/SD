@@ -1,20 +1,23 @@
 ﻿@using SD.Shared.Models.News;
 @inherits ComponenteCore<NewsComponent>
 
-@inject CacheApi CacheApi
+@inject CacheFlixsterApi CacheFlixsterApi
 
 <HeaderComponent Title="@($"{GlobalTranslations.NewsTitle} - {Language.enUS.GetName()}")" IconImage="logo/rotten-tomatoes.png">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList" title="Show all news">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-<RenderControl Task="LoadNews">
+<RenderControl Core="Core" Model="News" ExpressionEmpty="@((NewsModel? obj)=>obj==null||!obj.Items.Any())">
     <Carousel @bind-SelectedSlide="@selectedSlide">
-        @foreach (var item in News?.Items ?? new())
+        @foreach (var item in News?.Items ?? [])
         {
             <CarouselSlide Name="@item.id">
                 <div style="position: absolute; top: 0px; left: 0px; background-color: lime; opacity: 70%; font: caption;" class="px-1 m-2">
-                    @((MarkupString)item.title)
+                    @if (!string.IsNullOrEmpty(item.title))
+                    {
+                        @((MarkupString)item.title)
+                    }
                 </div>
                 <Blazorise.Link To="@item?.link" Target="Target.Blank" Title="@item?.title">
                     <Image Source="@item?.url_img" title="@item?.title" Text="@item?.title" Display="Display.Block" Width="Width.Is100" />
@@ -27,16 +30,18 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
+    public RenderControlCore<NewsModel?> Core { get; set; } = new();
     private NewsModel? News { get; set; }
     public string? selectedSlide { get; set; }
 
-    protected async Task<bool> LoadNews()
+    protected override void OnInitialized()
     {
-        var cache = await CacheApi.GetNews("compact");
+        CacheFlixsterApi.SetRenderCore(Core);
+    }
 
-        News = (NewsModel?)cache?.Data;
-
-        return News== null;
+    protected override async Task LoadDataRender()
+    {
+        News = await CacheFlixsterApi.GetNews("compact");
     }
 
     private async Task OpenCompleteList()

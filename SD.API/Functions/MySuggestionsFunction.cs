@@ -45,6 +45,7 @@ namespace SD.API.Functions
             try
             {
                 var userId = req.GetUserId();
+                if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
                 var obj = await _repo.Get<MySuggestions>(DocumentType.MySuggestions + ":" + userId, new PartitionKey(userId), cancellationToken);
                 var body = await req.GetPublicBody<MySuggestions>(cancellationToken);

@@ -2,47 +2,41 @@
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class WishListApi : ApiServices
+    public class WishListApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<WishList>(http, memoryCache, "WishList")
     {
-        public WishListApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         private struct Endpoint
         {
-            public const string Get = "WishList/Get";
+            public const string Get = "wishlist/get";
 
-            public static string Add(MediaType? type) => $"WishList/Add/{type}";
+            public static string Add(MediaType type) => $"wishlist/add/{type}";
 
-            public static string Remove(MediaType? type, string TmdbId) => $"WishList/Remove/{type}/{TmdbId}";
+            public static string Remove(MediaType type, string id) => $"wishlist/remove/{type}/{id}";
         }
 
-        public async Task<WishList?> Get(bool IsUserAuthenticated)
+        public async Task<WishList?> Get(string? id = null)
         {
-            if (IsUserAuthenticated)
+            if (!string.IsNullOrEmpty(id))
             {
-                return await GetAsync<WishList>(Endpoint.Get, false);
+                return await GetAsync($"{Endpoint.Get}?id={id}");
             }
             else
             {
-                return default;
+                return await GetAsync(Endpoint.Get);
             }
         }
 
-        public async Task<WishList?> Add(MediaType? mediaType, WishListItem? item)
+        public async Task<WishList?> Add(MediaType mediaType, WishListItem item)
         {
-            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            ArgumentNullException.ThrowIfNull(item);
 
-            return await PostAsync<WishListItem, WishList>(Endpoint.Add(mediaType), false, item, Endpoint.Get);
+            return await PostAsync(Endpoint.Add(mediaType), item);
         }
 
-        public async Task<WishList?> Remove(MediaType? mediaType, string? TmdbId)
+        public async Task<WishList?> Remove(MediaType mediaType, string id)
         {
-            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
-            if (TmdbId == null) throw new ArgumentNullException(nameof(TmdbId));
+            ArgumentNullException.ThrowIfNull(id);
 
-            return await PostAsync<WishList>(Endpoint.Remove(mediaType, TmdbId), false, null, Endpoint.Get);
+            return await PostAsync(Endpoint.Remove(mediaType, id), (WishList?)null);
         }
     }
 }

@@ -5,11 +5,11 @@
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@ShowTitle (@ShowSeasonName)</ModalTitle>
-    <CloseButton />
-</ModalHeader>
-<ModalBody MaxHeight="70">
-    <RenderControl Task="LoadSeason">
-        <ListGroup Flush>
+        <CloseButton />
+    </ModalHeader>
+    <ModalBody MaxHeight="70">
+        <RenderControl Core="Core" Model="Season" ExpressionEmpty="@((TmdbSeason? obj)=>obj==null||!obj.episodes.Any())">
+            <ListGroup Flush>
             @foreach (var item in Season?.episodes ?? new())
             {
                 <ListGroupItem Padding="Padding.Is2">
@@ -27,15 +27,17 @@
                         <Column>
                             <Heading Size="HeadingSize.Is6" Margin="Margin.Is1.FromBottom">@(item.episode_number + " - " + item.name)</Heading>
                             <Small TextAlignment="TextAlignment.Justified">@item.overview</Small>
-                        </Column>
-                    </Row>
-                </ListGroupItem>
+                            </Column>
+                        </Row>
+                    </ListGroupItem>
             }
         </ListGroup>
     </RenderControl>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">@GlobalTranslations.ButtonClose</Button>
+    <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">
+        @GlobalTranslations.ButtonClose
+    </Button>
 </ModalFooter>
 
 @code {
@@ -46,9 +48,10 @@
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public int? season_number { get; set; }
 
+    public RenderControlCore<TmdbSeason?>? Core { get; set; } = new();
     public TmdbSeason? Season { get; set; }
 
-    protected async Task<bool> LoadSeason()
+    protected override async Task LoadDataRender()
     {
         var parameters = new Dictionary<string, string>()
             {
@@ -57,8 +60,6 @@
             };
 
         Season = await TmdbApi.GetSeason(tmdb_id, season_number, parameters);
-
-        return Season == null;
     }
 
     public async Task HideModal()

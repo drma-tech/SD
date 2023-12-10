@@ -3,7 +3,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
-using System.Net;
 
 namespace SD.API.Functions
 {
@@ -20,13 +19,17 @@ namespace SD.API.Functions
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchingList))]
         [Function("WatchingListGet")]
         public async Task<WatchingList?> Get(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "WatchingList/Get")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "watchinglist/get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
                 var userId = req.GetUserId();
+                var id = req.GetQueryParameters()["id"];
 
-                return await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, new PartitionKey(userId), cancellationToken);
+                if (string.IsNullOrEmpty(id))
+                    return await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, new PartitionKey(userId), cancellationToken);
+                else
+                    return await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + id, new PartitionKey(id), cancellationToken);
             }
             catch (Exception ex)
             {
@@ -39,12 +42,13 @@ namespace SD.API.Functions
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchingList))]
         [Function("WatchingListAdd")]
         public async Task<WatchingList?> Add(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WatchingList/Add/{MediaType}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchinglist/add/{MediaType}")] HttpRequestData req,
             string MediaType, CancellationToken cancellationToken)
         {
             try
             {
                 var userId = req.GetUserId();
+                if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
                 var obj = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, new PartitionKey(userId), cancellationToken);
                 var newItem = await req.GetPublicBody<WatchingListItem>(cancellationToken);
@@ -75,12 +79,13 @@ namespace SD.API.Functions
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchingList))]
         [Function("WatchingListRemove")]
         public async Task<WatchingList?> Remove(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WatchingList/Remove/{MediaType}/{CollectionId}/{TmdbId}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchinglist/remove/{MediaType}/{CollectionId}/{TmdbId}")] HttpRequestData req,
             string MediaType, string CollectionId, string TmdbId, CancellationToken cancellationToken)
         {
             try
             {
                 var userId = req.GetUserId();
+                if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
                 var obj = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, new PartitionKey(userId), cancellationToken);
 
@@ -110,12 +115,13 @@ namespace SD.API.Functions
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchingList))]
         [Function("WatchingListSync")]
         public async Task<WatchingList?> Sync(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WatchingList/Sync/{MediaType}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchinglist/sync/{MediaType}")] HttpRequestData req,
             string MediaType, CancellationToken cancellationToken)
         {
             try
             {
                 var userId = req.GetUserId();
+                if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
                 var obj = await _repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, new PartitionKey(userId), cancellationToken);
 

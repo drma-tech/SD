@@ -2,11 +2,35 @@
 <SeoHeader Title="Suggestions | Metacritic" Keywords="@(new []{"Metacritic"})" Url="/suggestions/metacritic"></SeoHeader>
 
 @inherits PageCore<Metacritic>
+@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 <HeadPage Title="Metacritic" ImageSource="logo/metacritic.png" Text="Metacritic aggregates music, game, tv, and movie reviews from the leading critics. Only Metacritic.com uses METASCORES, which let you know at a glance how each item was reviewed." Link="https://www.metacritic.com/"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestMoviesofAllTime" MaxItens="100"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestTVShowsofAllTime" MaxItens="100"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestMoviesofAllTime" MaxItens="100" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestTVShowsofAllTime" MaxItens="100" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+
+@code {
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += (WatchedList? model) => WatchedList = model;
+        WatchingListApi.DataChanged += (WatchingList? model) => WatchingList = model;
+        WishListApi.DataChanged += (WishList? model) => WishList = model;
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get();
+        WatchingList = await WatchingListApi.Get();
+        WishList = await WishListApi.Get();
+    }
+}

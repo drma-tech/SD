@@ -3,7 +3,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
-using System.Net;
 
 namespace SD.API.Functions
 {
@@ -20,13 +19,17 @@ namespace SD.API.Functions
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WishList))]
         [Function("WishListGet")]
         public async Task<WishList?> Get(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "WishList/Get")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "wishlist/get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
                 var userId = req.GetUserId();
+                var id = req.GetQueryParameters()["id"];
 
-                return await _repo.Get<WishList>(DocumentType.WishList + ":" + userId, new PartitionKey(userId), cancellationToken);
+                if (string.IsNullOrEmpty(id))
+                    return await _repo.Get<WishList>(DocumentType.WishList + ":" + userId, new PartitionKey(userId), cancellationToken);
+                else
+                    return await _repo.Get<WishList>(DocumentType.WishList + ":" + id, new PartitionKey(id), cancellationToken);
             }
             catch (Exception ex)
             {
@@ -39,12 +42,13 @@ namespace SD.API.Functions
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WishList))]
         [Function("WishListAdd")]
         public async Task<WishList?> Add(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WishList/Add/{MediaType}")] HttpRequestData req,
-            string MediaType, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "wishlist/add/{type}")] HttpRequestData req,
+            string type, CancellationToken cancellationToken)
         {
             try
             {
                 var userId = req.GetUserId();
+                if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
                 var obj = await _repo.Get<WishList>(DocumentType.WishList + ":" + userId, new PartitionKey(userId), cancellationToken);
                 var newItem = await req.GetPublicBody<WishListItem>(cancellationToken);
@@ -60,7 +64,7 @@ namespace SD.API.Functions
                     obj.Update();
                 }
 
-                obj.AddItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), newItem);
+                obj.AddItem((MediaType)Enum.Parse(typeof(MediaType), type), newItem);
 
                 return await _repo.Upsert(obj, cancellationToken);
             }
@@ -75,12 +79,13 @@ namespace SD.API.Functions
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WishList))]
         [Function("WishListRemove")]
         public async Task<WishList?> Remove(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "WishList/Remove/{MediaType}/{TmdbId}")] HttpRequestData req,
-            string MediaType, string TmdbId, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "wishlist/remove/{type}/{id}")] HttpRequestData req,
+            string type, string id, CancellationToken cancellationToken)
         {
             try
             {
                 var userId = req.GetUserId();
+                if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
                 var obj = await _repo.Get<WishList>(DocumentType.WishList + ":" + userId, new PartitionKey(userId), cancellationToken);
 
@@ -95,7 +100,7 @@ namespace SD.API.Functions
                     obj.Update();
                 }
 
-                obj.RemoveItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), TmdbId);
+                obj.RemoveItem((MediaType)Enum.Parse(typeof(MediaType), type), id);
 
                 return await _repo.Upsert(obj, cancellationToken);
             }

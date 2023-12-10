@@ -48,7 +48,7 @@ namespace SD.WEB.Modules.Profile
         //        });
         //}
 
-        protected Task UpdateDataSelect(Expression<Func<TValue>> For)
+        protected Task UpdateDataSelect(Expression<Func<TValue>>? For)
         {
             return ModalService.Show<ProfileDataSelect<TValue, TEnum>>("",
                 x =>
@@ -57,7 +57,7 @@ namespace SD.WEB.Modules.Profile
                     x.Add(x => x.SelectedValues, SelectedValues);
                     x.Add(x => x.SelectedValuesChanged, SelectedValuesChanged);
                     x.Add(x => x.Order, Order);
-                    x.Add(x => x.Title, For.GetCustomAttribute()?.Name);
+                    x.Add(x => x.Title, For?.GetCustomAttribute()?.Name);
                 },
                 new ModalInstanceOptions()
                 {

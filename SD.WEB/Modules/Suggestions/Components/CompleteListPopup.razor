@@ -6,19 +6,30 @@
 @inject ExternalIdApi ExternalIdApi
 
 <ModalHeader>
-    <ModalTitle Size="HeadingSize.Is5">@GetTitle</ModalTitle>
+    <ModalTitle Size="HeadingSize.Is5">
+        @GetTitle
+    </ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
     <MediaListFull Items="Items" IsIMDB="IsIMDB" MaxItens="MaxItens" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
-                   StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false"></MediaListFull>
+                   StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false" Private="false"
+                   WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList">
+    </MediaListFull>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">@TranslationText.Close</Button>
+    <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">
+        @TranslationText.Close
+    </Button>
 </ModalFooter>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
+
+    [Parameter][EditorRequired] public bool Private { get; set; }
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
     [Parameter] public string? TitleHead { get; set; }
     [Parameter] public IMediaListApi? MediaListApi { get; set; }

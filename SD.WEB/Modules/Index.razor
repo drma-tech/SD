@@ -9,7 +9,9 @@
 @using SD.WEB.Modules.News.Components;
 @using SD.WEB.Modules.Trailers.Components
 
-@*<GoogleAdsense></GoogleAdsense>*@
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 <Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
     <Column>
@@ -22,7 +24,7 @@
     </Column>
 </Row>
 
-<PopularIndexComponent></PopularIndexComponent>
+<PopularIndexComponent WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></PopularIndexComponent>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
@@ -38,7 +40,34 @@
 
     [Parameter][SupplyParameterFromQuery(Name = "language")] public string? language { get; set; }
 
+    public RenderControlCore<WatchedList> CoreWatched { get; set; } = new();
+    public RenderControlCore<WatchingList> CoreWatching { get; set; } = new();
+    public RenderControlCore<WishList> CoreWishlist { get; set; } = new();    
+
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
     public string? Search { get; set; }
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += (WatchedList? model) => WatchedList = model;
+        WatchedListApi.SetRenderCore(CoreWatched);
+
+        WatchingListApi.DataChanged += (WatchingList? model) => WatchingList = model;
+        WatchingListApi.SetRenderCore(CoreWatching);
+
+        WishListApi.DataChanged += (WishList? model) => WishList = model;
+        WishListApi.SetRenderCore(CoreWishlist);
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get();
+        WatchingList = await WatchingListApi.Get();
+        WishList = await WishListApi.Get();
+    }
 
     public async Task ShowSearchPopup()
     {

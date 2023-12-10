@@ -7,7 +7,7 @@
 @inject TmdbApi TmdbApi
 @inject IJSRuntime JS
 
-<RenderControl Task="LoadAllProviders">
+<RenderControl Core="Core" Model="Providers" ExpressionEmpty="@((MediaProviders? obj)=>obj==null)">
     @{
         var hasProvider = false;
 
@@ -16,7 +16,9 @@
             hasProvider = true;
             <Row HorizontalGutter="4" VerticalGutter="4">
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                    <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFree</Button>
+                    <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
+                        @GlobalTranslations.DeliveryModelFree
+                    </Button>
                 </Column>
                 @foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
                 {
@@ -40,7 +42,9 @@
             hasProvider = true;
             <Row HorizontalGutter="4" VerticalGutter="4">
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                    <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelAds</Button>
+                    <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
+                        @GlobalTranslations.DeliveryModelAds
+                    </Button>
                 </Column>
                 @foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
                 {
@@ -64,7 +68,9 @@
             hasProvider = true;
             <Row HorizontalGutter="4" VerticalGutter="4">
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                    <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFlatRate</Button>
+                    <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
+                        @GlobalTranslations.DeliveryModelFlatRate
+                    </Button>
                 </Column>
                 @foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
                 {
@@ -88,7 +94,9 @@
             hasProvider = true;
             <Row HorizontalGutter="4" VerticalGutter="4">
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                    <Button Color="Color.Warning" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelFlatRateBuy</Button>
+                    <Button Color="Color.Warning" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
+                        @GlobalTranslations.DeliveryModelFlatRateBuy
+                    </Button>
                 </Column>
                 @foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
                 {
@@ -112,7 +120,9 @@
             hasProvider = true;
             <Row HorizontalGutter="4" VerticalGutter="4">
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                    <Button Color="Color.Primary" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelRent</Button>
+                    <Button Color="Color.Primary" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
+                        @GlobalTranslations.DeliveryModelRent
+                    </Button>
                 </Column>
                 @foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
                 {
@@ -136,7 +146,9 @@
             hasProvider = true;
             <Row HorizontalGutter="4" VerticalGutter="4">
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                    <Button Color="Color.Danger" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">@GlobalTranslations.DeliveryModelBuy</Button>
+                    <Button Color="Color.Danger" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
+                        @GlobalTranslations.DeliveryModelBuy
+                    </Button>
                 </Column>
                 @foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
                 {
@@ -219,6 +231,7 @@
     [Parameter] public string? MediaYear { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
+    public RenderControlCore<MediaProviders?>? Core { get; set; } = new();
     private MediaProviders? Providers { get; set; }
     private AllProviders? AllProviders { get; set; }
 
@@ -228,12 +241,12 @@
     private string bookLink => $"https://www.amazon.com/gp/search?ie=UTF8&tag=streamingdi0d-20&camp=1789&creative=9325&index=books&keywords={MediaTitle}";
     private string bookText => $"{GlobalTranslations.BuyBook}: {MediaTitle}";
 
-    protected async Task<bool> LoadAllProviders()
+    protected override async Task LoadDataRender()
     {
+        Core?.LoadingStarted?.Invoke();
         Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
+        Core?.LoadingFinished?.Invoke(Providers);
         AllProviders = await AllProvidersApi.GetAll();
-
-        return AllProviders == null;
     }
 
     private async Task Atualizar()

@@ -23,7 +23,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("CacheNew", "Rapid API (json)", Description = "flixster / cached - one_day")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<NewsModel>))]
         [Function("CacheNew")]
-        public async Task<CacheDocument<NewsModel>?> CacheNew(
+        public async Task<NewsModel?> CacheNew(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/News")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -62,13 +62,13 @@ namespace SD.API.Functions
                     var fullResult = await _cacheRepo.Add(new FlixsterCache(fullModels, "lastnews_full"), cancellationToken);
 
                     if (mode == "compact")
-                        return compactResult;
+                        return compactResult?.Data;
                     else
-                        return fullResult;
+                        return fullResult?.Data;
                 }
                 else
                 {
-                    return model;
+                    return model.Data;
                 }
             }
             catch (Exception ex)
@@ -81,7 +81,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("CacheTrailers", "Rapid API (json)", Description = "youtube-search-and-download / cached - one_day")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<TrailerModel>))]
         [Function("CacheTrailers")]
-        public async Task<CacheDocument<TrailerModel>?> CacheTrailers(
+        public async Task<TrailerModel?> CacheTrailers(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Trailers")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -102,7 +102,7 @@ namespace SD.API.Functions
                     foreach (var item in obj.contents.Take(8).Select(s => s.video))
                     {
                         if (item == null) continue;
-                        compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails.First().url));
+                        compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url));
                     }
 
                     var compactResult = await _cacheRepo.Add(new YoutubeCache(compactModels, "lasttrailers_compact"), cancellationToken);
@@ -120,13 +120,13 @@ namespace SD.API.Functions
                     var fullResult = await _cacheRepo.Add(new YoutubeCache(fullModels, "lasttrailers_full"), cancellationToken);
 
                     if (mode == "compact")
-                        return compactResult;
+                        return compactResult?.Data;
                     else
-                        return fullResult;
+                        return fullResult?.Data;
                 }
                 else
                 {
-                    return model;
+                    return model.Data;
                 }
             }
             catch (Exception ex)
@@ -139,7 +139,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("ImdbPopularMovies", "IMDB (scraping)", Description = "scraping / cached - one_day")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<MostPopularData>))]
         [Function("ImdbPopularMovies")]
-        public async Task<CacheDocument<MostPopularData>?> ImdbPopularMovies(
+        public async Task<MostPopularData?> ImdbPopularMovies(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/ImdbPopularMovies")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -178,13 +178,13 @@ namespace SD.API.Functions
                     var fullResult = await _cacheRepo.Add(new MostPopularDataCache(fullModels, "popularmovies_full"), cancellationToken);
 
                     if (mode == "compact")
-                        return compactResult;
+                        return compactResult?.Data;
                     else
-                        return fullResult;
+                        return fullResult?.Data;
                 }
                 else
                 {
-                    return model;
+                    return model.Data;
                 }
             }
             catch (Exception ex)
@@ -197,7 +197,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("ImdbPopularTVs", "IMDB (scraping)", Description = "scraping / cached - one_day")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<MostPopularData>))]
         [Function("ImdbPopularTVs")]
-        public async Task<CacheDocument<MostPopularData>?> ImdbPopularTVs(
+        public async Task<MostPopularData?> ImdbPopularTVs(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/ImdbPopularTVs")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -214,7 +214,7 @@ namespace SD.API.Functions
                     model = await _cacheRepo.Add(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
                 }
 
-                return model;
+                return model?.Data;
             }
             catch (Exception ex)
             {
@@ -226,7 +226,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("CacheMovieRatings", "Metacritic (scraping)", Description = "scraping / cached - one_day x one_year")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<Ratings>))]
         [Function("CacheMovieRatings")]
-        public async Task<CacheDocument<Ratings>?> CacheMovieRatings(
+        public async Task<Ratings?> CacheMovieRatings(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Ratings/Movie")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -267,7 +267,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                return model;
+                return model?.Data;
             }
             catch (Exception ex)
             {
@@ -279,7 +279,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("CacheShowRatings", "Metacritic (scraping)", Description = "scraping / cached - one_day x one_year")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<Ratings>))]
         [Function("CacheShowRatings")]
-        public async Task<CacheDocument<Ratings>?> CacheShowRatings(
+        public async Task<Ratings?> CacheShowRatings(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Ratings/Show")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -320,7 +320,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                return model;
+                return model?.Data;
             }
             catch (Exception ex)
             {
@@ -332,7 +332,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("CacheMovieReviews", "Rapid API (json)", Description = "imdb8 / cached - one_day x one_year")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<ReviewModel>))]
         [Function("CacheMovieReviews")]
-        public async Task<CacheDocument<ReviewModel>?> CacheMovieReviews(
+        public async Task<ReviewModel?> CacheMovieReviews(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Reviews/Movies")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -379,7 +379,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                return model;
+                return model?.Data;
             }
             catch (Exception ex)
             {
@@ -391,7 +391,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("CacheMovieReviews", "Metacritic (scraping)", Description = "scraping / cached - one_day x one_year")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<ReviewModel>))]
         [Function("CacheShowReviews")]
-        public async Task<CacheDocument<ReviewModel>?> CacheShowReviews(
+        public async Task<ReviewModel?> CacheShowReviews(
           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Cache/Reviews/Shows")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -442,7 +442,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                return model;
+                return model?.Data;
             }
             catch (Exception ex)
             {

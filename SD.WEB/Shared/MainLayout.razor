@@ -1,12 +1,13 @@
 ﻿@using SD.Shared.Models.Support;
 @using SD.WEB.Modules.Support.Core;
 @using Toolbelt.Blazor.PWA.Updater
+
 @inherits LayoutComponentBase
+
 @inject NavigationManager Navigation
 @inject ILogger<MainLayout> Logger
 @inject INotificationService Toast
 @inject TicketApi TicketApi
-@inject AppState AppState
 
 <MediaQueryList>
     <Layout Sider="true" Style="height: var(--app-height);">
@@ -81,6 +82,8 @@
 <PWAUpdater Text="@GlobalTranslations.PWAUpdaterText" ButtonCaption="@GlobalTranslations.PWAUpdaterButton" />
 
 @code {
+    [CascadingParameter] protected Task<AuthenticationState> authenticationState { get; set; } = default!;
+
     private enum TypeButton
     {
         Home, Profile, Providers, Suggestions, Support
@@ -132,10 +135,13 @@
     {
         try
         {
+            var authState = await authenticationState;
+            var user = authState?.User;
+
             var Ticket = new TicketModel();
 
             Ticket.TicketType = TicketType.BugReport;
-            Ticket.Initialize(await AppState.GetIdUser());
+            Ticket.Initialize(user?.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
             Ticket.Title = exc.Message ?? "erro desconhecido";
             Ticket.Description = exc.StackTrace;
 

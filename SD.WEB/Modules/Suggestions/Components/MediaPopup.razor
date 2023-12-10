@@ -8,18 +8,20 @@
 @inherits ComponenteCore<MediaPopup>
 
 @inject TmdbApi TmdbApi
-@inject CacheApi CacheApi
+@inject CacheRatingsApi CacheRatingsApi
 @inject ExternalIdApi ExternalIdApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
 <ModalHeader>
-    <ModalTitle Size="HeadingSize.Is5">@media?.title</ModalTitle>
+    <ModalTitle Size="HeadingSize.Is5">
+        @media?.title
+    </ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <RenderControl Task="LoadMedia">
+    <RenderControl Model="media" Core="Core" ExpressionEmpty="@((MediaDetail? obj)=>obj==null)">
         <Row HorizontalGutter="8" VerticalGutter="8">
             <Column ColumnSize="ColumnSize.Is12.OnMobile.Is4.OnDesktop">
                 @if (string.IsNullOrEmpty(media?.poster_large))
@@ -44,9 +46,15 @@
             <Column ColumnSize="ColumnSize.Is12.OnMobile.Is8.OnDesktop">
                 <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" RenderMode="TabsRenderMode.LazyLoad">
                     <Items>
-                        <Tab Name="About">@GlobalTranslations.TabAbout</Tab>
-                        <Tab Name="WhereToWatch">@GlobalTranslations.TabWhereToWatch</Tab>
-                        <Tab Name="Credits">@GlobalTranslations.TabCredits</Tab>
+                        <Tab Name="About">
+                            @GlobalTranslations.TabAbout
+                        </Tab>
+                        <Tab Name="WhereToWatch">
+                            @GlobalTranslations.TabWhereToWatch
+                        </Tab>
+                        <Tab Name="Credits">
+                            @GlobalTranslations.TabCredits
+                        </Tab>
                         @if (media?.Collection.Any() ?? false)
                         {
                             <Tab Name="Collection">@GlobalTranslations.TabCollection</Tab>
@@ -55,34 +63,33 @@
                     </Items>
                     <Content>
                         <TabPanel Name="About" Class="mt-2">
-                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd.Is1.FromBottom">@media?.runtime.FormatRuntime()</Badge>
+                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd.Is1.FromBottom">
+                                @media?.runtime.FormatRuntime()
+                            </Badge>
                             @foreach (var item in media?.Genres ?? new List<string>())
                             {
                                 <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd.Is1.FromBottom">@item</Badge>
                             }
-
                             <Paragraph>
-                                <RenderControl Task="LoadRating" PartialComponent="true">
-                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.imdb))
+                                <RenderControl PartialComponent="true" Core="CoreRatings" Model="ratingsCache" ExpressionEmpty="@((Ratings? obj)=>obj==null)">
+                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.imdb))
                                     {
-                                        <Badge Color="GetColorByRating(ratingsCache.Data?.imdb)" Margin="Margin.Is1.FromEnd">IMDB: @ratingsCache.Data?.imdb</Badge>
+                                        <Badge Color="GetColorByRating(ratingsCache.imdb)" Margin="Margin.Is1.FromEnd">IMDB: @ratingsCache.imdb</Badge>
                                     }
-                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.tmdb))
+                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.tmdb))
                                     {
-                                        <Badge Color="GetColorByRating(ratingsCache.Data?.tmdb)" Margin="Margin.Is1.FromEnd">TMDB: @ratingsCache.Data?.tmdb</Badge>
+                                        <Badge Color="GetColorByRating(ratingsCache.tmdb)" Margin="Margin.Is1.FromEnd">TMDB: @ratingsCache.tmdb</Badge>
                                     }
-                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.metacritic))
+                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.metacritic))
                                     {
-                                        <Badge Color="GetColorByRating(ratingsCache.Data?.metacritic)" Margin="Margin.Is1.FromEnd">Metacritic: @ratingsCache.Data?.metacritic</Badge>
+                                        <Badge Color="GetColorByRating(ratingsCache.metacritic)" Margin="Margin.Is1.FromEnd">Metacritic: @ratingsCache.metacritic</Badge>
                                     }
-                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.trakt))
+                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.trakt))
                                     {
-                                        <Badge Color="GetColorByRating(ratingsCache.Data?.trakt)" Margin="Margin.Is1.FromEnd">Trakt: @ratingsCache.Data?.trakt</Badge>
+                                        <Badge Color="GetColorByRating(ratingsCache.trakt)" Margin="Margin.Is1.FromEnd">Trakt: @ratingsCache.trakt</Badge>
                                     }
                                 </RenderControl>
-
                             </Paragraph>
-
                             <Paragraph TextAlignment="TextAlignment.Justified">
                                 @media?.plot
                             </Paragraph>
@@ -90,7 +97,9 @@
                             {
                                 <Row HorizontalGutter="4" VerticalGutter="4">
                                     <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                        <Button Color="Color.Dark" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">Trailers</Button>
+                                        <Button Color="Color.Dark" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
+                                            Trailers
+                                        </Button>
                                     </Column>
                                     @foreach (var item in media.Videos)
                                     {
@@ -147,7 +156,7 @@
                                                         }
 
                                                         var movieWatched = WatchedList?.Contains(MediaType.movie, item.id) ?? false;
-                                                        var showWatched = WatchingList?.GetWatchedItems(MediaType.tv, media.tmdb_id).Any(a => a == item.id) ?? false;
+                                                        var showWatched = WatchingList?.GetWatchingItems(MediaType.tv, media.tmdb_id).Any(a => a == item.id) ?? false;
                                                         if (movieWatched | showWatched)
                                                         {
                                                             <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x2" TextColor="TextColor.Light"
@@ -222,7 +231,9 @@
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonWatched
                     </Button>
                 }
-                <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">@GlobalTranslations.ButtonClose</Button>
+                <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">
+                    @GlobalTranslations.ButtonClose
+                </Button>
             </Column>
         </Row>
     </Container>
@@ -231,68 +242,51 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
+    public RenderControlCore<MediaDetail?>? Core { get; set; } = new();
     private MediaDetail? media { get; set; }
     public string? imdb_id { get; set; }
 
-    public bool IsUserAuthenticated { get; set; }
     string selectedTab = "About";
 
-    private WatchedList? WatchedList;
-    private WatchingList? WatchingList;
-    private WishList? WishList;
-    private RatingsCache? ratingsCache;
+    public RenderControlCore<Ratings?> CoreRatings { get; set; } = new();
+
+    private Ratings? ratingsCache;
 
     protected override void OnInitialized()
     {
         if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
 
-        AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); };
-        AppState.WatchingListChanged += (WatchingList? list) => { WatchingList = list; StateHasChanged(); };
-        AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); };
-    }
-
-    public async Task<bool> LoadMedia()
-    {
-        media = await TmdbApi.GetMediaDetail(tmdb_id, type);
-
-        imdb_id = await ExternalIdApi.GetImdbId(type, tmdb_id);
-
-        StateHasChanged();
-
-        return media == null;
-    }
-
-    private async Task<bool> LoadRating()
-    {
-        //TODO: must be english_title, not original_title
-        var title = media?.original_title?.RemoveSpecialCharacters().Replace(" ", "-").ToLower();
-
-        if (media.MediaType == MediaType.movie)
-        {
-            ratingsCache = await CacheApi.GetMovieRatings(imdb_id, title, media.release_date, media.rating.ToString("#.#"));
-        }
-        else
-        {
-            ratingsCache = await CacheApi.GetShowRatings(imdb_id, title, media?.release_date, media?.rating.ToString("#.#"));
-        }
-
-        return ratingsCache != null;
+        CacheRatingsApi.SetRenderCore(CoreRatings);
     }
 
     protected override async Task LoadDataRender()
     {
-        IsUserAuthenticated = await AppState.IsUserAuthenticated();
+        Core?.LoadingStarted?.Invoke();
+        media = await TmdbApi.GetMediaDetail(tmdb_id, type);
+        imdb_id = await ExternalIdApi.GetImdbId(type, tmdb_id);
+        Core?.LoadingFinished?.Invoke(media);
 
-        if (IsUserAuthenticated)
+        //TODO: must be english_title, not original_title
+        var title = media?.original_title?.RemoveSpecialCharacters().Replace(" ", "-").ToLower();
+
+        CoreRatings?.LoadingStarted?.Invoke();
+        if (media?.MediaType == MediaType.movie)
         {
-            WatchedList = await AppState.GetWatchedList(false);
-            WatchingList = await AppState.GetWatchingList(false);
-            WishList = await AppState.GetWishList(false);
+            ratingsCache = await CacheRatingsApi.GetMovieRatings(imdb_id, title, media.release_date, media.rating.ToString("#.#"));
         }
+        else
+        {
+            ratingsCache = await CacheRatingsApi.GetShowRatings(imdb_id, title, media?.release_date, media?.rating.ToString("#.#"));
+        }
+        CoreRatings?.LoadingFinished?.Invoke(ratingsCache);
     }
 
     private Color GetColorByRating(string? rating)
@@ -341,8 +335,6 @@
             var item = new WishListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.runtime);
 
             list = await WishListApi.Add(media.MediaType, item);
-
-            AppState.ChangeWishList(list);
         }
         catch (Exception ex)
         {
@@ -352,15 +344,13 @@
 
     private async Task Remove()
     {
-        if (media == null) throw new ArgumentNullException(nameof(media));
+        ArgumentNullException.ThrowIfNull(media);
 
         try
         {
             var list = WishList ?? new WishList();
 
             list = await WishListApi.Remove(media.MediaType, media.tmdb_id);
-
-            AppState.ChangeWishList(list);
         }
         catch (Exception ex)
         {
@@ -385,7 +375,7 @@
                     x =>
                     {
                         x.Add(x => x.ItemsCollection, media.Collection);
-                        x.Add(x => x.SelectedItems, watching.GetWatchedItems(media.MediaType, collectionId));
+                        x.Add(x => x.SelectedItems, watching.GetWatchingItems(media.MediaType, collectionId));
                         x.Add(x => x.SelectedItemsChanged,
                             new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(media, list, media.Collection.Count)));
                     },
@@ -398,11 +388,7 @@
             }
             else
             {
-                var watched = WatchedList ?? new WatchedList();
-
-                watched = await WatchedListApi.Add(media.MediaType, media.tmdb_id);
-
-                AppState.ChangeWatchedList(watched);
+                await WatchedListApi.Add(media.MediaType, media.tmdb_id);
             }
         }
         catch (Exception ex)
@@ -415,22 +401,16 @@
     {
         //watched list
 
-        var watched = WatchedList ?? new WatchedList();
-
         if (media.MediaType == MediaType.movie)
         {
-            watched = await WatchedListApi.Add(MediaType.movie, string.Join(',', items));
+            await WatchedListApi.Add(MediaType.movie, string.Join(',', items));
         }
         else
         {
-            watched = await WatchedListApi.Add(MediaType.tv, media.tmdb_id);
+            await WatchedListApi.Add(MediaType.tv, media.tmdb_id);
         }
 
-        AppState.ChangeWatchedList(watched);
-
         //watching list
-
-        var watching = WatchingList ?? new WatchingList();
 
         WatchingListItem item;
 
@@ -443,9 +423,7 @@
             item = new WatchingListItem(media?.tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
         }
 
-        watching = await WatchingListApi.Add(type, item);
-
-        AppState.ChangeWatchingList(watching);
+        await WatchingListApi.Add(type, item);
     }
 
     private async Task NotWatched()
@@ -456,11 +434,7 @@
         {
             //watched
 
-            var watched = WatchedList ?? new WatchedList();
-
-            watched = await WatchedListApi.Remove(media.MediaType, media.tmdb_id);
-
-            AppState.ChangeWatchedList(watched);
+            await WatchedListApi.Remove(media.MediaType, media.tmdb_id);
 
             //watching
 
@@ -468,18 +442,14 @@
 
             if (hasCollection)
             {
-                var watching = WatchingList ?? new WatchingList();
-
                 if (media.MediaType == MediaType.movie)
                 {
-                    watching = await WatchingListApi.Remove(media.MediaType, media.collectionId?.ToString(), media.tmdb_id);
+                    await WatchingListApi.Remove(media.MediaType, media.collectionId?.ToString(), media.tmdb_id);
                 }
                 else if (media.MediaType == MediaType.tv)
                 {
-                    watching = await WatchingListApi.Remove(media.MediaType, media.tmdb_id);
+                    await WatchingListApi.Remove(media.MediaType, media.tmdb_id);
                 }
-
-                AppState.ChangeWatchingList(watching);
             }
         }
         catch (Exception ex)
@@ -495,6 +465,9 @@
             {
                 x.Add(x => x.tmdb_id, collection?.id?.ToString());
                 x.Add(x => x.type, mediaType);
+                x.Add(x => x.WatchedList, WatchedList);
+                x.Add(x => x.WatchingList, WatchingList);
+                x.Add(x => x.WishList, WishList);
             },
             new ModalInstanceOptions()
                 {

@@ -10,7 +10,7 @@ namespace SD.API.Core.Scraping
         private readonly string trakt_movie_url = "https://trakt.tv/movies/{0}-{1}";
         private readonly string trakt_show_url = "https://trakt.tv/shows/{0}";
 
-        public Ratings GetMovieData(string imdb_id, string tmdb_rating, string title, string year)
+        public Ratings GetMovieData(string? imdb_id, string? tmdb_rating, string? title, string? year)
         {
             var data = new Ratings() { imdbId = imdb_id, type = MediaType.movie, tmdb = tmdb_rating };
             ProcessMovieImdb(data, string.Format(imdb_url, imdb_id));
@@ -18,7 +18,7 @@ namespace SD.API.Core.Scraping
             return data;
         }
 
-        public Ratings GetShowData(string imdb_id, string tmdb_rating, string title, string year)
+        public Ratings GetShowData(string? imdb_id, string? tmdb_rating, string? title, string? year)
         {
             var data = new Ratings() { imdbId = imdb_id, type = MediaType.tv, tmdb = tmdb_rating };
             ProcessShowImdb(data, string.Format(imdb_url, imdb_id));
@@ -27,7 +27,7 @@ namespace SD.API.Core.Scraping
             return data;
         }
 
-        private static void ProcessMovieImdb(Ratings data, string imdb_path)
+        private static void ProcessMovieImdb(Ratings data, string? imdb_path)
         {
             var web = new HtmlWeb();
             var doc = web.Load(imdb_path);

@@ -11,8 +11,12 @@
 @inject AllProvidersApi AllProvidersApi
 @inject IJSRuntime JS
 
-<Button Clicked="@SyncProvidersOnClick" Color="Color.Primary">Sync Providers</Button>
-<Button Clicked="@SaveSession" Color="Color.Primary">Save Session</Button>
+<Button Clicked="@SyncProvidersOnClick" Color="Color.Primary">
+    Sync Providers
+</Button>
+<Button Clicked="@SaveSession" Color="Color.Primary">
+    Save Session
+</Button>
 
 <DataGrid @ref="DataGrid" TItem="ProviderModel" Data="@AllProviders?.Items" Filterable="true" Editable="true" EditMode="DataGridEditMode.Form"
           ShowPager="true" PageSize="10" FilterMethod="DataGridFilterMethod.Contains"
@@ -219,9 +223,9 @@
 
     protected void RowUpdated(SavedRowItem<ProviderModel, Dictionary<string, object>> e)
     {
-        var item = AllProviders?.Items.FirstOrDefault(f => f.id == e.Item.id);
+        var item = AllProviders?.Items.FirstOrDefault(f => f.id == e.OldItem.id);
 
-        item = e.Item;
+        item = e.OldItem;
     }
 
     protected async Task<string> GetDescriptionOnClick(string? url)

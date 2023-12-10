@@ -2,8 +2,32 @@
 <SeoHeader Title="Suggestions | Upcoming Marvel Movies & TV Shows" Keywords="@(new []{"Upcoming Marvel Movies & TV Shows"})" Url="/suggestions/upcoming-marvel"></SeoHeader>
 @inherits PageCore<UpcomingMarvel>
 
+@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
-<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingMarvelMoviesTVShows" MaxItens="22"></MediaListFull>
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingMarvelMoviesTVShows" MaxItens="22" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaListFull>
+
+@code {
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += (WatchedList? model) => WatchedList = model;
+        WatchingListApi.DataChanged += (WatchingList? model) => WatchingList = model;
+        WishListApi.DataChanged += (WishList? model) => WishList = model;
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get();
+        WatchingList = await WatchingListApi.Get();
+        WishList = await WishListApi.Get();
+    }
+}

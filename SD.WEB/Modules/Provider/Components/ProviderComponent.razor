@@ -9,7 +9,7 @@
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-<RenderControl Task="LoadAllProviders">
+<RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj)=>obj==null||!obj.Items.Any())">
     <Row HorizontalGutter="4" VerticalGutter="4">
         @foreach (var item in GetFilteredProviders())
         {
@@ -42,6 +42,10 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+
+    public RenderControlCore<AllProviders?>? Core { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
 
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
@@ -50,16 +54,18 @@
 
     protected override void OnInitialized()
     {
+        throw new Exception("component sendo usado");
+
         AppStateStatic.RegionChanged += StateHasChanged;
     }
 
     private int GetTotalItems => AppStateStatic.OnMobile ? 8 : 18;
 
-    protected async Task<bool> LoadAllProviders()
+    protected override async Task LoadDataRender()
     {
+        Core?.LoadingStarted?.Invoke();
         AllProviders = await AllProvidersApi.GetAll();
-
-        return AllProviders == null;
+        Core?.LoadingFinished?.Invoke(AllProviders);
     }
 
     private async Task OpenCompleteList()
@@ -84,6 +90,8 @@
         x =>
         {
             x.Add(x => x.provider, item);
+            x.Add(x => x.WatchedList, WatchedList);
+            x.Add(x => x.WishList, WishList);
         },
         new ModalInstanceOptions()
             {

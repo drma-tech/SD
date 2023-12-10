@@ -59,29 +59,22 @@
     {
         //TODO: twitter doesnt load email
 
-        if (await AppState.IsUserAuthenticated())
+        if (IsUserAuthenticated)
         {
             principal = await PrincipalApi.Get();
 
             if (principal == null) principal = new();
 
-            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-
-            if (authState != null)
+            if (User != null)
             {
-                var user = authState.User;
+                principal.UserId = UserId;
+                principal.IdentityProvider = User.Identity?.AuthenticationType;
+                principal.UserDetails = User.Identity?.Name;
 
-                if (user != null)
-                {
-                    principal.UserId = user.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
-                    principal.IdentityProvider = user.Identity?.AuthenticationType;
-                    principal.UserDetails = user.Identity?.Name;
-
-                    principal.UserRoles = user.Claims.Where(w => w.Type == ClaimTypes.Role).Select(s => s.Value).ToArray();
-                }
-
-                principal.Email = principal?.UserDetails;
+                principal.UserRoles = User.Claims.Where(w => w.Type == ClaimTypes.Role).Select(s => s.Value).ToArray();
             }
+
+            principal.Email = principal?.UserDetails;
         }
     }
 

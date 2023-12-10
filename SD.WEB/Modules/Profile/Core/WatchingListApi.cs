@@ -2,56 +2,52 @@
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class WatchingListApi : ApiServices
+    public class WatchingListApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<WatchingList>(http, memoryCache, "WatchingList")
     {
-        public WatchingListApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         private struct Endpoint
         {
-            public const string Get = "WatchingList/Get";
+            public const string Get = "watchinglist/get";
 
-            public static string Add(MediaType? type) => $"WatchingList/Add/{type}";
+            public static string Add(MediaType? type) => $"watchinglist/add/{type}";
 
-            public static string Remove(MediaType? type, string CollectionId, string TmdbId) => $"WatchingList/Remove/{type}/{CollectionId}/{TmdbId}";
+            public static string Remove(MediaType? type, string CollectionId, string TmdbId) => $"watchinglist/remove/{type}/{CollectionId}/{TmdbId}";
 
-            public static string Sync(MediaType? type) => $"WatchingList/Sync/{type}";
+            public static string Sync(MediaType? type) => $"watchinglist/sync/{type}";
         }
 
-        public async Task<WatchingList?> Get(bool IsUserAuthenticated)
+        public async Task<WatchingList?> Get(string? id = null)
         {
-            if (IsUserAuthenticated)
+            if (!string.IsNullOrEmpty(id))
             {
-                return await GetAsync<WatchingList>(Endpoint.Get, false);
+                return await GetAsync($"{Endpoint.Get}?id={id}");
             }
             else
             {
-                return default;
+                return await GetAsync(Endpoint.Get);
             }
         }
 
         public async Task<WatchingList?> Add(MediaType? mediaType, WatchingListItem? item)
         {
-            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            ArgumentNullException.ThrowIfNull(mediaType);
+            ArgumentNullException.ThrowIfNull(item);
 
-            return await PostAsync<WatchingListItem, WatchingList>(Endpoint.Add(mediaType), false, item, Endpoint.Get);
+            return await PostAsync<WatchingListItem>(Endpoint.Add(mediaType), item);
         }
 
         public async Task<WatchingList?> Remove(MediaType? mediaType, string? CollectionId, string? TmdbId = "null")
         {
-            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
-            if (CollectionId == null) throw new ArgumentNullException(nameof(CollectionId));
+            ArgumentNullException.ThrowIfNull(mediaType);
+            ArgumentNullException.ThrowIfNull(CollectionId);
 
-            return await PostAsync<WatchingList>(Endpoint.Remove(mediaType, CollectionId, TmdbId ?? "null"), false, null, Endpoint.Get);
+            return await PostAsync<WatchingList>(Endpoint.Remove(mediaType, CollectionId, TmdbId ?? "null"), null);
         }
 
         public async Task<WatchingList?> Sync(MediaType? mediaType)
         {
-            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
+            ArgumentNullException.ThrowIfNull(mediaType);
 
-            return await PostAsync<WatchingList>(Endpoint.Sync(mediaType), false, null);
+            return await PostAsync<WatchingList>(Endpoint.Sync(mediaType), null);
         }
     }
 }

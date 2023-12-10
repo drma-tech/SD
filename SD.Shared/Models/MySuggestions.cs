@@ -55,7 +55,7 @@ namespace SD.Shared.Models
         }
     }
 
-    public class SuggestionListItem : IEquatable<SuggestionListItem>
+    public sealed class SuggestionListItem : IEquatable<SuggestionListItem>
     {
         public SuggestionListItem()
         {
@@ -76,7 +76,7 @@ namespace SD.Shared.Models
         public string? id { get; init; }
         public string? logo { get; init; }
         public string? name { get; init; }
-        public string[] Providers { get; set; }
+        public string[] Providers { get; set; } = Array.Empty<string>();
 
         public bool Equals(SuggestionListItem? other)
         {

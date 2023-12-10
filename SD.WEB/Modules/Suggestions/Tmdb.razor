@@ -2,21 +2,43 @@
 <SeoHeader Title="Suggestions | TMDB" Keywords="@(new []{"TMDB"})" Url="/Suggestions/Tmdb"></SeoHeader>
 @inherits PageCore<Tmdb>
 
+@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbPopularApi TmdbPopularApi
 @inject TmdbTopRatedApi TmdbTopRatedApi
 @inject TmdbUpcomingApi TmdbUpcomingApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 <HeadPage Title="TMDB" ImageSource="logo/tmdb.png" Text="@TranslationText.tmdb_desc" Link="https://www.themoviedb.org/"></HeadPage>
 
-<MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbPopularApi" MaxItens="50" ShowFilter="true"></MediaList>
-<MediaList TitleHead="@($"{TranslationText.TopRated} ({AppStateStatic.Region})")" MediaListApi="TmdbTopRatedApi" MaxItens="50" ShowFilter="true" MultiplesRegions="true"></MediaList>
-<MediaList TitleHead="@($"{TranslationText.ComingSoon} ({AppStateStatic.Region})")" MediaListApi="TmdbUpcomingApi" MaxItens="50" MultiplesRegions="true"></MediaList>
+<MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbPopularApi" MaxItens="50" ShowFilter="true" Private="false"
+           WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList TitleHead="@($"{TranslationText.TopRated} ({AppStateStatic.Region})")" MediaListApi="TmdbTopRatedApi" MaxItens="50" ShowFilter="true"
+           MultiplesRegions="true" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList TitleHead="@($"{TranslationText.ComingSoon} ({AppStateStatic.Region})")" MediaListApi="TmdbUpcomingApi" MaxItens="50"
+           MultiplesRegions="true" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
 
 @code {
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
     protected override void OnInitialized()
     {
         AppStateStatic.RegionChanged += StateHasChanged;
+
+        WatchedListApi.DataChanged += (WatchedList? model) => WatchedList = model;
+        WatchingListApi.DataChanged += (WatchingList? model) => WatchingList = model;
+        WishListApi.DataChanged += (WishList? model) => WishList = model;
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get();
+        WatchingList = await WatchingListApi.Get();
+        WishList = await WishListApi.Get();
     }
 }

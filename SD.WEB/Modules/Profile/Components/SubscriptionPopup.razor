@@ -1,0 +1,20 @@
+﻿@inherits ComponenteCore<SubscriptionPopup>
+
+<ModalHeader>
+    <ModalTitle Size="HeadingSize.Is5">
+        Streaming Discovery
+    </ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    aehh
+</ModalBody>
+<ModalFooter>
+    <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
+        @TranslationText.Close
+    </Button>
+</ModalFooter>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+}

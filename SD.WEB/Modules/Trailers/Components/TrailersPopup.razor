@@ -3,16 +3,16 @@
 @using System.Text.Json;
 @inherits ComponenteCore<TrailersPopup>
 
-@inject CacheApi CacheApi
+@inject CacheYoutubeApi CacheYoutubeApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@($"{GlobalTranslations.TrailersTitle} - ONE Media")</ModalTitle>
-        <CloseButton />
-    </ModalHeader>
-    <ModalBody MaxHeight="70">
-        <RenderControl Task="LoadYoutubeChanel">
-            <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
-                @foreach (var item in YoutubeChanel?.Items ?? new())
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((TrailerModel? obj)=>obj==null||!obj.Items.Any())">
+        <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
+            @foreach (var item in TrailerModel?.Items ?? new())
             {
                 <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
                     <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}")">
@@ -32,20 +32,24 @@
     </RenderControl>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">@TranslationText.Close</Button>
+    <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
+        @TranslationText.Close
+    </Button>
 </ModalFooter>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    private TrailerModel? YoutubeChanel { get; set; }
+    public RenderControlCore<TrailerModel?> Core { get; set; } = new();
+    private TrailerModel? TrailerModel { get; set; }
 
-    protected async Task<bool> LoadYoutubeChanel()
+    protected override void OnInitialized()
     {
-        var cache = await CacheApi.GetTrailers("full");
+        CacheYoutubeApi.SetRenderCore(Core);
+    }
 
-        YoutubeChanel = (TrailerModel?)cache?.Data;
-
-        return YoutubeChanel == null;
+    protected override async Task LoadDataRender()
+    {
+        TrailerModel = await CacheYoutubeApi.GetTrailers("full");
     }
 }

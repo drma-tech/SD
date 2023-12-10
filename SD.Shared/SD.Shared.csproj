@@ -1,114 +1,110 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Update="Models\Support\Resources\TicketModel.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TicketModel.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Models\Support\Resources\TicketStatus.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TicketStatus.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Models\Support\Resources\TicketType.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TicketType.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Enum\DeliveryModel.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DeliveryModel.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Enum\Language.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Language.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Enum\MediaType.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MediaType.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Enum\MovieGenre.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MovieGenre.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Enum\PopularType.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PopularType.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Enum\Region.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Region.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Enum\TvGenre.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TvGenre.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\TranslationText.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TranslationText.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Models\Support\Resources\TicketModel.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>TicketModel.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Models\Support\Resources\TicketStatus.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>TicketStatus.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Models\Support\Resources\TicketType.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>TicketType.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Enum\MovieGenre.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MovieGenre.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Enum\PopularType.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>PopularType.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Enum\TvGenre.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>TvGenre.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\TranslationText.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>TranslationText.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Enum\DeliveryModel.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>DeliveryModel.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Enum\Language.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Language.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Enum\MediaType.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MediaType.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Enum\Region.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Region.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Update="Models\Support\Resources\TicketModel.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>TicketModel.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Models\Support\Resources\TicketStatus.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>TicketStatus.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Models\Support\Resources\TicketType.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>TicketType.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Enum\DeliveryModel.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>DeliveryModel.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Enum\Language.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Language.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Enum\MediaType.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>MediaType.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Enum\MovieGenre.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>MovieGenre.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Enum\PopularType.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>PopularType.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Enum\Region.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Region.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Enum\TvGenre.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>TvGenre.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\TranslationText.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>TranslationText.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Models\Support\Resources\TicketModel.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>TicketModel.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Models\Support\Resources\TicketStatus.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>TicketStatus.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Models\Support\Resources\TicketType.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>TicketType.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Enum\MovieGenre.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>MovieGenre.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Enum\PopularType.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>PopularType.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Enum\TvGenre.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>TvGenre.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\TranslationText.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>TranslationText.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Enum\DeliveryModel.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>DeliveryModel.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Enum\Language.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Language.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Enum\MediaType.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>MediaType.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Enum\Region.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Region.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
 </Project>

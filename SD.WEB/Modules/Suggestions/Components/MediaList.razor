@@ -15,13 +15,13 @@
         {
             <RadioGroup CheckedValue="TypeSelected" CheckedValueChanged="@(async(MediaType type)=>await TypeSelectedChanged(type))" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is2.FromEnd">
                 <Radio Value="MediaType.movie">@MediaType.movie.GetName()</Radio>
-                <Radio Value="MediaType.tv">@MediaType.tv.GetName()</Radio>
-            </RadioGroup>
+                    <Radio Value="MediaType.tv">@MediaType.tv.GetName()</Radio>
+                </RadioGroup>
         }
     </HeaderComponent>
 }
 
-<RenderControl @ref="RenderControl" Task="LoadGeneric">
+<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list)=>!list.Any())">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
         @for (int i = 1; i <= Items.Take(GetTotalItems).Count(); i++)
         {
@@ -29,7 +29,8 @@
             <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
                 <Card>
                     <PosterComponent Date="@(item.release_date??DateTime.MaxValue)" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
-                                     TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" RankUpDown="@item.RankUpDown"></PosterComponent>
+                                     TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" RankUpDown="@item.RankUpDown"
+                                     WatchedList="WatchedList" WishList="WishList" Private="Private"></PosterComponent>
                 </Card>
             </Column>
             if ((i % GetTotalItems) == 0)
@@ -49,6 +50,11 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
+    [Parameter][EditorRequired] public bool Private { get; set; }
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
     [Parameter] public bool ShowFilter { get; set; } = false;
@@ -66,8 +72,7 @@
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
     private int GetTotalItems => AppStateStatic.OnFullHD ? 10 : 8;
 
-    public RenderControl? RenderControl { get; set; }
-
+    public RenderControlCore<HashSet<MediaDetail>>? Core { get; set; } = new();
     public HashSet<MediaDetail> Items { get; set; } = new();
 
     public string GetCustomStyle => "col-xl col-md-2 col-3";
@@ -80,9 +85,6 @@
             if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
             if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));
 
-            //TODO: analisar isso
-            // AppState.WishListChanged += StateHasChanged;
-            // AppState.WatchedListChanged += StateHasChanged;
             if (MultiplesRegions) AppStateStatic.RegionChanged += LoadGenericVoid;
         }
         catch (Exception ex)
@@ -91,25 +93,26 @@
         }
     }
 
-    protected async Task<bool> LoadGeneric()
+    protected override async Task LoadDataRender()
     {
-        await LoadItems(TypeSelected);
-        return !Items.Any();
+        Core?.ShowLoading();
+        await LoadItems(TypeSelected); 
+        Core?.HideLoading(Items);
     }
 
     protected async void LoadGenericVoid()
     {
-        RenderControl?.ShowLoading();
+        Core?.ShowLoading();
         await LoadItems(TypeSelected);
-        RenderControl?.ShowContent(!Items.Any());
+        Core?.HideLoading(Items);
     }
 
     private async Task TypeSelectedChanged(MediaType type)
     {
-        RenderControl?.ShowLoading();
+        Core?.ShowLoading();
         TypeSelected = type;
         await LoadItems(type);
-        RenderControl?.ShowContent(!Items.Any());
+        Core?.HideLoading(Items);
     }
 
     private async Task LoadItems(MediaType type)
@@ -119,7 +122,7 @@
             if (MediaListApi != null)
             {
                 var result = await MediaListApi.GetList(new(), TypeSelected, StringParameters, List, 1);
-                await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
+                // await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
                 Items = result.list;
 
                 if (Items.Count < 10) //force reload, if the filters bring few records
@@ -134,7 +137,7 @@
         }
         catch (Exception ex)
         {
-            RenderControl?.ShowError(ex.Message);
+            Core?.ShowError(ex.Message);
         }
     }
 
@@ -179,6 +182,9 @@
             {
                 x.Add(x => x.tmdb_id, tmdb_id);
                 x.Add(x => x.type, media?.MediaType);
+                x.Add(x => x.WatchedList, WatchedList);
+                x.Add(x => x.WatchingList, WatchingList);
+                x.Add(x => x.WishList, WishList);
             },
             new ModalInstanceOptions()
                 {

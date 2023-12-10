@@ -4,8 +4,6 @@
 @inherits ComponenteCore<MyWatchingListComponent>
 
 @inject TmdbApi TmdbApi
-@inject AppState State
-@inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 
 <HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@GlobalTranslations.MyMovieWatching.Format(WatchingList?.Movies.Count() ?? 0)">
@@ -22,7 +20,7 @@
         </Button>
     }
 </HeaderComponent>
-<RenderControl @ref="RenderControlMovies" Task="LoadWatchingListMovies" PrivateContent="true">
+<RenderControl Core="Core" Model="WatchingList" ExpressionEmpty="@((WatchingList? list)=>!list?.Movies.Any()??true)" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
         {
@@ -74,7 +72,7 @@
         </Button>
     }
 </HeaderComponent>
-<RenderControl @ref="RenderControlShows" Task="LoadWatchingListShows" PrivateContent="true">
+<RenderControl Core="Core" Model="WatchingList" ExpressionEmpty="@((WatchingList? list)=>!list?.Shows.Any()??true)">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
         {
@@ -122,37 +120,11 @@
     public bool MovieUpdating { get; set; } = false;
     public bool ShowUpdating { get; set; } = false;
 
-    private WatchedList? WatchedList;
-    private WatchingList? WatchingList;
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
-    private RenderControl? RenderControlMovies;
-    private RenderControl? RenderControlShows;
-
-    protected override void OnInitialized()
-    {
-        AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); };
-        AppState.WatchingListChanged += (WatchingList? list) => { WatchingList = list; StateHasChanged(); };
-    }
-
-    protected override async Task LoadDataRender()
-    {
-        await base.LoadDataRender();
-        if (await AppState.IsUserAuthenticated()) WatchedList ??= await AppState.GetWatchedList(true);
-    }
-
-    protected async Task<bool> LoadWatchingListMovies()
-    {
-        WatchingList ??= await AppState.GetWatchingList(true);
-        StateHasChanged();
-        return WatchingList == null || !WatchingList.Movies.Any();
-    }
-
-    protected async Task<bool> LoadWatchingListShows()
-    {
-        WatchingList ??= await AppState.GetWatchingList(true);
-        StateHasChanged();
-        return WatchingList == null || !WatchingList.Shows.Any();
-    }
+    [Parameter][EditorRequired] public RenderControlCore<WatchingList?>? Core { get; set; }
 
     private async Task OpenCompleteList(MediaType mediaType)
     {
@@ -160,6 +132,7 @@
         x =>
         {
             x.Add(x => x.MediaType, mediaType);
+            x.Add(x => x.WatchingList, WatchingList);
         },
         new ModalInstanceOptions()
             {
@@ -198,6 +171,8 @@
             {
                 x.Add(x => x.collection_id, collection_id);
                 x.Add(x => x.type, type);
+                x.Add(x => x.WatchingList, WatchingList);
+                x.Add(x => x.WishList, WishList);
             },
             new ModalInstanceOptions()
                 {
@@ -217,7 +192,7 @@
             {
                 WatchingList?.Movies.Clear();
                 MovieUpdating = true;
-                RenderControlMovies?.ShowLoading();
+                Core?.ShowProcessing();
 
                 foreach (var tmdb_id in WatchedList?.GetItems(MediaType.movie) ?? new())
                 {
@@ -225,7 +200,7 @@
                     if (media == null) continue;
                     var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-                    if (hasCollection && !watching.DeletedMovies.Any(a => a == media.collectionId.ToString()))
+                    if (hasCollection && !watching!.DeletedMovies.Any(a => a == media.collectionId.ToString()))
                     {
                         var item = watching?.GetItem(MediaType.movie, media.collectionId?.ToString());
 
@@ -243,22 +218,19 @@
                         }
 
                         watching = await WatchingListApi.Add(MediaType.movie, item);
-
-                        AppState.ChangeWatchingList(watching);
                     }
                 }
 
                 watching = await WatchingListApi.Sync(MediaType.movie);
 
-                AppState.ChangeWatchingList(watching);
                 MovieUpdating = false;
-                RenderControlMovies?.ShowContent(watching == null || !watching.Movies.Any());
+                Core?.HideProcessing(watching);
             }
             else
             {
                 WatchingList?.Shows.Clear();
                 ShowUpdating = true;
-                RenderControlShows?.ShowLoading();
+                Core?.ShowProcessing();
 
                 foreach (var tmdb_id in WatchedList?.GetItems(MediaType.tv) ?? new())
                 {
@@ -266,7 +238,7 @@
                     if (media == null) continue;
                     var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-                    if (hasCollection && !watching.DeletedShows.Any(a => a == media.tmdb_id))
+                    if (hasCollection && !watching!.DeletedShows.Any(a => a == media.tmdb_id))
                     {
                         var item = watching?.GetItem(MediaType.tv, media.tmdb_id);
 
@@ -284,16 +256,13 @@
                         }
 
                         watching = await WatchingListApi.Add(MediaType.tv, item);
-
-                        AppState.ChangeWatchingList(watching);
                     }
                 }
 
                 watching = await WatchingListApi.Sync(MediaType.tv);
 
-                AppState.ChangeWatchingList(watching);
                 ShowUpdating = false;
-                RenderControlShows?.ShowContent(watching == null || !watching.Shows.Any());
+                Core?.HideProcessing(watching);
             }
 
             StateHasChanged();
@@ -302,8 +271,7 @@
         {
             MovieUpdating = false;
             ShowUpdating = false;
-            RenderControlMovies?.ShowError(ex.Message);
-            RenderControlShows?.ShowError(ex.Message);
+            Core?.ShowError(ex.Message);
             ex.ProcessException(Toast, Logger);
         }
     }

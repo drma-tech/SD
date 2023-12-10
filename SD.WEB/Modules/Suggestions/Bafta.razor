@@ -2,12 +2,37 @@
 <SeoHeader Title="Suggestions | Bafta" Keywords="@(new []{"Bafta"})" Url="/suggestions/bafta"></SeoHeader>
 @inherits PageCore<Bafta>
 
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
+
+@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
 
 <HeadPage Title="Bafta" ImageSource="logo/bafta.png" Text="An independent British charity that supports, develops & promotes the art forms of the moving image" Link="https://www.bafta.org/"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestFilm" MaxItens="10"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestAnimatedFeatureFilm" MaxItens="10"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestDocumentary" MaxItens="10"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestFilm" MaxItens="10" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestAnimatedFeatureFilm" MaxItens="10" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestDocumentary" MaxItens="10" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+
+@code {
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += (WatchedList? model) => WatchedList = model;
+        WatchingListApi.DataChanged += (WatchingList? model) => WatchingList = model;
+        WishListApi.DataChanged += (WishList? model) => WishList = model;
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get();
+        WatchingList = await WatchingListApi.Get();
+        WishList = await WishListApi.Get();
+    }
+}

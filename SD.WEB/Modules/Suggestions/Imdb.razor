@@ -7,14 +7,38 @@
 @using SD.WEB.Modules.Suggestions.Components
 @inject ImdbTopRatedApi ImdbTopRatedApi
 @inject ImdbPopularApi ImdbPopularApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 @* @inject ImdbUpcomingApi ImdbUpcomingApi *@
 
 <HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@TranslationText.imdb_desc" Link="https://www.imdb.com/"></HeadPage>
 
-<MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="50" IsIMDB="true" ShowFilter="true" MultipleLanguages="false" StringParameters="Params"></MediaList>
-<MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" MaxItens="250" ShowFilter="true"></MediaList>
+<MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="50" IsIMDB="true" ShowFilter="true" MultipleLanguages="false"
+           StringParameters="Params" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" MaxItens="250" ShowFilter="true" Private="false" WatchedList="WatchedList"
+           WatchingList="WatchingList" WishList="WishList"></MediaList>
 @* <MediaList TitleHead="@TranslationText.ComingSoon" MediaListApi="ImdbUpcomingApi" MaxItens="50" IsIMDB="true" MultipleLanguages="false"></MediaList> *@
 
-@code{
+@code {
     public Dictionary<string, string> Params { get; set; } = new Dictionary<string, string>() { { "mode", "full" } };
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        AppStateStatic.RegionChanged += StateHasChanged;
+
+        WatchedListApi.DataChanged += (WatchedList? model) => WatchedList = model;
+        WatchingListApi.DataChanged += (WatchingList? model) => WatchingList = model;
+        WishListApi.DataChanged += (WishList? model) => WishList = model;
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get();
+        WatchingList = await WatchingListApi.Get();
+        WishList = await WishListApi.Get();
+    }
 }

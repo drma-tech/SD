@@ -9,12 +9,12 @@
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@collection?.name</ModalTitle>
-    <CloseButton />
-</ModalHeader>
-<ModalBody MaxHeight="70">
-    <RenderControl Task="Loadcollection">
-        <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
-            @foreach (var item in collection?.parts.OrderBy(o => o.release_date.GetDate()) ?? Enumerable.Empty<Part>())
+        <CloseButton />
+    </ModalHeader>
+    <ModalBody MaxHeight="70">
+        <RenderControl Core="Core" Model="collection" ExpressionEmpty="@((TmdbCollection? obj)=>obj==null||!obj.parts.Any())">
+            <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
+                @foreach (var item in collection?.parts.OrderBy(o => o.release_date.GetDate()) ?? Enumerable.Empty<Part>())
             {
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is3.OnWidescreen.Is2.OnFullHD">
                     <Card>
@@ -49,14 +49,14 @@
                                     }
                                 }
 
-                                var watched = WatchingList?.GetWatchedItems(type, collection?.id.ToString()).Any(a => a == item.id.ToString()) ?? false;
-                                if (watched)
+                                var watching = WatchingList?.GetWatchingItems(type, collection?.id.ToString()).Any(a => a == item.id.ToString()) ?? false;
+                                if (watching)
                                 {
                                     <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x2" TextColor="TextColor.Light"
                                                     Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
                                 }
 
-                                <CardImage Source="@(TmdbOptions.SmallPosterPath + item.poster_path)" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(watched ? "filter: grayscale(100%);" : "")}")></CardImage>
+                                <CardImage Source="@(TmdbOptions.SmallPosterPath + item.poster_path)" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(watching ? "filter: grayscale(100%);" : "")}")></CardImage>
                             }
                         </Blazorise.Link>
 
@@ -70,45 +70,40 @@
     </RenderControl>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Primary" Size="Size.Small" Clicked="@Watched" Float="Float.Start" title="Mark all these items as watched">@GlobalTranslations.ButtonWatched</Button>
-    <Button Color="Color.Danger" Size="Size.Small" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">@GlobalTranslations.RemoveCollection</Button>
-    <Button Color="Color.Secondary" Size="Size.Small" Clicked="@HideModal" Float="Float.End">@GlobalTranslations.ButtonClose</Button>
+    <Button Color="Color.Primary" Size="Size.Small" Clicked="@Watched" Float="Float.Start" title="Mark all these items as watched">
+        @GlobalTranslations.ButtonWatched
+    </Button>
+    <Button Color="Color.Danger" Size="Size.Small" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">
+        @GlobalTranslations.RemoveCollection
+    </Button>
+    <Button Color="Color.Secondary" Size="Size.Small" Clicked="@HideModal" Float="Float.End">
+        @GlobalTranslations.ButtonClose
+    </Button>
 </ModalFooter>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+
     [Parameter] public string? collection_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
+    private RenderControlCore<TmdbCollection?>? Core { get; set; } = new();
     private TmdbCollection? collection { get; set; }
-
-    private WatchedList? WatchedList;
-    private WatchingList? WatchingList;
-    private WishList? WishList;
 
     protected override void OnInitialized()
     {
         if (string.IsNullOrEmpty(collection_id)) throw new ArgumentNullException(nameof(collection_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
-
-        AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); };
-        AppState.WatchingListChanged += (WatchingList? list) => { WatchingList = list; StateHasChanged(); };
-        AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()
     {
-        if (await AppState.IsUserAuthenticated())
-        {
-            WatchedList = await AppState.GetWatchedList(false);
-            WatchingList = await AppState.GetWatchingList(false);
-            WishList = await AppState.GetWishList(false);
-        }        
-    }
+        Core?.LoadingStarted?.Invoke();
 
-    protected async Task<bool> Loadcollection()
-    {
         if (type == MediaType.movie)
         {
             var parameters = new Dictionary<string, string>()
@@ -140,7 +135,7 @@
             }
         }
 
-        return collection == null;
+        Core?.LoadingFinished?.Invoke(collection);
     }
 
     public async Task HideModal()
@@ -163,6 +158,9 @@
             {
                 x.Add(x => x.tmdb_id, part?.id.ToString());
                 x.Add(x => x.type, mediaType);
+                x.Add(x => x.WatchedList, WatchedList);
+                x.Add(x => x.WatchingList, WatchingList);
+                x.Add(x => x.WishList, WishList);
             },
             new ModalInstanceOptions()
                 {
@@ -196,7 +194,7 @@
             x =>
             {
                 x.Add(x => x.ItemsCollection, collection?.parts.Select(s => TmdbApi.ConvertToCollection(s)).ToList());
-                x.Add(x => x.SelectedItems, WatchingList?.GetWatchedItems(type, collection?.id.ToString()).ToHashSet()); //ToHashSet = clone to not reference
+                x.Add(x => x.SelectedItems, WatchingList?.GetWatchingItems(type, collection?.id.ToString()).ToHashSet()); //ToHashSet = clone to not reference
                 x.Add(x => x.SelectedItemsChanged,
                     new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(type, collection, collection_id, list, collection?.parts.Count ?? 0)));
             },
@@ -216,9 +214,7 @@
 
         if (type == MediaType.movie)
         {
-            WatchedList = await WatchedListApi.Add(type, string.Join(',', items));
-
-            AppState.ChangeWatchedList(WatchedList);
+            await WatchedListApi.Add(type, string.Join(',', items));
         }
 
         //watching list
@@ -236,20 +232,14 @@
             item = new WatchingListItem(tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
         }
 
-        WatchingList = await WatchingListApi.Add(type, item);
-
-        AppState.ChangeWatchingList(WatchingList);
+        await WatchingListApi.Add(type, item);
 
         await HideModal();
     }
 
     private async Task RemoveCollection()
     {
-        var watching = await AppState.GetWatchingList(false) ?? new WatchingList();
-
-        watching = await WatchingListApi.Remove(type, collection_id);
-
-        AppState.ChangeWatchingList(watching);
+        await WatchingListApi.Remove(type, collection_id);
 
         await HideModal();
     }

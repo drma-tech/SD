@@ -8,20 +8,20 @@
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@provider?.name</ModalTitle>
-    <CloseButton />
-</ModalHeader>
-<ModalBody MaxHeight="70">
-    <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true" RenderMode="TabsRenderMode.LazyLoad">
-        <Items>
-            <Tab Name="About">@GlobalTranslations.ProviderPopupTabAbout</Tab>
-            <Tab Name="Details">@GlobalTranslations.ProviderPopupTabDetails</Tab>
-            <Tab Name="Catalog">@GlobalTranslations.ProviderPopupTabCatalog</Tab>
-        </Items>
-        <Content>
-            <TabPanel Name="About" Class="mt-3">
-                <Row Margin="Margin.Is2.FromBottom" HorizontalGutter="4" VerticalGutter="4">
-                    <Column ColumnSize="ColumnSize.IsAuto">
-                        @if (!string.IsNullOrEmpty(provider?.logo_path))
+        <CloseButton />
+    </ModalHeader>
+    <ModalBody MaxHeight="70">
+        <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true" RenderMode="TabsRenderMode.LazyLoad">
+            <Items>
+                <Tab Name="About">@GlobalTranslations.ProviderPopupTabAbout</Tab>
+                <Tab Name="Details">@GlobalTranslations.ProviderPopupTabDetails</Tab>
+                <Tab Name="Catalog">@GlobalTranslations.ProviderPopupTabCatalog</Tab>
+            </Items>
+            <Content>
+                <TabPanel Name="About" Class="mt-3">
+                    <Row Margin="Margin.Is2.FromBottom" HorizontalGutter="4" VerticalGutter="4">
+                        <Column ColumnSize="ColumnSize.IsAuto">
+                            @if (!string.IsNullOrEmpty(provider?.logo_path))
                         {
                             <Image Source="@(TmdbOptions.OriginalPosterPath + provider.logo_path)" Text="@provider.name"></Image>
                         }
@@ -68,7 +68,7 @@
                     {
                         @foreach (var item in provider.plans)
                         {
-                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.name: @item.price.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture(provider.head_language?.GetName(false)??""))</Badge>
+                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.name: @item.price.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture(provider.head_language?.GetName(false) ?? ""))</Badge>
                         }
                     }
                     else
@@ -78,9 +78,12 @@
                 }
             </TabPanel>
             <TabPanel Name="Catalog" Class="mt-3">
-                <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc")" MaxItens="50" ShowFilter="true"></MediaList>
-                <MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc")" MaxItens="50" ShowFilter="true"></MediaList>
-                <MediaList TitleHead="@TranslationText.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc")" MaxItens="50" ShowFilter="true"></MediaList>
+                <MediaList TitleHead="@TranslationText.Popular" Private="false" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc")"
+                           MaxItens="50" ShowFilter="true" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+                <MediaList TitleHead="@TranslationText.Release" Private="false" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc")"
+                           MaxItens="50" ShowFilter="true" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+                <MediaList TitleHead="@TranslationText.TopRated" Private="false" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc")"
+                           MaxItens="50" ShowFilter="true" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
             </TabPanel>
         </Content>
     </Tabs>
@@ -98,29 +101,25 @@
             <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
         </Button>
     }
-    <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">@TranslationText.Close</Button>
+    <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
+        @TranslationText.Close
+    </Button>
 </ModalFooter>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter] public ProviderModel? provider { get; set; }
+    [Parameter][EditorRequired] public ProviderModel? provider { get; set; }
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
-    string selectedTab = "About";
-
+    private string selectedTab = "About";
     private MyProviders? myProviders { get; set; }
-    public bool IsUserAuthenticated { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (provider == null) throw new ArgumentNullException(nameof(provider));
-
-        IsUserAuthenticated = await AppState.IsUserAuthenticated();
-    }
 
     protected override async Task LoadDataRender()
     {
-        myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
+        myProviders = await MyProvidersApi.Get(IsUserAuthenticated);
     }
 
     private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)

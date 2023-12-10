@@ -4,10 +4,10 @@
 
 <ModalHeader>
     <ModalTitle>@Title</ModalTitle>
-    <CloseButton />
-</ModalHeader>
-<ModalBody MaxHeight="70">
-    @if (HasGroup)
+        <CloseButton />
+    </ModalHeader>
+    <ModalBody MaxHeight="70">
+        @if (HasGroup)
     {
         var previousGroup = "";
         @foreach (var group in EnumHelper.GetList<TEnum>().DistinctBy(d => d.Group).Select(s => s.Group))
@@ -18,11 +18,11 @@
                 {
                     <Alert Visible="true" Color="Color.Info">
                         <AlertMessage>@item.Group</AlertMessage>
-                    </Alert>
+                        </Alert>
                 }
                 <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
                     <Check TValue="bool" Checked="Checked(item)" CheckedChanged="@(()=>CheckedChanged(item, !Checked(item)))" Size="Size.Medium">@item.Name</Check>
-                    @if (!string.IsNullOrEmpty(@item.Description))
+                        @if (!string.IsNullOrEmpty(@item.Description))
                     {
                         <FieldHelp>@item.Description</FieldHelp>
                     }
@@ -37,7 +37,7 @@
         {
             <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
                 <Check TValue="bool" Checked="Checked(item)" CheckedChanged="@(()=>CheckedChanged(item, !Checked(item)))" Size="Size.Medium">@item.Name</Check>
-                @if (!string.IsNullOrEmpty(@item.Description))
+                    @if (!string.IsNullOrEmpty(@item.Description))
                 {
                     <FieldHelp>@item.Description</FieldHelp>
                 }
@@ -46,8 +46,12 @@
     }
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@(async()=>{await ModalService.Hide();})">Cancelar</Button>
-    <Button Color="Color.Primary" Clicked="@Confirmar">Confirmar</Button>
+    <Button Color="Color.Secondary" Clicked="@(async()=>{await ModalService.Hide();})">
+        Cancelar
+    </Button>
+    <Button Color="Color.Primary" Clicked="@Confirmar">
+        Confirmar
+    </Button>
 </ModalFooter>
 
 @code {

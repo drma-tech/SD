@@ -2,16 +2,16 @@
 @using SD.Shared.Models.Trailers;
 @inherits ComponenteCore<TrailersComponent>
 
-@inject CacheApi CacheApi
+@inject CacheYoutubeApi CacheYoutubeApi
 
 <HeaderComponent Title="@($"{GlobalTranslations.TrailersTitle} - {Language.enUS.GetName()}")" IconImage="logo/one-media.png">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList" title="Show all news">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-<RenderControl Task="LoadYoutubeChanel">
+<RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((TrailerModel? obj)=>obj==null||!obj.Items.Any())">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
-        @foreach (var item in YoutubeChanel?.Items ?? new())
+        @foreach (var item in TrailerModel?.Items ?? new())
         {
             <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
                 <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}")">
@@ -33,15 +33,17 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    private TrailerModel? YoutubeChanel { get; set; }
+    public RenderControlCore<TrailerModel?> Core { get; set; } = new();
+    private TrailerModel? TrailerModel { get; set; }
 
-    protected async Task<bool> LoadYoutubeChanel()
+    protected override void OnInitialized()
     {
-        var cache = await CacheApi.GetTrailers("compact");
+        CacheYoutubeApi.SetRenderCore(Core);
+    }
 
-        YoutubeChanel = cache?.Data;
-
-        return YoutubeChanel == null;
+    protected override async Task LoadDataRender()
+    {
+        TrailerModel = await CacheYoutubeApi.GetTrailers("compact");
     }
 
     private async Task OpenCompleteList()

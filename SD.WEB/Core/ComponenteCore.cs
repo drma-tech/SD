@@ -3,6 +3,7 @@ using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using SD.WEB.Modules.Auth.Core;
+using System.Security.Claims;
 
 namespace SD.WEB.Core
 {
@@ -15,21 +16,32 @@ namespace SD.WEB.Core
         [Inject] protected ILogger<T> Logger { get; set; } = default!;
         [Inject] protected INotificationService Toast { get; set; } = default!;
         [Inject] protected IResizeListener listener { get; set; } = default!;
+        [CascadingParameter] protected Task<AuthenticationState>? authenticationState { get; set; }
 
-        [Inject] protected AppState AppState { get; set; } = default!; //TODO: remove from here
+        protected bool IsUserAuthenticated { get; set; } = false;
+        protected ClaimsPrincipal? User { get; set; }
+        public string? UserId { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            if (authenticationState is not null)
+            {
+                var authState = await authenticationState;
+
+                User = authState?.User;
+                IsUserAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
+                UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            }
+        }
+
+        protected virtual Task LoadDataRender()
+        {
+            return Task.CompletedTask;
+        }
 
         public new void StateHasChanged()
         {
             base.StateHasChanged();
-        }
-
-        /// <summary>
-        /// Use this method if you need to access javascript or data of logged user.
-        /// </summary>
-        /// <returns></returns>
-        protected virtual Task LoadDataRender()
-        {
-            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -48,6 +60,8 @@ namespace SD.WEB.Core
                     listener.OnResized += WindowResized;
 
                     await LoadDataRender();
+
+                    StateHasChanged();
                 }
             }
             catch (Exception ex)
@@ -74,7 +88,6 @@ namespace SD.WEB.Core
     /// <typeparam name="T"></typeparam>
     public abstract class PageCore<T> : ComponenteCore<T> where T : class
     {
-        [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
         [Inject] protected NavigationManager Navigation { get; set; } = default!;
         [Inject] protected PrincipalApi PrincipalApi { get; set; } = default!;
 
@@ -89,7 +102,7 @@ namespace SD.WEB.Core
             {
                 await base.OnAfterRenderAsync(firstRender);
 
-                if (await AppState.IsUserAuthenticated())
+                if (IsUserAuthenticated)
                 {
                     var principal = await PrincipalApi.Get();
 

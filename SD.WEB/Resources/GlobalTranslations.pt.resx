@@ -150,9 +150,6 @@
   <data name="ButtonWatched" xml:space="preserve">
     <value>Assistido</value>
   </data>
-  <data name="CustomVisibilityInvalid" xml:space="preserve">
-    <value>Operação inválida. Por favor, tente novamente.</value>
-  </data>
   <data name="CustomVisibilityLoading" xml:space="preserve">
     <value>Carregando...</value>
   </data>
@@ -300,12 +297,6 @@
   <data name="AuthenticationInProgress" xml:space="preserve">
     <value>Autenticação em andamento...</value>
   </data>
-  <data name="OurSuggestions1" xml:space="preserve">
-    <value>Nossas sugestões são baseadas nos provedores que você adicionou aos favoritos</value>
-  </data>
-  <data name="OurSuggestions2" xml:space="preserve">
-    <value>Nossas sugestões são baseadas nos provedores que você adicionou aos favoritos, exceto títulos já assistidos ou presentes em alguma lista pessoal. (Poderá ser atualizada uma vez por dia)</value>
-  </data>
   <data name="UpdateMySuggestions" xml:space="preserve">
     <value>Suas preferências entrarão em vigor na próxima atualização desta lista</value>
   </data>
@@ -326,5 +317,8 @@
   </data>
   <data name="BuyDVD" xml:space="preserve">
     <value>Comprar Blu-ray/DVD</value>
+  </data>
+  <data name="CustomVisibilityInvalid" xml:space="preserve">
+    <value>Operação inválida. Tente novamente.</value>
   </data>
 </root>

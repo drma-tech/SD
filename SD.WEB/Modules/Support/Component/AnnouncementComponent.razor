@@ -3,7 +3,7 @@
 @inherits ComponenteCore<AnnouncementComponent>
 @inject AnnouncementApi AnnouncementApi
 
-<RenderControl Task="Loadannouncement">
+<RenderControl Core="Core" Model="announcement" ExpressionEmpty="@((AnnouncementModel? obj)=>obj==null||!obj.Items.Any())">
     @foreach (var item in announcement?.Items.OrderByDescending(o => o.Date) ?? Enumerable.Empty<AnnouncementItem>())
     {
         <Alert Color="Color.Info" Visible="true">
@@ -18,11 +18,13 @@
 </RenderControl>
 
 @code {
+    public RenderControlCore<AnnouncementModel?> Core { get; set; } = new();
     private AnnouncementModel? announcement;
 
-    protected async Task<bool> Loadannouncement()
+    protected override async Task LoadDataRender()
     {
+        Core?.LoadingStarted?.Invoke();
         announcement = await AnnouncementApi.Get();
-        return announcement == null;
+        Core?.LoadingFinished?.Invoke(announcement);
     }
 }

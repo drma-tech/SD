@@ -1,33 +1,92 @@
 ﻿@page "/profile"
+@using SD.WEB.Modules.Profile.Components;
+@using SD.WEB.Modules.Profile.Core
 <SeoHeader Title="@SeoTranslations.ProfileTitle" Description="@SeoTranslations.ProfileDescription" Url="/profile"></SeoHeader>
 @inherits PageCore<Profile>
 @inject IHttpClientFactory httpClientFactory
 
-<MyProviderComponent Fake="Fake"></MyProviderComponent>
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
-<MySuggestions Fake="Fake"></MySuggestions>
+@* <Jumbotron Background="Background.Primary" Margin="Margin.Is4.FromBottom" Padding="Padding.Is4">
+    <JumbotronTitle Size="JumbotronTitleSize.Is4">Wellcome!</JumbotronTitle>
+    <JumbotronSubtitle>
+        You have free access to the entire platform, but with some restrictions.
+    </JumbotronSubtitle>
+    <Divider DividerType="DividerType.Solid" Border="Border.White"></Divider>
+    <Paragraph>
+        For more benefits, we invite you to become a premium user. <Blazorise.Link Clicked="OpenSubscription" TextColor="TextColor.White" Style="cursor: pointer;">click here</Blazorise.Link> to find out more.
+    </Paragraph>
+</Jumbotron> *@
+
+<MyProviderComponent Fake="Fake" WatchedList="WatchedList" WishList="WishList"></MyProviderComponent>
+
+<MySuggestions Fake="Fake" WatchedList="WatchedList" WishList="WishList"></MySuggestions>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWishListComponent></MyWishListComponent>
+        <MyWishListComponent WatchedList="WatchedList" WishList="WishList" CoreWishlist="CoreWishlist"></MyWishListComponent>
     </Column>
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWatchingListComponent Fake="Fake"></MyWatchingListComponent>
+        <MyWatchingListComponent Fake="Fake" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList" Core="CoreWatching"></MyWatchingListComponent>
     </Column>
 </Row>
 
 @code {
     [Parameter][SupplyParameterFromQuery(Name = "Fake")] public bool Fake { get; set; } = false;
+    [Inject] public IModalService ModalService { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
+    public RenderControlCore<WatchedList> CoreWatchedList { get; set; } = new();
+    public RenderControlCore<WatchingList> CoreWatching { get; set; } = new();
+    public RenderControlCore<WishList> CoreWishlist { get; set; } = new();
+
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += (WatchedList? model) => WatchedList = model;
+        WatchedListApi.SetRenderCore(CoreWatchedList);
+
+        WatchingListApi.DataChanged += (WatchingList? model) => WatchingList = model;
+        WatchingListApi.SetRenderCore(CoreWatching);
+
+        WishListApi.DataChanged += (WishList? model) => WishList = model;
+        WishListApi.SetRenderCore(CoreWishlist);
+    }
+
+    protected override async Task LoadDataRender()
     {
         if (Fake)
         {
             var http = httpClientFactory.CreateClient("RetryHttpClient");
 
-            AppState.ChangeWishList(await http.GetFromJsonAsync<WishList>("/data/WishList.json"));
-            AppState.ChangeWatchedList(await http.GetFromJsonAsync<WatchedList>("/data/WatchedList.json"));
-            AppState.ChangeWatchingList(await http.GetFromJsonAsync<WatchingList>("/data/WatchingList.json"));
+            WatchedList = await http.GetFromJsonAsync<WatchedList>("/data/WatchedList.json");
+            WatchingList = await http.GetFromJsonAsync<WatchingList>("/data/WatchingList.json");
+            WishList = await http.GetFromJsonAsync<WishList>("/data/WishList.json");
         }
+        else
+        {
+            WatchedList = await WatchedListApi.Get();
+            WatchingList = await WatchingListApi.Get();
+            WishList = await WishListApi.Get();
+        }
+    }
+
+    private async Task OpenSubscription()
+    {
+        await ModalService.Show<SubscriptionPopup>(null,
+        x =>
+        {
+            // x.Add(x => x.MediaType, mediaType);
+        },
+        new ModalInstanceOptions()
+            {
+                UseModalStructure = false,
+                Centered = true,
+                Size = ModalSize.Large,
+            });
     }
 }

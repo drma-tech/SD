@@ -4,9 +4,9 @@
 @inherits ComponenteCore<ReviewComponent>
 
 @inject ExternalIdApi ExternalIdApi
-@inject CacheApi CacheApi
+@inject CacheMetaCriticApi CacheMetaCriticApi
 
-<RenderControl Task="LoadReview">
+<RenderControl Core="Core" Model="Model" ExpressionEmpty="@((ReviewModel? obj)=>obj==null||!obj.Items.Any())">
     <ListGroup Flush>
         @foreach (var item in Model?.Items ?? new())
         {
@@ -28,28 +28,30 @@
     [Parameter] public DateTime? release_date { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
+    public RenderControlCore<ReviewModel?> Core { get; set; } = new();
     public ReviewModel? Model { get; set; }
 
-    protected async Task<bool> LoadReview()
+    protected override void OnInitialized()
+    {
+        CacheMetaCriticApi.SetRenderCore(Core);
+    }
+
+    protected override async Task LoadDataRender()
     {
         if (!string.IsNullOrEmpty(imdb_id))
         {
+            Core?.LoadingStarted?.Invoke();
             //TODO: must be english_title, not original_title
             if (type == MediaType.movie)
             {
-                var cache = await CacheApi.GetMovieReviews(imdb_id, original_title, release_date);
-
-                Model = (ReviewModel?)cache?.Data;
+                Model = await CacheMetaCriticApi.GetMovieReviews(imdb_id, original_title, release_date);
             }
             else
             {
-                var cache = await CacheApi.GetShowReviews(imdb_id, original_title, release_date);
-
-                Model = (ReviewModel?)cache?.Data;
+                Model = await CacheMetaCriticApi.GetShowReviews(imdb_id, original_title, release_date);
             }
+            Core?.LoadingFinished?.Invoke(Model);
         }
-
-        return Model == null || !Model.Items.Any();
     }
 
     private Color GetColorByRating(int? val)

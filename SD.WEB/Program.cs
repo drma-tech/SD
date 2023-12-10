@@ -49,6 +49,9 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddStaticWebAppsAuthentication();
+    collection.AddCascadingAuthenticationState();
+    collection.AddOptions();
+    collection.AddAuthorizationCore();
 
     collection.AddScoped<PrincipalApi>();
     collection.AddScoped<LoginApi>();
@@ -63,7 +66,10 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<AnnouncementApi>();
 
     collection.AddScoped<ExternalIdApi>();
-    collection.AddScoped<CacheApi>();
+    collection.AddScoped<CacheFlixsterApi>();
+    collection.AddScoped<CacheYoutubeApi>();
+    collection.AddScoped<CacheRatingsApi>();
+    collection.AddScoped<CacheMetaCriticApi>();
 
     collection.AddScoped<TmdbApi>();
 
@@ -78,8 +84,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
 
     collection.AddScoped<ImdbPopularApi>();
     collection.AddScoped<ImdbTopRatedApi>();
-
-    collection.AddScoped<AppState>();
 
     collection.AddResizeListener();
 

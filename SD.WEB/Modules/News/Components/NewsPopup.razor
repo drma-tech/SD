@@ -2,16 +2,16 @@
 @using System.Text.Json;
 @inherits ComponenteCore<NewsPopup>
 
-@inject CacheApi CacheApi
+@inject CacheFlixsterApi CacheFlixsterApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@($"{GlobalTranslations.NewsTitle} - Rotten Tomatoes")</ModalTitle>
-        <CloseButton />
-    </ModalHeader>
-    <ModalBody MaxHeight="70">
-        <RenderControl Task="LoadNews">
-            <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
-                @foreach (var item in News?.Items ?? new())
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    <RenderControl Core="Core" Model="News" ExpressionEmpty="@((NewsModel? obj)=>obj==null||!obj.Items.Any())">
+        <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
+            @foreach (var item in News?.Items ?? new())
             {
                 <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
                     <Card>
@@ -19,9 +19,14 @@
                         </CardImage>
                         <CardBody>
                             <CardText Style="font-size: 0.8rem;">
-                                @((MarkupString)item.title)
+                                @if (!string.IsNullOrEmpty(item.title))
+                                {
+                                    @((MarkupString)item.title)
+                                }
                             </CardText>
-                            <Button Color="Color.Primary" Type="ButtonType.Link" To="@item.link" Target="Target.Blank" Size="Size.Small" Class="mt-2">@GlobalTranslations.ButtonReadMore</Button>
+                            <Button Color="Color.Primary" Type="ButtonType.Link" To="@item.link" Target="Target.Blank" Size="Size.Small" Class="mt-2">
+                                @GlobalTranslations.ButtonReadMore
+                            </Button>
                         </CardBody>
                     </Card>
                 </Column>
@@ -30,21 +35,25 @@
     </RenderControl>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">@TranslationText.Close</Button>
+    <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
+        @TranslationText.Close
+    </Button>
 </ModalFooter>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
+    public RenderControlCore<NewsModel?> Core { get; set; } = new();
     private NewsModel? News { get; set; }
     public string? selectedSlide { get; set; }
 
-    protected async Task<bool> LoadNews()
+    protected override void OnInitialized()
     {
-        var cache = await CacheApi.GetNews("full");
+        CacheFlixsterApi.SetRenderCore(Core);
+    }
 
-        News = (NewsModel?)cache.Data;
-
-        return News == null;
+    protected override async Task LoadDataRender()
+    {
+        News = await CacheFlixsterApi.GetNews("full");
     }
 }

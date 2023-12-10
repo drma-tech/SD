@@ -7,29 +7,34 @@
 @inject TmdbNowPlayingApi TmdbNowPlayingApi
 
 <HeaderComponent Title="@TranslationText.Popular" IconImage="logo/imdb.png">
-    <RadioGroup @bind-CheckedValue="TypeSelected" Buttons="true" Float="Float.End" Class="btn-group-xs">
-        <Radio Value="PopularType.Movie">@PopularType.Movie.GetName()</Radio>
-        <Radio Value="PopularType.Show">@PopularType.Show.GetName()</Radio>
-        <Radio Value="PopularType.Cinema">@PopularType.Cinema.GetName()</Radio>
+    <RadioGroup @bind-CheckedValue="@TypeSelected" Buttons="true" Float="Float.End" Class="btn-group-xs">
+        <Radio Value="PopularType.Movie">@(PopularType.Movie.GetName())</Radio>
+        <Radio Value="PopularType.Show">@(PopularType.Show.GetName())</Radio>
+        <Radio Value="PopularType.Cinema">@(PopularType.Cinema.GetName())</Radio>
     </RadioGroup>
 </HeaderComponent>
 @if (TypeSelected == PopularType.Movie)
 {
     <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false"
-               StringParameters="Params"></MediaList>
+               StringParameters="Params" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
 }
 else if (TypeSelected == PopularType.Show)
 {
     <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false"
-               StringParameters="Params" TypeSelected="MediaType.tv"></MediaList>
+               StringParameters="Params" TypeSelected="MediaType.tv" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
 }
 else if (TypeSelected == PopularType.Cinema)
 {
-    <MediaList ShowHead="false" MediaListApi="TmdbNowPlayingApi" MaxItens="10" MultiplesRegions="true">
+    <MediaList ShowHead="false" MediaListApi="TmdbNowPlayingApi" MaxItens="10" MultiplesRegions="true" Private="false"
+               WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList">
     </MediaList>
 }
 
 @code {
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+
     public PopularType TypeSelected { get; set; } = PopularType.Movie;
 
     public Dictionary<string, string> Params { get; set; } = new Dictionary<string, string>() { { "mode", "compact" } };

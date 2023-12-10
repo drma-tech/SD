@@ -5,14 +5,14 @@
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@Resources.Translations.NewTicketTitle</ModalTitle>
-    <CloseButton />
-</ModalHeader>
-<ModalBody>
-    <EditForm Model="@Ticket" OnValidSubmit="SubmitForm">
-        <FluentValidationValidator />
-        <div class="form-group">
-            <Select TValue="TicketType" @bind-SelectedValue="@TicketType" Size="Size.Small">
-                @foreach (var item in EnumHelper.GetArray<TicketType>())
+        <CloseButton />
+    </ModalHeader>
+    <ModalBody>
+        <EditForm Model="@Ticket" OnValidSubmit="SubmitForm">
+            <FluentValidationValidator />
+            <div class="form-group">
+                <Select TValue="TicketType" @bind-SelectedValue="@TicketType" Size="Size.Small">
+                    @foreach (var item in EnumHelper.GetArray<TicketType>())
                 {
                     <SelectItem Value="@item">@item.GetName()</SelectItem>
                 }
@@ -27,26 +27,25 @@
             <MemoEdit @bind-Text="@Ticket.Description" Rows="7" MaxLength="512" Placeholder="@CustomAttributeHelper.GetCustomAttribute(()=>Ticket.Description)?.Prompt" Size="Size.Small"></MemoEdit>
             <ValidationMessage For="@(()=>Ticket.Description)"></ValidationMessage>
         </div>
-        <Button Type="ButtonType.Submit" Color="Color.Primary" Disabled="!IsUserAuthenticated" Size="Size.Small">@GlobalTranslations.ButtonSave</Button>
-        <Button Clicked="@ModalService.Hide" Color="Color.Secondary" Size="Size.Small">@GlobalTranslations.ButtonCancel</Button>
-        <Button Clicked="@ImportLastError" Color="Color.Danger" Float="Float.End" Disabled="(TicketType == TicketType.Improvement)" Size="Size.Small">@Resources.Translations.ImportLastError</Button>
+        <Button Type="ButtonType.Submit" Color="Color.Primary" Disabled="!IsUserAuthenticated" Size="Size.Small">
+            @GlobalTranslations.ButtonSave
+        </Button>
+        <Button Clicked="@ModalService.Hide" Color="Color.Secondary" Size="Size.Small">
+            @GlobalTranslations.ButtonCancel
+        </Button>
+        <Button Clicked="@ImportLastError" Color="Color.Danger" Float="Float.End" Disabled="(TicketType == TicketType.Improvement)" Size="Size.Small">
+            @Resources.Translations.ImportLastError
+        </Button>
     </EditForm>
 </ModalBody>
 
 @code {
-    [Parameter] public TicketType TicketType { get; set; } = TicketType.BugReport;
+    [Parameter][EditorRequired] public TicketType TicketType { get; set; } = TicketType.BugReport;
 
     public TicketModel Ticket { get; set; } = new();
     [Parameter] public EventCallback<TicketModel> Inserted { get; set; }
 
     [Inject] public IModalService ModalService { get; set; } = default!;
-
-    public bool IsUserAuthenticated { get; set; }
-
-    protected override async Task LoadDataRender()
-    {
-        IsUserAuthenticated = await AppState.IsUserAuthenticated();
-    }
 
     private void ImportLastError()
     {
@@ -79,7 +78,7 @@
         {
             Ticket.TicketType = TicketType;
             Ticket.TicketStatus = TicketStatus.New;
-            Ticket.Initialize(await AppState.GetIdUser());
+            Ticket.Initialize(UserId);
 
             Ticket = await TicketApi.Insert(Ticket) ?? new();
 

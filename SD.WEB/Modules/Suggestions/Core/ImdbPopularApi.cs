@@ -5,23 +5,19 @@ using System.Globalization;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class ImdbPopularApi : ApiServices, IMediaListApi
+    public class ImdbPopularApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiServices(http, memoryCache), IMediaListApi
     {
-        public ImdbPopularApi(IHttpClientFactory http, IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
-
         public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
         {
             var list_media = new HashSet<MediaDetail>();
 
             if (type == MediaType.movie)
             {
-                var result = await GetAsync<MostPopularDataCache>("Public/Cache/ImdbPopularMovies".ConfigureParameters(stringParameters), false);
+                var result = await GetAsync<MostPopularData>("Public/Cache/ImdbPopularMovies".ConfigureParameters(stringParameters), false);
 
-                if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(GlobalTranslations.UnavailableService);
+                //if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(GlobalTranslations.UnavailableService);
 
-                foreach (var item in result?.Data?.Items ?? new List<MostPopularDataDetail>())
+                foreach (var item in result?.Items ?? [])
                 {
                     //if (item.IMDbRatingCount == "0") continue; //ignore low-rated movie
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
@@ -44,11 +40,11 @@ namespace SD.WEB.Modules.Suggestions.Core
             }
             else if (type == MediaType.tv)
             {
-                var result = await GetAsync<MostPopularDataCache>("Public/Cache/ImdbPopularTVs".ConfigureParameters(stringParameters), false);
+                var result = await GetAsync<MostPopularData>("Public/Cache/ImdbPopularTVs".ConfigureParameters(stringParameters), false);
 
-                if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(GlobalTranslations.UnavailableService);
+                //if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(GlobalTranslations.UnavailableService);
 
-                foreach (var item in result?.Data?.Items ?? new List<MostPopularDataDetail>())
+                foreach (var item in result?.Items ?? new List<MostPopularDataDetail>())
                 {
                     //if (item.IMDbRatingCount == "0") continue; //ignore low-rated movie
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster

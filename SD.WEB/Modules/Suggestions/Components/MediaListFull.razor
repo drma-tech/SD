@@ -12,7 +12,7 @@
 {
     <HeaderComponent Title="@GetTitle"></HeaderComponent>
 }
-<RenderControl Task="LoadGeneric">
+<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list)=>!list.Any())">
     <Row HorizontalGutter="4" VerticalGutter="4">
         @for (int i = 1; i <= Items.Count; i++)
         {
@@ -20,7 +20,7 @@
             <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
                 <Card>
                     <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments" CommentsSeparator="CommentsSeparator"
-                                     TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))"></PosterComponent>
+                                     TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" Private="Private" WatchedList="WatchedList" WishList="WishList"></PosterComponent>
                 </Card>
             </Column>
             if ((i % GetTotalItems) == 0)
@@ -38,16 +38,26 @@
 @if (MediaListApi != null)
 {
     <Div TextAlignment="TextAlignment.Center">
-        <Button Color="Color.Secondary" Size="Size.Small" Margin="Margin.Is2" Clicked="LoadMore" Disabled="@(Items.Count>=MaxItens|DisableLoadMore)">@GlobalTranslations.ButtonLoadMore</Button>
+        <Button Color="Color.Secondary" Size="Size.Small" Margin="Margin.Is2" Clicked="LoadMore" Disabled="@(Items.Count>=MaxItens|DisableLoadMore)">
+            @GlobalTranslations.ButtonLoadMore
+        </Button>
     </Div>
 }
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
+    [Parameter][EditorRequired] public bool Private { get; set; }
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
+
+    [Parameter] public RenderControlCore<HashSet<MediaDetail>>? Core { get; set; } = new();
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
+
     [Parameter] public bool IsIMDB { get; set; } = false;
     [Parameter] public int MaxItens { get; set; } = 10;
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
@@ -74,11 +84,11 @@
         // AppState.WatchedListChanged += StateHasChanged;
     }
 
-    protected async Task<bool> LoadGeneric()
+    protected override async Task LoadDataRender()
     {
+        Core?.ShowLoading();
         await LoadItems(TypeSelected);
-
-        return !Items.Any();
+        Core?.HideLoading(Items);
     }
 
     private async Task LoadItems(MediaType? type)
@@ -175,6 +185,9 @@
             {
                 x.Add(x => x.tmdb_id, tmdb_id);
                 x.Add(x => x.type, media?.MediaType);
+                x.Add(x => x.WatchedList, WatchedList);
+                x.Add(x => x.WatchingList, WatchingList);
+                x.Add(x => x.WishList, WishList);
             },
             new ModalInstanceOptions()
                 {

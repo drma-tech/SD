@@ -5,18 +5,20 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <FieldSelect For="@(() => MySuggestions.MovieGenres)" TValue="IReadOnlyList<MovieGenre>" TEnum="MovieGenre" @bind-SelectedValues="@MySuggestions.MovieGenres"
+    <FieldSelect For="@(() => MySuggestions!.MovieGenres)" TValue="IReadOnlyList<MovieGenre>" TEnum="MovieGenre" @bind-SelectedValues="@MySuggestions!.MovieGenres"
                  CssIcon="@FontAwesomeIcons.Film" Multiple="true" Order="(o)=>o.Name"></FieldSelect>
-    <FieldSelect For="@(() => MySuggestions.TvGenres)" TValue="IReadOnlyList<TvGenre>" TEnum="TvGenre" @bind-SelectedValues="@MySuggestions.TvGenres"
+    <FieldSelect For="@(() => MySuggestions!.TvGenres)" TValue="IReadOnlyList<TvGenre>" TEnum="TvGenre" @bind-SelectedValues="@MySuggestions!.TvGenres"
                  CssIcon="@FontAwesomeIcons.Tv" Multiple="true" Order="(o)=>o.Name"></FieldSelect>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@(()=>{ModalService.Hide();MySuggestionsChanged?.InvokeAsync(MySuggestions);})" Size="Size.Small">@TranslationText.OK</Button>
+    <Button Color="Color.Secondary" Clicked="@(()=>{ModalService.Hide();MySuggestionsChanged?.InvokeAsync(MySuggestions);})" Size="Size.Small">
+        @TranslationText.OK
+    </Button>
 </ModalFooter>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter] public SD.Shared.Models.MySuggestions? MySuggestions { get; set; }
+    [Parameter][EditorRequired] public SD.Shared.Models.MySuggestions? MySuggestions { get; set; } = new();
     [Parameter] public EventCallback<SD.Shared.Models.MySuggestions>? MySuggestionsChanged { get; set; }
 }

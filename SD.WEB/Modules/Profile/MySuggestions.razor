@@ -2,7 +2,6 @@
 @using SD.WEB.Modules.Suggestions.Core;
 @inherits ComponenteCore<MySuggestions>
 
-@inject AppState State
 @inject IHttpClientFactory httpClientFactory
 
 @inject MyProvidersApi MyProvidersApi
@@ -15,8 +14,8 @@
         <Blazorise.Icon Name="FontAwesomeIcons.Cog"></Blazorise.Icon>
     </Button>
     <RadioGroup @bind-CheckedValue="SearchType" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is1.FromEnd">
-        <Radio Value="MediaType.movie">@MediaType.movie.GetName()</Radio>
-        <Radio Value="MediaType.tv">@MediaType.tv.GetName()</Radio>
+        <Radio Value="MediaType.movie">@(MediaType.movie.GetName())</Radio>
+        <Radio Value="MediaType.tv">@(MediaType.tv.GetName())</Radio>
     </RadioGroup>
     @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (myProviders?.Items.Any() ?? false))
     {
@@ -32,7 +31,7 @@
     }
 </HeaderComponent>
 
-<RenderControl Task="LoadmySuggestions" PrivateContent="true">
+<RenderControl Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj)=>!obj?.Items(SearchType).Any()??true)" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !Watched(SearchType, w)).Take(GetTotalItems) ?? new List<SuggestionListItem>())
         {
@@ -59,7 +58,6 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    public RenderControl? RenderControl { get; set; }
     private MyProviders? myProviders { get; set; }
     private SD.Shared.Models.MySuggestions? mySuggestions { get; set; }
     public MediaType SearchType { get; set; } = MediaType.movie;
@@ -70,28 +68,16 @@
     public bool MovieUpdating { get; set; } = false;
     public bool ShowUpdating { get; set; } = false;
 
-    private WatchedList? WatchedList;
-    private WishList? WishList;
+    public RenderControlCore<SD.Shared.Models.MySuggestions?>? Core { get; set; } = new();
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
     private bool GenresChanged => mySuggestions?.MovieGenres.Any() ?? false | mySuggestions?.TvGenres.Any() ?? false;
 
-    protected override void OnInitialized()
-    {
-        AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); RenderControl?.ShowContent(mySuggestions == null); };
-        AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); RenderControl?.ShowContent(mySuggestions == null); };
-    }
-
     protected override async Task LoadDataRender()
     {
-        if (await AppState.IsUserAuthenticated())
-        {
-            WatchedList = await AppState.GetWatchedList(true);
-            WishList = await AppState.GetWishList(true);
-        }
-    }
+        Core?.ShowLoading();
 
-    protected async Task<bool> LoadmySuggestions()
-    {
         if (Fake)
         {
             var http = httpClientFactory.CreateClient("RetryHttpClient");
@@ -100,11 +86,11 @@
         }
         else
         {
-            myProviders = await MyProvidersApi.Get(await AppState.IsUserAuthenticated());
+            myProviders = await MyProvidersApi.Get(IsUserAuthenticated);
 
             if (myProviders == null || !myProviders.Items.Any())
             {
-                RenderControl?.ShowWarning(Resources.GlobalTranslations.OurSuggestions1);
+                Core?.ShowWarning(Resources.GlobalTranslations.OurSuggestions1);
             }
             else
             {
@@ -112,13 +98,12 @@
 
                 if (mySuggestions == null || !mySuggestions.Items(SearchType).Any())
                 {
-                    RenderControl?.ShowWarning(Resources.GlobalTranslations.OurSuggestions2);
+                    Core?.ShowWarning(Resources.GlobalTranslations.OurSuggestions2);
                 }
             }
         }
 
-        StateHasChanged();
-        return mySuggestions == null;
+        Core?.HideLoading(mySuggestions);
     }
 
     public Task ShowMediaPopup(string? tmdb_id, string? name, MediaType type)
@@ -167,7 +152,7 @@
             {
                 mySuggestions.Movies.Clear();
                 MovieUpdating = true;
-                RenderControl?.ShowLoading();
+                Core?.ShowProcessing();
 
                 var titles = new HashSet<MediaDetail>();
                 foreach (var provider in myProviders?.Items ?? new())
@@ -204,17 +189,17 @@
                     }
                 }
 
-                if (!mySuggestions.Items(MediaType.movie).Any()) RenderControl?.ShowWarning(null);
+                if (!mySuggestions.Items(MediaType.movie).Any()) Core?.ShowWarning(null);
 
                 mySuggestions = await MySuggestionsApi.Sync(MediaType.movie, mySuggestions);
                 MovieUpdating = false;
-                RenderControl?.ShowContent(mySuggestions == null || !mySuggestions.Movies.Any());
+                Core?.HideProcessing(mySuggestions);
             }
             else
             {
                 mySuggestions.Shows.Clear();
                 ShowUpdating = true;
-                RenderControl?.ShowLoading();
+                Core?.ShowProcessing();
 
                 var titles = new HashSet<MediaDetail>();
                 foreach (var provider in myProviders?.Items ?? new())
@@ -251,18 +236,18 @@
                     }
                 }
 
-                if (!mySuggestions.Items(MediaType.tv).Any()) RenderControl?.ShowWarning(null);
+                if (!mySuggestions.Items(MediaType.tv).Any()) Core?.ShowWarning(null);
 
                 mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions);
                 ShowUpdating = false;
-                RenderControl?.ShowContent(mySuggestions == null || !mySuggestions.Shows.Any());
+                Core?.HideProcessing(mySuggestions);
             }
         }
         catch (Exception ex)
         {
             MovieUpdating = false;
             ShowUpdating = false;
-            RenderControl?.ShowError(ex.Message);
+            Core?.ShowError(ex.Message);
             ex.ProcessException(Toast, Logger);
         }
     }

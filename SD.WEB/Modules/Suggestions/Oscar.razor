@@ -2,13 +2,37 @@
 <SeoHeader Title="Suggestions | Oscar" Description="@TranslationText.oscar_desc" Keywords="@(new []{"Oscar"})" Url="/suggestions/oscar"></SeoHeader>
 @inherits PageCore<Oscar>
 
+@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 <HeadPage Title="Oscar" ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestMotionPicture" MaxItens="12"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestAnimatedFeatureFilm" MaxItens="12"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarInternationalFeatureFilm" MaxItens="12"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarDocumentaryFeature" MaxItens="12"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestMotionPicture" MaxItens="12" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestAnimatedFeatureFilm" MaxItens="12" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarInternationalFeatureFilm" MaxItens="12" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarDocumentaryFeature" MaxItens="12" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+
+@code {
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += (WatchedList? model) => WatchedList = model;
+        WatchingListApi.DataChanged += (WatchingList? model) => WatchingList = model;
+        WishListApi.DataChanged += (WishList? model) => WishList = model;
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get();
+        WatchingList = await WatchingListApi.Get();
+        WishList = await WishListApi.Get();
+    }
+}

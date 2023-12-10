@@ -97,6 +97,10 @@
 }
 
 @code {
+    [Parameter][EditorRequired] public bool Private { get; set; }
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+
     [Parameter] public EventCallback<MouseEventArgs> Clicked { get; set; }
     [Parameter] public DateTime? Date { get; set; }
     [Parameter] public double? Rating { get; set; }
@@ -110,22 +114,4 @@
     [Parameter] public bool ShowWished { get; set; } = true;
     [Parameter] public bool ShowWatched { get; set; } = true;
     [Parameter] public string? RankUpDown { get; set; }
-
-    private WatchedList? WatchedList;
-    private WishList? WishList;
-
-    protected override void OnInitialized()
-    {
-        AppState.WatchedListChanged += (WatchedList? list) => { WatchedList = list; StateHasChanged(); };
-        AppState.WishListChanged += (WishList? list) => { WishList = list; StateHasChanged(); };
-    }
-
-    protected override async Task LoadDataRender()
-    {
-        if (await AppState.IsUserAuthenticated())
-        {
-            WatchedList = await AppState.GetWatchedList(false);
-            WishList = await AppState.GetWishList(false);
-        }
-    }
 }

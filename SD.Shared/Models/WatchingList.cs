@@ -25,7 +25,7 @@ namespace SD.Shared.Models
             return Items(type).FirstOrDefault(f => f.id == id);
         }
 
-        public HashSet<string> GetWatchedItems(MediaType? type, string? collectionId)
+        public HashSet<string> GetWatchingItems(MediaType? type, string? collectionId)
         {
             return Items(type).FirstOrDefault(f => f.id == collectionId)?.watched ?? new();
         }
@@ -37,21 +37,23 @@ namespace SD.Shared.Models
             return Items(type).Contains(item);
         }
 
-        public void AddItem(MediaType? type, WatchingListItem item)
+        public void AddItem(MediaType? type, WatchingListItem newItem)
         {
-            if (Contains(type, item))
+            if (Contains(type, newItem))
             {
-                GetItem(type, item.id)?.watched.Clear();
+                var item = GetItem(type, newItem.id)!;
 
-                GetItem(type, item.id).maxItems = item.maxItems;
-                foreach (var id in item.watched)
+                item.watched.Clear();
+
+                item.maxItems = newItem.maxItems;
+                foreach (var id in newItem.watched)
                 {
-                    GetItem(type, item.id)?.watched.Add(id);
+                    item.watched.Add(id);
                 }
             }
             else
             {
-                Items(type).Add(item);
+                Items(type).Add(newItem);
             }
         }
 
@@ -88,7 +90,7 @@ namespace SD.Shared.Models
         }
     }
 
-    public class WatchingListItem : IEquatable<WatchingListItem>
+    public sealed class WatchingListItem : IEquatable<WatchingListItem>
     {
         public WatchingListItem()
         {

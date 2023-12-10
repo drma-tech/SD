@@ -1,38 +1,36 @@
-﻿namespace SD.WEB.Modules.Profile.Core
-{
-    public class WatchedListApi : ApiServices
-    {
-        public WatchedListApi(IHttpClientFactory http, Microsoft.Extensions.Caching.Memory.IMemoryCache memoryCache) : base(http, memoryCache)
-        {
-        }
+﻿using Microsoft.Extensions.Caching.Memory;
 
+namespace SD.WEB.Modules.Profile.Core
+{
+    public class WatchedListApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<WatchedList>(http, memoryCache, "WatchedList")
+    {
         private struct Endpoint
         {
-            public const string Get = "WatchedList/Get";
+            public const string Get = "watchedlist/get";
 
-            public static string Add(MediaType? type, string TmdbId) => $"WatchedList/Add/{type}/{TmdbId}";
+            public static string Add(MediaType? type, string TmdbId) => $"watchedlist/add/{type}/{TmdbId}";
 
-            public static string Remove(MediaType? type, string TmdbId) => $"WatchedList/Remove/{type}/{TmdbId}";
+            public static string Remove(MediaType? type, string TmdbId) => $"watchedlist/remove/{type}/{TmdbId}";
         }
 
-        public async Task<WatchedList?> Get(bool IsUserAuthenticated)
+        public async Task<WatchedList?> Get(string? id = null)
         {
-            if (IsUserAuthenticated)
+            if (!string.IsNullOrEmpty(id))
             {
-                return await GetAsync<WatchedList>(Endpoint.Get, false);
+                return await GetAsync($"{Endpoint.Get}?id={id}");
             }
             else
             {
-                return default;
+                return await GetAsync(Endpoint.Get);
             }
         }
 
         public async Task<WatchedList?> Add(MediaType? mediaType, string? TmdbId)
         {
-            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
-            if (TmdbId == null) throw new ArgumentNullException(nameof(TmdbId));
+            ArgumentNullException.ThrowIfNull(mediaType);
+            ArgumentNullException.ThrowIfNull(TmdbId);
 
-            return await PostAsync<WatchedList>(Endpoint.Add(mediaType, TmdbId), false, null, Endpoint.Get);
+            return await PostAsync<WatchedList>(Endpoint.Add(mediaType, TmdbId), null);
         }
 
         public async Task<WatchedList?> Remove(MediaType? mediaType, string? TmdbId)
@@ -40,7 +38,7 @@
             if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
             if (TmdbId == null) throw new ArgumentNullException(nameof(TmdbId));
 
-            return await PostAsync<WatchedList>(Endpoint.Remove(mediaType, TmdbId), false, null, Endpoint.Get);
+            return await PostAsync<WatchedList>(Endpoint.Remove(mediaType, TmdbId), null);
         }
     }
 }

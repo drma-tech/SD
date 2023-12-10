@@ -2,11 +2,35 @@
 <SeoHeader Title="Suggestions | Empire" Keywords="@(new []{"Empire"})" Url="/suggestions/empire"></SeoHeader>
 @inherits PageCore<Empire>
 
+@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 <HeadPage Title="Empire" ImageSource="logo/empire.png" Text="Find the latest film reviews, news and celebrity interviews from Empire, the world's biggest movie destination. Discover our new TV and gaming content." Link="https://www.empireonline.com/"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestMoviesOfAllTime" MaxItens="100"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestTVShowsOfAllTime" MaxItens="100"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestMoviesOfAllTime" MaxItens="100" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestTVShowsOfAllTime" MaxItens="100" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+
+@code {
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += (WatchedList? model) => WatchedList = model;
+        WatchingListApi.DataChanged += (WatchingList? model) => WatchingList = model;
+        WishListApi.DataChanged += (WishList? model) => WishList = model;
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get();
+        WatchingList = await WatchingListApi.Get();
+        WishList = await WishListApi.Get();
+    }
+}

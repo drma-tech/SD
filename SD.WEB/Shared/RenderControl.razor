@@ -1,23 +1,23 @@
-﻿@inject AuthenticationStateProvider AuthenticationStateProvider
+﻿@typeparam TModel
 
-@if (Status == LoadingStatus.Loading)
+@if (Core.Status == LoadingStatus.Loading)
 {
     if (PartialComponent)
     {
         <Blazorise.Text TextColor="TextColor.Secondary">
-            <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @GlobalTranslations.CustomVisibilityLoading
+            <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @MessageLoading
         </Blazorise.Text>
     }
     else
     {
         <Alert Color="Color.Warning" Visible="true">
             <AlertDescription>
-                <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @GlobalTranslations.CustomVisibilityLoading
+                <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @MessageLoading
             </AlertDescription>
         </Alert>
     }
 }
-else if (Status == LoadingStatus.Locked && !PartialComponent)
+else if (Core.Status == LoadingStatus.Locked && !PartialComponent)
 {
     <Alert Color="Color.Primary" Visible="true">
         <AlertDescription>
@@ -25,7 +25,7 @@ else if (Status == LoadingStatus.Locked && !PartialComponent)
         </AlertDescription>
     </Alert>
 }
-else if (Status == LoadingStatus.Error && !PartialComponent)
+else if (Core.Status == LoadingStatus.Error && !PartialComponent)
 {
     <Alert Color="Color.Danger" Visible="true">
         <AlertDescription>
@@ -33,7 +33,7 @@ else if (Status == LoadingStatus.Error && !PartialComponent)
         </AlertDescription>
     </Alert>
 }
-else if (Status == LoadingStatus.Warning && !PartialComponent)
+else if (Core.Status == LoadingStatus.Warning && !PartialComponent)
 {
     <Alert Color="Color.Primary" Visible="true">
         <AlertDescription>
@@ -41,104 +41,59 @@ else if (Status == LoadingStatus.Warning && !PartialComponent)
         </AlertDescription>
     </Alert>
 }
-else if (Status == LoadingStatus.ShowContent)
+else //ShowContent
 {
     @ChildContent
 }
 
 @code {
-    [Parameter][EditorRequired] public RenderFragment? ChildContent { get; set; }
-    [Parameter][EditorRequired] public Func<Task<bool>>? Task { get; set; }
+    [CascadingParameter] protected Task<AuthenticationState>? authenticationState { get; set; }
+
+    [Parameter][EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter][EditorRequired] public RenderControlCore<TModel> Core { get; set; } = default!;
+    [Parameter][EditorRequired] public TModel? Model { get; set; }
+    [Parameter][EditorRequired] public Func<TModel?, bool> ExpressionEmpty { get; set; } = default!;
 
     [Parameter] public bool PrivateContent { get; set; } = false;
     [Parameter] public string? CustomMessageError { get; set; } = null;
     [Parameter] public string? CustomMessageWarning { get; set; } = null;
     [Parameter] public bool PartialComponent { get; set; } = false;
 
-    private Action? StartLoading { get; set; }
-    private Action<bool>? StopLoading { get; set; }
-    private Action<string?>? LoadingError { get; set; }
-    private Action<string?>? LoadingWarning { get; set; }
-
+    private string? MessageLoading { get; set; } = GlobalTranslations.CustomVisibilityLoading;
     private string? MessageError { get; set; } = null;
     private string? MessageWarning { get; set; } = null;
 
-    private LoadingStatus Status { get; set; }
-
-    private enum LoadingStatus
-    {
-        Loading,
-        Locked,
-        Error,
-        Warning,
-        ShowContent
-    }
-
     protected override void OnInitialized()
     {
-        if (ChildContent == null) throw new ArgumentNullException(nameof(ChildContent));
+        ArgumentNullException.ThrowIfNull(ChildContent);
+        ArgumentNullException.ThrowIfNull(Core);
+        ArgumentNullException.ThrowIfNull(ExpressionEmpty);
 
-        Status = PrivateContent ? LoadingStatus.Locked : LoadingStatus.Loading;
+        if (Model != null && (ExpressionEmpty != null && !ExpressionEmpty(Model)))
+            Core.Status = LoadingStatus.ShowContent;
 
-        StartLoading = () => ShowLoading();
-        StopLoading = (bool isEmpty) => ShowContent(isEmpty);
-        LoadingError = (string? msg) => ShowError(msg);
-        LoadingWarning = (string? msg) => ShowWarning(msg);
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (!PrivateContent)
-        {
-            var isEmpty = true;
-
-            try
-            {
-                StartLoading?.Invoke();
-                if (Task != null) isEmpty = await Task.Invoke();
-            }
-            catch (Exception ex)
-            {
-                ShowError(ex.Message);
-            }
-            finally
-            {
-                StopLoading?.Invoke(isEmpty);
-            }
-        }
-
-        await base.OnInitializedAsync();
+        Core.LoadingStarted += () => ShowLoading();
+        Core.LoadingFinished += (TModel? model) => ShowContent(model);
+        Core.ProcessingStarted += () => ShowLoading("Processing...");
+        Core.ProcessingFinished += (TModel? model) => ShowContent(model);
+        Core.WarningAction += (string? msg) => ShowWarning(msg);
+        Core.ErrorAction += (string? msg) => ShowError(msg);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        ArgumentNullException.ThrowIfNull(Core);
+
         await base.OnAfterRenderAsync(firstRender);
 
-        if (firstRender && PrivateContent)
+        if (firstRender && PrivateContent && authenticationState is not null)
         {
-            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var authState = await authenticationState;
+            var isAuthenticated = authState?.User?.Identity?.IsAuthenticated ?? false;
 
-            if (authState?.User?.Identity?.IsAuthenticated ?? false)
+            if (!isAuthenticated)
             {
-                var isEmpty = true;
-
-                try
-                {
-                    StartLoading?.Invoke();
-                    if (Task != null) isEmpty = await Task.Invoke();
-                }
-                catch (Exception ex)
-                {
-                    ShowError(ex.Message);
-                }
-                finally
-                {
-                    StopLoading?.Invoke(isEmpty);
-                }
-            }
-            else
-            {
-                Status = LoadingStatus.Locked;
+                Core.Status = LoadingStatus.Locked;
             }
         }
     }
@@ -151,46 +106,33 @@ else if (Status == LoadingStatus.ShowContent)
         StateHasChanged();
     }
 
-    public void ShowLoading()
+    private void ShowLoading(string? msg = null)
     {
         Reset();
 
-        Status = LoadingStatus.Loading;
+        Core.Status = LoadingStatus.Loading;
+        MessageLoading = msg ?? GlobalTranslations.CustomVisibilityLoading;
 
         StateHasChanged();
     }
 
-    public void ShowContent(bool isEmpty)
+    private void ShowContent(TModel? model)
     {
         Reset();
 
         if (PartialComponent)
         {
-            Status = LoadingStatus.ShowContent;
+            Core.Status = LoadingStatus.ShowContent;
             StateHasChanged();
             return;
         }
 
-        if (Status == LoadingStatus.Error | Status == LoadingStatus.Warning) return;
+        if (Core.Status == LoadingStatus.Error | Core.Status == LoadingStatus.Warning) return;
 
-        if (isEmpty)
-            Status = LoadingStatus.Warning;
+        if (model == null || (ExpressionEmpty != null && ExpressionEmpty(model)))
+            Core.Status = LoadingStatus.Warning;
         else
-            Status = LoadingStatus.ShowContent;
-
-        StateHasChanged();
-    }
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="msg">Default: invalid operation</param>
-    public void ShowError(string? msg)
-    {
-        Reset();
-
-        Status = LoadingStatus.Error;
-        MessageError = CustomMessageError ?? msg;
+            Core.Status = LoadingStatus.ShowContent;
 
         StateHasChanged();
     }
@@ -199,12 +141,26 @@ else if (Status == LoadingStatus.ShowContent)
     ///
     /// </summary>
     /// <param name="msg">Default: no data</param>
-    public void ShowWarning(string? msg)
+    private void ShowWarning(string? msg)
     {
         Reset();
 
-        Status = LoadingStatus.Warning;
+        Core.Status = LoadingStatus.Warning;
         MessageWarning = CustomMessageWarning ?? msg;
+
+        StateHasChanged();
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="msg">Default: invalid operation</param>
+    private void ShowError(string? msg)
+    {
+        Reset();
+
+        Core.Status = LoadingStatus.Error;
+        MessageError = CustomMessageError ?? msg;
 
         StateHasChanged();
     }
