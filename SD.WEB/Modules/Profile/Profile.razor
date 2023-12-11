@@ -9,16 +9,19 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-@* <Jumbotron Background="Background.Primary" Margin="Margin.Is4.FromBottom" Padding="Padding.Is4">
-    <JumbotronTitle Size="JumbotronTitleSize.Is4">Wellcome!</JumbotronTitle>
-    <JumbotronSubtitle>
-        You have free access to the entire platform, but with some restrictions.
-    </JumbotronSubtitle>
-    <Divider DividerType="DividerType.Solid" Border="Border.White"></Divider>
-    <Paragraph>
-        For more benefits, we invite you to become a premium user. <Blazorise.Link Clicked="OpenSubscription" TextColor="TextColor.White" Style="cursor: pointer;">click here</Blazorise.Link> to find out more.
-    </Paragraph>
-</Jumbotron> *@
+@if (IsUserAuthenticated)
+{
+    <Jumbotron Background="Background.Primary" Margin="Margin.Is4.FromBottom" Padding="Padding.Is4">
+        <JumbotronTitle Size="JumbotronTitleSize.Is4">Wellcome!</JumbotronTitle>
+        <JumbotronSubtitle>
+            You have free access to the entire platform, but with some restrictions.
+        </JumbotronSubtitle>
+        <Divider DividerType="DividerType.Solid" Border="Border.White"></Divider>
+        <Paragraph>
+            For more benefits, we invite you to become a premium user. <Blazorise.Link Clicked="OpenSubscription" TextColor="TextColor.White" Style="cursor: pointer;">click here</Blazorise.Link> to find out more.
+        </Paragraph>
+    </Jumbotron>
+}
 
 <MyProviderComponent Fake="Fake" WatchedList="WatchedList" WishList="WishList"></MyProviderComponent>
 

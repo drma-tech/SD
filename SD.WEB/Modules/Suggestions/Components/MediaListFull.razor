@@ -12,7 +12,7 @@
 {
     <HeaderComponent Title="@GetTitle"></HeaderComponent>
 }
-<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list)=>!list.Any())">
+<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
     <Row HorizontalGutter="4" VerticalGutter="4">
         @for (int i = 1; i <= Items.Count; i++)
         {

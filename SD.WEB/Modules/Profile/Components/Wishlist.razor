@@ -3,19 +3,20 @@
     <HeaderComponent IconName="@FontAwesomeIcons.Bookmark" Title="@Title">
         @if (Private)
         {
-            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList())" title="@GlobalTranslations.SeeAllItems" Disabled="(!Items.Any())" Class="ml-1">
+            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList())"
+                    title="@GlobalTranslations.SeeAllItems" Disabled="Items.Empty()" Class="ml-1">
                 <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
             </Button>
-            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle())" title="@GlobalTranslations.PickARandom" Disabled="(!Items.Any())">
+            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle())"
+                    title="@GlobalTranslations.PickARandom" Disabled="Items.Empty()">
                 <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
             </Button>
         }
     </HeaderComponent>
 }
-<RenderControl Core="Core" PrivateContent="Private" Model="WishList"
-               ExpressionEmpty="@((WishList? list)=>MediaType==MediaType.movie ? list==null||!list.Movies.Any() : list==null||!list.Shows.Any())">
+<RenderControl Core="Core" PrivateContent="Private" Model="WishList" ExpressionEmpty="ExpressionEmpty">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-        @foreach (var item in Items.Take(GetTotalItems) ?? new List<WishListItem>())
+        @foreach (var item in Items.Take(GetTotalItems) ?? [])
         {
             var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
             <Column ColumnSize="@ColSize">
@@ -32,13 +33,14 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter][EditorRequired] public RenderControlCore<WishList?>? Core { get; set; }
+    [Parameter][EditorRequired] public RenderControlCore<WishList?> Core { get; set; } = new();
     [Parameter][EditorRequired] public MediaType MediaType { get; set; }
     [Parameter][EditorRequired] public bool Private { get; set; }
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public Func<WishList?, bool> ExpressionEmpty { get; set; } = default!;
 
     private HashSet<WishListItem> Items => MediaType == MediaType.movie ? WishList?.Movies ?? new HashSet<WishListItem>() : WishList?.Shows ?? new HashSet<WishListItem>();
 
@@ -66,7 +68,7 @@
 
     public async Task ChooseRandomTitle()
     {
-        if (!Items.Any()) return;
+        if (Items.Empty()) return;
 
         var random = new Random();
 

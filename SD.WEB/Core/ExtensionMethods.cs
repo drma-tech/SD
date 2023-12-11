@@ -15,5 +15,15 @@ namespace SD.WEB.Core
         {
             return navigationManager.QueryString()[key];
         }
+
+        public static bool Empty<TSource>(this IEnumerable<TSource> source)
+        {
+            return !source.Any();
+        }
+
+        public static bool Empty<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            return !source.Any(predicate);
+        }
     }
 }

@@ -22,7 +22,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress);
 
-if (!builder.RootComponents.Any())
+if (builder.RootComponents.Empty())
 {
     builder.RootComponents.Add<App>("#app");
     builder.RootComponents.Add<HeadOutlet>("head::after");

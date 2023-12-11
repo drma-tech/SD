@@ -8,7 +8,7 @@
         <CloseButton />
     </ModalHeader>
     <ModalBody MaxHeight="70">
-        <RenderControl Core="Core" Model="Season" ExpressionEmpty="@((TmdbSeason? obj)=>obj==null||!obj.episodes.Any())">
+        <RenderControl Core="Core" Model="Season" ExpressionEmpty="@((TmdbSeason? obj)=> obj == null || obj.episodes.Empty())">
             <ListGroup Flush>
             @foreach (var item in Season?.episodes ?? new())
             {

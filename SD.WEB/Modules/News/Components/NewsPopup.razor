@@ -9,7 +9,7 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <RenderControl Core="Core" Model="News" ExpressionEmpty="@((NewsModel? obj)=>obj==null||!obj.Items.Any())">
+    <RenderControl Core="Core" Model="News" ExpressionEmpty="@((NewsModel? obj) => obj == null || obj.Items.Empty())">
         <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
             @foreach (var item in News?.Items ?? new())
             {

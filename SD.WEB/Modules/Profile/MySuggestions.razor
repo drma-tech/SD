@@ -10,7 +10,7 @@
 @inject TmdbApi TmdbApi
 
 <HeaderComponent IconName="@FontAwesomeIcons.ThumbsUp" Title="@GlobalTranslations.MySuggestions">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="(GenresChanged ? Color.Secondary : Color.Primary)" Clicked="@(async()=>await OpenConfigurations())" Disabled="(!myProviders?.Items.Any()??true)" title="Settings">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="(GenresChanged ? Color.Secondary : Color.Primary)" Clicked="@(async()=>await OpenConfigurations())" Disabled="(myProviders == null || myProviders.Items.Empty())" title="Settings">
         <Blazorise.Icon Name="FontAwesomeIcons.Cog"></Blazorise.Icon>
     </Button>
     <RadioGroup @bind-CheckedValue="SearchType" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is1.FromEnd">
@@ -31,7 +31,7 @@
     }
 </HeaderComponent>
 
-<RenderControl Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj)=>obj==null||!obj.Items(SearchType).Any())" PrivateContent="true">
+<RenderControl Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !Watched(SearchType, w)).Take(GetTotalItems) ?? new List<SuggestionListItem>())
         {
@@ -88,7 +88,7 @@
         {
             myProviders = await MyProvidersApi.Get(IsUserAuthenticated);
 
-            if (myProviders == null || !myProviders.Items.Any())
+            if (myProviders == null || myProviders.Items.Empty())
             {
                 Core?.ShowWarning(Resources.GlobalTranslations.OurSuggestions1);
             }
@@ -96,7 +96,7 @@
             {
                 mySuggestions = await MySuggestionsApi.Get(IsUserAuthenticated);
 
-                if (mySuggestions == null || !mySuggestions.Items(SearchType).Any())
+                if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
                 {
                     Core?.ShowWarning(Resources.GlobalTranslations.OurSuggestions2);
                 }
@@ -189,7 +189,7 @@
                     }
                 }
 
-                if (!mySuggestions.Items(MediaType.movie).Any()) Core?.ShowWarning(null);
+                if (mySuggestions.Items(MediaType.movie).Empty()) Core?.ShowWarning(null);
 
                 mySuggestions = await MySuggestionsApi.Sync(MediaType.movie, mySuggestions);
                 MovieUpdating = false;
@@ -236,7 +236,7 @@
                     }
                 }
 
-                if (!mySuggestions.Items(MediaType.tv).Any()) Core?.ShowWarning(null);
+                if (mySuggestions.Items(MediaType.tv).Empty()) Core?.ShowWarning(null);
 
                 mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions);
                 ShowUpdating = false;

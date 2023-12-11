@@ -3,7 +3,7 @@
 @inherits ComponenteCore<AnnouncementComponent>
 @inject AnnouncementApi AnnouncementApi
 
-<RenderControl Core="Core" Model="announcement" ExpressionEmpty="@((AnnouncementModel? obj)=>obj==null||!obj.Items.Any())">
+<RenderControl Core="Core" Model="announcement" ExpressionEmpty="@((AnnouncementModel? obj) => obj == null || obj.Items.Empty())">
     @foreach (var item in announcement?.Items.OrderByDescending(o => o.Date) ?? Enumerable.Empty<AnnouncementItem>())
     {
         <Alert Color="Color.Info" Visible="true">

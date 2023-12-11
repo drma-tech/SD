@@ -15,7 +15,7 @@
     <Button Color="Color.Primary" Clicked="SelectAll">
         All
     </Button>
-    <Button Color="Color.Primary" Clicked="@Confirm" Disabled="(!SelectedItems.Any())">
+    <Button Color="Color.Primary" Clicked="@Confirm" Disabled="(SelectedItems.Empty())">
         @GlobalTranslations.ButtonOk
     </Button>
     <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">

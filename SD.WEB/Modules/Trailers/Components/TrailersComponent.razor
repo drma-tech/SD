@@ -9,7 +9,7 @@
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-<RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((TrailerModel? obj)=>obj==null||!obj.Items.Any())">
+<RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((TrailerModel? obj) => obj == null || obj.Items.Empty())">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
         @foreach (var item in TrailerModel?.Items ?? new())
         {

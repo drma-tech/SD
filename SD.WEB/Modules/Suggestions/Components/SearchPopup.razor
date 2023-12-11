@@ -10,7 +10,7 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list)=>!list.Any())">
+    <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
         <MediaListFull @ref="MediaListFull" MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" MaxItens="100" ShowHead="false" Private="Private"
                        WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaListFull>
     </RenderControl>

@@ -72,7 +72,7 @@
         </FieldBody>
     </Field>
 </Fields>
-<RenderControl Core="Core" Model="tickets" ExpressionEmpty="@((HashSet<TicketModel> list)=>!list.Any())">
+<RenderControl Core="Core" Model="tickets" ExpressionEmpty="@((HashSet<TicketModel> list)=>list.Empty())">
     @foreach (var item in GetTicketList(TicketTypeSel, TicketStatusSel, OrderSel))
     {
         <Row HorizontalGutter="8" VerticalGutter="8">

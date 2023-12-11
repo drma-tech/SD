@@ -11,8 +11,6 @@
 
     public class RenderControlCore<T>
     {
-        public LoadingStatus Status { get; set; } = LoadingStatus.Loading;
-
         public Action? LoadingStarted { get; set; }
         public Action<T?>? LoadingFinished { get; set; }
         public Action? ProcessingStarted { get; set; }

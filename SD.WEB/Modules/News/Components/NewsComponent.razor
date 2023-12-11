@@ -8,7 +8,7 @@
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-<RenderControl Core="Core" Model="News" ExpressionEmpty="@((NewsModel? obj)=>obj==null||!obj.Items.Any())">
+<RenderControl Core="Core" Model="News" ExpressionEmpty="@((NewsModel? obj) => obj == null || obj.Items.Empty())">
     <Carousel @bind-SelectedSlide="@selectedSlide">
         @foreach (var item in News?.Items ?? [])
         {

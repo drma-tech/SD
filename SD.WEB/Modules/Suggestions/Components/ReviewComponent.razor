@@ -6,7 +6,7 @@
 @inject ExternalIdApi ExternalIdApi
 @inject CacheMetaCriticApi CacheMetaCriticApi
 
-<RenderControl Core="Core" Model="Model" ExpressionEmpty="@((ReviewModel? obj)=>obj==null||!obj.Items.Any())">
+<RenderControl Core="Core" Model="Model" ExpressionEmpty="@((ReviewModel? obj)=> obj == null || obj.Items.Empty())">
     <ListGroup Flush>
         @foreach (var item in Model?.Items ?? new())
         {

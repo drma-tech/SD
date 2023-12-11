@@ -7,10 +7,10 @@
 @inject WatchingListApi WatchingListApi
 
 <HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@GlobalTranslations.MyMovieWatching.Format(WatchingList?.Movies.Count() ?? 0)">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))" title="@GlobalTranslations.SeeAllItems" Disabled="(!WatchingList?.Movies.Any()??true)" Class="ml-1">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.movie))" title="@GlobalTranslations.SeeAllItems" Disabled="(WatchingList == null || WatchingList.Movies.Empty())" Class="ml-1">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.movie))" title="@GlobalTranslations.PickARandom" Disabled="(!WatchingList?.Movies.Any()??true)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.movie))" title="@GlobalTranslations.PickARandom" Disabled="(WatchingList == null || WatchingList.Movies.Empty())">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
     @if ((WatchingList?.MovieCanSync ?? false) && (WatchedList?.Movies.Any() ?? false))
@@ -20,7 +20,7 @@
         </Button>
     }
 </HeaderComponent>
-<RenderControl Core="Core" Model="WatchingList" ExpressionEmpty="@((WatchingList? list)=>list==null||!list.Movies.Any())" PrivateContent="true">
+<RenderControl Core="Core" Model="WatchingList" ExpressionEmpty="@((WatchingList? list) => list == null || list.Movies.Empty())" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in WatchingList?.Movies.Take(GetTotalItems) ?? new List<WatchingListItem>())
         {
@@ -59,10 +59,10 @@
 </RenderControl>
 
 <HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@GlobalTranslations.MyShowWatching.Format(WatchingList?.Shows.Count() ?? 0)">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))" title="@GlobalTranslations.SeeAllItems" Disabled="(!WatchingList?.Shows.Any()??true)" Class="ml-1">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList(MediaType.tv))" title="@GlobalTranslations.SeeAllItems" Disabled="(WatchingList == null || WatchingList.Shows.Empty())" Class="ml-1">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.tv))" title="@GlobalTranslations.PickARandom" Disabled="(!WatchingList?.Shows.Any()??true)">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle(MediaType.tv))" title="@GlobalTranslations.PickARandom" Disabled="(WatchingList == null || WatchingList.Shows.Empty())">
         <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
     </Button>
     @if ((WatchingList?.ShowCanSync ?? false) && (WatchedList?.Shows.Any() ?? false))
@@ -72,7 +72,7 @@
         </Button>
     }
 </HeaderComponent>
-<RenderControl Core="Core" Model="WatchingList" ExpressionEmpty="@((WatchingList? list)=>list==null||!list.Shows.Any())">
+<RenderControl Core="Core" Model="WatchingList" ExpressionEmpty="@((WatchingList? list) => list == null || list.Shows.Empty())">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in WatchingList?.Shows.Take(GetTotalItems) ?? new List<WatchingListItem>())
         {

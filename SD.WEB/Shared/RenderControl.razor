@@ -1,6 +1,6 @@
 ﻿@typeparam TModel
 
-@if (Core.Status == LoadingStatus.Loading)
+@if (Status == LoadingStatus.Loading)
 {
     if (PartialComponent)
     {
@@ -17,7 +17,7 @@
         </Alert>
     }
 }
-else if (Core.Status == LoadingStatus.Locked && !PartialComponent)
+else if (Status == LoadingStatus.Locked && !PartialComponent)
 {
     <Alert Color="Color.Primary" Visible="true">
         <AlertDescription>
@@ -25,7 +25,7 @@ else if (Core.Status == LoadingStatus.Locked && !PartialComponent)
         </AlertDescription>
     </Alert>
 }
-else if (Core.Status == LoadingStatus.Error && !PartialComponent)
+else if (Status == LoadingStatus.Error && !PartialComponent)
 {
     <Alert Color="Color.Danger" Visible="true">
         <AlertDescription>
@@ -33,7 +33,7 @@ else if (Core.Status == LoadingStatus.Error && !PartialComponent)
         </AlertDescription>
     </Alert>
 }
-else if (Core.Status == LoadingStatus.Warning && !PartialComponent)
+else if (Status == LoadingStatus.Warning && !PartialComponent)
 {
     <Alert Color="Color.Primary" Visible="true">
         <AlertDescription>
@@ -51,14 +51,15 @@ else //ShowContent
 
     [Parameter][EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
     [Parameter][EditorRequired] public RenderControlCore<TModel> Core { get; set; } = default!;
-    [Parameter][EditorRequired] public TModel? Model { get; set; }
-    [Parameter][EditorRequired] public Func<TModel?, bool> ExpressionEmpty { get; set; } = default!;
+    [Parameter][EditorRequired] public TModel Model { get; set; } = default!;
+    [Parameter][EditorRequired] public Func<TModel, bool> ExpressionEmpty { get; set; } = default!;
 
     [Parameter] public bool PrivateContent { get; set; } = false;
     [Parameter] public string? CustomMessageError { get; set; } = null;
     [Parameter] public string? CustomMessageWarning { get; set; } = null;
     [Parameter] public bool PartialComponent { get; set; } = false;
 
+    private LoadingStatus Status { get; set; } = LoadingStatus.Loading;
     private string? MessageLoading { get; set; } = GlobalTranslations.CustomVisibilityLoading;
     private string? MessageError { get; set; } = null;
     private string? MessageWarning { get; set; } = null;
@@ -70,7 +71,7 @@ else //ShowContent
         ArgumentNullException.ThrowIfNull(ExpressionEmpty);
 
         if (Model != null && (ExpressionEmpty != null && !ExpressionEmpty(Model)))
-            Core.Status = LoadingStatus.ShowContent;
+            Status = LoadingStatus.ShowContent;
 
         Core.LoadingStarted += () => ShowLoading();
         Core.LoadingFinished += (TModel? model) => ShowContent(model);
@@ -94,7 +95,7 @@ else //ShowContent
 
             if (!isAuthenticated)
             {
-                Core.Status = LoadingStatus.Locked;
+                Status = LoadingStatus.Locked;
             }
         }
     }
@@ -111,7 +112,7 @@ else //ShowContent
     {
         Reset();
 
-        Core.Status = LoadingStatus.Loading;
+        Status = LoadingStatus.Loading;
         MessageLoading = msg ?? GlobalTranslations.CustomVisibilityLoading;
 
         StateHasChanged();
@@ -123,17 +124,17 @@ else //ShowContent
 
         if (PartialComponent)
         {
-            Core.Status = LoadingStatus.ShowContent;
+            Status = LoadingStatus.ShowContent;
             StateHasChanged();
             return;
         }
 
-        if (Core.Status == LoadingStatus.Error | Core.Status == LoadingStatus.Warning) return;
+        if (Status == LoadingStatus.Error | Status == LoadingStatus.Warning) return;
 
         if (model == null || (ExpressionEmpty != null && ExpressionEmpty(model)))
-            Core.Status = LoadingStatus.Warning;
+            Status = LoadingStatus.Warning;
         else
-            Core.Status = LoadingStatus.ShowContent;
+            Status = LoadingStatus.ShowContent;
 
         StateHasChanged();
     }
@@ -146,7 +147,7 @@ else //ShowContent
     {
         Reset();
 
-        Core.Status = LoadingStatus.Warning;
+        Status = LoadingStatus.Warning;
         MessageWarning = CustomMessageWarning ?? msg;
 
         StateHasChanged();
@@ -160,7 +161,7 @@ else //ShowContent
     {
         Reset();
 
-        Core.Status = LoadingStatus.Error;
+        Status = LoadingStatus.Error;
         MessageError = CustomMessageError ?? msg;
 
         StateHasChanged();

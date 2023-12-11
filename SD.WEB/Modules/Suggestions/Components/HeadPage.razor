@@ -51,7 +51,7 @@
                 </Button>
                 @if (provider != null)
                 {
-                    <RenderControl PartialComponent="true" Core="Core" Model="myProviders" ExpressionEmpty="@((MyProviders? obj)=>obj==null||!obj.Items.Any())">
+                    <RenderControl PartialComponent="true" Core="Core" Model="myProviders" ExpressionEmpty="@((MyProviders? obj) => obj == null || obj.Items.Empty())">
                         @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
                         {
                             <Button Color="Color.Danger" Clicked="Remove" Size="Size.Small" Disabled="!IsUserAuthenticated" Style="display: block; width: 100%;">

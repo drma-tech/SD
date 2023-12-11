@@ -21,11 +21,11 @@
             {
             <p class="m-0" style="color: red">description</p>
             }
-            @if (!item.models.Any())
+            @if (item.models.Empty())
             {
             <p class="m-0" style="color: red">model</p>
             }
-            @if (item.models.Any(a => a == SD.Shared.Modal.Enum.DeliveryModel.SVOD) && !item.plans.Any())
+            @if (item.models.Any(a => a == SD.Shared.Modal.Enum.DeliveryModel.SVOD) && item.plans.Empty())
             {
             <p class="m-0" style="color: red">plan</p>
             }*@

@@ -21,7 +21,7 @@
     </HeaderComponent>
 }
 
-<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list)=>!list.Any())">
+<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
         @for (int i = 1; i <= Items.Take(GetTotalItems).Count(); i++)
         {

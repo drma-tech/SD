@@ -12,7 +12,7 @@
         <CloseButton />
     </ModalHeader>
     <ModalBody MaxHeight="70">
-        <RenderControl Core="Core" Model="collection" ExpressionEmpty="@((TmdbCollection? obj)=>obj==null||!obj.parts.Any())">
+        <RenderControl Core="Core" Model="collection" ExpressionEmpty="@((TmdbCollection? obj) => obj == null || obj.parts.Empty())">
             <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
                 @foreach (var item in collection?.parts.OrderBy(o => o.release_date.GetDate()) ?? Enumerable.Empty<Part>())
             {
