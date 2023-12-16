@@ -18,7 +18,7 @@ namespace SD.WEB.Modules.Suggestions.Core
 
             var result = await GetAsync<MovieNowPlaying>(TmdbOptions.BaseUri + "movie/now_playing".ConfigureParameters(parameter), true);
 
-            foreach (var item in result?.results ?? new List<ResultMovieNowPlaying>())
+            foreach (var item in result?.results ?? [])
             {
                 //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
                 if (item.release_date?.GetDate() > DateTime.Today.AddDays(1)) continue; //only accepts titles that will be released no later than one day after today

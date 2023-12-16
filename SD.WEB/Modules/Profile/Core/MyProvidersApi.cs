@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
@@ -9,11 +10,11 @@ namespace SD.WEB.Modules.Profile.Core
             public const string MyProviders = "MyProviders";
         }
 
-        public async Task<MyProviders?> Get(bool IsUserAuthenticated)
+        public async Task<MyProviders?> Get(bool IsUserAuthenticated, RenderControlCore<MyProviders?>? core)
         {
             if (IsUserAuthenticated)
             {
-                return await GetAsync(Endpoint.MyProviders);
+                return await GetAsync(Endpoint.MyProviders, core);
             }
             else
             {
@@ -25,7 +26,7 @@ namespace SD.WEB.Modules.Profile.Core
         {
             ArgumentNullException.ThrowIfNull(obj);
 
-            return await PostAsync(Endpoint.MyProviders, obj);
+            return await PostAsync(Endpoint.MyProviders, null, obj);
         }
     }
 }

@@ -1,5 +1,10 @@
 ﻿@using SD.WEB.Modules.Profile.Components
+@using SD.WEB.Modules.Profile.Core
 @inherits ComponenteCore<MyWishListPopup>
+
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">
@@ -8,7 +13,16 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <Wishlist MediaType="MediaType" Private="true" ShowHeader="false" FullScreen="true" WatchedList="WatchedList" WishList="WishList" Core="Core"></Wishlist>
+    @if (MediaType == MediaType.movie)
+    {
+        <Wishlist MediaType="MediaType" Private="true" ShowHeader="false" FullScreen="true" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"
+                  Core="Core" ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()"></Wishlist>
+    }
+    else
+    {
+        <Wishlist MediaType="MediaType" Private="true" ShowHeader="false" FullScreen="true" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"
+                  Core="Core" ExpressionEmpty="(WishList? list) => list == null || list.Shows.Empty()"></Wishlist>
+    }
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
@@ -21,9 +35,17 @@
 
     [Parameter][EditorRequired] public RenderControlCore<WishList?>? Core { get; set; }
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
     [Parameter] public MediaType MediaType { get; set; }
 
     private string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWishlist : GlobalTranslations.MyShowWishlist;
     public int Quantity => MediaType == MediaType.movie ? WishList?.Movies.Count ?? 0 : WishList?.Shows.Count ?? 0;
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+    }
 }

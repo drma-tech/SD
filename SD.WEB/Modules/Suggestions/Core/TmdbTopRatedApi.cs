@@ -20,7 +20,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             {
                 var result = await GetAsync<MovieTopRated>(TmdbOptions.BaseUri + "movie/top_rated".ConfigureParameters(parameter), true);
 
-                foreach (var item in result?.results ?? new List<ResultMovieTopRated>())
+                foreach (var item in result?.results ?? [])
                 {
                     if (item.release_date?.GetDate() < DateTime.Now.AddYears(-20)) continue;
                     if (item.vote_count < 500) continue;
@@ -45,7 +45,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             {
                 var result = await GetAsync<TVTopRated>(TmdbOptions.BaseUri + "tv/top_rated".ConfigureParameters(parameter), true);
 
-                foreach (var item in result?.results ?? new List<ResultTVTopRated>())
+                foreach (var item in result?.results ?? [])
                 {
                     if (item.first_air_date?.GetDate() < DateTime.Now.AddYears(-20)) continue;
                     if (item.vote_count < 500) continue;

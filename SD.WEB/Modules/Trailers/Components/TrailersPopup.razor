@@ -43,13 +43,8 @@
     public RenderControlCore<TrailerModel?> Core { get; set; } = new();
     private TrailerModel? TrailerModel { get; set; }
 
-    protected override void OnInitialized()
-    {
-        CacheYoutubeApi.SetRenderCore(Core);
-    }
-
     protected override async Task LoadDataRender()
     {
-        TrailerModel = await CacheYoutubeApi.GetTrailers("full");
+        TrailerModel = await CacheYoutubeApi.GetTrailers("full", Core);
     }
 }

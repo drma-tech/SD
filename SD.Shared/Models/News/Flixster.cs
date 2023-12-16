@@ -7,7 +7,7 @@
 
     public class Data
     {
-        public List<NewsStory> newsStories { get; set; } = new();
+        public List<NewsStory> newsStories { get; set; } = [];
     }
 
     public class NewsStory

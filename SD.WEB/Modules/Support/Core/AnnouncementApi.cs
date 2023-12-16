@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using SD.Shared.Models.Support;
+using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Support.Core
 {
@@ -10,9 +11,9 @@ namespace SD.WEB.Modules.Support.Core
             public const string Get = "Public/Announcements/Get";
         }
 
-        public async Task<AnnouncementModel?> Get()
+        public async Task<AnnouncementModel?> Get(RenderControlCore<AnnouncementModel?>? core)
         {
-            return await GetAsync(Endpoint.Get);
+            return await GetAsync(Endpoint.Get, core);
         }
     }
 }

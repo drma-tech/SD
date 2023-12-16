@@ -6,7 +6,7 @@ namespace SD.Shared.Helper
     {
         public static string ConfigureParameters(this string uri, Dictionary<string, string>? parameters)
         {
-            if (parameters == null || !parameters.Any()) return uri;
+            if (parameters == null || parameters.Count == 0) return uri;
 
             var sb = new StringBuilder(uri);
             for (int i = 0; i < parameters.Count; i++)

@@ -31,26 +31,19 @@
     public RenderControlCore<ReviewModel?> Core { get; set; } = new();
     public ReviewModel? Model { get; set; }
 
-    protected override void OnInitialized()
-    {
-        CacheMetaCriticApi.SetRenderCore(Core);
-    }
-
     protected override async Task LoadDataRender()
     {
         if (!string.IsNullOrEmpty(imdb_id))
         {
-            Core?.LoadingStarted?.Invoke();
             //TODO: must be english_title, not original_title
             if (type == MediaType.movie)
             {
-                Model = await CacheMetaCriticApi.GetMovieReviews(imdb_id, original_title, release_date);
+                Model = await CacheMetaCriticApi.GetMovieReviews(imdb_id, original_title, release_date, Core);
             }
             else
             {
-                Model = await CacheMetaCriticApi.GetShowReviews(imdb_id, original_title, release_date);
+                Model = await CacheMetaCriticApi.GetShowReviews(imdb_id, original_title, release_date, Core);
             }
-            Core?.LoadingFinished?.Invoke(Model);
         }
     }
 

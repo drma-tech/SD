@@ -132,7 +132,9 @@
         x =>
         {
             x.Add(x => x.MediaType, mediaType);
+            x.Add(x => x.WatchedList, WatchedList);
             x.Add(x => x.WatchingList, WatchingList);
+            x.Add(x => x.WishList, WishList);
         },
         new ModalInstanceOptions()
             {
@@ -171,6 +173,7 @@
             {
                 x.Add(x => x.collection_id, collection_id);
                 x.Add(x => x.type, type);
+                x.Add(x => x.WatchedList, WatchedList);
                 x.Add(x => x.WatchingList, WatchingList);
                 x.Add(x => x.WishList, WishList);
             },
@@ -221,7 +224,7 @@
                     }
                 }
 
-                watching = await WatchingListApi.Sync(MediaType.movie);
+                watching = await WatchingListApi.Sync(MediaType.movie, Core);
 
                 MovieUpdating = false;
                 Core?.HideProcessing(watching);
@@ -259,7 +262,7 @@
                     }
                 }
 
-                watching = await WatchingListApi.Sync(MediaType.tv);
+                watching = await WatchingListApi.Sync(MediaType.tv, Core);
 
                 ShowUpdating = false;
                 Core?.HideProcessing(watching);

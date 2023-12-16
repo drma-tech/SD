@@ -3,18 +3,11 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
-using System.Net;
 
 namespace SD.API.Functions
 {
-    public class MySuggestionsFunction
+    public class MySuggestionsFunction(IRepository repo)
     {
-        private readonly IRepository _repo;
-
-        public MySuggestionsFunction(IRepository repo)
-        {
-            _repo = repo;
-        }
 
         //[OpenApiOperation("MySuggestionsGet", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MySuggestions))]
@@ -26,7 +19,7 @@ namespace SD.API.Functions
             {
                 var userId = req.GetUserId();
 
-                return await _repo.Get<MySuggestions>(DocumentType.MySuggestions + ":" + userId, new PartitionKey(userId), cancellationToken);
+                return await repo.Get<MySuggestions>(DocumentType.MySuggestions + ":" + userId, new PartitionKey(userId), cancellationToken);
             }
             catch (Exception ex)
             {
@@ -47,7 +40,7 @@ namespace SD.API.Functions
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-                var obj = await _repo.Get<MySuggestions>(DocumentType.MySuggestions + ":" + userId, new PartitionKey(userId), cancellationToken);
+                var obj = await repo.Get<MySuggestions>(DocumentType.MySuggestions + ":" + userId, new PartitionKey(userId), cancellationToken);
                 var body = await req.GetPublicBody<MySuggestions>(cancellationToken);
 
                 if (obj == null)
@@ -74,7 +67,7 @@ namespace SD.API.Functions
                     obj.ShowSyncDate = DateTime.Now;
                 }
 
-                return await _repo.Upsert(obj, cancellationToken);
+                return await repo.Upsert(obj, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -93,7 +86,7 @@ namespace SD.API.Functions
             {
                 var body = await req.GetBody<MySuggestions>(cancellationToken);
 
-                return await _repo.Upsert(body, cancellationToken);
+                return await repo.Upsert(body, cancellationToken);
             }
             catch (Exception ex)
             {

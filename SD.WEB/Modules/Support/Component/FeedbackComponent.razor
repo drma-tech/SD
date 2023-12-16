@@ -151,9 +151,7 @@
 
     protected override async Task LoadDataRender()
     {
-        Core?.LoadingStarted?.Invoke();
-        tickets = await TicketApi.GetList();
-        Core?.LoadingFinished?.Invoke(tickets);
+        tickets = await TicketApi.GetList(Core);
 
         myVotes = await TicketVoteApi.GetMyVotes(IsUserAuthenticated);
     }

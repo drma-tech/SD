@@ -43,9 +43,10 @@
     [Inject] public IModalService ModalService { get; set; } = default!;
 
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
-    public RenderControlCore<AllProviders?>? Core { get; set; } = new();
+    private RenderControlCore<AllProviders?>? Core { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
 
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
@@ -63,9 +64,7 @@
 
     protected override async Task LoadDataRender()
     {
-        Core?.LoadingStarted?.Invoke();
-        AllProviders = await AllProvidersApi.GetAll();
-        Core?.LoadingFinished?.Invoke(AllProviders);
+        AllProviders = await AllProvidersApi.GetAll(Core);
     }
 
     private async Task OpenCompleteList()
@@ -91,6 +90,7 @@
         {
             x.Add(x => x.provider, item);
             x.Add(x => x.WatchedList, WatchedList);
+            x.Add(x => x.WatchingList, WatchingList);
             x.Add(x => x.WishList, WishList);
         },
         new ModalInstanceOptions()

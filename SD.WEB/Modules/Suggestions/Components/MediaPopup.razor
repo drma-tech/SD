@@ -117,7 +117,7 @@
                             <StreamingComponent tmdb_id="@tmdb_id" MediaTitle="@media?.title" MediaYear="@media?.release_date?.Year.ToString()" type="@type"></StreamingComponent>
                         </TabPanel>
                         <TabPanel Name="Credits" Class="mt-2">
-                            <CreditsComponent tmdb_id="@tmdb_id" type="@type"></CreditsComponent>
+                            <CreditsComponent tmdb_id="@tmdb_id" type="@type" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></CreditsComponent>
                         </TabPanel>
                         @if (media?.Collection.Any() ?? false)
                         {
@@ -264,7 +264,9 @@
         if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
 
-        CacheRatingsApi.SetRenderCore(CoreRatings);
+        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()
@@ -277,16 +279,14 @@
         //TODO: must be english_title, not original_title
         var title = media?.original_title?.RemoveSpecialCharacters().Replace(" ", "-").ToLower();
 
-        CoreRatings?.LoadingStarted?.Invoke();
         if (media?.MediaType == MediaType.movie)
         {
-            ratingsCache = await CacheRatingsApi.GetMovieRatings(imdb_id, title, media.release_date, media.rating.ToString("#.#"));
+            ratingsCache = await CacheRatingsApi.GetMovieRatings(imdb_id, title, media.release_date, media.rating.ToString("#.#"), CoreRatings);
         }
         else
         {
-            ratingsCache = await CacheRatingsApi.GetShowRatings(imdb_id, title, media?.release_date, media?.rating.ToString("#.#"));
+            ratingsCache = await CacheRatingsApi.GetShowRatings(imdb_id, title, media?.release_date, media?.rating.ToString("#.#"), CoreRatings);
         }
-        CoreRatings?.LoadingFinished?.Invoke(ratingsCache);
     }
 
     private Color GetColorByRating(string? rating)
@@ -348,9 +348,7 @@
 
         try
         {
-            var list = WishList ?? new WishList();
-
-            list = await WishListApi.Remove(media.MediaType, media?.tmdb_id);
+            await WishListApi.Remove(media.MediaType, media?.tmdb_id);
         }
         catch (Exception ex)
         {
@@ -448,7 +446,7 @@
                 }
                 else if (media.MediaType == MediaType.tv)
                 {
-                    await WatchingListApi.Remove(media.MediaType, media.tmdb_id);
+                    await WatchingListApi.Remove(media.MediaType, media.tmdb_id, null);
                 }
             }
         }

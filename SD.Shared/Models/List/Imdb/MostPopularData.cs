@@ -2,7 +2,7 @@
 {
     public class MostPopularData
     {
-        public List<MostPopularDataDetail> Items { get; set; } = new();
+        public List<MostPopularDataDetail> Items { get; set; } = [];
 
         public string? ErrorMessage { get; set; }
     }

@@ -170,6 +170,9 @@
                 {
                     x.Add(x => x.TitleHead, $"{media?.title}");
                     x.Add(x => x.Items, items.OrderByDescending(o => o.release_date).ToHashSet());
+                    x.Add(x => x.WatchedList, WatchedList);
+                    x.Add(x => x.WatchingList, WatchingList);
+                    x.Add(x => x.WishList, WishList);
                 },
                 new ModalInstanceOptions()
                     {

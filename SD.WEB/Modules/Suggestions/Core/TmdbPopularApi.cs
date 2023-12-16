@@ -76,7 +76,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             {
                 var result = await GetAsync<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter), true);
 
-                foreach (var item in result?.results ?? new List<ResultMoviePopular>())
+                foreach (var item in result?.results ?? [])
                 {
                     if (item.vote_count < 50) continue; //ignore low-rated movie
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
@@ -100,7 +100,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             {
                 var result = await GetAsync<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter), true);
 
-                foreach (var item in result?.results ?? new List<ResultTVPopular>())
+                foreach (var item in result?.results ?? [])
                 {
                     if (item.vote_count < 50) continue; //ignore low-rated movie
                     if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster

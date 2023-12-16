@@ -28,7 +28,7 @@
         public int? reviewCount { get; set; }
         public int? userRatingCount { get; set; }
         public double? userScore { get; set; }
-        public List<Review> reviews { get; set; } = new();
+        public List<Review> reviews { get; set; } = [];
         public Title? title { get; set; }
     }
 

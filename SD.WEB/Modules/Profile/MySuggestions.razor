@@ -70,6 +70,7 @@
 
     public RenderControlCore<SD.Shared.Models.MySuggestions?>? Core { get; set; } = new();
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
     private bool GenresChanged => mySuggestions?.MovieGenres.Any() ?? false | mySuggestions?.TvGenres.Any() ?? false;
@@ -86,7 +87,7 @@
         }
         else
         {
-            myProviders = await MyProvidersApi.Get(IsUserAuthenticated);
+            myProviders = await MyProvidersApi.Get(IsUserAuthenticated, null);
 
             if (myProviders == null || myProviders.Items.Empty())
             {
@@ -94,7 +95,7 @@
             }
             else
             {
-                mySuggestions = await MySuggestionsApi.Get(IsUserAuthenticated);
+                mySuggestions = await MySuggestionsApi.Get(IsUserAuthenticated, Core);
 
                 if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
                 {
@@ -115,6 +116,9 @@
             {
                 x.Add(x => x.tmdb_id, tmdb_id);
                 x.Add(x => x.type, type);
+                x.Add(x => x.WatchedList, WatchedList);
+                x.Add(x => x.WatchingList, WatchingList);
+                x.Add(x => x.WishList, WishList);
             },
             new ModalInstanceOptions()
                 {
@@ -191,7 +195,7 @@
 
                 if (mySuggestions.Items(MediaType.movie).Empty()) Core?.ShowWarning(null);
 
-                mySuggestions = await MySuggestionsApi.Sync(MediaType.movie, mySuggestions);
+                mySuggestions = await MySuggestionsApi.Sync(MediaType.movie, mySuggestions, Core);
                 MovieUpdating = false;
                 Core?.HideProcessing(mySuggestions);
             }
@@ -238,7 +242,7 @@
 
                 if (mySuggestions.Items(MediaType.tv).Empty()) Core?.ShowWarning(null);
 
-                mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions);
+                mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions, Core);
                 ShowUpdating = false;
                 Core?.HideProcessing(mySuggestions);
             }

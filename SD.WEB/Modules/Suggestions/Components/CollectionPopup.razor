@@ -6,6 +6,7 @@
 @inject TmdbApi TmdbApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@collection?.name</ModalTitle>
@@ -98,6 +99,10 @@
     {
         if (string.IsNullOrEmpty(collection_id)) throw new ArgumentNullException(nameof(collection_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
+
+        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()

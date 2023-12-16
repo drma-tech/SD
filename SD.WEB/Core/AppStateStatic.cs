@@ -5,7 +5,7 @@ namespace SD.WEB.Core
 {
     public static class AppStateStatic
     {
-        public static List<LogContainer> Logs { get; private set; } = new List<LogContainer>();
+        public static List<LogContainer> Logs { get; private set; } = [];
 
         public static Region Region { get; private set; }
         public static Language Language { get; private set; }

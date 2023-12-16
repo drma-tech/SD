@@ -4,7 +4,7 @@
     {
         public long? id { get; set; }
         public int totalResults { get; set; }
-        public List<MetaCriticScrapingItem> items { get; set; } = new();
+        public List<MetaCriticScrapingItem> items { get; set; } = [];
     }
 
     public class FilterOption
@@ -46,8 +46,8 @@
         public Next? next { get; set; }
         public First? first { get; set; }
         public Last? last { get; set; }
-        public List<FilterOption> filterOptions { get; set; } = new();
-        public List<SortOption> sortOptions { get; set; } = new();
+        public List<FilterOption> filterOptions { get; set; } = [];
+        public List<SortOption> sortOptions { get; set; } = [];
     }
 
     public class Meta

@@ -3,19 +3,11 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
-using System.Net;
 
 namespace SD.API.Functions
 {
-    public class MyProvidersFunction
+    public class MyProvidersFunction(IRepository repo)
     {
-        private readonly IRepository _repo;
-
-        public MyProvidersFunction(IRepository repo)
-        {
-            _repo = repo;
-        }
-
         //[OpenApiOperation("MyProviders", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MyProviders))]
         [Function("MyProviders")]
@@ -29,13 +21,13 @@ namespace SD.API.Functions
 
                 if (req.Method == Method.GET)
                 {
-                    model = await _repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, new PartitionKey(userId), cancellationToken);
+                    model = await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, new PartitionKey(userId), cancellationToken);
                 }
                 else
                 {
                     model = await req.GetBody<MyProviders>(cancellationToken);
 
-                    model = await _repo.Upsert(model, cancellationToken);
+                    model = await repo.Upsert(model, cancellationToken);
                 }
 
                 return model;

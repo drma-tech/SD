@@ -3,7 +3,11 @@
 @using SD.WEB.Modules.Profile.Core;
 @using SD.Shared.Models;
 @inherits ComponenteCore<MediaList>
+
 @inject ExternalIdApi ExternalIdApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 @if (ShowHead)
 {
@@ -86,6 +90,10 @@
             if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));
 
             if (MultiplesRegions) AppStateStatic.RegionChanged += LoadGenericVoid;
+
+            WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
+            WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
+            WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
         }
         catch (Exception ex)
         {
@@ -154,6 +162,9 @@
                 x.Add(x => x.IsIMDB, IsIMDB);
                 x.Add(x => x.TypeSelected, TypeSelected);
                 x.Add(x => x.StringParameters, StringParameters);
+                x.Add(x => x.WatchedList, WatchedList);
+                x.Add(x => x.WatchingList, WatchingList);
+                x.Add(x => x.WishList, WishList);
             },
             new ModalInstanceOptions()
                 {

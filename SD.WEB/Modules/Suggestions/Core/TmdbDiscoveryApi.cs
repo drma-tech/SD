@@ -102,7 +102,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             {
                 var result = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), true);
 
-                foreach (var item in result?.results ?? new List<ResultMovieDiscover>())
+                foreach (var item in result?.results ?? [])
                 {
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
 
@@ -125,7 +125,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             {
                 var result = await GetAsync<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), true);
 
-                foreach (var item in result?.results ?? new List<ResultTvDiscover>())
+                foreach (var item in result?.results ?? [])
                 {
                     if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
 

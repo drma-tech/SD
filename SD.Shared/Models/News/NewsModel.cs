@@ -2,7 +2,7 @@
 {
     public class NewsModel
     {
-        public List<Item> Items { get; set; } = new();
+        public List<Item> Items { get; set; } = [];
     }
 
     public class Item

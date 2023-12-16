@@ -20,7 +20,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             {
                 var result = await GetAsync<MovieUpcoming>(TmdbOptions.BaseUri + "movie/upcoming".ConfigureParameters(parameter), true);
 
-                foreach (var item in result?.results ?? new List<ResultMovieUpcoming>())
+                foreach (var item in result?.results ?? [])
                 {
                     //if (string.IsNullOrEmpty(item.poster_path)) continue;
 

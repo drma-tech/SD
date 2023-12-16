@@ -14,7 +14,7 @@ namespace SD.Shared.Models.List.Tmdb
     {
         public bool adult { get; set; }
         public string? backdrop_path { get; set; }
-        public List<int> genre_ids { get; set; } = new();
+        public List<int> genre_ids { get; set; } = [];
         public int id { get; set; }
         public string? media_type { get; set; }
         public string? original_language { get; set; }
@@ -46,7 +46,7 @@ namespace SD.Shared.Models.List.Tmdb
         public int page { get; set; }
         public object? poster_path { get; set; }
         public bool @public { get; set; }
-        public List<ResultCustomListNew> results { get; set; } = new();
+        public List<ResultCustomListNew> results { get; set; } = [];
         public long revenue { get; set; }
         public int runtime { get; set; }
         public string? sort_by { get; set; }

@@ -88,6 +88,10 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
@@ -129,6 +133,9 @@
                 {
                     x.Add(x => x.TitleHead, $"{crew.original_name} ({crew.job})");
                     x.Add(x => x.Items, items.OrderByDescending(o => o.release_date).ToHashSet());
+                    x.Add(x => x.WatchedList, WatchedList);
+                    x.Add(x => x.WatchingList, WatchingList);
+                    x.Add(x => x.WishList, WishList);
                 },
                 new ModalInstanceOptions()
                     {
@@ -176,6 +183,9 @@
                 {
                     x.Add(x => x.TitleHead, $"{cast.original_name}");
                     x.Add(x => x.Items, items.OrderByDescending(o => o.release_date).ToHashSet());
+                    x.Add(x => x.WatchedList, WatchedList);
+                    x.Add(x => x.WatchingList, WatchingList);
+                    x.Add(x => x.WishList, WishList);
                 },
                 new ModalInstanceOptions()
                     {

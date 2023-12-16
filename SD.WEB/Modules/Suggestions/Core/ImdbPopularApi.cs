@@ -44,7 +44,7 @@ namespace SD.WEB.Modules.Suggestions.Core
 
                 //if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(GlobalTranslations.UnavailableService);
 
-                foreach (var item in result?.Items ?? new List<MostPopularDataDetail>())
+                foreach (var item in result?.Items ?? [])
                 {
                     //if (item.IMDbRatingCount == "0") continue; //ignore low-rated movie
                     //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster

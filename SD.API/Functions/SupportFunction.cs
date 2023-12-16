@@ -4,19 +4,11 @@ using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
 using SD.Shared.Models.Support;
-using System.Net;
 
 namespace SD.API.Functions
 {
-    public class SupportFunction
+    public class SupportFunction(IRepository repo)
     {
-        private readonly IRepository _repo;
-
-        public SupportFunction(IRepository repo)
-        {
-            _repo = repo;
-        }
-
         //[OpenApiOperation("AnnouncementGet", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(AnnouncementModel))]
         [Function("AnnouncementGet")]
@@ -25,7 +17,7 @@ namespace SD.API.Functions
         {
             try
             {
-                return await _repo.Get<AnnouncementModel>("Announcement", new PartitionKey("Announcement"), cancellationToken);
+                return await repo.Get<AnnouncementModel>("Announcement", new PartitionKey("Announcement"), cancellationToken);
             }
             catch (Exception ex)
             {
@@ -42,7 +34,7 @@ namespace SD.API.Functions
         {
             try
             {
-                return await _repo.Query<TicketModel>(null, null, DocumentType.Ticket, cancellationToken);
+                return await repo.Query<TicketModel>(null, null, DocumentType.Ticket, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -61,7 +53,7 @@ namespace SD.API.Functions
             {
                 var userId = req.GetUserId();
 
-                return await _repo.Query<TicketVoteModel>(x => x.IdVotedUser == userId, null, DocumentType.TicketVote, cancellationToken);
+                return await repo.Query<TicketVoteModel>(x => x.IdVotedUser == userId, null, DocumentType.TicketVote, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -80,7 +72,7 @@ namespace SD.API.Functions
             {
                 var item = await req.GetPublicBody<TicketModel>(cancellationToken);
 
-                return await _repo.Upsert(item, cancellationToken);
+                return await repo.Upsert(item, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -100,13 +92,13 @@ namespace SD.API.Functions
                 var item = await req.GetPublicBody<TicketVoteModel>(cancellationToken);
 
                 if (item.VoteType == VoteType.PlusOne)
-                    await _repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, new PartitionKey(item.Key), new List<PatchOperation> { PatchOperation.Increment("/totalVotes", 1) }, cancellationToken);
+                    await repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, new PartitionKey(item.Key), new List<PatchOperation> { PatchOperation.Increment("/totalVotes", 1) }, cancellationToken);
                 else if (item.VoteType == VoteType.MinusOne)
-                    await _repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, new PartitionKey(item.Key), new List<PatchOperation> { PatchOperation.Increment("/totalVotes", -1) }, cancellationToken);
+                    await repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, new PartitionKey(item.Key), new List<PatchOperation> { PatchOperation.Increment("/totalVotes", -1) }, cancellationToken);
 
                 item.IdVotedUser = req.GetUserId();
 
-                return await _repo.Upsert(item, cancellationToken);
+                return await repo.Upsert(item, cancellationToken);
             }
             catch (Exception ex)
             {

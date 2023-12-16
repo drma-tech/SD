@@ -4,19 +4,11 @@ using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
 using SD.Shared.Models.Auth;
-using System.Net;
 
 namespace SD.API.Functions
 {
-    public class LoginFunction
+    public class LoginFunction(IRepository repo)
     {
-        private readonly IRepository _repo;
-
-        public LoginFunction(IRepository repo)
-        {
-            _repo = repo;
-        }
-
         //[OpenApiOperation("LoginAdd", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(void))]
         [Function("LoginAdd")]
@@ -27,18 +19,18 @@ namespace SD.API.Functions
             {
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
-                var login = await _repo.Get<ClienteLogin>(DocumentType.Login + ":" + userId, new PartitionKey(userId), cancellationToken);
+                var login = await repo.Get<ClienteLogin>(DocumentType.Login + ":" + userId, new PartitionKey(userId), cancellationToken);
 
                 if (login == null)
                 {
                     var newLogin = new ClienteLogin { UserId = userId, Logins = new DateTimeOffset[] { DateTimeOffset.Now } };
                     newLogin.Initialize(userId);
 
-                    await _repo.Upsert(newLogin, cancellationToken);
+                    await repo.Upsert(newLogin, cancellationToken);
                 }
                 else
                 {
-                    await _repo.PatchItem<ClienteLogin>(nameof(DocumentType.Login) + ":" + userId, new PartitionKey(userId), new List<PatchOperation> { PatchOperation.Add("/logins/-", DateTimeOffset.Now) }, cancellationToken);
+                    await repo.PatchItem<ClienteLogin>(nameof(DocumentType.Login) + ":" + userId, new PartitionKey(userId), new List<PatchOperation> { PatchOperation.Add("/logins/-", DateTimeOffset.Now) }, cancellationToken);
                 }
             }
             catch (Exception ex)

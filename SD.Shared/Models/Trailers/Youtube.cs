@@ -2,7 +2,7 @@
 {
     public class Avatar
     {
-        public List<Thumbnail> thumbnails { get; set; } = new();
+        public List<Thumbnail> thumbnails { get; set; } = [];
     }
 
     public class CommandMetadata
@@ -17,13 +17,13 @@
 
     public class Icon
     {
-        public List<Thumbnail> thumbnails { get; set; } = new();
+        public List<Thumbnail> thumbnails { get; set; } = [];
     }
 
     public class Links
     {
-        public List<PrimaryLink> primaryLinks { get; set; } = new();
-        public List<SecondaryLink> secondaryLinks { get; set; } = new();
+        public List<PrimaryLink> primaryLinks { get; set; } = [];
+        public List<SecondaryLink> secondaryLinks { get; set; } = [];
     }
 
     public class NavigationEndpoint
@@ -43,7 +43,7 @@
     public class Youtube
     {
         public Avatar? avatar { get; set; }
-        public List<Content> contents { get; set; } = new();
+        public List<Content> contents { get; set; } = [];
         public string? description { get; set; }
         public Links? links { get; set; }
         public string? next { get; set; }
@@ -83,7 +83,7 @@
     {
         public string? lengthText { get; set; }
         public string? publishedTimeText { get; set; }
-        public List<Thumbnail> thumbnails { get; set; } = new();
+        public List<Thumbnail> thumbnails { get; set; } = [];
         public string? title { get; set; }
         public string? videoId { get; set; }
         public string? viewCountText { get; set; }

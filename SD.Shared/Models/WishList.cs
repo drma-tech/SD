@@ -8,9 +8,9 @@ namespace SD.Shared.Models
         {
         }
 
-        public HashSet<WishListItem> Movies { get; init; } = new();
+        public HashSet<WishListItem> Movies { get; init; } = [];
 
-        public HashSet<WishListItem> Shows { get; init; } = new();
+        public HashSet<WishListItem> Shows { get; init; } = [];
 
         public WishListItem? GetItem(MediaType? type, string? id)
         {
@@ -41,7 +41,7 @@ namespace SD.Shared.Models
 
         public override bool HasValidData()
         {
-            return Movies.Any() || Shows.Any();
+            return Movies.Count != 0 || Shows.Count != 0;
         }
     }
 

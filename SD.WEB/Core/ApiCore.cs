@@ -16,8 +16,6 @@ namespace SD.WEB.Core
 
         private string? baseEndpoint { get; set; }
         private object cacheKey { get; set; }
-        private RenderControlCore<T>? Core { get; set; } = new();
-        private RenderControlCore<HashSet<T>> CoreList { get; set; } = new();
 
         protected ApiCore(IHttpClientFactory factory, IMemoryCache memoryCache, object cacheKey, bool externalLink = false)
         {
@@ -33,21 +31,11 @@ namespace SD.WEB.Core
             else return _http.BaseAddress?.ToString().Contains("localhost") ?? true ? "http://localhost:7071/api/" : _http.BaseAddress.ToString() + "api/";
         }
 
-        public void SetRenderCore(RenderControlCore<T> core)
-        {
-            Core = core;
-        }
-
-        public void SetRenderCoreList(RenderControlCore<HashSet<T>> core)
-        {
-            CoreList = core;
-        }
-
-        protected async Task<T?> GetAsync(string endpoint, object? customCacheKey = null)
+        protected async Task<T?> GetAsync(string endpoint, RenderControlCore<T?>? core, object? customCacheKey = null)
         {
             cacheKey = customCacheKey ?? cacheKey;
 
-            Core?.LoadingStarted?.Invoke();
+            core?.LoadingStarted?.Invoke();
 
             var result = cacheKey != null ? _cache.Get<T>(cacheKey) : default;
 
@@ -64,7 +52,7 @@ namespace SD.WEB.Core
             }
             finally
             {
-                Core?.LoadingFinished?.Invoke(result);
+                core?.LoadingFinished?.Invoke(result);
             }
         }
 
@@ -73,11 +61,11 @@ namespace SD.WEB.Core
         /// </summary>
         /// <param name="endpoint"></param>
         /// <param name="customCacheKey"></param>
-        protected async Task<HashSet<T>> GetListAsync(string endpoint, object? customCacheKey = null)
+        protected async Task<HashSet<T>> GetListAsync(string endpoint, RenderControlCore<HashSet<T>>? core, object? customCacheKey = null)
         {
             cacheKey = customCacheKey ?? cacheKey;
 
-            CoreList?.LoadingStarted?.Invoke();
+            core?.LoadingStarted?.Invoke();
 
             var result = cacheKey != null ? _cache.Get<HashSet<T>>(cacheKey) : default;
 
@@ -94,19 +82,20 @@ namespace SD.WEB.Core
             }
             finally
             {
-                CoreList?.LoadingFinished?.Invoke(result);
+                core?.LoadingFinished?.Invoke(result);
             }
         }
 
-        protected async Task<T?> PostAsync<I>(string endpoint, I? obj) where I : class
+        protected async Task<T?> PostAsync<I>(string endpoint, RenderControlCore<T?>? core, I? obj) where I : class
         {
             T? result = default;
 
             try
             {
-                ArgumentNullException.ThrowIfNull(obj);
+                //TODO: create remove api
+                //ArgumentNullException.ThrowIfNull(obj);
 
-                Core?.ProcessingStarted?.Invoke();
+                core?.ProcessingStarted?.Invoke();
 
                 var response = await _http.PostAsJsonAsync($"{baseEndpoint}{endpoint}", obj, new JsonSerializerOptions());
 
@@ -133,19 +122,19 @@ namespace SD.WEB.Core
             }
             finally
             {
-                Core?.ProcessingFinished?.Invoke(result);
+                core?.ProcessingFinished?.Invoke(result);
             }
         }
 
-        protected async Task<T?> PutAsync<I>(string endpoint, I? obj) where I : class
+        protected async Task<T?> PutAsync<I>(string endpoint, RenderControlCore<T?>? core, I? obj) where I : class
         {
             T? result = default;
 
             try
             {
-                ArgumentNullException.ThrowIfNull(obj);
+                //ArgumentNullException.ThrowIfNull(obj);
 
-                Core?.ProcessingStarted?.Invoke();
+                core?.ProcessingStarted?.Invoke();
 
                 var response = await _http.PutAsJsonAsync($"{baseEndpoint}{endpoint}", obj, new JsonSerializerOptions());
 
@@ -172,7 +161,7 @@ namespace SD.WEB.Core
             }
             finally
             {
-                Core?.ProcessingFinished?.Invoke(result);
+                core?.ProcessingFinished?.Invoke(result);
             }
         }
     }

@@ -4,19 +4,11 @@ using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
 using SD.Shared.Models.Auth;
-using System.Net;
 
 namespace SD.API.Functions
 {
-    public class PrincipalFunction
+    public class PrincipalFunction(IRepository repo)
     {
-        private readonly IRepository _repo;
-
-        public PrincipalFunction(IRepository repo)
-        {
-            _repo = repo;
-        }
-
         //[OpenApiOperation("PrincipalGet", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(ClientePrincipal))]
         [Function("PrincipalGet")]
@@ -27,7 +19,7 @@ namespace SD.API.Functions
             {
                 var userId = req.GetUserId();
 
-                return await _repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + userId, new PartitionKey(userId), cancellationToken);
+                return await repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + userId, new PartitionKey(userId), cancellationToken);
             }
             catch (Exception ex)
             {
@@ -46,7 +38,7 @@ namespace SD.API.Functions
             {
                 var body = await req.GetBody<ClientePrincipal>(cancellationToken);
 
-                return await _repo.Upsert(body, cancellationToken);
+                return await repo.Upsert(body, cancellationToken);
             }
             catch (Exception ex)
             {

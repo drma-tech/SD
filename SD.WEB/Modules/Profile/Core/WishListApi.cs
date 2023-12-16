@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
@@ -13,15 +14,15 @@ namespace SD.WEB.Modules.Profile.Core
             public static string Remove(MediaType? type, string id) => $"wishlist/remove/{type}/{id}";
         }
 
-        public async Task<WishList?> Get(bool IsUserAuthenticated, string? id = null)
+        public async Task<WishList?> Get(bool IsUserAuthenticated, RenderControlCore<WishList?>? core, string? id = null)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                return await GetAsync($"{Endpoint.Get}?id={id}");
+                return await GetAsync($"{Endpoint.Get}?id={id}", core);
             }
             else if (IsUserAuthenticated)
             {
-                return await GetAsync(Endpoint.Get);
+                return await GetAsync(Endpoint.Get, core);
             }
             else
             {
@@ -34,7 +35,7 @@ namespace SD.WEB.Modules.Profile.Core
             ArgumentNullException.ThrowIfNull(mediaType);
             ArgumentNullException.ThrowIfNull(item);
 
-            return await PostAsync(Endpoint.Add(mediaType), item);
+            return await PostAsync(Endpoint.Add(mediaType), null, item);
         }
 
         public async Task<WishList?> Remove(MediaType? mediaType, string? id)
@@ -42,7 +43,7 @@ namespace SD.WEB.Modules.Profile.Core
             ArgumentNullException.ThrowIfNull(mediaType);
             ArgumentNullException.ThrowIfNull(id);
 
-            return await PostAsync(Endpoint.Remove(mediaType, id), (WishList?)null);
+            return await PostAsync(Endpoint.Remove(mediaType, id), null, (WishList?)null);
         }
     }
 }

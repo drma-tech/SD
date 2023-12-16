@@ -8,11 +8,11 @@ namespace SD.Shared.Models
         {
         }
 
-        public List<MyProvidersItem> Items { get; set; } = new();
+        public List<MyProvidersItem> Items { get; set; } = [];
 
         public override bool HasValidData()
         {
-            return Items.Any();
+            return Items.Count != 0;
         }
     }
 

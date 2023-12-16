@@ -3,6 +3,7 @@ using SD.Shared.Models.List;
 using SD.Shared.Models.News;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
+using SD.WEB.Shared;
 
 namespace SD.WEB.Core
 {
@@ -23,43 +24,43 @@ namespace SD.WEB.Core
 
     public class CacheFlixsterApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<NewsModel?>(http, memoryCache, "NewsModel")
     {
-        public async Task<NewsModel?> GetNews(string mode)
+        public async Task<NewsModel?> GetNews(string mode, RenderControlCore<NewsModel?>? core)
         {
-            return await GetAsync(Endpoint.News(mode), $"NewsModel-{mode}");
+            return await GetAsync(Endpoint.News(mode), core, $"NewsModel-{mode}");
         }
     }
 
     public class CacheYoutubeApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<TrailerModel?>(http, memoryCache, "TrailerModel")
     {
-        public async Task<TrailerModel?> GetTrailers(string mode)
+        public async Task<TrailerModel?> GetTrailers(string mode, RenderControlCore<TrailerModel?>? core)
         {
-            return await GetAsync(Endpoint.Trailers(mode), $"TrailerModel-{mode}");
+            return await GetAsync(Endpoint.Trailers(mode), core, $"TrailerModel-{mode}");
         }
     }
 
     public class CacheRatingsApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<Ratings?>(http, memoryCache, "Ratings")
     {
-        public async Task<Ratings?> GetMovieRatings(string? id, string? title, DateTime? releaseDate, string? tmdb_rating)
+        public async Task<Ratings?> GetMovieRatings(string? id, string? title, DateTime? releaseDate, string? tmdb_rating, RenderControlCore<Ratings?>? core)
         {
-            return await GetAsync(Endpoint.GetMovieRatings(id, title, releaseDate, tmdb_rating));
+            return await GetAsync(Endpoint.GetMovieRatings(id, title, releaseDate, tmdb_rating), core);
         }
 
-        public async Task<Ratings?> GetShowRatings(string? id, string? title, DateTime? releaseDate, string? tmdb_rating)
+        public async Task<Ratings?> GetShowRatings(string? id, string? title, DateTime? releaseDate, string? tmdb_rating, RenderControlCore<Ratings?>? core)
         {
-            return await GetAsync(Endpoint.GetShowRatings(id, title, releaseDate, tmdb_rating));
+            return await GetAsync(Endpoint.GetShowRatings(id, title, releaseDate, tmdb_rating), core);
         }
     }
 
     public class CacheMetaCriticApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<ReviewModel?>(http, memoryCache, "ReviewModel")
     {
-        public async Task<ReviewModel?> GetMovieReviews(string? id, string? title, DateTime? releaseDate)
+        public async Task<ReviewModel?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, RenderControlCore<ReviewModel?>? core)
         {
-            return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate));
+            return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate), core);
         }
 
-        public async Task<ReviewModel?> GetShowReviews(string? id, string? title, DateTime? releaseDate)
+        public async Task<ReviewModel?> GetShowReviews(string? id, string? title, DateTime? releaseDate, RenderControlCore<ReviewModel?>? core)
         {
-            return await GetAsync(Endpoint.GetShowReviews(id, title, releaseDate));
+            return await GetAsync(Endpoint.GetShowReviews(id, title, releaseDate), core);
         }
     }
 }

@@ -34,9 +34,9 @@
     private AllProviders? AllProviders { get; set; }
     public ProviderModel? Provider { get; set; }
 
-    public RenderControlCore<WatchedList> CoreWatchedList { get; set; } = new();
-    public RenderControlCore<WatchingList> CoreWatchingList { get; set; } = new();
-    public RenderControlCore<WishList> CoreWishlist { get; set; } = new();
+    public RenderControlCore<WatchedList?> CoreWatchedList { get; set; } = new();
+    public RenderControlCore<WatchingList?> CoreWatchingList { get; set; } = new();
+    public RenderControlCore<WishList?> CoreWishlist { get; set; } = new();
 
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
@@ -44,27 +44,20 @@
 
     protected override void OnInitialized()
     {
-        WatchedListApi.DataChanged += (WatchedList? model) => WatchedList = model;
-        WatchedListApi.SetRenderCore(CoreWatchedList);
-
-        WatchingListApi.DataChanged += (WatchingList? model) => WatchingList = model;
-        WatchingListApi.SetRenderCore(CoreWatchingList);
-
-        WishListApi.DataChanged += (WishList? model) => WishList = model;
-        WishListApi.SetRenderCore(CoreWishlist);
+        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()
     {
-        Core?.LoadingStarted?.Invoke();
-        AllProviders = await AllProvidersApi.GetAll();
-        Core?.LoadingFinished?.Invoke(AllProviders);
+        AllProviders = await AllProvidersApi.GetAll(Core);
 
         Provider = AllProviders?.Items.SingleOrDefault(s => s.id == id);
 
-        WatchedList = await WatchedListApi.Get(IsUserAuthenticated);
-        WatchingList = await WatchingListApi.Get(IsUserAuthenticated);
-        WishList = await WishListApi.Get(IsUserAuthenticated);
+        WatchedList = await WatchedListApi.Get(IsUserAuthenticated, CoreWatchedList);
+        WatchingList = await WatchingListApi.Get(IsUserAuthenticated, CoreWatchingList);
+        WishList = await WishListApi.Get(IsUserAuthenticated, CoreWishlist);
 
         StateHasChanged(); //load SeoHeader
     }

@@ -44,7 +44,7 @@ namespace SD.WEB.Core
         {
             if (MemoryCache == null)
             {
-                return await Http.GetJsonFromApi<HashSet<T>>(BaseApi(isExternalLink) + requestUri) ?? new();
+                return await Http.GetJsonFromApi<HashSet<T>>(BaseApi(isExternalLink) + requestUri) ?? [];
             }
             else
             {
@@ -54,7 +54,7 @@ namespace SD.WEB.Core
 
                 if (result == null)
                 {
-                    result = await Http.GetJsonFromApi<HashSet<T>>(BaseApi(isExternalLink) + requestUri) ?? new();
+                    result = await Http.GetJsonFromApi<HashSet<T>>(BaseApi(isExternalLink) + requestUri) ?? [];
 
                     MemoryCache.Set(requestUri, result, cacheSettings);
                 }

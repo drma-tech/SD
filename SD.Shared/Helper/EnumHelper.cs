@@ -25,12 +25,12 @@
 
     public class EnumObject
     {
-        public EnumObject(Enum Value, string? Name, string? Description, string? Group)
+        public EnumObject(Enum value, string? name, string? description, string? group)
         {
-            this.Value = Value;
-            this.Name = Name;
-            this.Description = Description;
-            this.Group = Group;
+            Value = value;
+            Name = name;
+            Description = description;
+            Group = group;
         }
 
         public Enum Value { get; set; }

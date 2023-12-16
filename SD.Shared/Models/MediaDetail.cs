@@ -18,9 +18,9 @@
         public string? collectionName { get; set; }
         public string? collectionLogo { get; set; }
 
-        public List<Video> Videos { get; set; } = new();
-        public List<string> Genres { get; set; } = new();
-        public List<Collection> Collection { get; set; } = new();
+        public List<Video> Videos { get; set; } = [];
+        public List<string> Genres { get; set; } = [];
+        public List<Collection> Collection { get; set; } = [];
 
         public MediaType MediaType { get; set; }
 

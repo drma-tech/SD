@@ -6,7 +6,7 @@ namespace SD.Shared.Models.List.Tmdb
     {
         public bool adult { get; set; }
         public string? backdrop_path { get; set; }
-        public List<int> genre_ids { get; set; } = new();
+        public List<int> genre_ids { get; set; } = [];
         public int id { get; set; }
         public string? original_language { get; set; }
         public string? original_title { get; set; }
@@ -30,6 +30,6 @@ namespace SD.Shared.Models.List.Tmdb
         public string? overview { get; set; }
         public string? poster_path { get; set; }
         public string? backdrop_path { get; set; }
-        public List<Part> parts { get; set; } = new();
+        public List<Part> parts { get; set; } = [];
     }
 }

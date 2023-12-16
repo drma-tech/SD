@@ -13,8 +13,8 @@ namespace SD.Shared.Models
         public DateTime? MovieSyncDate { get; set; }
         public DateTime? ShowSyncDate { get; set; }
 
-        public HashSet<SuggestionListItem> Movies { get; init; } = new();
-        public HashSet<SuggestionListItem> Shows { get; init; } = new();
+        public HashSet<SuggestionListItem> Movies { get; init; } = [];
+        public HashSet<SuggestionListItem> Shows { get; init; } = [];
 
         [Custom(Name = "Movie Genres")]
         public IReadOnlyList<MovieGenre> MovieGenres { get; set; } = Array.Empty<MovieGenre>();
@@ -51,7 +51,7 @@ namespace SD.Shared.Models
 
         public override bool HasValidData()
         {
-            return Movies.Any() || Shows.Any();
+            return Movies.Count != 0 || Shows.Count != 0;
         }
     }
 
@@ -76,7 +76,7 @@ namespace SD.Shared.Models
         public string? id { get; init; }
         public string? logo { get; init; }
         public string? name { get; init; }
-        public string[] Providers { get; set; } = Array.Empty<string>();
+        public string[] Providers { get; set; } = [];
 
         public bool Equals(SuggestionListItem? other)
         {

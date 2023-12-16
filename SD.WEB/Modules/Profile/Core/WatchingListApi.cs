@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
@@ -15,15 +16,15 @@ namespace SD.WEB.Modules.Profile.Core
             public static string Sync(MediaType? type) => $"watchinglist/sync/{type}";
         }
 
-        public async Task<WatchingList?> Get(bool IsUserAuthenticated, string? id = null)
+        public async Task<WatchingList?> Get(bool IsUserAuthenticated, RenderControlCore<WatchingList?>? core, string? id = null)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                return await GetAsync($"{Endpoint.Get}?id={id}");
+                return await GetAsync($"{Endpoint.Get}?id={id}", core);
             }
             else if (IsUserAuthenticated)
             {
-                return await GetAsync(Endpoint.Get);
+                return await GetAsync(Endpoint.Get, core);
             }
             else
             {
@@ -36,7 +37,7 @@ namespace SD.WEB.Modules.Profile.Core
             ArgumentNullException.ThrowIfNull(mediaType);
             ArgumentNullException.ThrowIfNull(item);
 
-            return await PostAsync<WatchingListItem>(Endpoint.Add(mediaType), item);
+            return await PostAsync<WatchingListItem>(Endpoint.Add(mediaType), null, item);
         }
 
         public async Task<WatchingList?> Remove(MediaType? mediaType, string? CollectionId, string? TmdbId = "null")
@@ -44,14 +45,14 @@ namespace SD.WEB.Modules.Profile.Core
             ArgumentNullException.ThrowIfNull(mediaType);
             ArgumentNullException.ThrowIfNull(CollectionId);
 
-            return await PostAsync<WatchingList>(Endpoint.Remove(mediaType, CollectionId, TmdbId ?? "null"), null);
+            return await PostAsync<WatchingList>(Endpoint.Remove(mediaType, CollectionId, TmdbId ?? "null"), null, null);
         }
 
-        public async Task<WatchingList?> Sync(MediaType? mediaType)
+        public async Task<WatchingList?> Sync(MediaType? mediaType, RenderControlCore<WatchingList?>? core)
         {
             ArgumentNullException.ThrowIfNull(mediaType);
 
-            return await PostAsync<WatchingList>(Endpoint.Sync(mediaType), null);
+            return await PostAsync<WatchingList>(Endpoint.Sync(mediaType), core, null);
         }
     }
 }

@@ -22,15 +22,15 @@
 
     protected override void OnInitialized()
     {
-        WatchedListApi.DataChanged += (WatchedList? model) => WatchedList = model;
-        WatchingListApi.DataChanged += (WatchingList? model) => WatchingList = model;
-        WishListApi.DataChanged += (WishList? model) => WishList = model;
+        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()
     {
-        WatchedList = await WatchedListApi.Get(IsUserAuthenticated);
-        WatchingList = await WatchingListApi.Get(IsUserAuthenticated);
-        WishList = await WishListApi.Get(IsUserAuthenticated);
+        WatchedList = await WatchedListApi.Get(IsUserAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(IsUserAuthenticated, null);
+        WishList = await WishListApi.Get(IsUserAuthenticated, null);
     }
 }

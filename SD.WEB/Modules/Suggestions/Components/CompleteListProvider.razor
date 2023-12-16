@@ -43,6 +43,7 @@
     [Inject] public IModalService ModalService { get; set; } = default!;
 
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
     [Parameter] public string? CardHeader { get; set; }
@@ -63,6 +64,7 @@
         {
             x.Add(x => x.provider, item);
             x.Add(x => x.WatchedList, WatchedList);
+            x.Add(x => x.WatchingList, WatchingList);
             x.Add(x => x.WishList, WishList);
         },
         new ModalInstanceOptions()

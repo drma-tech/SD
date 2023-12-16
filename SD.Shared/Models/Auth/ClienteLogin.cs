@@ -9,7 +9,7 @@ namespace SD.Shared.Models.Auth
         }
 
         public string? UserId { get; set; }
-        public DateTimeOffset[] Logins { get; set; } = Array.Empty<DateTimeOffset>();
+        public DateTimeOffset[] Logins { get; set; } = [];
 
         public override void Initialize(string userId)
         {

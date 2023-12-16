@@ -47,13 +47,8 @@
     private NewsModel? News { get; set; }
     public string? selectedSlide { get; set; }
 
-    protected override void OnInitialized()
-    {
-        CacheFlixsterApi.SetRenderCore(Core);
-    }
-
     protected override async Task LoadDataRender()
     {
-        News = await CacheFlixsterApi.GetNews("full");
+        News = await CacheFlixsterApi.GetNews("full", Core);
     }
 }

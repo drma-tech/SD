@@ -1,4 +1,9 @@
-﻿@inherits ComponenteCore<MyWatchingListPopup>
+﻿@using SD.WEB.Modules.Profile.Core
+@inherits ComponenteCore<MyWatchingListPopup>
+
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@Title.Format(GetList().Count())</ModalTitle>
@@ -51,6 +56,7 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
@@ -58,6 +64,13 @@
     [Parameter] public int Quantity { get; set; }
 
     public string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWatching : GlobalTranslations.MyShowWatching;
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+    }
 
     private HashSet<WatchingListItem> GetList()
     {
@@ -76,6 +89,7 @@
             {
                 x.Add(x => x.collection_id, collection_id);
                 x.Add(x => x.type, type);
+                x.Add(x => x.WatchedList, WatchedList);
                 x.Add(x => x.WatchingList, WatchingList);
                 x.Add(x => x.WishList, WishList);
             },

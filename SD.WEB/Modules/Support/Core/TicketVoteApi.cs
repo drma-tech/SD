@@ -15,7 +15,7 @@ namespace SD.WEB.Modules.Support.Core
         {
             if (IsUserAuthenticated)
             {
-                return await GetListAsync(Endpoint.GetMyVotes, false);
+                return await GetListAsync(Endpoint.GetMyVotes, null, false);
             }
             else
             {
@@ -25,7 +25,7 @@ namespace SD.WEB.Modules.Support.Core
 
         public async Task<TicketVoteModel?> Vote(TicketVoteModel obj)
         {
-            return await PostAsync(Endpoint.Vote, obj);
+            return await PostAsync(Endpoint.Vote, null, obj);
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class AllProviders
     {
-        public List<ProviderModel> Items { get; set; } = new();
+        public List<ProviderModel> Items { get; set; } = [];
     }
 
     public class ProviderModel
@@ -14,10 +14,10 @@
         public string? link { get; set; }
         public string? logo_path { get; set; }
         public Language? head_language { get; set; }
-        public List<Region> regions { get; set; } = new();
-        public List<MediaType> types { get; set; } = new();
-        public List<DeliveryModel> models { get; set; } = new();
-        public List<Plan> plans { get; set; } = new();
+        public List<Region> regions { get; set; } = [];
+        public List<MediaType> types { get; set; } = [];
+        public List<DeliveryModel> models { get; set; } = [];
+        public List<Plan> plans { get; set; } = [];
     }
 
     public class Plan

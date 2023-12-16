@@ -30,21 +30,25 @@
     [Inject] public IModalService ModalService { get; set; } = default!;
 
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
     [Parameter] public bool Fake { get; set; } = false;
 
-    public RenderControlCore<MyProviders?>? Core { get; set; } = new();
+    public RenderControlCore<MyProviders?> Core { get; set; } = new();
     private AllProviders? allProviders { get; set; }
     private MyProviders? myProviders { get; set; }
     private bool expand { get; set; }
 
     private int GetTotalItems(bool expand) => AppStateStatic.OnMobile && !expand ? 4 : 12;
 
+    protected override void OnInitialized()
+    {
+        MyProvidersApi.DataChanged += (MyProviders? model) => { myProviders = model; StateHasChanged(); };
+    }
+
     protected override async Task LoadDataRender()
     {
-        Core?.ShowLoading();
-
         if (Fake)
         {
             var http = httpClientFactory.CreateClient("RetryHttpClient");
@@ -53,21 +57,20 @@
         }
         else
         {
-            myProviders = await MyProvidersApi.Get(IsUserAuthenticated);
+            myProviders = await MyProvidersApi.Get(IsUserAuthenticated, Core);
         }
-
-        Core?.HideLoading(myProviders);
     }
 
     public async Task ShowProviderPopup(MyProvidersItem item)
     {
-        if (allProviders == null) allProviders = await AllProvidersApi.GetAll();
+        if (allProviders == null) allProviders = await AllProvidersApi.GetAll(null);
 
         await ModalService.Show<Provider.Components.ProviderPopup>(item.name,
             x =>
             {
                 x.Add(x => x.provider, allProviders?.Items.FirstOrDefault(f => f.id == item.id));
                 x.Add(x => x.WatchedList, WatchedList);
+                x.Add(x => x.WatchingList, WatchingList);
                 x.Add(x => x.WishList, WishList);
             },
             new ModalInstanceOptions()

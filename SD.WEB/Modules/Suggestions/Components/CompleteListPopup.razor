@@ -3,7 +3,11 @@
 @using SD.WEB.Modules.Suggestions.Interface;
 @using SD.WEB.Modules.Profile.Core
 @inherits ComponenteCore<CompleteListPopup>
+
 @inject ExternalIdApi ExternalIdApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">
@@ -45,6 +49,10 @@
     protected override void OnInitialized()
     {
         if (List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
+
+        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
     }
 
     public async Task HideModal()

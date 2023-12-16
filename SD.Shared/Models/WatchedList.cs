@@ -8,8 +8,8 @@ namespace SD.Shared.Models
         {
         }
 
-        public HashSet<string> Movies { get; init; } = new();
-        public HashSet<string> Shows { get; init; } = new();
+        public HashSet<string> Movies { get; init; } = [];
+        public HashSet<string> Shows { get; init; } = [];
 
         public HashSet<string> GetItems(MediaType? type)
         {
@@ -40,7 +40,7 @@ namespace SD.Shared.Models
 
         public override bool HasValidData()
         {
-            return Movies.Any() || Shows.Any();
+            return Movies.Count != 0 || Shows.Count != 0;
         }
     }
 }

@@ -37,7 +37,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                         rating = item.vote_average,
                         runtime = item.runtime,
                         homepage = item.homepage,
-                        Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name }).ToList() ?? new List<Video>(),
+                        Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name }).ToList() ?? [],
                         Genres = item.genres.Select(s => s.name ?? "").ToList(),
                         MediaType = MediaType.movie
                     };
@@ -52,7 +52,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                             obj_return.collectionName = collection.name;
                             obj_return.collectionLogo = collection.poster_path;
 
-                            foreach (var part in collection.parts ?? new())
+                            foreach (var part in collection.parts ?? [])
                             {
                                 obj_return.Collection.Add(ConvertToCollection(part));
                             }
@@ -78,7 +78,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                         rating = item.vote_average,
                         runtime = item.episode_run_time.FirstOrDefault(),
                         homepage = item.homepage,
-                        Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name }).ToList() ?? new List<Video>(),
+                        Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name }).ToList() ?? [],
                         Genres = item.genres.Select(s => s.name ?? "").ToList(),
                         MediaType = MediaType.tv
                     };

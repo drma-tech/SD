@@ -1,13 +1,14 @@
 ﻿@using SD.WEB.Modules.Profile.Components
 
-<Wishlist MediaType="MediaType.movie" Private="true" ShowHeader="true" FullScreen="false" WatchedList="WatchedList" WishList="WishList"
+<Wishlist MediaType="MediaType.movie" Private="true" ShowHeader="true" FullScreen="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"
           Core="CoreWishlist" ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()"></Wishlist>
 
-<Wishlist MediaType="MediaType.tv" Private="true" ShowHeader="true" FullScreen="false" WatchedList="WatchedList" WishList="WishList"
+<Wishlist MediaType="MediaType.tv" Private="true" ShowHeader="true" FullScreen="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"
           Core="CoreWishlist" ExpressionEmpty="(WishList? list) => list == null || list.Shows.Empty()"></Wishlist>
 
 @code {
     [Parameter][EditorRequired] public RenderControlCore<WishList?> CoreWishlist { get; set; } = new();
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
 }

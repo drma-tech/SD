@@ -40,9 +40,9 @@
 
     [Parameter][SupplyParameterFromQuery(Name = "language")] public string? language { get; set; }
 
-    public RenderControlCore<WatchedList> CoreWatched { get; set; } = new();
-    public RenderControlCore<WatchingList> CoreWatching { get; set; } = new();
-    public RenderControlCore<WishList> CoreWishlist { get; set; } = new();    
+    public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
+    public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
+    public RenderControlCore<WishList?> CoreWishlist { get; set; } = new();    
 
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
@@ -52,21 +52,16 @@
 
     protected override void OnInitialized()
     {
-        WatchedListApi.DataChanged += (WatchedList? model) => WatchedList = model;
-        WatchedListApi.SetRenderCore(CoreWatched);
-
-        WatchingListApi.DataChanged += (WatchingList? model) => WatchingList = model;
-        WatchingListApi.SetRenderCore(CoreWatching);
-
-        WishListApi.DataChanged += (WishList? model) => WishList = model;
-        WishListApi.SetRenderCore(CoreWishlist);
+        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()
     {
-        WatchedList = await WatchedListApi.Get(IsUserAuthenticated);
-        WatchingList = await WatchingListApi.Get(IsUserAuthenticated);
-        WishList = await WishListApi.Get(IsUserAuthenticated);
+        WatchedList = await WatchedListApi.Get(IsUserAuthenticated, CoreWatched);
+        WatchingList = await WatchingListApi.Get(IsUserAuthenticated, CoreWatching);
+        WishList = await WishListApi.Get(IsUserAuthenticated, CoreWishlist);
     }
 
     public async Task ShowSearchPopup()
@@ -76,6 +71,9 @@
             {
                 x.Add(x => x.TitleHead, Search);
                 x.Add(x => x.Search, Search);
+                x.Add(x => x.WatchedList, WatchedList);
+                x.Add(x => x.WatchingList, WatchingList);
+                x.Add(x => x.WishList, WishList);
             },
             new ModalInstanceOptions()
                 {

@@ -23,16 +23,16 @@
     </Jumbotron>
 }
 
-<MyProviderComponent Fake="Fake" WatchedList="WatchedList" WishList="WishList"></MyProviderComponent>
+<MyProviderComponent Fake="Fake" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MyProviderComponent>
 
-<MySuggestions Fake="Fake" WatchedList="WatchedList" WishList="WishList"></MySuggestions>
+<MySuggestions Fake="Fake" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MySuggestions>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWishListComponent WatchedList="WatchedList" WishList="WishList" CoreWishlist="CoreWishlist"></MyWishListComponent>
+        <MyWishListComponent WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList" CoreWishlist="CoreWishlist"></MyWishListComponent>
     </Column>
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWatchingListComponent Fake="Fake" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList" Core="CoreWatching"></MyWatchingListComponent>
+        <MyWatchingListComponent Fake="Fake" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList" Core="CoreWatchingList"></MyWatchingListComponent>
     </Column>
 </Row>
 
@@ -40,9 +40,9 @@
     [Parameter][SupplyParameterFromQuery(Name = "Fake")] public bool Fake { get; set; } = false;
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    public RenderControlCore<WatchedList> CoreWatchedList { get; set; } = new();
-    public RenderControlCore<WatchingList> CoreWatching { get; set; } = new();
-    public RenderControlCore<WishList> CoreWishlist { get; set; } = new();
+    public RenderControlCore<WatchedList?> CoreWatchedList { get; set; } = new();
+    public RenderControlCore<WatchingList?> CoreWatchingList { get; set; } = new();
+    public RenderControlCore<WishList?> CoreWishlist { get; set; } = new();
 
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
@@ -50,14 +50,9 @@
 
     protected override void OnInitialized()
     {
-        WatchedListApi.DataChanged += (WatchedList? model) => WatchedList = model;
-        WatchedListApi.SetRenderCore(CoreWatchedList);
-
-        WatchingListApi.DataChanged += (WatchingList? model) => WatchingList = model;
-        WatchingListApi.SetRenderCore(CoreWatching);
-
-        WishListApi.DataChanged += (WishList? model) => WishList = model;
-        WishListApi.SetRenderCore(CoreWishlist);
+        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()
@@ -72,9 +67,9 @@
         }
         else
         {
-            WatchedList = await WatchedListApi.Get(IsUserAuthenticated);
-            WatchingList = await WatchingListApi.Get(IsUserAuthenticated);
-            WishList = await WishListApi.Get(IsUserAuthenticated);
+            WatchedList = await WatchedListApi.Get(IsUserAuthenticated, CoreWatchedList);
+            WatchingList = await WatchingListApi.Get(IsUserAuthenticated, CoreWatchingList);
+            WishList = await WishListApi.Get(IsUserAuthenticated, CoreWishlist);
         }
     }
 

@@ -9,7 +9,7 @@ namespace SD.Shared.Models.Support
         {
         }
 
-        public List<AnnouncementItem> Items { get; set; } = new();
+        public List<AnnouncementItem> Items { get; set; } = [];
 
         protected void Initialize()
         {
@@ -20,7 +20,7 @@ namespace SD.Shared.Models.Support
 
         public override bool HasValidData()
         {
-            return Items.Any();
+            return Items.Count != 0;
         }
 
         public override bool Equals(object? obj)

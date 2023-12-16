@@ -11,11 +11,11 @@ namespace SD.Shared.Models
         public DateTime? MovieSyncDate { get; set; }
         public DateTime? ShowSyncDate { get; set; }
 
-        public HashSet<WatchingListItem> Movies { get; init; } = new();
-        public HashSet<WatchingListItem> Shows { get; init; } = new();
+        public HashSet<WatchingListItem> Movies { get; init; } = [];
+        public HashSet<WatchingListItem> Shows { get; init; } = [];
 
-        public HashSet<string> DeletedMovies { get; init; } = new();
-        public HashSet<string> DeletedShows { get; init; } = new();
+        public HashSet<string> DeletedMovies { get; init; } = [];
+        public HashSet<string> DeletedShows { get; init; } = [];
 
         public bool MovieCanSync => !MovieSyncDate.HasValue || MovieSyncDate.Value < DateTime.Now.AddDays(-14);
         public bool ShowCanSync => !ShowSyncDate.HasValue || ShowSyncDate.Value < DateTime.Now.AddDays(-14);
@@ -27,7 +27,7 @@ namespace SD.Shared.Models
 
         public HashSet<string> GetWatchingItems(MediaType? type, string? collectionId)
         {
-            return Items(type).FirstOrDefault(f => f.id == collectionId)?.watched ?? new();
+            return Items(type).FirstOrDefault(f => f.id == collectionId)?.watched ?? [];
         }
 
         public bool Contains(MediaType? type, WatchingListItem? item)
@@ -59,7 +59,7 @@ namespace SD.Shared.Models
 
         public void RemoveItem(MediaType? type, string? collectionId, string? itemId)
         {
-            if (collectionId == null) throw new ArgumentNullException(nameof(collectionId));
+            ArgumentNullException.ThrowIfNull(collectionId);
 
             var collection = Items(type).FirstOrDefault(f => f.id == collectionId);
 
@@ -70,7 +70,7 @@ namespace SD.Shared.Models
                 else
                     collection.watched.Remove(itemId);
 
-                if (!collection.watched.Any())
+                if (collection.watched.Count == 0)
                 {
                     Items(type).Remove(collection);
 
@@ -86,7 +86,7 @@ namespace SD.Shared.Models
 
         public override bool HasValidData()
         {
-            return Movies.Any() || Shows.Any();
+            return Movies.Count != 0 || Shows.Count != 0;
         }
     }
 
@@ -115,7 +115,7 @@ namespace SD.Shared.Models
         public string? logo { get; init; }
         public string? name { get; init; }
         public int maxItems { get; set; }
-        public HashSet<string> watched { get; init; } = new();
+        public HashSet<string> watched { get; init; } = [];
 
         public bool Equals(WatchingListItem? other)
         {

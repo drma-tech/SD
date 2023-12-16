@@ -23,8 +23,6 @@
 
     protected override async Task LoadDataRender()
     {
-        Core?.LoadingStarted?.Invoke();
-        announcement = await AnnouncementApi.Get();
-        Core?.LoadingFinished?.Invoke(announcement);
+        announcement = await AnnouncementApi.Get(Core);
     }
 }

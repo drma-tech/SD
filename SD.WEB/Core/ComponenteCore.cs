@@ -20,7 +20,7 @@ namespace SD.WEB.Core
 
         protected bool IsUserAuthenticated { get; set; } = false;
         protected ClaimsPrincipal? User { get; set; }
-        public string? UserId { get; set; }
+        protected string? UserId { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

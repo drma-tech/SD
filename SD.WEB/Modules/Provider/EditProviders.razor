@@ -108,7 +108,7 @@
 
     protected override async Task LoadDataRender()
     {
-        AllProviders = await AllProvidersApi.GetAll();
+        AllProviders = await AllProvidersApi.GetAll(null);
     }
 
     private async Task ShowPopupProvider(ProviderModel item)

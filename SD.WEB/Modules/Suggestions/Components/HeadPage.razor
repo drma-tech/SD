@@ -117,9 +117,7 @@
 
     protected override async Task LoadDataRender()
     {
-        Core?.LoadingStarted?.Invoke();
-        myProviders = await MyProvidersApi.Get(IsUserAuthenticated);
-        Core?.LoadingFinished?.Invoke(myProviders);
+        myProviders = await MyProvidersApi.Get(IsUserAuthenticated, Core);
     }
 
     private async Task Add()

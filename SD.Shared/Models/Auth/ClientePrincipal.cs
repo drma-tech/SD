@@ -12,7 +12,7 @@ namespace SD.Shared.Models.Auth
         public string? UserId { get; set; }
         public string? IdentityProvider { get; set; }
         public string? UserDetails { get; set; }
-        public string[] UserRoles { get; set; } = Array.Empty<string>();
+        public string[] UserRoles { get; set; } = [];
 
         [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }

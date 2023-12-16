@@ -6,15 +6,8 @@ using SD.Shared.Core.Models;
 
 namespace SD.API.Functions
 {
-    public class WatchedListFunction
+    public class WatchedListFunction(IRepository repo)
     {
-        private readonly IRepository _repo;
-
-        public WatchedListFunction(IRepository repo)
-        {
-            _repo = repo;
-        }
-
         //[OpenApiOperation("WatchedListGet", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchedList))]
         [Function("WatchedListGet")]
@@ -27,9 +20,9 @@ namespace SD.API.Functions
                 var id = req.GetQueryParameters()["id"];
 
                 if (string.IsNullOrEmpty(id))
-                    return await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + userId, new PartitionKey(userId), cancellationToken);
+                    return await repo.Get<WatchedList>(DocumentType.WatchedList + ":" + userId, new PartitionKey(userId), cancellationToken);
                 else
-                    return await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + id, new PartitionKey(id), cancellationToken);
+                    return await repo.Get<WatchedList>(DocumentType.WatchedList + ":" + id, new PartitionKey(id), cancellationToken);
             }
             catch (Exception ex)
             {
@@ -50,7 +43,7 @@ namespace SD.API.Functions
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-                var obj = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + userId, new PartitionKey(userId), cancellationToken);
+                var obj = await repo.Get<WatchedList>(DocumentType.WatchedList + ":" + userId, new PartitionKey(userId), cancellationToken);
 
                 if (obj == null)
                 {
@@ -66,7 +59,7 @@ namespace SD.API.Functions
                 var ids = TmdbId.Split(',');
                 obj.AddItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), new HashSet<string>(ids));
 
-                return await _repo.Upsert(obj, cancellationToken);
+                return await repo.Upsert(obj, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -87,7 +80,7 @@ namespace SD.API.Functions
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-                var obj = await _repo.Get<WatchedList>(DocumentType.WatchedList + ":" + userId, new PartitionKey(userId), cancellationToken);
+                var obj = await repo.Get<WatchedList>(DocumentType.WatchedList + ":" + userId, new PartitionKey(userId), cancellationToken);
 
                 if (obj == null)
                 {
@@ -102,7 +95,7 @@ namespace SD.API.Functions
 
                 obj.RemoveItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), TmdbId);
 
-                return await _repo.Upsert(obj, cancellationToken);
+                return await repo.Upsert(obj, cancellationToken);
             }
             catch (Exception ex)
             {

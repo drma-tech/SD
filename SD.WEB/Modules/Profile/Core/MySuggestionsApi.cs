@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
@@ -12,11 +13,11 @@ namespace SD.WEB.Modules.Profile.Core
             public static string Sync(MediaType? type) => $"MySuggestions/Sync/{type}";
         }
 
-        public async Task<SD.Shared.Models.MySuggestions?> Get(bool IsUserAuthenticated)
+        public async Task<SD.Shared.Models.MySuggestions?> Get(bool IsUserAuthenticated, RenderControlCore<SD.Shared.Models.MySuggestions?>? core)
         {
             if (IsUserAuthenticated)
             {
-                return await GetAsync(Endpoint.Get);
+                return await GetAsync(Endpoint.Get, core);
             }
             else
             {
@@ -24,17 +25,17 @@ namespace SD.WEB.Modules.Profile.Core
             }
         }
 
-        public async Task<SD.Shared.Models.MySuggestions?> Sync(MediaType? mediaType, SD.Shared.Models.MySuggestions obj)
+        public async Task<SD.Shared.Models.MySuggestions?> Sync(MediaType? mediaType, SD.Shared.Models.MySuggestions obj, RenderControlCore<SD.Shared.Models.MySuggestions?>? core)
         {
             ArgumentNullException.ThrowIfNull(mediaType);
             ArgumentNullException.ThrowIfNull(obj);
 
-            return await PostAsync(Endpoint.Sync(mediaType), obj);
+            return await PostAsync(Endpoint.Sync(mediaType), core, obj);
         }
 
         public async Task Add(SD.Shared.Models.MySuggestions obj)
         {
-            await PostAsync(Endpoint.Add, obj);
+            await PostAsync(Endpoint.Add, null, obj);
         }
     }
 }
