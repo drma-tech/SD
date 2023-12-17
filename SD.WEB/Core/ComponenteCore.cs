@@ -18,7 +18,7 @@ namespace SD.WEB.Core
         [Inject] protected IResizeListener listener { get; set; } = default!;
         [CascadingParameter] protected Task<AuthenticationState>? authenticationState { get; set; }
 
-        protected bool IsUserAuthenticated { get; set; } = false;
+        protected bool IsAuthenticated { get; set; } = false;
         protected ClaimsPrincipal? User { get; set; }
         protected string? UserId { get; set; }
 
@@ -29,7 +29,7 @@ namespace SD.WEB.Core
                 var authState = await authenticationState;
 
                 User = authState?.User;
-                IsUserAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
+                IsAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
                 UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             }
         }
@@ -102,7 +102,7 @@ namespace SD.WEB.Core
             {
                 await base.OnAfterRenderAsync(firstRender);
 
-                if (IsUserAuthenticated)
+                if (IsAuthenticated)
                 {
                     var principal = await PrincipalApi.Get();
 

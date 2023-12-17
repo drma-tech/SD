@@ -1,0 +1,266 @@
+﻿@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Suggestions.Core
+
+@inherits ComponenteCore<WatchingComponent>
+@inject TmdbApi TmdbApi
+@inject WatchingListApi WatchingApi
+
+@if (ShowHeader)
+{
+    <HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@Title">
+        @if (Private)
+        {
+            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList())"
+                    title="@GlobalTranslations.SeeAllItems" Disabled="Items.Empty()" Class="ml-1">
+                <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
+            </Button>
+            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle())"
+                    title="@GlobalTranslations.PickARandom" Disabled="Items.Empty()">
+                <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
+            </Button>
+            @if ((Watching?.MovieCanSync ?? false) && (Watching?.Movies.Any() ?? false))
+            {
+                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched()"
+                        title="@GlobalTranslations.ButtonUpdate" Disabled="MovieUpdating">
+                    @GlobalTranslations.ButtonUpdate
+                </Button>
+            }
+        }
+    </HeaderComponent>
+}
+<RenderControl Core="Core" PrivateContent="Private" Model="Watching" ExpressionEmpty="ExpressionEmpty">
+    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
+        @foreach (var item in Items.Take(GetTotalItems) ?? [])
+        {
+            var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+            int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+            var resultPerc = $"{percentComplete}%";
+
+            <Column ColumnSize="@ColSize">
+                <Card Style="position: relative;">
+                    @if (percentComplete == 100)
+                    {
+                        <Badge Color="Color.Success" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+                    }
+                    else
+                    {
+                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+                    }
+
+                    @if (string.IsNullOrEmpty(item.logo))
+                    {
+                        <CardImage Source="images/noimage.png" Alt="@item.name" title="@item.name"
+                                   onclick="@(async()=>await ShowCollectionPopup(item.id, item.name))" Style="cursor: pointer;"></CardImage>
+
+                        <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 2rem; color: black; text-align: center; font-weight: 500;">
+                            @item.name
+                        </Div>
+                    }
+                    else
+                    {
+                        <CardImage Source="@logo" Alt="@item.name" title="@item.name"
+                                   onclick="@(async()=>await ShowCollectionPopup(item.id, item.name))" Style="cursor: pointer;"></CardImage>
+                    }
+                </Card>
+            </Column>
+        }
+    </Row>
+</RenderControl>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    [Parameter][EditorRequired] public RenderControlCore<WatchingList?> Core { get; set; } = new();
+    [Parameter][EditorRequired] public MediaType MediaType { get; set; }
+    [Parameter][EditorRequired] public bool Private { get; set; }
+    [Parameter][EditorRequired] public bool ShowHeader { get; set; }
+    [Parameter][EditorRequired] public bool FullScreen { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public Func<WatchingList?, bool> ExpressionEmpty { get; set; } = default!;
+
+    private HashSet<WatchingListItem> Items => MediaType == MediaType.movie ? Watching?.Movies ?? new HashSet<WatchingListItem>() : Watching?.Shows ?? new HashSet<WatchingListItem>();
+
+    private int GetTotalItems => !FullScreen ? (AppStateStatic.OnFullHD ? 6 : 4) : 100;
+    private string? Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWishlist.Format(Items.Count()) : GlobalTranslations.MyShowWishlist.Format(Items.Count());
+    private IFluentColumn ColSize => FullScreen ? ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile : ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile;
+
+    public bool MovieUpdating { get; set; } = false;
+    public bool ShowUpdating { get; set; } = false;
+
+    private async Task OpenCompleteList()
+    {
+        await ModalService.Show<MyWatchingListPopup>(null,
+        x =>
+        {
+            x.Add(x => x.MediaType, MediaType);
+            x.Add(x => x.Watched, Watched);
+            x.Add(x => x.Watching, Watching);
+            x.Add(x => x.Wish, Wish);
+            x.Add(x => x.Core, Core);
+        },
+        new ModalInstanceOptions()
+            {
+                UseModalStructure = false,
+                Centered = true,
+                Size = ModalSize.ExtraLarge,
+            });
+    }
+
+    public async Task ChooseRandomTitle()
+    {
+        if (Items.Empty()) return;
+
+        var random = new Random();
+
+        if (MediaType == MediaType.movie)
+        {
+            var index = random.Next(Items.Count);
+            var media = Items.ToList()[index];
+            await ShowMediaPopup(media?.id, media?.name);
+        }
+        else
+        {
+            var index = random.Next(Items.Count);
+            var media = Items.ToList()[index];
+            await ShowMediaPopup(media?.id, media?.name);
+        }
+    }
+
+    public Task ShowMediaPopup(string? tmdb_id, string? name)
+    {
+        if (string.IsNullOrEmpty(tmdb_id)) return default!;
+
+        return ModalService.Show<Suggestions.Components.MediaPopup>(name,
+            x =>
+            {
+                x.Add(x => x.tmdb_id, tmdb_id);
+                x.Add(x => x.type, MediaType);
+                x.Add(x => x.WatchedList, Watched);
+                x.Add(x => x.WatchingList, Watching);
+                x.Add(x => x.WishList, Wish);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
+    }
+
+    public Task ShowCollectionPopup(string? collection_id, string? name)
+    {
+        if (string.IsNullOrEmpty(collection_id)) return default!;
+
+        return ModalService.Show<Suggestions.Components.CollectionPopup>(name,
+            x =>
+            {
+                x.Add(x => x.collection_id, collection_id);
+                x.Add(x => x.type, MediaType);
+                x.Add(x => x.WatchedList, Watched);
+                x.Add(x => x.WatchingList, Watching);
+                x.Add(x => x.WishList, Wish);
+            },
+            new ModalInstanceOptions()
+                {
+                    UseModalStructure = false,
+                    Centered = true,
+                    Size = ModalSize.Large,
+                });
+    }
+
+    private async Task ImportFromWatched()
+    {
+        try
+        {
+            var watching = Watching ?? new WatchingList();
+
+            if (MediaType == MediaType.movie)
+            {
+                Watching?.Movies.Clear();
+                MovieUpdating = true;
+                Core?.ShowProcessing();
+
+                foreach (var tmdb_id in Watched?.GetItems(MediaType.movie) ?? new())
+                {
+                    var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.movie);
+                    if (media == null) continue;
+                    var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
+
+                    if (hasCollection && !watching!.DeletedMovies.Any(a => a == media.collectionId.ToString()))
+                    {
+                        var item = watching?.GetItem(MediaType.movie, media.collectionId?.ToString());
+
+                        if (item == null)
+                        {
+                            var items = new HashSet<string>();
+                            items.Add(tmdb_id);
+
+                            item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                        }
+                        else
+                        {
+                            item.maxItems = media.Collection.Count;
+                            item.watched.Add(tmdb_id);
+                        }
+
+                        watching = await WatchingApi.Add(MediaType.movie, item);
+                    }
+                }
+
+                watching = await WatchingApi.Sync(MediaType.movie, Core);
+
+                MovieUpdating = false;
+                Core?.HideProcessing(watching);
+            }
+            else
+            {
+                Watching?.Shows.Clear();
+                ShowUpdating = true;
+                Core?.ShowProcessing();
+
+                foreach (var tmdb_id in Watched?.GetItems(MediaType.tv) ?? new())
+                {
+                    var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.tv);
+                    if (media == null) continue;
+                    var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
+
+                    if (hasCollection && !watching!.DeletedShows.Any(a => a == media.tmdb_id))
+                    {
+                        var item = watching?.GetItem(MediaType.tv, media.tmdb_id);
+
+                        if (item == null)
+                        {
+                            var items = new HashSet<string>();
+                            items.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+
+                            item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                        }
+                        else
+                        {
+                            item.maxItems = media.Collection.Count;
+                            item.watched.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+                        }
+
+                        watching = await WatchingApi.Add(MediaType.tv, item);
+                    }
+                }
+
+                watching = await WatchingApi.Sync(MediaType.tv, Core);
+
+                ShowUpdating = false;
+                Core?.HideProcessing(watching);
+            }
+
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            MovieUpdating = false;
+            ShowUpdating = false;
+            Core?.ShowError(ex.Message);
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+}

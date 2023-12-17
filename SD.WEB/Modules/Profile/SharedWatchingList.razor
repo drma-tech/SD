@@ -1,0 +1,41 @@
+﻿@page "/shared/watchinglist/{type}/{id}"
+@page "/shared/watchinglist/{type}"
+
+@using SD.WEB.Modules.Profile.Components
+@using SD.WEB.Modules.Profile.Core
+
+@inherits PageCore<SharedWatchingList>
+@inject WishListApi WishApi
+@inject WatchingListApi WatchingApi
+@inject WatchedListApi WatchedApi
+
+@if (type == "movie")
+{
+    <WatchingComponent Core="CoreWatching" MediaType="MediaType.movie" Private="Private" ShowHeader="true" FullScreen="true" Id="@id"
+                       Watched="Watched" Watching="Watching" Wish="Wish"
+                       ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()"></WatchingComponent>
+}
+else
+{
+    <WatchingComponent Core="CoreWatching" MediaType="MediaType.movie" Private="Private" ShowHeader="true" FullScreen="true" Id="@id"
+                       Watched="Watched" Watching="Watching" Wish="Wish"
+                       ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()"></WatchingComponent>
+}
+
+@code {
+    [Parameter] public string? type { get; set; }
+    [Parameter] public string? id { get; set; }
+
+    public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
+    public bool Private => string.IsNullOrEmpty(id);
+    public WatchedList? Watched { get; set; }
+    public WatchingList? Watching { get; set; }
+    public WishList? Wish { get; set; }
+
+    protected override async Task LoadDataRender()
+    {
+        Watched = await WatchedApi.Get(IsAuthenticated, null, id);
+        Watching = await WatchingApi.Get(IsAuthenticated, CoreWatching);
+        Wish = await WishApi.Get(IsAuthenticated, null, id);
+    }
+}

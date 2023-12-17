@@ -13,8 +13,8 @@
 <HeadPage Title="Sundance" ImageSource="logo/sundance.png" Text="The Sundance Film Festival is the ultimate gathering of original storytellers and audiences seeking new voices and fresh perspectives. Our annual program includes dramatic and documentary features, short films, and episodic content." Link="https://festival.sundance.org/"></HeadPage>
 
 @*https://www.imdb.com/event/ev0000631/2023/1*@
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.SundanceGrandJuryPrizeDocumentary" MaxItens="14" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.SundanceGrandJuryPrizeDramatic" MaxItens="14" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.SundanceGrandJuryPrizeDocumentary" MaxItens="14" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.SundanceGrandJuryPrizeDramatic" MaxItens="14" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }
@@ -30,8 +30,8 @@
 
     protected override async Task LoadDataRender()
     {
-        WatchedList = await WatchedListApi.Get(IsUserAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(IsUserAuthenticated, null);
-        WishList = await WishListApi.Get(IsUserAuthenticated, null);
+        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
+        WishList = await WishListApi.Get(IsAuthenticated, null);
     }
 }

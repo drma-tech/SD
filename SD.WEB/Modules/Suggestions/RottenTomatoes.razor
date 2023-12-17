@@ -12,8 +12,8 @@
 
 <HeadPage Title="Rotten Tomatoes" ImageSource="logo/rotten-tomatoes.png" Text="Rotten Tomatoes, home of the Tomatometer, is the most trusted measurement of quality for Movies & TV. The definitive site for Reviews, Trailers, Showtimes, and Tickets" Link="https://www.rottentomatoes.com/"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesTOMATOMETER" MaxItens="100" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesAUDIENCESCORE" MaxItens="100" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesTOMATOMETER" MaxItens="100" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesAUDIENCESCORE" MaxItens="100" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }
@@ -29,8 +29,8 @@
 
     protected override async Task LoadDataRender()
     {
-        WatchedList = await WatchedListApi.Get(IsUserAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(IsUserAuthenticated, null);
-        WishList = await WishListApi.Get(IsUserAuthenticated, null);
+        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
+        WishList = await WishListApi.Get(IsAuthenticated, null);
     }
 }

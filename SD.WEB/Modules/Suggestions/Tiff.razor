@@ -13,9 +13,9 @@
 <HeadPage Title="Toronto International Film Festival" ImageSource="logo/tiff.png" Text="TIFF is a charitable cultural organization with a mission to transform the way people see the world, through film." Link="https://www.tiff.net/"></HeadPage>
 
 @*https://www.imdb.com/event/ev0000659/2022/1*@
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TorontoPeoplesChoiceBestFilm" MaxItens="13" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TorontoPeoplesChoiceDocumentary" MaxItens="13" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TorontoPeoplesChoiceMidnightMadness" MaxItens="13" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TorontoPeoplesChoiceBestFilm" MaxItens="13" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TorontoPeoplesChoiceDocumentary" MaxItens="13" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TorontoPeoplesChoiceMidnightMadness" MaxItens="13" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }
@@ -31,8 +31,8 @@
 
     protected override async Task LoadDataRender()
     {
-        WatchedList = await WatchedListApi.Get(IsUserAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(IsUserAuthenticated, null);
-        WishList = await WishListApi.Get(IsUserAuthenticated, null);
+        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
+        WishList = await WishListApi.Get(IsAuthenticated, null);
     }
 }

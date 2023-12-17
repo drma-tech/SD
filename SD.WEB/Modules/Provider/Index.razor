@@ -68,6 +68,6 @@
     protected override async Task LoadDataRender()
     {
         AllProviders = await AllProvidersApi.GetAll(Core);
-        myProviders = await MyProvidersApi.Get(IsUserAuthenticated, null);
+        myProviders = await MyProvidersApi.Get(IsAuthenticated, null);
     }
 }

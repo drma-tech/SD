@@ -87,7 +87,7 @@
         }
         else
         {
-            myProviders = await MyProvidersApi.Get(IsUserAuthenticated, null);
+            myProviders = await MyProvidersApi.Get(IsAuthenticated, null);
 
             if (myProviders == null || myProviders.Items.Empty())
             {
@@ -95,7 +95,7 @@
             }
             else
             {
-                mySuggestions = await MySuggestionsApi.Get(IsUserAuthenticated, Core);
+                mySuggestions = await MySuggestionsApi.Get(IsAuthenticated, Core);
 
                 if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
                 {

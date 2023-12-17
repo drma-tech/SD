@@ -5,9 +5,9 @@
 @inherits ComponenteCore<MediaList>
 
 @inject ExternalIdApi ExternalIdApi
-@inject WatchedListApi WatchedListApi
-@inject WatchingListApi WatchingListApi
-@inject WishListApi WishListApi
+@inject WatchedListApi WatchedApi
+@inject WatchingListApi WatchingApi
+@inject WishListApi WishApi
 
 @if (ShowHead)
 {
@@ -34,7 +34,7 @@
                 <Card>
                     <PosterComponent Date="@(item.release_date??DateTime.MaxValue)" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
                                      TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" RankUpDown="@item.RankUpDown"
-                                     WatchedList="WatchedList" WishList="WishList" Private="Private"></PosterComponent>
+                                     WatchedList="Watched" WishList="Wish" Private="Private"></PosterComponent>
                 </Card>
             </Column>
             if ((i % GetTotalItems) == 0)
@@ -55,9 +55,9 @@
     [Inject] public IModalService ModalService { get; set; } = default!;
 
     [Parameter][EditorRequired] public bool Private { get; set; }
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
@@ -91,9 +91,9 @@
 
             if (MultiplesRegions) AppStateStatic.RegionChanged += LoadGenericVoid;
 
-            WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
-            WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-            WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+            WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; StateHasChanged(); };
+            WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; StateHasChanged(); };
+            WishApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
         }
         catch (Exception ex)
         {
@@ -162,9 +162,9 @@
                 x.Add(x => x.IsIMDB, IsIMDB);
                 x.Add(x => x.TypeSelected, TypeSelected);
                 x.Add(x => x.StringParameters, StringParameters);
-                x.Add(x => x.WatchedList, WatchedList);
-                x.Add(x => x.WatchingList, WatchingList);
-                x.Add(x => x.WishList, WishList);
+                x.Add(x => x.WatchedList, Watched);
+                x.Add(x => x.WatchingList, Watching);
+                x.Add(x => x.WishList, Wish);
             },
             new ModalInstanceOptions()
                 {
@@ -193,9 +193,9 @@
             {
                 x.Add(x => x.tmdb_id, tmdb_id);
                 x.Add(x => x.type, media?.MediaType);
-                x.Add(x => x.WatchedList, WatchedList);
-                x.Add(x => x.WatchingList, WatchingList);
-                x.Add(x => x.WishList, WishList);
+                x.Add(x => x.WatchedList, Watched);
+                x.Add(x => x.WatchingList, Watching);
+                x.Add(x => x.WishList, Wish);
             },
             new ModalInstanceOptions()
                 {

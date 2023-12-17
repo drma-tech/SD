@@ -1,51 +1,28 @@
-﻿@using SD.WEB.Modules.Profile.Core
+﻿@using SD.WEB.Modules.Profile.Components
+@using SD.WEB.Modules.Profile.Core
 @inherits ComponenteCore<MyWatchingListPopup>
 
-@inject WatchedListApi WatchedListApi
-@inject WatchingListApi WatchingListApi
-@inject WishListApi WishListApi
+@inject WatchedListApi WatchedApi
+@inject WatchingListApi WatchingApi
+@inject WishListApi WishApi
 
 <ModalHeader>
-    <ModalTitle Size="HeadingSize.Is5">@Title.Format(GetList().Count())</ModalTitle>
-        <CloseButton />
-    </ModalHeader>
-    <ModalBody MaxHeight="70">
-        <Row HorizontalGutter="4" VerticalGutter="4">
-            @foreach (var item in GetList())
-        {
-            var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-            int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
-            var resultPerc = $"{percentComplete}%";
-
-            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                <Card Style="position: relative;">
-                    @if (percentComplete == 100)
-                    {
-                        <Badge Color="Color.Success" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
-                    }
-                    else
-                    {
-                        <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
-                    }
-
-                    @if (string.IsNullOrEmpty(item.logo))
-                    {
-                        <CardImage Source="images/noimage.png" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType))" Style="cursor: pointer;"></CardImage>
-
-                        <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 2rem; color: black; text-align: center; font-weight: 500;">
-                            @item.name
-                        </Div>
-                    }
-                    else
-                    {
-                        <CardImage Source="@logo" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowCollectionPopup(item.id, item.name, MediaType))" Style="cursor: pointer;"></CardImage>
-                    }
-                </Card>
-            </Column>
-        }
-    </Row>
+    <ModalTitle Size="HeadingSize.Is5">
+        @Title.Format(Quantity)
+    </ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    @if (MediaType == MediaType.movie)
+    {
+        <WatchingComponent MediaType="MediaType" Private="true" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+                           Core="Core" ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()"></WatchingComponent>
+    }
+    else
+    {
+        <WatchingComponent MediaType="MediaType" Private="true" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+                           Core="Core" ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()"></WatchingComponent>
+    }
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
@@ -56,48 +33,19 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
-
+    [Parameter][EditorRequired] public RenderControlCore<WatchingList?>? Core { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter] public MediaType MediaType { get; set; }
-    [Parameter] public int Quantity { get; set; }
 
-    public string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWatching : GlobalTranslations.MyShowWatching;
+    private string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWatching : GlobalTranslations.MyShowWatching;
+    private int Quantity => MediaType == MediaType.movie ? Watching?.Movies.Count ?? 0 : Watching?.Shows.Count ?? 0;
 
     protected override void OnInitialized()
     {
-        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
-    }
-
-    private HashSet<WatchingListItem> GetList()
-    {
-        if (MediaType == MediaType.movie)
-            return WatchingList?.Movies ?? new HashSet<WatchingListItem>();
-        else
-            return WatchingList?.Shows ?? new HashSet<WatchingListItem>();
-    }
-
-    public Task ShowCollectionPopup(string? collection_id, string? name, MediaType type)
-    {
-        if (string.IsNullOrEmpty(collection_id)) return default!;
-
-        return ModalService.Show<Suggestions.Components.CollectionPopup>(name,
-            x =>
-            {
-                x.Add(x => x.collection_id, collection_id);
-                x.Add(x => x.type, type);
-                x.Add(x => x.WatchedList, WatchedList);
-                x.Add(x => x.WatchingList, WatchingList);
-                x.Add(x => x.WishList, WishList);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.Large,
-                });
+        WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; StateHasChanged(); };
+        WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; StateHasChanged(); };
+        WishApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
     }
 }

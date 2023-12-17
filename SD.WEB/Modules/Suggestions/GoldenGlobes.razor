@@ -12,9 +12,9 @@
 
 <HeadPage Title="Golden Globes" ImageSource="logo/golden-globes.png" Text="@TranslationText.golden_desc" Link="https://www.goldenglobes.com/"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureDrama" MaxItens="12" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureMusicalComedy" MaxItens="12" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureAnimated" MaxItens="12" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureDrama" MaxItens="12" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureMusicalComedy" MaxItens="12" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureAnimated" MaxItens="12" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }
@@ -30,8 +30,8 @@
 
     protected override async Task LoadDataRender()
     {
-        WatchedList = await WatchedListApi.Get(IsUserAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(IsUserAuthenticated, null);
-        WishList = await WishListApi.Get(IsUserAuthenticated, null);
+        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
+        WishList = await WishListApi.Get(IsAuthenticated, null);
     }
 }

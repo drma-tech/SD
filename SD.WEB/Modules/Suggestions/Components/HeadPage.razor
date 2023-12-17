@@ -54,13 +54,13 @@
                     <RenderControl PartialComponent="true" Core="Core" Model="myProviders" ExpressionEmpty="@((MyProviders? obj) => obj == null || obj.Items.Empty())">
                         @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
                         {
-                            <Button Color="Color.Danger" Clicked="Remove" Size="Size.Small" Disabled="!IsUserAuthenticated" Style="display: block; width: 100%;">
+                            <Button Color="Color.Danger" Clicked="Remove" Size="Size.Small" Disabled="!IsAuthenticated" Style="display: block; width: 100%;">
                                 <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
                             </Button>
                         }
                         else
                         {
-                            <Button Color="Color.Primary" Clicked="Add" Size="Size.Small" Disabled="!IsUserAuthenticated" Style="display: block; width: 100%;">
+                            <Button Color="Color.Primary" Clicked="Add" Size="Size.Small" Disabled="!IsAuthenticated" Style="display: block; width: 100%;">
                                 <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
                             </Button>
                         }
@@ -117,7 +117,7 @@
 
     protected override async Task LoadDataRender()
     {
-        myProviders = await MyProvidersApi.Get(IsUserAuthenticated, Core);
+        myProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
     }
 
     private async Task Add()

@@ -15,9 +15,9 @@
 <HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@TranslationText.imdb_desc" Link="https://www.imdb.com/"></HeadPage>
 
 <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="50" IsIMDB="true" ShowFilter="true" MultipleLanguages="false"
-           StringParameters="Params" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
-<MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" MaxItens="250" ShowFilter="true" Private="false" WatchedList="WatchedList"
-           WatchingList="WatchingList" WishList="WishList"></MediaList>
+           StringParameters="Params" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" MaxItens="250" ShowFilter="true" Private="false" Watched="WatchedList"
+           Watching="WatchingList" Wish="WishList"></MediaList>
 @* <MediaList TitleHead="@TranslationText.ComingSoon" MediaListApi="ImdbUpcomingApi" MaxItens="50" IsIMDB="true" MultipleLanguages="false"></MediaList> *@
 
 @code {
@@ -37,8 +37,8 @@
 
     protected override async Task LoadDataRender()
     {
-        WatchedList = await WatchedListApi.Get(IsUserAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(IsUserAuthenticated, null);
-        WishList = await WishListApi.Get(IsUserAuthenticated, null);
+        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
+        WishList = await WishListApi.Get(IsAuthenticated, null);
     }
 }

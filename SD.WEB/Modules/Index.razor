@@ -9,9 +9,9 @@
 @using SD.WEB.Modules.News.Components;
 @using SD.WEB.Modules.Trailers.Components
 
-@inject WatchedListApi WatchedListApi
-@inject WatchingListApi WatchingListApi
-@inject WishListApi WishListApi
+@inject WatchedListApi WatchedApi
+@inject WatchingListApi WatchingApi
+@inject WishListApi WishApi
 
 <Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
     <Column>
@@ -24,7 +24,7 @@
     </Column>
 </Row>
 
-<PopularIndexComponent WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></PopularIndexComponent>
+<PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish"></PopularIndexComponent>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
@@ -42,26 +42,24 @@
 
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
-    public RenderControlCore<WishList?> CoreWishlist { get; set; } = new();    
+    public RenderControlCore<WishList?> CoreWish { get; set; } = new();    
 
-    public WatchedList? WatchedList { get; set; }
-    public WatchingList? WatchingList { get; set; }
-    public WishList? WishList { get; set; }
+    public WatchedList? Watched { get; set; }
+    public WatchingList? Watching { get; set; }
+    public WishList? Wish { get; set; }
 
     public string? Search { get; set; }
 
     protected override void OnInitialized()
     {
-        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+        WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; StateHasChanged(); };
+        WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; StateHasChanged(); };
+        WishApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()
     {
-        WatchedList = await WatchedListApi.Get(IsUserAuthenticated, CoreWatched);
-        WatchingList = await WatchingListApi.Get(IsUserAuthenticated, CoreWatching);
-        WishList = await WishListApi.Get(IsUserAuthenticated, CoreWishlist);
+        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
     }
 
     public async Task ShowSearchPopup()
@@ -71,9 +69,9 @@
             {
                 x.Add(x => x.TitleHead, Search);
                 x.Add(x => x.Search, Search);
-                x.Add(x => x.WatchedList, WatchedList);
-                x.Add(x => x.WatchingList, WatchingList);
-                x.Add(x => x.WishList, WishList);
+                x.Add(x => x.WatchedList, Watched);
+                x.Add(x => x.WatchingList, Watching);
+                x.Add(x => x.WishList, Wish);
             },
             new ModalInstanceOptions()
                 {

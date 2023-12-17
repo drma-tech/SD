@@ -5,20 +5,20 @@
 @using SD.WEB.Modules.Profile.Core
 
 @inherits PageCore<SharedWishlist>
-@inject WishListApi WishListApi
-@inject WatchingListApi WatchingListApi
-@inject WatchedListApi WatchedListApi
+@inject WishListApi WishApi
+@inject WatchingListApi WatchingApi
+@inject WatchedListApi WatchedApi
 
 @if (type == "movie")
 {
     <Wishlist Core="CoreWishlist" MediaType="MediaType.movie" Private="Private" ShowHeader="true" FullScreen="true" Id="@id"
-              WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"
+              Watched="Watched" Watching="Watching" Wish="Wish"
               ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()"></Wishlist>
 }
 else
 {
     <Wishlist Core="CoreWishlist" MediaType="MediaType.movie" Private="Private" ShowHeader="true" FullScreen="true" Id="@id"
-              WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"
+              Watched="Watched" Watching="Watching" Wish="Wish"
               ExpressionEmpty="(WishList? list) => list == null || list.Shows.Empty()"></Wishlist>
 }
 
@@ -28,14 +28,14 @@ else
 
     public RenderControlCore<WishList?> CoreWishlist { get; set; } = new();
     public bool Private => string.IsNullOrEmpty(id);
-    public WatchedList? WatchedList { get; set; }
-    public WatchingList? WatchingList { get; set; }
-    public WishList? WishList { get; set; }
+    public WatchedList? Watched { get; set; }
+    public WatchingList? Watching { get; set; }
+    public WishList? Wish { get; set; }
 
     protected override async Task LoadDataRender()
     {
-        WatchedList = await WatchedListApi.Get(IsUserAuthenticated, null, id);
-        WatchingList = await WatchingListApi.Get(IsUserAuthenticated, null);
-        WishList = await WishListApi.Get(IsUserAuthenticated, CoreWishlist, id);
+        Watched = await WatchedApi.Get(IsAuthenticated, null, id);
+        Watching = await WatchingApi.Get(IsAuthenticated, null);
+        Wish = await WishApi.Get(IsAuthenticated, CoreWishlist, id);
     }
 }

@@ -57,7 +57,7 @@
         }
         else
         {
-            myProviders = await MyProvidersApi.Get(IsUserAuthenticated, Core);
+            myProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
         }
     }
 

@@ -197,37 +197,37 @@
             <Column ColumnSize="ColumnSize.IsAuto">
                 @if (WishList?.Movies.Any(a => a.id == tmdb_id) ?? false)
                 {
-                    <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
+                    <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
                     </Button>
                 }
                 else if (WishList?.Shows.Any(a => a.id == tmdb_id) ?? false)
                 {
-                    <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
+                    <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
                     </Button>
                 }
                 else
                 {
-                    <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
+                    <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
                     </Button>
                 }
                 @if (WatchedList?.Movies.Any(a => a == tmdb_id) ?? false)
                 {
-                    <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
+                    <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
                     </Button>
                 }
                 else if (WatchedList?.Shows.Any(a => a == tmdb_id) ?? false)
                 {
-                    <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
+                    <Button Color="Color.Danger" Clicked="NotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
                     </Button>
                 }
                 else
                 {
-                    <Button Color="Color.Primary" Clicked="Watched" Margin="Margin.Is2.FromEnd" Disabled="!IsUserAuthenticated" Size="Size.Small">
+                    <Button Color="Color.Primary" Clicked="Watched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
                         <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonWatched
                     </Button>
                 }

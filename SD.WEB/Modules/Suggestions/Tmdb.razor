@@ -15,11 +15,11 @@
 <HeadPage Title="TMDB" ImageSource="logo/tmdb.png" Text="@TranslationText.tmdb_desc" Link="https://www.themoviedb.org/"></HeadPage>
 
 <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbPopularApi" MaxItens="50" ShowFilter="true" Private="false"
-           WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+           Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 <MediaList TitleHead="@($"{TranslationText.TopRated} ({AppStateStatic.Region})")" MediaListApi="TmdbTopRatedApi" MaxItens="50" ShowFilter="true"
-           MultiplesRegions="true" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+           MultiplesRegions="true" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 <MediaList TitleHead="@($"{TranslationText.ComingSoon} ({AppStateStatic.Region})")" MediaListApi="TmdbUpcomingApi" MaxItens="50"
-           MultiplesRegions="true" Private="false" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaList>
+           MultiplesRegions="true" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }
@@ -37,8 +37,8 @@
 
     protected override async Task LoadDataRender()
     {
-        WatchedList = await WatchedListApi.Get(IsUserAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(IsUserAuthenticated, null);
-        WishList = await WishListApi.Get(IsUserAuthenticated, null);
+        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
+        WishList = await WishListApi.Get(IsAuthenticated, null);
     }
 }

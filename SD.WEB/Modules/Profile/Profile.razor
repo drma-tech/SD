@@ -5,11 +5,11 @@
 @inherits PageCore<Profile>
 @inject IHttpClientFactory httpClientFactory
 
-@inject WatchedListApi WatchedListApi
-@inject WatchingListApi WatchingListApi
-@inject WishListApi WishListApi
+@inject WatchedListApi WatchedApi
+@inject WatchingListApi WatchingApi
+@inject WishListApi WishApi
 
-@if (IsUserAuthenticated)
+@if (IsAuthenticated)
 {
     <Jumbotron Background="Background.Primary" Margin="Margin.Is4.FromBottom" Padding="Padding.Is4">
         <JumbotronTitle Size="JumbotronTitleSize.Is4">Wellcome!</JumbotronTitle>
@@ -23,16 +23,16 @@
     </Jumbotron>
 }
 
-<MyProviderComponent Fake="Fake" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MyProviderComponent>
+<MyProviderComponent Fake="Fake" WatchedList="Watched" WatchingList="Watching" WishList="Wish"></MyProviderComponent>
 
-<MySuggestions Fake="Fake" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MySuggestions>
+<MySuggestions Fake="Fake" WatchedList="Watched" WatchingList="Watching" WishList="Wish"></MySuggestions>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWishListComponent WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList" CoreWishlist="CoreWishlist"></MyWishListComponent>
+        <MyWishListComponent Watched="Watched" Watching="Watching" Wish="Wish" CoreWishlist="CoreWish"></MyWishListComponent>
     </Column>
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWatchingListComponent Fake="Fake" WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList" Core="CoreWatchingList"></MyWatchingListComponent>
+        <MyWatchingListComponent Watched="Watched" Watching="Watching" Wish="Wish" CoreWatching="CoreWatching"></MyWatchingListComponent>
     </Column>
 </Row>
 
@@ -40,19 +40,19 @@
     [Parameter][SupplyParameterFromQuery(Name = "Fake")] public bool Fake { get; set; } = false;
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    public RenderControlCore<WatchedList?> CoreWatchedList { get; set; } = new();
-    public RenderControlCore<WatchingList?> CoreWatchingList { get; set; } = new();
-    public RenderControlCore<WishList?> CoreWishlist { get; set; } = new();
+    public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
+    public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
+    public RenderControlCore<WishList?> CoreWish { get; set; } = new();
 
-    public WatchedList? WatchedList { get; set; }
-    public WatchingList? WatchingList { get; set; }
-    public WishList? WishList { get; set; }
+    public WatchedList? Watched { get; set; }
+    public WatchingList? Watching { get; set; }
+    public WishList? Wish { get; set; }
 
     protected override void OnInitialized()
     {
-        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+        WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; StateHasChanged(); };
+        WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; StateHasChanged(); };
+        WishApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()
@@ -61,15 +61,13 @@
         {
             var http = httpClientFactory.CreateClient("RetryHttpClient");
 
-            WatchedList = await http.GetFromJsonAsync<WatchedList>("/data/WatchedList.json");
-            WatchingList = await http.GetFromJsonAsync<WatchingList>("/data/WatchingList.json");
-            WishList = await http.GetFromJsonAsync<WishList>("/data/WishList.json");
+            Watched = await http.GetFromJsonAsync<WatchedList>("/data/WatchedList.json");
+            Watching = await http.GetFromJsonAsync<WatchingList>("/data/WatchingList.json");
+            Wish = await http.GetFromJsonAsync<WishList>("/data/WishList.json");
         }
         else
         {
-            WatchedList = await WatchedListApi.Get(IsUserAuthenticated, CoreWatchedList);
-            WatchingList = await WatchingListApi.Get(IsUserAuthenticated, CoreWatchingList);
-            WishList = await WishListApi.Get(IsUserAuthenticated, CoreWishlist);
+            (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
         }
     }
 

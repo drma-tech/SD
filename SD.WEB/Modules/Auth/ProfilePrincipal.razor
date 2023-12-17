@@ -71,7 +71,7 @@
 
     protected override async Task LoadDataRender()
     {
-        if (IsUserAuthenticated)
+        if (IsAuthenticated)
         {
             principal = await PrincipalApi.Get();
 
