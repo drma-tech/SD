@@ -33,6 +33,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
     services.AddSingleton<CosmosCacheRepository>();
     services.AddApplicationInsightsTelemetryWorkerService();
     services.ConfigureFunctionsApplicationInsights();
+    services.AddMemoryCache();
 }
 
 static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder builder)
