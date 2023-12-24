@@ -12,10 +12,13 @@ var host = new HostBuilder()
          //https://github.com/Azure/azure-functions-openapi-extension/blob/main/docs/enable-open-api-endpoints-out-of-proc.md
          //worker.UseNewtonsoftJson();
      })
-    .ConfigureAppConfiguration(config =>
+    .ConfigureAppConfiguration((hostContext, config) =>
     {
-        config.AddJsonFile("local.settings.json", false, true);
-        config.AddUserSecrets<Program>();
+        if (hostContext.HostingEnvironment.IsDevelopment())
+        {
+            config.AddJsonFile("local.settings.json");
+            config.AddUserSecrets<Program>();
+        }
     })
     .ConfigureServices(ConfigureServices)
     .ConfigureLogging(ConfigureLogging)
