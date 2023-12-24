@@ -583,6 +583,33 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have free access to the entire platform, but with some restrictions..
+        /// </summary>
+        public static string SubscriptionSubTitle {
+            get {
+                return ResourceManager.GetString("SubscriptionSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For more benefits, we invite you to become a premium user.|click here|to find out more..
+        /// </summary>
+        public static string SubscriptionSubTitle2 {
+            get {
+                return ResourceManager.GetString("SubscriptionSubTitle2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wellcome!.
+        /// </summary>
+        public static string SubscriptionTitle {
+            get {
+                return ResourceManager.GetString("SubscriptionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string TabAbout {

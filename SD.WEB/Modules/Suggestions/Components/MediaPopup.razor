@@ -114,7 +114,7 @@
                             }
                         </TabPanel>
                         <TabPanel Name="WhereToWatch" Class="mt-2">
-                            <StreamingComponent tmdb_id="@tmdb_id" MediaTitle="@media?.title" MediaYear="@media?.release_date?.Year.ToString()" type="@type"></StreamingComponent>
+                            <StreamingComponent tmdb_id="@tmdb_id" OriginalMediaTitle="@media?.original_title" MediaYear="@media?.release_date?.Year.ToString()" type="@type"></StreamingComponent>
                         </TabPanel>
                         <TabPanel Name="Credits" Class="mt-2">
                             <CreditsComponent tmdb_id="@tmdb_id" type="@type" WatchedList="Watched" WatchingList="Watching" WishList="Wish"></CreditsComponent>

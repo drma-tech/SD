@@ -12,13 +12,18 @@
 @if (IsAuthenticated)
 {
     <Jumbotron Background="Background.Primary" Margin="Margin.Is4.FromBottom" Padding="Padding.Is4">
-        <JumbotronTitle Size="JumbotronTitleSize.Is4">Wellcome!</JumbotronTitle>
+        <JumbotronTitle Size="JumbotronTitleSize.Is4">
+            @GlobalTranslations.SubscriptionTitle
+        </JumbotronTitle>
         <JumbotronSubtitle>
-            You have free access to the entire platform, but with some restrictions.
+            @GlobalTranslations.SubscriptionSubTitle
         </JumbotronSubtitle>
         <Divider DividerType="DividerType.Solid" Border="Border.White"></Divider>
         <Paragraph>
-            For more benefits, we invite you to become a premium user. <Blazorise.Link Clicked="OpenSubscription" TextColor="TextColor.White" Style="cursor: pointer;">click here</Blazorise.Link> to find out more.
+            @{
+                var sentence = @GlobalTranslations.SubscriptionSubTitle2.Split("|");
+            }
+            @sentence[0] <Blazorise.Link Clicked="OpenSubscription" TextColor="TextColor.White" Style="cursor: pointer; text-decoration-line: underline;">@sentence[1]</Blazorise.Link> @sentence[2]
         </Paragraph>
     </Jumbotron>
 }
