@@ -83,7 +83,7 @@
     private HashSet<WatchingListItem> Items => MediaType == MediaType.movie ? Watching?.Movies ?? new HashSet<WatchingListItem>() : Watching?.Shows ?? new HashSet<WatchingListItem>();
 
     private int GetTotalItems => !FullScreen ? (AppStateStatic.OnFullHD ? 6 : 4) : 100;
-    private string? Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWishlist.Format(Items.Count()) : GlobalTranslations.MyShowWishlist.Format(Items.Count());
+    private string? Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWatching.Format(Items.Count()) : GlobalTranslations.MyShowWatching.Format(Items.Count());
     private IFluentColumn ColSize => FullScreen ? ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile : ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile;
 
     public bool MovieUpdating { get; set; } = false;
@@ -91,21 +91,7 @@
 
     private async Task OpenCompleteList()
     {
-        await ModalService.Show<MyWatchingListPopup>(null,
-        x =>
-        {
-            x.Add(x => x.MediaType, MediaType);
-            x.Add(x => x.Watched, Watched);
-            x.Add(x => x.Watching, Watching);
-            x.Add(x => x.Wish, Wish);
-            x.Add(x => x.Core, Core);
-        },
-        new ModalInstanceOptions()
-            {
-                UseModalStructure = false,
-                Centered = true,
-                Size = ModalSize.ExtraLarge,
-            });
+        await ModalService.MyWatchingListPopup(Core, MediaType, Watched, Watching, Wish);
     }
 
     public async Task ChooseRandomTitle()
@@ -132,42 +118,14 @@
     {
         if (string.IsNullOrEmpty(tmdb_id)) return default!;
 
-        return ModalService.Show<Suggestions.Components.MediaPopup>(name,
-            x =>
-            {
-                x.Add(x => x.tmdb_id, tmdb_id);
-                x.Add(x => x.type, MediaType);
-                x.Add(x => x.WatchedList, Watched);
-                x.Add(x => x.WatchingList, Watching);
-                x.Add(x => x.WishList, Wish);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.Large,
-                });
+        return ModalService.MediaPopup(Watched, Watching, Wish, MediaType, tmdb_id);
     }
 
     public Task ShowCollectionPopup(string? collection_id, string? name)
     {
         if (string.IsNullOrEmpty(collection_id)) return default!;
 
-        return ModalService.Show<Suggestions.Components.CollectionPopup>(name,
-            x =>
-            {
-                x.Add(x => x.collection_id, collection_id);
-                x.Add(x => x.type, MediaType);
-                x.Add(x => x.WatchedList, Watched);
-                x.Add(x => x.WatchingList, Watching);
-                x.Add(x => x.WishList, Wish);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.Large,
-                });
+        return ModalService.CollectionPopup(Watched, Watching, Wish, MediaType, collection_id);
     }
 
     private async Task ImportFromWatched()

@@ -12,9 +12,9 @@
 
 <HeadPage Title="Filmaffinity" ImageSource="logo/film-affinity.png" Text="Filmaffinity: Rate Movies and TV Shows & Find Movie Recommendations" Link="https://www.filmaffinity.com/"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestMovies" MaxItens="100" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestSeriesandTV" MaxItens="100" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestAnimation" MaxItens="100" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestMovies" MaxItens="100"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestSeriesandTV" MaxItens="100"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestAnimation" MaxItens="100"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

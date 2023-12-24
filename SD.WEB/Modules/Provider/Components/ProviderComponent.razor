@@ -42,9 +42,9 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
     private RenderControlCore<AllProviders?>? Core { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
@@ -69,35 +69,11 @@
 
     private async Task OpenCompleteList()
     {
-        await ModalService.Show<Modules.Suggestions.Components.CompleteListProvider>(@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region),
-        x =>
-        {
-            x.Add(x => x.CardHeader, @Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region));
-            x.Add(x => x.AllProviders, AllProviders);
-        },
-        new ModalInstanceOptions()
-            {
-                UseModalStructure = false,
-                Centered = true,
-                Size = ModalSize.ExtraLarge,
-            });
+        await ModalService.CompleteListProvider(@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region), AllProviders, Watched, Watching, Wish);
     }
 
     private async Task ShowPopupProvider(ProviderModel item)
     {
-        await ModalService.Show<Provider.Components.ProviderPopup>(item.name,
-        x =>
-        {
-            x.Add(x => x.provider, item);
-            x.Add(x => x.WatchedList, WatchedList);
-            x.Add(x => x.WatchingList, WatchingList);
-            x.Add(x => x.WishList, WishList);
-        },
-        new ModalInstanceOptions()
-            {
-                UseModalStructure = false,
-                Centered = true,
-                Size = ModalSize.ExtraLarge,
-            });
+        await ModalService.ProviderPopup(item, Watched, Watching, Wish);
     }
 }

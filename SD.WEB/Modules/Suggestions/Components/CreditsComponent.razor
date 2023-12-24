@@ -29,8 +29,8 @@
                     </Column>
                     <Column ColumnSize="ColumnSize.Is4">
                         <Paragraph Margin="Margin.Is0.FromBottom" TextWeight="TextWeight.Bold">@item.original_name</Paragraph>
-                        <Paragraph Margin="Margin.Is0.FromBottom">@item.job</Paragraph>
-                    </Column>
+                            <Paragraph Margin="Margin.Is0.FromBottom">@item.job</Paragraph>
+                        </Column>
                 }
             </Row>
         }
@@ -55,8 +55,8 @@
                     </Column>
                     <Column ColumnSize="ColumnSize.Is4">
                         <Paragraph Margin="Margin.Is0.FromBottom" TextWeight="TextWeight.Bold">@item.original_name</Paragraph>
-                        <Paragraph Margin="Margin.Is0.FromBottom">@item.job</Paragraph>
-                    </Column>
+                            <Paragraph Margin="Margin.Is0.FromBottom">@item.job</Paragraph>
+                        </Column>
                 }
             </Row>
         }
@@ -79,8 +79,8 @@
             </Column>
             <Column ColumnSize="ColumnSize.Is4">
                 <Paragraph Margin="Margin.Is0.FromBottom" TextWeight="TextWeight.Bold">@item.original_name</Paragraph>
-                <Paragraph Margin="Margin.Is0.FromBottom">@item.character</Paragraph>
-            </Column>
+                    <Paragraph Margin="Margin.Is0.FromBottom">@item.character</Paragraph>
+                </Column>
         }
     </Row>
 </RenderControl>
@@ -128,21 +128,7 @@
                     });
             }
 
-            await ModalService.Show<CompleteListPopup>(null,
-                x =>
-                {
-                    x.Add(x => x.TitleHead, $"{crew.original_name} ({crew.job})");
-                    x.Add(x => x.Items, items.OrderByDescending(o => o.release_date).ToHashSet());
-                    x.Add(x => x.WatchedList, WatchedList);
-                    x.Add(x => x.WatchingList, WatchingList);
-                    x.Add(x => x.WishList, WishList);
-                },
-                new ModalInstanceOptions()
-                    {
-                        UseModalStructure = false,
-                        Centered = true,
-                        Size = ModalSize.ExtraLarge,
-                    });
+            await ModalService.CompleteListPopup($"{crew.original_name} ({crew.job})", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet());
         }
         catch (Exception ex)
         {
@@ -178,21 +164,7 @@
                     });
             }
 
-            await ModalService.Show<CompleteListPopup>(null,
-                x =>
-                {
-                    x.Add(x => x.TitleHead, $"{cast.original_name}");
-                    x.Add(x => x.Items, items.OrderByDescending(o => o.release_date).ToHashSet());
-                    x.Add(x => x.WatchedList, WatchedList);
-                    x.Add(x => x.WatchingList, WatchingList);
-                    x.Add(x => x.WishList, WishList);
-                },
-                new ModalInstanceOptions()
-                    {
-                        UseModalStructure = false,
-                        Centered = true,
-                        Size = ModalSize.ExtraLarge,
-                    });
+            await ModalService.CompleteListPopup($"{cast.original_name}", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet());
         }
         catch (Exception ex)
         {

@@ -59,7 +59,9 @@
                 { "language", AppStateStatic.Language.GetName(false) ?? "en-US" }
             };
 
+        Core?.LoadingStarted?.Invoke();
         Season = await TmdbApi.GetSeason(tmdb_id, season_number, parameters);
+        Core?.LoadingFinished?.Invoke(Season);
     }
 
     public async Task HideModal()

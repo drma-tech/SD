@@ -1,4 +1,9 @@
-﻿@inherits ComponenteCore<CompleteListProvider>
+﻿@using SD.WEB.Modules.Profile.Core
+@inherits ComponenteCore<CompleteListProvider>
+
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@CardHeader</ModalTitle>
@@ -42,15 +47,22 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
     [Parameter] public string? CardHeader { get; set; }
     [Parameter] public AllProviders? AllProviders { get; set; }
 
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
         p.regions.Any(a => a == AppStateStatic.Region)) ?? Array.Empty<ProviderModel>();
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += (WatchedList? model) => { Watched = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { Watching = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
+    }
 
     public async Task HideModal()
     {
@@ -59,19 +71,6 @@
 
     private async Task ShowPopupProvider(ProviderModel item)
     {
-        await ModalService.Show<Provider.Components.ProviderPopup>(item.name,
-        x =>
-        {
-            x.Add(x => x.provider, item);
-            x.Add(x => x.WatchedList, WatchedList);
-            x.Add(x => x.WatchingList, WatchingList);
-            x.Add(x => x.WishList, WishList);
-        },
-        new ModalInstanceOptions()
-            {
-                UseModalStructure = false,
-                Centered = true,
-                Size = ModalSize.ExtraLarge,
-            });
+        await ModalService.ProviderPopup(item, Watched, Watching, Wish);
     }
 }

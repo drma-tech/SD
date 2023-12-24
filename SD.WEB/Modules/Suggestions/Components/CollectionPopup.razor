@@ -42,7 +42,7 @@
                             {
                                 if (type == MediaType.movie) //you don't put seasons as wishes
                                 {
-                                    var wishedMovie = WishList?.Contains(MediaType.movie, item.id.ToString()) ?? false;
+                                    var wishedMovie = Wish?.Contains(MediaType.movie, item.id.ToString()) ?? false;
                                     if (wishedMovie)
                                     {
                                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
@@ -50,14 +50,15 @@
                                     }
                                 }
 
-                                var watching = WatchingList?.GetWatchingItems(type, collection?.id.ToString()).Any(a => a == item.id.ToString()) ?? false;
+                                var watching = Watching?.GetWatchingItems(type, collection?.id.ToString()).Any(a => a == item.id.ToString()) ?? false;
                                 if (watching)
                                 {
                                     <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x2" TextColor="TextColor.Light"
                                                     Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
                                 }
 
-                                <CardImage Source="@(TmdbOptions.SmallPosterPath + item.poster_path)" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer; {(watching ? "filter: grayscale(100%);" : "")}")></CardImage>
+                                <CardImage Source="@(TmdbOptions.SmallPosterPath + item.poster_path)" Alt="@item.title" title="@item.title"
+                                           Style=@($"cursor: pointer; {(watching ? "filter: grayscale(100%);" : "")}")></CardImage>
                             }
                         </Blazorise.Link>
 
@@ -71,7 +72,7 @@
     </RenderControl>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Primary" Size="Size.Small" Clicked="@Watched" Float="Float.Start" title="Mark all these items as watched">
+    <Button Color="Color.Primary" Size="Size.Small" Clicked="@IsWatched" Float="Float.Start" title="Mark all these items as watched">
         @GlobalTranslations.ButtonWatched
     </Button>
     <Button Color="Color.Danger" Size="Size.Small" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">
@@ -85,9 +86,9 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
     [Parameter] public string? collection_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
@@ -100,9 +101,9 @@
         if (string.IsNullOrEmpty(collection_id)) throw new ArgumentNullException(nameof(collection_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
 
-        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+        WatchedListApi.DataChanged += (WatchedList? model) => { Watched = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { Watching = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()
@@ -158,57 +159,20 @@
 
     private async Task OpenPopupMedia(Part? part, MediaType? mediaType)
     {
-        await ModalService.Show<MediaPopup>(part?.title,
-            x =>
-            {
-                x.Add(x => x.tmdb_id, part?.id.ToString());
-                x.Add(x => x.type, mediaType);
-                x.Add(x => x.WatchedList, WatchedList);
-                x.Add(x => x.WatchingList, WatchingList);
-                x.Add(x => x.WishList, WishList);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.Large,
-                });
+        await ModalService.MediaPopup(Watched, Watching, Wish, mediaType, part?.id.ToString());
     }
 
     private async Task OpenPopupSeason(Part? part)
     {
-        await ModalService.Show<SeasonPopup>(null,
-            x =>
-            {
-                x.Add(x => x.ShowTitle, collection?.name);
-                x.Add(x => x.ShowSeasonName, part?.title);
-                x.Add(x => x.tmdb_id, collection_id);
-                x.Add(x => x.season_number, part?.season_number);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.Large,
-                });
+        await ModalService.SeasonPopup(collection?.name, part?.title, collection_id, part?.season_number);
     }
 
-    private async Task Watched()
+    private async Task IsWatched()
     {
-        await ModalService.Show<SelectItemsCollection>(null,
-            x =>
-            {
-                x.Add(x => x.ItemsCollection, collection?.parts.Select(s => TmdbApi.ConvertToCollection(s)).ToList());
-                x.Add(x => x.SelectedItems, WatchingList?.GetWatchingItems(type, collection?.id.ToString()).ToHashSet()); //ToHashSet = clone to not reference
-                x.Add(x => x.SelectedItemsChanged,
-                    new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(type, collection, collection_id, list, collection?.parts.Count ?? 0)));
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.Default,
-                });
+        await ModalService.SelectItemsCollection(
+            collection?.parts.Select(s => TmdbApi.ConvertToCollection(s)).ToList() ?? [],
+            Watching?.GetWatchingItems(type, collection?.id.ToString()).ToHashSet() ?? [],
+            new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(type, collection, collection_id, list, collection?.parts.Count ?? 0)));
     }
 
     private async Task SelectedItemsChanged(MediaType? type, TmdbCollection? collection, string? tmdb_id, HashSet<string> items, int collectionItemsCount)

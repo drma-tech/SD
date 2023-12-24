@@ -14,12 +14,12 @@
 
 <HeadPage Title="TMDB" ImageSource="logo/tmdb.png" Text="@TranslationText.tmdb_desc" Link="https://www.themoviedb.org/"></HeadPage>
 
-<MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbPopularApi" MaxItens="50" ShowFilter="true" Private="false"
+<MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbPopularApi" MaxItens="50" ShowFilter="true" 
            Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 <MediaList TitleHead="@($"{TranslationText.TopRated} ({AppStateStatic.Region})")" MediaListApi="TmdbTopRatedApi" MaxItens="50" ShowFilter="true"
-           MultiplesRegions="true" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+           MultiplesRegions="true"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 <MediaList TitleHead="@($"{TranslationText.ComingSoon} ({AppStateStatic.Region})")" MediaListApi="TmdbUpcomingApi" MaxItens="50"
-           MultiplesRegions="true" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+           MultiplesRegions="true"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

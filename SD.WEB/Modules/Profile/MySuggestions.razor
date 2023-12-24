@@ -33,7 +33,7 @@
 
 <RenderControl Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())" PrivateContent="true">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-        @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !Watched(SearchType, w)).Take(GetTotalItems) ?? new List<SuggestionListItem>())
+        @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)).Take(GetTotalItems) ?? new List<SuggestionListItem>())
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
                 <Card>
@@ -69,9 +69,9 @@
     public bool ShowUpdating { get; set; } = false;
 
     public RenderControlCore<SD.Shared.Models.MySuggestions?>? Core { get; set; } = new();
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
     private bool GenresChanged => mySuggestions?.MovieGenres.Any() ?? false | mySuggestions?.TvGenres.Any() ?? false;
 
@@ -111,21 +111,7 @@
     {
         if (string.IsNullOrEmpty(tmdb_id)) return default!;
 
-        return ModalService.Show<Suggestions.Components.MediaPopup>(name,
-            x =>
-            {
-                x.Add(x => x.tmdb_id, tmdb_id);
-                x.Add(x => x.type, type);
-                x.Add(x => x.WatchedList, WatchedList);
-                x.Add(x => x.WatchingList, WatchingList);
-                x.Add(x => x.WishList, WishList);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.Large,
-                });
+        return ModalService.MediaPopup(Watched, Watching, Wish, type, tmdb_id);
     }
 
     private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)
@@ -171,8 +157,8 @@
 
                 foreach (var item in titles.OrderByDescending(o => o.rating))
                 {
-                    if (WatchedList != null && WatchedList.Movies.Any(a => a == item.tmdb_id)) continue;
-                    if (WishList != null && WishList.Movies.Any(a => a.id == item.tmdb_id)) continue;
+                    if (Watched != null && Watched.Movies.Any(a => a == item.tmdb_id)) continue;
+                    if (Wish != null && Wish.Movies.Any(a => a.id == item.tmdb_id)) continue;
 
                     if (mySuggestions.Movies.Count < 16)
                     {
@@ -218,8 +204,8 @@
 
                 foreach (var item in titles.OrderByDescending(o => o.rating))
                 {
-                    if (WatchedList != null && WatchedList.Shows.Any(a => a == item.tmdb_id)) continue;
-                    if (WishList != null && WishList.Shows.Any(a => a.id == item.tmdb_id)) continue;
+                    if (Watched != null && Watched.Shows.Any(a => a == item.tmdb_id)) continue;
+                    if (Wish != null && Wish.Shows.Any(a => a.id == item.tmdb_id)) continue;
 
                     if (mySuggestions.Shows.Count < 16)
                     {
@@ -256,19 +242,19 @@
         }
     }
 
-    private bool Watched(MediaType type, SuggestionListItem item)
+    private bool IsWatched(MediaType type, SuggestionListItem item)
     {
         if (type == MediaType.movie)
         {
-            if (WatchedList != null && WatchedList.Movies.Any(a => a == item.id)) return true;
-            if (WishList != null && WishList.Movies.Any(a => a.id == item.id)) return true;
+            if (Watched != null && Watched.Movies.Any(a => a == item.id)) return true;
+            if (Wish != null && Wish.Movies.Any(a => a.id == item.id)) return true;
 
             return false;
         }
         else
         {
-            if (WatchedList != null && WatchedList.Shows.Any(a => a == item.id)) return true;
-            if (WishList != null && WishList.Shows.Any(a => a.id == item.id)) return true;
+            if (Watched != null && Watched.Shows.Any(a => a == item.id)) return true;
+            if (Wish != null && Wish.Shows.Any(a => a.id == item.id)) return true;
 
             return false;
         }
@@ -276,18 +262,7 @@
 
     private async Task OpenConfigurations()
     {
-        await ModalService.Show<MySuggestionsPopup>(null,
-        x =>
-        {
-            x.Add(x => x.MySuggestions, mySuggestions);
-            x.Add(x => x.MySuggestionsChanged, new EventCallbackFactory().Create(this, async (SD.Shared.Models.MySuggestions value) => await UpdateMySuggestions(value)));
-        },
-        new ModalInstanceOptions()
-            {
-                UseModalStructure = false,
-                Centered = true,
-                Size = ModalSize.Default,
-            });
+        await ModalService.MySuggestionsPopup(mySuggestions, new EventCallbackFactory().Create(this, async (SD.Shared.Models.MySuggestions value) => await UpdateMySuggestions(value)));
     }
 
     private async Task UpdateMySuggestions(SD.Shared.Models.MySuggestions obj)

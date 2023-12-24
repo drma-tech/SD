@@ -37,7 +37,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter] public MediaType MediaType { get; set; }
+    [Parameter][EditorRequired] public MediaType MediaType { get; set; }
 
     private string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWishlist : GlobalTranslations.MyShowWishlist;
     private int Quantity => MediaType == MediaType.movie ? Wish?.Movies.Count ?? 0 : Wish?.Shows.Count ?? 0;

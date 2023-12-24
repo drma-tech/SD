@@ -65,19 +65,6 @@
     {
         if (allProviders == null) allProviders = await AllProvidersApi.GetAll(null);
 
-        await ModalService.Show<Provider.Components.ProviderPopup>(item.name,
-            x =>
-            {
-                x.Add(x => x.provider, allProviders?.Items.FirstOrDefault(f => f.id == item.id));
-                x.Add(x => x.WatchedList, WatchedList);
-                x.Add(x => x.WatchingList, WatchingList);
-                x.Add(x => x.WishList, WishList);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.ExtraLarge,
-                });
+        await ModalService.ProviderPopup(allProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList);
     }
 }

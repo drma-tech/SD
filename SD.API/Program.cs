@@ -6,19 +6,16 @@ using Microsoft.Extensions.Logging;
 using SD.API.Repository.Core;
 
 var host = new HostBuilder()
-    .ConfigureAppConfiguration((hostContext, config) =>
+     .ConfigureFunctionsWorkerDefaults(worker =>
+     {
+         worker.UseMiddleware<ExceptionHandlingMiddleware>();
+         //https://github.com/Azure/azure-functions-openapi-extension/blob/main/docs/enable-open-api-endpoints-out-of-proc.md
+         //worker.UseNewtonsoftJson();
+     })
+    .ConfigureAppConfiguration(config =>
     {
-        if (hostContext.HostingEnvironment.IsDevelopment())
-        {
-            config.AddJsonFile("local.settings.json");
-            config.AddUserSecrets<Program>();
-        }
-    })
-    .ConfigureFunctionsWorkerDefaults(worker =>
-    {
-        worker.UseMiddleware<ExceptionHandlingMiddleware>();
-        //https://github.com/Azure/azure-functions-openapi-extension/blob/main/docs/enable-open-api-endpoints-out-of-proc.md
-        //worker.UseNewtonsoftJson();
+        config.AddJsonFile("local.settings.json", false, true);
+        config.AddUserSecrets<Program>();
     })
     .ConfigureServices(ConfigureServices)
     .ConfigureLogging(ConfigureLogging)
@@ -36,6 +33,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
     services.AddSingleton<CosmosCacheRepository>();
     services.AddApplicationInsightsTelemetryWorkerService();
     services.ConfigureFunctionsApplicationInsights();
+    services.AddMemoryCache();
 }
 
 static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder builder)

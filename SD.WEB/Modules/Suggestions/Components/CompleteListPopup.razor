@@ -17,8 +17,8 @@
 </ModalHeader>
 <ModalBody MaxHeight="70">
     <MediaListFull Items="Items" IsIMDB="IsIMDB" MaxItens="MaxItens" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
-                   StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false" Private="false"
-                   WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList">
+                   StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false"
+                   Watched="Watched" Watching="Watching" Wish="Wish">
     </MediaListFull>
 </ModalBody>
 <ModalFooter>
@@ -30,14 +30,14 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter][EditorRequired] public bool Private { get; set; }
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
-
-    [Parameter] public string? TitleHead { get; set; }
-    [Parameter] public IMediaListApi? MediaListApi { get; set; }
+    [Parameter][EditorRequired] public string? TitleHead { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
+
+    [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; }
     [Parameter] public int MaxItens { get; set; } = 10;
     [Parameter] public bool IsIMDB { get; set; } = false;
@@ -50,9 +50,9 @@
     {
         if (List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
 
-        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+        WatchedListApi.DataChanged += (WatchedList? model) => { Watched = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { Watching = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
     }
 
     public async Task HideModal()

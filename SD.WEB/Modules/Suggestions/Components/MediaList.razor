@@ -34,7 +34,7 @@
                 <Card>
                     <PosterComponent Date="@(item.release_date??DateTime.MaxValue)" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
                                      TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" RankUpDown="@item.RankUpDown"
-                                     WatchedList="Watched" WishList="Wish" Private="Private"></PosterComponent>
+                                     WatchedList="Watched" WishList="Wish"></PosterComponent>
                 </Card>
             </Column>
             if ((i % GetTotalItems) == 0)
@@ -54,7 +54,6 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter][EditorRequired] public bool Private { get; set; }
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
@@ -104,7 +103,7 @@
     protected override async Task LoadDataRender()
     {
         Core?.ShowLoading();
-        await LoadItems(TypeSelected); 
+        await LoadItems(TypeSelected);
         Core?.HideLoading(Items);
     }
 
@@ -151,27 +150,7 @@
 
     private async Task OpenCompleteList()
     {
-        await ModalService.Show<CompleteListPopup>(null,
-            x =>
-            {
-                x.Add(x => x.MediaListApi, MediaListApi);
-                x.Add(x => x.TitleHead, TitleHead);
-                x.Add(x => x.Items, Items);
-                x.Add(x => x.List, List);
-                x.Add(x => x.MaxItens, MaxItens);
-                x.Add(x => x.IsIMDB, IsIMDB);
-                x.Add(x => x.TypeSelected, TypeSelected);
-                x.Add(x => x.StringParameters, StringParameters);
-                x.Add(x => x.WatchedList, Watched);
-                x.Add(x => x.WatchingList, Watching);
-                x.Add(x => x.WishList, Wish);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.ExtraLarge,
-                });
+        await ModalService.CompleteListPopup(TitleHead, Watched, Watching, Wish, Items, MediaListApi, List, MaxItens, IsIMDB, TypeSelected, StringParameters);
     }
 
     private async Task OpenPopupMedia(MediaDetail? media)
@@ -188,20 +167,6 @@
             tmdb_id = media?.tmdb_id;
         }
 
-        await ModalService.Show<MediaPopup>(media?.title,
-            x =>
-            {
-                x.Add(x => x.tmdb_id, tmdb_id);
-                x.Add(x => x.type, media?.MediaType);
-                x.Add(x => x.WatchedList, Watched);
-                x.Add(x => x.WatchingList, Watching);
-                x.Add(x => x.WishList, Wish);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.Large,
-                });
+        await ModalService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdb_id);
     }
 }

@@ -43,16 +43,6 @@
 
     private async Task OpenCompleteList()
     {
-        await ModalService.Show<TrailersPopup>(null,
-        x =>
-        {
-            //
-        },
-        new ModalInstanceOptions()
-            {
-                UseModalStructure = false,
-                Centered = true,
-                Size = ModalSize.ExtraLarge,
-            });
+        await ModalService.TrailersPopup();
     }
 }

@@ -19,8 +19,8 @@
             var item = Items.ElementAt(i - 1);
             <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
                 <Card>
-                    <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments" CommentsSeparator="CommentsSeparator"
-                                     TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" Private="Private" WatchedList="WatchedList" WishList="WishList"></PosterComponent>
+                    <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments" CommentsSeparator="@CommentsSeparator"
+                                     TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" WatchedList="Watched" WishList="Wish"></PosterComponent>
                 </Card>
             </Column>
             if ((i % GetTotalItems) == 0)
@@ -47,10 +47,9 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter][EditorRequired] public bool Private { get; set; }
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
@@ -74,7 +73,6 @@
 
     protected override void OnInitialized()
     {
-        //if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
         //if (!string.IsNullOrEmpty(list_id) && !NextPage.HasDelegate) throw new ArgumentNullException(nameof(NextPage));
         //if (NextPage.HasDelegate && string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
         if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));
@@ -96,7 +94,7 @@
         if (MediaListApi != null)
         {
             var result = await MediaListApi.GetList(new(), TypeSelected, StringParameters, List, 1);
-            await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
+            // await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
 
             Items = result.list;
 
@@ -165,39 +163,11 @@
                     });
             }
 
-            await ModalService.Show<CompleteListPopup>(null,
-                x =>
-                {
-                    x.Add(x => x.TitleHead, $"{media?.title}");
-                    x.Add(x => x.Items, items.OrderByDescending(o => o.release_date).ToHashSet());
-                    x.Add(x => x.WatchedList, WatchedList);
-                    x.Add(x => x.WatchingList, WatchingList);
-                    x.Add(x => x.WishList, WishList);
-                },
-                new ModalInstanceOptions()
-                    {
-                        UseModalStructure = false,
-                        Centered = true,
-                        Size = ModalSize.ExtraLarge,
-                    });
+            await ModalService.CompleteListPopup($"{media?.title}", Watched, Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet());
         }
         else
         {
-            await ModalService.Show<MediaPopup>(media?.title,
-            x =>
-            {
-                x.Add(x => x.tmdb_id, tmdb_id);
-                x.Add(x => x.type, media?.MediaType);
-                x.Add(x => x.WatchedList, WatchedList);
-                x.Add(x => x.WatchingList, WatchingList);
-                x.Add(x => x.WishList, WishList);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.Large,
-                });
+            await ModalService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdb_id);
         }
     }
 

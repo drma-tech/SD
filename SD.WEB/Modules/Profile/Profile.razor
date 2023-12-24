@@ -25,7 +25,7 @@
 
 <MyProviderComponent Fake="Fake" WatchedList="Watched" WatchingList="Watching" WishList="Wish"></MyProviderComponent>
 
-<MySuggestions Fake="Fake" WatchedList="Watched" WatchingList="Watching" WishList="Wish"></MySuggestions>
+<MySuggestions Fake="Fake" Watched="Watched" Watching="Watching" Wish="Wish"></MySuggestions>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
@@ -73,16 +73,6 @@
 
     private async Task OpenSubscription()
     {
-        await ModalService.Show<SubscriptionPopup>(null,
-        x =>
-        {
-            // x.Add(x => x.MediaType, mediaType);
-        },
-        new ModalInstanceOptions()
-            {
-                UseModalStructure = false,
-                Centered = true,
-                Size = ModalSize.Large,
-            });
+        await ModalService.SubscriptionPopup();
     }
 }

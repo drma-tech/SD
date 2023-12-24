@@ -64,21 +64,7 @@
 
     public async Task ShowSearchPopup()
     {
-        await ModalService.Show<SearchPopup>(null,
-            x =>
-            {
-                x.Add(x => x.TitleHead, Search);
-                x.Add(x => x.Search, Search);
-                x.Add(x => x.WatchedList, Watched);
-                x.Add(x => x.WatchingList, Watching);
-                x.Add(x => x.WishList, Wish);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.ExtraLarge,
-                });
+        await ModalService.SearchPopup(Search, Search, Watched, Watching, Wish);
     }
 
     private async Task KeyPress(KeyboardEventArgs args)

@@ -1,7 +1,11 @@
-﻿@using SD.WEB.Modules.Suggestions.Core;
+﻿@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Suggestions.Core;
 @inherits ComponenteCore<SearchPopup>
 
 @inject TmdbSearchApi TmdbSearch
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">
@@ -11,8 +15,8 @@
 </ModalHeader>
 <ModalBody MaxHeight="70">
     <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
-        <MediaListFull @ref="MediaListFull" MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" MaxItens="100" ShowHead="false" Private="Private"
-                       WatchedList="WatchedList" WatchingList="WatchingList" WishList="WishList"></MediaListFull>
+        <MediaListFull @ref="MediaListFull" MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" MaxItens="100" ShowHead="false"
+                       Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaListFull>
     </RenderControl>
 </ModalBody>
 <ModalFooter>
@@ -24,18 +28,25 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter][EditorRequired] public bool Private { get; set; }
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
     [Parameter] public string? TitleHead { get; set; }
-    [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
+    
     [Parameter] public string? Search { get; set; }
 
-    public RenderControlCore<HashSet<MediaDetail>> Core { get; set; } = new();
+    private HashSet<MediaDetail> Items { get; set; } = new();
+    private RenderControlCore<HashSet<MediaDetail>> Core { get; set; } = new();
     private MediaListFull? MediaListFull;
     private Dictionary<string, string> StringParameters => new Dictionary<string, string>() { { "query", Search ?? "" } };
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+    }
 
     protected override async Task LoadDataRender()
     {

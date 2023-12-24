@@ -13,9 +13,9 @@
 <HeadPage Title="Trakt" ImageSource="logo/trakt.png" Text="Track what you watch and when. Discover what's hot and where you can watch it. Share comments, ratings and recommendations." Link="https://trakt.tv/"></HeadPage>
 
 @*https://trakt.tv/movies/recommended/all*@
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedMovies" MaxItens="100" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedMovies" MaxItens="100"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 @*https://trakt.tv/shows/recommended/all*@
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedTVShows" MaxItens="100" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedTVShows" MaxItens="100"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

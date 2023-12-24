@@ -12,8 +12,8 @@
 
 <HeadPage Title="Metacritic" ImageSource="logo/metacritic.png" Text="Metacritic aggregates music, game, tv, and movie reviews from the leading critics. Only Metacritic.com uses METASCORES, which let you know at a glance how each item was reviewed." Link="https://www.metacritic.com/"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestMoviesofAllTime" MaxItens="100" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestTVShowsofAllTime" MaxItens="100" Private="false" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestMoviesofAllTime" MaxItens="100"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestTVShowsofAllTime" MaxItens="100"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

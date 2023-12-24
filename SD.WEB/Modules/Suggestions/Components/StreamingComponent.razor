@@ -243,8 +243,10 @@
 
     protected override async Task LoadDataRender()
     {
+        Core?.LoadingStarted?.Invoke();
         Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
         AllProviders = await AllProvidersApi.GetAll(null);
+        Core?.LoadingFinished?.Invoke(Providers);
     }
 
     private async Task Atualizar()

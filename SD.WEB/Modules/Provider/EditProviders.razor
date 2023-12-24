@@ -113,17 +113,7 @@
 
     private async Task ShowPopupProvider(ProviderModel item)
     {
-        await ModalService.Show<Components.ProviderPopup>(item.name,
-            x =>
-            {
-                x.Add(x => x.provider, item);
-            },
-            new ModalInstanceOptions()
-                {
-                    UseModalStructure = false,
-                    Centered = true,
-                    Size = ModalSize.ExtraLarge,
-                });
+        await ModalService.ProviderPopup(item, null, null, null);
     }
 
     protected async Task SaveSession()

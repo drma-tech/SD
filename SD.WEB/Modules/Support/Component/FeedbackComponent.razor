@@ -89,15 +89,21 @@
             </Column>
             <Column Margin="Margin.Is1.FromBottom" ColumnSize="ColumnSize.Is10">
                 <Paragraph Margin="Margin.Is2.FromBottom" TextAlignment="TextAlignment.Justified" Overflow="Overflow.Auto">
-                    <Heading Size="HeadingSize.Is5">@item.Title.GetResume(150)</Heading>
-                    </Paragraph>
-                    <Paragraph Margin="Margin.Is2.FromBottom" TextAlignment="TextAlignment.Justified" Overflow="Overflow.Auto">
-                        @item.Description.GetResume(150)
+                    <Heading Size="HeadingSize.Is5">
+                        @item.Title.GetResume(150)
+                    </Heading>
+                </Paragraph>
+                <Paragraph Margin="Margin.Is2.FromBottom" TextAlignment="TextAlignment.Justified" Overflow="Overflow.Auto">
+                    @item.Description.GetResume(150)
                 </Paragraph>
                 <Paragraph Margin="Margin.Is2.FromBottom">
-                    <Badge Color="Color.Dark" Margin="Margin.Is1.FromEnd"><Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.Clock"></Blazorise.Icon> @item?.DtInsert.GetElapsedTime()</Badge>
-                        <Badge Color="Color.Dark" Margin="Margin.Is2.FromEnd">@item.TicketType.GetName()</Badge>
-                        @if (item.TicketStatus == TicketStatus.New)
+                    <Badge Color="Color.Dark" Margin="Margin.Is1.FromEnd">
+                        <Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.Clock"></Blazorise.Icon> @item?.DtInsert.GetElapsedTime()
+                    </Badge>
+                    <Badge Color="Color.Dark" Margin="Margin.Is2.FromEnd">
+                        @item.TicketType.GetName()
+                    </Badge>
+                    @if (item.TicketStatus == TicketStatus.New)
                     {
                         <Badge Color="Color.Info"><Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.InfoCircle"></Blazorise.Icon> @item.TicketStatus.GetName()</Badge>
                     }
@@ -173,17 +179,7 @@
 
     public Task ShowModal()
     {
-        return ModalService.Show<NewTicket>("",
-                x =>
-                {
-                    x.Add(x => x.Inserted, new EventCallbackFactory().Create<TicketModel>(this, (TicketModel model) => tickets.Add(model)));
-                },
-                new ModalInstanceOptions()
-                    {
-                        UseModalStructure = false,
-                        Centered = true,
-                        Size = ModalSize.Default,
-                    });
+        return ModalService.NewTicket(TicketTypeSel, new EventCallbackFactory().Create<TicketModel>(this, (TicketModel model) => tickets.Add(model)));
     }
 
     private async Task Vote(string? IdTicket, VoteType voteType)
