@@ -82,11 +82,11 @@
                 }
             </TabPanel>
             <TabPanel Name="Catalog" Class="mt-3">
-                <MediaList TitleHead="@TranslationText.Popular"  MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc")"
+                <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc")"
                            MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
-                <MediaList TitleHead="@TranslationText.Release"  MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc")"
+                <MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc")"
                            MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
-                <MediaList TitleHead="@TranslationText.TopRated"  MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc")"
+                <MediaList TitleHead="@TranslationText.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc")"
                            MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
             </TabPanel>
         </Content>
@@ -148,7 +148,7 @@
 
             if (provider != null) myProviders.Items.Add(new MyProvidersItem() { id = provider.id, name = provider.name, logo = provider.logo_path });
 
-            await MyProvidersApi.Post(myProviders);
+            myProviders = await MyProvidersApi.Post(myProviders);
 
             await Toast.Success("Provedor favoritado com sucesso!");
         }
@@ -166,7 +166,7 @@
 
             myProviders.Items.Remove(myProviders.Items.First(f => f.id == provider?.id));
 
-            await MyProvidersApi.Post(myProviders);
+            myProviders = await MyProvidersApi.Post(myProviders);
 
             await Toast.Success("Provedor removido com sucesso!");
         }

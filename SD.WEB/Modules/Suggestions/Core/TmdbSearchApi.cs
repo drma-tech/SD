@@ -50,7 +50,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             return new(currentList, page >= result?.total_pages);
         }
 
-        private string? GetPoster(TmdbResult? item, MediaType type)
+        private static string? GetPoster(TmdbResult? item, MediaType type)
         {
             if (item == null) return null;
 
@@ -64,21 +64,17 @@ namespace SD.WEB.Modules.Suggestions.Core
             }
         }
 
-        private string? GetComments(TmdbResult? item, MediaType type)
+        private static string? GetComments(TmdbResult? item, MediaType type)
         {
             if (item == null) return null;
 
-            switch (type)
+            return type switch
             {
-                case MediaType.movie:
-                    return MediaType.movie.GetName();
-                case MediaType.tv:
-                    return MediaType.tv.GetName();
-                case MediaType.person:
-                    return $"{MediaType.person.GetName()},{item.known_for_department}";
-                default:
-                    return null;
-            }
+                MediaType.movie => MediaType.movie.GetName(),
+                MediaType.tv => MediaType.tv.GetName(),
+                MediaType.person => $"{MediaType.person.GetName()},{item.known_for_department}",
+                _ => null,
+            };
         }
     }
 }

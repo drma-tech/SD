@@ -15,7 +15,7 @@ namespace SD.API.Core
 
         public static async Task<T?> GetNewsByFlixter<T>(this HttpClient http, CancellationToken cancellationToken) where T : class
         {
-            using var request = new HttpRequestMessage(HttpMethod.Get, "https://flixster.p.rapidapi.com/news/list");
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"https://flixster.p.rapidapi.com/news/list");
 
             request.Headers.TryAddWithoutValidation("X-RapidAPI-Key", "36af8735e3msh39423dcd3a94067p1975bdjsn4536c4c2ed8a");
             request.Headers.TryAddWithoutValidation("X-RapidAPI-Host", "flixster.p.rapidapi.com");
@@ -35,7 +35,7 @@ namespace SD.API.Core
             request.Headers.TryAddWithoutValidation("X-RapidAPI-Key", "36af8735e3msh39423dcd3a94067p1975bdjsn4536c4c2ed8a");
             request.Headers.TryAddWithoutValidation("X-RapidAPI-Host", "youtube-search-and-download.p.rapidapi.com");
 
-            var response = await http.SendAsync(request);
+            var response = await http.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
 
@@ -51,7 +51,7 @@ namespace SD.API.Core
             request.Headers.TryAddWithoutValidation("X-RapidAPI-Key", "36af8735e3msh39423dcd3a94067p1975bdjsn4536c4c2ed8a");
             request.Headers.TryAddWithoutValidation("X-RapidAPI-Host", "imdb8.p.rapidapi.com");
 
-            var response = await http.SendAsync(request);
+            var response = await http.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
 

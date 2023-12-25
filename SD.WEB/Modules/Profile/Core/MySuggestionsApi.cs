@@ -33,9 +33,9 @@ namespace SD.WEB.Modules.Profile.Core
             return await PostAsync(Endpoint.Sync(mediaType), core, obj);
         }
 
-        public async Task Add(SD.Shared.Models.MySuggestions obj)
+        public async Task<SD.Shared.Models.MySuggestions?> Add(SD.Shared.Models.MySuggestions obj)
         {
-            await PostAsync(Endpoint.Add, null, obj);
+            return await PostAsync(Endpoint.Add, null, obj);
         }
     }
 }

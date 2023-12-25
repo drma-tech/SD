@@ -30,7 +30,7 @@ namespace SD.API.Functions
                 }
                 else
                 {
-                    await repo.PatchItem<ClienteLogin>(nameof(DocumentType.Login) + ":" + userId, new PartitionKey(userId), new List<PatchOperation> { PatchOperation.Add("/logins/-", DateTimeOffset.Now) }, cancellationToken);
+                    await repo.PatchItem<ClienteLogin>(nameof(DocumentType.Login) + ":" + userId, new PartitionKey(userId), [PatchOperation.Add("/logins/-", DateTimeOffset.Now)], cancellationToken);
                 }
             }
             catch (Exception ex)

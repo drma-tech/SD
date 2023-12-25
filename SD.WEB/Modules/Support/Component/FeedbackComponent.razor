@@ -179,7 +179,7 @@
 
     public Task ShowModal()
     {
-        return ModalService.NewTicket(TicketTypeSel, new EventCallbackFactory().Create<TicketModel>(this, (TicketModel model) => tickets.Add(model)));
+        return ModalService.NewTicket(TicketTypeSel, new EventCallbackFactory().Create<TicketModel>(this, (TicketModel model) => { tickets.Add(model); Core?.LoadingFinished?.Invoke(tickets); }));
     }
 
     private async Task Vote(string? IdTicket, VoteType voteType)

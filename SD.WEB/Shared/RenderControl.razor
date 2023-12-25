@@ -129,7 +129,7 @@ else //ShowContent
             return;
         }
 
-        if (Status == LoadingStatus.Error | Status == LoadingStatus.Warning) return;
+        if (Status == LoadingStatus.Error | Status == LoadingStatus.Locked) return;
 
         if (model == null || (ExpressionEmpty != null && ExpressionEmpty(model)))
             Status = LoadingStatus.Warning;

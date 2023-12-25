@@ -407,7 +407,7 @@ namespace SD.API.Functions
 
                     var newModel = new ReviewModel();
 
-                    foreach (var item in obj.data?.items ?? new())
+                    foreach (var item in obj.data?.items ?? [])
                     {
                         if (item == null) continue;
                         newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));

@@ -42,7 +42,7 @@
 @code {
     [Parameter][EditorRequired] public TicketType TicketType { get; set; } = TicketType.BugReport;
 
-    public TicketModel Ticket { get; set; } = new();
+    public TicketModel? Ticket { get; set; } = new();
     [Parameter] public EventCallback<TicketModel> Inserted { get; set; }
 
     [Inject] public IModalService ModalService { get; set; } = default!;
@@ -56,6 +56,8 @@
 
             if (log != null)
             {
+                Ticket ??= new();
+
                 Ticket.Title = log.Message ?? "erro desconhecido";
                 Ticket.Description = System.Text.Json.JsonSerializer.Serialize(log);
 
@@ -76,11 +78,13 @@
     {
         try
         {
+            Ticket ??= new();
+
             Ticket.TicketType = TicketType;
             Ticket.TicketStatus = TicketStatus.New;
             Ticket.Initialize(UserId);
 
-            Ticket = await TicketApi.Insert(Ticket) ?? new();
+            Ticket = await TicketApi.Insert(Ticket);
 
             await Toast.Success("Salvo com sucesso");
 

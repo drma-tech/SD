@@ -91,6 +91,8 @@
             {
                 await PrincipalApi.Remove();
 
+                // Navigation.NavigateTo("https://identity.azurestaticapps.net/.auth/purge/" + provider);
+
                 Navigation.NavigateTo("/.auth/purge/" + provider);
 
                 //await SignOutManager.SetSignOutState();

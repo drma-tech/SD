@@ -88,10 +88,13 @@ namespace SD.API.Core
         {
             if (ex is CosmosException cex)
             {
-                //var result = JsonSerializer.Deserialize<CosmosExceptionStructure>(cex.ResponseBody);
-                var result = JsonSerializer.Deserialize<CosmosExceptionStructure>("{" + cex.ResponseBody.Replace("Errors", "\"Errors\"") + "}", options: null);
+                //TODO: review this
 
-                return result?.Errors.FirstOrDefault();
+                //var result = JsonSerializer.Deserialize<CosmosExceptionStructure>("{" + cex.ResponseBody.Replace("Errors", "\"Errors\"") + "}", options: null);
+
+                //return result?.Message?.Errors.FirstOrDefault();
+
+                return cex.Message;
             }
             else
             {

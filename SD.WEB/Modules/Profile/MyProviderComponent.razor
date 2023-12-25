@@ -44,7 +44,7 @@
 
     protected override void OnInitialized()
     {
-        MyProvidersApi.DataChanged += (MyProviders? model) => { myProviders = model; StateHasChanged(); };
+        MyProvidersApi.DataChanged += (MyProviders? model) => { myProviders = model; Core?.LoadingFinished?.Invoke(model); StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()

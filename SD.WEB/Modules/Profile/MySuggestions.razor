@@ -13,7 +13,7 @@
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="(GenresChanged ? Color.Secondary : Color.Primary)" Clicked="@(async()=>await OpenConfigurations())" Disabled="(myProviders == null || myProviders.Items.Empty())" title="Settings">
         <Blazorise.Icon Name="FontAwesomeIcons.Cog"></Blazorise.Icon>
     </Button>
-    <RadioGroup @bind-CheckedValue="SearchType" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is1.FromEnd">
+    <RadioGroup CheckedValue="SearchType" CheckedValueChanged="(MediaType type)=>CheckedValueChanged(type)" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is1.FromEnd">
         <Radio Value="MediaType.movie">@(MediaType.movie.GetName())</Radio>
         <Radio Value="MediaType.tv">@(MediaType.tv.GetName())</Radio>
     </RadioGroup>
@@ -262,17 +262,24 @@
 
     private async Task OpenConfigurations()
     {
-        await ModalService.MySuggestionsPopup(mySuggestions, new EventCallbackFactory().Create(this, async (SD.Shared.Models.MySuggestions value) => await UpdateMySuggestions(value)));
+        mySuggestions ??= new();
+
+        await ModalService.MySuggestionsPopup(mySuggestions,
+            new EventCallbackFactory().Create(this, async (SD.Shared.Models.MySuggestions value) => await UpdateMySuggestions(value)));
     }
 
     private async Task UpdateMySuggestions(SD.Shared.Models.MySuggestions obj)
     {
-        mySuggestions = obj;
-
-        await MySuggestionsApi.Add(obj);
+        mySuggestions = await MySuggestionsApi.Add(obj);
 
         StateHasChanged();
 
         await Toast.Warning(GlobalTranslations.UpdateMySuggestions);
+    }
+
+    private void CheckedValueChanged(MediaType type)
+    {
+        SearchType = type;
+        Core?.LoadingFinished?.Invoke(mySuggestions);
     }
 }

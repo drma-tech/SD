@@ -46,6 +46,6 @@
     {
         WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; StateHasChanged(); };
         WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; StateHasChanged(); };
-        WishApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
+        WishApi.DataChanged += (WishList? model) => { Wish = model; Core?.LoadingFinished?.Invoke(model); StateHasChanged(); };
     }
 }

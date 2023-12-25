@@ -37,7 +37,7 @@ namespace SD.WEB.Modules.Profile.Core
             ArgumentNullException.ThrowIfNull(mediaType);
             ArgumentNullException.ThrowIfNull(item);
 
-            return await PostAsync<WatchingListItem>(Endpoint.Add(mediaType), null, item);
+            return await PostAsync(Endpoint.Add(mediaType), null, item);
         }
 
         public async Task<WatchingList?> Remove(MediaType? mediaType, string? CollectionId, string? TmdbId = "null")

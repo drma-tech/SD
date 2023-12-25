@@ -38,7 +38,7 @@ namespace SD.Shared.Models.Support
 
         public void Initialize(string? idUserOwner)
         {
-            if (string.IsNullOrEmpty(IdUserOwner)) throw new ArgumentNullException(nameof(idUserOwner));
+            if (string.IsNullOrEmpty(idUserOwner)) throw new ArgumentNullException(nameof(idUserOwner));
 
             IdUserOwner = idUserOwner;
 
