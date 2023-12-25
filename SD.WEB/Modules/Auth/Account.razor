@@ -3,8 +3,11 @@
 @attribute [Authorize]
 @inherits PageCore<Account>
 @using System.Security.Claims
+@using Microsoft.Extensions.Caching.Memory
 @using SD.Shared.Models.Auth
 @using SD.WEB.Modules.Auth.Core
+
+@inject IMemoryCache cache
 
 <Row HorizontalGutter="8" VerticalGutter="0">
     <Column ColumnSize="ColumnSize.Is6.OnWidescreen">
@@ -26,10 +29,6 @@
                         <FieldLabel>Email</FieldLabel>
                         <TextEdit Text="@principal?.Email" Disabled="true" />
                     </Field>
-                    @* <Field ColumnSize="ColumnSize.Is6.OnDesktop">
-                    <FieldLabel>Mobile</FieldLabel>
-                    <TextEdit Text="@principal?.Mobile" Disabled="true" />
-                    </Field>*@
                 </Fields>
             </CardBody>
         </Card>
@@ -38,13 +37,10 @@
         <Card Margin="Margin.Is2.FromBottom">
             <CardHeader>Dados Cadastrais</CardHeader>
             <CardBody>
-                @* <Button Color="Color.Primary" Clicked="async()=>{ await ClearCache(); }" Margin="Margin.Is1.FromEnd">
-                <Blazorise.Icon Name="FontAwesomeIcons.Eraser" /> Limpar Cache
-                </Button>*@
-                <Button Color="Color.Warning" Clicked="async()=>{ await ResetInteractions(); }" Disabled="true" Margin="Margin.Is1.FromEnd">
-                    <Blazorise.Icon Name="FontAwesomeIcons.FastBackward" /> Resetar Interações
+                <Button Color="Color.Primary" Clicked="async()=>{ await ClearCache(); }" Margin="Margin.Is1.FromEnd">
+                    <Blazorise.Icon Name="FontAwesomeIcons.Eraser" /> Limpar Cache
                 </Button>
-                <Button Color="Color.Danger" Clicked="()=>{ DeleteAccount(principal?.IdentityProvider); }" Disabled="true">
+                <Button Color="Color.Danger" Clicked="async()=>{ await DeleteAccount(principal?.IdentityProvider); }">
                     <Blazorise.Icon Name="FontAwesomeIcons.UserSlash" /> Deletar Conta
                 </Button>
             </CardBody>
@@ -53,6 +49,8 @@
 </Row>
 
 @code {
+    [Inject] IMessageService MessageService { get; set; } = default!;
+
     private ClientePrincipal? principal;
 
     protected override async Task LoadDataRender()
@@ -78,26 +76,35 @@
         }
     }
 
-    private async Task ResetInteractions()
+    private async Task ClearCache()
     {
-        //show question: Desfaz todas as interações feitas com outros usuários (isso não afeta seus dados pessoais)
-
-        //transferir para backup
-
-        //deletar dados
+        ((MemoryCache)cache).Clear();
 
         await Toast.Success("Operação efetuada com sucesso!");
     }
 
-    private void DeleteAccount(string? provider)
+    private async Task DeleteAccount(string? provider)
     {
-        //show question: Caso queira apagar seu perfil e todas as interações feitas (seu perfil não ficará mais disponível)
+        try
+        {
+            if (await MessageService.Confirm("Are you sure you want to delete your account? This action cannot be undone.", "Streaming Discovery", (opt) => { opt.ShowMessageIcon = false; }))
+            {
+                await PrincipalApi.Remove();
 
-        //transferir para backup
+                Navigation.NavigateTo("/.auth/purge/" + provider);
 
-        //deletar dados
+                //await SignOutManager.SetSignOutState();
 
-        //await SignOutManager.SetSignOutState();
-        Navigation.NavigateTo("/.auth/purge/" + provider);
+                await Toast.Success("Operação efetuada com sucesso!");
+            }
+            else
+            {
+                await Toast.Warning("Operação cancelada!");
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 }

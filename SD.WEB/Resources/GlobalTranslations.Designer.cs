@@ -349,6 +349,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Free.
+        /// </summary>
+        public static string Free {
+            get {
+                return ResourceManager.GetString("Free", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string MenuHome {
@@ -498,6 +507,15 @@ namespace SD.WEB.Resources {
         public static string OurSuggestions2 {
             get {
                 return ResourceManager.GetString("OurSuggestions2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All payment management is carried out by a specialized company. We do not store any sensitive information of our users..
+        /// </summary>
+        public static string PaymentManagement {
+            get {
+                return ResourceManager.GetString("PaymentManagement", resourceCulture);
             }
         }
         
@@ -705,6 +723,15 @@ namespace SD.WEB.Resources {
         public static string Writing {
             get {
                 return ResourceManager.GetString("Writing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year.
+        /// </summary>
+        public static string Year {
+            get {
+                return ResourceManager.GetString("Year", resourceCulture);
             }
         }
         

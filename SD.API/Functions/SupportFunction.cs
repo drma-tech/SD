@@ -92,9 +92,9 @@ namespace SD.API.Functions
                 var item = await req.GetPublicBody<TicketVoteModel>(cancellationToken);
 
                 if (item.VoteType == VoteType.PlusOne)
-                    await repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, new PartitionKey(item.Key), new List<PatchOperation> { PatchOperation.Increment("/totalVotes", 1) }, cancellationToken);
+                    await repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, new PartitionKey(item.Key), [PatchOperation.Increment("/totalVotes", 1)], cancellationToken);
                 else if (item.VoteType == VoteType.MinusOne)
-                    await repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, new PartitionKey(item.Key), new List<PatchOperation> { PatchOperation.Increment("/totalVotes", -1) }, cancellationToken);
+                    await repo.PatchItem<TicketModel>(nameof(DocumentType.Ticket) + ":" + item.Key, new PartitionKey(item.Key), [PatchOperation.Increment("/totalVotes", -1)], cancellationToken);
 
                 item.IdVotedUser = req.GetUserId();
 

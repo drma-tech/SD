@@ -9,6 +9,7 @@ namespace SD.WEB.Modules.Auth.Core
         {
             public const string Get = "Principal/Get";
             public const string Add = "Principal/Add";
+            public const string Remove = "Principal/Remove";
         }
 
         public async Task<ClientePrincipal?> Get()
@@ -18,9 +19,14 @@ namespace SD.WEB.Modules.Auth.Core
 
         public async Task<ClientePrincipal?> Add(ClientePrincipal? obj)
         {
-            if (obj == null) throw new ArgumentNullException(nameof(obj));
+            ArgumentNullException.ThrowIfNull(obj);
 
             return await PostAsync<ClientePrincipal>(Endpoint.Add, false, obj, Endpoint.Get);
+        }
+
+        public async Task Remove()
+        {
+            await DeleteAsync(Endpoint.Remove, false, Endpoint.Get);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace SD.API.Functions
 
                 if (login == null)
                 {
-                    var newLogin = new ClienteLogin { UserId = userId, Logins = new DateTimeOffset[] { DateTimeOffset.Now } };
+                    var newLogin = new ClienteLogin { UserId = userId, Logins = [DateTimeOffset.Now] };
                     newLogin.Initialize(userId);
 
                     await repo.Upsert(newLogin, cancellationToken);

@@ -7,29 +7,33 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <FeatureUnavailable></FeatureUnavailable>
+    <Alert Color="Color.Info" Visible="true">
+        <AlertMessage>
+            @GlobalTranslations.PaymentManagement
+        </AlertMessage>
+    </Alert>
     <CardDeck Class="mt-3">
         <Card Background="Background.Light">
             <CardBody>
                 <CardTitle Size="6" TextAlignment="TextAlignment.Center">BASIC</CardTitle>
-                <CardTitle Size="4" TextAlignment="TextAlignment.Center">Free</CardTitle>
+                <CardTitle Size="4" TextAlignment="TextAlignment.Center">@GlobalTranslations.Free</CardTitle>
                 <CardText>
-                    <ListGroup Flush>
+                    <ListGroup Flush="true">
                         <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
                             Favorite Providers
                             <Badge Color="Color.Primary">1</Badge>
                         </ListGroupItem>
                         <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
-                            My Suggestions
-                            <Badge Color="Color.Primary">5</Badge>
+                            @GlobalTranslations.MySuggestions
+                            <Badge Color="Color.Primary">6</Badge>
                         </ListGroupItem>
                         <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
                             Wishlist
-                            <Badge Color="Color.Primary">5</Badge>
+                            <Badge Color="Color.Primary">6</Badge>
                         </ListGroupItem>
                         <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
                             Watching
-                            <Badge Color="Color.Primary">5</Badge>
+                            <Badge Color="Color.Primary">6</Badge>
                         </ListGroupItem>
                     </ListGroup>
                 </CardText>
@@ -38,24 +42,24 @@
         <Card>
             <CardBody Background="Background.Light">
                 <CardTitle Size="6" TextAlignment="TextAlignment.Center">STANDARD</CardTitle>
-                <CardTitle Size="4" TextAlignment="TextAlignment.Center">$10 / Year</CardTitle>
+                <CardTitle Size="4" TextAlignment="TextAlignment.Center">$10 / @GlobalTranslations.Year</CardTitle>
                 <CardText>
-                    <ListGroup Flush>
+                    <ListGroup Flush="true">
                         <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
                             Favorite Providers
                             <Badge Color="Color.Primary">6</Badge>
                         </ListGroupItem>
                         <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
-                            My Suggestions
+                            @GlobalTranslations.MySuggestions
                             <Badge Color="Color.Primary">12</Badge>
                         </ListGroupItem>
                         <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
                             Wishlist
-                            <Badge Color="Color.Primary">24</Badge>
+                            <Badge Color="Color.Primary">12</Badge>
                         </ListGroupItem>
                         <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
                             Watching
-                            <Badge Color="Color.Primary">24</Badge>
+                            <Badge Color="Color.Primary">12</Badge>
                         </ListGroupItem>
                     </ListGroup>
                 </CardText>
@@ -65,16 +69,16 @@
         <Card>
             <CardBody Background="Background.Light">
                 <CardTitle Size="6" TextAlignment="TextAlignment.Center">PREMIUM</CardTitle>
-                <CardTitle Size="4" TextAlignment="TextAlignment.Center">$20 / Year</CardTitle>
+                <CardTitle Size="4" TextAlignment="TextAlignment.Center">$20 / @GlobalTranslations.Year</CardTitle>
                 <CardText>
-                    <ListGroup Flush>
+                    <ListGroup Flush="true">
                         <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
                             Favorite Providers
                             <Badge Color="Color.Primary">12</Badge>
                         </ListGroupItem>
                         <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
-                            My Suggestions
-                            <Badge Color="Color.Primary">12</Badge>
+                            @GlobalTranslations.MySuggestions
+                            <Badge Color="Color.Primary">24</Badge>
                         </ListGroupItem>
                         <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
                             Wishlist
