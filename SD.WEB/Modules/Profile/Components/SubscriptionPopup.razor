@@ -2,12 +2,94 @@
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">
-        Streaming Discovery - Premium Account
+        SD - Premium Account
     </ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
     <FeatureUnavailable></FeatureUnavailable>
+    <CardDeck Class="mt-3">
+        <Card Background="Background.Light">
+            <CardBody>
+                <CardTitle Size="6" TextAlignment="TextAlignment.Center">BASIC</CardTitle>
+                <CardTitle Size="4" TextAlignment="TextAlignment.Center">Free</CardTitle>
+                <CardText>
+                    <ListGroup Flush>
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
+                            Favorite Providers
+                            <Badge Color="Color.Primary">1</Badge>
+                        </ListGroupItem>
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
+                            My Suggestions
+                            <Badge Color="Color.Primary">5</Badge>
+                        </ListGroupItem>
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
+                            Wishlist
+                            <Badge Color="Color.Primary">5</Badge>
+                        </ListGroupItem>
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
+                            Watching
+                            <Badge Color="Color.Primary">5</Badge>
+                        </ListGroupItem>
+                    </ListGroup>
+                </CardText>
+            </CardBody>
+        </Card>
+        <Card>
+            <CardBody Background="Background.Light">
+                <CardTitle Size="6" TextAlignment="TextAlignment.Center">STANDARD</CardTitle>
+                <CardTitle Size="4" TextAlignment="TextAlignment.Center">$10 / Year</CardTitle>
+                <CardText>
+                    <ListGroup Flush>
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
+                            Favorite Providers
+                            <Badge Color="Color.Primary">6</Badge>
+                        </ListGroupItem>
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
+                            My Suggestions
+                            <Badge Color="Color.Primary">12</Badge>
+                        </ListGroupItem>
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
+                            Wishlist
+                            <Badge Color="Color.Primary">24</Badge>
+                        </ListGroupItem>
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
+                            Watching
+                            <Badge Color="Color.Primary">24</Badge>
+                        </ListGroupItem>
+                    </ListGroup>
+                </CardText>
+                <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="true">Choose Plan</Button>
+            </CardBody>
+        </Card>
+        <Card>
+            <CardBody Background="Background.Light">
+                <CardTitle Size="6" TextAlignment="TextAlignment.Center">PREMIUM</CardTitle>
+                <CardTitle Size="4" TextAlignment="TextAlignment.Center">$20 / Year</CardTitle>
+                <CardText>
+                    <ListGroup Flush>
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
+                            Favorite Providers
+                            <Badge Color="Color.Primary">12</Badge>
+                        </ListGroupItem>
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
+                            My Suggestions
+                            <Badge Color="Color.Primary">12</Badge>
+                        </ListGroupItem>
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
+                            Wishlist
+                            <Badge Color="Color.Primary">48</Badge>
+                        </ListGroupItem>
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Light">
+                            Watching
+                            <Badge Color="Color.Primary">48</Badge>
+                        </ListGroupItem>
+                    </ListGroup>
+                </CardText>
+                <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="true">Choose Plan</Button>
+            </CardBody>
+        </Card>
+    </CardDeck>
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
