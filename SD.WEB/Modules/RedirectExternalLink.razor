@@ -1,0 +1,17 @@
+﻿@page "/redirect"
+@inject NavigationManager navigator
+@inject IJSRuntime JsRuntime
+
+@code {
+    [Parameter][SupplyParameterFromQuery] public string? link { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var external_link = link;
+        if (!string.IsNullOrEmpty(external_link))
+        {
+            // await JsRuntime.InvokeVoidAsync("eval", $"let _discard_ = open(`{external_link}`, `_blank`)");
+            navigator.NavigateTo(external_link.ShowExternalLink());
+        }
+    }
+}

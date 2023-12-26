@@ -22,7 +22,7 @@
                             else
                             {
                                 <Div>@Title</Div>
-                                <a href="@Link" target="_blank" rel="noopener">@(new Uri(Link ?? "").Host)</a>
+                                <a href="@Link.HideExternalLink()" target="_blank" rel="nofollow">@(new Uri(Link ?? "").Host)</a>
                             }
                         </Paragraph>
                     </Matched>
@@ -36,7 +36,7 @@
                             {
                                 @($"{Title} ▪ ")
 
-                                <a href="@Link" target="_blank" rel="noopener">@(new Uri(Link ?? "").Host)</a>
+                                <a href="@Link.HideExternalLink()" target="_blank" rel="nofollow">@(new Uri(Link ?? "").Host)</a>
                             }
                         </Paragraph>
                         <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is0.FromBottom">

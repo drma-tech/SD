@@ -117,7 +117,7 @@
         @if (!string.IsNullOrEmpty(HelpLink))
         {
             <Column ColumnSize="ColumnSize.IsFull">
-                <a href="@HelpLink" target="_blank" style="display: block; font-size: 80%;" rel="noopener">@(new Uri(@HelpLink).Host)</a>
+                <a href="@HelpLink.HideExternalLink()" target="_blank" style="display: block; font-size: 80%;" rel="nofollow">@(new Uri(@HelpLink).Host)</a>
             </Column>
         }
     </Field>

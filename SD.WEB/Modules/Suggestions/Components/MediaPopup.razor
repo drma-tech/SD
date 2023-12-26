@@ -191,7 +191,7 @@
             <Column VerticalAlignment="VerticalAlignment.Middle">
                 @if (!string.IsNullOrEmpty(media?.homepage))
                 {
-                    <a href="@media.homepage" target="_blank" rel="noopener" style="float: left;">@(new Uri(media.homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+                    <a href="@media.homepage.HideExternalLink()" target="_blank" rel="nofollow" style="float: left;">@(new Uri(media.homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
                 }
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">

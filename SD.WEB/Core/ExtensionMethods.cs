@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Collections.Specialized;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Web;
 
 namespace SD.WEB.Core
@@ -58,6 +59,26 @@ namespace SD.WEB.Core
                 return (task1.Result, task2.Result, task3.Result, task4.Result);
             }
             return Combine().GetAwaiter();
+        }
+
+        public static string HideExternalLink(this string? link)
+        {
+            return $"/redirect?link={SimpleEncrypt(link)}";
+        }
+
+        public static string ShowExternalLink(this string? link)
+        {
+            return SimpleDecrypt(link);
+        }
+
+        public static string SimpleEncrypt(this string? url)
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(url ?? ""));
+        }
+
+        public static string SimpleDecrypt(this string? obfuscatedUrl)
+        {
+            return Encoding.UTF8.GetString(Convert.FromBase64String(obfuscatedUrl ?? ""));
         }
     }
 }
