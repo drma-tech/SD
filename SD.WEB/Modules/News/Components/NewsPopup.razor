@@ -24,7 +24,7 @@
                                     @((MarkupString)item.title)
                                 }
                             </CardText>
-                            <Button Color="Color.Primary" Type="ButtonType.Link" To="@item.link" Target="Target.Blank" Size="Size.Small" Class="mt-2">
+                            <Button Color="Color.Primary" Type="ButtonType.Link" To="@item.link.HideExternalLink()" Target="Target.Blank" Size="Size.Small" Class="mt-2">
                                 @GlobalTranslations.ButtonReadMore
                             </Button>
                         </CardBody>

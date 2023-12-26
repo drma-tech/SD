@@ -15,7 +15,7 @@
             @foreach (var item in TrailerModel?.Items ?? new())
             {
                 <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
-                    <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}")">
+                    <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}".HideExternalLink())">
                         <Card>
                             <CardImage Source="@item?.url" Alt="@item?.title">
                             </CardImage>

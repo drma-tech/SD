@@ -56,7 +56,7 @@
                     <Blazorise.Icon Name=" FontAwesomeIcons.Eye">
                     </Blazorise.Icon>
                 </Button>
-                <Button Color="Color.Link" To="@("https://www.google.com/search?q=streaming+" + @context.Item.name)" Type="ButtonType.Link" Target="Target.Blank" Size="Size.Small" Visibility="@(string.IsNullOrEmpty(context.Item.link)?Visibility.Visible:Visibility.Invisible)">
+                <Button Color="Color.Link" To="@($"https://www.google.com/search?q=streaming+{context.Item.name}".HideExternalLink())" Type="ButtonType.Link" Target="Target.Blank" Size="Size.Small" Visibility="@(string.IsNullOrEmpty(context.Item.link)?Visibility.Visible:Visibility.Invisible)">
                     <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon>
                 </Button>
             </DeleteCommandTemplate>

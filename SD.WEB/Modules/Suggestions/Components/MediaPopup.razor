@@ -104,7 +104,7 @@
                                     @foreach (var item in media.Videos)
                                     {
                                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                            <Button Type="ButtonType.Link" To="@("https://www.youtube.com/watch?v=" + item.key)" Target="Target.Blank" Color="Color.Light"
+                                            <Button Type="ButtonType.Link" To="@($"https://www.youtube.com/watch?v={item.key}".HideExternalLink())" Target="Target.Blank" Color="Color.Light"
                                                     Padding="Padding.Is1" title="@item.name" Block="true">
                                                 <Blazorise.Icon Name="FontAwesomeIcons.Video"></Blazorise.Icon>
                                             </Button>

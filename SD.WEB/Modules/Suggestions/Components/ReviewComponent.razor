@@ -12,10 +12,14 @@
         {
             <ListGroupItem Padding="Padding.Is2">
                 <Heading Size="HeadingSize.Is6" Margin="Margin.Is1.FromBottom">
-                    <Badge Color="GetColorByRating(item?.score)" Margin="Margin.Is2.FromEnd">@item?.score</Badge> @(item?.reviewSite + (string.IsNullOrEmpty(item?.reviewer) ? "" : " | " + item?.reviewer))
+                    <Badge Color="GetColorByRating(item?.score)" Margin="Margin.Is2.FromEnd">
+                        @item?.score
+                    </Badge> @(item?.reviewSite + (string.IsNullOrEmpty(item?.reviewer) ? "" : " | " + item?.reviewer))
                 </Heading>
-                <Small TextAlignment="TextAlignment.Justified">@item.quote</Small>
-                <Blazorise.Link To="@item.reviewUrl" Target="Target.Blank" Style="font-size: 80%;">Read full review</Blazorise.Link>
+                <Small TextAlignment="TextAlignment.Justified">
+                    @item.quote
+                </Small>
+                <Blazorise.Link To="@item.reviewUrl.HideExternalLink()" Target="Target.Blank" Style="font-size: 80%;">Read full review</Blazorise.Link>
             </ListGroupItem>
         }
     </ListGroup>
