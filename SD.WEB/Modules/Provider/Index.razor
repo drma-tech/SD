@@ -60,14 +60,15 @@
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
         p.regions.Any(a => a == AppStateStatic.Region)) ?? Array.Empty<ProviderModel>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         AppStateStatic.RegionChanged += StateHasChanged;
+
+        AllProviders = await AllProvidersApi.GetAll(Core);
     }
 
     protected override async Task LoadDataRender()
     {
-        AllProviders = await AllProvidersApi.GetAll(Core);
         myProviders = await MyProvidersApi.Get(IsAuthenticated, null);
     }
 }
