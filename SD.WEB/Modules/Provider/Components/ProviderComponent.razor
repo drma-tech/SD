@@ -45,6 +45,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
 
     private RenderControlCore<AllProviders?>? Core { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
@@ -69,11 +70,11 @@
 
     private async Task OpenCompleteList()
     {
-        await ModalService.CompleteListProvider(@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region), AllProviders, Watched, Watching, Wish);
+        await ModalService.CompleteListProvider(@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region), AllProviders, Watched, Watching, Wish, ShowPrivateAction);
     }
 
     private async Task ShowPopupProvider(ProviderModel item)
     {
-        await ModalService.ProviderPopup(item, Watched, Watching, Wish);
+        await ModalService.ProviderPopup(item, Watched, Watching, Wish, ShowPrivateAction);
     }
 }

@@ -50,6 +50,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
 
     [Parameter] public string? CardHeader { get; set; }
     [Parameter] public AllProviders? AllProviders { get; set; }
@@ -71,6 +72,6 @@
 
     private async Task ShowPopupProvider(ProviderModel item)
     {
-        await ModalService.ProviderPopup(item, Watched, Watching, Wish);
+        await ModalService.ProviderPopup(item, Watched, Watching, Wish, ShowPrivateAction);
     }
 }

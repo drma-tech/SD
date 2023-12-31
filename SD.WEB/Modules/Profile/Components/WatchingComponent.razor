@@ -5,18 +5,24 @@
 @inject TmdbApi TmdbApi
 @inject WatchingListApi WatchingApi
 
+@inject IJSRuntime JS
+
 @if (ShowHeader)
 {
     <HeaderComponent IconName="@FontAwesomeIcons.Eye" Title="@Title">
-        @if (Private)
+        @if (ShowPrivateAction)
         {
             <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList())"
                     title="@GlobalTranslations.SeeAllItems" Disabled="Items.Empty()" Class="ml-1">
                 <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
             </Button>
             <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle())"
-                    title="@GlobalTranslations.PickARandom" Disabled="Items.Empty()">
+                    title="@GlobalTranslations.PickARandom" Disabled="Items.Empty()" Class="ml-1">
                 <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
+            </Button>
+            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Clicked="@(()=>Share(Title, "", $"{Navigation.BaseUri}shared/watching/{MediaType}/{UserId}"))"
+                    title="@GlobalTranslations.Share" Disabled="Items.Empty()">
+                <Blazorise.Icon Name="FontAwesomeIcons.Share"></Blazorise.Icon>
             </Button>
             @if ((Watching?.MovieCanSync ?? false) && (Watching?.Movies.Any() ?? false))
             {
@@ -28,7 +34,7 @@
         }
     </HeaderComponent>
 }
-<RenderControl Core="Core" PrivateContent="Private" Model="Watching" ExpressionEmpty="ExpressionEmpty">
+<RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Watching" ExpressionEmpty="ExpressionEmpty">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in Items.Take(GetTotalItems) ?? [])
         {
@@ -72,7 +78,7 @@
 
     [Parameter][EditorRequired] public RenderControlCore<WatchingList?> Core { get; set; } = new();
     [Parameter][EditorRequired] public MediaType MediaType { get; set; }
-    [Parameter][EditorRequired] public bool Private { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
@@ -91,7 +97,7 @@
 
     private async Task OpenCompleteList()
     {
-        await ModalService.MyWatchingListPopup(Core, MediaType, Watched, Watching, Wish);
+        await ModalService.MyWatchingListPopup(Core, MediaType, Watched, Watching, Wish, ShowPrivateAction);
     }
 
     public async Task ChooseRandomTitle()
@@ -118,14 +124,14 @@
     {
         if (string.IsNullOrEmpty(tmdb_id)) return default!;
 
-        return ModalService.MediaPopup(Watched, Watching, Wish, MediaType, tmdb_id);
+        return ModalService.MediaPopup(Watched, Watching, Wish, MediaType, tmdb_id, ShowPrivateAction);
     }
 
     public Task ShowCollectionPopup(string? collection_id, string? name)
     {
         if (string.IsNullOrEmpty(collection_id)) return default!;
 
-        return ModalService.CollectionPopup(Watched, Watching, Wish, MediaType, collection_id);
+        return ModalService.CollectionPopup(Watched, Watching, Wish, MediaType, collection_id, ShowPrivateAction);
     }
 
     private async Task ImportFromWatched()
@@ -220,5 +226,10 @@
             Core?.ShowError(ex.Message);
             ex.ProcessException(Toast, Logger);
         }
+    }
+
+    private async Task Share(string? title, string? text, string? link)
+    {
+        await JS.InvokeVoidAsync("share", title, text, link);
     }
 }

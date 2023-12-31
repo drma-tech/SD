@@ -29,22 +29,22 @@
     </Jumbotron>
 } *@
 
-<MyProviderComponent Fake="Fake" WatchedList="Watched" WatchingList="Watching" WishList="Wish"></MyProviderComponent>
+<MyProviderComponent Fake="Fake" WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true"></MyProviderComponent>
 
-<MySuggestions Fake="Fake" Watched="Watched" Watching="Watching" Wish="Wish"></MySuggestions>
+<MySuggestions Fake="Fake" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true"></MySuggestions>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWishListComponent Watched="Watched" Watching="Watching" Wish="Wish" CoreWishlist="CoreWish"></MyWishListComponent>
+        <MyWishListComponent Watched="Watched" Watching="Watching" Wish="Wish" CoreWishlist="CoreWish" ShowPrivateAction="true"></MyWishListComponent>
     </Column>
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWatchingListComponent Watched="Watched" Watching="Watching" Wish="Wish" CoreWatching="CoreWatching"></MyWatchingListComponent>
+        <MyWatchingListComponent Watched="Watched" Watching="Watching" Wish="Wish" CoreWatching="CoreWatching" ShowPrivateAction="true"></MyWatchingListComponent>
     </Column>
 </Row>
 
-    @code {
-        [Parameter][SupplyParameterFromQuery(Name = "Fake")] public bool Fake { get; set; } = false;
-        [Inject] public IModalService ModalService { get; set; } = default!;
+@code {
+    [Parameter][SupplyParameterFromQuery(Name = "Fake")] public bool Fake { get; set; } = false;
+    [Inject] public IModalService ModalService { get; set; } = default!;
 
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();

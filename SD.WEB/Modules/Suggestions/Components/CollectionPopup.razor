@@ -72,12 +72,15 @@
     </RenderControl>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Primary" Size="Size.Small" Clicked="@IsWatched" Float="Float.Start" title="Mark all these items as watched">
-        @GlobalTranslations.ButtonWatched
-    </Button>
-    <Button Color="Color.Danger" Size="Size.Small" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">
-        @GlobalTranslations.RemoveCollection
-    </Button>
+    @if (ShowPrivateAction)
+    {
+        <Button Color="Color.Primary" Size="Size.Small" Clicked="@IsWatched" Float="Float.Start" title="Mark all these items as watched">
+            @GlobalTranslations.ButtonWatched
+        </Button>
+        <Button Color="Color.Danger" Size="Size.Small" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">
+            @GlobalTranslations.RemoveCollection
+        </Button>
+    }
     <Button Color="Color.Secondary" Size="Size.Small" Clicked="@HideModal" Float="Float.End">
         @GlobalTranslations.ButtonClose
     </Button>
@@ -89,6 +92,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
 
     [Parameter] public string? collection_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
@@ -159,7 +163,7 @@
 
     private async Task OpenPopupMedia(Part? part, MediaType? mediaType)
     {
-        await ModalService.MediaPopup(Watched, Watching, Wish, mediaType, part?.id.ToString());
+        await ModalService.MediaPopup(Watched, Watching, Wish, mediaType, part?.id.ToString(), ShowPrivateAction);
     }
 
     private async Task OpenPopupSeason(Part? part)

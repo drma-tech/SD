@@ -15,12 +15,12 @@
 <ModalBody MaxHeight="70">
     @if (MediaType == MediaType.movie)
     {
-        <WatchingComponent MediaType="MediaType" Private="true" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+        <WatchingComponent MediaType="MediaType" ShowPrivateAction="ShowPrivateAction" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
                            Core="Core" ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()"></WatchingComponent>
     }
     else
     {
-        <WatchingComponent MediaType="MediaType" Private="true" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+        <WatchingComponent MediaType="MediaType" ShowPrivateAction="ShowPrivateAction" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
                            Core="Core" ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()"></WatchingComponent>
     }
 </ModalBody>
@@ -37,6 +37,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter] public MediaType MediaType { get; set; }
 
     private string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWatching : GlobalTranslations.MyShowWatching;

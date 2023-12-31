@@ -1,5 +1,5 @@
-﻿@page "/shared/watchinglist/{type}/{id}"
-@page "/shared/watchinglist/{type}"
+﻿@page "/shared/watching/{type}/{id}"
+<SeoHeader Title="@($"Watching | {(type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")"></SeoHeader>
 
 @using SD.WEB.Modules.Profile.Components
 @using SD.WEB.Modules.Profile.Core
@@ -11,13 +11,13 @@
 
 @if (type == "movie")
 {
-    <WatchingComponent Core="CoreWatching" MediaType="MediaType.movie" Private="Private" ShowHeader="true" FullScreen="true" Id="@id"
+    <WatchingComponent Core="CoreWatching" MediaType="MediaType.movie" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
                        Watched="Watched" Watching="Watching" Wish="Wish"
                        ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()"></WatchingComponent>
 }
 else
 {
-    <WatchingComponent Core="CoreWatching" MediaType="MediaType.movie" Private="Private" ShowHeader="true" FullScreen="true" Id="@id"
+    <WatchingComponent Core="CoreWatching" MediaType="MediaType.tv" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
                        Watched="Watched" Watching="Watching" Wish="Wish"
                        ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()"></WatchingComponent>
 }

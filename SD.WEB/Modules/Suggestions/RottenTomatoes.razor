@@ -12,8 +12,8 @@
 
 <HeadPage Title="Rotten Tomatoes" ImageSource="logo/rotten-tomatoes.png" Text="Rotten Tomatoes, home of the Tomatometer, is the most trusted measurement of quality for Movies & TV. The definitive site for Reviews, Trailers, Showtimes, and Tickets" Link="https://www.rottentomatoes.com/"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesTOMATOMETER" MaxItens="100"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesAUDIENCESCORE" MaxItens="100"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesTOMATOMETER" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesAUDIENCESCORE" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

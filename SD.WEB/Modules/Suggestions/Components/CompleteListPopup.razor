@@ -18,7 +18,7 @@
 <ModalBody MaxHeight="70">
     <MediaListFull Items="Items" IsIMDB="IsIMDB" MaxItens="MaxItens" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
                    StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false"
-                   Watched="Watched" Watching="Watching" Wish="Wish">
+                   Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction">
     </MediaListFull>
 </ModalBody>
 <ModalFooter>
@@ -34,7 +34,8 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }

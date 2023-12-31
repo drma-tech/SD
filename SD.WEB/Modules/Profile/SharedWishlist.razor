@@ -1,5 +1,5 @@
-﻿@page "/shared/wishlist/{type}/{id}"
-@page "/shared/wishlist/{type}"
+﻿@page "/shared/wishlist/{type}/{token}"
+<SeoHeader Title="@($"Wishlist | {(type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")"></SeoHeader>
 
 @using SD.WEB.Modules.Profile.Components
 @using SD.WEB.Modules.Profile.Core
@@ -11,31 +11,30 @@
 
 @if (type == "movie")
 {
-    <Wishlist Core="CoreWishlist" MediaType="MediaType.movie" Private="Private" ShowHeader="true" FullScreen="true" Id="@id"
+    <Wishlist Core="CoreWishlist" MediaType="MediaType.movie" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
               Watched="Watched" Watching="Watching" Wish="Wish"
               ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()"></Wishlist>
 }
 else
 {
-    <Wishlist Core="CoreWishlist" MediaType="MediaType.movie" Private="Private" ShowHeader="true" FullScreen="true" Id="@id"
+    <Wishlist Core="CoreWishlist" MediaType="MediaType.tv" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
               Watched="Watched" Watching="Watching" Wish="Wish"
               ExpressionEmpty="(WishList? list) => list == null || list.Shows.Empty()"></Wishlist>
 }
 
 @code {
     [Parameter] public string? type { get; set; }
-    [Parameter] public string? id { get; set; }
+    [Parameter] public string? token { get; set; }
 
     public RenderControlCore<WishList?> CoreWishlist { get; set; } = new();
-    public bool Private => string.IsNullOrEmpty(id);
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
     protected override async Task LoadDataRender()
     {
-        Watched = await WatchedApi.Get(IsAuthenticated, null, id);
+        Watched = await WatchedApi.Get(IsAuthenticated, null, token);
         Watching = await WatchingApi.Get(IsAuthenticated, null);
-        Wish = await WishApi.Get(IsAuthenticated, CoreWishlist, id);
+        Wish = await WishApi.Get(IsAuthenticated, CoreWishlist, token);
     }
 }

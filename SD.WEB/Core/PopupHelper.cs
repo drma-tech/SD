@@ -16,7 +16,7 @@ namespace SD.WEB.Core
 {
     public static class PopupHelper
     {
-        public static async Task CollectionPopup(this IModalService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? collection_id)
+        public static async Task CollectionPopup(this IModalService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? collection_id, bool showPrivateAction)
         {
             await service.Show<CollectionPopup>(null, x =>
             {
@@ -25,10 +25,11 @@ namespace SD.WEB.Core
                 x.Add(x => x.Watched, watched);
                 x.Add(x => x.Watching, watching);
                 x.Add(x => x.Wish, wish);
+                x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.Large));
         }
 
-        public static async Task CompleteListPopup(this IModalService service, string? TitleHead, WatchedList? Watched, WatchingList? Watching, WishList? Wish, HashSet<MediaDetail> Items)
+        public static async Task CompleteListPopup(this IModalService service, string? TitleHead, WatchedList? Watched, WatchingList? Watching, WishList? Wish, HashSet<MediaDetail> Items, bool showPrivateAction)
         {
             await service.Show<CompleteListPopup>(null, x =>
             {
@@ -37,11 +38,12 @@ namespace SD.WEB.Core
                 x.Add(x => x.Watching, Watching);
                 x.Add(x => x.Wish, Wish);
                 x.Add(x => x.Items, Items);
+                x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.ExtraLarge));
         }
 
         public static async Task CompleteListPopup(this IModalService service, string? TitleHead, WatchedList? Watched, WatchingList? Watching, WishList? Wish, HashSet<MediaDetail> Items,
-            IMediaListApi? MediaListApi, EnumLists? List, int MaxItens, bool IsIMDB, MediaType? TypeSelected, Dictionary<string, string> StringParameters)
+            IMediaListApi? MediaListApi, EnumLists? List, int MaxItens, bool IsIMDB, MediaType? TypeSelected, Dictionary<string, string> StringParameters, bool showPrivateAction)
         {
             await service.Show<CompleteListPopup>(null, x =>
             {
@@ -57,10 +59,11 @@ namespace SD.WEB.Core
                 x.Add(x => x.IsIMDB, IsIMDB);
                 x.Add(x => x.TypeSelected, TypeSelected);
                 x.Add(x => x.StringParameters, StringParameters);
+                x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.ExtraLarge));
         }
 
-        public static async Task CompleteListProvider(this IModalService service, string? cardHeader, AllProviders? allProviders, WatchedList? watched, WatchingList? watching, WishList? wish)
+        public static async Task CompleteListProvider(this IModalService service, string? cardHeader, AllProviders? allProviders, WatchedList? watched, WatchingList? watching, WishList? wish, bool showPrivateAction)
         {
             await service.Show<CompleteListProvider>(null, x =>
             {
@@ -69,10 +72,11 @@ namespace SD.WEB.Core
                 x.Add(x => x.Watched, watched);
                 x.Add(x => x.Watching, watching);
                 x.Add(x => x.Wish, wish);
+                x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.ExtraLarge));
         }
 
-        public static async Task MediaPopup(this IModalService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? tmdb_id)
+        public static async Task MediaPopup(this IModalService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? tmdb_id, bool showPrivateAction)
         {
             await service.Show<MediaPopup>(null, x =>
             {
@@ -81,10 +85,12 @@ namespace SD.WEB.Core
                 x.Add(x => x.Watched, watched);
                 x.Add(x => x.Watching, watching);
                 x.Add(x => x.Wish, wish);
+                x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.Large));
         }
 
-        public static async Task MySuggestionsPopup(this IModalService service, SD.Shared.Models.MySuggestions? MySuggestions, EventCallback<SD.Shared.Models.MySuggestions>? MySuggestionsChanged)
+        public static async Task MySuggestionsPopup(this IModalService service, SD.Shared.Models.MySuggestions? MySuggestions,
+            EventCallback<SD.Shared.Models.MySuggestions>? MySuggestionsChanged)
         {
             await service.Show<MySuggestionsPopup>(null, x =>
             {
@@ -93,7 +99,8 @@ namespace SD.WEB.Core
             }, Options(ModalSize.Default));
         }
 
-        public static async Task MyWatchingListPopup(this IModalService service, RenderControlCore<WatchingList?>? Core, MediaType MediaType, WatchedList? watched, WatchingList? watching, WishList? wish)
+        public static async Task MyWatchingListPopup(this IModalService service, RenderControlCore<WatchingList?>? Core, MediaType MediaType,
+            WatchedList? watched, WatchingList? watching, WishList? wish, bool showPrivateAction)
         {
             await service.Show<MyWatchingListPopup>(null, x =>
             {
@@ -102,10 +109,12 @@ namespace SD.WEB.Core
                 x.Add(x => x.Watched, watched);
                 x.Add(x => x.Watching, watching);
                 x.Add(x => x.Wish, wish);
+                x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.ExtraLarge));
         }
 
-        public static async Task MyWishListPopup(this IModalService service, RenderControlCore<WishList?>? Core, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType type)
+        public static async Task MyWishListPopup(this IModalService service, RenderControlCore<WishList?>? Core,
+            WatchedList? watched, WatchingList? watching, WishList? wish, MediaType type, bool showPrivateAction)
         {
             await service.Show<MyWishListPopup>(null, x =>
             {
@@ -114,6 +123,7 @@ namespace SD.WEB.Core
                 x.Add(x => x.Watched, watched);
                 x.Add(x => x.Watching, watching);
                 x.Add(x => x.Wish, wish);
+                x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.ExtraLarge));
         }
 
@@ -131,7 +141,7 @@ namespace SD.WEB.Core
             }, Options(ModalSize.Default));
         }
 
-        public static async Task ProviderPopup(this IModalService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish)
+        public static async Task ProviderPopup(this IModalService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish, bool showPrivateAction)
         {
             await service.Show<ProviderPopup>(null, x =>
             {
@@ -139,10 +149,11 @@ namespace SD.WEB.Core
                 x.Add(x => x.WatchedList, watched);
                 x.Add(x => x.WatchingList, watching);
                 x.Add(x => x.WishList, wish);
+                x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.ExtraLarge));
         }
 
-        public static async Task SearchPopup(this IModalService service, string? titleHead, string? search, WatchedList? watched, WatchingList? watching, WishList? wish)
+        public static async Task SearchPopup(this IModalService service, string? titleHead, string? search, WatchedList? watched, WatchingList? watching, WishList? wish, bool showPrivateAction)
         {
             await service.Show<SearchPopup>(null, x =>
             {
@@ -151,6 +162,7 @@ namespace SD.WEB.Core
                 x.Add(x => x.WatchedList, watched);
                 x.Add(x => x.WatchingList, watching);
                 x.Add(x => x.WishList, wish);
+                x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.ExtraLarge));
         }
 

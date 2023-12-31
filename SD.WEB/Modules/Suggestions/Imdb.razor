@@ -15,9 +15,9 @@
 <HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@TranslationText.imdb_desc" Link="https://www.imdb.com/"></HeadPage>
 
 <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="50" IsIMDB="true" ShowFilter="true" MultipleLanguages="false"
-           StringParameters="Params"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+           StringParameters="Params" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
 <MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" MaxItens="250" ShowFilter="true"  Watched="WatchedList"
-           Watching="WatchingList" Wish="WishList"></MediaList>
+           Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
 @* <MediaList TitleHead="@TranslationText.ComingSoon" MediaListApi="ImdbUpcomingApi" MaxItens="50" IsIMDB="true" MultipleLanguages="false"></MediaList> *@
 
 @code {

@@ -12,8 +12,8 @@
 
 <HeadPage Title="Critics Choice" ImageSource="logo/critics.png" Text="The Critics Choice Association (CCA) is a group of broadcast, radio and online critics as well as entertainment journalists who review films and documentaries as well as scripted and unscripted television." Link="https://www.criticschoice.com/"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CriticsChoiceBestPicture" MaxItens="10"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CriticsChoiceBestLimitedSeries" MaxItens="5"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CriticsChoiceBestPicture" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CriticsChoiceBestLimitedSeries" MaxItens="5" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

@@ -20,11 +20,11 @@
     }
 
     <MediaList TitleHead="@TranslationText.Popular"  MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "popularity.desc")"
-               MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+               MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
     <MediaList TitleHead="@TranslationText.Release"  MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "primary_release_date.desc")"
-               MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+               MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
     <MediaList TitleHead="@TranslationText.TopRated"  MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "vote_average.desc")"
-               MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+               MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
 </RenderControl>
 
 @code {

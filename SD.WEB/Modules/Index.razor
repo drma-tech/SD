@@ -24,7 +24,7 @@
     </Column>
 </Row>
 
-<PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish"></PopularIndexComponent>
+<PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true"></PopularIndexComponent>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
@@ -64,7 +64,7 @@
 
     public async Task ShowSearchPopup()
     {
-        await ModalService.SearchPopup(Search, Search, Watched, Watching, Wish);
+        await ModalService.SearchPopup(Search, Search, Watched, Watching, Wish, true);
     }
 
     private async Task KeyPress(KeyboardEventArgs args)

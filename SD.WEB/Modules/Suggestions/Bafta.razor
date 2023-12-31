@@ -13,9 +13,9 @@
 
 <HeadPage Title="Bafta" ImageSource="logo/bafta.png" Text="An independent British charity that supports, develops & promotes the art forms of the moving image" Link="https://www.bafta.org/"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestFilm" MaxItens="10"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestAnimatedFeatureFilm" MaxItens="10"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestDocumentary" MaxItens="10"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestFilm" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestAnimatedFeatureFilm" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestDocumentary" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

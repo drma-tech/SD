@@ -117,7 +117,7 @@
                             <StreamingComponent tmdb_id="@tmdb_id" OriginalMediaTitle="@media?.original_title" MediaYear="@media?.release_date?.Year.ToString()" type="@type"></StreamingComponent>
                         </TabPanel>
                         <TabPanel Name="Credits" Class="mt-2">
-                            <CreditsComponent tmdb_id="@tmdb_id" type="@type" WatchedList="Watched" WatchingList="Watching" WishList="Wish"></CreditsComponent>
+                            <CreditsComponent tmdb_id="@tmdb_id" type="@type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="ShowPrivateAction"></CreditsComponent>
                         </TabPanel>
                         @if (media?.Collection.Any() ?? false)
                         {
@@ -195,41 +195,44 @@
                 }
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                @if (Wish?.Movies.Any(a => a.id == tmdb_id) ?? false)
+                @if (ShowPrivateAction)
                 {
-                    <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                        <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
-                    </Button>
-                }
-                else if (Wish?.Shows.Any(a => a.id == tmdb_id) ?? false)
-                {
-                    <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                        <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
-                    </Button>
-                }
-                else
-                {
-                    <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                        <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
-                    </Button>
-                }
-                @if (Watched?.Movies.Any(a => a == tmdb_id) ?? false)
-                {
-                    <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                        <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
-                    </Button>
-                }
-                else if (Watched?.Shows.Any(a => a == tmdb_id) ?? false)
-                {
-                    <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                        <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
-                    </Button>
-                }
-                else
-                {
-                    <Button Color="Color.Primary" Clicked="IsWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                        <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonWatched
-                    </Button>
+                    @if (Wish?.Movies.Any(a => a.id == tmdb_id) ?? false)
+                    {
+                        <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
+                        </Button>
+                    }
+                    else if (Wish?.Shows.Any(a => a.id == tmdb_id) ?? false)
+                    {
+                        <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
+                        </Button>
+                    }
+                    else
+                    {
+                        <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
+                        </Button>
+                    }
+                    @if (Watched?.Movies.Any(a => a == tmdb_id) ?? false)
+                    {
+                        <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                            <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
+                        </Button>
+                    }
+                    else if (Watched?.Shows.Any(a => a == tmdb_id) ?? false)
+                    {
+                        <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                            <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
+                        </Button>
+                    }
+                    else
+                    {
+                        <Button Color="Color.Primary" Clicked="IsWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                            <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonWatched
+                        </Button>
+                    }
                 }
                 <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">
                     @GlobalTranslations.ButtonClose
@@ -245,6 +248,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
 
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
@@ -448,7 +452,7 @@
 
     private async Task OpenPopupMedia(Collection? collection, MediaType? mediaType)
     {
-        await ModalService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id?.ToString());
+        await ModalService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id?.ToString(), ShowPrivateAction);
     }
 
     private async Task OpenPopupSeason(Collection? collection)

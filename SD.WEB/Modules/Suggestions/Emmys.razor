@@ -12,9 +12,9 @@
 
 <HeadPage Title="Emmys" ImageSource="logo/emmys.png" Text="@TranslationText.emmys_desc" Link="https://www.emmys.com/"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingDramaSeries" MaxItens="8"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingComedySeries" MaxItens="7"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingLimitedSeries" MaxItens="11"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingDramaSeries" MaxItens="8" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingComedySeries" MaxItens="7" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingLimitedSeries" MaxItens="11" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

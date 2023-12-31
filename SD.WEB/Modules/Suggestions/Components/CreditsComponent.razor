@@ -91,6 +91,7 @@
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
 
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
@@ -128,7 +129,7 @@
                     });
             }
 
-            await ModalService.CompleteListPopup($"{crew.original_name} ({crew.job})", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet());
+            await ModalService.CompleteListPopup($"{crew.original_name} ({crew.job})", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), ShowPrivateAction);
         }
         catch (Exception ex)
         {
@@ -164,7 +165,7 @@
                     });
             }
 
-            await ModalService.CompleteListPopup($"{cast.original_name}", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet());
+            await ModalService.CompleteListPopup($"{cast.original_name}", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), ShowPrivateAction);
         }
         catch (Exception ex)
         {

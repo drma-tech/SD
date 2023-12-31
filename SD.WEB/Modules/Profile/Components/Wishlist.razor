@@ -1,20 +1,28 @@
-﻿@if (ShowHeader)
+﻿@inherits ComponenteCore<Wishlist>
+
+@inject IJSRuntime JS
+
+@if (ShowHeader)
 {
     <HeaderComponent IconName="@FontAwesomeIcons.Bookmark" Title="@Title">
-        @if (Private)
+        @if (ShowPrivateAction)
         {
             <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList())"
                     title="@GlobalTranslations.SeeAllItems" Disabled="Items.Empty()" Class="ml-1">
                 <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
             </Button>
             <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await ChooseRandomTitle())"
-                    title="@GlobalTranslations.PickARandom" Disabled="Items.Empty()">
+                    title="@GlobalTranslations.PickARandom" Disabled="Items.Empty()" Class="ml-1">
                 <Blazorise.Icon Name="FontAwesomeIcons.Random"></Blazorise.Icon>
+            </Button>
+            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Clicked="@(()=>Share(Title, "", $"{Navigation.BaseUri}shared/wishlist/{MediaType}/{UserId}"))"
+                    title="@GlobalTranslations.Share" Disabled="Items.Empty()">
+                <Blazorise.Icon Name="FontAwesomeIcons.Share"></Blazorise.Icon>
             </Button>
         }
     </HeaderComponent>
 }
-<RenderControl Core="Core" PrivateContent="Private" Model="Wish" ExpressionEmpty="ExpressionEmpty">
+<RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Wish" ExpressionEmpty="ExpressionEmpty">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in Items.Take(GetTotalItems) ?? [])
         {
@@ -35,7 +43,7 @@
 
     [Parameter][EditorRequired] public RenderControlCore<WishList?> Core { get; set; } = new();
     [Parameter][EditorRequired] public MediaType MediaType { get; set; }
-    [Parameter][EditorRequired] public bool Private { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
@@ -51,7 +59,7 @@
 
     private async Task OpenCompleteList()
     {
-        await ModalService.MyWishListPopup(Core, Watched, Watching, Wish, MediaType);
+        await ModalService.MyWishListPopup(Core, Watched, Watching, Wish, MediaType, ShowPrivateAction);
     }
 
     public async Task ChooseRandomTitle()
@@ -78,6 +86,11 @@
     {
         if (string.IsNullOrEmpty(tmdb_id)) return default!;
 
-        return ModalService.MediaPopup(Watched, Watching, Wish, MediaType, tmdb_id);
+        return ModalService.MediaPopup(Watched, Watching, Wish, MediaType, tmdb_id, ShowPrivateAction);
+    }
+
+    private async Task Share(string? title, string? text, string? link)
+    {
+        await JS.InvokeVoidAsync("share", title, text, link);
     }
 }

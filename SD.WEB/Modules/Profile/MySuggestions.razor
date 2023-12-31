@@ -72,6 +72,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
 
     private bool GenresChanged => mySuggestions?.MovieGenres.Any() ?? false | mySuggestions?.TvGenres.Any() ?? false;
 
@@ -111,7 +112,7 @@
     {
         if (string.IsNullOrEmpty(tmdb_id)) return default!;
 
-        return ModalService.MediaPopup(Watched, Watching, Wish, type, tmdb_id);
+        return ModalService.MediaPopup(Watched, Watching, Wish, type, tmdb_id, ShowPrivateAction);
     }
 
     private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)

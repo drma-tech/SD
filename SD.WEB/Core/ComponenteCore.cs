@@ -16,6 +16,7 @@ namespace SD.WEB.Core
         [Inject] protected ILogger<T> Logger { get; set; } = default!;
         [Inject] protected INotificationService Toast { get; set; } = default!;
         [Inject] protected IResizeListener listener { get; set; } = default!;
+        [Inject] protected NavigationManager Navigation { get; set; } = default!;
         [CascadingParameter] protected Task<AuthenticationState>? authenticationState { get; set; }
 
         protected bool IsAuthenticated { get; set; } = false;
@@ -88,7 +89,6 @@ namespace SD.WEB.Core
     /// <typeparam name="T"></typeparam>
     public abstract class PageCore<T> : ComponenteCore<T> where T : class
     {
-        [Inject] protected NavigationManager Navigation { get; set; } = default!;
         [Inject] protected PrincipalApi PrincipalApi { get; set; } = default!;
 
         /// <summary>

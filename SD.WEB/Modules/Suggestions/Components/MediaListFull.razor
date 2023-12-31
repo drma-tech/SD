@@ -50,6 +50,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
 
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
@@ -163,11 +164,11 @@
                     });
             }
 
-            await ModalService.CompleteListPopup($"{media?.title}", Watched, Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet());
+            await ModalService.CompleteListPopup($"{media?.title}", Watched, Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet(), ShowPrivateAction);
         }
         else
         {
-            await ModalService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdb_id);
+            await ModalService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdb_id, ShowPrivateAction);
         }
     }
 

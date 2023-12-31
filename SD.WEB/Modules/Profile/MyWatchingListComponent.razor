@@ -1,9 +1,9 @@
 ﻿@using SD.WEB.Modules.Profile.Components
 
-<WatchingComponent MediaType="MediaType.movie" Private="true" ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish"
+<WatchingComponent MediaType="MediaType.movie" ShowPrivateAction="ShowPrivateAction" ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish"
                    Core="CoreWatching" ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()"></WatchingComponent>
 
-<WatchingComponent MediaType="MediaType.tv" Private="true" ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish"
+<WatchingComponent MediaType="MediaType.tv" ShowPrivateAction="ShowPrivateAction" ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish"
                    Core="CoreWatching" ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()"></WatchingComponent>
 
 @code {
@@ -11,4 +11,5 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
 }

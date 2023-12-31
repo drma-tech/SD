@@ -12,8 +12,8 @@
 
 <HeadPage Title="Hollywood Reporter" ImageSource="logo/hollywood-reporter.png" Text="@TranslationText.thr_desc" Link="https://www.hollywoodreporter.com/"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100Movies" MaxItens="100"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100TVShows" MaxItens="100"  Watched="WatchedList" Watching="WatchingList" Wish="WishList"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100Movies" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100TVShows" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }
