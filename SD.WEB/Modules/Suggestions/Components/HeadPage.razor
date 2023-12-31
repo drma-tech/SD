@@ -45,7 +45,7 @@
                 </MediaQuery>
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                <Button Color="Color.Primary" Clicked="@(()=>Share(Title, Text, Navigation.Uri))" Size="Size.Small" Style="display: block; width: 100%;" Class="mb-1">
+                <Button Color="Color.Primary" Clicked="@(()=>Share(Navigation.Uri))" Size="Size.Small" Style="display: block; width: 100%;" Class="mb-1">
                     <Blazorise.Icon Name="FontAwesomeIcons.Share"></Blazorise.Icon> Share
                 </Button>
                 @if (provider != null)
@@ -156,8 +156,8 @@
         }
     }
 
-    private async Task Share(string? title, string? text, string? link)
+    private async Task Share(string? link)
     {
-        await JS.InvokeVoidAsync("share", title, text, link);
+        await JS.InvokeVoidAsync("share", link);
     }
 }

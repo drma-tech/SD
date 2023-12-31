@@ -64,19 +64,15 @@
     </script>
 
     <script>
-        function share(title, text, url) {
+        function share(url) {
             if (!("share" in navigator)) {
                 alert('Web Share API not supported.');
                 return;
             }
 
-            navigator.share({
-                title: title,
-                text: text,
-                url: url
-            })
-            .then(() => console.log('Successful share'))
-            .catch(error => console.log('Error sharing:', error));
+            navigator.share({ url: url })
+                .then(() => console.log('Successful share'))
+                .catch(error => console.log('Error sharing:', error));
         }
     </script>
 
