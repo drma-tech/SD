@@ -9,7 +9,7 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
-@if (IsAuthenticated)
+@* @if (IsAuthenticated)
 {
     <Jumbotron Background="Background.Primary" Margin="Margin.Is3.FromBottom" Padding="Padding.Is3">
         <JumbotronTitle Size="JumbotronTitleSize.Is4">
@@ -27,7 +27,7 @@
         </Paragraph>
         <Button Clicked="MyAccount">minha conta</Button>
     </Jumbotron>
-}
+} *@
 
 <MyProviderComponent Fake="Fake" WatchedList="Watched" WatchingList="Watching" WishList="Wish"></MyProviderComponent>
 
@@ -42,9 +42,9 @@
     </Column>
 </Row>
 
-@code {
-    [Parameter][SupplyParameterFromQuery(Name = "Fake")] public bool Fake { get; set; } = false;
-    [Inject] public IModalService ModalService { get; set; } = default!;
+    @code {
+        [Parameter][SupplyParameterFromQuery(Name = "Fake")] public bool Fake { get; set; } = false;
+        [Inject] public IModalService ModalService { get; set; } = default!;
 
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
