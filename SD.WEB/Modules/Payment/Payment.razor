@@ -1,0 +1,9 @@
+﻿@page "/payment"
+
+<a onclick='openCheckout()'>Buy now</a>
+
+<iframe class="checkout-container" frame-ancestors="self"></iframe>
+
+@code {
+    [Parameter][SupplyParameterFromQuery(Name = "_ptxn")] public string? PTXN { get; set; }
+}

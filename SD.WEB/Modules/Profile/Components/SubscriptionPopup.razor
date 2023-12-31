@@ -1,5 +1,7 @@
 ﻿@inherits ComponenteCore<SubscriptionPopup>
 
+@inject NavigationManager navigation
+
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">
         SD - Premium Account
@@ -63,7 +65,8 @@
                         </ListGroupItem>
                     </ListGroup>
                 </CardText>
-                <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="true">Choose Plan</Button>
+                <Button Color="Color.Primary" Block="true" Class="mt-3" Clicked="@(()=>navigation.NavigateTo("payment"))">Choose Plan</Button>
+                <a href='#' onclick='openCheckout()'>Buy now</a>
             </CardBody>
         </Card>
         <Card>
