@@ -34,11 +34,14 @@ else
 
     public Gravatar? Gravatar { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        var Client = await PrincipalApi.Get();
+        Gravatar = await PrincipalApi.GetGravatar(Client?.Email);
+    }
+
     protected override async Task LoadDataRender()
     {
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null, token), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, null, token));
-
-        var Client = await PrincipalApi.Get();
-        Gravatar = await PrincipalApi.GetGravatar(Client?.Email);
     }
 }
