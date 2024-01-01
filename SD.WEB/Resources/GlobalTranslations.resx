@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccessInformation" xml:space="preserve">
+    <value>Access Information</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
   <data name="AuthenticationInProgress" xml:space="preserve">
     <value>Authentication in progress...</value>
   </data>
@@ -177,6 +183,9 @@
   <data name="Cast" xml:space="preserve">
     <value>Cast</value>
   </data>
+  <data name="ClearCache" xml:space="preserve">
+    <value>Clear Cache</value>
+  </data>
   <data name="CustomVisibilityInvalid" xml:space="preserve">
     <value>Invalid operation. Please try again.</value>
   </data>
@@ -185,6 +194,9 @@
   </data>
   <data name="CustomVisibilityNoData" xml:space="preserve">
     <value>There is no data to show</value>
+  </data>
+  <data name="DeleteAccount" xml:space="preserve">
+    <value>Delete Account</value>
   </data>
   <data name="DeliveryModelAds" xml:space="preserve">
     <value>Ads</value>
@@ -207,6 +219,15 @@
   <data name="Directing" xml:space="preserve">
     <value>Directing</value>
   </data>
+  <data name="DisplayName" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="EditProfileGravatar" xml:space="preserve">
+    <value>Edit profile in Gravatar</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
   <data name="FeatureUnavailableDescription" xml:space="preserve">
     <value>Wait for news...</value>
   </data>
@@ -215,6 +236,12 @@
   </data>
   <data name="Free" xml:space="preserve">
     <value>Free</value>
+  </data>
+  <data name="Identification" xml:space="preserve">
+    <value>Identification</value>
+  </data>
+  <data name="IdentityProvider" xml:space="preserve">
+    <value>Identity Provider</value>
   </data>
   <data name="MenuHome" xml:space="preserve">
     <value>Home</value>
@@ -239,6 +266,9 @@
   </data>
   <data name="MyMovieWishlist" xml:space="preserve">
     <value>Wishlist - Movies ({0} items)</value>
+  </data>
+  <data name="MyProfileGravatar" xml:space="preserve">
+    <value>My Profile (Gravatar)</value>
   </data>
   <data name="MyProviders" xml:space="preserve">
     <value>Favorite Providers ({0} items)</value>
@@ -270,6 +300,9 @@
   <data name="PaymentManagement" xml:space="preserve">
     <value>All payment management is carried out by a specialized company. We do not store any sensitive information of our users.</value>
   </data>
+  <data name="PhotoLast" xml:space="preserve">
+    <value>Photo (Last)</value>
+  </data>
   <data name="PickARandom" xml:space="preserve">
     <value>Pick a random item for me</value>
   </data>
@@ -299,15 +332,6 @@
   </data>
   <data name="Share" xml:space="preserve">
     <value>Share</value>
-  </data>
-  <data name="SubscriptionSubTitle" xml:space="preserve">
-    <value>You have free access to the entire platform, but with some restrictions.</value>
-  </data>
-  <data name="SubscriptionSubTitle2" xml:space="preserve">
-    <value>For more benefits, we invite you to become a premium user.|click here|to find out more.</value>
-  </data>
-  <data name="SubscriptionTitle" xml:space="preserve">
-    <value>Wellcome!</value>
   </data>
   <data name="TabAbout" xml:space="preserve">
     <value>About</value>

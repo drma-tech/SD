@@ -16,8 +16,8 @@ namespace SD.WEB.Core
 
     public abstract class ApiServices
     {
-        private HttpClient Http { get; set; }
-        private IMemoryCache MemoryCache { get; set; }
+        protected HttpClient Http { get; set; }
+        protected IMemoryCache MemoryCache { get; set; }
 
         protected ApiServices(IHttpClientFactory httpClientFactory, IMemoryCache memoryCache)
         {

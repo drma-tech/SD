@@ -85,11 +85,12 @@
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public Func<WatchingList?, bool> ExpressionEmpty { get; set; } = default!;
+    [Parameter] public string? CustomTitle { get; set; }
 
     private HashSet<WatchingListItem> Items => MediaType == MediaType.movie ? Watching?.Movies ?? new HashSet<WatchingListItem>() : Watching?.Shows ?? new HashSet<WatchingListItem>();
 
     private int GetTotalItems => !FullScreen ? (AppStateStatic.OnFullHD ? 6 : 4) : 100;
-    private string? Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWatching.Format(Items.Count()) : GlobalTranslations.MyShowWatching.Format(Items.Count());
+    private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? GlobalTranslations.MyMovieWatching.Format(Items.Count()) : GlobalTranslations.MyShowWatching.Format(Items.Count()));
     private IFluentColumn ColSize => FullScreen ? ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile : ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile;
 
     public bool MovieUpdating { get; set; } = false;

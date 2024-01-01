@@ -197,6 +197,11 @@ namespace SD.WEB.Core
             await service.Show<TrailersPopup>(null, x => { }, Options(ModalSize.ExtraLarge));
         }
 
+        public static async Task OpenPopup<TComponent>(this IModalService service, Action<ModalProviderParameterBuilder<TComponent>> parameters, ModalSize size)
+        {
+            await service.Show(null, parameters, Options(size));
+        }
+
         private static ModalInstanceOptions Options(ModalSize size) => new()
         {
             UseModalStructure = false,

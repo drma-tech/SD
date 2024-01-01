@@ -61,6 +61,24 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Access Information.
+        /// </summary>
+        public static string AccessInformation {
+            get {
+                return ResourceManager.GetString("AccessInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        public static string Actions {
+            get {
+                return ResourceManager.GetString("Actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authentication in progress....
         /// </summary>
         public static string AuthenticationInProgress {
@@ -241,6 +259,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear Cache.
+        /// </summary>
+        public static string ClearCache {
+            get {
+                return ResourceManager.GetString("ClearCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid operation. Please try again..
         /// </summary>
         public static string CustomVisibilityInvalid {
@@ -264,6 +291,15 @@ namespace SD.WEB.Resources {
         public static string CustomVisibilityNoData {
             get {
                 return ResourceManager.GetString("CustomVisibilityNoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Account.
+        /// </summary>
+        public static string DeleteAccount {
+            get {
+                return ResourceManager.GetString("DeleteAccount", resourceCulture);
             }
         }
         
@@ -331,6 +367,33 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display Name.
+        /// </summary>
+        public static string DisplayName {
+            get {
+                return ResourceManager.GetString("DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit profile in Gravatar.
+        /// </summary>
+        public static string EditProfileGravatar {
+            get {
+                return ResourceManager.GetString("EditProfileGravatar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wait for news....
         /// </summary>
         public static string FeatureUnavailableDescription {
@@ -354,6 +417,24 @@ namespace SD.WEB.Resources {
         public static string Free {
             get {
                 return ResourceManager.GetString("Free", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identification.
+        /// </summary>
+        public static string Identification {
+            get {
+                return ResourceManager.GetString("Identification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identity Provider.
+        /// </summary>
+        public static string IdentityProvider {
+            get {
+                return ResourceManager.GetString("IdentityProvider", resourceCulture);
             }
         }
         
@@ -426,6 +507,15 @@ namespace SD.WEB.Resources {
         public static string MyMovieWishlist {
             get {
                 return ResourceManager.GetString("MyMovieWishlist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Profile (Gravatar).
+        /// </summary>
+        public static string MyProfileGravatar {
+            get {
+                return ResourceManager.GetString("MyProfileGravatar", resourceCulture);
             }
         }
         
@@ -520,6 +610,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Photo (Last).
+        /// </summary>
+        public static string PhotoLast {
+            get {
+                return ResourceManager.GetString("PhotoLast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pick a random item for me.
         /// </summary>
         public static string PickARandom {
@@ -606,33 +705,6 @@ namespace SD.WEB.Resources {
         public static string Share {
             get {
                 return ResourceManager.GetString("Share", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You have free access to the entire platform, but with some restrictions..
-        /// </summary>
-        public static string SubscriptionSubTitle {
-            get {
-                return ResourceManager.GetString("SubscriptionSubTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to For more benefits, we invite you to become a premium user.|click here|to find out more..
-        /// </summary>
-        public static string SubscriptionSubTitle2 {
-            get {
-                return ResourceManager.GetString("SubscriptionSubTitle2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wellcome!.
-        /// </summary>
-        public static string SubscriptionTitle {
-            get {
-                return ResourceManager.GetString("SubscriptionTitle", resourceCulture);
             }
         }
         

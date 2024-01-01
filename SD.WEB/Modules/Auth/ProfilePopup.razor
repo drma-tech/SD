@@ -1,0 +1,133 @@
+﻿@using Microsoft.Extensions.Caching.Memory
+@using SD.Shared.Core.Models
+@using SD.Shared.Models.Auth
+@using System.Security.Claims
+@inherits ComponenteCore<ProfilePopup>
+
+@inject IMemoryCache cache
+@inject IMessageService MessageService
+@inject IHttpClientFactory factory
+
+<ModalHeader>
+    <ModalTitle Size="HeadingSize.Is5">
+        SD - My Profile
+    </ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    <Card Margin="Margin.Is2.FromBottom">
+        <CardHeader>
+            @WEB.Resources.GlobalTranslations.AccessInformation
+        </CardHeader>
+        <CardBody>
+            <Fields>
+                <Field ColumnSize="ColumnSize.Is4.OnDesktop">
+                    <FieldLabel>
+                        @WEB.Resources.GlobalTranslations.IdentityProvider
+                    </FieldLabel>
+                    <TextEdit Text="@principal?.IdentityProvider" Disabled="true" />
+                </Field>
+                <Field ColumnSize="ColumnSize.Is4.OnDesktop">
+                    <FieldLabel>
+                        @WEB.Resources.GlobalTranslations.Identification
+                    </FieldLabel>
+                    <TextEdit Text="@principal?.UserDetails" Disabled="true" />
+                </Field>
+                <Field ColumnSize="ColumnSize.Is4.OnDesktop">
+                    <FieldLabel>
+                        @WEB.Resources.GlobalTranslations.Email
+                    </FieldLabel>
+                    <TextEdit Text="@principal?.Email" Disabled="true" />
+                </Field>
+            </Fields>
+        </CardBody>
+    </Card>
+    <Card Margin="Margin.Is2.FromBottom">
+        <CardHeader>
+            @WEB.Resources.GlobalTranslations.MyProfileGravatar
+        </CardHeader>
+        <CardBody>
+            <Fields>
+                <Field ColumnSize="ColumnSize.Is4.OnDesktop">
+                    <FieldLabel>
+                        @WEB.Resources.GlobalTranslations.DisplayName
+                    </FieldLabel>
+                    <TextEdit Text="@Gravatar?.displayName" Disabled="true" />
+                </Field>
+                <Field ColumnSize="ColumnSize.Is4.OnDesktop">
+                    <FieldLabel>
+                        @WEB.Resources.GlobalTranslations.PhotoLast
+                    </FieldLabel><br />
+                    <Figure Size="FigureSize.Is32x32">
+                        <FigureImage Source="@Gravatar?.photos.LastOrDefault()?.value" AlternateText="@Gravatar?.displayName" Rounded="true" />
+                    </Figure>
+                </Field>
+                <Field ColumnSize="ColumnSize.Is4.OnDesktop">
+                    <FieldLabel>
+                        @WEB.Resources.GlobalTranslations.EditProfileGravatar
+                    </FieldLabel><br />
+                    <Link To="@("https://gravatar.com/".HideExternalLink())" Target="Target.Blank">https://gravatar.com/</Link>
+                </Field>
+            </Fields>
+        </CardBody>
+    </Card>
+    <Card Margin="Margin.Is2.FromBottom">
+        <CardHeader>
+            @WEB.Resources.GlobalTranslations.Actions
+        </CardHeader>
+        <CardBody>
+            <Button Color="Color.Primary" Clicked="async()=>{ await ClearCache(); }" Margin="Margin.Is1.FromEnd">
+                <Blazorise.Icon Name="FontAwesomeIcons.Eraser" /> @WEB.Resources.GlobalTranslations.ClearCache
+            </Button>
+            <Button Color="Color.Danger" Clicked="async()=>{ await DeleteAccount(principal?.IdentityProvider); }" Disabled="true">
+                <Blazorise.Icon Name="FontAwesomeIcons.UserSlash" /> @WEB.Resources.GlobalTranslations.DeleteAccount
+            </Button>
+        </CardBody>
+    </Card>
+</ModalBody>
+<ModalFooter>
+    <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
+        @TranslationText.Close
+    </Button>
+</ModalFooter>
+
+@code {
+    [Inject] public IModalService ModalService { get; set; } = default!;
+
+    [Parameter] public ClientePrincipal? principal { get; set; }
+    [Parameter] public Gravatar? Gravatar { get; set; }
+
+    private async Task ClearCache()
+    {
+        ((MemoryCache)cache).Clear();
+
+        await Toast.Success("Operação efetuada com sucesso!");
+    }
+
+    private async Task DeleteAccount(string? provider)
+    {
+        try
+        {
+            if (await MessageService.Confirm("Are you sure you want to delete your account? This action cannot be undone.", "Streaming Discovery", (opt) => { opt.ShowMessageIcon = false; }))
+            {
+                await PrincipalApi.Remove();
+
+                // Navigation.NavigateTo("https://identity.azurestaticapps.net/.auth/purge/" + provider);
+
+                Navigation.NavigateTo("/.auth/purge/" + provider);
+
+                //await SignOutManager.SetSignOutState();
+
+                await Toast.Success("Operação efetuada com sucesso!");
+            }
+            else
+            {
+                await Toast.Warning("Operação cancelada!");
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+}

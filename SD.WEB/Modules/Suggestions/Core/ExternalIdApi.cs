@@ -25,8 +25,8 @@ namespace SD.WEB.Modules.Suggestions.Core
 
         public async Task<string?> GetImdbId(MediaType? type, string? tmdb_id)
         {
-            if (tmdb_id == null) throw new ArgumentNullException(nameof(tmdb_id));
-            if (type == null) throw new ArgumentNullException(nameof(type));
+            ArgumentNullException.ThrowIfNull(tmdb_id);
+            ArgumentNullException.ThrowIfNull(type);
 
             var parameter = new Dictionary<string, string>()
             {

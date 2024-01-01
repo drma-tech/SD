@@ -1,6 +1,7 @@
-﻿@page "/shared/watching/{type}/{id}"
-<SeoHeader Title="@($"Watching | {(type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")"></SeoHeader>
+﻿@page "/shared/watching/{type}/{token}"
+<SeoHeader Title="@($"Watching ({Gravatar?.displayName}) | {(type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")" Icon="@Gravatar?.photos.LastOrDefault()?.value"></SeoHeader>
 
+@using SD.Shared.Core.Models
 @using SD.WEB.Modules.Profile.Components
 @using SD.WEB.Modules.Profile.Core
 
@@ -13,29 +14,31 @@
 {
     <WatchingComponent Core="CoreWatching" MediaType="MediaType.movie" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
                        Watched="Watched" Watching="Watching" Wish="Wish"
-                       ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()"></WatchingComponent>
+                       ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()" CustomTitle="@($"Watching ({Gravatar?.displayName}) | { MediaType.movie.GetName()}")"></WatchingComponent>
 }
 else
 {
     <WatchingComponent Core="CoreWatching" MediaType="MediaType.tv" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
                        Watched="Watched" Watching="Watching" Wish="Wish"
-                       ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()"></WatchingComponent>
+                       ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()" CustomTitle="@($"Watching ({Gravatar?.displayName}) | { MediaType.tv.GetName()}")"></WatchingComponent>
 }
 
 @code {
     [Parameter] public string? type { get; set; }
-    [Parameter] public string? id { get; set; }
+    [Parameter] public string? token { get; set; }
 
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
-    public bool Private => string.IsNullOrEmpty(id);
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
+    public Gravatar? Gravatar { get; set; }
+
     protected override async Task LoadDataRender()
     {
-        Watched = await WatchedApi.Get(IsAuthenticated, null, id);
-        Watching = await WatchingApi.Get(IsAuthenticated, CoreWatching);
-        Wish = await WishApi.Get(IsAuthenticated, null, id);
+        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null, token), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, null, token));
+
+        var Client = await PrincipalApi.Get();
+        Gravatar = await PrincipalApi.GetGravatar(Client?.Email);
     }
 }
