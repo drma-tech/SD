@@ -101,13 +101,9 @@
 
     public IEnumerable<EnumObject> Languages { get; set; } = Array.Empty<EnumObject>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         Languages = EnumHelper.GetList<Language>();
-    }
-
-    protected override async Task LoadDataRender()
-    {
         AllProviders = await AllProvidersApi.GetAll(null);
     }
 

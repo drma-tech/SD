@@ -19,11 +19,11 @@
         <HeadPage ImageSource="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Text="@Provider.description" Link="@Provider.link" provider="Provider"></HeadPage>
     }
 
-    <MediaList TitleHead="@TranslationText.Popular"  MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "popularity.desc")"
+    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "popularity.desc")"
                MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
-    <MediaList TitleHead="@TranslationText.Release"  MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "primary_release_date.desc")"
+    <MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "primary_release_date.desc")"
                MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
-    <MediaList TitleHead="@TranslationText.TopRated"  MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "vote_average.desc")"
+    <MediaList TitleHead="@TranslationText.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "vote_average.desc")"
                MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
 </RenderControl>
 
@@ -42,24 +42,22 @@
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
         WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
         WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+
+        AllProviders = await AllProvidersApi.GetAll(Core);
+
+        Provider = AllProviders?.Items.SingleOrDefault(s => s.id == id);
     }
 
     protected override async Task LoadDataRender()
     {
-        AllProviders = await AllProvidersApi.GetAll(Core);
-
-        Provider = AllProviders?.Items.SingleOrDefault(s => s.id == id);
-
         WatchedList = await WatchedListApi.Get(IsAuthenticated, CoreWatchedList);
         WatchingList = await WatchingListApi.Get(IsAuthenticated, CoreWatchingList);
         WishList = await WishListApi.Get(IsAuthenticated, CoreWishlist);
-
-        StateHasChanged(); //load SeoHeader
     }
 
     private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)

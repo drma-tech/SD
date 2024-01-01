@@ -241,11 +241,15 @@
     private string bookLink => $"https://www.amazon.com/gp/search?ie=UTF8&tag=streamingdi0d-20&camp=1789&creative=9325&index=books&keywords={OriginalMediaTitle}";
     private string bookText => $"{GlobalTranslations.BuyBook}: {OriginalMediaTitle}";
 
+    protected override async Task OnInitializedAsync()
+    {
+        AllProviders = await AllProvidersApi.GetAll(null);
+    }
+
     protected override async Task LoadDataRender()
     {
         Core?.LoadingStarted?.Invoke();
         Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
-        AllProviders = await AllProvidersApi.GetAll(null);
         Core?.LoadingFinished?.Invoke(Providers);
     }
 

@@ -16,7 +16,7 @@
             <Column ColumnSize="ColumnSize.Is3.OnMobile.Is2.OnDesktop">
                 <Card>
                     <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name"
-                           onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;" title="@item.name"></CardImage>
+                               onclick="@(() => ShowPopupProvider(item))" Style="cursor: pointer;" title="@item.name"></CardImage>
                 </Card>
                 @*@if (string.IsNullOrEmpty(item.link))
             {
@@ -50,21 +50,18 @@
     private RenderControlCore<AllProviders?>? Core { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
 
+    private int GetTotalItems => AppStateStatic.OnMobile ? 8 : 18;
+
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
         p.regions.Any(a => a == AppStateStatic.Region))
         .Take(GetTotalItems) ?? Array.Empty<ProviderModel>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         throw new Exception("component sendo usado");
 
         AppStateStatic.RegionChanged += StateHasChanged;
-    }
 
-    private int GetTotalItems => AppStateStatic.OnMobile ? 8 : 18;
-
-    protected override async Task LoadDataRender()
-    {
         AllProviders = await AllProvidersApi.GetAll(Core);
     }
 
