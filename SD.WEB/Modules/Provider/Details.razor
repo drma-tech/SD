@@ -4,7 +4,8 @@
 @using SD.WEB.Modules.Provider.Core;
 @using SD.WEB.Modules.Suggestions.Components
 @using SD.WEB.Modules.Suggestions.Core;
-<SeoHeader Title="@($"{@SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/providers/{Provider?.id}")"></SeoHeader>
+<SeoHeader Title="@($"{@SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/providers/{Provider?.id}")"
+           Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)"></SeoHeader>
 @inherits PageCore<Provider.Details>
 
 @inject AllProvidersApi AllProvidersApi
