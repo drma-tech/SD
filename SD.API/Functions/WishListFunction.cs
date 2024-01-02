@@ -12,17 +12,21 @@ namespace SD.API.Functions
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WishList))]
         [Function("WishListGet")]
         public async Task<WishList?> Get(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "wishlist/get")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/wishlist/get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                var userId = req.GetUserId();
                 var id = req.GetQueryParameters()["id"];
 
                 if (string.IsNullOrEmpty(id))
+                {
+                    var userId = req.GetUserId();
                     return await repo.Get<WishList>(DocumentType.WishList + ":" + userId, new PartitionKey(userId), cancellationToken);
+                }
                 else
+                {
                     return await repo.Get<WishList>(DocumentType.WishList + ":" + id, new PartitionKey(id), cancellationToken);
+                }
             }
             catch (Exception ex)
             {

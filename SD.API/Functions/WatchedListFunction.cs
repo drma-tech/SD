@@ -12,17 +12,21 @@ namespace SD.API.Functions
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchedList))]
         [Function("WatchedListGet")]
         public async Task<WatchedList?> Get(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "watchedlist/get")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/watchedlist/get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                var userId = req.GetUserId();
                 var id = req.GetQueryParameters()["id"];
 
                 if (string.IsNullOrEmpty(id))
+                {
+                    var userId = req.GetUserId();
                     return await repo.Get<WatchedList>(DocumentType.WatchedList + ":" + userId, new PartitionKey(userId), cancellationToken);
+                }
                 else
+                {
                     return await repo.Get<WatchedList>(DocumentType.WatchedList + ":" + id, new PartitionKey(id), cancellationToken);
+                }
             }
             catch (Exception ex)
             {

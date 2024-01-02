@@ -7,7 +7,7 @@ namespace SD.WEB.Modules.Profile.Core
     {
         private struct Endpoint
         {
-            public const string Get = "watchinglist/get";
+            public const string Get = "public/watchinglist/get";
 
             public static string Add(MediaType? type) => $"watchinglist/add/{type}";
 
