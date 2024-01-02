@@ -36,8 +36,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var Client = await PrincipalApi.Get();
-        Gravatar = await PrincipalApi.GetGravatar(Client?.Email);
+        var email = await PrincipalApi.GetEmail(token);
+        Gravatar = await PrincipalApi.GetGravatar(email);
     }
 
     protected override async Task LoadDataRender()

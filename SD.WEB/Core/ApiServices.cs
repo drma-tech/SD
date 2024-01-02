@@ -31,6 +31,29 @@ namespace SD.WEB.Core
             else return Http.BaseAddress?.ToString().Contains("localhost") ?? true ? "http://localhost:7071/api/" : Http.BaseAddress.ToString() + "api/";
         }
 
+        protected async Task<string?> GetValueAsync(string requestUri, bool isExternalLink, CacheSettings? cacheSettings = null)
+        {
+            if (MemoryCache == null)
+            {
+                return await Http.GetValueAsync(BaseApi(isExternalLink) + requestUri);
+            }
+            else
+            {
+                cacheSettings ??= new CacheSettings();
+
+                var result = MemoryCache.Get<string>(requestUri);
+
+                if (result == null)
+                {
+                    result = await Http.GetValueAsync(BaseApi(isExternalLink) + requestUri);
+
+                    MemoryCache.Set(requestUri, result, cacheSettings);
+                }
+
+                return result;
+            }
+        }
+
         /// <summary>
         /// Return a HashSet<T>
         /// Note: Implement Equals and GetHashCode in classes

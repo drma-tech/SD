@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using SD.Shared.Core.Models;
 using SD.Shared.Models.Auth;
-using static System.Net.WebRequestMethods;
 
 namespace SD.WEB.Modules.Auth.Core
 {
@@ -10,6 +9,7 @@ namespace SD.WEB.Modules.Auth.Core
         private struct Endpoint
         {
             public const string Get = "Principal/Get";
+            public const string GetEmail = "Public/Principal/GetEmail";
             public const string Add = "Principal/Add";
             public const string Remove = "Principal/Remove";
         }
@@ -17,6 +17,11 @@ namespace SD.WEB.Modules.Auth.Core
         public async Task<ClientePrincipal?> Get()
         {
             return await GetAsync<ClientePrincipal>(Endpoint.Get, false);
+        }
+
+        public async Task<string?> GetEmail(string? token)
+        {
+            return await GetValueAsync($"{Endpoint.GetEmail}?token={token}", false);
         }
 
         public async Task<Gravatar?> GetGravatar(string? email)

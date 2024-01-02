@@ -6,6 +6,22 @@ namespace SD.WEB.Core
 {
     public static class ApiHelper
     {
+        public static async Task<string?> GetValueAsync(this HttpClient httpClient, string uri)
+        {
+            var response = await httpClient.GetAsync(uri);
+
+            if (response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == HttpStatusCode.NoContent) return default;
+
+                return await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                throw new NotificationException(response.ReasonPhrase);
+            }
+        }
+
         public static async Task<T?> GetJsonFromApi<T>(this HttpClient httpClient, string uri)
         {
             var response = await httpClient.GetAsync(uri);

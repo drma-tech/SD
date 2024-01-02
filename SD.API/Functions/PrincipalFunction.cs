@@ -29,6 +29,24 @@ namespace SD.API.Functions
             }
         }
 
+        [Function("PrincipalGetEmail")]
+        public async Task<string?> GetEmail(
+          [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Principal/GetEmail")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var token = req.GetQueryParameters()["token"];
+
+                var principal = await repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + token, new PartitionKey(token), cancellationToken);
+                return principal?.Email;
+            }
+            catch (Exception ex)
+            {
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
+            }
+        }
+
         //[OpenApiOperation("PrincipalAdd", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(ClientePrincipal))]
         [Function("PrincipalAdd")]
