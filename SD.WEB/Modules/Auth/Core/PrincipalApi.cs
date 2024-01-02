@@ -14,9 +14,16 @@ namespace SD.WEB.Modules.Auth.Core
             public const string Remove = "Principal/Remove";
         }
 
-        public async Task<ClientePrincipal?> Get()
+        public async Task<ClientePrincipal?> Get(bool IsUserAuthenticated)
         {
-            return await GetAsync<ClientePrincipal>(Endpoint.Get, false);
+            if (IsUserAuthenticated)
+            {
+                return await GetAsync<ClientePrincipal>(Endpoint.Get, false);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task<string?> GetEmail(string? token)
@@ -26,6 +33,8 @@ namespace SD.WEB.Modules.Auth.Core
 
         public async Task<Gravatar?> GetGravatar(string? email)
         {
+            if (string.IsNullOrEmpty(email)) return null;
+
             Gravatar? result = null;
             try
             {
@@ -33,7 +42,7 @@ namespace SD.WEB.Modules.Auth.Core
 
                 if (result == null)
                 {
-                    var root = await GetAsync<GravatarRoot>($"https://en.gravatar.com/{email?.GenerateHash()}.json", true);
+                    var root = await GetAsync<GravatarRoot>($"https://en.gravatar.com/{email.GenerateHash()}.json", true);
                     result = root?.entry.LastOrDefault();
                 }
             }
@@ -41,8 +50,8 @@ namespace SD.WEB.Modules.Auth.Core
             {
                 result = new()
                 {
-                    displayName = email?.Split("@")[0],
-                    photos = [new Photo { value = $"https://en.gravatar.com/avatar/{email?.GenerateHash()}?d=retro" }]
+                    displayName = email.Split("@")[0],
+                    photos = [new Photo { value = $"https://en.gravatar.com/avatar/{email.GenerateHash()}?d=retro" }]
                 };
 
                 MemoryCache.Set("empty-gravatar", result);

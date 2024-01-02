@@ -80,7 +80,7 @@
 
     protected override async Task LoadDataRender()
     {
-        Client = await PrincipalApi.Get();
+        Client = await PrincipalApi.Get(IsAuthenticated);
         Gravatar = await PrincipalApi.GetGravatar(Client?.Email);
 
         if (Fake)

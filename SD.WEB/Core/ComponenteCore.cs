@@ -103,7 +103,7 @@ namespace SD.WEB.Core
 
                 if (IsAuthenticated)
                 {
-                    var principal = await PrincipalApi.Get();
+                    var principal = await PrincipalApi.Get(IsAuthenticated);
 
                     if (principal == null) //force the registration, if the main account does not exist yet
                     {

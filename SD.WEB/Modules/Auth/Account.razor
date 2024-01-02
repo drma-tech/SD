@@ -59,7 +59,7 @@
 
         if (IsAuthenticated)
         {
-            principal = await PrincipalApi.Get();
+            principal = await PrincipalApi.Get(IsAuthenticated);
 
             if (principal == null) principal = new();
 
