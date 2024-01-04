@@ -1,15 +1,22 @@
-﻿<PageTitle>@GetTitle()</PageTitle>
+﻿<PageTitle>
+    @GetTitle()
+</PageTitle>
 <HeadContent>
+    <meta property="og:url" content="@GetCanonicalUrl()">
+    <meta property="og:site_name" content="@ProjectName">
     <meta Property="og:title" Content="@GetTitle()" />
-    <meta Name="twitter:title" Content="@GetTitle()" />
+    <meta Property="og:image" Content="@Icon" />
+    <meta Property="twitter:title" Content="@GetTitle()" />
+    <meta Property="twitter:site" content="@ProjectName">
+    <meta Property="twitter:image" Content="@Icon" />
     @if (!string.IsNullOrEmpty(Description))
     {
-        <meta Name="description" Content="@GetDescription()" />
+        <meta Property="description" Content="@GetDescription()" />
         <meta Property="og:description" Content="@GetDescription()" />
-        <meta Name="twitter:description" Content="@GetDescription()" />
+        <meta Property="twitter:description" Content="@GetDescription()" />
     }
     <meta Name="keywords" Content="@GetKeywords()" />
-    <meta property="og:url" content="@GetCanonicalUrl()">
+
     <link rel="canonical" href="@GetCanonicalUrl()" />
     <link rel="icon" type="image/png" href="@Icon" />
 </HeadContent>
