@@ -8,22 +8,22 @@
 
     public class CurrentBillingPeriod
     {
-        public DateTime ends_at { get; set; }
-        public DateTime starts_at { get; set; }
+        public DateTime? ends_at { get; set; }
+        public DateTime? starts_at { get; set; }
     }
 
     public class Discount
     {
         public string? id { get; set; }
-        public DateTime ends_at { get; set; }
-        public DateTime starts_at { get; set; }
+        public DateTime? ends_at { get; set; }
+        public DateTime? starts_at { get; set; }
     }
 
     public class SubscriptionPaddle
     {
         public string? event_id { get; set; }
         public string? event_type { get; set; }
-        public DateTime occurred_at { get; set; }
+        public DateTime? occurred_at { get; set; }
         public string? notification_id { get; set; }
         public Data? data { get; set; }
     }
@@ -40,19 +40,19 @@
         /// trialing = Subscription is in trial.
         /// </summary>
         public string? status { get; set; }
-        public DateTime paused_at { get; set; }
+        public DateTime? paused_at { get; set; }
         public string? address_id { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime started_at { get; set; }
-        public DateTime updated_at { get; set; }
+        public DateTime? created_at { get; set; }
+        public DateTime? started_at { get; set; }
+        public DateTime? updated_at { get; set; }
         public string? business_id { get; set; }
-        public DateTime canceled_at { get; set; }
+        public DateTime? canceled_at { get; set; }
         public Discount? discount { get; set; }
         public CustomData? custom_data { get; set; }
         public string? customer_id { get; set; }
         public BillingCycle? billing_cycle { get; set; }
         public string? currency_code { get; set; }
-        public DateTime next_billed_at { get; set; }
+        public DateTime? next_billed_at { get; set; }
         public string? transaction_id { get; set; }
         //public object? billing_details { get; set; }
         /// <summary>
@@ -60,7 +60,7 @@
         /// manual = Payment is collected manually. Customers are sent an invoice with payment terms and can make a payment offline or using a checkout. Requires billing_details.
         /// </summary>
         public string? collection_mode { get; set; }
-        public DateTime first_billed_at { get; set; }
+        public DateTime? first_billed_at { get; set; }
         //public object? scheduled_change { get; set; }
         public CurrentBillingPeriod? current_billing_period { get; set; }
         //public object? import_meta { get; set; }
@@ -87,11 +87,11 @@
         public string? status { get; set; }
         public int quantity { get; set; }
         public bool recurring { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime updated_at { get; set; }
+        public DateTime? created_at { get; set; }
+        public DateTime? updated_at { get; set; }
         //public object trial_dates { get; set; }
-        public DateTime next_billed_at { get; set; }
-        public DateTime previously_billed_at { get; set; }
+        public DateTime? next_billed_at { get; set; }
+        public DateTime? previously_billed_at { get; set; }
     }
 
     public class Price
