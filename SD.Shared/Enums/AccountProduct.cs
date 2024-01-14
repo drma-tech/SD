@@ -1,6 +1,6 @@
 ﻿namespace SD.Shared.Enums
 {
-    public enum AccountPlan
+    public enum AccountProduct
     {
         [Custom(Name = "Basic")]
         Basic = 1,

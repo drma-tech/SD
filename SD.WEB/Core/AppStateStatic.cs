@@ -1,4 +1,5 @@
 ﻿using Blazorise;
+using SD.Shared.Models.Auth;
 using System.Globalization;
 
 namespace SD.WEB.Core
@@ -12,6 +13,7 @@ namespace SD.WEB.Core
         public static Bar? Sidebar { get; set; }
 
         public static Action? RegionChanged { get; set; }
+        public static Action<TempClientePaddle>? RegistrationSuccessful { get; set; }
 
         public static bool OnMobile { get; set; }
         public static bool OnTablet { get; set; }

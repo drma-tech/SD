@@ -601,15 +601,6 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All payment management is carried out by a specialized company. We do not store any sensitive information of our users..
-        /// </summary>
-        public static string PaymentManagement {
-            get {
-                return ResourceManager.GetString("PaymentManagement", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Photo (Last).
         /// </summary>
         public static string PhotoLast {

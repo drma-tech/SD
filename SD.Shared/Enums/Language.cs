@@ -6,7 +6,6 @@
     /// </summary>
     public enum Language
     {
-        //"af-ZA" - Afrikaans (South Africa)
         [Custom(Name = "af-ZA", ResourceType = typeof(Resources.Enum.Language))]
         afZA = 9991,
 
@@ -37,7 +36,6 @@
         [Custom(Name = "cs-CZ", ResourceType = typeof(Resources.Enum.Language))]
         csCZ = 9,
 
-        //"cy-GB" - Welsh (United Kingdom)
         [Custom(Name = "cy-GB", ResourceType = typeof(Resources.Enum.Language))]
         cyGB = 99910,
 
@@ -101,9 +99,11 @@
         [Custom(Name = "fr-FR", ResourceType = typeof(Resources.Enum.Language))]
         frFR = 29,
 
-        //"ga-IE" - Irish
         [Custom(Name = "ga-IE", ResourceType = typeof(Resources.Enum.Language))]
         gaIE = 99930,
+
+        [Custom(Name = "gd-GB", ResourceType = typeof(Resources.Enum.Language))]
+        gdGB = 99931,
 
         [Custom(Name = "gl-ES", ResourceType = typeof(Resources.Enum.Language))]
         glES = 30,
@@ -114,7 +114,6 @@
         [Custom(Name = "hi-IN", ResourceType = typeof(Resources.Enum.Language))]
         hiIN = 32,
 
-        //"hr-HR" - Croatian
         [Custom(Name = "hr-HR", ResourceType = typeof(Resources.Enum.Language))]
         hrHR = 99933,
 
@@ -142,7 +141,6 @@
         [Custom(Name = "ko-KR", ResourceType = typeof(Resources.Enum.Language))]
         koKR = 40,
 
-        //"ky-KG"
         [Custom(Name = "ky-KG", ResourceType = typeof(Resources.Enum.Language))]
         kyKG = 99941,
 
@@ -155,7 +153,6 @@
         [Custom(Name = "ml-IN", ResourceType = typeof(Resources.Enum.Language))]
         mlIN = 43,
 
-        //"mr-IN"
         [Custom(Name = "mr-IN", ResourceType = typeof(Resources.Enum.Language))]
         mrIN = 99944,
 
@@ -168,7 +165,6 @@
         [Custom(Name = "nb-NO", ResourceType = typeof(Resources.Enum.Language))]
         nbNO = 46,
 
-        //"nl-BE"
         [Custom(Name = "nl-BE", ResourceType = typeof(Resources.Enum.Language))]
         nlBE = 99947,
 
@@ -178,7 +174,6 @@
         [Custom(Name = "no-NO", ResourceType = typeof(Resources.Enum.Language))]
         noNO = 48,
 
-        //"pa-IN"
         [Custom(Name = "pa-IN", ResourceType = typeof(Resources.Enum.Language))]
         paIN = 99949,
 
@@ -242,7 +237,6 @@
         [Custom(Name = "zh-HK", ResourceType = typeof(Resources.Enum.Language))]
         zhHK = 68,
 
-        //"zh-SG"
         [Custom(Name = "zh-SG", ResourceType = typeof(Resources.Enum.Language))]
         zhSG = 99969,
 

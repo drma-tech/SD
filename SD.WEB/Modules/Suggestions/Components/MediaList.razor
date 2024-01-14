@@ -90,10 +90,6 @@
             if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));
 
             if (MultiplesRegions) AppStateStatic.RegionChanged += LoadGenericVoid;
-
-            WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; StateHasChanged(); };
-            WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; StateHasChanged(); };
-            WishApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
         }
         catch (Exception ex)
         {

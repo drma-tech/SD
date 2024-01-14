@@ -11,6 +11,7 @@ namespace SD.WEB.Modules.Auth.Core
             public const string Get = "Principal/Get";
             public const string GetEmail = "Public/Principal/GetEmail";
             public const string Add = "Principal/Add";
+            public const string Paddle = "Principal/Paddle";
             public const string Remove = "Principal/Remove";
         }
 
@@ -64,6 +65,13 @@ namespace SD.WEB.Modules.Auth.Core
             ArgumentNullException.ThrowIfNull(obj);
 
             return await PostAsync<ClientePrincipal>(Endpoint.Add, false, obj, Endpoint.Get);
+        }
+
+        public async Task<ClientePrincipal?> Paddle(ClientePrincipal? obj)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            return await PutAsync<ClientePrincipal>(Endpoint.Paddle, false, obj, Endpoint.Get);
         }
 
         public async Task Remove()

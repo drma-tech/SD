@@ -82,12 +82,13 @@
                 }
             </TabPanel>
             <TabPanel Name="Catalog" Class="mt-3">
+                <Span>provider : @Wish?.Movies.Count</Span>
                 <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc")"
-                           MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="ShowPrivateAction"></MediaList>
+                               MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
                 <MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc")"
-                           MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="ShowPrivateAction"></MediaList>
+                               MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
                 <MediaList TitleHead="@TranslationText.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc")"
-                           MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="ShowPrivateAction"></MediaList>
+                               MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
             </TabPanel>
         </Content>
     </Tabs>
@@ -113,11 +114,11 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter][EditorRequired] public ProviderModel? provider { get; set; }
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter] public ProviderModel? provider { get; set; }
+    [Parameter] public WatchedList? WatchedList { get; set; }
+    [Parameter] public WatchingList? WatchingList { get; set; }
+    [Parameter] public WishList? Wish { get; set; }
+    [Parameter] public bool ShowPrivateAction { get; set; }
 
     private string selectedTab = "About";
     private MyProviders? myProviders { get; set; }
@@ -126,7 +127,7 @@
     {
         WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
         WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()

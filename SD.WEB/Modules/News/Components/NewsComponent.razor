@@ -8,7 +8,16 @@
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-<RenderControl Core="Core" Model="News" ExpressionEmpty="@((NewsModel? obj) => obj == null || obj.Items.Empty())">
+@if (News == null || News.Items.Empty())
+{
+    <Alert Color="Color.Warning" Visible="true">
+        <AlertDescription>
+            <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @GlobalTranslations.CustomVisibilityLoading
+        </AlertDescription>
+    </Alert>
+}
+else
+{
     <Carousel @bind-SelectedSlide="@selectedSlide">
         @foreach (var item in News?.Items ?? [])
         {
@@ -25,7 +34,7 @@
             </CarouselSlide>
         }
     </Carousel>
-</RenderControl>
+}
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;

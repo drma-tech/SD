@@ -41,11 +41,6 @@ namespace SD.WEB.Core
             return Task.CompletedTask;
         }
 
-        public new void StateHasChanged()
-        {
-            base.StateHasChanged();
-        }
-
         /// <summary>
         /// if you implement the OnAfterRenderAsync method, call 'await base.OnAfterRenderAsync(firstRender);'
         /// </summary>
@@ -55,8 +50,6 @@ namespace SD.WEB.Core
         {
             try
             {
-                await base.OnAfterRenderAsync(firstRender);
-
                 if (firstRender)
                 {
                     listener.OnResized += WindowResized;

@@ -6,6 +6,7 @@ namespace SD.API.Core.Scraping
     public class ScrapingRatings
     {
         private readonly string imdb_url = "https://www.imdb.com/title/{0}";
+        private readonly string imdb_rating_url = "https://www.imdb.com/title/{0}/ratings";
         private readonly string metacritic_tv_url = "https://www.metacritic.com/tv/{0}";
         private readonly string trakt_movie_url = "https://trakt.tv/movies/{0}-{1}";
         private readonly string trakt_show_url = "https://trakt.tv/shows/{0}";
@@ -14,6 +15,7 @@ namespace SD.API.Core.Scraping
         {
             var data = new Ratings() { imdbId = imdb_id, type = MediaType.movie, tmdb = tmdb_rating };
             ProcessMovieImdb(data, string.Format(imdb_url, imdb_id));
+            ProcessMovieRatingImdb(data, string.Format(imdb_rating_url, imdb_id));
             ProcessTrack(data, string.Format(trakt_movie_url, title, year));
             return data;
         }
@@ -34,12 +36,14 @@ namespace SD.API.Core.Scraping
 
             try
             {
-                data.imdb = doc.DocumentNode.SelectNodes("//*[@id=\"__next\"]/main/div/section[1]/section/div[3]/section/section/div[2]/div[2]/div/div[1]/a/span/div/div[2]/div[1]/span[1]").FirstOrDefault()?.InnerText;
+                //is loading dynamically
+                //data.imdb = doc.DocumentNode.SelectNodes("//*[@id=\"__next\"]/main/div/section[1]/section/div[3]/section/section/div[2]/div[2]/div/div[1]/a/span/div/div[2]/div[1]/span[1]").FirstOrDefault()?.InnerText;
             }
             catch
             {
                 //do nothing
             }
+
             try
             {
                 data.metacritic = doc.DocumentNode.SelectNodes("//*[@id=\"__next\"]/main/div/section[1]/section/div[3]/section/section/div[3]/div[2]/div[2]/ul/li[3]/a/span/span[1]/span").FirstOrDefault()?.InnerText;
@@ -48,6 +52,21 @@ namespace SD.API.Core.Scraping
             {
                 //do nothing
             }
+        }
+
+        private static void ProcessMovieRatingImdb(Ratings data, string? imdb_path)
+        {
+            var web = new HtmlWeb();
+            var doc = web.Load(imdb_path);
+
+            try
+            {
+                data.imdb = doc.DocumentNode.SelectNodes("//*[@id=\"__next\"]/main/div/section/div/section/div/div[1]/section[1]/div[2]/div[2]/div[1]/div[2]/div[2]/div[1]/span[1]").FirstOrDefault()?.InnerText;
+            }
+            catch
+            {
+                //do nothing
+            }          
         }
 
         private static void ProcessShowImdb(Ratings data, string imdb_path)

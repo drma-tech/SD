@@ -245,10 +245,10 @@
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
 
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
-    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
-    [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter] public WatchedList? Watched { get; set; }
+    [Parameter] public WatchingList? Watching { get; set; }
+    [Parameter] public WishList? Wish { get; set; }
+    [Parameter] public bool ShowPrivateAction { get; set; }
 
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }

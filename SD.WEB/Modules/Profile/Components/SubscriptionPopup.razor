@@ -1,4 +1,10 @@
-﻿@inherits ComponenteCore<SubscriptionPopup>
+﻿@using SD.Shared.Models.Auth
+@using SD.WEB.Modules.Auth.Core
+@inherits ComponenteCore<SubscriptionPopup>
+
+@inject NavigationManager navigation
+@inject IJSRuntime JsRuntime
+@inject PrincipalApi PrincipalApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">
@@ -7,16 +13,22 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <Alert Color="Color.Info" Visible="true">
-        <AlertMessage TextAlignment="TextAlignment.Justified">
-            @GlobalTranslations.PaymentManagement
-        </AlertMessage>
-    </Alert>
-    <CardDeck Class="mt-3">
-        <Card Background="Background.Secondary">
+    <div class="mt-2" style="text-align: center;">
+        <RadioGroup @bind-CheckedValue="Cycle" Buttons="true" Color="Color.Primary">
+            <Radio Value="AccountCycle.Monthly">
+                @AccountCycle.Monthly.GetName()
+            </Radio>
+            <Radio Value="AccountCycle.Yearly">
+                @AccountCycle.Yearly.GetName()
+            </Radio>
+        </RadioGroup>
+        <Badge Color="Color.Success">@("save 17%")</Badge>
+    </div>
+    <CardDeck Class="mt-2">
+        <Card Background="Background.Secondary" WhiteText="true">
             <CardBody>
                 <CardTitle Size="6" TextAlignment="TextAlignment.Center">
-                    @AccountPlan.Basic.GetName()
+                    @AccountProduct.Basic.GetName()
                 </CardTitle>
                 <CardTitle Size="4" TextAlignment="TextAlignment.Center">
                     @GlobalTranslations.Free
@@ -43,44 +55,58 @@
                 </CardText>
             </CardBody>
         </Card>
-        <Card>
-            <CardBody Background="Background.Secondary">
+        <Card Background="Background.Success" WhiteText="true">
+            <CardBody>
                 <CardTitle Size="6" TextAlignment="TextAlignment.Center">
-                    @AccountPlan.Standard.GetName()
+                    @AccountProduct.Standard.GetName()
                 </CardTitle>
                 <CardTitle Size="4" TextAlignment="TextAlignment.Center">
-                    $10 / @GlobalTranslations.Year
+                    @GetSubscription(AccountProduct.Standard)?.Price / @Cycle.GetDescription()
                 </CardTitle>
                 <CardText>
                     <ListGroup Flush="true">
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Success">
                             Favorite Providers
                             <Badge Color="Color.Primary">6</Badge>
                         </ListGroupItem>
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Success">
                             @GlobalTranslations.MySuggestions
                             <Badge Color="Color.Primary">12</Badge>
                         </ListGroupItem>
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Success">
                             Wishlist
                             <Badge Color="Color.Primary">12</Badge>
                         </ListGroupItem>
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Success">
                             Watching
                             <Badge Color="Color.Primary">12</Badge>
                         </ListGroupItem>
                     </ListGroup>
                 </CardText>
-                <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="true">Choose Plan</Button>
+                @if (Client?.ClientePaddle == null)
+                {
+                    <Button Color="Color.Primary" Block="true" Class="mt-3" Clicked="@(()=>OpenCheckout(GetSubscription(AccountProduct.Standard)?.PriceId))">Choose Plan</Button>
+                }
+                else
+                {
+                    if (Client?.ClientePaddle?.Items.Last().ProductId == Subscriptions.FirstOrDefault(w => w.Product == AccountProduct.Standard)?.ProductId)
+                    {
+                        <Button Color="Color.Danger" Block="true" Class="mt-3">Cancel Subscription</Button>
+                    }
+                    else
+                    {
+                        <Button Color="Color.Primary" Block="true" Class="mt-3">Change Plan</Button>
+                    }
+                }
             </CardBody>
         </Card>
-        <Card>
-            <CardBody Background="Background.Secondary">
+        <Card Background="Background.Secondary" WhiteText="true">
+            <CardBody>
                 <CardTitle Size="6" TextAlignment="TextAlignment.Center">
-                    @AccountPlan.Premium.GetName()
+                    @AccountProduct.Premium.GetName()
                 </CardTitle>
                 <CardTitle Size="4" TextAlignment="TextAlignment.Center">
-                    $20 / @GlobalTranslations.Year
+                    @GetSubscription(AccountProduct.Premium)?.Price / @Cycle.GetDescription()
                 </CardTitle>
                 <CardText>
                     <ListGroup Flush="true">
@@ -102,17 +128,108 @@
                         </ListGroupItem>
                     </ListGroup>
                 </CardText>
-                <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="true">Choose Plan</Button>
+                @if (Client?.ClientePaddle == null)
+                {
+                    <Button Color="Color.Primary" Block="true" Class="mt-3" Clicked="@(()=>OpenCheckout(GetSubscription(AccountProduct.Premium)?.PriceId))">Choose Plan</Button>
+                }
+                else
+                {
+                    if (Client?.ClientePaddle?.Items.Last().ProductId == Subscriptions.FirstOrDefault(w => w.Product == AccountProduct.Premium)?.ProductId)
+                    {
+                        <Button Color="Color.Danger" Block="true" Class="mt-3">Cancel Subscription</Button>
+                    }
+                    else
+                    {
+                        <Button Color="Color.Primary" Block="true" Class="mt-3">Change Plan</Button>
+                    }
+                }
             </CardBody>
         </Card>
     </CardDeck>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
-        @TranslationText.Close
-    </Button>
+    <Container Fluid="true" Margin="Margin.Is0" Padding="Padding.Is0.OnX">
+        <Row HorizontalGutter="4" VerticalGutter="4">
+            <Column>
+                Powered by <a href="https://www.paddle.com/" target="_blank" rel="nofollow"><Image Source="/logo/paddle.avif" Style="height: 30px;"></Image></a>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
+                    @TranslationText.Close
+                </Button>
+            </Column>
+        </Row>
+    </Container>
 </ModalFooter>
 
 @code {
     [Inject] public IModalService ModalService { get; set; } = default!;
+
+    [Parameter] public ClientePrincipal? Client { get; set; }
+
+    private AccountCycle Cycle { get; set; } = AccountCycle.Monthly;
+
+    private class Subscription
+    {
+        public AccountProduct Product { get; set; }
+        public AccountCycle Cycle { get; set; }
+        public string? Price { get; set; }
+
+        public string? ProductId { get; set; }
+        public string? PriceId { get; set; }
+    }
+
+    private IEnumerable<Subscription> Subscriptions { get; set; } = [];
+    private Subscription? GetSubscription(AccountProduct product) => Subscriptions.FirstOrDefault(f => f.Product == product && f.Cycle == Cycle);
+
+    protected override void OnInitialized()
+    {
+        AppStateStatic.RegistrationSuccessful += async (client) => await RegistrationSuccessful(client);
+    }
+
+    private async Task RegistrationSuccessful(TempClientePaddle client)
+    {
+        try
+        {
+            var product = Subscriptions.Single(w => w.ProductId == client.ProductId && w.Cycle == Cycle).Product;
+
+            if (Client.ClientePaddle == null)
+            {
+                Client.ClientePaddle = new ClientePaddle
+                    {
+                        CustomerId = client.CustomerId,
+                        AddressId = client.AddressId,
+                        Items = new List<PaddleItem>() { new PaddleItem { ProductId = client.ProductId, PriceId = client.PriceId, Product = product } },
+                        Transactions = new List<PaddleTransaction>() { new PaddleTransaction { TransactionId = client.TransactionId } }
+                    };
+            }
+            else
+            {
+                Client.ClientePaddle.Items.Add(new PaddleItem { ProductId = client.ProductId, PriceId = client.PriceId, Product = product });
+                Client.ClientePaddle.Transactions.Add(new PaddleTransaction { TransactionId = client.TransactionId });
+            }
+
+            Client = await PrincipalApi.Paddle(Client);
+
+            StateHasChanged();
+
+            await Toast.Success("Registration successful!");
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        Subscriptions = await JsRuntime.InvokeAsync<IEnumerable<Subscription>>("getPrices");
+    }
+
+    protected async Task OpenCheckout(string? priceId)
+    {
+        var locale = AppStateStatic.Language.ToString()?.Substring(0, 2);
+
+        await JsRuntime.InvokeVoidAsync("openCheckout", priceId, Client?.Email, locale, Client?.ClientePaddle?.CustomerId, Client?.ClientePaddle?.AddressId);
+    }
 }

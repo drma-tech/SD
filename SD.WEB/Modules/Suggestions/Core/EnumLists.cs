@@ -101,9 +101,6 @@
         [Custom(Name = "Best TV Shows of All Time")]
         RollingStoneBestTVShowsofAllTime = 8228448,
 
-        [Custom(Name = "Most Expected Movies of 2023")]
-        ExpectedMovieOf2023 = 8232488,
-
         [Custom(Name = "Most Expected Movies of 2024")]
         ExpectedMovieOf2024 = 8232490,
 

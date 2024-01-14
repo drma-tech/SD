@@ -1,5 +1,6 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
+using SD.Shared.Models.Auth;
 using SD.Shared.Models.Support;
 using SD.WEB.Modules.News.Components;
 using SD.WEB.Modules.Profile;
@@ -148,7 +149,7 @@ namespace SD.WEB.Core
                 x.Add(x => x.provider, provider);
                 x.Add(x => x.WatchedList, watched);
                 x.Add(x => x.WatchingList, watching);
-                x.Add(x => x.WishList, wish);
+                x.Add(x => x.Wish, wish);
                 x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.ExtraLarge));
         }
@@ -187,9 +188,12 @@ namespace SD.WEB.Core
             }, Options(ModalSize.Default));
         }
 
-        public static async Task SubscriptionPopup(this IModalService service)
+        public static async Task SubscriptionPopup(this IModalService service, ClientePrincipal client)
         {
-            await service.Show<SubscriptionPopup>(null, x => { }, Options(ModalSize.Large));
+            await service.Show<SubscriptionPopup>(null, x =>
+            {
+                x.Add(x => x.Client, client);
+            }, Options(ModalSize.Large));
         }
 
         public static async Task TrailersPopup(this IModalService service)

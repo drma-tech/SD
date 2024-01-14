@@ -349,6 +349,15 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gaelic (GB).
+        /// </summary>
+        public static string gd_GB {
+            get {
+                return ResourceManager.GetString("gd-GB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Galician (ES).
         /// </summary>
         public static string gl_ES {

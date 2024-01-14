@@ -1,74 +1,31 @@
 ﻿<CascadingAuthenticationState>
-    <Blazorise.ThemeProvider Theme="@theme">
-        <Router AppAssembly="@typeof(App).Assembly">
-            <Found Context="routeData">
-                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                    <NotAuthorized>
-                        <SD.WEB.Modules.Auth.LoginProviders></SD.WEB.Modules.Auth.LoginProviders>
-                    </NotAuthorized>
-                    <Authorizing>
-                        <div class="alert alert-warning" role="alert">
-                            <div class="spinner-border spinner-border-sm" role="status">
-                                <span class="sr-only">@Resources.GlobalTranslations.AuthenticationInProgress</span>
-                            </div>
-                            @Resources.GlobalTranslations.AuthenticationInProgress
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    <SD.WEB.Modules.Auth.LoginProviders></SD.WEB.Modules.Auth.LoginProviders>
+                </NotAuthorized>
+                <Authorizing>
+                    <div class="alert alert-warning" role="alert">
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="sr-only">@Resources.GlobalTranslations.AuthenticationInProgress</span>
                         </div>
-                    </Authorizing>
-                </AuthorizeRouteView>
-                <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-            </Found>
-            <NotFound>
-                <PageTitle>Not found</PageTitle>
-                <LayoutView Layout="@typeof(MainLayout)">
-                    <div class="alert alert-danger" role="alert">
-                        @Resources.GlobalTranslations.NothingThisAddress
+                        @Resources.GlobalTranslations.AuthenticationInProgress
                     </div>
-                </LayoutView>
-            </NotFound>
-        </Router>
-    </Blazorise.ThemeProvider>
+                </Authorizing>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <div class="alert alert-danger" role="alert">
+                    @Resources.GlobalTranslations.NothingThisAddress
+                </div>
+            </LayoutView>
+        </NotFound>
+    </Router>
 
     <ModalProvider></ModalProvider>
     <MessageProvider />
 </CascadingAuthenticationState>
-
-@code {
-    private Theme theme = new()
-        {
-            LuminanceThreshold = 170,
-            BarOptions = new()
-            {
-                HorizontalHeight = "64px",
-                VerticalBrandHeight = "64px",
-                LightColors = new()
-                {
-                    ItemColorOptions = new()
-                    {
-                        ActiveBackgroundColor = "#dedede",
-                        ActiveColor = "#000000",
-                        HoverBackgroundColor = "#dedede",
-                        HoverColor = "#000000",
-                    },
-                }
-            },
-            ColorOptions = new()
-            {
-                //Primary = "#9317E1",
-                Secondary = "#a5a5a5",
-            },
-            BackgroundOptions = new()
-            {
-                //Primary = "#9317E1",
-                Secondary = "#a5a5a5",
-            },
-            TextColorOptions = new()
-            {
-                //Primary = "#9317E1",
-                Secondary = "#a5a5a5",
-            }
-            //InputOptions = new()
-            //{
-            //    CheckColor = "#0288D1",
-            //},
-        };
-}
