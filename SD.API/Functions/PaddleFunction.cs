@@ -14,7 +14,7 @@ namespace SD.API.Functions
 
         [Function("Subscription")]
         public async Task Subscription(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Paddle/Subscription")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Public/Paddle/Subscription")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
