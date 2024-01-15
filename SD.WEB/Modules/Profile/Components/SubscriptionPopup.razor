@@ -4,7 +4,6 @@
 
 @inject NavigationManager navigation
 @inject IJSRuntime JsRuntime
-@inject PrincipalApi PrincipalApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">
@@ -13,139 +12,143 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <div class="mt-2" style="text-align: center;">
-        <RadioGroup @bind-CheckedValue="Cycle" Buttons="true" Color="Color.Primary">
-            <Radio Value="AccountCycle.Monthly">
-                @AccountCycle.Monthly.GetName()
-            </Radio>
-            <Radio Value="AccountCycle.Yearly">
-                @AccountCycle.Yearly.GetName()
-            </Radio>
-        </RadioGroup>
-        <Badge Color="Color.Success">@("save 17%")</Badge>
-    </div>
-    <CardDeck Class="mt-2">
-        <Card Background="Background.Secondary" WhiteText="true">
-            <CardBody>
-                <CardTitle Size="6" TextAlignment="TextAlignment.Center">
-                    @AccountProduct.Basic.GetName()
-                </CardTitle>
-                <CardTitle Size="4" TextAlignment="TextAlignment.Center">
-                    @GlobalTranslations.Free
-                </CardTitle>
-                <CardText>
-                    <ListGroup Flush="true">
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                            Favorite Providers
-                            <Badge Color="Color.Primary">1</Badge>
-                        </ListGroupItem>
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                            @GlobalTranslations.MySuggestions
-                            <Badge Color="Color.Primary">6</Badge>
-                        </ListGroupItem>
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                            Wishlist
-                            <Badge Color="Color.Primary">6</Badge>
-                        </ListGroupItem>
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                            Watching
-                            <Badge Color="Color.Primary">6</Badge>
-                        </ListGroupItem>
-                    </ListGroup>
-                </CardText>
-            </CardBody>
-        </Card>
-        <Card Background="Background.Success" WhiteText="true">
-            <CardBody>
-                <CardTitle Size="6" TextAlignment="TextAlignment.Center">
-                    @AccountProduct.Standard.GetName()
-                </CardTitle>
-                <CardTitle Size="4" TextAlignment="TextAlignment.Center">
-                    @GetSubscription(AccountProduct.Standard)?.Price / @Cycle.GetDescription()
-                </CardTitle>
-                <CardText>
-                    <ListGroup Flush="true">
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Success">
-                            Favorite Providers
-                            <Badge Color="Color.Primary">6</Badge>
-                        </ListGroupItem>
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Success">
-                            @GlobalTranslations.MySuggestions
-                            <Badge Color="Color.Primary">12</Badge>
-                        </ListGroupItem>
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Success">
-                            Wishlist
-                            <Badge Color="Color.Primary">12</Badge>
-                        </ListGroupItem>
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Success">
-                            Watching
-                            <Badge Color="Color.Primary">12</Badge>
-                        </ListGroupItem>
-                    </ListGroup>
-                </CardText>
-                @if (Client?.ClientePaddle == null)
-                {
+    @if (Client?.ClientePaddle == null)
+    {
+        <div class="mt-2" style="text-align: center;">
+            <RadioGroup @bind-CheckedValue="Cycle" Buttons="true" Color="Color.Primary">
+                <Radio Value="AccountCycle.Monthly">
+                    @AccountCycle.Monthly.GetName()
+                </Radio>
+                <Radio Value="AccountCycle.Yearly">
+                    @AccountCycle.Yearly.GetName()
+                </Radio>
+            </RadioGroup>
+            <Badge Color="Color.Success">@("save 17%")</Badge>
+        </div>
+        <CardDeck Class="mt-2">
+            <Card Background="Background.Secondary" WhiteText="true">
+                <CardBody>
+                    <CardTitle Size="6" TextAlignment="TextAlignment.Center">
+                        @AccountProduct.Basic.GetName()
+                    </CardTitle>
+                    <CardTitle Size="4" TextAlignment="TextAlignment.Center">
+                        @GlobalTranslations.Free
+                    </CardTitle>
+                    <CardText>
+                        <ListGroup Flush="true">
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                Favorite Providers
+                                <Badge Color="Color.Primary">1</Badge>
+                            </ListGroupItem>
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                @GlobalTranslations.MySuggestions
+                                <Badge Color="Color.Primary">6</Badge>
+                            </ListGroupItem>
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                Wishlist
+                                <Badge Color="Color.Primary">6</Badge>
+                            </ListGroupItem>
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                Watching
+                                <Badge Color="Color.Primary">6</Badge>
+                            </ListGroupItem>
+                        </ListGroup>
+                    </CardText>
+                </CardBody>
+            </Card>
+            <Card Background="Background.Secondary" WhiteText="true">
+                <CardBody>
+                    <CardTitle Size="6" TextAlignment="TextAlignment.Center">
+                        @AccountProduct.Standard.GetName()
+                    </CardTitle>
+                    <CardTitle Size="4" TextAlignment="TextAlignment.Center">
+                        @GetSubscription(AccountProduct.Standard)?.Price / @Cycle.GetDescription()
+                    </CardTitle>
+                    <CardText>
+                        <ListGroup Flush="true">
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                Favorite Providers
+                                <Badge Color="Color.Primary">6</Badge>
+                            </ListGroupItem>
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                @GlobalTranslations.MySuggestions
+                                <Badge Color="Color.Primary">12</Badge>
+                            </ListGroupItem>
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                Wishlist
+                                <Badge Color="Color.Primary">12</Badge>
+                            </ListGroupItem>
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                Watching
+                                <Badge Color="Color.Primary">12</Badge>
+                            </ListGroupItem>
+                        </ListGroup>
+                    </CardText>
                     <Button Color="Color.Primary" Block="true" Class="mt-3" Clicked="@(()=>OpenCheckout(GetSubscription(AccountProduct.Standard)?.PriceId))">Choose Plan</Button>
-                }
-                else
-                {
-                    if (Client?.ClientePaddle?.Items.Last().ProductId == Subscriptions.FirstOrDefault(w => w.Product == AccountProduct.Standard)?.ProductId)
-                    {
-                        <Button Color="Color.Danger" Block="true" Class="mt-3">Cancel Subscription</Button>
-                    }
-                    else
-                    {
-                        <Button Color="Color.Primary" Block="true" Class="mt-3">Change Plan</Button>
-                    }
-                }
-            </CardBody>
-        </Card>
-        <Card Background="Background.Secondary" WhiteText="true">
-            <CardBody>
-                <CardTitle Size="6" TextAlignment="TextAlignment.Center">
-                    @AccountProduct.Premium.GetName()
-                </CardTitle>
-                <CardTitle Size="4" TextAlignment="TextAlignment.Center">
-                    @GetSubscription(AccountProduct.Premium)?.Price / @Cycle.GetDescription()
-                </CardTitle>
-                <CardText>
-                    <ListGroup Flush="true">
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                            Favorite Providers
-                            <Badge Color="Color.Primary">12</Badge>
-                        </ListGroupItem>
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                            @GlobalTranslations.MySuggestions
-                            <Badge Color="Color.Primary">24</Badge>
-                        </ListGroupItem>
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                            Wishlist
-                            <Badge Color="Color.Primary">48</Badge>
-                        </ListGroupItem>
-                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                            Watching
-                            <Badge Color="Color.Primary">48</Badge>
-                        </ListGroupItem>
-                    </ListGroup>
-                </CardText>
-                @if (Client?.ClientePaddle == null)
-                {
+                </CardBody>
+            </Card>
+            <Card Background="Background.Secondary" WhiteText="true">
+                <CardBody>
+                    <CardTitle Size="6" TextAlignment="TextAlignment.Center">
+                        @AccountProduct.Premium.GetName()
+                    </CardTitle>
+                    <CardTitle Size="4" TextAlignment="TextAlignment.Center">
+                        @GetSubscription(AccountProduct.Premium)?.Price / @Cycle.GetDescription()
+                    </CardTitle>
+                    <CardText>
+                        <ListGroup Flush="true">
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                Favorite Providers
+                                <Badge Color="Color.Primary">12</Badge>
+                            </ListGroupItem>
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                @GlobalTranslations.MySuggestions
+                                <Badge Color="Color.Primary">24</Badge>
+                            </ListGroupItem>
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                Wishlist
+                                <Badge Color="Color.Primary">48</Badge>
+                            </ListGroupItem>
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                Watching
+                                <Badge Color="Color.Primary">48</Badge>
+                            </ListGroupItem>
+                        </ListGroup>
+                    </CardText>
                     <Button Color="Color.Primary" Block="true" Class="mt-3" Clicked="@(()=>OpenCheckout(GetSubscription(AccountProduct.Premium)?.PriceId))">Choose Plan</Button>
-                }
-                else
-                {
-                    if (Client?.ClientePaddle?.Items.Last().ProductId == Subscriptions.FirstOrDefault(w => w.Product == AccountProduct.Premium)?.ProductId)
-                    {
-                        <Button Color="Color.Danger" Block="true" Class="mt-3">Cancel Subscription</Button>
-                    }
-                    else
-                    {
-                        <Button Color="Color.Primary" Block="true" Class="mt-3">Change Plan</Button>
-                    }
-                }
+                </CardBody>
+            </Card>
+        </CardDeck>
+    }
+    else
+    {
+        <Card Margin="Margin.Is2.FromBottom">
+            <CardHeader>
+                Subscription Details
+                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="@(async()=>{ await UpdateClient(); })"
+                        title="@GlobalTranslations.ButtonUpdate" >
+                    @GlobalTranslations.ButtonUpdate
+                </Button>
+            </CardHeader>
+            <CardBody>
+                Product: @Client.ClientePaddle.Items.SingleOrDefault()?.Product.GetName();
+                Active: @Client.ClientePaddle.Items.SingleOrDefault()?.Active;
             </CardBody>
         </Card>
-    </CardDeck>
+        <Card Margin="Margin.Is2.FromBottom">
+            <CardHeader>
+                @WEB.Resources.GlobalTranslations.Actions
+            </CardHeader>
+            <CardBody>
+                <Button Color="Color.Primary" Clicked="async()=>{ }" Margin="Margin.Is1.FromEnd" Disabled="true">
+                    <Blazorise.Icon Name="FontAwesomeIcons.CreditCard" /> Update payment details
+                </Button>
+                <Button Color="Color.Danger" Clicked="async()=>{ }" Disabled="true">
+                    <Blazorise.Icon Name="FontAwesomeIcons.UserAltSlash" /> Cancel subscription
+                </Button>
+            </CardBody>
+        </Card>
+    }
 </ModalBody>
 <ModalFooter>
     <Container Fluid="true" Margin="Margin.Is0" Padding="Padding.Is0.OnX">
@@ -169,7 +172,7 @@
 
     private AccountCycle Cycle { get; set; } = AccountCycle.Monthly;
 
-    private class Subscription
+    private class Plan
     {
         public AccountProduct Product { get; set; }
         public AccountCycle Cycle { get; set; }
@@ -179,51 +182,19 @@
         public string? PriceId { get; set; }
     }
 
-    private IEnumerable<Subscription> Subscriptions { get; set; } = [];
-    private Subscription? GetSubscription(AccountProduct product) => Subscriptions.FirstOrDefault(f => f.Product == product && f.Cycle == Cycle);
+    private IEnumerable<Plan> Plans { get; set; } = [];
+    private Plan? GetSubscription(AccountProduct product) => Plans.FirstOrDefault(f => f.Product == product && f.Cycle == Cycle);
 
     protected override void OnInitialized()
     {
+        if (Client == null) throw new NotificationException("Client null");
+
         AppStateStatic.RegistrationSuccessful += async (client) => await RegistrationSuccessful(client);
-    }
-
-    private async Task RegistrationSuccessful(TempClientePaddle client)
-    {
-        try
-        {
-            var product = Subscriptions.Single(w => w.ProductId == client.ProductId && w.Cycle == Cycle).Product;
-
-            if (Client.ClientePaddle == null)
-            {
-                Client.ClientePaddle = new ClientePaddle
-                    {
-                        CustomerId = client.CustomerId,
-                        AddressId = client.AddressId,
-                        Items = new List<PaddleItem>() { new PaddleItem { ProductId = client.ProductId, PriceId = client.PriceId, Product = product } },
-                        Transactions = new List<PaddleTransaction>() { new PaddleTransaction { TransactionId = client.TransactionId } }
-                    };
-            }
-            else
-            {
-                Client.ClientePaddle.Items.Add(new PaddleItem { ProductId = client.ProductId, PriceId = client.PriceId, Product = product });
-                Client.ClientePaddle.Transactions.Add(new PaddleTransaction { TransactionId = client.TransactionId });
-            }
-
-            Client = await PrincipalApi.Paddle(Client);
-
-            StateHasChanged();
-
-            await Toast.Success("Registration successful!");
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
     }
 
     protected override async Task LoadDataRender()
     {
-        Subscriptions = await JsRuntime.InvokeAsync<IEnumerable<Subscription>>("getPrices");
+        Plans = await JsRuntime.InvokeAsync<IEnumerable<Plan>>("getPlans");
     }
 
     protected async Task OpenCheckout(string? priceId)
@@ -231,5 +202,47 @@
         var locale = AppStateStatic.Language.ToString()?.Substring(0, 2);
 
         await JsRuntime.InvokeVoidAsync("openCheckout", priceId, Client?.Email, locale, Client?.ClientePaddle?.CustomerId, Client?.ClientePaddle?.AddressId);
+    }
+
+    private async Task RegistrationSuccessful(TempClientePaddle client)
+    {
+        try
+        {
+            if (Client == null) throw new NotificationException("Client null");
+
+            var product = Plans.Single(w => w.ProductId == client.ProductId && w.Cycle == Cycle).Product;
+
+            if (Client.ClientePaddle == null)
+            {
+                Client.ClientePaddle = new ClientePaddle
+                    {
+                        CustomerId = client.CustomerId,
+                        AddressId = client.AddressId,
+                        Items = new List<PaddleItem>() { new PaddleItem { ProductId = client.ProductId, Product = product } }
+                    };
+            }
+            else
+            {
+                Client.ClientePaddle.Items.Add(new PaddleItem { ProductId = client.ProductId, Product = product });
+            }
+
+            Client = await PrincipalApi.Paddle(Client);
+
+            StateHasChanged();
+
+            await Toast.Success("Registration successful!");
+
+            await Task.Delay(5000).ContinueWith(async (task) => { await UpdateClient(); });
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
+    private async Task UpdateClient()
+    {
+        Client = await PrincipalApi.Get(true, true); 
+        StateHasChanged();
     }
 }

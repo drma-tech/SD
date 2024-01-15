@@ -31,6 +31,13 @@ namespace SD.WEB.Core
             else return Http.BaseAddress?.ToString().Contains("localhost") ?? true ? "http://localhost:7071/api/" : Http.BaseAddress.ToString() + "api/";
         }
 
+        protected void CleanCache(string? urlGet = null)
+        {
+            if (string.IsNullOrEmpty(urlGet)) return;
+
+            MemoryCache.Remove(urlGet);
+        }
+
         protected async Task<string?> GetValueAsync(string requestUri, bool isExternalLink, CacheSettings? cacheSettings = null)
         {
             if (MemoryCache == null)

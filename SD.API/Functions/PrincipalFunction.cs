@@ -90,7 +90,6 @@ namespace SD.API.Functions
                     }
 
                     Client.ClientePaddle.Items.AddRange(body.ClientePaddle?.Items ?? throw new NotificationException("transaction failed"));
-                    Client.ClientePaddle.Transactions.AddRange(body.ClientePaddle?.Transactions ?? throw new NotificationException("transaction failed"));
                 }
 
                 return await repo.Upsert(body, cancellationToken);

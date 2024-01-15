@@ -6,9 +6,7 @@ Paddle.Setup({
             let client = {
                 CustomerId: data.data.customer.id,
                 AddressId: data.data.customer.address.id,
-                ProductId: data.data.items[0].product.id,
-                PriceId: data.data.items[0].price_id,
-                TransactionId: data.data.transaction_id
+                ProductId: data.data.items[0].product.id
             };
             DotNet.invokeMethodAsync('SD.WEB', 'RegistrationSuccessful', client)
         }
@@ -24,7 +22,7 @@ let price_standard_year = "pri_01hk958vt3a5y9yc5dchwtgbp7";
 let price_premium_month = "pri_01hm2tgkt6gxay2y3m4bygxfbe";
 let price_premium_year = "pri_01hm2thqafj7bet8rkpsekxzq1";
 
-async function getPrices() {
+async function getPlans() {
     let request = {
         items: [
             { quantity: 1, priceId: price_standard_month },
@@ -56,12 +54,27 @@ async function getPrices() {
 }
 
 function openCheckout(priceId, email, locale, customerId, addressId) {
+    let customer;
+    if (customerId) {
+        customer = {
+            id: customerId,
+            address: {
+                id: addressId
+            }
+        }
+    }
+    else {
+        customer = {
+            email: email
+        }
+    }
+
     Paddle.Checkout.open({
         settings: {
             displayMode: "overlay",
             theme: "light",
             locale: locale,
-            showAddDiscounts:false,
+            showAddDiscounts: false,
             showAddTaxId: false
         },
         items: [
@@ -70,12 +83,6 @@ function openCheckout(priceId, email, locale, customerId, addressId) {
                 quantity: 1
             }
         ],
-        customer: {
-            email: email,
-            id: customerId,
-            address: {
-                id: addressId
-            }
-        }
+        customer: customer
     });
 }

@@ -15,8 +15,13 @@ namespace SD.WEB.Modules.Auth.Core
             public const string Remove = "Principal/Remove";
         }
 
-        public async Task<ClientePrincipal?> Get(bool IsUserAuthenticated)
+        public async Task<ClientePrincipal?> Get(bool IsUserAuthenticated, bool forceClean = false)
         {
+            if (forceClean)
+            {
+                CleanCache(Endpoint.Get);
+            }
+
             if (IsUserAuthenticated)
             {
                 return await GetAsync<ClientePrincipal>(Endpoint.Get, false);

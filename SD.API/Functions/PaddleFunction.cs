@@ -24,10 +24,12 @@ namespace SD.API.Functions
 
                 var result = await repo.Query<ClientePrincipal>(x => body.data.customer_id == (x.ClientePaddle != null ? x.ClientePaddle.CustomerId : ""), null, DocumentType.Principal, cancellationToken);
 
-                if (result == null) throw new NotificationException("result null");
+                if (result == null) return;
                 var client = result.FirstOrDefault();
                 if (client == null) throw new NotificationException("client null");
                 if (client.ClientePaddle == null) throw new NotificationException("client.ClientePaddle null");
+
+                client.ClientePaddle.SubscriptionId = body.data.id;
 
                 foreach (var item in body.data.items)
                 {
