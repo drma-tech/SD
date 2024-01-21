@@ -1,13 +1,17 @@
 ﻿@using SD.Shared.Models.Auth
+@using SD.Shared.Models.Subscription
 @using SD.WEB.Modules.Auth.Core
+@using SD.WEB.Modules.Profile.Core
 @inherits ComponenteCore<SubscriptionPopup>
 
 @inject NavigationManager navigation
 @inject IJSRuntime JsRuntime
+@inject PaddleConfigurationApi ConfigurationApi
+@inject PaddleSubscriptionApi SubscriptionApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">
-        SD - My Subscription
+        My Subscription
     </ModalTitle>
     <CloseButton />
 </ModalHeader>
@@ -125,14 +129,16 @@
         <Card Margin="Margin.Is2.FromBottom">
             <CardHeader>
                 Subscription Details
-                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="@(async()=>{ await UpdateClient(); })"
-                        title="@GlobalTranslations.ButtonUpdate" >
+                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="@(async()=>{ await UpdateData(); })"
+                        title="@GlobalTranslations.ButtonUpdate">
                     @GlobalTranslations.ButtonUpdate
                 </Button>
             </CardHeader>
             <CardBody>
-                Product: @Client.ClientePaddle.Items.SingleOrDefault()?.Product.GetName();
-                Active: @Client.ClientePaddle.Items.SingleOrDefault()?.Active;
+                <span>Subscription: @Client.ClientePaddle.Items.SingleOrDefault()?.Product.GetName()</span><br />
+                <span>Status: @Subscription?.data?.status</span><br />
+                <span>starts_at: @Subscription?.data?.current_billing_period?.starts_at</span><br />
+                <span>ends_at: @Subscription?.data?.current_billing_period?.ends_at</span>
             </CardBody>
         </Card>
         <Card Margin="Margin.Is2.FromBottom">
@@ -140,10 +146,10 @@
                 @WEB.Resources.GlobalTranslations.Actions
             </CardHeader>
             <CardBody>
-                <Button Color="Color.Primary" Clicked="async()=>{ }" Margin="Margin.Is1.FromEnd" Disabled="true">
+                <Button Color="Color.Primary" Clicked="UpdateClick" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.CreditCard" /> Update payment details
                 </Button>
-                <Button Color="Color.Danger" Clicked="async()=>{ }" Disabled="true">
+                <Button Color="Color.Danger" Clicked="CancelClick">
                     <Blazorise.Icon Name="FontAwesomeIcons.UserAltSlash" /> Cancel subscription
                 </Button>
             </CardBody>
@@ -170,6 +176,8 @@
 
     [Parameter] public ClientePrincipal? Client { get; set; }
 
+    public SubscriptionRoot? Subscription { get; set; }
+
     private AccountCycle Cycle { get; set; } = AccountCycle.Monthly;
 
     private class Plan
@@ -194,7 +202,18 @@
 
     protected override async Task LoadDataRender()
     {
-        Plans = await JsRuntime.InvokeAsync<IEnumerable<Plan>>("getPlans");
+        var config = await ConfigurationApi.GetConfigurations();
+        if (config == null) throw new NotificationException("server comunication error");
+
+        if (string.IsNullOrEmpty(Client?.ClientePaddle?.SubscriptionId))
+        {
+            await JsRuntime.InvokeVoidAsync("startPaddle", config.Token);
+            Plans = await JsRuntime.InvokeAsync<IEnumerable<Plan>>("getPlans", config.PriceStandardMonth, config.PriceStandardYear, config.PricePremiumMonth, config.PricePremiumYear);
+        }
+        else
+        {
+            Subscription = await SubscriptionApi.GetSubscription(Client?.ClientePaddle?.SubscriptionId);
+        }
     }
 
     protected async Task OpenCheckout(string? priceId)
@@ -232,7 +251,7 @@
 
             await Toast.Success("Registration successful!");
 
-            await Task.Delay(5000).ContinueWith(async (task) => { await UpdateClient(); });
+            await Task.Delay(10000).ContinueWith(async (task) => { await UpdateData(); });
         }
         catch (Exception ex)
         {
@@ -240,9 +259,20 @@
         }
     }
 
-    private async Task UpdateClient()
+    private async Task UpdateData()
     {
-        Client = await PrincipalApi.Get(true, true); 
+        Client = await PrincipalApi.Get(true, true);
+        await LoadDataRender();
         StateHasChanged();
+    }
+
+    private void UpdateClick()
+    {
+        Navigation.NavigateTo(Subscription?.data?.management_urls?.update_payment_method ?? "");
+    }
+
+    private void CancelClick()
+    {
+        Navigation.NavigateTo(Subscription?.data?.management_urls?.cancel ?? "");
     }
 }

@@ -1,28 +1,24 @@
-﻿Paddle.Environment.set("sandbox");
-Paddle.Setup({
-    token: 'test_3af0345347aa7b0122eca72495e',
-    eventCallback: function (data) {
-        if (data.name == "checkout.completed") {
-            let client = {
-                CustomerId: data.data.customer.id,
-                AddressId: data.data.customer.address.id,
-                ProductId: data.data.items[0].product.id
-            };
-            DotNet.invokeMethodAsync('SD.WEB', 'RegistrationSuccessful', client)
-        }
+﻿async function startPaddle(token) {
+    if (window.location.hostname == "localhost") {
+        Paddle.Environment.set("sandbox");
     }
-});
+    await Paddle.Setup({
+        token: token,
+        eventCallback: function (data) {
+            if (data.name == "checkout.completed") {
+                let client = {
+                    CustomerId: data.data.customer.id,
+                    AddressId: data.data.customer.address.id,
+                    ProductId: data.data.items[0].product.id
+                };
+                Paddle.Checkout.close();
+                DotNet.invokeMethodAsync('SD.WEB', 'RegistrationSuccessful', client);
+            }
+        }
+    });
+}
 
-let product_standard = "pro_01hk9578q9g4g82d91vxbz3zk5";
-let product_premium = "pro_01hm2tdgses7t04zngyvxchd3r";
-
-let price_standard_month = "pri_01hk96x0wdc6xrjrc8sfy39xj5";
-let price_standard_year = "pri_01hk958vt3a5y9yc5dchwtgbp7";
-
-let price_premium_month = "pri_01hm2tgkt6gxay2y3m4bygxfbe";
-let price_premium_year = "pri_01hm2thqafj7bet8rkpsekxzq1";
-
-async function getPlans() {
+async function getPlans(price_standard_month, price_standard_year, price_premium_month, price_premium_year) {
     let request = {
         items: [
             { quantity: 1, priceId: price_standard_month },

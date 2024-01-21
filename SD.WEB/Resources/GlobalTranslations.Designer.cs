@@ -610,15 +610,6 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pick a random item for me.
-        /// </summary>
-        public static string PickARandom {
-            get {
-                return ResourceManager.GetString("PickARandom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Product still under development, so a lot will still improve. If you have suggestions to make, please ask in the app&apos;s support section..
         /// </summary>
         public static string ProductUnderDevelopment {

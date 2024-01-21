@@ -1,24 +1,58 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Configuration;
 using SD.API.Repository.Core;
 using SD.Shared.Core.Models;
 using SD.Shared.Models.Auth;
 using SD.Shared.Models.Subscription;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace SD.API.Functions
 {
-    public class PaddleFunction(IRepository repo)
+    public class PaddleFunction(IRepository repo, IConfiguration configuration)
     {
+        //endpoints to authorize
         //Live:    https://34.232.58.13,https://34.195.105.136,https://34.237.3.244,https://35.155.119.135,https://52.11.166.252,https://34.212.5.7
         //Sandbox: https://34.194.127.46,https://54.234.237.108,https://3.208.120.145,https://44.226.236.210,https://44.241.183.62,https://100.20.172.113
 
-        [Function("Subscription")]
-        public async Task Subscription(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Public/Paddle/Subscription")] HttpRequestData req, CancellationToken cancellationToken)
+        [Function("GetSubscription")]
+        public async Task<SubscriptionRoot?> GetSubscription(
+           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/subscription")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                var body = await req.GetPublicBody<SubscriptionPaddle>(cancellationToken);
+                var id = req.GetQueryParameters()["id"];
+
+                var endpoint = configuration.GetValue<string>("Paddle_Endpoint");
+                var key = configuration.GetValue<string>("Paddle_Key");
+
+                using var http = new HttpClient();
+
+                http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
+
+                using var request = new HttpRequestMessage(HttpMethod.Get, $"{endpoint}subscriptions/{id}");
+
+                var response = await http.SendAsync(request, cancellationToken);
+
+                if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
+
+                return await response.Content.ReadFromJsonAsync<SubscriptionRoot>(cancellationToken: cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
+            }
+        }
+
+        [Function("PostSubscription")]
+        public async Task PostSubscription(
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "public/paddle/subscription")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var body = await req.GetPublicBody<EventRoot>(cancellationToken);
                 if (body == null) throw new NotificationException("body null");
                 if (body.data == null) throw new NotificationException("body.data null");
 
@@ -43,6 +77,29 @@ namespace SD.API.Functions
                 }
 
                 await repo.Upsert(client, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
+            }
+        }
+
+        [Function("Configurations")]
+        public Configurations Configurations([HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/configurations")] HttpRequestData req)
+        {
+            try
+            {
+                var config = new Configurations
+                {
+                    Token = configuration.GetValue<string>("Paddle_Token"),
+                    PriceStandardMonth = configuration.GetValue<string>("Paddle_PriceStandardMonth"),
+                    PriceStandardYear = configuration.GetValue<string>("Paddle_PriceStandardYear"),
+                    PricePremiumMonth = configuration.GetValue<string>("Paddle_PricePremiumMonth"),
+                    PricePremiumYear = configuration.GetValue<string>("Paddle_PricePremiumYear")
+                };
+
+                return config;
             }
             catch (Exception ex)
             {
