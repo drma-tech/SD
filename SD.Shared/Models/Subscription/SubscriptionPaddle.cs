@@ -151,6 +151,9 @@
     {
         public DateTime? created_at { get; set; }
 
+        /// <summary>
+        /// if null, it means that there will no longer be charges, so you should no longer cancel or update the payment method
+        /// </summary>
         public DateTime? next_billed_at { get; set; }
 
         //public object? trial_dates { get; set; }
@@ -158,7 +161,7 @@
 
         public Price? price { get; set; }
 
-        public Proration proration { get; set; }
+        public Proration? proration { get; set; }
         public int? quantity { get; set; }
 
         public bool? recurring { get; set; }
@@ -178,7 +181,7 @@
         public string? id { get; set; }
         public string? price_id { get; set; }
         public Product? product { get; set; }
-        public Proration proration { get; set; }
+        public Proration? proration { get; set; }
         public int? quantity { get; set; }
         public string? tax_rate { get; set; }
         public Totals? totals { get; set; }

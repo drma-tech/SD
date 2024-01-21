@@ -128,9 +128,9 @@
     {
         @if (Subscription == null)
         {
-            <Alert Color="Color.Primary" Visible="true">
+            <Alert Color="Color.Warning" Visible="true">
                 <AlertDescription>
-                    <Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Subscription being processed. Please, wait.
+                    <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> Subscription is being processed. Please wait.
                 </AlertDescription>
             </Alert>
         }
@@ -176,12 +176,23 @@
                     @WEB.Resources.GlobalTranslations.Actions
                 </CardHeader>
                 <CardBody>
-                    <Button Color="Color.Primary" Clicked="UpdateClick" Margin="Margin.Is1.FromEnd">
-                        <Blazorise.Icon Name="FontAwesomeIcons.CreditCard" /> Update payment details
-                    </Button>
-                    <Button Color="Color.Danger" Clicked="CancelClick">
-                        <Blazorise.Icon Name="FontAwesomeIcons.UserAltSlash" /> Cancel subscription
-                    </Button>
+                    @if (ActiveBilling)
+                    {
+                        <Button Color="Color.Primary" Clicked="UpdateClick" Disabled="!ActiveBilling" Margin="Margin.Is1.FromEnd">
+                            <Blazorise.Icon Name="FontAwesomeIcons.CreditCard" /> Update payment details
+                        </Button>
+                        <Button Color="Color.Danger" Clicked="CancelClick" Disabled="!ActiveBilling">
+                            <Blazorise.Icon Name="FontAwesomeIcons.UserAltSlash" /> Cancel subscription
+                        </Button>
+                    }
+                    else
+                    {
+                        <Alert Color="Color.Primary" Visible="true">
+                            <AlertDescription>
+                                <Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> The subscription has been scheduled to be canceled at the end of the current billing period.
+                            </AlertDescription>
+                        </Alert>
+                    }
                 </CardBody>
             </Card>
         }
@@ -208,6 +219,7 @@
     [Parameter] public ClientePrincipal? Client { get; set; }
 
     public RootSubscription? Subscription { get; set; }
+    public bool ActiveBilling => Subscription?.data?.items.FirstOrDefault()?.next_billed_at != null;
 
     private AccountCycle Cycle { get; set; } = AccountCycle.Monthly;
 

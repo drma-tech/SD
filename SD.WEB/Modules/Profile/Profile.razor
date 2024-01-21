@@ -83,6 +83,8 @@
 
     protected override async Task LoadDataRender()
     {
+        Client = await PrincipalApi.Get(IsAuthenticated);
+
         if (!string.IsNullOrEmpty(_ptxn))
         {
             var config = await ConfigurationApi.GetConfigurations();
@@ -104,7 +106,6 @@
             (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
         }
 
-        Client = await PrincipalApi.Get(IsAuthenticated);
         Gravatar = await PrincipalApi.GetGravatar(Client?.Email);
     }
 
