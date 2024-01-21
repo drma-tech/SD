@@ -95,6 +95,7 @@
     protected override void OnInitialized()
     {
         Navigation.LocationChanged += OnLocationChanged;
+        AppStateStatic.ShowError += async (msg) => { await Toast.Error(msg); };
 
         ChangeCurrentButton(Navigation.Uri);
 
@@ -160,5 +161,11 @@
     public static void RegistrationSuccessful(TempClientePaddle client)
     {
         AppStateStatic.RegistrationSuccessful?.Invoke(client);
+    }
+
+    [JSInvokable]
+    public static void ShowError(string error)
+    {
+        AppStateStatic.ShowError?.Invoke(error);
     }
 }

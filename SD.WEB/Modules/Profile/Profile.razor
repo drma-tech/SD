@@ -7,10 +7,12 @@
 <SeoHeader Title="@SeoTranslations.ProfileTitle" Description="@SeoTranslations.ProfileDescription" Url="/profile"></SeoHeader>
 @inherits PageCore<Profile>
 @inject IHttpClientFactory httpClientFactory
+@inject IJSRuntime JsRuntime
 
 @inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
+@inject PaddleConfigurationApi ConfigurationApi
 
 @if (IsAuthenticated)
 {
@@ -57,6 +59,7 @@
 </Row>
 
 @code {
+    [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }
     [Parameter][SupplyParameterFromQuery(Name = "Fake")] public bool Fake { get; set; } = false;
     [Inject] public IModalService ModalService { get; set; } = default!;
 
@@ -95,6 +98,14 @@
         {
             (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
         }
+
+        if (!string.IsNullOrEmpty(_ptxn))
+        {
+            var config = await ConfigurationApi.GetConfigurations();
+            if (config == null) throw new NotificationException("server comunication error");
+
+            await JsRuntime.InvokeVoidAsync("startPaddle", config.Token);
+        }        
     }
 
     private async Task MyAccount()
@@ -105,5 +116,12 @@
     private async Task OpenSubscription()
     {
         await ModalService.SubscriptionPopup(Client);
+    }
+
+    protected async Task OpenCheckout(string? priceId)
+    {
+        var locale = AppStateStatic.Language.ToString()?.Substring(0, 2);
+
+        await JsRuntime.InvokeVoidAsync("openCheckout", null, null, locale, null, null, _ptxn);
     }
 }
