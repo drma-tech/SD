@@ -13,32 +13,40 @@
     <Row HorizontalGutter="8" VerticalGutter="8">
         <Column ColumnSize="ColumnSize.Is6.OnWidescreen">
             <Card Margin="Margin.Is3.FromBottom">
-                <CardHeader>@Translations.RegistrationInformation</CardHeader>
-                    <CardBody>
-                        <Fields>
-                            <Field ColumnSize="ColumnSize.Is6.OnDesktop">
-                                <FieldLabel>@Translations.AccessProvider</FieldLabel>
-                                <TextEdit Text="@principal?.IdentityProvider" Disabled="true" />
-                            </Field>
-                            <Field ColumnSize="ColumnSize.Is6.OnDesktop">
-                                <FieldLabel>@Translations.Identification</FieldLabel>
-                                <TextEdit Text="@principal?.UserDetails" Disabled="true" />
-                            </Field>
-                        </Fields>
-                        @if (principal != null)
+                <CardHeader>
+                    @Translations.RegistrationInformation
+                </CardHeader>
+                <CardBody>
+                    <Fields>
+                        <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                            <FieldLabel>
+                                @Translations.AccessProvider
+                            </FieldLabel>
+                            <TextEdit Text="@principal?.IdentityProvider" Disabled="true" />
+                        </Field>
+                        <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                            <FieldLabel>
+                                @Translations.Identification
+                            </FieldLabel>
+                            <TextEdit Text="@principal?.UserDetails" Disabled="true" />
+                        </Field>
+                    </Fields>
+                    @if (principal != null)
                     {
                         <Fields>
                             <Field ColumnSize="ColumnSize.Is6.OnDesktop">
-                                <FieldLabel>@Translations.Email</FieldLabel>
-                                    <TextEdit @bind-Text="@principal.Email" Role="TextRole.Email" />
-                                    <ValidationMessage For="@(() => principal.Email)"></ValidationMessage>
-                                </Field>
-                                @*<Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                                <FieldLabel>
+                                    @Translations.Email
+                                </FieldLabel>
+                                <TextEdit @bind-Text="@principal.Email" Role="TextRole.Email" />
+                                <ValidationMessage For="@(() => principal.Email)"></ValidationMessage>
+                            </Field>
+                            @*<Field ColumnSize="ColumnSize.Is6.OnDesktop">
                         <FieldLabel>Mobile</FieldLabel>
                         <TextEdit @bind-Text="@principal.Mobile" Disabled="true" />
                         <ValidationMessage For="@(() => principal.Mobile)"></ValidationMessage>
                         </Field>*@
-                            </Fields>
+                        </Fields>
                     }
                 </CardBody>
             </Card>

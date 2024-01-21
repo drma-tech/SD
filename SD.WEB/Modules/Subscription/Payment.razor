@@ -1,0 +1,29 @@
+﻿@page "/payment"
+@using SD.Shared.Models.Auth
+@using SD.Shared.Models.Subscription
+@using SD.WEB.Modules.Profile.Core
+
+@inject IJSRuntime JsRuntime
+@inject PaddleConfigurationApi ConfigurationApi
+@inject PaddleSubscriptionApi SubscriptionApi
+
+@inherits ComponenteCore<Payment>
+
+@code {
+    [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }
+
+    protected override async Task LoadDataRender()
+    {
+        var config = await ConfigurationApi.GetConfigurations();
+        if (config == null) throw new NotificationException("server comunication error");
+
+        await JsRuntime.InvokeVoidAsync("startPaddle", config.Token);
+    }
+
+    protected async Task OpenCheckout(string? priceId)
+    {
+        var locale = AppStateStatic.Language.ToString()?.Substring(0, 2);
+
+        await JsRuntime.InvokeVoidAsync("openCheckout", null, null, locale, null, null, _ptxn);
+    }
+}

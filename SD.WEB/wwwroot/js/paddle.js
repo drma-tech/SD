@@ -49,7 +49,7 @@ async function getPlans(price_standard_month, price_standard_year, price_premium
     return list;
 }
 
-function openCheckout(priceId, email, locale, customerId, addressId) {
+function openCheckout(priceId, email, locale, customerId, addressId, transaction_id) {
     let customer;
     if (customerId) {
         customer = {
@@ -59,7 +59,7 @@ function openCheckout(priceId, email, locale, customerId, addressId) {
             }
         }
     }
-    else {
+    else if (email) {
         customer = {
             email: email
         }
@@ -79,6 +79,7 @@ function openCheckout(priceId, email, locale, customerId, addressId) {
                 quantity: 1
             }
         ],
-        customer: customer
+        customer: customer,
+        transaction_id: transaction_id
     });
 }

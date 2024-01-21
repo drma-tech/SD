@@ -126,34 +126,69 @@
     }
     else
     {
-        <Card Margin="Margin.Is2.FromBottom">
-            <CardHeader>
-                Subscription Details
-                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="@(async()=>{ await UpdateData(); })"
-                        title="@GlobalTranslations.ButtonUpdate">
-                    @GlobalTranslations.ButtonUpdate
-                </Button>
-            </CardHeader>
-            <CardBody>
-                <span>Subscription: @Client.ClientePaddle.Items.SingleOrDefault()?.Product.GetName()</span><br />
-                <span>Status: @Subscription?.data?.status</span><br />
-                <span>starts_at: @Subscription?.data?.current_billing_period?.starts_at</span><br />
-                <span>ends_at: @Subscription?.data?.current_billing_period?.ends_at</span>
-            </CardBody>
-        </Card>
-        <Card Margin="Margin.Is2.FromBottom">
-            <CardHeader>
-                @WEB.Resources.GlobalTranslations.Actions
-            </CardHeader>
-            <CardBody>
-                <Button Color="Color.Primary" Clicked="UpdateClick" Margin="Margin.Is1.FromEnd">
-                    <Blazorise.Icon Name="FontAwesomeIcons.CreditCard" /> Update payment details
-                </Button>
-                <Button Color="Color.Danger" Clicked="CancelClick">
-                    <Blazorise.Icon Name="FontAwesomeIcons.UserAltSlash" /> Cancel subscription
-                </Button>
-            </CardBody>
-        </Card>
+        @if (Subscription == null)
+        {
+            <Alert Color="Color.Primary" Visible="true">
+                <AlertDescription>
+                    <Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> Subscription being processed. If it takes too long, please click Update.
+                </AlertDescription>
+            </Alert>
+        }
+        else
+        {
+            <Card Margin="Margin.Is2.FromBottom">
+                <CardHeader>
+                    Subscription Details
+                    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="@(async()=>{ await UpdateData(); })"
+                            title="@GlobalTranslations.ButtonUpdate">
+                        @GlobalTranslations.ButtonUpdate
+                    </Button>
+                </CardHeader>
+                <CardBody>
+                    <Fields>
+                        <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                            <FieldLabel>
+                                Subscription / Product
+                            </FieldLabel>
+                            <TextEdit Text="@Client.ClientePaddle.Items.SingleOrDefault()?.Product.GetName()" Disabled="true" />
+                        </Field>
+                        <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                            <FieldLabel>
+                                Status
+                            </FieldLabel>
+                            <TextEdit Text="@Subscription.data?.status" Disabled="true" />
+                        </Field>
+                    </Fields>
+                    <Fields>
+                        <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                            <FieldLabel>
+                                Start (Current Billing Period)
+                            </FieldLabel>
+                            <TextEdit Text="@Subscription.data?.current_billing_period?.starts_at?.ToShortDateString()" Disabled="true" />
+                        </Field>
+                        <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                            <FieldLabel>
+                                End (Current Billing Period)
+                            </FieldLabel>
+                            <TextEdit Text="@Subscription.data?.current_billing_period?.ends_at?.ToShortDateString()" Disabled="true" />
+                        </Field>
+                    </Fields>
+                </CardBody>
+            </Card>
+            <Card Margin="Margin.Is2.FromBottom">
+                <CardHeader>
+                    @WEB.Resources.GlobalTranslations.Actions
+                </CardHeader>
+                <CardBody>
+                    <Button Color="Color.Primary" Clicked="UpdateClick" Margin="Margin.Is1.FromEnd">
+                        <Blazorise.Icon Name="FontAwesomeIcons.CreditCard" /> Update payment details
+                    </Button>
+                    <Button Color="Color.Danger" Clicked="CancelClick">
+                        <Blazorise.Icon Name="FontAwesomeIcons.UserAltSlash" /> Cancel subscription
+                    </Button>
+                </CardBody>
+            </Card>
+        }
     }
 </ModalBody>
 <ModalFooter>
@@ -176,7 +211,7 @@
 
     [Parameter] public ClientePrincipal? Client { get; set; }
 
-    public SubscriptionRoot? Subscription { get; set; }
+    public RootSubscription? Subscription { get; set; }
 
     private AccountCycle Cycle { get; set; } = AccountCycle.Monthly;
 

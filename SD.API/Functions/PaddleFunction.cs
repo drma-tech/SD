@@ -17,7 +17,7 @@ namespace SD.API.Functions
         //Sandbox: https://34.194.127.46,https://54.234.237.108,https://3.208.120.145,https://44.226.236.210,https://44.241.183.62,https://100.20.172.113
 
         [Function("GetSubscription")]
-        public async Task<SubscriptionRoot?> GetSubscription(
+        public async Task<RootSubscription?> GetSubscription(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/subscription")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -37,7 +37,37 @@ namespace SD.API.Functions
 
                 if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
 
-                return await response.Content.ReadFromJsonAsync<SubscriptionRoot>(cancellationToken: cancellationToken);
+                return await response.Content.ReadFromJsonAsync<RootSubscription>(cancellationToken: cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
+            }
+        }
+
+        [Function("GetSubscriptionUpdate")]
+        public async Task<RootSubscription?> GetSubscriptionUpdate(
+          [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/subscription/update")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var id = req.GetQueryParameters()["id"];
+
+                var endpoint = configuration.GetValue<string>("Paddle_Endpoint");
+                var key = configuration.GetValue<string>("Paddle_Key");
+
+                using var http = new HttpClient();
+
+                http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
+
+                using var request = new HttpRequestMessage(HttpMethod.Get, $"{endpoint}subscriptions/{id}/update-payment-method-transaction");
+
+                var response = await http.SendAsync(request, cancellationToken);
+
+                if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
+
+                return await response.Content.ReadFromJsonAsync<RootSubscription>(cancellationToken: cancellationToken);
             }
             catch (Exception ex)
             {
@@ -52,7 +82,7 @@ namespace SD.API.Functions
         {
             try
             {
-                var body = await req.GetPublicBody<EventRoot>(cancellationToken);
+                var body = await req.GetPublicBody<RootEvent>(cancellationToken);
                 if (body == null) throw new NotificationException("body null");
                 if (body.data == null) throw new NotificationException("body.data null");
 
