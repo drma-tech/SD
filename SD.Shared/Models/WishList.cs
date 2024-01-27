@@ -37,7 +37,7 @@ namespace SD.Shared.Models
             if (item != null) Items(type).Remove(item);
         }
 
-        private HashSet<WishListItem> Items(MediaType? type) => type == MediaType.movie ? Movies : Shows;
+        public HashSet<WishListItem> Items(MediaType? type) => type == MediaType.movie ? Movies : Shows;
 
         public override bool HasValidData()
         {

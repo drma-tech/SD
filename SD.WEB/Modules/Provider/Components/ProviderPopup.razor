@@ -83,18 +83,18 @@
             </TabPanel>
             <TabPanel Name="Catalog" Class="mt-3">
                 <Span>provider : @Wish?.Movies.Count</Span>
-                <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc")"
+                    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc")"
                                MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
-                <MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc")"
+                    <MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc")"
                                MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
-                <MediaList TitleHead="@TranslationText.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc")"
+                    <MediaList TitleHead="@TranslationText.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc")"
                                MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
-            </TabPanel>
-        </Content>
-    </Tabs>
-</ModalBody>
-<ModalFooter>
-    @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
+                </TabPanel>
+            </Content>
+        </Tabs>
+    </ModalBody>
+    <ModalFooter>
+        @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
     {
         <Button Color="Color.Danger" Clicked="Remove" Disabled="!IsAuthenticated" Size="Size.Small">
             <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
@@ -148,9 +148,9 @@
         {
             myProviders ??= new();
 
-            if (provider != null) myProviders.Items.Add(new MyProvidersItem() { id = provider.id, name = provider.name, logo = provider.logo_path });
-
-            myProviders = await MyProvidersApi.Post(myProviders);
+            var item = new MyProvidersItem() { id = provider?.id, name = provider?.name, logo = provider?.logo_path };
+            var client = await PrincipalApi.Get(true);
+            myProviders = await MyProvidersApi.Add(myProviders, item, client?.ClientePaddle);
 
             await Toast.Success("Provedor favoritado com sucesso!");
         }
@@ -166,9 +166,7 @@
         {
             myProviders ??= new();
 
-            myProviders.Items.Remove(myProviders.Items.First(f => f.id == provider?.id));
-
-            myProviders = await MyProvidersApi.Post(myProviders);
+            myProviders = await MyProvidersApi.Remove(myProviders.Items.First(f => f.id == provider?.id));
 
             await Toast.Success("Provedor removido com sucesso!");
         }

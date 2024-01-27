@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using SD.Shared.Models.Auth;
 using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
@@ -30,10 +31,12 @@ namespace SD.WEB.Modules.Profile.Core
             }
         }
 
-        public async Task<WishList?> Add(MediaType? mediaType, WishListItem item)
+        public async Task<WishList?> Add(MediaType? mediaType, WishList? obj, WishListItem item, ClientePaddle? paddle)
         {
             ArgumentNullException.ThrowIfNull(mediaType);
+            ArgumentNullException.ThrowIfNull(obj);
             ArgumentNullException.ThrowIfNull(item);
+            SubscriptionHelper.ValidateWishList(paddle?.Items.SingleOrDefault()?.Product, obj.Items(mediaType).Count + 1);
 
             return await PostAsync(Endpoint.Add(mediaType), null, item);
         }

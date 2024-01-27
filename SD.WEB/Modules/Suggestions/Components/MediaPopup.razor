@@ -337,8 +337,9 @@
             Wish ??= new();
 
             var item = new WishListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.runtime);
+            var client = await PrincipalApi.Get(true);
 
-            Wish = await WishListApi.Add(media.MediaType, item);
+            Wish = await WishListApi.Add(media.MediaType, Wish, item, client?.ClientePaddle);
         }
         catch (Exception ex)
         {

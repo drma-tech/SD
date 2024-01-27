@@ -126,9 +126,9 @@
         {
             myProviders ??= new();
 
-            if (provider != null) myProviders.Items.Add(new MyProvidersItem() { id = provider.id, name = provider.name, logo = provider.logo_path });
-
-            myProviders = await MyProvidersApi.Post(myProviders);
+            var item = new MyProvidersItem() { id = provider?.id, name = provider?.name, logo = provider?.logo_path };
+            var client = await PrincipalApi.Get(true);
+            myProviders = await MyProvidersApi.Add(myProviders, item, client?.ClientePaddle);
 
             await Toast.Success("Provedor favoritado com sucesso!");
         }
@@ -144,9 +144,7 @@
         {
             myProviders ??= new();
 
-            myProviders.Items.Remove(myProviders.Items.First(f => f.id == provider?.id));
-
-            myProviders = await MyProvidersApi.Post(myProviders);
+            myProviders = await MyProvidersApi.Remove(myProviders.Items.First(f => f.id == provider?.id));
 
             await Toast.Success("Provedor removido com sucesso!");
         }

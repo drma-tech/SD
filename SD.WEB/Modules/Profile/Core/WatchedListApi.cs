@@ -34,6 +34,7 @@ namespace SD.WEB.Modules.Profile.Core
         {
             ArgumentNullException.ThrowIfNull(mediaType);
             ArgumentNullException.ThrowIfNull(TmdbId);
+            //SubscriptionHelper.ValidateWatchedList(paddle?.Items.SingleOrDefault()?.Product, obj.Items.Count + 1);
 
             return await PostAsync<WatchedList>(Endpoint.Add(mediaType, TmdbId), null, null);
         }
