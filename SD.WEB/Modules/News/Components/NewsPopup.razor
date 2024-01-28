@@ -41,8 +41,6 @@
 </ModalFooter>
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
-
     public RenderControlCore<NewsModel?> Core { get; set; } = new();
     private NewsModel? News { get; set; }
     public string? selectedSlide { get; set; }

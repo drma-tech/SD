@@ -28,8 +28,6 @@
 </ModalFooter>
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
-
     [Parameter][EditorRequired] public string? TitleHead { get; set; }
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }

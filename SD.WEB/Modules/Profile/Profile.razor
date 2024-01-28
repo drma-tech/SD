@@ -61,7 +61,6 @@
 @code {
     [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }
     [Parameter][SupplyParameterFromQuery(Name = "Fake")] public bool Fake { get; set; } = false;
-    [Inject] public IModalService ModalService { get; set; } = default!;
 
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();

@@ -64,7 +64,6 @@
 </DataGrid>
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
     [Parameter] public EnumLists ListId { get; set; }
 
     private HashSet<MediaDetail> List { get; set; } = new();

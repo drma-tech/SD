@@ -38,8 +38,6 @@
 </ModalFooter>
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
-
     public RenderControlCore<TrailerModel?> Core { get; set; } = new();
     private TrailerModel? TrailerModel { get; set; }
 

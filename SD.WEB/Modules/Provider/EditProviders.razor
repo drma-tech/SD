@@ -92,8 +92,6 @@
 </DataGrid>
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
-
     public MediaType MediaType { get; set; } = MediaType.movie;
 
     public DataGrid<ProviderModel>? DataGrid { get; set; }

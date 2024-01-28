@@ -36,8 +36,6 @@
 </Row>
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
-
     [Parameter][SupplyParameterFromQuery(Name = "language")] public string? language { get; set; }
 
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();

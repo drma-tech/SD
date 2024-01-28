@@ -29,8 +29,6 @@ namespace SD.WEB.Modules.Profile
 
         private string? Description => For?.GetCustomAttribute()?.Description;
 
-        [Inject] public IModalService ModalService { get; set; } = default!;
-
         [Parameter] public Func<EnumObject, object> Order { get; set; } = o => o.Value;
 
         //protected Task UpdateDataHelp(Expression<Func<TValue>> For)

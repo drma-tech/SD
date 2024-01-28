@@ -50,8 +50,6 @@
 </RenderControl>
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
-
     public RenderControlCore<AllProviders?>? Core { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
 

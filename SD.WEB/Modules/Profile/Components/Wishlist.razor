@@ -35,8 +35,6 @@
 </RenderControl>
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
-
     [Parameter][EditorRequired] public RenderControlCore<WishList?> Core { get; set; } = new();
     [Parameter][EditorRequired] public MediaType MediaType { get; set; }
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }

@@ -188,7 +188,7 @@ namespace SD.WEB.Core
             }, Options(ModalSize.Default));
         }
 
-        public static async Task SubscriptionPopup(this IModalService service, ClientePrincipal client)
+        public static async Task SubscriptionPopup(this IModalService service, ClientePrincipal? client)
         {
             await service.Show<SubscriptionPopup>(null, x =>
             {

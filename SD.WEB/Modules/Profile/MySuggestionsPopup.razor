@@ -17,8 +17,6 @@
 </ModalFooter>
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
-
     [Parameter][EditorRequired] public SD.Shared.Models.MySuggestions? MySuggestions { get; set; }
     [Parameter] public EventCallback<SD.Shared.Models.MySuggestions>? MySuggestionsChanged { get; set; }
 }

@@ -27,8 +27,6 @@
 </RenderControl>
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
-
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }

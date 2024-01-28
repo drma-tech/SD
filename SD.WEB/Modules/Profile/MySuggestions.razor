@@ -56,8 +56,6 @@
 </RenderControl>
 
 @code {
-    [Inject] public IModalService ModalService { get; set; } = default!;
-
     private MyProviders? myProviders { get; set; }
     private SD.Shared.Models.MySuggestions? mySuggestions { get; set; }
     public MediaType SearchType { get; set; } = MediaType.movie;
