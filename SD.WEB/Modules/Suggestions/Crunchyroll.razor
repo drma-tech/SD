@@ -1,0 +1,37 @@
+﻿@page "/suggestions/crunchyroll"
+<SeoHeader Title="Suggestions | Crunchyroll Anime Awards" Keywords="@(new []{"Crunchyroll Anime Awards"})" Url="/suggestions/crunchyroll"></SeoHeader>
+@inherits PageCore<Spirit>
+
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Components
+@inject TmdbListApi TmdbListApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
+
+<HeadPage Title="Crunchyroll Anime Awards" ImageSource="logo/crunchyroll.png" Text="Since 2017, this global event has annually recognized anime’s finest series and films. During our voting period, you can vote here once per day in a variety of categories. Ultimately, Grand Winners are announced in-person at the 2023 Crunchyroll Anime Awards show on March 4, 2023." Link="https://www.crunchyroll.com/animeawards/"></HeadPage>
+
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollAnimeoftheYear" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollBestContinuingSeries" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollBestFilm" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+
+@code {
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
+        WishList = await WishListApi.Get(IsAuthenticated, null);
+    }
+}

@@ -157,5 +157,14 @@
 
         [Custom(Name = "Highest grossing movies")]
         GrossingMovies = 8255415,
+
+        [Custom(Name = "Anime of the Year")]
+        CrunchyrollAnimeoftheYear = 8289896,
+
+        [Custom(Name = "Best Continuing Series")]
+        CrunchyrollBestContinuingSeries = 8289897,
+
+        [Custom(Name = "Best Film")]
+        CrunchyrollBestFilm = 8289898,
     }
 }
