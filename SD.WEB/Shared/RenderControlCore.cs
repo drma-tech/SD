@@ -6,6 +6,7 @@
         Locked,
         Error,
         Warning,
+        Premium,
         ShowContent
     }
 

@@ -319,10 +319,10 @@
     <value>Operação inválida. Tente novamente.</value>
   </data>
   <data name="OurSuggestions1" xml:space="preserve">
-    <value>Nossas sugestões são baseadas nos fornecedores que você marcou como favorito</value>
+    <value>Nossas sugestões são baseadas nos provedores que você marcou como favorito</value>
   </data>
   <data name="OurSuggestions2" xml:space="preserve">
-    <value>Nossas sugestões são baseadas nos provedores que você adicionou aos seus favoritos, excluindo títulos que você assistiu ou que estão na sua lista pessoal.</value>
+    <value>Nossas sugestões são baseadas em seus provedores favoritos e em suas preferências de gênero (excluindo títulos que já estão em suas listas pessoais).</value>
   </data>
   <data name="Free" xml:space="preserve">
     <value>Grátis</value>
@@ -365,5 +365,8 @@
   </data>
   <data name="IdentityProvider" xml:space="preserve">
     <value>Provedor de identidade</value>
+  </data>
+  <data name="PremiumFeature" xml:space="preserve">
+    <value>Recurso Premium</value>
   </data>
 </root>

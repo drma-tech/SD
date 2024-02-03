@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using SD.Shared.Models.Auth;
 using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
@@ -30,11 +31,12 @@ namespace SD.WEB.Modules.Profile.Core
             }
         }
 
-        public async Task<WatchedList?> Add(MediaType? mediaType, string? TmdbId)
+        public async Task<WatchedList?> Add(MediaType? mediaType, WatchedList? obj, string? TmdbId, ClientePaddle? paddle)
         {
             ArgumentNullException.ThrowIfNull(mediaType);
+            ArgumentNullException.ThrowIfNull(obj);
             ArgumentNullException.ThrowIfNull(TmdbId);
-            //SubscriptionHelper.ValidateWatchedList(paddle?.Items.SingleOrDefault()?.Product, obj.Items.Count + 1);
+            SubscriptionHelper.ValidateWatched(paddle?.ActiveProduct, obj.Items(mediaType).Count + 1);
 
             return await PostAsync<WatchedList>(Endpoint.Add(mediaType, TmdbId), null, null);
         }

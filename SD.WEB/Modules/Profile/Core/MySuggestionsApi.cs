@@ -13,9 +13,13 @@ namespace SD.WEB.Modules.Profile.Core
             public static string Sync(MediaType? type) => $"MySuggestions/Sync/{type}";
         }
 
-        public async Task<SD.Shared.Models.MySuggestions?> Get(bool IsUserAuthenticated, RenderControlCore<SD.Shared.Models.MySuggestions?>? core)
+        public async Task<SD.Shared.Models.MySuggestions?> Get(AccountProduct? product, bool IsUserAuthenticated, RenderControlCore<SD.Shared.Models.MySuggestions?>? core)
         {
-            if (IsUserAuthenticated)
+            if (product == null || product == AccountProduct.Basic)
+            {
+                return new();
+            }
+            else if (IsUserAuthenticated)
             {
                 return await GetAsync(Endpoint.Get, core);
             }

@@ -25,9 +25,9 @@
                 </Radio>
                 <Radio Value="AccountCycle.Yearly">
                     @AccountCycle.Yearly.GetName()
+                    <Badge Color="Color.Success">@("save 17%")</Badge>
                 </Radio>
             </RadioGroup>
-            <Badge Color="Color.Success">@("save 17%")</Badge>
         </div>
         <CardDeck Class="mt-2">
             <Card Background="Background.Secondary" WhiteText="true">
@@ -42,19 +42,33 @@
                         <ListGroup Flush="true">
                             <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
                                 Favorite Providers
-                                <Badge Color="Color.Primary">1</Badge>
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Basic.GetRestrictions().FavoriteProviders
+                                </Badge>
                             </ListGroupItem>
                             <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
                                 @GlobalTranslations.MySuggestions
-                                <Badge Color="Color.Primary">6</Badge>
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Basic.GetRestrictions().MySuggestions
+                                </Badge>
                             </ListGroupItem>
                             <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                Wishlist
-                                <Badge Color="Color.Primary">6</Badge>
+                                Watched
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Basic.GetRestrictions().Watched
+                                </Badge>
                             </ListGroupItem>
                             <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
                                 Watching
-                                <Badge Color="Color.Primary">6</Badge>
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Basic.GetRestrictions().Watching
+                                </Badge>
+                            </ListGroupItem>
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                Wishlist
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Basic.GetRestrictions().Wishlist
+                                </Badge>
                             </ListGroupItem>
                         </ListGroup>
                     </CardText>
@@ -72,19 +86,33 @@
                         <ListGroup Flush="true">
                             <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
                                 Favorite Providers
-                                <Badge Color="Color.Primary">6</Badge>
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Standard.GetRestrictions().FavoriteProviders
+                                </Badge>
                             </ListGroupItem>
                             <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
                                 @GlobalTranslations.MySuggestions
-                                <Badge Color="Color.Primary">12</Badge>
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Standard.GetRestrictions().MySuggestions
+                                </Badge>
                             </ListGroupItem>
                             <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                Wishlist
-                                <Badge Color="Color.Primary">12</Badge>
+                                Watched
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Standard.GetRestrictions().Watched
+                                </Badge>
                             </ListGroupItem>
                             <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
                                 Watching
-                                <Badge Color="Color.Primary">12</Badge>
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Standard.GetRestrictions().Watching
+                                </Badge>
+                            </ListGroupItem>
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                Wishlist
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Standard.GetRestrictions().Wishlist
+                                </Badge>
                             </ListGroupItem>
                         </ListGroup>
                     </CardText>
@@ -103,19 +131,33 @@
                         <ListGroup Flush="true">
                             <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
                                 Favorite Providers
-                                <Badge Color="Color.Primary">12</Badge>
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Premium.GetRestrictions().FavoriteProviders
+                                </Badge>
                             </ListGroupItem>
                             <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
                                 @GlobalTranslations.MySuggestions
-                                <Badge Color="Color.Primary">24</Badge>
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Premium.GetRestrictions().MySuggestions
+                                </Badge>
                             </ListGroupItem>
                             <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                Wishlist
-                                <Badge Color="Color.Primary">48</Badge>
+                                Watched
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Premium.GetRestrictions().Watched
+                                </Badge>
                             </ListGroupItem>
                             <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
                                 Watching
-                                <Badge Color="Color.Primary">48</Badge>
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Premium.GetRestrictions().Watching
+                                </Badge>
+                            </ListGroupItem>
+                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
+                                Wishlist
+                                <Badge Color="Color.Primary">
+                                    @AccountProduct.Premium.GetRestrictions().Wishlist
+                                </Badge>
                             </ListGroupItem>
                         </ListGroup>
                     </CardText>
@@ -146,7 +188,7 @@
                             <FieldLabel>
                                 Subscription / Product
                             </FieldLabel>
-                            <TextEdit Text="@Client.ClientePaddle.Items.SingleOrDefault()?.Product.GetName()" Disabled="true" />
+                            <TextEdit Text="@Client?.ClientePaddle?.ActiveProduct.GetName()" Disabled="true" />
                         </Field>
                         <Field ColumnSize="ColumnSize.Is6.OnDesktop">
                             <FieldLabel>

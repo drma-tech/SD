@@ -1,4 +1,5 @@
-﻿@using SD.WEB.Modules.Profile.Core;
+﻿@using SD.Shared.Models.Auth
+@using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.Suggestions.Core;
 @inherits ComponenteCore<MySuggestions>
 
@@ -10,28 +11,32 @@
 @inject TmdbApi TmdbApi
 
 <HeaderComponent IconName="@FontAwesomeIcons.ThumbsUp" Title="@GlobalTranslations.MySuggestions">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="(GenresChanged ? Color.Secondary : Color.Primary)" Clicked="@(async()=>await OpenConfigurations())" Disabled="(myProviders == null || myProviders.Items.Empty())" title="Settings">
-        <Blazorise.Icon Name="FontAwesomeIcons.Cog"></Blazorise.Icon>
-    </Button>
-    <RadioGroup CheckedValue="SearchType" CheckedValueChanged="(MediaType type)=>CheckedValueChanged(type)" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is1.FromEnd">
-        <Radio Value="MediaType.movie">@(MediaType.movie.GetName())</Radio>
-        <Radio Value="MediaType.tv">@(MediaType.tv.GetName())</Radio>
-    </RadioGroup>
-    @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (myProviders?.Items.Any() ?? false))
+    @if (Client?.ClientePaddle?.IsPaidUser ?? false)
     {
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.movie)" title="@GlobalTranslations.ButtonUpdate" Disabled="MovieUpdating">
-            @GlobalTranslations.ButtonUpdate
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="(GenresChanged ? Color.Secondary : Color.Primary)" Clicked="@(async()=>await OpenConfigurations())" Disabled="(myProviders == null || myProviders.Items.Empty())" title="Settings">
+            <Blazorise.Icon Name="FontAwesomeIcons.Cog"></Blazorise.Icon>
         </Button>
-    }
-    @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync) && (myProviders?.Items.Any() ?? false))
-    {
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.tv)" title="@GlobalTranslations.ButtonUpdate" Disabled="ShowUpdating">
-            @GlobalTranslations.ButtonUpdate
-        </Button>
+        <RadioGroup CheckedValue="SearchType" CheckedValueChanged="(MediaType type)=>CheckedValueChanged(type)" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is1.FromEnd">
+            <Radio Value="MediaType.movie">@(MediaType.movie.GetName())</Radio>
+            <Radio Value="MediaType.tv">@(MediaType.tv.GetName())</Radio>
+        </RadioGroup>
+        @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (myProviders?.Items.Any() ?? false))
+        {
+            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.movie)" title="@GlobalTranslations.ButtonUpdate" Disabled="MovieUpdating">
+                @GlobalTranslations.ButtonUpdate
+            </Button>
+        }
+        @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync) && (myProviders?.Items.Any() ?? false))
+        {
+            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.tv)" title="@GlobalTranslations.ButtonUpdate" Disabled="ShowUpdating">
+                @GlobalTranslations.ButtonUpdate
+            </Button>
+        }
     }
 </HeaderComponent>
 
-<RenderControl Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())" PrivateContent="true">
+<RenderControl Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())"
+               PrivateContent="true" PremiumFeature="true" PremiumDescription="@Resources.GlobalTranslations.OurSuggestions2">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)).Take(GetTotalItems) ?? new List<SuggestionListItem>())
         {
@@ -71,6 +76,7 @@
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter][EditorRequired] public ClientePrincipal? Client { get; set; }
 
     private bool GenresChanged => mySuggestions?.MovieGenres.Any() ?? false | mySuggestions?.TvGenres.Any() ?? false;
 
@@ -94,7 +100,7 @@
             }
             else
             {
-                mySuggestions = await MySuggestionsApi.Get(IsAuthenticated, Core);
+                mySuggestions = await MySuggestionsApi.Get(Client?.ClientePaddle?.ActiveProduct, IsAuthenticated, Core);
 
                 if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
                 {

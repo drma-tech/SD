@@ -114,6 +114,7 @@
         try
         {
             var watching = Watching ?? new WatchingList();
+            var client = await PrincipalApi.Get(true);
 
             if (MediaType == MediaType.movie)
             {
@@ -144,7 +145,7 @@
                             item.watched.Add(tmdb_id);
                         }
 
-                        watching = await WatchingApi.Add(MediaType.movie, item);
+                        watching = await WatchingApi.Add(MediaType.movie, watching, item, client?.ClientePaddle);
                     }
                 }
 
@@ -182,7 +183,7 @@
                             item.watched.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
                         }
 
-                        watching = await WatchingApi.Add(MediaType.tv, item);
+                        watching = await WatchingApi.Add(MediaType.tv, watching, item, client?.ClientePaddle);
                     }
                 }
 

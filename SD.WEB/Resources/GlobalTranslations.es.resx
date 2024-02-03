@@ -322,7 +322,7 @@
     <value>Nuestras sugerencias se basan en los proveedores que ha marcado como favoritos.</value>
   </data>
   <data name="OurSuggestions2" xml:space="preserve">
-    <value>Nuestras sugerencias se basan en los proveedores que ha agregado a sus favoritos, excluyendo los títulos que ha visto o que están en su lista personal.</value>
+    <value>Nuestras sugerencias se basan en sus proveedores favoritos y sus preferencias de género (excluidos los títulos que ya están en sus listas personales).</value>
   </data>
   <data name="Free" xml:space="preserve">
     <value>Gratis</value>
@@ -365,5 +365,8 @@
   </data>
   <data name="IdentityProvider" xml:space="preserve">
     <value>Proveedor de identidad</value>
+  </data>
+  <data name="PremiumFeature" xml:space="preserve">
+    <value>Característica prémium</value>
   </data>
 </root>

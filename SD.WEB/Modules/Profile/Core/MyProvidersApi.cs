@@ -29,7 +29,7 @@ namespace SD.WEB.Modules.Profile.Core
         {
             ArgumentNullException.ThrowIfNull(obj);
             ArgumentNullException.ThrowIfNull(item);
-            SubscriptionHelper.ValidateFavoriteProviders(paddle?.Items.SingleOrDefault()?.Product, obj.Items.Count + 1);
+            SubscriptionHelper.ValidateFavoriteProviders(paddle?.ActiveProduct, obj.Items.Count + 1);
 
             return await PostAsync(Endpoint.MyProvidersAdd, null, item);
         }

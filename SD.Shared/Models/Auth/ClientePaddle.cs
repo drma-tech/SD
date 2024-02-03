@@ -14,6 +14,9 @@
         public string? AddressId { get; set; }
 
         public List<PaddleItem> Items { get; set; } = [];
+
+        public AccountProduct ActiveProduct => Items.SingleOrDefault(s => s.Active)?.Product ?? AccountProduct.Basic;
+        public bool IsPaidUser => ActiveProduct == AccountProduct.Standard || ActiveProduct == AccountProduct.Premium;
     }
 
     public class PaddleItem

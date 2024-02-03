@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using SD.Shared.Models.Auth;
 using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
@@ -32,11 +33,12 @@ namespace SD.WEB.Modules.Profile.Core
             }
         }
 
-        public async Task<WatchingList?> Add(MediaType? mediaType, WatchingListItem? item)
+        public async Task<WatchingList?> Add(MediaType? mediaType, WatchingList? obj, WatchingListItem? item, ClientePaddle? paddle)
         {
             ArgumentNullException.ThrowIfNull(mediaType);
+            ArgumentNullException.ThrowIfNull(obj);
             ArgumentNullException.ThrowIfNull(item);
-            //SubscriptionHelper.ValidateWatchingList(paddle?.Items.SingleOrDefault()?.Product, obj.Items.Count + 1);
+            SubscriptionHelper.ValidateWatching(paddle?.ActiveProduct, obj.Items(mediaType).Count + 1);
 
             return await PostAsync(Endpoint.Add(mediaType), null, item);
         }

@@ -1,4 +1,7 @@
-﻿@typeparam TModel
+﻿@using SD.WEB.Modules.Auth.Core
+@inject PrincipalApi PrincipalApi
+
+@typeparam TModel
 
 @if (Status == LoadingStatus.Loading)
 {
@@ -11,34 +14,50 @@
     else
     {
         <Alert Color="Color.Warning" Visible="true">
-            <AlertDescription>
+            <AlertMessage>
                 <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @MessageLoading
-            </AlertDescription>
+            </AlertMessage>
         </Alert>
     }
 }
 else if (Status == LoadingStatus.Locked && !PartialComponent)
 {
     <Alert Color="Color.Primary" Visible="true">
-        <AlertDescription>
+        <AlertMessage>
             <Blazorise.Icon Name="FontAwesomeIcons.UserLock"></Blazorise.Icon> @GlobalTranslations.UnauthenticatedUser
-        </AlertDescription>
+        </AlertMessage>
+    </Alert>
+}
+else if (Status == LoadingStatus.Premium && !PartialComponent)
+{
+    <Alert Color="Color.Primary" Visible="true">
+        <AlertMessage>
+            <Blazorise.Icon Name="FontAwesomeIcons.UserLock"></Blazorise.Icon> @GlobalTranslations.PremiumFeature
+        </AlertMessage>
+        @if (!string.IsNullOrEmpty(PremiumDescription))
+        {
+            <Span Margin="Margin.Is2.FromStart">
+                <AlertDescription>
+                    @PremiumDescription
+                </AlertDescription>
+            </Span>
+        }
     </Alert>
 }
 else if (Status == LoadingStatus.Error && !PartialComponent)
 {
     <Alert Color="Color.Danger" Visible="true">
-        <AlertDescription>
+        <AlertMessage>
             <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon> @(MessageError ?? @GlobalTranslations.CustomVisibilityInvalid)
-        </AlertDescription>
+        </AlertMessage>
     </Alert>
 }
 else if (Status == LoadingStatus.Warning && !PartialComponent)
 {
     <Alert Color="Color.Primary" Visible="true">
-        <AlertDescription>
+        <AlertMessage>
             <Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> @(MessageWarning ?? @GlobalTranslations.CustomVisibilityNoData)
-        </AlertDescription>
+        </AlertMessage>
     </Alert>
 }
 else //ShowContent
@@ -58,6 +77,8 @@ else //ShowContent
     [Parameter] public string? CustomMessageError { get; set; } = null;
     [Parameter] public string? CustomMessageWarning { get; set; } = null;
     [Parameter] public bool PartialComponent { get; set; } = false;
+    [Parameter] public bool PremiumFeature { get; set; } = false;
+    [Parameter] public string? PremiumDescription { get; set; }
 
     private LoadingStatus Status { get; set; } = LoadingStatus.Loading;
     private string? MessageLoading { get; set; } = GlobalTranslations.CustomVisibilityLoading;
@@ -97,6 +118,15 @@ else //ShowContent
             {
                 Status = LoadingStatus.Locked;
             }
+
+            if (PremiumFeature)
+            {
+                var client = await PrincipalApi.Get(isAuthenticated);
+                if (client == null || client?.ClientePaddle == null || client?.ClientePaddle?.ActiveProduct == AccountProduct.Basic)
+                {
+                    Status = LoadingStatus.Premium;
+                }
+            }
         }
     }
 
@@ -111,6 +141,8 @@ else //ShowContent
     private void ShowLoading(string? msg = null)
     {
         Reset();
+
+        if (Status == LoadingStatus.Error | Status == LoadingStatus.Locked | Status == LoadingStatus.Premium) return;
 
         Status = LoadingStatus.Loading;
         MessageLoading = msg ?? GlobalTranslations.CustomVisibilityLoading;
@@ -129,7 +161,7 @@ else //ShowContent
             return;
         }
 
-        if (Status == LoadingStatus.Error | Status == LoadingStatus.Locked) return;
+        if (Status == LoadingStatus.Error | Status == LoadingStatus.Locked | Status == LoadingStatus.Premium) return;
 
         if (model == null || (ExpressionEmpty != null && ExpressionEmpty(model)))
             Status = LoadingStatus.Warning;
@@ -146,6 +178,8 @@ else //ShowContent
     private void ShowWarning(string? msg)
     {
         Reset();
+
+        if (Status == LoadingStatus.Error | Status == LoadingStatus.Locked | Status == LoadingStatus.Premium) return;
 
         Status = LoadingStatus.Warning;
         MessageWarning = CustomMessageWarning ?? msg;

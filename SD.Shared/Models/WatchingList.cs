@@ -82,7 +82,7 @@ namespace SD.Shared.Models
             }
         }
 
-        private HashSet<WatchingListItem> Items(MediaType? type) => type == MediaType.movie ? Movies : Shows;
+        public HashSet<WatchingListItem> Items(MediaType? type) => type == MediaType.movie ? Movies : Shows;
 
         public override bool HasValidData()
         {
