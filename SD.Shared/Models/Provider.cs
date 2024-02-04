@@ -13,7 +13,6 @@
         public string? description { get; set; }
         public string? link { get; set; }
         public string? logo_path { get; set; }
-        public Language? head_language { get; set; }
         public List<Region> regions { get; set; } = [];
         public List<MediaType> types { get; set; } = [];
         public List<DeliveryModel> models { get; set; } = [];

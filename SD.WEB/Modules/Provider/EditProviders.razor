@@ -77,17 +77,6 @@
             </EditTemplate>
         </DataGridColumn>
         <DataGridColumn TItem="ProviderModel" Field="@nameof(ProviderModel.link)" Caption="Link" Editable="true"></DataGridColumn>
-        <DataGridColumn TItem="ProviderModel" Field="@nameof(ProviderModel.head_language)" Caption="Head Language" Editable="true">
-            <EditTemplate>
-                <Select TValue="Language?" SelectedValue="@((Language?)context.CellValue)" SelectedValueChanged="@((v) => context.CellValue = v)" Size="Size.Small" Style="width:auto;">
-                    <SelectItem TValue="@(Language?)" Value="@((Language?)null)"></SelectItem>
-                    @foreach (var item in Languages.Where(w => !string.IsNullOrEmpty(w.Name)).OrderBy(o => o.Name))
-                    {
-                        <SelectItem TValue="Language?" Value="@((Language)item.Value)">@item.Name</SelectItem>
-                    }
-                </Select>
-            </EditTemplate>
-        </DataGridColumn>
     </DataGridColumns>
 </DataGrid>
 
@@ -180,7 +169,6 @@
                         //own data (manual update)
                         description = detail?.description,
                         link = detail?.link,
-                        head_language = detail?.head_language,
                         plans = detail?.plans ?? new(),
                         models = detail?.models ?? new(),
                         //api by regions
