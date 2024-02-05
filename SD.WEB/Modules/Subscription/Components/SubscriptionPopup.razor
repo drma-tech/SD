@@ -345,6 +345,7 @@
     private async Task UpdateData()
     {
         Client = await PrincipalApi.Get(true, true);
+        PrincipalApi.DataChanged?.Invoke(Client);
         await LoadDataRender();
         StateHasChanged();
     }

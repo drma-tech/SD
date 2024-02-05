@@ -2,6 +2,7 @@
 <SeoHeader Title="@($"Wishlist ({Gravatar?.displayName}) | {(type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")" Icon="@Gravatar?.photos.LastOrDefault()?.value"></SeoHeader>
 
 @using SD.Shared.Core.Models
+@using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Profile.Components
 @using SD.WEB.Modules.Profile.Core
 
@@ -9,6 +10,7 @@
 @inject WishListApi WishApi
 @inject WatchingListApi WatchingApi
 @inject WatchedListApi WatchedApi
+@inject GravatarApi GravatarApi
 
 @if (type == "movie")
 {
@@ -37,7 +39,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         var email = await PrincipalApi.GetEmail(token);
-        Gravatar = await PrincipalApi.GetGravatar(email);
+        Gravatar = await GravatarApi.GetGravatar(email);
     }
 
     protected override async Task LoadDataRender()

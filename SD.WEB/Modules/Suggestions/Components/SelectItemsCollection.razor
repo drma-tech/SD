@@ -49,8 +49,15 @@
 
     private async Task Confirm()
     {
-        await SelectedItemsChanged.InvokeAsync(SelectedItems);
-        await ModalService.Hide();
+        try
+        {
+            await SelectedItemsChanged.InvokeAsync(SelectedItems);
+            await ModalService.Hide();
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 
     private async Task HideModal()

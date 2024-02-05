@@ -80,7 +80,7 @@ else //ShowContent
     [Parameter] public bool PremiumFeature { get; set; } = false;
     [Parameter] public string? PremiumDescription { get; set; }
 
-    private LoadingStatus Status { get; set; } = LoadingStatus.Loading;
+    public LoadingStatus Status { get; set; } = LoadingStatus.Loading;
     private string? MessageLoading { get; set; } = GlobalTranslations.CustomVisibilityLoading;
     private string? MessageError { get; set; } = null;
     private string? MessageWarning { get; set; } = null;

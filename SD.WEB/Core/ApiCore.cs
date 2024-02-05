@@ -31,6 +31,36 @@ namespace SD.WEB.Core
             else return _http.BaseAddress?.ToString().Contains("localhost") ?? true ? "http://localhost:7071/api/" : _http.BaseAddress.ToString() + "api/";
         }
 
+        protected void CleanCache()
+        {
+            _cache.Remove(cacheKey);
+        }
+
+        protected async Task<string?> GetValueAsync(string endpoint, RenderControlCore<string?>? core, object? customCacheKey = null)
+        {
+            cacheKey = customCacheKey ?? cacheKey;
+
+            core?.LoadingStarted?.Invoke();
+
+            var result = cacheKey != null ? _cache.Get<string>(cacheKey) : default;
+
+            try
+            {
+                if (result == null)
+                {
+                    result = await _http.GetValueAsync($"{baseEndpoint}{endpoint}");
+
+                    if (cacheKey != null) _cache.Set(cacheKey, result, CacheSettings);
+                }
+
+                return result;
+            }
+            finally
+            {
+                core?.LoadingFinished?.Invoke(result);
+            }
+        }
+
         protected async Task<T?> GetAsync(string endpoint, RenderControlCore<T?>? core, object? customCacheKey = null)
         {
             cacheKey = customCacheKey ?? cacheKey;
@@ -151,6 +181,43 @@ namespace SD.WEB.Core
                     DataChanged?.Invoke(result);
 
                     if (cacheKey != null) _cache.Set(cacheKey, result, CacheSettings);
+
+                    return result;
+                }
+                else
+                {
+                    throw new NotificationException(response.ReasonPhrase);
+                }
+            }
+            finally
+            {
+                core?.ProcessingFinished?.Invoke(result);
+            }
+        }
+
+        protected async Task<T?> DeleteAsync(string endpoint, RenderControlCore<T?>? core)
+        {
+            T? result = default;
+
+            try
+            {
+                core?.ProcessingStarted?.Invoke();
+
+                var response = await _http.DeleteAsync($"{baseEndpoint}{endpoint}");
+
+                if (response.StatusCode == HttpStatusCode.NoContent)
+                {
+                    DataChanged?.Invoke(default);
+
+                    return default;
+                }
+                else if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadFromJsonAsync<T>();
+
+                    DataChanged?.Invoke(result);
+
+                    if (cacheKey != null) _cache.Remove(cacheKey);
 
                     return result;
                 }

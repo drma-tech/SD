@@ -35,7 +35,7 @@
     }
 </HeaderComponent>
 
-<RenderControl Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())"
+<RenderControl @ref="render" Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())"
                PrivateContent="true" PremiumFeature="true" PremiumDescription="@Resources.GlobalTranslations.OurSuggestions2">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)).Take(GetTotalItems) ?? new List<SuggestionListItem>())
@@ -70,17 +70,29 @@
 
     public bool MovieUpdating { get; set; } = false;
     public bool ShowUpdating { get; set; } = false;
+    private RenderControl<SD.Shared.Models.MySuggestions?>? render;
 
     public RenderControlCore<SD.Shared.Models.MySuggestions?>? Core { get; set; } = new();
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
-    [Parameter][EditorRequired] public ClientePrincipal? Client { get; set; }
+
+    public ClientePrincipal? Client { get; set; }
 
     private bool GenresChanged => mySuggestions?.MovieGenres.Any() ?? false | mySuggestions?.TvGenres.Any() ?? false;
 
+    protected override void OnInitialized()
+    {
+        PrincipalApi.DataChanged += async (ClientePrincipal? model) => { Client = model; await LoadData(model); StateHasChanged(); };
+    }
+
     protected override async Task LoadDataRender()
+    {
+        await LoadData(null);
+    }
+
+    private async Task LoadData(ClientePrincipal? client)
     {
         Core?.ShowLoading();
 
@@ -100,7 +112,10 @@
             }
             else
             {
-                mySuggestions = await MySuggestionsApi.Get(Client?.ClientePaddle?.ActiveProduct, IsAuthenticated, Core);
+                if (client != null && render != null) render.Status = LoadingStatus.Loading; //force reset Premium status
+
+                client ??= await PrincipalApi.Get(IsAuthenticated);
+                mySuggestions = await MySuggestionsApi.Get(client?.ClientePaddle?.ActiveProduct, IsAuthenticated, Core);
 
                 if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
                 {
@@ -143,6 +158,10 @@
         {
             mySuggestions ??= new();
 
+            var qtd = 0;
+            if (Client?.ClientePaddle?.ActiveProduct == AccountProduct.Standard) qtd = AccountProduct.Standard.GetRestrictions().MySuggestions;
+            if (Client?.ClientePaddle?.ActiveProduct == AccountProduct.Premium) qtd = AccountProduct.Premium.GetRestrictions().MySuggestions;
+
             if (type == MediaType.movie)
             {
                 mySuggestions.Movies.Clear();
@@ -165,7 +184,7 @@
                     if (Watched != null && Watched.Movies.Any(a => a == item.tmdb_id)) continue;
                     if (Wish != null && Wish.Movies.Any(a => a.id == item.tmdb_id)) continue;
 
-                    if (mySuggestions.Movies.Count < 16)
+                    if (mySuggestions.Movies.Count < qtd)
                     {
                         var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.movie);
                         if (providers != null && myProviders != null)
@@ -212,7 +231,7 @@
                     if (Watched != null && Watched.Shows.Any(a => a == item.tmdb_id)) continue;
                     if (Wish != null && Wish.Shows.Any(a => a.id == item.tmdb_id)) continue;
 
-                    if (mySuggestions.Shows.Count < 16)
+                    if (mySuggestions.Shows.Count < qtd)
                     {
                         var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.tv);
                         if (providers != null && myProviders != null)
