@@ -288,10 +288,14 @@
         var config = await ConfigurationApi.GetConfigurations();
         if (config == null) throw new NotificationException("server comunication error");
 
-        if (string.IsNullOrEmpty(Client?.ClientePaddle?.SubscriptionId))
+        if (Client?.ClientePaddle == null && string.IsNullOrEmpty(Client?.ClientePaddle?.SubscriptionId))
         {
             await JsRuntime.InvokeVoidAsync("startPaddle", config.Token);
             Plans = await JsRuntime.InvokeAsync<IEnumerable<Plan>>("getPlans", config.PriceStandardMonth, config.PriceStandardYear, config.PricePremiumMonth, config.PricePremiumYear);
+        }
+        else if (string.IsNullOrEmpty(Client?.ClientePaddle?.SubscriptionId))
+        {
+            await Toast.Error("We were unable to identify your subscription. Please contact support.");
         }
         else
         {

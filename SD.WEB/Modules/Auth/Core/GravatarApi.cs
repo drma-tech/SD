@@ -3,7 +3,7 @@ using SD.Shared.Core.Models;
 
 namespace SD.WEB.Modules.Auth.Core
 {
-    public class GravatarApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<GravatarRoot>(factory, memoryCache, "Gravatar")
+    public class GravatarApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<GravatarRoot>(factory, memoryCache, "Gravatar", true)
     {
         public async Task<Gravatar?> GetGravatar(string? email)
         {

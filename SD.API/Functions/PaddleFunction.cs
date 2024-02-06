@@ -80,13 +80,16 @@ namespace SD.API.Functions
         public async Task PostSubscription(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "public/paddle/subscription")] HttpRequestData req, CancellationToken cancellationToken)
         {
+            string? mySignature = null;
+            string? paddleSignature = null;
+
             try
             {
-                var mySignature = configuration["Paddle_Signature"];
-                var paddleSignature = req.Headers.GetValues("Paddle-Signature").First();
-                var h1 = paddleSignature.Split(";")[1];
-                var h1Value = h1.Split("=")[1];
-                if (mySignature != h1Value) throw new NotificationException("wrong paddle signature");
+                mySignature = configuration["Paddle_Signature"];
+                var paddleHeader = req.Headers.GetValues("Paddle-Signature").First();
+                var h1 = paddleHeader.Split(";")[1];
+                paddleSignature = h1.Split("=")[1];
+                if (mySignature != paddleSignature) throw new NotificationException("wrong paddle signature");
 
                 var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new NotificationException("body null");
                 if (body.data == null) throw new NotificationException("body.data null");
@@ -112,7 +115,7 @@ namespace SD.API.Functions
             }
             catch (Exception ex)
             {
-                req.ProcessException(ex);
+                req.ProcessException(ex, mySignature, paddleSignature);
                 throw new UnhandledException(ex.BuildException());
             }
         }
