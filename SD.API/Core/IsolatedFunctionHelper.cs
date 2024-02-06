@@ -64,10 +64,10 @@ namespace SD.API.Core
             return dictionary;
         }
 
-        public static void ProcessException(this HttpRequestData req, Exception ex, params object?[] args)
+        public static void ProcessException(this HttpRequestData req, Exception ex)
         {
             var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
-            logger?.LogError(ex, req.BuildState(), req.BuildParams().Concat(args));
+            logger?.LogError(ex, req.BuildState(), req.BuildParams());
         }
 
         private static string[] BuildParams(this HttpRequestData req)
