@@ -82,7 +82,10 @@ namespace SD.API.Functions
         {
             try
             {
-                if (!req.Headers.PaddleWebhookVerify()) throw new NotificationException($"wrong paddle signature");
+                var paddleHeader = req.Headers.GetValues("Paddle-Signature").First();
+                var h1 = paddleHeader.Split(";")[1];
+                var paddleSignature = h1.Split("=")[1];
+                if (configuration["Paddle_Signature"] != paddleSignature) throw new NotificationException($"wrong paddle signature = {paddleSignature}");
 
                 var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new NotificationException("body null");
                 if (body.data == null) throw new NotificationException("body.data null");
