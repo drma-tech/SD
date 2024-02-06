@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Blazorise;
+using Microsoft.Extensions.Caching.Memory;
 using SD.Shared.Models.List;
 using SD.Shared.Models.News;
 using SD.Shared.Models.Reviews;
@@ -42,12 +43,12 @@ namespace SD.WEB.Core
     {
         public async Task<Ratings?> GetMovieRatings(string? id, string? title, DateTime? releaseDate, string? tmdb_rating, RenderControlCore<Ratings?>? core)
         {
-            return await GetAsync(Endpoint.GetMovieRatings(id, title, releaseDate, tmdb_rating), core);
+            return await GetAsync(Endpoint.GetMovieRatings(id, title, releaseDate, tmdb_rating), core, $"TrailerModel-{id}");
         }
 
         public async Task<Ratings?> GetShowRatings(string? id, string? title, DateTime? releaseDate, string? tmdb_rating, RenderControlCore<Ratings?>? core)
         {
-            return await GetAsync(Endpoint.GetShowRatings(id, title, releaseDate, tmdb_rating), core);
+            return await GetAsync(Endpoint.GetShowRatings(id, title, releaseDate, tmdb_rating), core, $"TrailerModel-{id}");
         }
     }
 
@@ -55,12 +56,12 @@ namespace SD.WEB.Core
     {
         public async Task<ReviewModel?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, RenderControlCore<ReviewModel?>? core)
         {
-            return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate), core);
+            return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate), core, $"ReviewModel-{id}");
         }
 
         public async Task<ReviewModel?> GetShowReviews(string? id, string? title, DateTime? releaseDate, RenderControlCore<ReviewModel?>? core)
         {
-            return await GetAsync(Endpoint.GetShowReviews(id, title, releaseDate), core);
+            return await GetAsync(Endpoint.GetShowReviews(id, title, releaseDate), core, $"ReviewModel-{id}");
         }
     }
 }

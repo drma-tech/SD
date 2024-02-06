@@ -82,15 +82,19 @@ namespace SD.API.Functions
         {
             try
             {
-                var body = await req.GetPublicBody<RootEvent>(cancellationToken);
-                if (body == null) throw new NotificationException("body null");
+                var mySignature = configuration["Paddle_Signature"];
+                var paddleSignature = req.Headers.GetValues("Paddle-Signature").First();
+                var h1 = paddleSignature.Split(";")[1];
+                var h1Value = h1.Split("=")[1];
+                if (mySignature != h1Value) throw new NotificationException("wrong paddle signature");
+
+                var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new NotificationException("body null");
                 if (body.data == null) throw new NotificationException("body.data null");
 
                 var result = await repo.Query<ClientePrincipal>(x => body.data.customer_id == (x.ClientePaddle != null ? x.ClientePaddle.CustomerId : ""), null, DocumentType.Principal, cancellationToken);
 
                 if (result == null) return;
-                var client = result.FirstOrDefault();
-                if (client == null) throw new NotificationException("client null");
+                var client = result.FirstOrDefault() ?? throw new NotificationException("client null");
                 if (client.ClientePaddle == null) throw new NotificationException("client.ClientePaddle null");
 
                 client.ClientePaddle.SubscriptionId = body.data.id;
@@ -100,9 +104,7 @@ namespace SD.API.Functions
                     if (item == null) throw new NotificationException("item null");
                     if (item.price == null) throw new NotificationException("item.price null");
 
-                    var localItem = client.ClientePaddle.Items.Find(f => f.ProductId == item.price.product_id);
-                    if (localItem == null) throw new NotificationException("localItem null");
-
+                    var localItem = client.ClientePaddle.Items.Find(f => f.ProductId == item.price.product_id) ?? throw new NotificationException("localItem null");
                     localItem.Active = (body.data.status == "active" || body.data.status == "trialing") && (item.status == "active" || item.status == "trialing");
                 }
 
