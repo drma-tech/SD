@@ -34,6 +34,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
     });
 
     services.AddSingleton<CosmosCacheRepository>();
+    services.AddSingleton<EmailRepository>();
     services.AddApplicationInsightsTelemetryWorkerService();
     services.ConfigureFunctionsApplicationInsights();
 }
