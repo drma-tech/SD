@@ -8,8 +8,8 @@ namespace SD.API.Functions
 {
     public class SendgridFunction(EmailRepository repo, IConfiguration configuration)
     {
-        [Function("PostSubscription")]
-        public async Task PostSubscription(
+        [Function("SendgridInbound")]
+        public async Task SendgridInbound(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "public/sendgrid/inbound")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
