@@ -2,13 +2,13 @@
 
 namespace SD.Shared.Models.Support
 {
-    public class Email : CosmosDocument
+    public class EmailDocument : CosmosDocument
     {
-        public Email()
+        public EmailDocument()
         {
         }
 
-        public Email(string key, InboundEmail? email) : base(key, key)
+        public EmailDocument(string key, InboundEmail? email) : base(key, key)
         {
             InboundEmail = email;
         }

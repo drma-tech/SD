@@ -1,13 +1,12 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
-using SD.API.Repository.Core;
 using SD.Shared.Models.Support;
 using StrongGrid;
 
 namespace SD.API.Functions
 {
-    public class SendgridFunction(IRepository repo, IConfiguration configuration)
+    public class SendgridFunction(EmailRepository repo, IConfiguration configuration)
     {
         [Function("PostSubscription")]
         public async Task PostSubscription(
@@ -18,9 +17,9 @@ namespace SD.API.Functions
                 var parser = new WebhookParser();
                 StrongGrid.Models.Webhooks.InboundEmail inboundMail = await parser.ParseInboundEmailWebhookAsync(req.Body, cancellationToken);
 
-                var model = new Email(Guid.NewGuid().ToString(), inboundMail);
+                var model = new EmailDocument(Guid.NewGuid().ToString(), inboundMail);
 
-            await    repo.Upsert(model, cancellationToken);
+                await repo.Upsert(model, cancellationToken);
             }
             catch (Exception ex)
             {
