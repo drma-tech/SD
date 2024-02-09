@@ -4,15 +4,15 @@ using SD.Shared.Models.Support;
 
 namespace SD.API.Repository
 {
-    public class EmailRepository
+    public class CosmosEmailRepository
     {
         public Container Container { get; private set; }
 
-        public EmailRepository(IConfiguration config)
+        public CosmosEmailRepository(IConfiguration config)
         {
             var connString = config.GetValue<string>("RepositoryOptions_CosmosConnectionString");
             var databaseId = config.GetValue<string>("RepositoryOptions_DatabaseId");
-            var containerId = "mail";
+            var containerId = config.GetValue<string>("RepositoryOptions_ContainerMailId");
 
             var _client = new CosmosClient(connString, new CosmosClientOptions()
             {

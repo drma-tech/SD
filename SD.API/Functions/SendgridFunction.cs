@@ -6,7 +6,7 @@ using StrongGrid;
 
 namespace SD.API.Functions
 {
-    public class SendgridFunction(EmailRepository repo, IConfiguration configuration)
+    public class SendgridFunction(CosmosEmailRepository repo, IConfiguration configuration)
     {
         [Function("SendgridInbound")]
         public async Task SendgridInbound(
