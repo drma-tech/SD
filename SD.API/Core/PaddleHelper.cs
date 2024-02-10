@@ -1,5 +1,4 @@
 ﻿using Microsoft.Azure.Functions.Worker.Http;
-using System.Collections;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -22,9 +21,19 @@ namespace SD.API.Core
             var hmacsha256 = new HMACSHA256(keyByte);
             var messageBytes = encoding.GetBytes(payload);
             var hashmessage = hmacsha256.ComputeHash(messageBytes);
-            var hash = Encoding.UTF8.GetString(hashmessage);
+            var hash = ByteToString(hashmessage);
 
             return h1Value.Equals(hash, StringComparison.CurrentCultureIgnoreCase);
+        }
+
+        public static string ByteToString(byte[] buff)
+        {
+            var sbinary = new StringBuilder();
+            for (int i = 0; i < buff.Length; i++)
+            {
+                sbinary.Append(buff[i].ToString("X2")); // hex format
+            }
+            return (sbinary.ToString());
         }
     }
 }
