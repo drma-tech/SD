@@ -1,5 +1,6 @@
 ﻿@page "/shared/wishlist/{type}/{token}"
-<SeoHeader Title="@($"Wishlist ({Gravatar?.displayName}) | {(type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")" Icon="@Gravatar?.photos.LastOrDefault()?.value"></SeoHeader>
+<SeoHeader Title="@($"Wishlist ({Gravatar?.displayName}) | {(type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")"
+           Icon="@Gravatar?.photos.LastOrDefault()?.value"></SeoHeader>
 
 @using SD.Shared.Core.Models
 @using SD.WEB.Modules.Auth.Core

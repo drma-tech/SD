@@ -7,6 +7,7 @@ using SD.Shared.Models.Auth;
 using SD.Shared.Models.Subscription;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Security.Cryptography;
 
 namespace SD.API.Functions
 {
@@ -76,16 +77,37 @@ namespace SD.API.Functions
             }
         }
 
+        public static string ByteToString(byte[] buff)
+        {
+            string sbinary = "";
+            for (int i = 0; i < buff.Length; i++)
+            {
+                sbinary += buff[i].ToString("X2"); // hex format
+            }
+            return (sbinary);
+        }
+
         [Function("PostSubscription")]
         public async Task PostSubscription(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "public/paddle/subscription")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                //var paddleHeader = req.Headers.GetValues("Paddle-Signature").First();
-                //var h1 = paddleHeader.Split(";")[1];
-                //var paddleSignature = h1.Split("=")[1];
-                //if (configuration["Paddle_Signature"] != paddleSignature) throw new NotificationException($"wrong paddle signature = {paddleSignature}");
+                var paddleHeader = req.Headers.GetValues("Paddle-Signature").First();
+                var ts = paddleHeader.Split(";")[0];
+                var h1 = paddleHeader.Split(";")[1];
+                var tsValue = ts.Split("=")[1];
+                var h1Value = h1.Split("=")[1];
+                var payload = tsValue + ":" + req.Body.ToString();
+
+                System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
+                byte[] keyByte = encoding.GetBytes(configuration["Paddle_Signature"]);
+                var hmacsha256 = new HMACSHA256(keyByte);
+                byte[] messageBytes = encoding.GetBytes(payload);
+                byte[] hashmessage = hmacsha256.ComputeHash(messageBytes);
+                var hash = ByteToString(hashmessage);
+
+                if (h1Value != hash) throw new NotificationException($"wrong paddle signature = {h1Value} | {hash}");
 
                 var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new NotificationException("body null");
                 if (body.data == null) throw new NotificationException("body.data null");
