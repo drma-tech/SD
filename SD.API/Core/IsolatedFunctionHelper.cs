@@ -42,6 +42,7 @@ namespace SD.API.Core
 
         public static async Task<T> GetPublicBody<T>(this HttpRequestData req, CancellationToken cancellationToken) where T : class, new()
         {
+            req.Body.Position = 0; //in case of a previous read
             var model = await JsonSerializer.DeserializeAsync<T>(req.Body, cancellationToken: cancellationToken);
             //TODO: call Update
             model ??= new T();
