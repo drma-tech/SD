@@ -108,7 +108,7 @@ namespace SD.API.Functions
                 byte[] hashmessage = hmacsha256.ComputeHash(messageBytes);
                 var hash = ByteToString(hashmessage);
 
-                if (h1Value != hash) throw new NotificationException($"wrong paddle signature = {h1Value} | {hash} | {rawbody}");
+                if (!h1Value.Equals(hash, StringComparison.CurrentCultureIgnoreCase)) throw new NotificationException($"wrong paddle signature = {h1Value} | {hash} | {rawbody}");
 
                 var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new NotificationException("body null");
                 if (body.data == null) throw new NotificationException("body.data null");
