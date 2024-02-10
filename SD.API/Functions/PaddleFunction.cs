@@ -98,7 +98,8 @@ namespace SD.API.Functions
                 var h1 = paddleHeader.Split(";")[1];
                 var tsValue = ts.Split("=")[1];
                 var h1Value = h1.Split("=")[1];
-                var payload = tsValue + ":" + req.Body.ToString();
+                var rawbody = await new StreamReader(req.Body).ReadToEndAsync(cancellationToken);
+                var payload = tsValue + ":" + rawbody;
 
                 System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
                 byte[] keyByte = encoding.GetBytes(configuration["Paddle_Signature"]);
@@ -107,7 +108,7 @@ namespace SD.API.Functions
                 byte[] hashmessage = hmacsha256.ComputeHash(messageBytes);
                 var hash = ByteToString(hashmessage);
 
-                if (h1Value != hash) throw new NotificationException($"wrong paddle signature = {h1Value} | {hash}");
+                if (h1Value != hash) throw new NotificationException($"wrong paddle signature = {h1Value} | {hash} | {rawbody}");
 
                 var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new NotificationException("body null");
                 if (body.data == null) throw new NotificationException("body.data null");
