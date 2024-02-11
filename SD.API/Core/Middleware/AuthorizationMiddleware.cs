@@ -38,10 +38,12 @@ namespace SD.API.Core.Middleware
                 await context.SetHttpResponseStatusCode(HttpStatusCode.Unauthorized, "Unauthorized");
             }
 
-            if (principal.UserRoles.Any(a => attributes.SingleOrDefault()?.Roles.Contains(a) ?? true))
-                await next(context);
-            else
+            if (attributes.Any() && !principal.UserRoles.Any(a => attributes.Single().Roles.Contains(a)))
+            {
                 await context.SetHttpResponseStatusCode(HttpStatusCode.Unauthorized, "Unauthorized");
+            }
+
+            await next(context);
         }
 
         public static MethodInfo GetTargetFunctionMethod(FunctionContext context)
