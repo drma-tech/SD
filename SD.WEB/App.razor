@@ -3,7 +3,9 @@
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
-                    <SD.WEB.Modules.Auth.LoginProviders></SD.WEB.Modules.Auth.LoginProviders>
+                    <div class="alert alert-danger" role="alert">
+                        @Resources.GlobalTranslations.YouAreNotAuthorized
+                    </div>
                 </NotAuthorized>
                 <Authorizing>
                     <div class="alert alert-warning" role="alert">

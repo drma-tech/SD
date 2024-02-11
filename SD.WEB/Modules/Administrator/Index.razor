@@ -1,0 +1,18 @@
+﻿@page "/administrator"
+@using SD.WEB.Modules.Auth.Core
+@inherits PageCore<Index>
+@* @attribute [Authorize(Roles = "administrator")] *@
+@inject AdministratorApi AdministratorApi
+
+<h3>Index</h3>
+
+<Span>Value: @Value</Span>
+
+@code {
+    public string? Value { get; set; }
+
+    protected override async Task LoadDataRender()
+    {
+        Value = await AdministratorApi.Test();
+    }
+}

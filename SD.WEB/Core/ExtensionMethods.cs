@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Collections.Specialized;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Web;
 
 namespace SD.WEB.Core
@@ -16,16 +15,6 @@ namespace SD.WEB.Core
         public static string? QueryString(this NavigationManager navigationManager, string key)
         {
             return navigationManager.QueryString()[key];
-        }
-
-        public static bool Empty<TSource>(this IEnumerable<TSource> source)
-        {
-            return !source.Any();
-        }
-
-        public static bool Empty<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
-        {
-            return !source.Any(predicate);
         }
 
         public static TaskAwaiter<(A, B)> GetAwaiter<A, B>(this (Task<A>, Task<B>) tuple)
@@ -63,22 +52,12 @@ namespace SD.WEB.Core
 
         public static string HideExternalLink(this string? link)
         {
-            return $"/redirect?link={SimpleEncrypt(link)}";
+            return $"/redirect?link={link.SimpleEncrypt()}";
         }
 
         public static string ShowExternalLink(this string? link)
         {
-            return SimpleDecrypt(link);
-        }
-
-        public static string SimpleEncrypt(this string? url)
-        {
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(url ?? ""));
-        }
-
-        public static string SimpleDecrypt(this string? obfuscatedUrl)
-        {
-            return Encoding.UTF8.GetString(Convert.FromBase64String(obfuscatedUrl ?? ""));
+            return link.SimpleDecrypt();
         }
     }
 }

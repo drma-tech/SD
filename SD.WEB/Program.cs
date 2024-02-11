@@ -53,6 +53,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddOptions();
     collection.AddAuthorizationCore();
 
+    collection.AddScoped<AdministratorApi>();
     collection.AddScoped<PrincipalApi>();
     collection.AddScoped<GravatarApi>();
     collection.AddScoped<LoginApi>();
