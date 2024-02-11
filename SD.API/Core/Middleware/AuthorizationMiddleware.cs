@@ -33,14 +33,22 @@ namespace SD.API.Core.Middleware
             var targetMethod = GetTargetFunctionMethod(context);
             var attributes = targetMethod.GetCustomAttributes<AuthorizeAttribute>(true);
 
+            if (attributes.Empty())
+            {
+                await next(context);
+                return;
+            }
+
             if (attributes.Any() && principal.UserRoles.Empty())
             {
                 await context.SetHttpResponseStatusCode(HttpStatusCode.Unauthorized, "Unauthorized");
+                return;
             }
 
             if (attributes.Any() && !principal.UserRoles.Any(a => attributes.Single().Roles.Contains(a)))
             {
                 await context.SetHttpResponseStatusCode(HttpStatusCode.Unauthorized, "Unauthorized");
+                return;
             }
 
             await next(context);
