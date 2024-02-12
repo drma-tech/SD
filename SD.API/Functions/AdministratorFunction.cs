@@ -1,14 +1,12 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using SD.API.Core.Middleware;
 
 namespace SD.API.Functions
 {
     public class AdministratorFunction()
     {
-        [Authorize("administrator")]
         [Function("AdministratorTest")]
-        public string AdministratorTest([HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "bla/test")] HttpRequestData req)
+        public string AdministratorTest([HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "adm/bla/test")] HttpRequestData req)
         {
             try
             {

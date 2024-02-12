@@ -1,8 +1,12 @@
 {
   "routes": [
     {
-      "route": "/api/Public/*",
+      "route": "/api/public/*",
       "allowedRoles": [ "anonymous" ]
+    },
+    {
+      "route": "/api/adm/*",
+      "allowedRoles": [ "administrator" ]
     },
     {
       "route": "/api/*",

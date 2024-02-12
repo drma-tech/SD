@@ -6,7 +6,7 @@ namespace SD.WEB.Modules.Auth.Core
     {
         private struct Endpoint
         {
-            public const string Add = "bla/test";
+            public const string Add = "adm/bla/test";
         }
 
         public async Task<string?> Test()
