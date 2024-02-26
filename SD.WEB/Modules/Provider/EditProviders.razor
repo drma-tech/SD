@@ -18,7 +18,7 @@
     Save Session
 </Button>
 
-<DataGrid @ref="DataGrid" TItem="ProviderModel" Data="@AllProviders?.Items" Filterable="true" Editable="true" EditMode="DataGridEditMode.Form"
+<DataGrid TItem="ProviderModel" Data="@AllProviders?.Items" Filterable="true" Editable="true" EditMode="DataGridEditMode.Form"
           ShowPager="true" PageSize="10" FilterMethod="DataGridFilterMethod.Contains"
           RowUpdated="RowUpdated">
     <DataGridColumns>
@@ -83,7 +83,6 @@
 @code {
     public MediaType MediaType { get; set; } = MediaType.movie;
 
-    public DataGrid<ProviderModel>? DataGrid { get; set; }
     private AllProviders? AllProviders { get; set; }
 
     public IEnumerable<EnumObject> Languages { get; set; } = Array.Empty<EnumObject>();

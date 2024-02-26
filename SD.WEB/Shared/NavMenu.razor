@@ -21,7 +21,7 @@
                     <BarIcon IconName="FontAwesomeIcons.UserCircle" /> @GlobalTranslations.MenuProfile
                 </BarLink>
             </BarItem>
-             <BarItem>
+            <BarItem>
                 <BarLink To="/providers" Match="Match.Prefix" Title="@GlobalTranslations.MenuProviders">
                     <BarIcon IconName="FontAwesomeIcons.PlayCircle" /> @GlobalTranslations.MenuProviders
                 </BarLink>
@@ -31,24 +31,23 @@
                     <BarIcon IconName="FontAwesomeIcons.ListOl" /> @GlobalTranslations.MenuSuggestions
                 </BarLink>
             </BarItem>
-            <BarItem>
-                <BarLink To="/support" Match="Match.Prefix" Title="@GlobalTranslations.MenuSupport">
-                    <BarIcon IconName="FontAwesomeIcons.Headset" /> @GlobalTranslations.MenuSupport
-                </BarLink>
-            </BarItem>
-            <BarItem>
-                <BarLink To="/administrator" Match="Match.Prefix" Title="Administrator">
-                    <BarIcon IconName="FontAwesomeIcons.UserTie" /> Administrator
-                </BarLink>
-            </BarItem>
+            <AuthorizeView Roles="administrator">
+                <Authorized>
+                    <BarItem>
+                        <BarLink To="/administrator" Match="Match.Prefix" Title="Administrator">
+                            <BarIcon IconName="FontAwesomeIcons.UserTie" /> Administrator
+                        </BarLink>
+                    </BarItem>
+                </Authorized>
+            </AuthorizeView>
         </BarStart>
     </BarMenu>
     <Div Style="bottom: 10px; position: absolute; width: 100%;" TextAlignment="TextAlignment.Center">
         <Badge Color="Color.Primary" Pill="true">@BuildDateString()</Badge>
-    </Div>
-</Bar>
+        </Div>
+    </Bar>
 
-@code {
+    @code {
     //https://swharden.com/blog/2020-12-29-blazor-build-info/
     private string BuildDateString()
     {

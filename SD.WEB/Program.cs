@@ -2,6 +2,7 @@ using AzureStaticWebApps.Blazor.Authentication;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using Blazorise.RichTextEdit;
 using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -39,7 +40,8 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection
         .AddBlazorise(options => options.Immediate = true)
         .AddBootstrapProviders()
-        .AddFontAwesomeIcons();
+        .AddFontAwesomeIcons()
+        .AddBlazoriseRichTextEdit();
 
     collection.AddPWAUpdater();
     collection.AddMediaQueryService();

@@ -7,13 +7,17 @@
 
 <Alert Color="Color.Secondary" Visible="true">
     <AlertDescription>
-        <Blazorise.Link To="@("support/terms/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkTerm</Blazorise.Link> ▪ <Blazorise.Link To="@("support/privacy/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">@Resources.Translations.LinkPrivacy</Blazorise.Link>
-        </AlertDescription>
-    </Alert>
+        <Blazorise.Link To="@("support/terms/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">
+            @Resources.Translations.LinkTerm
+        </Blazorise.Link> ▪ <Blazorise.Link To="@("support/privacy/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">
+            @Resources.Translations.LinkPrivacy
+        </Blazorise.Link>
+    </AlertDescription>
+</Alert>
 
-    <Div Margin="Margin.Is2.OnY">
-        <Button Size="Size.Small" Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Announcements)" Clicked="(() => ChangeOrder(Tabs.Announcements))">
-            @Resources.Translations.TabAnnouncements
+<Div Margin="Margin.Is2.OnY">
+    <Button Size="Size.Small" Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Announcements)" Clicked="(() => ChangeOrder(Tabs.Announcements))">
+        @Resources.Translations.TabAnnouncements
     </Button>
     <Button Size="Size.Small" Margin="Margin.Is1.FromBottom" Color="Color.Secondary" Outline="!(SelectedTab == Tabs.Roadmap)" Clicked="(() => ChangeOrder(Tabs.Roadmap))">
         @Resources.Translations.TabRoadmap

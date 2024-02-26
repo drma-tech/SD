@@ -18,7 +18,7 @@
 
 @if (IsAuthenticated)
 {
-    <Jumbotron Background="Background.Primary" Margin="Margin.Is3.FromBottom" Padding="Padding.Is3">
+    <Jumbotron Background="Background.Secondary" Margin="Margin.Is3.FromBottom" Padding="Padding.Is3">
         <Row>
             <Column ColumnSize="ColumnSize.IsAuto">
                 <Figure Size="FigureSize.Is64x64" Margin="Margin.Is0.OnDesktop">
@@ -34,11 +34,11 @@
                 </Text>
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                <Button Color="Color.Dark" Clicked="MyAccount">
+                <Button Color="Color.Primary" Clicked="MyAccount">
                     <Blazorise.Icon Name="FontAwesomeIcons.UserCircle"></Blazorise.Icon>
                     Account
                 </Button>
-                <Button Color="Color.Dark" Clicked="OpenSubscription">
+                <Button Color="Color.Primary" Clicked="OpenSubscription">
                     <Blazorise.Icon Name="FontAwesomeIcons.Gem"></Blazorise.Icon>
                     Subscription
                 </Button>

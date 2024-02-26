@@ -180,60 +180,103 @@
         {
             <Card Margin="Margin.Is2.FromBottom">
                 <CardHeader>
-                    Subscription Details
+                    Details
                 </CardHeader>
                 <CardBody>
                     <Fields>
-                        <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <Field ColumnSize="ColumnSize.Is6.OnDesktop" TextSize="TextSize.Small">
                             <FieldLabel>
-                                Subscription / Product
+                                Subscription Id
                             </FieldLabel>
-                            <TextEdit Text="@Client?.ClientePaddle?.ActiveProduct.GetName()" Disabled="true" />
+                            <TextEdit Text="@Subscription?.data?.id" Disabled="true" Size="Size.Small" />
                         </Field>
-                        <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <Field ColumnSize="ColumnSize.Is6.OnDesktop" TextSize="TextSize.Small">
                             <FieldLabel>
                                 Status
                             </FieldLabel>
-                            <TextEdit Text="@Subscription.data?.status" Disabled="true" />
+                            <TextEdit Text="@Subscription.data?.status" Disabled="true" Size="Size.Small" />
                         </Field>
                     </Fields>
                     <Fields>
-                        <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <Field ColumnSize="ColumnSize.Is6.OnDesktop" TextSize="TextSize.Small">
                             <FieldLabel>
-                                Start (Current Billing Period)
+                                Next Billed
                             </FieldLabel>
-                            <TextEdit Text="@Subscription.data?.current_billing_period?.starts_at?.ToShortDateString()" Disabled="true" />
+                            <TextEdit Text="@Subscription?.data?.next_billed_at?.ToShortDateString()" Disabled="true" Size="Size.Small" />
                         </Field>
-                        <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <Field ColumnSize="ColumnSize.Is6.OnDesktop" TextSize="TextSize.Small">
                             <FieldLabel>
-                                End (Current Billing Period)
+                                Canceled
                             </FieldLabel>
-                            <TextEdit Text="@Subscription.data?.current_billing_period?.ends_at?.ToShortDateString()" Disabled="true" />
+                            <TextEdit Text="@Subscription.data?.canceled_at?.ToShortDateString()" Disabled="true" Size="Size.Small" />
                         </Field>
                     </Fields>
                 </CardBody>
             </Card>
             <Card Margin="Margin.Is2.FromBottom">
                 <CardHeader>
-                    @WEB.Resources.GlobalTranslations.Actions
+                    Items
                 </CardHeader>
                 <CardBody>
-                    @if (ActiveBilling)
+                    <Table Narrow="true" Bordered="true" Striped="true" Margin="Margin.Is0.FromBottom">
+                        <TableHeader>
+                            <TableRow>
+                                <TableHeaderCell>Product</TableHeaderCell>
+                                <TableHeaderCell>Previously Billed</TableHeaderCell>
+                                <TableHeaderCell>Next Billed</TableHeaderCell>
+                                <TableHeaderCell>Status</TableHeaderCell>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            @foreach (var item in Subscription.data?.items ?? [])
+                            {
+                                <TableRow>
+                                    <TableRowCell>
+                                        @Config?.GetAccountProduct(item.price?.product_id).GetCustomAttribute()?.Name
+                                    </TableRowCell>
+                                    <TableRowCell>
+                                        @item.previously_billed_at?.ToShortDateString()
+                                    </TableRowCell>
+                                    <TableRowCell>
+                                        @if (item.next_billed_at.HasValue)
+                                        {
+                                            @item.next_billed_at?.ToShortDateString()
+                                        }
+                                        else
+                                        {
+                                            <Badge Color="Color.Warning">Inactive billing</Badge>
+                                        }
+                                    </TableRowCell>
+                                    <TableRowCell>
+                                        @item.status
+                                    </TableRowCell>
+                                </TableRow>
+                            }
+                        </TableBody>
+                    </Table>
+                </CardBody>
+            </Card>
+            <Card Margin="Margin.Is2.FromBottom">
+                <CardHeader>
+                    Management
+                </CardHeader>
+                <CardBody>
+                    @if (Subscription?.data?.IsCanceled ?? true)
                     {
-                        <Button Color="Color.Primary" Clicked="UpdateClick" Disabled="!ActiveBilling" Margin="Margin.Is1.FromEnd">
-                            <Blazorise.Icon Name="FontAwesomeIcons.CreditCard" /> Update payment details
-                        </Button>
-                        <Button Color="Color.Danger" Clicked="CancelClick" Disabled="!ActiveBilling">
-                            <Blazorise.Icon Name="FontAwesomeIcons.UserAltSlash" /> Cancel subscription
+                        <Button Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="CreateNewSubscription">
+                            <Blazorise.Icon Name="FontAwesomeIcons.Gem" /> Create new subscription
                         </Button>
                     }
                     else
                     {
-                        <Alert Color="Color.Primary" Visible="true">
-                            <AlertDescription>
-                                <Blazorise.Icon Name="FontAwesomeIcons.ExclamationTriangle"></Blazorise.Icon> The subscription has been scheduled to be canceled at the end of the current billing period.
-                            </AlertDescription>
-                        </Alert>
+                        <Button Color="Color.Primary" Type="ButtonType.Link" Target="Target.Blank" Margin="Margin.Is1.FromEnd"
+                                To="@Subscription?.data?.management_urls?.update_payment_method">
+                            <Blazorise.Icon Name="FontAwesomeIcons.CreditCard" /> Update payment details
+                        </Button>
+                        <Button Color="Color.Danger" Type="ButtonType.Link" Target="Target.Blank"
+                                To="@Subscription?.data?.management_urls?.cancel">
+                            <Blazorise.Icon Name="FontAwesomeIcons.UserAltSlash" /> Cancel subscription
+                        </Button>
                     }
                 </CardBody>
             </Card>
@@ -259,7 +302,8 @@
     [Parameter] public ClientePrincipal? Client { get; set; }
 
     public RootSubscription? Subscription { get; set; }
-    public bool ActiveBilling => Subscription?.data?.items.FirstOrDefault()?.next_billed_at != null;
+    public Configurations? Config { get; set; }
+    // public bool ActiveBilling => Subscription?.data?.items.FirstOrDefault()?.next_billed_at != null;
 
     private AccountCycle Cycle { get; set; } = AccountCycle.Monthly;
 
@@ -285,13 +329,13 @@
 
     protected override async Task LoadDataRender()
     {
-        var config = await ConfigurationApi.GetConfigurations();
-        if (config == null) throw new NotificationException("server comunication error");
+        Config = await ConfigurationApi.GetConfigurations();
+        if (Config == null) throw new NotificationException("server comunication error");
 
         if (Client?.ClientePaddle == null && string.IsNullOrEmpty(Client?.ClientePaddle?.SubscriptionId))
         {
-            await JsRuntime.InvokeVoidAsync("startPaddle", config.Token);
-            Plans = await JsRuntime.InvokeAsync<IEnumerable<Plan>>("getPlans", config.PriceStandardMonth, config.PriceStandardYear, config.PricePremiumMonth, config.PricePremiumYear);
+            await JsRuntime.InvokeVoidAsync("startPaddle", Config.Token);
+            Plans = await JsRuntime.InvokeAsync<IEnumerable<Plan>>("getPlans", Config.PriceStandardMonth, Config.PriceStandardYear, Config.PricePremiumMonth, Config.PricePremiumYear);
         }
         else if (string.IsNullOrEmpty(Client?.ClientePaddle?.SubscriptionId))
         {
@@ -354,13 +398,10 @@
         StateHasChanged();
     }
 
-    private void UpdateClick()
+    private async Task CreateNewSubscription()
     {
-        Navigation.NavigateTo(Subscription?.data?.management_urls?.update_payment_method ?? "");
-    }
-
-    private void CancelClick()
-    {
-        Navigation.NavigateTo(Subscription?.data?.management_urls?.cancel ?? "");
+        if (Client != null) Client.ClientePaddle = null;
+        Subscription = null;
+        await LoadDataRender();
     }
 }

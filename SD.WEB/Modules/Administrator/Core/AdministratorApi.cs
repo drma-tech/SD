@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using SD.Shared.Models.Support;
 
 namespace SD.WEB.Modules.Auth.Core
 {
@@ -6,12 +7,18 @@ namespace SD.WEB.Modules.Auth.Core
     {
         private struct Endpoint
         {
-            public const string Add = "adm/bla/test";
+            public const string GetEmails = "adm/emails";
+            public const string SendEmail = "adm/send-email";
         }
 
-        public async Task<string?> Test()
+        public async Task<List<EmailDocument>> GetEmails()
         {
-            return await GetValueAsync(Endpoint.Add, false);
+            return await GetAsync<List<EmailDocument>>(Endpoint.GetEmails, false) ?? [];
+        }
+
+        public async Task SendEmail(SendEmail inbound)
+        {
+            await PostAsync(Endpoint.SendEmail, false, inbound);
         }
     }
 }

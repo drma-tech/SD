@@ -67,32 +67,19 @@ namespace SD.API.Functions
         }
 
         [Function("PrincipalPaddle")]
-        public async Task<ClientePrincipal?> Paddle(
+        public async Task<ClientePrincipal> Paddle(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.PUT, Route = "Principal/Paddle")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
                 var userId = req.GetUserId();
 
-                var Client = await repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + userId, new PartitionKey(userId), cancellationToken);
-
+                var Client = await repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + userId, new PartitionKey(userId), cancellationToken) ?? throw new NotificationException("Client null");
                 var body = await req.GetBody<ClientePrincipal>(cancellationToken);
 
-                if (Client.ClientePaddle == null)
-                {
-                    Client.ClientePaddle = body.ClientePaddle;
-                }
-                else
-                {
-                    foreach (var item in Client.ClientePaddle.Items) //deactive current ones
-                    {
-                        item.Active = false;
-                    }
+                Client.ClientePaddle = body.ClientePaddle;
 
-                    Client.ClientePaddle.Items.AddRange(body.ClientePaddle?.Items ?? throw new NotificationException("transaction failed"));
-                }
-
-                return await repo.Upsert(body, cancellationToken);
+                return await repo.Upsert(Client, cancellationToken);
             }
             catch (Exception ex)
             {

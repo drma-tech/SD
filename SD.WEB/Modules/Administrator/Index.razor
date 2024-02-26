@@ -1,18 +1,73 @@
 ﻿@page "/administrator"
+@using SD.Shared.Models.Support
+@using SD.WEB.Modules.Administrator.Components
 @using SD.WEB.Modules.Auth.Core
+@using Blazorise.DataGrid
+@using StrongGrid.Models.Webhooks
+@using Microsoft.AspNetCore.Components.QuickGrid
 @inherits PageCore<Index>
-@* @attribute [Authorize(Roles = "administrator")] *@
+@attribute [Authorize(Roles = "administrator")]
 @inject AdministratorApi AdministratorApi
 
-<h3>Index</h3>
+<Button Clicked="@(async()=>await NewClick())" Background="Background.Primary">New Email</Button>
+<div>
+    <QuickGrid Items="@FilteredEmails" ItemKey="(p=>p.Id)" Pagination="@pagination">
+        <PropertyColumn Property="@(p => p.To)" Sortable="true">
+            <ColumnOptions>
+                <Select TValue="string">
+                    <SelectItem Value="@("support@streamingdiscovery.com")">support@streamingdiscovery.com</SelectItem>
+                </Select>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Property="@(p => p.From)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.Subject)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.Date)" Format="yyyy-MM-dd" Sortable="true">
+            <ColumnOptions>
+                <Addons>
+                    <Addon AddonType="AddonType.Body">
+                        <DatePicker @ref="@datePicker" TValue="DateTime?" @bind-Date="@Date" />
+                    </Addon>
+                    <Addon AddonType="AddonType.End">
+                        <Button Color="Color.Danger" Clicked="@(()=>Date=null)">
+                            <Blazorise.Icon Name="FontAwesomeIcons.Eraser" />
+                        </Button>
+                    </Addon>
+                    <Addon AddonType="AddonType.End">
+                        <Button Color="Color.Secondary" Clicked="@(()=>datePicker.ToggleAsync())">
+                            <Blazorise.Icon Name="FontAwesomeIcons.CalendarDay" />
+                        </Button>
+                    </Addon>
+                </Addons>
+            </ColumnOptions>
+        </PropertyColumn>
+        <TemplateColumn Title="Actions">
+            <Button Clicked="@(async()=>await ReadClick(context))" Background="Background.Primary">Read</Button>
+        </TemplateColumn>
+    </QuickGrid>
+</div>
 
-<Span>Value: @Value</Span>
+<Paginator State="@pagination" />
 
 @code {
-    public string? Value { get; set; }
+    IQueryable<EmailDocument>? Emails;
+    IQueryable<EmailDocument>? FilteredEmails => Emails?.Where(w => Date == null || w.Date!.Value.Date == Date.Value.Date).OrderByDescending(o => o.Date);
+    PaginationState pagination = new PaginationState { ItemsPerPage = 15 };
+
+    DatePicker<DateTime?>? datePicker;
+    DateTime? Date;
 
     protected override async Task LoadDataRender()
     {
-        Value = await AdministratorApi.Test();
+        Emails = (await AdministratorApi.GetEmails()).AsQueryable();
+    }
+
+    private async Task NewClick()
+    {
+        await ModalService.OpenPopup<EmailPopup>(x => { x.Add(x => x.OnlyRead, false); }, ModalSize.Large);
+    }
+
+    private async Task ReadClick(EmailDocument doc)
+    {
+        await ModalService.OpenPopup<EmailPopup>(x => { x.Add(x => x.EmailDocument, doc); }, ModalSize.Large);
     }
 }

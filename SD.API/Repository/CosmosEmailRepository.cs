@@ -1,6 +1,8 @@
 ﻿using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Configuration;
 using SD.Shared.Models.Support;
+using System.Linq.Expressions;
 
 namespace SD.API.Repository
 {
@@ -37,6 +39,35 @@ namespace SD.API.Repository
             {
                 return null;
             }
+        }
+
+        public async Task<List<EmailDocument>> Query(Expression<Func<EmailDocument, bool>>? predicate, CancellationToken cancellationToken)
+        {
+            IQueryable<EmailDocument> query;
+
+            if (predicate is null)
+            {
+                query = Container.GetItemLinqQueryable<EmailDocument>();
+            }
+            else
+            {
+                query = Container.GetItemLinqQueryable<EmailDocument>().Where(predicate);
+            }
+
+            using var iterator = query.ToFeedIterator();
+            var results = new List<EmailDocument>();
+            double count = 0;
+
+            while (iterator.HasMoreResults)
+            {
+                var response = await iterator.ReadNextAsync(cancellationToken);
+
+                count += response.RequestCharge;
+
+                results.AddRange(response.Resource);
+            }
+
+            return results;
         }
 
         public async Task<EmailDocument?> Upsert(EmailDocument email, CancellationToken cancellationToken)

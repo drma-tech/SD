@@ -15,6 +15,7 @@ namespace SD.WEB.Core
         public static Action? RegionChanged { get; set; }
         public static Action<TempClientePaddle>? RegistrationSuccessful { get; set; }
         public static Action<string>? ShowError { get; set; }
+        public static Action<bool>? ShowFeedback { get; set; }
 
         public static bool OnMobile { get; set; }
         public static bool OnTablet { get; set; }

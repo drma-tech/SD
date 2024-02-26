@@ -15,6 +15,12 @@ namespace SD.Shared.Models.Support
 
         public InboundEmail? InboundEmail { get; set; }
 
+        public string? From => InboundEmail?.From.Email;
+        public string? To => InboundEmail?.To.FirstOrDefault()?.Email;
+        public string? Subject => InboundEmail?.Subject;
+        public DateTime? Date => DateTime.Parse(InboundEmail?.Headers.SingleOrDefault(w => w.Key == "Date").Value);
+        public string? Html => InboundEmail?.Html;
+
         public override bool Equals(object? obj)
         {
             return obj is AnnouncementModel q && q.Id == Id;

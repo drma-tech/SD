@@ -1,7 +1,7 @@
 ﻿@using Blazorise.QRCode
 @inherits ComponenteCore<DownloadComponent>
 
-<Alert Color="Color.Info" Visible="true">
+<Alert Color="Color.Info" Visible="true" Margin="Margin.Is2.FromBottom">
     <AlertMessage>
         @Resources.Translations.PlatformVersionsAvailable
     </AlertMessage>
@@ -9,18 +9,45 @@
 <Row HorizontalGutter="4" VerticalGutter="4">
     @foreach (var item in Downloads)
     {
-        <Column ColumnSize="ColumnSize.Is2.OnFullHD.Is4.OnDesktop.Is6.OnMobile" TextAlignment="TextAlignment.Center">
+        <Column ColumnSize="ColumnSize.Is6" TextAlignment="TextAlignment.Center">
             <Card Class="p-1" Border="Border.Secondary" Background="Background.Light">
                 <Blazorise.Link To="@item.link" Target="Target.Blank">
                     <QRCode Value="@item.link" Alt="@item.name" EccLevel="EccLevel.H" Icon="@item.logo_path" Style="width: 100%" />
                 </Blazorise.Link>
                 <CardBody Padding="Padding.Is1">
                     <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 0.75rem;">@item.name</CardTitle>
-                </CardBody>
-            </Card>
-        </Column>
+                    </CardBody>
+                </Card>
+            </Column>
     }
 </Row>
+
+<Alert Color="Color.Info" Visible="true" Margin="Margin.Is2.OnY">
+    <AlertMessage>
+        Quick Links
+    </AlertMessage>
+</Alert>
+<Blazorise.Link To="@("support/terms/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">
+    @Resources.Translations.LinkTerm
+</Blazorise.Link> ▪ <Blazorise.Link To="@("support/privacy/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))">
+    @Resources.Translations.LinkPrivacy
+</Blazorise.Link>
+
+<Alert Color="Color.Info" Visible="true" Margin="Margin.Is2.OnY">
+    <AlertMessage>
+        Contact
+    </AlertMessage>
+</Alert>
+<Addons>
+    <Addon AddonType="AddonType.Body">
+        <TextEdit Text="support@streamingdiscovery.com" ReadOnly="true" />
+    </Addon>
+    <Addon AddonType="AddonType.End">
+        <Button Color="Color.Secondary" Type="ButtonType.Link" To="mailto:support@streamingdiscovery.com">
+            <Blazorise.Icon Name="@FontAwesomeIcons.Share"></Blazorise.Icon>
+        </Button>
+    </Addon>
+</Addons>
 
 @code {
     private List<Item> Downloads { get; set; } = new();

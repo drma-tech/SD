@@ -122,6 +122,9 @@
 
         public string? transaction_id { get; set; }
         public DateTime? updated_at { get; set; }
+
+        public bool IsActive => status == "active";
+        public bool IsCanceled => status == "canceled";
     }
 
     public class Details

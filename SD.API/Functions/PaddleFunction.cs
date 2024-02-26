@@ -124,6 +124,8 @@ namespace SD.API.Functions
                 var config = new Configurations
                 {
                     Token = configuration.GetValue<string>("Paddle_Token"),
+                    ProductStandard = configuration.GetValue<string>("Paddle_ProductStandard"),
+                    ProductPremium = configuration.GetValue<string>("Paddle_ProductPremium"),
                     PriceStandardMonth = configuration.GetValue<string>("Paddle_PriceStandardMonth"),
                     PriceStandardYear = configuration.GetValue<string>("Paddle_PriceStandardYear"),
                     PricePremiumMonth = configuration.GetValue<string>("Paddle_PricePremiumMonth"),
