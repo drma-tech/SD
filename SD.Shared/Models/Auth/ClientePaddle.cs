@@ -12,17 +12,15 @@
         public string? SubscriptionId { get; set; }
         public string? CustomerId { get; set; }
         public string? AddressId { get; set; }
+        public bool IsPaidUser { get; set; } = false;
 
         public List<PaddleItem> Items { get; set; } = [];
-
-        public AccountProduct ActiveProduct => Items.Find(s => s.Active)?.Product ?? Items.FirstOrDefault()?.Product ?? AccountProduct.Basic;
-        public bool IsPaidUser => ActiveProduct == AccountProduct.Standard || ActiveProduct == AccountProduct.Premium;
+        public AccountProduct ActiveProduct => IsPaidUser ? Items.FirstOrDefault()?.Product ?? AccountProduct.Basic : AccountProduct.Basic;
     }
 
     public class PaddleItem
     {
         public string? ProductId { get; set; }
         public AccountProduct Product { get; set; }
-        public bool Active { get; set; } = false;
     }
 }

@@ -93,15 +93,7 @@ namespace SD.API.Functions
                 if (client.ClientePaddle == null) throw new NotificationException("client.ClientePaddle null");
 
                 client.ClientePaddle.SubscriptionId = body.data.id;
-
-                foreach (var item in body.data.items)
-                {
-                    if (item == null) throw new NotificationException("item null");
-                    if (item.price == null) throw new NotificationException("item.price null");
-
-                    var localItem = client.ClientePaddle.Items.Find(f => f.ProductId == item.price.product_id) ?? throw new NotificationException("localItem null");
-                    localItem.Active = (body.data.status == "active" || body.data.status == "trialing") && (item.status == "active" || item.status == "trialing");
-                }
+                client.ClientePaddle.IsPaidUser = (body.data.status == "active" || body.data.status == "trialing");
 
                 await repo.Upsert(client, cancellationToken);
             }

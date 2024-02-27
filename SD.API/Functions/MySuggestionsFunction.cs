@@ -8,7 +8,6 @@ namespace SD.API.Functions
 {
     public class MySuggestionsFunction(IRepository repo)
     {
-
         //[OpenApiOperation("MySuggestionsGet", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MySuggestions))]
         [Function("MySuggestionsGet")]

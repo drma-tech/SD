@@ -36,16 +36,6 @@ namespace SD.API.Core.Scraping
 
             try
             {
-                //is loading dynamically
-                //data.imdb = doc.DocumentNode.SelectNodes("//*[@id=\"__next\"]/main/div/section[1]/section/div[3]/section/section/div[2]/div[2]/div/div[1]/a/span/div/div[2]/div[1]/span[1]").FirstOrDefault()?.InnerText;
-            }
-            catch
-            {
-                //do nothing
-            }
-
-            try
-            {
                 data.metacritic = doc.DocumentNode.SelectNodes("//*[@id=\"__next\"]/main/div/section[1]/section/div[3]/section/section/div[3]/div[2]/div[2]/ul/li[3]/a/span/span[1]/span").FirstOrDefault()?.InnerText;
             }
             catch
@@ -66,7 +56,7 @@ namespace SD.API.Core.Scraping
             catch
             {
                 //do nothing
-            }          
+            }
         }
 
         private static void ProcessShowImdb(Ratings data, string imdb_path)
