@@ -303,7 +303,6 @@
 
     public RootSubscription? Subscription { get; set; }
     public Configurations? Config { get; set; }
-    // public bool ActiveBilling => Subscription?.data?.items.FirstOrDefault()?.next_billed_at != null;
 
     private AccountCycle Cycle { get; set; } = AccountCycle.Monthly;
 
@@ -343,15 +342,22 @@
         }
         else
         {
-            Subscription = await SubscriptionApi.GetSubscription(Client?.ClientePaddle?.SubscriptionId);
+            Subscription = await SubscriptionApi.GetSubscription(Client?.ClientePaddle?.SubscriptionId, true);
         }
     }
 
     protected async Task OpenCheckout(string? priceId)
     {
-        var locale = AppStateStatic.Language.ToString()?.Substring(0, 2);
+        try
+        {
+            var locale = AppStateStatic.Language.ToString()?.Substring(0, 2);
 
-        await JsRuntime.InvokeVoidAsync("openCheckout", priceId, Client?.Email, locale, Client?.ClientePaddle?.CustomerId, Client?.ClientePaddle?.AddressId);
+            await JsRuntime.InvokeVoidAsync("openCheckout", priceId, Client?.Email, locale, Client?.ClientePaddle?.CustomerId, Client?.ClientePaddle?.AddressId);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 
     private async Task RegistrationSuccessful(TempClientePaddle client)
@@ -360,21 +366,25 @@
         {
             if (Client == null) throw new NotificationException("Client null");
 
+            if (Plans.Empty()) //for some reason, the list is getting empty (maybe is cause is calling twice)
+            {
+                if (Config == null)
+                {
+                    Config = await ConfigurationApi.GetConfigurations();
+                    if (Config == null) throw new NotificationException("server comunication error");
+                }
+                await JsRuntime.InvokeVoidAsync("startPaddle", Config.Token);
+                Plans = await JsRuntime.InvokeAsync<IEnumerable<Plan>>("getPlans", Config.PriceStandardMonth, Config.PriceStandardYear, Config.PricePremiumMonth, Config.PricePremiumYear);
+            }
+
             var product = Plans.Single(w => w.ProductId == client.ProductId && w.Cycle == Cycle).Product;
 
-            if (Client.ClientePaddle == null)
-            {
-                Client.ClientePaddle = new ClientePaddle
-                    {
-                        CustomerId = client.CustomerId,
-                        AddressId = client.AddressId,
-                        Items = new List<PaddleItem>() { new PaddleItem { ProductId = client.ProductId, Product = product } }
-                    };
-            }
-            else
-            {
-                Client.ClientePaddle.Items.Add(new PaddleItem { ProductId = client.ProductId, Product = product });
-            }
+            Client.ClientePaddle = new ClientePaddle
+                {
+                    CustomerId = client.CustomerId,
+                    AddressId = client.AddressId,
+                    Items = new List<PaddleItem>() { new PaddleItem { ProductId = client.ProductId, Product = product } }
+                };
 
             Client = await PrincipalApi.Paddle(Client);
 
@@ -392,16 +402,30 @@
 
     private async Task UpdateData()
     {
-        Client = await PrincipalApi.Get(true, true);
-        PrincipalApi.DataChanged?.Invoke(Client);
-        await LoadDataRender();
-        StateHasChanged();
+        try
+        {
+            Client = await PrincipalApi.Get(true, true);
+            PrincipalApi.DataChanged?.Invoke(Client);
+            await LoadDataRender();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 
     private async Task CreateNewSubscription()
     {
-        if (Client != null) Client.ClientePaddle = null;
-        Subscription = null;
-        await LoadDataRender();
+        try
+        {
+            if (Client != null) Client.ClientePaddle = null;
+            Subscription = null;
+            await LoadDataRender();
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 }

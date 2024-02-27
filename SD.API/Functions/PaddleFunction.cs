@@ -13,10 +13,6 @@ namespace SD.API.Functions
 {
     public class PaddleFunction(IRepository repo, IConfiguration configuration)
     {
-        //endpoints to authorize
-        //Live:    https://34.232.58.13,https://34.195.105.136,https://34.237.3.244,https://35.155.119.135,https://52.11.166.252,https://34.212.5.7
-        //Sandbox: https://34.194.127.46,https://54.234.237.108,https://3.208.120.145,https://44.226.236.210,https://44.241.183.62,https://100.20.172.113
-
         [Function("GetSubscription")]
         public async Task<RootSubscription?> GetSubscription(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/subscription")] HttpRequestData req, CancellationToken cancellationToken)

@@ -12,8 +12,13 @@ namespace SD.WEB.Modules.Profile.Core
             public static string subscriptionUpdate(string? id) => $"public/paddle/subscription/update?id={id}";
         }
 
-        public async Task<RootSubscription?> GetSubscription(string? id)
+        public async Task<RootSubscription?> GetSubscription(string? id, bool forceClean = false)
         {
+            if (forceClean)
+            {
+                CleanCache();
+            }
+
             return await GetAsync(Endpoint.subscription(id), null);
         }
 
