@@ -6,6 +6,7 @@
 
 @inject NavigationManager navigation
 @inject IJSRuntime JsRuntime
+@implements IDisposable
 @inject PaddleConfigurationApi ConfigurationApi
 @inject PaddleSubscriptionApi SubscriptionApi
 
@@ -319,11 +320,13 @@
     private IEnumerable<Plan> Plans { get; set; } = [];
     private Plan? GetSubscription(AccountProduct product) => Plans.FirstOrDefault(f => f.Product == product && f.Cycle == Cycle);
 
+    private Action<TempClientePaddle> Registration => async (client) => await RegistrationSuccessful(client);
+
     protected override void OnInitialized()
     {
         if (Client == null) throw new NotificationException("Client null");
 
-        AppStateStatic.RegistrationSuccessful += async (client) => await RegistrationSuccessful(client);
+        AppStateStatic.RegistrationSuccessful += Registration;
     }
 
     protected override async Task LoadDataRender()
@@ -427,5 +430,10 @@
         {
             ex.ProcessException(Toast, Logger);
         }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppStateStatic.RegistrationSuccessful -= Registration;
     }
 }

@@ -86,9 +86,9 @@
         <Div Position="Position.Absolute.Bottom.Is0.End.Is0" onclick="@(()=>AppStateStatic.ShowFeedback?.Invoke(true))" Style="z-index: 2;">
             <Button Position="Position.Relative" Margin="Margin.Is(GetMargin)" Color="Color.Primary" title="Help & Support">
                 <Blazorise.Icon Name="FontAwesomeIcons.Headset" />
-                <Badge Color="Color.Danger" Pill Position="Position.Absolute.Top.Is0.Start.Is100.Translate.Middle">
+               @*  <Badge Color="Color.Danger" Pill Position="Position.Absolute.Top.Is0.Start.Is100.Translate.Middle">
                      1
-                 </Badge>
+                 </Badge> *@
              </Button>
          </Div>
      </Div>
@@ -108,9 +108,9 @@
                  <Tab Name="Home">Home</Tab>
                  <Tab Name="Updates">
                      Updates
-                     <Badge Color="Color.Danger">
+                     @* <Badge Color="Color.Danger">
                          1
-                     </Badge>
+                     </Badge> *@
                  </Tab>
                  <Tab Name="Feedback">Feedback</Tab>
              </Items>
@@ -144,8 +144,8 @@
     protected override void OnInitialized()
     {
         Navigation.LocationChanged += OnLocationChanged;
-        AppStateStatic.ShowError += async (msg) => { await Toast.Error(msg); };
-        AppStateStatic.ShowFeedback += (show) => { ShowFeedback(show); };
+        AppStateStatic.ShowError = async (msg) => { await Toast.Error(msg); };
+        AppStateStatic.ShowFeedback = (show) => { ShowFeedback(show); };
 
         ChangeCurrentButton(Navigation.Uri);
 

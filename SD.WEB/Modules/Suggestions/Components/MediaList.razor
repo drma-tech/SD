@@ -8,6 +8,7 @@
 @inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
+@implements IDisposable
 
 @if (ShowHead)
 {
@@ -163,5 +164,10 @@
         }
 
         await ModalService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdb_id, ShowPrivateAction);
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppStateStatic.RegionChanged -= LoadGenericVoid;
     }
 }

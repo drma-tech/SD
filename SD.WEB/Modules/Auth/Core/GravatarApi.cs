@@ -9,7 +9,7 @@ namespace SD.WEB.Modules.Auth.Core
         {
             if (string.IsNullOrEmpty(email)) return null;
 
-            Gravatar? result = null;
+            Gravatar? result;
             try
             {
                 result = _cache.Get<Gravatar>("empty-gravatar");

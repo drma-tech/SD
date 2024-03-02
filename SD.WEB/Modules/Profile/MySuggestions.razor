@@ -84,15 +84,15 @@
 
     protected override void OnInitialized()
     {
-        PrincipalApi.DataChanged += async (ClientePrincipal? model) => { Client = model; await LoadData(model); StateHasChanged(); };
+        PrincipalApi.DataChanged += async (ClientePrincipal? model) => { Client = model; await LoadData(); StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()
     {
-        await LoadData(null);
+        await LoadData();
     }
 
-    private async Task LoadData(ClientePrincipal? client)
+    private async Task LoadData()
     {
         Core?.ShowLoading();
 
@@ -112,10 +112,10 @@
             }
             else
             {
-                if (client != null && render != null) render.Status = LoadingStatus.Loading; //force reset Premium status
+                if (Client != null && render != null) render.Status = LoadingStatus.Loading; //force reset Premium status
 
-                client ??= await PrincipalApi.Get(IsAuthenticated);
-                mySuggestions = await MySuggestionsApi.Get(client?.ClientePaddle?.ActiveProduct, IsAuthenticated, Core);
+                Client ??= await PrincipalApi.Get(IsAuthenticated);
+                mySuggestions = await MySuggestionsApi.Get(Client?.ClientePaddle?.ActiveProduct, IsAuthenticated, Core);
 
                 if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
                 {

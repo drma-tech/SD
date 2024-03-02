@@ -131,7 +131,5 @@ static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
 {
     return HttpPolicyExtensions
         .HandleTransientHttpError() // 408,5xx
-        .OrResult(msg => msg.StatusCode == HttpStatusCode.NotFound) // 404
-        .OrResult(msg => msg.StatusCode == HttpStatusCode.Unauthorized) // 401
         .WaitAndRetryAsync(1, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))); // Retry 3 times, with wait 1, 2 and 4 seconds.
 }

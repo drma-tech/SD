@@ -6,16 +6,14 @@
 <RenderControl Core="Core" Model="announcement" ExpressionEmpty="@((AnnouncementModel? obj) => obj == null || obj.Items.Empty())">
     @foreach (var item in announcement?.Items.OrderByDescending(o => o.Date) ?? Enumerable.Empty<AnnouncementItem>())
     {
-        <Card Background="Background.Light" Shadow="Shadow.Default" Margin="Margin.Is3.FromBottom">
-            <CardBody>
-                <CardTitle Size="5">
-                    @item.Title
-                </CardTitle>
-                <CardText>
-                    @((MarkupString)(item.Description ?? ""))
-                </CardText>
-            </CardBody>
-        </Card>
+        <Alert Color="Color.Info" Visible="true" Margin="Margin.Is2.FromBottom">
+            <AlertMessage>
+                @item.Title
+            </AlertMessage>
+        </Alert>
+        <Paragraph Margin="Margin.Is2.OnY" TextAlignment="TextAlignment.Justified">
+            @((MarkupString)(item.Description ?? ""))
+        </Paragraph>        
     }
 </RenderControl>
 
