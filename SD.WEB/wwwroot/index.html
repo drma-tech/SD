@@ -26,6 +26,7 @@
 
     <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
     <script src="js/paddle.js"></script>
+    <script src="js/util.js"></script>
 </head>
 
 <body style="overflow: hidden;">
@@ -63,19 +64,6 @@
         const appHeight = () => document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`)
         window.addEventListener('resize', appHeight)
         appHeight()
-    </script>
-
-    <script>
-        function share(url) {
-            if (!("share" in navigator)) {
-                alert('Web Share API not supported.');
-                return;
-            }
-
-            navigator.share({ url: url })
-                .then(() => console.log('Successful share'))
-                .catch(error => console.log('Error sharing:', error));
-        }
     </script>
 
     <persist-component-state />

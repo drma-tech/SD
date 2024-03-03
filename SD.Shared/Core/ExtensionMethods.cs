@@ -14,6 +14,11 @@ namespace SD.Shared.Core
             return !source.Any(predicate);
         }
 
+        public static bool NotEmpty(this string? value)
+        {
+            return !string.IsNullOrEmpty(value);
+        }
+
         public static string SimpleEncrypt(this string? url)
         {
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(url ?? ""));

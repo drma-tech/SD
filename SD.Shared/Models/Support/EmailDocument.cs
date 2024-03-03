@@ -23,7 +23,7 @@ namespace SD.Shared.Models.Support
 
         public override bool Equals(object? obj)
         {
-            return obj is AnnouncementModel q && q.Id == Id;
+            return obj is EmailDocument q && q.Id == Id;
         }
 
         public override int GetHashCode()

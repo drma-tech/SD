@@ -38,11 +38,11 @@ namespace SD.WEB.Core
 
         protected async Task<string?> GetValueAsync(string endpoint, RenderControlCore<string?>? core, object? customCacheKey = null)
         {
-            cacheKey = customCacheKey ?? cacheKey;
+            var localKey = customCacheKey ?? cacheKey;
 
             core?.LoadingStarted?.Invoke();
 
-            var result = cacheKey != null ? _cache.Get<string>(cacheKey) : default;
+            var result = localKey != null ? _cache.Get<string>(localKey) : default;
 
             try
             {
@@ -50,7 +50,7 @@ namespace SD.WEB.Core
                 {
                     result = await _http.GetValueAsync($"{baseEndpoint}{endpoint}");
 
-                    if (cacheKey != null) _cache.Set(cacheKey, result, CacheSettings);
+                    if (localKey != null) _cache.Set(localKey, result, CacheSettings);
                 }
 
                 return result;
@@ -63,11 +63,11 @@ namespace SD.WEB.Core
 
         protected async Task<T?> GetAsync(string endpoint, RenderControlCore<T?>? core, object? customCacheKey = null)
         {
-            cacheKey = customCacheKey ?? cacheKey;
+            var localKey = customCacheKey ?? cacheKey;
 
             core?.LoadingStarted?.Invoke();
 
-            var result = cacheKey != null ? _cache.Get<T>(cacheKey) : default;
+            var result = localKey != null ? _cache.Get<T>(localKey) : default;
 
             try
             {
@@ -75,7 +75,7 @@ namespace SD.WEB.Core
                 {
                     result = await _http.GetJsonFromApi<T>($"{baseEndpoint}{endpoint}");
 
-                    if (cacheKey != null) _cache.Set(cacheKey, result, CacheSettings);
+                    if (localKey != null) _cache.Set(localKey, result, CacheSettings);
                 }
 
                 return result;
@@ -93,11 +93,11 @@ namespace SD.WEB.Core
         /// <param name="customCacheKey"></param>
         protected async Task<HashSet<T>> GetListAsync(string endpoint, RenderControlCore<HashSet<T>>? core, object? customCacheKey = null)
         {
-            cacheKey = customCacheKey ?? cacheKey;
+            var localKey = customCacheKey ?? cacheKey;
 
             core?.LoadingStarted?.Invoke();
 
-            var result = cacheKey != null ? _cache.Get<HashSet<T>>(cacheKey) : default;
+            var result = localKey != null ? _cache.Get<HashSet<T>>(localKey) : default;
 
             try
             {
@@ -105,7 +105,7 @@ namespace SD.WEB.Core
                 {
                     result = await _http.GetJsonFromApi<HashSet<T>>($"{baseEndpoint}{endpoint}");
 
-                    if (cacheKey != null) _cache.Set(cacheKey, result, CacheSettings);
+                    if (localKey != null) _cache.Set(localKey, result, CacheSettings);
                 }
 
                 return result ?? [];

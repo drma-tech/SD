@@ -1,28 +1,45 @@
 ﻿@using SD.Shared.Models.Support;
 @using SD.WEB.Modules.Support.Core;
 @inherits ComponenteCore<AnnouncementComponent>
-@inject AnnouncementApi AnnouncementApi
 
-<RenderControl Core="Core" Model="announcement" ExpressionEmpty="@((AnnouncementModel? obj) => obj == null || obj.Items.Empty())">
-    @foreach (var item in announcement?.Items.OrderByDescending(o => o.Date) ?? Enumerable.Empty<AnnouncementItem>())
+@inject IJSRuntime JsRuntime
+@inject UpdateApi UpdateApi
+
+<RenderControl Core="Core" Model="Updates" ExpressionEmpty="@((HashSet<UpdateModel> lst) => lst.Empty())">
+    @foreach (var item in Updates?.OrderByDescending(o => o.Date) ?? Enumerable.Empty<UpdateModel>())
     {
         <Alert Color="Color.Info" Visible="true" Margin="Margin.Is2.FromBottom">
             <AlertMessage>
                 @item.Title
+                @if (item.IsNew)
+                {
+                    <Badge Color="Color.Danger" Float="Float.End">
+                        New
+                    </Badge>
+                }
             </AlertMessage>
         </Alert>
         <Paragraph Margin="Margin.Is2.OnY" TextAlignment="TextAlignment.Justified">
             @((MarkupString)(item.Description ?? ""))
-        </Paragraph>        
+        </Paragraph>
     }
 </RenderControl>
 
 @code {
-    public RenderControlCore<AnnouncementModel?> Core { get; set; } = new();
-    private AnnouncementModel? announcement;
+    [Parameter] public HashSet<UpdateModel> Updates { get; set; } = [];
+    [Parameter] public RenderControlCore<HashSet<UpdateModel>> Core { get; set; } = new();
 
-    protected override async Task LoadDataRender()
+    protected override async Task OnInitializedAsync()
     {
-        announcement = await AnnouncementApi.Get(Core);
+        await Task.Delay(2000).ContinueWith(async (task) =>
+        {
+            await JsRuntime.InvokeAsync<string>("SetLocalStorage", "updates-date", DateTime.Now.Ticks);
+            foreach (var item in Updates)
+            {
+                item.IsNew = false;
+                UpdateApi.DataChanged?.Invoke(item);
+            }
+            StateHasChanged();
+        });
     }
 }

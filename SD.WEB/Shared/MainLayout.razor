@@ -9,7 +9,9 @@
 @inject NavigationManager Navigation
 @inject ILogger<MainLayout> Logger
 @inject INotificationService Toast
+@inject IJSRuntime JsRuntime
 @inject TicketApi TicketApi
+@inject UpdateApi UpdateApi
 
 <MediaQueryList>
     <Div Position="Position.Relative">
@@ -86,52 +88,59 @@
         <Div Position="Position.Absolute.Bottom.Is0.End.Is0" onclick="@(()=>AppStateStatic.ShowFeedback?.Invoke(true))" Style="z-index: 2;">
             <Button Position="Position.Relative" Margin="Margin.Is(GetMargin)" Color="Color.Primary" title="Help & Support">
                 <Blazorise.Icon Name="FontAwesomeIcons.Headset" />
-               @*  <Badge Color="Color.Danger" Pill Position="Position.Absolute.Top.Is0.Start.Is100.Translate.Middle">
-                     1
-                 </Badge> *@
-             </Button>
-         </Div>
-     </Div>
- </MediaQueryList>
+                @*  <Badge Color="Color.Danger" Pill Position="Position.Absolute.Top.Is0.Start.Is100.Translate.Middle">
+                1
+                </Badge> *@
+            </Button>
+        </Div>
+    </Div>
+</MediaQueryList>
 
- <NotificationProvider Location="NotificationLocation.End" DefaultInterval="10000" />
- <PWAUpdater Text="@GlobalTranslations.PWAUpdaterText" ButtonCaption="@GlobalTranslations.PWAUpdaterButton" />
+<NotificationProvider Location="NotificationLocation.End" DefaultInterval="10000" />
+<PWAUpdater Text="@GlobalTranslations.PWAUpdaterText" ButtonCaption="@GlobalTranslations.PWAUpdaterButton" />
 
- <Offcanvas @ref="offcanvasRef" Placement="Placement.End">
-     <OffcanvasHeader>
-         Help & Support
-         <CloseButton Clicked="@(()=>ShowFeedback(false))" />
-     </OffcanvasHeader>
-     <OffcanvasBody>
-         <Tabs RenderMode="TabsRenderMode.LazyLoad" SelectedTab="Home" Pills="true" FullWidth="true">
-             <Items>
-                 <Tab Name="Home">Home</Tab>
-                 <Tab Name="Updates">
-                     Updates
-                     @* <Badge Color="Color.Danger">
-                         1
-                     </Badge> *@
-                 </Tab>
-                 <Tab Name="Feedback">Feedback</Tab>
-             </Items>
-             <Content>
-                 <TabPanel Name="Home" Padding="Padding.Is3.FromTop">
-                     <DownloadComponent></DownloadComponent>
-                 </TabPanel>
-                 <TabPanel Name="Updates" Padding="Padding.Is3.FromTop">
-                     <AnnouncementComponent></AnnouncementComponent>
-                 </TabPanel>
-                 <TabPanel Name="Feedback" Padding="Padding.Is3.FromTop">
-                     <FeedbackComponent></FeedbackComponent>
-                 </TabPanel>
-             </Content>
-         </Tabs>
-     </OffcanvasBody>
- </Offcanvas>
+<Offcanvas @ref="offcanvasRef" Placement="Placement.End">
+    <OffcanvasHeader>
+        Help & Support
+        <CloseButton Clicked="@(()=>ShowFeedback(false))" />
+    </OffcanvasHeader>
+    <OffcanvasBody>
+        <Tabs RenderMode="TabsRenderMode.LazyLoad" @bind-SelectedTab="@Tab" Pills="true" FullWidth="true">
+            <Items>
+                <Tab Name="Home">Home</Tab>
+                <Tab Name="Updates">
+                    Updates
+                    @if (Updates.Any(a => a.IsNew))
+                    {
+                        <Badge Color="Color.Danger">
+                            @Updates.Count(c => c.IsNew)
+                        </Badge>
+                    }
+                </Tab>
+                <Tab Name="Feedback">Feedback</Tab>
+            </Items>
+            <Content>
+                <TabPanel Name="Home" Padding="Padding.Is3.FromTop">
+                    <DownloadComponent></DownloadComponent>
+                </TabPanel>
+                <TabPanel Name="Updates" Padding="Padding.Is3.FromTop">
+                    <AnnouncementComponent Updates="Updates" Core="UpdateCore"></AnnouncementComponent>
+                </TabPanel>
+                <TabPanel Name="Feedback" Padding="Padding.Is3.FromTop">
+                    <FeedbackComponent></FeedbackComponent>
+                </TabPanel>
+            </Content>
+        </Tabs>
+    </OffcanvasBody>
+</Offcanvas>
 
- @code {
+@code {
     [CascadingParameter] protected Task<AuthenticationState> authenticationState { get; set; } = default!;
 
+    public HashSet<UpdateModel> Updates { get; set; } = [];
+    public RenderControlCore<HashSet<UpdateModel>> UpdateCore { get; set; } = new();
+
+    public string? Tab { get; set; } = "Home";
     public string GetMargin => "mr-4 mb-lg-4 mb-6";
 
     private enum TypeButton
@@ -146,10 +155,40 @@
         Navigation.LocationChanged += OnLocationChanged;
         AppStateStatic.ShowError = async (msg) => { await Toast.Error(msg); };
         AppStateStatic.ShowFeedback = (show) => { ShowFeedback(show); };
+        UpdateApi.DataChanged += (UpdateModel? model) =>
+        {
+            var item = Updates.FirstOrDefault(f => f.Id == model?.Id);
+            if (item != null)
+            {
+                item = model;
+            }
+            StateHasChanged();
+        };
 
         ChangeCurrentButton(Navigation.Uri);
 
         StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        Updates = await UpdateApi.Get(UpdateCore);
+
+        try
+        {
+            var date = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "updates-date");
+            foreach (var item in Updates)
+            {
+                if (date.NotEmpty() && long.Parse(date) > item.Date.Ticks)
+                {
+                    item.IsNew = false;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs args)

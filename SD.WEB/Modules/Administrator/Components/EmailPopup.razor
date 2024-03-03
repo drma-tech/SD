@@ -18,35 +18,7 @@
     }
     else
     {
-        <RichTextEdit @ref="richTextEditRef"
-                      Theme="RichTextEditTheme.Snow"
-                      ContentChanged="@OnContentChanged"
-                      PlaceHolder="Type your post here..."
-                      ReadOnly="@readOnly"
-                      SubmitOnEnter="false"
-                      EnterPressed="@OnSave"
-                      ToolbarPosition="Placement.Bottom">
-            <Editor>My example content</Editor>
-            <Toolbar>
-                <RichTextEditToolbarGroup>
-                    <RichTextEditToolbarButton Action="RichTextEditAction.Bold" />
-                    <RichTextEditToolbarButton Action="RichTextEditAction.Italic" />
-                    <RichTextEditToolbarSelect Action="RichTextEditAction.Size">
-                        <RichTextEditToolbarSelectItem Value="small" />
-                        <RichTextEditToolbarSelectItem Selected />
-                         <RichTextEditToolbarSelectItem Value="large" />
-                         <RichTextEditToolbarSelectItem Value="huge">Very Big</RichTextEditToolbarSelectItem>
-                     </RichTextEditToolbarSelect>
-                     <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
-                     <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
-                 </RichTextEditToolbarGroup>
-                 <!-- Custom toolbar content -->
-                 <RichTextEditToolbarGroup Float="Float.End">
-                     <Button onClick="window.open('https://www.quilljs.com/','quilljs')"><Blazorise.Icon Name="IconName.InfoCircle" /></Button>
-                     <Button Clicked="@OnSave"><Blazorise.Icon Name="IconName.Save" /></Button>
-                 </RichTextEditToolbarGroup>
-             </Toolbar>
-         </RichTextEdit>
+     
     }
 </ModalBody>
 <ModalFooter>
@@ -61,32 +33,14 @@
 
     public string Html => EmailDocument?.Html ?? "";
 
-    protected RichTextEdit? richTextEditRef;
-    protected bool readOnly;
-    protected string? contentAsHtml;
-    protected string? contentAsDeltaJson;
-    protected string? contentAsText;
-    protected string? savedContent;
-
-    public async Task OnContentChanged()
-    {
-        contentAsHtml = await richTextEditRef.GetHtmlAsync();
-        contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
-        contentAsText = await richTextEditRef.GetTextAsync();
-    }
-
     public async Task OnSave()
     {
         try
         {
-            savedContent = await richTextEditRef.GetHtmlAsync();
-
             var inbound = new SendEmail();
-            inbound.Html = savedContent;
+            inbound.Html = "";
 
             await AdministratorApi.SendEmail(inbound);
-
-            await richTextEditRef.ClearAsync();
         }
         catch (Exception ex)
         {

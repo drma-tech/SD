@@ -2,7 +2,6 @@ using AzureStaticWebApps.Blazor.Authentication;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
-using Blazorise.RichTextEdit;
 using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -16,7 +15,6 @@ using SD.WEB.Modules.Provider.Core;
 using SD.WEB.Modules.Suggestions.Core;
 using SD.WEB.Modules.Support.Core;
 using System.Globalization;
-using System.Net;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -40,8 +38,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection
         .AddBlazorise(options => options.Immediate = true)
         .AddBootstrapProviders()
-        .AddFontAwesomeIcons()
-        .AddBlazoriseRichTextEdit();
+        .AddFontAwesomeIcons();
 
     collection.AddPWAUpdater();
     collection.AddMediaQueryService();
@@ -67,7 +64,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<AllProvidersApi>();
     collection.AddScoped<TicketApi>();
     collection.AddScoped<TicketVoteApi>();
-    collection.AddScoped<AnnouncementApi>();
+    collection.AddScoped<UpdateApi>();
 
     collection.AddScoped<ExternalIdApi>();
     collection.AddScoped<CacheFlixsterApi>();

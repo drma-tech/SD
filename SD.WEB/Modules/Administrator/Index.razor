@@ -3,55 +3,96 @@
 @using SD.WEB.Modules.Administrator.Components
 @using SD.WEB.Modules.Auth.Core
 @using Blazorise.DataGrid
+@using SD.WEB.Modules.Support.Core
 @using StrongGrid.Models.Webhooks
-@using Microsoft.AspNetCore.Components.QuickGrid
 @inherits PageCore<Index>
 @attribute [Authorize(Roles = "administrator")]
+
 @inject AdministratorApi AdministratorApi
+@inject UpdateApi UpdateApi
 
-<Button Clicked="@(async()=>await NewClick())" Background="Background.Primary">New Email</Button>
-<div>
-    <QuickGrid Items="@FilteredEmails" ItemKey="(p=>p.Id)" Pagination="@pagination">
-        <PropertyColumn Property="@(p => p.To)" Sortable="true">
-            <ColumnOptions>
-                <Select TValue="string">
-                    <SelectItem Value="@("support@streamingdiscovery.com")">support@streamingdiscovery.com</SelectItem>
-                </Select>
-            </ColumnOptions>
-        </PropertyColumn>
-        <PropertyColumn Property="@(p => p.From)" Sortable="true" />
-        <PropertyColumn Property="@(p => p.Subject)" Sortable="true" />
-        <PropertyColumn Property="@(p => p.Date)" Format="yyyy-MM-dd" Sortable="true">
-            <ColumnOptions>
-                <Addons>
-                    <Addon AddonType="AddonType.Body">
-                        <DatePicker @ref="@datePicker" TValue="DateTime?" @bind-Date="@Date" />
-                    </Addon>
-                    <Addon AddonType="AddonType.End">
-                        <Button Color="Color.Danger" Clicked="@(()=>Date=null)">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Eraser" />
-                        </Button>
-                    </Addon>
-                    <Addon AddonType="AddonType.End">
-                        <Button Color="Color.Secondary" Clicked="@(()=>datePicker.ToggleAsync())">
-                            <Blazorise.Icon Name="FontAwesomeIcons.CalendarDay" />
-                        </Button>
-                    </Addon>
-                </Addons>
-            </ColumnOptions>
-        </PropertyColumn>
-        <TemplateColumn Title="Actions">
-            <Button Clicked="@(async()=>await ReadClick(context))" Background="Background.Primary">Read</Button>
-        </TemplateColumn>
-    </QuickGrid>
-</div>
-
-<Paginator State="@pagination" />
+<Tabs RenderMode="TabsRenderMode.LazyLoad" @bind-SelectedTab="@Tab" Pills="true" FullWidth="true">
+    <Items>
+        <Tab Name="Emails">Emails</Tab>
+        <Tab Name="Updates">Updates</Tab>
+    </Items>
+    <Content>
+        <TabPanel Name="Emails" Padding="Padding.Is3.FromTop">
+            <Button Clicked="@(async()=>await NewClick())" Background="Background.Primary">New Email</Button>
+            <div>
+               @*  <QuickGrid Items="@FilteredEmails" ItemKey="(p=>p.Id)" Pagination="@EmailPagination">
+                    <PropertyColumn Property="@(p => p.To)" Sortable="true">
+                        <ColumnOptions>
+                            <Select TValue="string">
+                                <SelectItem Value="@("support@streamingdiscovery.com")">support@streamingdiscovery.com</SelectItem>
+                            </Select>
+                        </ColumnOptions>
+                    </PropertyColumn>
+                    <PropertyColumn Property="@(p => p.From)" Sortable="true" />
+                    <PropertyColumn Property="@(p => p.Subject)" Sortable="true" />
+                    <PropertyColumn Property="@(p => p.Date)" Format="yyyy-MM-dd" Sortable="true">
+                        <ColumnOptions>
+                            <Addons>
+                                <Addon AddonType="AddonType.Body">
+                                    <DatePicker @ref="@datePicker" TValue="DateTime?" @bind-Date="@Date" />
+                                </Addon>
+                                <Addon AddonType="AddonType.End">
+                                    <Button Color="Color.Danger" Clicked="@(()=>Date=null)">
+                                        <Blazorise.Icon Name="FontAwesomeIcons.Eraser" />
+                                    </Button>
+                                </Addon>
+                                <Addon AddonType="AddonType.End">
+                                    <Button Color="Color.Secondary" Clicked="@(()=>datePicker.ToggleAsync())">
+                                        <Blazorise.Icon Name="FontAwesomeIcons.CalendarDay" />
+                                    </Button>
+                                </Addon>
+                            </Addons>
+                        </ColumnOptions>
+                    </PropertyColumn>
+                    <TemplateColumn Title="Actions">
+                        <Button Clicked="@(async()=>await ReadClick(context))" Background="Background.Primary">Read</Button>
+                    </TemplateColumn>
+                </QuickGrid> *@
+            </div>
+        </TabPanel>
+        <TabPanel Name="Updates" Padding="Padding.Is3.FromTop">
+            <DataGrid TItem="UpdateModel" Data="@Updates" @bind-SelectedRow="@Update" Editable="true" Responsive="true" ShowPager="true"
+                      RowInserted="RowInserted" RowUpdated="RowUpdated" RowRemoved="RowRemoved">
+                <DataGridColumns>
+                    <DataGridCommandColumn NewCommandAllowed="false" EditCommandAllowed="false" DeleteCommandAllowed="false" CancelCommandAllowed>
+                        <SaveCommandTemplate>
+                            <Button ElementId="btnSave" Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+                        </SaveCommandTemplate>
+                        <CancelCommandTemplate>
+                            <Button ElementId="btnCancel" Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+                        </CancelCommandTemplate>
+                    </DataGridCommandColumn>
+                    <DataGridColumn Field="@nameof(UpdateModel.Title)" Caption="Title" Editable="true" />
+                    <DataGridColumn Field="@nameof(UpdateModel.Description)" Caption="Description" Editable="true" Displayable="false">
+                        <EditTemplate>
+                            <MemoEdit Rows="5" AutoSize="true" Text="@((string?)context.CellValue)" TextChanged="@(v => context.CellValue = v)" />
+                        </EditTemplate>
+                    </DataGridColumn>
+                    <DataGridColumn Field="@nameof(UpdateModel.Date)" Caption="Date" Editable="true" />
+                </DataGridColumns>
+                <ButtonRowTemplate>
+                    <Button Color="Color.Success" Clicked="context.NewCommand.Clicked">New</Button>
+                    <Button Color="Color.Primary" Disabled="(Update is null)" Clicked="context.EditCommand.Clicked">Edit</Button>
+                    <Button Color="Color.Danger" Disabled="(Update is null)" Clicked="context.DeleteCommand.Clicked">Delete</Button>
+                    <Button Color="Color.Link" Clicked="context.ClearFilterCommand.Clicked">Clear Filter</Button>
+                </ButtonRowTemplate>
+            </DataGrid>
+        </TabPanel>
+    </Content>
+</Tabs>
 
 @code {
+    public string? Tab { get; set; } = "Emails";
+
     IQueryable<EmailDocument>? Emails;
-    IQueryable<EmailDocument>? FilteredEmails => Emails?.Where(w => Date == null || w.Date!.Value.Date == Date.Value.Date).OrderByDescending(o => o.Date);
-    PaginationState pagination = new PaginationState { ItemsPerPage = 15 };
+
+    HashSet<UpdateModel> Updates = [];
+    UpdateModel? Update;
 
     DatePicker<DateTime?>? datePicker;
     DateTime? Date;
@@ -59,6 +100,7 @@
     protected override async Task LoadDataRender()
     {
         Emails = (await AdministratorApi.GetEmails()).AsQueryable();
+        Updates = await UpdateApi.Get(null);
     }
 
     private async Task NewClick()
@@ -69,5 +111,24 @@
     private async Task ReadClick(EmailDocument doc)
     {
         await ModalService.OpenPopup<EmailPopup>(x => { x.Add(x => x.EmailDocument, doc); }, ModalSize.Large);
+    }
+
+    private async Task RowInserted(SavedRowItem<UpdateModel, Dictionary<string, object>> e)
+    {
+        var model = e.NewItem;
+
+        model.Initialize();
+
+        await UpdateApi.Add(model);
+    }
+
+    private async Task RowUpdated(SavedRowItem<UpdateModel, Dictionary<string, object>> e)
+    {
+        await UpdateApi.Add(e.NewItem);
+    }
+
+    private async Task RowRemoved(UpdateModel model)
+    {
+        await UpdateApi.Delete(model);
     }
 }
