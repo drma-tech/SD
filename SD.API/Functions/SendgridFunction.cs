@@ -1,12 +1,13 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Configuration;
 using SD.Shared.Models.Support;
 using StrongGrid;
 using StrongGrid.Models;
 
 namespace SD.API.Functions
 {
-    public class SendgridFunction(CosmosEmailRepository repo)
+    public class SendgridFunction(CosmosEmailRepository repo, IConfiguration configuration)
     {
         [Function("GetEmails")]
         public async Task<List<EmailDocument>?> GetEmails(
@@ -51,21 +52,49 @@ namespace SD.API.Functions
             {
                 var inbound = await req.GetPublicBody<SendEmail>(cancellationToken);
 
-                var apiKey = "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";
+                var apiKey = configuration.GetValue<string>("Sendgrid_Key");
                 var strongGridClient = new Client(apiKey);
 
-                var content = new MailContent("HTML", inbound.Html);
-                var from = new MailAddress("support@streamingdiscovery.com", "Support SD");
-                var to = new MailAddress("dhiogoacioli@gmail.com", "Dhiogo Acioli");
+                var textContent = new MailContent("text/plain", inbound.Text);
+                var htmlContent = new MailContent("text/html", inbound.Html);
+                var from = new MailAddress(inbound.FromEmail, inbound.FromName);
+                var to = new MailAddress(inbound.ToEmail, inbound.ToName);
 
                 var personalization = new MailPersonalization
                 {
                     From = from,
                     To = [to],
-                    Subject = "res tst 8"
+                    Subject = inbound.Subject,
                 };
 
-                await strongGridClient.Mail.SendAsync([personalization], "res tst 8", [content], from, [to], cancellationToken: cancellationToken);
+                //var mailSettings = new MailSettings
+                //{
+                //    SandboxModeEnabled = true,
+                //    Footer = new FooterSettings
+                //    {
+                //        Enabled = true,
+                //        HtmlContent = "<p>This email was sent with the help of the <b><a href=\"https://www.nuget.org/packages/StrongGrid/\">StrongGrid</a></b> library</p>",
+                //        TextContent = "This email was sent with the help of the StrongGrid library"
+                //    },
+                //    BypassListManagement = false,
+                //    BypassSpamManagement = true,
+                //    BypassBounceManagement = true,
+                //    BypassUnsubscribeManagement = true
+                //};
+
+                //var trackingSettings = new TrackingSettings
+                //{
+                //    ClickTracking = new ClickTrackingSettings
+                //    {
+                //        EnabledInHtmlContent = true,
+                //        EnabledInTextContent = true
+                //    },
+                //    OpenTracking = new OpenTrackingSettings { Enabled = true },
+                //    GoogleAnalytics = new GoogleAnalyticsSettings { Enabled = false },
+                //    SubscriptionTracking = new SubscriptionTrackingSettings { Enabled = false }
+                //};
+
+                await strongGridClient.Mail.SendAsync([personalization], inbound.Subject, [textContent, htmlContent], from, [to], cancellationToken: cancellationToken);
             }
             catch (Exception ex)
             {

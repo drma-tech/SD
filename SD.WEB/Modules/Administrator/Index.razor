@@ -18,42 +18,17 @@
     </Items>
     <Content>
         <TabPanel Name="Emails" Padding="Padding.Is3.FromTop">
-            <Button Clicked="@(async()=>await NewClick())" Background="Background.Primary">New Email</Button>
-            <div>
-               @*  <QuickGrid Items="@FilteredEmails" ItemKey="(p=>p.Id)" Pagination="@EmailPagination">
-                    <PropertyColumn Property="@(p => p.To)" Sortable="true">
-                        <ColumnOptions>
-                            <Select TValue="string">
-                                <SelectItem Value="@("support@streamingdiscovery.com")">support@streamingdiscovery.com</SelectItem>
-                            </Select>
-                        </ColumnOptions>
-                    </PropertyColumn>
-                    <PropertyColumn Property="@(p => p.From)" Sortable="true" />
-                    <PropertyColumn Property="@(p => p.Subject)" Sortable="true" />
-                    <PropertyColumn Property="@(p => p.Date)" Format="yyyy-MM-dd" Sortable="true">
-                        <ColumnOptions>
-                            <Addons>
-                                <Addon AddonType="AddonType.Body">
-                                    <DatePicker @ref="@datePicker" TValue="DateTime?" @bind-Date="@Date" />
-                                </Addon>
-                                <Addon AddonType="AddonType.End">
-                                    <Button Color="Color.Danger" Clicked="@(()=>Date=null)">
-                                        <Blazorise.Icon Name="FontAwesomeIcons.Eraser" />
-                                    </Button>
-                                </Addon>
-                                <Addon AddonType="AddonType.End">
-                                    <Button Color="Color.Secondary" Clicked="@(()=>datePicker.ToggleAsync())">
-                                        <Blazorise.Icon Name="FontAwesomeIcons.CalendarDay" />
-                                    </Button>
-                                </Addon>
-                            </Addons>
-                        </ColumnOptions>
-                    </PropertyColumn>
-                    <TemplateColumn Title="Actions">
-                        <Button Clicked="@(async()=>await ReadClick(context))" Background="Background.Primary">Read</Button>
-                    </TemplateColumn>
-                </QuickGrid> *@
-            </div>
+            <DataGrid TItem="EmailDocument" Data="@Emails" @bind-SelectedRow="@Email" Responsive="true" ShowPager="true">
+                <DataGridColumns>
+                    <DataGridColumn Field="@nameof(EmailDocument.From)" Caption="Title" />
+                    <DataGridColumn Field="@nameof(EmailDocument.Subject)" Caption="Description" />
+                    <DataGridColumn Field="@nameof(EmailDocument.Date)" Caption="Date" />
+                </DataGridColumns>
+                <ButtonRowTemplate>
+                    <Button Color="Color.Success" Clicked="@(async()=>await NewClick())">New</Button>
+                    <Button Color="Color.Primary" Disabled="(Email is null)" Clicked="@(async()=>await ReadClick(context))">Read</Button>
+                </ButtonRowTemplate>
+            </DataGrid>           
         </TabPanel>
         <TabPanel Name="Updates" Padding="Padding.Is3.FromTop">
             <DataGrid TItem="UpdateModel" Data="@Updates" @bind-SelectedRow="@Update" Editable="true" Responsive="true" ShowPager="true"
@@ -89,7 +64,8 @@
 @code {
     public string? Tab { get; set; } = "Emails";
 
-    IQueryable<EmailDocument>? Emails;
+    List<EmailDocument>? Emails;
+    EmailDocument? Email;
 
     HashSet<UpdateModel> Updates = [];
     UpdateModel? Update;
@@ -99,7 +75,7 @@
 
     protected override async Task LoadDataRender()
     {
-        Emails = (await AdministratorApi.GetEmails()).AsQueryable();
+        Emails = await AdministratorApi.GetEmails();
         Updates = await UpdateApi.Get(null);
     }
 
@@ -108,9 +84,9 @@
         await ModalService.OpenPopup<EmailPopup>(x => { x.Add(x => x.OnlyRead, false); }, ModalSize.Large);
     }
 
-    private async Task ReadClick(EmailDocument doc)
+    private async Task ReadClick(ButtonRowContext<EmailDocument> row)
     {
-        await ModalService.OpenPopup<EmailPopup>(x => { x.Add(x => x.EmailDocument, doc); }, ModalSize.Large);
+        await ModalService.OpenPopup<EmailPopup>(x => { x.Add(x => x.EmailDocument, row.EditCommand.Item); }, ModalSize.Large);
     }
 
     private async Task RowInserted(SavedRowItem<UpdateModel, Dictionary<string, object>> e)

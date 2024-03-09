@@ -18,10 +18,13 @@
     }
     else
     {
-     
+        //
     }
 </ModalBody>
 <ModalFooter>
+    <Button Color="Color.Secondary" Clicked="@OnSave" Size="Size.Small">
+        @Resources.GlobalTranslations.ButtonSave
+    </Button>
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
         @TranslationText.Close
     </Button>
@@ -37,8 +40,15 @@
     {
         try
         {
-            var inbound = new SendEmail();
-            inbound.Html = "";
+            var inbound = new SendEmail()
+                {
+                    Subject = "subject 123",
+                    Html = "<p>corpo do email</p>",
+                    FromName = "Support SD",
+                    FromEmail = "support@streamingdiscovery.com",
+                    ToName = "Dhiogo Acioli",
+                    ToEmail = "dhiogoacioli@gmail.com"
+                };
 
             await AdministratorApi.SendEmail(inbound);
         }
