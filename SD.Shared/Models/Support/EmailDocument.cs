@@ -1,6 +1,4 @@
-﻿using StrongGrid.Models.Webhooks;
-
-namespace SD.Shared.Models.Support
+﻿namespace SD.Shared.Models.Support
 {
     public class EmailDocument : CosmosDocument
     {
@@ -8,18 +6,19 @@ namespace SD.Shared.Models.Support
         {
         }
 
-        public EmailDocument(string key, InboundEmail? email) : base(key, key)
+        public EmailDocument(string key) : base(key, key)
         {
-            InboundEmail = email;
         }
 
-        public InboundEmail? InboundEmail { get; set; }
+        public string? Subject { get; set; }
+        public string? Html { get; set; }
+        public string? Text { get; set; }
+        public EmailAddress? From { get; set; }
+        public List<EmailAddress> To { get; set; } = [];
+        public List<EmailAddress> Cc { get; set; } = [];
+        public DateTime? Date { get; set; }
 
-        public string? From => InboundEmail?.From.Email;
-        public string? To => InboundEmail?.To.FirstOrDefault()?.Email;
-        public string? Subject => InboundEmail?.Subject;
-        public DateTime? Date => DateTime.Parse(InboundEmail?.Headers.SingleOrDefault(w => w.Key == "Date").Value);
-        public string? Html => InboundEmail?.Html;
+        public string? SenderIp { get; set; }
 
         public override bool Equals(object? obj)
         {
@@ -35,5 +34,11 @@ namespace SD.Shared.Models.Support
         {
             return true;
         }
+    }
+
+    public class EmailAddress
+    {
+        public string? Email { get; set; }
+        public string? Name { get; set; }
     }
 }

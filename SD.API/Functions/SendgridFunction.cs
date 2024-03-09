@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using SD.Shared.Models.Support;
 using StrongGrid;
 using StrongGrid.Models;
+using StrongGrid.Models.Webhooks;
+using System.Globalization;
 
 namespace SD.API.Functions
 {
@@ -31,9 +33,21 @@ namespace SD.API.Functions
             try
             {
                 var parser = new WebhookParser();
-                StrongGrid.Models.Webhooks.InboundEmail inboundMail = await parser.ParseInboundEmailWebhookAsync(req.Body, cancellationToken);
+                var inboundMail = await parser.ParseInboundEmailWebhookAsync(req.Body, cancellationToken);
 
-                var model = new EmailDocument(Guid.NewGuid().ToString(), inboundMail);
+                DateTime.TryParse(inboundMail.Headers.SingleOrDefault(w => w.Key == "Date").Value, CultureInfo.InvariantCulture, out DateTime date);
+
+                var model = new EmailDocument(Guid.NewGuid().ToString())
+                {
+                    Subject = inboundMail.Subject,
+                    Html = inboundMail.Html,
+                    Text = inboundMail.Text,
+                    From = new EmailAddress { Email = inboundMail.From.Email, Name = inboundMail.From.Name },
+                    To = inboundMail.To.Select(s => new EmailAddress { Email = s.Email, Name = s.Name }).ToList(),
+                    Cc = inboundMail.Cc.Select(s => new EmailAddress { Email = s.Email, Name = s.Name }).ToList(),
+                    Date = date,
+                    SenderIp = inboundMail.SenderIp
+                };
 
                 await repo.Upsert(model, cancellationToken);
             }
@@ -105,34 +119,3 @@ namespace SD.API.Functions
         }
     }
 }
-
-//// using SendGrid's C# Library
-//// https://github.com/sendgrid/sendgrid-csharp
-//using SendGrid;
-//using SendGrid.Helpers.Mail;
-//using System;
-//using System.Threading.Tasks;
-
-//namespace Example
-//{
-//    internal class Example
-//    {
-//        private static void Main()
-//        {
-//            Execute().Wait();
-//        }
-
-//        static async Task Execute()
-//        {
-//            var apiKey = Environment.GetEnvironmentVariable("NAME_OF_THE_ENVIRONMENT_VARIABLE_FOR_YOUR_SENDGRID_KEY");
-//            var client = new SendGridClient(apiKey);
-//            var from = new EmailAddress("test@example.com", "Example User");
-//            var subject = "Sending with SendGrid is Fun";
-//            var to = new EmailAddress("test@example.com", "Example User");
-//            var plainTextContent = "and easy to do anywhere, even with C#";
-//            var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
-//            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-//            var response = await client.SendEmailAsync(msg);
-//        }
-//    }
-//}
