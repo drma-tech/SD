@@ -69,7 +69,7 @@ namespace SD.API.Functions
                 var strongGridClient = new Client(apiKey);
 
                 var textContent = new MailContent("text/plain", inbound.Text);
-                var htmlContent = new MailContent("text/html", inbound.Html);
+                //var htmlContent = new MailContent("text/html", inbound.Html);
                 var from = new MailAddress(inbound.FromEmail, inbound.FromName);
                 var to = new MailAddress(inbound.ToEmail, inbound.ToName);
 
@@ -80,7 +80,7 @@ namespace SD.API.Functions
                     Subject = inbound.Subject,
                 };
 
-                await strongGridClient.Mail.SendAsync([personalization], inbound.Subject, [textContent, htmlContent], from, [to], cancellationToken: cancellationToken);
+                await strongGridClient.Mail.SendAsync([personalization], inbound.Subject, [textContent], from, [to], cancellationToken: cancellationToken);
             }
             catch (Exception ex)
             {

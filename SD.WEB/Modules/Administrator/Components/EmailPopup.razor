@@ -12,52 +12,57 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    @if (OnlyRead)
+    <MemoEdit @bind-Text="@EmailDocument.Text" Rows="10" ReadOnly="OnlyRead"  ></MemoEdit>
+</ModalBody>
+<ModalFooter>
+    @if (!OnlyRead)
     {
-        @((MarkupString)Html)
-        @((MarkupString)Text)
+        <Button Color="Color.Primary" Clicked="@SendHandle" Size="Size.Small">
+            Send
+        </Button>
     }
     else
     {
-        //
+        <Button Color="Color.Primary" Clicked="@ReplyHandle" Size="Size.Small">
+            Reply
+        </Button>
     }
-</ModalBody>
-<ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@OnSave" Size="Size.Small">
-        @Resources.GlobalTranslations.ButtonSave
-    </Button>
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
         @TranslationText.Close
     </Button>
 </ModalFooter>
 
 @code {
-    [Parameter] public EmailDocument? EmailDocument { get; set; }
+    [Parameter] public EmailDocument? EmailDocument { get; set; } = new();
     [Parameter] public bool OnlyRead { get; set; } = true;
 
-    public string Html => EmailDocument?.Html ?? "";
-    public string Text => EmailDocument?.Text ?? "";
-
-    public async Task OnSave()
+    public async Task SendHandle()
     {
         try
         {
             var inbound = new SendEmail()
                 {
-                    Subject = "subject tst ne send",
-                    Text = "bla bla bla",
-                    Html = "<p>bla bla bla</p>",
-                    FromName = "Support SD",
-                    FromEmail = "support@streamingdiscovery.com",
-                    ToName = "Dhiogo Acioli",
-                    ToEmail = "dhiogoacioli@gmail.com"
+                    Subject = $"RE {EmailDocument?.Subject}",
+                    Text = EmailDocument?.Text,
+                    FromName = EmailDocument?.To.FirstOrDefault()?.Name,
+                    FromEmail = EmailDocument?.To.FirstOrDefault()?.Email,
+                    ToName = EmailDocument?.From?.Name,
+                    ToEmail = EmailDocument?.From?.Email
                 };
 
             await AdministratorApi.SendEmail(inbound);
+
+            await ModalService.Hide();
         }
         catch (Exception ex)
         {
             ex.ProcessException(Toast, Logger);
         }
+    }
+
+    public void ReplyHandle()
+    {
+        OnlyRead = false;
+        if (EmailDocument != null) EmailDocument.Text = "\r\n\r\n" + EmailDocument.Text;
     }
 }
