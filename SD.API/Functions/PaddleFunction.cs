@@ -7,7 +7,6 @@ using SD.Shared.Models.Auth;
 using SD.Shared.Models.Subscription;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Security.Cryptography;
 
 namespace SD.API.Functions
 {
@@ -86,9 +85,7 @@ namespace SD.API.Functions
                 var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new NotificationException("body null");
                 if (body.data == null) throw new NotificationException("body.data null");
 
-                var result = await repo.Query<ClientePrincipal>(x => body.data.customer_id == (x.ClientePaddle != null ? x.ClientePaddle.CustomerId : ""), null, DocumentType.Principal, cancellationToken);
-
-                if (result == null) return;
+                var result = await repo.Query<ClientePrincipal>(x => x.ClientePaddle != null && x.ClientePaddle.CustomerId == body.data.customer_id, null, DocumentType.Principal, cancellationToken) ?? throw new NotificationException("ClientePrincipal null");
                 var client = result.FirstOrDefault() ?? throw new NotificationException("client null");
                 if (client.ClientePaddle == null) throw new NotificationException("client.ClientePaddle null");
 
