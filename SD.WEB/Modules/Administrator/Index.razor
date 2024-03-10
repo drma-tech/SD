@@ -20,8 +20,9 @@
         <TabPanel Name="Emails" Padding="Padding.Is3.FromTop">
             <DataGrid TItem="EmailDocument" Data="@Emails" @bind-SelectedRow="@Email" Responsive="true" ShowPager="true">
                 <DataGridColumns>
-                    <DataGridColumn Field="@nameof(EmailDocument.From)" Caption="Title" />
-                    <DataGridColumn Field="@nameof(EmailDocument.Subject)" Caption="Description" />
+                    <DataGridColumn Field="@nameof(EmailDocument.FromEmail)" Caption="From" />
+                    <DataGridColumn Field="@nameof(EmailDocument.ToEmail)" Caption="To" />
+                    <DataGridColumn Field="@nameof(EmailDocument.Subject)" Caption="Subject" />
                     <DataGridColumn Field="@nameof(EmailDocument.Date)" Caption="Date" />
                 </DataGridColumns>
                 <ButtonRowTemplate>

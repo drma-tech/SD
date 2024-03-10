@@ -20,6 +20,11 @@
 
         public string? SenderIp { get; set; }
 
+        public string? FromName => From?.Name;
+        public string? FromEmail => From?.Email;
+        public string? ToName => To.FirstOrDefault()?.Name;
+        public string? ToEmail => To.FirstOrDefault()?.Email;
+
         public override bool Equals(object? obj)
         {
             return obj is EmailDocument q && q.Id == Id;

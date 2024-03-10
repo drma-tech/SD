@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using SD.Shared.Models.Support;
 using StrongGrid;
 using StrongGrid.Models;
-using StrongGrid.Models.Webhooks;
 using System.Globalization;
 
 namespace SD.API.Functions
@@ -13,7 +12,7 @@ namespace SD.API.Functions
     {
         [Function("GetEmails")]
         public async Task<List<EmailDocument>?> GetEmails(
-          [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "adm/emails")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "adm/emails")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
@@ -81,35 +80,7 @@ namespace SD.API.Functions
                     Subject = inbound.Subject,
                 };
 
-                var mailSettings = new MailSettings
-                {
-                    SandboxModeEnabled = true,
-                    Footer = new FooterSettings
-                    {
-                        Enabled = true,
-                        HtmlContent = "<p>This email was sent with the help of the <b><a href=\"https://www.nuget.org/packages/StrongGrid/\">StrongGrid</a></b> library</p>",
-                        TextContent = "This email was sent with the help of the StrongGrid library"
-                    },
-                    BypassListManagement = false,
-                    BypassSpamManagement = true,
-                    BypassBounceManagement = true,
-                    BypassUnsubscribeManagement = true
-                };
-
-                var trackingSettings = new TrackingSettings
-                {
-                    ClickTracking = new ClickTrackingSettings
-                    {
-                        EnabledInHtmlContent = true,
-                        EnabledInTextContent = true
-                    },
-                    OpenTracking = new OpenTrackingSettings { Enabled = true },
-                    GoogleAnalytics = new GoogleAnalyticsSettings { Enabled = false },
-                    SubscriptionTracking = new SubscriptionTrackingSettings { Enabled = false }
-                };
-
-                await strongGridClient.Mail.SendAsync([personalization], inbound.Subject, [textContent, htmlContent], from, [to],
-                    mailSettings: mailSettings, trackingSettings: trackingSettings, cancellationToken: cancellationToken);
+                await strongGridClient.Mail.SendAsync([personalization], inbound.Subject, [textContent, htmlContent], from, [to], cancellationToken: cancellationToken);
             }
             catch (Exception ex)
             {
