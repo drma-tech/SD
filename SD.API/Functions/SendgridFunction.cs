@@ -80,7 +80,7 @@ namespace SD.API.Functions
                     Subject = inbound.Subject,
                 };
 
-                await strongGridClient.Mail.SendAsync([personalization], inbound.Subject, [textContent], from, [to], cancellationToken: cancellationToken);
+                await strongGridClient.Mail.SendAsync([personalization], inbound.Subject, [textContent], from, cancellationToken: cancellationToken);
             }
             catch (Exception ex)
             {
