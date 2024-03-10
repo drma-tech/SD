@@ -8,6 +8,7 @@ namespace SD.WEB.Modules.Auth.Core
         private struct Endpoint
         {
             public const string GetEmails = "adm/emails";
+            public const string EmailUpdate = "adm/emails/update";
             public const string SendEmail = "adm/send-email";
         }
 
@@ -19,6 +20,11 @@ namespace SD.WEB.Modules.Auth.Core
         public async Task SendEmail(SendEmail inbound)
         {
             await PostAsync(Endpoint.SendEmail, false, inbound);
+        }
+
+        public async Task EmailUpdate(EmailDocument email)
+        {
+            await PostAsync(Endpoint.EmailUpdate, false, email);
         }
     }
 }

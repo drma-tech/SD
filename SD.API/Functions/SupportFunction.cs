@@ -76,10 +76,29 @@ namespace SD.API.Functions
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(List<TicketModel>))]
         [Function("TicketGetList")]
         public async Task<List<TicketModel>> TicketGetList(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Ticket/GetList")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/ticket/get-list")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
+                var userId = req.GetUserId();
+
+                return await repo.Query<TicketModel>(m => m.TicketStatus != TicketStatus.New || m.IdUserOwner == userId, null, DocumentType.Ticket, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
+            }
+        }
+
+        [Function("TicketGetAll")]
+        public async Task<List<TicketModel>> TicketGetAll(
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "adm/ticket/get-all")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var userId = req.GetUserId();
+
                 return await repo.Query<TicketModel>(null, null, DocumentType.Ticket, cancellationToken);
             }
             catch (Exception ex)

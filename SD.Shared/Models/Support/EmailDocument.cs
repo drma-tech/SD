@@ -1,4 +1,6 @@
-﻿namespace SD.Shared.Models.Support
+﻿using Newtonsoft.Json;
+
+namespace SD.Shared.Models.Support
 {
     public class EmailDocument : CosmosDocument
     {
@@ -19,10 +21,19 @@
         public DateTime? Date { get; set; }
 
         public string? SenderIp { get; set; }
+        public bool Read { get; set; }
+        public bool Replied { get; set; }
 
+        [JsonIgnore]
         public string? FromName => From?.Name;
+
+        [JsonIgnore]
         public string? FromEmail => From?.Email;
+
+        [JsonIgnore]
         public string? ToName => To.FirstOrDefault()?.Name;
+
+        [JsonIgnore]
         public string? ToEmail => To.FirstOrDefault()?.Email;
 
         public override bool Equals(object? obj)

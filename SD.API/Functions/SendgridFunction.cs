@@ -25,6 +25,23 @@ namespace SD.API.Functions
             }
         }
 
+        [Function("EmailUpdate")]
+        public async Task EmailUpdate(
+           [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "adm/emails/update")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var Email = await req.GetPublicBody<EmailDocument>(cancellationToken);
+
+                await repo.Upsert(Email, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
+            }
+        }
+
         [Function("SendgridInbound")]
         public async Task SendgridInbound(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "public/sendgrid/inbound")] HttpRequestData req, CancellationToken cancellationToken)

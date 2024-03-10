@@ -79,7 +79,7 @@ namespace SD.Shared.Models.Support.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New.
+        ///   Looks up a localized string similar to New (opened by me).
         /// </summary>
         public static string New {
             get {

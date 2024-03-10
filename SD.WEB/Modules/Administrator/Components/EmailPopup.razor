@@ -12,7 +12,7 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <MemoEdit @bind-Text="@EmailDocument.Text" Rows="10" ReadOnly="OnlyRead"  ></MemoEdit>
+    <MemoEdit @bind-Text="@EmailDocument!.Text" Rows="10" ReadOnly="OnlyRead"></MemoEdit>
 </ModalBody>
 <ModalFooter>
     @if (!OnlyRead)
@@ -36,13 +36,30 @@
     [Parameter] public EmailDocument? EmailDocument { get; set; } = new();
     [Parameter] public bool OnlyRead { get; set; } = true;
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            EmailDocument!.Read = true;
+            await AdministratorApi.EmailUpdate(EmailDocument);
+        }
+    }
+
+    public void ReplyHandle()
+    {
+        OnlyRead = false;
+        if (EmailDocument != null) EmailDocument.Text = "\r\n\r\n" + EmailDocument.Text;
+    }
+
     public async Task SendHandle()
     {
         try
         {
             var inbound = new SendEmail()
                 {
-                    Subject = $"RE {EmailDocument?.Subject}",
+                    Subject = $"Re: {EmailDocument?.Subject}",
                     Text = EmailDocument?.Text,
                     FromName = EmailDocument?.To.FirstOrDefault()?.Name,
                     FromEmail = EmailDocument?.To.FirstOrDefault()?.Email,
@@ -52,17 +69,14 @@
 
             await AdministratorApi.SendEmail(inbound);
 
+            EmailDocument!.Replied = true;
+            await AdministratorApi.EmailUpdate(EmailDocument);
+
             await ModalService.Hide();
         }
         catch (Exception ex)
         {
             ex.ProcessException(Toast, Logger);
         }
-    }
-
-    public void ReplyHandle()
-    {
-        OnlyRead = false;
-        if (EmailDocument != null) EmailDocument.Text = "\r\n\r\n" + EmailDocument.Text;
     }
 }
