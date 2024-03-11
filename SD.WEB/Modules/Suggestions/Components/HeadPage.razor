@@ -126,7 +126,7 @@
         {
             myProviders ??= new();
 
-            var item = new MyProvidersItem() { id = provider?.id, name = provider?.name, logo = provider?.logo_path };
+            var item = new MyProvidersItem() { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = AppStateStatic.Region };
             var client = await PrincipalApi.Get(true);
             myProviders = await MyProvidersApi.Add(myProviders, item, client?.ClientePaddle);
 
