@@ -134,22 +134,23 @@
         return ModalService.MediaPopup(Watched, Watching, Wish, type, tmdb_id, ShowPrivateAction);
     }
 
-    private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)
+    private Dictionary<string, string> GetExtraParameters(string? provider_id, string? region, string sort_by)
     {
         if (provider_id == null) throw new ArgumentNullException(nameof(provider_id));
+        if (region == null) throw new ArgumentNullException(nameof(region));
 
         var genres = "";
 
         if (SearchType == MediaType.movie)
         {
-            genres = string.Join("|,", mySuggestions?.MovieGenres.Select(s => (int)s) ?? Enumerable.Empty<int>());
+            genres = string.Join("|", mySuggestions?.MovieGenres.Select(s => (int)s) ?? Enumerable.Empty<int>());
         }
         else
         {
-            genres = string.Join("|,", mySuggestions?.TvGenres.Select(s => (int)s) ?? Enumerable.Empty<int>());
+            genres = string.Join("|", mySuggestions?.TvGenres.Select(s => (int)s) ?? Enumerable.Empty<int>());
         }
 
-        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by }, { "with_genres", genres } };
+        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by }, { "with_genres", genres }, { "watch_region", region } };
     }
 
     private async Task ImportFromProviders(MediaType type)
@@ -171,7 +172,7 @@
                 var titles = new HashSet<MediaDetail>();
                 foreach (var provider in myProviders?.Items ?? new())
                 {
-                    var result = await TmdbDiscoveryApi.GetList(new(), MediaType.movie, GetExtraParameters(provider.id, "vote_average.desc"));
+                    var result = await TmdbDiscoveryApi.GetList(new(), MediaType.movie, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"));
 
                     foreach (var item in result.list)
                     {
@@ -218,7 +219,7 @@
                 var titles = new HashSet<MediaDetail>();
                 foreach (var provider in myProviders?.Items ?? new())
                 {
-                    var result = await TmdbDiscoveryApi.GetList(new(), MediaType.tv, GetExtraParameters(provider.id, "vote_average.desc"));
+                    var result = await TmdbDiscoveryApi.GetList(new(), MediaType.tv, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"));
 
                     foreach (var item in result.list)
                     {

@@ -14,6 +14,11 @@ namespace SD.Shared.Core
             return !source.Any(predicate);
         }
 
+        public static bool Empty(this string? value)
+        {
+            return string.IsNullOrEmpty(value);
+        }
+
         public static bool NotEmpty(this string? value)
         {
             return !string.IsNullOrEmpty(value);

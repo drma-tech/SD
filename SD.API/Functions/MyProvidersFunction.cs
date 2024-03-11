@@ -61,6 +61,38 @@ namespace SD.API.Functions
             }
         }
 
+        [Function("MyProvidersUpdate")]
+        public async Task<MyProviders?> Update(
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/update")] HttpRequestData req,
+             CancellationToken cancellationToken)
+        {
+            try
+            {
+                var userId = req.GetUserId();
+                if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+
+                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, new PartitionKey(userId), cancellationToken);
+
+                if (obj == null)
+                {
+                    throw new InvalidOperationException("MyProviders null");
+                }
+                else
+                {
+                    obj.Update();
+                }
+
+                var model = await req.GetPublicBody<MyProviders>(cancellationToken);
+
+                return await repo.Upsert(model, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                req.ProcessException(ex);
+                throw new UnhandledException(ex.BuildException());
+            }
+        }
+
         [Function("MyProvidersRemove")]
         public async Task<MyProviders?> Remove(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/remove")] HttpRequestData req,

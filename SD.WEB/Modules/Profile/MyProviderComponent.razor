@@ -17,7 +17,11 @@
         @foreach (var item in myProviders?.Items.Take(GetTotalItems(expand)) ?? new List<MyProvidersItem>())
         {
             <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                <Card>
+                <Card Style="position: relative;">
+                    <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="padding: 0.15rem; font-size: 0.65rem; position: absolute; top: 3px; left: 3px; z-index: 1;"
+                           title="@item.region?.GetCustomAttribute()?.Name">
+                        @item.region?.ToString()
+                    </Badge>
                     <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" title="@item.name"
                                onclick="@(()=>ShowProviderPopup(item))" Style="cursor: pointer;"></CardImage>
                 </Card>
@@ -57,6 +61,40 @@
         else
         {
             myProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
+        }
+
+        if (myProviders != null)
+        {
+            if (myProviders.Items.Any(a => !a.region.HasValue)) //update region (legacy)
+            {
+                if (allProviders == null) allProviders = await AllProvidersApi.GetAll(null);
+
+                foreach (var item in myProviders.Items)
+                {
+                    if (!item.region.HasValue)
+                    {
+                        var provider = allProviders?.Items.FirstOrDefault(f => f.id == item.id);
+
+                        if (provider != null)
+                        {
+                            if (provider.regions.Any(a => a == AppStateStatic.Region))
+                            {
+                                item.region = AppStateStatic.Region;
+                            }
+                            else
+                            {
+                                item.region = provider.regions.First();
+                            }
+                        }
+                    }
+                }
+
+                var client = await PrincipalApi.Get(IsAuthenticated);
+                await Toast.Warning("Regions have been automatically applied for your favorite providers. If they are wrong, please remove and add them again.");
+                await MyProvidersApi.Update(myProviders, client?.ClientePaddle);
+
+                StateHasChanged();
+            }
         }
     }
 

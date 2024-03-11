@@ -10,6 +10,7 @@ namespace SD.WEB.Modules.Profile.Core
         {
             public const string MyProviders = "my-providers";
             public const string MyProvidersAdd = "my-providers/add";
+            public const string MyProvidersUpdate = "my-providers/update";
             public const string MyProvidersRemove = "my-providers/remove";
         }
 
@@ -32,6 +33,14 @@ namespace SD.WEB.Modules.Profile.Core
             SubscriptionHelper.ValidateFavoriteProviders(paddle?.ActiveProduct, obj.Items.Count + 1);
 
             return await PostAsync(Endpoint.MyProvidersAdd, null, item);
+        }
+
+        public async Task<MyProviders?> Update(MyProviders? obj, ClientePaddle? paddle)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+            SubscriptionHelper.ValidateFavoriteProviders(paddle?.ActiveProduct, obj.Items.Count + 1);
+
+            return await PostAsync(Endpoint.MyProvidersUpdate, null, obj);
         }
 
         public async Task<MyProviders?> Remove(MyProvidersItem? item)

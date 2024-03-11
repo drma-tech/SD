@@ -34,6 +34,7 @@ namespace SD.Shared.Models
         public string? id { get; set; }
         public string? name { get; set; }
         public string? logo { get; set; }
+        public Region? region { get; set; }
 
         public bool Equals(MyProvidersItem? other)
         {
