@@ -395,7 +395,17 @@
 
             await Toast.Success("Registration successful!");
 
-            await Task.Delay(10000).ContinueWith(async (task) => { await UpdateData(); });
+            for (int i = 0; i < 20; i++)
+            {
+                await Task.Delay(1000);
+                var principal = await PrincipalApi.Get(IsAuthenticated, true);
+
+                if (principal?.ClientePaddle != null && principal.ClientePaddle.SubscriptionId.NotEmpty())
+                {
+                    await UpdateData();
+                    break;
+                }
+            }
         }
         catch (Exception ex)
         {
