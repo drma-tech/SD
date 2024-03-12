@@ -3,6 +3,7 @@
 @inherits PageCore<LoginProviders>
 
 @inject LoginApi LoginApi
+@inject IJSRuntime JsRuntime
 
 <div class="alert alert-warning" role="alert">
     <div class="spinner-border spinner-border-sm" role="status">
@@ -14,7 +15,9 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-        await LoginApi.Add();
+        var platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
+
+        await LoginApi.Add(platform);
 
         Navigation.NavigateTo("/");
     }

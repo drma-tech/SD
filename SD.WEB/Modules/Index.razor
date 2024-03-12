@@ -12,6 +12,7 @@
 @inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
+@inject IJSRuntime JsRuntime
 
 <Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
     <Column>
@@ -37,10 +38,11 @@
 
 @code {
     [Parameter][SupplyParameterFromQuery(Name = "language")] public string? language { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "platform")] public string? platform { get; set; }
 
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
-    public RenderControlCore<WishList?> CoreWish { get; set; } = new();    
+    public RenderControlCore<WishList?> CoreWish { get; set; } = new();
 
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
@@ -48,11 +50,18 @@
 
     public string? Search { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; CoreWatched?.LoadingFinished?.Invoke(model); StateHasChanged(); };
         WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; CoreWatching?.LoadingFinished?.Invoke(model); StateHasChanged(); };
         WishApi.DataChanged += (WishList? model) => { Wish = model; CoreWish?.LoadingFinished?.Invoke(model); StateHasChanged(); };
+
+        if (platform.NotEmpty())
+        {
+            await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", platform);
+        }
     }
 
     protected override async Task LoadDataRender()

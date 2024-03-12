@@ -10,6 +10,7 @@ namespace SD.Shared.Models.Auth
 
         public string? UserId { get; set; }
         public DateTimeOffset[] Logins { get; set; } = [];
+        public string[] Platforms { get; set; } = [];
 
         public override void Initialize(string userId)
         {

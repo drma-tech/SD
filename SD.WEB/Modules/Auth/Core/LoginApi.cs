@@ -7,12 +7,12 @@ namespace SD.WEB.Modules.Auth.Core
     {
         private struct Endpoint
         {
-            public const string Add = "Login/Add";
+            public static string Add(string platform) => $"login/add?platform={platform}";
         }
 
-        public async Task Add()
+        public async Task Add(string platform)
         {
-            await PostAsync<ClienteLogin>(Endpoint.Add, false, null, null);
+            await PostAsync<ClienteLogin>(Endpoint.Add(platform), false, null, null);
         }
     }
 }

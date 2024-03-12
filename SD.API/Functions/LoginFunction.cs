@@ -13,24 +13,38 @@ namespace SD.API.Functions
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(void))]
         [Function("LoginAdd")]
         public async Task Add(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Login/Add")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "login/add")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
+                var platform = req.GetQueryParameters()["platform"];
+                if (platform.Empty()) platform = "webapp";
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
                 var login = await repo.Get<ClienteLogin>(DocumentType.Login + ":" + userId, new PartitionKey(userId), cancellationToken);
 
                 if (login == null)
                 {
-                    var newLogin = new ClienteLogin { UserId = userId, Logins = [DateTimeOffset.Now] };
+                    var newLogin = new ClienteLogin { UserId = userId, Logins = [DateTimeOffset.Now], Platforms = [platform!] };
                     newLogin.Initialize(userId);
 
                     await repo.Upsert(newLogin, cancellationToken);
                 }
                 else
                 {
-                    await repo.PatchItem<ClienteLogin>(nameof(DocumentType.Login) + ":" + userId, new PartitionKey(userId), [PatchOperation.Add("/logins/-", DateTimeOffset.Now)], cancellationToken);
+                    if (Array.Exists(login.Platforms, a => a == platform))
+                    {
+                        await repo.PatchItem<ClienteLogin>(nameof(DocumentType.Login) + ":" + userId, new PartitionKey(userId),
+                            [
+                                PatchOperation.Add("/logins/-", DateTimeOffset.Now),
+                            ], cancellationToken);
+                    }
+                    else
+                    {
+                        login.Logins = login.Logins.Union([DateTimeOffset.Now]).ToArray();
+                        login.Platforms = login.Platforms.Union([platform]).ToArray();
+                        await repo.Upsert(login, cancellationToken);
+                    }
                 }
             }
             catch (Exception ex)
