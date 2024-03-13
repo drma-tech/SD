@@ -40,6 +40,7 @@
     [Parameter][SupplyParameterFromQuery(Name = "language")] public string? language { get; set; }
     [Parameter][SupplyParameterFromQuery(Name = "platform")] public string? platform { get; set; }
 
+
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
     public RenderControlCore<WishList?> CoreWish { get; set; } = new();
