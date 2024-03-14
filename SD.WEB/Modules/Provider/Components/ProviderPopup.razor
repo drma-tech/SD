@@ -83,11 +83,11 @@
             </TabPanel>
             <TabPanel Name="Catalog" Class="mt-3">
                 <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc")"
-                           MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
+                           MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
                 <MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc")"
-                           MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
+                           MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
                 <MediaList TitleHead="@TranslationText.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc")"
-                           MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
+                           MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
             </TabPanel>
         </Content>
     </Tabs>
@@ -112,9 +112,12 @@
 
 @code {
     [Parameter] public ProviderModel? provider { get; set; }
-    [Parameter] public WatchedList? WatchedList { get; set; }
-    [Parameter] public WatchingList? WatchingList { get; set; }
+    [Parameter] public WatchedList? Watched { get; set; }
+    [Parameter] public WatchingList? Watching { get; set; }
     [Parameter] public WishList? Wish { get; set; }
+    [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
+    [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
+    [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
     [Parameter] public bool ShowPrivateAction { get; set; }
 
     private string selectedTab = "About";
@@ -122,9 +125,9 @@
 
     protected override void OnInitialized()
     {
-        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
+        WatchedListApi.DataChanged += (WatchedList? model) => { Watched = model; WatchedChanged.InvokeAsync(model); StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { Watching = model; WatchingChanged.InvokeAsync(model); StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { Wish = model; WishChanged.InvokeAsync(model); StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()

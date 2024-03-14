@@ -90,6 +90,9 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
+    [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
+    [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
 
     [Parameter] public string? collection_id { get; set; }
@@ -103,9 +106,9 @@
         if (string.IsNullOrEmpty(collection_id)) throw new ArgumentNullException(nameof(collection_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
 
-        WatchedListApi.DataChanged += (WatchedList? model) => { Watched = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { Watching = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
+        WatchedListApi.DataChanged += (WatchedList? model) => { Watched = model; WatchedChanged.InvokeAsync(model); StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { Watching = model; WatchingChanged.InvokeAsync(model); StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { Wish = model; WishChanged.InvokeAsync(model); StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()

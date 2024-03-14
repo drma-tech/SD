@@ -246,6 +246,9 @@
     [Parameter] public WatchedList? Watched { get; set; }
     [Parameter] public WatchingList? Watching { get; set; }
     [Parameter] public WishList? Wish { get; set; }
+    [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
+    [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
+    [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
     [Parameter] public bool ShowPrivateAction { get; set; }
 
     [Parameter] public string? tmdb_id { get; set; }
@@ -266,9 +269,9 @@
         if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
 
-        WatchedListApi.DataChanged += (WatchedList? model) => { Watched = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { Watching = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
+        WatchedListApi.DataChanged += (WatchedList? model) => { Watched = model; WatchedChanged.InvokeAsync(model); StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { Watching = model; WatchingChanged.InvokeAsync(model); StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { Wish = model; WishChanged.InvokeAsync(model); StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()

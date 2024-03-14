@@ -16,7 +16,7 @@
 <ModalBody MaxHeight="70">
     <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
         <MediaListFull @ref="MediaListFull" MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" MaxItens="100" ShowHead="false"
-                       Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="ShowPrivateAction"></MediaListFull>
+                       Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaListFull>
     </RenderControl>
 </ModalBody>
 <ModalFooter>
@@ -26,9 +26,12 @@
 </ModalFooter>
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
+    [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
+    [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
 
     [Parameter] public string? TitleHead { get; set; }
@@ -42,9 +45,9 @@
 
     protected override void OnInitialized()
     {
-        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+        WatchedListApi.DataChanged += (WatchedList? model) => { Watched = model; WatchedChanged.InvokeAsync(model); StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { Watching = model; WatchingChanged.InvokeAsync(model); StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { Wish = model; WishChanged.InvokeAsync(model); StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()

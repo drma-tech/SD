@@ -17,6 +17,8 @@ namespace SD.WEB.Core
 {
     public static class PopupHelper
     {
+        public static readonly EventCallbackFactory Factory = new();
+
         public static async Task CollectionPopup(this IModalService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? collection_id, bool showPrivateAction)
         {
             await service.Show<CollectionPopup>(null, x =>
@@ -26,33 +28,42 @@ namespace SD.WEB.Core
                 x.Add(x => x.Watched, watched);
                 x.Add(x => x.Watching, watching);
                 x.Add(x => x.Wish, wish);
+                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
+                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
+                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
                 x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.Large));
         }
 
-        public static async Task CompleteListPopup(this IModalService service, string? TitleHead, WatchedList? Watched, WatchingList? Watching, WishList? Wish, HashSet<MediaDetail> Items, bool showPrivateAction)
+        public static async Task CompleteListPopup(this IModalService service, string? TitleHead, WatchedList? watched, WatchingList? watching, WishList? wish, HashSet<MediaDetail> Items, bool showPrivateAction)
         {
             await service.Show<CompleteListPopup>(null, x =>
             {
                 x.Add(x => x.TitleHead, TitleHead);
-                x.Add(x => x.Watched, Watched);
-                x.Add(x => x.Watching, Watching);
-                x.Add(x => x.Wish, Wish);
+                x.Add(x => x.Watched, watched);
+                x.Add(x => x.Watching, watching);
+                x.Add(x => x.Wish, wish);
+                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
+                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
+                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
                 x.Add(x => x.Items, Items);
                 x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.ExtraLarge));
         }
 
-        public static async Task CompleteListPopup(this IModalService service, string? TitleHead, WatchedList? Watched, WatchingList? Watching, WishList? Wish, HashSet<MediaDetail> Items,
+        public static async Task CompleteListPopup(this IModalService service, string? TitleHead, WatchedList? watched, WatchingList? watching, WishList? wish, HashSet<MediaDetail> Items,
             IMediaListApi? MediaListApi, EnumLists? List, int MaxItens, bool IsIMDB, MediaType? TypeSelected, Dictionary<string, string> StringParameters, bool showPrivateAction)
         {
             await service.Show<CompleteListPopup>(null, x =>
             {
                 x.Add(x => x.TitleHead, TitleHead);
-                x.Add(x => x.Watched, Watched);
-                x.Add(x => x.Watching, Watching);
-                x.Add(x => x.Wish, Wish);
+                x.Add(x => x.Watched, watched);
+                x.Add(x => x.Watching, watching);
+                x.Add(x => x.Wish, wish);
                 x.Add(x => x.Items, Items);
+                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
+                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
+                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
 
                 x.Add(x => x.MediaListApi, MediaListApi);
                 x.Add(x => x.List, List);
@@ -86,6 +97,9 @@ namespace SD.WEB.Core
                 x.Add(x => x.Watched, watched);
                 x.Add(x => x.Watching, watching);
                 x.Add(x => x.Wish, wish);
+                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
+                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
+                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
                 x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.Large));
         }
@@ -110,6 +124,9 @@ namespace SD.WEB.Core
                 x.Add(x => x.Watched, watched);
                 x.Add(x => x.Watching, watching);
                 x.Add(x => x.Wish, wish);
+                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
+                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
+                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
                 x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.ExtraLarge));
         }
@@ -124,6 +141,9 @@ namespace SD.WEB.Core
                 x.Add(x => x.Watched, watched);
                 x.Add(x => x.Watching, watching);
                 x.Add(x => x.Wish, wish);
+                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
+                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
+                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
                 x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.ExtraLarge));
         }
@@ -147,9 +167,12 @@ namespace SD.WEB.Core
             await service.Show<ProviderPopup>(null, x =>
             {
                 x.Add(x => x.provider, provider);
-                x.Add(x => x.WatchedList, watched);
-                x.Add(x => x.WatchingList, watching);
+                x.Add(x => x.Watched, watched);
+                x.Add(x => x.Watching, watching);
                 x.Add(x => x.Wish, wish);
+                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
+                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
+                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
                 x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.ExtraLarge));
         }
@@ -160,9 +183,12 @@ namespace SD.WEB.Core
             {
                 x.Add(x => x.TitleHead, titleHead);
                 x.Add(x => x.Search, search);
-                x.Add(x => x.WatchedList, watched);
-                x.Add(x => x.WatchingList, watching);
-                x.Add(x => x.WishList, wish);
+                x.Add(x => x.Watched, watched);
+                x.Add(x => x.Watching, watching);
+                x.Add(x => x.Wish, wish);
+                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
+                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
+                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
                 x.Add(x => x.ShowPrivateAction, showPrivateAction);
             }, Options(ModalSize.ExtraLarge));
         }
@@ -202,6 +228,7 @@ namespace SD.WEB.Core
         }
 
         public static async Task OpenPopup<TComponent>(this IModalService service, Action<ModalProviderParameterBuilder<TComponent>> parameters, ModalSize size)
+            where TComponent : IComponent
         {
             await service.Show(null, parameters, Options(size));
         }

@@ -35,6 +35,9 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
+    [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
+    [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter] public MediaType MediaType { get; set; }
 
@@ -43,8 +46,8 @@
 
     protected override void OnInitialized()
     {
-        WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; StateHasChanged(); };
-        WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; Core?.LoadingFinished?.Invoke(model); StateHasChanged(); };
-        WishApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
+        WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; WatchedChanged.InvokeAsync(model); StateHasChanged(); };
+        WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; WatchingChanged.InvokeAsync(model); Core?.LoadingFinished?.Invoke(model); StateHasChanged(); };
+        WishApi.DataChanged += (WishList? model) => { Wish = model; WishChanged.InvokeAsync(model); StateHasChanged(); };
     }
 }
