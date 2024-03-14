@@ -63,6 +63,10 @@
         {
             await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", platform);
         }
+        else
+        {
+            await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", "webapp");
+        }
     }
 
     protected override async Task LoadDataRender()
