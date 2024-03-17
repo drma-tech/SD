@@ -339,15 +339,15 @@ namespace SD.API.Functions
                 if (model == null)
                 {
                     using var http = new HttpClient();
-                    var obj = await http.GetReviewsByImdb8<MetaCritic>(id, cancellationToken);
+                    var obj = await http.GetReviewsByImdb8<RootMetacritic>(id, cancellationToken);
                     if (obj == null) return null;
 
                     var newModel = new ReviewModel();
 
-                    foreach (var item in obj.reviews)
+                    foreach (var item in obj?.data?.title?.metacritic?.reviews?.edges ?? [])
                     {
                         if (item == null) continue;
-                        newModel.Items.Add(new Shared.Models.Reviews.Item(item.reviewSite, item.reviewUrl, item.reviewer, item.score, item.quote));
+                        newModel.Items.Add(new Shared.Models.Reviews.Item(item.node?.site, item.node?.url, item.node?.reviewer, item.node?.score, item.node?.quote?.value));
                     }
 
                     if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date)
@@ -389,6 +389,7 @@ namespace SD.API.Functions
         {
             try
             {
+                //apis found that site metacritic is using
                 //https://fandom-prod.apigee.net/v1/xapi/shows/metacritic/game-of-thrones/web?apiKey=1MOZgmNFxvmljaQR1X9KAij9Mo4xAY3u
                 //https://fandom-prod.apigee.net/v1/xapi/reviews/metacritic/critic/shows/game-of-thrones/web?apiKey=1MOZgmNFxvmljaQR1X9KAij9Mo4xAY3u
 
@@ -402,12 +403,14 @@ namespace SD.API.Functions
                 if (model == null)
                 {
                     using var http = new HttpClient();
-                    var obj = await http.Get<MetaCriticScraping>($"https://fandom-prod.apigee.net/v1/xapi/reviews/metacritic/critic/shows/{title}/web?apiKey=1MOZgmNFxvmljaQR1X9KAij9Mo4xAY3u", cancellationToken);
+                    var url = $"https://internal-prod.apigee.fandom.net/v1/xapi/composer/metacritic/pages/shows-critic-reviews/{title}/web?filter=all&sort=score&apiKey=1MOZgmNFxvmljaQR1X9KAij9Mo4xAY3u";
+                    var obj = await http.Get<MetaCriticScraping>(url, cancellationToken);
                     if (obj == null) return null;
+                    if (obj.meta?.title == "undefined critic reviews") return null;
 
                     var newModel = new ReviewModel();
 
-                    foreach (var item in obj.data?.items ?? [])
+                    foreach (var item in obj.components.Find(w => w.meta?.componentName == "critic-reviews")?.data?.items ?? [])
                     {
                         if (item == null) continue;
                         newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));

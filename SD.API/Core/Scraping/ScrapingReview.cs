@@ -7,14 +7,26 @@ namespace SD.API.Core.Scraping
     {
         private readonly string tv_url = "https://www.metacritic.com/tv/{0}/critic-reviews";
 
-        public MetaCritic GetTvReviews(string tv_name)
+        public RootMetacritic GetTvReviews(string tv_name)
         {
             return ProcessHtml(string.Format(tv_url, tv_name));
         }
 
-        private static MetaCritic ProcessHtml(string path)
+        private static RootMetacritic ProcessHtml(string path)
         {
-            var data = new MetaCritic();
+            var data = new RootMetacritic
+            {
+                data = new()
+                {
+                    title = new()
+                    {
+                        metacritic = new()
+                        {
+                            reviews = new()
+                        }
+                    }
+                }
+            };
 
             var web = new HtmlWeb();
             var doc = web.Load(path);
@@ -44,16 +56,19 @@ namespace SD.API.Core.Scraping
 
                     if (score != 0)
                     {
-                        var item = new Review
+                        var item = new Edge
                         {
-                            quote = quote,
-                            reviewSite = site,
-                            reviewUrl = node.SelectNodes($"div[2]/div[2]/a[2]")?.FirstOrDefault()?.GetAttributeValue("href", "url error"),
-                            reviewer = reviewer,
-                            score = score
+                            node = new()
+                            {
+                                quote = new Quote { value = quote },
+                                site = site,
+                                url = node.SelectNodes($"div[2]/div[2]/a[2]")?.FirstOrDefault()?.GetAttributeValue("href", "url error"),
+                                reviewer = reviewer,
+                                score = score
+                            }
                         };
 
-                        data.reviews.Add(item);
+                        data.data.title.metacritic.reviews.edges.Add(item);
                     }
                 }
             }

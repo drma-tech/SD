@@ -1,8 +1,9 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SD.Shared.Helper
 {
-    public static class StringHelper
+    public static partial class StringHelper
     {
         public static string Format(this string format, object? arg0)
         {
@@ -11,15 +12,32 @@ namespace SD.Shared.Helper
 
         public static string RemoveSpecialCharacters(this string str)
         {
-            var sb = new StringBuilder();
+            return RemoveSpecialCharacters(str.AsSpan()).ToString();
+        }
+
+        public static ReadOnlySpan<char> RemoveSpecialCharacters(this ReadOnlySpan<char> str)
+        {
+            Span<char> buffer = new char[str.Length];
+            int idx = 0;
+
             foreach (char c in str)
             {
-                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == ' ')
+                if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))
                 {
-                    sb.Append(c);
+                    buffer[idx] = c;
+                    idx++;
                 }
             }
-            return sb.ToString();
+
+            return buffer[..idx];
+        }
+
+        [GeneratedRegex(@"\p{Mn}", RegexOptions.Compiled)]
+        private static partial Regex DiacriticsRegex();
+
+        public static string RemoveDiacritics(this string Text)
+        {
+            return DiacriticsRegex().Replace(Text.Normalize(NormalizationForm.FormD), string.Empty);
         }
     }
 }

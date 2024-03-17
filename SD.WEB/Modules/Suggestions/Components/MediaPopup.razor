@@ -177,7 +177,7 @@
                             </TabPanel>
                         }
                         <TabPanel Name="Reviews" Class="mt-2">
-                            <ReviewComponent imdb_id="@imdb_id" title="@media?.title?.RemoveSpecialCharacters().Replace(" ","-").ToLower()" original_title="@media?.original_title?.RemoveSpecialCharacters().Replace(" ","-").ToLower()" type="@type" release_date="@media?.release_date"></ReviewComponent>
+                            <ReviewComponent imdb_id="@imdb_id" title="@media?.title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ","-").ToLower()" original_title="@media?.original_title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ","-").ToLower()" type="@type" release_date="@media?.release_date"></ReviewComponent>
                         </TabPanel>
                     </Content>
                 </Tabs>
@@ -282,7 +282,7 @@
         Core?.LoadingFinished?.Invoke(media);
 
         //TODO: must be english_title, not original_title
-        var title = media?.original_title?.RemoveSpecialCharacters().Replace(" ", "-").ToLower();
+        var title = media?.original_title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").ToLower();
 
         if (media?.MediaType == MediaType.movie)
         {

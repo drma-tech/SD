@@ -65,7 +65,7 @@
         }
         else
         {
-            await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", "webapp");
+            await JsRuntime.InvokeAsync<string>("TryDetectWindowsStore");
         }
     }
 

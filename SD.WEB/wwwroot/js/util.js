@@ -25,3 +25,12 @@ function GetLocalStorage(key) {
 function SetLocalStorage(key, value) {
     return window.localStorage.setItem(key, value);
 }
+
+function TryDetectWindowsStore() {
+    let isWindows = document.referrer == "app-info://platform/microsoft-store";
+
+    if (isWindows)
+        SetLocalStorage('platform', 'windows');
+    else
+        SetLocalStorage('platform', 'webapp');
+}

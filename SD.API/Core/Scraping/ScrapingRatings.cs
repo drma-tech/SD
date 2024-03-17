@@ -81,6 +81,8 @@ namespace SD.API.Core.Scraping
 
             try
             {
+                if (doc.DocumentNode.InnerText.Contains("Page Not Found - Metacritic")) return;
+
                 data.metacritic = doc.DocumentNode.SelectNodes("html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[1]/div/div[1]/div[2]/div/div/span").FirstOrDefault()?.InnerText;
             }
             catch
@@ -96,6 +98,8 @@ namespace SD.API.Core.Scraping
 
             try
             {
+                if (doc.DocumentNode.InnerText.Contains("Page Not Found (404) - Trakt")) return;
+
                 data.trakt = doc.DocumentNode.SelectNodes("//*[@id=\"summary-ratings-wrapper\"]/div/div/div/ul[1]/li[1]/a/div[2]/div[1]").FirstOrDefault()?.InnerText.Replace("%", "");
             }
             catch
