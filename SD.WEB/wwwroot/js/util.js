@@ -27,6 +27,8 @@ function SetLocalStorage(key, value) {
 }
 
 function TryDetectWindowsStore() {
+    if (GetLocalStorage('platform')) return; //if populate before, cancel, cause detection only works for first call
+
     let isWindows = document.referrer == "app-info://platform/microsoft-store";
 
     if (isWindows)
