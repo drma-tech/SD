@@ -1,7 +1,8 @@
 ﻿@using Blazorise.DataGrid
 @using SD.Shared.Models.Support
+@using SD.WEB.Modules.Administrator.Core
 @using SD.WEB.Modules.Auth.Core
-@inherits ComponenteCore<EmailComponent>
+@inherits ComponentCore<EmailComponent>
 @attribute [Authorize(Roles = "administrator")]
 
 @inject AdministratorApi AdministratorApi

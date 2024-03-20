@@ -1,5 +1,5 @@
 ﻿@using SD.WEB.Modules.Profile.Core
-@inherits ComponenteCore<CompleteListProvider>
+@inherits ComponentCore<CompleteListProvider>
 
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
@@ -70,6 +70,6 @@
 
     private async Task ShowPopupProvider(ProviderModel item)
     {
-        await ModalService.ProviderPopup(item, Watched, Watching, Wish, ShowPrivateAction);
+        await ModalService.ProviderPopup(item, Watched, Watching, Wish, ShowPrivateAction, null);
     }
 }

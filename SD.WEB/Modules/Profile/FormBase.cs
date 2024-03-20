@@ -12,7 +12,7 @@ namespace SD.WEB.Modules.Profile
         Big
     }
 
-    public class FormBase<TValue, TClass> : ComponenteCore<TClass> where TClass : class
+    public class FormBase<TValue, TClass> : ComponentCore<TClass> where TClass : class
     {
         [Parameter] public Expression<Func<TValue>>? For { get; set; }
         [Parameter] public bool Disabled { get; set; }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using SD.Shared.Models.Support;
 
-namespace SD.WEB.Modules.Auth.Core
+namespace SD.WEB.Modules.Administrator.Core
 {
     public class AdministratorApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache)
     {

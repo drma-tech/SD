@@ -162,7 +162,8 @@ namespace SD.WEB.Core
             }, Options(ModalSize.Default));
         }
 
-        public static async Task ProviderPopup(this IModalService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish, bool showPrivateAction)
+        public static async Task ProviderPopup(this IModalService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish,
+            bool showPrivateAction, string? WatchRegion)
         {
             await service.Show<ProviderPopup>(null, x =>
             {
@@ -174,6 +175,7 @@ namespace SD.WEB.Core
                 x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
                 x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
                 x.Add(x => x.ShowPrivateAction, showPrivateAction);
+                x.Add(x => x.WatchRegion, WatchRegion);
             }, Options(ModalSize.ExtraLarge));
         }
 

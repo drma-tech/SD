@@ -1,9 +1,10 @@
 ﻿@using Blazorise.DataGrid
 @using SD.Shared.Core.Models
 @using SD.Shared.Models.Support
+@using SD.WEB.Modules.Administrator.Core
 @using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Support.Core
-@inherits ComponenteCore<FeedbackComponent>
+@inherits ComponentCore<FeedbackComponent>
 @attribute [Authorize(Roles = "administrator")]
 
 @inject AdministratorApi AdministratorApi

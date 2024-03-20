@@ -11,7 +11,7 @@ namespace SD.WEB.Core
     /// if you implement the OnAfterRenderAsync method, call 'await base.OnAfterRenderAsync(firstRender);'
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class ComponenteCore<T> : ComponentBase where T : class
+    public abstract class ComponentCore<T> : ComponentBase where T : class
     {
         [Inject] protected ILogger<T> Logger { get; set; } = default!;
         [Inject] protected INotificationService Toast { get; set; } = default!;
@@ -82,7 +82,7 @@ namespace SD.WEB.Core
     /// if you implement the OnAfterRenderAsync method, call 'await base.OnAfterRenderAsync(firstRender);'
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class PageCore<T> : ComponenteCore<T> where T : class
+    public abstract class PageCore<T> : ComponentCore<T> where T : class
     {
         /// <summary>
         /// if you implement the OnAfterRenderAsync method, call 'await base.OnAfterRenderAsync(firstRender);'

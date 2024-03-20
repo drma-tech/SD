@@ -55,7 +55,7 @@
                 <LayoutFooter Fixed="true" Display="Display.Block.None.OnWidescreen">
                     <Bar Mode="BarMode.Horizontal" Breakpoint="Breakpoint.Mobile" CollapseMode="BarCollapseMode.Small" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark"
                          Padding="Padding.Is0.FromBottom.Is0.FromTop" Style="text-align: center; display: block;">
-                        <BarBrand Class="mr-0">
+                        <BarBrand Class="me-0">
                             <Button Color="GetColor(TypeButton.Home)" To="/" Type="ButtonType.Link" title="@GlobalTranslations.MenuHome" Size="Size.Small" Style="line-height: 1.3;">
                                 <Blazorise.Icon Name="FontAwesomeIcons.Home" />
                                 <span style="display: block; font-size: 0.60rem;">@GlobalTranslations.MenuHome</span>
@@ -141,7 +141,7 @@
     public RenderControlCore<HashSet<UpdateModel>> UpdateCore { get; set; } = new();
 
     public string? Tab { get; set; } = "Home";
-    public string GetMargin => "mr-4 mb-lg-4 mb-6";
+    public string GetMargin => "me-4 mb-lg-4 mb-6";
 
     private enum TypeButton
     {

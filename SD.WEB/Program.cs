@@ -1,6 +1,6 @@
 using AzureStaticWebApps.Blazor.Authentication;
 using Blazorise;
-using Blazorise.Bootstrap;
+using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
 using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components;
@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Polly;
 using Polly.Extensions.Http;
 using SD.WEB;
+using SD.WEB.Modules.Administrator.Core;
 using SD.WEB.Modules.Auth.Core;
 using SD.WEB.Modules.Profile.Core;
 using SD.WEB.Modules.Provider.Core;
@@ -37,7 +38,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
 {
     collection
         .AddBlazorise(options => options.Immediate = true)
-        .AddBootstrapProviders()
+        .AddBootstrap5Providers()
         .AddFontAwesomeIcons();
 
     collection.AddPWAUpdater();

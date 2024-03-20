@@ -1,4 +1,4 @@
-﻿@inherits ComponenteCore<ProviderPopup>
+﻿@inherits ComponentCore<ProviderPopup>
 @using SD.Shared.Models
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Profile.Core
@@ -82,11 +82,11 @@
                 }
             </TabPanel>
             <TabPanel Name="Catalog" Class="mt-3">
-                <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc")"
+                <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc", WatchRegion)"
                            MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
-                <MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc")"
+                <MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc", WatchRegion)"
                            MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
-                <MediaList TitleHead="@TranslationText.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc")"
+                <MediaList TitleHead="@TranslationText.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc", WatchRegion)"
                            MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
             </TabPanel>
         </Content>
@@ -119,6 +119,7 @@
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
     [Parameter] public bool ShowPrivateAction { get; set; }
+    [Parameter] public string? WatchRegion { get; set; }
 
     private string selectedTab = "About";
     private MyProviders? myProviders { get; set; }
@@ -135,11 +136,13 @@
         myProviders = await MyProvidersApi.Get(IsAuthenticated, null);
     }
 
-    private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)
+    private Dictionary<string, string> GetExtraParameters(string? provider_id, string? sort_by, string? watch_region)
     {
         if (provider_id == null) throw new ArgumentNullException(nameof(provider_id));
+        if (sort_by == null) throw new ArgumentNullException(nameof(sort_by));
+        if (watch_region == null) throw new ArgumentNullException(nameof(watch_region));
 
-        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by } };
+        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by }, { "watch_region", watch_region } };
     }
 
     private async Task Add()

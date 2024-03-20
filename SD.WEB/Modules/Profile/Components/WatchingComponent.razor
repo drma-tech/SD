@@ -1,7 +1,7 @@
 ﻿@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Core
 
-@inherits ComponenteCore<WatchingComponent>
+@inherits ComponentCore<WatchingComponent>
 @inject TmdbApi TmdbApi
 @inject WatchingListApi WatchingApi
 
@@ -13,7 +13,7 @@
         @if (ShowPrivateAction)
         {
             <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList())"
-                    title="@GlobalTranslations.SeeAllItems" Disabled="Items.Empty()" Class="ml-1">
+                    title="@GlobalTranslations.SeeAllItems" Disabled="Items.Empty()" Class="ms-1">
                 <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
             </Button>
             <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Clicked="@(()=>Share($"{Navigation.BaseUri}shared/watching/{MediaType}/{UserId}"))"

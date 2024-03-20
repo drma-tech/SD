@@ -1,6 +1,6 @@
 ﻿@using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.Provider.Core;
-@inherits ComponenteCore<MyProviderComponent>
+@inherits ComponentCore<MyProviderComponent>
 
 @inject MyProvidersApi MyProvidersApi
 @inject AllProvidersApi AllProvidersApi
@@ -102,6 +102,6 @@
     {
         if (allProviders == null) allProviders = await AllProvidersApi.GetAll(null);
 
-        await ModalService.ProviderPopup(allProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList, ShowPrivateAction);
+        await ModalService.ProviderPopup(allProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList, ShowPrivateAction, item.region?.ToString());
     }
 }

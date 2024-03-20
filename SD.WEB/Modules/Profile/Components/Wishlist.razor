@@ -1,4 +1,4 @@
-﻿@inherits ComponenteCore<Wishlist>
+﻿@inherits ComponentCore<Wishlist>
 
 @inject IJSRuntime JS
 
@@ -8,7 +8,7 @@
         @if (ShowPrivateAction)
         {
             <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList())"
-                    title="@GlobalTranslations.SeeAllItems" Disabled="Items.Empty()" Class="ml-1">
+                    title="@GlobalTranslations.SeeAllItems" Disabled="Items.Empty()" Class="ms-1">
                 <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
             </Button>
             <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Clicked="@(()=>Share($"{Navigation.BaseUri}shared/wishlist/{MediaType}/{UserId}"))"
