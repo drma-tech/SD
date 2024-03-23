@@ -36,7 +36,6 @@ namespace SD.WEB.Modules.Profile.Core
         public async Task<WatchingList?> Add(MediaType? mediaType, WatchingList? obj, WatchingListItem? item, ClientePaddle? paddle)
         {
             ArgumentNullException.ThrowIfNull(mediaType);
-            ArgumentNullException.ThrowIfNull(obj);
             ArgumentNullException.ThrowIfNull(item);
             SubscriptionHelper.ValidateWatching(paddle?.ActiveProduct, obj.Items(mediaType).Count + 1);
 
