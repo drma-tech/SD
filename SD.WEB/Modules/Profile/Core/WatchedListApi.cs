@@ -33,9 +33,9 @@ namespace SD.WEB.Modules.Profile.Core
 
         public async Task<WatchedList?> Add(MediaType? mediaType, WatchedList? obj, string? TmdbId, ClientePaddle? paddle)
         {
-            ArgumentNullException.ThrowIfNull(mediaType);
-            ArgumentNullException.ThrowIfNull(obj);
-            ArgumentNullException.ThrowIfNull(TmdbId);
+            ArgumentNullException.ThrowIfNull(mediaType, nameof(mediaType));
+            ArgumentNullException.ThrowIfNull(obj, nameof(obj));
+            ArgumentNullException.ThrowIfNull(TmdbId, nameof(TmdbId));
             SubscriptionHelper.ValidateWatched(paddle?.ActiveProduct, obj.Items(mediaType).Count + 1);
 
             return await PostAsync<WatchedList>(Endpoint.Add(mediaType, TmdbId), null, null);

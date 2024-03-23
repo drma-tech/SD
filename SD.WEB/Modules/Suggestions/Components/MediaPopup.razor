@@ -150,7 +150,7 @@
                                                             var wishedMovie = Wish?.Contains(MediaType.movie, item.id) ?? false;
                                                             if (wishedMovie)
                                                             {
-                                                                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
+                                                                <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" TextColor="TextColor.Light"
                                                                                 Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
                                                             }
                                                         }
@@ -159,7 +159,7 @@
                                                         var showWatched = Watching?.GetWatchingItems(MediaType.tv, media.tmdb_id).Any(a => a == item.id) ?? false;
                                                         if (movieWatched | showWatched)
                                                         {
-                                                            <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x2" TextColor="TextColor.Light"
+                                                            <Blazorise.Icon Name="FontAwesomeIcons.Eye" TextColor="TextColor.Light"
                                                                             Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
                                                         }
 

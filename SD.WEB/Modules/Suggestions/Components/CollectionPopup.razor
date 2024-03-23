@@ -10,12 +10,12 @@
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@collection?.name</ModalTitle>
-        <CloseButton />
-    </ModalHeader>
-    <ModalBody MaxHeight="70">
-        <RenderControl Core="Core" Model="collection" ExpressionEmpty="@((TmdbCollection? obj) => obj == null || obj.parts.Empty())">
-            <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
-                @foreach (var item in collection?.parts.OrderBy(o => o.release_date.GetDate()) ?? Enumerable.Empty<Part>())
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    <RenderControl Core="Core" Model="collection" ExpressionEmpty="@((TmdbCollection? obj) => obj == null || obj.parts.Empty())">
+        <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
+            @foreach (var item in collection?.parts.OrderBy(o => o.release_date.GetDate()) ?? Enumerable.Empty<Part>())
             {
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is3.OnWidescreen.Is2.OnFullHD">
                     <Card>
@@ -45,7 +45,7 @@
                                     var wishedMovie = Wish?.Contains(MediaType.movie, item.id.ToString()) ?? false;
                                     if (wishedMovie)
                                     {
-                                        <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" IconSize="IconSize.x2" TextColor="TextColor.Light"
+                                        <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" TextColor="TextColor.Light"
                                                         Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
                                     }
                                 }
@@ -53,7 +53,7 @@
                                 var watching = Watching?.GetWatchingItems(type, collection?.id.ToString()).Any(a => a == item.id.ToString()) ?? false;
                                 if (watching)
                                 {
-                                    <Blazorise.Icon Name="FontAwesomeIcons.Eye" IconSize="IconSize.x2" TextColor="TextColor.Light"
+                                    <Blazorise.Icon Name="FontAwesomeIcons.Eye" TextColor="TextColor.Light"
                                                     Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
                                 }
 
@@ -183,6 +183,9 @@
     private async Task SelectedItemsChanged(MediaType? type, TmdbCollection? collection, string? tmdb_id, HashSet<string> items, int collectionItemsCount)
     {
         if (type == null) throw new ArgumentNullException(nameof(type));
+        if (collection == null) throw new ArgumentNullException(nameof(collection));
+        if (tmdb_id.Empty()) throw new ArgumentNullException(nameof(tmdb_id));
+        if (items.Empty()) throw new ArgumentNullException(nameof(items));
         var client = await PrincipalApi.Get(true);
 
         //watched list
