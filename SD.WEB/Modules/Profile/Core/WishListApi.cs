@@ -35,7 +35,7 @@ namespace SD.WEB.Modules.Profile.Core
         {
             ArgumentNullException.ThrowIfNull(mediaType);
             ArgumentNullException.ThrowIfNull(item);
-            SubscriptionHelper.ValidateWishList(paddle?.ActiveProduct, obj?.Items(mediaType).Count ?? 0 + 1);
+            SubscriptionHelper.ValidateWishList(paddle?.ActiveProduct, (obj?.Items(mediaType).Count ?? 0) + 1);
 
             return await PostAsync(Endpoint.Add(mediaType), null, item);
         }

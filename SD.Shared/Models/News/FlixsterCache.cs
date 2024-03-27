@@ -1,6 +1,4 @@
-﻿using SD.Shared.Core.Models;
-
-namespace SD.Shared.Models.News
+﻿namespace SD.Shared.Models.News
 {
     public class FlixsterCache : CacheDocument<NewsModel>
     {

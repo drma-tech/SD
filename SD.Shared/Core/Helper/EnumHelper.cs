@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Helper
+﻿namespace SD.Shared.Core.Helper
 {
     public static class EnumHelper
     {

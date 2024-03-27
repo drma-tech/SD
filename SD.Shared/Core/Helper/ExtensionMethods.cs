@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace SD.Shared.Core
+namespace SD.Shared.Core.Helper
 {
     public static class ExtensionMethods
     {
@@ -22,6 +22,13 @@ namespace SD.Shared.Core
         public static bool NotEmpty(this string? value)
         {
             return !string.IsNullOrEmpty(value);
+        }
+
+        public static string? Truncate(this string? value, int maxLength, string truncationSuffix = "…")
+        {
+            return value?.Length > maxLength
+                ? value[..maxLength] + truncationSuffix
+                : value;
         }
 
         public static string SimpleEncrypt(this string? url)

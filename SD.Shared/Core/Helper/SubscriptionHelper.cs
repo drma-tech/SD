@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Helper
+﻿namespace SD.Shared.Core.Helper
 {
     public static class SubscriptionHelper
     {
@@ -16,7 +16,7 @@
         public static void ValidateFavoriteProviders(AccountProduct? product, int qtd)
         {
             product ??= AccountProduct.Basic;
-            var restriction = GetRestrictions(product.Value);
+            var restriction = product.Value.GetRestrictions();
 
             if (qtd > restriction.FavoriteProviders)
             {
@@ -27,7 +27,7 @@
         public static void ValidateWatched(AccountProduct? product, int qtd)
         {
             product ??= AccountProduct.Basic;
-            var restriction = GetRestrictions(product.Value);
+            var restriction = product.Value.GetRestrictions();
 
             if (qtd > restriction.Watched)
             {
@@ -38,7 +38,7 @@
         public static void ValidateWatching(AccountProduct? product, int qtd)
         {
             product ??= AccountProduct.Basic;
-            var restriction = GetRestrictions(product.Value);
+            var restriction = product.Value.GetRestrictions();
 
             if (qtd > restriction.Watching)
             {
@@ -49,7 +49,7 @@
         public static void ValidateWishList(AccountProduct? product, int qtd)
         {
             product ??= AccountProduct.Basic;
-            var restriction = GetRestrictions(product.Value);
+            var restriction = product.Value.GetRestrictions();
 
             if (qtd > restriction.Wishlist)
             {
@@ -80,7 +80,7 @@
     {
         public override int FavoriteProviders => 12;
         public override int MySuggestions => 12;
-        public override int Watched => 200;
+        public override int Watched => 300;
         public override int Watching => 50;
         public override int Wishlist => 50;
     }
@@ -89,7 +89,7 @@
     {
         public override int FavoriteProviders => 24;
         public override int MySuggestions => 24;
-        public override int Watched => 400;
+        public override int Watched => 600;
         public override int Watching => 100;
         public override int Wishlist => 100;
     }

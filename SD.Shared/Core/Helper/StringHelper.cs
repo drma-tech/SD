@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 
-namespace SD.Shared.Helper
+namespace SD.Shared.Core.Helper
 {
     public static partial class StringHelper
     {

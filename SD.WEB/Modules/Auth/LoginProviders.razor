@@ -20,8 +20,8 @@
         {
             var link = provider.Key;
             if (link == "microsoft") link = "aad";
-            <Button Block="true" Class="@("btn-" + @provider.Key)" Size="Size.Large" Margin="Margin.Is3.FromBottom" Type="ButtonType.Link" To="@("/.auth/login/" + @link + "?post_login_redirect_uri=" + Navigation.BaseUri + "login-success")">
-                <span class="fab fa-@provider.Key"></span> @Resources.Translations.LoginWith @provider.Value
+            <Button Block="true" Class="@("btn-social btn-" + @provider.Key)" Size="Size.Large" Margin="Margin.Is3.FromBottom" Type="ButtonType.Link" To="@("/.auth/login/" + @link + "?post_login_redirect_uri=" + Navigation.BaseUri + "login-success")">
+                <span class="fa-brands fa-@provider.Key"></span> @Resources.Translations.LoginWith @provider.Value
             </Button>
         }
     </Column>
@@ -30,9 +30,10 @@
 @code {
     public Dictionary<string, string> providers = new Dictionary<string, string>
     {
+        // { "apple", "Apple" },
+        // { "facebook", "Facebook" },
+        // { "github", "Github" },
         { "google", "Google" },
-        //{ "facebook", "Facebook" },
-        { "twitter", "Twitter" },
         { "microsoft", "Microsoft"}
     };
 }

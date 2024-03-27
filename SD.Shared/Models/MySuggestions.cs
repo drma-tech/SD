@@ -1,5 +1,4 @@
-﻿using SD.Shared.Core.Models;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace SD.Shared.Models

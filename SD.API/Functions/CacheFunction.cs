@@ -1,7 +1,6 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Core.Scraping;
-using SD.Shared.Core.Models;
 using SD.Shared.Models.List;
 using SD.Shared.Models.List.Imdb;
 using SD.Shared.Models.News;

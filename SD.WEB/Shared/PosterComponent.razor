@@ -1,5 +1,4 @@
 ﻿@inherits ComponentCore<PosterComponent>
-@using SD.Shared.Helper;
 
 <Blazorise.Link Clicked="@Clicked" Position="Position.Relative">
     @if (MediaType == MediaType.person)
@@ -12,7 +11,7 @@
     }
     @if (Date.HasValue)
     {
-        if (Date.Value < DateTime.Now.AddMonths(-3))
+        if (Date.Value < DateTime.Now.AddMonths(-3) || OnlyYear)
         {
             <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="padding: 0.15rem; font-size: 0.65rem; position: absolute; top: 3px; left: 3px; z-index: 1;">@Date.Value.Year</Badge>
         }
@@ -112,5 +111,6 @@
     [Parameter] public int? Runtime { get; set; }
     [Parameter] public bool ShowWished { get; set; } = true;
     [Parameter] public bool ShowWatched { get; set; } = true;
+    [Parameter] public bool OnlyYear { get; set; } = false;
     [Parameter] public string? RankUpDown { get; set; }
 }

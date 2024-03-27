@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Resources;
 
-namespace SD.Shared.Core
+namespace SD.Shared.Core.Helper
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class CustomAttribute : Attribute
@@ -58,7 +58,7 @@ namespace SD.Shared.Core
 
         public static CustomAttribute GetCustomAttribute(this MemberInfo mi, bool translate = true)
         {
-            if (mi.GetCustomAttribute(typeof(CustomAttribute)) is not CustomAttribute attr) throw new ValidationException("attr null");
+            if (mi.GetCustomAttribute(typeof(CustomAttribute)) is not CustomAttribute attr) throw new ValidationException($"Attribute '{mi.Name}' is null");
 
             if (translate && attr.ResourceType != null) //translations
             {
@@ -66,7 +66,7 @@ namespace SD.Shared.Core
 
                 if (!string.IsNullOrEmpty(attr.Name)) attr.Name = rm.GetString(attr.Name) ?? attr.Name + " (incomplete translation)";
                 if (!string.IsNullOrEmpty(attr.Description)) attr.Description = rm.GetString(attr.Description) ?? attr.Description + " (incomplete translation)";
-                if (!string.IsNullOrEmpty(attr.Group)) attr.Group = rm.GetString(attr.Group);
+                if (!string.IsNullOrEmpty(attr.Group)) attr.Group = rm.GetString(attr.Group) ?? attr.Group + " (incomplete translation)";
                 if (!string.IsNullOrEmpty(attr.Prompt)) attr.Prompt = rm.GetString(attr.Prompt)?.Replace(@"\n", Environment.NewLine);
                 if (!string.IsNullOrEmpty(attr.FieldInfo)) attr.FieldInfo = rm.GetString(attr.FieldInfo)?.Replace(@"\n", Environment.NewLine) ?? attr.FieldInfo.Replace(@"\n", Environment.NewLine) + " (incomplete translation)";
             }

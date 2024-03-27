@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Core.Models;
 
 namespace SD.WEB.Modules.Auth.Core
 {

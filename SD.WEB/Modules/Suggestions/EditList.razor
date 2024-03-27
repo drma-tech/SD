@@ -2,7 +2,7 @@
 @inherits PageCore<EditList>
 @using Blazorise.DataGrid
 @using SD.Shared.Models
-@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Core;
 @inject TmdbListApi TmdbListApi
 
 <DataGrid @ref="DataGrid" TItem="MediaDetail" Data="@List" Filterable="true" Editable="true" EditMode="DataGridEditMode.Form"

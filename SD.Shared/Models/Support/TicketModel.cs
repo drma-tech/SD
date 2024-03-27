@@ -1,5 +1,4 @@
-﻿using SD.Shared.Core.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SD.Shared.Models.Support
 {

@@ -29,7 +29,7 @@ namespace SD.WEB.Modules.Profile.Core
         public async Task<MyProviders?> Add(MyProviders? obj, MyProvidersItem? item, ClientePaddle? paddle)
         {
             ArgumentNullException.ThrowIfNull(item);
-            SubscriptionHelper.ValidateFavoriteProviders(paddle?.ActiveProduct, obj?.Items.Count ?? 0 + 1);
+            SubscriptionHelper.ValidateFavoriteProviders(paddle?.ActiveProduct, (obj?.Items.Count ?? 0) + 1);
 
             return await PostAsync(Endpoint.MyProvidersAdd, null, item);
         }

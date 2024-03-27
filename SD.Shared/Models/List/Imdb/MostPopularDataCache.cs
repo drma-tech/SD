@@ -1,6 +1,4 @@
-﻿using SD.Shared.Core.Models;
-
-namespace SD.Shared.Models.List.Imdb
+﻿namespace SD.Shared.Models.List.Imdb
 {
     public class MostPopularDataCache : CacheDocument<MostPopularData>
     {

@@ -1,6 +1,4 @@
-﻿using SD.Shared.Core.Models;
-
-namespace SD.Shared.Models.Trailers
+﻿namespace SD.Shared.Models.Trailers
 {
     public class YoutubeCache : CacheDocument<TrailerModel>
     {

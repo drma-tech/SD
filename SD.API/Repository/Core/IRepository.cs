@@ -1,5 +1,4 @@
 ﻿using Microsoft.Azure.Cosmos;
-using SD.Shared.Core.Models;
 using System.Linq.Expressions;
 
 namespace SD.API.Repository.Core

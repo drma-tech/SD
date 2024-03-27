@@ -2,7 +2,6 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using SD.Shared.Core.Models;
 using System.Collections.Specialized;
 using System.Text.Json;
 using System.Web;

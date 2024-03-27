@@ -1,6 +1,4 @@
-﻿using SD.Shared.Core.Models;
-
-namespace SD.Shared.Models
+﻿namespace SD.Shared.Models
 {
     public class WatchingList : PrivateMainDocument
     {

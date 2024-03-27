@@ -1,6 +1,4 @@
-﻿using SD.Shared.Core.Models;
-
-namespace SD.Shared.Models.Auth
+﻿namespace SD.Shared.Models.Auth
 {
     public class ClienteLogin : PrivateMainDocument
     {

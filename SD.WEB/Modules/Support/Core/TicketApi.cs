@@ -25,7 +25,7 @@ namespace SD.WEB.Modules.Support.Core
 
         public async Task<TicketModel?> Insert(TicketModel obj)
         {
-            return await PostAsync(Endpoint.Insert,null, obj);
+            return await PostAsync(Endpoint.Insert, null, obj);
         }
     }
 }

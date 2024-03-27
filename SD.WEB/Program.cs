@@ -129,5 +129,5 @@ static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
 {
     return HttpPolicyExtensions
         .HandleTransientHttpError() // 408,5xx
-        .WaitAndRetryAsync(1, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))); // Retry 3 times, with wait 1, 2 and 4 seconds.
+        .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))); // Retry 2 times, with wait 1, 2 and 4 seconds.
 }

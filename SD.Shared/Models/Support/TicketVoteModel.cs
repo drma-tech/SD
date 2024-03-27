@@ -1,6 +1,4 @@
-﻿using SD.Shared.Core.Models;
-
-namespace SD.Shared.Models.Support
+﻿namespace SD.Shared.Models.Support
 {
     public class TicketVoteModel : ProtectedMainDocument
     {

@@ -1,6 +1,4 @@
-﻿using SD.Shared.Core.Models;
-
-namespace SD.Shared.Models.Reviews
+﻿namespace SD.Shared.Models.Reviews
 {
     public class MetaCriticCache : CacheDocument<ReviewModel>
     {

@@ -1,6 +1,4 @@
-﻿using SD.Shared.Core.Models;
-
-namespace SD.Shared.Models.List
+﻿namespace SD.Shared.Models.List
 {
     public class RatingsCache : CacheDocument<Ratings>
     {

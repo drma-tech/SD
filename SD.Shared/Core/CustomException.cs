@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Helper
+﻿namespace SD.Shared.Core
 {
     public class UnhandledException : Exception
     {

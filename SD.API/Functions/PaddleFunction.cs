@@ -2,7 +2,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
 using SD.API.Repository.Core;
-using SD.Shared.Core.Models;
 using SD.Shared.Models.Auth;
 using SD.Shared.Models.Subscription;
 using System.Net.Http.Headers;

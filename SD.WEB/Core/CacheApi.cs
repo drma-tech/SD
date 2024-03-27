@@ -1,5 +1,4 @@
-﻿using Blazorise;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using SD.Shared.Models.List;
 using SD.Shared.Models.News;
 using SD.Shared.Models.Reviews;

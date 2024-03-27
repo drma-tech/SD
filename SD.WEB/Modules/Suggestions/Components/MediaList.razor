@@ -2,6 +2,7 @@
 @using SD.WEB.Modules.Suggestions.Interface;
 @using SD.WEB.Modules.Profile.Core;
 @using SD.Shared.Models;
+
 @inherits ComponentCore<MediaList>
 
 @inject ExternalIdApi ExternalIdApi
@@ -35,7 +36,7 @@
                 <Card>
                     <PosterComponent Date="@(item.release_date??DateTime.MaxValue)" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
                                      TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" RankUpDown="@item.RankUpDown"
-                                     WatchedList="Watched" WishList="Wish"></PosterComponent>
+                                     WatchedList="Watched" WishList="Wish" OnlyYear="OnlyYear"></PosterComponent>
                 </Card>
             </Column>
             if ((i % GetTotalItems) == 0)
@@ -61,6 +62,7 @@
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
     [Parameter] public bool ShowFilter { get; set; } = false;
+    [Parameter] public bool OnlyYear { get; set; } = false;
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; } = null;

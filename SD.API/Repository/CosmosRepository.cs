@@ -2,7 +2,6 @@
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Configuration;
 using SD.API.Repository.Core;
-using SD.Shared.Core.Models;
 using System.Linq.Expressions;
 
 namespace SD.API.Repository

@@ -2,9 +2,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Repository.Core;
-using SD.Shared.Core.Models;
 using SD.Shared.Models.Support;
-using System.Linq.Expressions;
 
 namespace SD.API.Functions
 {

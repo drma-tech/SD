@@ -1,6 +1,5 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
-using SD.Shared.Core.Models;
 
 namespace SD.API.Repository
 {

@@ -20,7 +20,7 @@ namespace SD.Shared.Models.List.Tmdb
         public int vote_count { get; set; }
 
         [JsonIgnore]
-        public int? season_number { get; set;}
+        public int? season_number { get; set; }
     }
 
     public class TmdbCollection
