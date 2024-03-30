@@ -10,7 +10,7 @@ namespace SD.API.Core
         public string? IdentityProvider { get; set; }
         public string? UserId { get; set; }
         public string? UserDetails { get; set; }
-        public IEnumerable<string> UserRoles { get; set; } = Enumerable.Empty<string>();
+        public IEnumerable<string> UserRoles { get; set; } = [];
     }
 
     public static class StaticWebAppsAuth

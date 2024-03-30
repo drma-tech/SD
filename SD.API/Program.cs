@@ -29,11 +29,7 @@ host.Run();
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
-    services.AddSingleton<IRepository>((s) =>
-    {
-        return new CosmosRepository(context.Configuration);
-    });
-
+    services.AddSingleton<IRepository, CosmosRepository>();
     services.AddSingleton<CosmosCacheRepository>();
     services.AddSingleton<CosmosEmailRepository>();
     services.AddApplicationInsightsTelemetryWorkerService();

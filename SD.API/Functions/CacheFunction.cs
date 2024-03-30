@@ -33,7 +33,7 @@ namespace SD.API.Functions
 
                     var compactModels = new NewsModel();
 
-                    foreach (var item in obj.data?.newsStories.Take(8) ?? Enumerable.Empty<NewsStory>())
+                    foreach (var item in obj.data?.newsStories.Take(8) ?? [])
                     {
                         if (item == null) continue;
                         compactModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));

@@ -105,7 +105,7 @@ namespace SD.API.Core
 
     public class CosmosExceptionStructure
     {
-        public string[] Errors { get; set; } = Array.Empty<string>();
+        public string[] Errors { get; set; } = [];
     }
 
     public struct Method

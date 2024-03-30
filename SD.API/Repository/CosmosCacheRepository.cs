@@ -1,14 +1,18 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace SD.API.Repository
 {
     public class CosmosCacheRepository
     {
         public Container Container { get; private set; }
+        private readonly ILogger<CosmosCacheRepository> _logger;
 
-        public CosmosCacheRepository(IConfiguration config)
+        public CosmosCacheRepository(IConfiguration config, ILogger<CosmosCacheRepository> logger)
         {
+            _logger = logger;
+
             var connString = config.GetValue<string>("RepositoryOptions_CosmosConnectionString");
             var databaseId = config.GetValue<string>("RepositoryOptions_DatabaseId");
             var containerId = config.GetValue<string>("RepositoryOptions_ContainerCacheId");
@@ -30,6 +34,11 @@ namespace SD.API.Repository
             {
                 var response = await Container.ReadItemAsync<CacheDocument<TData>?>(key, new PartitionKey(key), null, cancellationToken);
 
+                if (response.RequestCharge > 1.5)
+                {
+                    _logger.LogWarning("Get - key {0}, RequestCharge {1}", key, response.RequestCharge);
+                }
+
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -41,6 +50,11 @@ namespace SD.API.Repository
         public async Task<CacheDocument<TData>?> Add<TData>(CacheDocument<TData> cache, CancellationToken cancellationToken) where TData : class
         {
             var response = await Container.UpsertItemAsync(cache, new PartitionKey(cache.Key), null, cancellationToken);
+
+            if (response.RequestCharge > 12)
+            {
+                _logger.LogWarning("Add - Key {0}, RequestCharge {1}", cache.Key, response.RequestCharge);
+            }
 
             return response.Resource;
         }

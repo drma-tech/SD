@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using SD.API.Repository.Core;
 using System.Linq.Expressions;
 
@@ -9,9 +10,12 @@ namespace SD.API.Repository
     public class CosmosRepository : IRepository
     {
         public Container Container { get; private set; }
+        private readonly ILogger<CosmosRepository> _logger;
 
-        public CosmosRepository(IConfiguration config)
+        public CosmosRepository(IConfiguration config, ILogger<CosmosRepository> logger)
         {
+            _logger = logger;
+
             var connString = config.GetValue<string>("RepositoryOptions_CosmosConnectionString");
             var databaseId = config.GetValue<string>("RepositoryOptions_DatabaseId");
             var containerId = config.GetValue<string>("RepositoryOptions_ContainerId");
@@ -35,6 +39,11 @@ namespace SD.API.Repository
             {
                 var response = await Container.ReadItemAsync<T>(id, key, null, cancellationToken);
 
+                if (response.RequestCharge > 1.5)
+                {
+                    _logger.LogWarning("Get - ID {0}, RequestCharge {1}", id, response.RequestCharge);
+                }
+
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -50,11 +59,17 @@ namespace SD.API.Repository
             using var iterator = query.ToFeedIterator();
             var results = new List<T>();
 
+            double charges = 0;
             while (iterator.HasMoreResults)
             {
                 var response = await iterator.ReadNextAsync(cancellationToken);
-
+                charges += response.RequestCharge;
                 results.AddRange(response.Resource);
+            }
+
+            if (charges > 5)
+            {
+                _logger.LogWarning("ListAll - Type {0}, RequestCharge {1}", Type.ToString(), charges);
             }
 
             return results;
@@ -68,11 +83,17 @@ namespace SD.API.Repository
             using var iterator = query.ToFeedIterator();
             var results = new List<T>();
 
+            double charges = 0;
             while (iterator.HasMoreResults)
             {
                 var response = await iterator.ReadNextAsync(cancellationToken);
-
+                charges += response.RequestCharge;
                 results.AddRange(response.Resource);
+            }
+
+            if (charges > 5)
+            {
+                _logger.LogWarning("Query - Type {0}, RequestCharge {1}", Type.ToString(), charges);
             }
 
             return results;
@@ -81,6 +102,11 @@ namespace SD.API.Repository
         public async Task<T> Upsert<T>(T item, CancellationToken cancellationToken) where T : CosmosDocument
         {
             var response = await Container.UpsertItemAsync(item, new PartitionKey(item.Key), null, cancellationToken);
+
+            if (response.RequestCharge > 15)
+            {
+                _logger.LogWarning("Upsert - ID {0}, Key {1}, RequestCharge {2}", item.Id, item.Key, response.RequestCharge);
+            }
 
             return response.Resource;
         }
@@ -91,12 +117,22 @@ namespace SD.API.Repository
 
             var response = await Container.PatchItemAsync<T>(id, key, operations, null, cancellationToken);
 
+            if (response.RequestCharge > 15)
+            {
+                _logger.LogWarning("PatchItem - ID {0}, Key {1}, RequestCharge {2}", id, key, response.RequestCharge);
+            }
+
             return response.Resource;
         }
 
         public async Task<bool> Delete<T>(T item, CancellationToken cancellationToken) where T : CosmosDocument
         {
             var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Key), null, cancellationToken);
+
+            if (response.RequestCharge > 8)
+            {
+                _logger.LogWarning("Delete - ID {0}, Key {1}, RequestCharge {2}", item.Id, item.Key, response.RequestCharge);
+            }
 
             return response.StatusCode == System.Net.HttpStatusCode.OK;
         }
