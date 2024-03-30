@@ -25,31 +25,6 @@ namespace SD.API.Repository
             });
 
             Container = _client.GetContainer(databaseId, containerId);
-
-            //Database database = await client.CreateDatabaseIfNotExistsAsync("cosmicworks");
-
-            //Container container = await database.CreateContainerIfNotExistsAsync(
-            //    "cosmicworks",
-            //    "/categoryId",
-            //    400
-            //);
-
-            //IndexingPolicy policy = new()
-            //{
-            //    IndexingMode = IndexingMode.Consistent,
-            //    Automatic = true
-            //};
-            //policy.ExcludedPaths.Add(
-            //    new ExcludedPath { Path = "/name/?" }
-            //);
-
-            //ContainerProperties options = new()
-            //{
-            //    Id = "products",
-            //    PartitionKeyPath = "/categoryId",
-            //    IndexingPolicy = policy
-            //};
-            //Container container = await database.CreateContainerIfNotExistsAsync(options, throughput: 400);
         }
 
         public async Task<T?> Get<T>(string id, PartitionKey key, CancellationToken cancellationToken) where T : CosmosDocument
@@ -68,30 +43,16 @@ namespace SD.API.Repository
             }
         }
 
-        public async Task<List<T>> Query<T>(Expression<Func<T, bool>>? predicate, PartitionKey? key, DocumentType Type, CancellationToken cancellationToken) where T : MainDocument
+        public async Task<List<T>> ListAll<T>(DocumentType Type, CancellationToken cancellationToken) where T : MainDocument
         {
-            IQueryable<T> query;
-
-            if (predicate is null)
-            {
-                query = Container.GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetDefaultOptions(key))
-                    .Where(item => item.Type == Type);
-            }
-            else
-            {
-                query = Container.GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetDefaultOptions(key))
-                    .Where(predicate.Compose(item => item.Type == Type, Expression.AndAlso));
-            }
+            var query = Container.GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetDefaultOptions(null)).Where(item => item.Type == Type);
 
             using var iterator = query.ToFeedIterator();
             var results = new List<T>();
-            double count = 0;
 
             while (iterator.HasMoreResults)
             {
                 var response = await iterator.ReadNextAsync(cancellationToken);
-
-                count += response.RequestCharge;
 
                 results.AddRange(response.Resource);
             }
@@ -99,17 +60,17 @@ namespace SD.API.Repository
             return results;
         }
 
-        public async Task<List<T>> Query<T>(QueryDefinition query, CancellationToken cancellationToken) where T : MainDocument
+        public async Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, PartitionKey? key, DocumentType Type, CancellationToken cancellationToken) where T : MainDocument
         {
-            using var iterator = Container.GetItemQueryIterator<T>(query);
+            var query = Container.GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetDefaultOptions(key))
+                     .Where(predicate.Compose(item => item.Type == Type, Expression.AndAlso));
+
+            using var iterator = query.ToFeedIterator();
             var results = new List<T>();
-            double count = 0;
 
             while (iterator.HasMoreResults)
             {
                 var response = await iterator.ReadNextAsync(cancellationToken);
-
-                count += response.RequestCharge;
 
                 results.AddRange(response.Resource);
             }

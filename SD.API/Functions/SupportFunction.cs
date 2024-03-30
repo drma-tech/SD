@@ -16,7 +16,7 @@ namespace SD.API.Functions
         {
             try
             {
-                return await repo.Query<UpdateModel>(null, null, DocumentType.Update, cancellationToken);
+                return await repo.ListAll<UpdateModel>(DocumentType.Update, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -95,9 +95,7 @@ namespace SD.API.Functions
         {
             try
             {
-                var userId = req.GetUserId();
-
-                return await repo.Query<TicketModel>(null, null, DocumentType.Ticket, cancellationToken);
+                return await repo.ListAll<TicketModel>(DocumentType.Ticket, cancellationToken);
             }
             catch (Exception ex)
             {
