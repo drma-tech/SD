@@ -16,10 +16,10 @@ namespace SD.Shared.Models
         public HashSet<SuggestionListItem> Shows { get; init; } = [];
 
         [Custom(Name = "Movie Genres")]
-        public IReadOnlyList<MovieGenre> MovieGenres { get; set; } = Array.Empty<MovieGenre>();
+        public IReadOnlyList<MovieGenre> MovieGenres { get; set; } = [];
 
         [Custom(Name = "TV Genres")]
-        public IReadOnlyList<TvGenre> TvGenres { get; set; } = Array.Empty<TvGenre>();
+        public IReadOnlyList<TvGenre> TvGenres { get; set; } = [];
 
         [JsonIgnore]
         [NotMapped]

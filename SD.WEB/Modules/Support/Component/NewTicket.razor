@@ -28,10 +28,10 @@
             <ValidationMessage For="@(()=>Ticket.Description)"></ValidationMessage>
         </div>
         <Button Type="ButtonType.Submit" Color="Color.Primary" Disabled="!IsAuthenticated" Size="Size.Small">
-            @GlobalTranslations.ButtonSave
+            @WEB.Resources.Button.Save
         </Button>
         <Button Clicked="@ModalService.Hide" Color="Color.Secondary" Size="Size.Small">
-            @GlobalTranslations.ButtonCancel
+            @WEB.Resources.Button.Cancel
         </Button>
         <Button Clicked="@ImportLastError" Color="Color.Danger" Float="Float.End" Disabled="(TicketType == TicketType.Improvement)" Size="Size.Small">
             @Resources.Translations.ImportLastError

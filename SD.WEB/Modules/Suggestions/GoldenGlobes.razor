@@ -3,6 +3,7 @@
 @inherits PageCore<GoldenGlobes>
 
 @using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Provider.Resources
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
@@ -10,7 +11,7 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="Golden Globes" ImageSource="logo/golden-globes.png" Text="@TranslationText.golden_desc" Link="https://www.goldenglobes.com/"></HeadPage>
+<HeadPage Title="Golden Globes" ImageSource="logo/golden-globes.png" Text="@Translations.golden_desc" Link="https://www.goldenglobes.com/"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureDrama" MaxItens="12" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureMusicalComedy" MaxItens="12" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>

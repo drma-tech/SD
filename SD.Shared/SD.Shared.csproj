@@ -58,11 +58,6 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>TvGenre.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Resources\TranslationText.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>TranslationText.resx</DependentUpon>
-		</Compile>
 	</ItemGroup>
 	<ItemGroup>
 		<EmbeddedResource Update="Models\Support\Resources\TicketModel.resx">
@@ -88,10 +83,6 @@
 		<EmbeddedResource Update="Resources\Enum\TvGenre.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>TvGenre.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\TranslationText.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>TranslationText.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Enum\DeliveryModel.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>

@@ -42,6 +42,21 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Translations.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Modules\News\Resources\Translations.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Translations.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Modules\Profile\Resources\Translations.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Translations.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Modules\Subscription\Resources\Translations.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Translations.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Modules\Suggestions\Resources\Translations.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -57,15 +72,30 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Translations.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Modules\Trailers\Resources\Translations.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Translations.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Properties\Resources.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Resources.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Resources\Button.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Button.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\GlobalTranslations.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>GlobalTranslations.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Menu.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Menu.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\SeoTranslations.Designer.cs">
 			<DesignTime>True</DesignTime>
@@ -77,6 +107,18 @@
 		<EmbeddedResource Update="Modules\Auth\Resources\Translations.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Modules\News\Resources\Translations.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Modules\Profile\Resources\Translations.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Modules\Subscription\Resources\Translations.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Translations.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Modules\Suggestions\Resources\Translations.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
@@ -90,13 +132,25 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Modules\Trailers\Resources\Translations.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Properties\Resources.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Button.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Button.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\GlobalTranslations.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>GlobalTranslations.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Menu.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Menu.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\SeoTranslations.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>

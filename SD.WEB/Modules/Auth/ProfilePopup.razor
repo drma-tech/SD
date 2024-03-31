@@ -2,6 +2,7 @@
 @using SD.Shared.Core.Models
 @using SD.Shared.Models.Auth
 @using System.Security.Claims
+@using SD.WEB.Modules.Profile.Resources
 @inherits ComponentCore<ProfilePopup>
 
 @inject IMemoryCache cache
@@ -10,32 +11,32 @@
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">
-        SD - My Profile
+        @Translations.MyProfile
     </ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
     <Card Margin="Margin.Is2.FromBottom">
         <CardHeader>
-            @WEB.Resources.GlobalTranslations.AccessInformation
+            @Translations.AccessInformation
         </CardHeader>
         <CardBody>
             <Fields>
                 <Field ColumnSize="ColumnSize.Is4.OnDesktop">
                     <FieldLabel>
-                        @WEB.Resources.GlobalTranslations.IdentityProvider
+                        @Translations.IdentityProvider
                     </FieldLabel>
                     <TextEdit Text="@principal?.IdentityProvider" Disabled="true" />
                 </Field>
                 <Field ColumnSize="ColumnSize.Is4.OnDesktop">
                     <FieldLabel>
-                        @WEB.Resources.GlobalTranslations.Identification
+                        @Translations.Identification
                     </FieldLabel>
                     <TextEdit Text="@principal?.UserDetails" Disabled="true" />
                 </Field>
                 <Field ColumnSize="ColumnSize.Is4.OnDesktop">
                     <FieldLabel>
-                        @WEB.Resources.GlobalTranslations.Email
+                        @Translations.Email
                     </FieldLabel>
                     <TextEdit Text="@principal?.Email" Disabled="true" />
                 </Field>
@@ -44,19 +45,19 @@
     </Card>
     <Card Margin="Margin.Is2.FromBottom">
         <CardHeader>
-            @WEB.Resources.GlobalTranslations.MyProfileGravatar
+            @Translations.MyProfileGravatar
         </CardHeader>
         <CardBody>
             <Fields>
                 <Field ColumnSize="ColumnSize.Is4.OnDesktop">
                     <FieldLabel>
-                        @WEB.Resources.GlobalTranslations.DisplayName
+                        @Translations.DisplayName
                     </FieldLabel>
                     <TextEdit Text="@Gravatar?.displayName" Disabled="true" />
                 </Field>
                 <Field ColumnSize="ColumnSize.Is4.OnDesktop">
                     <FieldLabel>
-                        @WEB.Resources.GlobalTranslations.PhotoLast
+                        @Translations.PhotoLast
                     </FieldLabel><br />
                     <Figure Size="FigureSize.Is32x32">
                         <FigureImage Source="@Gravatar?.photos.LastOrDefault()?.value" AlternateText="@Gravatar?.displayName" Rounded="true" />
@@ -64,7 +65,7 @@
                 </Field>
                 <Field ColumnSize="ColumnSize.Is4.OnDesktop">
                     <FieldLabel>
-                        @WEB.Resources.GlobalTranslations.EditProfileGravatar
+                        @Translations.EditProfileGravatar
                     </FieldLabel><br />
                     <Link To="@("https://gravatar.com/".HideExternalLink())" Target="Target.Blank">https://gravatar.com/</Link>
                 </Field>
@@ -73,21 +74,21 @@
     </Card>
     <Card Margin="Margin.Is2.FromBottom">
         <CardHeader>
-            @WEB.Resources.GlobalTranslations.Actions
+            @Translations.Actions
         </CardHeader>
         <CardBody>
             <Button Color="Color.Primary" Clicked="async()=>{ await ClearCache(); }" Margin="Margin.Is1.FromEnd">
-                <Blazorise.Icon Name="FontAwesomeIcons.Eraser" /> @WEB.Resources.GlobalTranslations.ClearCache
+                <Blazorise.Icon Name="FontAwesomeIcons.Eraser" /> @Translations.ClearCache
             </Button>
             <Button Color="Color.Danger" Clicked="async()=>{ await DeleteAccount(principal?.IdentityProvider); }" Disabled="true">
-                <Blazorise.Icon Name="FontAwesomeIcons.UserSlash" /> @WEB.Resources.GlobalTranslations.DeleteAccount
+                <Blazorise.Icon Name="FontAwesomeIcons.UserSlash" /> @Translations.DeleteAccount
             </Button>
         </CardBody>
     </Card>
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
-        @TranslationText.Close
+        @WEB.Resources.Button.Close
     </Button>
 </ModalFooter>
 
@@ -99,14 +100,14 @@
     {
         ((MemoryCache)cache).Clear();
 
-        await Toast.Success("Operação efetuada com sucesso!");
+        await Toast.Success(GlobalTranslations.OperationCompleted);
     }
 
     private async Task DeleteAccount(string? provider)
     {
         try
         {
-            if (await MessageService.Confirm("Are you sure you want to delete your account? This action cannot be undone.", "Streaming Discovery", (opt) => { opt.ShowMessageIcon = false; }))
+            if (await MessageService.Confirm(GlobalTranslations.SureDeleteAccount, "Streaming Discovery", (opt) => { opt.ShowMessageIcon = false; }))
             {
                 await PrincipalApi.Remove();
 
@@ -116,11 +117,11 @@
 
                 //await SignOutManager.SetSignOutState();
 
-                await Toast.Success("Operação efetuada com sucesso!");
+                await Toast.Success(GlobalTranslations.OperationCompleted);
             }
             else
             {
-                await Toast.Warning("Operação cancelada!");
+                await Toast.Warning(GlobalTranslations.OperationCanceled);
             }
         }
         catch (Exception ex)

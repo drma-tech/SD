@@ -1,10 +1,11 @@
 ﻿@using SD.Shared.Models.News;
 @using SD.Shared.Models.Trailers;
+@using SD.WEB.Modules.Trailers.Resources
 @inherits ComponentCore<TrailersComponent>
 
 @inject CacheYoutubeApi CacheYoutubeApi
 
-<HeaderComponent Title="@($"{GlobalTranslations.TrailersTitle} - {Language.enUS.GetName()}")" IconImage="logo/one-media.png">
+<HeaderComponent Title="@($"{Translations.TrailersTitle} - {Language.enUS.GetName()}")" IconImage="logo/one-media.png">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList" title="Show all news">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>

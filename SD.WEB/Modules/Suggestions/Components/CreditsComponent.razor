@@ -1,5 +1,6 @@
 ﻿@using SD.Shared.Models.List.Tmdb;
 @using SD.WEB.Modules.Suggestions.Core;
+@using SD.WEB.Modules.Suggestions.Resources
 
 @inherits ComponentCore<CreditsComponent>
 
@@ -11,7 +12,7 @@
         var directors = Credits?.crew.Where(w => w.job == "Director").ToList() ?? new List<Crew>();
         if (directors.Any())
         {
-            <Divider DividerType="DividerType.TextContent" Text="@GlobalTranslations.Directing" />
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.Directing" />
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in directors)
                 {
@@ -37,7 +38,7 @@
         var writers = Credits?.crew.Where(w => w.job == "Writer" || w.job == "Screenplay" || w.job == "Author" || w.job == "Story").ToList() ?? new List<Crew>();
         if (writers.Any())
         {
-            <Divider DividerType="DividerType.TextContent" Text="@GlobalTranslations.Writing" />
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.Writing" />
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in writers)
                 {
@@ -61,7 +62,7 @@
             </Row>
         }
     }
-    <Divider DividerType="DividerType.TextContent" Text="@GlobalTranslations.Cast" />
+    <Divider DividerType="DividerType.TextContent" Text="@Translations.Cast" />
     <Row HorizontalGutter="4" VerticalGutter="4">
         @foreach (var item in Credits?.cast.OrderBy(o => o.order).Take(24) ?? new List<Cast>())
         {
@@ -118,7 +119,7 @@
                     {
                         tmdb_id = item.id.ToString(),
                         title = type == MediaType.movie ? item.title : item.name,
-                        plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
+                        plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
                         release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
                         poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                         poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
@@ -153,7 +154,7 @@
                     {
                         tmdb_id = item.id.ToString(),
                         title = type == MediaType.movie ? item.title : item.name,
-                        plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
+                        plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
                         release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
                         poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                         poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,

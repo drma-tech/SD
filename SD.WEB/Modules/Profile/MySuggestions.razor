@@ -1,5 +1,6 @@
 ﻿@using SD.Shared.Models.Auth
 @using SD.WEB.Modules.Profile.Core;
+@using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Suggestions.Core;
 @inherits ComponentCore<MySuggestions>
 
@@ -10,7 +11,7 @@
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject TmdbApi TmdbApi
 
-<HeaderComponent IconName="@FontAwesomeIcons.ThumbsUp" Title="@GlobalTranslations.MySuggestions">
+<HeaderComponent IconName="@FontAwesomeIcons.ThumbsUp" Title="@Translations.MySuggestions">
     @if (Client?.ClientePaddle?.IsPaidUser ?? false)
     {
         <Button Float="Float.End" Size="Size.ExtraSmall" Color="(GenresChanged ? Color.Secondary : Color.Primary)" Clicked="@(async()=>await OpenConfigurations())" Disabled="(myProviders == null || myProviders.Items.Empty())" title="Settings">
@@ -22,21 +23,21 @@
         </RadioGroup>
         @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (myProviders?.Items.Any() ?? false))
         {
-            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.movie)" title="@GlobalTranslations.ButtonUpdate" Disabled="MovieUpdating">
-                @GlobalTranslations.ButtonUpdate
+            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.movie)" title="@WEB.Resources.Button.Update" Disabled="MovieUpdating">
+                @WEB.Resources.Button.Update
             </Button>
         }
         @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync) && (myProviders?.Items.Any() ?? false))
         {
-            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.tv)" title="@GlobalTranslations.ButtonUpdate" Disabled="ShowUpdating">
-                @GlobalTranslations.ButtonUpdate
+            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.tv)" title="@WEB.Resources.Button.Update" Disabled="ShowUpdating">
+                @WEB.Resources.Button.Update
             </Button>
         }
     }
 </HeaderComponent>
 
 <RenderControl @ref="render" Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())"
-               PrivateContent="true" PremiumFeature="true" PremiumDescription="@Resources.GlobalTranslations.OurSuggestions2">
+               PrivateContent="true" PremiumFeature="true" PremiumDescription="@Translations.OurSuggestions2">
     <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
         @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)).Take(GetTotalItems) ?? new List<SuggestionListItem>())
         {
@@ -108,7 +109,7 @@
 
             if (myProviders == null || myProviders.Items.Empty())
             {
-                Core?.ShowWarning(Resources.GlobalTranslations.OurSuggestions1);
+                Core?.ShowWarning(Translations.OurSuggestions1);
             }
             else
             {
@@ -119,7 +120,7 @@
 
                 if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
                 {
-                    Core?.ShowWarning(Resources.GlobalTranslations.OurSuggestions2);
+                    Core?.ShowWarning(Translations.OurSuggestions2);
                 }
             }
         }
@@ -299,7 +300,7 @@
 
         StateHasChanged();
 
-        await Toast.Warning(GlobalTranslations.UpdateMySuggestions);
+        await Toast.Warning(Translations.UpdateMySuggestions);
     }
 
     private void CheckedValueChanged(MediaType type)

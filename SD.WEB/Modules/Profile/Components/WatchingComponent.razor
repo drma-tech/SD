@@ -1,4 +1,5 @@
 ﻿@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Suggestions.Core;
 
 @inherits ComponentCore<WatchingComponent>
@@ -23,8 +24,8 @@
             @if ((Watching?.MovieCanSync ?? false) && (Watching?.Movies.Any() ?? false))
             {
                 <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched()"
-                        title="@GlobalTranslations.ButtonUpdate" Disabled="MovieUpdating">
-                    @GlobalTranslations.ButtonUpdate
+                        title="@WEB.Resources.Button.Update" Disabled="MovieUpdating">
+                    @WEB.Resources.Button.Update
                 </Button>
             }
         }
@@ -84,7 +85,7 @@
     private HashSet<WatchingListItem> Items => MediaType == MediaType.movie ? Watching?.Movies ?? new HashSet<WatchingListItem>() : Watching?.Shows ?? new HashSet<WatchingListItem>();
 
     private int GetTotalItems => !FullScreen ? (AppStateStatic.OnFullHD ? 6 : 4) : 100;
-    private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? GlobalTranslations.MyMovieWatching.Format(Items.Count()) : GlobalTranslations.MyShowWatching.Format(Items.Count()));
+    private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? Translations.MyMovieWatching.Format(Items.Count()) : Translations.MyShowWatching.Format(Items.Count()));
     private IFluentColumn ColSize => FullScreen ? ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile : ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile;
 
     public bool MovieUpdating { get; set; } = false;

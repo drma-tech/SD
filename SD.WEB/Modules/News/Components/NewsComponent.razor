@@ -1,9 +1,10 @@
 ﻿@using SD.Shared.Models.News;
+@using SD.WEB.Modules.News.Resources
 @inherits ComponentCore<NewsComponent>
 
 @inject CacheFlixsterApi CacheFlixsterApi
 
-<HeaderComponent Title="@($"{GlobalTranslations.NewsTitle} - {Language.enUS.GetName()}")" IconImage="logo/rotten-tomatoes.png">
+<HeaderComponent Title="@($"{Translations.NewsTitle} - {Language.enUS.GetName()}")" IconImage="logo/rotten-tomatoes.png">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList" title="Show all news">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>

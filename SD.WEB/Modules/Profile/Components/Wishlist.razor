@@ -1,4 +1,5 @@
-﻿@inherits ComponentCore<Wishlist>
+﻿@using SD.WEB.Modules.Profile.Resources
+@inherits ComponentCore<Wishlist>
 
 @inject IJSRuntime JS
 
@@ -49,7 +50,7 @@
     private HashSet<WishListItem> Items => MediaType == MediaType.movie ? Wish?.Movies ?? new HashSet<WishListItem>() : Wish?.Shows ?? new HashSet<WishListItem>();
 
     private int GetTotalItems => !FullScreen ? (AppStateStatic.OnFullHD ? 6 : 4) : 100;
-    private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? GlobalTranslations.MyMovieWishlist.Format(Items.Count()) : GlobalTranslations.MyShowWishlist.Format(Items.Count()));
+    private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? Translations.MyMovieWishlist.Format(Items.Count()) : Translations.MyShowWishlist.Format(Items.Count()));
     private IFluentColumn ColSize => FullScreen ? ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile : ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile;
 
     private async Task OpenCompleteList()

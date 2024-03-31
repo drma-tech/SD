@@ -904,7 +904,7 @@
 
         public IEnumerable<ProviderBase> GetAdsListProviders(Region region)
         {
-            if (results == null) return Array.Empty<ProviderBase>();
+            if (results == null) return [];
 
             return region switch
             {
@@ -1053,7 +1053,7 @@
 
         public IEnumerable<ProviderBase> GetFlatRateListProviders(Region region)
         {
-            if (results == null) return Array.Empty<ProviderBase>();
+            if (results == null) return [];
 
             return region switch
             {
@@ -1202,7 +1202,7 @@
 
         public IEnumerable<ProviderBase> GetFlatRateBuyListProviders(Region region)
         {
-            if (results == null) return Array.Empty<ProviderBase>();
+            if (results == null) return [];
 
             return region switch
             {
@@ -1351,7 +1351,7 @@
 
         public IEnumerable<ProviderBase> GetRentListProviders(Region region)
         {
-            if (results == null) return Array.Empty<ProviderBase>();
+            if (results == null) return [];
 
             return region switch
             {
@@ -1500,7 +1500,7 @@
 
         public IEnumerable<ProviderBase> GetBuyListProviders(Region region)
         {
-            if (results == null) return Array.Empty<ProviderBase>();
+            if (results == null) return [];
 
             return region switch
             {

@@ -117,13 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ButtonNotWatched" xml:space="preserve">
+    <value>Not Watched</value>
+  </data>
+  <data name="ButtonWatched" xml:space="preserve">
+    <value>Watched</value>
+  </data>
+  <data name="Cast" xml:space="preserve">
+    <value>Cast</value>
+  </data>
+  <data name="DeliveryModelAds" xml:space="preserve">
+    <value>Ads</value>
+  </data>
+  <data name="DeliveryModelBuy" xml:space="preserve">
+    <value>Buy</value>
+  </data>
+  <data name="DeliveryModelFlatRate" xml:space="preserve">
+    <value>Flat Rate</value>
+  </data>
+  <data name="DeliveryModelFlatRateBuy" xml:space="preserve">
+    <value>Flat Rate/Buy</value>
+  </data>
+  <data name="DeliveryModelFree" xml:space="preserve">
+    <value>Free</value>
+  </data>
+  <data name="DeliveryModelRent" xml:space="preserve">
+    <value>Rent</value>
+  </data>
+  <data name="Directing" xml:space="preserve">
+    <value>Directing</value>
+  </data>
+  <data name="MoreInformation" xml:space="preserve">
+    <value>More information or Contributions</value>
+  </data>
+  <data name="NoPlot" xml:space="preserve">
+    <value>overview not available in your language</value>
+  </data>
+  <data name="Offering" xml:space="preserve">
+    <value>Offering</value>
+  </data>
+  <data name="TabAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="TabCollection" xml:space="preserve">
+    <value>Collection</value>
+  </data>
+  <data name="TabCredits" xml:space="preserve">
+    <value>Credits</value>
+  </data>
+  <data name="TabWhereToWatch" xml:space="preserve">
+    <value>Where to Watch</value>
+  </data>
   <data name="TitleAwards" xml:space="preserve">
     <value>Awards</value>
+  </data>
+  <data name="TitleNotAvailable" xml:space="preserve">
+    <value>Unfortunately this title is not available in your region</value>
   </data>
   <data name="TitleSpecializedSites" xml:space="preserve">
     <value>Specialized Sites</value>
   </data>
   <data name="TitleSpecials" xml:space="preserve">
     <value>Specials</value>
+  </data>
+  <data name="Writing" xml:space="preserve">
+    <value>Writing</value>
   </data>
 </root>

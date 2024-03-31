@@ -76,14 +76,14 @@
     @if (ShowPrivateAction)
     {
         <Button Color="Color.Primary" Size="Size.Small" Clicked="@IsWatched" Float="Float.Start" title="Mark all these items as watched">
-            @GlobalTranslations.ButtonWatched
+            @Resources.Translations.ButtonWatched
         </Button>
         <Button Color="Color.Danger" Size="Size.Small" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">
             @GlobalTranslations.RemoveCollection
         </Button>
     }
     <Button Color="Color.Secondary" Size="Size.Small" Clicked="@HideModal" Float="Float.End">
-        @GlobalTranslations.ButtonClose
+        @WEB.Resources.Button.Close
     </Button>
 </ModalFooter>
 

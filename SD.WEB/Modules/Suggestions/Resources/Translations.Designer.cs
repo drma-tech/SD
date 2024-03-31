@@ -61,11 +61,173 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not Watched.
+        /// </summary>
+        public static string ButtonNotWatched {
+            get {
+                return ResourceManager.GetString("ButtonNotWatched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Watched.
+        /// </summary>
+        public static string ButtonWatched {
+            get {
+                return ResourceManager.GetString("ButtonWatched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cast.
+        /// </summary>
+        public static string Cast {
+            get {
+                return ResourceManager.GetString("Cast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ads.
+        /// </summary>
+        public static string DeliveryModelAds {
+            get {
+                return ResourceManager.GetString("DeliveryModelAds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buy.
+        /// </summary>
+        public static string DeliveryModelBuy {
+            get {
+                return ResourceManager.GetString("DeliveryModelBuy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flat Rate.
+        /// </summary>
+        public static string DeliveryModelFlatRate {
+            get {
+                return ResourceManager.GetString("DeliveryModelFlatRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flat Rate/Buy.
+        /// </summary>
+        public static string DeliveryModelFlatRateBuy {
+            get {
+                return ResourceManager.GetString("DeliveryModelFlatRateBuy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free.
+        /// </summary>
+        public static string DeliveryModelFree {
+            get {
+                return ResourceManager.GetString("DeliveryModelFree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rent.
+        /// </summary>
+        public static string DeliveryModelRent {
+            get {
+                return ResourceManager.GetString("DeliveryModelRent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Directing.
+        /// </summary>
+        public static string Directing {
+            get {
+                return ResourceManager.GetString("Directing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More information or Contributions.
+        /// </summary>
+        public static string MoreInformation {
+            get {
+                return ResourceManager.GetString("MoreInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to overview not available in your language.
+        /// </summary>
+        public static string NoPlot {
+            get {
+                return ResourceManager.GetString("NoPlot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offering.
+        /// </summary>
+        public static string Offering {
+            get {
+                return ResourceManager.GetString("Offering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string TabAbout {
+            get {
+                return ResourceManager.GetString("TabAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collection.
+        /// </summary>
+        public static string TabCollection {
+            get {
+                return ResourceManager.GetString("TabCollection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credits.
+        /// </summary>
+        public static string TabCredits {
+            get {
+                return ResourceManager.GetString("TabCredits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Where to Watch.
+        /// </summary>
+        public static string TabWhereToWatch {
+            get {
+                return ResourceManager.GetString("TabWhereToWatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Awards.
         /// </summary>
         public static string TitleAwards {
             get {
                 return ResourceManager.GetString("TitleAwards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unfortunately this title is not available in your region.
+        /// </summary>
+        public static string TitleNotAvailable {
+            get {
+                return ResourceManager.GetString("TitleNotAvailable", resourceCulture);
             }
         }
         
@@ -84,6 +246,15 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         public static string TitleSpecials {
             get {
                 return ResourceManager.GetString("TitleSpecials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Writing.
+        /// </summary>
+        public static string Writing {
+            get {
+                return ResourceManager.GetString("Writing", resourceCulture);
             }
         }
     }

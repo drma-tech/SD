@@ -1,12 +1,13 @@
 ﻿@using SD.Shared.Models.News;
 @using SD.Shared.Models.Trailers;
+@using SD.WEB.Modules.Trailers.Resources
 @using System.Text.Json;
 @inherits ComponentCore<TrailersPopup>
 
 @inject CacheYoutubeApi CacheYoutubeApi
 
 <ModalHeader>
-    <ModalTitle Size="HeadingSize.Is5">@($"{GlobalTranslations.TrailersTitle} - ONE Media")</ModalTitle>
+    <ModalTitle Size="HeadingSize.Is5">@($"{Translations.TrailersTitle} - ONE Media")</ModalTitle>
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
@@ -33,7 +34,7 @@
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
-        @TranslationText.Close
+        @WEB.Resources.Button.Close
     </Button>
 </ModalFooter>
 

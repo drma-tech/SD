@@ -117,59 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ButtonAdd" xml:space="preserve">
-    <value>Agregar</value>
-  </data>
-  <data name="ButtonCancel" xml:space="preserve">
-    <value>Cancelar</value>
-  </data>
-  <data name="ButtonClose" xml:space="preserve">
-    <value>Cerrar</value>
-  </data>
-  <data name="ButtonLogin" xml:space="preserve">
-    <value>Entrar</value>
-  </data>
-  <data name="ButtonLogout" xml:space="preserve">
-    <value>Salir</value>
-  </data>
-  <data name="ButtonNew" xml:space="preserve">
-    <value>Nuevo</value>
-  </data>
-  <data name="ButtonNotWatched" xml:space="preserve">
-    <value>Sin ayuda</value>
-  </data>
-  <data name="ButtonRemove" xml:space="preserve">
-    <value>Eliminar</value>
-  </data>
-  <data name="ButtonSave" xml:space="preserve">
-    <value>Salvar</value>
-  </data>
-  <data name="ButtonWatched" xml:space="preserve">
-    <value>Asistida</value>
-  </data>
   <data name="CustomVisibilityLoading" xml:space="preserve">
     <value>Llevar...</value>
   </data>
   <data name="CustomVisibilityNoData" xml:space="preserve">
     <value>No hay datos para mostrar</value>
-  </data>
-  <data name="DeliveryModelAds" xml:space="preserve">
-    <value>Anuncios</value>
-  </data>
-  <data name="DeliveryModelBuy" xml:space="preserve">
-    <value>Comprar</value>
-  </data>
-  <data name="DeliveryModelFlatRate" xml:space="preserve">
-    <value>Tasa fija</value>
-  </data>
-  <data name="DeliveryModelFlatRateBuy" xml:space="preserve">
-    <value>Tasa fija/Comprar</value>
-  </data>
-  <data name="DeliveryModelFree" xml:space="preserve">
-    <value>Gratis</value>
-  </data>
-  <data name="DeliveryModelRent" xml:space="preserve">
-    <value>Alquilar</value>
   </data>
   <data name="FeatureUnavailableDescription" xml:space="preserve">
     <value>Espera noticias...</value>
@@ -177,196 +129,43 @@
   <data name="FeatureUnavailableMessage" xml:space="preserve">
     <value>En desarrollo</value>
   </data>
-  <data name="MenuHome" xml:space="preserve">
-    <value>Hogar</value>
-  </data>
-  <data name="MenuProfile" xml:space="preserve">
-    <value>Perfil</value>
-  </data>
-  <data name="MenuSupport" xml:space="preserve">
-    <value>Apoyo</value>
-  </data>
-  <data name="MoreInformation" xml:space="preserve">
-    <value>Más información o Contribuciones</value>
-  </data>
-  <data name="MyProviders" xml:space="preserve">
-    <value>Proveedores favoritos ({0} artículos)</value>
-  </data>
-  <data name="Offering" xml:space="preserve">
-    <value>Ofrenda</value>
-  </data>
-  <data name="ProviderPopupTabAbout" xml:space="preserve">
-    <value>Sobre</value>
-  </data>
-  <data name="ProviderPopupTabCatalog" xml:space="preserve">
-    <value>Catálogo</value>
-  </data>
-  <data name="ProviderPopupTabDetails" xml:space="preserve">
-    <value>Detalles</value>
-  </data>
   <data name="PWAUpdaterButton" xml:space="preserve">
     <value>ACTUALIZA AHORA</value>
   </data>
   <data name="PWAUpdaterText" xml:space="preserve">
     <value>Una nueva versión está disponible</value>
   </data>
-  <data name="TitleNotAvailable" xml:space="preserve">
-    <value>Desafortunadamente, este título no está disponible en su región</value>
-  </data>
-  <data name="ButtonOk" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="MenuSuggestions" xml:space="preserve">
-    <value>Sugerencias</value>
-  </data>
-  <data name="TabAbout" xml:space="preserve">
-    <value>Sobre</value>
-  </data>
-  <data name="TabCollection" xml:space="preserve">
-    <value>Colección</value>
-  </data>
   <data name="RemoveCollection" xml:space="preserve">
     <value>Quitar colección</value>
-  </data>
-  <data name="NewsTitle" xml:space="preserve">
-    <value>Últimas noticias</value>
-  </data>
-  <data name="ButtonReadMore" xml:space="preserve">
-    <value>Leer más</value>
-  </data>
-  <data name="ButtonLoadMore" xml:space="preserve">
-    <value>Cargar más</value>
   </data>
   <data name="SeeAllItems" xml:space="preserve">
     <value>Ver todos los artículos</value>
   </data>
-  <data name="TabCredits" xml:space="preserve">
-    <value>Créditos</value>
-  </data>
-  <data name="Cast" xml:space="preserve">
-    <value>Elenco</value>
-  </data>
-  <data name="Directing" xml:space="preserve">
-    <value>Dirección</value>
-  </data>
-  <data name="Writing" xml:space="preserve">
-    <value>Guion</value>
-  </data>
-  <data name="UnauthenticatedUser" xml:space="preserve">
-    <value>Usuario no autenticado</value>
-  </data>
   <data name="TypeSomething" xml:space="preserve">
     <value>Escriba algo para buscar</value>
-  </data>
-  <data name="ButtoSearch" xml:space="preserve">
-    <value>Buscar</value>
-  </data>
-  <data name="MyMovieWatching" xml:space="preserve">
-    <value>Viendo - Películas ({0} artículos)</value>
-  </data>
-  <data name="MyMovieWishlist" xml:space="preserve">
-    <value>Mi lista - Películas ({0} artículos)</value>
-  </data>
-  <data name="MyShowWatching" xml:space="preserve">
-    <value>Viendo - Serie ({0} artículos)</value>
-  </data>
-  <data name="MyShowWishlist" xml:space="preserve">
-    <value>Mi lista - Serie ({0} artículos)</value>
-  </data>
-  <data name="TrailersTitle" xml:space="preserve">
-    <value>Últimos Trailers</value>
-  </data>
-  <data name="MenuProviders" xml:space="preserve">
-    <value>Proveedores</value>
-  </data>
-  <data name="ButtonUpdate" xml:space="preserve">
-    <value>Actualizar</value>
   </data>
   <data name="BetaVersion" xml:space="preserve">
     <value>¡Versión beta!</value>
   </data>
-  <data name="NothingThisAddress" xml:space="preserve">
-    <value>Lo sentimos, no hay nada en esta dirección.</value>
-  </data>
   <data name="ProductUnderDevelopment" xml:space="preserve">
     <value>Producto aún en desarrollo, por lo que mucho mejorará. Si tiene sugerencias que hacer, pregunte en la sección de soporte de la aplicación.</value>
-  </data>
-  <data name="AuthenticationInProgress" xml:space="preserve">
-    <value>Autenticación en curso...</value>
-  </data>
-  <data name="UpdateMySuggestions" xml:space="preserve">
-    <value>Sus preferencias entrarán en vigor en la próxima actualización de esta lista</value>
-  </data>
-  <data name="MySuggestions" xml:space="preserve">
-    <value>Mis sugerencias</value>
-  </data>
-  <data name="UnavailableService" xml:space="preserve">
-    <value>Servicio no disponible. Estaremos reemplazando tan pronto como sea posible.</value>
-  </data>
-  <data name="YouAreNotAuthorized" xml:space="preserve">
-    <value>No está autorizado a acceder a este recurso.</value>
-  </data>
-  <data name="TabWhereToWatch" xml:space="preserve">
-    <value>Dónde verlo</value>
-  </data>
-  <data name="BuyBook" xml:space="preserve">
-    <value>Comprar Libros</value>
-  </data>
-  <data name="BuyDVD" xml:space="preserve">
-    <value>Comprar Blu-ray/DVD</value>
   </data>
   <data name="CustomVisibilityInvalid" xml:space="preserve">
     <value>Operación no válida. Por favor, inténtelo de nuevo.</value>
   </data>
-  <data name="OurSuggestions1" xml:space="preserve">
-    <value>Nuestras sugerencias se basan en los proveedores que ha marcado como favoritos.</value>
-  </data>
-  <data name="OurSuggestions2" xml:space="preserve">
-    <value>Nuestras sugerencias se basan en sus proveedores favoritos y sus preferencias de género (excluidos los títulos que ya están en sus listas personales).</value>
-  </data>
-  <data name="Free" xml:space="preserve">
-    <value>Gratis</value>
-  </data>
-  <data name="Year" xml:space="preserve">
-    <value>Año</value>
-  </data>
   <data name="Share" xml:space="preserve">
     <value>Compartir</value>
   </data>
-  <data name="ClearCache" xml:space="preserve">
-    <value>Limpiar cache</value>
-  </data>
-  <data name="DeleteAccount" xml:space="preserve">
-    <value>Borrar cuenta</value>
-  </data>
-  <data name="DisplayName" xml:space="preserve">
-    <value>Nombre para mostrar</value>
-  </data>
-  <data name="EditProfileGravatar" xml:space="preserve">
-    <value>Editar perfil en Gravatar</value>
-  </data>
-  <data name="PhotoLast" xml:space="preserve">
-    <value>Foto (Última)</value>
-  </data>
-  <data name="AccessInformation" xml:space="preserve">
-    <value>Informacion de acceso</value>
-  </data>
-  <data name="Actions" xml:space="preserve">
-    <value>Acciones</value>
-  </data>
-  <data name="MyProfileGravatar" xml:space="preserve">
-    <value>Mi perfil (Gravatar)</value>
-  </data>
-  <data name="Email" xml:space="preserve">
-    <value>Correo electrónico</value>
-  </data>
-  <data name="Identification" xml:space="preserve">
-    <value>Identificación</value>
-  </data>
-  <data name="IdentityProvider" xml:space="preserve">
-    <value>Proveedor de identidad</value>
-  </data>
   <data name="PremiumFeature" xml:space="preserve">
     <value>Característica prémium</value>
+  </data>
+  <data name="OperationCompleted" xml:space="preserve">
+    <value>¡La operación se realizó con éxito!</value>
+  </data>
+  <data name="OperationCanceled" xml:space="preserve">
+    <value>Operación cancelada!</value>
+  </data>
+  <data name="SureDeleteAccount" xml:space="preserve">
+    <value>¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.</value>
   </data>
 </root>

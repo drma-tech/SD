@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using SD.Shared.Models.List.Tmdb;
+using SD.WEB.Modules.Suggestions.Resources;
 using SD.WEB.Modules.Suggestions.Interface;
 
 namespace SD.WEB.Modules.Suggestions.Core
@@ -69,7 +70,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                         {
                             tmdb_id = item.id.ToString(),
                             title = item.title,
-                            plot = string.IsNullOrEmpty(item.overview) ? SD.Shared.Resources.TranslationText.NoPlot : item.overview,
+                            plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
                             release_date = item.release_date?.GetDate(),
                             poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                             poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
@@ -88,7 +89,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                         {
                             tmdb_id = item.id.ToString(),
                             title = item.name,
-                            plot = string.IsNullOrEmpty(item.overview) ? SD.Shared.Resources.TranslationText.NoPlot : item.overview,
+                            plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
                             release_date = item.first_air_date?.GetDate(),
                             poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                             poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
@@ -112,7 +113,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                     {
                         tmdb_id = item.id.ToString(),
                         title = item.title,
-                        plot = string.IsNullOrEmpty(item.overview) ? SD.Shared.Resources.TranslationText.NoPlot : item.overview,
+                        plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
                         release_date = item.release_date?.GetDate(),
                         poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                         poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
@@ -135,7 +136,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                     {
                         tmdb_id = item.id.ToString(),
                         title = item.name,
-                        plot = string.IsNullOrEmpty(item.overview) ? SD.Shared.Resources.TranslationText.NoPlot : item.overview,
+                        plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
                         release_date = item.first_air_date?.GetDate(),
                         poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                         poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,

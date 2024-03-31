@@ -1,5 +1,6 @@
 ﻿@using SD.WEB.Modules.Profile.Components
 @using SD.WEB.Modules.Profile.Core;
+@using SD.WEB.Modules.Profile.Resources
 @inherits ComponentCore<MyWishListPopup>
 
 @inject WatchedListApi WatchedApi
@@ -26,7 +27,7 @@
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
-        @TranslationText.Close
+        @WEB.Resources.Button.Close
     </Button>
 </ModalFooter>
 
@@ -41,7 +42,7 @@
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public MediaType MediaType { get; set; }
 
-    private string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWishlist : GlobalTranslations.MyShowWishlist;
+    private string Title => MediaType == MediaType.movie ? Translations.MyMovieWishlist : Translations.MyShowWishlist;
     private int Quantity => MediaType == MediaType.movie ? Wish?.Movies.Count ?? 0 : Wish?.Shows.Count ?? 0;
 
     protected override void OnInitialized()

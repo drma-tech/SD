@@ -48,7 +48,7 @@ namespace SD.API.Core
 
             if (principal != null)
             {
-                principal.UserRoles = principal.UserRoles?.Except(roles, StringComparer.CurrentCultureIgnoreCase) ?? Array.Empty<string>();
+                principal.UserRoles = principal.UserRoles?.Except(roles, StringComparer.CurrentCultureIgnoreCase) ?? [];
 
                 if (!principal.UserRoles?.Any() ?? true)
                 {

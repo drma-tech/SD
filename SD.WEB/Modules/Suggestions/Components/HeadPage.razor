@@ -1,4 +1,5 @@
 ﻿@using SD.WEB.Modules.Profile.Core;
+@using SD.WEB.Modules.Provider.Resources
 @inherits ComponentCore<HeadPage>
 
 @inject MyProvidersApi MyProvidersApi
@@ -55,13 +56,13 @@
                         @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
                         {
                             <Button Color="Color.Danger" Clicked="Remove" Size="Size.Small" Disabled="!IsAuthenticated" Style="display: block; width: 100%;">
-                                <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
+                                <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @WEB.Resources.Button.Remove
                             </Button>
                         }
                         else
                         {
                             <Button Color="Color.Primary" Clicked="Add" Size="Size.Small" Disabled="!IsAuthenticated" Style="display: block; width: 100%;">
-                                <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
+                                <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @WEB.Resources.Button.Add
                             </Button>
                         }
                     </RenderControl>
@@ -73,7 +74,7 @@
             <Row HorizontalGutter="8" VerticalGutter="8">
                 <Column>
                     <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">
-                        @TranslationText.DeliveryModel:
+                        @Translations.DeliveryModel:
                     </Badge>
                     @foreach (var item in provider?.models ?? new List<DeliveryModel>())
                     {
@@ -84,7 +85,7 @@
                     @if (provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
                     {
                         <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">
-                            @TranslationText.Plans:
+                            @Translations.Plans:
                         </Badge>
                         @if (provider.plans.Any())
                         {
@@ -95,7 +96,7 @@
                         }
                         else
                         {
-                            <Badge Color="Color.Danger">@TranslationText.NotFound</Badge>
+                            <Badge Color="Color.Danger">@Translations.NotFound</Badge>
                         }
                     }
                 </Column>

@@ -3,6 +3,7 @@
 @inherits PageCore<HollywoodReporter>
 
 @using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Provider.Resources
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
@@ -10,7 +11,7 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="Hollywood Reporter" ImageSource="logo/hollywood-reporter.png" Text="@TranslationText.thr_desc" Link="https://www.hollywoodreporter.com/"></HeadPage>
+<HeadPage Title="Hollywood Reporter" ImageSource="logo/hollywood-reporter.png" Text="@Translations.thr_desc" Link="https://www.hollywoodreporter.com/"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100Movies" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100TVShows" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>

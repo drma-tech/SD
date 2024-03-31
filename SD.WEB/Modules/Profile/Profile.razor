@@ -5,6 +5,7 @@
 @using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Profile.Components;
 @using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Profile.Resources
 <SeoHeader Title="@SeoTranslations.ProfileTitle" Description="@SeoTranslations.ProfileDescription" Url="/profile"></SeoHeader>
 @inherits PageCore<Profile>
 @inject IHttpClientFactory httpClientFactory
@@ -36,11 +37,11 @@
             <Column ColumnSize="ColumnSize.IsAuto">
                 <Button Color="Color.Primary" Clicked="MyAccount">
                     <Blazorise.Icon Name="FontAwesomeIcons.UserCircle"></Blazorise.Icon>
-                    Account
+                    @Translations.Account
                 </Button>
                 <Button Color="Color.Primary" Clicked="OpenSubscription">
                     <Blazorise.Icon Name="FontAwesomeIcons.Gem"></Blazorise.Icon>
-                    Subscription
+                    @Translations.Subscription
                 </Button>
             </Column>
         </Row>

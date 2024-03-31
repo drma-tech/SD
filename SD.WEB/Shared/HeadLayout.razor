@@ -45,12 +45,12 @@
             <AuthorizeView>
                 <Authorized>
                     <Button Color="Color.Danger" Clicked="Logout" title="Logout" Float="Float.End" Size="Size.Small">
-                        <Blazorise.Icon Name="FontAwesomeIcons.SignOutAlt" /> @GlobalTranslations.ButtonLogout
+                        <Blazorise.Icon Name="FontAwesomeIcons.SignOutAlt" /> @WEB.Resources.Button.Logout
                     </Button>
                 </Authorized>
                 <NotAuthorized>
                     <Button Color="Color.Primary" Type="ButtonType.Link" To="/login-providers" title="Login" Float="Float.End" Size="Size.Small">
-                        <Blazorise.Icon Name="FontAwesomeIcons.SignInAlt" /> @GlobalTranslations.ButtonLogin
+                        <Blazorise.Icon Name="FontAwesomeIcons.SignInAlt" /> @WEB.Resources.Button.Login
                     </Button>
                 </NotAuthorized>
             </AuthorizeView>

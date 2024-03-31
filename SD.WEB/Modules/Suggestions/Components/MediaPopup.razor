@@ -5,6 +5,7 @@
 @using SD.WEB.Modules.Suggestions.Core;
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core;
+@using SD.WEB.Modules.Suggestions.Resources
 
 @inherits ComponentCore<MediaPopup>
 
@@ -48,17 +49,17 @@
                 <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" RenderMode="TabsRenderMode.LazyLoad">
                     <Items>
                         <Tab Name="About">
-                            @GlobalTranslations.TabAbout
+                            @Translations.TabAbout
                         </Tab>
                         <Tab Name="WhereToWatch">
-                            @GlobalTranslations.TabWhereToWatch
+                            @Translations.TabWhereToWatch
                         </Tab>
                         <Tab Name="Credits">
-                            @GlobalTranslations.TabCredits
+                            @Translations.TabCredits
                         </Tab>
                         @if (media?.Collection.Any() ?? false)
                         {
-                            <Tab Name="Collection">@GlobalTranslations.TabCollection</Tab>
+                            <Tab Name="Collection">@Translations.TabCollection</Tab>
                         }
                         <Tab Name="Reviews">Reviews</Tab>
                     </Items>
@@ -201,42 +202,42 @@
                     @if (Wish?.Movies.Any(a => a.id == tmdb_id) ?? false)
                     {
                         <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
+                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @WEB.Resources.Button.Remove
                         </Button>
                     }
                     else if (Wish?.Shows.Any(a => a.id == tmdb_id) ?? false)
                     {
                         <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
+                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @WEB.Resources.Button.Remove
                         </Button>
                     }
                     else
                     {
                         <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
+                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @WEB.Resources.Button.Add
                         </Button>
                     }
                     @if (Watched?.Movies.Any(a => a == tmdb_id) ?? false)
                     {
                         <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
+                            <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @Resources.Translations.ButtonNotWatched
                         </Button>
                     }
                     else if (Watched?.Shows.Any(a => a == tmdb_id) ?? false)
                     {
                         <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonNotWatched
+                            <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @Resources.Translations.ButtonNotWatched
                         </Button>
                     }
                     else
                     {
                         <Button Color="Color.Primary" Clicked="IsWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @GlobalTranslations.ButtonWatched
+                            <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @Resources.Translations.ButtonWatched
                         </Button>
                     }
                 }
                 <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">
-                    @GlobalTranslations.ButtonClose
+                    @WEB.Resources.Button.Close
                 </Button>
             </Column>
         </Row>

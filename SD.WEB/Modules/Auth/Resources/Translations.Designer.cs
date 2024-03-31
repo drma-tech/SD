@@ -70,6 +70,15 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authentication in progress....
+        /// </summary>
+        public static string AuthenticationInProgress {
+            get {
+                return ResourceManager.GetString("AuthenticationInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string Email {
@@ -106,11 +115,38 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, there&apos;s nothing at this address..
+        /// </summary>
+        public static string NothingThisAddress {
+            get {
+                return ResourceManager.GetString("NothingThisAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Registration Information.
         /// </summary>
         public static string RegistrationInformation {
             get {
                 return ResourceManager.GetString("RegistrationInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unauthenticated User.
+        /// </summary>
+        public static string UnauthenticatedUser {
+            get {
+                return ResourceManager.GetString("UnauthenticatedUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not authorized to access this resource..
+        /// </summary>
+        public static string YouAreNotAuthorized {
+            get {
+                return ResourceManager.GetString("YouAreNotAuthorized", resourceCulture);
             }
         }
     }

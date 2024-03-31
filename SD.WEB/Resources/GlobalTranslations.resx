@@ -117,74 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccessInformation" xml:space="preserve">
-    <value>Access Information</value>
-  </data>
-  <data name="Actions" xml:space="preserve">
-    <value>Actions</value>
-  </data>
-  <data name="AuthenticationInProgress" xml:space="preserve">
-    <value>Authentication in progress...</value>
-  </data>
   <data name="BetaVersion" xml:space="preserve">
     <value>Beta Version!</value>
-  </data>
-  <data name="ButtonAdd" xml:space="preserve">
-    <value>Add</value>
-  </data>
-  <data name="ButtonCancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="ButtonClose" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="ButtonLoadMore" xml:space="preserve">
-    <value>Load More</value>
-  </data>
-  <data name="ButtonLogin" xml:space="preserve">
-    <value>Login</value>
-  </data>
-  <data name="ButtonLogout" xml:space="preserve">
-    <value>Logout</value>
-  </data>
-  <data name="ButtonNew" xml:space="preserve">
-    <value>New</value>
-  </data>
-  <data name="ButtonNotWatched" xml:space="preserve">
-    <value>Not Watched</value>
-  </data>
-  <data name="ButtonOk" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="ButtonReadMore" xml:space="preserve">
-    <value>Read More</value>
-  </data>
-  <data name="ButtonRemove" xml:space="preserve">
-    <value>Remove</value>
-  </data>
-  <data name="ButtonSave" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="ButtonUpdate" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="ButtonWatched" xml:space="preserve">
-    <value>Watched</value>
-  </data>
-  <data name="ButtoSearch" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="BuyBook" xml:space="preserve">
-    <value>Buy Books</value>
-  </data>
-  <data name="BuyDVD" xml:space="preserve">
-    <value>Buy Blu-ray/DVD</value>
-  </data>
-  <data name="Cast" xml:space="preserve">
-    <value>Cast</value>
-  </data>
-  <data name="ClearCache" xml:space="preserve">
-    <value>Clear Cache</value>
   </data>
   <data name="CustomVisibilityInvalid" xml:space="preserve">
     <value>Invalid operation. Please try again.</value>
@@ -195,125 +129,23 @@
   <data name="CustomVisibilityNoData" xml:space="preserve">
     <value>There is no data to show</value>
   </data>
-  <data name="DeleteAccount" xml:space="preserve">
-    <value>Delete Account</value>
-  </data>
-  <data name="DeliveryModelAds" xml:space="preserve">
-    <value>Ads</value>
-  </data>
-  <data name="DeliveryModelBuy" xml:space="preserve">
-    <value>Buy</value>
-  </data>
-  <data name="DeliveryModelFlatRate" xml:space="preserve">
-    <value>Flat Rate</value>
-  </data>
-  <data name="DeliveryModelFlatRateBuy" xml:space="preserve">
-    <value>Flat Rate/Buy</value>
-  </data>
-  <data name="DeliveryModelFree" xml:space="preserve">
-    <value>Free</value>
-  </data>
-  <data name="DeliveryModelRent" xml:space="preserve">
-    <value>Rent</value>
-  </data>
-  <data name="Directing" xml:space="preserve">
-    <value>Directing</value>
-  </data>
-  <data name="DisplayName" xml:space="preserve">
-    <value>Display Name</value>
-  </data>
-  <data name="EditProfileGravatar" xml:space="preserve">
-    <value>Edit profile in Gravatar</value>
-  </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
-  </data>
   <data name="FeatureUnavailableDescription" xml:space="preserve">
     <value>Wait for news...</value>
   </data>
   <data name="FeatureUnavailableMessage" xml:space="preserve">
     <value>Under development</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value>Free</value>
+  <data name="OperationCanceled" xml:space="preserve">
+    <value>Operation cancelled!</value>
   </data>
-  <data name="Identification" xml:space="preserve">
-    <value>Identification</value>
-  </data>
-  <data name="IdentityProvider" xml:space="preserve">
-    <value>Identity Provider</value>
-  </data>
-  <data name="MenuHome" xml:space="preserve">
-    <value>Home</value>
-  </data>
-  <data name="MenuProfile" xml:space="preserve">
-    <value>Profile</value>
-  </data>
-  <data name="MenuProviders" xml:space="preserve">
-    <value>Providers</value>
-  </data>
-  <data name="MenuSuggestions" xml:space="preserve">
-    <value>Suggestions</value>
-  </data>
-  <data name="MenuSupport" xml:space="preserve">
-    <value>Support</value>
-  </data>
-  <data name="MoreInformation" xml:space="preserve">
-    <value>More information or Contributions</value>
-  </data>
-  <data name="MyMovieWatching" xml:space="preserve">
-    <value>Watching - Movies ({0} items)</value>
-  </data>
-  <data name="MyMovieWishlist" xml:space="preserve">
-    <value>Wishlist - Movies ({0} items)</value>
-  </data>
-  <data name="MyProfileGravatar" xml:space="preserve">
-    <value>My Profile (Gravatar)</value>
-  </data>
-  <data name="MyProviders" xml:space="preserve">
-    <value>Favorite Providers ({0} items)</value>
-  </data>
-  <data name="MyShowWatching" xml:space="preserve">
-    <value>Watching - Shows ({0} items)</value>
-  </data>
-  <data name="MyShowWishlist" xml:space="preserve">
-    <value>Wishlist - Shows ({0} items)</value>
-  </data>
-  <data name="MySuggestions" xml:space="preserve">
-    <value>My Suggestions</value>
-  </data>
-  <data name="NewsTitle" xml:space="preserve">
-    <value>Last News</value>
-  </data>
-  <data name="NothingThisAddress" xml:space="preserve">
-    <value>Sorry, there's nothing at this address.</value>
-  </data>
-  <data name="Offering" xml:space="preserve">
-    <value>Offering</value>
-  </data>
-  <data name="OurSuggestions1" xml:space="preserve">
-    <value>Our suggestions are based on the providers you've favorited</value>
-  </data>
-  <data name="OurSuggestions2" xml:space="preserve">
-    <value>Our suggestions are based on your favorite providers and your genre preferences (excluding titles that are already on your personal lists).</value>
-  </data>
-  <data name="PhotoLast" xml:space="preserve">
-    <value>Photo (Last)</value>
+  <data name="OperationCompleted" xml:space="preserve">
+    <value>Operation completed successfully!</value>
   </data>
   <data name="PremiumFeature" xml:space="preserve">
     <value>Premium Feature</value>
   </data>
   <data name="ProductUnderDevelopment" xml:space="preserve">
     <value>Product still under development, so a lot will still improve. If you have suggestions to make, please ask in the app's support section.</value>
-  </data>
-  <data name="ProviderPopupTabAbout" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="ProviderPopupTabCatalog" xml:space="preserve">
-    <value>Catalog</value>
-  </data>
-  <data name="ProviderPopupTabDetails" xml:space="preserve">
-    <value>Details</value>
   </data>
   <data name="PWAUpdaterButton" xml:space="preserve">
     <value>UPDATE NOW</value>
@@ -330,43 +162,10 @@
   <data name="Share" xml:space="preserve">
     <value>Share</value>
   </data>
-  <data name="TabAbout" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="TabCollection" xml:space="preserve">
-    <value>Collection</value>
-  </data>
-  <data name="TabCredits" xml:space="preserve">
-    <value>Credits</value>
-  </data>
-  <data name="TabWhereToWatch" xml:space="preserve">
-    <value>Where to Watch</value>
-  </data>
-  <data name="TitleNotAvailable" xml:space="preserve">
-    <value>Unfortunately this title is not available in your region</value>
-  </data>
-  <data name="TrailersTitle" xml:space="preserve">
-    <value>Last Trailers</value>
+  <data name="SureDeleteAccount" xml:space="preserve">
+    <value>Are you sure you want to delete your account? This action cannot be undone.</value>
   </data>
   <data name="TypeSomething" xml:space="preserve">
     <value>Type something to search</value>
-  </data>
-  <data name="UnauthenticatedUser" xml:space="preserve">
-    <value>Unauthenticated User</value>
-  </data>
-  <data name="UnavailableService" xml:space="preserve">
-    <value>Unavailable service. We will be replacing as soon as possible.</value>
-  </data>
-  <data name="UpdateMySuggestions" xml:space="preserve">
-    <value>Your preferences will take effect in the next update of this list</value>
-  </data>
-  <data name="Writing" xml:space="preserve">
-    <value>Writing</value>
-  </data>
-  <data name="Year" xml:space="preserve">
-    <value>Year</value>
-  </data>
-  <data name="YouAreNotAuthorized" xml:space="preserve">
-    <value>You are not authorized to access this resource.</value>
   </data>
 </root>

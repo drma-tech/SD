@@ -2,6 +2,7 @@
 <SeoHeader Title="Suggestions | IMDB" Keywords="@(new []{"IMDB"})" Url="/suggestions/imdb"></SeoHeader>
 @inherits PageCore<Imdb>
 
+@using SD.WEB.Modules.Provider.Resources
 @using SD.WEB.Modules.Suggestions.Core;
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Components
@@ -12,13 +13,13 @@
 @inject WishListApi WishListApi
 @* @inject ImdbUpcomingApi ImdbUpcomingApi *@
 
-<HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@TranslationText.imdb_desc" Link="https://www.imdb.com/"></HeadPage>
+<HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@Translations.imdb_desc" Link="https://www.imdb.com/"></HeadPage>
 
-<MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="50" IsIMDB="true" ShowFilter="true" MultipleLanguages="false"
+<MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" MaxItens="50" IsIMDB="true" ShowFilter="true" MultipleLanguages="false"
            StringParameters="Params" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" OnlyYear="true"></MediaList>
 <MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" MaxItens="250" ShowFilter="true" Watched="WatchedList"
            Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" OnlyYear="true"></MediaList>
-@* <MediaList TitleHead="@TranslationText.ComingSoon" MediaListApi="ImdbUpcomingApi" MaxItens="50" IsIMDB="true" MultipleLanguages="false"></MediaList> *@
+@* <MediaList TitleHead="@Translations.ComingSoon" MediaListApi="ImdbUpcomingApi" MaxItens="50" IsIMDB="true" MultipleLanguages="false"></MediaList> *@
 
 @code {
     public Dictionary<string, string> Params { get; set; } = new Dictionary<string, string>() { { "mode", "full" } };

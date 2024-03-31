@@ -1,5 +1,6 @@
 ﻿@inherits ComponentCore<ProviderPopup>
 @using SD.Shared.Models
+@using SD.WEB.Modules.Provider.Resources
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Components
@@ -12,20 +13,20 @@
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@provider?.name</ModalTitle>
-        <CloseButton />
-    </ModalHeader>
-    <ModalBody MaxHeight="70">
-        <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true" RenderMode="TabsRenderMode.LazyLoad">
-            <Items>
-                <Tab Name="About">@GlobalTranslations.ProviderPopupTabAbout</Tab>
-                <Tab Name="Details">@GlobalTranslations.ProviderPopupTabDetails</Tab>
-                <Tab Name="Catalog">@GlobalTranslations.ProviderPopupTabCatalog</Tab>
-            </Items>
-            <Content>
-                <TabPanel Name="About" Class="mt-3">
-                    <Row Margin="Margin.Is2.FromBottom" HorizontalGutter="4" VerticalGutter="4">
-                        <Column ColumnSize="ColumnSize.IsAuto">
-                            @if (!string.IsNullOrEmpty(provider?.logo_path))
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true" RenderMode="TabsRenderMode.LazyLoad">
+        <Items>
+            <Tab Name="About">@Translations.ProviderPopupTabAbout</Tab>
+            <Tab Name="Details">@Translations.ProviderPopupTabDetails</Tab>
+            <Tab Name="Catalog">@Translations.ProviderPopupTabCatalog</Tab>
+        </Items>
+        <Content>
+            <TabPanel Name="About" Class="mt-3">
+                <Row Margin="Margin.Is2.FromBottom" HorizontalGutter="4" VerticalGutter="4">
+                    <Column ColumnSize="ColumnSize.IsAuto">
+                        @if (!string.IsNullOrEmpty(provider?.logo_path))
                         {
                             <Image Source="@(TmdbOptions.OriginalPosterPath + provider.logo_path)" Text="@provider.name"></Image>
                         }
@@ -48,17 +49,17 @@
                 </Row>
             </TabPanel>
             <TabPanel Name="Details" Class="mt-3">
-                <Divider DividerType="DividerType.TextContent" Text="@TranslationText.MediaTypes" />
+                <Divider DividerType="DividerType.TextContent" Text="@Translations.MediaTypes" />
                 @foreach (var item in provider?.types ?? new List<MediaType>())
                 {
                     <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
                 }
-                <Divider DividerType="DividerType.TextContent" Text="@TranslationText.Regions" />
+                <Divider DividerType="DividerType.TextContent" Text="@Translations.Regions" />
                 @foreach (var item in provider?.regions.OrderBy(o => o.GetName()).ToList() ?? new List<Region>())
                 {
                     <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
                 }
-                <Divider DividerType="DividerType.TextContent" Text="@TranslationText.DeliveryModel" />
+                <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModel" />
                 @foreach (var item in provider?.models ?? new List<DeliveryModel>())
                 {
                     <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" title="@item.GetDescription()" Style="cursor: help;">
@@ -67,7 +68,7 @@
                 }
                 @if (provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
                 {
-                    <Divider DividerType="DividerType.TextContent" Text="@TranslationText.Plans" />
+                    <Divider DividerType="DividerType.TextContent" Text="@Translations.Plans" />
                     @if (provider.plans.Any())
                     {
                         @foreach (var item in provider.plans)
@@ -77,16 +78,16 @@
                     }
                     else
                     {
-                        <Badge Color="Color.Danger">@TranslationText.NotFound</Badge>
+                        <Badge Color="Color.Danger">@Translations.NotFound</Badge>
                     }
                 }
             </TabPanel>
             <TabPanel Name="Catalog" Class="mt-3">
-                <MediaList TitleHead="@TranslationText.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc", WatchRegion)"
+                <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc", WatchRegion)"
                            MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
-                <MediaList TitleHead="@TranslationText.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc", WatchRegion)"
+                <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc", WatchRegion)"
                            MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
-                <MediaList TitleHead="@TranslationText.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc", WatchRegion)"
+                <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc", WatchRegion)"
                            MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
             </TabPanel>
         </Content>
@@ -96,17 +97,17 @@
     @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
     {
         <Button Color="Color.Danger" Clicked="Remove" Disabled="!IsAuthenticated" Size="Size.Small">
-            <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonRemove
+            <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @WEB.Resources.Button.Remove
         </Button>
     }
     else
     {
         <Button Color="Color.Primary" Clicked="Add" Disabled="!IsAuthenticated" Size="Size.Small">
-            <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @GlobalTranslations.ButtonAdd
+            <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @WEB.Resources.Button.Add
         </Button>
     }
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
-        @TranslationText.Close
+        @WEB.Resources.Button.Close
     </Button>
 </ModalFooter>
 
@@ -155,7 +156,7 @@
             var client = await PrincipalApi.Get(true);
             myProviders = await MyProvidersApi.Add(myProviders, item, client?.ClientePaddle);
 
-            await Toast.Success("Provedor favoritado com sucesso!");
+            await Toast.Success(GlobalTranslations.OperationCompleted);
         }
         catch (Exception ex)
         {
@@ -171,7 +172,7 @@
 
             myProviders = await MyProvidersApi.Remove(myProviders.Items.First(f => f.id == provider?.id));
 
-            await Toast.Success("Provedor removido com sucesso!");
+            await Toast.Success(GlobalTranslations.OperationCompleted);
         }
         catch (Exception ex)
         {

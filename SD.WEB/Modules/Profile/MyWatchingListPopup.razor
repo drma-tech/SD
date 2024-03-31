@@ -1,5 +1,6 @@
 ﻿@using SD.WEB.Modules.Profile.Components
 @using SD.WEB.Modules.Profile.Core;
+@using SD.WEB.Modules.Profile.Resources
 @inherits ComponentCore<MyWatchingListPopup>
 
 @inject WatchedListApi WatchedApi
@@ -26,7 +27,7 @@
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
-        @TranslationText.Close
+        @WEB.Resources.Button.Close
     </Button>
 </ModalFooter>
 
@@ -41,7 +42,7 @@
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter] public MediaType MediaType { get; set; }
 
-    private string Title => MediaType == MediaType.movie ? GlobalTranslations.MyMovieWatching : GlobalTranslations.MyShowWatching;
+    private string Title => MediaType == MediaType.movie ? Translations.MyMovieWatching : Translations.MyShowWatching;
     private int Quantity => MediaType == MediaType.movie ? Watching?.Movies.Count ?? 0 : Watching?.Shows.Count ?? 0;
 
     protected override void OnInitialized()

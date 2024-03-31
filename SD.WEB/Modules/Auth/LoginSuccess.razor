@@ -1,5 +1,6 @@
 ﻿@page "/login-success"
 @using SD.WEB.Modules.Auth.Core;
+@using SD.WEB.Modules.Auth.Resources
 @inherits PageCore<LoginProviders>
 
 @inject LoginApi LoginApi
@@ -7,9 +8,9 @@
 
 <div class="alert alert-warning" role="alert">
     <div class="spinner-border spinner-border-sm" role="status">
-        <span class="sr-only">@GlobalTranslations.AuthenticationInProgress</span>
+        <span class="sr-only">@Translations.AuthenticationInProgress</span>
     </div>
-    @GlobalTranslations.AuthenticationInProgress
+    @Translations.AuthenticationInProgress
 </div>
 
 @code {

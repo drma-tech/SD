@@ -1,6 +1,7 @@
 ﻿@using SD.Shared.Models.List.Tmdb;
 @using SD.WEB.Modules.Provider.Core;
 @using SD.WEB.Modules.Suggestions.Core;
+@using SD.WEB.Modules.Suggestions.Resources
 @inherits ComponentCore<StreamingComponent>
 
 @inject AllProvidersApi AllProvidersApi
@@ -17,7 +18,7 @@
             <Row HorizontalGutter="4" VerticalGutter="4">
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                     <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
-                        @GlobalTranslations.DeliveryModelFree
+                        @Translations.DeliveryModelFree
                     </Button>
                 </Column>
                 @foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
@@ -43,7 +44,7 @@
             <Row HorizontalGutter="4" VerticalGutter="4">
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                     <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
-                        @GlobalTranslations.DeliveryModelAds
+                        @Translations.DeliveryModelAds
                     </Button>
                 </Column>
                 @foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
@@ -69,7 +70,7 @@
             <Row HorizontalGutter="4" VerticalGutter="4">
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                     <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
-                        @GlobalTranslations.DeliveryModelFlatRate
+                        @Translations.DeliveryModelFlatRate
                     </Button>
                 </Column>
                 @foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
@@ -95,7 +96,7 @@
             <Row HorizontalGutter="4" VerticalGutter="4">
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                     <Button Color="Color.Warning" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
-                        @GlobalTranslations.DeliveryModelFlatRateBuy
+                        @Translations.DeliveryModelFlatRateBuy
                     </Button>
                 </Column>
                 @foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
@@ -121,7 +122,7 @@
             <Row HorizontalGutter="4" VerticalGutter="4">
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                     <Button Color="Color.Primary" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
-                        @GlobalTranslations.DeliveryModelRent
+                        @Translations.DeliveryModelRent
                     </Button>
                 </Column>
                 @foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
@@ -147,7 +148,7 @@
             <Row HorizontalGutter="4" VerticalGutter="4">
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
                     <Button Color="Color.Danger" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
-                        @GlobalTranslations.DeliveryModelBuy
+                        @Translations.DeliveryModelBuy
                     </Button>
                 </Column>
                 @foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
@@ -173,7 +174,7 @@
             <Row Margin="Margin.Is2.FromTop">
                 <Column>
                     <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
-                        @GlobalTranslations.Offering: <a href=@("https://www.justwatch.com/".HideExternalLink()) target="_blank" rel="nofollow">@(new Uri("https://www.justwatch.com/").Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+                        @Translations.Offering: <a href=@("https://www.justwatch.com/".HideExternalLink()) target="_blank" rel="nofollow">@(new Uri("https://www.justwatch.com/").Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
                     </Alert>
                 </Column>
             </Row>
@@ -181,7 +182,7 @@
         else
         {
             <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is2.FromTop" Visible="true">
-                @GlobalTranslations.TitleNotAvailable
+                @Translations.TitleNotAvailable
             </Alert>
         }
 
@@ -197,27 +198,11 @@
             <Row Margin="Margin.Is2.FromTop">
                 <Column>
                     <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
-                        @GlobalTranslations.MoreInformation: <a href="@fomatted_link.HideExternalLink()" target="_blank" rel="nofollow">@(uri_link.Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+                        @Translations.MoreInformation: <a href="@fomatted_link.HideExternalLink()" target="_blank" rel="nofollow">@(uri_link.Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
                     </Alert>
                 </Column>
             </Row>
         }
-
-        <Row Margin="Margin.Is2.FromTop">
-            <Column>
-                <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
-                    <a target="_blank" href="@dvdLink.HideExternalLink()">@dvdText</a>
-                </Alert>
-            </Column>
-        </Row>
-
-        <Row Margin="Margin.Is2.FromTop">
-            <Column>
-                <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
-                    <a target="_blank" href="@bookLink.HideExternalLink()">@bookText</a>
-                </Alert>
-            </Column>
-        </Row>
 
         //<Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false" Margin="Margin.Is2.FromTop">Atualizar</Button>
     }
@@ -225,19 +210,11 @@
 
 @code {
     [Parameter] public string? tmdb_id { get; set; }
-    [Parameter] public string? OriginalMediaTitle { get; set; }
-    [Parameter] public string? MediaYear { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
     public RenderControlCore<MediaProviders?>? Core { get; set; } = new();
     private MediaProviders? Providers { get; set; }
     private AllProviders? AllProviders { get; set; }
-
-    private string dvdLink => $"https://www.amazon.com/gp/search?ie=UTF8&tag=streamingdi0d-20&camp=1789&creative=9325&index=dvd&keywords={OriginalMediaTitle} {MediaYear}";
-    private string dvdText => $"{GlobalTranslations.BuyDVD}: {OriginalMediaTitle}";
-
-    private string bookLink => $"https://www.amazon.com/gp/search?ie=UTF8&tag=streamingdi0d-20&camp=1789&creative=9325&index=books&keywords={OriginalMediaTitle}";
-    private string bookText => $"{GlobalTranslations.BuyBook}: {OriginalMediaTitle}";
 
     protected override async Task OnInitializedAsync()
     {

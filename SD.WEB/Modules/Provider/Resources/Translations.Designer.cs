@@ -61,11 +61,173 @@ namespace SD.WEB.Modules.Provider.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coming Soon.
+        /// </summary>
+        public static string ComingSoon {
+            get {
+                return ResourceManager.GetString("ComingSoon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Models.
+        /// </summary>
+        public static string DeliveryModel {
+            get {
+                return ResourceManager.GetString("DeliveryModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Primetime Emmy Award is an American award bestowed by the Academy of Television Arts &amp; Sciences in recognition of excellence in American primetime television programming..
+        /// </summary>
+        public static string emmys_desc {
+            get {
+                return ResourceManager.GetString("emmys_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Official site of the Golden Globes with Winners &amp; Nominees, exclusive Hollywood interviews, and historical pieces from the Hollywood Foreign Press Association..
+        /// </summary>
+        public static string golden_desc {
+            get {
+                return ResourceManager.GetString("golden_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IMDb is the world&apos;s most popular and authoritative source for movie, TV and celebrity content. Find ratings and reviews for the newest movie and TV shows..
+        /// </summary>
+        public static string imdb_desc {
+            get {
+                return ResourceManager.GetString("imdb_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Media.
+        /// </summary>
+        public static string MediaTypes {
+            get {
+                return ResourceManager.GetString("MediaTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Found.
+        /// </summary>
+        public static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Official site of the Academy with history and general information on the Academy Awards, as well as photographs, events and screenings, and press releases..
+        /// </summary>
+        public static string oscar_desc {
+            get {
+                return ResourceManager.GetString("oscar_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plans.
+        /// </summary>
+        public static string Plans {
+            get {
+                return ResourceManager.GetString("Plans", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Popular.
+        /// </summary>
+        public static string Popular {
+            get {
+                return ResourceManager.GetString("Popular", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string ProviderPopupTabAbout {
+            get {
+                return ResourceManager.GetString("ProviderPopupTabAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Catalog.
+        /// </summary>
+        public static string ProviderPopupTabCatalog {
+            get {
+                return ResourceManager.GetString("ProviderPopupTabCatalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Details.
+        /// </summary>
+        public static string ProviderPopupTabDetails {
+            get {
+                return ResourceManager.GetString("ProviderPopupTabDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Regions.
+        /// </summary>
+        public static string Regions {
+            get {
+                return ResourceManager.GetString("Regions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to News.
+        /// </summary>
+        public static string Release {
+            get {
+                return ResourceManager.GetString("Release", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Hollywood Reporter is the premier destination &amp; most widely trusted resource for entertainment news, reviews, videos &amp; more..
+        /// </summary>
+        public static string thr_desc {
+            get {
+                return ResourceManager.GetString("thr_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Providers ({0}).
         /// </summary>
         public static string TitleProviders {
             get {
                 return ResourceManager.GetString("TitleProviders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Movie Database (TMDb) is a popular, user editable database for movies and TV shows..
+        /// </summary>
+        public static string tmdb_desc {
+            get {
+                return ResourceManager.GetString("tmdb_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recommended.
+        /// </summary>
+        public static string TopRated {
+            get {
+                return ResourceManager.GetString("TopRated", resourceCulture);
             }
         }
     }

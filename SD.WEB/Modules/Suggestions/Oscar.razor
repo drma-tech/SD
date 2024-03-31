@@ -1,8 +1,9 @@
 ﻿@page "/suggestions/oscar"
-<SeoHeader Title="Suggestions | Oscar" Description="@TranslationText.oscar_desc" Keywords="@(new []{"Oscar"})" Url="/suggestions/oscar"></SeoHeader>
+<SeoHeader Title="Suggestions | Oscar" Description="@Translations.oscar_desc" Keywords="@(new []{"Oscar"})" Url="/suggestions/oscar"></SeoHeader>
 @inherits PageCore<Oscar>
 
 @using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Provider.Resources
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
@@ -10,7 +11,7 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="Oscar" ImageSource="logo/oscar.png" Text="@TranslationText.oscar_desc" Link="https://www.oscars.org/"></HeadPage>
+<HeadPage Title="Oscar" ImageSource="logo/oscar.png" Text="@Translations.oscar_desc" Link="https://www.oscars.org/"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestMotionPicture" MaxItens="12" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestAnimatedFeatureFilm" MaxItens="12" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>

@@ -1,4 +1,5 @@
-﻿@using SD.WEB.Modules.Suggestions.Core;
+﻿@using SD.WEB.Modules.Provider.Resources
+@using SD.WEB.Modules.Suggestions.Core;
 @using SD.WEB.Modules.Suggestions.Components;
 
 @inherits ComponentCore<PopularIndexComponent>
@@ -6,7 +7,7 @@
 @inject ImdbPopularApi ImdbPopularApi
 @inject TmdbNowPlayingApi TmdbNowPlayingApi
 
-<HeaderComponent Title="@TranslationText.Popular" IconImage="logo/imdb.png">
+<HeaderComponent Title="@Translations.Popular" IconImage="logo/imdb.png">
     <RadioGroup @bind-CheckedValue="@TypeSelected" Buttons="true" Float="Float.End" Class="btn-group-xs">
         <Radio Value="PopularType.Movie">@(PopularType.Movie.GetName())</Radio>
         <Radio Value="PopularType.Show">@(PopularType.Show.GetName())</Radio>
@@ -15,13 +16,13 @@
 </HeaderComponent>
 @if (TypeSelected == PopularType.Movie)
 {
-    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false"
+    <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false"
                StringParameters="Params" TypeSelected="MediaType.movie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                ShowPrivateAction="ShowPrivateAction" OnlyYear="true"></MediaList>
 }
 else if (TypeSelected == PopularType.Show)
 {
-    <MediaList TitleHead="@TranslationText.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false"
+    <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false"
                StringParameters="Params" TypeSelected="MediaType.tv" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                ShowPrivateAction="ShowPrivateAction" OnlyYear="true"></MediaList>
 }

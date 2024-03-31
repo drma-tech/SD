@@ -61,6 +61,33 @@ namespace SD.WEB.Modules.Support.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Feedback.
+        /// </summary>
+        public static string Feedback {
+            get {
+                return ResourceManager.GetString("Feedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help &amp; Support.
+        /// </summary>
+        public static string HelpSupport {
+            get {
+                return ResourceManager.GetString("HelpSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import Last Error.
         /// </summary>
         public static string ImportLastError {
@@ -165,6 +192,15 @@ namespace SD.WEB.Modules.Support.Resources {
         public static string TabRoadmap {
             get {
                 return ResourceManager.GetString("TabRoadmap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates.
+        /// </summary>
+        public static string Updates {
+            get {
+                return ResourceManager.GetString("Updates", resourceCulture);
             }
         }
     }
