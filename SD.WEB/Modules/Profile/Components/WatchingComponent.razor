@@ -21,10 +21,10 @@
                     title="@GlobalTranslations.Share" Disabled="Items.Empty()">
                 <Blazorise.Icon Name="FontAwesomeIcons.Share"></Blazorise.Icon>
             </Button>
-            @if ((Watching?.MovieCanSync ?? false) && (Watching?.Movies.Any() ?? false))
+            @if ((Watching?.CanSync(MediaType) ?? false) && (Watching?.Items(MediaType).Any() ?? false))
             {
                 <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched()"
-                        title="@WEB.Resources.Button.Update" Disabled="MovieUpdating">
+                        title="@WEB.Resources.Button.Update" Disabled="Updating">
                     @WEB.Resources.Button.Update
                 </Button>
             }
@@ -88,8 +88,7 @@
     private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? Translations.MyMovieWatching.Format(Items.Count()) : Translations.MyShowWatching.Format(Items.Count()));
     private IFluentColumn ColSize => FullScreen ? ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile : ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile;
 
-    public bool MovieUpdating { get; set; } = false;
-    public bool ShowUpdating { get; set; } = false;
+    public bool Updating { get; set; } = false;
 
     private async Task OpenCompleteList()
     {
@@ -120,7 +119,7 @@
             if (MediaType == MediaType.movie)
             {
                 Watching?.Movies.Clear();
-                MovieUpdating = true;
+                Updating = true;
                 Core?.ShowProcessing();
 
                 foreach (var tmdb_id in Watched?.GetItems(MediaType.movie) ?? new())
@@ -152,13 +151,13 @@
 
                 watching = await WatchingApi.Sync(MediaType.movie, Core);
 
-                MovieUpdating = false;
+                Updating = false;
                 Core?.HideProcessing(watching);
             }
             else
             {
                 Watching?.Shows.Clear();
-                ShowUpdating = true;
+                Updating = true;
                 Core?.ShowProcessing();
 
                 foreach (var tmdb_id in Watched?.GetItems(MediaType.tv) ?? new())
@@ -190,7 +189,7 @@
 
                 watching = await WatchingApi.Sync(MediaType.tv, Core);
 
-                ShowUpdating = false;
+                Updating = false;
                 Core?.HideProcessing(watching);
             }
 
@@ -198,8 +197,7 @@
         }
         catch (Exception ex)
         {
-            MovieUpdating = false;
-            ShowUpdating = false;
+            Updating = false;
             Core?.ShowError(ex.Message);
             ex.ProcessException(Toast, Logger);
         }

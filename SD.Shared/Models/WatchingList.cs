@@ -9,12 +9,15 @@
         public DateTime? MovieSyncDate { get; set; }
         public DateTime? ShowSyncDate { get; set; }
 
+        public HashSet<WatchingListItem> Items(MediaType? type) => type == MediaType.movie ? Movies : Shows;
+
         public HashSet<WatchingListItem> Movies { get; init; } = [];
         public HashSet<WatchingListItem> Shows { get; init; } = [];
 
         public HashSet<string> DeletedMovies { get; init; } = [];
         public HashSet<string> DeletedShows { get; init; } = [];
 
+        public bool CanSync(MediaType? type) => type == MediaType.movie ? MovieCanSync : ShowCanSync;
         public bool MovieCanSync => !MovieSyncDate.HasValue || MovieSyncDate.Value < DateTime.Now.AddDays(-14);
         public bool ShowCanSync => !ShowSyncDate.HasValue || ShowSyncDate.Value < DateTime.Now.AddDays(-14);
 
@@ -79,8 +82,6 @@
                 }
             }
         }
-
-        public HashSet<WatchingListItem> Items(MediaType? type) => type == MediaType.movie ? Movies : Shows;
 
         public override bool HasValidData()
         {
