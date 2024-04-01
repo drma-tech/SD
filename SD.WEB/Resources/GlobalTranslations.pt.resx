@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BetaVersion" xml:space="preserve">
+    <value>Versão Beta!</value>
+  </data>
+  <data name="CustomVisibilityInvalid" xml:space="preserve">
+    <value>Operação inválida. Por favor, tente novamente.</value>
+  </data>
   <data name="CustomVisibilityLoading" xml:space="preserve">
     <value>Carregando...</value>
   </data>
@@ -128,6 +134,18 @@
   </data>
   <data name="FeatureUnavailableMessage" xml:space="preserve">
     <value>Em desenvolvimento</value>
+  </data>
+  <data name="OperationCanceled" xml:space="preserve">
+    <value>Operação cancelada!</value>
+  </data>
+  <data name="OperationCompleted" xml:space="preserve">
+    <value>Operação concluída com sucesso!</value>
+  </data>
+  <data name="PremiumFeature" xml:space="preserve">
+    <value>Recurso Premium</value>
+  </data>
+  <data name="ProductUnderDevelopment" xml:space="preserve">
+    <value>Produto ainda em desenvolvimento, então muita coisa ainda vai melhorar. Se você tiver sugestões a fazer, favor solicitar na seção de suporte do aplicativo.</value>
   </data>
   <data name="PWAUpdaterButton" xml:space="preserve">
     <value>ATUALIZAR AGORA</value>
@@ -141,31 +159,13 @@
   <data name="SeeAllItems" xml:space="preserve">
     <value>Ver todos os itens</value>
   </data>
-  <data name="TypeSomething" xml:space="preserve">
-    <value>Digite algo para pesquisar</value>
-  </data>
-  <data name="BetaVersion" xml:space="preserve">
-    <value>Versão Beta!</value>
-  </data>
-  <data name="ProductUnderDevelopment" xml:space="preserve">
-    <value>Produto ainda em desenvolvimento, então muita coisa ainda vai melhorar. Se você tiver sugestões a fazer, favor solicitar na seção de suporte do aplicativo.</value>
-  </data>
-  <data name="CustomVisibilityInvalid" xml:space="preserve">
-    <value>Operação inválida. Tente novamente.</value>
-  </data>
   <data name="Share" xml:space="preserve">
     <value>Compartilhar</value>
   </data>
-  <data name="PremiumFeature" xml:space="preserve">
-    <value>Recurso Premium</value>
-  </data>
-  <data name="OperationCompleted" xml:space="preserve">
-    <value>Operação concluída com sucesso!</value>
-  </data>
-  <data name="OperationCanceled" xml:space="preserve">
-    <value>Operação cancelada!</value>
-  </data>
   <data name="SureDeleteAccount" xml:space="preserve">
     <value>Tem certeza de que deseja excluir sua conta? Essa ação não pode ser desfeita.</value>
+  </data>
+  <data name="TypeSomething" xml:space="preserve">
+    <value>Digite algo para pesquisar</value>
   </data>
 </root>
