@@ -39,7 +39,7 @@ namespace SD.API.Repository
             {
                 var response = await Container.ReadItemAsync<T>(id, key, null, cancellationToken);
 
-                if (response.RequestCharge > 1.5)
+                if (response.RequestCharge > 1.8)
                 {
                     _logger.LogWarning("Get - ID {0}, RequestCharge {1}", id, response.RequestCharge);
                 }
@@ -103,7 +103,7 @@ namespace SD.API.Repository
         {
             var response = await Container.UpsertItemAsync(item, new PartitionKey(item.Key), null, cancellationToken);
 
-            if (response.RequestCharge > 15)
+            if (response.RequestCharge > 20)
             {
                 _logger.LogWarning("Upsert - ID {0}, Key {1}, RequestCharge {2}", item.Id, item.Key, response.RequestCharge);
             }
@@ -117,7 +117,7 @@ namespace SD.API.Repository
 
             var response = await Container.PatchItemAsync<T>(id, key, operations, null, cancellationToken);
 
-            if (response.RequestCharge > 15)
+            if (response.RequestCharge > 20)
             {
                 _logger.LogWarning("PatchItem - ID {0}, Key {1}, RequestCharge {2}", id, key, response.RequestCharge);
             }
