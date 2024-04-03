@@ -161,8 +161,6 @@
 		<BlazorWasmPrerenderingMode>Static</BlazorWasmPrerenderingMode>
 		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
 		<CurrentDate>$([System.DateTime]::Now.ToString(yyyy.MM.dd))</CurrentDate>
-		<!--workaround to solve a memory problem that occurs in android 8.0 and below - test if in newer versions of blazor, this has already been resolved-->
-		<EmccInitialHeapSize>16777216</EmccInitialHeapSize>
 	</PropertyGroup>
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 		<Exec Command="echo $(CurrentDate) &gt; &quot;$(ProjectDir)\Resources\BuildDate.txt&quot;" />
