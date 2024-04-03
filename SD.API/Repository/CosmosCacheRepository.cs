@@ -34,7 +34,7 @@ namespace SD.API.Repository
             {
                 var response = await Container.ReadItemAsync<CacheDocument<TData>?>(key, new PartitionKey(key), null, cancellationToken);
 
-                if (response.RequestCharge > 1.5)
+                if (response.RequestCharge > 1.7)
                 {
                     _logger.LogWarning("Get - key {0}, RequestCharge {1}", key, response.RequestCharge);
                 }
