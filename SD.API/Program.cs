@@ -20,6 +20,8 @@ var host = new HostBuilder()
             config.AddJsonFile("local.settings.json");
             config.AddUserSecrets<Program>();
         }
+
+        ApiStartup.Startup(config.Build().GetValue<string>("RepositoryOptions_CosmosConnectionString"));
     })
     .ConfigureServices(ConfigureServices)
     .ConfigureLogging(ConfigureLogging)

@@ -22,13 +22,11 @@ namespace SD.API.Functions
                 var endpoint = configuration.GetValue<string>("Paddle_Endpoint");
                 var key = configuration.GetValue<string>("Paddle_Key");
 
-                using var http = new HttpClient();
-
-                http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
+                ApiStartup.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
 
                 using var request = new HttpRequestMessage(HttpMethod.Get, $"{endpoint}subscriptions/{id}");
 
-                var response = await http.SendAsync(request, cancellationToken);
+                var response = await ApiStartup.HttpClient.SendAsync(request, cancellationToken);
 
                 if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
 
@@ -52,13 +50,11 @@ namespace SD.API.Functions
                 var endpoint = configuration.GetValue<string>("Paddle_Endpoint");
                 var key = configuration.GetValue<string>("Paddle_Key");
 
-                using var http = new HttpClient();
-
-                http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
+                ApiStartup.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
 
                 using var request = new HttpRequestMessage(HttpMethod.Get, $"{endpoint}subscriptions/{id}/update-payment-method-transaction");
 
-                var response = await http.SendAsync(request, cancellationToken);
+                var response = await ApiStartup.HttpClient.SendAsync(request, cancellationToken);
 
                 if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
 

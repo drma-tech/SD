@@ -16,19 +16,10 @@ namespace SD.API.Repository
         {
             _logger = logger;
 
-            var connString = config.GetValue<string>("RepositoryOptions_CosmosConnectionString");
             var databaseId = config.GetValue<string>("RepositoryOptions_DatabaseId");
             var containerId = config.GetValue<string>("RepositoryOptions_ContainerId");
 
-            var _client = new CosmosClient(connString, new CosmosClientOptions()
-            {
-                SerializerOptions = new CosmosSerializationOptions()
-                {
-                    PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-                }
-            });
-
-            Container = _client.GetContainer(databaseId, containerId);
+            Container = ApiStartup.CosmosClient.GetContainer(databaseId, containerId);
         }
 
         public async Task<T?> Get<T>(string id, PartitionKey key, CancellationToken cancellationToken) where T : CosmosDocument

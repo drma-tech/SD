@@ -25,8 +25,7 @@ namespace SD.API.Functions
 
                 if (model == null)
                 {
-                    using var http = new HttpClient();
-                    var obj = await http.GetNewsByFlixter<Flixster>(cancellationToken);
+                    var obj = await ApiStartup.HttpClient.GetNewsByFlixter<Flixster>(cancellationToken);
                     if (obj == null) return null;
 
                     //compact
@@ -83,8 +82,7 @@ namespace SD.API.Functions
 
                 if (model == null)
                 {
-                    using var http = new HttpClient();
-                    var obj = await http.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
+                    var obj = await ApiStartup.HttpClient.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
                     if (obj == null) return null;
 
                     //compact
@@ -198,7 +196,6 @@ namespace SD.API.Functions
 
                 if (model == null)
                 {
-                    using var http = new HttpClient();
                     var scraping = new ScrapingPopular();
                     var obj = scraping.GetTvData();
                     if (obj == null) return null;
@@ -337,8 +334,7 @@ namespace SD.API.Functions
 
                 if (model == null)
                 {
-                    using var http = new HttpClient();
-                    var obj = await http.GetReviewsByImdb8<RootMetacritic>(id, cancellationToken);
+                    var obj = await ApiStartup.HttpClient.GetReviewsByImdb8<RootMetacritic>(id, cancellationToken);
                     if (obj == null) return null;
 
                     var newModel = new ReviewModel();
@@ -401,9 +397,8 @@ namespace SD.API.Functions
 
                 if (model == null)
                 {
-                    using var http = new HttpClient();
                     var url = $"https://internal-prod.apigee.fandom.net/v1/xapi/composer/metacritic/pages/shows-critic-reviews/{title}/web?filter=all&sort=score&apiKey=1MOZgmNFxvmljaQR1X9KAij9Mo4xAY3u";
-                    var obj = await http.Get<MetaCriticScraping>(url, cancellationToken);
+                    var obj = await ApiStartup.HttpClient.Get<MetaCriticScraping>(url, cancellationToken);
                     if (obj == null) return null;
                     if (obj.meta?.title == "undefined critic reviews") return null;
 

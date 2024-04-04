@@ -26,19 +26,10 @@ namespace SD.API.Repository
 
         public CosmosLogRepository(IConfiguration config)
         {
-            var connString = config.GetValue<string>("RepositoryOptions_CosmosConnectionString");
             var databaseId = config.GetValue<string>("RepositoryOptions_DatabaseId");
             var containerId = config.GetValue<string>("RepositoryOptions_ContainerLogId");
 
-            var _client = new CosmosClient(connString, new CosmosClientOptions()
-            {
-                SerializerOptions = new CosmosSerializationOptions()
-                {
-                    PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-                }
-            });
-
-            Container = _client.GetContainer(databaseId, containerId);
+            Container = ApiStartup.CosmosClient.GetContainer(databaseId, containerId);
         }
 
         public async Task Add(LogModel log)
