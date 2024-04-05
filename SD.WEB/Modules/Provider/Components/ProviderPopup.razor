@@ -16,85 +16,96 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true" RenderMode="TabsRenderMode.LazyLoad">
-        <Items>
-            <Tab Name="About">@Translations.ProviderPopupTabAbout</Tab>
-            <Tab Name="Details">@Translations.ProviderPopupTabDetails</Tab>
-            <Tab Name="Catalog">@Translations.ProviderPopupTabCatalog</Tab>
-        </Items>
-        <Content>
-            <TabPanel Name="About" Class="mt-3">
-                <Row Margin="Margin.Is2.FromBottom" HorizontalGutter="4" VerticalGutter="4">
-                    <Column ColumnSize="ColumnSize.IsAuto">
-                        @if (!string.IsNullOrEmpty(provider?.logo_path))
-                        {
-                            <Image Source="@(TmdbOptions.OriginalPosterPath + provider.logo_path)" Text="@provider.name"></Image>
-                        }
-                    </Column>
-                    <Column>
-                        <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
-                            @provider?.description
-                        </Paragraph>
-                        <Paragraph>
-                            @if (string.IsNullOrEmpty(provider?.link))
+    @if (provider == null)
+    {
+        <Alert Color="Color.Danger" Visible="true">
+            <AlertMessage>
+                <Blazorise.Icon Name="FontAwesomeIcons.Trash"></Blazorise.Icon> @Resources.Translations.NotFound
+            </AlertMessage>
+        </Alert>
+    }
+    else
+    {
+        <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" Justified="true" RenderMode="TabsRenderMode.LazyLoad">
+            <Items>
+                <Tab Name="About">@Translations.ProviderPopupTabAbout</Tab>
+                <Tab Name="Details">@Translations.ProviderPopupTabDetails</Tab>
+                <Tab Name="Catalog">@Translations.ProviderPopupTabCatalog</Tab>
+            </Items>
+            <Content>
+                <TabPanel Name="About" Class="mt-3">
+                    <Row Margin="Margin.Is2.FromBottom" HorizontalGutter="4" VerticalGutter="4">
+                        <Column ColumnSize="ColumnSize.IsAuto">
+                            @if (!string.IsNullOrEmpty(provider?.logo_path))
                             {
-                                <a href="@($"https://www.google.com/search?q=streaming+{provider?.name}".HideExternalLink())" target="_blank" rel="nofollow" style="float: left;">search on google</a>
+                                <Image Source="@(TmdbOptions.OriginalPosterPath + provider.logo_path)" Text="@provider.name"></Image>
                             }
-                            else
-                            {
-                                <a href="@provider.link.HideExternalLink()" target="_blank" rel="nofollow" style="float: left;">@(new Uri(provider.link).Host)</a>
-                            }
-                        </Paragraph>
-                    </Column>
-                </Row>
-            </TabPanel>
-            <TabPanel Name="Details" Class="mt-3">
-                <Divider DividerType="DividerType.TextContent" Text="@Translations.MediaTypes" />
-                @foreach (var item in provider?.types ?? new List<MediaType>())
-                {
-                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
-                }
-                <Divider DividerType="DividerType.TextContent" Text="@Translations.Regions" />
-                @foreach (var item in provider?.regions.OrderBy(o => o.GetName()).ToList() ?? new List<Region>())
-                {
-                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
-                }
-                <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModel" />
-                @foreach (var item in provider?.models ?? new List<DeliveryModel>())
-                {
-                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" title="@item.GetDescription()" Style="cursor: help;">
-                        @item.GetName() <Blazorise.Icon Name="FontAwesomeIcons.QuestionCircle"></Blazorise.Icon>
-                    </Badge>
-                }
-                @if (provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
-                {
-                    <Divider DividerType="DividerType.TextContent" Text="@Translations.Plans" />
-                    @if (provider.plans.Any())
+                        </Column>
+                        <Column>
+                            <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
+                                @provider?.description
+                            </Paragraph>
+                            <Paragraph>
+                                @if (string.IsNullOrEmpty(provider?.link))
+                                {
+                                    <a href="@($"https://www.google.com/search?q=streaming+{provider?.name}".HideExternalLink())" target="_blank" rel="nofollow" style="float: left;">search on google</a>
+                                }
+                                else
+                                {
+                                    <a href="@provider.link.HideExternalLink()" target="_blank" rel="nofollow" style="float: left;">@(new Uri(provider.link).Host)</a>
+                                }
+                            </Paragraph>
+                        </Column>
+                    </Row>
+                </TabPanel>
+                <TabPanel Name="Details" Class="mt-3">
+                    <Divider DividerType="DividerType.TextContent" Text="@Translations.MediaTypes" />
+                    @foreach (var item in provider?.types ?? new List<MediaType>())
                     {
-                        @foreach (var item in provider.plans)
+                        <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
+                    }
+                    <Divider DividerType="DividerType.TextContent" Text="@Translations.Regions" />
+                    @foreach (var item in provider?.regions.OrderBy(o => o.GetName()).ToList() ?? new List<Region>())
+                    {
+                        <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
+                    }
+                    <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModel" />
+                    @foreach (var item in provider?.models ?? new List<DeliveryModel>())
+                    {
+                        <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" title="@item.GetDescription()" Style="cursor: help;">
+                            @item.GetName() <Blazorise.Icon Name="FontAwesomeIcons.QuestionCircle"></Blazorise.Icon>
+                        </Badge>
+                    }
+                    @if (provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
+                    {
+                        <Divider DividerType="DividerType.TextContent" Text="@Translations.Plans" />
+                        @if (provider.plans.Any())
                         {
-                            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.name: @item.price.ToString("C")</Badge>
+                            @foreach (var item in provider.plans)
+                            {
+                                <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.name: @item.price.ToString("C")</Badge>
+                            }
+                        }
+                        else
+                        {
+                            <Badge Color="Color.Danger">@Translations.NotFound</Badge>
                         }
                     }
-                    else
-                    {
-                        <Badge Color="Color.Danger">@Translations.NotFound</Badge>
-                    }
-                }
-            </TabPanel>
-            <TabPanel Name="Catalog" Class="mt-3">
-                <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "popularity.desc", WatchRegion)"
-                           MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
-                <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "primary_release_date.desc", WatchRegion)"
-                           MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
-                <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(provider?.id, "vote_average.desc", WatchRegion)"
-                           MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
-            </TabPanel>
-        </Content>
-    </Tabs>
+                </TabPanel>
+                <TabPanel Name="Catalog" Class="mt-3">
+                    <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
+                               MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
+                    <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
+                               MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
+                    <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
+                               MaxItens="50" ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaList>
+                </TabPanel>
+            </Content>
+        </Tabs>
+    }
 </ModalBody>
 <ModalFooter>
-    @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
+    @if (myProviders?.Items.Any(a => a.id == ProviderId) ?? false)
     {
         <Button Color="Color.Danger" Clicked="Remove" Disabled="!IsAuthenticated" Size="Size.Small">
             <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @WEB.Resources.Button.Remove
@@ -121,6 +132,7 @@
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
     [Parameter] public bool ShowPrivateAction { get; set; }
     [Parameter] public string? WatchRegion { get; set; }
+    [Parameter] public string? ProviderId { get; set; }
 
     private string selectedTab = "About";
     private MyProviders? myProviders { get; set; }
@@ -170,7 +182,7 @@
         {
             myProviders ??= new();
 
-            myProviders = await MyProvidersApi.Remove(myProviders.Items.First(f => f.id == provider?.id));
+            myProviders = await MyProvidersApi.Remove(myProviders.Items.First(f => f.id == ProviderId));
 
             await Toast.Success(GlobalTranslations.OperationCompleted);
         }

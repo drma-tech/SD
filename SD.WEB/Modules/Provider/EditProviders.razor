@@ -96,7 +96,7 @@
 
     private async Task ShowPopupProvider(ProviderModel item)
     {
-        await ModalService.ProviderPopup(item, null, null, null, true, null);
+        await ModalService.ProviderPopup(item, null, null, null, true, null, item.id);
     }
 
     protected async Task SaveSession()

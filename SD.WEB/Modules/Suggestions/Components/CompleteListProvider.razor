@@ -70,6 +70,6 @@
 
     private async Task ShowPopupProvider(ProviderModel item)
     {
-        await ModalService.ProviderPopup(item, Watched, Watching, Wish, ShowPrivateAction, null);
+        await ModalService.ProviderPopup(item, Watched, Watching, Wish, ShowPrivateAction, null, item.id);
     }
 }

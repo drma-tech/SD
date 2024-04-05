@@ -23,6 +23,12 @@
                            title="@item.region?.GetCustomAttribute()?.Name">
                         @item.region?.ToString()
                     </Badge>
+                    @if (!allProviders?.Items.Any(a => a.id == item.id) ?? false)
+                    {
+                        <Badge Color="Color.Danger" Style="position: absolute; bottom: 0; z-index: 1; width: 100%;">
+                            <Blazorise.Icon Name="FontAwesomeIcons.Trash" TextColor="TextColor.Light" IconSize="IconSize.x2"></Blazorise.Icon>
+                        </Badge>
+                    }
                     <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" title="@item.name"
                                onclick="@(()=>ShowProviderPopup(item))" Style="cursor: pointer;"></CardImage>
                 </Card>
@@ -62,14 +68,13 @@
         else
         {
             myProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
+            if (allProviders == null) allProviders = await AllProvidersApi.GetAll(null);
         }
 
         if (myProviders != null)
         {
             if (myProviders.Items.Any(a => !a.region.HasValue)) //update region (legacy)
             {
-                if (allProviders == null) allProviders = await AllProvidersApi.GetAll(null);
-
                 foreach (var item in myProviders.Items)
                 {
                     if (!item.region.HasValue)
@@ -103,6 +108,7 @@
     {
         if (allProviders == null) allProviders = await AllProvidersApi.GetAll(null);
 
-        await ModalService.ProviderPopup(allProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList, ShowPrivateAction, item.region?.ToString());
+        await ModalService.ProviderPopup(allProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList, ShowPrivateAction,
+            item.region?.ToString(), item.id);
     }
 }

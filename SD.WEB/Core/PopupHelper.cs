@@ -163,7 +163,7 @@ namespace SD.WEB.Core
         }
 
         public static async Task ProviderPopup(this IModalService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish,
-            bool showPrivateAction, string? WatchRegion)
+            bool showPrivateAction, string? WatchRegion, string? ProviderId)
         {
             await service.Show<ProviderPopup>(null, x =>
             {
@@ -176,6 +176,7 @@ namespace SD.WEB.Core
                 x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
                 x.Add(x => x.ShowPrivateAction, showPrivateAction);
                 x.Add(x => x.WatchRegion, WatchRegion);
+                x.Add(x => x.ProviderId, ProviderId);
             }, Options(ModalSize.ExtraLarge));
         }
 
