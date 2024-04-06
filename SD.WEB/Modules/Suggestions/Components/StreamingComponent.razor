@@ -28,10 +28,14 @@
                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                             <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
                                 <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.FREE))
-                                {
-                                    <span>false</span>
-                                }
+                                <AuthorizeView Roles="administrator">
+                                    <Authorized>
+                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.FREE))
+                                        {
+                                            <span>false</span>
+                                        }
+                                    </Authorized>
+                                </AuthorizeView>
                             </Button>
                         </Column>
                     }
@@ -54,10 +58,14 @@
                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                             <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
                                 <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.AVOD))
-                                {
-                                    <span>false</span>
-                                }
+                                <AuthorizeView Roles="administrator">
+                                    <Authorized>
+                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.AVOD))
+                                        {
+                                            <span>false</span>
+                                        }
+                                    </Authorized>
+                                </AuthorizeView>
                             </Button>
                         </Column>
                     }
@@ -80,10 +88,14 @@
                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                             <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
                                 <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.SVOD))
-                                {
-                                    <span>false</span>
-                                }
+                                <AuthorizeView Roles="administrator">
+                                    <Authorized>
+                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.SVOD))
+                                        {
+                                            <span>false</span>
+                                        }
+                                    </Authorized>
+                                </AuthorizeView>
                             </Button>
                         </Column>
                     }
@@ -106,10 +118,14 @@
                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                             <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
                                 <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.PVOD))
-                                {
-                                    <span>false</span>
-                                }
+                                <AuthorizeView Roles="administrator">
+                                    <Authorized>
+                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.PVOD))
+                                        {
+                                            <span>false</span>
+                                        }
+                                    </Authorized>
+                                </AuthorizeView>
                             </Button>
                         </Column>
                     }
@@ -132,10 +148,14 @@
                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                             <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
                                 <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
-                                {
-                                    <span>false</span>
-                                }
+                                <AuthorizeView Roles="administrator">
+                                    <Authorized>
+                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
+                                        {
+                                            <span>false</span>
+                                        }
+                                    </Authorized>
+                                </AuthorizeView>
                             </Button>
                         </Column>
                     }
@@ -158,10 +178,14 @@
                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                             <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
                                 <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
-                                @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
-                                {
-                                    <span>false</span>
-                                }
+                                <AuthorizeView Roles="administrator">
+                                    <Authorized>
+                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
+                                        {
+                                            <span>false</span>
+                                        }
+                                    </Authorized>
+                                </AuthorizeView>
                             </Button>
                         </Column>
                     }
@@ -204,7 +228,11 @@
             </Row>
         }
 
-        //<Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false" Margin="Margin.Is2.FromTop">Atualizar</Button>
+        <AuthorizeView Roles="administrator">
+            <Authorized>
+                <Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false" Margin="Margin.Is2.FromTop">Atualizar</Button>
+            </Authorized>
+        </AuthorizeView>
     }
 </RenderControl>
 
@@ -216,13 +244,10 @@
     private MediaProviders? Providers { get; set; }
     private AllProviders? AllProviders { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        AllProviders = await AllProvidersApi.GetAll(null);
-    }
-
     protected override async Task LoadDataRender()
     {
+        AllProviders = await AllProvidersApi.GetAll(null);
+
         Core?.LoadingStarted?.Invoke();
         Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
         Core?.LoadingFinished?.Invoke(Providers);

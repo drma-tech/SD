@@ -79,6 +79,7 @@
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     public ClientePrincipal? Client { get; set; }
 
@@ -133,7 +134,7 @@
     {
         if (string.IsNullOrEmpty(tmdb_id)) return default!;
 
-        return ModalService.MediaPopup(Watched, Watching, Wish, type, tmdb_id, ShowPrivateAction);
+        return ModalService.MediaPopup(Watched, Watching, Wish, type, tmdb_id, ShowPrivateAction, IsAuthenticated);
     }
 
     private Dictionary<string, string> GetExtraParameters(string? provider_id, string? region, string sort_by)

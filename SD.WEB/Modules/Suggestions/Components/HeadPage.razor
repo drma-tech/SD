@@ -106,6 +106,8 @@
 </Alert>
 
 @code {
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+
     [Parameter] public string? ImageSource { get; set; }
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Text { get; set; }

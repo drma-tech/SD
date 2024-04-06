@@ -16,13 +16,13 @@
 @if (type == "movie")
 {
     <Wishlist Core="CoreWishlist" MediaType="MediaType.movie" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
-              Watched="Watched" Watching="Watching" Wish="Wish"
+              Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="@UserId"
               ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()" CustomTitle="@($"Wishlist ({Gravatar?.displayName}) | { MediaType.movie.GetName()}")"></Wishlist>
 }
 else
 {
     <Wishlist Core="CoreWishlist" MediaType="MediaType.tv" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
-              Watched="Watched" Watching="Watching" Wish="Wish"
+              Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="@UserId"
               ExpressionEmpty="(WishList? list) => list == null || list.Shows.Empty()" CustomTitle="@($"Wishlist ({Gravatar?.displayName}) | { MediaType.tv.GetName()}")"></Wishlist>
 }
 

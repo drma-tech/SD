@@ -10,11 +10,14 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="Sundance" ImageSource="logo/sundance.png" Text="The Sundance Film Festival is the ultimate gathering of original storytellers and audiences seeking new voices and fresh perspectives. Our annual program includes dramatic and documentary features, short films, and episodic content." Link="https://festival.sundance.org/"></HeadPage>
+<HeadPage Title="Sundance" ImageSource="logo/sundance.png" Text="The Sundance Film Festival is the ultimate gathering of original storytellers and audiences seeking new voices and fresh perspectives. Our annual program includes dramatic and documentary features, short films, and episodic content."
+          Link="https://festival.sundance.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 @*https://www.imdb.com/event/ev0000631/2023/1*@
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.SundanceGrandJuryPrizeDocumentary" MaxItens="14" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.SundanceGrandJuryPrizeDramatic" MaxItens="14" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.SundanceGrandJuryPrizeDocumentary" MaxItens="14" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.SundanceGrandJuryPrizeDramatic" MaxItens="14" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

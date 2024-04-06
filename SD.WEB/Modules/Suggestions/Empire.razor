@@ -10,10 +10,13 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="Empire" ImageSource="logo/empire.png" Text="Find the latest film reviews, news and celebrity interviews from Empire, the world's biggest movie destination. Discover our new TV and gaming content." Link="https://www.empireonline.com/"></HeadPage>
+<HeadPage Title="Empire" ImageSource="logo/empire.png" Text="Find the latest film reviews, news and celebrity interviews from Empire, the world's biggest movie destination. Discover our new TV and gaming content."
+          Link="https://www.empireonline.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestMoviesOfAllTime" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestTVShowsOfAllTime" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestMoviesOfAllTime" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestTVShowsOfAllTime" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

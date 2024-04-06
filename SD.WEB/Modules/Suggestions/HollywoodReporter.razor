@@ -11,10 +11,12 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="Hollywood Reporter" ImageSource="logo/hollywood-reporter.png" Text="@Translations.thr_desc" Link="https://www.hollywoodreporter.com/"></HeadPage>
+<HeadPage Title="Hollywood Reporter" ImageSource="logo/hollywood-reporter.png" Text="@Translations.thr_desc" Link="https://www.hollywoodreporter.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100Movies" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100TVShows" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100Movies" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100TVShows" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

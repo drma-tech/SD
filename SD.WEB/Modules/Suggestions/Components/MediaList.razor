@@ -58,6 +58,7 @@
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
@@ -148,7 +149,7 @@
 
     private async Task OpenCompleteList()
     {
-        await ModalService.CompleteListPopup(TitleHead, Watched, Watching, Wish, Items, MediaListApi, List, MaxItens, IsIMDB, TypeSelected, StringParameters, ShowPrivateAction);
+        await ModalService.CompleteListPopup(TitleHead, Watched, Watching, Wish, Items, MediaListApi, List, MaxItens, IsIMDB, TypeSelected, StringParameters, ShowPrivateAction, IsAuthenticated);
     }
 
     private async Task OpenPopupMedia(MediaDetail? media)
@@ -165,7 +166,7 @@
             tmdb_id = media?.tmdb_id;
         }
 
-        await ModalService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdb_id, ShowPrivateAction);
+        await ModalService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdb_id, ShowPrivateAction, IsAuthenticated);
     }
 
     void IDisposable.Dispose()

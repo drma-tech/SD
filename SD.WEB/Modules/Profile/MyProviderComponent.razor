@@ -49,6 +49,7 @@
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public bool Fake { get; set; } = false;
 
@@ -127,7 +128,7 @@
         if (allProviders == null) allProviders = await AllProvidersApi.GetAll(null);
 
         await ModalService.ProviderPopup(allProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList, ShowPrivateAction,
-            item.region?.ToString(), item.id);
+            item.region?.ToString(), item.id, IsAuthenticated);
     }
 
     private async Task UpdateProviders()

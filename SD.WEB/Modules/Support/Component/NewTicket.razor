@@ -17,10 +17,10 @@
                     <SelectItem Value="@item">@item.GetName()</SelectItem>
                 }
             </Select>
-            <ValidationMessage For="@(()=>Ticket.TicketType)"></ValidationMessage>
+            <ValidationMessage For="@(()=>Ticket!.TicketType)"></ValidationMessage>
         </div>
         <div class="form-group">
-            <TextEdit @bind-Text="@Ticket.Title" MaxLength="100" Placeholder="@CustomAttributeHelper.GetCustomAttribute(()=>Ticket.Title)?.Prompt" Size="Size.Small"></TextEdit>
+            <TextEdit @bind-Text="@Ticket!.Title" MaxLength="100" Placeholder="@CustomAttributeHelper.GetCustomAttribute(()=>Ticket!.Title)?.Prompt" Size="Size.Small"></TextEdit>
             <ValidationMessage For="@(()=>Ticket.Title)"></ValidationMessage>
         </div>
         <div class="form-group">
@@ -41,6 +41,8 @@
 
 @code {
     [Parameter][EditorRequired] public TicketType TicketType { get; set; } = TicketType.BugReport;
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter][EditorRequired] public string? UserId { get; set; }
 
     public TicketModel? Ticket { get; set; } = new();
     [Parameter] public EventCallback<TicketModel> Inserted { get; set; }

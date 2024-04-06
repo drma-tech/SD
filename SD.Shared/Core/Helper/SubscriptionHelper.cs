@@ -69,7 +69,7 @@
 
     public class BasicRestrictions : Restrictions
     {
-        public override int FavoriteProviders => 1;
+        public override int FavoriteProviders => 2;
         public override int MySuggestions => 0;
         public override int Watched => 10;
         public override int Watching => 6;

@@ -19,7 +19,7 @@
 <ModalBody MaxHeight="70">
     <MediaListFull Items="Items" IsIMDB="IsIMDB" MaxItens="MaxItens" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
                    StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false"
-                   Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction">
+                   Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
     </MediaListFull>
 </ModalBody>
 <ModalFooter>
@@ -33,6 +33,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
     [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }

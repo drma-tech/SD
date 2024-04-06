@@ -138,6 +138,9 @@
 </RenderControl>
 
 @code {
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter][EditorRequired] public string? UserId { get; set; }
+
     public RenderControlCore<HashSet<TicketModel>> Core { get; set; } = new();
     private HashSet<TicketModel> tickets = new();
     private HashSet<TicketVoteModel> myVotes = new();
@@ -179,7 +182,8 @@
 
     public Task ShowModal()
     {
-        return ModalService.NewTicket(TicketTypeSel, new EventCallbackFactory().Create<TicketModel>(this, (TicketModel model) => { tickets.Add(model); Core?.LoadingFinished?.Invoke(tickets); }));
+        return ModalService.NewTicket(TicketTypeSel, new EventCallbackFactory().Create<TicketModel>(this, (TicketModel model) => { tickets.Add(model); Core?.LoadingFinished?.Invoke(tickets); }),
+            IsAuthenticated, UserId);
     }
 
     private async Task Vote(string? IdTicket, VoteType voteType)

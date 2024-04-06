@@ -119,7 +119,8 @@
                             <StreamingComponent tmdb_id="@tmdb_id" type="@type"></StreamingComponent>
                         </TabPanel>
                         <TabPanel Name="Credits" Class="mt-2">
-                            <CreditsComponent tmdb_id="@tmdb_id" type="@type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="ShowPrivateAction"></CreditsComponent>
+                            <CreditsComponent tmdb_id="@tmdb_id" type="@type" WatchedList="Watched" WatchingList="Watching" WishList="Wish"
+                                              ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated"></CreditsComponent>
                         </TabPanel>
                         @if (media?.Collection.Any() ?? false)
                         {
@@ -245,6 +246,8 @@
 </ModalFooter>
 
 @code {
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+
     [Parameter] public WatchedList? Watched { get; set; }
     [Parameter] public WatchingList? Watching { get; set; }
     [Parameter] public WishList? Wish { get; set; }
@@ -459,7 +462,7 @@
 
     private async Task OpenPopupMedia(Collection? collection, MediaType? mediaType)
     {
-        await ModalService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id?.ToString(), ShowPrivateAction);
+        await ModalService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id?.ToString(), ShowPrivateAction, IsAuthenticated);
     }
 
     private async Task OpenPopupSeason(Collection? collection)

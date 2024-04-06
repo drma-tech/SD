@@ -10,7 +10,8 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingNetflixMovies" MaxItens="46" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaListFull>
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingNetflixMovies" MaxItens="46" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaListFull>
 
 @code {
     public WatchedList? WatchedList { get; set; }

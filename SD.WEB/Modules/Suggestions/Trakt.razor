@@ -10,12 +10,15 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="Trakt" ImageSource="logo/trakt.png" Text="Track what you watch and when. Discover what's hot and where you can watch it. Share comments, ratings and recommendations." Link="https://trakt.tv/"></HeadPage>
+<HeadPage Title="Trakt" ImageSource="logo/trakt.png" Text="Track what you watch and when. Discover what's hot and where you can watch it. Share comments, ratings and recommendations."
+          Link="https://trakt.tv/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 @*https://trakt.tv/movies/recommended/all*@
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedMovies" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedMovies" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
 @*https://trakt.tv/shows/recommended/all*@
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedTVShows" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedTVShows" MaxItens="100" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

@@ -95,6 +95,7 @@
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public string? collection_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
@@ -165,7 +166,7 @@
 
     private async Task OpenPopupMedia(Part? part, MediaType? mediaType)
     {
-        await ModalService.MediaPopup(Watched, Watching, Wish, mediaType, part?.id.ToString(), ShowPrivateAction);
+        await ModalService.MediaPopup(Watched, Watching, Wish, mediaType, part?.id.ToString(), ShowPrivateAction, IsAuthenticated);
     }
 
     private async Task OpenPopupSeason(Part? part)

@@ -45,6 +45,8 @@
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public Func<WishList?, bool> ExpressionEmpty { get; set; } = default!;
+    [Parameter][EditorRequired] public string? UserId { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
     [Parameter] public string? CustomTitle { get; set; }
 
     private HashSet<WishListItem> Items => MediaType == MediaType.movie ? Wish?.Movies ?? new HashSet<WishListItem>() : Wish?.Shows ?? new HashSet<WishListItem>();
@@ -55,14 +57,14 @@
 
     private async Task OpenCompleteList()
     {
-        await ModalService.MyWishListPopup(Core, Watched, Watching, Wish, MediaType, ShowPrivateAction);
+        await ModalService.MyWishListPopup(Core, Watched, Watching, Wish, MediaType, ShowPrivateAction, IsAuthenticated, UserId);
     }
 
     public Task ShowMediaPopup(string? tmdb_id, string? name)
     {
         if (string.IsNullOrEmpty(tmdb_id)) return default!;
 
-        return ModalService.MediaPopup(Watched, Watching, Wish, MediaType, tmdb_id, ShowPrivateAction);
+        return ModalService.MediaPopup(Watched, Watching, Wish, MediaType, tmdb_id, ShowPrivateAction, IsAuthenticated);
     }
 
     private async Task Share(string? link)

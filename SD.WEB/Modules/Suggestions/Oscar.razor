@@ -11,12 +11,16 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="Oscar" ImageSource="logo/oscar.png" Text="@Translations.oscar_desc" Link="https://www.oscars.org/"></HeadPage>
+<HeadPage Title="Oscar" ImageSource="logo/oscar.png" Text="@Translations.oscar_desc" Link="https://www.oscars.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestMotionPicture" MaxItens="12" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestAnimatedFeatureFilm" MaxItens="12" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarInternationalFeatureFilm" MaxItens="12" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarDocumentaryFeature" MaxItens="12" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestMotionPicture" MaxItens="12" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestAnimatedFeatureFilm" MaxItens="12" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarInternationalFeatureFilm" MaxItens="12" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarDocumentaryFeature" MaxItens="12" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

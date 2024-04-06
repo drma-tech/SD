@@ -48,16 +48,16 @@
     </Jumbotron>
 }
 
-<MyProviderComponent Fake="Fake" WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true"></MyProviderComponent>
+<MyProviderComponent Fake="Fake" WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MyProviderComponent>
 
-<MySuggestions Fake="Fake" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true"></MySuggestions>
+<MySuggestions Fake="Fake" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MySuggestions>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWishListComponent Watched="Watched" Watching="Watching" Wish="Wish" CoreWishlist="CoreWish" ShowPrivateAction="true"></MyWishListComponent>
+        <MyWishListComponent Watched="Watched" Watching="Watching" Wish="Wish" CoreWishlist="CoreWish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" UserId="@UserId"></MyWishListComponent>
     </Column>
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWatchingListComponent Watched="Watched" Watching="Watching" Wish="Wish" CoreWatching="CoreWatching" ShowPrivateAction="true"></MyWatchingListComponent>
+        <MyWatchingListComponent Watched="Watched" Watching="Watching" Wish="Wish" CoreWatching="CoreWatching" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" UserId="@UserId"></MyWatchingListComponent>
     </Column>
 </Row>
 
@@ -119,7 +119,7 @@
 
     private async Task OpenSubscription()
     {
-        await ModalService.SubscriptionPopup(Client);
+        await ModalService.SubscriptionPopup(Client, IsAuthenticated);
     }
 
     protected async Task OpenCheckout(string? priceId)

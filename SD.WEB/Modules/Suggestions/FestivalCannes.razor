@@ -10,11 +10,15 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="Festival de Cannes" ImageSource="logo/festival-cannes.png" Text="All the news from the 1st film festival in the world." Link="https://www.festival-cannes.com/en/"></HeadPage>
+<HeadPage Title="Festival de Cannes" ImageSource="logo/festival-cannes.png" Text="All the news from the 1st film festival in the world."
+          Link="https://www.festival-cannes.com/en/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesPalme" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesGrandPrix" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesPalmeShortFilm" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesPalme" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesGrandPrix" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesPalmeShortFilm" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

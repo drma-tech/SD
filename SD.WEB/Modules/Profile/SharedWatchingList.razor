@@ -15,13 +15,13 @@
 @if (type == "movie")
 {
     <WatchingComponent Core="CoreWatching" MediaType="MediaType.movie" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
-                       Watched="Watched" Watching="Watching" Wish="Wish"
+                       Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="UserId"
                        ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()" CustomTitle="@($"Watching ({Gravatar?.displayName}) | { MediaType.movie.GetName()}")"></WatchingComponent>
 }
 else
 {
     <WatchingComponent Core="CoreWatching" MediaType="MediaType.tv" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
-                       Watched="Watched" Watching="Watching" Wish="Wish"
+                       Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="UserId"
                        ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()" CustomTitle="@($"Watching ({Gravatar?.displayName}) | { MediaType.tv.GetName()}")"></WatchingComponent>
 }
 

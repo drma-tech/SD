@@ -18,18 +18,18 @@
 {
     <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false"
                StringParameters="Params" TypeSelected="MediaType.movie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-               ShowPrivateAction="ShowPrivateAction" OnlyYear="true"></MediaList>
+               ShowPrivateAction="ShowPrivateAction" OnlyYear="true" IsAuthenticated="IsAuthenticated"></MediaList>
 }
 else if (TypeSelected == PopularType.Show)
 {
     <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" MaxItens="10" IsIMDB="true" ShowHead="false" MultipleLanguages="false"
                StringParameters="Params" TypeSelected="MediaType.tv" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-               ShowPrivateAction="ShowPrivateAction" OnlyYear="true"></MediaList>
+               ShowPrivateAction="ShowPrivateAction" OnlyYear="true" IsAuthenticated="IsAuthenticated"></MediaList>
 }
 else if (TypeSelected == PopularType.Cinema)
 {
     <MediaList ShowHead="false" MediaListApi="TmdbNowPlayingApi" MaxItens="10" MultiplesRegions="true"
-               Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="ShowPrivateAction">
+               Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
     </MediaList>
 }
 
@@ -38,6 +38,7 @@ else if (TypeSelected == PopularType.Cinema)
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     public PopularType TypeSelected { get; set; } = PopularType.Movie;
 

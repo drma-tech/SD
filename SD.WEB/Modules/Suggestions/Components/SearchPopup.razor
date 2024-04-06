@@ -16,7 +16,7 @@
 <ModalBody MaxHeight="70">
     <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
         <MediaListFull @ref="MediaListFull" MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" MaxItens="100" ShowHead="false"
-                       Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction"></MediaListFull>
+                       Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated"></MediaListFull>
     </RenderControl>
 </ModalBody>
 <ModalFooter>
@@ -33,6 +33,7 @@
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public string? TitleHead { get; set; }
     

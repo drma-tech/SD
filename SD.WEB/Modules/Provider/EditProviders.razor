@@ -88,15 +88,19 @@
 
     public IEnumerable<EnumObject> Languages { get; set; } = Array.Empty<EnumObject>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         Languages = EnumHelper.GetList<Language>();
+    }
+
+    protected override async Task LoadDataRender()
+    {
         AllProviders = await AllProvidersApi.GetAll(null);
     }
 
     private async Task ShowPopupProvider(ProviderModel item)
     {
-        await ModalService.ProviderPopup(item, null, null, null, true, null, item.id);
+        await ModalService.ProviderPopup(item, null, null, null, true, null, item.id, IsAuthenticated);
     }
 
     protected async Task SaveSession()

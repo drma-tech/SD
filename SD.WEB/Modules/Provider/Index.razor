@@ -28,22 +28,26 @@
                         }
                     </Blazorise.Link>
                 </Card>
-                @* @if (string.IsNullOrEmpty(item.link))
-                {
-                    <p class="m-0" style="color: red">link</p>
-                } *@
-                @* @if (string.IsNullOrEmpty(item.description))
-                {
-                    <p class="m-0" style="color: red">description</p>
-                } *@
-                @*@if (item.models.Empty())
-                {
-                <p class="m-0" style="color: red">model</p>
-                }*@
-                    @*@if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && item.plans.Empty())
-                {
-                <p class="m-0" style="color: red">plan</p>
-                }*@
+                <AuthorizeView Roles="administrator">
+                    <Authorized>
+                       @*  @if (string.IsNullOrEmpty(item.link))
+                        {
+                            <p class="m-0" style="color: red">link</p>
+                        } *@
+                       @*  @if (string.IsNullOrEmpty(item.description))
+                        {
+                            <p class="m-0" style="color: red">description</p>
+                        } *@
+                        @if (item.models.Empty())
+                        {
+                            <p class="m-0" style="color: red">model</p>
+                        }
+                       @*  @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && item.plans.Empty())
+                        {
+                            <p class="m-0" style="color: red">plan</p>
+                        } *@
+                    </Authorized>
+                </AuthorizeView>
             </Column>
         }
     </Row>
@@ -62,6 +66,7 @@
     {
         AppStateStatic.RegionChanged += StateHasChanged;
 
+        //it is in initialize so it can be recognized by link mapping
         AllProviders = await AllProvidersApi.GetAll(Core);
     }
 

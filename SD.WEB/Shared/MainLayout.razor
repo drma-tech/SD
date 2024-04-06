@@ -2,6 +2,7 @@
 @using SD.Shared.Models.Support;
 @using SD.WEB.Modules.Support.Component
 @using SD.WEB.Modules.Support.Core;
+@using System.Security.Claims
 @using Toolbelt.Blazor.PWA.Updater
 
 @inherits LayoutComponentBase
@@ -127,7 +128,7 @@
                     <AnnouncementComponent Updates="Updates" Core="UpdateCore"></AnnouncementComponent>
                 </TabPanel>
                 <TabPanel Name="Feedback" Padding="Padding.Is3.FromTop">
-                    <FeedbackComponent></FeedbackComponent>
+                    <FeedbackComponent IsAuthenticated="IsAuthenticated" UserId="UserId"></FeedbackComponent>
                 </TabPanel>
             </Content>
         </Tabs>
@@ -168,6 +169,21 @@
         ChangeCurrentButton(Navigation.Uri);
 
         StateHasChanged();
+    }
+
+    protected bool IsAuthenticated { get; set; } = false;
+    protected string? UserId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+
+            var User = authState?.User;
+            IsAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
+            UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -227,13 +243,10 @@
     {
         try
         {
-            var authState = await authenticationState;
-            var user = authState?.User;
-
             var Ticket = new TicketModel();
 
             Ticket.TicketType = TicketType.BugReport;
-            Ticket.Initialize(user?.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+            Ticket.Initialize(UserId);
             Ticket.Title = exc.Message ?? "erro desconhecido";
             Ticket.Description = exc.StackTrace;
 

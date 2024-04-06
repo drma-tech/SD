@@ -13,12 +13,12 @@
 @inject WishListApi WishListApi
 @* @inject ImdbUpcomingApi ImdbUpcomingApi *@
 
-<HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@Translations.imdb_desc" Link="https://www.imdb.com/"></HeadPage>
+<HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@Translations.imdb_desc" Link="https://www.imdb.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" MaxItens="50" IsIMDB="true" ShowFilter="true" MultipleLanguages="false"
-           StringParameters="Params" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" OnlyYear="true"></MediaList>
+           StringParameters="Params" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OnlyYear="true"></MediaList>
 <MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" MaxItens="250" ShowFilter="true" Watched="WatchedList"
-           Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" OnlyYear="true"></MediaList>
+           Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OnlyYear="true"></MediaList>
 @* <MediaList TitleHead="@Translations.ComingSoon" MediaListApi="ImdbUpcomingApi" MaxItens="50" IsIMDB="true" MultipleLanguages="false"></MediaList> *@
 
 @code {

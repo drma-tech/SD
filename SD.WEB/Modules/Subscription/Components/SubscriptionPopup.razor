@@ -302,6 +302,7 @@
 </ModalFooter>
 
 @code {
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
     [Parameter] public ClientePrincipal? Client { get; set; }
 
     public RootSubscription? Subscription { get; set; }
