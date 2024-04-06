@@ -34,10 +34,10 @@ namespace SD.WEB.Modules.Profile.Core
             return await PostAsync(Endpoint.MyProvidersAdd, null, item);
         }
 
-        public async Task<MyProviders?> Update(MyProviders? obj, ClientePaddle? paddle)
+        public async Task<MyProviders?> Update(MyProviders? obj, ClientePaddle? paddle, bool validatePlan = true)
         {
             ArgumentNullException.ThrowIfNull(obj);
-            SubscriptionHelper.ValidateFavoriteProviders(paddle?.ActiveProduct, obj.Items.Count + 1);
+            if (validatePlan) SubscriptionHelper.ValidateFavoriteProviders(paddle?.ActiveProduct, obj.Items.Count + 1);
 
             return await PostAsync(Endpoint.MyProvidersUpdate, null, obj);
         }

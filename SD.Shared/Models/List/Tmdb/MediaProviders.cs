@@ -753,7 +753,7 @@
             };
         }
 
-        public List<ProviderBase> GetFreeListProviders(Region region)
+        public List<ProviderBase> GetFreeListProviders(Region? region)
         {
             if (results == null) return [];
 
@@ -902,7 +902,7 @@
             };
         }
 
-        public IEnumerable<ProviderBase> GetAdsListProviders(Region region)
+        public IEnumerable<ProviderBase> GetAdsListProviders(Region? region)
         {
             if (results == null) return [];
 
@@ -1051,7 +1051,7 @@
             };
         }
 
-        public IEnumerable<ProviderBase> GetFlatRateListProviders(Region region)
+        public IEnumerable<ProviderBase> GetFlatRateListProviders(Region? region)
         {
             if (results == null) return [];
 
@@ -1200,7 +1200,7 @@
             };
         }
 
-        public IEnumerable<ProviderBase> GetFlatRateBuyListProviders(Region region)
+        public IEnumerable<ProviderBase> GetFlatRateBuyListProviders(Region? region)
         {
             if (results == null) return [];
 
@@ -1349,7 +1349,7 @@
             };
         }
 
-        public IEnumerable<ProviderBase> GetRentListProviders(Region region)
+        public IEnumerable<ProviderBase> GetRentListProviders(Region? region)
         {
             if (results == null) return [];
 
@@ -1498,7 +1498,7 @@
             };
         }
 
-        public IEnumerable<ProviderBase> GetBuyListProviders(Region region)
+        public IEnumerable<ProviderBase> GetBuyListProviders(Region? region)
         {
             if (results == null) return [];
 

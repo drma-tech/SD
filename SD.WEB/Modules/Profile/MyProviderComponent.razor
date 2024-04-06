@@ -11,6 +11,13 @@
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand = !expand; })" title="Show all providers" Disabled="(myProviders == null || myProviders.Items.Empty())">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
+    @if (ProvidersChanged)
+    {
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="UpdateProviders"
+                title="@WEB.Resources.Button.Update">
+            @WEB.Resources.Button.Update
+        </Button>
+    }
 </HeaderComponent>
 
 <RenderControl Core="Core" Model="myProviders" ExpressionEmpty="((MyProviders? obj)=> obj == null || obj.Items.Empty())" PrivateContent="true">
@@ -49,6 +56,7 @@
     private AllProviders? allProviders { get; set; }
     private MyProviders? myProviders { get; set; }
     private bool expand { get; set; }
+    private bool ProvidersChanged { get; set; } = false;
 
     private int GetTotalItems(bool expand) => AppStateStatic.OnMobile && !expand ? 4 : 12;
 
@@ -69,6 +77,16 @@
         {
             myProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
             if (allProviders == null) allProviders = await AllProvidersApi.GetAll(null);
+        }
+
+        foreach (var item in myProviders?.Items ?? [])
+        {
+            var provider = allProviders?.Items.Find(f => f.id == item.id);
+
+            if (provider?.name != item.name || provider?.logo_path != item.logo)
+            {
+                ProvidersChanged = true;
+            }
         }
 
         if (myProviders != null)
@@ -110,5 +128,22 @@
 
         await ModalService.ProviderPopup(allProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList, ShowPrivateAction,
             item.region?.ToString(), item.id);
+    }
+
+    private async Task UpdateProviders()
+    {
+        foreach (var item in myProviders?.Items ?? [])
+        {
+            var provider = allProviders?.Items.Find(f => f.id == item.id);
+
+            if (provider != null)
+            {
+                item.name = provider.name;
+                item.logo = provider.logo_path;
+            }
+        }
+
+        myProviders = await MyProvidersApi.Update(myProviders, null, false);
+        ProvidersChanged = false;
     }
 }
