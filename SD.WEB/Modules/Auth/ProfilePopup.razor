@@ -112,8 +112,11 @@
                 //remove data from cosmos db
                 await PrincipalApi.Remove();
 
+                //close popup
+                await ModalService.Hide();
+
                 //remove personal data from the Azure Static Web Apps platform
-                Navigation.NavigateTo("/.auth/purge/" + provider);
+                Navigation.NavigateTo("/.auth/purge/" + provider, true);
             }
             else
             {

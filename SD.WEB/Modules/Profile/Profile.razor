@@ -86,7 +86,7 @@
 
     protected override async Task LoadDataRender()
     {
-        Client = await PrincipalApi.Get(IsAuthenticated);
+        Gravatar = await GravatarApi.GetGravatar(Client?.Email);
 
         if (!string.IsNullOrEmpty(_ptxn))
         {
@@ -109,7 +109,7 @@
             (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
         }
 
-        Gravatar = await GravatarApi.GetGravatar(Client?.Email);
+        Client = await PrincipalApi.Get(IsAuthenticated);
     }
 
     private async Task MyAccount()
