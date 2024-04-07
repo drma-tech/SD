@@ -1,10 +1,9 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Models.List.Tmdb;
+﻿using SD.Shared.Models.List.Tmdb;
 using SD.WEB.Modules.Suggestions.Interface;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class TmdbUpcomingApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache), IMediaListApi
+    public class TmdbUpcomingApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
     {
         public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
         {
@@ -18,7 +17,7 @@ namespace SD.WEB.Modules.Suggestions.Core
 
             if (type == MediaType.movie)
             {
-                var result = await GetAsync<MovieUpcoming>(TmdbOptions.BaseUri + "movie/upcoming".ConfigureParameters(parameter), true);
+                var result = await GetAsync<MovieUpcoming>(TmdbOptions.BaseUri + "movie/upcoming".ConfigureParameters(parameter));
 
                 foreach (var item in result?.results ?? [])
                 {

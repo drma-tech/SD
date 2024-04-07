@@ -22,7 +22,7 @@ namespace SD.WEB.Core
         public static string GetShowReviews(string? id, string? title, DateTime? date) => $"Public/Cache/Reviews/Shows?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}";
     }
 
-    public class CacheFlixsterApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<NewsModel?>(http, memoryCache, "NewsModel")
+    public class CacheFlixsterApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCosmos<NewsModel>(http, memoryCache, null)
     {
         public async Task<NewsModel?> GetNews(string mode, RenderControlCore<NewsModel?>? core)
         {
@@ -30,7 +30,7 @@ namespace SD.WEB.Core
         }
     }
 
-    public class CacheYoutubeApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<TrailerModel?>(http, memoryCache, "TrailerModel")
+    public class CacheYoutubeApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCosmos<TrailerModel>(http, memoryCache, null)
     {
         public async Task<TrailerModel?> GetTrailers(string mode, RenderControlCore<TrailerModel?>? core)
         {
@@ -38,7 +38,7 @@ namespace SD.WEB.Core
         }
     }
 
-    public class CacheRatingsApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<Ratings?>(http, memoryCache, "Ratings")
+    public class CacheRatingsApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCosmos<Ratings>(http, memoryCache, null)
     {
         public async Task<Ratings?> GetMovieRatings(string? id, string? title, DateTime? releaseDate, string? tmdb_rating, RenderControlCore<Ratings?>? core)
         {
@@ -51,7 +51,7 @@ namespace SD.WEB.Core
         }
     }
 
-    public class CacheMetaCriticApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<ReviewModel?>(http, memoryCache, "ReviewModel")
+    public class CacheMetaCriticApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCosmos<ReviewModel>(http, memoryCache, null)
     {
         public async Task<ReviewModel?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, RenderControlCore<ReviewModel?>? core)
         {

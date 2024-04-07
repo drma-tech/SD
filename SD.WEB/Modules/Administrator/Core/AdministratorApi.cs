@@ -3,7 +3,7 @@ using SD.Shared.Models.Support;
 
 namespace SD.WEB.Modules.Administrator.Core
 {
-    public class AdministratorApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache)
+    public class AdministratorApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<EmailDocument>(factory, memoryCache, "EmailDocument")
     {
         private struct Endpoint
         {
@@ -12,19 +12,19 @@ namespace SD.WEB.Modules.Administrator.Core
             public const string SendEmail = "adm/send-email";
         }
 
-        public async Task<List<EmailDocument>> GetEmails()
+        public async Task<HashSet<EmailDocument>> GetEmails()
         {
-            return await GetAsync<List<EmailDocument>>(Endpoint.GetEmails, false) ?? [];
+            return await GetListAsync(Endpoint.GetEmails, null);
         }
 
         public async Task SendEmail(SendEmail inbound)
         {
-            await PostAsync(Endpoint.SendEmail, false, inbound);
+            await PostAsync(Endpoint.SendEmail, null, inbound);
         }
 
         public async Task EmailUpdate(EmailDocument email)
         {
-            await PostAsync(Endpoint.EmailUpdate, false, email);
+            await PostAsync(Endpoint.EmailUpdate, null, email);
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace SD.WEB.Core
+namespace SD.WEB.Core.Api
 {
     public static class ApiHelper
     {

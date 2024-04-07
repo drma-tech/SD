@@ -4,7 +4,7 @@ using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class WishListApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<WishList>(factory, memoryCache, "WishList")
+    public class WishListApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<WishList>(factory, memoryCache, "WishList")
     {
         private struct Endpoint
         {

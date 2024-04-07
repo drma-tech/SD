@@ -21,8 +21,8 @@
         {
             <RadioGroup CheckedValue="TypeSelected" CheckedValueChanged="@(async(MediaType type)=>await TypeSelectedChanged(type))" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is2.FromEnd">
                 <Radio Value="MediaType.movie">@MediaType.movie.GetName()</Radio>
-                    <Radio Value="MediaType.tv">@MediaType.tv.GetName()</Radio>
-                </RadioGroup>
+                <Radio Value="MediaType.tv">@MediaType.tv.GetName()</Radio>
+            </RadioGroup>
         }
     </HeaderComponent>
 }
@@ -64,6 +64,7 @@
     [Parameter] public string? TitleHead { get; set; }
     [Parameter] public bool ShowFilter { get; set; } = false;
     [Parameter] public bool OnlyYear { get; set; } = false;
+    [Parameter] public bool OrderByComments { get; set; } = false;
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; } = null;
@@ -139,6 +140,8 @@
                         Items.Add(item);
                     }
                 }
+
+                if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",").Last() ?? "0")).ToHashSet();
             }
         }
         catch (Exception ex)

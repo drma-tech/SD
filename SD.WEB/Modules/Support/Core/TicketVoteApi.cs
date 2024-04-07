@@ -3,7 +3,7 @@ using SD.Shared.Models.Support;
 
 namespace SD.WEB.Modules.Support.Core
 {
-    public class TicketVoteApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<TicketVoteModel>(http, memoryCache, "TicketVoteModel")
+    public class TicketVoteApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCosmos<TicketVoteModel>(http, memoryCache, "TicketVoteModel")
     {
         private struct Endpoint
         {

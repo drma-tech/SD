@@ -3,7 +3,7 @@ using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class MySuggestionsApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<SD.Shared.Models.MySuggestions>(factory, memoryCache, "MySuggestions")
+    public class MySuggestionsApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<SD.Shared.Models.MySuggestions>(factory, memoryCache, "MySuggestions")
     {
         private struct Endpoint
         {

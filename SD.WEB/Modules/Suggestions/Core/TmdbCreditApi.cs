@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Models.List.Tmdb;
+﻿using SD.Shared.Models.List.Tmdb;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class TmdbCreditApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache)
+    public class TmdbCreditApi(IHttpClientFactory factory) : ApiExternal(factory)
     {
         public async Task<Credits?> GetList(MediaType? type, string? tmdb_id)
         {
@@ -17,11 +16,11 @@ namespace SD.WEB.Modules.Suggestions.Core
 
             if (type == MediaType.movie)
             {
-                return await GetAsync<Credits>(TmdbOptions.BaseUri + $"movie/{tmdb_id}/credits".ConfigureParameters(parameter), true);
+                return await GetAsync<Credits>(TmdbOptions.BaseUri + $"movie/{tmdb_id}/credits".ConfigureParameters(parameter));
             }
             else
             {
-                return await GetAsync<Credits>(TmdbOptions.BaseUri + $"tv/{tmdb_id}/credits".ConfigureParameters(parameter), true);
+                return await GetAsync<Credits>(TmdbOptions.BaseUri + $"tv/{tmdb_id}/credits".ConfigureParameters(parameter));
             }
         }
 
@@ -35,7 +34,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                 { "language", AppStateStatic.Language.GetName(false) ?? "en-US" },
             };
 
-            return await GetAsync<CreditsByPerson>(TmdbOptions.BaseUri + $"person/{person_id}/combined_credits".ConfigureParameters(parameter), true);
+            return await GetAsync<CreditsByPerson>(TmdbOptions.BaseUri + $"person/{person_id}/combined_credits".ConfigureParameters(parameter));
         }
     }
 }

@@ -3,7 +3,7 @@ using SD.Shared.Models.Auth;
 
 namespace SD.WEB.Modules.Auth.Core
 {
-    public class PrincipalApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<ClientePrincipal>(factory, memoryCache, "ClientePrincipal")
+    public class PrincipalApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<ClientePrincipal>(factory, memoryCache, "ClientePrincipal")
     {
         private struct Endpoint
         {

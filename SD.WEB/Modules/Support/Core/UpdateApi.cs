@@ -4,7 +4,7 @@ using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Support.Core
 {
-    public class UpdateApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCore<UpdateModel>(http, memoryCache, "UpdateModel")
+    public class UpdateApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCosmos<UpdateModel>(http, memoryCache, null)
     {
         private struct Endpoint
         {

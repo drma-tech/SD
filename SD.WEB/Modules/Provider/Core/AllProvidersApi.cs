@@ -1,10 +1,9 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.WEB.Shared;
+﻿using SD.WEB.Shared;
 using System.Net.Http.Json;
 
 namespace SD.WEB.Modules.Provider.Core
 {
-    public class AllProvidersApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<AllProviders>(factory, memoryCache, "AllProviders")
+    public class AllProvidersApi(IHttpClientFactory factory) : ApiCore(factory)
     {
         public async Task<AllProviders?> GetAll(RenderControlCore<AllProviders?>? core)
         {

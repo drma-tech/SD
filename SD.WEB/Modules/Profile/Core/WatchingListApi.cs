@@ -4,7 +4,7 @@ using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class WatchingListApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<WatchingList>(factory, memoryCache, "WatchingList")
+    public class WatchingListApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<WatchingList>(factory, memoryCache, "WatchingList")
     {
         private struct Endpoint
         {

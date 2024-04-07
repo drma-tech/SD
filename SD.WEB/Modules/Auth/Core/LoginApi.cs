@@ -3,7 +3,7 @@ using SD.Shared.Models.Auth;
 
 namespace SD.WEB.Modules.Auth.Core
 {
-    public class LoginApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache)
+    public class LoginApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<ClienteLogin>(factory, memoryCache, "ClienteLogin")
     {
         private struct Endpoint
         {
@@ -12,7 +12,7 @@ namespace SD.WEB.Modules.Auth.Core
 
         public async Task Add(string platform)
         {
-            await PostAsync<ClienteLogin>(Endpoint.Add(platform), false, null, null);
+            await PostAsync<ClienteLogin>(Endpoint.Add(platform), null, null);
         }
     }
 }

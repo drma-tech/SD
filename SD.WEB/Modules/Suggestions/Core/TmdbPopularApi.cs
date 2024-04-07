@@ -1,10 +1,9 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Models.List.Tmdb;
+﻿using SD.Shared.Models.List.Tmdb;
 using SD.WEB.Modules.Suggestions.Interface;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class TmdbPopularApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache), IMediaListApi
+    public class TmdbPopularApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
     {
         public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
         {
@@ -18,8 +17,8 @@ namespace SD.WEB.Modules.Suggestions.Core
 
             if (type == null)
             {
-                var movies = await GetAsync<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter), true);
-                var shows = await GetAsync<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter), true);
+                var movies = await GetAsync<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter));
+                var shows = await GetAsync<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter));
 
                 var listOrder = new List<Ordem>();
 
@@ -74,7 +73,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             }
             else if (type == MediaType.movie)
             {
-                var result = await GetAsync<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter), true);
+                var result = await GetAsync<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter));
 
                 foreach (var item in result?.results ?? [])
                 {
@@ -98,7 +97,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             }
             else //if (type == MediaType.tv)
             {
-                var result = await GetAsync<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter), true);
+                var result = await GetAsync<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter));
 
                 foreach (var item in result?.results ?? [])
                 {

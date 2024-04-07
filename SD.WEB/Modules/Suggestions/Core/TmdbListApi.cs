@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Models.List.Tmdb;
+﻿using SD.Shared.Models.List.Tmdb;
 using SD.WEB.Modules.Suggestions.Interface;
 using System.Text.Json;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class TmdbListApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache), IMediaListApi
+    public class TmdbListApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
     {
         public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
         {

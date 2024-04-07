@@ -80,7 +80,7 @@
             <Button Color="Color.Primary" Clicked="async()=>{ await ClearCache(); }" Margin="Margin.Is1.FromEnd">
                 <Blazorise.Icon Name="FontAwesomeIcons.Eraser" /> @Translations.ClearCache
             </Button>
-            <Button Color="Color.Danger" Clicked="async()=>{ await DeleteAccount(principal?.IdentityProvider); }" Disabled="true">
+            <Button Color="Color.Danger" Clicked="async()=>{ await DeleteAccount(principal?.IdentityProvider); }">
                 <Blazorise.Icon Name="FontAwesomeIcons.UserSlash" /> @Translations.DeleteAccount
             </Button>
         </CardBody>
@@ -109,13 +109,11 @@
         {
             if (await MessageService.Confirm(GlobalTranslations.SureDeleteAccount, "Streaming Discovery", (opt) => { opt.ShowMessageIcon = false; }))
             {
+                //remove data from cosmos db
                 await PrincipalApi.Remove();
 
-                // Navigation.NavigateTo("https://identity.azurestaticapps.net/.auth/purge/" + provider);
-
-                Navigation.NavigateTo("/.auth/purge/" + provider);
-
-                //await SignOutManager.SetSignOutState();
+                //remove personal data from the Azure Static Web Apps platform
+                Navigation.NavigateTo("https://identity.azurestaticapps.net/.auth/purge/" + provider);
 
                 await Toast.Success(GlobalTranslations.OperationCompleted);
             }

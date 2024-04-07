@@ -1,35 +1,24 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-
-namespace SD.WEB.Modules.Auth.Core
+﻿namespace SD.WEB.Modules.Auth.Core
 {
-    public class GravatarApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<GravatarRoot>(factory, memoryCache, "Gravatar", true)
+    public class GravatarApi(IHttpClientFactory factory) : ApiExternal(factory)
     {
         public async Task<Gravatar?> GetGravatar(string? email)
         {
             if (string.IsNullOrEmpty(email)) return null;
 
-            Gravatar? result;
             try
             {
-                result = _cache.Get<Gravatar>("empty-gravatar");
-
-                if (result == null)
-                {
-                    var root = await GetAsync($"https://en.gravatar.com/{email.GenerateHash()}.json", null);
-                    result = root?.entry.LastOrDefault();
-                }
+                var root = await GetAsync<GravatarRoot>($"https://en.gravatar.com/{email.GenerateHash()}.json", null);
+                return root?.entry.LastOrDefault();
             }
             catch (Exception)
             {
-                result = new()
+                return new()
                 {
                     displayName = email.Split("@")[0],
                     photos = [new Photo { value = $"https://en.gravatar.com/avatar/{email.GenerateHash()}?d=retro" }]
                 };
-
-                _cache.Set("empty-gravatar", result);
             }
-            return result;
         }
     }
 }

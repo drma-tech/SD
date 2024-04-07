@@ -14,11 +14,11 @@
           Link="https://www.crunchyroll.com/animeawards/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollAnimeoftheYear" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollBestContinuingSeries" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollBestFilm" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

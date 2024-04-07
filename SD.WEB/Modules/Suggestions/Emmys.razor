@@ -14,11 +14,11 @@
 <HeadPage Title="Emmys" ImageSource="logo/emmys.png" Text="@Translations.emmys_desc" Link="https://www.emmys.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingDramaSeries" MaxItens="8" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingComedySeries" MaxItens="7" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingLimitedSeries" MaxItens="11" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

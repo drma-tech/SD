@@ -4,7 +4,7 @@ using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class MyProvidersApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<MyProviders>(factory, memoryCache, "MyProviders")
+    public class MyProvidersApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<MyProviders>(factory, memoryCache, "MyProviders")
     {
         private struct Endpoint
         {

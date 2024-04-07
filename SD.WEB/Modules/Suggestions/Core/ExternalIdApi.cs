@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Models.List.Tmdb;
+﻿using SD.Shared.Models.List.Tmdb;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class ExternalIdApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache)
+    public class ExternalIdApi(IHttpClientFactory factory) : ApiExternal(factory)
     {
         public async Task<string?> GetTmdbId(MediaType? type, string? imdb_id)
         {
@@ -16,7 +15,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                 { "external_source", "imdb_id" }
             };
 
-            var result = await GetAsync<FindByImdb>(TmdbOptions.BaseUri + $"find/{imdb_id}".ConfigureParameters(parameter), true);
+            var result = await GetAsync<FindByImdb>(TmdbOptions.BaseUri + $"find/{imdb_id}".ConfigureParameters(parameter));
             if (type == MediaType.movie)
                 return result?.movie_results.FirstOrDefault()?.id.ToString();
             else
@@ -36,13 +35,13 @@ namespace SD.WEB.Modules.Suggestions.Core
 
             if (type == MediaType.movie)
             {
-                var result = await GetAsync<MovieExternalIds>(TmdbOptions.BaseUri + $"movie/{tmdb_id}/external_ids".ConfigureParameters(parameter), true);
+                var result = await GetAsync<MovieExternalIds>(TmdbOptions.BaseUri + $"movie/{tmdb_id}/external_ids".ConfigureParameters(parameter));
 
                 return result?.imdb_id;
             }
             else
             {
-                var result = await GetAsync<ShowExternalIds>(TmdbOptions.BaseUri + $"tv/{tmdb_id}/external_ids".ConfigureParameters(parameter), true);
+                var result = await GetAsync<ShowExternalIds>(TmdbOptions.BaseUri + $"tv/{tmdb_id}/external_ids".ConfigureParameters(parameter));
 
                 return result?.imdb_id;
             }

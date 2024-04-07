@@ -3,7 +3,7 @@ using SD.Shared.Models.Subscription;
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class PaddleConfigurationApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCore<Configurations>(factory, memoryCache, "PaddleConfigurationApi")
+    public class PaddleConfigurationApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<Configurations>(factory, memoryCache, "PaddleConfigurationApi")
     {
         private struct Endpoint
         {

@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.WEB.Modules.Suggestions.Interface;
+﻿using SD.WEB.Modules.Suggestions.Interface;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class ImdbTopRatedApi(IHttpClientFactory factory, IMemoryCache memoryCache, TmdbListApi tmdbListApi) : ApiServices(factory, memoryCache), IMediaListApi
+    public class ImdbTopRatedApi(IHttpClientFactory factory, TmdbListApi tmdbListApi) : ApiExternal(factory), IMediaListApi
     {
         public Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
         {

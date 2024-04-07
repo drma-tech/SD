@@ -1,10 +1,9 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Models.List.Tmdb;
+﻿using SD.Shared.Models.List.Tmdb;
 using SD.WEB.Modules.Suggestions.Resources;
 
 namespace SD.WEB.Modules.Suggestions.Core
 {
-    public class TmdbApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiServices(factory, memoryCache)
+    public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
     {
         public async Task<MediaDetail> GetMediaDetail(string? tmdb_id, MediaType? type)
         {
@@ -22,7 +21,7 @@ namespace SD.WEB.Modules.Suggestions.Core
 
             if (type == MediaType.movie)
             {
-                var item = await GetAsync<MovieDetail>(TmdbOptions.BaseUri + "movie/" + tmdb_id.ConfigureParameters(parameter), true);
+                var item = await GetAsync<MovieDetail>(TmdbOptions.BaseUri + "movie/" + tmdb_id.ConfigureParameters(parameter));
 
                 if (item != null)
                 {
@@ -63,7 +62,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             }
             else
             {
-                var item = await GetAsync<TVDetail>(TmdbOptions.BaseUri + "tv/" + tmdb_id.ConfigureParameters(parameter), true);
+                var item = await GetAsync<TVDetail>(TmdbOptions.BaseUri + "tv/" + tmdb_id.ConfigureParameters(parameter));
 
                 if (item != null)
                 {
@@ -121,7 +120,7 @@ namespace SD.WEB.Modules.Suggestions.Core
         {
             if (collectionId == null) return default;
 
-            return await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" + collectionId.ConfigureParameters(parameters), true);
+            return await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" + collectionId.ConfigureParameters(parameters));
         }
 
         public async Task<TmdbSeason?> GetSeason(string? tmdbId, int? seasonNumber, Dictionary<string, string> parameters)
@@ -129,7 +128,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             if (tmdbId == null) return default;
             if (seasonNumber == null) return default;
 
-            return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri + $"/tv/{tmdbId}/season/{seasonNumber}".ConfigureParameters(parameters), true);
+            return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri + $"/tv/{tmdbId}/season/{seasonNumber}".ConfigureParameters(parameters));
         }
 
         public async Task<MediaProviders?> GetWatchProvidersList(string? tmdb_id, MediaType? type)
@@ -144,11 +143,11 @@ namespace SD.WEB.Modules.Suggestions.Core
 
             if (type == MediaType.movie)
             {
-                return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"movie/{tmdb_id}/watch/providers".ConfigureParameters(parameter), true);
+                return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"movie/{tmdb_id}/watch/providers".ConfigureParameters(parameter));
             }
             else //tv
             {
-                return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"tv/{tmdb_id}/watch/providers".ConfigureParameters(parameter), true);
+                return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"tv/{tmdb_id}/watch/providers".ConfigureParameters(parameter));
             }
         }
     }
