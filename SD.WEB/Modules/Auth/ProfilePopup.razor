@@ -115,8 +115,11 @@
                 //close popup
                 await ModalService.Hide();
 
-                //remove personal data from the Azure Static Web Apps platform
-                Navigation.NavigateTo("/.auth/purge/" + provider, true);
+                //remove data from azure
+                Navigation.NavigateTo("/.auth/purge/" + provider);
+
+                //close session
+                Navigation.NavigateTo("/.auth/logout", forceLoad: true);
             }
             else
             {
