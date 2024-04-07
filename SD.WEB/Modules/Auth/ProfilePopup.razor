@@ -113,9 +113,7 @@
                 await PrincipalApi.Remove();
 
                 //remove personal data from the Azure Static Web Apps platform
-                Navigation.NavigateTo("https://identity.azurestaticapps.net/.auth/purge/" + provider);
-
-                await Toast.Success(GlobalTranslations.OperationCompleted);
+                Navigation.NavigateTo("/.auth/purge/" + provider);
             }
             else
             {
