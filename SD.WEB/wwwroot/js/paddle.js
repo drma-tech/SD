@@ -2,7 +2,7 @@
     if (window.location.hostname == "localhost" || window.location.hostname.includes("dev.")) {
         Paddle.Environment.set("sandbox");
     }
-    await Paddle.Setup({
+    await Paddle.Initialize({
         token: token,
         eventCallback: function (data) {
             if (data.name == "checkout.completed") {

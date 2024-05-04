@@ -16,7 +16,7 @@
     @if (Client?.ClientePaddle?.IsPaidUser ?? false)
     {
         <Button Float="Float.End" Size="Size.ExtraSmall" Color="(GenresChanged ? Color.Secondary : Color.Primary)" Clicked="@(async()=>await OpenConfigurations())" Disabled="(myProviders == null || myProviders.Items.Empty())" title="Settings">
-            <Blazorise.Icon Name="FontAwesomeIcons.Cog"></Blazorise.Icon>
+            <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
         </Button>
         <RadioGroup CheckedValue="SearchType" CheckedValueChanged="(MediaType type)=>CheckedValueChanged(type)" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is1.FromEnd">
             <Radio Value="MediaType.movie">@(MediaType.movie.GetName())</Radio>
