@@ -212,5 +212,23 @@ namespace SD.WEB.Resources {
                 return ResourceManager.GetString("TypeSomething", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help us reach a larger audience..
+        /// </summary>
+        public static string WriteReviewMessage {
+            get {
+                return ResourceManager.GetString("WriteReviewMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write a review.
+        /// </summary>
+        public static string WriteReviewTitle {
+            get {
+                return ResourceManager.GetString("WriteReviewTitle", resourceCulture);
+            }
+        }
     }
 }
