@@ -339,7 +339,7 @@ namespace SD.API.Functions
 
                     var newModel = new ReviewModel();
 
-                    foreach (var item in obj?.data?.title?.metacritic?.reviews?.edges ?? [])
+                    foreach (var item in obj.data?.title?.metacritic?.reviews?.edges ?? [])
                     {
                         if (item == null) continue;
                         newModel.Items.Add(new Shared.Models.Reviews.Item(item.node?.site, item.node?.url, item.node?.reviewer, item.node?.score, item.node?.quote?.value));

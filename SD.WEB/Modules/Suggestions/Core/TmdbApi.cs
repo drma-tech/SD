@@ -133,8 +133,8 @@ namespace SD.WEB.Modules.Suggestions.Core
 
         public async Task<MediaProviders?> GetWatchProvidersList(string? tmdb_id, MediaType? type)
         {
-            if (tmdb_id == null) throw new ArgumentNullException(nameof(tmdb_id));
-            if (type == null) throw new ArgumentNullException(nameof(type));
+            ArgumentNullException.ThrowIfNull(tmdb_id);
+            ArgumentNullException.ThrowIfNull(type);
 
             var parameter = new Dictionary<string, string>()
             {

@@ -1,6 +1,4 @@
-﻿@page "/edit-providers"
-@inherits PageCore<EditProviders>
-@attribute [Authorize(Roles = "administrator")]
+﻿@inherits ComponentCore<EditProviders>
 
 @using Blazorise.DataGrid
 @using HtmlAgilityPack
@@ -100,7 +98,7 @@
 
     private async Task ShowPopupProvider(ProviderModel item)
     {
-        await ModalService.ProviderPopup(item, null, null, null, true, null, item.id, IsAuthenticated);
+        await ModalService.ProviderPopup(item, null, null, null, true, null, item.id, true);
     }
 
     protected async Task SaveSession()
