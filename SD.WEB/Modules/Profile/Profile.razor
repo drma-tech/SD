@@ -46,10 +46,12 @@
             </Column>
         </Row>
     </Jumbotron>
-    @if (Platform.NotEmpty() && Reviewed.Empty() && (Client != null && Client.DtInsert < DateTimeOffset.UtcNow.AddDays(-7)))
+    @if (Platform.NotEmpty() && Reviewed.Empty() && Client != null
+        && (Client.DtInsert < DateTimeOffset.UtcNow.AddDays(-7))
+        && (Client.ClientePaddle == null || !Client.ClientePaddle.IsPaidUser))
     {
         <Alert Visible="true" Color="Color.Info" Class="mb-3">
-            <AlertMessage>
+            <AlertMessage Display="Display.Inline.OnFullHD.Block.OnMobile">
                 @GlobalTranslations.WriteReviewTitle
             </AlertMessage>
             <AlertDescription>
