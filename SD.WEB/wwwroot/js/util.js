@@ -26,13 +26,16 @@ function SetLocalStorage(key, value) {
     return window.localStorage.setItem(key, value);
 }
 
-function TryDetectWindowsStore() {
-    if (GetLocalStorage('platform')) return; //if populate before, cancel, cause detection only works for first call
+function TryDetectPlatform() {
+    if (GetLocalStorage('platform')) return; //if populate before, cancel, cause detection (windows) only works for first call
 
     let isWindows = document.referrer == "app-info://platform/microsoft-store";
+    let isAndroid = /(android)/i.test(navigator.userAgent);
 
     if (isWindows)
         SetLocalStorage('platform', 'windows');
+    else if (isAndroid)
+        SetLocalStorage('platform', 'play');
     else
         SetLocalStorage('platform', 'webapp');
 }
