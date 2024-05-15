@@ -47,27 +47,36 @@
         </Row>
     </Jumbotron>
     @if (Platform.NotEmpty() && Reviewed.Empty() && Client != null
-        && (Client.DtInsert < DateTimeOffset.UtcNow.AddDays(-7))
-        && (Client.ClientePaddle == null || !Client.ClientePaddle.IsPaidUser))
+     && (Client.DtInsert < DateTimeOffset.UtcNow.AddDays(-7))
+     && (Client.ClientePaddle == null || !Client.ClientePaddle.IsPaidUser))
     {
         <Alert Visible="true" Color="Color.Info" Class="mb-3">
-            <AlertMessage Display="Display.Inline.OnFullHD.Block.OnMobile">
+            <AlertMessage Display="Display.Inline.OnTablet.Block.OnMobile">
                 @GlobalTranslations.WriteReviewTitle
             </AlertMessage>
             <AlertDescription>
-                @GlobalTranslations.WriteReviewMessage
-                <Button Color="Color.Secondary" Size="Size.Small" Clicked="SetReviewed"
-                        To="https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa" Type="ButtonType.Link" Target="Target.Blank">
-                    <Image Source="/logo/google-play.png" Width="Width.Px(16)"></Image> Google Play
-                </Button>
-                <Button Color="Color.Secondary" Size="Size.Small" Clicked="SetReviewed"
-                        To="https://apps.microsoft.com/detail/9PB1PKRDD8L0" Type="ButtonType.Link" Target="Target.Blank">
-                    <Image Source="/logo/microsoft-store.png" Width="Width.Px(16)"></Image> Microsoft Store
-                </Button>
-                <Button Color="Color.Secondary" Size="Size.Small" Clicked="SetReviewed"
-                        To="https://www.trustpilot.com/review/streamingdiscovery.com" Type="ButtonType.Link" Target="Target.Blank">
-                    <Image Source="/logo/trustpilot.png" Width="Width.Px(16)"></Image> Trustpilot
-                </Button>
+                <Span Margin="Margin.Is2.FromEnd">@GlobalTranslations.WriteReviewMessage</Span>
+                @if (Platform == "play")
+                {
+                    <Button Color="Color.Secondary" Size="Size.Small" Clicked="SetReviewed"
+                            To="https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa" Type="ButtonType.Link" Target="Target.Blank">
+                        <Image Source="/logo/google-play.png" Width="Width.Px(16)"></Image> Google Play
+                    </Button>
+                }
+                @if (Platform == "windows")
+                {
+                    <Button Color="Color.Secondary" Size="Size.Small" Clicked="SetReviewed"
+                            To="https://apps.microsoft.com/detail/9PB1PKRDD8L0" Type="ButtonType.Link" Target="Target.Blank">
+                        <Image Source="/logo/microsoft-store.png" Width="Width.Px(16)"></Image> Microsoft Store
+                    </Button>
+                }
+                @if (Platform == "webapp")
+                {
+                    <Button Color="Color.Secondary" Size="Size.Small" Clicked="SetReviewed"
+                            To="https://www.trustpilot.com/review/streamingdiscovery.com" Type="ButtonType.Link" Target="Target.Blank">
+                        <Image Source="/logo/trustpilot.png" Width="Width.Px(16)"></Image> Trustpilot
+                    </Button>
+                }
             </AlertDescription>
         </Alert>
     }
