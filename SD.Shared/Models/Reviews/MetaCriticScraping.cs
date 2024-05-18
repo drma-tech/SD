@@ -338,7 +338,7 @@
         public string? url { get; set; }
         public object? description { get; set; }
         public int? duration { get; set; }
-        public DateTime originalAirDate { get; set; }
+        //public DateTime originalAirDate { get; set; }
         public int? seasonNumber { get; set; }
         public int? episodeNumber { get; set; }
         public List<Image> images { get; set; } = [];
