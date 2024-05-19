@@ -11,12 +11,6 @@
         <Alert Color="Color.Info" Visible="true" Margin="Margin.Is2.FromBottom">
             <AlertMessage>
                 @item.Title
-                @if (item.IsNew)
-                {
-                    <Badge Color="Color.Danger" Float="Float.End">
-                        @WEB.Resources.Button.New
-                    </Badge>
-                }
             </AlertMessage>
         </Alert>
         <Paragraph Margin="Margin.Is2.OnY" TextAlignment="TextAlignment.Justified">
@@ -26,20 +20,11 @@
 </RenderControl>
 
 @code {
-    [Parameter] public HashSet<UpdateModel> Updates { get; set; } = [];
-    [Parameter] public RenderControlCore<HashSet<UpdateModel>> Core { get; set; } = new();
+    public HashSet<UpdateModel> Updates { get; set; } = [];
+    public RenderControlCore<HashSet<UpdateModel>> Core { get; set; } = new();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task LoadDataRender()
     {
-        await Task.Delay(2000).ContinueWith(async (task) =>
-        {
-            await JsRuntime.InvokeAsync<string>("SetLocalStorage", "updates-date", DateTime.Now.Ticks);
-            foreach (var item in Updates)
-            {
-                item.IsNew = false;
-                UpdateApi.DataChanged?.Invoke(item);
-            }
-            StateHasChanged();
-        });
+        Updates = await UpdateApi.Get(Core);
     }
 }

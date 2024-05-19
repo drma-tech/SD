@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SD.Shared.Models.Support
 {
@@ -7,7 +6,6 @@ namespace SD.Shared.Models.Support
     {
         public UpdateModel() : base(DocumentType.Update)
         {
-            IsNew = Date > DateTime.Now.AddMonths(-3);
         }
 
         [Required]
@@ -19,9 +17,6 @@ namespace SD.Shared.Models.Support
         public string? Description { get; set; }
 
         public DateTime Date { get; set; } = DateTime.Now;
-
-        [NotMapped]
-        public bool IsNew { get; set; }
 
         public void Initialize()
         {

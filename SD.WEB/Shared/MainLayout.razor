@@ -12,7 +12,6 @@
 @inject INotificationService Toast
 @inject IJSRuntime JsRuntime
 @inject TicketApi TicketApi
-@inject UpdateApi UpdateApi
 
 <MediaQueryList>
     <Div Position="Position.Relative">
@@ -111,12 +110,6 @@
                 <Tab Name="Home">@SD.WEB.Modules.Support.Resources.Translations.Home</Tab>
                 <Tab Name="Updates">
                     @SD.WEB.Modules.Support.Resources.Translations.Updates
-                    @if (Updates.Any(a => a.IsNew))
-                    {
-                        <Badge Color="Color.Danger">
-                            @Updates.Count(c => c.IsNew)
-                        </Badge>
-                    }
                 </Tab>
                 <Tab Name="Feedback">@SD.WEB.Modules.Support.Resources.Translations.Feedback</Tab>
             </Items>
@@ -125,7 +118,7 @@
                     <DownloadComponent></DownloadComponent>
                 </TabPanel>
                 <TabPanel Name="Updates" Padding="Padding.Is3.FromTop">
-                    <AnnouncementComponent Updates="Updates" Core="UpdateCore"></AnnouncementComponent>
+                    <AnnouncementComponent></AnnouncementComponent>
                 </TabPanel>
                 <TabPanel Name="Feedback" Padding="Padding.Is3.FromTop">
                     <FeedbackComponent IsAuthenticated="IsAuthenticated" UserId="UserId"></FeedbackComponent>
@@ -137,9 +130,6 @@
 
 @code {
     [CascadingParameter] protected Task<AuthenticationState> authenticationState { get; set; } = default!;
-
-    public HashSet<UpdateModel> Updates { get; set; } = [];
-    public RenderControlCore<HashSet<UpdateModel>> UpdateCore { get; set; } = new();
 
     public string? Tab { get; set; } = "Home";
     public string GetMargin => "me-4 mb-lg-4 mb-6";
@@ -156,15 +146,6 @@
         Navigation.LocationChanged += OnLocationChanged;
         AppStateStatic.ShowError = async (msg) => { await Toast.Error(msg); };
         AppStateStatic.ShowFeedback = (show) => { ShowFeedback(show); };
-        UpdateApi.DataChanged += (UpdateModel? model) =>
-        {
-            var item = Updates.FirstOrDefault(f => f.Id == model?.Id);
-            if (item != null)
-            {
-                item = model;
-            }
-            StateHasChanged();
-        };
 
         ChangeCurrentButton(Navigation.Uri);
 
@@ -173,37 +154,17 @@
 
     protected bool IsAuthenticated { get; set; } = false;
     protected string? UserId { get; set; }
+    public ClaimsPrincipal? User { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        if (authenticationState is not null)
+        if (User == null && authenticationState is not null)
         {
             var authState = await authenticationState;
 
-            var User = authState?.User;
+            User = authState?.User;
             IsAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
             UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        }
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        Updates = await UpdateApi.Get(UpdateCore);
-
-        try
-        {
-            var date = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "updates-date");
-            foreach (var item in Updates)
-            {
-                if (date.NotEmpty() && long.Parse(date) > item.Date.Ticks)
-                {
-                    item.IsNew = false;
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
         }
     }
 

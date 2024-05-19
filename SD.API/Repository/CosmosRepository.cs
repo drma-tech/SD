@@ -45,7 +45,9 @@ namespace SD.API.Repository
 
         public async Task<List<T>> ListAll<T>(DocumentType Type, CancellationToken cancellationToken) where T : MainDocument
         {
-            var query = Container.GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetDefaultOptions(null)).Where(item => item.Type == Type);
+            var query = Container
+                .GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetDefaultOptions(null))
+                .Where(item => item.Type == Type);
 
             using var iterator = query.ToFeedIterator();
             var results = new List<T>();
@@ -60,7 +62,7 @@ namespace SD.API.Repository
 
             if (charges > 5)
             {
-                _logger.LogWarning("ListAll - Type {0}, RequestCharge {1}", Type.ToString(), charges);
+                _logger.LogWarning("ListAll - Type {Type}, RequestCharge {Charges}", Type.ToString(), charges);
             }
 
             return results;
@@ -68,8 +70,9 @@ namespace SD.API.Repository
 
         public async Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, PartitionKey? key, DocumentType Type, CancellationToken cancellationToken) where T : MainDocument
         {
-            var query = Container.GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetDefaultOptions(key))
-                     .Where(predicate.Compose(item => item.Type == Type, Expression.AndAlso));
+            var query = Container
+                .GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetDefaultOptions(key))
+                .Where(predicate.Compose(item => item.Type == Type, Expression.AndAlso));
 
             using var iterator = query.ToFeedIterator();
             var results = new List<T>();
@@ -84,7 +87,7 @@ namespace SD.API.Repository
 
             if (charges > 5)
             {
-                _logger.LogWarning("Query - Type {0}, RequestCharge {1}", Type.ToString(), charges);
+                _logger.LogWarning("Query - Type {Type}, RequestCharge {Charges}", Type.ToString(), charges);
             }
 
             return results;
@@ -96,7 +99,7 @@ namespace SD.API.Repository
 
             if (response.RequestCharge > 20)
             {
-                _logger.LogWarning("Upsert - ID {0}, Key {1}, RequestCharge {2}", item.Id, item.Key, response.RequestCharge);
+                _logger.LogWarning("Upsert - ID {Id}, Key {Key}, RequestCharge {Charges}", item.Id, item.Key, response.RequestCharge);
             }
 
             return response.Resource;
@@ -110,7 +113,7 @@ namespace SD.API.Repository
 
             if (response.RequestCharge > 20)
             {
-                _logger.LogWarning("PatchItem - ID {0}, Key {1}, RequestCharge {2}", id, key, response.RequestCharge);
+                _logger.LogWarning("PatchItem - ID {Id}, Key {Key}, RequestCharge {Charges}", id, key, response.RequestCharge);
             }
 
             return response.Resource;
@@ -122,7 +125,7 @@ namespace SD.API.Repository
 
             if (response.RequestCharge > 8)
             {
-                _logger.LogWarning("Delete - ID {0}, Key {1}, RequestCharge {2}", item.Id, item.Key, response.RequestCharge);
+                _logger.LogWarning("Delete - ID {Id}, Key {Key}, RequestCharge {Charges}", item.Id, item.Key, response.RequestCharge);
             }
 
             return response.StatusCode == System.Net.HttpStatusCode.OK;
@@ -143,13 +146,19 @@ namespace SD.API.Repository
         public static QueryRequestOptions? GetDefaultOptions(PartitionKey? key)
         {
             if (key == null)
-                return null;
+                return new QueryRequestOptions()
+                {
+                    //https://learn.microsoft.com/en-us/training/modules/measure-index-azure-cosmos-db-sql-api/4-measure-query-cost
+                    MaxItemCount = 5, //max itens per page
+                    //https://learn.microsoft.com/en-us/training/modules/measure-index-azure-cosmos-db-sql-api/2-enable-indexing-metrics
+                    PopulateIndexMetrics = false //enable only when analysing metrics
+                };
             else
                 return new QueryRequestOptions()
                 {
                     PartitionKey = key,
                     //https://learn.microsoft.com/en-us/training/modules/measure-index-azure-cosmos-db-sql-api/4-measure-query-cost
-                    MaxItemCount = 10, //max itens per page
+                    MaxItemCount = 5, //max itens per page
                     //https://learn.microsoft.com/en-us/training/modules/measure-index-azure-cosmos-db-sql-api/2-enable-indexing-metrics
                     PopulateIndexMetrics = false //enable only when analysing metrics
                 };
