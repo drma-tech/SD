@@ -60,7 +60,7 @@ namespace SD.API.Repository
                 results.AddRange(response.Resource);
             }
 
-            if (charges > 5)
+            if (charges > 6)
             {
                 _logger.LogWarning("ListAll - Type {Type}, RequestCharge {Charges}", Type.ToString(), charges);
             }
@@ -85,7 +85,7 @@ namespace SD.API.Repository
                 results.AddRange(response.Resource);
             }
 
-            if (charges > 5)
+            if (charges > 6)
             {
                 _logger.LogWarning("Query - Type {Type}, RequestCharge {Charges}", Type.ToString(), charges);
             }
@@ -145,23 +145,16 @@ namespace SD.API.Repository
     {
         public static QueryRequestOptions? GetDefaultOptions(PartitionKey? key)
         {
-            if (key == null)
-                return new QueryRequestOptions()
-                {
-                    //https://learn.microsoft.com/en-us/training/modules/measure-index-azure-cosmos-db-sql-api/4-measure-query-cost
-                    MaxItemCount = 5, //max itens per page
-                    //https://learn.microsoft.com/en-us/training/modules/measure-index-azure-cosmos-db-sql-api/2-enable-indexing-metrics
-                    PopulateIndexMetrics = false //enable only when analysing metrics
-                };
-            else
-                return new QueryRequestOptions()
-                {
-                    PartitionKey = key,
-                    //https://learn.microsoft.com/en-us/training/modules/measure-index-azure-cosmos-db-sql-api/4-measure-query-cost
-                    MaxItemCount = 5, //max itens per page
-                    //https://learn.microsoft.com/en-us/training/modules/measure-index-azure-cosmos-db-sql-api/2-enable-indexing-metrics
-                    PopulateIndexMetrics = false //enable only when analysing metrics
-                };
+            return new QueryRequestOptions()
+            {
+                PartitionKey = key,
+
+                //https://learn.microsoft.com/en-us/training/modules/measure-index-azure-cosmos-db-sql-api/4-measure-query-cost
+                MaxItemCount = 10, // - max itens per page
+
+                //https://learn.microsoft.com/en-us/training/modules/measure-index-azure-cosmos-db-sql-api/2-enable-indexing-metrics
+                PopulateIndexMetrics = false //enable only when analysing metrics
+            };
         }
     }
 }
