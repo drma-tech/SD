@@ -1,5 +1,5 @@
-﻿@page "/suggestions/movies-2024"
-<SeoHeader Title="Suggestions | Most Expected Movies of 2024" Keywords="@(new []{"Rotten Tomatoes"})" Url="/suggestions/movies-2024"></SeoHeader>
+﻿@page "/suggestions/movies-2025"
+<SeoHeader Title="Suggestions | Most Expected Movies of 2025" Keywords="@(new []{"Rotten Tomatoes"})" Url="/suggestions/movies-2025"></SeoHeader>
 @inherits PageCore<Movies2024>
 
 @using SD.WEB.Modules.Profile.Core
@@ -10,7 +10,7 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2024" MaxItens="33" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2025" MaxItens="30" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaListFull>
 
 @code {

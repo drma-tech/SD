@@ -104,6 +104,9 @@
         [Custom(Name = "Most Expected Movies of 2024")]
         ExpectedMovieOf2024 = 8232490,
 
+        [Custom(Name = "Most Expected Movies of 2025")]
+        ExpectedMovieOf2025 = 8300898,
+
         [Custom(Name = "Best Movies")]
         FilmaffinityBestMovies = 8232832,
 
