@@ -45,7 +45,10 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddPWAUpdater();
     collection.AddMediaQueryService();
     collection.AddMemoryCache();
-    collection.AddBlazorApplicationInsights((opt) => { opt.ConnectionString = "dde77532-45dc-4f8d-818e-5c035d3cc293"; });
+    collection.AddBlazorApplicationInsights((opt) =>
+    {
+        opt.ConnectionString = "InstrumentationKey=dde77532-45dc-4f8d-818e-5c035d3cc293;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/;ApplicationId=556d8113-d6a8-40f1-8f50-51378200c760";
+    });
 
     collection.AddHttpClient("RetryHttpClient", c => { c.BaseAddress = new Uri(baseAddress); })
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
