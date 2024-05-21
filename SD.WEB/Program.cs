@@ -1,4 +1,5 @@
 using AzureStaticWebApps.Blazor.Authentication;
+using BlazorApplicationInsights;
 using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
@@ -44,6 +45,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddPWAUpdater();
     collection.AddMediaQueryService();
     collection.AddMemoryCache();
+    collection.AddBlazorApplicationInsights((opt) => { opt.ConnectionString = "dde77532-45dc-4f8d-818e-5c035d3cc293"; });
 
     collection.AddHttpClient("RetryHttpClient", c => { c.BaseAddress = new Uri(baseAddress); })
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
