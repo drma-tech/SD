@@ -47,7 +47,6 @@
         </Row>
     </Jumbotron>
     @if (Platform.NotEmpty() && Reviewed.Empty() && Client != null
-     && (Client.DtInsert < DateTimeOffset.UtcNow.AddDays(-7))
      && (Client.ClientePaddle == null || !Client.ClientePaddle.IsPaidUser))
     {
         <Alert Visible="true" Color="Color.Info" Class="mb-3">
