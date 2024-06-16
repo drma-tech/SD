@@ -11,13 +11,13 @@
 	<ItemGroup>
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
 		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
-		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.40.0" />
+		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.41.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.22.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.2.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.17.2" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
-		<PackageReference Include="StrongGrid" Version="0.107.0" />
+		<PackageReference Include="StrongGrid" Version="0.108.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\SD.Shared\SD.Shared.csproj" />
