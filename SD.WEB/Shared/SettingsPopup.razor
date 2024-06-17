@@ -1,0 +1,44 @@
+﻿@using SD.WEB.Modules.Profile
+@inherits ComponentCore<SettingsPopup>
+
+<ModalHeader>
+    <ModalTitle Size="HeadingSize.Is5">@GlobalTranslations.Settings</ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    <FieldSelect For="@(() => AppStateStatic.Region)" TValue="Region" TEnum="Region" SelectedValue="@AppStateStatic.Region" SelectedValueChanged="RegionValueChanged"
+                 CssIcon="@FontAwesomeIcons.MapLocation" Order="(o)=>o.Name"></FieldSelect>
+    <FieldSelect For="@(() => AppStateStatic.Language)" TValue="Language" TEnum="Language" SelectedValue="@AppStateStatic.Language" SelectedValueChanged="LanguageValueChanged"
+                 CssIcon="@FontAwesomeIcons.Language" Order="(o)=>o.Name"></FieldSelect>
+</ModalBody>
+<ModalFooter>
+    <Button Color="Color.Secondary" Clicked="@(()=>{ModalService.Hide();})" Size="Size.Small">
+        @WEB.Resources.Button.Close
+    </Button>
+</ModalFooter>
+
+@code {
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        var region = Navigation?.QueryString("region");
+
+        if (!string.IsNullOrEmpty(region))
+        {
+            AppStateStatic.ChangeRegion((Region)Enum.Parse(typeof(Region), region));
+        }
+    }
+
+    protected void RegionValueChanged(Region value)
+    {
+        AppStateStatic.ChangeRegion(value);
+
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("region", value.GetName(false)));
+    }
+
+    protected void LanguageValueChanged(Language value)
+    {
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("language", value.GetName(false)), forceLoad: true);
+    }
+}

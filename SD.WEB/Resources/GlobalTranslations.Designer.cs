@@ -115,6 +115,24 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Most languages ​​are only for films/series (not for the website).
+        /// </summary>
+        public static string LanguageDescription {
+            get {
+                return ResourceManager.GetString("LanguageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation cancelled!.
         /// </summary>
         public static string OperationCanceled {
@@ -169,6 +187,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Region.
+        /// </summary>
+        public static string Region {
+            get {
+                return ResourceManager.GetString("Region", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove Collection.
         /// </summary>
         public static string RemoveCollection {
@@ -183,6 +210,15 @@ namespace SD.WEB.Resources {
         public static string SeeAllItems {
             get {
                 return ResourceManager.GetString("SeeAllItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         

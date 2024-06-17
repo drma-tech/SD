@@ -124,6 +124,15 @@ namespace SD.WEB.Core
             }, Options(ModalSize.Default));
         }
 
+        public static async Task SettingsPopup(this IModalService service)
+        {
+            await service.Show<SettingsPopup>(null, x =>
+            {
+                //x.Add(x => x.MySuggestions, MySuggestions);
+                //x.Add(x => x.MySuggestionsChanged, MySuggestionsChanged);
+            }, Options(ModalSize.Default));
+        }
+
         public static async Task MyWatchingListPopup(this IModalService service, RenderControlCore<WatchingList?>? Core, MediaType MediaType,
             WatchedList? watched, WatchingList? watching, WishList? wish, bool showPrivateAction, bool IsAuthenticated, string? UserId)
         {

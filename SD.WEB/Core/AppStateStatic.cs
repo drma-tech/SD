@@ -8,8 +8,12 @@ namespace SD.WEB.Core
     {
         public static List<LogContainer> Logs { get; private set; } = [];
 
+        [Custom(Name = "Region", ResourceType = typeof(GlobalTranslations))]
         public static Region Region { get; private set; }
+
+        [Custom(Name = "Language", Description = "LanguageDescription", ResourceType = typeof(GlobalTranslations))]
         public static Language Language { get; private set; }
+
         public static Bar? Sidebar { get; set; }
 
         public static Action? RegionChanged { get; set; }
