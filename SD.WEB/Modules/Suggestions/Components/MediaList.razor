@@ -157,19 +157,26 @@
 
     private async Task OpenPopupMedia(MediaDetail? media)
     {
-        var tmdb_id = "";
-
-        if (IsIMDB)
+        try
         {
-            //for now, only tv series (imdb) need this kind of workaround (tmdb api only work with imdb id from movies - not documented)
-            tmdb_id = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id);
-        }
-        else
-        {
-            tmdb_id = media?.tmdb_id;
-        }
+            var tmdb_id = "";
 
-        await ModalService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdb_id, ShowPrivateAction, IsAuthenticated);
+            if (IsIMDB)
+            {
+                //for now, only tv series (imdb) need this kind of workaround (tmdb api only work with imdb id from movies - this info is not documented)
+                tmdb_id = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id);
+            }
+            else
+            {
+                tmdb_id = media?.tmdb_id;
+            }
+
+            await ModalService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdb_id, ShowPrivateAction, IsAuthenticated);
+        }
+        catch (Exception ex)
+        {
+            Core?.ShowError(ex.Message);
+        }
     }
 
     void IDisposable.Dispose()

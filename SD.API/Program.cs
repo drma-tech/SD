@@ -27,7 +27,7 @@ var host = new HostBuilder()
     .ConfigureLogging(ConfigureLogging)
     .Build();
 
-host.Run();
+await host.RunAsync();
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {

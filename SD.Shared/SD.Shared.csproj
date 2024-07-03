@@ -5,7 +5,7 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-	  <PackageReference Include="StrongGrid" Version="0.108.0" />
+	  <PackageReference Include="StrongGrid" Version="0.109.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="Models\Support\Resources\TicketModel.Designer.cs">
