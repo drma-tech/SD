@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using SD.API.Repository.Core;
 
 namespace SD.API.Repository
 {
@@ -23,7 +24,7 @@ namespace SD.API.Repository
         {
             try
             {
-                var response = await Container.ReadItemAsync<CacheDocument<TData>?>(key, new PartitionKey(key), null, cancellationToken);
+                var response = await Container.ReadItemAsync<CacheDocument<TData>?>(key, new PartitionKey(key), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
                 if (response.RequestCharge > 1.7)
                 {
@@ -40,7 +41,7 @@ namespace SD.API.Repository
 
         public async Task<CacheDocument<TData>?> Add<TData>(CacheDocument<TData> cache, CancellationToken cancellationToken) where TData : class
         {
-            var response = await Container.UpsertItemAsync(cache, new PartitionKey(cache.Key), null, cancellationToken);
+            var response = await Container.UpsertItemAsync(cache, new PartitionKey(cache.Key), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
             if (response.RequestCharge > 12)
             {

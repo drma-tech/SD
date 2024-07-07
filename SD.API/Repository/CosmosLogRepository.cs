@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
+using SD.API.Repository.Core;
 
 namespace SD.API.Repository
 {
@@ -34,7 +35,7 @@ namespace SD.API.Repository
 
         public async Task Add(LogModel log)
         {
-            await Container.CreateItemAsync(log, new PartitionKey(log.Key), null);
+            await Container.CreateItemAsync(log, new PartitionKey(log.Key), CosmosRepositoryExtensions.GetItemRequestOptions());
         }
     }
 }

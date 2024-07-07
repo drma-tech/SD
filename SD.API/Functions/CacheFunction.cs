@@ -28,34 +28,34 @@ namespace SD.API.Functions
                     var obj = await ApiStartup.HttpClient.GetNewsByFlixter<Flixster>(cancellationToken);
                     if (obj == null) return null;
 
-                    //compact
-
-                    var compactModels = new NewsModel();
-
-                    foreach (var item in obj.data?.newsStories.Take(8) ?? [])
-                    {
-                        if (item == null) continue;
-                        compactModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
-                    }
-
-                    var compactResult = await cacheRepo.Add(new FlixsterCache(compactModels, "lastnews_compact"), cancellationToken);
-
-                    //full
-
-                    var fullModels = new NewsModel();
-
-                    foreach (var item in obj.data?.newsStories ?? Enumerable.Empty<NewsStory>())
-                    {
-                        if (item == null) continue;
-                        fullModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
-                    }
-
-                    var fullResult = await cacheRepo.Add(new FlixsterCache(fullModels, "lastnews_full"), cancellationToken);
-
                     if (mode == "compact")
+                    {
+                        var compactModels = new NewsModel();
+
+                        foreach (var item in obj.data?.newsStories.Take(8) ?? [])
+                        {
+                            if (item == null) continue;
+                            compactModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
+                        }
+
+                        var compactResult = await cacheRepo.Add(new FlixsterCache(compactModels, "lastnews_compact"), cancellationToken);
+
                         return compactResult?.Data;
+                    }
                     else
+                    {
+                        var fullModels = new NewsModel();
+
+                        foreach (var item in obj.data?.newsStories ?? Enumerable.Empty<NewsStory>())
+                        {
+                            if (item == null) continue;
+                            fullModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
+                        }
+
+                        var fullResult = await cacheRepo.Add(new FlixsterCache(fullModels, "lastnews_full"), cancellationToken);
+
                         return fullResult?.Data;
+                    }
                 }
                 else
                 {
@@ -85,34 +85,34 @@ namespace SD.API.Functions
                     var obj = await ApiStartup.HttpClient.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
                     if (obj == null) return null;
 
-                    //compact
-
-                    var compactModels = new TrailerModel();
-
-                    foreach (var item in obj.contents.Take(8).Select(s => s.video))
-                    {
-                        if (item == null) continue;
-                        compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url));
-                    }
-
-                    var compactResult = await cacheRepo.Add(new YoutubeCache(compactModels, "lasttrailers_compact"), cancellationToken);
-
-                    //full
-
-                    var fullModels = new TrailerModel();
-
-                    foreach (var item in obj.contents.Select(s => s.video))
-                    {
-                        if (item == null) continue;
-                        fullModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[2].url));
-                    }
-
-                    var fullResult = await cacheRepo.Add(new YoutubeCache(fullModels, "lasttrailers_full"), cancellationToken);
-
                     if (mode == "compact")
+                    {
+                        var compactModels = new TrailerModel();
+
+                        foreach (var item in obj.contents.Take(8).Select(s => s.video))
+                        {
+                            if (item == null) continue;
+                            compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url));
+                        }
+
+                        var compactResult = await cacheRepo.Add(new YoutubeCache(compactModels, "lasttrailers_compact"), cancellationToken);
+
                         return compactResult?.Data;
+                    }
                     else
+                    {
+                        var fullModels = new TrailerModel();
+
+                        foreach (var item in obj.contents.Select(s => s.video))
+                        {
+                            if (item == null) continue;
+                            fullModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[2].url));
+                        }
+
+                        var fullResult = await cacheRepo.Add(new YoutubeCache(fullModels, "lasttrailers_full"), cancellationToken);
+
                         return fullResult?.Data;
+                    }
                 }
                 else
                 {
@@ -143,34 +143,34 @@ namespace SD.API.Functions
                     var obj = scraping.GetMovieData();
                     if (obj == null) return null;
 
-                    //compact
-
-                    var compactModels = new MostPopularData() { ErrorMessage = obj.ErrorMessage };
-
-                    foreach (var item in obj.Items.Take(10))
-                    {
-                        if (item == null) continue;
-                        compactModels.Items.Add(item);
-                    }
-
-                    var compactResult = await cacheRepo.Add(new MostPopularDataCache(compactModels, "popularmovies_compact"), cancellationToken);
-
-                    //full
-
-                    var fullModels = new MostPopularData() { ErrorMessage = obj.ErrorMessage };
-
-                    foreach (var item in obj.Items)
-                    {
-                        if (item == null) continue;
-                        fullModels.Items.Add(item);
-                    }
-
-                    var fullResult = await cacheRepo.Add(new MostPopularDataCache(fullModels, "popularmovies_full"), cancellationToken);
-
                     if (mode == "compact")
+                    {
+                        var compactModels = new MostPopularData() { ErrorMessage = obj.ErrorMessage };
+
+                        foreach (var item in obj.Items.Take(10))
+                        {
+                            if (item == null) continue;
+                            compactModels.Items.Add(item);
+                        }
+
+                        var compactResult = await cacheRepo.Add(new MostPopularDataCache(compactModels, "popularmovies_compact"), cancellationToken);
+
                         return compactResult?.Data;
+                    }
                     else
+                    {
+                        var fullModels = new MostPopularData() { ErrorMessage = obj.ErrorMessage };
+
+                        foreach (var item in obj.Items)
+                        {
+                            if (item == null) continue;
+                            fullModels.Items.Add(item);
+                        }
+
+                        var fullResult = await cacheRepo.Add(new MostPopularDataCache(fullModels, "popularmovies_full"), cancellationToken);
+
                         return fullResult?.Data;
+                    }
                 }
                 else
                 {

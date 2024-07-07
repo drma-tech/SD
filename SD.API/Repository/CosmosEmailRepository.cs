@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Configuration;
+using SD.API.Repository.Core;
 using SD.Shared.Models.Support;
 using System.Linq.Expressions;
 
@@ -22,7 +23,7 @@ namespace SD.API.Repository
         {
             try
             {
-                var response = await Container.ReadItemAsync<EmailDocument?>(key, new PartitionKey(key), null, cancellationToken);
+                var response = await Container.ReadItemAsync<EmailDocument?>(key, new PartitionKey(key), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
                 return response.Resource;
             }
@@ -63,7 +64,7 @@ namespace SD.API.Repository
 
         public async Task<EmailDocument?> Upsert(EmailDocument email, CancellationToken cancellationToken)
         {
-            var response = await Container.UpsertItemAsync(email, new PartitionKey(email.Key), null, cancellationToken);
+            var response = await Container.UpsertItemAsync(email, new PartitionKey(email.Key), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
             return response.Resource;
         }
