@@ -6,12 +6,20 @@ namespace SD.API.Repository.Core
     {
         public static ItemRequestOptions? GetItemRequestOptions()
         {
-            return null;
+            return new ItemRequestOptions
+            {
+                //to this work, the changes need to be made by frontend
+                //EnableContentResponseOnWrite = false
+            };
         }
 
         public static PatchItemRequestOptions? GetPatchItemRequestOptions()
         {
-            return null;
+            return new PatchItemRequestOptions
+            {
+                //to this work, the changes need to be made by frontend
+                //EnableContentResponseOnWrite = false
+            };
         }
 
         public static QueryRequestOptions? GetQueryRequestOptions(PartitionKey? key, bool enableMetrics)

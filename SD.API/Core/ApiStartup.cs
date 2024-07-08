@@ -20,7 +20,10 @@ namespace SD.API.Core
                 SerializerOptions = new CosmosSerializationOptions()
                 {
                     PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-                }
+                },
+
+                //https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/sdk-connection-modes
+                //ConnectionMode = ConnectionMode.Gateway // ConnectionMode.Direct is the default
             });
         }
     }
