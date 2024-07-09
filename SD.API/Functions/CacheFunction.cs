@@ -12,12 +12,6 @@ namespace SD.API.Functions
 {
     public class CacheFunction(CosmosCacheRepository cacheRepo)
     {
-        [Function("WarmUp")]
-        public static void WarmUp([TimerTrigger("0 */15 * * * *")] TimerInfo timer)
-        {
-            //do nothing
-        }
-
         //[OpenApiOperation("CacheNew", "Rapid API (json)", Description = "flixster / cached - one_day")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<NewsModel>))]
         [Function("CacheNew")]
