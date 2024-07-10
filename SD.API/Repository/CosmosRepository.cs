@@ -11,7 +11,6 @@ namespace SD.API.Repository
     {
         public Container Container { get; private set; }
         private readonly ILogger<CosmosRepository> _logger;
-        private readonly bool enableMetrics = false;
 
         public CosmosRepository(IConfiguration config, ILogger<CosmosRepository> logger)
         {
@@ -19,7 +18,6 @@ namespace SD.API.Repository
 
             var databaseId = config.GetValue<string>("RepositoryOptions_DatabaseId");
             var containerId = config.GetValue<string>("RepositoryOptions_ContainerId");
-            //enableMetrics = config.GetValue<bool>("RepositoryOptions_PopulateIndexMetrics");
 
             Container = ApiStartup.CosmosClient.GetContainer(databaseId, containerId);
         }
@@ -48,7 +46,7 @@ namespace SD.API.Repository
         public async Task<List<T>> ListAll<T>(DocumentType Type, CancellationToken cancellationToken) where T : MainDocument
         {
             var query = Container
-                .GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetQueryRequestOptions(null, enableMetrics))
+                .GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetQueryRequestOptions(null))
                 .Where(item => item.Type == Type);
 
             using var iterator = query.ToFeedIterator();
@@ -73,7 +71,7 @@ namespace SD.API.Repository
         public async Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, PartitionKey? key, DocumentType Type, CancellationToken cancellationToken) where T : MainDocument
         {
             var query = Container
-                .GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetQueryRequestOptions(key, enableMetrics))
+                .GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetQueryRequestOptions(key))
                 .Where(predicate.Compose(item => item.Type == Type, Expression.AndAlso));
 
             using var iterator = query.ToFeedIterator();

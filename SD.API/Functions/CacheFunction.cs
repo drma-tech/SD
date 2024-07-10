@@ -234,25 +234,21 @@ namespace SD.API.Functions
                     var obj = scraping.GetMovieData(id, tmdb_rating, title, release_date.Year.ToString());
                     if (obj == null) return null;
 
-                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date)
+                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date) //invalid date
                     {
-                        //invalid date
                         model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
                     }
-                    else if (release_date > DateTime.Now.AddMonths(-1))
+                    else if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
                     {
-                        // < 1 month launch
+                        model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
+                    }
+                    else if (release_date > DateTime.Now.AddMonths(-1)) // < 1 month launch
+                    {
                         model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_week), cancellationToken);
                     }
-                    else if (release_date > DateTime.Now.AddMonths(-6))
+                    else // > 1 month launch
                     {
-                        // < 6 month launch
                         model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_month), cancellationToken);
-                    }
-                    else
-                    {
-                        // > 6 month launch
-                        model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_year), cancellationToken);
                     }
                 }
 
@@ -287,25 +283,21 @@ namespace SD.API.Functions
                     var obj = scraping.GetShowData(id, tmdb_rating, title, release_date.Year.ToString());
                     if (obj == null) return null;
 
-                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date)
+                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date) //invalid date
                     {
-                        //invalid date
                         model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
                     }
-                    else if (release_date > DateTime.Now.AddMonths(-1))
+                    else if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
                     {
-                        // < 1 month launch
+                        model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
+                    }
+                    else if (release_date > DateTime.Now.AddMonths(-1)) // < 1 month launch
+                    {
                         model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_week), cancellationToken);
                     }
-                    else if (release_date > DateTime.Now.AddMonths(-6))
+                    else // > 1 month launch
                     {
-                        // < 6 month launch
                         model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_month), cancellationToken);
-                    }
-                    else
-                    {
-                        // > 6 month launch
-                        model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_year), cancellationToken);
                     }
                 }
 
@@ -345,25 +337,21 @@ namespace SD.API.Functions
                         newModel.Items.Add(new Shared.Models.Reviews.Item(item.node?.site, item.node?.url, item.node?.reviewer, item.node?.score, item.node?.quote?.value));
                     }
 
-                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date)
+                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date) //invalid date
                     {
-                        //invalid date
                         model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
                     }
-                    else if (release_date > DateTime.Now.AddMonths(-1))
+                    else if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
                     {
-                        // < 1 month launch
+                        model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
+                    }
+                    else if (release_date > DateTime.Now.AddMonths(-1)) // < 1 month launch
+                    {
                         model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_week), cancellationToken);
                     }
-                    else if (release_date > DateTime.Now.AddMonths(-6))
+                    else // > 1 month launch
                     {
-                        // < 6 month launch
                         model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_month), cancellationToken);
-                    }
-                    else
-                    {
-                        // > 6 month launch
-                        model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_year), cancellationToken);
                     }
                 }
 
@@ -410,25 +398,21 @@ namespace SD.API.Functions
                         newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));
                     }
 
-                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date)
+                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date) //invalid date
                     {
-                        //invalid date
                         model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
                     }
-                    else if (release_date > DateTime.Now.AddMonths(-1))
+                    else if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
                     {
-                        // < 1 month launch
+                        model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
+                    }
+                    else if (release_date > DateTime.Now.AddMonths(-1)) // < 1 month launch
+                    {
                         model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_week), cancellationToken);
                     }
-                    else if (release_date > DateTime.Now.AddMonths(-6))
+                    else // > 1 month launch
                     {
-                        // < 6 month launch
                         model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_month), cancellationToken);
-                    }
-                    else
-                    {
-                        // > 6 month launch
-                        model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_year), cancellationToken);
                     }
                 }
 
