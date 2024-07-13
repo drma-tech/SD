@@ -123,7 +123,7 @@ namespace SD.API.Repository
         {
             var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-            if (response.RequestCharge > 8)
+            if (response.RequestCharge > 12)
             {
                 _logger.LogWarning("Delete - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);
             }

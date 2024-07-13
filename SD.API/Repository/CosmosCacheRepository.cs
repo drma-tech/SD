@@ -43,7 +43,7 @@ namespace SD.API.Repository
         {
             var response = await Container.CreateItemAsync(cache, new PartitionKey(cache.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-            if (response.RequestCharge > 8)
+            if (response.RequestCharge > 12)
             {
                 _logger.LogWarning("Add - Id {0}, RequestCharge {1}", cache.Id, response.RequestCharge);
             }
