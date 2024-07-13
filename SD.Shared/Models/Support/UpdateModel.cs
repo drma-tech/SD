@@ -22,7 +22,7 @@ namespace SD.Shared.Models.Support
         {
             var id = Guid.NewGuid().ToString();
 
-            base.Initialize(id, id);
+            base.Initialize(id);
         }
 
         public override bool HasValidData()

@@ -30,7 +30,6 @@ namespace SD.Shared.Models.Auth
             if (string.IsNullOrEmpty(IdentityProvider)) return false;
             if (string.IsNullOrEmpty(UserDetails)) return false;
             if (UserRoles.Length == 0) return false;
-            if (UserId != Key) return false;
 
             return true;
         }

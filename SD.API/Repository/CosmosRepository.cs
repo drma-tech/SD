@@ -30,7 +30,7 @@ namespace SD.API.Repository
             {
                 var response = await Container.ReadItemAsync<T>(id, key, CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-                if (response.RequestCharge > 1.8)
+                if (response.RequestCharge > 1.5)
                 {
                     _logger.LogWarning("Get - ID {0}, RequestCharge {1}", id, response.RequestCharge);
                 }
@@ -60,7 +60,7 @@ namespace SD.API.Repository
                 results.AddRange(response.Resource);
             }
 
-            if (charges > 6)
+            if (charges > 5)
             {
                 _logger.LogWarning("ListAll - Type {Type}, RequestCharge {Charges}", Type.ToString(), charges);
             }
@@ -85,7 +85,7 @@ namespace SD.API.Repository
                 results.AddRange(response.Resource);
             }
 
-            if (charges > 6)
+            if (charges > 5)
             {
                 _logger.LogWarning("Query - Type {Type}, RequestCharge {Charges}", Type.ToString(), charges);
             }
@@ -95,11 +95,11 @@ namespace SD.API.Repository
 
         public async Task<T> Upsert<T>(T item, CancellationToken cancellationToken) where T : CosmosDocument
         {
-            var response = await Container.UpsertItemAsync(item, new PartitionKey(item.Key), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+            var response = await Container.UpsertItemAsync(item, new PartitionKey(item.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-            if (response.RequestCharge > 20)
+            if (response.RequestCharge > 8)
             {
-                _logger.LogWarning("Upsert - ID {Id}, Key {Key}, RequestCharge {Charges}", item.Id, item.Key, response.RequestCharge);
+                _logger.LogWarning("Upsert - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);
             }
 
             return response.Resource;
@@ -111,9 +111,9 @@ namespace SD.API.Repository
 
             var response = await Container.PatchItemAsync<T>(id, key, operations, CosmosRepositoryExtensions.GetPatchItemRequestOptions(), cancellationToken);
 
-            if (response.RequestCharge > 20)
+            if (response.RequestCharge > 8)
             {
-                _logger.LogWarning("PatchItem - ID {Id}, Key {Key}, RequestCharge {Charges}", id, key, response.RequestCharge);
+                _logger.LogWarning("PatchItem - ID {Id}, RequestCharge {Charges}", id, response.RequestCharge);
             }
 
             return response.Resource;
@@ -121,11 +121,11 @@ namespace SD.API.Repository
 
         public async Task<bool> Delete<T>(T item, CancellationToken cancellationToken) where T : CosmosDocument
         {
-            var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Key), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+            var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
             if (response.RequestCharge > 8)
             {
-                _logger.LogWarning("Delete - ID {Id}, Key {Key}, RequestCharge {Charges}", item.Id, item.Key, response.RequestCharge);
+                _logger.LogWarning("Delete - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);
             }
 
             return response.StatusCode == System.Net.HttpStatusCode.OK;

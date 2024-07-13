@@ -107,12 +107,6 @@ namespace SD.API.Functions
                 var mySuggestions = await repo.Get<MySuggestions>(DocumentType.MySuggestions + ":" + userId, new PartitionKey(userId), cancellationToken);
                 if (mySuggestions != null) await repo.Delete(mySuggestions, cancellationToken);
 
-                var myVotes = await repo.Query<TicketVoteModel>(x => x.IdVotedUser == userId, null, DocumentType.TicketVote, cancellationToken);
-                foreach (var vote in myVotes)
-                {
-                    if (vote != null) await repo.Delete(vote, cancellationToken);
-                }
-
                 var myWatched = await repo.Get<WatchedList>(DocumentType.WatchedList + ":" + userId, new PartitionKey(userId), cancellationToken);
                 if (myWatched != null) await repo.Delete(myWatched, cancellationToken);
 

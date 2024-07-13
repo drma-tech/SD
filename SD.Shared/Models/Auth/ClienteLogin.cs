@@ -19,7 +19,6 @@
         public override bool HasValidData()
         {
             if (string.IsNullOrEmpty(UserId)) return false;
-            if (UserId != Key) return false;
 
             return true;
         }

@@ -2,7 +2,7 @@
 
 namespace SD.Shared.Models.Support
 {
-    public class EmailDocument : CosmosDocumentOnlyId
+    public class EmailDocument : CosmosDocument
     {
         public EmailDocument()
         {

@@ -26,9 +26,9 @@ namespace SD.API.Repository
             {
                 var response = await Container.ReadItemAsync<CacheDocument<TData>?>(id, new PartitionKey(id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-                if (response.RequestCharge > 1.7)
+                if (response.RequestCharge > 1.5)
                 {
-                    _logger.LogWarning("Get - key {0}, RequestCharge {1}", id, response.RequestCharge);
+                    _logger.LogWarning("Get - Id {0}, RequestCharge {1}", id, response.RequestCharge);
                 }
 
                 return response.Resource;
@@ -43,9 +43,9 @@ namespace SD.API.Repository
         {
             var response = await Container.CreateItemAsync(cache, new PartitionKey(cache.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-            if (response.RequestCharge > 12)
+            if (response.RequestCharge > 8)
             {
-                _logger.LogWarning("Add - Key {0}, RequestCharge {1}", cache.Id, response.RequestCharge);
+                _logger.LogWarning("Add - Id {0}, RequestCharge {1}", cache.Id, response.RequestCharge);
             }
 
             return response.Resource;

@@ -9,11 +9,9 @@ namespace SD.API.Repository
         public LogModel()
         {
             Id = Guid.NewGuid().ToString();
-            Key = DateTime.UtcNow.ToShortDateString();
         }
 
         public string? Id { get; set; }
-        public string? Key { get; set; }
         public string? Name { get; set; }
         public string? State { get; set; }
         public string? Message { get; set; }
@@ -35,7 +33,7 @@ namespace SD.API.Repository
 
         public async Task Add(LogModel log)
         {
-            await Container.CreateItemAsync(log, new PartitionKey(log.Key), CosmosRepositoryExtensions.GetItemRequestOptions());
+            await Container.CreateItemAsync(log, new PartitionKey(log.Id), CosmosRepositoryExtensions.GetItemRequestOptions());
         }
     }
 }

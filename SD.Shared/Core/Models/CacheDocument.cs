@@ -2,7 +2,7 @@
 
 namespace SD.Shared.Core.Models
 {
-    public class CacheDocument<TData> : CosmosDocumentOnlyId where TData : class
+    public class CacheDocument<TData> : CosmosDocument where TData : class
     {
         protected CacheDocument()
         {

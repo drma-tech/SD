@@ -3,7 +3,6 @@
 
 @inherits ComponentCore<FeedbackComponent>
 @inject TicketApi TicketApi
-@inject TicketVoteApi TicketVoteApi
 
 <Fields>
     <Field ColumnSize="ColumnSize.Is6">
@@ -78,11 +77,11 @@
         <Row HorizontalGutter="8" VerticalGutter="8">
             <Column Margin="Margin.Is1.FromBottom" ColumnSize="ColumnSize.Is2" Overflow="Overflow.Auto">
                 <Div Style="height: 100px;" TextAlignment="TextAlignment.Center" TextWeight="TextWeight.Bold">
-                    <Button Size=" Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Key, VoteType.PlusOne)" Disabled="anyVote(item.Key, UserId) || !IsAuthenticated">
+                    <Button Size=" Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Id, VoteType.PlusOne)" Disabled="anyVote(item.Id, UserId) || !IsAuthenticated">
                         <Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.AngleUp"></Blazorise.Icon>
                     </Button>
                     @item.TotalVotes
-                    <Button Size="Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Key, VoteType.MinusOne)" Disabled="anyVote(item.Key, UserId) || !IsAuthenticated">
+                    <Button Size="Size.ExtraSmall" Margin="Margin.Is0" Color="Color.Primary" Block="true" Outline="true" Clicked="()=>Vote(item.Id, VoteType.MinusOne)" Disabled="anyVote(item.Id, UserId) || !IsAuthenticated">
                         <Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.AngleDown"></Blazorise.Icon>
                     </Button>
                 </Div>
@@ -143,7 +142,6 @@
 
     public RenderControlCore<HashSet<TicketModel>> Core { get; set; } = new();
     private HashSet<TicketModel> tickets = new();
-    private HashSet<TicketVoteModel> myVotes = new();
 
     private TicketType TicketTypeSel { get; set; } = TicketType.Improvement;
     private TicketStatus? TicketStatusSel { get; set; }
@@ -161,8 +159,6 @@
     protected override async Task LoadDataRender()
     {
         tickets = await TicketApi.GetList(Core);
-
-        myVotes = await TicketVoteApi.GetMyVotes(IsAuthenticated);
     }
 
     private List<TicketModel> GetTicketList(TicketType ticketType, TicketStatus? ticketStatus, Order order)
@@ -198,16 +194,11 @@
             }
             else
             {
-                var vote = new TicketVoteModel();
-                vote.Initialize("", IdTicket);
+                var ticket = tickets.Single(s => s.Id == IdTicket);
 
-                vote.VoteType = voteType;
-                vote.IdVotedUser = UserId;
+                ticket.Vote(UserId!, voteType);
 
-                await TicketVoteApi.Vote(vote);
-                tickets.Single(s => s.Key == IdTicket.ToString()).Vote(voteType);
-
-                myVotes.Add(vote);
+                await TicketApi.Insert(ticket);
 
                 await Toast.Success("Voto registrado com sucesso");
             }
@@ -218,5 +209,5 @@
         }
     }
 
-    private bool anyVote(string? IdTicket, string? IdUser) => myVotes.Any(a => a.Key == IdTicket & a.IdVotedUser == IdUser);
+    private bool anyVote(string? IdTicket, string? IdUser) => tickets.Single(s => s.Id == IdTicket).Votes.Any(a => a.IdVotedUser == IdUser);
 }

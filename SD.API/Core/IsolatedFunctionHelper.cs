@@ -29,7 +29,7 @@ namespace SD.API.Core
 
             if (model is ProtectedMainDocument prot)
             {
-                prot.Initialize(userId, userId);
+                prot.Initialize(userId);
             }
             else if (model is PrivateMainDocument priv)
             {

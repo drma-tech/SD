@@ -26,7 +26,9 @@ namespace SD.Shared.Models.Support
         public TicketStatus TicketStatus { get; set; } = TicketStatus.New;
 
         [Custom(Name = "Total de Votos")]
-        public int TotalVotes { get; set; }
+        public List<TicketVote> Votes { get; set; } = [];
+
+        public int TotalVotes => Votes.Sum(s => s.VoteType == VoteType.MinusOne ? -1 : 1);
 
         public void ChangeStatus(TicketStatus ticketStatus)
         {
@@ -35,7 +37,7 @@ namespace SD.Shared.Models.Support
             Update();
         }
 
-        public void Initialize(string? idUserOwner)
+        public new void Initialize(string? idUserOwner)
         {
             if (string.IsNullOrEmpty(idUserOwner)) throw new ArgumentNullException(nameof(idUserOwner));
 
@@ -43,15 +45,12 @@ namespace SD.Shared.Models.Support
 
             var id = Guid.NewGuid().ToString();
 
-            base.Initialize(id, id);
+            base.Initialize(id);
         }
 
-        public void Vote(VoteType voteType)
+        public void Vote(string userId, VoteType voteType)
         {
-            if (voteType == VoteType.PlusOne)
-                TotalVotes++;
-            else
-                TotalVotes--;
+            Votes.Add(new TicketVote { IdVotedUser = userId, VoteType = voteType });
 
             Update();
         }
@@ -70,6 +69,13 @@ namespace SD.Shared.Models.Support
         {
             return !string.IsNullOrEmpty(Title) && !string.IsNullOrEmpty(Description);
         }
+    }
+
+    public class TicketVote
+    {
+        public string? IdVotedUser { get; set; }
+
+        public VoteType VoteType { get; set; }
     }
 
     public enum TicketType
@@ -100,5 +106,11 @@ namespace SD.Shared.Models.Support
 
         [Custom(Name = "Declined", ResourceType = typeof(Resources.TicketStatus))]
         Declined = 6
+    }
+
+    public enum VoteType
+    {
+        MinusOne = -1,
+        PlusOne = 1
     }
 }
