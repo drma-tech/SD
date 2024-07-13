@@ -38,7 +38,7 @@ namespace SD.API.Functions
                             compactModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
                         }
 
-                        var compactResult = await cacheRepo.Add(new FlixsterCache(compactModels, "lastnews_compact"), cancellationToken);
+                        var compactResult = await cacheRepo.CreateItemAsync(new FlixsterCache(compactModels, "lastnews_compact"), cancellationToken);
 
                         return compactResult?.Data;
                     }
@@ -52,7 +52,7 @@ namespace SD.API.Functions
                             fullModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
                         }
 
-                        var fullResult = await cacheRepo.Add(new FlixsterCache(fullModels, "lastnews_full"), cancellationToken);
+                        var fullResult = await cacheRepo.CreateItemAsync(new FlixsterCache(fullModels, "lastnews_full"), cancellationToken);
 
                         return fullResult?.Data;
                     }
@@ -95,7 +95,7 @@ namespace SD.API.Functions
                             compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url));
                         }
 
-                        var compactResult = await cacheRepo.Add(new YoutubeCache(compactModels, "lasttrailers_compact"), cancellationToken);
+                        var compactResult = await cacheRepo.CreateItemAsync(new YoutubeCache(compactModels, "lasttrailers_compact"), cancellationToken);
 
                         return compactResult?.Data;
                     }
@@ -109,7 +109,7 @@ namespace SD.API.Functions
                             fullModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[2].url));
                         }
 
-                        var fullResult = await cacheRepo.Add(new YoutubeCache(fullModels, "lasttrailers_full"), cancellationToken);
+                        var fullResult = await cacheRepo.CreateItemAsync(new YoutubeCache(fullModels, "lasttrailers_full"), cancellationToken);
 
                         return fullResult?.Data;
                     }
@@ -153,7 +153,7 @@ namespace SD.API.Functions
                             compactModels.Items.Add(item);
                         }
 
-                        var compactResult = await cacheRepo.Add(new MostPopularDataCache(compactModels, "popularmovies_compact"), cancellationToken);
+                        var compactResult = await cacheRepo.CreateItemAsync(new MostPopularDataCache(compactModels, "popularmovies_compact"), cancellationToken);
 
                         return compactResult?.Data;
                     }
@@ -167,7 +167,7 @@ namespace SD.API.Functions
                             fullModels.Items.Add(item);
                         }
 
-                        var fullResult = await cacheRepo.Add(new MostPopularDataCache(fullModels, "popularmovies_full"), cancellationToken);
+                        var fullResult = await cacheRepo.CreateItemAsync(new MostPopularDataCache(fullModels, "popularmovies_full"), cancellationToken);
 
                         return fullResult?.Data;
                     }
@@ -200,7 +200,7 @@ namespace SD.API.Functions
                     var obj = scraping.GetTvData();
                     if (obj == null) return null;
 
-                    model = await cacheRepo.Add(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
+                    model = await cacheRepo.CreateItemAsync(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
                 }
 
                 return model?.Data;
@@ -236,19 +236,19 @@ namespace SD.API.Functions
 
                     if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date) //invalid date
                     {
-                        model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
                     }
                     else if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
                     {
-                        model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
                     }
                     else if (release_date > DateTime.Now.AddMonths(-1)) // < 1 month launch
                     {
-                        model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_week), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new RatingsCache(id, obj, ttlCache.one_week), cancellationToken);
                     }
                     else // > 1 month launch
                     {
-                        model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_month), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new RatingsCache(id, obj, ttlCache.one_month), cancellationToken);
                     }
                 }
 
@@ -285,19 +285,19 @@ namespace SD.API.Functions
 
                     if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date) //invalid date
                     {
-                        model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
                     }
                     else if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
                     {
-                        model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new RatingsCache(id, obj, ttlCache.one_day), cancellationToken);
                     }
                     else if (release_date > DateTime.Now.AddMonths(-1)) // < 1 month launch
                     {
-                        model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_week), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new RatingsCache(id, obj, ttlCache.one_week), cancellationToken);
                     }
                     else // > 1 month launch
                     {
-                        model = await cacheRepo.Add(new RatingsCache(id, obj, ttlCache.one_month), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new RatingsCache(id, obj, ttlCache.one_month), cancellationToken);
                     }
                 }
 
@@ -339,19 +339,19 @@ namespace SD.API.Functions
 
                     if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date) //invalid date
                     {
-                        model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
                     }
                     else if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
                     {
-                        model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
                     }
                     else if (release_date > DateTime.Now.AddMonths(-1)) // < 1 month launch
                     {
-                        model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_week), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_week), cancellationToken);
                     }
                     else // > 1 month launch
                     {
-                        model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_month), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_month), cancellationToken);
                     }
                 }
 
@@ -400,19 +400,19 @@ namespace SD.API.Functions
 
                     if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date) //invalid date
                     {
-                        model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
                     }
                     else if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
                     {
-                        model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
                     }
                     else if (release_date > DateTime.Now.AddMonths(-1)) // < 1 month launch
                     {
-                        model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_week), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_week), cancellationToken);
                     }
                     else // > 1 month launch
                     {
-                        model = await cacheRepo.Add(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_month), cancellationToken);
+                        model = await cacheRepo.CreateItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_month), cancellationToken);
                     }
                 }
 

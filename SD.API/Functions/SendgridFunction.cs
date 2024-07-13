@@ -33,7 +33,7 @@ namespace SD.API.Functions
             {
                 var Email = await req.GetPublicBody<EmailDocument>(cancellationToken);
 
-                await repo.Upsert(Email, cancellationToken);
+                await repo.UpsertItemAsync(Email, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -65,7 +65,7 @@ namespace SD.API.Functions
                     SenderIp = inboundMail.SenderIp
                 };
 
-                await repo.Upsert(model, cancellationToken);
+                await repo.CreateItemAsync(model, cancellationToken);
             }
             catch (Exception ex)
             {
