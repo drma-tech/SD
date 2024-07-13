@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace SD.API.Repository
 {
-    public class CosmosRepository : IRepository
+    public class CosmosRepository
     {
         public Container Container { get; private set; }
         private readonly ILogger<CosmosRepository> _logger;
@@ -22,13 +22,13 @@ namespace SD.API.Repository
             Container = ApiStartup.CosmosClient.GetContainer(databaseId, containerId);
         }
 
-        public async Task<T?> Get<T>(string id, CancellationToken cancellationToken) where T : CosmosDocument
+        public async Task<T?> Get<T>(DocumentType type, string? id, CancellationToken cancellationToken) where T : CosmosDocument
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
 
             try
             {
-                var response = await Container.ReadItemAsync<T>(id, new PartitionKey(id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+                var response = await Container.ReadItemAsync<T>($"{type}:{id}", new PartitionKey($"{type}:{id}"), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
                 if (response.RequestCharge > 1.5)
                 {
@@ -97,7 +97,7 @@ namespace SD.API.Repository
         {
             var response = await Container.UpsertItemAsync(item, new PartitionKey(item.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-            if (response.RequestCharge > 8)
+            if (response.RequestCharge > 12)
             {
                 _logger.LogWarning("Upsert - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);
             }
@@ -105,13 +105,13 @@ namespace SD.API.Repository
             return response.Resource;
         }
 
-        public async Task<T> PatchItem<T>(string id, List<PatchOperation> operations, CancellationToken cancellationToken) where T : CosmosDocument
+        public async Task<T> PatchItem<T>(DocumentType type, string? id, List<PatchOperation> operations, CancellationToken cancellationToken) where T : CosmosDocument
         {
             //https://learn.microsoft.com/en-us/azure/cosmos-db/partial-document-update-getting-started?tabs=dotnet
 
-            var response = await Container.PatchItemAsync<T>(id, new PartitionKey(id), operations, CosmosRepositoryExtensions.GetPatchItemRequestOptions(), cancellationToken);
+            var response = await Container.PatchItemAsync<T>($"{type}:{id}", new PartitionKey($"{type}:{id}"), operations, CosmosRepositoryExtensions.GetPatchItemRequestOptions(), cancellationToken);
 
-            if (response.RequestCharge > 8)
+            if (response.RequestCharge > 12)
             {
                 _logger.LogWarning("PatchItem - ID {Id}, RequestCharge {Charges}", id, response.RequestCharge);
             }

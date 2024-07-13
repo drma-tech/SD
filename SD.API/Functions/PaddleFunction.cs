@@ -1,7 +1,6 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
-using SD.API.Repository.Core;
 using SD.Shared.Models.Auth;
 using SD.Shared.Models.Subscription;
 using System.Net.Http.Headers;
@@ -9,7 +8,7 @@ using System.Net.Http.Json;
 
 namespace SD.API.Functions
 {
-    public class PaddleFunction(IRepository repo, IConfiguration configuration)
+    public class PaddleFunction(CosmosRepository repo, IConfiguration configuration)
     {
         [Function("GetSubscription")]
         public async Task<RootSubscription?> GetSubscription(

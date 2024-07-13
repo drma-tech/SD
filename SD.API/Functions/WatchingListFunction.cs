@@ -1,10 +1,9 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using SD.API.Repository.Core;
 
 namespace SD.API.Functions
 {
-    public class WatchingListFunction(IRepository repo)
+    public class WatchingListFunction(CosmosRepository repo)
     {
         //[OpenApiOperation("WatchingListGet", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchingList))]
@@ -19,11 +18,11 @@ namespace SD.API.Functions
                 if (string.IsNullOrEmpty(id))
                 {
                     var userId = req.GetUserId();
-                    return await repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, cancellationToken);
+                    return await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
                 }
                 else
                 {
-                    return await repo.Get<WatchingList>(DocumentType.WatchingList + ":" + id, cancellationToken);
+                    return await repo.Get<WatchingList>(DocumentType.WatchingList, id, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -45,7 +44,7 @@ namespace SD.API.Functions
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-                var obj = await repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, cancellationToken);
+                var obj = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
                 var newItem = await req.GetPublicBody<WatchingListItem>(cancellationToken);
 
                 if (obj == null)
@@ -82,7 +81,7 @@ namespace SD.API.Functions
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-                var obj = await repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, cancellationToken);
+                var obj = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
 
                 if (obj == null)
                 {
@@ -118,7 +117,7 @@ namespace SD.API.Functions
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-                var obj = await repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, cancellationToken);
+                var obj = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
 
                 if (obj == null)
                 {

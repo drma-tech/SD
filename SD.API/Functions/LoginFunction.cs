@@ -1,12 +1,11 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using SD.API.Repository.Core;
 using SD.Shared.Models.Auth;
 
 namespace SD.API.Functions
 {
-    public class LoginFunction(IRepository repo)
+    public class LoginFunction(CosmosRepository repo)
     {
         //[OpenApiOperation("LoginAdd", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(void))]
@@ -20,7 +19,7 @@ namespace SD.API.Functions
                 if (platform.Empty()) platform = "webapp";
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
-                var login = await repo.Get<ClienteLogin>(DocumentType.Login + ":" + userId, cancellationToken);
+                var login = await repo.Get<ClienteLogin>(DocumentType.Login, userId, cancellationToken);
 
                 if (login == null)
                 {
@@ -33,7 +32,7 @@ namespace SD.API.Functions
                 {
                     if (Array.Exists(login.Platforms, a => a == platform))
                     {
-                        await repo.PatchItem<ClienteLogin>(nameof(DocumentType.Login) + ":" + userId,
+                        await repo.PatchItem<ClienteLogin>(DocumentType.Login, userId,
                             [
                                 PatchOperation.Add("/logins/-", DateTimeOffset.Now),
                             ], cancellationToken);

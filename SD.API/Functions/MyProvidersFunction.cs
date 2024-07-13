@@ -1,10 +1,9 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using SD.API.Repository.Core;
 
 namespace SD.API.Functions
 {
-    public class MyProvidersFunction(IRepository repo)
+    public class MyProvidersFunction(CosmosRepository repo)
     {
         //[OpenApiOperation("MyProviders", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MyProviders))]
@@ -15,7 +14,7 @@ namespace SD.API.Functions
             try
             {
                 var userId = req.GetUserId();
-                return await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, cancellationToken);
+                return await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -34,7 +33,7 @@ namespace SD.API.Functions
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, cancellationToken);
+                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
 
                 if (obj == null)
                 {
@@ -69,7 +68,7 @@ namespace SD.API.Functions
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, cancellationToken);
+                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
 
                 if (obj == null)
                 {
@@ -101,7 +100,7 @@ namespace SD.API.Functions
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, cancellationToken);
+                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
 
                 if (obj == null)
                 {

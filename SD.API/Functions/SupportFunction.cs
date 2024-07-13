@@ -1,11 +1,10 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using SD.API.Repository.Core;
 using SD.Shared.Models.Support;
 
 namespace SD.API.Functions
 {
-    public class SupportFunction(IRepository repo)
+    public class SupportFunction(CosmosRepository repo)
     {
         //[OpenApiOperation("UpdatesGet", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(AnnouncementModel))]
@@ -31,7 +30,7 @@ namespace SD.API.Functions
             try
             {
                 var item = await req.GetPublicBody<UpdateModel>(cancellationToken);
-                var dbItem = await repo.Get<UpdateModel>(DocumentType.Update + ":" + item.Id, cancellationToken);
+                var dbItem = await repo.Get<UpdateModel>(DocumentType.Update, item.Id, cancellationToken);
 
                 if (dbItem != null)
                 {

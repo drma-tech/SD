@@ -1,11 +1,10 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using SD.API.Repository.Core;
 using SD.Shared.Models.Auth;
 
 namespace SD.API.Functions
 {
-    public class PrincipalFunction(IRepository repo)
+    public class PrincipalFunction(CosmosRepository repo)
     {
         //[OpenApiOperation("PrincipalGet", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(ClientePrincipal))]
@@ -17,7 +16,7 @@ namespace SD.API.Functions
             {
                 var userId = req.GetUserId();
 
-                return await repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + userId, cancellationToken);
+                return await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -34,7 +33,7 @@ namespace SD.API.Functions
             {
                 var token = req.GetQueryParameters()["token"];
 
-                var principal = await repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + token, cancellationToken);
+                var principal = await repo.Get<ClientePrincipal>(DocumentType.Principal, token, cancellationToken);
                 return principal?.Email;
             }
             catch (Exception ex)
@@ -71,7 +70,7 @@ namespace SD.API.Functions
             {
                 var userId = req.GetUserId();
 
-                var Client = await repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + userId, cancellationToken) ?? throw new NotificationException("Client null");
+                var Client = await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new NotificationException("Client null");
                 var body = await req.GetBody<ClientePrincipal>(cancellationToken);
 
                 Client.ClientePaddle = body.ClientePaddle;
@@ -93,25 +92,25 @@ namespace SD.API.Functions
             {
                 var userId = req.GetUserId();
 
-                var myPrincipal = await repo.Get<ClientePrincipal>(DocumentType.Principal + ":" + userId, cancellationToken);
+                var myPrincipal = await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken);
                 if (myPrincipal != null) await repo.Delete(myPrincipal, cancellationToken);
 
-                var myProviders = await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, cancellationToken);
+                var myProviders = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
                 if (myProviders != null) await repo.Delete(myProviders, cancellationToken);
 
-                var myLogins = await repo.Get<ClienteLogin>(DocumentType.Login + ":" + userId, cancellationToken);
+                var myLogins = await repo.Get<ClienteLogin>(DocumentType.Login, userId, cancellationToken);
                 if (myLogins != null) await repo.Delete(myLogins, cancellationToken);
 
-                var mySuggestions = await repo.Get<MySuggestions>(DocumentType.MySuggestions + ":" + userId, cancellationToken);
+                var mySuggestions = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
                 if (mySuggestions != null) await repo.Delete(mySuggestions, cancellationToken);
 
-                var myWatched = await repo.Get<WatchedList>(DocumentType.WatchedList + ":" + userId, cancellationToken);
+                var myWatched = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
                 if (myWatched != null) await repo.Delete(myWatched, cancellationToken);
 
-                var myWatching = await repo.Get<WatchingList>(DocumentType.WatchingList + ":" + userId, cancellationToken);
+                var myWatching = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
                 if (myWatching != null) await repo.Delete(myWatching, cancellationToken);
 
-                var myWish = await repo.Get<WishList>(DocumentType.WishList + ":" + userId, cancellationToken);
+                var myWish = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
                 if (myWish != null) await repo.Delete(myWish, cancellationToken);
             }
             catch (Exception ex)
