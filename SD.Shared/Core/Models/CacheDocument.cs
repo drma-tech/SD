@@ -2,13 +2,13 @@
 
 namespace SD.Shared.Core.Models
 {
-    public class CacheDocument<TData> : CosmosDocument where TData : class
+    public class CacheDocument<TData> : CosmosDocumentOnlyId where TData : class
     {
         protected CacheDocument()
         {
         }
 
-        protected CacheDocument(string key, TData data, ttlCache ttl) : base(key, key)
+        protected CacheDocument(string id, TData data, ttlCache ttl) : base(id)
         {
             Data = data;
             Ttl = (int)ttl;

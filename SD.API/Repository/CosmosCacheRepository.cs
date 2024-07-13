@@ -20,15 +20,15 @@ namespace SD.API.Repository
             Container = ApiStartup.CosmosClient.GetContainer(databaseId, containerId);
         }
 
-        public async Task<CacheDocument<TData>?> Get<TData>(string key, CancellationToken cancellationToken) where TData : class
+        public async Task<CacheDocument<TData>?> Get<TData>(string id, CancellationToken cancellationToken) where TData : class
         {
             try
             {
-                var response = await Container.ReadItemAsync<CacheDocument<TData>?>(key, new PartitionKey(key), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+                var response = await Container.ReadItemAsync<CacheDocument<TData>?>(id, new PartitionKey(id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
                 if (response.RequestCharge > 1.7)
                 {
-                    _logger.LogWarning("Get - key {0}, RequestCharge {1}", key, response.RequestCharge);
+                    _logger.LogWarning("Get - key {0}, RequestCharge {1}", id, response.RequestCharge);
                 }
 
                 return response.Resource;
@@ -41,11 +41,11 @@ namespace SD.API.Repository
 
         public async Task<CacheDocument<TData>?> Add<TData>(CacheDocument<TData> cache, CancellationToken cancellationToken) where TData : class
         {
-            var response = await Container.UpsertItemAsync(cache, new PartitionKey(cache.Key), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+            var response = await Container.UpsertItemAsync(cache, new PartitionKey(cache.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
             if (response.RequestCharge > 12)
             {
-                _logger.LogWarning("Add - Key {0}, RequestCharge {1}", cache.Key, response.RequestCharge);
+                _logger.LogWarning("Add - Key {0}, RequestCharge {1}", cache.Id, response.RequestCharge);
             }
 
             return response.Resource;

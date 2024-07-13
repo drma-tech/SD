@@ -46,4 +46,44 @@ namespace SD.Shared.Core
             DtUpdate = DateTimeOffset.UtcNow;
         }
     }
+
+    public abstract class CosmosDocumentOnlyId
+    {
+        private readonly bool FixedId = false;
+
+        protected CosmosDocumentOnlyId()
+        {
+            FixedId = false;
+        }
+
+        protected CosmosDocumentOnlyId(string id)
+        {
+            Id = id;
+
+            FixedId = true;
+        }
+
+        [JsonInclude]
+        public string Id { get; set; } = string.Empty;
+
+        [JsonInclude]
+        public DateTimeOffset DtInsert { get; set; } = DateTimeOffset.UtcNow;
+
+        [JsonInclude]
+        public DateTimeOffset? DtUpdate { get; set; } = null;
+
+        public abstract bool HasValidData();
+
+        protected void SetIds(string id)
+        {
+            if (FixedId) throw new InvalidOperationException();
+
+            Id = id;
+        }
+
+        public virtual void Update()
+        {
+            DtUpdate = DateTimeOffset.UtcNow;
+        }
+    }
 }

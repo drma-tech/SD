@@ -19,11 +19,11 @@ namespace SD.API.Repository
             Container = ApiStartup.CosmosClient.GetContainer(databaseId, containerId);
         }
 
-        public async Task<EmailDocument?> Get(string key, CancellationToken cancellationToken)
+        public async Task<EmailDocument?> Get(string id, CancellationToken cancellationToken)
         {
             try
             {
-                var response = await Container.ReadItemAsync<EmailDocument?>(key, new PartitionKey(key), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+                var response = await Container.ReadItemAsync<EmailDocument?>(id, new PartitionKey(id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
                 return response.Resource;
             }
@@ -64,7 +64,7 @@ namespace SD.API.Repository
 
         public async Task<EmailDocument?> Upsert(EmailDocument email, CancellationToken cancellationToken)
         {
-            var response = await Container.UpsertItemAsync(email, new PartitionKey(email.Key), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+            var response = await Container.UpsertItemAsync(email, new PartitionKey(email.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
             return response.Resource;
         }

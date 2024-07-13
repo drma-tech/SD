@@ -2,13 +2,13 @@
 
 namespace SD.Shared.Models.Support
 {
-    public class EmailDocument : CosmosDocument
+    public class EmailDocument : CosmosDocumentOnlyId
     {
         public EmailDocument()
         {
         }
 
-        public EmailDocument(string key) : base(key, key)
+        public EmailDocument(string id) : base(id)
         {
         }
 
