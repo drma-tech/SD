@@ -22,12 +22,10 @@ namespace SD.API.Repository.Core
             };
         }
 
-        public static QueryRequestOptions? GetQueryRequestOptions(PartitionKey? key)
+        public static QueryRequestOptions? GetQueryRequestOptions()
         {
             return new QueryRequestOptions()
             {
-                PartitionKey = key,
-
                 //https://learn.microsoft.com/en-us/training/modules/measure-index-azure-cosmos-db-sql-api/4-measure-query-cost
                 MaxItemCount = 10, // - max itens per page
             };

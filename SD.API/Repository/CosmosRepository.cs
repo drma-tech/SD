@@ -22,13 +22,13 @@ namespace SD.API.Repository
             Container = ApiStartup.CosmosClient.GetContainer(databaseId, containerId);
         }
 
-        public async Task<T?> Get<T>(string id, PartitionKey key, CancellationToken cancellationToken) where T : CosmosDocument
+        public async Task<T?> Get<T>(string id, CancellationToken cancellationToken) where T : CosmosDocument
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
 
             try
             {
-                var response = await Container.ReadItemAsync<T>(id, key, CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+                var response = await Container.ReadItemAsync<T>(id, new PartitionKey(id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
                 if (response.RequestCharge > 1.5)
                 {
@@ -46,7 +46,7 @@ namespace SD.API.Repository
         public async Task<List<T>> ListAll<T>(DocumentType Type, CancellationToken cancellationToken) where T : MainDocument
         {
             var query = Container
-                .GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetQueryRequestOptions(null))
+                .GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetQueryRequestOptions())
                 .Where(item => item.Type == Type);
 
             using var iterator = query.ToFeedIterator();
@@ -68,10 +68,10 @@ namespace SD.API.Repository
             return results;
         }
 
-        public async Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, PartitionKey? key, DocumentType Type, CancellationToken cancellationToken) where T : MainDocument
+        public async Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, DocumentType Type, CancellationToken cancellationToken) where T : MainDocument
         {
             var query = Container
-                .GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetQueryRequestOptions(key))
+                .GetItemLinqQueryable<T>(requestOptions: CosmosRepositoryExtensions.GetQueryRequestOptions())
                 .Where(predicate.Compose(item => item.Type == Type, Expression.AndAlso));
 
             using var iterator = query.ToFeedIterator();
@@ -105,11 +105,11 @@ namespace SD.API.Repository
             return response.Resource;
         }
 
-        public async Task<T> PatchItem<T>(string id, PartitionKey key, List<PatchOperation> operations, CancellationToken cancellationToken) where T : CosmosDocument
+        public async Task<T> PatchItem<T>(string id, List<PatchOperation> operations, CancellationToken cancellationToken) where T : CosmosDocument
         {
             //https://learn.microsoft.com/en-us/azure/cosmos-db/partial-document-update-getting-started?tabs=dotnet
 
-            var response = await Container.PatchItemAsync<T>(id, key, operations, CosmosRepositoryExtensions.GetPatchItemRequestOptions(), cancellationToken);
+            var response = await Container.PatchItemAsync<T>(id, new PartitionKey(id), operations, CosmosRepositoryExtensions.GetPatchItemRequestOptions(), cancellationToken);
 
             if (response.RequestCharge > 8)
             {

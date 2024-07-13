@@ -1,4 +1,3 @@
-using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Repository.Core;
@@ -16,7 +15,7 @@ namespace SD.API.Functions
             try
             {
                 var userId = req.GetUserId();
-                return await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, new PartitionKey(userId), cancellationToken);
+                return await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -35,7 +34,7 @@ namespace SD.API.Functions
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, new PartitionKey(userId), cancellationToken);
+                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, cancellationToken);
 
                 if (obj == null)
                 {
@@ -70,7 +69,7 @@ namespace SD.API.Functions
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, new PartitionKey(userId), cancellationToken);
+                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, cancellationToken);
 
                 if (obj == null)
                 {
@@ -102,7 +101,7 @@ namespace SD.API.Functions
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, new PartitionKey(userId), cancellationToken);
+                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider + ":" + userId, cancellationToken);
 
                 if (obj == null)
                 {

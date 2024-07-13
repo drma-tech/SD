@@ -1,4 +1,3 @@
-using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.API.Repository.Core;
@@ -32,7 +31,7 @@ namespace SD.API.Functions
             try
             {
                 var item = await req.GetPublicBody<UpdateModel>(cancellationToken);
-                var dbItem = await repo.Get<UpdateModel>(DocumentType.Update + ":" + item.Id, new PartitionKey(item.Id), cancellationToken);
+                var dbItem = await repo.Get<UpdateModel>(DocumentType.Update + ":" + item.Id, cancellationToken);
 
                 if (dbItem != null)
                 {
@@ -80,7 +79,7 @@ namespace SD.API.Functions
             {
                 var userId = req.GetUserId();
 
-                return await repo.Query<TicketModel>(m => m.TicketStatus != TicketStatus.New || m.IdUserOwner == userId, null, DocumentType.Ticket, cancellationToken);
+                return await repo.Query<TicketModel>(m => m.TicketStatus != TicketStatus.New || m.IdUserOwner == userId, DocumentType.Ticket, cancellationToken);
             }
             catch (Exception ex)
             {

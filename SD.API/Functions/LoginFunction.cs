@@ -20,7 +20,7 @@ namespace SD.API.Functions
                 if (platform.Empty()) platform = "webapp";
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
-                var login = await repo.Get<ClienteLogin>(DocumentType.Login + ":" + userId, new PartitionKey(userId), cancellationToken);
+                var login = await repo.Get<ClienteLogin>(DocumentType.Login + ":" + userId, cancellationToken);
 
                 if (login == null)
                 {
@@ -33,7 +33,7 @@ namespace SD.API.Functions
                 {
                     if (Array.Exists(login.Platforms, a => a == platform))
                     {
-                        await repo.PatchItem<ClienteLogin>(nameof(DocumentType.Login) + ":" + userId, new PartitionKey(userId),
+                        await repo.PatchItem<ClienteLogin>(nameof(DocumentType.Login) + ":" + userId,
                             [
                                 PatchOperation.Add("/logins/-", DateTimeOffset.Now),
                             ], cancellationToken);
