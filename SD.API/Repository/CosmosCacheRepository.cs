@@ -26,7 +26,7 @@ namespace SD.API.Repository
             {
                 var response = await Container.ReadItemAsync<CacheDocument<TData>?>(id, new PartitionKey(id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-                if (response.RequestCharge > 1.5)
+                if (response.RequestCharge > 1.7)
                 {
                     _logger.LogWarning("Get - Id {0}, RequestCharge {1}", id, response.RequestCharge);
                 }
