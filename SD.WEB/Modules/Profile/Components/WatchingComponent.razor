@@ -120,8 +120,9 @@
 
             if (MediaType == MediaType.movie)
             {
-                Watching?.Movies.Clear();
+                watching?.Movies.Clear();
                 Updating = true;
+                StateHasChanged();
                 Core?.ShowProcessing();
 
                 foreach (var tmdb_id in Watched?.GetItems(MediaType.movie) ?? new())
@@ -154,12 +155,14 @@
                 watching = await WatchingApi.Sync(MediaType.movie, watching, Core);
 
                 Updating = false;
+                StateHasChanged();
                 Core?.HideProcessing(watching);
             }
             else
             {
-                Watching?.Shows.Clear();
+                watching?.Shows.Clear();
                 Updating = true;
+                StateHasChanged();
                 Core?.ShowProcessing();
 
                 foreach (var tmdb_id in Watched?.GetItems(MediaType.tv) ?? new())
@@ -192,6 +195,7 @@
                 watching = await WatchingApi.Sync(MediaType.tv, watching, Core);
 
                 Updating = false;
+                StateHasChanged();
                 Core?.HideProcessing(watching);
             }
 
