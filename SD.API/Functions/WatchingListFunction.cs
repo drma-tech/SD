@@ -118,6 +118,7 @@ namespace SD.API.Functions
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
                 var obj = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
+                var newItem = await req.GetPublicBody<WatchingList>(cancellationToken);
 
                 if (obj == null)
                 {
@@ -134,10 +135,18 @@ namespace SD.API.Functions
 
                 if (type == Shared.Enums.MediaType.movie)
                 {
+                    foreach (var item in newItem.Movies)
+                    {
+                        obj.AddItem(Shared.Enums.MediaType.movie, item);
+                    }
                     obj.MovieSyncDate = DateTime.Now;
                 }
                 else
                 {
+                    foreach (var item in newItem.Shows)
+                    {
+                        obj.AddItem(Shared.Enums.MediaType.tv, item);
+                    }
                     obj.ShowSyncDate = DateTime.Now;
                 }
 

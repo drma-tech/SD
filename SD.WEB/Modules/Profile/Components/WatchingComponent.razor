@@ -115,8 +115,8 @@
     {
         try
         {
-            var watching = Watching ?? new WatchingList();
-            var client = await PrincipalApi.Get(true);
+            var watching = await WatchingApi.Get(IsAuthenticated, Core, null, "watching-import"); //get a new one (memory may be compromised/corrupted)
+            var client = await PrincipalApi.Get(IsAuthenticated);
 
             if (MediaType == MediaType.movie)
             {
@@ -147,11 +147,11 @@
                             item.watched.Add(tmdb_id);
                         }
 
-                        watching = await WatchingApi.Add(MediaType.movie, watching, item, client?.ClientePaddle);
+                        watching?.AddItem(MediaType.movie, item);
                     }
                 }
 
-                watching = await WatchingApi.Sync(MediaType.movie, Core);
+                watching = await WatchingApi.Sync(MediaType.movie, watching, Core);
 
                 Updating = false;
                 Core?.HideProcessing(watching);
@@ -185,11 +185,11 @@
                             item.watched.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
                         }
 
-                        watching = await WatchingApi.Add(MediaType.tv, watching, item, client?.ClientePaddle);
+                        watching?.AddItem(MediaType.tv, item);
                     }
                 }
 
-                watching = await WatchingApi.Sync(MediaType.tv, Core);
+                watching = await WatchingApi.Sync(MediaType.tv, watching, Core);
 
                 Updating = false;
                 Core?.HideProcessing(watching);

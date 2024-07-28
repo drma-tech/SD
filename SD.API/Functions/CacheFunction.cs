@@ -225,8 +225,12 @@ namespace SD.API.Functions
                 var id = req.GetQueryParameters()["id"];
                 var tmdb_rating = req.GetQueryParameters()["tmdb_rating"];
                 var title = req.GetQueryParameters()["title"];
+
                 DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime release_date);
-                model = await cacheRepo.Get<Ratings>($"rating_new_{id}", cancellationToken);
+
+                if (id.Empty()) throw new NotificationException($"id null ({title} - {release_date.Year})");
+
+                model = await cacheRepo.Get<Ratings>($"rating_{id}", cancellationToken);
 
                 if (model == null)
                 {
@@ -274,8 +278,12 @@ namespace SD.API.Functions
                 var id = req.GetQueryParameters()["id"];
                 var tmdb_rating = req.GetQueryParameters()["tmdb_rating"];
                 var title = req.GetQueryParameters()["title"];
+
                 DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime release_date);
-                model = await cacheRepo.Get<Ratings>($"rating_new_{id}", cancellationToken);
+
+                if (id.Empty()) throw new NotificationException($"id null ({title} - {release_date.Year})");
+
+                model = await cacheRepo.Get<Ratings>($"rating_{id}", cancellationToken);
 
                 if (model == null)
                 {

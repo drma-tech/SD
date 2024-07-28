@@ -17,15 +17,15 @@ namespace SD.WEB.Modules.Profile.Core
             public static string Sync(MediaType? type) => $"watchinglist/sync/{type}";
         }
 
-        public async Task<WatchingList?> Get(bool IsUserAuthenticated, RenderControlCore<WatchingList?>? core, string? id = null)
+        public async Task<WatchingList?> Get(bool IsUserAuthenticated, RenderControlCore<WatchingList?>? core, string? id = null, object? customCacheKey = null)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                return await GetAsync($"{Endpoint.Get}?id={id}", core);
+                return await GetAsync($"{Endpoint.Get}?id={id}", core, customCacheKey);
             }
             else if (IsUserAuthenticated)
             {
-                return await GetAsync(Endpoint.Get, core);
+                return await GetAsync(Endpoint.Get, core, customCacheKey);
             }
             else
             {
@@ -50,11 +50,12 @@ namespace SD.WEB.Modules.Profile.Core
             return await PostAsync<WatchingList>(Endpoint.Remove(mediaType, CollectionId, TmdbId ?? "null"), null, null);
         }
 
-        public async Task<WatchingList?> Sync(MediaType? mediaType, RenderControlCore<WatchingList?>? core)
+        public async Task<WatchingList?> Sync(MediaType? mediaType, WatchingList? obj, RenderControlCore<WatchingList?>? core)
         {
             ArgumentNullException.ThrowIfNull(mediaType);
+            ArgumentNullException.ThrowIfNull(obj);
 
-            return await PostAsync<WatchingList>(Endpoint.Sync(mediaType), core, null);
+            return await PostAsync<WatchingList>(Endpoint.Sync(mediaType), core, obj);
         }
     }
 }

@@ -174,7 +174,7 @@
                 MovieUpdating = true;
                 Core?.ShowProcessing();
 
-                //search best titles by provider
+                //search best titles by provider (TMDB)
                 var titles = new HashSet<MediaDetail>();
                 foreach (var provider in myProviders?.Items ?? new())
                 {
@@ -227,6 +227,7 @@
                 ShowUpdating = true;
                 Core?.ShowProcessing();
 
+                //search best titles by provider (TMDB)
                 var titles = new HashSet<MediaDetail>();
                 foreach (var provider in myProviders?.Items ?? new())
                 {
@@ -238,6 +239,7 @@
                     }
                 }
 
+                //select titles for the user
                 foreach (var item in titles.OrderByDescending(o => o.rating))
                 {
                     if (Watched != null && Watched.Shows.Any(a => a == item.tmdb_id)) continue;

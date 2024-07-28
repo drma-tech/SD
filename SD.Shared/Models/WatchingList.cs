@@ -1,4 +1,7 @@
-﻿namespace SD.Shared.Models
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SD.Shared.Models
 {
     public class WatchingList : PrivateMainDocument
     {
@@ -18,7 +21,13 @@
         public HashSet<string> DeletedShows { get; init; } = [];
 
         public bool CanSync(MediaType? type) => type == MediaType.movie ? MovieCanSync : ShowCanSync;
+
+        [JsonIgnore]
+        [NotMapped]
         public bool MovieCanSync => !MovieSyncDate.HasValue || MovieSyncDate.Value < DateTime.Now.AddDays(-14);
+
+        [JsonIgnore]
+        [NotMapped]
         public bool ShowCanSync => !ShowSyncDate.HasValue || ShowSyncDate.Value < DateTime.Now.AddDays(-14);
 
         public WatchingListItem? GetItem(MediaType? type, string? id)
@@ -43,8 +52,6 @@
             if (Contains(type, newItem))
             {
                 var item = GetItem(type, newItem.id)!;
-
-                item.watched.Clear();
 
                 item.maxItems = newItem.maxItems;
                 foreach (var id in newItem.watched)
