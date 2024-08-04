@@ -49,6 +49,10 @@
                 Model = await CacheMetaCriticApi.GetShowReviews(imdb_id, original_title, release_date, Core);
             }
         }
+        else
+        {
+            Core?.LoadingFinished?.Invoke(new());
+        }
     }
 
     private Color GetColorByRating(int? val)

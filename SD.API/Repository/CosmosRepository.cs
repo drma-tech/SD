@@ -131,13 +131,7 @@ namespace SD.API.Repository
             return response.StatusCode == System.Net.HttpStatusCode.OK;
         }
 
-        //multiple transactions
-        //https://docs.microsoft.com/pt-br/learn/modules/perform-cross-document-transactional-operations-azure-cosmos-db-sql-api/2-create-transactional-batch-sdk
-
-        //bulk insert
-        //https://docs.microsoft.com/pt-br/learn/modules/process-bulk-data-azure-cosmos-db-sql-api/2-create-bulk-operations-sdk
-
-        //composite indexes
-        //https://docs.microsoft.com/pt-br/learn/modules/customize-indexes-azure-cosmos-db-sql-api/3-evaluate-composite-indexes
+        //Overview of indexing in Azure Cosmos DB
+        //https://learn.microsoft.com/en-us/azure/cosmos-db/index-overview
     }
 }

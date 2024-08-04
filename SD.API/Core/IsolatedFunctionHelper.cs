@@ -10,7 +10,7 @@ namespace SD.API.Core
 {
     public static class IsolatedFunctionHelper
     {
-        public static async Task<T> GetBody<T>(this HttpRequestData req, CancellationToken cancellationToken) where T : MainDocument, new()
+        public static async Task<T> GetBody<T>(this HttpRequestData req, CancellationToken cancellationToken) where T : CosmosDocument, new()
         {
             var model = await JsonSerializer.DeserializeAsync<T>(req.Body, cancellationToken: cancellationToken);
 
@@ -34,6 +34,10 @@ namespace SD.API.Core
             else if (model is PrivateMainDocument priv)
             {
                 priv.Initialize(userId);
+            }
+            else if (model is CosmosDocument doc) //generic document
+            {
+                doc.SetIds(userId);
             }
 
             return model;

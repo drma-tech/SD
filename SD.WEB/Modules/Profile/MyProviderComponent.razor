@@ -30,7 +30,7 @@
                            title="@item.region?.GetCustomAttribute()?.Name">
                         @item.region?.ToString()
                     </Badge>
-                    @if (!allProviders?.Items.Any(a => a.id == item.id) ?? false)
+                    @if (allProviders != null && (!allProviders.Items.Any(a => a.id == item.id) || !allProviders.Items.Any(a => a.id == item.id && a.regions.Contains(item.region ?? AppStateStatic.Region))))
                     {
                         <Badge Color="Color.Danger" Style="position: absolute; bottom: 0; z-index: 1; width: 100%;">
                             <Blazorise.Icon Name="FontAwesomeIcons.Trash" TextColor="TextColor.Light" IconSize="IconSize.x2"></Blazorise.Icon>
