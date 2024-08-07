@@ -7,8 +7,8 @@
         }
 
         public string? UserId { get; set; }
-        public DateTimeOffset[] Logins { get; set; } = [];
-        public string[] Platforms { get; set; } = [];
+
+        public Access[] Accesses { get; set; } = [];
 
         public override void Initialize(string userId)
         {
@@ -22,5 +22,12 @@
 
             return true;
         }
+    }
+
+    public class Access
+    {
+        public DateTimeOffset Date { get; set; }
+        public string? Platform { get; set; }
+        public string? Ip { get; set; }
     }
 }

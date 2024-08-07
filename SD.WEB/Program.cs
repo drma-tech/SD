@@ -6,6 +6,8 @@ using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Polly;
+using Polly.Extensions.Http;
 using SD.WEB;
 using SD.WEB.Modules.Administrator.Core;
 using SD.WEB.Modules.Auth.Core;
@@ -43,7 +45,8 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddMediaQueryService();
     collection.AddMemoryCache();
 
-    collection.AddHttpClient("RetryHttpClient", c => { c.BaseAddress = new Uri(baseAddress); });
+    collection.AddHttpClient("RetryHttpClient", c => { c.BaseAddress = new Uri(baseAddress); })
+        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddStaticWebAppsAuthentication();
     collection.AddCascadingAuthenticationState();
@@ -118,4 +121,12 @@ static void ConfigureCulture(WebAssemblyHost? host)
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         }
     }
+}
+
+//https://github.com/App-vNext/Polly/wiki/Polly-and-HttpClientFactory
+static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+{
+    return HttpPolicyExtensions
+        .HandleTransientHttpError() // 408,5xx
+        .WaitAndRetryAsync(2, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))); // Retry 2 times, with wait 1, 2 and 4 seconds.
 }

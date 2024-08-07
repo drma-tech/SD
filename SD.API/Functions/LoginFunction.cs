@@ -1,4 +1,3 @@
-using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.Shared.Models.Auth;
@@ -15,34 +14,28 @@ namespace SD.API.Functions
         {
             try
             {
-                var platform = req.GetQueryParameters()["platform"];
-                if (platform.Empty()) platform = "webapp";
+                var platform = req.GetQueryParameters()["platform"] ?? "webapp";
+                var ip = req.GetQueryParameters()["ip"] ?? "null ip";
                 var userId = req.GetUserId();
                 if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
                 var login = await repo.Get<ClienteLogin>(DocumentType.Login, userId, cancellationToken);
 
                 if (login == null)
                 {
-                    var newLogin = new ClienteLogin { UserId = userId, Logins = [DateTimeOffset.Now], Platforms = [platform!] };
+                    var newLogin = new ClienteLogin
+                    {
+                        UserId = userId,
+                        Accesses = [new Access { Date = DateTimeOffset.Now, Platform = platform, Ip = ip }]
+                    };
                     newLogin.Initialize(userId);
 
                     await repo.Upsert(newLogin, cancellationToken);
                 }
                 else
                 {
-                    if (Array.Exists(login.Platforms, a => a == platform))
-                    {
-                        await repo.PatchItem<ClienteLogin>(DocumentType.Login, userId,
-                            [
-                                PatchOperation.Add("/logins/-", DateTimeOffset.Now),
-                            ], cancellationToken);
-                    }
-                    else
-                    {
-                        login.Logins = login.Logins.Union([DateTimeOffset.Now]).ToArray();
-                        login.Platforms = login.Platforms.Union([platform]).ToArray();
-                        await repo.Upsert(login, cancellationToken);
-                    }
+                    login.Accesses = login.Accesses.Union([new Access { Date = DateTimeOffset.Now, Platform = platform, Ip = ip }]).ToArray();
+
+                    await repo.Upsert(login, cancellationToken);
                 }
             }
             catch (Exception ex)

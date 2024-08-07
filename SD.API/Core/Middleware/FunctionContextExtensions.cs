@@ -10,7 +10,7 @@ namespace SD.API.Core.Middleware
         {
             var req = await context.GetHttpRequestDataAsync();
 
-            var newHttpResponse = req.CreateResponse(statusCode);
+            var newHttpResponse = req!.CreateResponse(statusCode);
 
             // You need to explicitly pass the status code in WriteAsJsonAsync method.
             // https://github.com/Azure/azure-functions-dotnet-worker/issues/776

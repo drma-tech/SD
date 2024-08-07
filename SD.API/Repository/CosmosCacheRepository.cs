@@ -33,6 +33,10 @@ namespace SD.API.Repository
 
                 return response.Resource;
             }
+            catch (CosmosOperationCanceledException)
+            {
+                return null;
+            }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 return null;

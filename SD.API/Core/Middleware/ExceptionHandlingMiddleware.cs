@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Functions.Worker;
+﻿using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;
 using System.Net;
@@ -14,6 +15,10 @@ namespace SD.API.Core.Middleware
             try
             {
                 await next(context);
+            }
+            catch (CosmosOperationCanceledException)
+            {
+                await context.SetHttpResponseStatusCode(HttpStatusCode.RequestTimeout, "Request Timeout!");
             }
             catch (Exception ex)
             {
