@@ -72,12 +72,5 @@ namespace SD.API.Repository
 
             return response.Resource;
         }
-
-        public async Task<EmailDocument?> CreateItemAsync(EmailDocument email, CancellationToken cancellationToken)
-        {
-            var response = await Container.CreateItemAsync(email, new PartitionKey(email.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
-
-            return response.Resource;
-        }
     }
 }

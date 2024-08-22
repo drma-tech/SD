@@ -43,9 +43,9 @@ namespace SD.API.Repository
             }
         }
 
-        public async Task<CacheDocument<TData>?> CreateItemAsync<TData>(CacheDocument<TData> cache, CancellationToken cancellationToken) where TData : class
+        public async Task<CacheDocument<TData>?> UpsertItemAsync<TData>(CacheDocument<TData> cache, CancellationToken cancellationToken) where TData : class
         {
-            var response = await Container.CreateItemAsync(cache, new PartitionKey(cache.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+            var response = await Container.UpsertItemAsync(cache, new PartitionKey(cache.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
             if (response.RequestCharge > 12)
             {

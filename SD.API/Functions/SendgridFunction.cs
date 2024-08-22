@@ -65,7 +65,7 @@ namespace SD.API.Functions
                     SenderIp = inboundMail.SenderIp
                 };
 
-                await repo.CreateItemAsync(model, cancellationToken);
+                await repo.UpsertItemAsync(model, cancellationToken);
             }
             catch (Exception ex)
             {
