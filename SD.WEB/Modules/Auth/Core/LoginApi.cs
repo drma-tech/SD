@@ -12,8 +12,18 @@ namespace SD.WEB.Modules.Auth.Core
 
         public async Task Add(string platform)
         {
-            var response = await _http.GetAsync(new Uri("https://ipinfo.io/ip"));
-            var ip = await response.Content.ReadAsStringAsync();
+            var ip = "";
+
+            try
+            {
+                //TODO: TypeError: Failed to fetch
+                var response = await _http.GetAsync(new Uri("https://ipinfo.io/ip"));
+                ip = await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception)
+            {
+                //do nothing;
+            }
 
             await PostAsync<ClienteLogin>(Endpoint.Add(platform, ip?.Trim()), null, null);
         }
