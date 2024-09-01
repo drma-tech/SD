@@ -45,14 +45,21 @@ namespace SD.API.Repository
 
         public async Task<CacheDocument<TData>?> UpsertItemAsync<TData>(CacheDocument<TData> cache, CancellationToken cancellationToken) where TData : class
         {
-            var response = await Container.UpsertItemAsync(cache, new PartitionKey(cache.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
-
-            if (response.RequestCharge > 12)
+            try
             {
-                _logger.LogWarning("Add - Id {0}, RequestCharge {1}", cache.Id, response.RequestCharge);
-            }
+                var response = await Container.UpsertItemAsync(cache, new PartitionKey(cache.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-            return response.Resource;
+                if (response.RequestCharge > 12)
+                {
+                    _logger.LogWarning("Add - Id {0}, RequestCharge {1}", cache.Id, response.RequestCharge);
+                }
+
+                return response.Resource;
+            }
+            catch (CosmosOperationCanceledException)
+            {
+                return null;
+            }
         }
     }
 }
