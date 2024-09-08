@@ -62,6 +62,19 @@ namespace SD.API.Functions
                     return model.Data;
                 }
             }
+            catch (TaskCanceledException ex)
+            {
+                if (ex.CancellationToken.IsCancellationRequested)
+                {
+                    req.ProcessException(new NotificationException("Cancellation Requested"));
+                    return default;
+                }
+                else
+                {
+                    req.ProcessException(new NotificationException("Timeout occurred"));
+                    throw new UnhandledException(ex.BuildException());
+                }
+            }
             catch (Exception ex)
             {
                 req.ProcessException(ex);
@@ -117,6 +130,19 @@ namespace SD.API.Functions
                 else
                 {
                     return model.Data;
+                }
+            }
+            catch (TaskCanceledException ex)
+            {
+                if (ex.CancellationToken.IsCancellationRequested)
+                {
+                    req.ProcessException(new NotificationException("Cancellation Requested"));
+                    return default;
+                }
+                else
+                {
+                    req.ProcessException(new NotificationException("Timeout occurred"));
+                    throw new UnhandledException(ex.BuildException());
                 }
             }
             catch (Exception ex)
@@ -177,6 +203,19 @@ namespace SD.API.Functions
                     return model.Data;
                 }
             }
+            catch (TaskCanceledException ex)
+            {
+                if (ex.CancellationToken.IsCancellationRequested)
+                {
+                    req.ProcessException(new NotificationException("Cancellation Requested"));
+                    return default;
+                }
+                else
+                {
+                    req.ProcessException(new NotificationException("Timeout occurred"));
+                    throw new UnhandledException(ex.BuildException());
+                }
+            }
             catch (Exception ex)
             {
                 req.ProcessException(ex);
@@ -204,6 +243,19 @@ namespace SD.API.Functions
                 }
 
                 return model?.Data;
+            }
+            catch (TaskCanceledException ex)
+            {
+                if (ex.CancellationToken.IsCancellationRequested)
+                {
+                    req.ProcessException(new NotificationException("Cancellation Requested"));
+                    return default;
+                }
+                else
+                {
+                    req.ProcessException(new NotificationException("Timeout occurred"));
+                    throw new UnhandledException(ex.BuildException());
+                }
             }
             catch (Exception ex)
             {
@@ -258,6 +310,19 @@ namespace SD.API.Functions
 
                 return model?.Data;
             }
+            catch (TaskCanceledException ex)
+            {
+                if (ex.CancellationToken.IsCancellationRequested)
+                {
+                    req.ProcessException(new NotificationException("Cancellation Requested"));
+                    return default;
+                }
+                else
+                {
+                    req.ProcessException(new NotificationException("Timeout occurred"));
+                    throw new UnhandledException(ex.BuildException());
+                }
+            }
             catch (Exception ex)
             {
                 req.ProcessException(ex);
@@ -310,6 +375,19 @@ namespace SD.API.Functions
                 }
 
                 return model?.Data;
+            }
+            catch (TaskCanceledException ex)
+            {
+                if (ex.CancellationToken.IsCancellationRequested)
+                {
+                    req.ProcessException(new NotificationException("Cancellation Requested"));
+                    return default;
+                }
+                else
+                {
+                    req.ProcessException(new NotificationException("Timeout occurred"));
+                    throw new UnhandledException(ex.BuildException());
+                }
             }
             catch (Exception ex)
             {
@@ -364,6 +442,19 @@ namespace SD.API.Functions
                 }
 
                 return model?.Data;
+            }
+            catch (TaskCanceledException ex)
+            {
+                if (ex.CancellationToken.IsCancellationRequested)
+                {
+                    req.ProcessException(new NotificationException("Cancellation Requested"));
+                    return default;
+                }
+                else
+                {
+                    req.ProcessException(new NotificationException("Timeout occurred"));
+                    throw new UnhandledException(ex.BuildException());
+                }
             }
             catch (Exception ex)
             {
@@ -425,6 +516,19 @@ namespace SD.API.Functions
                 }
 
                 return model?.Data;
+            }
+            catch (TaskCanceledException ex)
+            {
+                if (ex.CancellationToken.IsCancellationRequested)
+                {
+                    req.ProcessException(new NotificationException("Cancellation Requested"));
+                    return default;
+                }
+                else
+                {
+                    req.ProcessException(new NotificationException("Timeout occurred"));
+                    throw new UnhandledException(ex.BuildException());
+                }
             }
             catch (Exception ex)
             {

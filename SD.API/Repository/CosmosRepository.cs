@@ -66,7 +66,7 @@ namespace SD.API.Repository
                     results.AddRange(response.Resource);
                 }
 
-                if (charges > 5)
+                if (charges > 7)
                 {
                     _logger.LogWarning("ListAll - Type {Type}, RequestCharge {Charges}", Type.ToString(), charges);
                 }
@@ -98,7 +98,7 @@ namespace SD.API.Repository
                     results.AddRange(response.Resource);
                 }
 
-                if (charges > 5)
+                if (charges > 7)
                 {
                     _logger.LogWarning("Query - Type {Type}, RequestCharge {Charges}", Type.ToString(), charges);
                 }
