@@ -1,5 +1,6 @@
 ﻿@page "/shared/watching/{type}/{token}"
-<SeoHeader Title="@($"Watching ({Gravatar?.displayName}) | {(type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")" Icon="@Gravatar?.photos.LastOrDefault()?.value"></SeoHeader>
+<SeoHeader Title="@($"Watching ({Gravatar?.displayName}) | {(type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")"
+           Icon="@Gravatar?.photos.LastOrDefault()?.value"></SeoHeader>
 
 @using SD.Shared.Core.Models
 @using SD.WEB.Modules.Auth.Core
@@ -15,13 +16,13 @@
 @if (type == "movie")
 {
     <WatchingComponent Core="CoreWatching" MediaType="MediaType.movie" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
-                       Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="UserId"
+                       Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="@UserId"
                        ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()" CustomTitle="@($"Watching ({Gravatar?.displayName}) | { MediaType.movie.GetName()}")"></WatchingComponent>
 }
 else
 {
     <WatchingComponent Core="CoreWatching" MediaType="MediaType.tv" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
-                       Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="UserId"
+                       Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="@UserId"
                        ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()" CustomTitle="@($"Watching ({Gravatar?.displayName}) | { MediaType.tv.GetName()}")"></WatchingComponent>
 }
 

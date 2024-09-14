@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using SD.Shared.Models.List;
-using SD.Shared.Models.List.Tmdb;
 using SD.Shared.Models.News;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;

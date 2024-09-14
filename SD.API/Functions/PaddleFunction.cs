@@ -84,7 +84,7 @@ namespace SD.API.Functions
                 if (client.ClientePaddle == null) throw new NotificationException("client.ClientePaddle null");
 
                 client.ClientePaddle.SubscriptionId = body.data.id;
-                client.ClientePaddle.IsPaidUser = (body.data.status == "active" || body.data.status == "trialing");
+                client.ClientePaddle.IsPaidUser = (body.data.status is "active" or "trialing");
 
                 await repo.Upsert(client, cancellationToken);
             }

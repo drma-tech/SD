@@ -45,7 +45,7 @@ namespace SD.WEB.Modules.Profile.Core
             ArgumentNullException.ThrowIfNull(mediaType);
             ArgumentNullException.ThrowIfNull(id);
 
-            return await PostAsync(Endpoint.Remove(mediaType, id), null, (WishList?)null);
+            return await PostAsync(Endpoint.Remove(mediaType, id), null, null);
         }
     }
 }

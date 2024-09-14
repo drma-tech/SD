@@ -53,8 +53,8 @@ namespace SD.WEB.Modules.Suggestions.Core
 
                 var listOrder = new List<Ordem>();
 
-                listOrder.AddRange(movies?.results.Select(s => new Ordem { id = s.id, type = MediaType.movie, Popularity = s.popularity }) ?? new List<Ordem>());
-                listOrder.AddRange(shows?.results.Select(s => new Ordem { id = s.id, type = MediaType.tv, Popularity = s.popularity }) ?? new List<Ordem>());
+                listOrder.AddRange(movies?.results.Select(s => new Ordem { id = s.id, type = MediaType.movie, Popularity = s.popularity }) ?? []);
+                listOrder.AddRange(shows?.results.Select(s => new Ordem { id = s.id, type = MediaType.tv, Popularity = s.popularity }) ?? []);
 
                 foreach (var ordem in listOrder.OrderByDescending(o => o.Popularity))
                 {

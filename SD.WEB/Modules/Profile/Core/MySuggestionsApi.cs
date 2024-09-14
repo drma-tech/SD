@@ -15,7 +15,7 @@ namespace SD.WEB.Modules.Profile.Core
 
         public async Task<SD.Shared.Models.MySuggestions?> Get(AccountProduct? product, bool IsUserAuthenticated, RenderControlCore<SD.Shared.Models.MySuggestions?>? core)
         {
-            if (product == null || product == AccountProduct.Basic)
+            if (product is null or AccountProduct.Basic)
             {
                 return new();
             }

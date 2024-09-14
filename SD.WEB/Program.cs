@@ -14,6 +14,7 @@ using SD.WEB.Modules.Administrator.Core;
 using SD.WEB.Modules.Auth.Core;
 using SD.WEB.Modules.Profile.Core;
 using SD.WEB.Modules.Provider.Core;
+using SD.WEB.Modules.Subscription.Core;
 using SD.WEB.Modules.Suggestions.Core;
 using SD.WEB.Modules.Support.Core;
 using System.Globalization;

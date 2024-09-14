@@ -8,20 +8,20 @@ namespace SD.WEB.Core
         {
             var msg = await response.Content.ReadAsStringAsync();
 
-            if ((short)response.StatusCode >= 100 && (short)response.StatusCode <= 199) //Provisional response
+            if ((short)response.StatusCode is >= 100 and <= 199) //Provisional response
             {
                 //do nothing
             }
-            else if ((short)response.StatusCode >= 200 && (short)response.StatusCode <= 299) //Successful
+            else if ((short)response.StatusCode is >= 200 and <= 299) //Successful
             {
                 if (!string.IsNullOrEmpty(msgSuccess)) toast?.Success(msgSuccess);
                 if (!string.IsNullOrEmpty(msgInfo)) toast?.Info(msgInfo);
             }
-            else if ((short)response.StatusCode >= 300 && (short)response.StatusCode <= 399) //Redirected
+            else if ((short)response.StatusCode is >= 300 and <= 399) //Redirected
             {
                 throw new NotificationException(msg);
             }
-            else if ((short)response.StatusCode >= 400 && (short)response.StatusCode <= 499) //Request error
+            else if ((short)response.StatusCode is >= 400 and <= 499) //Request error
             {
                 throw new NotificationException(msg);
             }
