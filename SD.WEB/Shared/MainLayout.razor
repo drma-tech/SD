@@ -107,11 +107,15 @@
     <OffcanvasBody>
         <Tabs RenderMode="TabsRenderMode.LazyLoad" @bind-SelectedTab="@Tab" Pills="true" FullWidth="true">
             <Items>
-                <Tab Name="Home">@SD.WEB.Modules.Support.Resources.Translations.Home</Tab>
+                <Tab Name="Home">
+                    @SD.WEB.Modules.Support.Resources.Translations.Home
+                </Tab>
                 <Tab Name="Updates">
                     @SD.WEB.Modules.Support.Resources.Translations.Updates
                 </Tab>
-                <Tab Name="Feedback">@SD.WEB.Modules.Support.Resources.Translations.Feedback</Tab>
+                <Tab Name="Feedback">
+                    @SD.WEB.Modules.Support.Resources.Translations.Feedback
+                </Tab>
             </Items>
             <Content>
                 <TabPanel Name="Home" Padding="Padding.Is3.FromTop">
