@@ -1,5 +1,6 @@
 # Streaming Discovery
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdrma-tech%2FSD.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdrma-tech%2FSD?ref=badge_shield)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdrma-tech%2FSD.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdrma-tech%2FSD?ref=badge_shield&issueType=security)
 [![CodeFactor](https://www.codefactor.io/repository/github/drma-tech/sd/badge)](https://www.codefactor.io/repository/github/drma-tech/sd)
 
 - We are a platform that helps you decide what to watch.
