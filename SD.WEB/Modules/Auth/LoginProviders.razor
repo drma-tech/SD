@@ -1,10 +1,6 @@
 ﻿@page "/login-providers"
-@using Blazorise.Captcha
-@using System.Text.Json
 @inherits PageCore<LoginProviders>
 <SeoHeader Title="@Resources.Translations.LoginProvidersTitle" Url="/login-providers" ShowH1="false"></SeoHeader>
-
-@inject IHttpClientFactory httpClientFactory
 
 <h1 class="mb-3">@Resources.Translations.LoginProvidersTitle</h1>
 
@@ -17,27 +13,14 @@
         </Alert>
     </Column>
 </Row>
-<Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-    <Column ColumnSize="ColumnSize.IsAuto.OnMobile.Is1.OnDesktop.Is2.OnFullHD"></Column>
-    <Column ColumnSize="ColumnSize.IsAuto">
-        <Captcha @ref="@captcha" Solved="@Solved" Validate="@Validate" Expired="Expired" />
-    </Column>
-    <Column ColumnSize="ColumnSize.IsAuto">
-        <Button Background="Background.Primary" Clicked="@Reset">
-            Reset
-        </Button>
-    </Column>
-</Row>
 <Row HorizontalGutter="4" VerticalGutter="4">
     <Column ColumnSize="ColumnSize.IsAuto.OnMobile.Is1.OnDesktop.Is2.OnFullHD"></Column>
     <Column ColumnSize="ColumnSize.Is12.OnMobile.Is10.OnDesktop.Is8.OnFullHD">
-        <Span>Valid:@valid</Span>
         @foreach (var provider in providers)
         {
             var link = provider.Key;
             if (link == "microsoft") link = "aad";
-            <Button Block="true" Class="@("btn-social btn-" + @provider.Key)" Size="Size.Large" Margin="Margin.Is3.FromBottom" Disabled="!valid"
-                    Type="ButtonType.Link" To="@("/.auth/login/" + @link + "?post_login_redirect_uri=" + Navigation.BaseUri + "login-success")">
+            <Button Block="true" Class="@("btn-social btn-" + @provider.Key)" Size="Size.Large" Margin="Margin.Is3.FromBottom" Type="ButtonType.Link" To="@("/.auth/login/" + @link + "?post_login_redirect_uri=" + Navigation.BaseUri + "login-success")">
                 <span class="fa-brands fa-@provider.Key"></span> @Resources.Translations.LoginWith @provider.Value
             </Button>
         }
@@ -53,70 +36,4 @@
         { "google", "Google" },
         { "microsoft", "Microsoft"}
     };
-
-    private Captcha? captcha;
-    private bool valid;
-
-    private void Solved(CaptchaState state)
-    {
-        valid = state.Valid;
-        StateHasChanged();
-        Console.WriteLine($"Captcha Success: {state.Valid}");
-    }
-
-    private void Expired()
-    {
-        Console.WriteLine("Captcha Expired");
-    }
-
-    private async Task<bool> Validate(CaptchaState state)
-    {
-        try
-        {
-            valid = state.Valid;
-            StateHasChanged();
-            Console.WriteLine("Captcha Validate");
-
-            //Perform server side validation
-            //You should make sure to implement server side validation
-            //https://developers.google.com/recaptcha/docs/verify
-            //Here's a simple example:
-            var content = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("secret", "6LeewEIqAAAAAP6OSWvgPr016kn5c0tbY909VXM7"),
-                new KeyValuePair<string, string>("response", state.Response),
-            });
-
-            var http = httpClientFactory.CreateClient("RetryHttpClient");
-            var response = await http.PostAsync("https://www.google.com/recaptcha/api/siteverify", content);
-
-            var result = await response.Content.ReadAsStringAsync();
-            var googleResponse = JsonSerializer.Deserialize<GoogleResponse>(result, new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                });
-
-            return googleResponse?.Success ?? false;
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-            return false;
-        }       
-    }
-
-    private async Task Reset()
-    {
-        await captcha!.Reset();
-    }
-
-    public class GoogleResponse
-    {
-        public bool Success { get; set; }
-        public double Score { get; set; } //V3 only - The score for this request (0.0 - 1.0)
-        public string? Action { get; set; } //v3 only - An identifier
-        public string? Challenge_ts { get; set; }
-        public string? Hostname { get; set; }
-        public string? ErrorCodes { get; set; }
-    }
 }

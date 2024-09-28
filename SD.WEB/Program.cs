@@ -1,7 +1,6 @@
 using AzureStaticWebApps.Blazor.Authentication;
 using Blazorise;
 using Blazorise.Bootstrap5;
-using Blazorise.Captcha.ReCaptcha;
 using Blazorise.Icons.FontAwesome;
 using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components;
@@ -41,11 +40,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection
         .AddBlazorise(options => options.Immediate = true)
         .AddBootstrap5Providers()
-        .AddFontAwesomeIcons()
-        .AddBlazoriseGoogleReCaptcha(reCaptchaOptions =>
-        {
-            reCaptchaOptions.SiteKey = "6LeewEIqAAAAAP6OSWvgPr016kn5c0tbY909VXM7";
-        });
+        .AddFontAwesomeIcons();
 
     collection.AddPWAUpdater();
     collection.AddMediaQueryService();
