@@ -23,7 +23,7 @@
             </LayoutSider>
             <Layout>
                 <LayoutHeader Fixed="true">
-                    <HeadLayout></HeadLayout>
+                    <HeadLayout DevEnv="DevEnv"></HeadLayout>
                 </LayoutHeader>
                 <LayoutContent Style="overflow-y: auto; overflow-x: hidden;">
                     <Container Fluid="true" Padding="Padding.Is2">
@@ -160,6 +160,8 @@
     protected string? UserId { get; set; }
     public ClaimsPrincipal? User { get; set; }
 
+    public bool DevEnv { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         if (User == null && authenticationState is not null)
@@ -169,6 +171,14 @@
             User = authState?.User;
             IsAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
             UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            DevEnv = Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev");
         }
     }
 

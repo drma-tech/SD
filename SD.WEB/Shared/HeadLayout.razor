@@ -23,11 +23,17 @@
             <Button Color="Color.Dark" Float="Float.End" Size="Size.Small" Margin="Margin.Is2.FromEnd" Clicked="OpenConfigurations">
                 <Blazorise.Icon Name="FontAwesomeIcons.Globe" />
             </Button>
+            @if (DevEnv)
+            {
+                <Badge Color="Color.Warning"><Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon> Development Environment</Badge>
+            }
         </BarMenu>
     </Container>
 </Bar>
 
 @code {
+    [Parameter] public bool DevEnv { get; set; }
+
     private void Logout()
     {
         Navigation.NavigateTo("/.auth/logout", forceLoad: true);
