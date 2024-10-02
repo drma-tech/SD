@@ -49,7 +49,7 @@ namespace SD.API.Repository
             {
                 var response = await Container.UpsertItemAsync(cache, new PartitionKey(cache.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-                if (response.RequestCharge > 12)
+                if (response.RequestCharge > 15)
                 {
                     _logger.LogWarning("Add - Id {0}, RequestCharge {1}", cache.Id, response.RequestCharge);
                 }

@@ -117,7 +117,7 @@ namespace SD.API.Repository
             {
                 var response = await Container.UpsertItemAsync(item, new PartitionKey(item.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-                if (response.RequestCharge > 12)
+                if (response.RequestCharge > 15)
                 {
                     _logger.LogWarning("Upsert - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);
                 }

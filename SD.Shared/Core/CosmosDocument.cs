@@ -22,7 +22,7 @@ namespace SD.Shared.Core
         public string Id { get; set; } = string.Empty;
 
         [JsonInclude]
-        public DateTimeOffset DtInsert { get; set; } = DateTimeOffset.UtcNow;
+        public DateTimeOffset DtInsert { get; set; } = DateTimeOffset.Now;
 
         [JsonInclude]
         public DateTimeOffset? DtUpdate { get; set; } = null;
@@ -38,7 +38,7 @@ namespace SD.Shared.Core
 
         public virtual void Update()
         {
-            DtUpdate = DateTimeOffset.UtcNow;
+            DtUpdate = DateTimeOffset.Now;
         }
     }
 }
