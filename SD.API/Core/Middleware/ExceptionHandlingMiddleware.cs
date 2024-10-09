@@ -22,7 +22,7 @@ namespace SD.API.Core.Middleware
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error processing invocation");
+                _logger.LogError(ex, "ExceptionHandlingMiddleware");
 
                 await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "Invocation failed!");
             }

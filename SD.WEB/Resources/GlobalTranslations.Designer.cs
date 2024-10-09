@@ -160,7 +160,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Product still under development, so a lot will still improve. If you have suggestions to make, please ask in the app&apos;s support section..
+        ///   Looks up a localized string similar to Product still under development, so a lot of things will still be improved. If you have any suggestions, please ask in the support section of the app or send us an email..
         /// </summary>
         public static string ProductUnderDevelopment {
             get {

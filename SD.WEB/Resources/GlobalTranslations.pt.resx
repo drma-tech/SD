@@ -135,6 +135,12 @@
   <data name="FeatureUnavailableMessage" xml:space="preserve">
     <value>Em desenvolvimento</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="LanguageDescription" xml:space="preserve">
+    <value>A maioria dos idiomas servem apenas para filmes/séries (não para o site)</value>
+  </data>
   <data name="OperationCanceled" xml:space="preserve">
     <value>Operação cancelada!</value>
   </data>
@@ -144,20 +150,23 @@
   <data name="PremiumFeature" xml:space="preserve">
     <value>Recurso Premium</value>
   </data>
-  <data name="ProductUnderDevelopment" xml:space="preserve">
-    <value>Produto ainda em desenvolvimento, então muita coisa ainda vai melhorar. Se você tiver sugestões a fazer, favor solicitar na seção de suporte do aplicativo.</value>
-  </data>
   <data name="PWAUpdaterButton" xml:space="preserve">
     <value>ATUALIZAR AGORA</value>
   </data>
   <data name="PWAUpdaterText" xml:space="preserve">
     <value>Uma nova versão está disponível</value>
   </data>
+  <data name="Region" xml:space="preserve">
+    <value>Região</value>
+  </data>
   <data name="RemoveCollection" xml:space="preserve">
     <value>Remover coleção</value>
   </data>
   <data name="SeeAllItems" xml:space="preserve">
     <value>Ver todos os itens</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Configurações</value>
   </data>
   <data name="Share" xml:space="preserve">
     <value>Compartilhar</value>
@@ -174,16 +183,7 @@
   <data name="WriteReviewTitle" xml:space="preserve">
     <value>Escreva uma crítica</value>
   </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Configurações</value>
-  </data>
-  <data name="Region" xml:space="preserve">
-    <value>Região</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Idioma</value>
-  </data>
-  <data name="LanguageDescription" xml:space="preserve">
-    <value>A maioria dos idiomas servem apenas para filmes/séries (não para o site)</value>
+  <data name="ProductUnderDevelopment" xml:space="preserve">
+    <value>O produto ainda está em desenvolvimento, então muitas coisas ainda serão aprimoradas. Se você tiver alguma sugestão, pergunte na seção de suporte do aplicativo ou nos envie um email.</value>
   </data>
 </root>
