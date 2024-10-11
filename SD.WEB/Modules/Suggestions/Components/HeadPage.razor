@@ -82,6 +82,12 @@
                             @item.GetName() <Blazorise.Icon Name="FontAwesomeIcons.QuestionCircle"></Blazorise.Icon>
                         </Badge>
                     }
+                    <Badge Color="Color.Primary">
+                        Contries:
+                    </Badge>
+                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">
+                        @provider?.regions.Count
+                    </Badge>
                     @if (provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
                     {
                         <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">

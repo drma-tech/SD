@@ -123,3 +123,12 @@ canvas {
 .mx-6 {
     margin-left: 4rem !important;
 }
+
+.google-ads {
+    display: inline-block;
+    min-width: 400px;
+    max-width: 970px;
+    width: 100% !important;
+    height: 90px !important;
+    margin-bottom: 0.6rem;
+}

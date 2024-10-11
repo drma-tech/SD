@@ -47,7 +47,7 @@
             </Column>
         </Row>
     </Jumbotron>
-    @if (Platform.NotEmpty() && Reviewed.Empty() && Client != null
+    @* @if (Platform.NotEmpty() && Reviewed.Empty() && Client != null
      && (Client.ClientePaddle == null || !Client.ClientePaddle.IsPaidUser))
     {
         <Alert Visible="true" Color="Color.Info" Class="mb-3">
@@ -79,7 +79,7 @@
                 }
             </AlertDescription>
         </Alert>
-    }
+    } *@
 }
 
 <MyProviderComponent Fake="Fake" WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MyProviderComponent>

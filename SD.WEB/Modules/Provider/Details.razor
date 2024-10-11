@@ -18,8 +18,8 @@
 <RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj)=>obj==null)">
     @if (Provider != null)
     {
-        <HeadPage ImageSource="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Text="@Provider.description" Link="@Provider.link" 
-        provider="Provider" IsAuthenticated="IsAuthenticated"></HeadPage>
+        <HeadPage ImageSource="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Text="@Provider.description" Link="@Provider.link"
+                  provider="Provider" IsAuthenticated="IsAuthenticated"></HeadPage>
     }
 
     <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "popularity.desc")"
