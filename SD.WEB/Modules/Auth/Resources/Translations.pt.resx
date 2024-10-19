@@ -117,17 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LoginProvidersTitle" xml:space="preserve">
-    <value>Login / Registro</value>
-  </data>
-  <data name="LoginWith" xml:space="preserve">
-    <value>Faça o login com</value>
-  </data>
-  <data name="RegistrationInformation" xml:space="preserve">
-    <value>Informações de Registro</value>
-  </data>
   <data name="AccessProvider" xml:space="preserve">
     <value>Provedor de Acesso</value>
+  </data>
+  <data name="AuthenticationInProgress" xml:space="preserve">
+    <value>Autenticação em andamento...</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
@@ -135,11 +129,17 @@
   <data name="Identification" xml:space="preserve">
     <value>Identificação</value>
   </data>
-  <data name="AuthenticationInProgress" xml:space="preserve">
-    <value>Autenticação em andamento...</value>
+  <data name="LoginProvidersTitle" xml:space="preserve">
+    <value>Login / Registro</value>
+  </data>
+  <data name="LoginWith" xml:space="preserve">
+    <value>Faça o login com</value>
   </data>
   <data name="NothingThisAddress" xml:space="preserve">
     <value>Desculpe, não há nada neste endereço.</value>
+  </data>
+  <data name="RegistrationInformation" xml:space="preserve">
+    <value>Informações de Registro</value>
   </data>
   <data name="UnauthenticatedUser" xml:space="preserve">
     <value>Usuário não autenticado</value>

@@ -128,7 +128,7 @@ namespace SD.WEB.Modules.Suggestions.Core
             if (tmdbId == null) return default;
             if (seasonNumber == null) return default;
 
-            return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri + $"/tv/{tmdbId}/season/{seasonNumber}".ConfigureParameters(parameters));
+            return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri + $"tv/{tmdbId}/season/{seasonNumber}".ConfigureParameters(parameters));
         }
 
         public async Task<MediaProviders?> GetWatchProvidersList(string? tmdb_id, MediaType? type)

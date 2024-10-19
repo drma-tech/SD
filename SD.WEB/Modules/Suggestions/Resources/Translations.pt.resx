@@ -117,20 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TitleAwards" xml:space="preserve">
-    <value>Premiações</value>
-  </data>
-  <data name="TitleSpecializedSites" xml:space="preserve">
-    <value>Sites Especializados</value>
-  </data>
-  <data name="TitleSpecials" xml:space="preserve">
-    <value>Especiais</value>
-  </data>
   <data name="ButtonNotWatched" xml:space="preserve">
     <value>Não assistido</value>
   </data>
   <data name="ButtonWatched" xml:space="preserve">
     <value>Assistido</value>
+  </data>
+  <data name="Cast" xml:space="preserve">
+    <value>Elenco</value>
   </data>
   <data name="DeliveryModelAds" xml:space="preserve">
     <value>Anúncios</value>
@@ -150,26 +144,17 @@
   <data name="DeliveryModelRent" xml:space="preserve">
     <value>Alugar</value>
   </data>
-  <data name="MoreInformation" xml:space="preserve">
-    <value>Mais informações ou Contribuições</value>
-  </data>
-  <data name="Offering" xml:space="preserve">
-    <value>Oferecimento</value>
-  </data>
-  <data name="TitleNotAvailable" xml:space="preserve">
-    <value>Infelizmente este título não está disponível em sua região</value>
-  </data>
-  <data name="Cast" xml:space="preserve">
-    <value>Elenco</value>
-  </data>
   <data name="Directing" xml:space="preserve">
     <value>Diretor(a)</value>
+  </data>
+  <data name="MoreInformation" xml:space="preserve">
+    <value>Mais informações ou Contribuições</value>
   </data>
   <data name="NoPlot" xml:space="preserve">
     <value>visão geral não disponível no seu idioma</value>
   </data>
-  <data name="Writing" xml:space="preserve">
-    <value>Roteirização</value>
+  <data name="Offering" xml:space="preserve">
+    <value>Oferecimento</value>
   </data>
   <data name="TabAbout" xml:space="preserve">
     <value>Sobre</value>
@@ -182,5 +167,20 @@
   </data>
   <data name="TabWhereToWatch" xml:space="preserve">
     <value>Onde assistir</value>
+  </data>
+  <data name="TitleAwards" xml:space="preserve">
+    <value>Premiações</value>
+  </data>
+  <data name="TitleNotAvailable" xml:space="preserve">
+    <value>Infelizmente este título não está disponível em sua região</value>
+  </data>
+  <data name="TitleSpecializedSites" xml:space="preserve">
+    <value>Sites Especializados</value>
+  </data>
+  <data name="TitleSpecials" xml:space="preserve">
+    <value>Especiais</value>
+  </data>
+  <data name="Writing" xml:space="preserve">
+    <value>Roteirização</value>
   </data>
 </root>

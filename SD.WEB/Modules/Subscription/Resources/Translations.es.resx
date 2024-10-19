@@ -117,20 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Free" xml:space="preserve">
-    <value>Gratis</value>
-  </data>
-  <data name="MySubscription" xml:space="preserve">
-    <value>Mi suscripción</value>
-  </data>
   <data name="Canceled" xml:space="preserve">
     <value>Cancelado</value>
+  </data>
+  <data name="CancelSubscription" xml:space="preserve">
+    <value>Cancelar suscripción</value>
+  </data>
+  <data name="CreateNewSubscription" xml:space="preserve">
+    <value>Crear una nueva suscripción</value>
   </data>
   <data name="Details" xml:space="preserve">
     <value>Detalles</value>
   </data>
+  <data name="Free" xml:space="preserve">
+    <value>Gratis</value>
+  </data>
+  <data name="InactiveBilling" xml:space="preserve">
+    <value>Facturación inactiva</value>
+  </data>
   <data name="Items" xml:space="preserve">
     <value>Elementos</value>
+  </data>
+  <data name="Management" xml:space="preserve">
+    <value>Gestión</value>
+  </data>
+  <data name="MySubscription" xml:space="preserve">
+    <value>Mi suscripción</value>
   </data>
   <data name="NextBilled" xml:space="preserve">
     <value>Siguiente facturado</value>
@@ -150,19 +162,7 @@
   <data name="SubscriptionProcessed" xml:space="preserve">
     <value>Se está procesando la suscripción. Espere por favor.</value>
   </data>
-  <data name="CreateNewSubscription" xml:space="preserve">
-    <value>Crear una nueva suscripción</value>
-  </data>
-  <data name="InactiveBilling" xml:space="preserve">
-    <value>Facturación inactiva</value>
-  </data>
-  <data name="Management" xml:space="preserve">
-    <value>Gestión</value>
-  </data>
   <data name="UpdatePaymentDetails" xml:space="preserve">
     <value>Actualizar detalles del pago</value>
-  </data>
-  <data name="CancelSubscription" xml:space="preserve">
-    <value>Cancelar suscripción</value>
   </data>
 </root>

@@ -117,20 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Free" xml:space="preserve">
-    <value>Grátis</value>
-  </data>
-  <data name="MySubscription" xml:space="preserve">
-    <value>Minha assinatura</value>
-  </data>
   <data name="Canceled" xml:space="preserve">
     <value>Cancelado</value>
+  </data>
+  <data name="CancelSubscription" xml:space="preserve">
+    <value>Cancelar assinatura</value>
+  </data>
+  <data name="CreateNewSubscription" xml:space="preserve">
+    <value>Criar nova assinatura</value>
   </data>
   <data name="Details" xml:space="preserve">
     <value>Detalhes</value>
   </data>
+  <data name="Free" xml:space="preserve">
+    <value>Grátis</value>
+  </data>
+  <data name="InactiveBilling" xml:space="preserve">
+    <value>Cobrança Inativa</value>
+  </data>
   <data name="Items" xml:space="preserve">
     <value>Itens</value>
+  </data>
+  <data name="Management" xml:space="preserve">
+    <value>Gerenciamento</value>
+  </data>
+  <data name="MySubscription" xml:space="preserve">
+    <value>Minha assinatura</value>
   </data>
   <data name="NextBilled" xml:space="preserve">
     <value>Próxima cobrança</value>
@@ -150,19 +162,7 @@
   <data name="SubscriptionProcessed" xml:space="preserve">
     <value>A assinatura está sendo processada. Por favor, aguarde.</value>
   </data>
-  <data name="CreateNewSubscription" xml:space="preserve">
-    <value>Criar nova assinatura</value>
-  </data>
-  <data name="InactiveBilling" xml:space="preserve">
-    <value>Cobrança Inativa</value>
-  </data>
-  <data name="Management" xml:space="preserve">
-    <value>Gerenciamento</value>
-  </data>
   <data name="UpdatePaymentDetails" xml:space="preserve">
     <value>Atualizar detalhes de pagamento</value>
-  </data>
-  <data name="CancelSubscription" xml:space="preserve">
-    <value>Cancelar assinatura</value>
   </data>
 </root>
