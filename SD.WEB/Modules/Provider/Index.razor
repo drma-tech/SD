@@ -8,6 +8,20 @@
 @inject AllProvidersApi AllProvidersApi
 @inject MyProvidersApi MyProvidersApi
 
+<Div TextAlignment="TextAlignment.Center">
+    @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
+    {
+        <div class="adsbygoogle google-ads" style="background-color: black;"></div>
+    }
+    else
+    {
+        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-3885428939386350" data-ad-slot="7879953118"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    }
+</Div>
+
 <HeaderComponent Title="@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region.GetName())">
 </HeaderComponent>
 <RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null || obj.Items.Empty())">

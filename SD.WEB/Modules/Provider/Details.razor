@@ -22,6 +22,20 @@
                   provider="Provider" IsAuthenticated="IsAuthenticated"></HeadPage>
     }
 
+    <Div TextAlignment="TextAlignment.Center">
+        @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
+        {
+            <div class="adsbygoogle google-ads" style="background-color: black;"></div>
+        }
+        else
+        {
+            <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-3885428939386350" data-ad-slot="3912787946"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        }
+    </Div>
+
     <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "popularity.desc")"
                MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
     <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "primary_release_date.desc")"

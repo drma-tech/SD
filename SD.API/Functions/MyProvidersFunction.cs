@@ -24,7 +24,7 @@ namespace SD.API.Functions
         }
 
         [Function("MyProvidersAdd")]
-        public async Task<MyProviders?> Add(
+        public async Task<MyProviders?> MyProvidersAdd(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/add")] HttpRequestData req,
              CancellationToken cancellationToken)
         {
@@ -59,7 +59,7 @@ namespace SD.API.Functions
         }
 
         [Function("MyProvidersUpdate")]
-        public async Task<MyProviders?> Update(
+        public async Task<MyProviders?> MyProvidersUpdate(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/update")] HttpRequestData req,
              CancellationToken cancellationToken)
         {
@@ -91,7 +91,7 @@ namespace SD.API.Functions
         }
 
         [Function("MyProvidersRemove")]
-        public async Task<MyProviders?> Remove(
+        public async Task<MyProviders?> MyProvidersRemove(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/remove")] HttpRequestData req,
             CancellationToken cancellationToken)
         {

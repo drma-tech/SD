@@ -82,6 +82,20 @@
     } *@
 }
 
+<Div TextAlignment="TextAlignment.Center">
+    @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
+    {
+        <div class="adsbygoogle google-ads" style="background-color: black;"></div>
+    }
+    else
+    {
+        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-3885428939386350" data-ad-slot="7834182664"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    }
+</Div>
+
 <MyProviderComponent Fake="Fake" WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MyProviderComponent>
 
 <MySuggestions Fake="Fake" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MySuggestions>

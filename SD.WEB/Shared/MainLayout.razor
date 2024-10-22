@@ -29,19 +29,6 @@
                     <Container Fluid="true" Padding="Padding.Is2">
                         <ErrorBoundary @ref="boundary">
                             <ChildContent>
-                                <Div TextAlignment="TextAlignment.Center">
-                                    @if (DevEnv)
-                                    {
-                                        <div class="adsbygoogle google-ads" style="background-color: black;"></div>
-                                    }
-                                    else
-                                    {
-                                        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-3885428939386350" data-ad-slot="3165413564"></ins>
-                                        <script>
-                                            (adsbygoogle = window.adsbygoogle || []).push({});
-                                        </script>
-                                    }
-                                </Div>
                                 @Body
                             </ChildContent>
                             <ErrorContent Context="ex">

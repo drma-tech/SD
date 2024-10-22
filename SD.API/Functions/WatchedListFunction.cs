@@ -8,7 +8,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("WatchedListGet", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchedList))]
         [Function("WatchedListGet")]
-        public async Task<WatchedList?> Get(
+        public async Task<WatchedList?> WatchedListGet(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/watchedlist/get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -35,7 +35,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("WatchedListAdd", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchedList))]
         [Function("WatchedListAdd")]
-        public async Task<WatchedList?> Add(
+        public async Task<WatchedList?> WatchedListAdd(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchedlist/add/{MediaType}/{TmdbId}")] HttpRequestData req,
             string MediaType, string TmdbId, CancellationToken cancellationToken)
         {
@@ -72,7 +72,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("WatchedListRemove", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchedList))]
         [Function("WatchedListRemove")]
-        public async Task<WatchedList?> Remove(
+        public async Task<WatchedList?> WatchedListRemove(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchedlist/remove/{MediaType}/{TmdbId}")] HttpRequestData req,
             string MediaType, string TmdbId, CancellationToken cancellationToken)
         {

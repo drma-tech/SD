@@ -9,7 +9,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("PrincipalGet", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(ClientePrincipal))]
         [Function("PrincipalGet")]
-        public async Task<ClientePrincipal?> Get(
+        public async Task<ClientePrincipal?> PrincipalGet(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Principal/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -26,7 +26,7 @@ namespace SD.API.Functions
         }
 
         [Function("PrincipalGetEmail")]
-        public async Task<string?> GetEmail(
+        public async Task<string?> PrincipalGetEmail(
           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Public/Principal/GetEmail")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -46,7 +46,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("PrincipalAdd", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(ClientePrincipal))]
         [Function("PrincipalAdd")]
-        public async Task<ClientePrincipal?> Add(
+        public async Task<ClientePrincipal?> PrincipalAdd(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Principal/Add")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -63,7 +63,7 @@ namespace SD.API.Functions
         }
 
         [Function("PrincipalPaddle")]
-        public async Task<ClientePrincipal> Paddle(
+        public async Task<ClientePrincipal> PrincipalPaddle(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.PUT, Route = "Principal/Paddle")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -85,7 +85,7 @@ namespace SD.API.Functions
         }
 
         [Function("PrincipalRemove")]
-        public async Task Remove(
+        public async Task PrincipalRemove(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.DELETE, Route = "Principal/Remove")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try

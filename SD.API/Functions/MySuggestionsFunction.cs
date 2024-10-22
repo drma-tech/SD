@@ -8,7 +8,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("MySuggestionsGet", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MySuggestions))]
         [Function("MySuggestionsGet")]
-        public async Task<MySuggestions?> Get(
+        public async Task<MySuggestions?> MySuggestionsGet(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "MySuggestions/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -27,7 +27,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("MySuggestionsSync", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MySuggestions))]
         [Function("MySuggestionsSync")]
-        public async Task<MySuggestions?> Sync(
+        public async Task<MySuggestions?> MySuggestionsSync(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "MySuggestions/Sync/{MediaType}")] HttpRequestData req,
             string MediaType, CancellationToken cancellationToken)
         {
@@ -75,7 +75,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("MySuggestionsAdd", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MySuggestions))]
         [Function("MySuggestionsAdd")]
-        public async Task<MySuggestions?> Add(
+        public async Task<MySuggestions?> MySuggestionsAdd(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "MySuggestions/Add")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try

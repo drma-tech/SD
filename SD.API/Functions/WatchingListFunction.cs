@@ -8,7 +8,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("WatchingListGet", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchingList))]
         [Function("WatchingListGet")]
-        public async Task<WatchingList?> Get(
+        public async Task<WatchingList?> WatchingListGet(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/watchinglist/get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -35,7 +35,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("WatchingListAdd", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchingList))]
         [Function("WatchingListAdd")]
-        public async Task<WatchingList?> Add(
+        public async Task<WatchingList?> WatchingListAdd(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchinglist/add/{MediaType}")] HttpRequestData req,
             string MediaType, CancellationToken cancellationToken)
         {
@@ -72,7 +72,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("WatchingListRemove", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchingList))]
         [Function("WatchingListRemove")]
-        public async Task<WatchingList?> Remove(
+        public async Task<WatchingList?> WatchingListRemove(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchinglist/remove/{MediaType}/{CollectionId}/{TmdbId}")] HttpRequestData req,
             string MediaType, string CollectionId, string TmdbId, CancellationToken cancellationToken)
         {
@@ -108,7 +108,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("WatchingListSync", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchingList))]
         [Function("WatchingListSync")]
-        public async Task<WatchingList?> Sync(
+        public async Task<WatchingList?> WatchingListSync(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchinglist/sync/{MediaType}")] HttpRequestData req,
             string MediaType, CancellationToken cancellationToken)
         {

@@ -8,7 +8,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("WishListGet", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WishList))]
         [Function("WishListGet")]
-        public async Task<WishList?> Get(
+        public async Task<WishList?> WishListGet(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/wishlist/get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
@@ -35,7 +35,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("WishListAdd", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WishList))]
         [Function("WishListAdd")]
-        public async Task<WishList?> Add(
+        public async Task<WishList?> WishListAdd(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "wishlist/add/{type}")] HttpRequestData req,
             string type, CancellationToken cancellationToken)
         {
@@ -72,7 +72,7 @@ namespace SD.API.Functions
         //[OpenApiOperation("WishListRemove", "Azure (Cosmos DB)")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WishList))]
         [Function("WishListRemove")]
-        public async Task<WishList?> Remove(
+        public async Task<WishList?> WishListRemove(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "wishlist/remove/{type}/{id}")] HttpRequestData req,
             string type, string id, CancellationToken cancellationToken)
         {
