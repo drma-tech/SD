@@ -1,6 +1,8 @@
 ﻿@using SD.WEB.Modules.Profile
 @inherits ComponentCore<SettingsPopup>
 
+@inject IJSRuntime JsRuntime
+
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@GlobalTranslations.Settings</ModalTitle>
     <CloseButton />
@@ -18,27 +20,45 @@
 </ModalFooter>
 
 @code {
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
-
         var region = Navigation?.QueryString("region");
 
         if (!string.IsNullOrEmpty(region))
         {
             AppStateStatic.ChangeRegion((Region)Enum.Parse(typeof(Region), region));
+            await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", region);
         }
     }
 
-    protected void RegionValueChanged(Region value)
+    protected override async Task LoadDataRender()
+    {
+        var region = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "region");
+
+        if (region.NotEmpty())
+        {
+            AppStateStatic.ChangeRegion((Region)Enum.Parse(typeof(Region), region), false);
+        }
+
+        var language = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "language");
+
+        if (language.NotEmpty())
+        {
+            AppStateStatic.ChangeLanguage((Language)Enum.Parse(typeof(Language), language.Replace("-", "")));
+        }
+    }
+
+    protected async Task RegionValueChanged(Region value)
     {
         AppStateStatic.ChangeRegion(value);
 
+        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", value.GetName(false));
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("region", value.GetName(false)));
     }
 
-    protected void LanguageValueChanged(Language value)
+    protected async Task LanguageValueChanged(Language value)
     {
+        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "language", value.GetName(false));
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("language", value.GetName(false)), forceLoad: true);
     }
 }

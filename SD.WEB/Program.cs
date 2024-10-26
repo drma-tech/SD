@@ -6,6 +6,7 @@ using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.JSInterop;
 using Polly;
 using Polly.Extensions.Http;
 using SD.WEB;
@@ -31,7 +32,7 @@ if (builder.RootComponents.Empty())
 
 var host = builder.Build();
 
-ConfigureCulture(host);
+await ConfigureCulture(host);
 
 await host.RunAsync();
 
@@ -98,20 +99,26 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     });
 }
 
-static void ConfigureCulture(WebAssemblyHost? host)
+static async Task ConfigureCulture(WebAssemblyHost? host)
 {
     if (host != null)
     {
         var nav = host.Services.GetService<NavigationManager>();
         var language = nav?.QueryString("language");
 
-        if (!string.IsNullOrEmpty(language))
+        if (language.Empty())
+        {
+            var JsRuntime = host.Services.GetRequiredService<IJSRuntime>();
+            language = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "language");
+        }
+
+        if (language.NotEmpty())
         {
             CultureInfo cultureInfo;
 
             try
             {
-                cultureInfo = new CultureInfo(language);
+                cultureInfo = new CultureInfo(language!);
             }
             catch (Exception)
             {

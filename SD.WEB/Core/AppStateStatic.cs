@@ -36,10 +36,15 @@ namespace SD.WEB.Core
             Language = (Language?)language ?? Language.enUS;
         }
 
-        public static void ChangeRegion(Region value)
+        public static void ChangeRegion(Region value, bool callAction = true)
         {
             Region = value;
-            RegionChanged?.Invoke();
+            if (callAction) RegionChanged?.Invoke();
+        }
+
+        public static void ChangeLanguage(Language value)
+        {
+            Language = value;
         }
     }
 }

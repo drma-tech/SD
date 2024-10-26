@@ -174,11 +174,18 @@
         }
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             DevEnv = Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev");
+
+            var region = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "region");
+
+            if (region.NotEmpty())
+            {
+                AppStateStatic.ChangeRegion((Region)Enum.Parse(typeof(Region), region));
+            }
         }
     }
 
