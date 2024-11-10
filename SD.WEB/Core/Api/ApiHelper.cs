@@ -18,7 +18,8 @@ namespace SD.WEB.Core.Api
             }
             else
             {
-                throw new NotificationException(response.ReasonPhrase);
+                var content = await response.Content.ReadAsStringAsync();
+                throw new NotificationException(content);
             }
         }
 
@@ -45,7 +46,8 @@ namespace SD.WEB.Core.Api
             }
             else
             {
-                throw new NotificationException(response.ReasonPhrase);
+                var content = await response.Content.ReadAsStringAsync();
+                throw new NotificationException(content);
             }
         }
 
@@ -72,7 +74,8 @@ namespace SD.WEB.Core.Api
             }
             else
             {
-                throw new NotificationException(response.ReasonPhrase);
+                var content = await response.Content.ReadAsStringAsync();
+                throw new NotificationException(content);
             }
         }
     }

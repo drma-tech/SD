@@ -26,9 +26,8 @@ namespace SD.API.Repository
         public CosmosLogRepository(IConfiguration config)
         {
             var databaseId = config.GetValue<string>("RepositoryOptions_DatabaseId");
-            var containerId = config.GetValue<string>("RepositoryOptions_ContainerLogId");
 
-            Container = ApiStartup.CosmosClient.GetContainer(databaseId, containerId);
+            Container = ApiStartup.CosmosClient.GetContainer(databaseId, "logs");
         }
 
         public async Task Add(LogModel log)

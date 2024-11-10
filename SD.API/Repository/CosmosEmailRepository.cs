@@ -14,9 +14,8 @@ namespace SD.API.Repository
         public CosmosEmailRepository(IConfiguration config)
         {
             var databaseId = config.GetValue<string>("RepositoryOptions_DatabaseId");
-            var containerId = config.GetValue<string>("RepositoryOptions_ContainerMailId");
 
-            Container = ApiStartup.CosmosClient.GetContainer(databaseId, containerId);
+            Container = ApiStartup.CosmosClient.GetContainer(databaseId, "mail");
         }
 
         public async Task<EmailDocument?> Get(string id, CancellationToken cancellationToken)

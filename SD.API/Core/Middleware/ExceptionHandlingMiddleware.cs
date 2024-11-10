@@ -20,6 +20,16 @@ namespace SD.API.Core.Middleware
             {
                 await context.SetHttpResponseStatusCode(HttpStatusCode.RequestTimeout, "Request Timeout!");
             }
+            catch (CosmosException)
+            {
+                //var result = JsonSerializer.Deserialize<CosmosExceptionStructure>("{" + cex.ResponseBody.Replace("Errors", "\"Errors\"") + "}", options: null);
+                //return result?.Message?.Errors.FirstOrDefault();
+                await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "Invocation failed!");
+            }
+            catch (NotificationException ex)
+            {
+                await context.SetHttpResponseStatusCode(HttpStatusCode.BadRequest, ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "ExceptionHandlingMiddleware");

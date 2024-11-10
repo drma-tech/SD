@@ -15,9 +15,8 @@ namespace SD.API.Repository
             _logger = logger;
 
             var databaseId = config.GetValue<string>("RepositoryOptions_DatabaseId");
-            var containerId = config.GetValue<string>("RepositoryOptions_ContainerCacheId");
 
-            Container = ApiStartup.CosmosClient.GetContainer(databaseId, containerId);
+            Container = ApiStartup.CosmosClient.GetContainer(databaseId, "cache");
         }
 
         public async Task<CacheDocument<TData>?> Get<TData>(string id, CancellationToken cancellationToken) where TData : class

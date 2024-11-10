@@ -72,13 +72,13 @@ namespace SD.API.Functions
                 else
                 {
                     req.ProcessException(new NotificationException("Timeout occurred"));
-                    throw new UnhandledException(ex.BuildException());
+                    throw;
                 }
             }
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                throw new UnhandledException(ex.BuildException());
+                throw;
             }
         }
 
@@ -142,13 +142,13 @@ namespace SD.API.Functions
                 else
                 {
                     req.ProcessException(new NotificationException("Timeout occurred"));
-                    throw new UnhandledException(ex.BuildException());
+                    throw;
                 }
             }
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                throw new UnhandledException(ex.BuildException());
+                throw;
             }
         }
 
@@ -213,13 +213,13 @@ namespace SD.API.Functions
                 else
                 {
                     req.ProcessException(new NotificationException("Timeout occurred"));
-                    throw new UnhandledException(ex.BuildException());
+                    throw;
                 }
             }
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                throw new UnhandledException(ex.BuildException());
+                throw;
             }
         }
 
@@ -254,13 +254,13 @@ namespace SD.API.Functions
                 else
                 {
                     req.ProcessException(new NotificationException("Timeout occurred"));
-                    throw new UnhandledException(ex.BuildException());
+                    throw;
                 }
             }
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                throw new UnhandledException(ex.BuildException());
+                throw;
             }
         }
 
@@ -320,13 +320,13 @@ namespace SD.API.Functions
                 else
                 {
                     req.ProcessException(new NotificationException("Timeout occurred"));
-                    throw new UnhandledException(ex.BuildException());
+                    throw;
                 }
             }
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                throw new UnhandledException(ex.BuildException());
+                throw;
             }
         }
 
@@ -386,13 +386,13 @@ namespace SD.API.Functions
                 else
                 {
                     req.ProcessException(new NotificationException("Timeout occurred"));
-                    throw new UnhandledException(ex.BuildException());
+                    throw;
                 }
             }
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                throw new UnhandledException(ex.BuildException());
+                throw;
             }
         }
 
@@ -453,13 +453,13 @@ namespace SD.API.Functions
                 else
                 {
                     req.ProcessException(new NotificationException("Timeout occurred"));
-                    throw new UnhandledException(ex.BuildException());
+                    throw;
                 }
             }
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                throw new UnhandledException(ex.BuildException());
+                throw;
             }
         }
 
@@ -527,13 +527,13 @@ namespace SD.API.Functions
                 else
                 {
                     req.ProcessException(new NotificationException("Timeout occurred"));
-                    throw new UnhandledException(ex.BuildException());
+                    throw;
                 }
             }
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                throw new UnhandledException(ex.BuildException());
+                throw;
             }
         }
     }

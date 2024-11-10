@@ -1,5 +1,4 @@
-﻿using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Functions.Worker;
+﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using System.Collections.Specialized;
@@ -86,24 +85,6 @@ namespace SD.API.Core
             var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
 
             return string.Join("", valueCollection.AllKeys.Select((key) => $"{key?.ToLowerInvariant()}={{{key?.ToLowerInvariant()}}}|"));
-        }
-
-        public static string? BuildException(this Exception ex)
-        {
-            if (ex is CosmosException cex)
-            {
-                //TODO: review this
-
-                //var result = JsonSerializer.Deserialize<CosmosExceptionStructure>("{" + cex.ResponseBody.Replace("Errors", "\"Errors\"") + "}", options: null);
-
-                //return result?.Message?.Errors.FirstOrDefault();
-
-                return cex.Message;
-            }
-            else
-            {
-                return ex.Message;
-            }
         }
     }
 

@@ -21,7 +21,7 @@ namespace SD.API.Functions
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                throw new UnhandledException(ex.BuildException());
+                throw;
             }
         }
 
@@ -39,7 +39,7 @@ namespace SD.API.Functions
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                throw new UnhandledException(ex.BuildException());
+                throw;
             }
         }
 
@@ -58,7 +58,7 @@ namespace SD.API.Functions
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                throw new UnhandledException(ex.BuildException());
+                throw;
             }
         }
 
@@ -80,7 +80,7 @@ namespace SD.API.Functions
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                throw new UnhandledException(ex.BuildException());
+                throw;
             }
         }
 
@@ -116,7 +116,7 @@ namespace SD.API.Functions
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                throw new UnhandledException(ex.BuildException());
+                throw;
             }
         }
     }
