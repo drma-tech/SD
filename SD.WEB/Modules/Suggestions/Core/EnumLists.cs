@@ -29,7 +29,7 @@
         [Custom(Name = "Outstanding Comedy Series")]
         EmmysOutstandingComedySeries = 7103519,
 
-        [Custom(Name = "Outstanding Limited Series")]
+        [Custom(Name = "Outstanding Limited Or Anthology Series")]
         EmmysOutstandingLimitedSeries = 7103526,
 
         [Custom(Name = "Top 100 TV Shows")]
@@ -169,5 +169,11 @@
 
         [Custom(Name = "Best Film")]
         CrunchyrollBestFilm = 8289898,
+
+        [Custom(Name = "2024 - 76th Emmy Awards")]
+        EmmyAwards = 8498162,
+
+        [Custom(Name = "2024 - 49th Toronto International Film Festival")]
+        TiffAwards = 8498169,
     }
 }

@@ -1,0 +1,31 @@
+﻿@inherits PageCore<TiffAwards>
+
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Suggestions.Core
+@inject TmdbListApi TmdbListApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
+
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TiffAwards" MaxItens="5" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" TotalItemsFull="5" TotalItemsNotFull="4"></MediaList>
+
+@code {
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
+        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
+        WishList = await WishListApi.Get(IsAuthenticated, null);
+    }
+}

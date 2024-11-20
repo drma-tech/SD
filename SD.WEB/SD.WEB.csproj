@@ -11,14 +11,14 @@
 	<ItemGroup>
 		<PackageReference Include="AnthonyChu.AzureStaticWebApps.Blazor.Authentication" Version="0.0.2-preview" />
 		<PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
-		<PackageReference Include="Blazorise.Bootstrap5" Version="1.6.2" />
-		<PackageReference Include="Blazorise.Components" Version="1.6.2" />
-		<PackageReference Include="Blazorise.DataGrid" Version="1.6.2" />
-		<PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.6.2" />
-		<PackageReference Include="Blazorise.QRCode" Version="1.6.2" />
+		<PackageReference Include="Blazorise.Bootstrap5" Version="1.7.0" />
+		<PackageReference Include="Blazorise.Components" Version="1.7.0" />
+		<PackageReference Include="Blazorise.DataGrid" Version="1.7.0" />
+		<PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.7.0" />
+		<PackageReference Include="Blazorise.QRCode" Version="1.7.0" />
 		<PackageReference Include="BlazorPro.BlazorSize" Version="8.0.0" />
-		<PackageReference Include="BlazorWasmPreRendering.Build" Version="4.0.1" />
-		<PackageReference Include="HtmlAgilityPack" Version="1.11.70" />
+		<PackageReference Include="BlazorWasmPreRendering.Build" Version="5.0.0" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.11.71" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10">
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>

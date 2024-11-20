@@ -75,9 +75,12 @@
     [Parameter] public bool MultiplesRegions { get; set; } = false;
     [Parameter] public bool MultipleLanguages { get; set; } = true;
 
+    [Parameter] public int TotalItemsFull { get; set; } = 10;
+    [Parameter] public int TotalItemsNotFull { get; set; } = 8;
+
     [Parameter] public MediaType TypeSelected { get; set; } = MediaType.movie;
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
-    private int GetTotalItems => AppStateStatic.OnFullHD ? 10 : 8;
+    private int GetTotalItems => AppStateStatic.OnFullHD ? TotalItemsFull : TotalItemsNotFull;
 
     public RenderControlCore<HashSet<MediaDetail>>? Core { get; set; } = new();
     public HashSet<MediaDetail> Items { get; set; } = new();
