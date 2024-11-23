@@ -482,6 +482,8 @@ namespace SD.API.Functions
                 DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime release_date);
                 model = await cacheRepo.Get<ReviewModel>($"review_{id}", cancellationToken);
 
+                return null; //todo: solve this anyway
+
                 if (model == null)
                 {
                     var url = $"https://internal-prod.apigee.fandom.net/v1/xapi/composer/metacritic/pages/shows-critic-reviews/{title}/web?filter=all&sort=score&apiKey=1MOZgmNFxvmljaQR1X9KAij9Mo4xAY3u";

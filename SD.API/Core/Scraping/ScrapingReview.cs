@@ -7,7 +7,7 @@ namespace SD.API.Core.Scraping
     {
         private readonly string tv_url = "https://www.metacritic.com/tv/{0}/critic-reviews";
 
-        public RootMetacritic GetTvReviews(string tv_name)
+        public RootMetacritic GetTvReviews(string? tv_name)
         {
             return ProcessHtml(string.Format(tv_url, tv_name));
         }

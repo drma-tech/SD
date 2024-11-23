@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using SD.API.Repository.Core;
+using System.Text.Json.Serialization;
 
 namespace SD.API.Repository
 {
@@ -17,6 +18,9 @@ namespace SD.API.Repository
         public string? Message { get; set; }
         public string? StackTrace { get; set; }
         public DateTimeOffset DateTimeError { get; set; } = DateTimeOffset.Now;
+
+        [JsonInclude]
+        public int Ttl { get; init; }
     }
 
     public class CosmosLogRepository

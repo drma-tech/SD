@@ -42,7 +42,8 @@ namespace SD.API.Core
                 Name = _name,
                 State = formatter(state, exception),
                 Message = exception?.Message,
-                StackTrace = exception?.StackTrace
+                StackTrace = exception?.StackTrace,
+                Ttl = (int)ttlCache.three_months
             });
         }
     }
