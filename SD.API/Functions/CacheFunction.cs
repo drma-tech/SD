@@ -1,5 +1,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Configuration;
+using SD.API.Core;
 using SD.API.Core.Scraping;
 using SD.Shared.Models.List;
 using SD.Shared.Models.List.Imdb;
@@ -10,7 +12,7 @@ using System.Globalization;
 
 namespace SD.API.Functions
 {
-    public class CacheFunction(CosmosCacheRepository cacheRepo)
+    public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration configuration)
     {
         //[OpenApiOperation("CacheNew", "Rapid API (json)", Description = "flixster / cached - one_day")]
         //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(CacheDocument<NewsModel>))]
@@ -275,6 +277,7 @@ namespace SD.API.Functions
                 CacheDocument<Ratings>? model;
 
                 var id = req.GetQueryParameters()["id"];
+                var tmdb_id = req.GetQueryParameters()["tmdb_id"];
                 var tmdb_rating = req.GetQueryParameters()["tmdb_rating"];
                 var title = req.GetQueryParameters()["title"];
 
@@ -305,6 +308,25 @@ namespace SD.API.Functions
                     else // > 1 month launch
                     {
                         model = await cacheRepo.UpsertItemAsync(new RatingsCache(id, obj, ttlCache.one_month), cancellationToken);
+                    }
+                }
+
+                if (model?.Data != null)
+                {
+                    var rating = model.Data;
+
+                    var imdb_ok = float.TryParse(rating.imdb, NumberStyles.Any, CultureInfo.InvariantCulture, out float imdb);
+                    var tmdb_ok = float.TryParse(rating.tmdb, NumberStyles.Any, CultureInfo.InvariantCulture, out float tmdb);
+                    var meta_ok = float.TryParse(rating.metacritic, NumberStyles.Any, CultureInfo.InvariantCulture, out float meta);
+                    var trac_ok = float.TryParse(rating.trakt, NumberStyles.Any, CultureInfo.InvariantCulture, out float trac);
+
+                    if (imdb_ok && tmdb_ok && meta_ok && trac_ok)
+                    {
+                        if (imdb >= 8 && tmdb >= 8 && meta >= 80 && trac >= 80)
+                        {
+                            var tmdb_write_token = configuration.GetValue<string>("tmdb_write_token");
+                            await ApiStartup.HttpClient.AddTmdbListItem(8498673, int.Parse(tmdb_id!), MediaType.movie, tmdb_write_token, cancellationToken);
+                        }
                     }
                 }
 
@@ -341,6 +363,7 @@ namespace SD.API.Functions
                 CacheDocument<Ratings>? model;
 
                 var id = req.GetQueryParameters()["id"];
+                var tmdb_id = req.GetQueryParameters()["tmdb_id"];
                 var tmdb_rating = req.GetQueryParameters()["tmdb_rating"];
                 var title = req.GetQueryParameters()["title"];
 
@@ -371,6 +394,25 @@ namespace SD.API.Functions
                     else // > 1 month launch
                     {
                         model = await cacheRepo.UpsertItemAsync(new RatingsCache(id, obj, ttlCache.one_month), cancellationToken);
+                    }
+                }
+
+                if (model?.Data != null)
+                {
+                    var rating = model.Data;
+
+                    var imdb_ok = float.TryParse(rating.imdb, NumberStyles.Any, CultureInfo.InvariantCulture, out float imdb);
+                    var tmdb_ok = float.TryParse(rating.tmdb, NumberStyles.Any, CultureInfo.InvariantCulture, out float tmdb);
+                    var meta_ok = float.TryParse(rating.metacritic, NumberStyles.Any, CultureInfo.InvariantCulture, out float meta);
+                    var trac_ok = float.TryParse(rating.trakt, NumberStyles.Any, CultureInfo.InvariantCulture, out float trac);
+
+                    if (imdb_ok && tmdb_ok && meta_ok && trac_ok)
+                    {
+                        if (imdb >= 8 && tmdb >= 8 && meta >= 8 && trac >= 80)
+                        {
+                            var tmdb_write_token = configuration.GetValue<string>("tmdb_write_token");
+                            await ApiStartup.HttpClient.AddTmdbListItem(8498675, int.Parse(tmdb_id!), MediaType.tv, tmdb_write_token, cancellationToken);
+                        }
                     }
                 }
 

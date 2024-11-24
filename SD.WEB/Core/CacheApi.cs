@@ -13,9 +13,9 @@ namespace SD.WEB.Core
 
         public static string Trailers(string mode) => $"Public/Cache/Trailers?mode={mode}";
 
-        public static string GetMovieRatings(string? id, string? title, DateTime? date, string? tmdb_rating) => $"Public/Cache/Ratings/Movie?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdb_rating}";
+        public static string GetMovieRatings(string? id, string? tmdb_id, string? title, DateTime? date, string? tmdb_rating) => $"Public/Cache/Ratings/Movie?id={id}&tmdb_id={tmdb_id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdb_rating}";
 
-        public static string GetShowRatings(string? id, string? title, DateTime? date, string? tmdb_rating) => $"Public/Cache/Ratings/Show?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdb_rating}";
+        public static string GetShowRatings(string? id, string? tmdb_id, string? title, DateTime? date, string? tmdb_rating) => $"Public/Cache/Ratings/Show?id={id}&tmdb_id={tmdb_id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdb_rating}";
 
         public static string GetMovieReviews(string? id, string? title, DateTime? date) => $"Public/Cache/Reviews/Movies?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}";
 
@@ -40,7 +40,7 @@ namespace SD.WEB.Core
 
     public class CacheRatingsApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCosmos<Ratings>(http, memoryCache, null)
     {
-        public async Task<Ratings?> GetMovieRatings(string? id, string? title, DateTime? releaseDate, string? tmdb_rating, RenderControlCore<Ratings?>? core)
+        public async Task<Ratings?> GetMovieRatings(string? id, string? tmdb_id, string? title, DateTime? releaseDate, string? tmdb_rating, RenderControlCore<Ratings?>? core)
         {
             if (id.Empty())
             {
@@ -48,10 +48,10 @@ namespace SD.WEB.Core
                 return new();
             }
 
-            return await GetAsync(Endpoint.GetMovieRatings(id, title, releaseDate, tmdb_rating), core, $"TrailerModel-{id}");
+            return await GetAsync(Endpoint.GetMovieRatings(id, tmdb_id, title, releaseDate, tmdb_rating), core, $"TrailerModel-{id}");
         }
 
-        public async Task<Ratings?> GetShowRatings(string? id, string? title, DateTime? releaseDate, string? tmdb_rating, RenderControlCore<Ratings?>? core)
+        public async Task<Ratings?> GetShowRatings(string? id, string? tmdb_id, string? title, DateTime? releaseDate, string? tmdb_rating, RenderControlCore<Ratings?>? core)
         {
             if (id.Empty())
             {
@@ -59,7 +59,7 @@ namespace SD.WEB.Core
                 return new();
             }
 
-            return await GetAsync(Endpoint.GetShowRatings(id, title, releaseDate, tmdb_rating), core, $"TrailerModel-{id}");
+            return await GetAsync(Endpoint.GetShowRatings(id, tmdb_id, title, releaseDate, tmdb_rating), core, $"TrailerModel-{id}");
         }
     }
 

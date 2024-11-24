@@ -291,11 +291,11 @@
 
         if (media?.MediaType == MediaType.movie)
         {
-            ratingsCache = await CacheRatingsApi.GetMovieRatings(imdb_id, title, media.release_date, media.rating.ToString("#.#"), CoreRatings);
+            ratingsCache = await CacheRatingsApi.GetMovieRatings(imdb_id, media?.tmdb_id, title, media?.release_date, media?.rating.ToString("#.#"), CoreRatings);
         }
         else
         {
-            ratingsCache = await CacheRatingsApi.GetShowRatings(imdb_id, title, media?.release_date, media?.rating.ToString("#.#"), CoreRatings);
+            ratingsCache = await CacheRatingsApi.GetShowRatings(imdb_id, media?.tmdb_id, title, media?.release_date, media?.rating.ToString("#.#"), CoreRatings);
         }
     }
 

@@ -19,10 +19,11 @@ namespace SD.Shared.Core.Helper
         {
             Span<char> buffer = new char[str.Length];
             int idx = 0;
+            char[] exceptions = ['-'];
 
             foreach (char c in str)
             {
-                if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))
+                if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || Array.Exists(exceptions, match => match == c))
                 {
                     buffer[idx] = c;
                     idx++;

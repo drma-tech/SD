@@ -14,8 +14,8 @@ namespace SD.API.Core.Scraping
         public Ratings GetMovieData(string? imdb_id, string? tmdb_rating, string? title, string? year)
         {
             var data = new Ratings() { imdbId = imdb_id, type = MediaType.movie, tmdb = tmdb_rating };
-            ProcessMovieImdb(data, string.Format(imdb_url, imdb_id));
-            ProcessMovieRatingImdb(data, string.Format(imdb_rating_url, imdb_id));
+            ProcessMovieMetacrict(data, string.Format(imdb_url, imdb_id));
+            ProcessMovieImdb(data, string.Format(imdb_rating_url, imdb_id));
             ProcessTrack(data, string.Format(trakt_movie_url, title, year));
             return data;
         }
@@ -29,13 +29,14 @@ namespace SD.API.Core.Scraping
             return data;
         }
 
-        private static void ProcessMovieImdb(Ratings data, string? imdb_path)
+        private static void ProcessMovieMetacrict(Ratings data, string? imdb_path)
         {
             var web = new HtmlWeb();
             var doc = web.Load(imdb_path);
 
             try
             {
+                //here is getting metascore, not user score
                 data.metacritic = doc.DocumentNode.SelectNodes("//*[@id=\"__next\"]/main/div/section[1]/section/div[3]/section/section/div[3]/div[2]/div[2]/ul/li[3]/a/span/span[1]/span").FirstOrDefault()?.InnerText;
             }
             catch
@@ -44,7 +45,25 @@ namespace SD.API.Core.Scraping
             }
         }
 
-        private static void ProcessMovieRatingImdb(Ratings data, string? imdb_path)
+        private static void ProcessShowMetacritic(Ratings data, string metacritic_path)
+        {
+            var web = new HtmlWeb();
+            var doc = web.Load(metacritic_path);
+
+            try
+            {
+                if (doc.DocumentNode.InnerText.Contains("Page Not Found - Metacritic")) return;
+
+                //getting user score
+                data.metacritic = doc.DocumentNode.SelectNodes("html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span").FirstOrDefault()?.InnerText;
+            }
+            catch
+            {
+                //do nothing
+            }
+        }
+
+        private static void ProcessMovieImdb(Ratings data, string? imdb_path)
         {
             var web = new HtmlWeb();
             var doc = web.Load(imdb_path);
@@ -67,23 +86,6 @@ namespace SD.API.Core.Scraping
             try
             {
                 data.imdb = doc.DocumentNode.SelectNodes("//*[@id=\"__next\"]/main/div/section[1]/section/div[3]/section/section/div[2]/div[2]/div/div[1]/a/span/div/div[2]/div[1]/span[1]").FirstOrDefault()?.InnerText;
-            }
-            catch
-            {
-                //do nothing
-            }
-        }
-
-        private static void ProcessShowMetacritic(Ratings data, string metacritic_path)
-        {
-            var web = new HtmlWeb();
-            var doc = web.Load(metacritic_path);
-
-            try
-            {
-                if (doc.DocumentNode.InnerText.Contains("Page Not Found - Metacritic")) return;
-
-                data.metacritic = doc.DocumentNode.SelectNodes("html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span").FirstOrDefault()?.InnerText;
             }
             catch
             {

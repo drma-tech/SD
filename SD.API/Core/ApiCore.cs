@@ -1,4 +1,6 @@
-﻿using System.Net.Http.Json;
+﻿using Newtonsoft.Json;
+using System.Net.Http.Json;
+using System.Text;
 
 namespace SD.API.Core
 {
@@ -11,6 +13,25 @@ namespace SD.API.Core
             if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
 
             return await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken);
+        }
+
+        public static async Task AddTmdbListItem(this HttpClient http, int listId, int tmdbId, MediaType type, string? token, CancellationToken cancellationToken)
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Post, $"https://api.themoviedb.org/4/list/{listId}/items");
+
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.TryAddWithoutValidation("content-type", "application/json");
+            request.Headers.Add("Authorization", $"Bearer {token}");
+            var obj = new { items = new[] { new { media_type = type == MediaType.movie ? "movie" : "tv", media_id = tmdbId } } };
+            request.Content = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
+
+            var response = await http.SendAsync(request, cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
+                throw new NotificationException(responseContent);
+            }
         }
 
         public static async Task<T?> GetNewsByFlixter<T>(this HttpClient http, CancellationToken cancellationToken) where T : class

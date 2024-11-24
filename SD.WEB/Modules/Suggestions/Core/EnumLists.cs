@@ -178,5 +178,11 @@
 
         [Custom(Name = "Most relevant awards of 2024")]
         AwardsOfTheYear = 8498534,
+
+        [Custom(Name = "Certified by Streaming Discovery")]
+        CertifiedStreamingDiscoveryMovies = 8498673,
+
+        [Custom(Name = "Certified by Streaming Discovery")]
+        CertifiedStreamingDiscoveryShows = 8498675,
     }
 }
