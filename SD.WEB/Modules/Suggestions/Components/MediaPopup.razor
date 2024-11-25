@@ -282,12 +282,18 @@
     protected override async Task LoadDataRender()
     {
         Core?.LoadingStarted?.Invoke();
-        media = await TmdbApi.GetMediaDetail(tmdb_id, type);
+        media = await TmdbApi.GetMediaDetail(tmdb_id, type!.Value);
         imdb_id = await ExternalIdApi.GetImdbId(type, tmdb_id);
         Core?.LoadingFinished?.Invoke(media);
 
-        //TODO: must be english_title, not original_title
-        var title = media?.original_title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").ToLower();
+        var title = media?.original_title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
+
+        if (media != null && media.original_language != "en")
+        {
+            //title must be in english
+            var en_media = await TmdbApi.GetMediaDetail(tmdb_id, type!.Value, "en-US");
+            title = en_media?.title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
+        }
 
         if (media?.MediaType == MediaType.movie)
         {
@@ -303,7 +309,7 @@
     {
         if (string.IsNullOrEmpty(rating)) return Color.Secondary;
 
-        var val = double.Parse(rating);
+        double.TryParse(rating, out double val);
 
         if (val > 10) val = val / 10;
 

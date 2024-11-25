@@ -48,7 +48,7 @@ namespace SD.WEB.Core
                 return new();
             }
 
-            return await GetAsync(Endpoint.GetMovieRatings(id, tmdb_id, title, releaseDate, tmdb_rating), core, $"TrailerModel-{id}");
+            return await GetAsync(Endpoint.GetMovieRatings(id, tmdb_id, title, releaseDate, tmdb_rating), core, $"RatingsModel-{id}");
         }
 
         public async Task<Ratings?> GetShowRatings(string? id, string? tmdb_id, string? title, DateTime? releaseDate, string? tmdb_rating, RenderControlCore<Ratings?>? core)
@@ -59,7 +59,7 @@ namespace SD.WEB.Core
                 return new();
             }
 
-            return await GetAsync(Endpoint.GetShowRatings(id, tmdb_id, title, releaseDate, tmdb_rating), core, $"TrailerModel-{id}");
+            return await GetAsync(Endpoint.GetShowRatings(id, tmdb_id, title, releaseDate, tmdb_rating), core, $"RatingsModel-{id}");
         }
     }
 

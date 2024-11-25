@@ -322,7 +322,7 @@ namespace SD.API.Functions
 
                     if (imdb_ok && tmdb_ok && meta_ok && trac_ok)
                     {
-                        if (imdb >= 8 && tmdb >= 8 && meta >= 80 && trac >= 80)
+                        if (imdb >= 8 && tmdb >= 8 && meta >= 8 && trac >= 80)
                         {
                             var tmdb_write_token = configuration.GetValue<string>("tmdb_write_token");
                             await ApiStartup.HttpClient.AddTmdbListItem(8498673, int.Parse(tmdb_id!), MediaType.movie, tmdb_write_token, cancellationToken);

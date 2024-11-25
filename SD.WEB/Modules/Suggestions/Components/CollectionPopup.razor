@@ -207,7 +207,7 @@
         }
         else
         {
-            var media = await TmdbApi.GetMediaDetail(tmdb_id, type);
+            var media = await TmdbApi.GetMediaDetail(tmdb_id, type.Value);
 
             item = new WatchingListItem(tmdb_id, media?.title, media?.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
         }

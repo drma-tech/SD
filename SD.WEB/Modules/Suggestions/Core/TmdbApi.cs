@@ -5,15 +5,14 @@ namespace SD.WEB.Modules.Suggestions.Core
 {
     public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
     {
-        public async Task<MediaDetail> GetMediaDetail(string? tmdb_id, MediaType? type)
+        public async Task<MediaDetail> GetMediaDetail(string? tmdb_id, MediaType type, string? language = null)
         {
             ArgumentNullException.ThrowIfNull(tmdb_id);
-            ArgumentNullException.ThrowIfNull(type);
 
             var parameter = new Dictionary<string, string>()
             {
                 { "api_key", TmdbOptions.ApiKey },
-                { "language", AppStateStatic.Language.GetName(false) ?? "en-US" },
+                { "language", language ?? AppStateStatic.Language.GetName(false) ?? "en-US" },
                 { "append_to_response", "videos" }
             };
 
@@ -30,6 +29,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                         tmdb_id = item.id.ToString(),
                         title = item.title,
                         original_title = item.original_title,
+                        original_language = item.original_language,
                         plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
                         release_date = item.release_date?.GetDate(),
                         poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
@@ -71,6 +71,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                         tmdb_id = item.id.ToString(),
                         title = item.name,
                         original_title = item.original_name,
+                        original_language = item.original_language,
                         plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
                         release_date = item.first_air_date?.GetDate(),
                         poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
