@@ -2,11 +2,11 @@
 @using SD.WEB.Modules.Suggestions.Core;
 @using SD.WEB.Modules.Suggestions.Components;
 
-@inherits ComponentCore<CertifiedStreamingDiscoveryComponent>
+@inherits ComponentCore<CertifiedSDComponent>
 
 @inject TmdbListApi TmdbListApi
 
-<HeaderComponent Title="Certified by Streaming Discovery" IconImage="icon/icon-114.png">
+<HeaderComponent Title="Certified by SD" IconImage="icon/icon-114.png">
     <RadioGroup @bind-CheckedValue="@TypeSelected" Buttons="true" Float="Float.End" Class="btn-group-xs">
         <Radio Value="PopularType.Movie">@(PopularType.Movie.GetName())</Radio>
         <Radio Value="PopularType.Show">@(PopularType.Show.GetName())</Radio>
@@ -14,19 +14,19 @@
 </HeaderComponent>
 @if (TypeSelected == PopularType.Movie)
 {
-    <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" MaxItens="40" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+    <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" MaxItens="40" Watched="Watched" Watching="Watching" Wish="Wish"
                ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false"></MediaList>
 }
 else if (TypeSelected == PopularType.Show)
 {
-    <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" MaxItens="50" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+    <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" MaxItens="50" Watched="Watched" Watching="Watching" Wish="Wish"
                ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false"></MediaList>
 }
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 

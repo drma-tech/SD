@@ -13,7 +13,7 @@
 
 @if (ShowHead)
 {
-    <HeaderComponent Title="@Title">
+    <HeaderComponent Title="@Title" IconImage="@IconImage">
         <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList">
             <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
         </Button>
@@ -62,6 +62,7 @@
 
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
+    [Parameter] public string? IconImage { get; set; }
     [Parameter] public bool ShowFilter { get; set; } = false;
     [Parameter] public bool OnlyYear { get; set; } = false;
     [Parameter] public bool OrderByComments { get; set; } = false;
@@ -132,7 +133,6 @@
             if (MediaListApi != null)
             {
                 var result = await MediaListApi.GetList(new(), TypeSelected, StringParameters, List, 1);
-                // await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
                 Items = result.list;
 
                 if (Items.Count < 10) //force reload, if the filters bring few records

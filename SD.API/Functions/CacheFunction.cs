@@ -311,7 +311,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                if (model?.Data != null)
+                if (model?.Data != null && release_date < DateTime.Now.AddDays(-14)) // at least 2 week launch
                 {
                     var rating = model.Data;
 
@@ -397,7 +397,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                if (model?.Data != null)
+                if (model?.Data != null && release_date < DateTime.Now.AddDays(-14)) // at least 2 week launch
                 {
                     var rating = model.Data;
 

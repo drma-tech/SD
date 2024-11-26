@@ -286,13 +286,13 @@
         imdb_id = await ExternalIdApi.GetImdbId(type, tmdb_id);
         Core?.LoadingFinished?.Invoke(media);
 
-        var title = media?.original_title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
+        var title = media?.original_title;//?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
 
         if (media != null && media.original_language != "en")
         {
             //title must be in english
             var en_media = await TmdbApi.GetMediaDetail(tmdb_id, type!.Value, "en-US");
-            title = en_media?.title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
+            title = en_media?.title;//?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
         }
 
         if (media?.MediaType == MediaType.movie)
