@@ -107,6 +107,10 @@ namespace SD.API.Core.Scraping
 
             try
             {
+                //Fullmetal Alchemist: Brotherhood - doesnt exist
+                //Rick and Morty - changed 'and' by '&'
+                //Attack on Titan - doesnt exist
+
                 var page_year = doc.DocumentNode.SelectNodes("/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span").FirstOrDefault()?.InnerText;
 
                 if (doc.DocumentNode.InnerText.Contains("Page Not Found - Metacritic"))
@@ -175,13 +179,13 @@ namespace SD.API.Core.Scraping
 
         private static void ProcessTrack(Ratings data, string trakt_url, string? year)
         {
+            trakt_url = trakt_url.Replace("--", "-");
+
             var web = new HtmlWeb();
             var doc = web.Load(trakt_url);
 
             try
             {
-                //Disney 100: A Century of Dreams - A Special Edition of 20/20
-
                 if (doc.DocumentNode.InnerText.Contains("Page Not Found (404) - Trakt")) return;
 
                 var page_year = doc.DocumentNode.SelectNodes("html/body/div[2]/section[1]/div[4]/div/div/div[2]/h1/span").FirstOrDefault()?.InnerText;
