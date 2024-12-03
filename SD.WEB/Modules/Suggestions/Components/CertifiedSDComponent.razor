@@ -7,20 +7,23 @@
 @inject TmdbListApi TmdbListApi
 
 <HeaderComponent Title="Certified by SD" IconImage="icon/icon-114.png">
-    <RadioGroup @bind-CheckedValue="@TypeSelected" Buttons="true" Float="Float.End" Class="btn-group-xs">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>MediaList!.OpenCompleteList())">
+        <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
+    </Button>
+    <RadioGroup @bind-CheckedValue="@TypeSelected" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is2.FromEnd">
         <Radio Value="PopularType.Movie">@(PopularType.Movie.GetName())</Radio>
         <Radio Value="PopularType.Show">@(PopularType.Show.GetName())</Radio>
     </RadioGroup>
 </HeaderComponent>
 @if (TypeSelected == PopularType.Movie)
 {
-    <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" MaxItens="40" Watched="Watched" Watching="Watching" Wish="Wish"
-               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false"></MediaList>
+    <MediaList @ref="MediaList" MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" MaxItens="40" Watched="Watched" Watching="Watching" Wish="Wish"
+    ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false"></MediaList>
 }
 else if (TypeSelected == PopularType.Show)
 {
-    <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" MaxItens="50" Watched="Watched" Watching="Watching" Wish="Wish"
-               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false"></MediaList>
+    <MediaList @ref="MediaList" MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" MaxItens="50" Watched="Watched" Watching="Watching" Wish="Wish"
+    ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false"></MediaList>
 }
 
 @code {
@@ -31,6 +34,7 @@ else if (TypeSelected == PopularType.Show)
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     public PopularType TypeSelected { get; set; } = PopularType.Movie;
+    private MediaList? MediaList;
 
     public Dictionary<string, string> Params { get; set; } = new Dictionary<string, string>() { { "mode", "compact" } };
 }

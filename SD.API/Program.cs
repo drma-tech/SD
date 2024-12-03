@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SD.API.Core.Middleware;
 
-var host = new HostBuilder()
+var app = new HostBuilder()
      .ConfigureFunctionsWorkerDefaults(worker =>
      {
          worker.UseMiddleware<ExceptionHandlingMiddleware>();
@@ -26,7 +26,7 @@ var host = new HostBuilder()
     .ConfigureLogging(ConfigureLogging)
     .Build();
 
-await host.RunAsync();
+await app.RunAsync();
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {

@@ -30,11 +30,11 @@ if (builder.RootComponents.Empty())
     builder.RootComponents.Add<HeadOutlet>("head::after");
 }
 
-var host = builder.Build();
+var app = builder.Build();
 
-await ConfigureCulture(host);
+await ConfigureCulture(app);
 
-await host.RunAsync();
+await app.RunAsync();
 
 static void ConfigureServices(IServiceCollection collection, string baseAddress)
 {
@@ -99,16 +99,16 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     });
 }
 
-static async Task ConfigureCulture(WebAssemblyHost? host)
+static async Task ConfigureCulture(WebAssemblyHost? app)
 {
-    if (host != null)
+    if (app != null)
     {
-        var nav = host.Services.GetService<NavigationManager>();
+        var nav = app.Services.GetService<NavigationManager>();
         var language = nav?.QueryString("language");
 
         if (language.Empty())
         {
-            var JsRuntime = host.Services.GetRequiredService<IJSRuntime>();
+            var JsRuntime = app.Services.GetRequiredService<IJSRuntime>();
             language = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "language");
         }
 
