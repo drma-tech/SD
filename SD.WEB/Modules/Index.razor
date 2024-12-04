@@ -15,6 +15,12 @@
 @inject IJSRuntime JsRuntime
 
 <Div TextAlignment="TextAlignment.Center">
+    <div id="ezoic-pub-ad-placeholder-101"></div>
+    <script>
+        ezstandalone.cmd.push(function() {
+            ezstandalone.showAds()
+        });
+    </script>
     @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
     {
         <div class="adsbygoogle google-ads" style="background-color: black;"></div>
