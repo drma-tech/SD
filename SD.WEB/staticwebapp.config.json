@@ -11,11 +11,6 @@
     {
       "route": "/api/*",
       "allowedRoles": [ "authenticated" ]
-    },
-    {
-      "route": "/ads.txt",
-      "redirect": "https://srv.adstxtmanager.com/19390/streamingdiscovery.com",
-      "statusCode": 301
     }
   ],
   "navigationFallback": {
