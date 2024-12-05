@@ -82,7 +82,7 @@
     } *@
 }
 
-<Div TextAlignment="TextAlignment.Center">
+@* <Div TextAlignment="TextAlignment.Center">
     @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
     {
         <div class="adsbygoogle google-ads" style="background-color: black;"></div>
@@ -94,7 +94,7 @@
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     }
-</Div>
+</Div> *@
 
 <MyProviderComponent Fake="Fake" WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MyProviderComponent>
 

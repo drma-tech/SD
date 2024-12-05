@@ -22,7 +22,7 @@
                   provider="Provider" IsAuthenticated="IsAuthenticated"></HeadPage>
     }
 
-    <Div TextAlignment="TextAlignment.Center">
+   @*  <Div TextAlignment="TextAlignment.Center">
         @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
         {
             <div class="adsbygoogle google-ads" style="background-color: black;"></div>
@@ -34,7 +34,7 @@
                 (adsbygoogle = window.adsbygoogle || []).push({});
             </script>
         }
-    </Div>
+    </Div> *@
 
     <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "popularity.desc")"
                MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>

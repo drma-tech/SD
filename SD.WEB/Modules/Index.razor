@@ -14,7 +14,7 @@
 @inject WishListApi WishApi
 @inject IJSRuntime JsRuntime
 
-<Div TextAlignment="TextAlignment.Center">
+@* <Div TextAlignment="TextAlignment.Center">
     @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
     {
         <div class="adsbygoogle google-ads" style="background-color: black;"></div>
@@ -26,7 +26,7 @@
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     }
-</Div>
+</Div> *@
 
 <Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
     <Column>

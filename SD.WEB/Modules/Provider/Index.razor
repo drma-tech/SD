@@ -8,7 +8,7 @@
 @inject AllProvidersApi AllProvidersApi
 @inject MyProvidersApi MyProvidersApi
 
-<Div TextAlignment="TextAlignment.Center">
+@* <Div TextAlignment="TextAlignment.Center">
     @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
     {
         <div class="adsbygoogle google-ads" style="background-color: black;"></div>
@@ -20,7 +20,7 @@
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     }
-</Div>
+</Div> *@
 
 <HeaderComponent Title="@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region.GetName())">
 </HeaderComponent>

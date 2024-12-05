@@ -2,7 +2,7 @@
 <SeoHeader Title="@SeoTranslations.SuggestionsTitle" Description="@SeoTranslations.SuggestionsDescription" Url="/suggestions"></SeoHeader>
 @inherits PageCore<Suggestions>
 
-<Div TextAlignment="TextAlignment.Center">
+@* <Div TextAlignment="TextAlignment.Center">
     @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
     {
         <div class="adsbygoogle google-ads" style="background-color: black;"></div>
@@ -14,7 +14,7 @@
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     }
-</Div>
+</Div> *@
 
 <HeaderComponent Title="@Resources.Translations.TitleAwards">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand_awards = !expand_awards; })" title="Show all">
