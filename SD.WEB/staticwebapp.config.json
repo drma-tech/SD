@@ -2,19 +2,44 @@
   "routes": [
     {
       "route": "/api/public/*",
-      "allowedRoles": [ "anonymous" ]
+      "allowedRoles": [
+        "anonymous"
+      ]
     },
     {
       "route": "/api/adm/*",
-      "allowedRoles": [ "administrator" ]
+      "allowedRoles": [
+        "administrator"
+      ]
     },
     {
       "route": "/api/*",
-      "allowedRoles": [ "authenticated" ]
+      "allowedRoles": [
+        "authenticated"
+      ]
+    },
+    {
+      "route": "/*",
+      "methods": [
+        "get",
+        "head",
+        "post",
+        "put",
+        "delete",
+        "connect",
+        "options",
+        "trace",
+        "patch"
+      ],
+      "headers": {
+        "X-Robots-Tag": "noindex"
+      }
     }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": [ "*.{css,scss,js,png,gif,ico,jpg,svg}" ]
+    "exclude": [
+      "*.{css,scss,js,png,gif,ico,jpg,svg}"
+    ]
   }
 }
