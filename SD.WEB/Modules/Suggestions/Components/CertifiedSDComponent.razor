@@ -18,12 +18,12 @@
 @if (TypeSelected == PopularType.Movie)
 {
     <MediaList @ref="MediaList" MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" MaxItens="40" Watched="Watched" Watching="Watching" Wish="Wish"
-    ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false"></MediaList>
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false"></MediaList>
 }
 else if (TypeSelected == PopularType.Show)
 {
     <MediaList @ref="MediaList" MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" MaxItens="50" Watched="Watched" Watching="Watching" Wish="Wish"
-    ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false"></MediaList>
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false"></MediaList>
 }
 
 @code {

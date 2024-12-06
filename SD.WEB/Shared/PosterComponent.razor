@@ -22,11 +22,11 @@
     }
     @if (Rating.HasValue && string.IsNullOrEmpty(RankUpDown))
     {
-        if (Rating >= 8)
+        if (Rating >= 7.95)
         {
             <Badge Color="Color.Success" Style="padding: 0.15rem; font-size: 0.65rem; position: absolute; top: 3px; right: 3px; z-index: 1;">@Rating.Value.ToString("#.#")</Badge>
         }
-        else if (Rating >= 6)
+        else if (Rating >= 5.95)
         {
             <Badge Color="Color.Warning" TextColor="TextColor.Dark" Style="padding: 0.15rem; font-size: 0.65rem; position: absolute; top: 3px; right: 3px; z-index: 1;">@Rating.Value.ToString("#.#")</Badge>
         }
