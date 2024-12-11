@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Models.Auth;
+﻿using SD.Shared.Models.Auth;
 
 namespace SD.WEB.Modules.Auth.Core
 {
-    public class LoginApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<ClienteLogin>(factory, memoryCache, "ClienteLogin")
+    public class LoginApi(IHttpClientFactory factory) : ApiCosmos<ClienteLogin>(factory)
     {
         private struct Endpoint
         {

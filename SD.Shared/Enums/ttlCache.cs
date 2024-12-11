@@ -2,6 +2,7 @@
 {
     public enum ttlCache
     {
+        one_hour = 60 * 60 * 1,
         one_day = 60 * 60 * 24,
         one_week = 60 * 60 * 24 * 7,
         one_month = 60 * 60 * 24 * 30,

@@ -1,10 +1,9 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Models.Auth;
+﻿using SD.Shared.Models.Auth;
 using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class WishListApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<WishList>(factory, memoryCache, "WishList")
+    public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(factory)
     {
         private struct Endpoint
         {

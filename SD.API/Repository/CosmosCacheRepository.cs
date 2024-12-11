@@ -19,7 +19,7 @@ namespace SD.API.Repository
             Container = ApiStartup.CosmosClient.GetContainer(databaseId, "cache");
         }
 
-        public async Task<CacheDocument<TData>?> Get<TData>(string id, CancellationToken cancellationToken) where TData : class
+        public async Task<CacheDocument<TData>?> Get<TData>(string id, CancellationToken cancellationToken) where TData : class, new()
         {
             try
             {
@@ -42,7 +42,7 @@ namespace SD.API.Repository
             }
         }
 
-        public async Task<CacheDocument<TData>?> UpsertItemAsync<TData>(CacheDocument<TData> cache, CancellationToken cancellationToken) where TData : class
+        public async Task<CacheDocument<TData>?> UpsertItemAsync<TData>(CacheDocument<TData> cache, CancellationToken cancellationToken) where TData : class, new()
         {
             try
             {

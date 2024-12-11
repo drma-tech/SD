@@ -73,22 +73,22 @@
                                 <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd.Is1.FromBottom">@item</Badge>
                             }
                             <Paragraph>
-                                <RenderControl PartialComponent="true" Core="CoreRatings" Model="ratingsCache" ExpressionEmpty="@((Ratings? obj)=>obj==null)">
-                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.imdb))
+                                <RenderControl PartialComponent="true" Core="CoreRatings" Model="ratingsCache" ExpressionEmpty="@((CacheDocument<Ratings>? obj)=>obj?.Data==null)">
+                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.imdb))
                                     {
-                                        <Badge Color="GetColorByRating(ratingsCache.imdb)" Margin="Margin.Is1.FromEnd">IMDB: @ratingsCache.imdb</Badge>
+                                        <Badge Color="GetColorByRating(ratingsCache.Data?.imdb)" Margin="Margin.Is1.FromEnd">IMDB: @ratingsCache.Data?.imdb</Badge>
                                     }
-                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.tmdb))
+                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.tmdb))
                                     {
-                                        <Badge Color="GetColorByRating(ratingsCache.tmdb)" Margin="Margin.Is1.FromEnd">TMDB: @ratingsCache.tmdb</Badge>
+                                        <Badge Color="GetColorByRating(ratingsCache.Data?.tmdb)" Margin="Margin.Is1.FromEnd">TMDB: @ratingsCache.Data?.tmdb</Badge>
                                     }
-                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.metacritic))
+                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.metacritic))
                                     {
-                                        <Badge Color="GetColorByRating(ratingsCache.metacritic)" Margin="Margin.Is1.FromEnd">Metacritic: @ratingsCache.metacritic</Badge>
+                                        <Badge Color="GetColorByRating(ratingsCache.Data?.metacritic)" Margin="Margin.Is1.FromEnd">Metacritic: @ratingsCache.Data?.metacritic</Badge>
                                     }
-                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.trakt))
+                                    @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.trakt))
                                     {
-                                        <Badge Color="GetColorByRating(ratingsCache.trakt)" Margin="Margin.Is1.FromEnd">Trakt: @ratingsCache.trakt</Badge>
+                                        <Badge Color="GetColorByRating(ratingsCache.Data?.trakt)" Margin="Margin.Is1.FromEnd">Trakt: @ratingsCache.Data?.trakt</Badge>
                                     }
                                 </RenderControl>
                             </Paragraph>
@@ -265,9 +265,8 @@
 
     string selectedTab = "About";
 
-    public RenderControlCore<Ratings?> CoreRatings { get; set; } = new();
-
-    private Ratings? ratingsCache;
+    public RenderControlCore<CacheDocument<Ratings>?> CoreRatings { get; set; } = new();
+    private CacheDocument<Ratings>? ratingsCache;
 
     protected override void OnInitialized()
     {

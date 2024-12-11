@@ -115,7 +115,7 @@
     {
         try
         {
-            var watching = await WatchingApi.Get(IsAuthenticated, Core, null, "watching-import"); //get a new one (memory may be compromised/corrupted)
+            var watching = await WatchingApi.Get(IsAuthenticated, Core, null); //get a new one (memory may be compromised/corrupted)
             var client = await PrincipalApi.Get(IsAuthenticated);
 
             if (MediaType == MediaType.movie)

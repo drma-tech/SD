@@ -1,10 +1,9 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Models.Auth;
+﻿using SD.Shared.Models.Auth;
 using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class MyProvidersApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<MyProviders>(factory, memoryCache, "MyProviders")
+    public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>(factory)
     {
         private struct Endpoint
         {

@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Models.Support;
+﻿using SD.Shared.Models.Support;
 
 namespace SD.WEB.Modules.Administrator.Core
 {
-    public class AdministratorApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<EmailDocument>(factory, memoryCache, "EmailDocument")
+    public class AdministratorApi(IHttpClientFactory factory) : ApiCosmos<EmailDocument>(factory)
     {
         private struct Endpoint
         {

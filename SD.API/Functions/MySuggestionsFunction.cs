@@ -5,17 +5,17 @@ namespace SD.API.Functions
 {
     public class MySuggestionsFunction(CosmosRepository repo)
     {
-        //[OpenApiOperation("MySuggestionsGet", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MySuggestions))]
         [Function("MySuggestionsGet")]
-        public async Task<MySuggestions?> MySuggestionsGet(
+        public async Task<HttpResponseData?> MySuggestionsGet(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "MySuggestions/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
                 var userId = req.GetUserId();
 
-                return await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
+                var doc = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
+
+                return await req.CreateResponse(doc, ttlCache.one_day, doc?.ETag, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -24,8 +24,6 @@ namespace SD.API.Functions
             }
         }
 
-        //[OpenApiOperation("MySuggestionsSync", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MySuggestions))]
         [Function("MySuggestionsSync")]
         public async Task<MySuggestions?> MySuggestionsSync(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "MySuggestions/Sync/{MediaType}")] HttpRequestData req,
@@ -48,11 +46,9 @@ namespace SD.API.Functions
                 else
                 {
                     obj = body;
-
-                    obj.Update();
                 }
 
-                var type = (MediaType)Enum.Parse(typeof(MediaType), MediaType);
+                var type = Enum.Parse<MediaType>(MediaType);
 
                 if (type == Shared.Enums.MediaType.movie)
                 {
@@ -72,8 +68,6 @@ namespace SD.API.Functions
             }
         }
 
-        //[OpenApiOperation("MySuggestionsAdd", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MySuggestions))]
         [Function("MySuggestionsAdd")]
         public async Task<MySuggestions?> MySuggestionsAdd(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "MySuggestions/Add")] HttpRequestData req, CancellationToken cancellationToken)

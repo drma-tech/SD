@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SD.Shared.Core
 {
@@ -18,14 +18,17 @@ namespace SD.Shared.Core
             FixedId = true;
         }
 
-        [JsonInclude]
+        [JsonProperty(PropertyName = "id")]
         public string Id { get; set; } = string.Empty;
 
-        [JsonInclude]
-        public DateTimeOffset DtInsert { get; set; } = DateTimeOffset.Now;
+        [JsonProperty(PropertyName = "_etag")]
+        public string? ETag { get; set; }
 
-        [JsonInclude]
-        public DateTimeOffset? DtUpdate { get; set; } = null;
+        [JsonProperty(PropertyName = "_ts")]
+        public long Timestamp { get; set; }
+
+        [JsonIgnore]
+        public DateTime DateTime => DateTimeOffset.FromUnixTimeSeconds(Timestamp).UtcDateTime;
 
         public abstract bool HasValidData();
 
@@ -34,11 +37,6 @@ namespace SD.Shared.Core
             if (FixedId) throw new InvalidOperationException();
 
             Id = id;
-        }
-
-        public virtual void Update()
-        {
-            DtUpdate = DateTimeOffset.Now;
         }
     }
 }

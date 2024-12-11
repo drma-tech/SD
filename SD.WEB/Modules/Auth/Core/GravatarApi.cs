@@ -8,7 +8,7 @@
 
             try
             {
-                var root = await GetAsync<GravatarRoot>($"https://en.gravatar.com/{email.GenerateHash()}.json", null);
+                var root = await GetAsync<GravatarRoot>($"https://en.gravatar.com/{email.GenerateHash()}.json");
                 return root?.entry.LastOrDefault();
             }
             catch (Exception)

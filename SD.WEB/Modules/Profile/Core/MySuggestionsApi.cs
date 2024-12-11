@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.WEB.Shared;
+﻿using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class MySuggestionsApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<SD.Shared.Models.MySuggestions>(factory, memoryCache, "MySuggestions")
+    public class MySuggestionsApi(IHttpClientFactory factory) : ApiCosmos<SD.Shared.Models.MySuggestions>(factory)
     {
         private struct Endpoint
         {

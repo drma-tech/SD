@@ -6,15 +6,15 @@ namespace SD.API.Functions
 {
     public class SupportFunction(CosmosRepository repo)
     {
-        //[OpenApiOperation("UpdatesGet", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(AnnouncementModel))]
         [Function("UpdatesGet")]
-        public async Task<List<UpdateModel>> UpdatesGet(
+        public async Task<HttpResponseData> UpdatesGet(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/updates/get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
-                return await repo.ListAll<UpdateModel>(DocumentType.Update, cancellationToken);
+                var doc = await repo.ListAll<UpdateModel>(DocumentType.Update, cancellationToken);
+
+                return await req.CreateResponse(doc, ttlCache.one_day, $"\"{Guid.NewGuid()}\"", cancellationToken);
             }
             catch (Exception ex)
             {
@@ -68,8 +68,6 @@ namespace SD.API.Functions
             }
         }
 
-        //[OpenApiOperation("TicketGetList", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(List<TicketModel>))]
         [Function("TicketGetList")]
         public async Task<List<TicketModel>> TicketGetList(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/ticket/get-list")] HttpRequestData req, CancellationToken cancellationToken)
@@ -102,8 +100,6 @@ namespace SD.API.Functions
             }
         }
 
-        //[OpenApiOperation("TicketInsert", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(TicketModel))]
         [Function("TicketInsert")]
         public async Task<TicketModel?> TicketInsert(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Ticket/Insert")] HttpRequestData req, CancellationToken cancellationToken)

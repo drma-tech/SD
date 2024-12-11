@@ -1,40 +1,22 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.WEB.Shared;
+﻿using SD.WEB.Shared;
 
 namespace SD.WEB.Core.Api
 {
-    public abstract class ApiCosmos<T>(IHttpClientFactory factory, IMemoryCache memoryCache, object? cacheKey) : ApiCore(factory) where T : class
+    public abstract class ApiCosmos<T>(IHttpClientFactory factory) : ApiCore(factory) where T : class
     {
         public Action<T?>? DataChanged { get; set; }
 
-        protected CacheSettings? CacheSettings { get; set; } = new CacheSettings();
-        protected IMemoryCache _cache { get; set; } = memoryCache;
-        protected object? cacheKey { get; set; } = cacheKey;
-
         private string baseEndpoint => _http.BaseAddress?.ToString().Contains("localhost") ?? true ? "http://localhost:7071/api/" : $"{_http.BaseAddress}api/";
 
-        protected void CleanCache()
+        protected async Task<string?> GetValueAsync(string endpoint, RenderControlCore<string?>? core)
         {
-            if (cacheKey != null) _cache.Remove(cacheKey);
-        }
-
-        protected async Task<T?> GetAsync(string endpoint, RenderControlCore<T?>? core, object? customCacheKey = null)
-        {
-            var localKey = (customCacheKey ?? cacheKey) ?? throw new NotificationException("localKey null");
-
             core?.LoadingStarted?.Invoke();
 
-            var result = _cache.Get<T>(localKey);
+            string? result = null;
 
             try
             {
-                if (result == null)
-                {
-                    result = await GetAsync<T>($"{baseEndpoint}{endpoint}");
-
-                    _cache.Set(localKey, result, CacheSettings);
-                }
-
+                result = await GetValueAsync($"{baseEndpoint}{endpoint}");
                 return result;
             }
             finally
@@ -43,53 +25,37 @@ namespace SD.WEB.Core.Api
             }
         }
 
-        protected async Task<string?> GetValueAsync(string endpoint, RenderControlCore<string?>? core, object? customCacheKey = null)
+        protected async Task<T?> GetAsync(string endpoint, RenderControlCore<T?>? core)
         {
-            var localKey = (customCacheKey ?? cacheKey) ?? throw new NotificationException("localKey null");
-
             core?.LoadingStarted?.Invoke();
 
-            var result = _cache.Get<string>(localKey);
+            T? obj = null;
 
             try
             {
-                if (result == null)
-                {
-                    result = await GetValueAsync($"{baseEndpoint}{endpoint}");
-
-                    _cache.Set(localKey, result, CacheSettings);
-                }
-
-                return result;
+                obj = await GetAsync<T>($"{baseEndpoint}{endpoint}");
+                return obj;
             }
             finally
             {
-                core?.LoadingFinished?.Invoke(result);
+                core?.LoadingFinished?.Invoke(obj);
             }
         }
 
-        protected async Task<HashSet<T>> GetListAsync(string endpoint, RenderControlCore<HashSet<T>>? core, object? customCacheKey = null)
+        protected async Task<HashSet<T>> GetListAsync(string endpoint, RenderControlCore<HashSet<T>>? core)
         {
-            var localKey = (customCacheKey ?? cacheKey) ?? throw new NotificationException("localKey null");
-
             core?.LoadingStarted?.Invoke();
 
-            var result = _cache.Get<HashSet<T>>(localKey);
+            HashSet<T> list = [];
 
             try
             {
-                if (result == null)
-                {
-                    result = await GetListAsync<T>($"{baseEndpoint}{endpoint}");
-
-                    _cache.Set(localKey, result, CacheSettings);
-                }
-
-                return result ?? [];
+                list = await GetListAsync<T>($"{baseEndpoint}{endpoint}");
+                return list;
             }
             finally
             {
-                core?.LoadingFinished?.Invoke(result);
+                core?.LoadingFinished?.Invoke(list);
             }
         }
 
@@ -107,8 +73,6 @@ namespace SD.WEB.Core.Api
                 core?.ProcessingStarted?.Invoke();
 
                 result = await PostAsync<I, T>($"{baseEndpoint}{endpoint}", obj);
-
-                if (cacheKey != null && result != default) _cache.Set(cacheKey, result, CacheSettings);
 
                 DataChanged?.Invoke(result);
 
@@ -130,8 +94,6 @@ namespace SD.WEB.Core.Api
 
                 result = await PutAsync<I, T>($"{baseEndpoint}{endpoint}", obj);
 
-                if (cacheKey != null && result != default) _cache.Set(cacheKey, result, CacheSettings);
-
                 DataChanged?.Invoke(result);
 
                 return result;
@@ -151,8 +113,6 @@ namespace SD.WEB.Core.Api
                 core?.ProcessingStarted?.Invoke();
 
                 result = await DeleteAsync<T>($"{baseEndpoint}{endpoint}");
-
-                if (cacheKey != null) _cache.Remove(cacheKey);
 
                 DataChanged?.Invoke(result);
 

@@ -31,7 +31,7 @@ namespace SD.WEB.Modules.Suggestions.Core
                 {
                     if (item.media_type == "collection") continue;
 
-                    var mediaType = (MediaType)Enum.Parse(typeof(MediaType), item.media_type ?? "");
+                    var mediaType = Enum.Parse<MediaType>(item.media_type ?? "");
 
                     currentList.Add(new MediaDetail
                     {

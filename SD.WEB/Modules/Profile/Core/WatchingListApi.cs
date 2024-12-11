@@ -1,10 +1,9 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Models.Auth;
+﻿using SD.Shared.Models.Auth;
 using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class WatchingListApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<WatchingList>(factory, memoryCache, "WatchingList")
+    public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingList>(factory)
     {
         private struct Endpoint
         {
@@ -17,15 +16,15 @@ namespace SD.WEB.Modules.Profile.Core
             public static string Sync(MediaType? type) => $"watchinglist/sync/{type}";
         }
 
-        public async Task<WatchingList?> Get(bool IsUserAuthenticated, RenderControlCore<WatchingList?>? core, string? id = null, object? customCacheKey = null)
+        public async Task<WatchingList?> Get(bool IsUserAuthenticated, RenderControlCore<WatchingList?>? core, string? id = null)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                return await GetAsync($"{Endpoint.Get}?id={id}", core, customCacheKey);
+                return await GetAsync($"{Endpoint.Get}?id={id}", core);
             }
             else if (IsUserAuthenticated)
             {
-                return await GetAsync(Endpoint.Get, core, customCacheKey);
+                return await GetAsync(Endpoint.Get, core);
             }
             else
             {

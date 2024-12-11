@@ -6,8 +6,6 @@ namespace SD.API.Functions
 {
     public class LoginFunction(CosmosRepository repo)
     {
-        //[OpenApiOperation("LoginAdd", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(void))]
         [Function("LoginAdd")]
         public async Task LoginAdd(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "login/add")] HttpRequestData req, CancellationToken cancellationToken)

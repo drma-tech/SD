@@ -5,25 +5,26 @@ namespace SD.API.Functions
 {
     public class WishListFunction(CosmosRepository repo)
     {
-        //[OpenApiOperation("WishListGet", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WishList))]
         [Function("WishListGet")]
-        public async Task<WishList?> WishListGet(
+        public async Task<HttpResponseData?> WishListGet(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/wishlist/get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
                 var id = req.GetQueryParameters()["id"];
+                WishList? doc;
 
                 if (string.IsNullOrEmpty(id))
                 {
                     var userId = req.GetUserId();
-                    return await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
+                    doc = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
                 }
                 else
                 {
-                    return await repo.Get<WishList>(DocumentType.WishList, id, cancellationToken);
+                    doc = await repo.Get<WishList>(DocumentType.WishList, id, cancellationToken);
                 }
+
+                return await req.CreateResponse(doc, ttlCache.one_day, doc?.ETag, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -32,8 +33,6 @@ namespace SD.API.Functions
             }
         }
 
-        //[OpenApiOperation("WishListAdd", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WishList))]
         [Function("WishListAdd")]
         public async Task<WishList?> WishListAdd(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "wishlist/add/{type}")] HttpRequestData req,
@@ -53,12 +52,8 @@ namespace SD.API.Functions
 
                     obj.Initialize(userId);
                 }
-                else
-                {
-                    obj.Update();
-                }
 
-                obj.AddItem((MediaType)Enum.Parse(typeof(MediaType), type), newItem);
+                obj.AddItem(Enum.Parse<MediaType>(type), newItem);
 
                 return await repo.Upsert(obj, cancellationToken);
             }
@@ -69,8 +64,6 @@ namespace SD.API.Functions
             }
         }
 
-        //[OpenApiOperation("WishListRemove", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WishList))]
         [Function("WishListRemove")]
         public async Task<WishList?> WishListRemove(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "wishlist/remove/{type}/{id}")] HttpRequestData req,
@@ -89,12 +82,8 @@ namespace SD.API.Functions
 
                     obj.Initialize(userId);
                 }
-                else
-                {
-                    obj.Update();
-                }
 
-                obj.RemoveItem((MediaType)Enum.Parse(typeof(MediaType), type), id);
+                obj.RemoveItem(Enum.Parse<MediaType>(type), id);
 
                 return await repo.Upsert(obj, cancellationToken);
             }

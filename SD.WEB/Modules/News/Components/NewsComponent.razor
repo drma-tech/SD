@@ -9,7 +9,7 @@
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-@if (News == null || News.Items.Empty())
+@if (News?.Data == null || News.Data.Items.Empty())
 {
     <Alert Color="Color.Warning" Visible="true">
         <AlertDescription>
@@ -20,7 +20,7 @@
 else
 {
     <Carousel @bind-SelectedSlide="@selectedSlide">
-        @foreach (var item in News?.Items ?? [])
+        @foreach (var item in News?.Data.Items ?? [])
         {
             <CarouselSlide Name="@item.id">
                 <div style="position: absolute; top: 0px; left: 0px; background-color: lime; opacity: 70%; font: caption;" class="px-1 m-2">
@@ -38,8 +38,8 @@ else
 }
 
 @code {
-    public RenderControlCore<NewsModel?> Core { get; set; } = new();
-    private NewsModel? News { get; set; }
+    public RenderControlCore<CacheDocument<NewsModel>?> Core { get; set; } = new();
+    private CacheDocument<NewsModel>? News { get; set; }
     public string? selectedSlide { get; set; }
 
     protected override async Task LoadDataRender()

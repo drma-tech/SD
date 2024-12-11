@@ -58,7 +58,7 @@ namespace SD.Shared.Core.Helper
 
         public static CustomAttribute GetCustomAttribute(this MemberInfo mi, bool translate = true)
         {
-            if (mi.GetCustomAttribute(typeof(CustomAttribute)) is not CustomAttribute attr) throw new ValidationException($"Attribute '{mi.Name}' is null");
+            if (mi.GetCustomAttribute<CustomAttribute>() is not CustomAttribute attr) throw new ValidationException($"Attribute '{mi.Name}' is null");
 
             if (translate && attr.ResourceType != null) //translations
             {

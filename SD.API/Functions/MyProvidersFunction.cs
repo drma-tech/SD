@@ -5,16 +5,17 @@ namespace SD.API.Functions
 {
     public class MyProvidersFunction(CosmosRepository repo)
     {
-        //[OpenApiOperation("MyProviders", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(MyProviders))]
         [Function("MyProviders")]
-        public async Task<MyProviders?> MyProviders(
+        public async Task<HttpResponseData?> MyProviders(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "my-providers")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
                 var userId = req.GetUserId();
-                return await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
+
+                var doc = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
+
+                return await req.CreateResponse(doc, ttlCache.one_day, doc?.ETag, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -40,10 +41,6 @@ namespace SD.API.Functions
                     obj = new();
 
                     obj.Initialize(userId);
-                }
-                else
-                {
-                    obj.Update();
                 }
 
                 var item = await req.GetPublicBody<MyProvidersItem>(cancellationToken);
@@ -74,10 +71,6 @@ namespace SD.API.Functions
                 {
                     throw new InvalidOperationException("MyProviders null");
                 }
-                else
-                {
-                    obj.Update();
-                }
 
                 var model = await req.GetPublicBody<MyProviders>(cancellationToken);
 
@@ -107,10 +100,6 @@ namespace SD.API.Functions
                     obj = new();
 
                     obj.Initialize(userId);
-                }
-                else
-                {
-                    obj.Update();
                 }
 
                 var item = await req.GetPublicBody<MyProvidersItem>(cancellationToken);

@@ -5,25 +5,26 @@ namespace SD.API.Functions
 {
     public class WatchedListFunction(CosmosRepository repo)
     {
-        //[OpenApiOperation("WatchedListGet", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchedList))]
         [Function("WatchedListGet")]
-        public async Task<WatchedList?> WatchedListGet(
+        public async Task<HttpResponseData?> WatchedListGet(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/watchedlist/get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
                 var id = req.GetQueryParameters()["id"];
+                WatchedList? doc;
 
                 if (string.IsNullOrEmpty(id))
                 {
                     var userId = req.GetUserId();
-                    return await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
+                    doc = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
                 }
                 else
                 {
-                    return await repo.Get<WatchedList>(DocumentType.WatchedList, id, cancellationToken);
+                    doc = await repo.Get<WatchedList>(DocumentType.WatchedList, id, cancellationToken);
                 }
+
+                return await req.CreateResponse(doc, ttlCache.one_day, doc?.ETag, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -32,8 +33,6 @@ namespace SD.API.Functions
             }
         }
 
-        //[OpenApiOperation("WatchedListAdd", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchedList))]
         [Function("WatchedListAdd")]
         public async Task<WatchedList?> WatchedListAdd(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchedlist/add/{MediaType}/{TmdbId}")] HttpRequestData req,
@@ -52,13 +51,9 @@ namespace SD.API.Functions
 
                     obj.Initialize(userId);
                 }
-                else
-                {
-                    obj.Update();
-                }
 
                 var ids = TmdbId.Split(',');
-                obj.AddItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), new HashSet<string>(ids));
+                obj.AddItem(Enum.Parse<MediaType>(MediaType), new HashSet<string>(ids));
 
                 return await repo.Upsert(obj, cancellationToken);
             }
@@ -69,8 +64,6 @@ namespace SD.API.Functions
             }
         }
 
-        //[OpenApiOperation("WatchedListRemove", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(WatchedList))]
         [Function("WatchedListRemove")]
         public async Task<WatchedList?> WatchedListRemove(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchedlist/remove/{MediaType}/{TmdbId}")] HttpRequestData req,
@@ -89,12 +82,8 @@ namespace SD.API.Functions
 
                     obj.Initialize(userId);
                 }
-                else
-                {
-                    obj.Update();
-                }
 
-                obj.RemoveItem((MediaType)Enum.Parse(typeof(MediaType), MediaType), TmdbId);
+                obj.RemoveItem(Enum.Parse<MediaType>(MediaType), TmdbId);
 
                 return await repo.Upsert(obj, cancellationToken);
             }

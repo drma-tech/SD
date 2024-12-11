@@ -1,10 +1,9 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Models.Support;
+﻿using SD.Shared.Models.Support;
 using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Support.Core
 {
-    public class TicketApi(IHttpClientFactory http, IMemoryCache memoryCache) : ApiCosmos<TicketModel>(http, memoryCache, "TicketModel")
+    public class TicketApi(IHttpClientFactory http) : ApiCosmos<TicketModel>(http)
     {
         private struct Endpoint
         {

@@ -1,11 +1,9 @@
-﻿@using Microsoft.Extensions.Caching.Memory
-@using SD.Shared.Core.Models
+﻿@using SD.Shared.Core.Models
 @using SD.Shared.Models.Auth
 @using System.Security.Claims
 @using SD.WEB.Modules.Profile.Resources
 @inherits ComponentCore<ProfilePopup>
 
-@inject IMemoryCache cache
 @inject IMessageService MessageService
 @inject IHttpClientFactory factory
 
@@ -77,9 +75,6 @@
             @Translations.Actions
         </CardHeader>
         <CardBody>
-            <Button Color="Color.Primary" Clicked="async()=>{ await ClearCache(); }" Margin="Margin.Is1.FromEnd">
-                <Blazorise.Icon Name="FontAwesomeIcons.Eraser" /> @Translations.ClearCache
-            </Button>
             <Button Color="Color.Danger" Clicked="async()=>{ await DeleteAccount(principal?.IdentityProvider); }">
                 <Blazorise.Icon Name="FontAwesomeIcons.UserSlash" /> @Translations.DeleteAccount
             </Button>
@@ -95,13 +90,6 @@
 @code {
     [Parameter] public ClientePrincipal? principal { get; set; }
     [Parameter] public Gravatar? Gravatar { get; set; }
-
-    private async Task ClearCache()
-    {
-        ((MemoryCache)cache).Clear();
-
-        await Toast.Success(GlobalTranslations.OperationCompleted);
-    }
 
     private async Task DeleteAccount(string? provider)
     {

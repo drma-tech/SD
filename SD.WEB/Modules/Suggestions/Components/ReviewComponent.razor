@@ -6,9 +6,9 @@
 @inject ExternalIdApi ExternalIdApi
 @inject CacheMetaCriticApi CacheMetaCriticApi
 
-<RenderControl Core="Core" Model="Model" ExpressionEmpty="@((ReviewModel? obj)=> obj == null || obj.Items.Empty())">
+<RenderControl Core="Core" Model="Model" ExpressionEmpty="@((CacheDocument<ReviewModel>? obj)=> obj?.Data == null || obj.Data.Items.Empty())">
     <ListGroup Flush>
-        @foreach (var item in Model?.Items ?? new())
+        @foreach (var item in Model?.Data?.Items ?? new())
         {
             <ListGroupItem Padding="Padding.Is2">
                 <Heading Size="HeadingSize.Is6" Margin="Margin.Is1.FromBottom">
@@ -32,8 +32,8 @@
     [Parameter] public DateTime? release_date { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
-    public RenderControlCore<ReviewModel?> Core { get; set; } = new();
-    public ReviewModel? Model { get; set; }
+    public RenderControlCore<CacheDocument<ReviewModel>?> Core { get; set; } = new();
+    public CacheDocument<ReviewModel>? Model { get; set; }
 
     protected override async Task LoadDataRender()
     {
@@ -51,7 +51,7 @@
         }
         else
         {
-            Core?.LoadingFinished?.Invoke(new());
+            Core?.LoadingFinished?.Invoke(default);
         }
     }
 

@@ -17,10 +17,6 @@ namespace SD.API.Core
             {
                 model = new T();
             }
-            else
-            {
-                model.Update();
-            }
 
             var userId = req.GetUserId();
 
@@ -46,10 +42,29 @@ namespace SD.API.Core
         {
             req.Body.Position = 0; //in case of a previous read
             var model = await JsonSerializer.DeserializeAsync<T>(req.Body, cancellationToken: cancellationToken);
-            //TODO: call Update
             model ??= new T();
 
             return model;
+        }
+
+        public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, ttlCache maxAge, string? eTag, CancellationToken cancellationToken) where T : class
+        {
+            if (doc != null)
+            {
+                var response = req.CreateResponse();
+
+                response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}"); // expiration time cache
+                response.Headers.Add("ETag", eTag); // unique identification to verify data changes
+                //response.Headers.Add("Access-Control-Expose-Headers", "ETag"); //dont using anymore
+
+                await response.WriteAsJsonAsync(doc, cancellationToken);
+
+                return response;
+            }
+            else
+            {
+                return req.CreateResponse(System.Net.HttpStatusCode.NoContent);
+            }
         }
 
         public static StringDictionary GetQueryParameters(this HttpRequestData req)
@@ -86,11 +101,6 @@ namespace SD.API.Core
 
             return string.Join("", valueCollection.AllKeys.Select((key) => $"{key?.ToLowerInvariant()}={{{key?.ToLowerInvariant()}}}|"));
         }
-    }
-
-    public class CosmosExceptionStructure
-    {
-        public string[] Errors { get; set; } = [];
     }
 
     public struct Method

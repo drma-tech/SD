@@ -6,17 +6,17 @@ namespace SD.API.Functions
 {
     public class PrincipalFunction(CosmosRepository repo)
     {
-        //[OpenApiOperation("PrincipalGet", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(ClientePrincipal))]
         [Function("PrincipalGet")]
-        public async Task<ClientePrincipal?> PrincipalGet(
+        public async Task<HttpResponseData?> PrincipalGet(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "Principal/Get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
                 var userId = req.GetUserId();
 
-                return await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken);
+                var doc = await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken);
+
+                return await req.CreateResponse(doc, ttlCache.one_day, doc?.ETag, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -34,6 +34,7 @@ namespace SD.API.Functions
                 var token = req.GetQueryParameters()["token"];
 
                 var principal = await repo.Get<ClientePrincipal>(DocumentType.Principal, token, cancellationToken);
+
                 return principal?.Email;
             }
             catch (Exception ex)
@@ -43,8 +44,6 @@ namespace SD.API.Functions
             }
         }
 
-        //[OpenApiOperation("PrincipalAdd", "Azure (Cosmos DB)")]
-        //[OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(ClientePrincipal))]
         [Function("PrincipalAdd")]
         public async Task<ClientePrincipal?> PrincipalAdd(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "Principal/Add")] HttpRequestData req, CancellationToken cancellationToken)

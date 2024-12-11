@@ -10,9 +10,9 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <RenderControl Core="Core" Model="News" ExpressionEmpty="@((NewsModel? obj) => obj == null || obj.Items.Empty())">
+    <RenderControl Core="Core" Model="News" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
         <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
-            @foreach (var item in News?.Items ?? new())
+            @foreach (var item in News?.Data?.Items ?? new())
             {
                 <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
                     <Card>
@@ -42,8 +42,8 @@
 </ModalFooter>
 
 @code {
-    public RenderControlCore<NewsModel?> Core { get; set; } = new();
-    private NewsModel? News { get; set; }
+    public RenderControlCore<CacheDocument<NewsModel>?> Core { get; set; } = new();
+    private CacheDocument<NewsModel>? News { get; set; }
     public string? selectedSlide { get; set; }
 
     protected override async Task LoadDataRender()

@@ -349,7 +349,7 @@
         }
         else
         {
-            Subscription = await SubscriptionApi.GetSubscription(Client?.ClientePaddle?.SubscriptionId, true);
+            Subscription = await SubscriptionApi.GetSubscription(Client?.ClientePaddle?.SubscriptionId);
         }
     }
 
@@ -402,7 +402,7 @@
             for (int i = 0; i < 20; i++)
             {
                 await Task.Delay(2000);
-                var principal = await PrincipalApi.Get(IsAuthenticated, true);
+                var principal = await PrincipalApi.Get(IsAuthenticated);
 
                 if (principal?.ClientePaddle != null && principal.ClientePaddle.SubscriptionId.NotEmpty())
                 {
@@ -421,7 +421,7 @@
     {
         try
         {
-            Client = await PrincipalApi.Get(true, true);
+            Client = await PrincipalApi.Get(true);
             PrincipalApi.DataChanged?.Invoke(Client);
             await LoadDataRender();
             StateHasChanged();

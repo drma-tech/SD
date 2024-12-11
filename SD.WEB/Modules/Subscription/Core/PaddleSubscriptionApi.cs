@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SD.Shared.Models.Subscription;
+﻿using SD.Shared.Models.Subscription;
 
 namespace SD.WEB.Modules.Subscription.Core
 {
-    public class PaddleSubscriptionApi(IHttpClientFactory factory, IMemoryCache memoryCache) : ApiCosmos<RootSubscription>(factory, memoryCache, "PaddleSubscriptionApi")
+    public class PaddleSubscriptionApi(IHttpClientFactory factory) : ApiCosmos<RootSubscription>(factory)
     {
         private struct Endpoint
         {
@@ -12,13 +11,8 @@ namespace SD.WEB.Modules.Subscription.Core
             public static string subscriptionUpdate(string? id) => $"public/paddle/subscription/update?id={id}";
         }
 
-        public async Task<RootSubscription?> GetSubscription(string? id, bool forceClean = false)
+        public async Task<RootSubscription?> GetSubscription(string? id)
         {
-            if (forceClean)
-            {
-                CleanCache();
-            }
-
             return await GetAsync(Endpoint.subscription(id), null);
         }
 

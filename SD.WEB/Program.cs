@@ -45,7 +45,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
 
     collection.AddPWAUpdater();
     collection.AddMediaQueryService();
-    collection.AddMemoryCache();
 
     collection.AddHttpClient("RetryHttpClient", c => { c.BaseAddress = new Uri(baseAddress); })
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());

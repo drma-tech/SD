@@ -33,8 +33,6 @@ namespace SD.Shared.Models.Support
         public void ChangeStatus(TicketStatus ticketStatus)
         {
             TicketStatus = ticketStatus;
-
-            Update();
         }
 
         public new void Initialize(string? idUserOwner)
@@ -51,8 +49,6 @@ namespace SD.Shared.Models.Support
         public void Vote(string userId, VoteType voteType)
         {
             Votes.Add(new TicketVote { IdVotedUser = userId, VoteType = voteType });
-
-            Update();
         }
 
         public override bool Equals(object? obj)

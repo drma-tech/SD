@@ -11,9 +11,9 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((TrailerModel? obj) => obj == null || obj.Items.Empty())">
+    <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
         <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
-            @foreach (var item in TrailerModel?.Items ?? new())
+            @foreach (var item in TrailerModel?.Data?.Items ?? new())
             {
                 <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
                     <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}".HideExternalLink())">
@@ -39,8 +39,8 @@
 </ModalFooter>
 
 @code {
-    public RenderControlCore<TrailerModel?> Core { get; set; } = new();
-    private TrailerModel? TrailerModel { get; set; }
+    public RenderControlCore<CacheDocument<TrailerModel>?> Core { get; set; } = new();
+    private CacheDocument<TrailerModel>? TrailerModel { get; set; }
 
     protected override async Task LoadDataRender()
     {

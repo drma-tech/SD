@@ -9,12 +9,14 @@ namespace SD.Shared.Core.Helper
             if (parameters == null || parameters.Count == 0) return uri;
 
             var sb = new StringBuilder(uri);
+            var started = uri.Contains('?');
+
             for (int i = 0; i < parameters.Count; i++)
             {
                 var item = parameters.ElementAt(i);
 
                 if (i == 0)
-                    sb.Append($"?{item.Key}={item.Value}");
+                    sb.Append($"{(started ? "&" : "?")}{item.Key}={item.Value}");
                 else
                     sb.Append($"&{item.Key}={item.Value}");
             }

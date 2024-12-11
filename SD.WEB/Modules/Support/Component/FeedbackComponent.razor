@@ -97,7 +97,7 @@
                 </Paragraph>
                 <Paragraph Margin="Margin.Is2.FromBottom">
                     <Badge Color="Color.Dark" Margin="Margin.Is1.FromEnd">
-                        <Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.Clock"></Blazorise.Icon> @item?.DtInsert.GetElapsedTime()
+                        <Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.Clock"></Blazorise.Icon> @item?.DateTime.GetElapsedTime()
                     </Badge>
                     <Badge Color="Color.Dark" Margin="Margin.Is2.FromEnd">
                         @item.TicketType.GetName()
@@ -171,7 +171,7 @@
             result = tickets.Where(w => w.TicketType == ticketType);
 
         if (order == Order.Last)
-            return result.OrderByDescending(o => o.DtInsert).ToList();
+            return result.OrderByDescending(o => o.DateTime).ToList();
         else
             return result.OrderByDescending(o => o.TotalVotes).ToList();
     }
