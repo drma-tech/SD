@@ -45,12 +45,10 @@ async function getUserInfo() {
         const response = await fetch('/.auth/me');
         if (response.ok) {
             const userInfo = await response.json();
-            if (userInfo.length > 0) {
-                const userId = userInfo[0].userId;
-                return userId;
-            } else {
-                return null;
+            if (userInfo?.userId) {
+                return userInfo.userId;
             }
+            return null;
         }
         else {
             return null;
