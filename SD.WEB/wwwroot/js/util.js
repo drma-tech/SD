@@ -39,3 +39,25 @@ function TryDetectPlatform() {
     else
         SetLocalStorage('platform', 'webapp');
 }
+
+async function getUserInfo() {
+    try {
+        const response = await fetch('/.auth/me');
+        if (response.ok) {
+            const userInfo = await response.json();
+            if (userInfo.length > 0) {
+                const userId = userInfo[0].userId;
+                return userId;
+            } else {
+                return null;
+            }
+        }
+        else {
+            return null;
+        }
+
+    } catch (error) {
+        console.error('getUserInfo:', error);
+        return null;
+    }
+}

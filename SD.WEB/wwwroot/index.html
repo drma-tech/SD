@@ -42,6 +42,13 @@
         meta.content = window.location.hostname.includes('dev') ? 'noindex, nofollow' : "index";
         document.head.appendChild(meta);
     </script>
+    <script>
+        getUserInfo().then(userId => {
+            if (userId) {
+                gtag('set', { 'user_id': userId });
+            }
+        });
+    </script>
 </head>
 
 <body style="overflow: hidden;">
