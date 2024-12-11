@@ -45,7 +45,9 @@
     <script>
         getUserInfo().then(userId => {
             if (userId) {
-                gtag('set', { 'user_id': userId });
+                gtag('config', 'G-4PREF5QX1F', {
+                    'user_id': userId
+                });
             }
         });
     </script>
