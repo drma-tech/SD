@@ -55,7 +55,6 @@ async function getUserInfo() {
         }
 
     } catch (error) {
-        console.error('getUserInfo:', error);
         return null;
     }
 }

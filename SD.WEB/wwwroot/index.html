@@ -34,22 +34,22 @@
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
-        gtag('config', 'G-4PREF5QX1F');
-    </script>
-    <script>
-        const meta = document.createElement('meta');
-        meta.name = 'robots';
-        meta.content = window.location.hostname.includes('dev') ? 'noindex, nofollow' : "index";
-        document.head.appendChild(meta);
-    </script>
-    <script>
         getUserInfo().then(userId => {
             if (userId) {
                 gtag('config', 'G-4PREF5QX1F', {
                     'user_id': userId
                 });
             }
+            else {
+                gtag('config', 'G-4PREF5QX1F');
+            }
         });
+    </script>
+    <script>
+        const meta = document.createElement('meta');
+        meta.name = 'robots';
+        meta.content = window.location.hostname.includes('dev') ? 'noindex, nofollow' : "index";
+        document.head.appendChild(meta);
     </script>
 </head>
 
