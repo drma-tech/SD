@@ -18,7 +18,7 @@ namespace SD.API.Core.Scraping
             var title_trakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-").Replace("--", "-").Replace("--", "-").ToLower();
 
             var data = new Ratings() { imdbId = imdb_id, type = MediaType.movie, tmdb = tmdb_rating };
-            ProcessMovieImdb(data, string.Format(imdb_rating_url, imdb_id));
+            if (imdb_id.NotEmpty()) ProcessMovieImdb(data, string.Format(imdb_rating_url, imdb_id));
             ProcessMovieMetacritic(data, string.Format(metacritic_movie_url, title_meta), year);
             ProcessTrack(data, string.Format(trakt_movie_url, title_trakt, year), year);
             return data;
@@ -30,7 +30,7 @@ namespace SD.API.Core.Scraping
             var title_trakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-").Replace("--", "-").Replace("--", "-").ToLower();
 
             var data = new Ratings() { imdbId = imdb_id, type = MediaType.tv, tmdb = tmdb_rating };
-            ProcessShowImdb(data, string.Format(imdb_url, imdb_id));
+            if (imdb_id.NotEmpty()) ProcessShowImdb(data, string.Format(imdb_url, imdb_id));
             ProcessShowMetacritic(data, string.Format(metacritic_tv_url, title_meta), year);
             ProcessTrack(data, string.Format(trakt_show_url, title_trakt), year);
             return data;
@@ -59,8 +59,6 @@ namespace SD.API.Core.Scraping
 
             try
             {
-                var page_year = doc.DocumentNode.SelectNodes("/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span").FirstOrDefault()?.InnerText;
-
                 if (doc.DocumentNode.InnerText.Contains("Page Not Found - Metacritic"))
                 {
                     doc = web.Load($"{metacritic_path}-{year}");
@@ -79,6 +77,8 @@ namespace SD.API.Core.Scraping
                     doc = web.Load($"{metacritic_path}-{year}");
                     data.metacritic = doc.DocumentNode.SelectNodes("html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span").FirstOrDefault()?.InnerText;
                 }
+
+                var page_year = doc.DocumentNode.SelectNodes("/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span").FirstOrDefault()?.InnerText;
 
                 if (year != null && page_year != null && year != page_year)
                 {
@@ -111,8 +111,6 @@ namespace SD.API.Core.Scraping
                 //Rick and Morty - changed 'and' by '&'
                 //Attack on Titan - doesnt exist
 
-                var page_year = doc.DocumentNode.SelectNodes("/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span").FirstOrDefault()?.InnerText;
-
                 if (doc.DocumentNode.InnerText.Contains("Page Not Found - Metacritic"))
                 {
                     doc = web.Load($"{metacritic_path}-{year}");
@@ -131,6 +129,8 @@ namespace SD.API.Core.Scraping
                     doc = web.Load($"{metacritic_path}-{year}");
                     data.metacritic = doc.DocumentNode.SelectNodes("html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span").FirstOrDefault()?.InnerText;
                 }
+
+                var page_year = doc.DocumentNode.SelectNodes("/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span").FirstOrDefault()?.InnerText;
 
                 if (year != null && page_year != null && year != page_year)
                 {

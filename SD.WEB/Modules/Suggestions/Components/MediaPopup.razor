@@ -294,6 +294,8 @@
             title = en_media?.title;//?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
         }
 
+        title = title?.Replace("&", "");
+
         if (media?.MediaType == MediaType.movie)
         {
             ratingsCache = await CacheRatingsApi.GetMovieRatings(imdb_id, media?.tmdb_id, title, media?.release_date, media?.rating.ToString("#.#"), CoreRatings);

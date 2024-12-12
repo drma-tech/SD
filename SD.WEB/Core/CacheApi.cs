@@ -41,23 +41,11 @@ namespace SD.WEB.Core
     {
         public async Task<CacheDocument<Ratings>?> GetMovieRatings(string? id, string? tmdb_id, string? title, DateTime? releaseDate, string? tmdb_rating, RenderControlCore<CacheDocument<Ratings>?>? core)
         {
-            if (id.Empty())
-            {
-                core?.LoadingFinished?.Invoke(new());
-                return new();
-            }
-
             return await GetAsync(Endpoint.GetMovieRatings(id, tmdb_id, title, releaseDate, tmdb_rating), core);
         }
 
         public async Task<CacheDocument<Ratings>?> GetShowRatings(string? id, string? tmdb_id, string? title, DateTime? releaseDate, string? tmdb_rating, RenderControlCore<CacheDocument<Ratings>?>? core)
         {
-            if (id.Empty())
-            {
-                core?.LoadingFinished?.Invoke(new());
-                return new();
-            }
-
             return await GetAsync(Endpoint.GetShowRatings(id, tmdb_id, title, releaseDate, tmdb_rating), core);
         }
     }

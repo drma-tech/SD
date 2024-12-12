@@ -236,9 +236,7 @@ namespace SD.API.Functions
 
                 DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime release_date);
 
-                if (id.Empty()) throw new NotificationException($"id null ({title} - {release_date.Year})");
-
-                var doc = await cacheRepo.Get<Ratings>($"rating_{id}", cancellationToken);
+                var doc = await cacheRepo.Get<Ratings>($"rating_{(id.NotEmpty() ? id : tmdb_id)}", cancellationToken);
                 var ttl = ttlCache.one_day;
 
                 if (doc == null)
@@ -264,7 +262,7 @@ namespace SD.API.Functions
                         ttl = ttlCache.one_month;
                     }
 
-                    doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id, obj, ttl), cancellationToken);
+                    doc = await cacheRepo.UpsertItemAsync(new RatingsCache((id.NotEmpty() ? id : tmdb_id), obj, ttl), cancellationToken);
                 }
 
                 if (doc?.Data != null && release_date < DateTime.Now.AddDays(-14)) // at least 2 week launch
@@ -317,9 +315,7 @@ namespace SD.API.Functions
 
                 DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime release_date);
 
-                if (id.Empty()) throw new NotificationException($"id null ({title} - {release_date.Year})");
-
-                var doc = await cacheRepo.Get<Ratings>($"rating_{id}", cancellationToken);
+                var doc = await cacheRepo.Get<Ratings>($"rating_{(id.NotEmpty() ? id : tmdb_id)}", cancellationToken);
                 var ttl = ttlCache.one_day;
 
                 if (doc == null)
@@ -345,7 +341,7 @@ namespace SD.API.Functions
                         ttl = ttlCache.one_month;
                     }
 
-                    doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id, obj, ttl), cancellationToken);
+                    doc = await cacheRepo.UpsertItemAsync(new RatingsCache((id.NotEmpty() ? id : tmdb_id), obj, ttl), cancellationToken);
                 }
 
                 if (doc?.Data != null && release_date < DateTime.Now.AddDays(-14)) // at least 2 week launch
