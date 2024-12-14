@@ -151,7 +151,7 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Watching - Movies ({0} items).
+        ///   Looks up a localized string similar to Watching - Movies.
         /// </summary>
         public static string MyMovieWatching {
             get {
@@ -160,7 +160,7 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wishlist - Movies ({0} items).
+        ///   Looks up a localized string similar to Wishlist - Movies.
         /// </summary>
         public static string MyMovieWishlist {
             get {
@@ -187,7 +187,7 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Favorite Providers ({0} items).
+        ///   Looks up a localized string similar to Favorite Providers.
         /// </summary>
         public static string MyProviders {
             get {
@@ -196,7 +196,7 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Watching - Shows ({0} items).
+        ///   Looks up a localized string similar to Watching - Shows.
         /// </summary>
         public static string MyShowWatching {
             get {
@@ -205,7 +205,7 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wishlist - Shows ({0} items).
+        ///   Looks up a localized string similar to Wishlist - Shows.
         /// </summary>
         public static string MyShowWishlist {
             get {

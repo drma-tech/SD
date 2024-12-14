@@ -7,7 +7,7 @@
 @inject AllProvidersApi AllProvidersApi
 @inject IHttpClientFactory httpClientFactory
 
-<HeaderComponent IconName="@FontAwesomeIcons.Star" Title="@Translations.MyProviders.Format(myProviders?.Items.Count ?? 0)">
+<HeaderComponent IconName="@FontAwesomeIcons.Star" Title="@Translations.MyProviders">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand = !expand; })" title="Show all providers" Disabled="(myProviders == null || myProviders.Items.Empty())">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>

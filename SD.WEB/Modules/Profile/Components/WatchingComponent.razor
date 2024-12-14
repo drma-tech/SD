@@ -87,7 +87,7 @@
     private HashSet<WatchingListItem> Items => MediaType == MediaType.movie ? Watching?.Movies ?? new HashSet<WatchingListItem>() : Watching?.Shows ?? new HashSet<WatchingListItem>();
 
     private int GetTotalItems => !FullScreen ? (AppStateStatic.OnFullHD ? 6 : 4) : 100;
-    private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? Translations.MyMovieWatching.Format(Items.Count()) : Translations.MyShowWatching.Format(Items.Count()));
+    private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? Translations.MyMovieWatching : Translations.MyShowWatching);
     private IFluentColumn ColSize => FullScreen ? ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile : ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile;
 
     public bool Updating { get; set; } = false;

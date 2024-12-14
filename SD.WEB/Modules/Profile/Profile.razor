@@ -12,6 +12,7 @@
 @inject IHttpClientFactory httpClientFactory
 @inject IJSRuntime JsRuntime
 
+@inject MyProvidersApi MyProvidersApi
 @inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
@@ -20,7 +21,7 @@
 
 @if (IsAuthenticated)
 {
-    <Jumbotron Background="Background.Secondary" Margin="Margin.Is3.FromBottom" Padding="Padding.Is3">
+    <Jumbotron Background="Background.Secondary" Margin="Margin.Is2.FromBottom" Padding="Padding.Is2">
         <Row>
             <Column ColumnSize="ColumnSize.IsAuto">
                 <Figure Size="FigureSize.Is64x64" Margin="Margin.Is0.OnDesktop">
@@ -82,6 +83,52 @@
     } *@
 }
 
+<Row Gutter="(8,8)">
+    <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
+        <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromBottom">
+            <AlertMessage>
+                <Blazorise.Icon Name="@FontAwesomeIcons.Star" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>Providers
+            </AlertMessage>
+            <Div>
+                <Badge Color="Color.Secondary">@(myProviders?.Items.Count ?? 0)</Badge>
+            </Div>
+        </Alert>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
+        <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromBottom">
+            <AlertMessage>
+                <Blazorise.Icon Name="@FontAwesomeIcons.Bookmark" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>Wishlist
+            </AlertMessage>
+            <Div>
+                <Badge Color="Color.Secondary">@(Wish?.Movies.Count ?? 0) Movies</Badge>
+                <Badge Color="Color.Secondary">@(Wish?.Shows.Count ?? 0) Shows</Badge>
+            </Div>
+        </Alert>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
+        <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromBottom">
+            <AlertMessage>
+                <Blazorise.Icon Name="@FontAwesomeIcons.Eye" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>Watching
+            </AlertMessage>
+            <Div>
+                <Badge Color="Color.Secondary">@(Watching?.Movies.Count ?? 0) Movies</Badge>
+                <Badge Color="Color.Secondary">@(Watching?.Shows.Count ?? 0) Shows</Badge>
+            </Div>
+        </Alert>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
+        <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromBottom">
+            <AlertMessage>
+                <Blazorise.Icon Name="@FontAwesomeIcons.ClockRotateLeft" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>Watched
+            </AlertMessage>
+            <Div>
+                <Badge Color="Color.Secondary">@(Watched?.Movies.Count ?? 0) Movies</Badge>
+                <Badge Color="Color.Secondary">@(Watched?.Shows.Count ?? 0) Shows</Badge>
+            </Div>
+        </Alert>
+    </Column>
+</Row>
+
 @* <Div TextAlignment="TextAlignment.Center">
     @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
     {
@@ -117,6 +164,7 @@
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
     public RenderControlCore<WishList?> CoreWish { get; set; } = new();
 
+    private MyProviders? myProviders { get; set; }
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
@@ -160,6 +208,7 @@
             (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
         }
 
+        myProviders = await MyProvidersApi.Get(IsAuthenticated, null);
         Platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
         Reviewed = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "reviewed");
     }
