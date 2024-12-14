@@ -250,6 +250,15 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Providers.
+        /// </summary>
+        public static string Providers {
+            get {
+                return ResourceManager.GetString("Providers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Regions have been automatically applied for your favorite providers. If they are wrong, please remove and add them again..
         /// </summary>
         public static string RegionsApplied {
@@ -273,6 +282,33 @@ namespace SD.WEB.Modules.Profile.Resources {
         public static string UpdateMySuggestions {
             get {
                 return ResourceManager.GetString("UpdateMySuggestions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Watched.
+        /// </summary>
+        public static string Watched {
+            get {
+                return ResourceManager.GetString("Watched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Watching.
+        /// </summary>
+        public static string Watching {
+            get {
+                return ResourceManager.GetString("Watching", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wishlist.
+        /// </summary>
+        public static string Wishlist {
+            get {
+                return ResourceManager.GetString("Wishlist", resourceCulture);
             }
         }
     }

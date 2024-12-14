@@ -22,7 +22,7 @@ namespace SD.Shared.Resources.Enum {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class PopularType {
+    public class PopularType {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace SD.Shared.Resources.Enum {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.Shared.Resources.Enum.PopularType", typeof(PopularType).Assembly);
@@ -51,7 +51,7 @@ namespace SD.Shared.Resources.Enum {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace SD.Shared.Resources.Enum {
         /// <summary>
         ///   Looks up a localized string similar to Cinema.
         /// </summary>
-        internal static string CinemaName {
+        public static string CinemaName {
             get {
                 return ResourceManager.GetString("CinemaName", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace SD.Shared.Resources.Enum {
         /// <summary>
         ///   Looks up a localized string similar to Movies.
         /// </summary>
-        internal static string MovieName {
+        public static string MovieName {
             get {
                 return ResourceManager.GetString("MovieName", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace SD.Shared.Resources.Enum {
         /// <summary>
         ///   Looks up a localized string similar to TV Shows.
         /// </summary>
-        internal static string ShowName {
+        public static string ShowName {
             get {
                 return ResourceManager.GetString("ShowName", resourceCulture);
             }

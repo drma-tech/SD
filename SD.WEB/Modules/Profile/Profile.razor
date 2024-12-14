@@ -85,9 +85,9 @@
 
 <Row Gutter="(8,8)">
     <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
-        <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromBottom">
+        <Alert Visible="true" Color="Color.Secondary">
             <AlertMessage>
-                <Blazorise.Icon Name="@FontAwesomeIcons.Star" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>Providers
+                <Blazorise.Icon Name="@FontAwesomeIcons.Star" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Providers
             </AlertMessage>
             <Div>
                 <Badge Color="Color.Secondary">@(myProviders?.Items.Count ?? 0)</Badge>
@@ -95,35 +95,35 @@
         </Alert>
     </Column>
     <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
-        <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromBottom">
+        <Alert Visible="true" Color="Color.Secondary">
             <AlertMessage>
-                <Blazorise.Icon Name="@FontAwesomeIcons.Bookmark" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>Wishlist
+                <Blazorise.Icon Name="@FontAwesomeIcons.Bookmark" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Wishlist
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary">@(Wish?.Movies.Count ?? 0) Movies</Badge>
-                <Badge Color="Color.Secondary">@(Wish?.Shows.Count ?? 0) Shows</Badge>
+                <Badge Color="Color.Secondary">@(Wish?.Movies.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.MovieName</Badge>
+                <Badge Color="Color.Secondary">@(Wish?.Shows.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.ShowName</Badge>
             </Div>
         </Alert>
     </Column>
     <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
-        <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromBottom">
+        <Alert Visible="true" Color="Color.Secondary">
             <AlertMessage>
-                <Blazorise.Icon Name="@FontAwesomeIcons.Eye" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>Watching
+                <Blazorise.Icon Name="@FontAwesomeIcons.Eye" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Watching
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary">@(Watching?.Movies.Count ?? 0) Movies</Badge>
-                <Badge Color="Color.Secondary">@(Watching?.Shows.Count ?? 0) Shows</Badge>
+                <Badge Color="Color.Secondary">@(Watching?.Movies.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.MovieName</Badge>
+                <Badge Color="Color.Secondary">@(Watching?.Shows.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.ShowName</Badge>
             </Div>
         </Alert>
     </Column>
     <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
-        <Alert Visible="true" Color="Color.Secondary" Margin="Margin.Is2.FromBottom">
+        <Alert Visible="true" Color="Color.Secondary">
             <AlertMessage>
-                <Blazorise.Icon Name="@FontAwesomeIcons.ClockRotateLeft" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>Watched
+                <Blazorise.Icon Name="@FontAwesomeIcons.ClockRotateLeft" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Watched
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary">@(Watched?.Movies.Count ?? 0) Movies</Badge>
-                <Badge Color="Color.Secondary">@(Watched?.Shows.Count ?? 0) Shows</Badge>
+                <Badge Color="Color.Secondary">@(Watched?.Movies.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.MovieName</Badge>
+                <Badge Color="Color.Secondary">@(Watched?.Shows.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.ShowName</Badge>
             </Div>
         </Alert>
     </Column>
