@@ -29,7 +29,7 @@ namespace SD.API.Repository
 
         public CosmosLogRepository(IConfiguration config)
         {
-            var databaseId = config.GetValue<string>("RepositoryOptions_DatabaseId");
+            var databaseId = config.GetValue<string>("CosmosDB:DatabaseId");
 
             Container = ApiStartup.CosmosClient.GetContainer(databaseId, "logs");
         }

@@ -278,7 +278,7 @@ namespace SD.API.Functions
                     {
                         if (imdb >= 8 && tmdb > 7.95 && meta >= 8 && trac >= 80)
                         {
-                            var tmdb_write_token = configuration.GetValue<string>("tmdb_write_token");
+                            var tmdb_write_token = configuration.GetValue<string>("TMDB:WriteToken");
                             await ApiStartup.HttpClient.AddTmdbListItem(8498673, int.Parse(tmdb_id!), MediaType.movie, tmdb_write_token, cancellationToken);
                         }
                     }
@@ -357,7 +357,7 @@ namespace SD.API.Functions
                     {
                         if (imdb >= 8 && tmdb > 7.95 && meta >= 8 && trac >= 80)
                         {
-                            var tmdb_write_token = configuration.GetValue<string>("tmdb_write_token");
+                            var tmdb_write_token = configuration.GetValue<string>("TMDB:WriteToken");
                             await ApiStartup.HttpClient.AddTmdbListItem(8498675, int.Parse(tmdb_id!), MediaType.tv, tmdb_write_token, cancellationToken);
                         }
                     }

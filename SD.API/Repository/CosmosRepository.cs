@@ -16,7 +16,7 @@ namespace SD.API.Repository
         {
             _logger = logger;
 
-            var databaseId = config.GetValue<string>("RepositoryOptions_DatabaseId");
+            var databaseId = config.GetValue<string>("CosmosDB:DatabaseId");
 
             Container = ApiStartup.CosmosClient.GetContainer(databaseId, "main");
         }

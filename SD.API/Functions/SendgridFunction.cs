@@ -82,7 +82,7 @@ namespace SD.API.Functions
             {
                 var inbound = await req.GetPublicBody<SendEmail>(cancellationToken);
 
-                var apiKey = configuration.GetValue<string>("Sendgrid_Key");
+                var apiKey = configuration.GetValue<string>("Sendgrid:Key");
                 var strongGridClient = new Client(apiKey);
 
                 var textContent = new MailContent("text/plain", inbound.Text);

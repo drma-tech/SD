@@ -18,8 +18,8 @@ namespace SD.API.Functions
             {
                 var id = req.GetQueryParameters()["id"];
 
-                var endpoint = configuration.GetValue<string>("Paddle_Endpoint");
-                var key = configuration.GetValue<string>("Paddle_Key");
+                var endpoint = configuration.GetValue<string>("Paddle:Endpoint");
+                var key = configuration.GetValue<string>("Paddle:Key");
 
                 ApiStartup.HttpClientPaddle.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
 
@@ -46,8 +46,8 @@ namespace SD.API.Functions
             {
                 var id = req.GetQueryParameters()["id"];
 
-                var endpoint = configuration.GetValue<string>("Paddle_Endpoint");
-                var key = configuration.GetValue<string>("Paddle_Key");
+                var endpoint = configuration.GetValue<string>("Paddle:Endpoint");
+                var key = configuration.GetValue<string>("Paddle:Key");
 
                 ApiStartup.HttpClientPaddle.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
 
@@ -72,7 +72,7 @@ namespace SD.API.Functions
         {
             try
             {
-                var validSignature = await req.ValidPaddleSignature(configuration["Paddle_Signature"], cancellationToken);
+                var validSignature = await req.ValidPaddleSignature(configuration["Paddle:Signature"], cancellationToken);
 
                 if (!validSignature) throw new NotificationException("wrong paddle signature");
 
@@ -102,13 +102,13 @@ namespace SD.API.Functions
             {
                 var config = new Configurations
                 {
-                    Token = configuration.GetValue<string>("Paddle_Token"),
-                    ProductStandard = configuration.GetValue<string>("Paddle_ProductStandard"),
-                    ProductPremium = configuration.GetValue<string>("Paddle_ProductPremium"),
-                    PriceStandardMonth = configuration.GetValue<string>("Paddle_PriceStandardMonth"),
-                    PriceStandardYear = configuration.GetValue<string>("Paddle_PriceStandardYear"),
-                    PricePremiumMonth = configuration.GetValue<string>("Paddle_PricePremiumMonth"),
-                    PricePremiumYear = configuration.GetValue<string>("Paddle_PricePremiumYear")
+                    Token = configuration.GetValue<string>("Paddle:Token"),
+                    ProductStandard = configuration.GetValue<string>("Paddle:Standard:Product"),
+                    ProductPremium = configuration.GetValue<string>("Paddle:Premium:Product"),
+                    PriceStandardMonth = configuration.GetValue<string>("Paddle:Standard:PriceMonth"),
+                    PriceStandardYear = configuration.GetValue<string>("Paddle:Standard:PriceYear"),
+                    PricePremiumMonth = configuration.GetValue<string>("Paddle:Premium:PriceMonth"),
+                    PricePremiumYear = configuration.GetValue<string>("Paddle:Premium:PriceYear")
                 };
 
                 return config;
