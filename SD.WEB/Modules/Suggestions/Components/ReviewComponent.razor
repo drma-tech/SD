@@ -27,8 +27,7 @@
 
 @code {
     [Parameter] public string? imdb_id { get; set; }
-    [Parameter] public string? title { get; set; }
-    [Parameter] public string? original_title { get; set; }
+    [Parameter] public string? english_title { get; set; }
     [Parameter] public DateTime? release_date { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
@@ -39,14 +38,13 @@
     {
         if (!string.IsNullOrEmpty(imdb_id))
         {
-            //TODO: must be english_title, not original_title
             if (type == MediaType.movie)
             {
-                Model = await CacheMetaCriticApi.GetMovieReviews(imdb_id, original_title, release_date, Core);
+                Model = await CacheMetaCriticApi.GetMovieReviews(imdb_id, english_title, release_date, Core);
             }
             else
             {
-                Model = await CacheMetaCriticApi.GetShowReviews(imdb_id, original_title, release_date, Core);
+                Model = await CacheMetaCriticApi.GetShowReviews(imdb_id, english_title, release_date, Core);
             }
         }
         else

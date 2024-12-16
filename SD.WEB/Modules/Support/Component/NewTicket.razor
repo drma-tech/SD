@@ -9,7 +9,6 @@
     </ModalHeader>
     <ModalBody>
         <EditForm Model="@Ticket" OnValidSubmit="SubmitForm">
-            <FluentValidationValidator />
             <div class="form-group">
                 <Select TValue="TicketType" @bind-SelectedValue="@TicketType" Size="Size.Small">
                     @foreach (var item in EnumHelper.GetArray<TicketType>())

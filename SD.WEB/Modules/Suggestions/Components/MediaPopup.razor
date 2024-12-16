@@ -180,7 +180,8 @@
                             </TabPanel>
                         }
                         <TabPanel Name="Reviews" Class="mt-2">
-                            <ReviewComponent imdb_id="@imdb_id" title="@media?.title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ","-").ToLower()" original_title="@media?.original_title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ","-").ToLower()" type="@type" release_date="@media?.release_date"></ReviewComponent>
+                            <ReviewComponent imdb_id="@imdb_id" english_title="@EnglishTitle?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ","-").ToLower()"
+                                             type="@type" release_date="@media?.release_date"></ReviewComponent>
                         </TabPanel>
                     </Content>
                 </Tabs>
@@ -262,6 +263,7 @@
     public RenderControlCore<MediaDetail?>? Core { get; set; } = new();
     private MediaDetail? media { get; set; }
     public string? imdb_id { get; set; }
+    public string? EnglishTitle { get; set; }
 
     string selectedTab = "About";
 
@@ -285,24 +287,24 @@
         imdb_id = await ExternalIdApi.GetImdbId(type, tmdb_id);
         Core?.LoadingFinished?.Invoke(media);
 
-        var title = media?.original_title;//?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
+        EnglishTitle = media?.original_title;//?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
 
         if (media != null && media.original_language != "en")
         {
             //title must be in english
             var en_media = await TmdbApi.GetMediaDetail(tmdb_id, type!.Value, "en-US");
-            title = en_media?.title;//?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
+            EnglishTitle = en_media?.title;//?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
         }
 
-        title = title?.Replace("&", "");
+        EnglishTitle = EnglishTitle?.Replace("&", "");
 
         if (media?.MediaType == MediaType.movie)
         {
-            ratingsCache = await CacheRatingsApi.GetMovieRatings(imdb_id, media?.tmdb_id, title, media?.release_date, media?.rating.ToString("#.#"), CoreRatings);
+            ratingsCache = await CacheRatingsApi.GetMovieRatings(imdb_id, media?.tmdb_id, EnglishTitle, media?.release_date, media?.rating.ToString("#.#"), CoreRatings);
         }
         else
         {
-            ratingsCache = await CacheRatingsApi.GetShowRatings(imdb_id, media?.tmdb_id, title, media?.release_date, media?.rating.ToString("#.#"), CoreRatings);
+            ratingsCache = await CacheRatingsApi.GetShowRatings(imdb_id, media?.tmdb_id, EnglishTitle, media?.release_date, media?.rating.ToString("#.#"), CoreRatings);
         }
     }
 
