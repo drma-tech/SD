@@ -223,6 +223,15 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Certified by SD.
+        /// </summary>
+        public static string TitleCertifiedSD {
+            get {
+                return ResourceManager.GetString("TitleCertifiedSD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unfortunately this title is not available in your region.
         /// </summary>
         public static string TitleNotAvailable {

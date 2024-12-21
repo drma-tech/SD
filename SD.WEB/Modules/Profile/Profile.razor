@@ -90,7 +90,7 @@
                 <Blazorise.Icon Name="@FontAwesomeIcons.Star" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Providers
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary">@(myProviders?.Items.Count ?? 0)</Badge>
+                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(myProviders?.Items.Count ?? 0)</Badge>
             </Div>
         </Alert>
     </Column>
@@ -100,8 +100,8 @@
                 <Blazorise.Icon Name="@FontAwesomeIcons.Bookmark" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Wishlist
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary">@(Wish?.Movies.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.MovieName</Badge>
-                <Badge Color="Color.Secondary">@(Wish?.Shows.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.ShowName</Badge>
+                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Wish?.Movies.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.MovieName</Badge>
+                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Wish?.Shows.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.ShowName</Badge>
             </Div>
         </Alert>
     </Column>
@@ -111,8 +111,8 @@
                 <Blazorise.Icon Name="@FontAwesomeIcons.Eye" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Watching
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary">@(Watching?.Movies.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.MovieName</Badge>
-                <Badge Color="Color.Secondary">@(Watching?.Shows.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.ShowName</Badge>
+                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watching?.Movies.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.MovieName</Badge>
+                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watching?.Shows.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.ShowName</Badge>
             </Div>
         </Alert>
     </Column>
@@ -122,8 +122,8 @@
                 <Blazorise.Icon Name="@FontAwesomeIcons.ClockRotateLeft" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Watched
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary">@(Watched?.Movies.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.MovieName</Badge>
-                <Badge Color="Color.Secondary">@(Watched?.Shows.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.ShowName</Badge>
+                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watched?.Movies.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.MovieName</Badge>
+                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watched?.Shows.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.ShowName</Badge>
             </Div>
         </Alert>
     </Column>
