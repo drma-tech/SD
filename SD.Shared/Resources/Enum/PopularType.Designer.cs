@@ -79,7 +79,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TV Shows.
+        ///   Looks up a localized string similar to Series.
         /// </summary>
         public static string ShowName {
             get {
