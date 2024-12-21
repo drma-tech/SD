@@ -20,7 +20,7 @@
             <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
                 <Card>
                     <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments" CommentsSeparator="@CommentsSeparator"
-                                     TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" WatchedList="Watched" WishList="Wish"></PosterComponent>
+                    TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" WatchedList="Watched" WishList="Wish"></PosterComponent>
                 </Card>
             </Column>
             if ((i % GetTotalItems) == 0)
@@ -56,6 +56,7 @@
 
     [Parameter] public RenderControlCore<HashSet<MediaDetail>>? Core { get; set; } = new();
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
+    [Parameter] public EventCallback<HashSet<MediaDetail>> ItemsChanged { get; set; }
 
     [Parameter] public bool IsIMDB { get; set; } = false;
     [Parameter] public int MaxItens { get; set; } = 10;
@@ -178,6 +179,8 @@
             var result = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++currentPage);
             Items = result.list;
             DisableLoadMore = result.lastPage;
+
+            await ItemsChanged.InvokeAsync(Items);
         }
     }
 }

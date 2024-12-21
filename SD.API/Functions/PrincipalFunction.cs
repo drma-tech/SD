@@ -13,6 +13,7 @@ namespace SD.API.Functions
             try
             {
                 var userId = req.GetUserId();
+                if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
                 var doc = await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken);
 

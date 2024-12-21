@@ -17,7 +17,8 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <MediaListFull Items="Items" IsIMDB="IsIMDB" MaxItens="MaxItens" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
+    <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list)=>{Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged();})"
+                   IsIMDB="IsIMDB" MaxItens="MaxItens" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
                    StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false"
                    Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
     </MediaListFull>
@@ -40,6 +41,7 @@
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
 
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
+    [Parameter] public EventCallback<HashSet<MediaDetail>> ItemsChanged { get; set; }
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; }

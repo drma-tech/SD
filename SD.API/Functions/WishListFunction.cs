@@ -17,6 +17,8 @@ namespace SD.API.Functions
                 if (string.IsNullOrEmpty(id))
                 {
                     var userId = req.GetUserId();
+                    if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
+
                     doc = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
                 }
                 else

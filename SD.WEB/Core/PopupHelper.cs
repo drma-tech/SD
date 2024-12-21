@@ -66,6 +66,7 @@ namespace SD.WEB.Core
                 x.Add(x => x.Watching, watching);
                 x.Add(x => x.Wish, wish);
                 x.Add(x => x.Items, Items);
+                x.Add(x => x.ItemsChanged, Factory.Create(new(), (HashSet<MediaDetail> list) => { Items = list; }));
                 x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
                 x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
                 x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));

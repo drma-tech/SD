@@ -137,7 +137,7 @@ namespace SD.API.Repository
             {
                 var response = await Container.PatchItemAsync<T>($"{type}:{id}", new PartitionKey($"{type}:{id}"), operations, CosmosRepositoryExtensions.GetPatchItemRequestOptions(), cancellationToken);
 
-                if (response.RequestCharge > 12)
+                if (response.RequestCharge > 15)
                 {
                     _logger.LogWarning("PatchItem - ID {Id}, RequestCharge {Charges}", id, response.RequestCharge);
                 }
@@ -156,7 +156,7 @@ namespace SD.API.Repository
             {
                 var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-                if (response.RequestCharge > 12)
+                if (response.RequestCharge > 15)
                 {
                     _logger.LogWarning("Delete - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);
                 }

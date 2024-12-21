@@ -9,8 +9,6 @@ var app = new HostBuilder()
      .ConfigureFunctionsWorkerDefaults(worker =>
      {
          worker.UseMiddleware<ExceptionHandlingMiddleware>();
-         //https://github.com/Azure/azure-functions-openapi-extension/blob/main/docs/enable-open-api-endpoints-out-of-proc.md
-         //worker.UseNewtonsoftJson();
      })
     .ConfigureAppConfiguration((hostContext, config) =>
     {

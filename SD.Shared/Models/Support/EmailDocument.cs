@@ -19,6 +19,7 @@ namespace SD.Shared.Models.Support
         public List<EmailAddress> To { get; set; } = [];
         public List<EmailAddress> Cc { get; set; } = [];
         public DateTime? Date { get; set; }
+        public string? SpamScore { get; set; }
 
         public string? SenderIp { get; set; }
         public bool Read { get; set; }
