@@ -21,7 +21,7 @@ namespace SD.WEB.Core
         public static string GetShowReviews(string? id, string? title, DateTime? date) => $"public/cache/reviews/shows?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}";
     }
 
-    public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<NewsModel>>(http)
+    public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<NewsModel>>(http, null)
     {
         public async Task<CacheDocument<NewsModel>?> GetNews(string mode, RenderControlCore<CacheDocument<NewsModel>?>? core)
         {
@@ -29,7 +29,7 @@ namespace SD.WEB.Core
         }
     }
 
-    public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<TrailerModel>>(http)
+    public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<TrailerModel>>(http, null)
     {
         public async Task<CacheDocument<TrailerModel>?> GetTrailers(string mode, RenderControlCore<CacheDocument<TrailerModel>?>? core)
         {
@@ -37,7 +37,7 @@ namespace SD.WEB.Core
         }
     }
 
-    public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<Ratings>>(http)
+    public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<Ratings>>(http, null)
     {
         public async Task<CacheDocument<Ratings>?> GetMovieRatings(string? id, string? tmdb_id, string? title, DateTime? releaseDate, string? tmdb_rating, RenderControlCore<CacheDocument<Ratings>?>? core)
         {
@@ -50,7 +50,7 @@ namespace SD.WEB.Core
         }
     }
 
-    public class CacheMetaCriticApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<ReviewModel>>(http)
+    public class CacheMetaCriticApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<ReviewModel>>(http, null)
     {
         public async Task<CacheDocument<ReviewModel>?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, RenderControlCore<CacheDocument<ReviewModel>?>? core)
         {

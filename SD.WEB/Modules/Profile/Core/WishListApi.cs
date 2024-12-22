@@ -3,7 +3,7 @@ using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(factory)
+    public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(factory, "wishlist")
     {
         private struct Endpoint
         {

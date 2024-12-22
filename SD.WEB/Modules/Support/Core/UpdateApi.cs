@@ -3,7 +3,7 @@ using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Support.Core
 {
-    public class UpdateApi(IHttpClientFactory http) : ApiCosmos<UpdateModel>(http)
+    public class UpdateApi(IHttpClientFactory http) : ApiCosmos<UpdateModel>(http, null)
     {
         private struct Endpoint
         {

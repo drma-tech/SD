@@ -2,7 +2,7 @@
 
 namespace SD.WEB.Modules.Administrator.Core
 {
-    public class AdministratorApi(IHttpClientFactory factory) : ApiCosmos<EmailDocument>(factory)
+    public class AdministratorApi(IHttpClientFactory factory) : ApiCosmos<EmailDocument>(factory, null)
     {
         private struct Endpoint
         {

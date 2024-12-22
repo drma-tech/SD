@@ -3,7 +3,7 @@ using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Support.Core
 {
-    public class TicketApi(IHttpClientFactory http) : ApiCosmos<TicketModel>(http)
+    public class TicketApi(IHttpClientFactory http) : ApiCosmos<TicketModel>(http, null)
     {
         private struct Endpoint
         {

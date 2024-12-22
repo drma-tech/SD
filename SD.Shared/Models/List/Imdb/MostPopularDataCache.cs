@@ -5,7 +5,7 @@
         public MostPopularDataCache()
         { }
 
-        public MostPopularDataCache(MostPopularData data, string key) : base(key, data, ttlCache.one_day)
+        public MostPopularDataCache(MostPopularData data, string key) : base(key, data, ttlCache.half_day)
         { }
     }
 }

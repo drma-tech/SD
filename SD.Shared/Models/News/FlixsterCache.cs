@@ -5,7 +5,7 @@
         public FlixsterCache()
         { }
 
-        public FlixsterCache(NewsModel data, string key) : base(key, data, ttlCache.one_day)
+        public FlixsterCache(NewsModel data, string key) : base(key, data, ttlCache.half_day)
         { }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace SD.WEB.Modules.Subscription.Core
 {
-    public class PaddleConfigurationApi(IHttpClientFactory factory) : ApiCosmos<Configurations>(factory)
+    public class PaddleConfigurationApi(IHttpClientFactory factory) : ApiCosmos<Configurations>(factory, null)
     {
         private struct Endpoint
         {

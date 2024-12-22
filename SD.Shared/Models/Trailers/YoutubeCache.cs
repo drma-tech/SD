@@ -5,7 +5,7 @@
         public YoutubeCache()
         { }
 
-        public YoutubeCache(TrailerModel data, string key) : base(key, data, ttlCache.one_day)
+        public YoutubeCache(TrailerModel data, string key) : base(key, data, ttlCache.half_day)
         { }
     }
 }

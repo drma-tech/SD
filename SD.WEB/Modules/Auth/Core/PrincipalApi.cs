@@ -2,15 +2,15 @@
 
 namespace SD.WEB.Modules.Auth.Core
 {
-    public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<ClientePrincipal>(factory)
+    public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<ClientePrincipal>(factory, "principal")
     {
         private struct Endpoint
         {
-            public const string Get = "Principal/Get";
-            public const string GetEmail = "Public/Principal/GetEmail";
-            public const string Add = "Principal/Add";
-            public const string Paddle = "Principal/Paddle";
-            public const string Remove = "Principal/Remove";
+            public const string Get = "principal/get";
+            public const string GetEmail = "public/principal/get-email";
+            public const string Add = "principal/add";
+            public const string Paddle = "principal/paddle";
+            public const string Remove = "principal/remove";
         }
 
         public async Task<ClientePrincipal?> Get(bool IsUserAuthenticated)

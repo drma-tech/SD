@@ -3,7 +3,7 @@ using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core
 {
-    public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>(factory)
+    public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>(factory, "my-providers")
     {
         private struct Endpoint
         {

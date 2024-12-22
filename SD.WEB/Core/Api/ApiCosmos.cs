@@ -2,7 +2,7 @@
 
 namespace SD.WEB.Core.Api
 {
-    public abstract class ApiCosmos<T>(IHttpClientFactory factory) : ApiCore(factory) where T : class
+    public abstract class ApiCosmos<T>(IHttpClientFactory factory, string? key) : ApiCore(factory, key) where T : class
     {
         public Action<T?>? DataChanged { get; set; }
 

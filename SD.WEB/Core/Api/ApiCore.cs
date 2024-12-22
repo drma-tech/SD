@@ -4,39 +4,50 @@ using System.Text.Json;
 
 namespace SD.WEB.Core.Api
 {
-    public abstract class ApiCore(IHttpClientFactory factory)
+    public abstract class ApiCore(IHttpClientFactory factory, string? key)
     {
         protected HttpClient _http => factory.CreateClient("RetryHttpClient");
-        protected int? CacheVersion { get; set; }
+        protected static Dictionary<string, int> CacheVersion { get; set; } = [];
 
-        private Dictionary<string, string> GetVersionParameter()
+        public static void SetNewVersion(string? key)
         {
-            CacheVersion ??= new Random().Next(1, 999999);
-
-            return new Dictionary<string, string> { { "v", CacheVersion.Value.ToString() } };
+            if (key.NotEmpty())
+            {
+                CacheVersion[key!] = new Random().Next(1, 999999);
+            }
         }
 
-        protected async Task<string?> GetValueAsync(string uri, bool useVersion = true)
+        private Dictionary<string, string> GetVersion()
         {
-            if (useVersion)
-                return await _http.GetValueAsync(uri.ConfigureParameters(GetVersionParameter()));
+            if (!CacheVersion.TryGetValue(key!, out _))
+            {
+                CacheVersion[key!] = new Random().Next(1, 999999);
+            }
+
+            return new Dictionary<string, string> { { "v", CacheVersion[key!].ToString() } };
+        }
+
+        protected async Task<string?> GetValueAsync(string uri)
+        {
+            if (key.NotEmpty())
+                return await _http.GetValueAsync(uri.ConfigureParameters(GetVersion()));
             else
                 return await _http.GetValueAsync(uri);
         }
 
-        protected async Task<T?> GetAsync<T>(string uri, bool useVersion = true)
+        protected async Task<T?> GetAsync<T>(string uri)
         {
-            if (useVersion)
-                return await _http.GetJsonFromApi<T>(uri.ConfigureParameters(GetVersionParameter()));
+            if (key.NotEmpty())
+                return await _http.GetJsonFromApi<T>(uri.ConfigureParameters(GetVersion()));
             else
                 return await _http.GetJsonFromApi<T>(uri);
         }
 
-        protected async Task<HashSet<T>> GetListAsync<T>(string uri, bool useVersion = true)
+        protected async Task<HashSet<T>> GetListAsync<T>(string uri)
         {
-            if (useVersion)
+            if (key.NotEmpty())
             {
-                var result = await _http.GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetVersionParameter()));
+                var result = await _http.GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetVersion()));
                 return result ?? [];
             }
             else
@@ -57,7 +68,7 @@ namespace SD.WEB.Core.Api
 
         protected async Task<O?> PostAsync<I, O>(string uri, I? obj)
         {
-            CacheVersion = new Random().Next(1, 999999);
+            SetNewVersion(key);
 
             var response = await _http.PostAsJsonAsync(uri, obj, new JsonSerializerOptions());
 
@@ -78,7 +89,7 @@ namespace SD.WEB.Core.Api
 
         protected async Task<O?> PutAsync<I, O>(string uri, I? obj)
         {
-            CacheVersion = new Random().Next(1, 999999);
+            SetNewVersion(key);
 
             var response = await _http.PutAsJsonAsync(uri, obj, new JsonSerializerOptions());
 
@@ -99,7 +110,7 @@ namespace SD.WEB.Core.Api
 
         protected async Task<T?> DeleteAsync<T>(string uri)
         {
-            CacheVersion = new Random().Next(1, 999999);
+            SetNewVersion(key);
 
             var response = await _http.DeleteAsync(uri);
 

@@ -2,7 +2,7 @@
 
 namespace SD.WEB.Modules.Subscription.Core
 {
-    public class PaddleSubscriptionApi(IHttpClientFactory factory) : ApiCosmos<RootSubscription>(factory)
+    public class PaddleSubscriptionApi(IHttpClientFactory factory) : ApiCosmos<RootSubscription>(factory, null)
     {
         private struct Endpoint
         {

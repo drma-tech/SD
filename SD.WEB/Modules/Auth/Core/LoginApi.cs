@@ -2,7 +2,7 @@
 
 namespace SD.WEB.Modules.Auth.Core
 {
-    public class LoginApi(IHttpClientFactory factory) : ApiCosmos<ClienteLogin>(factory)
+    public class LoginApi(IHttpClientFactory factory) : ApiCosmos<ClienteLogin>(factory, null)
     {
         private struct Endpoint
         {

@@ -7,7 +7,7 @@ namespace SD.API.Functions
     {
         [Function("MySuggestionsGet")]
         public async Task<HttpResponseData?> MySuggestionsGet(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "MySuggestions/Get")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "my-suggestions/get")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace SD.API.Functions
 
         [Function("MySuggestionsSync")]
         public async Task<MySuggestions?> MySuggestionsSync(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "MySuggestions/Sync/{MediaType}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-suggestions/sync/{MediaType}")] HttpRequestData req,
             string MediaType, CancellationToken cancellationToken)
         {
             try
@@ -70,7 +70,7 @@ namespace SD.API.Functions
 
         [Function("MySuggestionsAdd")]
         public async Task<MySuggestions?> MySuggestionsAdd(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "MySuggestions/Add")] HttpRequestData req, CancellationToken cancellationToken)
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-suggestions/add")] HttpRequestData req, CancellationToken cancellationToken)
         {
             try
             {

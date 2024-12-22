@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace SD.WEB.Modules.Provider.Core
 {
-    public class AllProvidersApi(IHttpClientFactory factory) : ApiCore(factory)
+    public class AllProvidersApi(IHttpClientFactory factory) : ApiCore(factory, null)
     {
         public async Task<AllProviders?> GetAll(RenderControlCore<AllProviders?>? core)
         {
