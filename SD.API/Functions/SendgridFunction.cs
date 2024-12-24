@@ -63,7 +63,8 @@ namespace SD.API.Functions
                     Cc = inboundMail.Cc.Select(s => new EmailAddress { Email = s.Email, Name = s.Name }).ToList(),
                     Date = date,
                     SenderIp = inboundMail.SenderIp,
-                    SpamScore = inboundMail.SpamScore
+                    SpamScore = inboundMail.SpamScore,
+                    SpamReport = inboundMail.SpamReport
                 };
 
                 await repo.UpsertItemAsync(model, cancellationToken);
