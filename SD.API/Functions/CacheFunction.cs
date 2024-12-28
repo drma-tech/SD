@@ -241,7 +241,9 @@ namespace SD.API.Functions
 
                 if (doc == null)
                 {
-                    var scraping = new ScrapingRatings();
+                    var objRatings = await ApiStartup.HttpClient.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
+
+                    var scraping = new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name), objRatings);
                     var obj = scraping.GetMovieData(id, tmdb_rating, title, release_date.Year.ToString());
                     if (obj == null) return null;
 
@@ -265,22 +267,30 @@ namespace SD.API.Functions
                     doc = await cacheRepo.UpsertItemAsync(new RatingsCache((id.NotEmpty() ? id : tmdb_id), obj, ttl), cancellationToken);
                 }
 
+                //add on sd certified list
                 if (doc?.Data != null && release_date < DateTime.Now.AddDays(-14)) // at least 2 week launch
                 {
                     var rating = doc.Data;
 
-                    var imdb_ok = float.TryParse(rating.imdb, NumberStyles.Any, CultureInfo.InvariantCulture, out float imdb);
-                    var tmdb_ok = float.TryParse(rating.tmdb, NumberStyles.Any, CultureInfo.InvariantCulture, out float tmdb);
-                    var meta_ok = float.TryParse(rating.metacritic, NumberStyles.Any, CultureInfo.InvariantCulture, out float meta);
-                    var trac_ok = float.TryParse(rating.trakt, NumberStyles.Any, CultureInfo.InvariantCulture, out float trac);
+                    var imdb_ok = float.TryParse(rating.imdb?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float imdb);
+                    var tmdb_ok = float.TryParse(rating.tmdb?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float tmdb);
+                    var meta_ok = float.TryParse(rating.metacritic?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float meta);
+                    var trac_ok = float.TryParse(rating.trakt?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float trac);
+                    var roto_ok = float.TryParse(rating.rottenTomatoes?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float roto);
+                    var fiaf_ok = float.TryParse(rating.filmAffinity?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float fiaf);
 
-                    if (imdb_ok && tmdb_ok && meta_ok && trac_ok)
+                    var count = 0;
+                    if (imdb_ok && imdb >= 8) count++;
+                    if (tmdb_ok && tmdb > 7.95) count++;
+                    if (meta_ok && meta >= 8) count++;
+                    if (trac_ok && trac >= 80) count++;
+                    if (roto_ok && roto >= 80) count++;
+                    if (fiaf_ok && fiaf >= 8) count++;
+
+                    if (count >= 5) //if there is at least 5 green ratings
                     {
-                        if (imdb >= 8 && tmdb > 7.95 && meta >= 8 && trac >= 80)
-                        {
-                            var tmdb_write_token = configuration.GetValue<string>("TMDB:WriteToken");
-                            await ApiStartup.HttpClient.AddTmdbListItem(8498673, int.Parse(tmdb_id!), MediaType.movie, tmdb_write_token, cancellationToken);
-                        }
+                        var tmdb_write_token = configuration.GetValue<string>("TMDB:WriteToken");
+                        await ApiStartup.HttpClient.AddTmdbListItem(8498673, int.Parse(tmdb_id!), MediaType.movie, tmdb_write_token, cancellationToken);
                     }
                 }
 
@@ -320,7 +330,9 @@ namespace SD.API.Functions
 
                 if (doc == null)
                 {
-                    var scraping = new ScrapingRatings();
+                    var objRatings = await ApiStartup.HttpClient.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
+
+                    var scraping = new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name), objRatings);
                     var obj = scraping.GetShowData(id, tmdb_rating, title, release_date.Year.ToString());
                     if (obj == null) return null;
 
@@ -344,22 +356,30 @@ namespace SD.API.Functions
                     doc = await cacheRepo.UpsertItemAsync(new RatingsCache((id.NotEmpty() ? id : tmdb_id), obj, ttl), cancellationToken);
                 }
 
+                //add on sd certified list
                 if (doc?.Data != null && release_date < DateTime.Now.AddDays(-14)) // at least 2 week launch
                 {
                     var rating = doc.Data;
 
-                    var imdb_ok = float.TryParse(rating.imdb, NumberStyles.Any, CultureInfo.InvariantCulture, out float imdb);
-                    var tmdb_ok = float.TryParse(rating.tmdb, NumberStyles.Any, CultureInfo.InvariantCulture, out float tmdb);
-                    var meta_ok = float.TryParse(rating.metacritic, NumberStyles.Any, CultureInfo.InvariantCulture, out float meta);
-                    var trac_ok = float.TryParse(rating.trakt, NumberStyles.Any, CultureInfo.InvariantCulture, out float trac);
+                    var imdb_ok = float.TryParse(rating.imdb?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float imdb);
+                    var tmdb_ok = float.TryParse(rating.tmdb?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float tmdb);
+                    var meta_ok = float.TryParse(rating.metacritic?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float meta);
+                    var trac_ok = float.TryParse(rating.trakt?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float trac);
+                    var roto_ok = float.TryParse(rating.rottenTomatoes?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float roto);
+                    var fiaf_ok = float.TryParse(rating.filmAffinity?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float fiaf);
 
-                    if (imdb_ok && tmdb_ok && meta_ok && trac_ok)
+                    var count = 0;
+                    if (imdb_ok && imdb >= 8) count++;
+                    if (tmdb_ok && tmdb > 7.95) count++;
+                    if (meta_ok && meta >= 8) count++;
+                    if (trac_ok && trac >= 80) count++;
+                    if (roto_ok && roto >= 80) count++;
+                    if (fiaf_ok && fiaf >= 8) count++;
+
+                    if (count >= 5) //if there is at least 5 green ratings
                     {
-                        if (imdb >= 8 && tmdb > 7.95 && meta >= 8 && trac >= 80)
-                        {
-                            var tmdb_write_token = configuration.GetValue<string>("TMDB:WriteToken");
-                            await ApiStartup.HttpClient.AddTmdbListItem(8498675, int.Parse(tmdb_id!), MediaType.tv, tmdb_write_token, cancellationToken);
-                        }
+                        var tmdb_write_token = configuration.GetValue<string>("TMDB:WriteToken");
+                        await ApiStartup.HttpClient.AddTmdbListItem(8498675, int.Parse(tmdb_id!), MediaType.tv, tmdb_write_token, cancellationToken);
                     }
                 }
 

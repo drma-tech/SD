@@ -133,15 +133,6 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cantonese (CN).
-        /// </summary>
-        public static string cn_CN {
-            get {
-                return ResourceManager.GetString("cn-CN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Czech (CZ).
         /// </summary>
         public static string cs_CZ {

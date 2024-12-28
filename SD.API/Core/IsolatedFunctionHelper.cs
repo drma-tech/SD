@@ -88,18 +88,18 @@ namespace SD.API.Core
             logger?.LogError(ex, req.BuildState(), req.BuildParams());
         }
 
-        private static string[] BuildParams(this HttpRequestData req)
-        {
-            var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
-
-            return valueCollection.AllKeys.Select((key) => valueCollection[key] ?? "").ToArray();
-        }
-
         private static string BuildState(this HttpRequestData req)
         {
             var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
 
             return string.Join("", valueCollection.AllKeys.Select((key) => $"{key?.ToLowerInvariant()}={{{key?.ToLowerInvariant()}}}|"));
+        }
+
+        private static string[] BuildParams(this HttpRequestData req)
+        {
+            var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
+
+            return valueCollection.AllKeys.Select((key) => valueCollection[key] ?? "").ToArray();
         }
     }
 

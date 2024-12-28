@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace SD.Shared.Models.List
+﻿namespace SD.Shared.Models.List
 {
     public class Ratings
     {
@@ -10,17 +8,7 @@ namespace SD.Shared.Models.List
         public string? metacritic { get; set; }
         public string? tmdb { get; set; }
         public string? trakt { get; set; }
-
-        /// <summary>
-        /// TODO: error -> Access Denied
-        /// </summary>
-        [NotMapped]
         public string? rottenTomatoes { get; set; }
-
-        /// <summary>
-        /// TODO: link uses its own code
-        /// </summary>
-        [NotMapped]
         public string? filmAffinity { get; set; }
     }
 }

@@ -78,5 +78,23 @@ namespace SD.API.Core
 
             return await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken);
         }
+
+        public static async Task<T?> GetFilmShowRatings<T>(this HttpClient http, string? imdbId, CancellationToken cancellationToken) where T : class
+        {
+            if (string.IsNullOrEmpty(imdbId)) return null;
+
+            using var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"https://film-show-ratings.p.rapidapi.com/item/?id={imdbId}"),
+                Headers = { { "x-rapidapi-key", "36af8735e3msh39423dcd3a94067p1975bdjsn4536c4c2ed8a" }, { "x-rapidapi-host", "film-show-ratings.p.rapidapi.com" }, },
+            };
+
+            var response = await http.SendAsync(request, cancellationToken);
+
+            if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
+
+            return await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken);
+        }
     }
 }
