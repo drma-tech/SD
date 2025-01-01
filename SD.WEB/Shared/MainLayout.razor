@@ -229,7 +229,7 @@
 
             Ticket.TicketType = TicketType.BugReport;
             Ticket.Initialize(UserId);
-            Ticket.Title = exc.Message ?? "erro desconhecido";
+            Ticket.Title = exc.Message ?? "unknown error";
             Ticket.Description = exc.StackTrace;
 
             await TicketApi.Insert(Ticket);

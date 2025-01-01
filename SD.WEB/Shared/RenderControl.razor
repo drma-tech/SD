@@ -96,9 +96,11 @@ else //ShowContent
             Status = LoadingStatus.ShowContent;
 
         Core.LoadingStarted += () => ShowLoading();
-        Core.LoadingFinished += (TModel? model) => ShowContent(model);
         Core.ProcessingStarted += () => ShowLoading("Processing...");
+
+        Core.LoadingFinished += (TModel? model) => ShowContent(model);
         Core.ProcessingFinished += (TModel? model) => ShowContent(model);
+
         Core.WarningAction += (string? msg) => ShowWarning(msg);
         Core.ErrorAction += (string? msg) => ShowError(msg);
     }

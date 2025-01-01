@@ -239,6 +239,8 @@ namespace SD.API.Functions
                 var doc = await cacheRepo.Get<Ratings>($"rating_{(id.NotEmpty() ? id : tmdb_id)}", cancellationToken);
                 var ttl = ttlCache.one_day;
 
+                if (release_date > DateTime.Now.AddDays(-7)) return null; //dont get ratings for new releases (one week)
+
                 if (doc == null)
                 {
                     var objRatings = await ApiStartup.HttpClient.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
@@ -247,11 +249,7 @@ namespace SD.API.Functions
                     var obj = scraping.GetMovieData(id, tmdb_rating, title, release_date.Year.ToString());
                     if (obj == null) return null;
 
-                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date) //invalid date
-                    {
-                        ttl = ttlCache.one_day;
-                    }
-                    else if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
+                    if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
                     {
                         ttl = ttlCache.one_day;
                     }
@@ -261,7 +259,7 @@ namespace SD.API.Functions
                     }
                     else // > 1 month launch
                     {
-                        ttl = ttlCache.one_month;
+                        ttl = ttlCache.three_months;
                     }
 
                     doc = await cacheRepo.UpsertItemAsync(new RatingsCache((id.NotEmpty() ? id : tmdb_id), obj, ttl), cancellationToken);
@@ -328,6 +326,8 @@ namespace SD.API.Functions
                 var doc = await cacheRepo.Get<Ratings>($"rating_{(id.NotEmpty() ? id : tmdb_id)}", cancellationToken);
                 var ttl = ttlCache.one_day;
 
+                if (release_date > DateTime.Now.AddDays(-7)) return null; //dont get ratings for new releases (one week)
+
                 if (doc == null)
                 {
                     var objRatings = await ApiStartup.HttpClient.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
@@ -336,11 +336,7 @@ namespace SD.API.Functions
                     var obj = scraping.GetShowData(id, tmdb_rating, title, release_date.Year.ToString());
                     if (obj == null) return null;
 
-                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date) //invalid date
-                    {
-                        ttl = ttlCache.one_day;
-                    }
-                    else if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
+                    if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
                     {
                         ttl = ttlCache.one_day;
                     }
@@ -350,7 +346,7 @@ namespace SD.API.Functions
                     }
                     else // > 1 month launch
                     {
-                        ttl = ttlCache.one_month;
+                        ttl = ttlCache.three_months;
                     }
 
                     doc = await cacheRepo.UpsertItemAsync(new RatingsCache((id.NotEmpty() ? id : tmdb_id), obj, ttl), cancellationToken);
@@ -412,6 +408,8 @@ namespace SD.API.Functions
                 var doc = await cacheRepo.Get<ReviewModel>($"review_{id}", cancellationToken);
                 var ttl = ttlCache.one_day;
 
+                if (release_date > DateTime.Now.AddDays(-7)) return null; //dont get reviews for new releases (one week)
+
                 if (doc == null)
                 {
                     var obj = await ApiStartup.HttpClient.GetReviewsByImdb8<RootMetacritic>(id, cancellationToken);
@@ -425,11 +423,7 @@ namespace SD.API.Functions
                         newModel.Items.Add(new Shared.Models.Reviews.Item(item.node?.site, item.node?.url, item.node?.reviewer, item.node?.score, item.node?.quote?.value));
                     }
 
-                    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date) //invalid date
-                    {
-                        ttl = ttlCache.one_day;
-                    }
-                    else if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
+                    if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
                     {
                         ttl = ttlCache.one_day;
                     }
@@ -439,7 +433,7 @@ namespace SD.API.Functions
                     }
                     else // > 1 month launch
                     {
-                        ttl = ttlCache.one_month;
+                        ttl = ttlCache.three_months;
                     }
 
                     doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
@@ -477,6 +471,8 @@ namespace SD.API.Functions
                 //var doc = await cacheRepo.Get<ReviewModel>($"review_{id}", cancellationToken);
                 //var ttl = ttlCache.one_day;
 
+                //if (release_date > DateTime.Now.AddDays(-7)) return null; //dont get reviews for new releases (one week)
+
                 //if (doc == null)
                 //{
                 //    var url = $"https://internal-prod.apigee.fandom.net/v1/xapi/composer/metacritic/pages/shows-critic-reviews/{title}/web?filter=all&sort=score&apiKey=1MOZgmNFxvmljaQR1X9KAij9Mo4xAY3u";
@@ -492,11 +488,7 @@ namespace SD.API.Functions
                 //        newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));
                 //    }
 
-                //    if (release_date.Date == DateTime.MinValue.Date || release_date.Date == DateTime.MaxValue.Date) //invalid date
-                //    {
-                //        ttl = ttlCache.one_day;
-                //    }
-                //    else if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
+                //    if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
                 //    {
                 //        ttl = ttlCache.one_day;
                 //    }
@@ -506,7 +498,7 @@ namespace SD.API.Functions
                 //    }
                 //    else // > 1 month launch
                 //    {
-                //        ttl = ttlCache.one_month;
+                //        ttl = ttlCache.three_months;
                 //    }
 
                 //    doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
