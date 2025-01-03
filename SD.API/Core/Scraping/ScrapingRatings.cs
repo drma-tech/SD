@@ -59,6 +59,11 @@ namespace SD.API.Core.Scraping
             return data;
         }
 
+        private static string? GetNodeInnerText(HtmlDocument doc, string xPath)
+        {
+            return doc.DocumentNode.SelectNodes(xPath)?.FirstOrDefault()?.InnerText?.Trim();
+        }
+
         private void ProcessMovieMetacritic(Ratings data, string metacriticPath, string? year)
         {
             var web = new HtmlWeb();
@@ -77,21 +82,21 @@ namespace SD.API.Core.Scraping
                 }
 
                 //getting user score
-                data.metacritic = doc.DocumentNode.SelectNodes("html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span").FirstOrDefault()?.InnerText;
+                data.metacritic = GetNodeInnerText(doc, "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span");
 
                 if (data.metacritic == "tbd")
                 {
                     doc = web.Load($"{metacriticPath}-{year}");
-                    data.metacritic = doc.DocumentNode.SelectNodes("html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span").FirstOrDefault()?.InnerText;
+                    data.metacritic = GetNodeInnerText(doc, "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span");
                 }
 
-                var page_year = doc.DocumentNode.SelectNodes("/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span").FirstOrDefault()?.InnerText;
+                var page_year = GetNodeInnerText(doc, "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span");
 
                 if (year != null && page_year != null && year != page_year)
                 {
                     //probably wrong title, then try to search by other url
                     doc = web.Load($"{metacriticPath}-{year}");
-                    data.metacritic = doc.DocumentNode.SelectNodes("html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span").FirstOrDefault()?.InnerText;
+                    data.metacritic = GetNodeInnerText(doc, "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span");
                 }
 
                 if (data.metacritic == "tbd") data.metacritic = null;
@@ -129,21 +134,21 @@ namespace SD.API.Core.Scraping
                 }
 
                 //getting user score
-                data.metacritic = doc.DocumentNode.SelectNodes("html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span").FirstOrDefault()?.InnerText;
+                data.metacritic = GetNodeInnerText(doc, "html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span");
 
                 if (data.metacritic == "tbd")
                 {
                     doc = web.Load($"{metacriticPath}-{year}");
-                    data.metacritic = doc.DocumentNode.SelectNodes("html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span").FirstOrDefault()?.InnerText;
+                    data.metacritic = GetNodeInnerText(doc, "html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span");
                 }
 
-                var page_year = doc.DocumentNode.SelectNodes("/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span").FirstOrDefault()?.InnerText;
+                var page_year = GetNodeInnerText(doc, "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span");
 
                 if (year != null && page_year != null && year != page_year)
                 {
                     //probably wrong title, then try to search by other url
                     doc = web.Load($"{metacriticPath}-{year}");
-                    data.metacritic = doc.DocumentNode.SelectNodes("html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span").FirstOrDefault()?.InnerText;
+                    data.metacritic = GetNodeInnerText(doc, "html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span");
                 }
 
                 if (data.metacritic == "tbd") data.metacritic = null;
@@ -161,7 +166,7 @@ namespace SD.API.Core.Scraping
 
             try
             {
-                data.imdb = doc.DocumentNode.SelectNodes("//*[@id=\"__next\"]/main/div/section/div/section/div/div[1]/section[1]/div[2]/div[2]/div[1]/div[2]/div[2]/div[1]/span[1]").FirstOrDefault()?.InnerText;
+                data.imdb = GetNodeInnerText(doc, "//*[@id=\"__next\"]/main/div/section/div/section/div/div[1]/section[1]/div[2]/div[2]/div[1]/div[2]/div[2]/div[1]/span[1]");
             }
             catch (Exception ex)
             {
@@ -176,7 +181,7 @@ namespace SD.API.Core.Scraping
 
             try
             {
-                data.imdb = doc.DocumentNode.SelectNodes("//*[@id=\"__next\"]/main/div/section[1]/section/div[3]/section/section/div[2]/div[2]/div/div[1]/a/span/div/div[2]/div[1]/span[1]").FirstOrDefault()?.InnerText;
+                data.imdb = GetNodeInnerText(doc, "//*[@id=\"__next\"]/main/div/section[1]/section/div[3]/section/section/div[2]/div[2]/div/div[1]/a/span/div/div[2]/div[1]/span[1]");
             }
             catch (Exception ex)
             {
@@ -195,17 +200,17 @@ namespace SD.API.Core.Scraping
             {
                 if (doc.DocumentNode.InnerText.Contains("Page Not Found (404) - Trakt")) return;
 
-                var page_year = doc.DocumentNode.SelectNodes("html/body/div[2]/section[1]/div[4]/div/div/div[2]/h1/span").FirstOrDefault()?.InnerText;
+                var page_year = GetNodeInnerText(doc, "html/body/div[2]/section[1]/div[4]/div/div/div[2]/h1/span");
 
                 if (year != null && page_year != null && year != page_year)
                 {
                     //probably wrong title, then try to search by other url
                     doc = web.Load($"{traktUrl}-{year}");
-                    data.trakt = doc.DocumentNode.SelectNodes("//*[@id=\"summary-ratings-wrapper\"]/div/div/div/ul[1]/li[1]/a/div[2]/div[1]").FirstOrDefault()?.InnerText.Replace("%", "");
+                    data.trakt = GetNodeInnerText(doc, "//*[@id=\"summary-ratings-wrapper\"]/div/div/div/ul[1]/li[1]/a/div[2]/div[1]")?.Replace("%", "");
                 }
                 else
                 {
-                    data.trakt = doc.DocumentNode.SelectNodes("//*[@id=\"summary-ratings-wrapper\"]/div/div/div/ul[1]/li[1]/a/div[2]/div[1]").FirstOrDefault()?.InnerText.Replace("%", "");
+                    data.trakt = GetNodeInnerText(doc, "//*[@id=\"summary-ratings-wrapper\"]/div/div/div/ul[1]/li[1]/a/div[2]/div[1]")?.Replace("%", "");
                 }
             }
             catch (Exception ex)
