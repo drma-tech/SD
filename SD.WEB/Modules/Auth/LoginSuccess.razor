@@ -1,6 +1,8 @@
 ﻿@page "/login-success"
+@using SD.Shared.Models.Auth
 @using SD.WEB.Modules.Auth.Core;
 @using SD.WEB.Modules.Auth.Resources
+@using System.Security.Claims
 @inherits PageCore<LoginProviders>
 
 @inject LoginApi LoginApi
@@ -14,12 +16,33 @@
 </div>
 
 @code {
-    protected override async Task OnInitializedAsync()
+    private ClientePrincipal? principal { get; set; } = new();
+
+    protected override async Task LoadDataRender()
     {
-        var platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
+        if (IsAuthenticated)
+        {
+            principal = await PrincipalApi.Get(IsAuthenticated);
 
-        await LoginApi.Add(platform);
+            if (principal == null && User != null)
+            {
+                principal = new();
 
-        Navigation.NavigateTo("/");
+                principal.UserId = UserId;
+                principal.IdentityProvider = User.Identity?.AuthenticationType;
+                principal.UserDetails = User.Identity?.Name;
+                principal.UserRoles = User.Claims.Where(w => w.Type == ClaimTypes.Role)?.Select(s => s.Value).ToArray() ?? Array.Empty<string>();
+
+                principal.Email = principal.UserDetails;
+
+                principal = await PrincipalApi.Add(principal);
+            }
+
+            var platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
+
+            await LoginApi.Add(platform);
+
+            Navigation.NavigateTo("/");
+        }
     }
 }

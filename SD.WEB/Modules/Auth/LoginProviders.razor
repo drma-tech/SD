@@ -13,7 +13,7 @@
         </Alert>
     </Column>
 </Row>
-<Row HorizontalGutter="4" VerticalGutter="4">
+<Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
     <Column ColumnSize="ColumnSize.IsAuto.OnMobile.Is1.OnDesktop.Is2.OnFullHD"></Column>
     <Column ColumnSize="ColumnSize.Is12.OnMobile.Is10.OnDesktop.Is8.OnFullHD">
         @foreach (var provider in providers)
@@ -24,6 +24,23 @@
                 <span class="fa-brands fa-@provider.Key"></span> @Resources.Translations.LoginWith @provider.Value
             </Button>
         }
+    </Column>
+</Row>
+<Row HorizontalGutter="4" VerticalGutter="4">
+    <Column ColumnSize="ColumnSize.IsAuto.OnMobile.Is1.OnDesktop.Is2.OnFullHD"></Column>
+    <Column ColumnSize="ColumnSize.Is12.OnMobile.Is10.OnDesktop.Is8.OnFullHD">
+        <Alert Visible="true" Color="Color.Warning" Class="mb-3">
+            @if (AppStateStatic.Language == Language.ptBR || AppStateStatic.Language == Language.ptPT)
+            {
+                <Span>Ao fazer login, você confirma que leu e concorda com os </Span>
+                <Blazorise.Link To="support/terms/pt" Target="Target.Blank">Termos de Uso</Blazorise.Link>
+            }
+            else
+            {
+                <Span>By logging in, you confirm that you have read and agree to the </Span>
+                <Blazorise.Link To="support/terms/en" Target="Target.Blank">Terms of Use</Blazorise.Link>
+            }
+        </Alert>
     </Column>
 </Row>
 

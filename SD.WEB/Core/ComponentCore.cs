@@ -84,32 +84,5 @@ namespace SD.WEB.Core
                 UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             }
         }
-
-        /// <summary>
-        /// if you implement the OnAfterRenderAsync method, call 'await base.OnAfterRenderAsync(firstRender);'
-        /// </summary>
-        /// <param name="firstRender"></param>
-        /// <returns></returns>
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            try
-            {
-                if (IsAuthenticated)
-                {
-                    var principal = await PrincipalApi.Get(IsAuthenticated);
-
-                    if (principal == null) //force the registration, if the main account does not exist yet
-                    {
-                        Navigation.NavigateTo("/profile-principal");
-                    }
-                }
-
-                await base.OnAfterRenderAsync(firstRender);
-            }
-            catch (Exception ex)
-            {
-                ex.ProcessException(Toast, Logger);
-            }
-        }
     }
 }
