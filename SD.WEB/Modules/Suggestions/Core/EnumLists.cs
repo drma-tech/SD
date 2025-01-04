@@ -173,7 +173,7 @@
         [Custom(Name = "2024 - 49th Toronto International Film Festival")]
         TiffAwards = 8498169,
 
-        [Custom(Name = "Most relevant awards of 2024")]
+        [Custom(Name = "Best awards of the year")]
         AwardsOfTheYear = 8498534,
 
         [Custom(Name = "Certified by SD")]
