@@ -2,11 +2,8 @@
 
 <Bar Mode="BarMode.Horizontal" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark" Padding="Padding.Is2">
     <Container Fluid="true" Padding="Padding.Is0.OnX">
-        <MediaQuery Media="@Breakpoints.LargeUp">
-            <Matched>
-                <BarToggler Bar="@AppStateStatic.Sidebar" Background="Background.Dark" Margin="Margin.Is2.FromEnd" Padding="Padding.Is0" Style="height: 31px; width: 31px;" />
-            </Matched>
-        </MediaQuery>
+        <BarToggler Bar="@AppStateStatic.Sidebar" Background="Background.Dark" Display="Display.None.Block.OnWidescreen"
+                    Margin="Margin.Is2.FromEnd" Padding="Padding.Is0" Style="height: 31px; width: 31px;" />
         <BarMenu Style="flex-basis: unset !important;">
             <AuthorizeView>
                 <Authorized>

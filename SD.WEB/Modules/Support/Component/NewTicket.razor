@@ -5,13 +5,13 @@
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@Resources.Translations.NewTicketTitle</ModalTitle>
-        <CloseButton />
-    </ModalHeader>
-    <ModalBody>
-        <EditForm Model="@Ticket" OnValidSubmit="SubmitForm">
-            <div class="form-group">
-                <Select TValue="TicketType" @bind-SelectedValue="@TicketType" Size="Size.Small">
-                    @foreach (var item in EnumHelper.GetArray<TicketType>())
+    <CloseButton />
+</ModalHeader>
+<ModalBody>
+    <EditForm Model="@Ticket" OnValidSubmit="SubmitForm">
+        <div class="form-group">
+            <Select TValue="TicketType" @bind-SelectedValue="@TicketType" Size="Size.Small">
+                @foreach (var item in EnumHelper.GetArray<TicketType>())
                 {
                     <SelectItem Value="@item">@item.GetName()</SelectItem>
                 }
@@ -19,11 +19,11 @@
             <ValidationMessage For="@(()=>Ticket!.TicketType)"></ValidationMessage>
         </div>
         <div class="form-group">
-            <TextEdit @bind-Text="@Ticket!.Title" MaxLength="100" Placeholder="@CustomAttributeHelper.GetCustomAttribute(()=>Ticket!.Title)?.Prompt" Size="Size.Small"></TextEdit>
+            <TextEdit @bind-Text="@Ticket!.Title" MaxLength="100" Placeholder="@CustomAttributeHelper.GetCustomAttribute(()=>Ticket!.Title)?.Placeholder" Size="Size.Small"></TextEdit>
             <ValidationMessage For="@(()=>Ticket.Title)"></ValidationMessage>
         </div>
         <div class="form-group">
-            <MemoEdit @bind-Text="@Ticket.Description" Rows="7" MaxLength="512" Placeholder="@CustomAttributeHelper.GetCustomAttribute(()=>Ticket.Description)?.Prompt" Size="Size.Small"></MemoEdit>
+            <MemoEdit @bind-Text="@Ticket.Description" Rows="7" MaxLength="512" Placeholder="@CustomAttributeHelper.GetCustomAttribute(()=>Ticket.Description)?.Placeholder" Size="Size.Small"></MemoEdit>
             <ValidationMessage For="@(()=>Ticket.Description)"></ValidationMessage>
         </div>
         <Button Type="ButtonType.Submit" Color="Color.Primary" Disabled="!IsAuthenticated" Size="Size.Small">

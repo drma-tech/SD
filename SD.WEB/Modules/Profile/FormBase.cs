@@ -35,7 +35,7 @@ namespace SD.WEB.Modules.Profile
                 }
             }
 
-            dic.Add("placeholder", For?.GetCustomAttribute()?.Prompt ?? "");
+            dic.Add("placeholder", For?.GetCustomAttribute()?.Placeholder ?? "");
 
             return dic;
         }

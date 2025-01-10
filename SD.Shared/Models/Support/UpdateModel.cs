@@ -9,11 +9,11 @@ namespace SD.Shared.Models.Support
         }
 
         [Required]
-        [Custom(Name = "Title", Prompt = "...")]
+        [Custom(Name = "Title", Placeholder = "...")]
         public string? Title { get; set; }
 
         [Required]
-        [Custom(Name = "Description", Prompt = "...")]
+        [Custom(Name = "Description", Placeholder = "...")]
         public string? Description { get; set; }
 
         public DateTime Date { get; set; } = DateTime.Now;

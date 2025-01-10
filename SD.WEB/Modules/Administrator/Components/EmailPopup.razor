@@ -12,7 +12,14 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <MemoEdit @bind-Text="@EmailDocument!.Text" Rows="10" ReadOnly="OnlyRead"></MemoEdit>
+    @if (EmailDocument!.Html.NotEmpty())
+    {
+        @((MarkupString)EmailDocument!.Html!)
+    }
+    else
+    {
+        <MemoEdit @bind-Text="@EmailDocument!.Text" Rows="10" ReadOnly="OnlyRead"></MemoEdit>
+    }    
 </ModalBody>
 <ModalFooter>
     @if (!OnlyRead)
