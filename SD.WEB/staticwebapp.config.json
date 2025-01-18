@@ -17,15 +17,6 @@
       "allowedRoles": [
         "authenticated"
       ]
-    },
-    {
-      "route": "/dev/*",
-      "rewrite": "/index.html"
-    },
-    {
-      "route": "/*",
-      "redirect": "https://streamingdiscovery.com/:splat",
-      "statusCode": 301
     }
   ],
   "navigationFallback": {
