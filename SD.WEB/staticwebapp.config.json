@@ -24,5 +24,10 @@
     "exclude": [
       "*.{css,scss,js,png,gif,ico,jpg,svg}"
     ]
+  },
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/404"
+    }
   }
 }
