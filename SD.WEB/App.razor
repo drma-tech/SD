@@ -1,4 +1,5 @@
 ﻿@using SD.WEB.Modules.Auth.Resources
+
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
@@ -20,12 +21,7 @@
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
         </Found>
         <NotFound>
-            <PageTitle>Not found</PageTitle>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <div class="alert alert-danger" role="alert">
-                    @Translations.NothingThisAddress
-                </div>
-            </LayoutView>
+           <RedirectTo404 />
         </NotFound>
     </Router>
 
