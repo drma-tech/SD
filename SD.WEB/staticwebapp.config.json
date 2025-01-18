@@ -22,12 +22,12 @@
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [
-      "*.{css,scss,js,png,gif,ico,jpg,svg}"
+      "*.{css,scss,js,png,gif,ico,jpg,svg,ttf,woff2,webmanifest}"
     ]
   },
   "responseOverrides": {
     "404": {
-      "rewrite": "/404",
+      "rewrite": "/404.html",
       "statusCode": 404
     }
   }
