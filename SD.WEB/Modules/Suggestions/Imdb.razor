@@ -11,7 +11,6 @@
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
-@* @inject ImdbUpcomingApi ImdbUpcomingApi *@
 
 <HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@Translations.imdb_desc" Link="https://www.imdb.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
@@ -19,7 +18,6 @@
            StringParameters="Params" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OnlyYear="true"></MediaList>
 <MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" MaxItens="250" ShowFilter="true" Watched="WatchedList"
            Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OnlyYear="true"></MediaList>
-@* <MediaList TitleHead="@Translations.ComingSoon" MediaListApi="ImdbUpcomingApi" MaxItens="50" IsIMDB="true" MultipleLanguages="false"></MediaList> *@
 
 @code {
     public Dictionary<string, string> Params { get; set; } = new Dictionary<string, string>() { { "mode", "full" } };

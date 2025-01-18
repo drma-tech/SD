@@ -6,7 +6,7 @@
 @using SD.WEB.Modules.Suggestions.Components
 @using SD.WEB.Modules.Suggestions.Core;
 <SeoHeader Title="@($"{@SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/providers/{Provider?.id}")"
-Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)"></SeoHeader>
+           Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)"></SeoHeader>
 @inherits PageCore<Provider.Details>
 
 @inject AllProvidersApi AllProvidersApi
@@ -19,7 +19,7 @@ Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)"></SeoHeader>
     @if (Provider != null)
     {
         <HeadPage ImageSource="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Text="@Provider.description" Link="@Provider.link"
-        provider="Provider" IsAuthenticated="IsAuthenticated"></HeadPage>
+                  provider="Provider" IsAuthenticated="IsAuthenticated"></HeadPage>
     }
 
     @*  <Div TextAlignment="TextAlignment.Center">
@@ -37,11 +37,11 @@ Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)"></SeoHeader>
     </Div> *@
 
     <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "popularity.desc")"
-    MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+               MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
     <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "primary_release_date.desc")"
-    MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+               MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
     <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "vote_average.desc")"
-    MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+               MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
 </RenderControl>
 
 @code {
