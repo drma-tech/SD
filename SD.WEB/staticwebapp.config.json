@@ -17,6 +17,11 @@
       "allowedRoles": [
         "authenticated"
       ]
+    },
+    {
+      "route": "https://dev.streamingdiscovery.com/*",
+      "redirect": "https://salmon-pebble-006f15d10.2.azurestaticapps.net/:splat",
+      "statusCode": 301
     }
   ],
   "navigationFallback": {
