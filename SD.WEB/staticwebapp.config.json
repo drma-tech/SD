@@ -32,6 +32,6 @@
     }
   },
   "globalHeaders": {
-    "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cdn.paddle.com https://www.googletagmanager.com; style-src *; img-src *;"
+    "content-security-policy": "default-src 'self'; script-src 'self' https://cdn.paddle.com https://www.googletagmanager.com 'unsafe-inline'; style-src * 'unsafe-inline'; img-src * data:;"
   }
 }
