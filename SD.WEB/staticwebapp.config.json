@@ -30,5 +30,8 @@
       "rewrite": "/404.html",
       "statusCode": 404
     }
+  },
+  "globalHeaders": {
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cdn.paddle.com https://www.googletagmanager.com; style-src *; img-src *;"
   }
 }
