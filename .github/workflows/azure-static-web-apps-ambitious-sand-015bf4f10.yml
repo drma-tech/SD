@@ -22,7 +22,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           echo "Using master configuration"
-          cp staticwebapp.prd.json staticwebapp.config.json
+          cp SD.WEB/staticwebapp.prd.json SD.WEB/staticwebapp.config.json
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
