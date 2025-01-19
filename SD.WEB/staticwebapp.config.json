@@ -20,7 +20,7 @@
     },
     {
       "route": "https://dev.streamingdiscovery.com/*",
-      "redirect": "https://salmon-pebble-006f15d10.2.azurestaticapps.net/:splat",
+      "redirect": "https://salmon-pebble-006f15d10.2.azurestaticapps.net/:path",
       "statusCode": 301
     }
   ],
