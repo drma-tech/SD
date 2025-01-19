@@ -32,6 +32,6 @@
     }
   },
   "globalHeaders": {
-    "content-security-policy": "default-src 'self'; connect-src 'self' https://www.google-analytics.com https://api.themoviedb.org; script-src 'self' https://cdn.paddle.com https://www.googletagmanager.com 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; img-src * data:;"
+    "content-security-policy": "default-src 'self'; connect-src 'self' https://www.google-analytics.com https://api.themoviedb.org https://ipinfo.io https://en.gravatar.com https://sandbox-api.paddle.com https://api.paddle.com/; script-src 'self' https://cdn.paddle.com https://www.googletagmanager.com 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; img-src * data:;"
   }
 }
