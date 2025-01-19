@@ -18,6 +18,11 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+      - name: Set master configuration
+        if: github.ref == 'refs/heads/master'
+        run: |
+          echo "Using master configuration"
+          cp staticwebapp.prd.json staticwebapp.config.json
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1

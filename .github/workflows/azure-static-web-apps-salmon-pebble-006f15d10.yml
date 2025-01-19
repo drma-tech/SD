@@ -18,6 +18,11 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+      - name: Set developer configuration
+        if: github.ref == 'refs/heads/developer'
+        run: |
+          echo "Using developer configuration"
+          cp staticwebapp.dev.json staticwebapp.config.json
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
