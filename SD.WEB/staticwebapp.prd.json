@@ -35,8 +35,5 @@
       "rewrite": "/404.html",
       "statusCode": 404
     }
-  },
-  "globalHeaders": {
-    "content-security-policy": "default-src https: 'unsafe-eval' 'unsafe-inline'; object-src 'none'"
   }
 }
