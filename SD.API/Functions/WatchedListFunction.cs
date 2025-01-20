@@ -26,7 +26,7 @@ namespace SD.API.Functions
                     doc = await repo.Get<WatchedList>(DocumentType.WatchedList, id, cancellationToken);
                 }
 
-                return await req.CreateResponse(doc, ttlCache.one_day, doc?.ETag, cancellationToken);
+                return await req.CreateResponse(doc, ttlCache.one_day, cancellationToken);
             }
             catch (Exception ex)
             {

@@ -14,7 +14,7 @@ namespace SD.API.Functions
             {
                 var doc = await repo.ListAll<UpdateModel>(DocumentType.Update, cancellationToken);
 
-                return await req.CreateResponse(doc, ttlCache.one_day, $"\"{Guid.NewGuid()}\"", cancellationToken);
+                return await req.CreateResponse(doc, ttlCache.one_day, cancellationToken);
             }
             catch (Exception ex)
             {

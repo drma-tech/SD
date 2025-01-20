@@ -21,9 +21,6 @@ namespace SD.Shared.Core
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; } = string.Empty;
 
-        [JsonProperty(PropertyName = "_etag")]
-        public string? ETag { get; set; }
-
         [JsonProperty(PropertyName = "_ts")]
         public long Timestamp { get; set; }
 

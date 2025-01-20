@@ -44,14 +44,14 @@ namespace SD.API.Core
             return model;
         }
 
-        public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, ttlCache maxAge, string? eTag, CancellationToken cancellationToken) where T : class
+        public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, ttlCache maxAge,  CancellationToken cancellationToken) where T : class
         {
             if (doc != null)
             {
                 var response = req.CreateResponse();
 
                 response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}"); // expiration time cache
-                response.Headers.Add("ETag", eTag); // unique identification to verify data changes
+                //response.Headers.Add("ETag", eTag); // unique identification to verify data changes
                 //response.Headers.Add("Access-Control-Expose-Headers", "ETag"); //dont using anymore
 
                 await response.WriteAsJsonAsync(doc, cancellationToken);

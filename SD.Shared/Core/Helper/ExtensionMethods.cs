@@ -19,6 +19,11 @@ namespace SD.Shared.Core.Helper
             return string.IsNullOrEmpty(value);
         }
 
+        public static bool NotEmpty<TSource>(this IEnumerable<TSource> source)
+        {
+            return source.Any();
+        }
+
         public static bool NotEmpty(this string? value)
         {
             return !string.IsNullOrEmpty(value);

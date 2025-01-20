@@ -53,7 +53,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                return await req.CreateResponse(doc, ttlCache.half_day, doc?.ETag, cancellationToken);
+                return await req.CreateResponse(doc, ttlCache.half_day, cancellationToken);
             }
             catch (TaskCanceledException ex)
             {
@@ -111,7 +111,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                return await req.CreateResponse(doc, ttlCache.half_day, doc?.ETag, cancellationToken);
+                return await req.CreateResponse(doc, ttlCache.half_day, cancellationToken);
             }
             catch (TaskCanceledException ex)
             {
@@ -170,7 +170,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                return await req.CreateResponse(doc, ttlCache.half_day, doc?.ETag, cancellationToken);
+                return await req.CreateResponse(doc, ttlCache.half_day, cancellationToken);
             }
             catch (TaskCanceledException ex)
             {
@@ -205,7 +205,7 @@ namespace SD.API.Functions
                     doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
                 }
 
-                return await req.CreateResponse(doc, ttlCache.half_day, doc?.ETag, cancellationToken);
+                return await req.CreateResponse(doc, ttlCache.half_day, cancellationToken);
             }
             catch (TaskCanceledException ex)
             {
@@ -292,7 +292,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                return await req.CreateResponse(doc, ttl, doc?.ETag, cancellationToken);
+                return await req.CreateResponse(doc, ttl, cancellationToken);
             }
             catch (TaskCanceledException ex)
             {
@@ -379,7 +379,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                return await req.CreateResponse(doc, ttl, doc?.ETag, cancellationToken);
+                return await req.CreateResponse(doc, ttl, cancellationToken);
             }
             catch (TaskCanceledException ex)
             {
@@ -439,7 +439,7 @@ namespace SD.API.Functions
                     doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
                 }
 
-                return await req.CreateResponse(doc, ttl, doc?.ETag, cancellationToken);
+                return await req.CreateResponse(doc, ttl, cancellationToken);
             }
             catch (TaskCanceledException ex)
             {

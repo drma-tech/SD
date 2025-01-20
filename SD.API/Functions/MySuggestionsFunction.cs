@@ -15,7 +15,7 @@ namespace SD.API.Functions
 
                 var doc = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
 
-                return await req.CreateResponse(doc, ttlCache.one_day, doc?.ETag, cancellationToken);
+                return await req.CreateResponse(doc, ttlCache.one_day, cancellationToken);
             }
             catch (Exception ex)
             {
