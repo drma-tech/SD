@@ -39,6 +39,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         var email = await PrincipalApi.GetEmail(token);
         Gravatar = await GravatarApi.GetGravatar(email);
     }

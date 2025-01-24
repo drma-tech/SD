@@ -1,12 +1,14 @@
 ﻿@page "/providers"
+
 @using SD.WEB.Modules.Profile.Core;
-@using SD.WEB.Modules.Provider.Components
 @using SD.WEB.Modules.Provider.Core;
-<SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/providers"></SeoHeader>
+
 @inherits PageCore<Provider.Index>
 
 @inject AllProvidersApi AllProvidersApi
 @inject MyProvidersApi MyProvidersApi
+
+<SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/providers"></SeoHeader>
 
 @* <Div TextAlignment="TextAlignment.Center">
     @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
@@ -78,6 +80,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         AppStateStatic.RegionChanged += StateHasChanged;
 
         //it is in initialize so it can be recognized by link mapping
