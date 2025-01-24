@@ -82,21 +82,6 @@ namespace SD.WEB.Core
             }, Options(ModalSize.ExtraLarge));
         }
 
-        public static async Task CompleteListProvider(this IModalService service, string? cardHeader, AllProviders? allProviders, WatchedList? watched,
-            WatchingList? watching, WishList? wish, bool showPrivateAction, bool IsAuthenticated)
-        {
-            await service.Show<CompleteListProvider>(null, x =>
-            {
-                x.Add(x => x.CardHeader, cardHeader);
-                x.Add(x => x.AllProviders, allProviders);
-                x.Add(x => x.Watched, watched);
-                x.Add(x => x.Watching, watching);
-                x.Add(x => x.Wish, wish);
-                x.Add(x => x.ShowPrivateAction, showPrivateAction);
-                x.Add(x => x.IsAuthenticated, IsAuthenticated);
-            }, Options(ModalSize.ExtraLarge));
-        }
-
         public static async Task MediaPopup(this IModalService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? tmdb_id,
             bool showPrivateAction, bool IsAuthenticated)
         {
