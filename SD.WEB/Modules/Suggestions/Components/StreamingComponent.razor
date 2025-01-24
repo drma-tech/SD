@@ -27,7 +27,7 @@
                     {
                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                             <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" alt="@item.provider_name" Style="width: 100%"></Image>
                                 <AuthorizeView Roles="administrator">
                                     <Authorized>
                                         @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.FREE))
@@ -57,7 +57,7 @@
                     {
                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                             <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" alt="@item.provider_name" Style="width: 100%"></Image>
                                 <AuthorizeView Roles="administrator">
                                     <Authorized>
                                         @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.AVOD))
@@ -87,7 +87,7 @@
                     {
                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                             <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" alt="@item.provider_name" Style="width: 100%"></Image>
                                 <AuthorizeView Roles="administrator">
                                     <Authorized>
                                         @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.SVOD))
@@ -117,7 +117,7 @@
                     {
                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                             <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" alt="@item.provider_name" Style="width: 100%"></Image>
                                 <AuthorizeView Roles="administrator">
                                     <Authorized>
                                         @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.PVOD))
@@ -147,7 +147,7 @@
                     {
                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                             <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" alt="@item.provider_name" Style="width: 100%"></Image>
                                 <AuthorizeView Roles="administrator">
                                     <Authorized>
                                         @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
@@ -177,7 +177,7 @@
                     {
                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
                             <Button Target="Target.Blank" Color="Color.Light" Padding="Padding.Is0" title="@item.provider_name">
-                                <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" Style="width: 100%"></Image>
+                                <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" alt="@item.provider_name" Style="width: 100%"></Image>
                                 <AuthorizeView Roles="administrator">
                                     <Authorized>
                                         @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))

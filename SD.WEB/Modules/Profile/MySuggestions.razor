@@ -48,10 +48,10 @@
                                onclick="@(async()=>await ShowMediaPopup(item.id, item.name, SearchType))" Style="cursor: pointer;"></CardImage>
                     <CardBody Padding="Padding.Is1">
                         <Row HorizontalGutter="4" VerticalGutter="4">
-                            @foreach (var item in item.Providers)
+                            @foreach (var provider in item.Providers)
                             {
                                 <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen">
-                                    <Image Source="@(TmdbOptions.OriginalPosterPath + item)" Style="width: 100%"></Image>
+                                    <Image Source="@(TmdbOptions.OriginalPosterPath + provider)" alt="@provider" Style="width: 100%"></Image>
                                 </Column>
                             }
                         </Row>

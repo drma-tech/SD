@@ -38,7 +38,7 @@
                         <Column ColumnSize="ColumnSize.IsAuto">
                             @if (!string.IsNullOrEmpty(provider?.logo_path))
                             {
-                                <Image Source="@(TmdbOptions.OriginalPosterPath + provider.logo_path)" Text="@provider.name"></Image>
+                                <Image Source="@(TmdbOptions.OriginalPosterPath + provider.logo_path)" Text="@provider.name" alt="@provider.name"></Image>
                             }
                         </Column>
                         <Column>

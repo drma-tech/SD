@@ -41,7 +41,7 @@
                         {
                             <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media?.release_date?.ToShortDateString()</Badge>
                         }
-                        <Image Source="@media?.poster_large" Text="@media?.title" Style="width: 100%;"></Image>
+                        <Image Source="@media?.poster_large" Text="@media?.title" alt="@media?.title" Style="width: 100%;"></Image>
                     </Div>
                 }
             </Column>
@@ -77,37 +77,37 @@
                                     @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.imdb))
                                     {
                                         <Badge Color="GetColorByRating(ratingsCache.Data?.imdb)" Margin="Margin.Is1.FromEnd" Padding="Padding.Is1.FromStart.Is1.OnY" title="IMDb">
-                                            <Image Source="logo/imdb.png" Style="height: 20px;" Margin="Margin.Is1.FromEnd"></Image>@ratingsCache.Data?.imdb
+                                            <Image Source="logo/imdb.png" Style="height: 20px;" alt="imdb" Margin="Margin.Is1.FromEnd"></Image>@ratingsCache.Data?.imdb
                                         </Badge>
                                     }
                                     @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.tmdb))
                                     {
                                         <Badge Color="GetColorByRating(ratingsCache.Data?.tmdb)" Margin="Margin.Is1.FromEnd" Padding="Padding.Is1.FromStart.Is1.OnY" title="TMDB">
-                                            <Image Source="logo/tmdb.png" Style="height: 20px;" Margin="Margin.Is1.FromEnd"></Image>@ratingsCache.Data?.tmdb
+                                            <Image Source="logo/tmdb.png" Style="height: 20px;" alt="tmdb" Margin="Margin.Is1.FromEnd"></Image>@ratingsCache.Data?.tmdb
                                         </Badge>
                                     }
                                     @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.metacritic))
                                     {
                                         <Badge Color="GetColorByRating(ratingsCache.Data?.metacritic)" Margin="Margin.Is1.FromEnd" Padding="Padding.Is1.FromStart.Is1.OnY" title="Metacritic">
-                                            <Image Source="logo/metacritic.png" Style="height: 20px;" Margin="Margin.Is1.FromEnd"></Image>@ratingsCache.Data?.metacritic
+                                            <Image Source="logo/metacritic.png" Style="height: 20px;" alt="metacritic" Margin="Margin.Is1.FromEnd"></Image>@ratingsCache.Data?.metacritic
                                         </Badge>
                                     }
                                     @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.trakt))
                                     {
                                         <Badge Color="GetColorByRating(ratingsCache.Data?.trakt)" Margin="Margin.Is1.FromEnd" Padding="Padding.Is1.FromStart.Is1.OnY" title="Trakt">
-                                            <Image Source="logo/trakt.png" Style="height: 20px;" Margin="Margin.Is1.FromEnd"></Image>@ratingsCache.Data?.trakt
+                                            <Image Source="logo/trakt.png" Style="height: 20px;" alt="trakt" Margin="Margin.Is1.FromEnd"></Image>@ratingsCache.Data?.trakt
                                         </Badge>
                                     }
                                     @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.rottenTomatoes))
                                     {
                                         <Badge Color="GetColorByRating(ratingsCache.Data?.rottenTomatoes)" Margin="Margin.Is1.FromEnd" Padding="Padding.Is1.FromStart.Is1.OnY" title="Rotten Tomatoes">
-                                            <Image Source="logo/rotten-tomatoes.png" Style="height: 20px;" Margin="Margin.Is1.FromEnd"></Image>@ratingsCache.Data?.rottenTomatoes
+                                            <Image Source="logo/rotten-tomatoes.png" Style="height: 20px;" alt="rotten tomatoes" Margin="Margin.Is1.FromEnd"></Image>@ratingsCache.Data?.rottenTomatoes
                                         </Badge>
                                     }
                                     @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.filmAffinity))
                                     {
                                         <Badge Color="GetColorByRating(ratingsCache.Data?.filmAffinity)" Margin="Margin.Is1.FromEnd" Padding="Padding.Is1.FromStart.Is1.OnY" title="Film Affinity">
-                                            <Image Source="logo/film-affinity.png" Style="height: 20px;" Margin="Margin.Is1.FromEnd"></Image>@ratingsCache.Data?.filmAffinity
+                                            <Image Source="logo/film-affinity.png" Style="height: 20px;" alt="film affinity" Margin="Margin.Is1.FromEnd"></Image>@ratingsCache.Data?.filmAffinity
                                         </Badge>
                                     }
                                 </RenderControl>

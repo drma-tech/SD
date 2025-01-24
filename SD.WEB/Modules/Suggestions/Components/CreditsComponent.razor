@@ -20,18 +20,18 @@
                         <Blazorise.Link Clicked="@(async() => await OpenCompleteList(item))" Style="cursor: pointer;">
                             @if (string.IsNullOrEmpty(item.profile_path))
                             {
-                                <Image Source="images/no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
+                                <Image Source="images/no-user.png" Text="@item.original_name" Style="width: 100%" alt="@item.original_name"></Image>
                             }
                             else
                             {
-                                <Image Source="@(TmdbOptions.FacePath + item.profile_path)" Text="@item.original_name" Style="width: 100%"></Image>
+                                <Image Source="@(TmdbOptions.FacePath + item.profile_path)" Text="@item.original_name" Style="width: 100%" alt="@item.original_name"></Image>
                             }
                         </Blazorise.Link>
                     </Column>
                     <Column ColumnSize="ColumnSize.Is4">
                         <Paragraph Margin="Margin.Is0.FromBottom" TextWeight="TextWeight.Bold">@item.original_name</Paragraph>
-                            <Paragraph Margin="Margin.Is0.FromBottom">@item.job</Paragraph>
-                        </Column>
+                        <Paragraph Margin="Margin.Is0.FromBottom">@item.job</Paragraph>
+                    </Column>
                 }
             </Row>
         }
@@ -46,18 +46,18 @@
                         <Blazorise.Link Clicked="@(async() => await OpenCompleteList(item))" Style="cursor: pointer;">
                             @if (string.IsNullOrEmpty(item.profile_path))
                             {
-                                <Image Source="images/no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
+                                <Image Source="images/no-user.png" Text="@item.original_name" Style="width: 100%" alt="@item.original_name"></Image>
                             }
                             else
                             {
-                                <Image Source="@(TmdbOptions.FacePath + item.profile_path)" Text="@item.original_name" Style="width: 100%"></Image>
+                                <Image Source="@(TmdbOptions.FacePath + item.profile_path)" Text="@item.original_name" Style="width: 100%" alt="@item.original_name"></Image>
                             }
                         </Blazorise.Link>
                     </Column>
                     <Column ColumnSize="ColumnSize.Is4">
                         <Paragraph Margin="Margin.Is0.FromBottom" TextWeight="TextWeight.Bold">@item.original_name</Paragraph>
-                            <Paragraph Margin="Margin.Is0.FromBottom">@item.job</Paragraph>
-                        </Column>
+                        <Paragraph Margin="Margin.Is0.FromBottom">@item.job</Paragraph>
+                    </Column>
                 }
             </Row>
         }
@@ -70,18 +70,18 @@
                 <Blazorise.Link Clicked="@(async() => await OpenCompleteList(item))" Style="cursor: pointer;">
                     @if (string.IsNullOrEmpty(item.profile_path))
                     {
-                        <Image Source="images/no-user.png" Text="@item.original_name" Style="width: 100%"></Image>
+                        <Image Source="images/no-user.png" Text="@item.original_name" Style="width: 100%" alt="@item.original_name"></Image>
                     }
                     else
                     {
-                        <Image Source="@(TmdbOptions.FacePath + item.profile_path)" Text="@item.original_name" Style="width: 100%"></Image>
+                        <Image Source="@(TmdbOptions.FacePath + item.profile_path)" Text="@item.original_name" Style="width: 100%" alt="@item.original_name"></Image>
                     }
                 </Blazorise.Link>
             </Column>
             <Column ColumnSize="ColumnSize.Is4">
                 <Paragraph Margin="Margin.Is0.FromBottom" TextWeight="TextWeight.Bold">@item.original_name</Paragraph>
-                    <Paragraph Margin="Margin.Is0.FromBottom">@item.character</Paragraph>
-                </Column>
+                <Paragraph Margin="Margin.Is0.FromBottom">@item.character</Paragraph>
+            </Column>
         }
     </Row>
 </RenderControl>
