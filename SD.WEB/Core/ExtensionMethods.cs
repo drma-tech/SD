@@ -49,15 +49,5 @@ namespace SD.WEB.Core
             }
             return Combine().GetAwaiter();
         }
-
-        public static string HideExternalLink(this string? link)
-        {
-            return $"/redirect?link={link.SimpleEncrypt()}";
-        }
-
-        public static string ShowExternalLink(this string? link)
-        {
-            return link.SimpleDecrypt();
-        }
     }
 }

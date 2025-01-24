@@ -126,7 +126,7 @@
                                     @foreach (var item in media.Videos)
                                     {
                                         <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                            <Button Type="ButtonType.Link" To="@($"https://www.youtube.com/watch?v={item.key}".HideExternalLink())" Target="Target.Blank" Color="Color.Light"
+                                            <Button Type="ButtonType.Link" To="@($"https://www.youtube.com/watch?v={item.key}")" Target="Target.Blank" Color="Color.Light"
                                                     Padding="Padding.Is1" title="@item.name" Block="true">
                                                 <Blazorise.Icon Name="FontAwesomeIcons.Video"></Blazorise.Icon>
                                             </Button>
@@ -215,7 +215,7 @@
             <Column VerticalAlignment="VerticalAlignment.Middle">
                 @if (!string.IsNullOrEmpty(media?.homepage))
                 {
-                    <a href="@media.homepage.HideExternalLink()" target="_blank" rel="nofollow" style="float: left;">@(new Uri(media.homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+                    <a href="@media.homepage" target="_blank" rel="nofollow" style="float: left;">@(new Uri(media.homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
                 }
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">

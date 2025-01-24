@@ -29,7 +29,7 @@ else
                         @((MarkupString)item.title)
                     }
                 </div>
-                <Blazorise.Link To="@item?.link.HideExternalLink()" Target="Target.Blank" Title="@item?.title">
+                <Blazorise.Link To="@item?.link" Target="Target.Blank" Title="@item?.title">
                     <Image Source="@item?.url_img" title="@item?.title" Text="@item?.title" Display="Display.Block" Width="Width.Is100" />
                 </Blazorise.Link>
             </CarouselSlide>

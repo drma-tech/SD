@@ -48,11 +48,11 @@
                             <Paragraph>
                                 @if (string.IsNullOrEmpty(provider?.link))
                                 {
-                                    <a href="@($"https://www.google.com/search?q=streaming+{provider?.name}".HideExternalLink())" target="_blank" rel="nofollow" style="float: left;">search on google</a>
+                                    <a href="@($"https://www.google.com/search?q=streaming+{provider?.name}")" target="_blank" rel="nofollow" style="float: left;">search on google</a>
                                 }
                                 else
                                 {
-                                    <a href="@provider.link.HideExternalLink()" target="_blank" rel="nofollow" style="float: left;">@(new Uri(provider.link).Host)</a>
+                                    <a href="@provider.link" target="_blank" rel="nofollow" style="float: left;">@(new Uri(provider.link).Host)</a>
                                 }
                             </Paragraph>
                         </Column>
