@@ -266,7 +266,7 @@ namespace SD.API.Functions
                 }
 
                 //add on sd certified list
-                if (doc?.Data != null && release_date < DateTime.Now.AddDays(-14)) // at least 2 week launch
+                if (doc?.Data != null && release_date < DateTime.Now.AddDays(-30)) // at least 1 month launch
                 {
                     var rating = doc.Data;
 
@@ -279,7 +279,7 @@ namespace SD.API.Functions
 
                     var count = 0;
                     if (imdb_ok && imdb >= 8) count++;
-                    if (tmdb_ok && tmdb > 7.95) count++;
+                    if (tmdb_ok && tmdb >= 8) count++;
                     if (meta_ok && meta >= 8) count++;
                     if (trac_ok && trac >= 80) count++;
                     if (roto_ok && roto >= 80) count++;
@@ -353,7 +353,7 @@ namespace SD.API.Functions
                 }
 
                 //add on sd certified list
-                if (doc?.Data != null && release_date < DateTime.Now.AddDays(-14)) // at least 2 week launch
+                if (doc?.Data != null && release_date < DateTime.Now.AddDays(-30)) // at least 1 month launch
                 {
                     var rating = doc.Data;
 
@@ -366,7 +366,7 @@ namespace SD.API.Functions
 
                     var count = 0;
                     if (imdb_ok && imdb >= 8) count++;
-                    if (tmdb_ok && tmdb > 7.95) count++;
+                    if (tmdb_ok && tmdb >= 8) count++;
                     if (meta_ok && meta >= 8) count++;
                     if (trac_ok && trac >= 80) count++;
                     if (roto_ok && roto >= 80) count++;
