@@ -48,7 +48,7 @@
                             <Paragraph>
                                 @if (string.IsNullOrEmpty(provider?.link))
                                 {
-                                    <a href="@($"https://www.google.com/search?q=streaming+{provider?.name}")" target="_blank" rel="nofollow" style="float: left;">search on google</a>
+                                    <a href="@($"https://www.google.com/search?q=streaming+{provider?.name?.Replace("&","")}")" target="_blank" rel="nofollow" style="float: left;">search on google</a>
                                 }
                                 else
                                 {
