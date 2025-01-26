@@ -1,7 +1,9 @@
 ﻿@page "/providers"
 
+@using SD.WEB.Modules.Profile
 @using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.Provider.Core;
+@using System.ComponentModel.DataAnnotations
 
 @inherits PageCore<Provider.Index>
 
@@ -25,6 +27,13 @@
 </Div> *@
 
 <HeaderComponent Title="@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region.GetName())">
+    <Select TValue="DeliveryModel?" @bind-SelectedValue="@DeliveryModel" Size="Size.ExtraSmall">
+        <SelectItem></SelectItem>
+        @foreach (var item in EnumHelper.GetList<DeliveryModel>())
+        {
+            <SelectItem Value="@item.Value">@item.Name</SelectItem>
+        }
+    </Select>
 </HeaderComponent>
 <RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null || obj.Items.Empty())">
     <Row HorizontalGutter="4" VerticalGutter="4">
@@ -46,11 +55,11 @@
                 </Card>
                 <AuthorizeView Roles="administrator">
                     <Authorized>
-                       @*  @if (string.IsNullOrEmpty(item.link))
+                        @*  @if (string.IsNullOrEmpty(item.link))
                         {
                             <p class="m-0" style="color: red">link</p>
                         } *@
-                       @*  @if (string.IsNullOrEmpty(item.description))
+                        @*  @if (string.IsNullOrEmpty(item.description))
                         {
                             <p class="m-0" style="color: red">description</p>
                         } *@
@@ -58,7 +67,7 @@
                         {
                             <p class="m-0" style="color: red">model</p>
                         }
-                       @*  @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && item.plans.Empty())
+                        @*  @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && item.plans.Empty())
                         {
                             <p class="m-0" style="color: red">plan</p>
                         } *@
@@ -75,8 +84,14 @@
 
     private MyProviders? myProviders { get; set; }
 
-    public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items.OrderBy(o => o.priority).Where(p =>
-        p.regions.Any(a => a == AppStateStatic.Region)) ?? Array.Empty<ProviderModel>();
+    [Custom(Name = "Model")]
+    public DeliveryModel? DeliveryModel { get; set; }
+
+    public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items
+        .OrderBy(o => o.priority)
+        .Where(p => p.regions.Any(a => a == AppStateStatic.Region)) 
+        .Where(p => p.models.Any(a => DeliveryModel == null ? true : a == DeliveryModel))
+        ?? Array.Empty<ProviderModel>();
 
     protected override async Task OnInitializedAsync()
     {

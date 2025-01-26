@@ -124,7 +124,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Most languages ​​are only for films/series (not for the website).
+        ///   Looks up a localized string similar to Most languages ​​are only for films/series (not for the website/app).
         /// </summary>
         public static string LanguageDescription {
             get {
