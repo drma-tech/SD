@@ -24,33 +24,34 @@ namespace SD.API.Functions
 
                 if (doc == null)
                 {
-                    var obj = await ApiStartup.HttpClient.GetNewsByFlixter<Flixster>(cancellationToken);
-                    if (obj == null) return null;
+                    return null;
+                    //var obj = await ApiStartup.HttpClient.GetNewsByFlixter<Flixster>(cancellationToken);
+                    //if (obj == null) return null;
 
-                    if (mode == "compact")
-                    {
-                        var compactModels = new NewsModel();
+                    //if (mode == "compact")
+                    //{
+                    //    var compactModels = new NewsModel();
 
-                        foreach (var item in obj.data?.newsStories.Take(8) ?? [])
-                        {
-                            if (item == null) continue;
-                            compactModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
-                        }
+                    //    foreach (var item in obj.data?.newsStories.Take(8) ?? [])
+                    //    {
+                    //        if (item == null) continue;
+                    //        compactModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
+                    //    }
 
-                        doc = await cacheRepo.UpsertItemAsync(new FlixsterCache(compactModels, "lastnews_compact"), cancellationToken);
-                    }
-                    else
-                    {
-                        var fullModels = new NewsModel();
+                    //    doc = await cacheRepo.UpsertItemAsync(new FlixsterCache(compactModels, "lastnews_compact"), cancellationToken);
+                    //}
+                    //else
+                    //{
+                    //    var fullModels = new NewsModel();
 
-                        foreach (var item in obj.data?.newsStories ?? Enumerable.Empty<NewsStory>())
-                        {
-                            if (item == null) continue;
-                            fullModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
-                        }
+                    //    foreach (var item in obj.data?.newsStories ?? Enumerable.Empty<NewsStory>())
+                    //    {
+                    //        if (item == null) continue;
+                    //        fullModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
+                    //    }
 
-                        doc = await cacheRepo.UpsertItemAsync(new FlixsterCache(fullModels, "lastnews_full"), cancellationToken);
-                    }
+                    //    doc = await cacheRepo.UpsertItemAsync(new FlixsterCache(fullModels, "lastnews_full"), cancellationToken);
+                    //}
                 }
 
                 return await req.CreateResponse(doc, ttlCache.half_day, cancellationToken);
