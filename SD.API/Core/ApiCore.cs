@@ -43,7 +43,17 @@ namespace SD.API.Core
 
             var response = await http.SendAsync(request, cancellationToken);
 
-            if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
+                {
+                    return null;
+                }
+                else
+                {
+                    throw new NotificationException(response.ReasonPhrase);
+                }
+            }
 
             return await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken);
         }
@@ -58,7 +68,17 @@ namespace SD.API.Core
 
             var response = await http.SendAsync(request, cancellationToken);
 
-            if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
+                {
+                    return null;
+                }
+                else
+                {
+                    throw new NotificationException(response.ReasonPhrase);
+                }
+            }
 
             return await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken);
         }

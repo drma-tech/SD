@@ -9,33 +9,26 @@
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
-@if (News?.Data == null || News.Data.Items.Empty())
-{
-    <Alert Color="Color.Warning" Visible="true">
-        <AlertDescription>
-            <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @GlobalTranslations.CustomVisibilityLoading
-        </AlertDescription>
-    </Alert>
-}
-else
-{
-    <Carousel @bind-SelectedSlide="@selectedSlide">
-        @foreach (var item in News?.Data.Items ?? [])
-        {
-            <CarouselSlide Name="@item.id">
-                <div style="position: absolute; top: 0px; left: 0px; background-color: lime; opacity: 70%; font: caption;" class="px-1 m-2">
-                    @if (!string.IsNullOrEmpty(item.title))
-                    {
-                        @((MarkupString)item.title)
-                    }
-                </div>
-                <Blazorise.Link To="@item?.link" Target="Target.Blank" Title="@item?.title">
-                    <Image Source="@item?.url_img" title="@item?.title" alt="@item?.title" Text="@item?.title" Display="Display.Block" Width="Width.Is100" />
-                </Blazorise.Link>
-            </CarouselSlide>
-        }
-    </Carousel>
-}
+<RenderControl Core="Core" Model="News" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
+        <Carousel @bind-SelectedSlide="@selectedSlide">
+            @foreach (var item in News?.Data?.Items ?? [])
+            {
+                <CarouselSlide Name="@item.id">
+                    <div style="position: absolute; top: 0px; left: 0px; background-color: lime; opacity: 70%; font: caption;" class="px-1 m-2">
+                        @if (!string.IsNullOrEmpty(item.title))
+                        {
+                            @((MarkupString)item.title)
+                        }
+                    </div>
+                    <Blazorise.Link To="@item?.link" Target="Target.Blank" Title="@item?.title">
+                        <Image Source="@item?.url_img" title="@item?.title" alt="@item?.title" Text="@item?.title" Display="Display.Block" Width="Width.Is100" />
+                    </Blazorise.Link>
+                </CarouselSlide>
+            }
+        </Carousel>
+    </Row>
+</RenderControl>
 
 @code {
     public RenderControlCore<CacheDocument<NewsModel>?> Core { get; set; } = new();

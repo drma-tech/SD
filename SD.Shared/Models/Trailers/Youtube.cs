@@ -43,7 +43,7 @@
     public class Youtube
     {
         public Avatar? avatar { get; set; }
-        public List<Content> contents { get; set; } = [];
+        public List<Content>? contents { get; set; }
         public string? description { get; set; }
         public Links? links { get; set; }
         public string? next { get; set; }
