@@ -128,27 +128,6 @@
         [Custom(Name = "Upcoming Walt Disney Pictures")]
         UpcomingWaltDisneyPictures = 8239943,
 
-        [Custom(Name = "Best Film")]
-        BerlinBestFilm = 8240313,
-
-        [Custom(Name = "Best Short Film")]
-        BerlinBestShortFilm = 8240314,
-
-        [Custom(Name = "Grand Jury Prize: Documentary")]
-        SundanceGrandJuryPrizeDocumentary = 8240577,
-
-        [Custom(Name = "Grand Jury Prize: Dramatic")]
-        SundanceGrandJuryPrizeDramatic = 8240576,
-
-        [Custom(Name = "People's Choice - Best Film")]
-        TorontoPeoplesChoiceBestFilm = 8240630,
-
-        [Custom(Name = "People's Choice - Documentary")]
-        TorontoPeoplesChoiceDocumentary = 8240631,
-
-        [Custom(Name = "People's Choice - Midnight Madness")]
-        TorontoPeoplesChoiceMidnightMadness = 8240632,
-
         [Custom(Name = "Recommended Movies")]
         TraktRecommendedMovies = 8240654,
 
@@ -167,12 +146,6 @@
         [Custom(Name = "Best Film")]
         CrunchyrollBestFilm = 8289898,
 
-        [Custom(Name = "2024 - 76th Emmy Awards")]
-        EmmyAwards = 8498162,
-
-        [Custom(Name = "2024 - 49th Toronto International Film Festival")]
-        TiffAwards = 8498169,
-
         [Custom(Name = "Best awards of the year")]
         AwardsOfTheYear = 8498534,
 
@@ -181,5 +154,23 @@
 
         [Custom(Name = "Certified by SD")]
         CertifiedStreamingDiscoveryShows = 8498675,
+
+        [Custom(Name = "The Movie of the Year")]
+        PeoplesChoiseTheMovie = 8515196,
+
+        [Custom(Name = "The Action Movie of the Year")]
+        PeoplesChoiseTheActionMovie = 8515197,
+
+        [Custom(Name = "The Comedy Movie of the Year")]
+        PeoplesChoiseTheComedyMovie = 8515199,
+
+        [Custom(Name = "The Drama Movie of the Year")]
+        PeoplesChoiseTheDramaMovie = 8515200,
+
+        [Custom(Name = "Best Animated Feature")]
+        AnnieAwardsBestAnimatedFeature = 8515202,
+
+        [Custom(Name = "Best Animated Independent Feature")]
+        AnnieAwardsBestAnimatedIndependentFeature = 8515201,
     }
 }

@@ -1,6 +1,6 @@
-﻿@page "/suggestions/sundance"
-<SeoHeader Title="Suggestions | Sundance" Keywords="@(new []{"Sundance"})" Url="/suggestions/sundance"></SeoHeader>
-@inherits PageCore<Emmys>
+﻿@page "/suggestions/annie"
+<SeoHeader Title="Suggestions | Annie Awards" Keywords="@(new []{"Annie Awards"})" Url="/suggestions/annie"></SeoHeader>
+@inherits PageCore<AnnieAwards>
 
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Core
@@ -10,13 +10,12 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="Sundance" ImageSource="logo/sundance.png" Text="The Sundance Film Festival is the ultimate gathering of original storytellers and audiences seeking new voices and fresh perspectives. Our annual program includes dramatic and documentary features, short films, and episodic content."
-          Link="https://festival.sundance.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<HeadPage Title="Annie Awards" ImageSource="logo/annie.png" Text="Honoring excellence in the field of animation, the 52nd Annual Annie Awards will be presented in 37 categories including Animated Feature, Animated Feature-Independent, Television/Media Production(s), Sponsored Production, Short Subject and Student Film, as well as the Achievement and Honorary awards."
+          Link="https://www.annieawards.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
-@*https://www.imdb.com/event/ev0000631/2023/1*@
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.SundanceGrandJuryPrizeDocumentary" MaxItens="14" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.AnnieAwardsBestAnimatedFeature" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.SundanceGrandJuryPrizeDramatic" MaxItens="14" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.AnnieAwardsBestAnimatedIndependentFeature" MaxItens="5" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
 
 @code {
