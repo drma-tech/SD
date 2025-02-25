@@ -88,10 +88,10 @@
     public DeliveryModel? DeliveryModel { get; set; }
 
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items
-        .OrderBy(o => o.priority)
-        .Where(p => p.regions.Any(a => a == AppStateStatic.Region)) 
+        .Where(p => p.regions.Any(a => a == AppStateStatic.Region))
         .Where(p => p.models.Any(a => DeliveryModel == null ? true : a == DeliveryModel))
-        ?? Array.Empty<ProviderModel>();
+        .OrderBy(o => o.priority).AsEnumerable()
+        ?? [];
 
     protected override async Task OnInitializedAsync()
     {

@@ -11,7 +11,7 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="Emmys" ImageSource="logo/emmys.png" Text="@Translations.emmys_desc" Link="https://www.emmys.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<HeadPage Title="Emmy Awards" ImageSource="logo/emmy-awards.png" Text="@Translations.emmys_desc" Link="https://www.emmys.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingDramaSeries" MaxItens="8" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true"></MediaList>
