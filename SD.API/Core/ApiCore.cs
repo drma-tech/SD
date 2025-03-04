@@ -34,30 +34,6 @@ namespace SD.API.Core
             }
         }
 
-        public static async Task<T?> GetNewsByFlixter<T>(this HttpClient http, CancellationToken cancellationToken) where T : class
-        {
-            using var request = new HttpRequestMessage(HttpMethod.Get, "https://flixster.p.rapidapi.com/news/list");
-
-            request.Headers.TryAddWithoutValidation("X-RapidAPI-Key", "36af8735e3msh39423dcd3a94067p1975bdjsn4536c4c2ed8a");
-            request.Headers.TryAddWithoutValidation("X-RapidAPI-Host", "flixster.p.rapidapi.com");
-
-            var response = await http.SendAsync(request, cancellationToken);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-                {
-                    return null;
-                }
-                else
-                {
-                    throw new NotificationException(response.ReasonPhrase);
-                }
-            }
-
-            return await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken);
-        }
-
         public static async Task<T?> GetTrailersByYoutubeSearch<T>(this HttpClient http, CancellationToken cancellationToken) where T : class
         {
             string id = "UCzcRQ3vRNr6fJ1A9rqFn7QA";

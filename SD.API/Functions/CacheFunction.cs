@@ -24,31 +24,32 @@ namespace SD.API.Functions
 
                 if (doc == null)
                 {
-                    var obj = await ApiStartup.HttpClient.GetNewsByFlixter<Flixster>(cancellationToken);
+                    var scraping = new ScrapingNews();
+                    var obj = scraping.GetNews();
 
                     if (mode == "compact")
                     {
                         var compactModels = new NewsModel();
 
-                        foreach (var item in obj?.data?.newsStories?.Take(8) ?? [])
+                        foreach (var item in obj?.Items?.Take(8) ?? [])
                         {
                             if (item == null) continue;
-                            compactModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
+                            compactModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.url_img, item.link));
                         }
 
-                        doc = await cacheRepo.UpsertItemAsync(new FlixsterCache(compactModels, "lastnews_compact"), cancellationToken);
+                        doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, "lastnews_compact"), cancellationToken);
                     }
                     else
                     {
                         var fullModels = new NewsModel();
 
-                        foreach (var item in obj?.data?.newsStories ?? [])
+                        foreach (var item in obj?.Items ?? [])
                         {
                             if (item == null) continue;
-                            fullModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.mainImage?.url, item.link));
+                            fullModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.url_img, item.link));
                         }
 
-                        doc = await cacheRepo.UpsertItemAsync(new FlixsterCache(fullModels, "lastnews_full"), cancellationToken);
+                        doc = await cacheRepo.UpsertItemAsync(new NewsCache(fullModels, "lastnews_full"), cancellationToken);
                     }
                 }
 
