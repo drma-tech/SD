@@ -120,7 +120,7 @@
                             </ListGroupItem>
                         </ListGroup>
                     </CardText>
-                    <Button Color="Color.Primary" Block="true" Class="mt-3" Clicked="@(()=>OpenCheckout(GetSubscription(AccountProduct.Standard)?.PriceId))">Choose Plan</Button>
+                    <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="Client==null" Clicked="@(()=>OpenCheckout(GetSubscription(AccountProduct.Standard)?.PriceId))">Choose Plan</Button>
                 </CardBody>
             </Card>
             <Card Background="Background.Secondary" WhiteText="true">
@@ -165,7 +165,7 @@
                             </ListGroupItem>
                         </ListGroup>
                     </CardText>
-                    <Button Color="Color.Primary" Block="true" Class="mt-3" Clicked="@(()=>OpenCheckout(GetSubscription(AccountProduct.Premium)?.PriceId))">Choose Plan</Button>
+                    <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="Client==null" Clicked="@(()=>OpenCheckout(GetSubscription(AccountProduct.Premium)?.PriceId))">Choose Plan</Button>
                 </CardBody>
             </Card>
         </CardDeck>
@@ -328,8 +328,6 @@
 
     protected override void OnInitialized()
     {
-        if (Client == null) throw new NotificationException("Client null");
-
         AppStateStatic.RegistrationSuccessful += Registration;
     }
 

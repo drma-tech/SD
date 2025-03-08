@@ -1,4 +1,5 @@
 ﻿@using SD.WEB.Modules.Profile
+@using SD.WEB.Modules.Shared
 @inherits ComponentCore<SettingsPopup>
 
 @inject IJSRuntime JsRuntime
@@ -8,10 +9,10 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <FieldSelect For="@(() => AppStateStatic.Region)" TValue="Region" TEnum="Region" SelectedValue="@AppStateStatic.Region" SelectedValueChanged="RegionValueChanged"
-                 CssIcon="@FontAwesomeIcons.MapLocation" Order="(o)=>o.Name"></FieldSelect>
+    <Country TValue="Region" TEnum="Region" For="@(() => AppStateStatic.Region)" SelectedValue="@AppStateStatic.Region" SelectedValueChanged="RegionValueChanged"
+             LabelSize="LabelSize.Short"></Country>
     <FieldSelect For="@(() => AppStateStatic.Language)" TValue="Language" TEnum="Language" SelectedValue="@AppStateStatic.Language" SelectedValueChanged="LanguageValueChanged"
-                 CssIcon="@FontAwesomeIcons.Language" Order="(o)=>o.Name"></FieldSelect>
+                 CssIcon="@FontAwesomeIcons.Language" LabelSize="LabelSize.Short" Order="(o)=>o.Name" ShowGroup="true"></FieldSelect>
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@(()=>{ModalService.Hide();})" Size="Size.Small">

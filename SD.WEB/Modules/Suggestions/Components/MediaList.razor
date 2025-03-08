@@ -19,7 +19,7 @@
         </Button>
         @if (ShowFilter)
         {
-            <RadioGroup CheckedValue="TypeSelected" CheckedValueChanged="@(async(MediaType type)=>await TypeSelectedChanged(type))" Buttons="true" Float="Float.End" Class="btn-group-xs" Margin="Margin.Is2.FromEnd">
+            <RadioGroup CheckedValue="TypeSelected" CheckedValueChanged="@(async(MediaType type)=>await TypeSelectedChanged(type))" Buttons="true" Float="Float.End" Size="Size.ExtraSmall" Margin="Margin.Is2.FromEnd">
                 <Radio Value="MediaType.movie">@MediaType.movie.GetName()</Radio>
                 <Radio Value="MediaType.tv">@MediaType.tv.GetName()</Radio>
             </RadioGroup>

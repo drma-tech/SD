@@ -23,7 +23,7 @@
             </LayoutSider>
             <Layout>
                 <LayoutHeader Fixed="true">
-                    <HeadLayout DevEnv="DevEnv"></HeadLayout>
+                    <HeadLayout IsAuthenticated="IsAuthenticated"></HeadLayout>
                 </LayoutHeader>
                 <LayoutContent Style="overflow-y: auto; overflow-x: hidden;">
                     <Container Fluid="true" Padding="Padding.Is2">
@@ -85,14 +85,6 @@
                 </LayoutFooter>
             </Layout>
         </Layout>
-        <Div Position="Position.Absolute.Bottom.Is0.End.Is0" onclick="@(()=>AppStateStatic.ShowFeedback?.Invoke(true))" Style="z-index: 2;">
-            <Button Position="Position.Relative" Margin="Margin.Is(GetMargin)" Color="Color.Primary" title="Help & Support">
-                <Blazorise.Icon Name="FontAwesomeIcons.Headset" />
-                @*  <Badge Color="Color.Danger" Pill Position="Position.Absolute.Top.Is0.Start.Is100.Translate.Middle">
-                1
-                </Badge> *@
-            </Button>
-        </Div>
     </Div>
 </MediaQueryList>
 
@@ -160,8 +152,6 @@
     protected string? UserId { get; set; }
     public ClaimsPrincipal? User { get; set; }
 
-    public bool DevEnv { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
         if (User == null && authenticationState is not null)
@@ -178,8 +168,6 @@
     {
         if (firstRender)
         {
-            DevEnv = Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev");
-
             var region = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "region");
 
             if (region.NotEmpty())

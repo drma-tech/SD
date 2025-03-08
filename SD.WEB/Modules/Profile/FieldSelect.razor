@@ -35,11 +35,11 @@
                             @if (ShowGroup)
                             {
                                 <SelectItem></SelectItem>
-                                @foreach (var group in EnumHelper.GetList<TEnum>().OrderBy(Order).Select(s => s.Group).Distinct())
+                                @foreach (var group in EnumHelper.GetList<TEnum>().OrderBy(o=>o.Group).ThenBy(Order).Select(s => s.Group).Distinct())
                                 {
                                     if (string.IsNullOrEmpty(group))
                                     {
-                                        @foreach (var item in EnumHelper.GetList<TEnum>().Where(w => w.Group == group))
+                                        @foreach (var item in EnumHelper.GetList<TEnum>().Where(w => w.Group == group).OrderBy(Order))
                                         {
                                             <SelectItem Value="@item.Value">@item.Name</SelectItem>
                                         }
@@ -47,7 +47,7 @@
                                     else
                                     {
                                         <SelectGroup Label="@group">
-                                            @foreach (var item in EnumHelper.GetList<TEnum>().Where(w => w.Group == group))
+                                            @foreach (var item in EnumHelper.GetList<TEnum>().Where(w => w.Group == group).OrderBy(Order))
                                             {
                                                 <SelectItem Value="@item.Value">@item.Name</SelectItem>
                                             }

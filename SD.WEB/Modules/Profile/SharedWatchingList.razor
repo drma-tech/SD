@@ -1,6 +1,5 @@
 ﻿@page "/shared/watching/{type}/{token}"
-<SeoHeader Title="@($"Watching ({Gravatar?.displayName}) | {(type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")"
-           Icon="@Gravatar?.photos.LastOrDefault()?.value"></SeoHeader>
+<SeoHeader Title="@($"Watching ({Email}) | {(type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")"></SeoHeader>
 
 @using SD.Shared.Core.Models
 @using SD.WEB.Modules.Auth.Core
@@ -11,19 +10,18 @@
 @inject WishListApi WishApi
 @inject WatchingListApi WatchingApi
 @inject WatchedListApi WatchedApi
-@inject GravatarApi GravatarApi
 
 @if (type == "movie")
 {
     <WatchingComponent Core="CoreWatching" MediaType="MediaType.movie" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
                        Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="@UserId"
-                       ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()" CustomTitle="@($"Watching ({Gravatar?.displayName}) | { MediaType.movie.GetName()}")"></WatchingComponent>
+                       ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()" CustomTitle="@($"Watching ({Email}) | { MediaType.movie.GetName()}")"></WatchingComponent>
 }
 else
 {
     <WatchingComponent Core="CoreWatching" MediaType="MediaType.tv" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
                        Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="@UserId"
-                       ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()" CustomTitle="@($"Watching ({Gravatar?.displayName}) | { MediaType.tv.GetName()}")"></WatchingComponent>
+                       ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()" CustomTitle="@($"Watching ({Email}) | { MediaType.tv.GetName()}")"></WatchingComponent>
 }
 
 @code {
@@ -35,14 +33,13 @@ else
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
-    public Gravatar? Gravatar { get; set; }
+    public string? Email { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-        var email = await PrincipalApi.GetEmail(token);
-        Gravatar = await GravatarApi.GetGravatar(email);
+        Email = await PrincipalApi.GetEmail(token);
     }
 
     protected override async Task LoadDataRender()

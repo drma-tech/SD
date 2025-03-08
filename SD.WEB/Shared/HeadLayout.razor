@@ -1,35 +1,84 @@
-﻿@inherits ComponentCore<HeadLayout>
+﻿@using SD.WEB.Modules.Auth.Core
+@using SD.WEB.Modules.Subscription.Core
+@inherits ComponentCore<HeadLayout>
+
+@inject IJSRuntime JsRuntime
+
+@inject PaddleConfigurationApi ConfigurationApi
 
 <Bar Mode="BarMode.Horizontal" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark" Padding="Padding.Is2">
     <Container Fluid="true" Padding="Padding.Is0.OnX">
         <BarToggler Bar="@AppStateStatic.Sidebar" Background="Background.Dark" Display="Display.None.Block.OnWidescreen"
-                    Margin="Margin.Is2.FromEnd" Padding="Padding.Is0" Style="height: 31px; width: 31px;" />
+        Margin="Margin.Is2.FromEnd" Padding="Padding.Is0" Style="height: 31px; width: 31px;" />
         <BarMenu Style="flex-basis: unset !important;">
-            <AuthorizeView>
-                <Authorized>
-                    <Button Color="Color.Danger" Clicked="Logout" title="Logout" Float="Float.End" Size="Size.Small">
-                        <Blazorise.Icon Name="FontAwesomeIcons.SignOutAlt" /> @WEB.Resources.Button.Logout
+            <Buttons Role="ButtonsRole.Toolbar" Float="Float.End" >
+                <Buttons Margin="Margin.Is2.FromEnd" Size="Size.Small">
+                    <Button Color="Color.Warning" Clicked="OpenSubscription">
+                        <Blazorise.Icon Name="FontAwesomeIcons.Gem"></Blazorise.Icon>
+                        @Modules.Profile.Resources.Translations.Subscription
                     </Button>
-                </Authorized>
-                <NotAuthorized>
-                    <Button Color="Color.Primary" Type="ButtonType.Link" To="/login-providers" title="Login" Float="Float.End" Size="Size.Small">
-                        <Blazorise.Icon Name="FontAwesomeIcons.SignInAlt" /> @WEB.Resources.Button.Login
+                </Buttons>
+                <AuthorizeView>
+                    <Authorized>
+                        <Buttons Margin="Margin.Is1.FromEnd" Size="Size.Small">
+                            <Button Color="Color.Dark" Clicked="MyAccount">
+                                <Blazorise.Icon Name="FontAwesomeIcons.UserCircle"></Blazorise.Icon>
+                            </Button>
+                        </Buttons>
+                    </Authorized>
+                </AuthorizeView>
+                <Buttons Margin="Margin.Is1.FromEnd">
+                    <Button Color="Color.Dark" Clicked="OpenConfigurations" Size="Size.Small">
+                        <Blazorise.Icon Name="FontAwesomeIcons.Globe" />
                     </Button>
-                </NotAuthorized>
-            </AuthorizeView>
-            <Button Color="Color.Dark" Float="Float.End" Size="Size.Small" Margin="Margin.Is2.FromEnd" Clicked="OpenConfigurations">
-                <Blazorise.Icon Name="FontAwesomeIcons.Globe" />
-            </Button>
-            @if (DevEnv)
-            {
-                <Badge Color="Color.Warning"><Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon> Development Environment</Badge>
-            }
+                </Buttons>
+                <Buttons Margin="Margin.Is1.FromEnd" Display="Display.None">
+                    <Button Color="Color.Dark" Clicked="ChangeTheme" Size="Size.Small">
+                        <Blazorise.Icon Name="@(Theme == "light" ? FontAwesomeIcons.Moon : FontAwesomeIcons.Sun)" />
+                    </Button>
+                </Buttons>
+                <Buttons Margin="Margin.Is2.FromEnd">
+                    <Button Color="Color.Dark" Clicked="@(()=>AppStateStatic.ShowFeedback?.Invoke(true))" Size="Size.Small">
+                        <Blazorise.Icon Name="FontAwesomeIcons.Headset"></Blazorise.Icon>
+                    </Button>
+                </Buttons>
+                <Buttons>
+                    <AuthorizeView>
+                        <Authorized>
+                            <Button Color="Color.Danger" Clicked="Logout" title="Logout" Size="Size.Small">
+                                @WEB.Resources.Button.Logout
+                            </Button>
+                        </Authorized>
+                        <NotAuthorized>
+                            <Button Color="Color.Primary" Type="ButtonType.Link" To="/login-providers" title="Login" Size="Size.Small">
+                                @WEB.Resources.Button.Login
+                            </Button>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </Buttons>
+            </Buttons>
         </BarMenu>
     </Container>
 </Bar>
 
 @code {
-    [Parameter] public bool DevEnv { get; set; }
+    [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }
+    [Parameter] public bool IsAuthenticated { get; set; } = false;
+
+    public string? Theme { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        Theme = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "theme");
+
+        if (Theme.Empty())
+        {
+            await JsRuntime.InvokeVoidAsync("changeDarkMode");
+            Theme = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "theme");
+        }
+    }
 
     private void Logout()
     {
@@ -39,5 +88,33 @@
     private async Task OpenConfigurations()
     {
         await ModalService.SettingsPopup();
+    }
+
+    private async Task ChangeTheme()
+    {
+        await JsRuntime.InvokeVoidAsync("changeDarkMode");
+        Theme = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "theme");
+    }
+
+    private async Task MyAccount()
+    {
+        var Client = await PrincipalApi.Get(IsAuthenticated);
+
+        await ModalService.OpenPopup<Modules.Auth.ProfilePopup>(x => { x.Add(x => x.principal, Client); }, ModalSize.Large);
+    }
+
+    private async Task OpenSubscription()
+    {
+        var Client = await PrincipalApi.Get(IsAuthenticated);
+
+        if (!string.IsNullOrEmpty(_ptxn))
+        {
+            var config = await ConfigurationApi.GetConfigurations();
+            if (config == null) throw new NotificationException("server comunication error");
+
+            await JsRuntime.InvokeVoidAsync("startPaddle", config.Token);
+        }
+
+        await ModalService.SubscriptionPopup(Client, IsAuthenticated);
     }
 }

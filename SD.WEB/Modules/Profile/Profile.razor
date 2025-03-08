@@ -16,39 +16,11 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 @inject PaddleConfigurationApi ConfigurationApi
-@inject GravatarApi GravatarApi
 
 <SeoHeader Title="@SeoTranslations.ProfileTitle" Description="@SeoTranslations.ProfileDescription" Url="/profile"></SeoHeader>
 
 @if (IsAuthenticated)
 {
-    <Jumbotron Background="Background.Secondary" Margin="Margin.Is2.FromBottom" Padding="Padding.Is2">
-        <Row>
-            <Column ColumnSize="ColumnSize.IsAuto">
-                <Figure Size="FigureSize.Is64x64" Margin="Margin.Is0.OnDesktop">
-                    <FigureImage Source="@Gravatar?.photos.LastOrDefault()?.value" AlternateText="@Gravatar?.displayName" Rounded="true" />
-                </Figure>
-            </Column>
-            <Column>
-                <Text TextSize="TextSize.Heading4">
-                    @Gravatar?.displayName
-                </Text><br />
-                <Text TextSize="TextSize.Heading6">
-                    @Client?.Email
-                </Text>
-            </Column>
-            <Column ColumnSize="ColumnSize.IsAuto">
-                <Button Color="Color.Primary" Clicked="MyAccount">
-                    <Blazorise.Icon Name="FontAwesomeIcons.UserCircle"></Blazorise.Icon>
-                    @Translations.Account
-                </Button>
-                <Button Color="Color.Primary" Clicked="OpenSubscription">
-                    <Blazorise.Icon Name="FontAwesomeIcons.Gem"></Blazorise.Icon>
-                    @Translations.Subscription
-                </Button>
-            </Column>
-        </Row>
-    </Jumbotron>
     @* @if (Platform.NotEmpty() && Reviewed.Empty() && Client != null
      && (Client.ClientePaddle == null || !Client.ClientePaddle.IsPaidUser))
     {
@@ -170,8 +142,6 @@
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
-    public ClientePrincipal? Client { get; set; }
-    public Gravatar? Gravatar { get; set; }
     public string? Platform { get; set; }
     public string? Reviewed { get; set; }
 
@@ -180,14 +150,10 @@
         WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; CoreWatched?.LoadingFinished?.Invoke(model); StateHasChanged(); };
         WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; CoreWatching?.LoadingFinished?.Invoke(model); StateHasChanged(); };
         WishApi.DataChanged += (WishList? model) => { Wish = model; CoreWish?.LoadingFinished?.Invoke(model); StateHasChanged(); };
-        PrincipalApi.DataChanged += (ClientePrincipal? model) => { Client = model; StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()
     {
-        Client = await PrincipalApi.Get(IsAuthenticated);
-        Gravatar = await GravatarApi.GetGravatar(Client?.Email);
-
         if (!string.IsNullOrEmpty(_ptxn))
         {
             var config = await ConfigurationApi.GetConfigurations();
@@ -214,26 +180,16 @@
         Reviewed = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "reviewed");
     }
 
-    private async Task MyAccount()
-    {
-        await ModalService.OpenPopup<ProfilePopup>(x => { x.Add(x => x.principal, Client); x.Add(x => x.Gravatar, Gravatar); }, ModalSize.Large);
-    }
+    // protected async Task OpenCheckout(string? priceId)
+    // {
+    //     var locale = AppStateStatic.Language.ToString()?.Substring(0, 2);
 
-    private async Task OpenSubscription()
-    {
-        await ModalService.SubscriptionPopup(Client, IsAuthenticated);
-    }
+    //     await JsRuntime.InvokeVoidAsync("openCheckout", null, null, locale, null, null, _ptxn);
+    // }
 
-    protected async Task OpenCheckout(string? priceId)
-    {
-        var locale = AppStateStatic.Language.ToString()?.Substring(0, 2);
-
-        await JsRuntime.InvokeVoidAsync("openCheckout", null, null, locale, null, null, _ptxn);
-    }
-
-    private async Task SetReviewed()
-    {
-        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "reviewed", "true");
-        Reviewed = "true";
-    }
+    // private async Task SetReviewed()
+    // {
+    //     await JsRuntime.InvokeAsync<string>("SetLocalStorage", "reviewed", "true");
+    //     Reviewed = "true";
+    // }
 }

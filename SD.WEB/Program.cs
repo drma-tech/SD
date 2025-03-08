@@ -56,7 +56,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
 
     collection.AddScoped<AdministratorApi>();
     collection.AddScoped<PrincipalApi>();
-    collection.AddScoped<GravatarApi>();
     collection.AddScoped<LoginApi>();
     collection.AddScoped<WatchedListApi>();
     collection.AddScoped<WishListApi>();

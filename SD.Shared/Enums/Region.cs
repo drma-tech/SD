@@ -5,421 +5,421 @@
     /// </summary>
     public enum Region
     {
-        [Custom(Name = "AD", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "AD", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         AD = 20,
 
-        [Custom(Name = "AE", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "AE", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         AE = 784,
 
-        [Custom(Name = "AG", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "AG", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         AG = 28,
 
-        [Custom(Name = "AL", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "AL", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         AL = 8,
 
-        [Custom(Name = "AO", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "AO", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         AO = 24,
 
-        [Custom(Name = "AR", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "AR", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         AR = 32,
 
-        [Custom(Name = "AT", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "AT", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         AT = 40,
 
-        [Custom(Name = "AU", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "AU", Group = "Oceania", ResourceType = typeof(Resources.Enum.Region))]
         AU = 36,
 
-        [Custom(Name = "AZ", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "AZ", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         AZ = 31,
 
-        [Custom(Name = "BA", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "BA", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         BA = 70,
 
-        [Custom(Name = "BB", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "BB", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         BB = 52,
 
-        [Custom(Name = "BE", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "BE", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         BE = 56,
 
-        [Custom(Name = "BF", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "BF", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         BF = 854,
 
-        [Custom(Name = "BG", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "BG", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         BG = 100,
 
-        [Custom(Name = "BH", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "BH", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         BH = 48,
 
-        [Custom(Name = "BM", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "BM", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         BM = 60,
 
-        [Custom(Name = "BO", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "BO", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         BO = 68,
 
-        [Custom(Name = "BR", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "BR", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         BR = 76,
 
-        [Custom(Name = "BS", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "BS", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         BS = 44,
 
-        [Custom(Name = "BY", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "BY", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         BY = 112,
 
-        [Custom(Name = "BZ", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "BZ", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         BZ = 84,
 
-        [Custom(Name = "CA", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "CA", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         CA = 124,
 
-        [Custom(Name = "CD", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "CD", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         CD = 180,
 
-        [Custom(Name = "CH", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "CH", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         CH = 756,
 
-        [Custom(Name = "CI", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "CI", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         CI = 384,
 
-        [Custom(Name = "CL", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "CL", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         CL = 152,
 
-        [Custom(Name = "CM", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "CM", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         CM = 120,
 
-        [Custom(Name = "CO", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "CO", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         CO = 170,
 
-        [Custom(Name = "CR", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "CR", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         CR = 188,
 
-        [Custom(Name = "CU", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "CU", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         CU = 192,
 
-        [Custom(Name = "CV", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "CV", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         CV = 132,
 
-        [Custom(Name = "CY", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "CY", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         CY = 196,
 
-        [Custom(Name = "CZ", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "CZ", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         CZ = 203,
 
-        [Custom(Name = "DE", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "DE", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         DE = 276,
 
-        [Custom(Name = "DK", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "DK", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         DK = 208,
 
-        [Custom(Name = "DO", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "DO", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         DO = 214,
 
-        [Custom(Name = "DZ", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "DZ", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         DZ = 12,
 
-        [Custom(Name = "EC", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "EC", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         EC = 218,
 
-        [Custom(Name = "EE", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "EE", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         EE = 233,
 
-        [Custom(Name = "EG", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "EG", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         EG = 818,
 
-        [Custom(Name = "ES", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "ES", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         ES = 724,
 
-        [Custom(Name = "FI", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "FI", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         FI = 246,
 
-        [Custom(Name = "FJ", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "FJ", Group = "Oceania", ResourceType = typeof(Resources.Enum.Region))]
         FJ = 242,
 
-        [Custom(Name = "FR", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "FR", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         FR = 250,
 
-        [Custom(Name = "GB", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "GB", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         GB = 826,
 
-        [Custom(Name = "GF", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "GF", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         GF = 254,
 
-        [Custom(Name = "GH", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "GH", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         GH = 288,
 
-        [Custom(Name = "GI", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "GI", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         GI = 292,
 
-        [Custom(Name = "GP", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "GP", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         GP = 312,
 
-        [Custom(Name = "GQ", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "GQ", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         GQ = 226,
 
-        [Custom(Name = "GR", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "GR", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         GR = 300,
 
-        [Custom(Name = "GT", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "GT", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         GT = 320,
 
-        [Custom(Name = "GY", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "GY", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         GY = 328,
 
-        [Custom(Name = "HK", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "HK", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         HK = 344,
 
-        [Custom(Name = "HN", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "HN", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         HN = 340,
 
-        [Custom(Name = "HR", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "HR", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         HR = 191,
 
-        [Custom(Name = "HU", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "HU", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         HU = 348,
 
-        [Custom(Name = "ID", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "ID", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         ID = 360,
 
-        [Custom(Name = "IE", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "IE", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         IE = 372,
 
-        [Custom(Name = "IL", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "IL", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         IL = 376,
 
-        [Custom(Name = "IN", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "IN", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         IN = 356,
 
-        [Custom(Name = "IQ", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "IQ", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         IQ = 368,
 
-        [Custom(Name = "IS", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "IS", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         IS = 352,
 
-        [Custom(Name = "IT", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "IT", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         IT = 380,
 
-        [Custom(Name = "JM", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "JM", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         JM = 388,
 
-        [Custom(Name = "JO", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "JO", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         JO = 400,
 
-        [Custom(Name = "JP", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "JP", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         JP = 392,
 
-        [Custom(Name = "KE", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "KE", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         KE = 404,
 
-        [Custom(Name = "KR", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "KR", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         KR = 410,
 
-        [Custom(Name = "KW", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "KW", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         KW = 414,
 
-        [Custom(Name = "LB", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "LB", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         LB = 422,
 
-        [Custom(Name = "LC", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "LC", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         LC = 662,
 
-        [Custom(Name = "LI", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "LI", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         LI = 438,
 
-        [Custom(Name = "LT", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "LT", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         LT = 440,
 
-        [Custom(Name = "LU", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "LU", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         LU = 442,
 
-        [Custom(Name = "LV", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "LV", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         LV = 428,
 
-        [Custom(Name = "LY", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "LY", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         LY = 434,
 
-        [Custom(Name = "MA", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "MA", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         MA = 504,
 
-        [Custom(Name = "MC", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "MC", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         MC = 492,
 
-        [Custom(Name = "MD", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "MD", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         MD = 498,
 
-        [Custom(Name = "ME", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "ME", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         ME = 499,
 
-        [Custom(Name = "MG", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "MG", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         MG = 450,
 
-        [Custom(Name = "MK", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "MK", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         MK = 807,
 
-        [Custom(Name = "ML", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "ML", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         ML = 466,
 
-        [Custom(Name = "MT", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "MT", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         MT = 470,
 
-        [Custom(Name = "MU", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "MU", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         MU = 480,
 
-        [Custom(Name = "MW", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "MW", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         MW = 454,
 
-        [Custom(Name = "MX", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "MX", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         MX = 484,
 
-        [Custom(Name = "MY", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "MY", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         MY = 458,
 
-        [Custom(Name = "MZ", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "MZ", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         MZ = 508,
 
-        [Custom(Name = "NE", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "NE", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         NE = 562,
 
-        [Custom(Name = "NG", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "NG", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         NG = 566,
 
-        [Custom(Name = "NI", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "NI", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         NI = 558,
 
-        [Custom(Name = "NL", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "NL", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         NL = 528,
 
-        [Custom(Name = "NO", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "NO", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         NO = 578,
 
-        [Custom(Name = "NZ", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "NZ", Group = "Oceania", ResourceType = typeof(Resources.Enum.Region))]
         NZ = 554,
 
-        [Custom(Name = "OM", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "OM", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         OM = 512,
 
-        [Custom(Name = "PA", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "PA", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         PA = 591,
 
-        [Custom(Name = "PE", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "PE", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         PE = 604,
 
-        [Custom(Name = "PF", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "PF", Group = "Oceania", ResourceType = typeof(Resources.Enum.Region))]
         PF = 258,
 
-        [Custom(Name = "PG", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "PG", Group = "Oceania", ResourceType = typeof(Resources.Enum.Region))]
         PG = 598,
 
-        [Custom(Name = "PH", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "PH", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         PH = 608,
 
-        [Custom(Name = "PK", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "PK", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         PK = 586,
 
-        [Custom(Name = "PL", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "PL", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         PL = 616,
 
-        [Custom(Name = "PS", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "PS", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         PS = 275,
 
-        [Custom(Name = "PT", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "PT", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         PT = 620,
 
-        [Custom(Name = "PY", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "PY", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         PY = 600,
 
-        [Custom(Name = "QA", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "QA", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         QA = 634,
 
-        [Custom(Name = "RO", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "RO", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         RO = 642,
 
-        [Custom(Name = "RS", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "RS", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         RS = 688,
 
-        [Custom(Name = "RU", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "RU", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         RU = 643,
 
-        [Custom(Name = "SA", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "SA", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         SA = 682,
 
-        [Custom(Name = "SC", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "SC", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         SC = 690,
 
-        [Custom(Name = "SE", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "SE", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         SE = 752,
 
-        [Custom(Name = "SG", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "SG", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         SG = 702,
 
-        [Custom(Name = "SI", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "SI", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         SI = 705,
 
-        [Custom(Name = "SK", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "SK", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         SK = 703,
 
-        [Custom(Name = "SM", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "SM", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         SM = 674,
 
-        [Custom(Name = "SN", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "SN", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         SN = 686,
 
-        [Custom(Name = "SV", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "SV", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         SV = 222,
 
-        [Custom(Name = "TC", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "TC", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         TC = 796,
 
-        [Custom(Name = "TD", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "TD", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         TD = 148,
 
-        [Custom(Name = "TH", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "TH", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         TH = 764,
 
-        [Custom(Name = "TN", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "TN", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         TN = 788,
 
-        [Custom(Name = "TR", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "TR", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         TR = 792,
 
-        [Custom(Name = "TT", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "TT", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         TT = 780,
 
-        [Custom(Name = "TW", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "TW", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         TW = 99999, //doesnt have a code
 
-        [Custom(Name = "TZ", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "TZ", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         TZ = 834,
 
-        [Custom(Name = "UA", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "UA", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         UA = 804,
 
-        [Custom(Name = "UG", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "UG", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         UG = 800,
 
-        [Custom(Name = "US", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "US", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         US = 840,
 
-        [Custom(Name = "UY", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "UY", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         UY = 858,
 
-        [Custom(Name = "VA", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "VA", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         VA = 336,
 
-        [Custom(Name = "VE", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "VE", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
         VE = 862,
 
-        [Custom(Name = "XK", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "XK", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
         XK = 88888, //doesnt have a code
 
-        [Custom(Name = "YE", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "YE", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
         YE = 887,
 
-        [Custom(Name = "ZA", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "ZA", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         ZA = 710,
 
-        [Custom(Name = "ZM", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "ZM", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         ZM = 894,
 
-        [Custom(Name = "ZW", ResourceType = typeof(Resources.Enum.Region))]
+        [Custom(Name = "ZW", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
         ZW = 716
     }
 }

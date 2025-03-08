@@ -106,24 +106,6 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Display Name.
-        /// </summary>
-        public static string DisplayName {
-            get {
-                return ResourceManager.GetString("DisplayName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit profile in Gravatar.
-        /// </summary>
-        public static string EditProfileGravatar {
-            get {
-                return ResourceManager.GetString("EditProfileGravatar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string Email {
@@ -178,15 +160,6 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to My Profile (Gravatar).
-        /// </summary>
-        public static string MyProfileGravatar {
-            get {
-                return ResourceManager.GetString("MyProfileGravatar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Favorite Providers.
         /// </summary>
         public static string MyProviders {
@@ -237,15 +210,6 @@ namespace SD.WEB.Modules.Profile.Resources {
         public static string OurSuggestions2 {
             get {
                 return ResourceManager.GetString("OurSuggestions2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Photo (Last).
-        /// </summary>
-        public static string PhotoLast {
-            get {
-                return ResourceManager.GetString("PhotoLast", resourceCulture);
             }
         }
         

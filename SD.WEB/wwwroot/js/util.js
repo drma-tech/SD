@@ -53,8 +53,15 @@ async function getUserInfo() {
         else {
             return null;
         }
-
     } catch (error) {
         return null;
     }
+}
+
+function changeDarkMode() {
+    let theme = GetLocalStorage('theme');
+    theme = (theme == "light" ? "dark" : "light");
+    SetLocalStorage('theme', theme);
+
+    document.body.setAttribute("data-bs-theme", theme);
 }

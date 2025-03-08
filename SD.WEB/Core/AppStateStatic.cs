@@ -11,7 +11,7 @@ namespace SD.WEB.Core
         [Custom(Name = "Region", ResourceType = typeof(GlobalTranslations))]
         public static Region Region { get; private set; }
 
-        [Custom(Name = "Language", Description = "LanguageDescription", ResourceType = typeof(GlobalTranslations))]
+        [Custom(Name = "Language", ResourceType = typeof(GlobalTranslations))]
         public static Language Language { get; private set; }
 
         public static Bar? Sidebar { get; set; }

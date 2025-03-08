@@ -70,6 +70,15 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full translation.
+        /// </summary>
+        public static string app {
+            get {
+                return ResourceManager.GetString("app", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arabic (AE).
         /// </summary>
         public static string ar_AE {
@@ -129,6 +138,15 @@ namespace SD.Shared.Resources.Enum {
         public static string ch_GU {
             get {
                 return ResourceManager.GetString("ch-GU", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only movies/tvs content.
+        /// </summary>
+        public static string content {
+            get {
+                return ResourceManager.GetString("content", resourceCulture);
             }
         }
         

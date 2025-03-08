@@ -1,0 +1,42 @@
+﻿@using SD.WEB.Modules.Profile
+@inherits FormBase<TValue, FieldSelect<TValue, TEnum>>
+@typeparam TValue
+@typeparam TEnum where TEnum : struct, Enum, IConvertible
+
+<Field Horizontal="true">
+    <FieldLabel ColumnSize="@GetLabelSize()">
+        <Blazorise.Icon Name="@FontAwesomeIcons.MapLocation"></Blazorise.Icon> @For?.GetCustomAttribute()?.Name
+    </FieldLabel>
+    <FieldBody ColumnSize="@GetBodySize()">
+        <Addons>
+            <Addon AddonType="AddonType.Body">
+                <Select @bind-SelectedValue="@Continent" Disabled="@Disabled" Width="Width.Is33">
+                    <SelectItem></SelectItem>
+                    @foreach (var group in EnumHelper.GetList<SD.Shared.Enums.Region>().Select(s => s.Group).Order().Distinct())
+                    {
+                        <SelectItem Value="@group">@group</SelectItem>
+                    }
+                </Select>
+                <Select TValue="SD.Shared.Enums.Region" SelectedValue="@SelectedValue" SelectedValueChanged="SelectedValueChanged" Disabled="@Disabled" Width="Width.Is66">
+                    <SelectItem></SelectItem>
+                    @foreach (var item in EnumHelper.GetList<SD.Shared.Enums.Region>().Where(w => w.Group == Continent).OrderBy(o => o.Name))
+                    {
+                        <SelectItem Value="@item.Value">@item.Name</SelectItem>
+                    }
+                </Select>
+            </Addon>
+        </Addons>
+    </FieldBody>
+</Field>
+
+@code {
+    [Parameter] public SD.Shared.Enums.Region SelectedValue { get; set; }
+    [Parameter] public EventCallback<SD.Shared.Enums.Region> SelectedValueChanged { get; set; }
+
+    public string? Continent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Continent = SelectedValue.GetCustomAttribute()?.Group;
+    }
+}

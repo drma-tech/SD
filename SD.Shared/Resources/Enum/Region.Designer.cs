@@ -79,6 +79,15 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Africa.
+        /// </summary>
+        public static string Africa {
+            get {
+                return ResourceManager.GetString("Africa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Antigua and Barbuda.
         /// </summary>
         public static string AG {
@@ -97,6 +106,15 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Americas.
+        /// </summary>
+        public static string Americas {
+            get {
+                return ResourceManager.GetString("Americas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Angola.
         /// </summary>
         public static string AO {
@@ -111,6 +129,15 @@ namespace SD.Shared.Resources.Enum {
         public static string AR {
             get {
                 return ResourceManager.GetString("AR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Asia.
+        /// </summary>
+        public static string Asia {
+            get {
+                return ResourceManager.GetString("Asia", resourceCulture);
             }
         }
         
@@ -426,6 +453,15 @@ namespace SD.Shared.Resources.Enum {
         public static string ES {
             get {
                 return ResourceManager.GetString("ES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Europe.
+        /// </summary>
+        public static string Europe {
+            get {
+                return ResourceManager.GetString("Europe", resourceCulture);
             }
         }
         
@@ -921,6 +957,15 @@ namespace SD.Shared.Resources.Enum {
         public static string NZ {
             get {
                 return ResourceManager.GetString("NZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oceania.
+        /// </summary>
+        public static string Oceania {
+            get {
+                return ResourceManager.GetString("Oceania", resourceCulture);
             }
         }
         

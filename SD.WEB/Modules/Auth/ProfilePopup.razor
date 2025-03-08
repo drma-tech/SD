@@ -43,35 +43,6 @@
     </Card>
     <Card Margin="Margin.Is2.FromBottom">
         <CardHeader>
-            @Translations.MyProfileGravatar
-        </CardHeader>
-        <CardBody>
-            <Fields>
-                <Field ColumnSize="ColumnSize.Is4.OnDesktop">
-                    <FieldLabel>
-                        @Translations.DisplayName
-                    </FieldLabel>
-                    <TextEdit Text="@Gravatar?.displayName" Disabled="true" />
-                </Field>
-                <Field ColumnSize="ColumnSize.Is4.OnDesktop">
-                    <FieldLabel>
-                        @Translations.PhotoLast
-                    </FieldLabel><br />
-                    <Figure Size="FigureSize.Is32x32">
-                        <FigureImage Source="@Gravatar?.photos.LastOrDefault()?.value" AlternateText="@Gravatar?.displayName" Rounded="true" />
-                    </Figure>
-                </Field>
-                <Field ColumnSize="ColumnSize.Is4.OnDesktop">
-                    <FieldLabel>
-                        @Translations.EditProfileGravatar
-                    </FieldLabel><br />
-                    <Link To="@("https://gravatar.com/")" Target="Target.Blank">https://gravatar.com/</Link>
-                </Field>
-            </Fields>
-        </CardBody>
-    </Card>
-    <Card Margin="Margin.Is2.FromBottom">
-        <CardHeader>
             @Translations.Actions
         </CardHeader>
         <CardBody>
@@ -89,7 +60,6 @@
 
 @code {
     [Parameter] public ClientePrincipal? principal { get; set; }
-    [Parameter] public Gravatar? Gravatar { get; set; }
 
     private async Task DeleteAccount(string? provider)
     {
