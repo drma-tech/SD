@@ -9,9 +9,9 @@
 <Bar Mode="BarMode.Horizontal" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark" Padding="Padding.Is2">
     <Container Fluid="true" Padding="Padding.Is0.OnX">
         <BarToggler Bar="@AppStateStatic.Sidebar" Background="Background.Dark" Display="Display.None.Block.OnWidescreen"
-        Margin="Margin.Is2.FromEnd" Padding="Padding.Is0" Style="height: 31px; width: 31px;" />
+                    Margin="Margin.Is2.FromEnd" Padding="Padding.Is0" Style="height: 31px; width: 31px;" />
         <BarMenu Style="flex-basis: unset !important;">
-            <Buttons Role="ButtonsRole.Toolbar" Float="Float.End" >
+            <Buttons Role="ButtonsRole.Toolbar" Float="Float.End">
                 <Buttons Margin="Margin.Is2.FromEnd" Size="Size.Small">
                     <Button Color="Color.Warning" Clicked="OpenSubscription">
                         <Blazorise.Icon Name="FontAwesomeIcons.Gem"></Blazorise.Icon>
@@ -67,16 +67,17 @@
 
     public string? Theme { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnInitializedAsync();
-
-        Theme = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "theme");
-
-        if (Theme.Empty())
+        if (firstRender)
         {
-            await JsRuntime.InvokeVoidAsync("changeDarkMode");
             Theme = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "theme");
+
+            if (Theme.Empty())
+            {
+                await JsRuntime.InvokeVoidAsync("changeDarkMode");
+                Theme = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "theme");
+            }
         }
     }
 
