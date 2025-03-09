@@ -61,7 +61,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Manage your streams, what you&apos;ve watched, are watching and want to watch. All in one place..
+        ///   Looks up a localized string similar to Your personal streaming assistant! Organize your platforms, track your progress, and find new content to watch — all in one app..
         /// </summary>
         public static string Description {
             get {
@@ -120,24 +120,6 @@ namespace SD.WEB.Resources {
         public static string SuggestionsTitle {
             get {
                 return ResourceManager.GetString("SuggestionsTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to See new announcements, get support with bugs, suggest new features, or learn which platforms to find Streaming Discovery on..
-        /// </summary>
-        public static string SupportDescription {
-            get {
-                return ResourceManager.GetString("SupportDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Support.
-        /// </summary>
-        public static string SupportTitle {
-            get {
-                return ResourceManager.GetString("SupportTitle", resourceCulture);
             }
         }
     }
