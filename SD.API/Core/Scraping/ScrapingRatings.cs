@@ -159,7 +159,7 @@ namespace SD.API.Core.Scraping
             }
         }
 
-        private void ProcessMovieImdb(Ratings data, string? imdbPath)
+        private void ProcessMovieImdb(Ratings data, string imdbPath)
         {
             var web = new HtmlWeb();
             var doc = web.Load(imdbPath);

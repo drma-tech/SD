@@ -10,6 +10,7 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 @implements IDisposable
+@inject IJSRuntime JsRuntime
 
 @if (ShowHead)
 {
@@ -28,29 +29,22 @@
 }
 
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
-    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
-        @for (int i = 1; i <= Items.Take(GetTotalItems).Count(); i++)
-        {
-            var item = Items.ElementAt(i - 1);
-            <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
-                <Card>
-                    <PosterComponent Date="@(item.release_date??DateTime.MaxValue)" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
-                                     TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" RankUpDown="@item.RankUpDown"
-                                     WatchedList="Watched" WishList="Wish" OnlyYear="OnlyYear"></PosterComponent>
-                </Card>
-            </Column>
-            if ((i % GetTotalItems) == 0)
+    <div id="@SwiperId" class="swiper mb-2">
+        <div class="swiper-wrapper">
+            @foreach (var item in Items)
             {
-                <div class="w-100"></div>
+                <div class="swiper-slide">
+                    <Card>
+                        <PosterComponent Date="@(item.release_date??DateTime.MaxValue)" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
+                                         TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" RankUpDown="@item.RankUpDown"
+                                         WatchedList="Watched" WishList="Wish" OnlyYear="OnlyYear" CommentImage="CommentImage"></PosterComponent>
+                    </Card>
+                </div>
             }
-        }
-        @for (int i = 1; i <= (GetTotalItems - Items.Count % GetTotalItems); i++)
-        {
-            <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
-
-            </Column>
-        }
-    </Row>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
 </RenderControl>
 
 @code {
@@ -66,6 +60,7 @@
     [Parameter] public bool ShowFilter { get; set; } = false;
     [Parameter] public bool OnlyYear { get; set; } = false;
     [Parameter] public bool OrderByComments { get; set; } = false;
+    [Parameter] public bool CommentImage { get; set; } = false;
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; } = null;
@@ -81,12 +76,11 @@
 
     [Parameter] public MediaType TypeSelected { get; set; } = MediaType.movie;
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
-    private int GetTotalItems => AppStateStatic.OnFullHD ? TotalItemsFullHD : TotalItemsNotFullHD;
 
     public RenderControlCore<HashSet<MediaDetail>>? Core { get; set; } = new();
     public HashSet<MediaDetail> Items { get; set; } = new();
 
-    public string GetCustomStyle => "col-xl col-md-2 col-3";
+    private readonly string SwiperId = $"swiper-{Guid.NewGuid()}";
 
     protected override void OnInitialized()
     {
@@ -102,6 +96,13 @@
         {
             ex.ProcessException(Toast, Logger);
         }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        await JsRuntime.InvokeVoidAsync("initSwiper", SwiperId);
     }
 
     protected override async Task LoadDataRender()
@@ -155,7 +156,8 @@
 
     public async Task OpenCompleteList()
     {
-        await ModalService.CompleteListPopup(TitleHead, Watched, Watching, Wish, Items, MediaListApi, List, MaxItens, IsIMDB, TypeSelected, StringParameters, ShowPrivateAction, IsAuthenticated);
+        await ModalService.CompleteListPopup(TitleHead, Watched, Watching, Wish, Items, MediaListApi, List, MaxItens, IsIMDB, TypeSelected, StringParameters, 
+            ShowPrivateAction, IsAuthenticated, CommentImage);
     }
 
     private async Task OpenPopupMedia(MediaDetail? media)

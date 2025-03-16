@@ -36,12 +36,12 @@
     </Select>
 </HeaderComponent>
 <RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null || obj.Items.Empty())">
-    <Row HorizontalGutter="4" VerticalGutter="4">
+    <div class="grid-relative-container">
         @foreach (var item in GetFilteredProviders())
         {
             var favorite = myProviders?.Items.Any(a => a.id == item.id) ?? false;
 
-            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
+            <Div>
                 <Card Background="(favorite ? Background.Success : Background.Transparent)" Style="@(favorite ? "padding: 3px;" : "")">
                     <Blazorise.Link To="@($"/providers/{item.id}")">
                         <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" Style="cursor: pointer;" title="@item.name"></CardImage>
@@ -73,9 +73,9 @@
                         } *@
                     </Authorized>
                 </AuthorizeView>
-            </Column>
+            </Div>
         }
-    </Row>
+    </div>
 </RenderControl>
 
 @code {

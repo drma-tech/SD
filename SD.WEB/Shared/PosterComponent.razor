@@ -52,7 +52,7 @@
     }
     @if (string.IsNullOrEmpty(Poster))
     {
-        <CardImage Source="images/noimage.png" Alt="@Title" title="@Title" Style="cursor: pointer;"></CardImage>
+        <CardImage Source="images/noimage.png" Alt="@Title" title="@Title" Style="cursor: pointer; border-radius: 6px;"></CardImage>
 
         <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 2rem; color: black; text-align: center; font-weight: 500;">
             @Title
@@ -64,10 +64,10 @@
         {
             var wishedMovie = WishList?.Contains(MediaType.movie, TmdbId) ?? false;
             var wishedShow = WishList?.Contains(MediaType.tv, TmdbId) ?? false;
-            if (wishedMovie | wishedShow)
+            if (wishedMovie || wishedShow)
             {
                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" TextColor="TextColor.Light" Position="Position.Absolute"
-                                Style="bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
+                Style="bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
             }
         }
         bool watchedMovie = false;
@@ -76,23 +76,39 @@
         {
             watchedMovie = WatchedList?.Contains(MediaType.movie, TmdbId) ?? false;
             watchedShow = WatchedList?.Contains(MediaType.tv, TmdbId) ?? false;
-            if (watchedMovie | watchedShow)
+            if (watchedMovie || watchedShow)
             {
                 <Blazorise.Icon Name="FontAwesomeIcons.Eye" TextColor="TextColor.Light" Position="Position.Absolute"
-                                Style="bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
+                Style="bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
             }
         }
-        <CardImage Source="@Poster" Alt="@Title" title="@Title" Style=@($"cursor: pointer; {(watchedMovie | watchedShow ? "filter: grayscale(100%);" : "")}")></CardImage>
+        <CardImage Source="@Poster" Alt="@Title" title="@Title" Style=@($"cursor: pointer; border-radius: 6px; {(watchedMovie || watchedShow ? "filter: grayscale(100%);" : "")}")></CardImage>
     }
 </Blazorise.Link>
 @if (!string.IsNullOrEmpty(Comments))
 {
-    <CardBody Padding="Padding.Is1">
-        @foreach (var item in Comments.Split(CommentsSeparator))
-        {
-            <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" Style="white-space: inherit; font-size: 0.65rem;">@item</Badge>
-        }
-    </CardBody>
+    if (CommentImage)
+    {
+        <CardBody Padding="Padding.Is1">
+            <Row HorizontalGutter="4" VerticalGutter="4">
+                @foreach (var item in Comments.Split(CommentsSeparator))
+                {
+                    <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen" Border="Border.Secondary">
+                        <Image Source="@item" alt="@item" title="@item.Replace("logo/","").Replace(".png","")" Style="width: 100%"></Image>
+                    </Column>
+                }
+            </Row>
+        </CardBody>
+    }
+    else
+    {
+        <CardBody Padding="Padding.Is1">
+            @foreach (var item in Comments.Split(CommentsSeparator))
+            {
+                <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" Style="white-space: inherit; font-size: 0.65rem;">@item</Badge>
+            }
+        </CardBody>
+    }    
 }
 
 @code {
@@ -113,4 +129,5 @@
     [Parameter] public bool ShowWatched { get; set; } = true;
     [Parameter] public bool OnlyYear { get; set; } = false;
     [Parameter] public string? RankUpDown { get; set; }
+    [Parameter] public bool CommentImage { get; set; } = false;
 }

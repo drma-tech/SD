@@ -20,7 +20,7 @@
     <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list)=>{Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged();})"
                    IsIMDB="IsIMDB" MaxItens="MaxItens" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
                    StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false"
-                   Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
+                   Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated" CommentImage="CommentImage">
     </MediaListFull>
 </ModalBody>
 <ModalFooter>
@@ -49,6 +49,7 @@
     [Parameter] public bool IsIMDB { get; set; } = false;
     [Parameter] public MediaType? TypeSelected { get; set; }
     [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
+    [Parameter] public bool CommentImage { get; set; } = false;
 
     private string? GetTitle => List != null ? List.GetName() : TitleHead;
 

@@ -57,7 +57,7 @@ namespace SD.WEB.Core
 
         public static async Task CompleteListPopup(this IModalService service, string? TitleHead, WatchedList? watched, WatchingList? watching, WishList? wish, HashSet<MediaDetail> Items,
             IMediaListApi? MediaListApi, EnumLists? List, int MaxItens, bool IsIMDB, MediaType? TypeSelected, Dictionary<string, string> StringParameters,
-            bool showPrivateAction, bool IsAuthenticated)
+            bool showPrivateAction, bool IsAuthenticated, bool commentImage = false)
         {
             await service.Show<CompleteListPopup>(null, x =>
             {
@@ -79,6 +79,7 @@ namespace SD.WEB.Core
                 x.Add(x => x.StringParameters, StringParameters);
                 x.Add(x => x.ShowPrivateAction, showPrivateAction);
                 x.Add(x => x.IsAuthenticated, IsAuthenticated);
+                x.Add(x => x.CommentImage, commentImage);
             }, Options(ModalSize.ExtraLarge));
         }
 
@@ -114,8 +115,6 @@ namespace SD.WEB.Core
         {
             await service.Show<SettingsPopup>(null, x =>
             {
-                //x.Add(x => x.MySuggestions, MySuggestions);
-                //x.Add(x => x.MySuggestionsChanged, MySuggestionsChanged);
             }, Options(ModalSize.Default));
         }
 

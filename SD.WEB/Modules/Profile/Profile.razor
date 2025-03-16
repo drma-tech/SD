@@ -116,9 +116,9 @@
     }
 </Div> *@
 
-<MyProviderComponent Fake="Fake" WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MyProviderComponent>
+<MyProviderComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MyProviderComponent>
 
-<MySuggestions Fake="Fake" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MySuggestions>
+<MySuggestions Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MySuggestions>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
@@ -131,7 +131,6 @@
 
 @code {
     [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }
-    [Parameter][SupplyParameterFromQuery(Name = "Fake")] public bool Fake { get; set; } = false;
 
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
@@ -162,18 +161,7 @@
             await JsRuntime.InvokeVoidAsync("startPaddle", config.Token);
         }
 
-        if (Fake)
-        {
-            var http = httpClientFactory.CreateClient("RetryHttpClient");
-
-            Watched = await http.GetFromJsonAsync<WatchedList>("/data/WatchedList.json");
-            Watching = await http.GetFromJsonAsync<WatchingList>("/data/WatchingList.json");
-            Wish = await http.GetFromJsonAsync<WishList>("/data/WishList.json");
-        }
-        else
-        {
-            (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
-        }
+        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
 
         myProviders = await MyProvidersApi.Get(IsAuthenticated, null);
         Platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");

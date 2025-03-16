@@ -2,7 +2,6 @@ using AzureStaticWebApps.Blazor.Authentication;
 using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
-using BlazorPro.BlazorSize;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -10,7 +9,6 @@ using Microsoft.JSInterop;
 using Polly;
 using Polly.Extensions.Http;
 using SD.WEB;
-using SD.WEB.Modules.Administrator.Core;
 using SD.WEB.Modules.Auth.Core;
 using SD.WEB.Modules.Profile.Core;
 using SD.WEB.Modules.Provider.Core;
@@ -44,7 +42,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
         .AddFontAwesomeIcons();
 
     collection.AddPWAUpdater();
-    collection.AddMediaQueryService();
 
     collection.AddHttpClient("RetryHttpClient", c => { c.BaseAddress = new Uri(baseAddress); })
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
@@ -54,7 +51,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddOptions();
     collection.AddAuthorizationCore();
 
-    collection.AddScoped<AdministratorApi>();
     collection.AddScoped<PrincipalApi>();
     collection.AddScoped<LoginApi>();
     collection.AddScoped<WatchedListApi>();
@@ -88,8 +84,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
 
     collection.AddScoped<PaddleConfigurationApi>();
     collection.AddScoped<PaddleSubscriptionApi>();
-
-    collection.AddResizeListener();
 
     collection.AddLogging(logging =>
     {

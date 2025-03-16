@@ -2,7 +2,7 @@
 @using SD.WEB.Modules.Auth.Resources
 @inject PrincipalApi PrincipalApi
 
-@typeparam TModel
+@typeparam TModel where TModel : class
 
 @if (Status == LoadingStatus.Loading)
 {
@@ -145,7 +145,7 @@ else //ShowContent
     {
         Reset();
 
-        if (Status == LoadingStatus.Error | Status == LoadingStatus.Locked | Status == LoadingStatus.Premium) return;
+        if (Status == LoadingStatus.Error || Status == LoadingStatus.Locked || Status == LoadingStatus.Premium) return;
 
         Status = LoadingStatus.Loading;
         MessageLoading = msg ?? GlobalTranslations.CustomVisibilityLoading;
@@ -164,7 +164,7 @@ else //ShowContent
             return;
         }
 
-        if (Status == LoadingStatus.Error | Status == LoadingStatus.Locked | Status == LoadingStatus.Premium) return;
+        if (Status == LoadingStatus.Error || Status == LoadingStatus.Locked || Status == LoadingStatus.Premium) return;
 
         if (model == null || (ExpressionEmpty != null && ExpressionEmpty(model)))
             Status = LoadingStatus.Warning;
@@ -182,7 +182,7 @@ else //ShowContent
     {
         Reset();
 
-        if (Status == LoadingStatus.Error | Status == LoadingStatus.Locked | Status == LoadingStatus.Premium) return;
+        if (Status == LoadingStatus.Error || Status == LoadingStatus.Locked || Status == LoadingStatus.Premium) return;
 
         Status = LoadingStatus.Warning;
         MessageWarning = CustomMessageWarning ?? msg;

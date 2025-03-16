@@ -6,7 +6,7 @@
 @inject TmdbApi TmdbApi
 @inject WatchingListApi WatchingApi
 
-@inject IJSRuntime JS
+@inject IJSRuntime JsRuntime
 
 @if (ShowHeader)
 {
@@ -32,15 +32,16 @@
     </HeaderComponent>
 }
 <RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Watching" ExpressionEmpty="ExpressionEmpty">
-    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-        @foreach (var item in Items.Take(GetTotalItems) ?? [])
-        {
-            var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-            int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
-            var resultPerc = $"{percentComplete}%";
+    @if (FullScreen)
+    {
+        <div class="grid-relative-container mb-2">
+            @foreach (var item in Items.Take(GetTotalItems) ?? [])
+            {
+                var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                var resultPerc = $"{percentComplete}%";
 
-            <Column ColumnSize="@ColSize">
-                <Card Style="position: relative;">
+                <Card Style="position: relative; max-width: 100px;" TextAlignment="TextAlignment.Center">
                     @if (percentComplete == 100)
                     {
                         <Badge Color="Color.Success" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
@@ -65,9 +66,53 @@
                                    onclick="@(async()=>await ShowCollectionPopup(item.id, item.name))" Style="cursor: pointer;"></CardImage>
                     }
                 </Card>
-            </Column>
-        }
-    </Row>
+            }
+        </div>
+    }
+    else
+    {
+        <div id="@SwiperId" class="swiper mb-2">
+            <div class="swiper-wrapper">
+                @foreach (var item in Items.Take(GetTotalItems) ?? [])
+                {
+                    var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                    int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                    var resultPerc = $"{percentComplete}%";
+
+                    <div class="swiper-slide">
+                        <Card Style="position: relative;">
+                            @if (percentComplete == 100)
+                            {
+                                <Badge Color="Color.Success" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+                            }
+                            else
+                            {
+                                <Badge Color="Color.Light" TextColor="TextColor.Dark" Padding="Padding.Is1" Style="font-size: 10px; position: absolute; top: 3px; left: 3px;">@resultPerc</Badge>
+                            }
+
+                            @if (string.IsNullOrEmpty(item.logo))
+                            {
+                                <CardImage Source="images/noimage.png" Alt="@item.name" title="@item.name"
+                                           onclick="@(async()=>await ShowCollectionPopup(item.id, item.name))" Style="cursor: pointer;"></CardImage>
+
+                                <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 2rem; color: black; text-align: center; font-weight: 500;">
+                                    @item.name
+                                </Div>
+                            }
+                            else
+                            {
+                                <CardImage Source="@logo" Alt="@item.name" title="@item.name"
+                                           onclick="@(async()=>await ShowCollectionPopup(item.id, item.name))" Style="cursor: pointer;"></CardImage>
+                            }
+                        </Card>
+                    </div>
+                }
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    }
+
 </RenderControl>
 
 @code {
@@ -86,11 +131,18 @@
 
     private HashSet<WatchingListItem> Items => MediaType == MediaType.movie ? Watching?.Movies ?? new HashSet<WatchingListItem>() : Watching?.Shows ?? new HashSet<WatchingListItem>();
 
-    private int GetTotalItems => !FullScreen ? (AppStateStatic.OnFullHD ? 6 : 4) : 100;
+    private int GetTotalItems => FullScreen ? SubscriptionHelper.GetRestrictions(AccountProduct.Premium).Watching : SubscriptionHelper.GetRestrictions(AccountProduct.Basic).Watching;
     private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? Translations.MyMovieWatching : Translations.MyShowWatching);
-    private IFluentColumn ColSize => FullScreen ? ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile : ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile;
 
     public bool Updating { get; set; } = false;
+    private readonly string SwiperId = $"swiper-{Guid.NewGuid()}";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        await JsRuntime.InvokeVoidAsync("initSwiper", SwiperId);
+    }
 
     private async Task OpenCompleteList()
     {
@@ -211,6 +263,6 @@
 
     private async Task Share(string? link)
     {
-        await JS.InvokeVoidAsync("share", link);
+        await JsRuntime.InvokeVoidAsync("share", link);
     }
 }

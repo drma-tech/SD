@@ -11,39 +11,33 @@
             <Column ColumnSize="ColumnSize.IsAuto">
                 <Image Source="@ImageSource" Style="height: 60px;" alt="@ImageSource"></Image>
             </Column>
-            <Column Style="@($"max-width: calc(100% - {(163)}px);")">
-                <MediaQuery Media="@Breakpoints.XSmallDown">
-                    <Matched>
-                        <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
-                            @if (string.IsNullOrEmpty(Link))
-                            {
-                                @Title
-                            }
-                            else
-                            {
-                                <Div>@Title</Div>
-                                <a href="@Link" target="_blank" rel="nofollow">@(new Uri(Link ?? "").Host)</a>
-                            }
-                        </Paragraph>
-                    </Matched>
-                    <Unmatched>
-                        <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
-                            @if (string.IsNullOrEmpty(Link))
-                            {
-                                @Title
-                            }
-                            else
-                            {
-                                @($"{Title} ▪ ")
+            <Column>
+                <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom" Display="Display.Block.None.OnTablet">
+                    @if (string.IsNullOrEmpty(Link))
+                    {
+                        @Title
+                    }
+                    else
+                    {
+                        <Div>@Title</Div>
+                        <a href="@Link" target="_blank" rel="nofollow">@(new Uri(Link ?? "").Host)</a>
+                    }
+                </Paragraph>
+                <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom" Display="Display.None.Block.OnTablet">
+                    @if (string.IsNullOrEmpty(Link))
+                    {
+                        @Title
+                    }
+                    else
+                    {
+                        @($"{Title} ▪ ")
 
-                                <a href="@Link" target="_blank" rel="nofollow">@(new Uri(Link ?? "").Host)</a>
-                            }
-                        </Paragraph>
-                        <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is0.FromBottom">
-                            @Text
-                        </Paragraph>
-                    </Unmatched>
-                </MediaQuery>
+                        <a href="@Link" target="_blank" rel="nofollow">@(new Uri(Link ?? "").Host)</a>
+                    }
+                </Paragraph>
+                <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is0.FromBottom" Display="Display.None.Block.OnTablet">
+                    @Text
+                </Paragraph>
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
                 <Button Color="Color.Primary" Clicked="@(()=>Share(Navigation.Uri))" Size="Size.Small" Style="display: block; width: 100%;" Class="mb-1">

@@ -146,7 +146,7 @@ namespace SD.API.Functions
                     {
                         var compactModels = new MostPopularData() { ErrorMessage = obj.ErrorMessage };
 
-                        foreach (var item in obj?.Items.Take(10) ?? [])
+                        foreach (var item in obj?.Items.Take(14) ?? [])
                         {
                             if (item == null) continue;
                             compactModels.Items.Add(item);
@@ -461,6 +461,9 @@ namespace SD.API.Functions
         {
             try
             {
+                //https://www.metacritic.com/tv/severance/critic-reviews/?sort-by=Recently%20Added
+                //get first 20 reviews
+
                 return null; //todo: solve this anyway
 
                 //var id = req.GetQueryParameters()["id"];

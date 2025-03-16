@@ -1,7 +1,7 @@
 ﻿@using SD.WEB.Modules.Profile.Resources
 @inherits ComponentCore<Wishlist>
 
-@inject IJSRuntime JS
+@inject IJSRuntime JsRuntime
 
 @if (ShowHeader)
 {
@@ -20,19 +20,40 @@
     </HeaderComponent>
 }
 <RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Wish" ExpressionEmpty="ExpressionEmpty">
-    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-        @foreach (var item in Items.Take(GetTotalItems) ?? [])
-        {
-            var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-            <Column ColumnSize="@ColSize">
-                <Card>
+    @if (FullScreen)
+    {
+        <div class="grid-relative-container mb-2">
+            @foreach (var item in Items.Take(GetTotalItems) ?? [])
+            {
+                var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                <Card Style="max-width: 100px;" TextAlignment="TextAlignment.Center">
                     <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType"
                                      Clicked="@(async()=>await ShowMediaPopup(item.id, item.name))" ShowWished="false"
                                      WatchedList="Watched" WishList="Wish"></PosterComponent>
                 </Card>
-            </Column>
-        }
-    </Row>
+            }
+        </div>
+    }
+    else
+    {
+        <div id="@SwiperId" class="swiper mb-2">
+            <div class="swiper-wrapper">
+                @foreach (var item in Items.Take(GetTotalItems) ?? [])
+                {
+                    var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                    <div class="swiper-slide">
+                        <Card>
+                            <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType"
+                                             Clicked="@(async()=>await ShowMediaPopup(item.id, item.name))" ShowWished="false"
+                                             WatchedList="Watched" WishList="Wish"></PosterComponent>
+                        </Card>
+                    </div>
+                }
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    }
 </RenderControl>
 
 @code {
@@ -51,9 +72,17 @@
 
     private HashSet<WishListItem> Items => MediaType == MediaType.movie ? Wish?.Movies ?? new HashSet<WishListItem>() : Wish?.Shows ?? new HashSet<WishListItem>();
 
-    private int GetTotalItems => !FullScreen ? (AppStateStatic.OnFullHD ? 6 : 4) : 100;
+    private int GetTotalItems => FullScreen ? SubscriptionHelper.GetRestrictions(AccountProduct.Premium).Wishlist : SubscriptionHelper.GetRestrictions(AccountProduct.Basic).Wishlist;
     private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? Translations.MyMovieWishlist : Translations.MyShowWishlist);
-    private IFluentColumn ColSize => FullScreen ? ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile : ColumnSize.Is2.OnFullHD.Is3.OnDesktop.Is3.OnMobile;
+
+    private readonly string SwiperId = $"swiper-{Guid.NewGuid()}";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        await JsRuntime.InvokeVoidAsync("initSwiper", SwiperId);
+    }
 
     private async Task OpenCompleteList()
     {
@@ -69,6 +98,6 @@
 
     private async Task Share(string? link)
     {
-        await JS.InvokeVoidAsync("share", link);
+        await JsRuntime.InvokeVoidAsync("share", link);
     }
 }

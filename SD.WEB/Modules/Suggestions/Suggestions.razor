@@ -2,6 +2,8 @@
 <SeoHeader Title="@SeoTranslations.SuggestionsTitle" Description="@SeoTranslations.SuggestionsDescription" Url="/suggestions"></SeoHeader>
 @inherits PageCore<Suggestions>
 
+@inject IJSRuntime JsRuntime
+
 @* <Div TextAlignment="TextAlignment.Center">
     @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
     {
@@ -16,79 +18,77 @@
     }
 </Div> *@
 
-<HeaderComponent Title="@Resources.Translations.TitleAwards">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand_awards = !expand_awards; })" title="Show all">
-        <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
-    </Button>
-</HeaderComponent>
-<Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-    @foreach (var item in Awards.Take(GetTotalItems(expand_awards)))
-    {
-        <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
-            <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
-                <Blazorise.Link To="@item.link" Title="@item.name">
-                    <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
-                </Blazorise.Link>
-                <CardBody Padding="Padding.Is1" Style="min-height: 38px">
-                    <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 0.75rem;">@item.name</CardTitle>
-                </CardBody>
-            </Card>
-        </Column>
-    }
-</Row>
+<HeaderComponent Title="@Resources.Translations.TitleAwards"></HeaderComponent>
+<div id="@SwiperAwards" class="swiper mb-2">
+    <div class="swiper-wrapper">
+        @foreach (var item in Awards)
+        {
+            <div class="swiper-slide">
+                <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
+                    <Blazorise.Link To="@item.link" Title="@item.name">
+                        <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
+                    </Blazorise.Link>
+                    <CardBody Padding="Padding.Is1" Style="min-height: 38px">
+                        <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 0.75rem;">@item.name</CardTitle>
+                    </CardBody>
+                </Card>
+            </div>
+        }
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
 
-<HeaderComponent Title="@Resources.Translations.TitleSpecializedSites">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand_sites = !expand_sites; })" title="Show all">
-        <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
-    </Button>
-</HeaderComponent>
-<Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-    @foreach (var item in Sites.Take(GetTotalItems(expand_sites)))
-    {
-        <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
-            <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
-                <Blazorise.Link To="@item.link" Title="@item.name">
-                    <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
-                </Blazorise.Link>
-                <CardBody Padding="Padding.Is1" Style="min-height: 38px">
-                    <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 0.75rem;">@item.name</CardTitle>
-                </CardBody>
-            </Card>
-        </Column>
-    }
-</Row>
+<HeaderComponent Title="@Resources.Translations.TitleSpecializedSites"></HeaderComponent>
+<div id="@SwiperSites" class="swiper mb-2">
+    <div class="swiper-wrapper">
+        @foreach (var item in Sites)
+        {
+            <div class="swiper-slide">
+                <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
+                    <Blazorise.Link To="@item.link" Title="@item.name">
+                        <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
+                    </Blazorise.Link>
+                    <CardBody Padding="Padding.Is1" Style="min-height: 38px">
+                        <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 0.75rem;">@item.name</CardTitle>
+                    </CardBody>
+                </Card>
+            </div>
+        }
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
 
-<HeaderComponent Title="@Resources.Translations.TitleSpecials">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>{ expand_specials = !expand_specials; })" title="Show all">
-        <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
-    </Button>
-</HeaderComponent>
-<Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-    @foreach (var item in Specials.Take(GetTotalItems(expand_specials)))
-    {
-        <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile" TextAlignment="TextAlignment.Center">
-            <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
-                <Blazorise.Link To="@item.link" Title="@item.name">
-                    <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
-                </Blazorise.Link>
-                <CardBody Padding="Padding.Is1" Style="min-height: 38px">
-                    <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 0.75rem;">@item.name</CardTitle>
-                </CardBody>
-            </Card>
-        </Column>
-    }
-</Row>
+<HeaderComponent Title="@Resources.Translations.TitleSpecials"></HeaderComponent>
+<div id="@SwiperSpecials" class="swiper mb-2">
+    <div class="swiper-wrapper">
+        @foreach (var item in Specials)
+        {
+            <div class="swiper-slide">
+                <Card Class="p-0" Border="Border.Secondary" Background="Background.Light">
+                    <Blazorise.Link To="@item.link" Title="@item.name">
+                        <CardImage Source="@(item.logo_path)" Alt="@item.name" Style="cursor: pointer;"></CardImage>
+                    </Blazorise.Link>
+                    <CardBody Padding="Padding.Is1" Style="min-height: 38px">
+                        <CardTitle Size="3" Margin="Margin.Is0" Style="font-size: 0.75rem;">@item.name</CardTitle>
+                    </CardBody>
+                </Card>
+            </div>
+        }
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
 
 @code {
     private List<Item> Awards { get; set; } = new();
     private List<Item> Sites { get; set; } = new();
     private List<Item> Specials { get; set; } = new();
 
-    private int GetTotalItems(bool expand) => AppStateStatic.OnMobile && !expand ? 4 : 12;
-
-    private bool expand_awards { get; set; }
-    private bool expand_sites { get; set; }
-    private bool expand_specials { get; set; }
+    private readonly string SwiperAwards = $"swiper-{Guid.NewGuid()}";
+    private readonly string SwiperSites = $"swiper-{Guid.NewGuid()}";
+    private readonly string SwiperSpecials = $"swiper-{Guid.NewGuid()}";
 
     public class Item
     {
@@ -130,5 +130,14 @@
         Specials.Add(new Item() { name = "Walt Disney Pictures", logo_path = "logo/disney.png", link = "/suggestions/upcoming-disney" });
         Specials.Add(new Item() { name = "Highest grossing movies", logo_path = "logo/grossing-movies.png", link = "/suggestions/grossing-movies" });
         Specials.Add(new Item() { name = "Most Expected Movies of 2025", logo_path = "logo/rotten-tomatoes.png", link = "/suggestions/movies-2025" });
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        await JsRuntime.InvokeVoidAsync("initSwiper", SwiperAwards);
+        await JsRuntime.InvokeVoidAsync("initSwiper", SwiperSites);
+        await JsRuntime.InvokeVoidAsync("initSwiper", SwiperSpecials);
     }
 }

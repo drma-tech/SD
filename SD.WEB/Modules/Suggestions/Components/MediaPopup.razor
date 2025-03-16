@@ -180,7 +180,7 @@
 
                                                         var movieWatched = Watched?.Contains(MediaType.movie, item.id) ?? false;
                                                         var showWatched = Watching?.GetWatchingItems(MediaType.tv, media.tmdb_id).Any(a => a == item.id) ?? false;
-                                                        if (movieWatched | showWatched)
+                                                        if (movieWatched || showWatched)
                                                         {
                                                             <Blazorise.Icon Name="FontAwesomeIcons.Eye" TextColor="TextColor.Light"
                                                                             Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
@@ -307,13 +307,13 @@
         imdb_id = await ExternalIdApi.GetImdbId(type, tmdb_id);
         Core?.LoadingFinished?.Invoke(media);
 
-        EnglishTitle = media?.original_title;//?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
+        EnglishTitle = media?.original_title;
 
         if (media != null && media.original_language != "en")
         {
             //title must be in english
             var en_media = await TmdbApi.GetMediaDetail(tmdb_id, type!.Value, "en-US");
-            EnglishTitle = en_media?.title;//?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
+            EnglishTitle = en_media?.title;
         }
 
         EnglishTitle = EnglishTitle?.Replace("&", "");

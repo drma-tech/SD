@@ -18,7 +18,7 @@ var app = new HostBuilder()
             config.AddUserSecrets<Program>();
         }
 
-        ApiStartup.Startup(config.Build().GetValue<string>("CosmosDB:ConnectionString"));
+        ApiStartup.Startup(config.Build().GetValue<string>("CosmosDB:ConnectionString")!);
     })
     .ConfigureServices(ConfigureServices)
     .ConfigureLogging(ConfigureLogging)
@@ -30,7 +30,6 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
 {
     services.AddSingleton<CosmosRepository>();
     services.AddSingleton<CosmosCacheRepository>();
-    services.AddSingleton<CosmosEmailRepository>();
     services.AddApplicationInsightsTelemetryWorkerService();
     services.ConfigureFunctionsApplicationInsights();
 }

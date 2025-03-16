@@ -10,24 +10,19 @@
     </Button>
 </HeaderComponent>
 <RenderControl Core="Core" Model="News" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
-        <Carousel @bind-SelectedSlide="@selectedSlide">
-            @foreach (var item in News?.Data?.Items ?? [])
-            {
-                <CarouselSlide Name="@item.id">
-                    <div style="position: absolute; top: 0px; left: 0px; background-color: lime; opacity: 70%; font: caption;" class="px-1 m-2">
-                        @if (!string.IsNullOrEmpty(item.title))
-                        {
-                            @((MarkupString)item.title)
-                        }
+    <Carousel @bind-SelectedSlide="@selectedSlide">
+        @foreach (var item in News?.Data?.Items ?? [])
+        {
+            <CarouselSlide Name="@item.id">
+                <Blazorise.Link To="@item?.link" Target="Target.Blank" Title="@item?.title">
+                    <Image Source="@item?.url_img" title="@item?.title" alt="@item?.title" Text="@item?.title" Display="Display.Block" Width="Width.Is100" />
+                    <div class="carousel-caption d-none d-md-block p-1" style="background-color: lime; opacity: 70%; color: black;">
+                        <p>@((MarkupString)item.title)</p>
                     </div>
-                    <Blazorise.Link To="@item?.link" Target="Target.Blank" Title="@item?.title">
-                        <Image Source="@item?.url_img" title="@item?.title" alt="@item?.title" Text="@item?.title" Display="Display.Block" Width="Width.Is100" />
-                    </Blazorise.Link>
-                </CarouselSlide>
-            }
-        </Carousel>
-    </Row>
+                </Blazorise.Link>
+            </CarouselSlide>
+        }
+    </Carousel>
 </RenderControl>
 
 @code {

@@ -8,9 +8,32 @@
 
 <Bar Mode="BarMode.Horizontal" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark" Padding="Padding.Is2">
     <Container Fluid="true" Padding="Padding.Is0.OnX">
-        <BarToggler Bar="@AppStateStatic.Sidebar" Background="Background.Dark" Display="Display.None.Block.OnWidescreen"
-                    Margin="Margin.Is2.FromEnd" Padding="Padding.Is0" Style="height: 31px; width: 31px;" />
-        <BarMenu Style="flex-basis: unset !important;">
+        <BarBrand Display="Display.None.Block.OnDesktop" Padding="Padding.Is0">
+            Streaming Discovery
+        </BarBrand>
+        <BarMenu Style="flex-basis: unset !important;" Class="d-max-768-block d-min-768-contents">
+            <BarStart Style="flex-flow: row;" Display="Display.None.Flex.Row.OnWidescreen">
+                <BarItem Margin="Margin.Is2.FromEnd">
+                    <BarLink To="/" Match="Match.All" Title="@WEB.Resources.Menu.Home">
+                        <BarIcon IconName="FontAwesomeIcons.Home" /> @WEB.Resources.Menu.Home
+                    </BarLink>
+                </BarItem>
+                <BarItem Margin="Margin.Is2.FromEnd">
+                    <BarLink To="/profile" Match="Match.Prefix" Title="@WEB.Resources.Menu.Profile">
+                        <BarIcon IconName="FontAwesomeIcons.UserCircle" /> @WEB.Resources.Menu.Profile
+                    </BarLink>
+                </BarItem>
+                <BarItem Margin="Margin.Is2.FromEnd">
+                    <BarLink To="/providers" Match="Match.Prefix" Title="@WEB.Resources.Menu.Providers">
+                        <BarIcon IconName="FontAwesomeIcons.PlayCircle" /> @WEB.Resources.Menu.Providers
+                    </BarLink>
+                </BarItem>
+                <BarItem Margin="Margin.Is2.FromEnd">
+                    <BarLink To="/suggestions" Match="Match.Prefix" Title="@WEB.Resources.Menu.Suggestions">
+                        <BarIcon IconName="FontAwesomeIcons.ListOl" /> @WEB.Resources.Menu.Suggestions
+                    </BarLink>
+                </BarItem>
+            </BarStart>
             <Buttons Role="ButtonsRole.Toolbar" Float="Float.End">
                 <Buttons Margin="Margin.Is2.FromEnd" Size="Size.Small">
                     <Button Color="Color.Warning" Clicked="OpenSubscription">

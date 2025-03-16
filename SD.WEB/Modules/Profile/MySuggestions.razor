@@ -5,12 +5,11 @@
 @using SD.WEB.Modules.Suggestions.Core;
 @inherits ComponentCore<MySuggestions>
 
-@inject IHttpClientFactory httpClientFactory
-
 @inject MyProvidersApi MyProvidersApi
 @inject MySuggestionsApi MySuggestionsApi
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject TmdbApi TmdbApi
+@inject IJSRuntime JsRuntime
 
 <HeaderComponent IconName="@FontAwesomeIcons.ThumbsUp" Title="@Translations.MySuggestions">
     @if (Client?.ClientePaddle?.IsPaidUser ?? false)
@@ -39,40 +38,42 @@
 
 <RenderControl @ref="render" Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())"
                PrivateContent="true" PremiumFeature="true" PremiumDescription="@Translations.OurSuggestions2">
-    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is2.FromBottom">
-        @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)).Take(GetTotalItems) ?? new List<SuggestionListItem>())
-        {
-            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is3.OnMobile">
-                <Card>
-                    <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                               onclick="@(async()=>await ShowMediaPopup(item.id, item.name, SearchType))" Style="cursor: pointer;"></CardImage>
-                    <CardBody Padding="Padding.Is1">
-                        <Row HorizontalGutter="4" VerticalGutter="4">
-                            @foreach (var provider in item.Providers)
-                            {
-                                <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen">
-                                    <Image Source="@(TmdbOptions.OriginalPosterPath + provider)" alt="@provider" Style="width: 100%"></Image>
-                                </Column>
-                            }
-                        </Row>
-                    </CardBody>
-                </Card>
-            </Column>
-        }
-    </Row>
+
+    <div id="@SwiperId" class="swiper mb-2">
+        <div class="swiper-wrapper">
+            @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)) ?? new List<SuggestionListItem>())
+            {
+                <div class="swiper-slide">
+                    <Card>
+                        <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" title="@item.name"
+                                   onclick="@(async()=>await ShowMediaPopup(item.id, item.name, SearchType))" Style="cursor: pointer;"></CardImage>
+                        <CardBody Padding="Padding.Is1">
+                            <Row HorizontalGutter="4" VerticalGutter="4">
+                                @foreach (var provider in item.Providers)
+                                {
+                                    <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen">
+                                        <Image Source="@(TmdbOptions.OriginalPosterPath + provider)" alt="@provider" Style="width: 100%"></Image>
+                                    </Column>
+                                }
+                            </Row>
+                        </CardBody>
+                    </Card>
+                </div>
+            }
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
 </RenderControl>
 
 @code {
     private MyProviders? myProviders { get; set; }
     private SD.Shared.Models.MySuggestions? mySuggestions { get; set; }
     public MediaType SearchType { get; set; } = MediaType.movie;
-    private int GetTotalItems => AppStateStatic.OnFullHD ? 12 : 8;
-
-    [Parameter] public bool Fake { get; set; } = false;
 
     public bool MovieUpdating { get; set; } = false;
     public bool ShowUpdating { get; set; } = false;
-    private RenderControl<SD.Shared.Models.MySuggestions?>? render;
+    private RenderControl<SD.Shared.Models.MySuggestions>? render;
 
     public RenderControlCore<SD.Shared.Models.MySuggestions?>? Core { get; set; } = new();
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
@@ -82,12 +83,20 @@
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     public ClientePrincipal? Client { get; set; }
+    private readonly string SwiperId = $"swiper-{Guid.NewGuid()}";
 
-    private bool GenresChanged => mySuggestions?.MovieGenres.Any() ?? false | mySuggestions?.TvGenres.Any() ?? false;
+    private bool GenresChanged => (mySuggestions?.MovieGenres.Any() ?? false) || (mySuggestions?.TvGenres.Any() ?? false);
 
     protected override void OnInitialized()
     {
         PrincipalApi.DataChanged += async (ClientePrincipal? model) => { Client = model; await LoadData(); StateHasChanged(); };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        await JsRuntime.InvokeVoidAsync("initSwiper", SwiperId);
     }
 
     protected override async Task LoadDataRender()
@@ -99,31 +108,22 @@
     {
         Core?.ShowLoading();
 
-        if (Fake)
-        {
-            var http = httpClientFactory.CreateClient("RetryHttpClient");
+        myProviders = await MyProvidersApi.Get(IsAuthenticated, null);
 
-            mySuggestions = await http.GetFromJsonAsync<SD.Shared.Models.MySuggestions>("/data/MySuggestions.json");
+        if (myProviders == null || myProviders.Items.Empty())
+        {
+            Core?.ShowWarning(Translations.OurSuggestions1);
         }
         else
         {
-            myProviders = await MyProvidersApi.Get(IsAuthenticated, null);
+            if (Client != null && render != null) render.Status = LoadingStatus.Loading; //force reset Premium status
 
-            if (myProviders == null || myProviders.Items.Empty())
+            Client ??= await PrincipalApi.Get(IsAuthenticated);
+            mySuggestions = await MySuggestionsApi.Get(Client?.ClientePaddle?.ActiveProduct, IsAuthenticated, Core);
+
+            if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
             {
-                Core?.ShowWarning(Translations.OurSuggestions1);
-            }
-            else
-            {
-                if (Client != null && render != null) render.Status = LoadingStatus.Loading; //force reset Premium status
-
-                Client ??= await PrincipalApi.Get(IsAuthenticated);
-                mySuggestions = await MySuggestionsApi.Get(Client?.ClientePaddle?.ActiveProduct, IsAuthenticated, Core);
-
-                if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
-                {
-                    Core?.ShowWarning(Translations.OurSuggestions2);
-                }
+                Core?.ShowWarning(Translations.OurSuggestions2);
             }
         }
 
@@ -260,7 +260,7 @@
                                 var RentList = providers.GetRentListProviders(region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
                                 var BuyList = providers.GetBuyListProviders(region).Where(w => myProviders.Items.Any(a => a.id == w.provider_id.ToString()));
 
-                                allProviders.AddRange( FreeList.Concat(AdsList).Concat(FlatRateList).Concat(FlatRateBuyList).Concat(RentList).Concat(BuyList) ?? []);
+                                allProviders.AddRange(FreeList.Concat(AdsList).Concat(FlatRateList).Concat(FlatRateBuyList).Concat(RentList).Concat(BuyList) ?? []);
                             }
 
                             mySuggestions.Items(MediaType.tv).Add(new SuggestionListItem(item.tmdb_id, item.title, item.poster_small, allProviders.Select(s => s.logo_path ?? "").Distinct().ToArray()));

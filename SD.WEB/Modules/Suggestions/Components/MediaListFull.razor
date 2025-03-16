@@ -13,27 +13,16 @@
     <HeaderComponent Title="@GetTitle"></HeaderComponent>
 }
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
-    <Row HorizontalGutter="4" VerticalGutter="4">
+    <div class="grid-relative-container">
         @for (int i = 1; i <= Items.Count; i++)
         {
             var item = Items.ElementAt(i - 1);
-            <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
-                <Card>
-                    <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments" CommentsSeparator="@CommentsSeparator"
-                    TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" WatchedList="Watched" WishList="Wish"></PosterComponent>
-                </Card>
-            </Column>
-            if ((i % GetTotalItems) == 0)
-            {
-                <div class="w-100"></div>
-            }
+            <Card TextAlignment="TextAlignment.Center">
+                <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments" CommentsSeparator="@CommentsSeparator"
+                                 TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" WatchedList="Watched" WishList="Wish" CommentImage="CommentImage"></PosterComponent>
+            </Card>
         }
-        @for (int i = 1; i <= (GetTotalItems - Items.Count % GetTotalItems); i++)
-        {
-            <Column ColumnSize="ColumnSize.Is(GetCustomStyle)" TextAlignment="TextAlignment.Center">
-            </Column>
-        }
-    </Row>
+    </div>
 </RenderControl>
 @if (MediaListApi != null)
 {
@@ -65,10 +54,9 @@
     [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
     [Parameter] public EnumLists? List { get; set; }
     [Parameter] public string? CommentsSeparator { get; set; } = ",";
+    [Parameter] public bool CommentImage { get; set; } = false;
 
     private string? GetTitle => List != null ? List.GetName() : TitleHead;
-    private string GetCustomStyle => "col-xl col-md-2 col-3";
-    private int GetTotalItems => AppStateStatic.OnFullHD ? 10 : 8;
     public bool DisableLoadMore { get; set; } = false;
     private int currentPage = 1;
 

@@ -62,35 +62,35 @@
     {
         public abstract int FavoriteProviders { get; }
         public abstract int MySuggestions { get; }
-        public abstract int Watched { get; }
-        public abstract int Watching { get; }
-        public abstract int Wishlist { get; }
+        public abstract int Watched { get; } //30x
+        public abstract int Watching { get; } //4x
+        public abstract int Wishlist { get; } //4x
     }
 
     public class BasicRestrictions : Restrictions
     {
         public override int FavoriteProviders => 2;
         public override int MySuggestions => 0;
-        public override int Watched => 10;
-        public override int Watching => 6;
-        public override int Wishlist => 6;
+        public override int Watched => 14;
+        public override int Watching => 7;
+        public override int Wishlist => 7;
     }
 
     public class StandardRestrictions : Restrictions
     {
-        public override int FavoriteProviders => 12;
-        public override int MySuggestions => 12;
-        public override int Watched => 300;
-        public override int Watching => 50;
-        public override int Wishlist => 50;
+        public override int FavoriteProviders => 10;
+        public override int MySuggestions => 14;
+        public override int Watched => 420;
+        public override int Watching => 56;
+        public override int Wishlist => 56;
     }
 
     public class PremiumRestrictions : Restrictions
     {
-        public override int FavoriteProviders => 24;
-        public override int MySuggestions => 24;
+        public override int FavoriteProviders => 20;
+        public override int MySuggestions => 20;
         public override int Watched => 600;
-        public override int Watching => 100;
-        public override int Wishlist => 100;
+        public override int Watching => 80;
+        public override int Wishlist => 80;
     }
 }
