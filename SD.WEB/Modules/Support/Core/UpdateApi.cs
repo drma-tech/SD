@@ -8,7 +8,6 @@ namespace SD.WEB.Modules.Support.Core
         private struct Endpoint
         {
             public const string Get = "public/updates/get";
-            public const string GetCountry = "public/country/get";
             public const string Add = "adm/updates/add";
             public const string Delete = "adm/updates/delete";
         }
@@ -16,11 +15,6 @@ namespace SD.WEB.Modules.Support.Core
         public async Task<HashSet<UpdateModel>> Get(RenderControlCore<HashSet<UpdateModel>>? core)
         {
             return await GetListAsync(Endpoint.Get, core);
-        }
-
-        public async Task<string?> GetCountry()
-        {
-            return await GetValueAsync(Endpoint.GetCountry, null);
         }
 
         public async Task<UpdateModel?> Add(UpdateModel model)

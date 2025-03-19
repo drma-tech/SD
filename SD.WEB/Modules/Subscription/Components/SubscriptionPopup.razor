@@ -4,7 +4,6 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Modules.Subscription.Resources
-@using SD.WEB.Modules.Support.Core
 
 @inherits ComponentCore<SubscriptionPopup>
 
@@ -13,7 +12,6 @@
 @implements IDisposable
 @inject PaddleConfigurationApi ConfigurationApi
 @inject PaddleSubscriptionApi SubscriptionApi
-@inject UpdateApi UpdateApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">
@@ -26,42 +24,12 @@
     {
         <Alert Visible="true" Color="Color.Warning">
             <AlertMessage>
-                Our services are available worldwide, but certain limitations apply due to international sanctions, legal obligations, and internal policies. At the moment, we are unable to support customers/business links to the following countries:
+                @($"Unfortunately, due to legal and policy restrictions, we are unable to offer our services in {Countries[CurrentCountry!]}.")
             </AlertMessage>
-            <AlertDescription>
-                Afghanistan
-                Belarus
-                Bulgaria*
-                Burkina Faso
-                Cameroon
-                Croatia*
-                Democratic Republic of Congo
-                Haiti
-                Iran
-                Kenya
-                Monaco*
-                Mali
-                Mozambique
-                Myanmar
-                Namibia
-                Nigeria
-                North Korea
-                Philippines
-                Russia
-                Senegal
-                South Africa
-                South Sudan
-                Syria
-                Tanzania
-                Venezuela
-                Vietnam
-                Yemen
-            </AlertDescription>
         </Alert>
     }
     else
     {
-        <span>country: @Country</span>
         @if (Client?.ClientePaddle == null)
         {
             <div class="mt-2" style="text-align: center;">
@@ -316,11 +284,11 @@
                         else
                         {
                             <Button Color="Color.Primary" Type="ButtonType.Link" Target="Target.Blank" Margin="Margin.Is1.FromEnd"
-                            To="@Subscription?.data?.management_urls?.update_payment_method">
+                                    To="@Subscription?.data?.management_urls?.update_payment_method">
                                 <Blazorise.Icon Name="FontAwesomeIcons.CreditCard" /> @Translations.UpdatePaymentDetails
                             </Button>
                             <Button Color="Color.Danger" Type="ButtonType.Link" Target="Target.Blank"
-                            To="@Subscription?.data?.management_urls?.cancel">
+                                    To="@Subscription?.data?.management_urls?.cancel">
                                 <Blazorise.Icon Name="FontAwesomeIcons.UserAltSlash" /> @Translations.CancelSubscription
                             </Button>
                         }
@@ -354,8 +322,38 @@
 
     private AccountCycle Cycle { get; set; } = AccountCycle.Monthly;
 
-    public bool BlockedCountry { get; set; } = false;
-    public string? Country { get; set; }
+    private string? CurrentCountry { get; set; }
+    private bool BlockedCountry { get; set; }
+    private readonly Dictionary<string, string> Countries = new Dictionary<string, string>
+    {
+        { "AF", "Afghanistan" },
+        { "BY", "Belarus" },
+        { "BG", "Bulgaria" },
+        { "BF", "Burkina Faso" },
+        { "CM", "Cameroon" },
+        { "HR", "Croatia" },
+        { "CD", "Democratic Republic of Congo" },
+        { "HT", "Haiti" },
+        { "IR", "Iran" },
+        { "KE", "Kenya" },
+        { "MC", "Monaco" },
+        { "ML", "Mali" },
+        { "MZ", "Mozambique" },
+        { "MM", "Myanmar" },
+        { "NA", "Namibia" },
+        { "NG", "Nigeria" },
+        { "KP", "North Korea" },
+        { "PH", "Philippines" },
+        { "RU", "Russia" },
+        { "SN", "Senegal" },
+        { "ZA", "South Africa" },
+        { "SS", "South Sudan" },
+        { "SY", "Syria" },
+        { "TZ", "Tanzania" },
+        { "VE", "Venezuela" },
+        { "VN", "Vietnam" },
+        { "YE", "Yemen" }
+    };
 
     private class Plan
     {
@@ -379,7 +377,15 @@
 
     protected override async Task LoadDataRender()
     {
-        Country = await UpdateApi.GetCountry();
+        CurrentCountry = await ConfigurationApi.GetCountry();
+
+        if (CurrentCountry.NotEmpty())
+        {
+            //https://www.xolo.io/zz-en/faq/xolo-leap/category/get-started/article/do-you-accept-customers-from-all-countries
+            BlockedCountry = Countries.ContainsKey(CurrentCountry!);
+
+            if (BlockedCountry) return;
+        }
 
         Config = await ConfigurationApi.GetConfigurations();
         if (Config == null) throw new NotificationException("server comunication error");

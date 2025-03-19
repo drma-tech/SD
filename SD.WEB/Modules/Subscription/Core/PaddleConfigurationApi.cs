@@ -13,5 +13,18 @@ namespace SD.WEB.Modules.Subscription.Core
         {
             return await GetAsync(Endpoint.configurations, null);
         }
+
+        public async Task<string?> GetCountry()
+        {
+            try
+            {
+                var response = await _http.GetAsync(new Uri("https://ipinfo.io/country"));
+                return (await response.Content.ReadAsStringAsync()).Trim();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }
