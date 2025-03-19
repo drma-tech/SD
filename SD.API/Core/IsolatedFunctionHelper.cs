@@ -44,7 +44,7 @@ namespace SD.API.Core
             return model;
         }
 
-        public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, ttlCache maxAge,  CancellationToken cancellationToken) where T : class
+        public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, ttlCache maxAge, CancellationToken cancellationToken) where T : class
         {
             if (doc != null)
             {

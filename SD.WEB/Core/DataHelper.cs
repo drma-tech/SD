@@ -18,7 +18,7 @@
 
         public static string GetElapsedTime(this DateTime date)
         {
-            return GetElapsedTime((DateTimeOffset)date);
+            return ((DateTimeOffset)date).GetElapsedTime();
         }
 
         public static string GetElapsedTime(this DateTimeOffset date)

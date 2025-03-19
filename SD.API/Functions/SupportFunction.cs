@@ -1,11 +1,30 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.Shared.Models.Support;
+using System.Text.Json;
 
 namespace SD.API.Functions
 {
     public class SupportFunction(CosmosRepository repo)
     {
+        [Function("country")]
+        public async Task<HttpResponseData> GetCountry([HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/country/get")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            var userIp = req.Headers.GetValues("X-Forwarded-For").FirstOrDefault()?.Split(',')[0].Trim();
+
+            string geoApiUrl = $"http://ip-api.com/json/{userIp}";
+            var response = await ApiStartup.HttpClient.GetStringAsync(geoApiUrl);
+            var obj = JsonSerializer.Deserialize<GeoLocationResponse>(response);
+
+            return await req.CreateResponse(obj?.CountryCode, ttlCache.one_day, cancellationToken);
+        }
+
+        public sealed class GeoLocationResponse
+        {
+            public string? Country { get; set; }
+            public string? CountryCode { get; set; }
+        }
+
         [Function("UpdatesGet")]
         public async Task<HttpResponseData> UpdatesGet(
             [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/updates/get")] HttpRequestData req, CancellationToken cancellationToken)

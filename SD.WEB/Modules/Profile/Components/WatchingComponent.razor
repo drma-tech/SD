@@ -5,6 +5,7 @@
 @inherits ComponentCore<WatchingComponent>
 @inject TmdbApi TmdbApi
 @inject WatchingListApi WatchingApi
+@inject WatchedListApi WatchedApi
 
 @inject IJSRuntime JsRuntime
 
@@ -179,31 +180,45 @@
 
                 foreach (var tmdb_id in Watched?.GetItems(MediaType.movie) ?? new())
                 {
-                    var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.movie);
-                    if (media == null) continue;
-                    var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
-
-                    if (hasCollection && !watching!.DeletedMovies.Any(a => a == media.collectionId.ToString()))
+                    try
                     {
-                        var item = watching?.GetItem(MediaType.movie, media.collectionId?.ToString());
+                        var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.movie);
+                        if (media == null) continue;
+                        var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-                        if (item == null)
+                        if (hasCollection && !watching!.DeletedMovies.Any(a => a == media.collectionId.ToString()))
                         {
-                            var items = new HashSet<string>();
-                            items.Add(tmdb_id);
+                            var item = watching?.GetItem(MediaType.movie, media.collectionId?.ToString());
 
-                            item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                            if (item == null)
+                            {
+                                var items = new HashSet<string>();
+                                items.Add(tmdb_id);
+
+                                item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                            }
+                            else
+                            {
+                                item.maxItems = media.Collection.Count;
+                                item.watched.Add(tmdb_id);
+                            }
+
+                            watching?.AddItem(MediaType.movie, item);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.Message.Contains("The resource you requested could not be found"))
+                        {
+                            Watched = await WatchedApi.Remove(MediaType.movie, tmdb_id);
                         }
                         else
                         {
-                            item.maxItems = media.Collection.Count;
-                            item.watched.Add(tmdb_id);
+                            throw;
                         }
-
-                        watching?.AddItem(MediaType.movie, item);
                     }
                 }
-
+               
                 watching = await WatchingApi.Sync(MediaType.movie, watching, Core);
 
                 Updating = false;
@@ -219,28 +234,42 @@
 
                 foreach (var tmdb_id in Watched?.GetItems(MediaType.tv) ?? new())
                 {
-                    var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.tv);
-                    if (media == null) continue;
-                    var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
-
-                    if (hasCollection && !watching!.DeletedShows.Any(a => a == media.tmdb_id))
+                    try
                     {
-                        var item = watching?.GetItem(MediaType.tv, media.tmdb_id);
+                        var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.tv);
+                        if (media == null) continue;
+                        var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-                        if (item == null)
+                        if (hasCollection && !watching!.DeletedShows.Any(a => a == media.tmdb_id))
                         {
-                            var items = new HashSet<string>();
-                            items.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+                            var item = watching?.GetItem(MediaType.tv, media.tmdb_id);
 
-                            item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                            if (item == null)
+                            {
+                                var items = new HashSet<string>();
+                                items.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+
+                                item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+                            }
+                            else
+                            {
+                                item.maxItems = media.Collection.Count;
+                                item.watched.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+                            }
+
+                            watching?.AddItem(MediaType.tv, item);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.Message.Contains("The resource you requested could not be found"))
+                        {
+                            Watched = await WatchedApi.Remove(MediaType.tv, tmdb_id);
                         }
                         else
                         {
-                            item.maxItems = media.Collection.Count;
-                            item.watched.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+                            throw;
                         }
-
-                        watching?.AddItem(MediaType.tv, item);
                     }
                 }
 
