@@ -27,7 +27,7 @@ namespace SD.API.Repository
 
                 if (response.RequestCharge > 1.7)
                 {
-                    _logger.LogWarning("Get - Id {0}, RequestCharge {1}", id, response.RequestCharge);
+                    _logger.LogWarning("Get - Id {Id}, RequestCharge {RequestCharge}", id, response.RequestCharge);
                 }
 
                 return response.Resource;
@@ -50,7 +50,7 @@ namespace SD.API.Repository
 
                 if (response.RequestCharge > 15)
                 {
-                    _logger.LogWarning("Add - Id {0}, RequestCharge {1}", cache.Id, response.RequestCharge);
+                    _logger.LogWarning("Add - Id {Id}, RequestCharge {RequestCharge}", cache.Id, response.RequestCharge);
                 }
 
                 return response.Resource;
