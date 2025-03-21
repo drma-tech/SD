@@ -153,6 +153,18 @@ canvas {
     gap: 4px;
 }
 
+.grid-relative-container-150 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 4px;
+}
+
+.grid-relative-container-200 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 4px;
+}
+
 .nav-link {
     padding-top: .25rem !important;
     padding-bottom: .25rem !important;

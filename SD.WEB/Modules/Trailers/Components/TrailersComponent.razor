@@ -11,24 +11,22 @@
     </Button>
 </HeaderComponent>
 <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-    <Row HorizontalGutter="4" VerticalGutter="4" Margin="Margin.Is1.FromBottom">
+    <div class="grid-relative-container-150">
         @foreach (var item in TrailerModel?.Data?.Items ?? new())
         {
-            <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
-                <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}")">
-                    <Card>
-                        <CardImage Source="@item?.url" Alt="@item?.title">
-                        </CardImage>
-                        <CardBody>
-                            <CardText Style="line-height: normal; font-size: 0.8rem;">
-                                @item?.title.GetResume(55)
-                            </CardText>
-                        </CardBody>
-                    </Card>
-                </Blazorise.Link>
-            </Column>
+            <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}")">
+                <Card>
+                    <CardImage Source="@item?.url" Alt="@item?.title">
+                    </CardImage>
+                    <CardBody>
+                        <CardText Style="line-height: normal; font-size: 0.8rem;">
+                            @item?.title.GetResume(50)
+                        </CardText>
+                    </CardBody>
+                </Card>
+            </Blazorise.Link>
         }
-    </Row>
+    </div>
 </RenderControl>
 
 @code {

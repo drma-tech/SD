@@ -88,7 +88,7 @@ namespace SD.API.Functions
                     {
                         var compactModels = new TrailerModel();
 
-                        foreach (var item in obj?.contents?.Take(8).Select(s => s.video) ?? [])
+                        foreach (var item in obj?.contents?.Take(10).Select(s => s.video) ?? [])
                         {
                             if (item == null) continue;
                             compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url));
