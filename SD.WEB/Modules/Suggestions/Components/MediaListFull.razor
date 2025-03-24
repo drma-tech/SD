@@ -13,7 +13,7 @@
     <HeaderComponent Title="@GetTitle"></HeaderComponent>
 }
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
-    <div class="grid-relative-container">
+    <div class="grid-relative-container-sm">
         @for (int i = 1; i <= Items.Count; i++)
         {
             var item = Items.ElementAt(i - 1);

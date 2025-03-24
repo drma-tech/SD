@@ -151,19 +151,19 @@ canvas {
     align-items: center;
 }
 
-.grid-relative-container {
+.grid-relative-container-sm {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
     gap: 4px;
 }
 
-.grid-relative-container-150 {
+.grid-relative-container-md {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
     gap: 4px;
 }
 
-.grid-relative-container-200 {
+.grid-relative-container-lg {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 4px;

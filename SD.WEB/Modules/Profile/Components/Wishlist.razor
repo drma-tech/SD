@@ -22,7 +22,7 @@
 <RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Wish" ExpressionEmpty="ExpressionEmpty">
     @if (FullScreen)
     {
-        <div class="grid-relative-container mb-2">
+        <div class="grid-relative-container-sm mb-2">
             @foreach (var item in Items.Take(GetTotalItems) ?? [])
             {
                 var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;

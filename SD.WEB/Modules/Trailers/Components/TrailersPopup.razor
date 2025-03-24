@@ -12,7 +12,7 @@
 </ModalHeader>
 <ModalBody MaxHeight="70">
     <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-        <div class="grid-relative-container-150">
+        <div class="grid-relative-container-md">
             @foreach (var item in TrailerModel?.Data?.Items ?? new())
             {
                 <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}")">

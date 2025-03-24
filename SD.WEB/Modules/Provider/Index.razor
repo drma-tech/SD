@@ -36,7 +36,7 @@
     </Select>
 </HeaderComponent>
 <RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null || obj.Items.Empty())">
-    <div class="grid-relative-container">
+    <div class="grid-relative-container-sm">
         @foreach (var item in GetFilteredProviders())
         {
             var favorite = myProviders?.Items.Any(a => a.id == item.id) ?? false;

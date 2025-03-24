@@ -11,7 +11,7 @@
 </ModalHeader>
 <ModalBody MaxHeight="70">
     <RenderControl Core="Core" Model="News" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-        <div class="grid-relative-container-200">
+        <div class="grid-relative-container-lg">
             @foreach (var item in News?.Data?.Items ?? new())
             {
                 <Card>
