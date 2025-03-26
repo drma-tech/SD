@@ -61,7 +61,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your personal streaming assistant! Organize your platforms, track your progress, and find new content to watch — all in one app..
+        ///   Looks up a localized string similar to Your personal streaming assistant! Organize your platforms, track your progress, and find new content to watch - all in one app..
         /// </summary>
         public static string Description {
             get {
