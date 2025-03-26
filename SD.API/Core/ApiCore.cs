@@ -17,7 +17,7 @@ namespace SD.API.Core
 
         public static async Task AddTmdbListItem(this HttpClient http, int listId, int tmdbId, MediaType type, string? token, CancellationToken cancellationToken)
         {
-            using var request = new HttpRequestMessage(HttpMethod.Post, $"https://api.themoviedb.org/4/list/{listId}/items");
+            using var request = new HttpRequestMessage(HttpMethod.Post, $"https://api.tmdb.org/4/list/{listId}/items");
 
             request.Headers.Add("Accept", "application/json");
             request.Headers.TryAddWithoutValidation("content-type", "application/json");
