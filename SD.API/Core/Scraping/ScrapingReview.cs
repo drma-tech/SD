@@ -1,79 +1,63 @@
 ﻿using HtmlAgilityPack;
-using SD.Shared.Models.Reviews;
+using Newtonsoft.Json;
+using SD.Shared.Models.Reviews.MetaCriticSite;
+using System.Text.RegularExpressions;
 
 namespace SD.API.Core.Scraping
 {
     public class ScrapingReview
     {
-        private readonly string tv_url = "https://www.metacritic.com/tv/{0}/critic-reviews";
+        private readonly string tv_url = "https://www.metacritic.com/tv/{0}/critic-reviews/?sort-by=Recently%20Added";
 
-        public RootMetacritic GetTvReviews(string? tv_name)
+        public RootMetacriticReview GetTvReviews(string? tv_name, int year)
         {
-            return ProcessHtml(string.Format(tv_url, tv_name));
+            var result = ProcessHtml(string.Format(tv_url, tv_name));
+
+            if (result == null)
+            {
+                result = ProcessHtml(string.Format(tv_url, $"{tv_name}-{year}"));
+            }
+
+            return result ?? new();
         }
 
-        private static RootMetacritic ProcessHtml(string path)
+        private static RootMetacriticReview? ProcessHtml(string path)
         {
-            var data = new RootMetacritic
-            {
-                data = new()
-                {
-                    title = new()
-                    {
-                        metacritic = new()
-                        {
-                            reviews = new()
-                        }
-                    }
-                }
-            };
-
             var web = new HtmlWeb();
             var doc = web.Load(path);
+            var htmlBody = doc.Text;
 
-            var div = doc.DocumentNode.SelectNodes("//div[starts-with(@class,'critic_reviews')]")?.FirstOrDefault();
+            int startIndex = htmlBody.IndexOf("j.components=") + "j.components=".Length;
+            int endIndex = htmlBody.IndexOf(";j.footer=", startIndex);
 
-            if (div != null)
+            if (startIndex < 0 || endIndex < 0)
             {
-                foreach (var node in div.ChildNodes.Where(w => w.Name == "div"))
+                startIndex = htmlBody.IndexOf("k.components=") + "k.components=".Length;
+                endIndex = htmlBody.IndexOf(";k.footer=", startIndex);
+
+                if (startIndex < 0 || endIndex < 0)
                 {
-                    _ = int.TryParse(node.SelectNodes("div[1]/div")?.FirstOrDefault()?.InnerText, out int score);
-                    var site = node.SelectNodes("div[2]/div[1]/span[1]/a/img")?.FirstOrDefault()?.GetAttributeValue("alt", "site error");
-                    if (string.IsNullOrEmpty(site)) //site title is not a image
-                    {
-                        site = node.SelectNodes("div[2]/div[1]/span[1]/a")?.FirstOrDefault()?.InnerText;
-                    }
-                    var reviewer = node.SelectNodes($"div[2]/div[1]/span[2]/a")?.FirstOrDefault()?.InnerText;
-                    if (string.IsNullOrEmpty(reviewer)) //reviewer doesnt have a link
-                    {
-                        reviewer = node.SelectNodes($"div[2]/div[1]/span[2]")?.FirstOrDefault()?.InnerText;
-                    }
-                    var quote = node.SelectNodes("div[2]/div[2]/a[1]")?.FirstOrDefault()?.InnerText;
-                    if (string.IsNullOrEmpty(quote)) //quote doesnt have a link
-                    {
-                        quote = node.SelectNodes("div[2]/div[2]")?.FirstOrDefault()?.InnerText;
-                    }
+                    startIndex = htmlBody.IndexOf("l.components=") + "l.components=".Length;
+                    endIndex = htmlBody.IndexOf(";l.footer=", startIndex);
 
-                    if (score != 0)
+                    if (startIndex < 0 || endIndex < 0)
                     {
-                        var item = new Edge
-                        {
-                            node = new()
-                            {
-                                quote = new Quote { value = quote },
-                                site = site,
-                                url = node.SelectNodes($"div[2]/div[2]/a[2]")?.FirstOrDefault()?.GetAttributeValue("href", "url error"),
-                                reviewer = reviewer,
-                                score = score
-                            }
-                        };
-
-                        data.data.title.metacritic.reviews.edges.Add(item);
+                        return null;
                     }
                 }
             }
 
-            return data;
+            string jsonContent = htmlBody.Substring(startIndex, endIndex - startIndex).Trim();
+
+            jsonContent = Regex.Replace(jsonContent, @",[b-o],", ",\"\",");
+            jsonContent = Regex.Replace(jsonContent, @":[b-o]", ":\"\"");
+            jsonContent = Regex.Replace(jsonContent, @":\[[b-o]\]", ":[\"\"]");
+
+            var result = JsonConvert.DeserializeObject<List<RootMetacriticReview>>(jsonContent)?[2];
+
+            if (result != null) result.items = result.items.TakeLast(20).OrderByDescending(x => x.score).ToList();
+
+            return result;
         }
     }
 }

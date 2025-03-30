@@ -461,51 +461,46 @@ namespace SD.API.Functions
         {
             try
             {
-                //https://www.metacritic.com/tv/severance/critic-reviews/?sort-by=Recently%20Added
-                //get first 20 reviews
+                var id = req.GetQueryParameters()["id"];
+                var title = req.GetQueryParameters()["title"];
+                DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime release_date);
+                var doc = await cacheRepo.Get<ReviewModel>($"review_{id}", cancellationToken);
+                var ttl = ttlCache.one_day;
 
-                return null; //todo: solve this anyway
+                if (release_date > DateTime.Now.AddDays(-7)) return null; //dont get reviews for new releases (one week)
 
-                //var id = req.GetQueryParameters()["id"];
-                //var title = req.GetQueryParameters()["title"];
-                //DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime release_date);
-                //var doc = await cacheRepo.Get<ReviewModel>($"review_{id}", cancellationToken);
-                //var ttl = ttlCache.one_day;
+                if (doc == null)
+                {
+                    var scraping = new ScrapingReview();
+                    var obj = scraping.GetTvReviews(title, release_date.Year);
+                    if (obj == null) return null;
+                    //if (obj.meta?.title == "undefined critic reviews") return null;
 
-                //if (release_date > DateTime.Now.AddDays(-7)) return null; //dont get reviews for new releases (one week)
+                    var newModel = new ReviewModel();
 
-                //if (doc == null)
-                //{
-                //    var url = $"https://internal-prod.apigee.fandom.net/v1/xapi/composer/metacritic/pages/shows-critic-reviews/{title}/web?filter=all&sort=score&apiKey=1MOZgmNFxvmljaQR1X9KAij9Mo4xAY3u";
-                //    var obj = await ApiStartup.HttpClient.Get<MetaCriticScraping>(url, cancellationToken);
-                //    if (obj == null) return null;
-                //    if (obj.meta?.title == "undefined critic reviews") return null;
+                    foreach (var item in obj.items ?? [])
+                    {
+                        if (item == null) continue;
+                        newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));
+                    }
 
-                //    var newModel = new ReviewModel();
+                    if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
+                    {
+                        ttl = ttlCache.one_day;
+                    }
+                    else if (release_date > DateTime.Now.AddMonths(-1)) // < 1 month launch
+                    {
+                        ttl = ttlCache.one_week;
+                    }
+                    else // > 1 month launch
+                    {
+                        ttl = ttlCache.three_months;
+                    }
 
-                //    foreach (var item in obj.components.Find(w => w.meta?.componentName == "critic-reviews")?.data?.items ?? [])
-                //    {
-                //        if (item == null) continue;
-                //        newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));
-                //    }
+                    doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
+                }
 
-                //    if (release_date > DateTime.Now.AddDays(-7)) // < 1 week launch
-                //    {
-                //        ttl = ttlCache.one_day;
-                //    }
-                //    else if (release_date > DateTime.Now.AddMonths(-1)) // < 1 month launch
-                //    {
-                //        ttl = ttlCache.one_week;
-                //    }
-                //    else // > 1 month launch
-                //    {
-                //        ttl = ttlCache.three_months;
-                //    }
-
-                //    doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttlCache.one_day), cancellationToken);
-                //}
-
-                //return await req.CreateResponse(doc, ttl, doc?.ETag, cancellationToken);
+                return await req.CreateResponse(doc, ttl, cancellationToken);
             }
             catch (TaskCanceledException ex)
             {
