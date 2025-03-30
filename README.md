@@ -3,6 +3,15 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdrma-tech%2FSD.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdrma-tech%2FSD?ref=badge_shield&issueType=security)
 [![CodeFactor](https://www.codefactor.io/repository/github/drma-tech/sd/badge)](https://www.codefactor.io/repository/github/drma-tech/sd)
 
-- We are a platform that helps you decide what to watch.
-- We have catalogs of the main movie and series titles from hundreds of streaming platforms around the world (Netflix, Disney Plus, Amazon Prime Video, Apple iTunes, Crunchyroll, Apple TV Plus, Star Plus, HBO Max and many more).
-- We have suggestions for films and series awarded at the main events in the world (Oscar, Golden Globe, Emmys, Critics Choice, Cannes and much more).
+Streaming Discovery: Your Ultimate Streaming Organizer
+Tired of wasting time deciding what to watch? Streaming Discovery is here to help! We’re your all-in-one platform to manage, organize, and discover movies and series across hundreds of streaming services like Netflix, Disney+, Amazon Prime Video, HBO Max, and many more.
+
+Explore Global Catalogs: Access detailed information about movies and series from streaming platforms worldwide.
+
+Award-Winning Recommendations: Get curated suggestions from top events like the Oscars, Golden Globes, Emmys, and Cannes.
+
+Organize Your Watchlist: Track what you’ve watched, are watching, and want to watch—all in one place.
+
+Discover New Favorites: Find hidden gems and trending titles tailored to your tastes.
+
+Streaming Discovery simplifies your streaming life, so you can spend less time searching and more time enjoying.
