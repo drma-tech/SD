@@ -117,22 +117,17 @@
                             </Paragraph>
                             @if (media != null && media.Videos.Any())
                             {
-                                <Row HorizontalGutter="4" VerticalGutter="4">
-                                    <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                                        <Button Color="Color.Dark" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
-                                            Trailers
-                                        </Button>
-                                    </Column>
+                                <ListGroup Margin="Margin.Is2.FromTop" Scrollable="true" Height="Height.Px(190)">
                                     @foreach (var item in media.Videos)
                                     {
-                                        <Column ColumnSize="ColumnSize.Is2.OnMobile.Is1.OnWidescreen">
-                                            <Button Type="ButtonType.Link" To="@($"https://www.youtube.com/watch?v={item.key}")" Target="Target.Blank" Color="Color.Light"
-                                                    Padding="Padding.Is1" title="@item.name" Block="true">
+                                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Padding="Padding.Is1">
+                                            @item.name
+                                            <Button Type="ButtonType.Link" To="@($"https://www.youtube.com/watch?v={item.key}")" Target="Target.Blank" Color="Color.Light">
                                                 <Blazorise.Icon Name="FontAwesomeIcons.Video"></Blazorise.Icon>
                                             </Button>
-                                        </Column>
+                                        </ListGroupItem>
                                     }
-                                </Row>
+                                </ListGroup>
                             }
                         </TabPanel>
                         <TabPanel Name="WhereToWatch" Class="mt-2">
@@ -140,7 +135,7 @@
                         </TabPanel>
                         <TabPanel Name="Credits" Class="mt-2">
                             <CreditsComponent tmdb_id="@tmdb_id" type="@type" WatchedList="Watched" WatchingList="Watching" WishList="Wish"
-                                              ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated"></CreditsComponent>
+                            ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated"></CreditsComponent>
                         </TabPanel>
                         @if (media?.Collection.Any() ?? false)
                         {
@@ -174,7 +169,7 @@
                                                             if (wishedMovie)
                                                             {
                                                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" TextColor="TextColor.Light"
-                                                                                Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
+                                                                Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
                                                             }
                                                         }
 
@@ -183,7 +178,7 @@
                                                         if (movieWatched || showWatched)
                                                         {
                                                             <Blazorise.Icon Name="FontAwesomeIcons.Eye" TextColor="TextColor.Light"
-                                                                            Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
+                                                            Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
                                                         }
 
                                                         <CardImage Source="@item.poster_small" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer;")></CardImage>
@@ -201,7 +196,7 @@
                         }
                         <TabPanel Name="Reviews" Class="mt-2">
                             <ReviewComponent imdb_id="@imdb_id" english_title="@EnglishTitle?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ","-").ToLower()"
-                                             type="@type" release_date="@media?.release_date"></ReviewComponent>
+                            type="@type" release_date="@media?.release_date"></ReviewComponent>
                         </TabPanel>
                     </Content>
                 </Tabs>
@@ -239,13 +234,13 @@
                             <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @WEB.Resources.Button.Add
                         </Button>
                     }
-                    @if (Watched?.Movies.Any(a => a == tmdb_id) ?? false)
+                    @if (Watched?.Movies.Contains(tmdb_id ?? "") ?? false)
                     {
                         <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
                             <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @Resources.Translations.ButtonNotWatched
                         </Button>
                     }
-                    else if (Watched?.Shows.Any(a => a == tmdb_id) ?? false)
+                    else if (Watched?.Shows.Contains(tmdb_id ?? "") ?? false)
                     {
                         <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
                             <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @Resources.Translations.ButtonNotWatched
@@ -304,6 +299,7 @@
     {
         Core?.LoadingStarted?.Invoke();
         media = await TmdbApi.GetMediaDetail(tmdb_id, type!.Value);
+        media.Videos.Reverse();
         imdb_id = await ExternalIdApi.GetImdbId(type, tmdb_id);
         Core?.LoadingFinished?.Invoke(media);
 

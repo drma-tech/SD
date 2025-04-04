@@ -55,7 +55,7 @@ namespace SD.API.Core.Scraping
 
             var result = JsonConvert.DeserializeObject<List<RootMetacriticReview>>(jsonContent)?[2];
 
-            if (result != null) result.items = result.items.TakeLast(20).OrderByDescending(x => x.score).ToList();
+            if (result != null) result.items = result.items.TakeLast(10).OrderByDescending(x => x.score).ToList();
 
             return result;
         }
