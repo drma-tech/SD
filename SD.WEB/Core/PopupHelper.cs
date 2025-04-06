@@ -1,7 +1,6 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
 using SD.Shared.Models.Auth;
-using SD.Shared.Models.Support;
 using SD.WEB.Modules.News.Components;
 using SD.WEB.Modules.Profile;
 using SD.WEB.Modules.Provider.Components;
@@ -9,7 +8,6 @@ using SD.WEB.Modules.Subscription.Components;
 using SD.WEB.Modules.Suggestions.Components;
 using SD.WEB.Modules.Suggestions.Core;
 using SD.WEB.Modules.Suggestions.Interface;
-using SD.WEB.Modules.Support.Component;
 using SD.WEB.Modules.Trailers.Components;
 using SD.WEB.Shared;
 
@@ -159,17 +157,6 @@ namespace SD.WEB.Core
         public static async Task NewsPopup(this IModalService service)
         {
             await service.Show<NewsPopup>(null, x => { }, Options(ModalSize.ExtraLarge));
-        }
-
-        public static async Task NewTicket(this IModalService service, TicketType TicketType, EventCallback<TicketModel> Inserted, bool IsAuthenticated, string? UserId)
-        {
-            await service.Show<NewTicket>(null, x =>
-            {
-                x.Add(x => x.TicketType, TicketType);
-                x.Add(x => x.Inserted, Inserted);
-                x.Add(x => x.IsAuthenticated, IsAuthenticated);
-                x.Add(x => x.UserId, UserId);
-            }, Options(ModalSize.Default));
         }
 
         public static async Task ProviderPopup(this IModalService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish,

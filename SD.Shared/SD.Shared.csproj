@@ -8,21 +8,6 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="Models\Support\Resources\TicketModel.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>TicketModel.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Models\Support\Resources\TicketStatus.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>TicketStatus.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Models\Support\Resources\TicketType.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>TicketType.resx</DependentUpon>
-		</Compile>
 		<Compile Update="Resources\Enum\DeliveryModel.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -60,18 +45,6 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-		<EmbeddedResource Update="Models\Support\Resources\TicketModel.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>TicketModel.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Models\Support\Resources\TicketStatus.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>TicketStatus.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Models\Support\Resources\TicketType.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>TicketType.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Enum\MovieGenre.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>MovieGenre.Designer.cs</LastGenOutput>

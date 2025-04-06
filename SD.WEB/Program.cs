@@ -14,7 +14,6 @@ using SD.WEB.Modules.Profile.Core;
 using SD.WEB.Modules.Provider.Core;
 using SD.WEB.Modules.Subscription.Core;
 using SD.WEB.Modules.Suggestions.Core;
-using SD.WEB.Modules.Support.Core;
 using System.Globalization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
@@ -59,8 +58,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<MyProvidersApi>();
     collection.AddScoped<MySuggestionsApi>();
     collection.AddScoped<AllProvidersApi>();
-    collection.AddScoped<TicketApi>();
-    collection.AddScoped<UpdateApi>();
 
     collection.AddScoped<ExternalIdApi>();
     collection.AddScoped<CacheFlixsterApi>();

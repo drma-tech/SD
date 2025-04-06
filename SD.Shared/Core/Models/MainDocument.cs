@@ -7,13 +7,13 @@
         MyProvider = 3,
         WishList = 4,
         WatchedList = 5,
-        Ticket = 6,
+        //Ticket = 6,
         //TicketVote = 7,
         //Announcement = 8,
         WatchingList = 9,
         Login = 10,
         MySuggestions = 11,
-        Update = 12
+        //Update = 12
     }
 
     public abstract class MainDocument : CosmosDocument

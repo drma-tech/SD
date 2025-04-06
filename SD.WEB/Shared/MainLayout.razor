@@ -1,7 +1,4 @@
 ﻿@using SD.Shared.Models.Auth
-@using SD.Shared.Models.Support;
-@using SD.WEB.Modules.Support.Component
-@using SD.WEB.Modules.Support.Core;
 @using System.Security.Claims
 @using Toolbelt.Blazor.PWA.Updater
 
@@ -11,7 +8,6 @@
 @inject ILogger<MainLayout> Logger
 @inject INotificationService Toast
 @inject IJSRuntime JsRuntime
-@inject TicketApi TicketApi
 
 <Div Position="Position.Relative">
     <Layout Style="height: var(--app-height);">
@@ -25,29 +21,26 @@
                         @Body
                     </ChildContent>
                     <ErrorContent Context="ex">
-                        @if (AppStateStatic.Language == Language.ptBR || AppStateStatic.Language == Language.ptPT)
-                        {
-                            <Alert Color="Color.Danger" Visible="true">
-                                <AlertDescription>
-                                    <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon> Não foi possível processar essa operação. Para abrir um ticket de suporte, <Blazorise.Link onclick="@(()=>SubmitForm(ex))" style="cursor: pointer;">clique aqui</Blazorise.Link>
-                                </AlertDescription>
-                            </Alert>
-                        }
-                        else
-                        {
-                            <Alert Color="Color.Danger" Visible="true">
-                                <AlertDescription>
-                                    <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon> This operation could not be processed. To open a support ticket, <Blazorise.Link onclick="@(()=>SubmitForm(ex))" style="cursor: pointer;">click here</Blazorise.Link>
-                                </AlertDescription>
-                            </Alert>
-                        }
+                        <Alert Color="Color.Danger" Visible="true">
+                            <AlertMessage>
+                                <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon>
+                                This operation could not be processed. Please send an email to our <Blazorise.Link To="mail:support@streamingdiscovery.com" style="cursor: pointer;">support</Blazorise.Link> with the following details:
+                            </AlertMessage>
+                            <AlertDescription>
+                                @ex.StackTrace
+                            </AlertDescription>
+                        </Alert>
                     </ErrorContent>
                 </ErrorBoundary>
             </Container>
-            <Div Padding="Padding.Is3.OnY" TextAlignment="TextAlignment.Center" TextColor="TextColor.Muted" TextSize="TextSize.Small"
-                 Display="Display.None.Block.OnWidescreen">
-                © 2021-@DateTime.Now.Year - DRMA Tech. All rights reserved.
-            </Div>
+            <FooterComponent></FooterComponent>
+            <Container Fluid="true">
+                <Row Margin="Margin.Is4.OnY" Padding="Padding.Is4.FromTop" Border="Border.Secondary.OnTop">
+                    <Span TextColor="TextColor.Muted" TextAlignment="TextAlignment.Center">
+                        © 2021-@DateTime.Now.Year - DRMA Tech. All rights reserved.
+                    </Span>
+                </Row>
+            </Container>
         </LayoutContent>
         <LayoutFooter Display="Display.Block.None.OnWidescreen">
             <Bar Mode="BarMode.Horizontal" Breakpoint="Breakpoint.Mobile" CollapseMode="BarCollapseMode.Small" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark"
@@ -69,6 +62,10 @@
                         <BarIcon IconName="FontAwesomeIcons.ListOl" />
                         <span style="display: block; font-size: 0.60rem;">@WEB.Resources.Menu.Suggestions</span>
                     </Button>
+                    <Button Color="GetColor(TypeButton.Support)" To="/support" Type="ButtonType.Link" title="@WEB.Resources.Menu.Support" Size="Size.Small" Style="line-height: 1.3;">
+                        <BarIcon IconName="FontAwesomeIcons.Headset" />
+                        <span style="display: block; font-size: 0.60rem;">@WEB.Resources.Menu.Support</span>
+                    </Button>
                 </BarBrand>
             </Bar>
         </LayoutFooter>
@@ -78,48 +75,14 @@
 <NotificationProvider Location="NotificationLocation.End" DefaultInterval="10000" />
 <PWAUpdater Text="@GlobalTranslations.PWAUpdaterText" ButtonCaption="@GlobalTranslations.PWAUpdaterButton" />
 
-<Offcanvas @ref="offcanvasRef" Placement="Placement.End">
-    <OffcanvasHeader>
-        @SD.WEB.Modules.Support.Resources.Translations.HelpSupport
-        <CloseButton Clicked="@(()=>ShowFeedback(false))" />
-    </OffcanvasHeader>
-    <OffcanvasBody>
-        <Tabs RenderMode="TabsRenderMode.LazyLoad" @bind-SelectedTab="@Tab" Pills="true" FullWidth="true">
-            <Items>
-                <Tab Name="Home">
-                    @SD.WEB.Modules.Support.Resources.Translations.Home
-                </Tab>
-                <Tab Name="Updates">
-                    @SD.WEB.Modules.Support.Resources.Translations.Updates
-                </Tab>
-                <Tab Name="Feedback">
-                    @SD.WEB.Modules.Support.Resources.Translations.Feedback
-                </Tab>
-            </Items>
-            <Content>
-                <TabPanel Name="Home" Padding="Padding.Is3.FromTop">
-                    <DownloadComponent></DownloadComponent>
-                </TabPanel>
-                <TabPanel Name="Updates" Padding="Padding.Is3.FromTop">
-                    <AnnouncementComponent></AnnouncementComponent>
-                </TabPanel>
-                <TabPanel Name="Feedback" Padding="Padding.Is3.FromTop">
-                    <FeedbackComponent IsAuthenticated="@IsAuthenticated" UserId="@UserId"></FeedbackComponent>
-                </TabPanel>
-            </Content>
-        </Tabs>
-    </OffcanvasBody>
-</Offcanvas>
-
 @code {
     [CascadingParameter] protected Task<AuthenticationState> authenticationState { get; set; } = default!;
 
-    public string? Tab { get; set; } = "Home";
     public string GetMargin => "me-4 mb-lg-4 mb-6";
 
     private enum TypeButton
     {
-        Home, Profile, Providers, Suggestions, Support, Administrator
+        Home, Profile, Providers, Suggestions, Support
     }
 
     private TypeButton CurrentButton;
@@ -128,7 +91,6 @@
     {
         Navigation.LocationChanged += OnLocationChanged;
         AppStateStatic.ShowError = async (msg) => { await Toast.Error(msg); };
-        AppStateStatic.ShowFeedback = (show) => { ShowFeedback(show); };
 
         ChangeCurrentButton(Navigation.Uri);
 
@@ -177,7 +139,6 @@
         else if (location.Contains("/providers")) CurrentButton = TypeButton.Providers;
         else if (location.Contains("/suggestions")) CurrentButton = TypeButton.Suggestions;
         else if (location.Contains("/support")) CurrentButton = TypeButton.Support;
-        else if (location.Contains("/administrator")) CurrentButton = TypeButton.Administrator;
         else CurrentButton = TypeButton.Home;
     }
 
@@ -196,27 +157,6 @@
         boundary?.Recover();
     }
 
-    public async Task SubmitForm(Exception exc)
-    {
-        try
-        {
-            var Ticket = new TicketModel();
-
-            Ticket.TicketType = TicketType.BugReport;
-            Ticket.Initialize(UserId);
-            Ticket.Title = exc.Message ?? "unknown error";
-            Ticket.Description = exc.StackTrace;
-
-            await TicketApi.Insert(Ticket);
-
-            await Toast.Success(GlobalTranslations.OperationCompleted);
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
-    }
-
     [JSInvokable]
     public static void RegistrationSuccessful(TempClientePaddle client)
     {
@@ -227,15 +167,5 @@
     public static void ShowError(string error)
     {
         AppStateStatic.ShowError?.Invoke(error);
-    }
-
-    private Offcanvas? offcanvasRef;
-
-    private void ShowFeedback(bool show)
-    {
-        if (show)
-            offcanvasRef?.Show();
-        else
-            offcanvasRef?.Hide();
     }
 }

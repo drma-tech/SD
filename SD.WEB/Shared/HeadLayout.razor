@@ -55,9 +55,6 @@
                 <Button Color="Color.Dark" Clicked="ChangeTheme" Margin="Margin.Is1.FromEnd" Display="Display.None">
                     <Blazorise.Icon Name="@(Theme == "light" ? FontAwesomeIcons.Moon : FontAwesomeIcons.Sun)" />
                 </Button>
-                <Button Color="Color.Dark" Clicked="@(()=>AppStateStatic.ShowFeedback?.Invoke(true))" Margin="Margin.Is2.FromEnd">
-                    <Blazorise.Icon Name="FontAwesomeIcons.Headset"></Blazorise.Icon>
-                </Button>
                 <AuthorizeView>
                     <Authorized>
                         <Button Color="Color.Danger" Clicked="Logout" title="Logout">

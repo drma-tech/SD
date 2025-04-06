@@ -61,33 +61,6 @@ namespace SD.WEB.Modules.Support.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Feedback.
-        /// </summary>
-        public static string Feedback {
-            get {
-                return ResourceManager.GetString("Feedback", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Help &amp; Support.
-        /// </summary>
-        public static string HelpSupport {
-            get {
-                return ResourceManager.GetString("HelpSupport", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Home.
-        /// </summary>
-        public static string Home {
-            get {
-                return ResourceManager.GetString("Home", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Import Last Error.
         /// </summary>
         public static string ImportLastError {
@@ -120,87 +93,6 @@ namespace SD.WEB.Modules.Support.Resources {
         public static string LinkTerm {
             get {
                 return ResourceManager.GetString("LinkTerm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New Ticket.
-        /// </summary>
-        public static string NewTicketTitle {
-            get {
-                return ResourceManager.GetString("NewTicketTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Last.
-        /// </summary>
-        public static string OrderLast {
-            get {
-                return ResourceManager.GetString("OrderLast", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Voted.
-        /// </summary>
-        public static string OrderVoted {
-            get {
-                return ResourceManager.GetString("OrderVoted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Platform versions available (click or scan).
-        /// </summary>
-        public static string PlatformVersionsAvailable {
-            get {
-                return ResourceManager.GetString("PlatformVersionsAvailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Announcements.
-        /// </summary>
-        public static string TabAnnouncements {
-            get {
-                return ResourceManager.GetString("TabAnnouncements", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Downloads.
-        /// </summary>
-        public static string TabDownloads {
-            get {
-                return ResourceManager.GetString("TabDownloads", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Feedback.
-        /// </summary>
-        public static string TabFeedback {
-            get {
-                return ResourceManager.GetString("TabFeedback", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Roadmap.
-        /// </summary>
-        public static string TabRoadmap {
-            get {
-                return ResourceManager.GetString("TabRoadmap", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Updates.
-        /// </summary>
-        public static string Updates {
-            get {
-                return ResourceManager.GetString("Updates", resourceCulture);
             }
         }
     }
