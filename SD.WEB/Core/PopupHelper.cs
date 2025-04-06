@@ -109,13 +109,6 @@ namespace SD.WEB.Core
             }, Options(ModalSize.Default));
         }
 
-        public static async Task SettingsPopup(this IModalService service)
-        {
-            await service.Show<SettingsPopup>(null, x =>
-            {
-            }, Options(ModalSize.Default));
-        }
-
         public static async Task MyWatchingListPopup(this IModalService service, RenderControlCore<WatchingList?>? Core, MediaType MediaType,
             WatchedList? watched, WatchingList? watching, WishList? wish, bool showPrivateAction, bool IsAuthenticated, string? UserId)
         {
@@ -157,6 +150,12 @@ namespace SD.WEB.Core
         public static async Task NewsPopup(this IModalService service)
         {
             await service.Show<NewsPopup>(null, x => { }, Options(ModalSize.ExtraLarge));
+        }
+
+        public static async Task OpenPopup<TComponent>(this IModalService service, Action<ModalProviderParameterBuilder<TComponent>> parameters, ModalSize size)
+            where TComponent : IComponent
+        {
+            await service.Show(null, parameters, Options(size));
         }
 
         public static async Task ProviderPopup(this IModalService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish,
@@ -217,6 +216,13 @@ namespace SD.WEB.Core
             }, Options(ModalSize.Default));
         }
 
+        public static async Task SettingsPopup(this IModalService service)
+        {
+            await service.Show<SettingsPopup>(null, x =>
+            {
+            }, Options(ModalSize.Default));
+        }
+
         public static async Task SubscriptionPopup(this IModalService service, ClientePrincipal? client, bool IsAuthenticated)
         {
             await service.Show<SubscriptionPopup>(null, x =>
@@ -229,12 +235,6 @@ namespace SD.WEB.Core
         public static async Task TrailersPopup(this IModalService service)
         {
             await service.Show<TrailersPopup>(null, x => { }, Options(ModalSize.ExtraLarge));
-        }
-
-        public static async Task OpenPopup<TComponent>(this IModalService service, Action<ModalProviderParameterBuilder<TComponent>> parameters, ModalSize size)
-            where TComponent : IComponent
-        {
-            await service.Show(null, parameters, Options(size));
         }
 
         private static ModalInstanceOptions Options(ModalSize size) => new()
