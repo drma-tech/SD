@@ -61,7 +61,16 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your personal streaming assistant! Organize your platforms, track your progress, and find new content to watch - all in one app..
+        ///   Looks up a localized string similar to Streaming Discovery.
+        /// </summary>
+        public static string AppName {
+            get {
+                return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage your streaming platforms, track your watch progress, and discover what to watch next with ease. Browse expert-curated lists like award winners and critic picks - all in one place..
         /// </summary>
         public static string Description {
             get {
