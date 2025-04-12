@@ -12,7 +12,7 @@
         var directors = Credits?.crew.Where(w => w.job == "Director").ToList() ?? new List<Crew>();
         if (directors.Any())
         {
-            <Divider DividerType="DividerType.TextContent" Text="@Translations.Directing" />
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.Directing" Background="Background.Secondary" Style="opacity: .75" />
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in directors)
                 {
@@ -38,7 +38,7 @@
         var writers = Credits?.crew.Where(w => w.job == "Writer" || w.job == "Screenplay" || w.job == "Author" || w.job == "Story").ToList() ?? new List<Crew>();
         if (writers.Any())
         {
-            <Divider DividerType="DividerType.TextContent" Text="@Translations.Writing" />
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.Writing" Background="Background.Secondary" Style="opacity: .75" />
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in writers)
                 {
@@ -62,7 +62,7 @@
             </Row>
         }
     }
-    <Divider DividerType="DividerType.TextContent" Text="@Translations.Cast" />
+    <Divider DividerType="DividerType.TextContent" Text="@Translations.Cast" Background="Background.Secondary" Style="opacity: .75" />
     <Row HorizontalGutter="4" VerticalGutter="4">
         @foreach (var item in Credits?.cast.OrderBy(o => o.order).Take(24) ?? new List<Cast>())
         {

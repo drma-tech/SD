@@ -40,9 +40,12 @@
                 </Paragraph>
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                <Button Color="Color.Primary" Clicked="@(()=>Share(Navigation.Uri))" Size="Size.Small" Style="display: block; width: 100%;" Class="mb-1">
-                    <Blazorise.Icon Name="FontAwesomeIcons.Share"></Blazorise.Icon> Share
-                </Button>
+                @if (ShowShare)
+                {
+                    <Button Color="Color.Primary" Clicked="@(()=>Share(Navigation.Uri))" Size="Size.Small" Style="display: block; width: 100%;" Class="mb-1">
+                        <Blazorise.Icon Name="FontAwesomeIcons.Share"></Blazorise.Icon> Share
+                    </Button>
+                }
                 @if (provider != null)
                 {
                     <RenderControl PartialComponent="true" PrivateContent="true" Core="Core" Model="myProviders"
@@ -112,6 +115,7 @@
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Text { get; set; }
     [Parameter] public string? Link { get; set; }
+    [Parameter] public bool ShowShare { get; set; }
 
     [Parameter] public ProviderModel? provider { get; set; }
 

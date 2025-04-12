@@ -205,7 +205,7 @@ namespace SD.WEB.Modules.Provider.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Providers ({0}).
+        ///   Looks up a localized string similar to Platforms ({0}).
         /// </summary>
         public static string TitleProviders {
             get {

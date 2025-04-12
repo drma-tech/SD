@@ -1,0 +1,16 @@
+﻿@page "/support/credits"
+@using SD.WEB.Modules.Suggestions.Components
+@inherits PageCore<Credits>
+
+<SeoHeader Title="Credits" Url=@($"/credits")></SeoHeader>
+
+<Container>
+    <HeadPage Title="TMDB" ImageSource="logo/tmdb.png" Text="@SD.WEB.Modules.Provider.Resources.Translations.tmdb_desc" Link="https://www.themoviedb.org/"
+              IsAuthenticated="IsAuthenticated" ShowShare="false"></HeadPage>
+
+    <HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@SD.WEB.Modules.Provider.Resources.Translations.imdb_desc" Link="https://www.imdb.com/"
+              IsAuthenticated="IsAuthenticated" ShowShare="false"></HeadPage>
+
+    <HeadPage Title="JustWatch" ImageSource="logo/justwatch.png" Text="All your streaming services in one app." Link="https://www.justwatch.com/"
+              IsAuthenticated="IsAuthenticated" ShowShare="false"></HeadPage>
+</Container>

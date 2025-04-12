@@ -16,11 +16,7 @@
         {
             hasProvider = true;
             <Row HorizontalGutter="4" VerticalGutter="4">
-                <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                    <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
-                        @Translations.DeliveryModelFree
-                    </Button>
-                </Column>
+                <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelFree" Background="Background.Secondary" Style="opacity: .75" />
                 @foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
                 {
                     @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
@@ -46,12 +42,8 @@
         if (Providers?.GetAdsListProviders(AppStateStatic.Region).Any() ?? false)
         {
             hasProvider = true;
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelAds" Background="Background.Secondary" Style="opacity: .75" />
             <Row HorizontalGutter="4" VerticalGutter="4">
-                <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                    <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
-                        @Translations.DeliveryModelAds
-                    </Button>
-                </Column>
                 @foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
                 {
                     @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
@@ -77,12 +69,8 @@
         if (Providers?.GetFlatRateListProviders(AppStateStatic.Region).Any() ?? false)
         {
             hasProvider = true;
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelFlatRate" Background="Background.Secondary" Style="opacity: .75" />
             <Row HorizontalGutter="4" VerticalGutter="4">
-                <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                    <Button Color="Color.Success" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
-                        @Translations.DeliveryModelFlatRate
-                    </Button>
-                </Column>
                 @foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
                 {
                     @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
@@ -108,12 +96,8 @@
         if (Providers?.GetFlatRateBuyListProviders(AppStateStatic.Region).Any() ?? false)
         {
             hasProvider = true;
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelFlatRateBuy" Background="Background.Secondary" Style="opacity: .75" />
             <Row HorizontalGutter="4" VerticalGutter="4">
-                <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                    <Button Color="Color.Warning" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
-                        @Translations.DeliveryModelFlatRateBuy
-                    </Button>
-                </Column>
                 @foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
                 {
                     @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
@@ -139,12 +123,8 @@
         if (Providers?.GetRentListProviders(AppStateStatic.Region).Any() ?? false)
         {
             hasProvider = true;
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelRent" Background="Background.Secondary" Style="opacity: .75" />
             <Row HorizontalGutter="4" VerticalGutter="4">
-                <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                    <Button Color="Color.Primary" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
-                        @Translations.DeliveryModelRent
-                    </Button>
-                </Column>
                 @foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
                 {
                     @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
@@ -170,12 +150,8 @@
         if (Providers?.GetBuyListProviders(AppStateStatic.Region).Any() ?? false)
         {
             hasProvider = true;
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelBuy" Background="Background.Secondary" Style="opacity: .75" />
             <Row HorizontalGutter="4" VerticalGutter="4">
-                <Column ColumnSize="ColumnSize.Is4.OnMobile.Is2.OnWidescreen">
-                    <Button Color="Color.Danger" Size="Size.Small" Block="true" Style="height: 100%" Disabled="true">
-                        @Translations.DeliveryModelBuy
-                    </Button>
-                </Column>
                 @foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
                 {
                     @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
@@ -199,41 +175,12 @@
             </Row>
         }
 
-        if (hasProvider)
-        {
-            <Row Margin="Margin.Is2.FromTop">
-                <Column>
-                    <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
-                        @Translations.Offering: <a href=@("https://www.justwatch.com/") target="_blank" rel="nofollow">@(new Uri("https://www.justwatch.com/").Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
-                    </Alert>
-                </Column>
-            </Row>
-        }
-        else
+        @if (!hasProvider)
         {
             <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is2.FromTop" Visible="true">
                 @Translations.TitleNotAvailable
             </Alert>
         }
-
-        var link = Providers?.GetLink(AppStateStatic.Region);
-        if (string.IsNullOrEmpty(link))
-        {
-            link = Providers?.GetLink(Region.US);
-        }
-        @if (!string.IsNullOrEmpty(link))
-        {
-            var uri_link = new Uri(link);
-            var fomatted_link = "https://" + uri_link.Host + string.Join("", uri_link.Segments.SkipLast(1));
-            <Row Margin="Margin.Is2.FromTop">
-                <Column>
-                    <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is0.FromBottom" Visible="true">
-                        @Translations.MoreInformation: <a href="@fomatted_link" target="_blank" rel="nofollow">@(uri_link.Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
-                    </Alert>
-                </Column>
-            </Row>
-        }
-
         <AuthorizeView Roles="administrator">
             <Authorized>
                 <Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false" Margin="Margin.Is2.FromTop">Atualizar</Button>

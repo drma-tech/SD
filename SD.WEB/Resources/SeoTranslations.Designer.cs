@@ -106,7 +106,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Providers.
+        ///   Looks up a localized string similar to Platforms.
         /// </summary>
         public static string ProvidersTitle {
             get {
