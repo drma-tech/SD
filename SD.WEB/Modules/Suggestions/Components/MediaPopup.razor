@@ -46,7 +46,7 @@
                 }
             </Column>
             <Column ColumnSize="ColumnSize.Is12.OnMobile.Is8.OnDesktop">
-                <Tabs @bind-SelectedTab="@selectedTab" Pills="true" FullWidth="true" RenderMode="TabsRenderMode.LazyLoad">
+                <Tabs @bind-SelectedTab="@selectedTab" FullWidth="true" RenderMode="TabsRenderMode.LazyLoad">
                     <Items>
                         <Tab Name="About">
                             @Translations.TabAbout
@@ -120,10 +120,11 @@
                                 <ListGroup Margin="Margin.Is2.FromTop" Scrollable="true" Height="Height.Px(190)">
                                     @foreach (var item in media.Videos)
                                     {
-                                        <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Padding="Padding.Is1">
-                                            @item.name
-                                            <Button Type="ButtonType.Link" To="@($"https://www.youtube.com/watch?v={item.key}")" Target="Target.Blank" Color="Color.Light">
+                                        <ListGroupItem Padding="Padding.Is1">
+                                            <Button Type="ButtonType.Link" To="@($"https://www.youtube.com/watch?v={item.key}")" Target="Target.Blank" Color="Color.Light"
+                                                    TextAlignment="TextAlignment.Justified" Width="Width.Is100">
                                                 <Blazorise.Icon Name="FontAwesomeIcons.Video"></Blazorise.Icon>
+                                                @item.name
                                             </Button>
                                         </ListGroupItem>
                                     }
@@ -135,7 +136,7 @@
                         </TabPanel>
                         <TabPanel Name="Credits" Class="mt-2">
                             <CreditsComponent tmdb_id="@tmdb_id" type="@type" WatchedList="Watched" WatchingList="Watching" WishList="Wish"
-                            ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated"></CreditsComponent>
+                                              ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated"></CreditsComponent>
                         </TabPanel>
                         @if (media?.Collection.Any() ?? false)
                         {
@@ -169,7 +170,7 @@
                                                             if (wishedMovie)
                                                             {
                                                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" TextColor="TextColor.Light"
-                                                                Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
+                                                                                Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
                                                             }
                                                         }
 
@@ -178,7 +179,7 @@
                                                         if (movieWatched || showWatched)
                                                         {
                                                             <Blazorise.Icon Name="FontAwesomeIcons.Eye" TextColor="TextColor.Light"
-                                                            Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
+                                                                            Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
                                                         }
 
                                                         <CardImage Source="@item.poster_small" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer;")></CardImage>
@@ -196,7 +197,7 @@
                         }
                         <TabPanel Name="Reviews" Class="mt-2">
                             <ReviewComponent imdb_id="@imdb_id" english_title="@EnglishTitle?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ","-").ToLower()"
-                            type="@type" release_date="@media?.release_date"></ReviewComponent>
+                                             type="@type" release_date="@media?.release_date"></ReviewComponent>
                         </TabPanel>
                     </Content>
                 </Tabs>
@@ -230,10 +231,11 @@
                     }
                     else
                     {
-                        <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @WEB.Resources.Button.Add
+                        <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small" title="Add to your wishlist">
+                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @Resources.Translations.Add
                         </Button>
                     }
+
                     @if (Watched?.Movies.Contains(tmdb_id ?? "") ?? false)
                     {
                         <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
@@ -248,7 +250,7 @@
                     }
                     else
                     {
-                        <Button Color="Color.Primary" Clicked="IsWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                        <Button Color="Color.Primary" Clicked="IsWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small" title="Mark as watched">
                             <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @Resources.Translations.ButtonWatched
                         </Button>
                     }

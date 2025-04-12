@@ -79,9 +79,16 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnAfterRenderAsync(firstRender);
+        try
+        {
+            await base.OnAfterRenderAsync(firstRender);
 
-        await JsRuntime.InvokeVoidAsync("initSwiper", SwiperId);
+            await JsRuntime.InvokeVoidAsync("initSwiper", SwiperId);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 
     private async Task OpenCompleteList()

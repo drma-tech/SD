@@ -45,9 +45,16 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await JsRuntime.InvokeVoidAsync("initCalendar", GallerySwiperId);
+        try
+        {
+            await JsRuntime.InvokeVoidAsync("initCalendar", GallerySwiperId);
 
-        await base.OnAfterRenderAsync(firstRender);
+            await base.OnAfterRenderAsync(firstRender);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 
     protected override async Task LoadDataRender()

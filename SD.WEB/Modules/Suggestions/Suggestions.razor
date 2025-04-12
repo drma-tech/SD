@@ -134,10 +134,17 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnAfterRenderAsync(firstRender);
+        try
+        {
+            await base.OnAfterRenderAsync(firstRender);
 
-        await JsRuntime.InvokeVoidAsync("initSwiper", SwiperAwards);
-        await JsRuntime.InvokeVoidAsync("initSwiper", SwiperSites);
-        await JsRuntime.InvokeVoidAsync("initSwiper", SwiperSpecials);
+            await JsRuntime.InvokeVoidAsync("initSwiper", SwiperAwards);
+            await JsRuntime.InvokeVoidAsync("initSwiper", SwiperSites);
+            await JsRuntime.InvokeVoidAsync("initSwiper", SwiperSpecials);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
     }
 }

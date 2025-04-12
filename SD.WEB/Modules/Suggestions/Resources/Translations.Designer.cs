@@ -61,6 +61,15 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add to wishlist.
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not Watched.
         /// </summary>
         public static string ButtonNotWatched {
@@ -70,7 +79,7 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Watched.
+        ///   Looks up a localized string similar to Mark as watched.
         /// </summary>
         public static string ButtonWatched {
             get {
