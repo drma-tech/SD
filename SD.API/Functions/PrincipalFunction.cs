@@ -96,6 +96,24 @@ namespace SD.API.Functions
 
                 var myPrincipal = await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken);
                 if (myPrincipal != null) await repo.Delete(myPrincipal, cancellationToken);
+
+                var myProviders = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
+                if (myProviders != null) await repo.Delete(myProviders, cancellationToken);
+
+                var myLogins = await repo.Get<ClienteLogin>(DocumentType.Login, userId, cancellationToken);
+                if (myLogins != null) await repo.Delete(myLogins, cancellationToken);
+
+                var mySuggestions = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
+                if (mySuggestions != null) await repo.Delete(mySuggestions, cancellationToken);
+
+                var myWatched = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
+                if (myWatched != null) await repo.Delete(myWatched, cancellationToken);
+
+                var myWatching = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
+                if (myWatching != null) await repo.Delete(myWatching, cancellationToken);
+
+                var myWish = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
+                if (myWish != null) await repo.Delete(myWish, cancellationToken);
             }
             catch (Exception ex)
             {

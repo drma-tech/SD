@@ -154,11 +154,7 @@ namespace SD.API.Repository
         {
             try
             {
-                var options = CosmosRepositoryExtensions.GetItemRequestOptions();
-
-                options.PreTriggers = ["delete-childs"];
-
-                var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Id), options, cancellationToken);
+                var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
                 if (response.RequestCharge > 15)
                 {
