@@ -221,19 +221,19 @@
                     @if (Wish?.Movies.Any(a => a.id == tmdb_id) ?? false)
                     {
                         <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @WEB.Resources.Button.Remove
+                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @Resources.Translations.RemoveWishlist
                         </Button>
                     }
                     else if (Wish?.Shows.Any(a => a.id == tmdb_id) ?? false)
                     {
                         <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @WEB.Resources.Button.Remove
+                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @Resources.Translations.RemoveWishlist
                         </Button>
                     }
                     else
                     {
-                        <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @Resources.Translations.Add
+                        <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @Resources.Translations.AddWishlist
                         </Button>
                     }
 
@@ -251,7 +251,7 @@
                     }
                     else
                     {
-                        <Button Color="Color.Primary" Clicked="IsWatched" Margin="Margin.Is2.FromEnd" Size="Size.Small">
+                        <Button Color="Color.Primary" Clicked="IsWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
                             <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @Resources.Translations.ButtonWatched
                         </Button>
                     }
@@ -368,12 +368,6 @@
 
         try
         {
-            if (!IsAuthenticated)
-            {
-                await Toast.Warning("You must be logged in before adding an item to your wishlist.");
-                return;
-            }
-
             Wish ??= new();
 
             var item = new WishListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.runtime);
@@ -407,12 +401,6 @@
 
         try
         {
-            if (!IsAuthenticated)
-            {
-                await Toast.Warning("You must be logged in before you can mark an item as watched.");
-                return;
-            }
-
             var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
             if (hasCollection)
