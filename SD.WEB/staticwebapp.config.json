@@ -7,6 +7,10 @@
       ]
     },
     {
+      "route": "/api/principal/remove",
+      "allowedRoles": [ "anonymous" ]
+    },
+    {
       "route": "/api/adm/*",
       "allowedRoles": [
         "administrator"
