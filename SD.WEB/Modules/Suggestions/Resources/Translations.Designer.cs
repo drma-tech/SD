@@ -70,7 +70,7 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not Watched.
+        ///   Looks up a localized string similar to Mark as unwatched.
         /// </summary>
         public static string ButtonNotWatched {
             get {
@@ -79,7 +79,7 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mark as unwatched.
+        ///   Looks up a localized string similar to Mark as watched.
         /// </summary>
         public static string ButtonWatched {
             get {
