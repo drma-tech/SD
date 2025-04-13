@@ -223,11 +223,10 @@ namespace SD.WEB.Core
             }, Options(ModalSize.Default));
         }
 
-        public static async Task SubscriptionPopup(this IModalService service, ClientePrincipal? client, bool IsAuthenticated)
+        public static async Task SubscriptionPopup(this IModalService service, bool IsAuthenticated)
         {
             await service.Show<SubscriptionPopup>(null, x =>
             {
-                x.Add(x => x.Client, client);
                 x.Add(x => x.IsAuthenticated, IsAuthenticated);
             }, Options(ModalSize.Large));
         }

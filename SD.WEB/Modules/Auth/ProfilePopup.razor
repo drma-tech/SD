@@ -59,7 +59,14 @@
 </ModalFooter>
 
 @code {
-    [Parameter] public ClientePrincipal? principal { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; } = false;
+
+    private ClientePrincipal? principal { get; set; }
+
+    protected override async Task LoadDataRender()
+    {
+        principal = await PrincipalApi.Get(IsAuthenticated);
+    }
 
     private async Task DeleteAccount(string? provider)
     {

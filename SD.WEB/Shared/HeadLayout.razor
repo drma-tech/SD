@@ -112,15 +112,11 @@
 
     private async Task MyAccount()
     {
-        var Client = await PrincipalApi.Get(IsAuthenticated);
-
-        await ModalService.OpenPopup<Modules.Auth.ProfilePopup>(x => { x.Add(x => x.principal, Client); }, ModalSize.Large);
+        await ModalService.OpenPopup<Modules.Auth.ProfilePopup>(x => { x.Add(x => x.IsAuthenticated, IsAuthenticated); }, ModalSize.Large);
     }
 
     private async Task OpenSubscription()
     {
-        var Client = await PrincipalApi.Get(IsAuthenticated);
-
         if (!string.IsNullOrEmpty(_ptxn))
         {
             var config = await ConfigurationApi.GetConfigurations();
@@ -129,6 +125,6 @@
             await JsRuntime.InvokeVoidAsync("startPaddle", config.Token);
         }
 
-        await ModalService.SubscriptionPopup(Client, IsAuthenticated);
+        await ModalService.SubscriptionPopup(IsAuthenticated);
     }
 }

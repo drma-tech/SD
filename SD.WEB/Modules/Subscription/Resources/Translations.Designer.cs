@@ -169,6 +169,15 @@ namespace SD.WEB.Modules.Subscription.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Registration successful!.
+        /// </summary>
+        public static string RegistrationSuccessful {
+            get {
+                return ResourceManager.GetString("RegistrationSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string Status {
@@ -192,6 +201,15 @@ namespace SD.WEB.Modules.Subscription.Resources {
         public static string SubscriptionProcessed {
             get {
                 return ResourceManager.GetString("SubscriptionProcessed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We were unable to identify your subscription. Please contact support..
+        /// </summary>
+        public static string UnableReadSubscription {
+            get {
+                return ResourceManager.GetString("UnableReadSubscription", resourceCulture);
             }
         }
         

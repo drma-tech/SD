@@ -153,6 +153,9 @@
   <data name="Product" xml:space="preserve">
     <value>Product</value>
   </data>
+  <data name="RegistrationSuccessful" xml:space="preserve">
+    <value>Registration successful!</value>
+  </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="SubscriptionProcessed" xml:space="preserve">
     <value>Subscription is being processed. Please wait.</value>
+  </data>
+  <data name="UnableReadSubscription" xml:space="preserve">
+    <value>We were unable to identify your subscription. Please contact support.</value>
   </data>
   <data name="UpdatePaymentDetails" xml:space="preserve">
     <value>Update payment details</value>

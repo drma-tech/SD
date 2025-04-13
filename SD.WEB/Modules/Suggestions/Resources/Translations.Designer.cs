@@ -187,6 +187,24 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Platform added successfully!.
+        /// </summary>
+        public static string PlatformAdded {
+            get {
+                return ResourceManager.GetString("PlatformAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Platform removed successfully!.
+        /// </summary>
+        public static string PlatformRemoved {
+            get {
+                return ResourceManager.GetString("PlatformRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove from wishlist.
         /// </summary>
         public static string RemoveWishlist {

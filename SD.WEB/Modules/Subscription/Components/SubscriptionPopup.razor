@@ -28,6 +28,14 @@
             </AlertMessage>
         </Alert>
     }
+    else if (IsAuthenticated && Client == null)
+    {
+        <Alert Color="Color.Warning" Visible="true">
+            <AlertMessage>
+                <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @GlobalTranslations.CustomVisibilityLoading
+            </AlertMessage>
+        </Alert>
+    }
     else
     {
         @if (Client?.ClientePaddle == null)
@@ -315,7 +323,7 @@
 
 @code {
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
-    [Parameter] public ClientePrincipal? Client { get; set; }
+    private ClientePrincipal? Client { get; set; }
 
     public RootSubscription? Subscription { get; set; }
     public Configurations? Config { get; set; }
@@ -359,6 +367,23 @@
         AppStateStatic.RegistrationSuccessful += Registration;
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                Client = await PrincipalApi.Get(IsAuthenticated);
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
+
     protected override async Task LoadDataRender()
     {
         CurrentCountry = await ConfigurationApi.GetCountry();
@@ -381,7 +406,7 @@
         }
         else if (string.IsNullOrEmpty(Client?.ClientePaddle?.SubscriptionId))
         {
-            await Toast.Error("We were unable to identify your subscription. Please contact support.");
+            await Toast.Error(Resources.Translations.UnableReadSubscription);
         }
         else
         {
@@ -433,7 +458,7 @@
 
             StateHasChanged();
 
-            await Toast.Success("Registration successful!");
+            await Toast.Success(Resources.Translations.RegistrationSuccessful);
 
             for (int i = 0; i < 20; i++)
             {

@@ -137,7 +137,7 @@
             var client = await PrincipalApi.Get(true);
             myProviders = await MyProvidersApi.Add(myProviders, item, client?.ClientePaddle);
 
-            await Toast.Success("Provedor favoritado com sucesso!");
+            await Toast.Success(Resources.Translations.PlatformAdded);
         }
         catch (Exception ex)
         {
@@ -153,7 +153,7 @@
 
             myProviders = await MyProvidersApi.Remove(myProviders.Items.First(f => f.id == provider?.id));
 
-            await Toast.Success("Provedor removido com sucesso!");
+            await Toast.Success(Resources.Translations.PlatformRemoved);
         }
         catch (Exception ex)
         {
