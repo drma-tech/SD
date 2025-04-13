@@ -6,6 +6,7 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Core;
 @using SD.WEB.Modules.Suggestions.Resources
+@using System.Globalization
 
 @inherits ComponentCore<MediaPopup>
 
@@ -59,7 +60,7 @@
                         </Tab>
                         @if (media?.Collection.Any() ?? false)
                         {
-                            <Tab Name="Collection">@Translations.TabCollection</Tab>
+                            <Tab Name="Collection">@(media.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)</Tab>
                         }
                         <Tab Name="Reviews">Reviews</Tab>
                     </Items>
@@ -231,7 +232,7 @@
                     }
                     else
                     {
-                        <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small" title="Add to your wishlist">
+                        <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Size="Size.Small">
                             <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @Resources.Translations.Add
                         </Button>
                     }
@@ -250,7 +251,7 @@
                     }
                     else
                     {
-                        <Button Color="Color.Primary" Clicked="IsWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small" title="Mark as watched">
+                        <Button Color="Color.Primary" Clicked="IsWatched" Margin="Margin.Is2.FromEnd" Size="Size.Small">
                             <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @Resources.Translations.ButtonWatched
                         </Button>
                     }
@@ -330,7 +331,7 @@
     {
         if (string.IsNullOrEmpty(rating)) return Color.Secondary;
 
-        double.TryParse(rating, out double val);
+        float.TryParse(rating.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float val);
 
         if (val > 10) val = val / 10;
 
@@ -367,6 +368,12 @@
 
         try
         {
+            if (!IsAuthenticated)
+            {
+                await Toast.Warning("You must be logged in before adding an item to your wishlist.");
+                return;
+            }
+
             Wish ??= new();
 
             var item = new WishListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.runtime);
@@ -400,6 +407,12 @@
 
         try
         {
+            if (!IsAuthenticated)
+            {
+                await Toast.Warning("You must be logged in before you can mark an item as watched.");
+                return;
+            }
+
             var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
             if (hasCollection)

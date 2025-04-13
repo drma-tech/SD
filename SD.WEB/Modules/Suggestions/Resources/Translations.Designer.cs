@@ -196,11 +196,20 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Collection.
+        ///   Looks up a localized string similar to Sequels.
         /// </summary>
-        public static string TabCollection {
+        public static string TabCollection1 {
             get {
-                return ResourceManager.GetString("TabCollection", resourceCulture);
+                return ResourceManager.GetString("TabCollection1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seasons.
+        /// </summary>
+        public static string TabCollection2 {
+            get {
+                return ResourceManager.GetString("TabCollection2", resourceCulture);
             }
         }
         
