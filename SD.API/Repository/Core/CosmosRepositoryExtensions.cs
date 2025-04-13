@@ -4,7 +4,7 @@ namespace SD.API.Repository.Core
 {
     public static class CosmosRepositoryExtensions
     {
-        public static ItemRequestOptions? GetItemRequestOptions()
+        public static ItemRequestOptions GetItemRequestOptions()
         {
             return new ItemRequestOptions
             {
@@ -13,7 +13,7 @@ namespace SD.API.Repository.Core
             };
         }
 
-        public static PatchItemRequestOptions? GetPatchItemRequestOptions()
+        public static PatchItemRequestOptions GetPatchItemRequestOptions()
         {
             return new PatchItemRequestOptions
             {
@@ -22,7 +22,7 @@ namespace SD.API.Repository.Core
             };
         }
 
-        public static QueryRequestOptions? GetQueryRequestOptions()
+        public static QueryRequestOptions GetQueryRequestOptions()
         {
             return new QueryRequestOptions()
             {

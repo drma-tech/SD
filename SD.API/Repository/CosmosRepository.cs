@@ -31,7 +31,7 @@ namespace SD.API.Repository
 
                 if (response.RequestCharge > 1.7)
                 {
-                    _logger.LogWarning("Get - ID {0}, RequestCharge {1}", id, response.RequestCharge);
+                    _logger.LogWarning("Get - ID {Id}, RequestCharge {Charges}", id, response.RequestCharge);
                 }
 
                 return response.Resource;
@@ -154,7 +154,11 @@ namespace SD.API.Repository
         {
             try
             {
-                var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+                var options = CosmosRepositoryExtensions.GetItemRequestOptions();
+
+                options.PostTriggers = ["delete-childs"];
+
+                var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Id), options, cancellationToken);
 
                 if (response.RequestCharge > 15)
                 {
