@@ -1,6 +1,6 @@
 ﻿@inherits ComponentCore<PosterComponent>
 
-<Blazorise.Link Clicked="@Clicked" Position="Position.Relative">
+<Blazorise.Link Clicked="@Clicked" Position="Position.Relative" Style="cursor: pointer;">
     @if (MediaType == MediaType.person)
     {
         <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="padding: 0.15rem; font-size: 0.65rem; position: absolute; top: 3px; left: 3px; z-index: 1; white-space: inherit;">@Title</Badge>
@@ -67,7 +67,7 @@
             if (wishedMovie || wishedShow)
             {
                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" TextColor="TextColor.Light" Position="Position.Absolute"
-                Style="bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
+                                Style="bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
             }
         }
         bool watchedMovie = false;
@@ -79,37 +79,37 @@
             if (watchedMovie || watchedShow)
             {
                 <Blazorise.Icon Name="FontAwesomeIcons.Eye" TextColor="TextColor.Light" Position="Position.Absolute"
-                Style="bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
+                                Style="bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
             }
         }
         <CardImage Source="@Poster" Alt="@Title" title="@Title" Style=@($"cursor: pointer; border-radius: 6px; {(watchedMovie || watchedShow ? "filter: grayscale(100%);" : "")}")></CardImage>
     }
-</Blazorise.Link>
-@if (!string.IsNullOrEmpty(Comments))
-{
-    if (CommentImage)
+    @if (!string.IsNullOrEmpty(Comments))
     {
-        <CardBody Padding="Padding.Is1">
-            <Row HorizontalGutter="4" VerticalGutter="4">
+        if (CommentImage)
+        {
+            <CardBody Padding="Padding.Is1">
+                <Row HorizontalGutter="4" VerticalGutter="4">
+                    @foreach (var item in Comments.Split(CommentsSeparator))
+                    {
+                        <Column ColumnSize="ColumnSize.Is4" Border="Border.Secondary">
+                            <Image Source="@item" alt="@item" title="@item.Replace("logo/","").Replace(".png","")" Style="width: 100%"></Image>
+                        </Column>
+                    }
+                </Row>
+            </CardBody>
+        }
+        else
+        {
+            <CardBody Padding="Padding.Is1">
                 @foreach (var item in Comments.Split(CommentsSeparator))
                 {
-                    <Column ColumnSize="ColumnSize.Is4" Border="Border.Secondary">
-                        <Image Source="@item" alt="@item" title="@item.Replace("logo/","").Replace(".png","")" Style="width: 100%"></Image>
-                    </Column>
+                    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" Style="white-space: inherit; font-size: 0.65rem;">@item</Badge>
                 }
-            </Row>
-        </CardBody>
+            </CardBody>
+        }
     }
-    else
-    {
-        <CardBody Padding="Padding.Is1">
-            @foreach (var item in Comments.Split(CommentsSeparator))
-            {
-                <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" Style="white-space: inherit; font-size: 0.65rem;">@item</Badge>
-            }
-        </CardBody>
-    }    
-}
+</Blazorise.Link>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }

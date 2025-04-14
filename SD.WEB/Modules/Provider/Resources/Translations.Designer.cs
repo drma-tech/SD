@@ -97,7 +97,7 @@ namespace SD.WEB.Modules.Provider.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IMDb is the world&apos;s most popular and authoritative source for movie, TV and celebrity content. Find ratings and reviews for the newest movie and TV shows..
+        ///   Looks up a localized string similar to IMDb is the world&apos;s most popular and authoritative source for movie, TV and celebrity content. Find ratings and reviews for the newest movie and TV shows. Get personalized recommendations, and learn where to watch across hundreds of streaming providers..
         /// </summary>
         public static string imdb_desc {
             get {
