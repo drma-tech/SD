@@ -115,6 +115,42 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Free Account.
+        /// </summary>
+        public static string HeroButton {
+            get {
+                return ResourceManager.GetString("HeroButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note: This is not a platform to stream or watch content..
+        /// </summary>
+        public static string HeroNote {
+            get {
+                return ResourceManager.GetString("HeroNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create your free account to track what you&apos;ve watched and what you&apos;re currently watching, save your favorite streamins platforms, and get personalized suggestions based on your preferences..
+        /// </summary>
+        public static string HeroText {
+            get {
+                return ResourceManager.GetString("HeroText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage your streaming life.
+        /// </summary>
+        public static string HeroTitle {
+            get {
+                return ResourceManager.GetString("HeroTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Identification.
         /// </summary>
         public static string Identification {

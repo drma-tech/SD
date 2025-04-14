@@ -55,6 +55,24 @@
         </Alert>
     } *@
 }
+else
+{
+    <Jumbotron Background="Background.Primary" TextColor="TextColor.Light" Padding="Padding.Is3" Margin="Margin.Is3.FromBottom">
+        <JumbotronTitle Size="JumbotronTitleSize.Is4">
+            @Resources.Translations.HeroTitle
+        </JumbotronTitle>
+        <JumbotronSubtitle Class="mb-3" TextAlignment="TextAlignment.Justified">
+            @Resources.Translations.HeroText
+        </JumbotronSubtitle>
+        <Button Type="ButtonType.Link" Color="Color.Warning" To="/login-providers">
+            @Resources.Translations.HeroButton
+        </Button>
+        <Divider Background="Background.White" Style="opacity: .75"></Divider>
+        <Paragraph>
+            @Resources.Translations.HeroNote
+        </Paragraph>
+    </Jumbotron>
+}
 
 <Row Gutter="(8,8)">
     <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
