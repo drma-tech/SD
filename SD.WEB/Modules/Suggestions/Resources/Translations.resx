@@ -150,6 +150,9 @@
   <data name="Directing" xml:space="preserve">
     <value>Directing</value>
   </data>
+  <data name="LoginNeeded" xml:space="preserve">
+    <value>Some features need login.</value>
+  </data>
   <data name="MoreInformation" xml:space="preserve">
     <value>More information or Contributions</value>
   </data>
@@ -159,11 +162,17 @@
   <data name="Offering" xml:space="preserve">
     <value>Offering</value>
   </data>
+  <data name="PlatformAdded" xml:space="preserve">
+    <value>Platform added successfully!</value>
+  </data>
+  <data name="PlatformForManaging" xml:space="preserve">
+    <value>This platform is for managing, not streaming.</value>
+  </data>
   <data name="PlatformRemoved" xml:space="preserve">
     <value>Platform removed successfully!</value>
   </data>
-  <data name="PlatformAdded" xml:space="preserve">
-    <value>Platform added successfully!</value>
+  <data name="RelatedLinks" xml:space="preserve">
+    <value>Related links</value>
   </data>
   <data name="RemoveWishlist" xml:space="preserve">
     <value>Remove from wishlist</value>
@@ -200,14 +209,5 @@
   </data>
   <data name="Writing" xml:space="preserve">
     <value>Writing</value>
-  </data>
-  <data name="PlatformForManaging" xml:space="preserve">
-    <value>This platform is for managing, not streaming.</value>
-  </data>
-  <data name="LoginNeeded" xml:space="preserve">
-    <value>Some features need login.</value>
-  </data>
-  <data name="RelatedLinks" xml:space="preserve">
-    <value>Related links</value>
   </data>
 </root>
