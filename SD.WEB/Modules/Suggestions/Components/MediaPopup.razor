@@ -206,7 +206,7 @@
         </Row>
     </RenderControl>
 </ModalBody>
-@if (IsAuthenticated)
+@if (!IsAuthenticated)
 {
     <ModalFooter>
         <Alert Color="Color.Info" Margin="Margin.Is0" Visible="true" Width="Width.Is100">
