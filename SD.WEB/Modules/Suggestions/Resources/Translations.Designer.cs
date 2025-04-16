@@ -160,6 +160,15 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Some features need login..
+        /// </summary>
+        public static string LoginNeeded {
+            get {
+                return ResourceManager.GetString("LoginNeeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to More information or Contributions.
         /// </summary>
         public static string MoreInformation {
@@ -196,11 +205,29 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This platform is for managing, not streaming..
+        /// </summary>
+        public static string PlatformForManaging {
+            get {
+                return ResourceManager.GetString("PlatformForManaging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Platform removed successfully!.
         /// </summary>
         public static string PlatformRemoved {
             get {
                 return ResourceManager.GetString("PlatformRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Related links.
+        /// </summary>
+        public static string RelatedLinks {
+            get {
+                return ResourceManager.GetString("RelatedLinks", resourceCulture);
             }
         }
         

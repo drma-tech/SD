@@ -133,7 +133,7 @@
                             }
                         </TabPanel>
                         <TabPanel Name="WhereToWatch" Class="mt-2">
-                            <StreamingComponent tmdb_id="@tmdb_id" type="@type"></StreamingComponent>
+                            <StreamingComponent tmdb_id="@tmdb_id" type="@type" homepage="@media.homepage"></StreamingComponent>
                         </TabPanel>
                         <TabPanel Name="Credits" Class="mt-2">
                             <CreditsComponent tmdb_id="@tmdb_id" type="@type" WatchedList="Watched" WatchingList="Watching" WishList="Wish"
@@ -206,61 +206,64 @@
         </Row>
     </RenderControl>
 </ModalBody>
+@if (IsAuthenticated)
+{
+    <ModalFooter>
+        <Alert Color="Color.Info" Margin="Margin.Is0" Visible="true" Width="Width.Is100">
+            <AlertMessage>
+                @Resources.Translations.LoginNeeded
+            </AlertMessage>
+            <AlertDescription>
+                @Resources.Translations.PlatformForManaging
+            </AlertDescription>
+        </Alert>
+    </ModalFooter>
+}
 <ModalFooter>
     <Container Fluid="true" Margin="Margin.Is0" Padding="Padding.Is0.OnX">
-        <Row HorizontalGutter="4" VerticalGutter="4">
-            <Column VerticalAlignment="VerticalAlignment.Middle">
-                @if (!string.IsNullOrEmpty(media?.homepage))
-                {
-                    <a href="@media.homepage" target="_blank" rel="nofollow" style="float: left;">@(new Uri(media.homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
-                }
-            </Column>
-            <Column ColumnSize="ColumnSize.IsAuto">
-                @if (ShowPrivateAction)
-                {
-                    @if (Wish?.Movies.Any(a => a.id == tmdb_id) ?? false)
-                    {
-                        <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @Resources.Translations.RemoveWishlist
-                        </Button>
-                    }
-                    else if (Wish?.Shows.Any(a => a.id == tmdb_id) ?? false)
-                    {
-                        <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @Resources.Translations.RemoveWishlist
-                        </Button>
-                    }
-                    else
-                    {
-                        <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Bookmark"></Blazorise.Icon> @Resources.Translations.AddWishlist
-                        </Button>
-                    }
-
-                    @if (Watched?.Movies.Contains(tmdb_id ?? "") ?? false)
-                    {
-                        <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @Resources.Translations.ButtonNotWatched
-                        </Button>
-                    }
-                    else if (Watched?.Shows.Contains(tmdb_id ?? "") ?? false)
-                    {
-                        <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @Resources.Translations.ButtonNotWatched
-                        </Button>
-                    }
-                    else
-                    {
-                        <Button Color="Color.Primary" Clicked="IsWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Eye"></Blazorise.Icon> @Resources.Translations.ButtonWatched
-                        </Button>
-                    }
-                }
-                <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">
-                    @WEB.Resources.Button.Close
+        @if (ShowPrivateAction)
+        {
+            @if (Wish?.Movies.Any(a => a.id == tmdb_id) ?? false)
+            {
+                <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                    @Resources.Translations.RemoveWishlist
                 </Button>
-            </Column>
-        </Row>
+            }
+            else if (Wish?.Shows.Any(a => a.id == tmdb_id) ?? false)
+            {
+                <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                    @Resources.Translations.RemoveWishlist
+                </Button>
+            }
+            else
+            {
+                <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                    @Resources.Translations.AddWishlist
+                </Button>
+            }
+
+            @if (Watched?.Movies.Contains(tmdb_id ?? "") ?? false)
+            {
+                <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                    @Resources.Translations.ButtonNotWatched
+                </Button>
+            }
+            else if (Watched?.Shows.Contains(tmdb_id ?? "") ?? false)
+            {
+                <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                    @Resources.Translations.ButtonNotWatched
+                </Button>
+            }
+            else
+            {
+                <Button Color="Color.Primary" Clicked="IsWatched" Margin="Margin.Is2.FromEnd" Disabled="!IsAuthenticated" Size="Size.Small">
+                    @Resources.Translations.ButtonWatched
+                </Button>
+            }
+        }
+        <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">
+            @WEB.Resources.Button.Close
+        </Button>
     </Container>
 </ModalFooter>
 

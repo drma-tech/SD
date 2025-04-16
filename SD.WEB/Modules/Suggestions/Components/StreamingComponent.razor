@@ -181,17 +181,25 @@
                 @Translations.TitleNotAvailable
             </Alert>
         }
-        <AuthorizeView Roles="administrator">
-            <Authorized>
-                <Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false" Margin="Margin.Is2.FromTop">Atualizar</Button>
-            </Authorized>
-        </AuthorizeView>
+
+        @if (!string.IsNullOrEmpty(homepage))
+        {
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.RelatedLinks" Background="Background.Secondary" Style="opacity: .75" />
+            <a href="@homepage" target="_blank" rel="nofollow" style="float: left;">@(new Uri(homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+        }
+
+        // <AuthorizeView Roles="administrator">
+        //     <Authorized>
+        //         <Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false" Margin="Margin.Is2.FromTop">Atualizar</Button>
+        //     </Authorized>
+        // </AuthorizeView>
     }
 </RenderControl>
 
 @code {
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
+    [Parameter] public string? homepage { get; set; }
 
     public RenderControlCore<MediaProviders?>? Core { get; set; } = new();
     private MediaProviders? Providers { get; set; }

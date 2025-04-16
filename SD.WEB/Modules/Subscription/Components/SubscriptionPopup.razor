@@ -40,6 +40,11 @@
     {
         @if (Client?.ClientePaddle == null)
         {
+            <Alert Visible="true" Color="Color.Warning">
+                <AlertMessage>
+                    <Blazorise.Icon Name="FontAwesomeIcons.Gift"></Blazorise.Icon> @Resources.Translations.FreePeriod
+                </AlertMessage>
+            </Alert>
             <div class="mt-2" style="text-align: center;">
                 <RadioGroup @bind-CheckedValue="Cycle" Buttons="true" Color="Color.Primary">
                     <Radio Value="AccountCycle.Monthly">
@@ -47,7 +52,7 @@
                     </Radio>
                     <Radio Value="AccountCycle.Yearly">
                         @AccountCycle.Yearly.GetName()
-                        <Badge Color="Color.Success">@("save 17%")</Badge>
+                        <Badge Color="Color.Success">@Resources.Translations.YearSave</Badge>
                     </Radio>
                 </RadioGroup>
             </div>
@@ -186,7 +191,7 @@
                         <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="Client==null" Clicked="@(()=>OpenCheckout(GetSubscription(AccountProduct.Premium)?.PriceId))">Choose Plan</Button>
                     </CardBody>
                 </Card>
-            </CardDeck>
+            </CardDeck>            
         }
         else
         {

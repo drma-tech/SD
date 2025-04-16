@@ -106,6 +106,15 @@ namespace SD.WEB.Modules.Subscription.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enjoy 14 days free! You won&apos;t be charged until the trial ends..
+        /// </summary>
+        public static string FreePeriod {
+            get {
+                return ResourceManager.GetString("FreePeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inactive billing.
         /// </summary>
         public static string InactiveBilling {
@@ -219,6 +228,15 @@ namespace SD.WEB.Modules.Subscription.Resources {
         public static string UpdatePaymentDetails {
             get {
                 return ResourceManager.GetString("UpdatePaymentDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to save 17%.
+        /// </summary>
+        public static string YearSave {
+            get {
+                return ResourceManager.GetString("YearSave", resourceCulture);
             }
         }
     }
