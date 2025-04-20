@@ -171,7 +171,7 @@
 
     private async Task OpenPopupSeason(Part? part)
     {
-        await ModalService.SeasonPopup(collection?.name, part?.title, collection_id, part?.season_number);
+        await ModalService.SeasonPopup(collection?.name, part?.title, collection_id, part?.season_number, IsAuthenticated);
     }
 
     private async Task IsWatched()

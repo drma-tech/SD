@@ -195,7 +195,7 @@ namespace SD.WEB.Core
             }, Options(ModalSize.ExtraLarge));
         }
 
-        public static async Task SeasonPopup(this IModalService service, string? ShowTitle, string? ShowSeasonName, string? tmdb_id, int? season_number)
+        public static async Task SeasonPopup(this IModalService service, string? ShowTitle, string? ShowSeasonName, string? tmdb_id, int? season_number, bool IsAuthenticated)
         {
             await service.Show<SeasonPopup>(null, x =>
             {
@@ -203,6 +203,7 @@ namespace SD.WEB.Core
                 x.Add(x => x.ShowSeasonName, ShowSeasonName);
                 x.Add(x => x.tmdb_id, tmdb_id);
                 x.Add(x => x.season_number, season_number);
+                x.Add(x => x.IsAuthenticated, IsAuthenticated);
             }, Options(ModalSize.ExtraLarge));
         }
 

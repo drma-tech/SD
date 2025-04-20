@@ -498,6 +498,6 @@
 
     private async Task OpenPopupSeason(Collection? collection)
     {
-        await ModalService.SeasonPopup(media?.title, collection?.title, tmdb_id, collection?.SeasonNumber);
+        await ModalService.SeasonPopup(media?.title, collection?.title, tmdb_id, collection?.SeasonNumber, IsAuthenticated);
     }
 }

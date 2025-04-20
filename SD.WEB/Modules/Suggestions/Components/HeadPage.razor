@@ -9,7 +9,16 @@
     <AlertDescription>
         <Row HorizontalGutter="8" VerticalGutter="8">
             <Column ColumnSize="ColumnSize.IsAuto">
-                <Image Source="@ImageSource" Style="height: 60px;" alt="@ImageSource"></Image>
+                @if (string.IsNullOrEmpty(Link))
+                {
+                    <Image Source="@ImageSource" Style="height: 60px;" alt="@ImageSource"></Image>
+                }
+                else
+                {
+                    <a href="@Link" target="_blank" rel="nofollow">
+                        <Image Source="@ImageSource" Style="height: 60px;" alt="@ImageSource"></Image>
+                    </a>
+                }
             </Column>
             <Column>
                 <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom" Display="Display.Block.None.OnTablet">

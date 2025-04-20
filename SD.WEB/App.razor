@@ -1,4 +1,9 @@
 ﻿@using SD.WEB.Modules.Auth.Resources
+
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@implements IDisposable
+
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
@@ -32,3 +37,25 @@
     <ModalProvider></ModalProvider>
     <MessageProvider />
 </CascadingAuthenticationState>
+
+@code {
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += HandleLocationChanged;
+    }
+
+    private async void HandleLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        await Task.Delay(100);
+        if (OperatingSystem.IsBrowser())
+        {
+            var js = (IJSInProcessRuntime)JSRuntime;
+            js.InvokeVoid("eval", "if (window.clarity) clarity('set', 'page', window.location.href);");
+        }
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+}
