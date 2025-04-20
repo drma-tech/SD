@@ -9,10 +9,10 @@
     <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <Country TValue="Region" TEnum="Region" For="@(() => AppStateStatic.Region)" SelectedValue="@AppStateStatic.Region" SelectedValueChanged="RegionValueChanged"
-             LabelSize="LabelSize.Short"></Country>
-    <FieldSelect For="@(() => AppStateStatic.Language)" TValue="Language" TEnum="Language" SelectedValue="@AppStateStatic.Language" SelectedValueChanged="LanguageValueChanged"
-                 CssIcon="@FontAwesomeIcons.Language" LabelSize="LabelSize.Short" Order="(o)=>o.Name" ShowGroup="true"></FieldSelect>
+    <Country TValue="Region" TEnum="Region" For="@(() => AppStateStatic.Region)" SelectedValue="@AppStateStatic.Region"
+             SelectedValueChanged="RegionValueChanged" LabelSize="LabelSize.Short"></Country>
+    <Language TValue="Language" TEnum="Language" For="@(() => AppStateStatic.Language)" SelectedValue="@AppStateStatic.Language"
+              SelectedValueChanged="LanguageValueChanged" LabelSize="LabelSize.Short"></Language>
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@(()=>{ModalService.Hide();})" Size="Size.Small">
