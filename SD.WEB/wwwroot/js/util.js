@@ -65,3 +65,23 @@ function changeDarkMode() {
 
     document.body.setAttribute("data-bs-theme", theme);
 }
+
+function animationShake(cssClass) {
+    const alertBoxes = document.querySelectorAll(cssClass);
+
+    alertBoxes.forEach(el => {
+        el.classList.add("shake");
+        setTimeout(() => el.classList.remove("shake"), 300);
+    });
+
+    if (navigator.vibrate) { navigator.vibrate(200); }
+}
+
+function animationBlink(cssClass) {
+    const alertBoxes = document.querySelectorAll(cssClass);
+
+    alertBoxes.forEach(el => {
+        el.classList.add("blink");
+        setTimeout(() => { el.classList.remove("blink"); }, 1500);
+    });
+}

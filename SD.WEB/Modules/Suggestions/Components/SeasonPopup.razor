@@ -6,11 +6,11 @@
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@ShowTitle (@ShowSeasonName)</ModalTitle>
-        <CloseButton />
-    </ModalHeader>
-    <ModalBody MaxHeight="70">
-        <RenderControl Core="Core" Model="Season" ExpressionEmpty="@((TmdbSeason? obj)=> obj == null || obj.episodes.Empty())">
-            <ListGroup Flush>
+    <CloseButton />
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    <RenderControl Core="Core" Model="Season" ExpressionEmpty="@((TmdbSeason? obj)=> obj == null || obj.episodes.Empty())">
+        <ListGroup Flush>
             @foreach (var item in Season?.episodes ?? new())
             {
                 <ListGroupItem Padding="Padding.Is2">
@@ -18,19 +18,19 @@
                         <Column ColumnSize="ColumnSize.Is3">
                             @if (string.IsNullOrEmpty(item.still_path))
                             {
-                                <CardImage Source="images/noimage.png" Alt="@item.name" title="@item.name" Style="height: 100px;"></CardImage>
+                                <CardImage Source="images/noimage.png" Alt="@item.name" title="@item.name" Style="height: 100px;" onclick="animationShake('.alertLoginNeeded')"></CardImage>
                             }
                             else
                             {
-                                <CardImage Source="@(TmdbOptions.SmallPosterPath +  item.still_path)" Alt="@item.name"></CardImage>
+                                <CardImage Source="@(TmdbOptions.SmallPosterPath +  item.still_path)" Alt="@item.name" onclick="animationShake('.alertLoginNeeded')"></CardImage>
                             }
                         </Column>
                         <Column>
                             <Heading Size="HeadingSize.Is6" Margin="Margin.Is1.FromBottom">@(item.episode_number + " - " + item.name)</Heading>
                             <Small TextAlignment="TextAlignment.Justified">@item.overview</Small>
-                            </Column>
-                        </Row>
-                    </ListGroupItem>
+                        </Column>
+                    </Row>
+                </ListGroupItem>
             }
         </ListGroup>
     </RenderControl>
@@ -38,7 +38,7 @@
 @if (!IsAuthenticated)
 {
     <ModalFooter>
-        <Alert Color="Color.Info" Margin="Margin.Is0" Visible="true" Width="Width.Is100">
+        <Alert Color="Color.Info" Margin="Margin.Is0" Visible="true" Width="Width.Is100" Class="alertLoginNeeded">
             <AlertMessage>
                 @Resources.Translations.LoginNeeded
             </AlertMessage>
