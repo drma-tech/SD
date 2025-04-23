@@ -26,7 +26,7 @@
     }
 </Div> *@
 
-<HeaderComponent Title="@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region.GetName())">
+<HeaderComponent Title="@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region.GetName() ?? "invalid country")">
     <Select TValue="DeliveryModel?" @bind-SelectedValue="@DeliveryModel" Size="Size.ExtraSmall">
         <SelectItem></SelectItem>
         @foreach (var item in EnumHelper.GetList<DeliveryModel>())

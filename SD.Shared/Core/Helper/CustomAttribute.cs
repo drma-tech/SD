@@ -18,11 +18,11 @@ namespace SD.Shared.Core.Helper
 
     public static class CustomAttributeHelper
     {
-        public static CustomAttribute GetCustomAttribute(this Enum value, bool translate = true)
+        public static CustomAttribute? GetCustomAttribute(this Enum value, bool translate = true)
         {
             var fieldInfo = value.GetType().GetField(value.ToString());
 
-            return fieldInfo != null ? fieldInfo.GetCustomAttribute(translate) : throw new NotificationException($"{value} fieldInfo is null");
+            return fieldInfo?.GetCustomAttribute(translate);
         }
 
         public static CustomAttribute GetCustomAttribute<T>(this Expression<Func<T>>? expression, bool translate = true)
@@ -57,9 +57,9 @@ namespace SD.Shared.Core.Helper
             return attr;
         }
 
-        public static string GetName(this Enum value, bool translate = true)
+        public static string? GetName(this Enum value, bool translate = true)
         {
-            return value.GetCustomAttribute(translate).Name ?? throw new NotificationException($"{value} Name is null");
+            return value.GetCustomAttribute(translate)?.Name;
         }
 
         public static string GetDescription(this Enum value, bool translate = true)

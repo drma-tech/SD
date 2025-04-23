@@ -8,10 +8,10 @@ namespace SD.WEB.Core
         public static List<LogContainer> Logs { get; private set; } = [];
 
         [Custom(Name = "Region", ResourceType = typeof(GlobalTranslations))]
-        public static Region Region { get; private set; }
+        public static Region Region { get; private set; } = Region.US;
 
         [Custom(Name = "Language", ResourceType = typeof(GlobalTranslations))]
-        public static Language Language { get; private set; }
+        public static Language Language { get; private set; } = Language.enUS;
 
         public static Action? RegionChanged { get; set; }
         public static Action<TempClientePaddle>? RegistrationSuccessful { get; set; }

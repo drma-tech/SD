@@ -143,7 +143,20 @@
                                 </ListGroupItem>
                             </ListGroup>
                         </CardText>
-                        <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="Client==null" Clicked="@(()=>OpenCheckout(GetSubscription(AccountProduct.Standard)?.PriceId))">Choose Plan</Button>
+                        @if (Client == null)
+                        {
+                            <span onclick="animationShake('.alertLoginNeeded')">
+                                <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="true">
+                                    Choose Plan
+                                </Button>
+                            </span>
+                        }
+                        else
+                        {
+                            <Button Color="Color.Primary" Block="true" Class="mt-3" Clicked="@(()=>OpenCheckout(GetSubscription(AccountProduct.Standard)?.PriceId))">
+                                Choose Plan
+                            </Button>
+                        }
                     </CardBody>
                 </Card>
                 <Card Background="Background.Secondary" WhiteText="true">
@@ -188,10 +201,23 @@
                                 </ListGroupItem>
                             </ListGroup>
                         </CardText>
-                        <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="Client==null" Clicked="@(()=>OpenCheckout(GetSubscription(AccountProduct.Premium)?.PriceId))">Choose Plan</Button>
+                        @if (Client == null)
+                        {
+                            <span onclick="animationShake('.alertLoginNeeded')">
+                                <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="true">
+                                    Choose Plan
+                                </Button>
+                            </span>
+                        }
+                        else
+                        {
+                            <Button Color="Color.Primary" Block="true" Class="mt-3" Clicked="@(()=>OpenCheckout(GetSubscription(AccountProduct.Premium)?.PriceId))">
+                                Choose Plan
+                            </Button>
+                        }
                     </CardBody>
                 </Card>
-            </CardDeck>            
+            </CardDeck>
         }
         else
         {
@@ -311,6 +337,19 @@
         }
     }
 </ModalBody>
+@if (Client == null)
+{
+    <ModalFooter>
+        <Alert Color="Color.Info" Margin="Margin.Is0" Visible="true" Width="Width.Is100" Class="alertLoginNeeded">
+            <AlertMessage>
+                @Suggestions.Resources.Translations.LoginNeeded
+            </AlertMessage>
+            <AlertDescription>
+                @Suggestions.Resources.Translations.PlatformForManaging
+            </AlertDescription>
+        </Alert>
+    </ModalFooter>
+}
 <ModalFooter>
     <Container Fluid="true" Margin="Margin.Is0" Padding="Padding.Is0.OnX">
         <Row HorizontalGutter="4" VerticalGutter="4">
