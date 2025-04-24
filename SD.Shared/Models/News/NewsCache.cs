@@ -5,7 +5,7 @@
         public NewsCache()
         { }
 
-        public NewsCache(NewsModel data, string key) : base(key, data, ttlCache.half_day)
+        public NewsCache(NewsModel data, string key) : base(key, data, ttlCache.six_hours)
         { }
     }
 }

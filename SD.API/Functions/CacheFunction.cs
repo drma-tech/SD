@@ -53,7 +53,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                return await req.CreateResponse(doc, ttlCache.half_day, cancellationToken);
+                return await req.CreateResponse(doc, ttlCache.six_hours, cancellationToken);
             }
             catch (TaskCanceledException ex)
             {
@@ -110,7 +110,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                return await req.CreateResponse(doc, ttlCache.half_day, cancellationToken);
+                return await req.CreateResponse(doc, ttlCache.six_hours, cancellationToken);
             }
             catch (TaskCanceledException ex)
             {
@@ -168,7 +168,7 @@ namespace SD.API.Functions
                     }
                 }
 
-                return await req.CreateResponse(doc, ttlCache.half_day, cancellationToken);
+                return await req.CreateResponse(doc, ttlCache.six_hours, cancellationToken);
             }
             catch (TaskCanceledException ex)
             {
@@ -203,7 +203,7 @@ namespace SD.API.Functions
                     doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
                 }
 
-                return await req.CreateResponse(doc, ttlCache.half_day, cancellationToken);
+                return await req.CreateResponse(doc, ttlCache.six_hours, cancellationToken);
             }
             catch (TaskCanceledException ex)
             {
