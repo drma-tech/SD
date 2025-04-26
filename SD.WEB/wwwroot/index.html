@@ -98,6 +98,37 @@
         }
     </script>
 
+    <script>
+        function isWasmSupported() {
+            try {
+                if (typeof WebAssembly === "object"
+                    && typeof WebAssembly.instantiate === "function") {
+                    const module = new WebAssembly.Module(
+                        Uint8Array.of(
+                            0x00, 0x61, 0x73, 0x6d, // '\0asm'
+                            0x01, 0x00, 0x00, 0x00  // version 1
+                        )
+                    );
+                    if (module instanceof WebAssembly.Module)
+                        return new WebAssembly.Instance(module) instanceof WebAssembly.Instance;
+                }
+            } catch (e) {
+                //do nothing
+            }
+            return false;
+        }
+
+        if (!isWasmSupported()) {
+            document.body.innerHTML = `
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px;font-family:sans-serif;">
+              <h1>Unsupported Browser</h1>
+              <p>Your browser does not support WebAssembly, which is required to run this application.</p>
+              <p>Please update your browser or switch to a more recent version.</p>
+            </div>
+          `;
+        }
+    </script>
+
     <script async src="_content/Toolbelt.Blazor.PWA.Updater.Service/script.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script async src="js/swiper.js"></script>
