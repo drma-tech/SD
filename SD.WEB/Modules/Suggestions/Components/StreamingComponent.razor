@@ -180,6 +180,20 @@
             <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is2.FromTop" Visible="true">
                 @Translations.TitleNotAvailable
             </Alert>
+
+            @if (AppStateStatic.Region.GetName().Empty())
+            {
+                <Alert Color="Color.Danger" Padding="Padding.Is1" Margin="Margin.Is2.FromTop" Visible="true">
+                    <AlertMessage>
+                        There was an error detecting your region
+                    </AlertMessage>
+                    <AlertDescription>
+                        <Paragraph>Please contact support and provide the following information:</Paragraph>
+                        <Paragraph>CurrentRegion: @System.Globalization.RegionInfo.CurrentRegion.Name</Paragraph>
+                        <Paragraph>CurrentCulture: @System.Globalization.CultureInfo.CurrentCulture.Name</Paragraph>
+                    </AlertDescription>
+                </Alert>
+            }
         }
 
         @if (!string.IsNullOrEmpty(homepage))

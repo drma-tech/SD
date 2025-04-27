@@ -36,46 +36,62 @@
     </Select>
 </HeaderComponent>
 <RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null || obj.Items.Empty())">
-    <div class="grid-relative-container-sm">
-        @foreach (var item in GetFilteredProviders())
-        {
-            var favorite = myProviders?.Items.Any(a => a.id == item.id) ?? false;
+    @if (AppStateStatic.Region.GetName().Empty())
+    {
+        <Alert Color="Color.Danger" Padding="Padding.Is1" Margin="Margin.Is2.FromTop" Visible="true">
+            <AlertMessage>
+                There was an error detecting your region
+            </AlertMessage>
+            <AlertDescription>
+                <Paragraph>Please contact support and provide the following information:</Paragraph>
+                <Paragraph>CurrentRegion: @System.Globalization.RegionInfo.CurrentRegion.Name</Paragraph>
+                <Paragraph>CurrentCulture: @System.Globalization.CultureInfo.CurrentCulture.Name</Paragraph>
+            </AlertDescription>
+        </Alert>
+    }
+    else
+    {
+        <div class="grid-relative-container-sm">
+            @foreach (var item in GetFilteredProviders())
+            {
+                var favorite = myProviders?.Items.Any(a => a.id == item.id) ?? false;
 
-            <Div>
-                <Card Background="(favorite ? Background.Success : Background.Transparent)" Style="@(favorite ? "padding: 3px;" : "")">
-                    <Blazorise.Link To="@($"/providers/{item.id}")">
-                        <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" Style="cursor: pointer;" title="@item.name"></CardImage>
-                        @if (favorite)
-                        {
-                            <Badge Color="Color.Light" Style="padding: 0.15rem; font-size: 1rem; position: absolute; top: 6px; right: 6px; z-index: 1;">
-                                <Blazorise.Icon Name="FontAwesomeIcons.Star" TextColor="TextColor.Success"></Blazorise.Icon>
-                            </Badge>
-                        }
-                    </Blazorise.Link>
-                </Card>
-                <AuthorizeView Roles="administrator">
-                    <Authorized>
-                        @*  @if (string.IsNullOrEmpty(item.link))
+                <Div>
+                    <Card Background="(favorite ? Background.Success : Background.Transparent)" Style="@(favorite ? "padding: 3px;" : "")">
+                        <Blazorise.Link To="@($"/providers/{item.id}")">
+                            <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" Style="cursor: pointer;" title="@item.name"></CardImage>
+                            @if (favorite)
+                            {
+                                <Badge Color="Color.Light" Style="padding: 0.15rem; font-size: 1rem; position: absolute; top: 6px; right: 6px; z-index: 1;">
+                                    <Blazorise.Icon Name="FontAwesomeIcons.Star" TextColor="TextColor.Success"></Blazorise.Icon>
+                                </Badge>
+                            }
+                        </Blazorise.Link>
+                    </Card>
+                    <AuthorizeView Roles="administrator">
+                        <Authorized>
+                            @*  @if (string.IsNullOrEmpty(item.link))
                         {
                             <p class="m-0" style="color: red">link</p>
                         } *@
-                        @*  @if (string.IsNullOrEmpty(item.description))
+                            @*  @if (string.IsNullOrEmpty(item.description))
                         {
                             <p class="m-0" style="color: red">description</p>
                         } *@
-                        @if (item.models.Empty())
-                        {
-                            <p class="m-0" style="color: red">model</p>
-                        }
-                        @*  @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && item.plans.Empty())
+                            @if (item.models.Empty())
+                            {
+                                <p class="m-0" style="color: red">model</p>
+                            }
+                            @*  @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && item.plans.Empty())
                         {
                             <p class="m-0" style="color: red">plan</p>
                         } *@
-                    </Authorized>
-                </AuthorizeView>
-            </Div>
-        }
-    </div>
+                        </Authorized>
+                    </AuthorizeView>
+                </Div>
+            }
+        </div>
+    }
 </RenderControl>
 
 @code {
@@ -88,10 +104,10 @@
     public DeliveryModel? DeliveryModel { get; set; }
 
     public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items
-        .Where(p => p.regions.Any(a => a == AppStateStatic.Region))
-        .Where(p => p.models.Any(a => DeliveryModel == null ? true : a == DeliveryModel))
-        .OrderBy(o => o.priority).AsEnumerable()
-        ?? [];
+    .Where(p => p.regions.Any(a => a == AppStateStatic.Region))
+    .Where(p => p.models.Any(a => DeliveryModel == null ? true : a == DeliveryModel))
+    .OrderBy(o => o.priority).AsEnumerable()
+    ?? [];
 
     protected override async Task OnInitializedAsync()
     {

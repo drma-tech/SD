@@ -95,7 +95,7 @@
                 <Row HorizontalGutter="4" VerticalGutter="4">
                     @foreach (var item in Comments.Split(CommentsSeparator))
                     {
-                        <Column ColumnSize="ColumnSize.Is4" Border="Border.Secondary">
+                        <Column ColumnSize="ColumnSize.Is4" Border="Border.Secondary" Style="border-color: lightgray !important; padding: 1px;">
                             <Image Source="@item" alt="@item" title="@item.Replace("logo/","").Replace(".png","")" Style="width: 100%"></Image>
                         </Column>
                     }
