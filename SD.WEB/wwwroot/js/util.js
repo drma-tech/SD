@@ -31,11 +31,14 @@ function TryDetectPlatform() {
 
     let isWindows = document.referrer == "app-info://platform/microsoft-store";
     let isAndroid = /(android)/i.test(navigator.userAgent);
+    let isIOS = document.cookie.split('; ').some(cookie => cookie === 'app-platform=iOS App Store');
 
     if (isWindows)
         SetLocalStorage('platform', 'windows');
     else if (isAndroid)
         SetLocalStorage('platform', 'play');
+    else if (isIOS)
+        SetLocalStorage('platform', 'ios');
     else
         SetLocalStorage('platform', 'webapp');
 }
