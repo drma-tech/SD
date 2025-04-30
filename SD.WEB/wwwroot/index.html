@@ -27,6 +27,9 @@
     <script defer src="js/paddle.js"></script>
     <script src="js/util.js"></script>
 
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5922021468622891" crossorigin="anonymous"></script>
+
     <!-- Microsoft Clarity -->
     <script type="text/javascript">
         if (!window.location.host.includes('localhost')) {
@@ -114,12 +117,12 @@
 
         if (!supported) {
             document.body.innerHTML = `
-                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px;font-family:sans-serif;">
-                    <h1>Unsupported Browser</h1>
-                    <p>Your browser does not support WebAssembly, which is required to run this application.</p>
-                    <p>Please update your browser or switch to a more recent version.</p>
-                </div>
-                `;
+                    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px;font-family:sans-serif;">
+                        <h1>Unsupported Browser</h1>
+                        <p>Your browser does not support WebAssembly, which is required to run this application.</p>
+                        <p>Please update your browser or switch to a more recent version.</p>
+                    </div>
+                    `;
         }
     </script>
 
