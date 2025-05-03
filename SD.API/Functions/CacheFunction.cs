@@ -144,7 +144,7 @@ namespace SD.API.Functions
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                return req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
+                return await req.CreateResponse((CacheDocument<TrailerModel>?)null, ttlCache.six_hours, cancellationToken);
             }
         }
 
@@ -202,7 +202,7 @@ namespace SD.API.Functions
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                return req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
+                return await req.CreateResponse((CacheDocument<MostPopularData>?)null, ttlCache.six_hours, cancellationToken);
             }
         }
 
@@ -237,7 +237,7 @@ namespace SD.API.Functions
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                return req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
+                return await req.CreateResponse((CacheDocument<MostPopularData>?)null, ttlCache.six_hours, cancellationToken);
             }
         }
 
@@ -324,7 +324,7 @@ namespace SD.API.Functions
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                return req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
+                return await req.CreateResponse((CacheDocument<Ratings>?)null, ttlCache.six_hours, cancellationToken);
             }
         }
 
@@ -411,7 +411,7 @@ namespace SD.API.Functions
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                return req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
+                return await req.CreateResponse((CacheDocument<Ratings>?)null, ttlCache.six_hours, cancellationToken);
             }
         }
 
@@ -471,7 +471,7 @@ namespace SD.API.Functions
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                return req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
+                return await req.CreateResponse((CacheDocument<ReviewModel>?)null, ttlCache.six_hours, cancellationToken);
             }
         }
 
@@ -534,7 +534,7 @@ namespace SD.API.Functions
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                return req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
+                return await req.CreateResponse((CacheDocument<ReviewModel>?)null, ttlCache.six_hours, cancellationToken);
             }
         }
     }
