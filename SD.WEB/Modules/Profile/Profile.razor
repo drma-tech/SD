@@ -19,6 +19,23 @@
 
 <SeoHeader Title="@SeoTranslations.ProfileTitle" Description="@SeoTranslations.ProfileDescription" Url="/profile"></SeoHeader>
 
+@if (Settings != null && Settings.ShowAdSense)
+{
+    <Div TextAlignment="TextAlignment.Center">
+        @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
+        {
+            <div class="adsbygoogle google-ads" style="background-color: black;"></div>
+        }
+        else
+        {
+            <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="3844372040"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        }
+    </Div>
+}
+
 @if (IsAuthenticated)
 {
     @* @if (Platform.NotEmpty() && Reviewed.Empty() && Client != null
@@ -120,20 +137,6 @@ else
     </Column>
 </Row>
 
-<Div TextAlignment="TextAlignment.Center">
-    @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
-    {
-        <div class="adsbygoogle google-ads" style="background-color: black;"></div>
-    }
-    else
-    {
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="3844372040"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    }
-</Div>
-
 <MyProviderComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MyProviderComponent>
 
 <MySuggestions Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MySuggestions>
@@ -154,6 +157,7 @@ else
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
     public RenderControlCore<WishList?> CoreWish { get; set; } = new();
 
+    public Settings? Settings { get; set; }
     private MyProviders? myProviders { get; set; }
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
@@ -162,11 +166,15 @@ else
     public string? Platform { get; set; }
     public string? Reviewed { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; CoreWatched?.LoadingFinished?.Invoke(model); StateHasChanged(); };
         WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; CoreWatching?.LoadingFinished?.Invoke(model); StateHasChanged(); };
         WishApi.DataChanged += (WishList? model) => { Wish = model; CoreWish?.LoadingFinished?.Invoke(model); StateHasChanged(); };
+
+        Settings = await CacheSettingsApi.GetSettings();
     }
 
     protected override async Task LoadDataRender()

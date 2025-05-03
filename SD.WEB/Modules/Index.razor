@@ -14,19 +14,22 @@
 @inject WishListApi WishApi
 @inject IJSRuntime JsRuntime
 
-<Div TextAlignment="TextAlignment.Center">
-    @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
-    {
-        <div class="adsbygoogle google-ads" style="background-color: black;"></div>
-    }
-    else
-    {
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="8246651489"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    }
-</Div>
+@if (Settings != null && Settings.ShowAdSense)
+{
+    <Div TextAlignment="TextAlignment.Center">
+        @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
+        {
+            <div class="adsbygoogle google-ads" style="background-color: black;"></div>
+        }
+        else
+        {
+            <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="8246651489"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        }
+    </Div>
+}
 
 <Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
     <Column>
@@ -62,6 +65,7 @@
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
     public RenderControlCore<WishList?> CoreWish { get; set; } = new();
 
+    public Settings? Settings { get; set; }
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
@@ -75,6 +79,8 @@
         WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; CoreWatched?.LoadingFinished?.Invoke(model); StateHasChanged(); };
         WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; CoreWatching?.LoadingFinished?.Invoke(model); StateHasChanged(); };
         WishApi.DataChanged += (WishList? model) => { Wish = model; CoreWish?.LoadingFinished?.Invoke(model); StateHasChanged(); };
+
+        Settings = await CacheSettingsApi.GetSettings();
 
         if (platform.NotEmpty())
         {

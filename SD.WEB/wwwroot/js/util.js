@@ -29,13 +29,13 @@ function SetLocalStorage(key, value) {
 function TryDetectPlatform() {
     if (GetLocalStorage('platform')) return; //if populate before, cancel, cause detection (windows) only works for first call
 
-    let isWindows = document.referrer == "app-info://platform/microsoft-store";
-    let isAndroid = /(android)/i.test(navigator.userAgent);
+    let isWindows = document.referrer == "app-info://platform/microsoft-store";    
+    let isGooglePlay = document.referrer?.includes("android-app://"); //let isAndroid = /(android)/i.test(navigator.userAgent);
     let isIOS = document.cookie.split('; ').some(cookie => cookie === 'app-platform=iOS App Store');
 
     if (isWindows)
         SetLocalStorage('platform', 'windows');
-    else if (isAndroid)
+    else if (isGooglePlay)
         SetLocalStorage('platform', 'play');
     else if (isIOS)
         SetLocalStorage('platform', 'ios');
@@ -57,6 +57,7 @@ async function getUserInfo() {
             return null;
         }
     } catch (error) {
+        console.log('Error getUserInfo:', error)
         return null;
     }
 }

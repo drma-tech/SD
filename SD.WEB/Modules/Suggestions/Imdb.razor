@@ -14,6 +14,23 @@
 
 <HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@Translations.imdb_desc" Link="https://www.imdb.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
+@if (Settings != null && Settings.ShowAdSense)
+{
+    <Div TextAlignment="TextAlignment.Center">
+        @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
+        {
+            <div class="adsbygoogle google-ads" style="background-color: black;"></div>
+        }
+        else
+        {
+            <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        }
+    </Div>
+}
+
 <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" MaxItens="50" IsIMDB="true" ShowFilter="true" MultipleLanguages="false"
            StringParameters="Params" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OnlyYear="true"></MediaList>
 <MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" MaxItens="250" ShowFilter="true" Watched="WatchedList"
@@ -21,17 +38,23 @@
 
 @code {
     public Dictionary<string, string> Params { get; set; } = new Dictionary<string, string>() { { "mode", "full" } };
+
+    public Settings? Settings { get; set; }
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         AppStateStatic.RegionChanged += StateHasChanged;
 
         WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
         WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
         WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+
+        Settings = await CacheSettingsApi.GetSettings();
     }
 
     protected override async Task LoadDataRender()

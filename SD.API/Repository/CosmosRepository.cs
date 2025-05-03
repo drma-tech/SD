@@ -97,7 +97,7 @@ namespace SD.API.Repository
                     results.AddRange(response.Resource);
                 }
 
-                if (charges > 7)
+                if (charges > 15)
                 {
                     _logger.LogWarning("Query - Type {Type}, RequestCharge {Charges}", Type.ToString(), charges);
                 }

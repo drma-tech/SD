@@ -12,19 +12,22 @@
 
 <SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/providers"></SeoHeader>
 
-<Div TextAlignment="TextAlignment.Center">
-    @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
-    {
-        <div class="adsbygoogle google-ads" style="background-color: black;"></div>
-    }
-    else
-    {
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="5179836142"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    }
-</Div>
+@if (Settings != null && Settings.ShowAdSense)
+{
+    <Div TextAlignment="TextAlignment.Center">
+        @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
+        {
+            <div class="adsbygoogle google-ads" style="background-color: black;"></div>
+        }
+        else
+        {
+            <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="5179836142"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        }
+    </Div>
+}
 
 <HeaderComponent Title="@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region.GetName() ?? "invalid country")">
     <Select TValue="DeliveryModel?" @bind-SelectedValue="@DeliveryModel" Size="Size.ExtraSmall">
@@ -98,6 +101,7 @@
     public RenderControlCore<AllProviders?>? Core { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
 
+    public Settings? Settings { get; set; }
     private MyProviders? myProviders { get; set; }
 
     [Custom(Name = "Model")]
@@ -114,6 +118,8 @@
         await base.OnInitializedAsync();
 
         AppStateStatic.RegionChanged += StateHasChanged;
+
+        Settings = await CacheSettingsApi.GetSettings();
 
         //it is in initialize so it can be recognized by link mapping
         AllProviders = await AllProvidersApi.GetAll(Core);

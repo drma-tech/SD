@@ -13,6 +13,26 @@ namespace SD.API.Functions
 {
     public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration configuration)
     {
+        [Function("Settings")]
+        public async Task<HttpResponseData> Configurations(
+            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/settings")] HttpRequestData req, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var settings = new Settings
+                {
+                    ShowAdSense = configuration.GetValue<bool>("Settings:ShowAdSense"),
+                };
+
+                return await req.CreateResponse(settings, ttlCache.one_day, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                req.ProcessException(ex);
+                throw;
+            }
+        }
+
         [Function("CacheNew")]
         public async Task<HttpResponseData?> CacheNew(
            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/cache/news")] HttpRequestData req, CancellationToken cancellationToken)

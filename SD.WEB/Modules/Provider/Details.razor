@@ -22,19 +22,22 @@
                   provider="Provider" IsAuthenticated="IsAuthenticated"></HeadPage>
     }
 
-    <Div TextAlignment="TextAlignment.Center">
-        @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
-        {
-            <div class="adsbygoogle google-ads" style="background-color: black;"></div>
-        }
-        else
-        {
-            <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="2339718687"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        }
-    </Div>
+    @if (Settings != null && Settings.ShowAdSense)
+    {
+        <Div TextAlignment="TextAlignment.Center">
+            @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
+            {
+                <div class="adsbygoogle google-ads" style="background-color: black;"></div>
+            }
+            else
+            {
+                <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="2339718687"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            }
+        </Div>
+    }
 
     <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "popularity.desc")"
                MaxItens="50" ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
@@ -55,6 +58,7 @@
     public RenderControlCore<WatchingList?> CoreWatchingList { get; set; } = new();
     public RenderControlCore<WishList?> CoreWishlist { get; set; } = new();
 
+    public Settings? Settings { get; set; }
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
@@ -66,6 +70,8 @@
         WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
         WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
         WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+
+        Settings = await CacheSettingsApi.GetSettings();
 
         AllProviders = await AllProvidersApi.GetAll(Core);
 

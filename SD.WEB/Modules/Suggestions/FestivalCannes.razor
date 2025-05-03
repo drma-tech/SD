@@ -13,6 +13,23 @@
 <HeadPage Title="Festival de Cannes" ImageSource="logo/festival-cannes.png" Text="All the news from the 1st film festival in the world."
           Link="https://www.festival-cannes.com/en/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
+@if (Settings != null && Settings.ShowAdSense)
+{
+    <Div TextAlignment="TextAlignment.Center">
+        @if (Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev"))
+        {
+            <div class="adsbygoogle google-ads" style="background-color: black;"></div>
+        }
+        else
+        {
+            <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        }
+    </Div>
+}
+
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesPalme" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesGrandPrix" MaxItens="10" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
@@ -21,15 +38,20 @@
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
 
 @code {
+    public Settings? Settings { get; set; }
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
         WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
         WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+
+        Settings = await CacheSettingsApi.GetSettings();
     }
 
     protected override async Task LoadDataRender()

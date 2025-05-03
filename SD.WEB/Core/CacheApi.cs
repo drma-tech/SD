@@ -8,6 +8,8 @@ namespace SD.WEB.Core
 {
     public struct Endpoint
     {
+        public static string Settings => $"public/settings";
+
         public static string News(string mode) => $"public/cache/news?mode={mode}";
 
         public static string Trailers(string mode) => $"public/cache/trailers?mode={mode}";
@@ -19,6 +21,14 @@ namespace SD.WEB.Core
         public static string GetMovieReviews(string? id, string? title, DateTime? date) => $"public/cache/reviews/movies?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}";
 
         public static string GetShowReviews(string? id, string? title, DateTime? date) => $"public/cache/reviews/shows?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}";
+    }
+
+    public class CacheSettingsApi(IHttpClientFactory http) : ApiCosmos<Settings>(http, null)
+    {
+        public async Task<Settings?> GetSettings()
+        {
+            return await GetAsync(Endpoint.Settings, null);
+        }
     }
 
     public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<NewsModel>>(http, null)
