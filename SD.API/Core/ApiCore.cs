@@ -10,7 +10,7 @@ namespace SD.API.Core
         {
             var response = await http.GetAsync(request_uri, cancellationToken);
 
-            if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
+            if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
 
             return await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken);
         }
@@ -30,7 +30,7 @@ namespace SD.API.Core
             if (!response.IsSuccessStatusCode)
             {
                 var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
-                throw new NotificationException(responseContent);
+                throw new UnhandledException(responseContent);
             }
         }
 
@@ -52,7 +52,7 @@ namespace SD.API.Core
                 }
                 else
                 {
-                    throw new NotificationException(response.ReasonPhrase);
+                    throw new UnhandledException(response.ReasonPhrase);
                 }
             }
 
@@ -70,7 +70,7 @@ namespace SD.API.Core
 
             var response = await http.SendAsync(request, cancellationToken);
 
-            if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
+            if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
 
             return await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken);
         }
@@ -88,7 +88,7 @@ namespace SD.API.Core
 
             var response = await http.SendAsync(request, cancellationToken);
 
-            if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
+            if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
 
             return await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken);
         }

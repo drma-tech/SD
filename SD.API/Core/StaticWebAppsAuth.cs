@@ -27,7 +27,7 @@ namespace SD.API.Core
             {
                 var principal = req.Parse();
 
-                return principal?.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value ?? throw new NotificationException("user id not available");
+                return principal?.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value ?? throw new UnhandledException("user id not available");
             }
         }
 

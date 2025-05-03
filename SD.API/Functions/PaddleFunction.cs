@@ -27,7 +27,7 @@ namespace SD.API.Functions
 
                 var response = await ApiStartup.HttpClientPaddle.SendAsync(request, cancellationToken);
 
-                if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
+                if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
 
                 return await response.Content.ReadFromJsonAsync<RootSubscription>(cancellationToken: cancellationToken);
             }
@@ -55,7 +55,7 @@ namespace SD.API.Functions
 
                 var response = await ApiStartup.HttpClientPaddle.SendAsync(request, cancellationToken);
 
-                if (!response.IsSuccessStatusCode) throw new NotificationException(response.ReasonPhrase);
+                if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
 
                 return await response.Content.ReadFromJsonAsync<RootSubscription>(cancellationToken: cancellationToken);
             }
@@ -74,14 +74,14 @@ namespace SD.API.Functions
             {
                 var validSignature = await req.ValidPaddleSignature(configuration["Paddle:Signature"], cancellationToken);
 
-                if (!validSignature) throw new NotificationException("wrong paddle signature");
+                if (!validSignature) throw new UnhandledException("wrong paddle signature");
 
-                var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new NotificationException("body null");
-                if (body.data == null) throw new NotificationException("body.data null");
+                var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new UnhandledException("body null");
+                if (body.data == null) throw new UnhandledException("body.data null");
 
-                var result = await repo.Query<ClientePrincipal>(x => x.ClientePaddle != null && x.ClientePaddle.CustomerId == body.data.customer_id, DocumentType.Principal, cancellationToken) ?? throw new NotificationException("ClientePrincipal null");
-                var client = result.FirstOrDefault() ?? throw new NotificationException("client null");
-                if (client.ClientePaddle == null) throw new NotificationException("client.ClientePaddle null");
+                var result = await repo.Query<ClientePrincipal>(x => x.ClientePaddle != null && x.ClientePaddle.CustomerId == body.data.customer_id, DocumentType.Principal, cancellationToken) ?? throw new UnhandledException("ClientePrincipal null");
+                var client = result.FirstOrDefault() ?? throw new UnhandledException("client null");
+                if (client.ClientePaddle == null) throw new UnhandledException("client.ClientePaddle null");
 
                 client.ClientePaddle.SubscriptionId = body.data.id;
                 client.ClientePaddle.IsPaidUser = (body.data.status is "active" or "trialing");

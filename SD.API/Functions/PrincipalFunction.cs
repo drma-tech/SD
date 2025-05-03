@@ -70,7 +70,7 @@ namespace SD.API.Functions
             {
                 var userId = req.GetUserId();
 
-                var Client = await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new NotificationException("Client null");
+                var Client = await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
                 var body = await req.GetBody<ClientePrincipal>(cancellationToken);
 
                 Client.ClientePaddle = body.ClientePaddle;
