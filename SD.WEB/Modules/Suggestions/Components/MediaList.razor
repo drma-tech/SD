@@ -65,7 +65,6 @@
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; } = null;
     [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
-    [Parameter] public int MaxItens { get; set; } = 10;
     [Parameter] public bool IsIMDB { get; set; } = false;
 
     [Parameter] public bool MultiplesRegions { get; set; } = false;
@@ -88,7 +87,6 @@
         {
             if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
             if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
-            if (MaxItens == 0) throw new ArgumentNullException(nameof(MaxItens));
 
             if (MultiplesRegions) AppStateStatic.RegionChanged += LoadGenericVoid;
         }
@@ -163,7 +161,7 @@
 
     public async Task OpenCompleteList()
     {
-        await ModalService.CompleteListPopup(TitleHead, Watched, Watching, Wish, Items, MediaListApi, List, MaxItens, IsIMDB, TypeSelected, StringParameters, 
+        await ModalService.CompleteListPopup(TitleHead, Watched, Watching, Wish, Items, MediaListApi, List, IsIMDB, TypeSelected, StringParameters, 
             ShowPrivateAction, IsAuthenticated, CommentImage);
     }
 

@@ -32,11 +32,11 @@
     </Div>
 }
 
-<MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbPopularApi" MaxItens="50" ShowFilter="true" 
+<MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbPopularApi" ShowFilter="true"
            Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
-<MediaList TitleHead="@($"{Translations.TopRated} ({AppStateStatic.Region})")" MediaListApi="TmdbTopRatedApi" MaxItens="50" ShowFilter="true"
+<MediaList TitleHead="@($"{Translations.TopRated} ({AppStateStatic.Region})")" MediaListApi="TmdbTopRatedApi" ShowFilter="true"
            MultiplesRegions="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
-<MediaList TitleHead="@($"{Translations.ComingSoon} ({AppStateStatic.Region})")" MediaListApi="TmdbUpcomingApi" MaxItens="50"
+<MediaList TitleHead="@($"{Translations.ComingSoon} ({AppStateStatic.Region})")" MediaListApi="TmdbUpcomingApi"
            MultiplesRegions="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
 
 @code {

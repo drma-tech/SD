@@ -31,9 +31,9 @@
     </Div>
 }
 
-<MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" MaxItens="50" IsIMDB="true" ShowFilter="true" MultipleLanguages="false"
+<MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsIMDB="true" ShowFilter="true" MultipleLanguages="false"
            StringParameters="Params" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OnlyYear="true"></MediaList>
-<MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" MaxItens="250" ShowFilter="true" Watched="WatchedList"
+<MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" ShowFilter="true" Watched="WatchedList"
            Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OnlyYear="true"></MediaList>
 
 @code {

@@ -1,6 +1,5 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
-using SD.Shared.Models.Auth;
 using SD.WEB.Modules.News.Components;
 using SD.WEB.Modules.Profile;
 using SD.WEB.Modules.Provider.Components;
@@ -54,7 +53,7 @@ namespace SD.WEB.Core
         }
 
         public static async Task CompleteListPopup(this IModalService service, string? TitleHead, WatchedList? watched, WatchingList? watching, WishList? wish, HashSet<MediaDetail> Items,
-            IMediaListApi? MediaListApi, EnumLists? List, int MaxItens, bool IsIMDB, MediaType? TypeSelected, Dictionary<string, string> StringParameters,
+            IMediaListApi? MediaListApi, EnumLists? List, bool IsIMDB, MediaType? TypeSelected, Dictionary<string, string> StringParameters,
             bool showPrivateAction, bool IsAuthenticated, bool commentImage = false)
         {
             await service.Show<CompleteListPopup>(null, x =>
@@ -71,7 +70,6 @@ namespace SD.WEB.Core
 
                 x.Add(x => x.MediaListApi, MediaListApi);
                 x.Add(x => x.List, List);
-                x.Add(x => x.MaxItens, MaxItens);
                 x.Add(x => x.IsIMDB, IsIMDB);
                 x.Add(x => x.TypeSelected, TypeSelected);
                 x.Add(x => x.StringParameters, StringParameters);
