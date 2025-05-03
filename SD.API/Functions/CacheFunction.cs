@@ -166,7 +166,7 @@ namespace SD.API.Functions
                     {
                         var compactModels = new MostPopularData() { ErrorMessage = obj.ErrorMessage };
 
-                        foreach (var item in obj?.Items.Take(14) ?? [])
+                        foreach (var item in obj?.Items.Take(20) ?? [])
                         {
                             if (item == null) continue;
                             compactModels.Items.Add(item);
