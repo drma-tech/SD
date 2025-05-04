@@ -85,7 +85,7 @@
         public object? metadata { get; set; }
         public Links? links { get; set; }
         public List<Item> items { get; set; } = [];
-        public int total { get; set; }
+        public int? total { get; set; }
     }
 
     public class Season

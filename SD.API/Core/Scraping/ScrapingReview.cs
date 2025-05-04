@@ -49,9 +49,9 @@ namespace SD.API.Core.Scraping
 
             string jsonContent = htmlBody.Substring(startIndex, endIndex - startIndex).Trim();
 
-            jsonContent = Regex.Replace(jsonContent, @",[b-o],", ",\"\",");
-            jsonContent = Regex.Replace(jsonContent, @":[b-o]", ":\"\"");
-            jsonContent = Regex.Replace(jsonContent, @":\[[b-o]\]", ":[\"\"]");
+            jsonContent = Regex.Replace(jsonContent, @",[b-t],", ",\"\",");
+            jsonContent = Regex.Replace(jsonContent, @":[b-t]", ":\"\"");
+            jsonContent = Regex.Replace(jsonContent, @":\[[b-t]\]", ":[\"\"]");
 
             var result = JsonConvert.DeserializeObject<List<RootMetacriticReview>>(jsonContent)?[2];
 
