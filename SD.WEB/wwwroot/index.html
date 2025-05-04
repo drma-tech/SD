@@ -103,13 +103,15 @@
             try {
                 // Check for essential features
                 if (typeof WebAssembly !== "object") return false;
+                if (typeof WebAssembly.instantiate !== "function") return false;
                 if (typeof BigInt !== "function") return false;
                 if (typeof Promise !== "function") return false;
                 if (typeof fetch !== "function") return false;
 
                 // Check modern syntax (optional chaining, nullish coalescing, arrow functions, etc.)
-                new Function("let a = () => {}");
-                new Function("const obj = { foo: 'bar' }; const val = obj?.foo ?? 'default';");
+                const obj = { foo: null };
+                const test = obj?.foo ?? "ok";
+                return test === "ok";
 
                 return true;
             } catch (e) {
