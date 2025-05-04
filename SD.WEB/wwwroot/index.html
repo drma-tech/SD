@@ -99,19 +99,17 @@
     </script>
 
     <script>
-        const supported = (() => {
+        const isModernBrowser = (() => {
             try {
-                // Check for essential features
+                // Test basic required APIs
                 if (typeof WebAssembly !== "object") return false;
                 if (typeof WebAssembly.instantiate !== "function") return false;
                 if (typeof BigInt !== "function") return false;
-                if (typeof Promise !== "function") return false;
                 if (typeof fetch !== "function") return false;
+                if (typeof Promise !== "function") return false;
 
-                // Check modern syntax (optional chaining, nullish coalescing, arrow functions, etc.)
-                const obj = { foo: null };
-                const test = obj?.foo ?? "ok";
-                return test === "ok";
+                // Safely test modern syntax using Function (optional chaining / nullish coalescing)
+                new Function("const obj = { foo: null }; const x = obj && obj.foo !== undefined ? obj.foo : 'ok';");
 
                 return true;
             } catch (e) {
@@ -120,15 +118,15 @@
             }
         })();
 
-        if (!supported) {
+        if (!isModernBrowser) {
             document.body.innerHTML = `
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px;font-family:sans-serif;">
-                <h1>Unsupported Browser</h1>
-                <p>Your browser does not support modern features required to run this application.</p>
-                <p>Please update your browser or switch to a more recent version of <strong>Chrome, Edge, Firefox, or Safari</strong>.</p>
-            </div>
+                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px;font-family:sans-serif;">
+                    <h1>Unsupported Browser</h1>
+                    <p>Your browser is too old to run this application.</p>
+                    <p>Please use a recent version of Chrome, Edge, Firefox, or Safari (2021 or newer).</p>
+                </div>
             `;
-        }
+            }
     </script>
 
     <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
