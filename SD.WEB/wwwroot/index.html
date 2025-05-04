@@ -119,14 +119,24 @@
         })();
 
         if (!isModernBrowser) {
+            showBrowserWarning();
+        }
+
+        window.addEventListener('error', function (e) {
+            if (e.filename && e.filename.includes('blazor.webassembly.js')) {
+                showBrowserWarning();
+            }
+        });
+
+        function showBrowserWarning() {
             document.body.innerHTML = `
                 <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px;font-family:sans-serif;">
                     <h1>Unsupported Browser</h1>
                     <p>Your browser is too old to run this application.</p>
-                    <p>Please use a recent version of Chrome, Edge, Firefox, or Safari (2021 or newer).</p>
+                    <p>Use the latest version of your browser (Chrome, Edge, Firefox, Safari, etc).</p>
                 </div>
             `;
-            }
+        }
     </script>
 
     <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
