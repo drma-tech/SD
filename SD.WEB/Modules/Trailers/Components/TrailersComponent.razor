@@ -4,6 +4,7 @@
 @inherits ComponentCore<TrailersComponent>
 
 @inject CacheYoutubeApi CacheYoutubeApi
+@inject IJSRuntime JsRuntime
 
 <HeaderComponent Title="@($"{Translations.TrailersTitle} - {Language.enUS.GetName()}")" IconImage="logo/one-media.png">
     <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@OpenCompleteList" title="Show all news">
@@ -11,27 +12,50 @@
     </Button>
 </HeaderComponent>
 <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-    <div class="grid-relative-container-md">
-        @foreach (var item in TrailerModel?.Data?.Items ?? new())
-        {
-            <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}")">
-                <Card>
-                    <CardImage Source="@item?.url" Alt="@item?.title">
-                    </CardImage>
-                    <CardBody>
-                        <CardText Style="line-height: normal; font-size: 0.8rem;">
-                            @item?.title.GetResume(50)
-                        </CardText>
-                    </CardBody>
-                </Card>
-            </Blazorise.Link>
-        }
+    <div id="@GallerySwiperId" class="swiper" style="height: 352px;">
+        <div class="swiper-wrapper">
+            @foreach (var item in TrailerModel?.Data?.Items ?? new())
+            {
+                <div class="swiper-slide swiper-slide-grid">
+                    <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}")">
+                        <Card>
+                            <CardImage Source="@item?.url" Alt="@item?.title">
+                            </CardImage>
+                            <CardBody>
+                                <CardText Style="line-height: normal; font-size: 0.8rem;">
+                                    @item?.title.GetResume(50)
+                                </CardText>
+                            </CardBody>
+                        </Card>
+                    </Blazorise.Link>
+                </div>
+            }
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        @* <div class="swiper-pagination"></div> *@
     </div>
 </RenderControl>
 
 @code {
     public RenderControlCore<CacheDocument<TrailerModel>?> Core { get; set; } = new();
     private CacheDocument<TrailerModel>? TrailerModel { get; set; }
+
+    private readonly string GallerySwiperId = $"swiper-{Guid.NewGuid()}";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            await JsRuntime.InvokeVoidAsync("initGrid", GallerySwiperId);
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Toast, Logger);
+        }
+    }
 
     protected override async Task LoadDataRender()
     {

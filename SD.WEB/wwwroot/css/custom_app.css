@@ -151,6 +151,10 @@ canvas {
     align-items: center;
 }
 
+.swiper-slide-grid {
+    height: calc((100% - 30px) / 2) !important;
+}
+
 .autoplay-progress {
     position: absolute;
     right: 16px;

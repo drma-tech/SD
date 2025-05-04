@@ -51,7 +51,7 @@ namespace SD.API.Functions
                     {
                         var compactModels = new NewsModel();
 
-                        foreach (var item in obj?.Items?.Take(8) ?? [])
+                        foreach (var item in obj?.Items?.Take(10) ?? [])
                         {
                             if (item == null) continue;
                             compactModels.Items.Add(new Shared.Models.News.Item(item.id, item.title, item.url_img, item.link));
@@ -87,7 +87,7 @@ namespace SD.API.Functions
             catch (Exception ex)
             {
                 req.ProcessException(ex);
-                return req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
+                return await req.CreateResponse((CacheDocument<NewsModel>?)null, ttlCache.six_hours, cancellationToken);
             }
         }
 
@@ -108,7 +108,7 @@ namespace SD.API.Functions
                     {
                         var compactModels = new TrailerModel();
 
-                        foreach (var item in obj?.contents?.Take(10).Select(s => s.video) ?? [])
+                        foreach (var item in obj?.contents?.Take(12).Select(s => s.video) ?? [])
                         {
                             if (item == null) continue;
                             compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url));
