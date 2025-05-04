@@ -29,7 +29,7 @@ function SetLocalStorage(key, value) {
 function TryDetectPlatform() {
     if (GetLocalStorage('platform')) return; //if populate before, cancel, cause detection (windows) only works for first call
 
-    let isWindows = document.referrer == "app-info://platform/microsoft-store";    
+    let isWindows = document.referrer == "app-info://platform/microsoft-store";
     let isGooglePlay = document.referrer?.includes("android-app://"); //let isAndroid = /(android)/i.test(navigator.userAgent);
     let isIOS = document.cookie.split('; ').some(cookie => cookie === 'app-platform=iOS App Store');
 

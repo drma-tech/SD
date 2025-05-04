@@ -104,25 +104,34 @@
     <script>
         const supported = (() => {
             try {
-                if (typeof WebAssembly === "object"
-                    && typeof WebAssembly.instantiate === "function") {
-                    const module = new WebAssembly.Module(Uint8Array.of(0x0, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00));
-                    if (module instanceof WebAssembly.Module)
-                        return new WebAssembly.Instance(module) instanceof WebAssembly.Instance;
+                // detect blazor
+                if (!(typeof WebAssembly === "object" && typeof WebAssembly.instantiate === "function")) {
+                    return false;
                 }
+                    
+                // Checks modern JS features (~2020)
+                if (typeof BigInt !== "function") return false;
+                if (typeof Intl === "undefined" || typeof Intl.RelativeTimeFormat !== "function") return false;
+                if (typeof WebAssembly.instantiateStreaming !== "function") return false;
+
+                // Avoid eval — but optional chaining (?.) and nullish (??) are syntactical, so use a safe workaround:
+                new Function("const foo = { bar: 'ok' }; const test = foo?.bar ?? 'fallback'; return test;")();
+
+                return true;
             } catch (e) {
+                console.error("Browser not supported:", e);
+                return false;
             }
-            return false;
         })();
 
         if (!supported) {
             document.body.innerHTML = `
-                    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px;font-family:sans-serif;">
-                        <h1>Unsupported Browser</h1>
-                        <p>Your browser does not support WebAssembly, which is required to run this application.</p>
-                        <p>Please update your browser or switch to a more recent version.</p>
-                    </div>
-                    `;
+                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px;font-family:sans-serif;">
+                    <h1>Unsupported or Outdated Browser</h1>
+                    <p>Your browser is outdated and lacks support for features required to run this application.</p>
+                    <p>Please update your browser (Chrome, Edge, Firefox, Safari) to a version released in the last 5 years.</p>
+                </div>
+            `;
         }
     </script>
 
