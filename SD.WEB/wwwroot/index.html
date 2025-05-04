@@ -90,9 +90,6 @@
         <span class="dismiss">🗙</span>
     </div>
 
-    <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
-    <script src="_framework/blazor.webassembly.js"></script>
-
     <script>
         //avoid google (and others) search console execute this
         if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex/i.test(window.navigator.userAgent) &&
@@ -104,18 +101,15 @@
     <script>
         const supported = (() => {
             try {
-                // detect blazor
-                if (!(typeof WebAssembly === "object" && typeof WebAssembly.instantiate === "function")) {
-                    return false;
-                }
-                    
-                // Checks modern JS features (~2020)
+                // Check for essential features
+                if (typeof WebAssembly !== "object") return false;
                 if (typeof BigInt !== "function") return false;
-                if (typeof Intl === "undefined" || typeof Intl.RelativeTimeFormat !== "function") return false;
-                if (typeof WebAssembly.instantiateStreaming !== "function") return false;
+                if (typeof Promise !== "function") return false;
+                if (typeof fetch !== "function") return false;
 
-                // Avoid eval — but optional chaining (?.) and nullish (??) are syntactical, so use a safe workaround:
-                new Function("const foo = { bar: 'ok' }; const test = foo?.bar ?? 'fallback'; return test;")();
+                // Check modern syntax (optional chaining, nullish coalescing, arrow functions, etc.)
+                new Function("let a = () => {}");
+                new Function("const obj = { foo: 'bar' }; const val = obj?.foo ?? 'default';");
 
                 return true;
             } catch (e) {
@@ -126,14 +120,17 @@
 
         if (!supported) {
             document.body.innerHTML = `
-                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px;font-family:sans-serif;">
-                    <h1>Unsupported or Outdated Browser</h1>
-                    <p>Your browser is outdated and lacks support for features required to run this application.</p>
-                    <p>Please update your browser (Chrome, Edge, Firefox, Safari) to a version released in the last 5 years.</p>
-                </div>
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px;font-family:sans-serif;">
+                <h1>Unsupported Browser</h1>
+                <p>Your browser does not support modern features required to run this application.</p>
+                <p>Please update your browser or switch to a more recent version of <strong>Chrome, Edge, Firefox, or Safari</strong>.</p>
+            </div>
             `;
         }
     </script>
+
+    <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
 
     <script async src="_content/Toolbelt.Blazor.PWA.Updater.Service/script.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
