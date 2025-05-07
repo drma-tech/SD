@@ -19,7 +19,7 @@ namespace SD.API.Core
         {
             if (req.Url.Host.Contains("localhost"))
             {
-                var local_id = "b9a10c8be2f244c0a625b78f05e30812";
+                var local_id = "8ed6f45c90ac43248353b90a846a8519";
 
                 return local_id;
             }

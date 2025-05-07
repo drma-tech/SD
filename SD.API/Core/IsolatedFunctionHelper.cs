@@ -82,7 +82,19 @@ namespace SD.API.Core
         public static void ProcessException(this HttpRequestData req, Exception ex)
         {
             var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
-            logger?.LogError(ex, req.BuildState(), req.BuildParams());
+
+            const string messageTemplate = "ProcessException. State: {State}, Params: {Params}";
+
+            logger?.LogError(ex, messageTemplate, req.BuildState(), req.BuildParams());
+        }
+
+        public static void LogWarning(this HttpRequestData req, string? message)
+        {
+            var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
+
+            const string messageTemplate = "LogWarning. Message: {message} State: {State}, Params: {Params}";
+
+            logger?.LogWarning(messageTemplate, message, req.BuildState(), req.BuildParams());
         }
 
         private static string BuildState(this HttpRequestData req)

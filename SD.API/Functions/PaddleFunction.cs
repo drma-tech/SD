@@ -80,13 +80,14 @@ namespace SD.API.Functions
                 if (body.data == null) throw new UnhandledException("body.data null");
 
                 var result = await repo.Query<ClientePrincipal>(x => x.ClientePaddle != null && x.ClientePaddle.CustomerId == body.data.customer_id, DocumentType.Principal, cancellationToken) ?? throw new UnhandledException("ClientePrincipal null");
-                var client = result.FirstOrDefault() ?? throw new UnhandledException("client null");
+                var client = result.FirstOrDefault() ?? throw new UnhandledException($"client null - customer_id:{body.data.customer_id}");
                 if (client.ClientePaddle == null) throw new UnhandledException("client.ClientePaddle null");
 
                 client.ClientePaddle.SubscriptionId = body.data.id;
                 client.ClientePaddle.IsPaidUser = (body.data.status is "active" or "trialing");
 
                 await repo.Upsert(client, cancellationToken);
+                req.LogWarning($"{body.data.id} - {body.data.status}");
             }
             catch (Exception ex)
             {
