@@ -13,11 +13,11 @@ namespace SD.WEB.Modules.Auth.Core
             public const string Remove = "principal/remove";
         }
 
-        public async Task<ClientePrincipal?> Get(bool IsUserAuthenticated)
+        public async Task<ClientePrincipal?> Get(bool IsUserAuthenticated, bool setNewVersion = false)
         {
             if (IsUserAuthenticated)
             {
-                return await GetAsync(Endpoint.Get, null);
+                return await GetAsync(Endpoint.Get, null, setNewVersion);
             }
             else
             {

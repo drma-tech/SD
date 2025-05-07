@@ -507,7 +507,7 @@
             for (int i = 0; i < 20; i++)
             {
                 await Task.Delay(2000);
-                var principal = await PrincipalApi.Get(IsAuthenticated);
+                var principal = await PrincipalApi.Get(IsAuthenticated, true);
 
                 if (principal?.ClientePaddle != null && principal.ClientePaddle.SubscriptionId.NotEmpty())
                 {
@@ -526,7 +526,7 @@
     {
         try
         {
-            Client = await PrincipalApi.Get(true);
+            Client = await PrincipalApi.Get(true, true);
             PrincipalApi.DataChanged?.Invoke(Client);
             await LoadDataRender();
             StateHasChanged();
