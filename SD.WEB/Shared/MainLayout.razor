@@ -113,25 +113,26 @@
             IsAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
             UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         }
-
-        await SetRegion();
     }
 
-    private async Task SetRegion()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var region = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "region");
-
-        //get new region by IP
-        if (region.Empty())
+        if (firstRender)
         {
-            region = await PaddleApi.GetCountry();
+            var region = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "region");
 
-            region ??= Region.US.ToString();
+            //get new region by IP
+            if (region.Empty())
+            {
+                region = await PaddleApi.GetCountry();
 
-            await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", region);
+                region ??= Region.US.ToString();
+
+                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", region);
+            }
+
+            AppStateStatic.ChangeRegion(AppStateStatic.GetValidRegion(region));
         }
-
-        AppStateStatic.ChangeRegion(AppStateStatic.GetValidRegion(region));
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs args)
