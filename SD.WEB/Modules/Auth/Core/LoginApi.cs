@@ -21,7 +21,7 @@ namespace SD.WEB.Modules.Auth.Core
             }
             catch (Exception)
             {
-                //do nothing;
+                ip = "0.0.0.0";
             }
 
             await PostAsync<ClienteLogin>(Endpoint.Add(platform, ip?.Trim()), null, null);

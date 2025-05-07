@@ -1,5 +1,6 @@
 ﻿@using SD.Shared.Models.Auth
 @using System.Security.Claims
+@using SD.WEB.Modules.Subscription.Core
 @using Toolbelt.Blazor.PWA.Updater
 
 @inherits LayoutComponentBase
@@ -8,6 +9,7 @@
 @inject ILogger<MainLayout> Logger
 @inject INotificationService Toast
 @inject IJSRuntime JsRuntime
+@inject PaddleConfigurationApi PaddleApi
 
 <Div Position="Position.Relative">
     <Layout Style="height: var(--app-height);">
@@ -111,19 +113,25 @@
             IsAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
             UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         }
+
+        await SetRegion();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    private async Task SetRegion()
     {
-        if (firstRender)
-        {
-            var region = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "region");
+        var region = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "region");
 
-            if (region.NotEmpty())
-            {
-                AppStateStatic.ChangeRegion((Region)Enum.Parse(typeof(Region), region));
-            }
+        //get new region by IP
+        if (region.Empty())
+        {
+            region = await PaddleApi.GetCountry();
+
+            region ??= Region.US.ToString();
+
+            await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", region);
         }
+
+        AppStateStatic.ChangeRegion(AppStateStatic.GetValidRegion(region));
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs args)

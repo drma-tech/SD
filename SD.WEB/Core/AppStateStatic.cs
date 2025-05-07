@@ -19,27 +19,14 @@ namespace SD.WEB.Core
 
         static AppStateStatic()
         {
-            Region = GetValidRegion();
             Language = GetValidLanguage();
         }
 
-        private static Region GetValidRegion()
+        public static Region GetValidRegion(string? regionName)
         {
-            var regionName = RegionInfo.CurrentRegion.Name;
-
             if (!Enum.TryParse<Region>(regionName, out var region) || !Enum.IsDefined(region))
             {
-                regionName = regionName switch
-                {
-                    "001" => Region.US.ToString(), // World
-                    "002" => Region.ZA.ToString(), // Africa
-                    "009" => Region.AU.ToString(), // Oceania
-                    "019" => Region.US.ToString(), // Americas
-                    "142" => Region.JP.ToString(), // Asia
-                    "150" => Region.FR.ToString(), // Europe
-                    "419" => Region.MX.ToString(), // Latin America
-                    _ => Region.US.ToString()
-                };
+                regionName = Region.US.ToString();
 
                 _ = Enum.TryParse(regionName, out region);
             }

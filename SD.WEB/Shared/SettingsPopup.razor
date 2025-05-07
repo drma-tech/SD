@@ -21,28 +21,8 @@
 </ModalFooter>
 
 @code {
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        var region = Navigation?.QueryString("region");
-
-        if (!string.IsNullOrEmpty(region))
-        {
-            AppStateStatic.ChangeRegion((Region)Enum.Parse(typeof(Region), region));
-            await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", region);
-        }
-    }
-
     protected override async Task LoadDataRender()
     {
-        var region = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "region");
-
-        if (region.NotEmpty())
-        {
-            AppStateStatic.ChangeRegion((Region)Enum.Parse(typeof(Region), region), false);
-        }
-
         var language = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "language");
 
         if (language.NotEmpty())
@@ -53,10 +33,9 @@
 
     protected async Task RegionValueChanged(Region value)
     {
-        AppStateStatic.ChangeRegion(value);
-
         await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", value.GetName(false));
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("region", value.GetName(false)));
+
+        AppStateStatic.ChangeRegion(value);
     }
 
     protected async Task LanguageValueChanged(Language value)
