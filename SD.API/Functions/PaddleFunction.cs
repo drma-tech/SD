@@ -79,7 +79,7 @@ namespace SD.API.Functions
                 var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new UnhandledException("body null");
                 if (body.data == null) throw new UnhandledException("body.data null");
 
-                //todo: find a better way to wait for the ClientePaddle to be saved
+                //todo: find a better way to wait for the ClientePaddle to be saved or save before payment
                 await Task.Delay(1000, cancellationToken);
 
                 var result = await repo.Query<ClientePrincipal>(x => x.ClientePaddle != null && x.ClientePaddle.CustomerId == body.data.customer_id, DocumentType.Principal, cancellationToken) ?? throw new UnhandledException("ClientePrincipal null");
