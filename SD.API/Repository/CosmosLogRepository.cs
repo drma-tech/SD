@@ -17,7 +17,7 @@ namespace SD.API.Repository
         public string? State { get; set; }
         public string? Message { get; set; }
         public string? StackTrace { get; set; }
-        public DateTimeOffset DateTimeError { get; set; } = DateTimeOffset.Now;
+        public DateTimeOffset DateTimeEvent { get; set; } = DateTimeOffset.Now;
 
         [JsonInclude]
         public int Ttl { get; init; }
