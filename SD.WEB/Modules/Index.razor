@@ -3,6 +3,8 @@
 <SeoHeader Title="Home" Description="@SeoTranslations.Description" Url="/"></SeoHeader>
 @inherits PageCore<Index>
 
+@using SD.WEB.Modules.AwardsOfTheYear.Components
+@using SD.WEB.Modules.CertifiedSD.Components
 @using SD.WEB.Modules.Profile.Core;
 @using SD.WEB.Modules.Suggestions.Components;
 @using SD.WEB.Modules.Provider.Components;
@@ -29,7 +31,7 @@
         <TextEdit @bind-Text="@Search" Placeholder="@GlobalTranslations.TypeSomething" Size="Size.Small" KeyPress="KeyPress" />
     </Column>
     <Column ColumnSize="ColumnSize.IsAuto">
-        <Button Color="Color.Primary" Block="true" Clicked="ShowSearchPopup" Disabled="string.IsNullOrEmpty(Search)" Size="Size.Small">
+        <Button Color="Color.Primary" Block="true" Disabled="string.IsNullOrEmpty(Search)" Size="Size.Small" Type="ButtonType.Link" To="@($"/search/{Search}")">
             @WEB.Resources.Button.Search
         </Button>
     </Column>
@@ -39,7 +41,7 @@
 
 <CertifiedSDComponent Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></CertifiedSDComponent>
 
-<AwardsOfTheYear></AwardsOfTheYear>
+<AwardsOfTheYearComponent></AwardsOfTheYearComponent>
 
 <Row HorizontalGutter="8" VerticalGutter="8">
     <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnWidescreen.Is7.OnFullHD">
@@ -90,16 +92,11 @@
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
     }
 
-    public async Task ShowSearchPopup()
-    {
-        await ModalService.SearchPopup(Search, Search, Watched, Watching, Wish, true, IsAuthenticated);
-    }
-
-    private async Task KeyPress(KeyboardEventArgs args)
+    private void KeyPress(KeyboardEventArgs args)
     {
         if (args.Key == "Enter")
         {
-            await ShowSearchPopup();
+            Navigation.NavigateTo($"/search/{Search}");
         }
     }
 }

@@ -232,7 +232,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type something to search.
+        ///   Looks up a localized string similar to Search for movies, series or people.
         /// </summary>
         public static string TypeSomething {
             get {

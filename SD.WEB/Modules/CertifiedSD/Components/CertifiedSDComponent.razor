@@ -7,22 +7,22 @@
 @inject TmdbListApi TmdbListApi
 
 <HeaderComponent Title="@WEB.Modules.Suggestions.Resources.Translations.TitleCertifiedSD">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(()=>MediaList!.OpenCompleteList())">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Type="ButtonType.Link" To="@($"/certified-sd/{TypeSelected}")">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
     <RadioGroup @bind-CheckedValue="@TypeSelected" Buttons="true" Float="Float.End" Size="Size.ExtraSmall" Margin="Margin.Is2.FromEnd">
-        <Radio Value="PopularType.Movie">@(PopularType.Movie.GetName())</Radio>
-        <Radio Value="PopularType.Show">@(PopularType.Show.GetName())</Radio>
+        <Radio Value="MediaType.movie">@(MediaType.movie.GetName())</Radio>
+        <Radio Value="MediaType.tv">@(MediaType.tv.GetName())</Radio>
     </RadioGroup>
 </HeaderComponent>
-@if (TypeSelected == PopularType.Movie)
+@if (TypeSelected == MediaType.movie)
 {
-    <MediaList @ref="MediaList" MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish"
+    <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish"
                ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false"></MediaList>
 }
-else if (TypeSelected == PopularType.Show)
+else if (TypeSelected == MediaType.tv)
 {
-    <MediaList @ref="MediaList" MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish"
+    <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish"
                ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false"></MediaList>
 }
 
@@ -33,8 +33,7 @@ else if (TypeSelected == PopularType.Show)
     [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
-    public PopularType TypeSelected { get; set; } = PopularType.Movie;
-    private MediaList? MediaList;
+    public MediaType TypeSelected { get; set; } = MediaType.movie;
 
     public Dictionary<string, string> Params { get; set; } = new Dictionary<string, string>() { { "mode", "compact" } };
 }

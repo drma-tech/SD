@@ -1,34 +1,59 @@
 ﻿@using SD.WEB.Modules.Auth.Resources
-<CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(App).Assembly">
-        <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                <NotAuthorized>
-                    <div class="alert alert-danger" role="alert">
-                        @Translations.YouAreNotAuthorized
-                    </div>
-                </NotAuthorized>
-                <Authorizing>
-                    <div class="alert alert-warning" role="alert">
-                        <div class="spinner-border spinner-border-sm" role="status">
-                            <span class="sr-only">@Translations.AuthenticationInProgress</span>
-                        </div>
-                        @Translations.AuthenticationInProgress
-                    </div>
-                </Authorizing>
-            </AuthorizeRouteView>
-            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-        </Found>
-        <NotFound>
-            <PageTitle>Not found</PageTitle>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <div class="alert alert-danger" role="alert">
-                    @Translations.NothingThisAddress
-                </div>
-            </LayoutView>
-        </NotFound>
-    </Router>
 
-    <ModalProvider></ModalProvider>
-    <MessageProvider />
-</CascadingAuthenticationState>
+<ErrorBoundary @ref="boundary">
+    <ChildContent>
+        <CascadingAuthenticationState>
+            <Router AppAssembly="@typeof(App).Assembly">
+                <Found Context="routeData">
+                    <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                        <NotAuthorized>
+                            <div class="alert alert-danger" role="alert">
+                                @Translations.YouAreNotAuthorized
+                            </div>
+                        </NotAuthorized>
+                        <Authorizing>
+                            <div class="alert alert-warning" role="alert">
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="sr-only">@Translations.AuthenticationInProgress</span>
+                                </div>
+                                @Translations.AuthenticationInProgress
+                            </div>
+                        </Authorizing>
+                    </AuthorizeRouteView>
+                    <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+                </Found>
+                <NotFound>
+                    <PageTitle>Not found</PageTitle>
+                    <LayoutView Layout="@typeof(MainLayout)">
+                        <div class="alert alert-danger" role="alert">
+                            @Translations.NothingThisAddress
+                        </div>
+                    </LayoutView>
+                </NotFound>
+            </Router>
+
+            <ModalProvider></ModalProvider>
+            <MessageProvider />
+        </CascadingAuthenticationState>
+    </ChildContent>
+    <ErrorContent Context="ex">
+        <Alert Color="Color.Danger" Visible="true">
+            <AlertMessage>
+                <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon>
+                This operation could not be processed. Please send an email to our <Blazorise.Link To="mailto:support@streamingdiscovery.com" style="cursor: pointer;">support</Blazorise.Link> with the following details:
+            </AlertMessage>
+            <AlertDescription>
+                @ex.StackTrace
+            </AlertDescription>
+        </Alert>
+    </ErrorContent>
+</ErrorBoundary>
+
+@code {
+    ErrorBoundary? boundary;
+
+    protected override void OnParametersSet()
+    {
+        boundary?.Recover();
+    }
+}

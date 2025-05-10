@@ -145,11 +145,6 @@ namespace SD.WEB.Core
             }, Options(ModalSize.ExtraLarge));
         }
 
-        public static async Task NewsPopup(this IModalService service)
-        {
-            await service.Show<NewsPopup>(null, x => { }, Options(ModalSize.ExtraLarge));
-        }
-
         public static async Task OpenPopup<TComponent>(this IModalService service, Action<ModalProviderParameterBuilder<TComponent>> parameters, ModalSize size)
             where TComponent : IComponent
         {
@@ -171,24 +166,6 @@ namespace SD.WEB.Core
                 x.Add(x => x.ShowPrivateAction, showPrivateAction);
                 x.Add(x => x.WatchRegion, WatchRegion);
                 x.Add(x => x.ProviderId, ProviderId);
-                x.Add(x => x.IsAuthenticated, IsAuthenticated);
-            }, Options(ModalSize.ExtraLarge));
-        }
-
-        public static async Task SearchPopup(this IModalService service, string? titleHead, string? search, WatchedList? watched, WatchingList? watching, WishList? wish,
-            bool showPrivateAction, bool IsAuthenticated)
-        {
-            await service.Show<SearchPopup>(null, x =>
-            {
-                x.Add(x => x.TitleHead, titleHead);
-                x.Add(x => x.Search, search);
-                x.Add(x => x.Watched, watched);
-                x.Add(x => x.Watching, watching);
-                x.Add(x => x.Wish, wish);
-                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
-                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
-                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
-                x.Add(x => x.ShowPrivateAction, showPrivateAction);
                 x.Add(x => x.IsAuthenticated, IsAuthenticated);
             }, Options(ModalSize.ExtraLarge));
         }
@@ -228,11 +205,6 @@ namespace SD.WEB.Core
             {
                 x.Add(x => x.IsAuthenticated, IsAuthenticated);
             }, Options(ModalSize.Large));
-        }
-
-        public static async Task TrailersPopup(this IModalService service)
-        {
-            await service.Show<TrailersPopup>(null, x => { }, Options(ModalSize.ExtraLarge));
         }
 
         private static ModalInstanceOptions Options(ModalSize size) => new()

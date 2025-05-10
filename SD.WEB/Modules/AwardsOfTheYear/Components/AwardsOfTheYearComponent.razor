@@ -1,14 +1,20 @@
-﻿@inherits PageCore<AwardsOfTheYear>
+﻿@inherits PageCore<AwardsOfTheYearComponent>
 
 @using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Suggestions.Components
 @using SD.WEB.Modules.Suggestions.Core
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
+<HeaderComponent Title="@EnumLists.AwardsOfTheYear.GetName()">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Type="ButtonType.Link" To="@($"/best-awards-year")">
+        <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
+    </Button>
+</HeaderComponent>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" TotalItemsFullHD="10" TotalItemsNotFullHD="8" CommentImage="true"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" TotalItemsFullHD="10" TotalItemsNotFullHD="8" CommentImage="true" ShowHead="false"></MediaList>
 
 @code {
     public WatchedList? WatchedList { get; set; }

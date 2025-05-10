@@ -18,22 +18,7 @@
         </LayoutHeader>
         <LayoutContent Style="overflow-y: auto; overflow-x: hidden;">
             <Container Fluid="true" Padding="Padding.Is2">
-                <ErrorBoundary @ref="boundary">
-                    <ChildContent>
-                        @Body
-                    </ChildContent>
-                    <ErrorContent Context="ex">
-                        <Alert Color="Color.Danger" Visible="true">
-                            <AlertMessage>
-                                <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon>
-                                This operation could not be processed. Please send an email to our <Blazorise.Link To="mailto:support@streamingdiscovery.com" style="cursor: pointer;">support</Blazorise.Link> with the following details:
-                            </AlertMessage>
-                            <AlertDescription>
-                                @ex.StackTrace
-                            </AlertDescription>
-                        </Alert>
-                    </ErrorContent>
-                </ErrorBoundary>
+                @Body
             </Container>
             <FooterComponent></FooterComponent>
             <Container Fluid="true">
@@ -157,13 +142,6 @@
             return Color.Dark;
         else
             return Color.Secondary;
-    }
-
-    ErrorBoundary? boundary;
-
-    protected override void OnParametersSet()
-    {
-        boundary?.Recover();
     }
 
     [JSInvokable]

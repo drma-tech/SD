@@ -159,6 +159,9 @@
             if (e.filename && e.filename.includes('blazor.webassembly.js')) {
                 showBrowserWarning();
             }
+            else {
+                //todo: send log to server
+            }
         });
 
         function showBrowserWarning() {

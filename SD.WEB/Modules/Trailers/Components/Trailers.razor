@@ -1,0 +1,59 @@
+﻿@page "/trailers"
+
+@using SD.Shared.Models.News;
+@using SD.Shared.Models.Trailers;
+@using SD.WEB.Modules.Trailers.Resources
+@using System.Text.Json;
+@inherits ComponentCore<Trailers>
+
+@inject CacheYoutubeApi CacheYoutubeApi
+
+<SeoHeader Title="Trailers" Keywords="@(new []{"Trailers"})" Url="/trailers"></SeoHeader>
+
+@if (Settings != null && Settings.ShowAdSense)
+{
+    <Div TextAlignment="TextAlignment.Center">
+        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </Div>
+}
+<HeaderComponent Title="@($"{Translations.TrailersTitle} - ONE Media")" />
+<RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+    <div class="grid-relative-container-md">
+        @foreach (var item in TrailerModel?.Data?.Items ?? new())
+        {
+            <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}")">
+                <Card>
+                    <CardImage Source="@item?.url" Alt="@item?.title">
+                    </CardImage>
+                    <CardBody>
+                        <CardText Style="line-height: normal; font-size: 0.8rem;">
+                            @item?.title
+                        </CardText>
+                    </CardBody>
+                </Card>
+            </Blazorise.Link>
+        }
+    </div>
+</RenderControl>
+
+@code {
+    public RenderControlCore<CacheDocument<TrailerModel>?> Core { get; set; } = new();
+    private CacheDocument<TrailerModel>? TrailerModel { get; set; }
+
+    public Settings? Settings { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();     
+
+        Settings = await CacheSettingsApi.GetSettings();
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        TrailerModel = await CacheYoutubeApi.GetTrailers("full", Core);
+    }
+}

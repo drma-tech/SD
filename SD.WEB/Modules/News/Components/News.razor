@@ -1,0 +1,64 @@
+﻿@page "/news"
+
+@using SD.Shared.Models.News;
+@using System.Text.Json;
+@using SD.WEB.Modules.News.Resources
+@inherits PageCore<News>
+
+@inject CacheFlixsterApi CacheFlixsterApi
+
+<SeoHeader Title="News" Keywords="@(new []{"News"})" Url="/news"></SeoHeader>
+
+@if (Settings != null && Settings.ShowAdSense)
+{
+    <Div TextAlignment="TextAlignment.Center">
+        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </Div>
+}
+
+<HeaderComponent Title="@($"{Translations.NewsTitle} - Rotten Tomatoes")" />
+<RenderControl Core="Core" Model="NewsList" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+    <div class="grid-relative-container-lg">
+        @foreach (var item in NewsList?.Data?.Items ?? new())
+        {
+            <Card>
+                <CardImage Source="@item.url_img" Alt="@item.title">
+                </CardImage>
+                <CardBody>
+                    <CardText Style="font-size: 0.8rem;">
+                        @if (!string.IsNullOrEmpty(item.title))
+                        {
+                            @((MarkupString)item.title)
+                        }
+                    </CardText>
+                    <Button Color="Color.Primary" Type="ButtonType.Link" To="@item.link" Target="Target.Blank" Size="Size.Small" Class="mt-2">
+                        @WEB.Resources.Button.ReadMore
+                    </Button>
+                </CardBody>
+            </Card>
+        }
+    </div>
+</RenderControl>
+
+@code {
+    public RenderControlCore<CacheDocument<NewsModel>?> Core { get; set; } = new();
+    private CacheDocument<NewsModel>? NewsList { get; set; }
+    public string? selectedSlide { get; set; }
+
+    public Settings? Settings { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();      
+
+        Settings = await CacheSettingsApi.GetSettings();
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        NewsList = await CacheFlixsterApi.GetNews("full", Core);
+    }
+}
