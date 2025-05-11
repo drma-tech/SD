@@ -15,7 +15,7 @@ function share(url) {
 
     navigator.share({ url: url })
         .then(() => console.log('Successful share'))
-        .catch(error => console.log('Error sharing:', error));
+        .catch(error => showError(error.message));
 }
 
 function GetLocalStorage(key) {
@@ -45,21 +45,51 @@ function TryDetectPlatform() {
 
 async function getUserInfo() {
     try {
-        const response = await fetch('/.auth/me');
-        if (response.ok) {
-            const userInfo = await response.json();
-            if (userInfo?.clientPrincipal?.userId) {
-                return userInfo.clientPrincipal.userId;
+        if (!window.location.host.includes('localhost')) {
+            const response = await fetch('/.auth/me');
+            if (response.ok) {
+                const userInfo = await response.json();
+                if (userInfo?.clientPrincipal?.userId) {
+                    return userInfo.clientPrincipal.userId;
+                }
+                return null;
             }
-            return null;
+            else {
+                return null;
+            }
         }
         else {
             return null;
         }
     } catch (error) {
-        console.log('Error getUserInfo:', error)
+        showError(error.message);
         return null;
     }
+}
+
+function showError(message) {
+    if (window.DotNet)
+        try {
+            DotNet.invokeMethodAsync('SD.WEB', 'ShowError', message);
+        }
+        catch {
+            showToast(message);
+        }
+    else {
+        showToast(message);
+    }
+}
+
+function showToast(message) {
+    const container = document.getElementById('error-container');
+    if (!container) return;
+
+    container.textContent = message;
+    container.style.display = 'block';
+
+    setTimeout(() => {
+        container.style.display = 'none';
+    }, 5000);
 }
 
 function changeDarkMode() {

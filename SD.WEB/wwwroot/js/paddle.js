@@ -43,8 +43,7 @@ async function getPlans(price_standard_month, price_standard_year, price_premium
             }
         })
         .catch((error) => {
-            console.error(error);
-            DotNet.invokeMethodAsync('SD.WEB', 'ShowError', error.error.detail);
+            showError(error.error.detail);
         });
 
     return list;

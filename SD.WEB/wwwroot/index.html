@@ -45,7 +45,7 @@
                     window.clarity('consent');
                     clearInterval(clarityCheckInterval);
                 }
-            }, 10000);
+            }, 5000);
         }
     </script>
 
@@ -56,16 +56,20 @@
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
-        getUserInfo().then(userId => {
-            if (userId) {
-                gtag('config', 'G-4PREF5QX1F', {
-                    'user_id': userId
-                });
-            }
-            else {
-                gtag('config', 'G-4PREF5QX1F');
-            }
-        });
+        getUserInfo()
+            .then(userId => {
+                if (userId) {
+                    gtag('config', 'G-4PREF5QX1F', {
+                        'user_id': userId
+                    });
+                }
+                else {
+                    gtag('config', 'G-4PREF5QX1F');
+                }
+            })
+            .catch(error => {
+                showError(error.message);
+            });
     </script>
     <script>
         const meta = document.createElement('meta');
@@ -90,6 +94,8 @@
         <a href="." class="reload">Reload</a>
         <span class="dismiss">🗙</span>
     </div>
+
+    <div id="error-container" style="position: fixed; bottom: 20px; right: 20px; max-width: 300px; background-color: rgba(220, 53, 69, 0.9); color: white; padding: 10px 15px; border-radius: 8px; display: none; font-family: sans-serif; box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 10000;"></div>
 
     <script>
         window.addEventListener('load', function () {
@@ -145,8 +151,8 @@
                 new Function("const obj = { foo: null }; const x = obj && obj.foo !== undefined ? obj.foo : 'ok';");
 
                 return true;
-            } catch (e) {
-                console.error("Browser not supported:", e);
+            } catch (error) {
+                showError("Browser not supported: " + error.message);
                 return false;
             }
         })();
@@ -160,36 +166,42 @@
                 showBrowserWarning();
             }
             else {
+                showError(e.message);
                 //todo: send log to server
             }
         });
 
+        window.addEventListener('unhandledrejection', function (e) {
+            showError(e.reason.message);
+            //todo: send log to server
+        });
+
         function showBrowserWarning() {
             document.body.innerHTML = `
-                <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f0f2f5; font-family: 'Segoe UI', Roboto, sans-serif; padding: 1rem;">
-                    <div style="background: #fff; padding: 0.6rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 460px; text-align: center; color: #333;">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚠️</div>
-                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Your browser needs an update</h2>
-                        <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 0.5rem; text-align: justify;">
-                            This app uses modern browser features. Your current browser version isn’t compatible. Even when installed from a store, this app runs inside your device’s built-in browser.
-                        </p>
-                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; color: #555; text-align: left; padding-top: 0.5rem;">
-                            <li style="margin: 0.5rem 0; text-align: center;">
-                                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googleplay.svg" alt="Play Store" width="20" style="margin-right: 4px;" />
-                                <strong>Android</strong>: uses <strong>Chrome</strong>
-                            </li>
-                            <li style="margin: 0.5rem 0; text-align: center;">
-                                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/apple.svg" alt="App Store" width="20" style="margin-right: 4px;" />
-                                <strong>iOS/macOS</strong>: uses <strong>Safari</strong>
-                            </li>
-                            <li style="margin: 0.5rem 0; text-align: center;">
-                                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/microsoftstore.svg" alt="Microsoft Store" width="20" style="margin-right: 4px;" />
-                                <strong>Windows</strong>: uses <strong>Edge</strong>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            `;
+                        <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f0f2f5; font-family: 'Segoe UI', Roboto, sans-serif; padding: 1rem;">
+                            <div style="background: #fff; padding: 0.6rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 460px; text-align: center; color: #333;">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚠️</div>
+                                <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Your browser needs an update</h2>
+                                <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 0.5rem; text-align: justify;">
+                                    This app uses modern browser features. Your current browser version isn’t compatible. Even when installed from a store, this app runs inside your device’s built-in browser.
+                                </p>
+                                <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; color: #555; text-align: left; padding-top: 0.5rem;">
+                                    <li style="margin: 0.5rem 0; text-align: center;">
+                                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googleplay.svg" alt="Play Store" width="20" style="margin-right: 4px;" />
+                                        <strong>Android</strong>: uses <strong>Chrome</strong>
+                                    </li>
+                                    <li style="margin: 0.5rem 0; text-align: center;">
+                                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/apple.svg" alt="App Store" width="20" style="margin-right: 4px;" />
+                                        <strong>iOS/macOS</strong>: uses <strong>Safari</strong>
+                                    </li>
+                                    <li style="margin: 0.5rem 0; text-align: center;">
+                                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/microsoftstore.svg" alt="Microsoft Store" width="20" style="margin-right: 4px;" />
+                                        <strong>Windows</strong>: uses <strong>Edge</strong>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
         }
     </script>
 

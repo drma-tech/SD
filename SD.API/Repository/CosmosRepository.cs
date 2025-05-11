@@ -129,6 +129,9 @@ namespace SD.API.Repository
             }
         }
 
+        /// <summary>
+        /// to update arrays, there is no performance gain
+        /// </summary>
         public async Task<T> PatchItem<T>(DocumentType type, string? id, List<PatchOperation> operations, CancellationToken cancellationToken) where T : CosmosDocument, new()
         {
             //https://learn.microsoft.com/en-us/azure/cosmos-db/partial-document-update-getting-started?tabs=dotnet
