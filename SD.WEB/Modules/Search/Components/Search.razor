@@ -17,14 +17,15 @@
         <TextEdit @bind-Text="@SearchContent" Placeholder="@GlobalTranslations.TypeSomething" Size="Size.Small" KeyPress="KeyPress" />
     </Column>
     <Column ColumnSize="ColumnSize.IsAuto">
-        <Button Color="Color.Primary" Block="true" Disabled="string.IsNullOrEmpty(SearchContent)" Size="Size.Small">
+        <Button Color="Color.Primary" Block="true" Disabled="string.IsNullOrEmpty(SearchContent)" Size="Size.Small"
+                Clicked="@(() => Navigation.NavigateTo($"/search/{SearchContent}", true))">
             @WEB.Resources.Button.Search
         </Button>
     </Column>
 </Row>
 
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
-    <MediaListFull @ref="MediaListFull" MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false"
+    <MediaListFull MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false"
                    Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaListFull>
 </RenderControl>
 
@@ -37,7 +38,6 @@
 
     private HashSet<MediaDetail> Items { get; set; } = new();
     private RenderControlCore<HashSet<MediaDetail>> Core { get; set; } = new();
-    private MediaListFull? MediaListFull;
     private Dictionary<string, string> StringParameters => new Dictionary<string, string>() { { "query", SearchContent ?? "" } };
 
     protected override void OnInitialized()
@@ -55,7 +55,7 @@
         Core?.LoadingFinished?.Invoke(Items);
 
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
-    }   
+    }
 
     private void KeyPress(KeyboardEventArgs args)
     {

@@ -1,15 +1,8 @@
 ﻿"use strict";
 
-function getWindowDimensions() {
-    return {
-        width: window.innerWidth,
-        height: window.innerHeight
-    };
-};
-
 function share(url) {
-    if (!("share" in navigator)) {
-        alert('Web Share API not supported.');
+    if (!('share' in navigator) || window.isSecureContext === false) {
+        showError('Web Share API not supported.');
         return;
     }
 
@@ -23,6 +16,10 @@ function GetLocalStorage(key) {
 }
 
 function SetLocalStorage(key, value) {
+    if (typeof key !== 'string' || typeof value !== 'string') {
+        showError('Key/value must be strings');
+        return;
+    }
     return window.localStorage.setItem(key, value);
 }
 
@@ -47,16 +44,9 @@ async function getUserInfo() {
     try {
         if (!window.location.host.includes('localhost')) {
             const response = await fetch('/.auth/me');
-            if (response.ok) {
-                const userInfo = await response.json();
-                if (userInfo?.clientPrincipal?.userId) {
-                    return userInfo.clientPrincipal.userId;
-                }
-                return null;
-            }
-            else {
-                return null;
-            }
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const userInfo = await response.json();
+            return userInfo?.clientPrincipal?.userId || null;
         }
         else {
             return null;
@@ -118,4 +108,51 @@ function animationBlink(cssClass) {
         el.classList.add("blink");
         setTimeout(() => { el.classList.remove("blink"); }, 1500);
     });
+}
+
+function isModernBrowser() {
+    try {
+        // Test basic required APIs
+        if (typeof WebAssembly !== "object") return false;
+        if (typeof WebAssembly.instantiate !== "function") return false;
+        if (typeof BigInt !== "function") return false;
+        if (typeof fetch !== "function") return false;
+        if (typeof Promise !== "function") return false;
+
+        // Safely test modern syntax using Function (optional chaining / nullish coalescing)
+        new Function("const obj = { foo: null }; const x = obj && obj.foo !== undefined ? obj.foo : 'ok';");
+
+        return true;
+    } catch (error) {
+        showError("Browser not supported: " + error.message);
+        return false;
+    }
+}
+
+function showBrowserWarning() {
+    document.body.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f0f2f5; font-family: 'Segoe UI', Roboto, sans-serif; padding: 1rem;">
+            <div style="background: #fff; padding: 0.6rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 460px; text-align: center; color: #333;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚠️</div>
+                <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Your browser needs an update</h2>
+                <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 0.5rem; text-align: justify;">
+                    This app uses modern browser features. Your current browser version isn’t compatible. Even when installed from a store, this app runs inside your device’s built-in browser.
+                </p>
+                <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; color: #555; text-align: left; padding-top: 0.5rem;">
+                    <li style="margin: 0.5rem 0; text-align: center;">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googleplay.svg" alt="Play Store" width="20" style="margin-right: 4px;" />
+                        <strong>Android</strong>: uses <strong>Chrome</strong>
+                    </li>
+                    <li style="margin: 0.5rem 0; text-align: center;">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/apple.svg" alt="App Store" width="20" style="margin-right: 4px;" />
+                        <strong>iOS/macOS</strong>: uses <strong>Safari</strong>
+                    </li>
+                    <li style="margin: 0.5rem 0; text-align: center;">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/microsoftstore.svg" alt="Microsoft Store" width="20" style="margin-right: 4px;" />
+                        <strong>Windows</strong>: uses <strong>Edge</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    `;
 }
