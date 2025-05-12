@@ -46,22 +46,24 @@ namespace SD.API.Core
 
         public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, ttlCache maxAge, CancellationToken cancellationToken) where T : class
         {
+            HttpResponseData? response;
+
             if (doc != null)
             {
-                var response = req.CreateResponse();
-
-                response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}"); // expiration time cache
-                //response.Headers.Add("ETag", eTag); // unique identification to verify data changes
-                //response.Headers.Add("Access-Control-Expose-Headers", "ETag"); //dont using anymore
+                response = req.CreateResponse();
 
                 await response.WriteAsJsonAsync(doc, cancellationToken);
-
-                return response;
             }
             else
             {
-                return req.CreateResponse(System.Net.HttpStatusCode.NoContent);
+                response = req.CreateResponse(System.Net.HttpStatusCode.NoContent);
             }
+
+            response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
+            //response.Headers.Add("ETag", eTag); // unique identification to verify data changes
+            //response.Headers.Add("Access-Control-Expose-Headers", "ETag"); //dont using anymore
+
+            return response;
         }
 
         public static StringDictionary GetQueryParameters(this HttpRequestData req)

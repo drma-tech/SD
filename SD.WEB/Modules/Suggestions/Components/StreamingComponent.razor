@@ -178,7 +178,7 @@
         @if (!hasProvider)
         {
             <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is2.FromTop" Visible="true">
-                @Translations.TitleNotAvailable
+                @(string.Format(Translations.TitleNotAvailable, AppStateStatic.Region.GetName()))
             </Alert>
 
             @if (AppStateStatic.Region.GetName().Empty())

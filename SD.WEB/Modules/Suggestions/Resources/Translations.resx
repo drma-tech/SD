@@ -166,7 +166,7 @@
     <value>Platform added successfully!</value>
   </data>
   <data name="PlatformForManaging" xml:space="preserve">
-    <value>This platform is for managing, not streaming.</value>
+    <value>This platform is not for watching movies.</value>
   </data>
   <data name="PlatformRemoved" xml:space="preserve">
     <value>Platform removed successfully!</value>
@@ -199,7 +199,7 @@
     <value>Certified by SD</value>
   </data>
   <data name="TitleNotAvailable" xml:space="preserve">
-    <value>Unfortunately this title is not available in your region</value>
+    <value>This title is not available in your region: {0}</value>
   </data>
   <data name="TitleSpecializedSites" xml:space="preserve">
     <value>Specialized Sites</value>

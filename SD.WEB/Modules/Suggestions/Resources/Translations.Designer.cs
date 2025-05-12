@@ -205,7 +205,7 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This platform is for managing, not streaming..
+        ///   Looks up a localized string similar to This platform is not for watching movies..
         /// </summary>
         public static string PlatformForManaging {
             get {
@@ -304,7 +304,7 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unfortunately this title is not available in your region.
+        ///   Looks up a localized string similar to This title is not available in your region: {0}.
         /// </summary>
         public static string TitleNotAvailable {
             get {

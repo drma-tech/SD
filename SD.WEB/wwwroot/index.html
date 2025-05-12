@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <link rel="stylesheet" href="_content/Blazorise/blazorise.min.css" />
@@ -23,9 +23,8 @@
     <link rel="stylesheet" href="_content/Blazorise.Snackbar/blazorise.snackbar.min.css" />
     <link rel="stylesheet" href="_content/Blazorise.Icons.FontAwesome/v6/css/all.min.css">
 
-    <script defer src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
-    <script defer src="js/paddle.js"></script>
-    <script src="js/util.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="js/events.js"></script>
 
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5922021468622891" crossorigin="anonymous"></script>
@@ -51,7 +50,7 @@
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4PREF5QX1F"></script>
-    <script>
+    <script type="text/javascript">
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
@@ -71,7 +70,9 @@
                 showError(error.message);
             });
     </script>
-    <script>
+
+    <!--Disable robots for dev environment-->
+    <script type="text/javascript">
         const meta = document.createElement('meta');
         meta.name = 'robots';
         meta.content = window.location.hostname.includes('dev') ? 'noindex, nofollow' : "index";
@@ -97,65 +98,22 @@
 
     <div id="error-container" class="error-container"></div>
 
-    <script>
-        window.addEventListener('load', function () {
-            const startTime = performance.now();
-            const app = document.getElementById('app');
-            const messageEl = document.querySelector('.loading-message');
-
-            const checkConnection = setInterval(() => {
-                const elapsed = (performance.now() - startTime) / 1000;
-                const progress = parseFloat(getComputedStyle(document.documentElement)
-                    .getPropertyValue('--blazor-load-percentage') || '0');
-
-                // Clear previous classes
-                app.classList.remove('slow-connection', 'very-slow-connection', 'extremely-slow-connection');
-
-                if (elapsed > 80 && progress < 100) {
-                    app.classList.add('extremely-slow-connection');
-                    messageEl.textContent = "Still loading. Something may be holding things up.";
-                }
-                else if (elapsed > 50 && progress < 100) {
-                    app.classList.add('very-slow-connection');
-                    messageEl.textContent = "Still loading. This may take a little longer.";
-                }
-                else if (elapsed > 20 && progress < 100) {
-                    app.classList.add('slow-connection');
-                    messageEl.textContent = "This is taking a bit longer than expected.";
-                }
-
-                if (progress >= 100) clearInterval(checkConnection);
-            }, 1000);
-        });
-    </script>
-
-    <script>
+    <script type="text/javascript">
         //avoid google (and others) search console execute this
         if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex/i.test(window.navigator.userAgent) &&
             window.navigator.serviceWorker && window.navigator.serviceWorker.register) {
             navigator.serviceWorker.register('service-worker.js');
         }
-    </script>
 
-    <script>
+        //capture height of the app
+        const appHeight = () => document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`)
+        window.addEventListener('resize', appHeight)
+        appHeight()
+
+        // check is browser is compatible with blazor
         if (!isModernBrowser()) {
             showBrowserWarning();
         }
-
-        window.addEventListener('error', function (e) {
-            if (e.filename && e.filename.includes('blazor.webassembly.js')) {
-                showBrowserWarning();
-            }
-            else {
-                showError(e.message);
-                //todo: send log to server
-            }
-        });
-
-        window.addEventListener('unhandledrejection', function (e) {
-            showError(e.reason.message);
-            //todo: send log to server
-        });
     </script>
 
     <script rel="preload" src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
@@ -164,11 +122,7 @@
     <script defer src="_content/Toolbelt.Blazor.PWA.Updater.Service/script.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script defer src="js/swiper.js"></script>
-
-    <script>
-        const appHeight = () => document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`)
-        window.addEventListener('resize', appHeight)
-        appHeight()
-    </script>
+    <script defer src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+    <script defer src="js/paddle.js"></script>
 </body>
 </html>
