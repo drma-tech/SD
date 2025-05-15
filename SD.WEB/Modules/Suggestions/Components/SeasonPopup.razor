@@ -27,7 +27,7 @@
                         </Column>
                         <Column>
                             <Heading Size="HeadingSize.Is6" Margin="Margin.Is1.FromBottom">@(item.episode_number + " - " + item.name)</Heading>
-                            <Small TextAlignment="TextAlignment.Justified">@item.overview</Small>
+                            <Small TextAlignment="TextAlignment.Justified">@(item.overview.Empty() ? GlobalTranslations.CustomVisibilityNoData : item.overview)</Small>
                         </Column>
                     </Row>
                 </ListGroupItem>
@@ -35,19 +35,13 @@
         </ListGroup>
     </RenderControl>
 </ModalBody>
-@if (!IsAuthenticated)
-{
-    <ModalFooter>
-        <Alert Color="Color.Info" Margin="Margin.Is0" Visible="true" Width="Width.Is100" Class="alertLoginNeeded">
-            <AlertMessage>
-                @Resources.Translations.LoginNeeded
-            </AlertMessage>
-            <AlertDescription>
-                @Resources.Translations.PlatformForManaging
-            </AlertDescription>
-        </Alert>
-    </ModalFooter>
-}
+<ModalFooter>
+    <Alert Color="Color.Info" Margin="Margin.Is0" Visible="true" Width="Width.Is100" Class="alertLoginNeeded">
+        <AlertDescription>
+            @Resources.Translations.PlatformForManaging
+        </AlertDescription>
+    </Alert>
+</ModalFooter>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small" Margin="Margin.Is0">
         @WEB.Resources.Button.Close

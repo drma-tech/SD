@@ -42,7 +42,7 @@
                         {
                             <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media?.release_date?.ToShortDateString()</Badge>
                         }
-                        <Image Source="@media?.poster_large" Text="@media?.title" alt="@media?.title" Style="width: 100%;"></Image>
+                        <Image Source="@media?.poster_large" Text="@media?.title" alt="@media?.title" Style="width: 100%;" onclick="animationShake('.alertLoginNeeded')"></Image>
                     </Div>
                 }
             </Column>
@@ -147,7 +147,7 @@
                                     {
                                         <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
                                             <Card>
-                                                <Blazorise.Link Clicked="@(async() => await CollectionClicked(item))" Style="position: relative;">
+                                                <Blazorise.Link Clicked="@(async() => await CollectionClicked(item))" Style="position: relative; text-decoration: none; color: var(--bs-card-color);">
                                                     @if (item.release_date.HasValue)
                                                     {
                                                         if (item.release_date.Value < DateTime.Now.AddMonths(-3))
@@ -185,11 +185,10 @@
 
                                                         <CardImage Source="@item.poster_small" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer;")></CardImage>
                                                     }
+                                                    <CardBody Class="py-1" Style="cursor: pointer;">
+                                                        @item.title
+                                                    </CardBody>
                                                 </Blazorise.Link>
-
-                                                <CardBody Class="py-1">
-                                                    @item.title
-                                                </CardBody>
                                             </Card>
                                         </Column>
                                     }
@@ -206,19 +205,19 @@
         </Row>
     </RenderControl>
 </ModalBody>
-@if (!IsAuthenticated)
-{
-    <ModalFooter>
-        <Alert Color="Color.Info" Margin="Margin.Is0" Visible="true" Width="Width.Is100" Class="alertLoginNeeded">
+<ModalFooter>
+    <Alert Color="Color.Info" Margin="Margin.Is0" Visible="true" Width="Width.Is100" Class="alertLoginNeeded">
+        @if (!IsAuthenticated)
+        {
             <AlertMessage>
                 @Resources.Translations.LoginNeeded
             </AlertMessage>
-            <AlertDescription>
-                @Resources.Translations.PlatformForManaging
-            </AlertDescription>
-        </Alert>
-    </ModalFooter>
-}
+        }
+        <AlertDescription>
+            @Resources.Translations.PlatformForManaging
+        </AlertDescription>
+    </Alert>
+</ModalFooter>
 <ModalFooter>
     <Container Fluid="true" Margin="Margin.Is0" Padding="Padding.Is0.OnX">
         @if (ShowPrivateAction)

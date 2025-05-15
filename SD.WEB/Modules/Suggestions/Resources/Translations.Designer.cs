@@ -205,7 +205,7 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This platform is not for watching movies..
+        ///   Looks up a localized string similar to This platform is not for watching movies or series..
         /// </summary>
         public static string PlatformForManaging {
             get {

@@ -146,7 +146,7 @@
                         @if (Client == null)
                         {
                             <span onclick="animationShake('.alertLoginNeeded')">
-                                <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="true">
+                                <Button Color="Color.Primary" Block="true" Class="mt-3">
                                     Choose Plan
                                 </Button>
                             </span>
@@ -204,7 +204,7 @@
                         @if (Client == null)
                         {
                             <span onclick="animationShake('.alertLoginNeeded')">
-                                <Button Color="Color.Primary" Block="true" Class="mt-3" Disabled="true">
+                                <Button Color="Color.Primary" Block="true" Class="mt-3">
                                     Choose Plan
                                 </Button>
                             </span>
@@ -337,19 +337,19 @@
         }
     }
 </ModalBody>
-@if (Client == null)
-{
-    <ModalFooter>
-        <Alert Color="Color.Info" Margin="Margin.Is0" Visible="true" Width="Width.Is100" Class="alertLoginNeeded">
+<ModalFooter>
+    <Alert Color="Color.Info" Margin="Margin.Is0" Visible="true" Width="Width.Is100" Class="alertLoginNeeded">
+        @if (Client == null)
+        {
             <AlertMessage>
                 @Suggestions.Resources.Translations.LoginNeeded
             </AlertMessage>
-            <AlertDescription>
-                @Suggestions.Resources.Translations.PlatformForManaging
-            </AlertDescription>
-        </Alert>
-    </ModalFooter>
-}
+        }
+        <AlertDescription>
+            @Suggestions.Resources.Translations.PlatformForManaging
+        </AlertDescription>
+    </Alert>
+</ModalFooter>
 <ModalFooter>
     <Container Fluid="true" Margin="Margin.Is0" Padding="Padding.Is0.OnX">
         <Row HorizontalGutter="4" VerticalGutter="4">
