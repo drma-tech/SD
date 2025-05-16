@@ -3,6 +3,8 @@
     const app = document.getElementById('app');
     const messageEl = document.querySelector('.loading-message');
 
+    if (!app) return;
+
     const checkConnection = setInterval(() => {
         const elapsed = (performance.now() - startTime) / 1000;
         const progress = parseFloat(getComputedStyle(document.documentElement)

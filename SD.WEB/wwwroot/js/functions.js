@@ -110,23 +110,19 @@ function animationBlink(cssClass) {
     });
 }
 
-function isModernBrowser() {
-    try {
-        // Test basic required APIs
-        if (typeof WebAssembly !== "object") return false;
-        if (typeof WebAssembly.instantiate !== "function") return false;
-        if (typeof BigInt !== "function") return false;
-        if (typeof fetch !== "function") return false;
-        if (typeof Promise !== "function") return false;
+async function detectBrowserFeatures() {
+    const [simd, bulkMemory, bigInt] = await Promise.all([
+        wasmFeatureDetect.simd(),
+        wasmFeatureDetect.bulkMemory(),
+        wasmFeatureDetect.bigInt()
+    ]);
 
-        // Safely test modern syntax using Function (optional chaining / nullish coalescing)
-        new Function("const obj = { foo: null }; const x = obj && obj.foo !== undefined ? obj.foo : 'ok';");
-
-        return true;
-    } catch (error) {
-        showError("Browser not supported: " + error.message);
+    if (!simd || !bulkMemory || !bigInt) {
+        showBrowserWarning();
         return false;
     }
+
+    return true;
 }
 
 function showBrowserWarning() {

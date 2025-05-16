@@ -98,6 +98,7 @@
 
     <div id="error-container" class="error-container"></div>
 
+    <script src="https://unpkg.com/wasm-feature-detect/dist/umd/index.js"></script>
     <script type="text/javascript">
         //avoid google (and others) search console execute this
         if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex/i.test(window.navigator.userAgent) &&
@@ -111,9 +112,15 @@
         appHeight()
 
         // check is browser is compatible with blazor
-        if (!isModernBrowser()) {
-            showBrowserWarning();
-        }
+        detectBrowserFeatures()
+            .then((ok) => {
+                if (!ok) {
+                    showBrowserWarning();
+                }
+            })
+            .catch((error) => {
+                showError("Browser not supported: " + error.message);
+            });
     </script>
 
     <script rel="preload" src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
