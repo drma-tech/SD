@@ -10,7 +10,7 @@
     <link rel="manifest" href="manifest.webmanifest" />
 
     <link rel="stylesheet" href="css/app.min.css" />
-    <link rel="stylesheet" href="css/custom_app.min.css" />
+    <link rel="stylesheet" href="css/custom-app.min.css" />
     <link rel="stylesheet" href="SD.WEB.styles.css" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
@@ -23,60 +23,17 @@
     <link rel="stylesheet" href="_content/Blazorise.Snackbar/blazorise.snackbar.min.css" />
     <link rel="stylesheet" href="_content/Blazorise.Icons.FontAwesome/v6/css/all.min.css">
 
-    <script src="js/functions.js"></script>
-    <script src="js/events.js"></script>
-
-    <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5922021468622891" crossorigin="anonymous"></script>
-
-    <!-- Microsoft Clarity -->
-    <script type="text/javascript">
-        if (!window.location.host.includes('localhost')) {
-            (function (c, l, a, r, i, t, y) {
-                c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
-                t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
-                y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-            })(window, document, "clarity", "script", "r2iwqdpwtv");
-
-            // Check if Clarity is loaded and call the consent function
-            var clarityCheckInterval = setInterval(function () {
-                if (window.clarity) {
-                    window.clarity('consent');
-                    clearInterval(clarityCheckInterval);
-                }
-            }, 5000);
-        }
-    </script>
-
-    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4PREF5QX1F"></script>
-    <script type="text/javascript">
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
 
-        getUserInfo()
-            .then(userId => {
-                if (userId) {
-                    gtag('config', 'G-4PREF5QX1F', {
-                        'user_id': userId
-                    });
-                }
-                else {
-                    gtag('config', 'G-4PREF5QX1F');
-                }
-            })
-            .catch(error => {
-                showError(error.message);
-            });
-    </script>
+    <script src="js/functions.min.js"></script>
+    <script src="js/events.min.js"></script>
+    <script src="js/services.min.js"></script>
 
-    <!--Disable robots for dev environment-->
     <script type="text/javascript">
-        const meta = document.createElement('meta');
-        meta.name = 'robots';
-        meta.content = window.location.hostname.includes('dev') ? 'noindex, nofollow' : "index";
-        document.head.appendChild(meta);
+        window.setRobotsMeta();
+        window.initGoogleAnalytics("G-4PREF5QX1F");
+        window.initClarity("r2iwqdpwtv");
     </script>
 </head>
 
@@ -128,8 +85,8 @@
 
     <script defer src="_content/Toolbelt.Blazor.PWA.Updater.Service/script.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script defer src="js/swiper.js"></script>
+    <script defer src="js/swiper.min.js"></script>
     <script defer src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
-    <script defer src="js/paddle.js"></script>
+    <script defer src="js/paddle.min.js"></script>
 </body>
 </html>

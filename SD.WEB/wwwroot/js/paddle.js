@@ -1,4 +1,6 @@
-﻿async function startPaddle(token) {
+﻿"use strict";
+
+async function startPaddle(token) {
     if (window.location.hostname == "localhost" || window.location.hostname.includes("dev.")) {
         Paddle.Environment.set("sandbox");
     }

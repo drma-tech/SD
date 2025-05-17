@@ -6,7 +6,8 @@ function share(url) {
         return;
     }
 
-    navigator.share({ url: url })
+    navigator
+        .share({ url: url })
         .then(() => console.log('Successful share'))
         .catch(error => showError(error.message));
 }
