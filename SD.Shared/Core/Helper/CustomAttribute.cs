@@ -64,7 +64,7 @@ namespace SD.Shared.Core.Helper
 
         public static string GetDescription(this Enum value, bool translate = true)
         {
-            return value.GetCustomAttribute(translate).Description ?? throw new UnhandledException($"{value} Description is null");
+            return value.GetCustomAttribute(translate)?.Description ?? throw new UnhandledException($"{value} Description is null");
         }
     }
 }

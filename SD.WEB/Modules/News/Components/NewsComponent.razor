@@ -19,7 +19,10 @@
                     <Blazorise.Link To="@item?.link" Target="Target.Blank" Title="@item?.title">
                         <Image Source="@item?.url_img" title="@item?.title" alt="@item?.title" Text="@item?.title" Display="Display.Block" Width="Width.Is100" />
                         <div class="carousel-caption d-none d-md-block p-1" style="background-color: lime; opacity: 70%; color: black;">
-                            <p>@((MarkupString)item.title)</p>
+                            @if (item?.title != null)
+                            {
+                                <p>@((MarkupString)item.title)</p>
+                            }
                         </div>
                     </Blazorise.Link>
                 </div>
