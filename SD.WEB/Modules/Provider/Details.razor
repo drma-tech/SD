@@ -1,13 +1,13 @@
 ﻿@page "/providers/{id}"
+<SeoHeader Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/providers/{Provider?.id}")"
+           Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)">
+</SeoHeader>
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Provider.Components
-@using SD.WEB.Modules.Provider.Core;
+@using SD.WEB.Modules.Provider.Core
 @using SD.WEB.Modules.Provider.Resources
 @using SD.WEB.Modules.Suggestions.Components
-@using SD.WEB.Modules.Suggestions.Core;
-<SeoHeader Title="@($"{@SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/providers/{Provider?.id}")"
-           Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)"></SeoHeader>
-@inherits PageCore<Provider.Details>
+@using SD.WEB.Modules.Suggestions.Core
+@inherits PageCore<Details>
 
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
@@ -15,14 +15,15 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj)=>obj==null)">
+<RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null)">
     @if (Provider != null)
     {
         <HeadPage ImageSource="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Text="@Provider.description" Link="@Provider.link"
-                  provider="Provider" IsAuthenticated="IsAuthenticated"></HeadPage>
+                  provider="Provider" IsAuthenticated="IsAuthenticated">
+        </HeadPage>
     }
 
-    @if (Settings != null && Settings.ShowAdSense)
+    @if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
     {
         <Div TextAlignment="TextAlignment.Center">
             <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="2339718687"></ins>
@@ -33,11 +34,14 @@
     }
 
     <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "popularity.desc")"
-               ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+               ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+    </MediaList>
     <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "primary_release_date.desc")"
-               ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+               ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+    </MediaList>
     <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "vote_average.desc")"
-               ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+               ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+    </MediaList>
 </RenderControl>
 
 @code {
@@ -52,6 +56,8 @@
     public RenderControlCore<WishList?> CoreWishlist { get; set; } = new();
 
     public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
+
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
@@ -60,11 +66,24 @@
     {
         await base.OnInitializedAsync();
 
-        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+        WatchedListApi.DataChanged += model =>
+        {
+            WatchedList = model;
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            WatchingList = model;
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            WishList = model;
+            StateHasChanged();
+        };
 
         Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
 
         AllProviders = await AllProvidersApi.GetAll(Core);
 
@@ -82,6 +101,8 @@
     {
         if (provider_id == null) throw new ArgumentNullException(nameof(provider_id));
 
-        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by } }; ;
+        return new Dictionary<string, string> { { "with_watch_providers", provider_id }, { "sort_by", sort_by } };
+        ;
     }
+
 }

@@ -1,7 +1,5 @@
-﻿@using SD.Shared.Core.Models
-@using SD.Shared.Models.Auth
-@using System.Security.Claims
-@using SD.WEB.Modules.Profile.Resources
+﻿@using SD.WEB.Modules.Profile.Resources
+@using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<ProfilePopup>
 
 @inject IMessageService MessageService
@@ -11,7 +9,7 @@
     <ModalTitle Size="HeadingSize.Is5">
         @Translations.MyProfile
     </ModalTitle>
-    <CloseButton />
+    <CloseButton/>
 </ModalHeader>
 <ModalBody MaxHeight="70">
     <Card Margin="Margin.Is2.FromBottom">
@@ -24,19 +22,19 @@
                     <FieldLabel>
                         @Translations.IdentityProvider
                     </FieldLabel>
-                    <TextEdit Text="@principal?.IdentityProvider" Disabled="true" />
+                    <TextEdit Text="@principal?.IdentityProvider" Disabled="true"/>
                 </Field>
                 <Field ColumnSize="ColumnSize.Is4.OnDesktop">
                     <FieldLabel>
                         @Translations.Identification
                     </FieldLabel>
-                    <TextEdit Text="@principal?.UserDetails" Disabled="true" />
+                    <TextEdit Text="@principal?.UserDetails" Disabled="true"/>
                 </Field>
                 <Field ColumnSize="ColumnSize.Is4.OnDesktop">
                     <FieldLabel>
                         @Translations.Email
                     </FieldLabel>
-                    <TextEdit Text="@principal?.Email" Disabled="true" />
+                    <TextEdit Text="@principal?.Email" Disabled="true"/>
                 </Field>
             </Fields>
         </CardBody>
@@ -46,20 +44,20 @@
             @Translations.Actions
         </CardHeader>
         <CardBody>
-            <Button Color="Color.Danger" Clicked="async()=>{ await DeleteAccount(principal?.IdentityProvider); }">
-                <Blazorise.Icon Name="FontAwesomeIcons.UserSlash" /> @Translations.DeleteAccount
+            <Button Color="Color.Danger" Clicked="async () => { await DeleteAccount(principal?.IdentityProvider); }">
+                <Blazorise.Icon Name="FontAwesomeIcons.UserSlash"/> @Translations.DeleteAccount
             </Button>
         </CardBody>
     </Card>
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
-        @WEB.Resources.Button.Close
+        @Button.Close
     </Button>
 </ModalFooter>
 
 @code {
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; } = false;
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
 
     private ClientePrincipal? principal { get; set; }
 
@@ -72,7 +70,7 @@
     {
         try
         {
-            if (await MessageService.Confirm(GlobalTranslations.SureDeleteAccount, WEB.Resources.SeoTranslations.AppName, (opt) => { opt.ShowMessageIcon = false; }))
+            if (await MessageService.Confirm(GlobalTranslations.SureDeleteAccount, SeoTranslations.AppName, opt => { opt.ShowMessageIcon = false; }))
             {
                 //remove data from cosmos db
                 await PrincipalApi.Remove();
@@ -84,7 +82,7 @@
                 Navigation.NavigateTo("/.auth/purge/" + provider);
 
                 //close session
-                Navigation.NavigateTo("/.auth/logout", forceLoad: true);
+                Navigation.NavigateTo("/.auth/logout", true);
             }
             else
             {
@@ -96,4 +94,5 @@
             ex.ProcessException(Toast, Logger);
         }
     }
+
 }

@@ -35,7 +35,7 @@
                             @if (ShowGroup)
                             {
                                 <SelectItem></SelectItem>
-                                @foreach (var group in EnumHelper.GetList<TEnum>().OrderBy(o=>o.Group).ThenBy(Order).Select(s => s.Group).Distinct())
+                                @foreach (var group in EnumHelper.GetList<TEnum>().OrderBy(o => o.Group).ThenBy(Order).Select(s => s.Group).Distinct())
                                 {
                                     if (string.IsNullOrEmpty(group))
                                     {
@@ -82,7 +82,7 @@
                         </AddonLabel>
                     </Addon>
                 }
-               @* @if (ShowHelper & !Multiple) //help
+                @* @if (ShowHelper & !Multiple) //help
                 {
                     <Addon AddonType="AddonType.End">
                         <Button Color="Color.Primary" Outline="true" Clicked="() => UpdateDataHelp(For)" Disabled="@Disabled">
@@ -94,7 +94,7 @@
                 {
                     <Addon AddonType="AddonType.End">
                         <Button Color="Color.Primary" Outline="true" Clicked="() => UpdateDataSelect(For)" Disabled="@Disabled">
-                            <Blazorise.Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.Plus"></Blazorise.Icon>
+                            <Blazorise.Icon Name="FontAwesomeIcons.Plus"></Blazorise.Icon>
                         </Button>
                     </Addon>
                 }
@@ -117,7 +117,7 @@
         @if (!string.IsNullOrEmpty(HelpLink))
         {
             <Column ColumnSize="ColumnSize.IsFull">
-                <a href="@HelpLink" target="_blank" style="display: block; font-size: 80%;" rel="nofollow">@(new Uri(@HelpLink).Host)</a>
+                <a href="@HelpLink" target="_blank" style="display: block; font-size: 80%;" rel="nofollow">@(new Uri(HelpLink).Host)</a>
             </Column>
         }
     </Field>

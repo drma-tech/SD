@@ -1,213 +1,222 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
-using SD.WEB.Modules.News.Components;
 using SD.WEB.Modules.Profile;
 using SD.WEB.Modules.Provider.Components;
 using SD.WEB.Modules.Subscription.Components;
 using SD.WEB.Modules.Suggestions.Components;
 using SD.WEB.Modules.Suggestions.Core;
 using SD.WEB.Modules.Suggestions.Interface;
-using SD.WEB.Modules.Trailers.Components;
 using SD.WEB.Shared;
+using MySuggestions = SD.Shared.Models.MySuggestions;
 
-namespace SD.WEB.Core
+namespace SD.WEB.Core;
+
+public static class PopupHelper
 {
-    public static class PopupHelper
+    public static readonly EventCallbackFactory Factory = new();
+
+    public static async Task CollectionPopup(this IModalService service, WatchedList? watched, WatchingList? watching,
+        WishList? wish, MediaType? type,
+        string? collectionId, bool showPrivateAction, bool isAuthenticated)
     {
-        public static readonly EventCallbackFactory Factory = new();
-
-        public static async Task CollectionPopup(this IModalService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type,
-            string? collection_id, bool showPrivateAction, bool IsAuthenticated)
+        await service.Show<CollectionPopup>(null, x =>
         {
-            await service.Show<CollectionPopup>(null, x =>
-            {
-                x.Add(x => x.collection_id, collection_id);
-                x.Add(x => x.type, type);
-                x.Add(x => x.Watched, watched);
-                x.Add(x => x.Watching, watching);
-                x.Add(x => x.Wish, wish);
-                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
-                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
-                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
-                x.Add(x => x.ShowPrivateAction, showPrivateAction);
-                x.Add(x => x.IsAuthenticated, IsAuthenticated);
-            }, Options(ModalSize.Large));
-        }
+            x.Add(x => x.collection_id, collectionId);
+            x.Add(x => x.type, type);
+            x.Add(x => x.Watched, watched);
+            x.Add(x => x.Watching, watching);
+            x.Add(x => x.Wish, wish);
+            x.Add(x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }));
+            x.Add(x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }));
+            x.Add(x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }));
+            x.Add(x => x.ShowPrivateAction, showPrivateAction);
+            x.Add(x => x.IsAuthenticated, isAuthenticated);
+        }, Options(ModalSize.Large));
+    }
 
-        public static async Task CompleteListPopup(this IModalService service, string? TitleHead, WatchedList? watched, WatchingList? watching, WishList? wish,
-            HashSet<MediaDetail> Items, bool showPrivateAction, bool IsAuthenticated)
+    public static async Task CompleteListPopup(this IModalService service, string? titleHead, WatchedList? watched,
+        WatchingList? watching, WishList? wish,
+        HashSet<MediaDetail> items, bool showPrivateAction, bool isAuthenticated)
+    {
+        await service.Show<CompleteListPopup>(null, x =>
         {
-            await service.Show<CompleteListPopup>(null, x =>
-            {
-                x.Add(x => x.TitleHead, TitleHead);
-                x.Add(x => x.Watched, watched);
-                x.Add(x => x.Watching, watching);
-                x.Add(x => x.Wish, wish);
-                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
-                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
-                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
-                x.Add(x => x.Items, Items);
-                x.Add(x => x.ShowPrivateAction, showPrivateAction);
-                x.Add(x => x.IsAuthenticated, IsAuthenticated);
-            }, Options(ModalSize.ExtraLarge));
-        }
+            x.Add(x => x.TitleHead, titleHead);
+            x.Add(x => x.Watched, watched);
+            x.Add(x => x.Watching, watching);
+            x.Add(x => x.Wish, wish);
+            x.Add(x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }));
+            x.Add(x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }));
+            x.Add(x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }));
+            x.Add(x => x.Items, items);
+            x.Add(x => x.ShowPrivateAction, showPrivateAction);
+            x.Add(x => x.IsAuthenticated, isAuthenticated);
+        }, Options(ModalSize.ExtraLarge));
+    }
 
-        public static async Task CompleteListPopup(this IModalService service, string? TitleHead, WatchedList? watched, WatchingList? watching, WishList? wish, HashSet<MediaDetail> Items,
-            IMediaListApi? MediaListApi, EnumLists? List, bool IsIMDB, MediaType? TypeSelected, Dictionary<string, string> StringParameters,
-            bool showPrivateAction, bool IsAuthenticated, bool commentImage = false)
+    public static async Task CompleteListPopup(this IModalService service, string? titleHead, WatchedList? watched,
+        WatchingList? watching, WishList? wish, HashSet<MediaDetail> items,
+        IMediaListApi? mediaListApi, EnumLists? list, bool isImdb, MediaType? typeSelected,
+        Dictionary<string, string> stringParameters,
+        bool showPrivateAction, bool isAuthenticated, bool commentImage = false)
+    {
+        await service.Show<CompleteListPopup>(null, x =>
         {
-            await service.Show<CompleteListPopup>(null, x =>
-            {
-                x.Add(x => x.TitleHead, TitleHead);
-                x.Add(x => x.Watched, watched);
-                x.Add(x => x.Watching, watching);
-                x.Add(x => x.Wish, wish);
-                x.Add(x => x.Items, Items);
-                x.Add(x => x.ItemsChanged, Factory.Create(new(), (HashSet<MediaDetail> list) => { Items = list; }));
-                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
-                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
-                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
+            x.Add(x => x.TitleHead, titleHead);
+            x.Add(x => x.Watched, watched);
+            x.Add(x => x.Watching, watching);
+            x.Add(x => x.Wish, wish);
+            x.Add(x => x.Items, items);
+            x.Add(x => x.ItemsChanged, Factory.Create(new object(), (HashSet<MediaDetail> list) => { items = list; }));
+            x.Add(x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }));
+            x.Add(x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }));
+            x.Add(x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }));
 
-                x.Add(x => x.MediaListApi, MediaListApi);
-                x.Add(x => x.List, List);
-                x.Add(x => x.IsIMDB, IsIMDB);
-                x.Add(x => x.TypeSelected, TypeSelected);
-                x.Add(x => x.StringParameters, StringParameters);
-                x.Add(x => x.ShowPrivateAction, showPrivateAction);
-                x.Add(x => x.IsAuthenticated, IsAuthenticated);
-                x.Add(x => x.CommentImage, commentImage);
-            }, Options(ModalSize.ExtraLarge));
-        }
+            x.Add(x => x.MediaListApi, mediaListApi);
+            x.Add(x => x.List, list);
+            x.Add(x => x.IsIMDB, isImdb);
+            x.Add(x => x.TypeSelected, typeSelected);
+            x.Add(x => x.StringParameters, stringParameters);
+            x.Add(x => x.ShowPrivateAction, showPrivateAction);
+            x.Add(x => x.IsAuthenticated, isAuthenticated);
+            x.Add(x => x.CommentImage, commentImage);
+        }, Options(ModalSize.ExtraLarge));
+    }
 
-        public static async Task MediaPopup(this IModalService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? tmdb_id,
-            bool showPrivateAction, bool IsAuthenticated)
+    public static async Task MediaPopup(this IModalService service, WatchedList? watched, WatchingList? watching,
+        WishList? wish, MediaType? type, string? tmdbId,
+        bool showPrivateAction, bool isAuthenticated)
+    {
+        await service.Show<MediaPopup>(null, x =>
         {
-            await service.Show<MediaPopup>(null, x =>
-            {
-                x.Add(x => x.tmdb_id, tmdb_id);
-                x.Add(x => x.type, type);
-                x.Add(x => x.Watched, watched);
-                x.Add(x => x.Watching, watching);
-                x.Add(x => x.Wish, wish);
-                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
-                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
-                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
-                x.Add(x => x.ShowPrivateAction, showPrivateAction);
-                x.Add(x => x.IsAuthenticated, IsAuthenticated);
-            }, Options(ModalSize.Large));
-        }
+            x.Add(x => x.tmdb_id, tmdbId);
+            x.Add(x => x.type, type);
+            x.Add(x => x.Watched, watched);
+            x.Add(x => x.Watching, watching);
+            x.Add(x => x.Wish, wish);
+            x.Add(x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }));
+            x.Add(x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }));
+            x.Add(x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }));
+            x.Add(x => x.ShowPrivateAction, showPrivateAction);
+            x.Add(x => x.IsAuthenticated, isAuthenticated);
+        }, Options(ModalSize.Large));
+    }
 
-        public static async Task MySuggestionsPopup(this IModalService service, SD.Shared.Models.MySuggestions? MySuggestions,
-            EventCallback<SD.Shared.Models.MySuggestions>? MySuggestionsChanged)
+    public static async Task MySuggestionsPopup(this IModalService service, MySuggestions? mySuggestions,
+        EventCallback<MySuggestions>? mySuggestionsChanged)
+    {
+        await service.Show<MySuggestionsPopup>(null, x =>
         {
-            await service.Show<MySuggestionsPopup>(null, x =>
-            {
-                x.Add(x => x.MySuggestions, MySuggestions);
-                x.Add(x => x.MySuggestionsChanged, MySuggestionsChanged);
-            }, Options(ModalSize.Default));
-        }
+            x.Add(x => x.MySuggestions, mySuggestions);
+            x.Add(x => x.MySuggestionsChanged, mySuggestionsChanged);
+        }, Options(ModalSize.Default));
+    }
 
-        public static async Task MyWatchingListPopup(this IModalService service, RenderControlCore<WatchingList?>? Core, MediaType MediaType,
-            WatchedList? watched, WatchingList? watching, WishList? wish, bool showPrivateAction, bool IsAuthenticated, string? UserId)
+    public static async Task MyWatchingListPopup(this IModalService service, RenderControlCore<WatchingList?>? core,
+        MediaType mediaType,
+        WatchedList? watched, WatchingList? watching, WishList? wish, bool showPrivateAction, bool isAuthenticated,
+        string? userId)
+    {
+        await service.Show<MyWatchingListPopup>(null, x =>
         {
-            await service.Show<MyWatchingListPopup>(null, x =>
-            {
-                x.Add(x => x.Core, Core);
-                x.Add(x => x.MediaType, MediaType);
-                x.Add(x => x.Watched, watched);
-                x.Add(x => x.Watching, watching);
-                x.Add(x => x.Wish, wish);
-                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
-                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
-                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
-                x.Add(x => x.ShowPrivateAction, showPrivateAction);
-                x.Add(x => x.IsAuthenticated, IsAuthenticated);
-                x.Add(x => x.UserId, UserId);
-            }, Options(ModalSize.ExtraLarge));
-        }
+            x.Add(x => x.Core, core);
+            x.Add(x => x.MediaType, mediaType);
+            x.Add(x => x.Watched, watched);
+            x.Add(x => x.Watching, watching);
+            x.Add(x => x.Wish, wish);
+            x.Add(x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }));
+            x.Add(x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }));
+            x.Add(x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }));
+            x.Add(x => x.ShowPrivateAction, showPrivateAction);
+            x.Add(x => x.IsAuthenticated, isAuthenticated);
+            x.Add(x => x.UserId, userId);
+        }, Options(ModalSize.ExtraLarge));
+    }
 
-        public static async Task MyWishListPopup(this IModalService service, RenderControlCore<WishList?>? Core,
-            WatchedList? watched, WatchingList? watching, WishList? wish, MediaType type, bool showPrivateAction, bool IsAuthenticated, string? UserId)
+    public static async Task MyWishListPopup(this IModalService service, RenderControlCore<WishList?>? core,
+        WatchedList? watched, WatchingList? watching, WishList? wish, MediaType type, bool showPrivateAction,
+        bool isAuthenticated, string? userId)
+    {
+        await service.Show<MyWishListPopup>(null, x =>
         {
-            await service.Show<MyWishListPopup>(null, x =>
-            {
-                x.Add(x => x.Core, Core);
-                x.Add(x => x.MediaType, type);
-                x.Add(x => x.Watched, watched);
-                x.Add(x => x.Watching, watching);
-                x.Add(x => x.Wish, wish);
-                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
-                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
-                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
-                x.Add(x => x.ShowPrivateAction, showPrivateAction);
-                x.Add(x => x.IsAuthenticated, IsAuthenticated);
-                x.Add(x => x.UserId, UserId);
-            }, Options(ModalSize.ExtraLarge));
-        }
+            x.Add(x => x.Core, core);
+            x.Add(x => x.MediaType, type);
+            x.Add(x => x.Watched, watched);
+            x.Add(x => x.Watching, watching);
+            x.Add(x => x.Wish, wish);
+            x.Add(x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }));
+            x.Add(x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }));
+            x.Add(x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }));
+            x.Add(x => x.ShowPrivateAction, showPrivateAction);
+            x.Add(x => x.IsAuthenticated, isAuthenticated);
+            x.Add(x => x.UserId, userId);
+        }, Options(ModalSize.ExtraLarge));
+    }
 
-        public static async Task OpenPopup<TComponent>(this IModalService service, Action<ModalProviderParameterBuilder<TComponent>> parameters, ModalSize size)
-            where TComponent : IComponent
+    public static async Task OpenPopup<TComponent>(this IModalService service,
+        Action<ModalProviderParameterBuilder<TComponent>> parameters, ModalSize size)
+        where TComponent : IComponent
+    {
+        await service.Show(null, parameters, Options(size));
+    }
+
+    public static async Task ProviderPopup(this IModalService service, ProviderModel? provider, WatchedList? watched,
+        WatchingList? watching, WishList? wish,
+        bool showPrivateAction, string? watchRegion, string? providerId, bool isAuthenticated)
+    {
+        await service.Show<ProviderPopup>(null, x =>
         {
-            await service.Show(null, parameters, Options(size));
-        }
+            x.Add(x => x.provider, provider);
+            x.Add(x => x.Watched, watched);
+            x.Add(x => x.Watching, watching);
+            x.Add(x => x.Wish, wish);
+            x.Add(x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }));
+            x.Add(x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }));
+            x.Add(x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }));
+            x.Add(x => x.ShowPrivateAction, showPrivateAction);
+            x.Add(x => x.WatchRegion, watchRegion);
+            x.Add(x => x.ProviderId, providerId);
+            x.Add(x => x.IsAuthenticated, isAuthenticated);
+        }, Options(ModalSize.ExtraLarge));
+    }
 
-        public static async Task ProviderPopup(this IModalService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish,
-            bool showPrivateAction, string? WatchRegion, string? ProviderId, bool IsAuthenticated)
+    public static async Task SeasonPopup(this IModalService service, string? showTitle, string? showSeasonName,
+        string? tmdbId, int? seasonNumber, bool isAuthenticated)
+    {
+        await service.Show<SeasonPopup>(null, x =>
         {
-            await service.Show<ProviderPopup>(null, x =>
-            {
-                x.Add(x => x.provider, provider);
-                x.Add(x => x.Watched, watched);
-                x.Add(x => x.Watching, watching);
-                x.Add(x => x.Wish, wish);
-                x.Add(x => x.WatchedChanged, Factory.Create(new(), (WatchedList? list) => { watched = list; }));
-                x.Add(x => x.WatchingChanged, Factory.Create(new(), (WatchingList? list) => { watching = list; }));
-                x.Add(x => x.WishChanged, Factory.Create(new(), (WishList? list) => { wish = list; }));
-                x.Add(x => x.ShowPrivateAction, showPrivateAction);
-                x.Add(x => x.WatchRegion, WatchRegion);
-                x.Add(x => x.ProviderId, ProviderId);
-                x.Add(x => x.IsAuthenticated, IsAuthenticated);
-            }, Options(ModalSize.ExtraLarge));
-        }
+            x.Add(x => x.ShowTitle, showTitle);
+            x.Add(x => x.ShowSeasonName, showSeasonName);
+            x.Add(x => x.tmdb_id, tmdbId);
+            x.Add(x => x.season_number, seasonNumber);
+            x.Add(x => x.IsAuthenticated, isAuthenticated);
+        }, Options(ModalSize.ExtraLarge));
+    }
 
-        public static async Task SeasonPopup(this IModalService service, string? ShowTitle, string? ShowSeasonName, string? tmdb_id, int? season_number, bool IsAuthenticated)
+    public static async Task SelectItemsCollection(this IModalService service, List<Collection> items,
+        HashSet<string> selectedItems, EventCallback<HashSet<string>> itemsChanged)
+    {
+        await service.Show<SelectItemsCollection>(null, x =>
         {
-            await service.Show<SeasonPopup>(null, x =>
-            {
-                x.Add(x => x.ShowTitle, ShowTitle);
-                x.Add(x => x.ShowSeasonName, ShowSeasonName);
-                x.Add(x => x.tmdb_id, tmdb_id);
-                x.Add(x => x.season_number, season_number);
-                x.Add(x => x.IsAuthenticated, IsAuthenticated);
-            }, Options(ModalSize.ExtraLarge));
-        }
+            x.Add(x => x.ItemsCollection, items);
+            x.Add(x => x.SelectedItems, selectedItems);
+            x.Add(x => x.SelectedItemsChanged, itemsChanged);
+        }, Options(ModalSize.Default));
+    }
 
-        public static async Task SelectItemsCollection(this IModalService service, List<Collection> Items, HashSet<string> SelectedItems, EventCallback<HashSet<string>> ItemsChanged)
-        {
-            await service.Show<SelectItemsCollection>(null, x =>
-            {
-                x.Add(x => x.ItemsCollection, Items);
-                x.Add(x => x.SelectedItems, SelectedItems);
-                x.Add(x => x.SelectedItemsChanged, ItemsChanged);
-            }, Options(ModalSize.Default));
-        }
+    public static async Task SettingsPopup(this IModalService service)
+    {
+        await service.Show<SettingsPopup>(null, x => { }, Options(ModalSize.Default));
+    }
 
-        public static async Task SettingsPopup(this IModalService service)
-        {
-            await service.Show<SettingsPopup>(null, x =>
-            {
-            }, Options(ModalSize.Default));
-        }
+    public static async Task SubscriptionPopup(this IModalService service, bool isAuthenticated)
+    {
+        await service.Show<SubscriptionPopup>(null, x => { x.Add(x => x.IsAuthenticated, isAuthenticated); },
+            Options(ModalSize.Large));
+    }
 
-        public static async Task SubscriptionPopup(this IModalService service, bool IsAuthenticated)
-        {
-            await service.Show<SubscriptionPopup>(null, x =>
-            {
-                x.Add(x => x.IsAuthenticated, IsAuthenticated);
-            }, Options(ModalSize.Large));
-        }
-
-        private static ModalInstanceOptions Options(ModalSize size) => new()
+    private static ModalInstanceOptions Options(ModalSize size)
+    {
+        return new ModalInstanceOptions
         {
             UseModalStructure = false,
             Centered = true,

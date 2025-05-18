@@ -1,17 +1,18 @@
-﻿@using SD.Shared.Models.List.Tmdb;
-@using SD.WEB.Modules.Suggestions.Core;
-
+﻿@using SD.Shared.Models.List.Tmdb
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Resources
+@using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<SeasonPopup>
 @inject TmdbApi TmdbApi
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@ShowTitle (@ShowSeasonName)</ModalTitle>
-    <CloseButton />
+    <CloseButton/>
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <RenderControl Core="Core" Model="Season" ExpressionEmpty="@((TmdbSeason? obj)=> obj == null || obj.episodes.Empty())">
+    <RenderControl Core="Core" Model="Season" ExpressionEmpty="@((TmdbSeason? obj) => obj == null || obj.episodes.Empty())">
         <ListGroup Flush>
-            @foreach (var item in Season?.episodes ?? new())
+            @foreach (var item in Season?.episodes ?? new List<Episode>())
             {
                 <ListGroupItem Padding="Padding.Is2">
                     <Row VerticalGutter="8" HorizontalGutter="8">
@@ -22,7 +23,7 @@
                             }
                             else
                             {
-                                <CardImage Source="@(TmdbOptions.SmallPosterPath +  item.still_path)" Alt="@item.name" onclick="animationShake('.alertLoginNeeded')"></CardImage>
+                                <CardImage Source="@(TmdbOptions.SmallPosterPath + item.still_path)" Alt="@item.name" onclick="animationShake('.alertLoginNeeded')"></CardImage>
                             }
                         </Column>
                         <Column>
@@ -38,18 +39,18 @@
 <ModalFooter>
     <Alert Color="Color.Info" Margin="Margin.Is0" Visible="true" Width="Width.Is100" Class="alertLoginNeeded">
         <AlertDescription>
-            @Resources.Translations.PlatformForManaging
+            @Translations.PlatformForManaging
         </AlertDescription>
     </Alert>
 </ModalFooter>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small" Margin="Margin.Is0">
-        @WEB.Resources.Button.Close
+        @Button.Close
     </Button>
 </ModalFooter>
 
 @code {
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public string? ShowTitle { get; set; }
     [Parameter] public string? ShowSeasonName { get; set; }
@@ -61,11 +62,11 @@
 
     protected override async Task LoadDataRender()
     {
-        var parameters = new Dictionary<string, string>()
-            {
-                { "api_key", TmdbOptions.ApiKey },
-                { "language", AppStateStatic.Language.GetName(false) ?? "en-US" }
-            };
+        var parameters = new Dictionary<string, string>
+        {
+            { "api_key", TmdbOptions.ApiKey },
+            { "language", AppStateStatic.Language.GetName(false) ?? "en-US" }
+        };
 
         Core?.LoadingStarted?.Invoke();
         Season = await TmdbApi.GetSeason(tmdb_id, season_number, parameters);
@@ -76,4 +77,5 @@
     {
         await ModalService.Hide();
     }
+
 }

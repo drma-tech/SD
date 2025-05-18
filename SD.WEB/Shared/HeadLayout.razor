@@ -1,5 +1,7 @@
-﻿@using SD.WEB.Modules.Auth.Core
+﻿@using SD.WEB.Modules.Auth
+@using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Subscription.Core
+@using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<HeadLayout>
 
 @inject IJSRuntime JsRuntime
@@ -9,30 +11,30 @@
 <Bar Mode="BarMode.Horizontal" Background="Background.Secondary" ThemeContrast="ThemeContrast.Dark" Padding="Padding.Is2">
     <Container Fluid="true" Padding="Padding.Is0.OnX">
         <BarBrand Display="Display.None.Block.OnDesktop" Padding="Padding.Is0" Margin="Margin.Is4.FromEnd">
-            <Link To="/" Match="Match.All" Title="@Resources.SeoTranslations.AppName" TextDecoration="TextDecoration.None" TextColor="TextColor.White">
-                @Resources.SeoTranslations.AppName
+            <Link To="/" Match="Match.All" Title="@SeoTranslations.AppName" TextDecoration="TextDecoration.None" TextColor="TextColor.White">
+                @SeoTranslations.AppName
             </Link>
         </BarBrand>
         <BarMenu Style="flex-basis: unset !important;" Class="d-max-768-block d-min-768-contents">
             <BarStart Style="flex-flow: row;" Display="Display.None.Flex.Row.OnWidescreen">
                 <BarItem Margin="Margin.Is2.FromEnd">
-                    <BarLink To="/" CustomMatch="@IsHomeActive" Title="@WEB.Resources.Menu.Home">
-                        <BarIcon IconName="FontAwesomeIcons.Home" /> @WEB.Resources.Menu.Home
+                    <BarLink To="/" CustomMatch="@IsHomeActive" Title="@Menu.Home">
+                        <BarIcon IconName="FontAwesomeIcons.Home"/> @Menu.Home
                     </BarLink>
                 </BarItem>
                 <BarItem Margin="Margin.Is2.FromEnd">
-                    <BarLink To="/profile" Match="Match.Prefix" Title="@WEB.Resources.Menu.Profile">
-                        <BarIcon IconName="FontAwesomeIcons.UserCircle" /> @WEB.Resources.Menu.Profile
+                    <BarLink To="/profile" Match="Match.Prefix" Title="@Menu.Profile">
+                        <BarIcon IconName="FontAwesomeIcons.UserCircle"/> @Menu.Profile
                     </BarLink>
                 </BarItem>
                 <BarItem Margin="Margin.Is2.FromEnd">
-                    <BarLink To="/providers" Match="Match.Prefix" Title="@WEB.Resources.Menu.Platforms">
-                        <BarIcon IconName="FontAwesomeIcons.PlayCircle" /> @WEB.Resources.Menu.Platforms
+                    <BarLink To="/providers" Match="Match.Prefix" Title="@Menu.Platforms">
+                        <BarIcon IconName="FontAwesomeIcons.PlayCircle"/> @Menu.Platforms
                     </BarLink>
                 </BarItem>
                 <BarItem Margin="Margin.Is2.FromEnd">
-                    <BarLink To="/suggestions" Match="Match.Prefix" Title="@WEB.Resources.Menu.Collections">
-                        <BarIcon IconName="FontAwesomeIcons.LayerGroup" /> @WEB.Resources.Menu.Collections
+                    <BarLink To="/suggestions" Match="Match.Prefix" Title="@Menu.Collections">
+                        <BarIcon IconName="FontAwesomeIcons.LayerGroup"/> @Menu.Collections
                     </BarLink>
                 </BarItem>
             </BarStart>
@@ -42,7 +44,7 @@
                 </Button>
                 <Button Color="Color.Warning" Clicked="OpenSubscription" Margin="Margin.Is2.FromEnd" Display="Display.None.Block.OnTablet">
                     <Blazorise.Icon Name="FontAwesomeIcons.Gem"></Blazorise.Icon>
-                    @Modules.Profile.Resources.Translations.Subscription
+                    @Translations.Subscription
                 </Button>
                 <AuthorizeView>
                     <Authorized>
@@ -52,20 +54,20 @@
                     </Authorized>
                 </AuthorizeView>
                 <Button Color="Color.Dark" Clicked="OpenConfigurations" Margin="Margin.Is1.FromEnd">
-                    <Blazorise.Icon Name="FontAwesomeIcons.Globe" />
+                    <Blazorise.Icon Name="FontAwesomeIcons.Globe"/>
                 </Button>
                 <Button Color="Color.Dark" Clicked="ChangeTheme" Margin="Margin.Is1.FromEnd" Display="Display.None">
-                    <Blazorise.Icon Name="@(Theme == "light" ? FontAwesomeIcons.Moon : FontAwesomeIcons.Sun)" />
+                    <Blazorise.Icon Name="@(Theme == "light" ? FontAwesomeIcons.Moon : FontAwesomeIcons.Sun)"/>
                 </Button>
                 <AuthorizeView>
                     <Authorized>
                         <Button Color="Color.Danger" Clicked="Logout" title="Logout">
-                            @WEB.Resources.Button.Logout
+                            @Button.Logout
                         </Button>
                     </Authorized>
                     <NotAuthorized>
                         <Button Color="Color.Primary" Type="ButtonType.Link" To="/login-providers" title="Login">
-                            @WEB.Resources.Button.Login
+                            @Button.Login
                         </Button>
                     </NotAuthorized>
                 </AuthorizeView>
@@ -75,8 +77,8 @@
 </Bar>
 
 @code {
-    [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }
-    [Parameter] public bool IsAuthenticated { get; set; } = false;
+    [SupplyParameterFromQuery] [Parameter] public string? _ptxn { get; set; }
+    [Parameter] public bool IsAuthenticated { get; set; }
 
     public string? Theme { get; set; }
 
@@ -96,7 +98,7 @@
 
     private void Logout()
     {
-        Navigation.NavigateTo("/.auth/logout", forceLoad: true);
+        Navigation.NavigateTo("/.auth/logout", true);
     }
 
     private async Task OpenConfigurations()
@@ -112,7 +114,7 @@
 
     private async Task MyAccount()
     {
-        await ModalService.OpenPopup<Modules.Auth.ProfilePopup>(x => { x.Add(x => x.IsAuthenticated, IsAuthenticated); }, ModalSize.Large);
+        await ModalService.OpenPopup<ProfilePopup>(x => { x.Add(x => x.IsAuthenticated, IsAuthenticated); }, ModalSize.Large);
     }
 
     private async Task OpenSubscription()
@@ -133,4 +135,5 @@
         var uri = new Uri(currentUri);
         return string.Equals(uri.AbsolutePath, "/", StringComparison.OrdinalIgnoreCase);
     }
+
 }

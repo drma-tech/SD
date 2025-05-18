@@ -1,3 +1,4 @@
+using System.Globalization;
 using AzureStaticWebApps.Blazor.Authentication;
 using Blazorise;
 using Blazorise.Bootstrap5;
@@ -14,7 +15,6 @@ using SD.WEB.Modules.Profile.Core;
 using SD.WEB.Modules.Provider.Core;
 using SD.WEB.Modules.Subscription.Core;
 using SD.WEB.Modules.Suggestions.Core;
-using System.Globalization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -43,7 +43,10 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddPWAUpdater();
 
     collection.AddHttpClient("RetryHttpClient", c => { c.BaseAddress = new Uri(baseAddress); })
-        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
+        .AddPolicyHandler(request =>
+            request.Method == HttpMethod.Get
+                ? GetRetryPolicy()
+                : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddStaticWebAppsAuthentication();
     collection.AddCascadingAuthenticationState();
@@ -83,10 +86,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
     collection.AddScoped<PaddleConfigurationApi>();
     collection.AddScoped<PaddleSubscriptionApi>();
 
-    collection.AddLogging(logging =>
-    {
-        logging.AddProvider(new CosmosLoggerProvider());
-    });
+    collection.AddLogging(logging => { logging.AddProvider(new CosmosLoggerProvider()); });
 }
 
 static async Task ConfigureCulture(WebAssemblyHost? app)
@@ -98,8 +98,8 @@ static async Task ConfigureCulture(WebAssemblyHost? app)
 
         if (language.Empty())
         {
-            var JsRuntime = app.Services.GetRequiredService<IJSRuntime>();
-            language = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "language");
+            var jsRuntime = app.Services.GetRequiredService<IJSRuntime>();
+            language = await jsRuntime.InvokeAsync<string>("GetLocalStorage", "language");
         }
 
         if (language.NotEmpty())

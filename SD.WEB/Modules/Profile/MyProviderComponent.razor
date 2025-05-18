@@ -1,6 +1,7 @@
-﻿@using SD.WEB.Modules.Profile.Core;
+﻿@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
-@using SD.WEB.Modules.Provider.Core;
+@using SD.WEB.Modules.Provider.Core
+@using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<MyProviderComponent>
 
 @inject MyProvidersApi MyProvidersApi
@@ -11,16 +12,16 @@
     @if (ProvidersChanged)
     {
         <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="UpdateProviders"
-                title="@WEB.Resources.Button.Update">
-            @WEB.Resources.Button.Update
+                title="@Button.Update">
+            @Button.Update
         </Button>
     }
 </HeaderComponent>
 
-<RenderControl Core="Core" Model="myProviders" ExpressionEmpty="((MyProviders? obj)=> obj == null || obj.Items.Empty())" PrivateContent="true">
-     <div id="@SwiperId" class="swiper mb-2">
+<RenderControl Core="Core" Model="myProviders" ExpressionEmpty="(MyProviders? obj) => obj == null || obj.Items.Empty()" PrivateContent="true">
+    <div id="@SwiperId" class="swiper mb-2">
         <div class="swiper-wrapper">
-            @foreach (var item in myProviders?.Items.Take(SubscriptionHelper.GetRestrictions(AccountProduct.Premium).MySuggestions) ?? new List<MyProvidersItem>())
+            @foreach (var item in myProviders?.Items.Take(AccountProduct.Premium.GetRestrictions().MySuggestions) ?? new List<MyProvidersItem>())
             {
                 <div class="swiper-slide">
                     <Card Style="position: relative;">
@@ -35,7 +36,8 @@
                             </Badge>
                         }
                         <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                   onclick="@(()=>ShowProviderPopup(item))" Style="cursor: pointer;"></CardImage>
+                                   onclick="@(() => ShowProviderPopup(item))" Style="cursor: pointer;">
+                        </CardImage>
                     </Card>
                 </div>
             }
@@ -46,22 +48,27 @@
 </RenderControl>
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] [EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter] [EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter] [EditorRequired] public WishList? WishList { get; set; }
+    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
 
     public RenderControlCore<MyProviders?> Core { get; set; } = new();
     private AllProviders? allProviders { get; set; }
     private MyProviders? myProviders { get; set; }
-    private bool ProvidersChanged { get; set; } = false;
+    private bool ProvidersChanged { get; set; }
 
     private readonly string SwiperId = $"swiper-{Guid.NewGuid()}";
 
     protected override void OnInitialized()
     {
-        MyProvidersApi.DataChanged += (MyProviders? model) => { myProviders = model; Core?.LoadingFinished?.Invoke(model); StateHasChanged(); };
+        MyProvidersApi.DataChanged += model =>
+        {
+            myProviders = model;
+            Core?.LoadingFinished?.Invoke(model);
+            StateHasChanged();
+        };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -150,4 +157,5 @@
         myProviders = await MyProvidersApi.Update(myProviders, null, false);
         ProvidersChanged = false;
     }
+
 }

@@ -1,17 +1,18 @@
 ﻿@page "/login-providers"
+@using SD.WEB.Modules.Auth.Resources
 @inherits PageCore<LoginProviders>
-<SeoHeader Title="@Resources.Translations.LoginProvidersTitle" Url="/login-providers" ShowH1="false"></SeoHeader>
+<SeoHeader Title="@Translations.LoginProvidersTitle" Url="/login-providers" ShowH1="false"></SeoHeader>
 
 <Container>
-    <Heading Size="HeadingSize.Is4" TextColor="TextColor.Success" TextAlignment="TextAlignment.Center">Welcome to @WEB.Resources.SeoTranslations.AppName</Heading>
+    <Heading Size="HeadingSize.Is4" TextColor="TextColor.Success" TextAlignment="TextAlignment.Center">Welcome to @SeoTranslations.AppName</Heading>
     <Divider></Divider>
     <Row>
         <Column ColumnSize="ColumnSize.Is12.OnMobile.Is6.OnTablet" TextAlignment="TextAlignment.Center">
             <Alert Background="Background.Dark" Visible="true" Padding="Padding.Is2" Margin="Margin.Is3.FromBottom">
                 <Paragraph TextColor="TextColor.White50">
-                    @WEB.Resources.SeoTranslations.Description
+                    @SeoTranslations.Description
                 </Paragraph>
-                <Image Source="icon/icon-full.png" Width="Width.Is50.OnMobile.Is66.OnTablet" />
+                <Image Source="icon/icon-full.png" Width="Width.Is50.OnMobile.Is66.OnTablet"/>
             </Alert>
         </Column>
         <Column ColumnSize="ColumnSize.Is12.OnMobile.Is6.OnTablet">
@@ -21,8 +22,11 @@
                     {
                         var link = provider.Key;
                         if (link == "microsoft") link = "aad";
-                        <a class="@($"button {provider.Key}")" href="@("/.auth/login/" + @link + "?post_login_redirect_uri=" + Navigation.BaseUri + "login-success")">
-                            <span><i class="fa-brands fa-@provider.Key" aria-hidden="true"></i></span> <p style="font-size: 16px;">@Resources.Translations.LoginWith @provider.Value</p>
+                        <a class="@($"button {provider.Key}")" href="@("/.auth/login/" + link + "?post_login_redirect_uri=" + Navigation.BaseUri + "login-success")">
+                            <span>
+                                <i class="fa-brands fa-@provider.Key" aria-hidden="true"></i>
+                            </span>
+                            <p style="font-size: 16px;">@Translations.LoginWith @provider.Value</p>
                         </a>
                     }
                 </div>
@@ -46,12 +50,14 @@
 </Container>
 
 @code {
-    private readonly Dictionary<string, string> providers = new Dictionary<string, string>
+
+    private readonly Dictionary<string, string> providers = new()
     {
         { "google", "Google" },
-        { "microsoft", "Microsoft"},
+        { "microsoft", "Microsoft" }
         // { "facebook", "Facebook" },
         // { "apple", "Apple" },
         // { "twitter", "Twitter" },
     };
+
 }

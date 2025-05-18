@@ -1,33 +1,33 @@
-﻿@using System.Linq.Expressions;
-@typeparam TValue
+﻿@typeparam TValue
 @typeparam TEnum where TEnum : struct, Enum, IConvertible
 
 <ModalHeader>
     <ModalTitle>@Title</ModalTitle>
-        <CloseButton />
-    </ModalHeader>
-    <ModalBody MaxHeight="70">
-        @if (HasGroup)
+    <CloseButton/>
+</ModalHeader>
+<ModalBody MaxHeight="70">
+    @if (HasGroup)
     {
         var previousGroup = "";
         @foreach (var group in EnumHelper.GetList<TEnum>().DistinctBy(d => d.Group).Select(s => s.Group))
         {
             @foreach (var item in EnumHelper.GetList<TEnum>().Where(w => w.Group == group).OrderBy(Order))
             {
-                if (!string.IsNullOrEmpty(@item.Group) && previousGroup != @item.Group)
+                if (!string.IsNullOrEmpty(item.Group) && previousGroup != item.Group)
                 {
                     <Alert Visible="true" Color="Color.Info">
                         <AlertMessage>@item.Group</AlertMessage>
-                        </Alert>
+                    </Alert>
                 }
+
                 <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
-                    <Check TValue="bool" Checked="Checked(item)" CheckedChanged="@(()=>CheckedChanged(item, !Checked(item)))" Size="Size.Medium">@item.Name</Check>
-                        @if (!string.IsNullOrEmpty(@item.Description))
+                    <Check TValue="bool" Checked="Checked(item)" CheckedChanged="@(() => CheckedChanged(item, !Checked(item)))" Size="Size.Medium">@item.Name</Check>
+                    @if (!string.IsNullOrEmpty(item.Description))
                     {
                         <FieldHelp>@item.Description</FieldHelp>
                     }
                 </Paragraph>
-                previousGroup = @item.Group;
+                previousGroup = item.Group;
             }
         }
     }
@@ -36,8 +36,8 @@
         @foreach (var item in EnumHelper.GetList<TEnum>().OrderBy(Order))
         {
             <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
-                <Check TValue="bool" Checked="Checked(item)" CheckedChanged="@(()=>CheckedChanged(item, !Checked(item)))" Size="Size.Medium">@item.Name</Check>
-                    @if (!string.IsNullOrEmpty(@item.Description))
+                <Check TValue="bool" Checked="Checked(item)" CheckedChanged="@(() => CheckedChanged(item, !Checked(item)))" Size="Size.Medium">@item.Name</Check>
+                @if (!string.IsNullOrEmpty(item.Description))
                 {
                     <FieldHelp>@item.Description</FieldHelp>
                 }
@@ -46,7 +46,7 @@
     }
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@(async()=>{await ModalService.Hide();})">
+    <Button Color="Color.Secondary" Clicked="@(async () => { await ModalService.Hide(); })">
         Cancelar
     </Button>
     <Button Color="Color.Primary" Clicked="@Confirmar">
@@ -76,7 +76,7 @@
         if (value) //add
         {
             if (SelectedValues == null) SelectedValues = Array.Empty<TEnum>();
-            SelectedValues = SelectedValues.ToArray().Concat(new TEnum[] { (TEnum)item.Value }).ToList().AsReadOnly();
+            SelectedValues = SelectedValues.ToArray().Concat(new[] { (TEnum)item.Value }).ToList().AsReadOnly();
         }
         else //remove
         {
@@ -92,4 +92,5 @@
 
         await ModalService.Hide();
     }
+
 }

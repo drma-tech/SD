@@ -1,6 +1,8 @@
-﻿@using SD.Shared.Models.List.Tmdb;
-@using SD.WEB.Modules.Provider.Core;
-@using SD.WEB.Modules.Suggestions.Core;
+﻿@using System.Globalization
+@using System.Text.Json
+@using SD.Shared.Models.List.Tmdb
+@using SD.WEB.Modules.Provider.Core
+@using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Resources
 @inherits ComponentCore<StreamingComponent>
 
@@ -8,7 +10,7 @@
 @inject TmdbApi TmdbApi
 @inject IJSRuntime JS
 
-<RenderControl Core="Core" Model="Providers" ExpressionEmpty="@((MediaProviders? obj)=>obj==null)">
+<RenderControl Core="Core" Model="Providers" ExpressionEmpty="@((MediaProviders? obj) => obj == null)">
     @{
         var hasProvider = false;
 
@@ -16,7 +18,7 @@
         {
             hasProvider = true;
             <Row HorizontalGutter="4" VerticalGutter="4">
-                <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelFree" Background="Background.Secondary" Style="opacity: .75" />
+                <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelFree" Background="Background.Secondary" Style="opacity: .75"/>
                 @foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
                 {
                     @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
@@ -39,10 +41,11 @@
                 }
             </Row>
         }
+
         if (Providers?.GetAdsListProviders(AppStateStatic.Region).Any() ?? false)
         {
             hasProvider = true;
-            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelAds" Background="Background.Secondary" Style="opacity: .75" />
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelAds" Background="Background.Secondary" Style="opacity: .75"/>
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
                 {
@@ -66,10 +69,11 @@
                 }
             </Row>
         }
+
         if (Providers?.GetFlatRateListProviders(AppStateStatic.Region).Any() ?? false)
         {
             hasProvider = true;
-            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelFlatRate" Background="Background.Secondary" Style="opacity: .75" />
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelFlatRate" Background="Background.Secondary" Style="opacity: .75"/>
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
                 {
@@ -93,10 +97,11 @@
                 }
             </Row>
         }
+
         if (Providers?.GetFlatRateBuyListProviders(AppStateStatic.Region).Any() ?? false)
         {
             hasProvider = true;
-            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelFlatRateBuy" Background="Background.Secondary" Style="opacity: .75" />
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelFlatRateBuy" Background="Background.Secondary" Style="opacity: .75"/>
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
                 {
@@ -120,10 +125,11 @@
                 }
             </Row>
         }
+
         if (Providers?.GetRentListProviders(AppStateStatic.Region).Any() ?? false)
         {
             hasProvider = true;
-            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelRent" Background="Background.Secondary" Style="opacity: .75" />
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelRent" Background="Background.Secondary" Style="opacity: .75"/>
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
                 {
@@ -147,10 +153,11 @@
                 }
             </Row>
         }
+
         if (Providers?.GetBuyListProviders(AppStateStatic.Region).Any() ?? false)
         {
             hasProvider = true;
-            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelBuy" Background="Background.Secondary" Style="opacity: .75" />
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModelBuy" Background="Background.Secondary" Style="opacity: .75"/>
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
                 {
@@ -189,8 +196,8 @@
                     </AlertMessage>
                     <AlertDescription>
                         <Paragraph>Please contact support and provide the following information:</Paragraph>
-                        <Paragraph>CurrentRegion: @System.Globalization.RegionInfo.CurrentRegion.Name</Paragraph>
-                        <Paragraph>CurrentCulture: @System.Globalization.CultureInfo.CurrentCulture.Name</Paragraph>
+                        <Paragraph>CurrentRegion: @RegionInfo.CurrentRegion.Name</Paragraph>
+                        <Paragraph>CurrentCulture: @CultureInfo.CurrentCulture.Name</Paragraph>
                     </AlertDescription>
                 </Alert>
             }
@@ -198,8 +205,10 @@
 
         @if (!string.IsNullOrEmpty(homepage))
         {
-            <Divider DividerType="DividerType.TextContent" Text="@Translations.RelatedLinks" Background="Background.Secondary" Style="opacity: .75" />
-            <a href="@homepage" target="_blank" rel="nofollow" style="float: left;">@(new Uri(homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon></a>
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.RelatedLinks" Background="Background.Secondary" Style="opacity: .75"/>
+            <a href="@homepage" target="_blank" rel="nofollow" style="float: left;">
+                @(new Uri(homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon>
+            </a>
         }
 
         // <AuthorizeView Roles="administrator">
@@ -318,7 +327,8 @@
 
         if (AllProviders != null)
         {
-            await JS.InvokeVoidAsync("window.localStorage.setItem", new object[] { "AllProviders", System.Text.Json.JsonSerializer.Serialize(AllProviders) });
+            await JS.InvokeVoidAsync("window.localStorage.setItem", "AllProviders", JsonSerializer.Serialize(AllProviders));
         }
     }
+
 }

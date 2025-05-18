@@ -1,11 +1,8 @@
 ﻿@page "/shared/watching/{type}/{token}"
 <SeoHeader Title="@($"Watching ({Email}) | {(type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")"></SeoHeader>
 
-@using SD.Shared.Core.Models
-@using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Profile.Components
-@using SD.WEB.Modules.Profile.Core;
-
+@using SD.WEB.Modules.Profile.Core
 @inherits PageCore<SharedWatchingList>
 @inject WishListApi WishApi
 @inject WatchingListApi WatchingApi
@@ -15,13 +12,15 @@
 {
     <WatchingComponent Core="CoreWatching" MediaType="MediaType.movie" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
                        Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="@UserId"
-                       ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()" CustomTitle="@($"Watching ({Email}) | { MediaType.movie.GetName()}")"></WatchingComponent>
+                       ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()" CustomTitle="@($"Watching ({Email}) | {MediaType.movie.GetName()}")">
+    </WatchingComponent>
 }
 else
 {
     <WatchingComponent Core="CoreWatching" MediaType="MediaType.tv" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
                        Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="@UserId"
-                       ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()" CustomTitle="@($"Watching ({Email}) | { MediaType.tv.GetName()}")"></WatchingComponent>
+                       ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()" CustomTitle="@($"Watching ({Email}) | {MediaType.tv.GetName()}")">
+    </WatchingComponent>
 }
 
 @code {
@@ -46,4 +45,5 @@ else
     {
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null, token), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, null, token));
     }
+
 }

@@ -1,9 +1,9 @@
-﻿@inherits ComponentCore<ProviderPopup>
-@using SD.Shared.Models
+﻿@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Resources
-@using SD.WEB.Modules.Suggestions.Core
-@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Components
+@using SD.WEB.Modules.Suggestions.Core
+@using Button = SD.WEB.Resources.Button
+@inherits ComponentCore<ProviderPopup>
 
 @inject MyProvidersApi MyProvidersApi
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
@@ -13,14 +13,14 @@
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@provider?.name</ModalTitle>
-    <CloseButton />
+    <CloseButton/>
 </ModalHeader>
 <ModalBody MaxHeight="70">
     @if (provider == null)
     {
         <Alert Color="Color.Danger" Visible="true">
             <AlertMessage>
-                <Blazorise.Icon Name="FontAwesomeIcons.Trash"></Blazorise.Icon> @Resources.Translations.NotFound
+                <Blazorise.Icon Name="FontAwesomeIcons.Trash"></Blazorise.Icon> @Translations.NotFound
             </AlertMessage>
         </Alert>
     }
@@ -48,7 +48,7 @@
                             <Paragraph>
                                 @if (string.IsNullOrEmpty(provider?.link))
                                 {
-                                    <a href="@($"https://www.google.com/search?q=streaming+{provider?.name?.Replace("&","")}")" target="_blank" rel="nofollow" style="float: left;">search on google</a>
+                                    <a href="@($"https://www.google.com/search?q=streaming+{provider?.name?.Replace("&", "")}")" target="_blank" rel="nofollow" style="float: left;">search on google</a>
                                 }
                                 else
                                 {
@@ -59,17 +59,17 @@
                     </Row>
                 </TabPanel>
                 <TabPanel Name="Details" Class="mt-3">
-                    <Divider DividerType="DividerType.TextContent" Text="@Translations.MediaTypes" />
+                    <Divider DividerType="DividerType.TextContent" Text="@Translations.MediaTypes"/>
                     @foreach (var item in provider?.types ?? new List<MediaType>())
                     {
                         <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
                     }
-                    <Divider DividerType="DividerType.TextContent" Text="@Translations.Regions" />
+                    <Divider DividerType="DividerType.TextContent" Text="@Translations.Regions"/>
                     @foreach (var item in provider?.regions.OrderBy(o => o.GetName()).ToList() ?? new List<Region>())
                     {
                         <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
                     }
-                    <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModel" />
+                    <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModel"/>
                     @foreach (var item in provider?.models ?? new List<DeliveryModel>())
                     {
                         <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" title="@item.GetDescription()" Style="cursor: help;">
@@ -78,7 +78,7 @@
                     }
                     @if (provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
                     {
-                        <Divider DividerType="DividerType.TextContent" Text="@Translations.Plans" />
+                        <Divider DividerType="DividerType.TextContent" Text="@Translations.Plans"/>
                         @if (provider.plans.Any())
                         {
                             @foreach (var item in provider.plans)
@@ -94,11 +94,14 @@
                 </TabPanel>
                 <TabPanel Name="Catalog" Class="mt-3">
                     <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
-                               ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated"></MediaList>
+                               ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
+                    </MediaList>
                     <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
-                               ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated"></MediaList>
+                               ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
+                    </MediaList>
                     <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
-                               ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated"></MediaList>
+                               ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
+                    </MediaList>
                 </TabPanel>
             </Content>
         </Tabs>
@@ -108,22 +111,22 @@
     @if (myProviders?.Items.Any(a => a.id == ProviderId) ?? false)
     {
         <Button Color="Color.Danger" Clicked="Remove" Disabled="!IsAuthenticated" Size="Size.Small">
-            <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @WEB.Resources.Button.Remove
+            <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @Button.Remove
         </Button>
     }
     else
     {
         <Button Color="Color.Primary" Clicked="Add" Disabled="!IsAuthenticated" Size="Size.Small">
-            <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @WEB.Resources.Button.Add
+            <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @Button.Add
         </Button>
     }
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
-        @WEB.Resources.Button.Close
+        @Button.Close
     </Button>
 </ModalFooter>
 
 @code {
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public ProviderModel? provider { get; set; }
     [Parameter] public WatchedList? Watched { get; set; }
@@ -141,9 +144,24 @@
 
     protected override void OnInitialized()
     {
-        WatchedListApi.DataChanged += (WatchedList? model) => { Watched = model; WatchedChanged.InvokeAsync(model); StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { Watching = model; WatchingChanged.InvokeAsync(model); StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { Wish = model; WishChanged.InvokeAsync(model); StateHasChanged(); };
+        WatchedListApi.DataChanged += model =>
+        {
+            Watched = model;
+            WatchedChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            Watching = model;
+            WatchingChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            Wish = model;
+            WishChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
     }
 
     protected override async Task LoadDataRender()
@@ -157,16 +175,16 @@
         if (sort_by == null) throw new ArgumentNullException(nameof(sort_by));
         if (watch_region == null) throw new ArgumentNullException(nameof(watch_region));
 
-        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by }, { "watch_region", watch_region } };
+        return new Dictionary<string, string> { { "with_watch_providers", provider_id }, { "sort_by", sort_by }, { "watch_region", watch_region } };
     }
 
     private async Task Add()
     {
         try
         {
-            myProviders ??= new();
+            myProviders ??= new MyProviders();
 
-            var item = new MyProvidersItem() { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = AppStateStatic.Region };
+            var item = new MyProvidersItem { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = AppStateStatic.Region };
             var client = await PrincipalApi.Get(true);
             myProviders = await MyProvidersApi.Add(myProviders, item, client?.ClientePaddle);
 
@@ -182,7 +200,7 @@
     {
         try
         {
-            myProviders ??= new();
+            myProviders ??= new MyProviders();
 
             myProviders = await MyProvidersApi.Remove(myProviders.Items.First(f => f.id == ProviderId));
 
@@ -193,4 +211,5 @@
             ex.ProcessException(Toast, Logger);
         }
     }
+
 }

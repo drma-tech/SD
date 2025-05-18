@@ -1,16 +1,15 @@
 ﻿@page "/suggestions/movies-2025"
-<SeoHeader Title="Suggestions | Most Expected Movies of 2025" Keywords="@(new []{"Rotten Tomatoes"})" Url="/suggestions/movies-2025"></SeoHeader>
-@inherits PageCore<Movies2025>
-
+<SeoHeader Title="Suggestions | Most Expected Movies of 2025" Keywords="@(new[] { "Rotten Tomatoes" })" Url="/suggestions/movies-2025"></SeoHeader>
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
+@using SD.WEB.Modules.Suggestions.Core
+@inherits PageCore<Movies2025>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-@if (Settings != null && Settings.ShowAdSense)
+@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
@@ -21,10 +20,13 @@
 }
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2025" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaListFull>
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaListFull>
 
 @code {
     public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
+
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
@@ -33,11 +35,24 @@
     {
         await base.OnInitializedAsync();
 
-        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+        WatchedListApi.DataChanged += model =>
+        {
+            WatchedList = model;
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            WatchingList = model;
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            WishList = model;
+            StateHasChanged();
+        };
 
         Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
     protected override async Task LoadDataRender()
@@ -46,4 +61,5 @@
         WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
         WishList = await WishListApi.Get(IsAuthenticated, null);
     }
+
 }

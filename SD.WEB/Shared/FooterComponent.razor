@@ -1,11 +1,12 @@
-﻿<Container Fluid="true" Display="@(Support ? Display.Block.None.OnWidescreen : Display.None.Block.OnWidescreen)">
+﻿@using SD.WEB.Modules.Support.Resources
+<Container Fluid="true" Display="@(Support ? Display.Block.None.OnWidescreen : Display.None.Block.OnWidescreen)">
     <Row Margin="Margin.Is5.FromTop.Is3.FromBottom" Padding="Padding.Is3.FromTop" Border="Border.Secondary.OnTop">
         <Column ColumnSize="ColumnSize.Is12.Is4.OnTablet" Display="Display.Flex.Column" Gap="Gap.Is3" Margin="Margin.Is3.FromBottom.Is0.OnTablet">
             <Span TextWeight="TextWeight.Bold" TextColor="TextColor.Muted">
-                <Image Source="icon/icon-71.png" Height="Height.Px(27)"></Image> @Resources.SeoTranslations.AppName
+                <Image Source="icon/icon-71.png" Height="Height.Px(27)"></Image> @SeoTranslations.AppName
             </Span>
             <Paragraph TextColor="TextColor.Muted" TextSize="TextSize.Small" TextAlignment="TextAlignment.Justified">
-                @Resources.SeoTranslations.Description
+                @SeoTranslations.Description
             </Paragraph>
         </Column>
         <Column ColumnSize="ColumnSize.Is12.Is2.OnTablet" Display="Display.Flex.Column" Gap="Gap.Is3" Margin="Margin.Is3.FromBottom.Is0.OnTablet">
@@ -46,10 +47,10 @@
                 LEGAL
             </Span>
             <Blazorise.Link To="@("support/terms/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))" TextColor="TextColor.Muted" TextDecoration="TextDecoration.None">
-                @WEB.Modules.Support.Resources.Translations.LinkTerm
+                @Translations.LinkTerm
             </Blazorise.Link>
             <Blazorise.Link To="@("support/privacy/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))" TextColor="TextColor.Muted" TextDecoration="TextDecoration.None">
-                @WEB.Modules.Support.Resources.Translations.LinkPrivacy
+                @Translations.LinkPrivacy
             </Blazorise.Link>
             <Blazorise.Link To="support/credits" TextColor="TextColor.Muted" TextDecoration="TextDecoration.None">
                 Credits
@@ -59,5 +60,5 @@
 </Container>
 
 @code {
-    [Parameter] public bool Support { get; set; } = false;
+    [Parameter] public bool Support { get; set; }
 }

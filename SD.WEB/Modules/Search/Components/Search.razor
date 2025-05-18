@@ -1,8 +1,8 @@
 ﻿@page "/search/{SearchContent}"
-
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Components
-@using SD.WEB.Modules.Suggestions.Core;
+@using SD.WEB.Modules.Suggestions.Core
+@using Button = SD.WEB.Resources.Button
 @inherits PageCore<Search>
 
 @inject TmdbSearchApi TmdbSearch
@@ -14,19 +14,20 @@
 
 <Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
     <Column>
-        <TextEdit @bind-Text="@SearchContent" Placeholder="@GlobalTranslations.TypeSomething" Size="Size.Small" KeyPress="KeyPress" />
+        <TextEdit @bind-Text="@SearchContent" Placeholder="@GlobalTranslations.TypeSomething" Size="Size.Small" KeyPress="KeyPress"/>
     </Column>
     <Column ColumnSize="ColumnSize.IsAuto">
         <Button Color="Color.Primary" Block="true" Disabled="string.IsNullOrEmpty(SearchContent)" Size="Size.Small"
                 Clicked="@(() => Navigation.NavigateTo($"/search/{SearchContent}", true))">
-            @WEB.Resources.Button.Search
+            @Button.Search
         </Button>
     </Column>
 </Row>
 
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
     <MediaListFull MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false"
-                   Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaListFull>
+                   Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+    </MediaListFull>
 </RenderControl>
 
 @code {
@@ -37,14 +38,26 @@
     [Parameter] public string? SearchContent { get; set; }
 
     private HashSet<MediaDetail> Items { get; set; } = new();
-    private RenderControlCore<HashSet<MediaDetail>> Core { get; set; } = new();
-    private Dictionary<string, string> StringParameters => new Dictionary<string, string>() { { "query", SearchContent ?? "" } };
+    private RenderControlCore<HashSet<MediaDetail>> Core { get; } = new();
+    private Dictionary<string, string> StringParameters => new() { { "query", SearchContent ?? "" } };
 
     protected override void OnInitialized()
     {
-        WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; StateHasChanged(); };
-        WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; StateHasChanged(); };
-        WishApi.DataChanged += (WishList? model) => { Wish = model; StateHasChanged(); };
+        WatchedApi.DataChanged += model =>
+        {
+            Watched = model;
+            StateHasChanged();
+        };
+        WatchingApi.DataChanged += model =>
+        {
+            Watching = model;
+            StateHasChanged();
+        };
+        WishApi.DataChanged += model =>
+        {
+            Wish = model;
+            StateHasChanged();
+        };
     }
 
     protected override async Task LoadDataRender()
@@ -64,4 +77,5 @@
             Navigation.NavigateTo($"/search/{SearchContent}", true);
         }
     }
+
 }

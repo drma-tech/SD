@@ -1,42 +1,41 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using System.Text.Json.Serialization;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using SD.API.Repository.Core;
-using System.Text.Json.Serialization;
 
-namespace SD.API.Repository
+namespace SD.API.Repository;
+
+public class LogModel
 {
-    public class LogModel
+    public LogModel()
     {
-        public LogModel()
-        {
-            Id = Guid.NewGuid().ToString();
-        }
-
-        public string? Id { get; set; }
-        public string? Name { get; set; }
-        public string? State { get; set; }
-        public string? Message { get; set; }
-        public string? StackTrace { get; set; }
-        public DateTimeOffset DateTime { get; set; } = DateTimeOffset.Now;
-
-        [JsonInclude]
-        public int Ttl { get; init; }
+        Id = Guid.NewGuid().ToString();
     }
 
-    public class CosmosLogRepository
+    public string? Id { get; set; }
+    public string? Name { get; set; }
+    public string? State { get; set; }
+    public string? Message { get; set; }
+    public string? StackTrace { get; set; }
+    public DateTimeOffset DateTime { get; set; } = DateTimeOffset.Now;
+
+    [JsonInclude] public int Ttl { get; init; }
+}
+
+public class CosmosLogRepository
+{
+    public CosmosLogRepository(IConfiguration config)
     {
-        public Container Container { get; private set; }
+        var databaseId = config.GetValue<string>("CosmosDB:DatabaseId");
 
-        public CosmosLogRepository(IConfiguration config)
-        {
-            var databaseId = config.GetValue<string>("CosmosDB:DatabaseId");
+        Container = ApiStartup.CosmosClient.GetContainer(databaseId, "logs");
+    }
 
-            Container = ApiStartup.CosmosClient.GetContainer(databaseId, "logs");
-        }
+    public Container Container { get; }
 
-        public async Task Add(LogModel log)
-        {
-            await Container.CreateItemAsync(log, new PartitionKey(log.Id), CosmosRepositoryExtensions.GetItemRequestOptions());
-        }
+    public async Task Add(LogModel log)
+    {
+        await Container.CreateItemAsync(log, new PartitionKey(log.Id),
+            CosmosRepositoryExtensions.GetItemRequestOptions());
     }
 }

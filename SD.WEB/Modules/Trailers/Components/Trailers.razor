@@ -1,16 +1,14 @@
 ﻿@page "/trailers"
-
-@using SD.Shared.Models.News;
-@using SD.Shared.Models.Trailers;
+@using SD.Shared.Models.Trailers
 @using SD.WEB.Modules.Trailers.Resources
-@using System.Text.Json;
-@inherits ComponentCore<Trailers>
+@using Item = SD.Shared.Models.Trailers.Item
+@inherits PageCore<Trailers>
 
 @inject CacheYoutubeApi CacheYoutubeApi
 
-<SeoHeader Title="Trailers" Keywords="@(new []{"Trailers"})" Url="/trailers"></SeoHeader>
+<SeoHeader Title="Trailers" Keywords="@(new[] { "Trailers" })" Url="/trailers"></SeoHeader>
 
-@if (Settings != null && Settings.ShowAdSense)
+@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
@@ -19,10 +17,10 @@
         </script>
     </Div>
 }
-<HeaderComponent Title="@($"{Translations.TrailersTitle} - ONE Media")" />
+<HeaderComponent Title="@($"{Translations.TrailersTitle} - ONE Media")"/>
 <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
     <div class="grid-relative-container-md">
-        @foreach (var item in TrailerModel?.Data?.Items ?? new())
+        @foreach (var item in TrailerModel?.Data?.Items ?? new List<Item>())
         {
             <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}")">
                 <Card>
@@ -44,16 +42,19 @@
     private CacheDocument<TrailerModel>? TrailerModel { get; set; }
 
     public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();     
+        await base.OnInitializedAsync();
 
         Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
     protected override async Task LoadDataRender()
     {
         TrailerModel = await CacheYoutubeApi.GetTrailers("full", Core);
     }
+
 }

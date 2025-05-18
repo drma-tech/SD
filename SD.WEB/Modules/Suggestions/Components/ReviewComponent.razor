@@ -1,14 +1,13 @@
-﻿@using SD.Shared.Models.Reviews;
-@using SD.WEB.Modules.Suggestions.Core;
-
+﻿@using SD.Shared.Models.Reviews
+@using SD.WEB.Modules.Suggestions.Core
 @inherits ComponentCore<ReviewComponent>
 
 @inject ExternalIdApi ExternalIdApi
 @inject CacheMetaCriticApi CacheMetaCriticApi
 
-<RenderControl Core="Core" Model="Model" ExpressionEmpty="@((CacheDocument<ReviewModel>? obj)=> obj?.Data == null || obj.Data.Items.Empty())">
+<RenderControl Core="Core" Model="Model" ExpressionEmpty="@((CacheDocument<ReviewModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
     <ListGroup Flush>
-        @foreach (var item in Model?.Data?.Items ?? new())
+        @foreach (var item in Model?.Data?.Items ?? new List<Item>())
         {
             <ListGroupItem Padding="Padding.Is2">
                 <Heading Size="HeadingSize.Is6" Margin="Margin.Is1.FromBottom">
@@ -63,13 +62,13 @@
         {
             return Color.Success;
         }
-        else if (val >= 6)
+
+        if (val >= 6)
         {
             return Color.Warning;
         }
-        else
-        {
-            return Color.Danger;
-        }
+
+        return Color.Danger;
     }
+
 }

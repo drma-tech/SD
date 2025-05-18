@@ -1,28 +1,25 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SD.Shared.Core.Models
+namespace SD.Shared.Core.Models;
+
+public class CacheDocument<TData> : CosmosDocument where TData : class, new()
 {
-    public class CacheDocument<TData> : CosmosDocument where TData : class, new()
+    public CacheDocument()
     {
-        public CacheDocument()
-        {
-        }
+    }
 
-        public CacheDocument(string id, TData data, ttlCache ttl) : base(id)
-        {
-            Data = data;
-            Ttl = (int)ttl;
-        }
+    public CacheDocument(string id, TData data, ttlCache ttl) : base(id)
+    {
+        Data = data;
+        Ttl = (int)ttl;
+    }
 
-        [JsonInclude]
-        public virtual TData? Data { get; init; } //TODO: cosmos doesn`t support save dynamic property (yet)
+    [JsonInclude] public virtual TData? Data { get; init; } //TODO: cosmos doesn`t support save dynamic property (yet)
 
-        [JsonInclude]
-        public int Ttl { get; init; }
+    [JsonInclude] public int Ttl { get; init; }
 
-        public override bool HasValidData()
-        {
-            return Data != null;
-        }
+    public override bool HasValidData()
+    {
+        return Data != null;
     }
 }

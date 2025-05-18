@@ -1,7 +1,8 @@
-﻿@using SD.Shared.Models.List.Tmdb;
-@using SD.WEB.Modules.Profile.Core;
-@using SD.WEB.Modules.Suggestions.Core;
-
+﻿@using SD.Shared.Models.List.Tmdb
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Resources
+@using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<CollectionPopup>
 
 @inject TmdbApi TmdbApi
@@ -11,7 +12,7 @@
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@collection?.name</ModalTitle>
-    <CloseButton />
+    <CloseButton/>
 </ModalHeader>
 <ModalBody MaxHeight="70">
     <RenderControl Core="Core" Model="collection" ExpressionEmpty="@((TmdbCollection? obj) => obj == null || obj.parts.Empty())">
@@ -20,7 +21,7 @@
             {
                 <Column ColumnSize="ColumnSize.Is4.OnMobile.Is3.OnWidescreen.Is2.OnFullHD">
                     <Card>
-                        <Blazorise.Link Clicked="@(async() => await CollectionClicked(item))" Style="position: relative;">
+                        <Blazorise.Link Clicked="@(async () => await CollectionClicked(item))" Style="position: relative;">
                             @{
                                 var release_date = item.release_date.GetDate();
                             }
@@ -47,7 +48,8 @@
                                     if (wishedMovie)
                                     {
                                         <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" TextColor="TextColor.Light"
-                                                        Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
+                                                        Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;">
+                                        </Blazorise.Icon>
                                     }
                                 }
 
@@ -55,11 +57,13 @@
                                 if (watching)
                                 {
                                     <Blazorise.Icon Name="FontAwesomeIcons.Eye" TextColor="TextColor.Light"
-                                                    Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
+                                                    Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;">
+                                    </Blazorise.Icon>
                                 }
 
                                 <CardImage Source="@(TmdbOptions.SmallPosterPath + item.poster_path)" Alt="@item.title" title="@item.title"
-                                           Style=@($"cursor: pointer; {(watching ? "filter: grayscale(100%);" : "")}")></CardImage>
+                                           Style=@($"cursor: pointer; {(watching ? "filter: grayscale(100%);" : "")}")>
+                                </CardImage>
                             }
                         </Blazorise.Link>
 
@@ -76,31 +80,31 @@
     @if (ShowPrivateAction)
     {
         <Button Color="Color.Primary" Size="Size.Small" Clicked="@IsWatched" Float="Float.Start" title="Mark all these items as watched">
-            @Resources.Translations.ButtonWatched
+            @Translations.ButtonWatched
         </Button>
         <Button Color="Color.Danger" Size="Size.Small" Clicked="@RemoveCollection" Float="Float.Start" title="Remove this collection from my list">
             @GlobalTranslations.RemoveCollection
         </Button>
     }
     <Button Color="Color.Secondary" Size="Size.Small" Clicked="@HideModal" Float="Float.End">
-        @WEB.Resources.Button.Close
+        @Button.Close
     </Button>
 </ModalFooter>
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
-    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
-    [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter] [EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter] [EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter] [EditorRequired] public WishList? Wish { get; set; }
     [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public string? collection_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
 
-    private RenderControlCore<TmdbCollection?>? Core { get; set; } = new();
+    private RenderControlCore<TmdbCollection?>? Core { get; } = new();
     private TmdbCollection? collection { get; set; }
 
     protected override void OnInitialized()
@@ -108,9 +112,24 @@
         if (string.IsNullOrEmpty(collection_id)) throw new ArgumentNullException(nameof(collection_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
 
-        WatchedListApi.DataChanged += (WatchedList? model) => { Watched = model; WatchedChanged.InvokeAsync(model); StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { Watching = model; WatchingChanged.InvokeAsync(model); StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { Wish = model; WishChanged.InvokeAsync(model); StateHasChanged(); };
+        WatchedListApi.DataChanged += model =>
+        {
+            Watched = model;
+            WatchedChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            Watching = model;
+            WatchingChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            Wish = model;
+            WishChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
     }
 
     protected override async Task LoadDataRender()
@@ -119,7 +138,7 @@
 
         if (type == MediaType.movie)
         {
-            var parameters = new Dictionary<string, string>()
+            var parameters = new Dictionary<string, string>
             {
                 { "api_key", TmdbOptions.ApiKey },
                 { "language", AppStateStatic.Language.GetName(false) ?? "en-US" }
@@ -138,13 +157,13 @@
             foreach (var season in show.Collection)
             {
                 collection.parts.Add(new Part
-                    {
-                        id = int.Parse(season.id ?? "0"),
-                        season_number = season.SeasonNumber,
-                        title = season.title ?? "error",
-                        release_date = season.release_date.ToString() ?? "",
-                        poster_path = string.IsNullOrEmpty(season.poster_small) ? "" : TmdbOptions.SmallPosterPath + season.poster_small
-                    });
+                {
+                    id = int.Parse(season.id ?? "0"),
+                    season_number = season.SeasonNumber,
+                    title = season.title ?? "error",
+                    release_date = season.release_date.ToString() ?? "",
+                    poster_path = string.IsNullOrEmpty(season.poster_small) ? "" : TmdbOptions.SmallPosterPath + season.poster_small
+                });
             }
         }
 
@@ -223,4 +242,5 @@
 
         await HideModal();
     }
+
 }

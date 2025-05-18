@@ -1,18 +1,17 @@
 ﻿@page "/providers"
 
-@using SD.WEB.Modules.Profile
-@using SD.WEB.Modules.Profile.Core;
-@using SD.WEB.Modules.Provider.Core;
-@using System.ComponentModel.DataAnnotations
-
-@inherits PageCore<Provider.Index>
+@using System.Globalization
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Provider.Core
+@using SD.WEB.Modules.Provider.Resources
+@inherits PageCore<Index>
 
 @inject AllProvidersApi AllProvidersApi
 @inject MyProvidersApi MyProvidersApi
 
 <SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/providers"></SeoHeader>
 
-@if (Settings != null && Settings.ShowAdSense)
+@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="5179836142"></ins>
@@ -22,7 +21,7 @@
     </Div>
 }
 
-<HeaderComponent Title="@Provider.Resources.Translations.TitleProviders.Format(AppStateStatic.Region.GetName() ?? "invalid country")">
+<HeaderComponent Title="@Translations.TitleProviders.Format(AppStateStatic.Region.GetName() ?? "invalid country")">
     <Select TValue="DeliveryModel?" @bind-SelectedValue="@DeliveryModel" Size="Size.ExtraSmall">
         <SelectItem></SelectItem>
         @foreach (var item in EnumHelper.GetList<DeliveryModel>())
@@ -40,8 +39,8 @@
             </AlertMessage>
             <AlertDescription>
                 <Paragraph>Please contact support and provide the following information:</Paragraph>
-                <Paragraph>CurrentRegion: @System.Globalization.RegionInfo.CurrentRegion.Name</Paragraph>
-                <Paragraph>CurrentCulture: @System.Globalization.CultureInfo.CurrentCulture.Name</Paragraph>
+                <Paragraph>CurrentRegion: @RegionInfo.CurrentRegion.Name</Paragraph>
+                <Paragraph>CurrentCulture: @CultureInfo.CurrentCulture.Name</Paragraph>
             </AlertDescription>
         </Alert>
     }
@@ -53,7 +52,7 @@
                 var favorite = myProviders?.Items.Any(a => a.id == item.id) ?? false;
 
                 <Div>
-                    <Card Background="(favorite ? Background.Success : Background.Transparent)" Style="@(favorite ? "padding: 3px;" : "")">
+                    <Card Background="favorite ? Background.Success : Background.Transparent" Style="@(favorite ? "padding: 3px;" : "")">
                         <Blazorise.Link To="@($"/providers/{item.id}")">
                             <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" Style="cursor: pointer;" title="@item.name"></CardImage>
                             @if (favorite)
@@ -95,16 +94,19 @@
     private AllProviders? AllProviders { get; set; }
 
     public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
     private MyProviders? myProviders { get; set; }
 
-    [Custom(Name = "Model")]
-    public DeliveryModel? DeliveryModel { get; set; }
+    [Custom(Name = "Model")] public DeliveryModel? DeliveryModel { get; set; }
 
-    public IEnumerable<ProviderModel> GetFilteredProviders() => AllProviders?.Items
-    .Where(p => p.regions.Any(a => a == AppStateStatic.Region))
-    .Where(p => p.models.Any(a => DeliveryModel == null ? true : a == DeliveryModel))
-    .OrderBy(o => o.priority).AsEnumerable()
-    ?? [];
+    public IEnumerable<ProviderModel> GetFilteredProviders()
+    {
+        return AllProviders?.Items
+                   .Where(p => p.regions.Any(a => a == AppStateStatic.Region))
+                   .Where(p => p.models.Any(a => DeliveryModel == null ? true : a == DeliveryModel))
+                   .OrderBy(o => o.priority).AsEnumerable()
+               ?? [];
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -113,6 +115,7 @@
         AppStateStatic.RegionChanged += StateHasChanged;
 
         Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
 
         //it is in initialize so it can be recognized by link mapping
         AllProviders = await AllProvidersApi.GetAll(Core);
@@ -122,4 +125,5 @@
     {
         myProviders = await MyProvidersApi.Get(IsAuthenticated, null);
     }
+
 }

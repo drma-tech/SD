@@ -1,20 +1,20 @@
 ﻿@page "/suggestions/bafta"
-<SeoHeader Title="Suggestions | Bafta" Keywords="@(new []{"Bafta"})" Url="/suggestions/bafta"></SeoHeader>
+<SeoHeader Title="Suggestions | Bafta" Keywords="@(new[] { "Bafta" })" Url="/suggestions/bafta"></SeoHeader>
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Suggestions.Components
+@using SD.WEB.Modules.Suggestions.Core
 @inherits PageCore<Bafta>
 
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
-
-@using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Suggestions.Core
-@using SD.WEB.Modules.Suggestions.Components
 @inject TmdbListApi TmdbListApi
 
 <HeadPage Title="Bafta" ImageSource="logo/bafta.png" Text="An independent British charity that supports, develops & promotes the art forms of the moving image"
-          Link="https://www.bafta.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
+          Link="https://www.bafta.org/" IsAuthenticated="IsAuthenticated">
+</HeadPage>
 
-@if (Settings != null && Settings.ShowAdSense)
+@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
@@ -25,14 +25,19 @@
 }
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestFilm" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestAnimatedFeatureFilm" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.BaftaBestDocumentary" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaList>
 
 @code {
     public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
+
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
@@ -41,11 +46,24 @@
     {
         await base.OnInitializedAsync();
 
-        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+        WatchedListApi.DataChanged += model =>
+        {
+            WatchedList = model;
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            WatchingList = model;
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            WishList = model;
+            StateHasChanged();
+        };
 
         Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
     protected override async Task LoadDataRender()
@@ -54,4 +72,5 @@
         WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
         WishList = await WishListApi.Get(IsAuthenticated, null);
     }
+
 }

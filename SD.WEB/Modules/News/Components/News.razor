@@ -1,15 +1,14 @@
 ﻿@page "/news"
-
-@using SD.Shared.Models.News;
-@using System.Text.Json;
+@using SD.Shared.Models.News
 @using SD.WEB.Modules.News.Resources
+@using Button = SD.WEB.Resources.Button
 @inherits PageCore<News>
 
 @inject CacheFlixsterApi CacheFlixsterApi
 
-<SeoHeader Title="News" Keywords="@(new []{"News"})" Url="/news"></SeoHeader>
+<SeoHeader Title="News" Keywords="@(new[] { "News" })" Url="/news"></SeoHeader>
 
-@if (Settings != null && Settings.ShowAdSense)
+@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
@@ -19,10 +18,10 @@
     </Div>
 }
 
-<HeaderComponent Title="@($"{Translations.NewsTitle} - Rotten Tomatoes")" />
+<HeaderComponent Title="@($"{Translations.NewsTitle} - Rotten Tomatoes")"/>
 <RenderControl Core="Core" Model="NewsList" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
     <div class="grid-relative-container-lg">
-        @foreach (var item in NewsList?.Data?.Items ?? new())
+        @foreach (var item in NewsList?.Data?.Items ?? new List<Item>())
         {
             <Card>
                 <CardImage Source="@item.url_img" Alt="@item.title">
@@ -35,7 +34,7 @@
                         }
                     </CardText>
                     <Button Color="Color.Primary" Type="ButtonType.Link" To="@item.link" Target="Target.Blank" Size="Size.Small" Class="mt-2">
-                        @WEB.Resources.Button.ReadMore
+                        @Button.ReadMore
                     </Button>
                 </CardBody>
             </Card>
@@ -49,16 +48,19 @@
     public string? selectedSlide { get; set; }
 
     public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();      
+        await base.OnInitializedAsync();
 
         Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
     protected override async Task LoadDataRender()
     {
         NewsList = await CacheFlixsterApi.GetNews("full", Core);
     }
+
 }

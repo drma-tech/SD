@@ -1,26 +1,29 @@
 ﻿@using SD.WEB.Modules.Profile
-@using SD.WEB.Modules.Shared
+@using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<SettingsPopup>
 
 @inject IJSRuntime JsRuntime
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">@GlobalTranslations.Settings</ModalTitle>
-    <CloseButton />
+    <CloseButton/>
 </ModalHeader>
 <ModalBody MaxHeight="70">
     <Country TValue="Region" TEnum="Region" For="@(() => AppStateStatic.Region)" SelectedValue="@AppStateStatic.Region"
-             SelectedValueChanged="RegionValueChanged" LabelSize="LabelSize.Short"></Country>
+             SelectedValueChanged="RegionValueChanged" LabelSize="LabelSize.Short">
+    </Country>
     <Language TValue="Language" TEnum="Language" For="@(() => AppStateStatic.Language)" SelectedValue="@AppStateStatic.Language"
-              SelectedValueChanged="LanguageValueChanged" LabelSize="LabelSize.Short"></Language>
+              SelectedValueChanged="LanguageValueChanged" LabelSize="LabelSize.Short">
+    </Language>
 </ModalBody>
 <ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@(()=>{ModalService.Hide();})" Size="Size.Small">
-        @WEB.Resources.Button.Close
+    <Button Color="Color.Secondary" Clicked="@(() => { ModalService.Hide(); })" Size="Size.Small">
+        @Button.Close
     </Button>
 </ModalFooter>
 
 @code {
+
     protected override async Task LoadDataRender()
     {
         var language = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "language");
@@ -41,6 +44,7 @@
     protected async Task LanguageValueChanged(Language value)
     {
         await JsRuntime.InvokeAsync<string>("SetLocalStorage", "language", value.GetName(false));
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("language", value.GetName(false)), forceLoad: true);
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("language", value.GetName(false)), true);
     }
+
 }

@@ -101,7 +101,9 @@
                         <ul>
                             <li>
                                 <p>Google</p>
-                                <p><a href=@("https://policies.google.com/technologies/ads") target="_blank">https://policies.google.com/technologies/ads</a></p>
+                                <p>
+                                    <a href=@("https://policies.google.com/technologies/ads") target="_blank">https://policies.google.com/technologies/ads</a>
+                                </p>
                             </li>
                         </ul>
 
@@ -140,6 +142,6 @@
 @code {
     [Parameter] public string? lang { get; set; }
 
-    public string? ProjectTitle => WEB.Resources.SeoTranslations.AppName;
+    public string? ProjectTitle => SeoTranslations.AppName;
     public string? ProjectDomain => "www.streamingdiscovery.com";
 }

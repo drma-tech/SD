@@ -1,22 +1,21 @@
 ﻿@page "/"
 @page "/index"
 <SeoHeader Title="Home" Description="@SeoTranslations.Description" Url="/"></SeoHeader>
-@inherits PageCore<Index>
-
 @using SD.WEB.Modules.AwardsOfTheYear.Components
 @using SD.WEB.Modules.CertifiedSD.Components
-@using SD.WEB.Modules.Profile.Core;
-@using SD.WEB.Modules.Suggestions.Components;
-@using SD.WEB.Modules.Provider.Components;
-@using SD.WEB.Modules.News.Components;
+@using SD.WEB.Modules.News.Components
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Suggestions.Components
 @using SD.WEB.Modules.Trailers.Components
+@using Button = Button
+@inherits PageCore<Index>
 
 @inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 @inject IJSRuntime JsRuntime
 
-@if (Settings != null && Settings.ShowAdSense)
+@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="8246651489"></ins>
@@ -28,11 +27,11 @@
 
 <Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
     <Column>
-        <TextEdit @bind-Text="@Search" Placeholder="@GlobalTranslations.TypeSomething" Size="Size.Small" KeyPress="KeyPress" />
+        <TextEdit @bind-Text="@Search" Placeholder="@GlobalTranslations.TypeSomething" Size="Size.Small" KeyPress="KeyPress"/>
     </Column>
     <Column ColumnSize="ColumnSize.IsAuto">
         <Button Color="Color.Primary" Block="true" Disabled="string.IsNullOrEmpty(Search)" Size="Size.Small" Type="ButtonType.Link" To="@($"/search/{Search}")">
-            @WEB.Resources.Button.Search
+            @Button.Search
         </Button>
     </Column>
 </Row>
@@ -53,14 +52,21 @@
 </Row>
 
 @code {
-    [Parameter][SupplyParameterFromQuery(Name = "language")] public string? language { get; set; }
-    [Parameter][SupplyParameterFromQuery(Name = "platform")] public string? platform { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "language")]
+    public string? language { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "platform")]
+    public string? platform { get; set; }
 
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
     public RenderControlCore<WishList?> CoreWish { get; set; } = new();
 
     public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
@@ -71,11 +77,27 @@
     {
         await base.OnInitializedAsync();
 
-        WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; CoreWatched?.LoadingFinished?.Invoke(model); StateHasChanged(); };
-        WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; CoreWatching?.LoadingFinished?.Invoke(model); StateHasChanged(); };
-        WishApi.DataChanged += (WishList? model) => { Wish = model; CoreWish?.LoadingFinished?.Invoke(model); StateHasChanged(); };
+        WatchedApi.DataChanged += model =>
+        {
+            Watched = model;
+            CoreWatched?.LoadingFinished?.Invoke(model);
+            StateHasChanged();
+        };
+        WatchingApi.DataChanged += model =>
+        {
+            Watching = model;
+            CoreWatching?.LoadingFinished?.Invoke(model);
+            StateHasChanged();
+        };
+        WishApi.DataChanged += model =>
+        {
+            Wish = model;
+            CoreWish?.LoadingFinished?.Invoke(model);
+            StateHasChanged();
+        };
 
         Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
 
         if (platform.NotEmpty())
         {
@@ -99,4 +121,5 @@
             Navigation.NavigateTo($"/search/{Search}");
         }
     }
+
 }

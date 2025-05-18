@@ -1,6 +1,5 @@
 ﻿@using SD.WEB.Modules.Auth.Resources
-
-<ErrorBoundary @ref="boundary">
+<ErrorBoundary @ref="_boundary">
     <ChildContent>
         <CascadingAuthenticationState>
             <Router AppAssembly="@typeof(App).Assembly">
@@ -20,7 +19,7 @@
                             </div>
                         </Authorizing>
                     </AuthorizeRouteView>
-                    <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+                    <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
                 </Found>
                 <NotFound>
                     <PageTitle>Not found</PageTitle>
@@ -33,14 +32,14 @@
             </Router>
 
             <ModalProvider></ModalProvider>
-            <MessageProvider />
+            <MessageProvider/>
         </CascadingAuthenticationState>
     </ChildContent>
     <ErrorContent Context="ex">
         <Alert Color="Color.Danger" Visible="true">
             <AlertMessage>
                 <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon>
-                This operation could not be processed. Please send an email to our <Blazorise.Link To="mailto:support@streamingdiscovery.com" style="cursor: pointer;">support</Blazorise.Link> with the following details:
+                This operation could not be processed. Please email our <Blazorise.Link To="mailto:support@streamingdiscovery.com" style="cursor: pointer;">support</Blazorise.Link> with the following details:
             </AlertMessage>
             <AlertDescription>
                 @ex.StackTrace
@@ -50,10 +49,11 @@
 </ErrorBoundary>
 
 @code {
-    ErrorBoundary? boundary;
+    ErrorBoundary? _boundary;
 
     protected override void OnParametersSet()
     {
-        boundary?.Recover();
+        _boundary?.Recover();
     }
+
 }

@@ -1,6 +1,7 @@
 ﻿@using SD.WEB.Modules.Profile.Components
-@using SD.WEB.Modules.Profile.Core;
+@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
+@using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<MyWatchingListPopup>
 
 @inject WatchedListApi WatchedApi
@@ -11,38 +12,40 @@
     <ModalTitle Size="HeadingSize.Is5">
         @Title.Format(Quantity)
     </ModalTitle>
-    <CloseButton />
+    <CloseButton/>
 </ModalHeader>
 <ModalBody MaxHeight="70">
     @if (MediaType == MediaType.movie)
     {
         <WatchingComponent MediaType="MediaType" ShowPrivateAction="ShowPrivateAction" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
-                           Core="Core" ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()" IsAuthenticated="IsAuthenticated" UserId="UserId"></WatchingComponent>
+                           Core="Core" ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()" IsAuthenticated="IsAuthenticated" UserId="UserId">
+        </WatchingComponent>
     }
     else
     {
         <WatchingComponent MediaType="MediaType" ShowPrivateAction="ShowPrivateAction" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
-                           Core="Core" ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()" IsAuthenticated="IsAuthenticated" UserId="UserId"></WatchingComponent>
+                           Core="Core" ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()" IsAuthenticated="IsAuthenticated" UserId="UserId">
+        </WatchingComponent>
     }
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
-        @WEB.Resources.Button.Close
+        @Button.Close
     </Button>
 </ModalFooter>
 
 @code {
-    [Parameter][EditorRequired] public RenderControlCore<WatchingList?>? Core { get; set; }
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
-    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
-    [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
-    [Parameter][EditorRequired] public string? UserId { get; set; }
+    [Parameter] [EditorRequired] public RenderControlCore<WatchingList?>? Core { get; set; }
+    [Parameter] [EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter] [EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter] [EditorRequired] public WishList? Wish { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] [EditorRequired] public string? UserId { get; set; }
 
     [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter] public MediaType MediaType { get; set; }
 
     private string Title => MediaType == MediaType.movie ? Translations.MyMovieWatching : Translations.MyShowWatching;
@@ -50,8 +53,25 @@
 
     protected override void OnInitialized()
     {
-        WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; WatchedChanged.InvokeAsync(model); StateHasChanged(); };
-        WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; WatchingChanged.InvokeAsync(model); Core?.LoadingFinished?.Invoke(model); StateHasChanged(); };
-        WishApi.DataChanged += (WishList? model) => { Wish = model; WishChanged.InvokeAsync(model); StateHasChanged(); };
+        WatchedApi.DataChanged += model =>
+        {
+            Watched = model;
+            WatchedChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+        WatchingApi.DataChanged += model =>
+        {
+            Watching = model;
+            WatchingChanged.InvokeAsync(model);
+            Core?.LoadingFinished?.Invoke(model);
+            StateHasChanged();
+        };
+        WishApi.DataChanged += model =>
+        {
+            Wish = model;
+            WishChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
     }
+
 }

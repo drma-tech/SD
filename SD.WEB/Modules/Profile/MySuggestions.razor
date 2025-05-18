@@ -1,8 +1,8 @@
-﻿@using SD.Shared.Models.Auth
-@using SD.Shared.Models.List.Tmdb
-@using SD.WEB.Modules.Profile.Core;
+﻿@using SD.Shared.Models.List.Tmdb
+@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
-@using SD.WEB.Modules.Suggestions.Core;
+@using SD.WEB.Modules.Suggestions.Core
+@using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<MySuggestions>
 
 @inject MyProvidersApi MyProvidersApi
@@ -14,23 +14,24 @@
 <HeaderComponent IconName="@FontAwesomeIcons.ThumbsUp" Title="@Translations.MySuggestions">
     @if (Client?.ClientePaddle?.IsPaidUser ?? false)
     {
-        <Button Float="Float.End" Size="Size.ExtraSmall" Color="(GenresChanged ? Color.Secondary : Color.Primary)" Clicked="@(async()=>await OpenConfigurations())" Disabled="(myProviders == null || myProviders.Items.Empty())" title="Settings">
+        <Button Float="Float.End" Size="Size.ExtraSmall" Color="GenresChanged ? Color.Secondary : Color.Primary" Clicked="@(async () => await OpenConfigurations())" Disabled="myProviders == null || myProviders.Items.Empty()" title="Settings">
             <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
         </Button>
-        <RadioGroup CheckedValue="SearchType" CheckedValueChanged="(MediaType type)=>CheckedValueChanged(type)" Buttons="true" Float="Float.End" Size="Size.ExtraSmall" Margin="Margin.Is1.FromEnd">
+        <RadioGroup CheckedValue="SearchType" CheckedValueChanged="(MediaType type) => CheckedValueChanged(type)" Buttons="true" Float="Float.End" Size="Size.ExtraSmall" Margin="Margin.Is1.FromEnd">
             <Radio Value="MediaType.movie">@(MediaType.movie.GetName())</Radio>
             <Radio Value="MediaType.tv">@(MediaType.tv.GetName())</Radio>
         </RadioGroup>
         @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (myProviders?.Items.Any() ?? false))
         {
-            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Warning" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.movie)" title="@WEB.Resources.Button.Update" Disabled="MovieUpdating">
-                <Blazorise.Icon Name="FontAwesomeIcons.Rotate"></Blazorise.Icon> @WEB.Resources.Button.Update
+            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Warning" Margin="Margin.Is1.FromEnd" Clicked="() => ImportFromProviders(MediaType.movie)" title="@Button.Update" Disabled="MovieUpdating">
+                <Blazorise.Icon Name="FontAwesomeIcons.Rotate"></Blazorise.Icon> @Button.Update
             </Button>
         }
+
         @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync) && (myProviders?.Items.Any() ?? false))
         {
-            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Warning" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromProviders(MediaType.tv)" title="@WEB.Resources.Button.Update" Disabled="ShowUpdating">
-                <Blazorise.Icon Name="FontAwesomeIcons.Rotate"></Blazorise.Icon> @WEB.Resources.Button.Update
+            <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Warning" Margin="Margin.Is1.FromEnd" Clicked="() => ImportFromProviders(MediaType.tv)" title="@Button.Update" Disabled="ShowUpdating">
+                <Blazorise.Icon Name="FontAwesomeIcons.Rotate"></Blazorise.Icon> @Button.Update
             </Button>
         }
     }
@@ -46,7 +47,8 @@
                 <div class="swiper-slide">
                     <Card>
                         <CardImage Source="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowMediaPopup(item.id, item.name, SearchType))" Style="cursor: pointer;"></CardImage>
+                                   onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))" Style="cursor: pointer;">
+                        </CardImage>
                         <CardBody Padding="Padding.Is1">
                             <Row HorizontalGutter="4" VerticalGutter="4">
                                 @foreach (var provider in item.Providers)
@@ -71,16 +73,16 @@
     private SD.Shared.Models.MySuggestions? mySuggestions { get; set; }
     public MediaType SearchType { get; set; } = MediaType.movie;
 
-    public bool MovieUpdating { get; set; } = false;
-    public bool ShowUpdating { get; set; } = false;
+    public bool MovieUpdating { get; set; }
+    public bool ShowUpdating { get; set; }
     private RenderControl<SD.Shared.Models.MySuggestions>? render;
 
     public RenderControlCore<SD.Shared.Models.MySuggestions?>? Core { get; set; } = new();
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
-    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
-    [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] [EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter] [EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter] [EditorRequired] public WishList? Wish { get; set; }
+    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
 
     public ClientePrincipal? Client { get; set; }
     private readonly string SwiperId = $"swiper-{Guid.NewGuid()}";
@@ -89,7 +91,12 @@
 
     protected override void OnInitialized()
     {
-        PrincipalApi.DataChanged += async (ClientePrincipal? model) => { Client = model; await LoadData(); StateHasChanged(); };
+        PrincipalApi.DataChanged += async model =>
+        {
+            Client = model;
+            await LoadData();
+            StateHasChanged();
+        };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -160,14 +167,14 @@
             genres = string.Join("|", mySuggestions?.TvGenres.Select(s => (int)s) ?? Enumerable.Empty<int>());
         }
 
-        return new Dictionary<string, string>() { { "with_watch_providers", provider_id }, { "sort_by", sort_by }, { "with_genres", genres }, { "watch_region", region } };
+        return new Dictionary<string, string> { { "with_watch_providers", provider_id }, { "sort_by", sort_by }, { "with_genres", genres }, { "watch_region", region } };
     }
 
     private async Task ImportFromProviders(MediaType type)
     {
         try
         {
-            mySuggestions ??= new();
+            mySuggestions ??= new SD.Shared.Models.MySuggestions();
 
             var qtd = 0;
             if (Client?.ClientePaddle?.ActiveProduct == AccountProduct.Standard) qtd = AccountProduct.Standard.GetRestrictions().MySuggestions;
@@ -183,9 +190,9 @@
 
                 //search best titles by provider (TMDB)
                 var titles = new HashSet<MediaDetail>();
-                foreach (var provider in myProviders?.Items ?? new())
+                foreach (var provider in myProviders?.Items ?? new List<MyProvidersItem>())
                 {
-                    var result = await TmdbDiscoveryApi.GetList(new(), MediaType.movie, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"));
+                    var result = await TmdbDiscoveryApi.GetList(new HashSet<MediaDetail>(), MediaType.movie, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"));
 
                     foreach (var item in result.list)
                     {
@@ -236,9 +243,9 @@
 
                 //search best titles by provider (TMDB)
                 var titles = new HashSet<MediaDetail>();
-                foreach (var provider in myProviders?.Items ?? new())
+                foreach (var provider in myProviders?.Items ?? new List<MyProvidersItem>())
                 {
-                    var result = await TmdbDiscoveryApi.GetList(new(), MediaType.tv, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"));
+                    var result = await TmdbDiscoveryApi.GetList(new HashSet<MediaDetail>(), MediaType.tv, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"));
 
                     foreach (var item in result.list)
                     {
@@ -300,18 +307,16 @@
 
             return false;
         }
-        else
-        {
-            if (Watched != null && Watched.Shows.Any(a => a == item.id)) return true;
-            if (Wish != null && Wish.Shows.Any(a => a.id == item.id)) return true;
 
-            return false;
-        }
+        if (Watched != null && Watched.Shows.Any(a => a == item.id)) return true;
+        if (Wish != null && Wish.Shows.Any(a => a.id == item.id)) return true;
+
+        return false;
     }
 
     private async Task OpenConfigurations()
     {
-        mySuggestions ??= new();
+        mySuggestions ??= new SD.Shared.Models.MySuggestions();
 
         await ModalService.MySuggestionsPopup(mySuggestions,
             new EventCallbackFactory().Create(this, async (SD.Shared.Models.MySuggestions value) => await UpdateMySuggestions(value)));
@@ -331,4 +336,5 @@
         SearchType = type;
         Core?.LoadingFinished?.Invoke(mySuggestions);
     }
+
 }

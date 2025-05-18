@@ -1,12 +1,9 @@
 ﻿@page "/profile"
 
-@using SD.Shared.Models.Auth
-@using SD.WEB.Modules.Auth
-@using SD.WEB.Modules.Auth.Core
+@using SD.Shared.Resources.Enum
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Subscription.Core
-
 @inherits PageCore<Profile>
 
 @inject IHttpClientFactory httpClientFactory
@@ -19,7 +16,7 @@
 
 <SeoHeader Title="@SeoTranslations.ProfileTitle" Description="@SeoTranslations.ProfileDescription" Url="/profile"></SeoHeader>
 
-@if (Settings != null && Settings.ShowAdSense)
+@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="3844372040"></ins>
@@ -69,22 +66,22 @@ else
 {
     <Jumbotron Background="Background.Primary" TextColor="TextColor.Light" Padding="Padding.Is3" Margin="Margin.Is3.FromBottom">
         <JumbotronTitle Size="JumbotronTitleSize.Is4">
-            @Resources.Translations.HeroTitle
+            @Translations.HeroTitle
         </JumbotronTitle>
         <JumbotronSubtitle Class="mb-3" TextAlignment="TextAlignment.Justified">
-            @Resources.Translations.HeroText
+            @Translations.HeroText
         </JumbotronSubtitle>
         <Button Type="ButtonType.Link" Color="Color.Warning" To="/login-providers">
-            @Resources.Translations.HeroButton
+            @Translations.HeroButton
         </Button>
         <Divider Background="Background.White" Style="opacity: .75"></Divider>
         <Paragraph>
-            @Resources.Translations.HeroNote
+            @Translations.HeroNote
         </Paragraph>
     </Jumbotron>
 }
 
-<Row Gutter="(8,8)">
+<Row Gutter="(8, 8)">
     <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
         <Alert Visible="true" Color="Color.Secondary">
             <AlertMessage>
@@ -101,8 +98,8 @@ else
                 <Blazorise.Icon Name="@FontAwesomeIcons.Bookmark" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Wishlist
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Wish?.Movies.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.MovieName</Badge>
-                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Wish?.Shows.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.ShowName</Badge>
+                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Wish?.Movies.Count ?? 0) @PopularType.MovieName</Badge>
+                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Wish?.Shows.Count ?? 0) @PopularType.ShowName</Badge>
             </Div>
         </Alert>
     </Column>
@@ -112,8 +109,8 @@ else
                 <Blazorise.Icon Name="@FontAwesomeIcons.Eye" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Watching
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watching?.Movies.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.MovieName</Badge>
-                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watching?.Shows.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.ShowName</Badge>
+                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watching?.Movies.Count ?? 0) @PopularType.MovieName</Badge>
+                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watching?.Shows.Count ?? 0) @PopularType.ShowName</Badge>
             </Div>
         </Alert>
     </Column>
@@ -123,8 +120,8 @@ else
                 <Blazorise.Icon Name="@FontAwesomeIcons.ClockRotateLeft" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Watched
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watched?.Movies.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.MovieName</Badge>
-                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watched?.Shows.Count ?? 0) @SD.Shared.Resources.Enum.PopularType.ShowName</Badge>
+                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watched?.Movies.Count ?? 0) @PopularType.MovieName</Badge>
+                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watched?.Shows.Count ?? 0) @PopularType.ShowName</Badge>
             </Div>
         </Alert>
     </Column>
@@ -144,13 +141,15 @@ else
 </Row>
 
 @code {
-    [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }
+    [SupplyParameterFromQuery] [Parameter] public string? _ptxn { get; set; }
 
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
     public RenderControlCore<WishList?> CoreWish { get; set; } = new();
 
     public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
+
     private MyProviders? myProviders { get; set; }
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
@@ -163,11 +162,27 @@ else
     {
         await base.OnInitializedAsync();
 
-        WatchedApi.DataChanged += (WatchedList? model) => { Watched = model; CoreWatched?.LoadingFinished?.Invoke(model); StateHasChanged(); };
-        WatchingApi.DataChanged += (WatchingList? model) => { Watching = model; CoreWatching?.LoadingFinished?.Invoke(model); StateHasChanged(); };
-        WishApi.DataChanged += (WishList? model) => { Wish = model; CoreWish?.LoadingFinished?.Invoke(model); StateHasChanged(); };
+        WatchedApi.DataChanged += model =>
+        {
+            Watched = model;
+            CoreWatched?.LoadingFinished?.Invoke(model);
+            StateHasChanged();
+        };
+        WatchingApi.DataChanged += model =>
+        {
+            Watching = model;
+            CoreWatching?.LoadingFinished?.Invoke(model);
+            StateHasChanged();
+        };
+        WishApi.DataChanged += model =>
+        {
+            Wish = model;
+            CoreWish?.LoadingFinished?.Invoke(model);
+            StateHasChanged();
+        };
 
         Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
     protected override async Task LoadDataRender()

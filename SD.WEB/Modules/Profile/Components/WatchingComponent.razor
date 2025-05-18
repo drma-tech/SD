@@ -1,7 +1,7 @@
 ﻿@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
-@using SD.WEB.Modules.Suggestions.Core;
-
+@using SD.WEB.Modules.Suggestions.Core
+@using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<WatchingComponent>
 @inject TmdbApi TmdbApi
 @inject WatchingListApi WatchingApi
@@ -29,20 +29,21 @@
             }
             else
             {
-                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList())"
+                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async () => await OpenCompleteList())"
                         title="@GlobalTranslations.SeeAllItems" Class="ms-1">
                     <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
                 </Button>
-                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Clicked="@(()=>Share($"{Navigation.BaseUri}shared/watching/{MediaType}/{UserId}"))"
+                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Clicked="@(() => Share($"{Navigation.BaseUri}shared/watching/{MediaType}/{UserId}"))"
                         title="@GlobalTranslations.Share">
                     <Blazorise.Icon Name="FontAwesomeIcons.Share"></Blazorise.Icon>
                 </Button>
             }
+
             @if ((Watching?.CanSync(MediaType) ?? false) && (Watching?.Items(MediaType).Any() ?? false))
             {
-                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Warning" Margin="Margin.Is1.FromEnd" Clicked="()=>ImportFromWatched()"
-                        title="@WEB.Resources.Button.Update" Disabled="Updating">
-                    <Blazorise.Icon Name="FontAwesomeIcons.Rotate"></Blazorise.Icon> @WEB.Resources.Button.Update
+                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Warning" Margin="Margin.Is1.FromEnd" Clicked="() => ImportFromWatched()"
+                        title="@Button.Update" Disabled="Updating">
+                    <Blazorise.Icon Name="FontAwesomeIcons.Rotate"></Blazorise.Icon> @Button.Update
                 </Button>
             }
         }
@@ -56,7 +57,7 @@
             @foreach (var item in Items.Take(GetTotalItems) ?? [])
             {
                 var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-                int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
                 var resultPerc = $"{percentComplete}%";
 
                 <Card Style="position: relative; max-width: 100px;" TextAlignment="TextAlignment.Center">
@@ -72,7 +73,8 @@
                     @if (string.IsNullOrEmpty(item.logo))
                     {
                         <CardImage Source="images/noimage.png" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowCollectionPopup(item.id, item.name))" Style="cursor: pointer;"></CardImage>
+                                   onclick="@(async () => await ShowCollectionPopup(item.id, item.name))" Style="cursor: pointer;">
+                        </CardImage>
 
                         <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 2rem; color: black; text-align: center; font-weight: 500;">
                             @item.name
@@ -81,7 +83,8 @@
                     else
                     {
                         <CardImage Source="@logo" Alt="@item.name" title="@item.name"
-                                   onclick="@(async()=>await ShowCollectionPopup(item.id, item.name))" Style="cursor: pointer;"></CardImage>
+                                   onclick="@(async () => await ShowCollectionPopup(item.id, item.name))" Style="cursor: pointer;">
+                        </CardImage>
                     }
                 </Card>
             }
@@ -94,7 +97,7 @@
                 @foreach (var item in Items.Take(GetTotalItems) ?? [])
                 {
                     var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-                    int percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                    var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
                     var resultPerc = $"{percentComplete}%";
 
                     <div class="swiper-slide">
@@ -111,7 +114,8 @@
                             @if (string.IsNullOrEmpty(item.logo))
                             {
                                 <CardImage Source="images/noimage.png" Alt="@item.name" title="@item.name"
-                                           onclick="@(async()=>await ShowCollectionPopup(item.id, item.name))" Style="cursor: pointer;"></CardImage>
+                                           onclick="@(async () => await ShowCollectionPopup(item.id, item.name))" Style="cursor: pointer;">
+                                </CardImage>
 
                                 <Div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 2rem; color: black; text-align: center; font-weight: 500;">
                                     @item.name
@@ -120,7 +124,8 @@
                             else
                             {
                                 <CardImage Source="@logo" Alt="@item.name" title="@item.name"
-                                           onclick="@(async()=>await ShowCollectionPopup(item.id, item.name))" Style="cursor: pointer;"></CardImage>
+                                           onclick="@(async () => await ShowCollectionPopup(item.id, item.name))" Style="cursor: pointer;">
+                                </CardImage>
                             }
                         </Card>
                     </div>
@@ -134,25 +139,25 @@
 </RenderControl>
 
 @code {
-    [Parameter][EditorRequired] public RenderControlCore<WatchingList?> Core { get; set; } = new();
-    [Parameter][EditorRequired] public MediaType MediaType { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
-    [Parameter][EditorRequired] public bool ShowHeader { get; set; }
-    [Parameter][EditorRequired] public bool FullScreen { get; set; }
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
-    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
-    [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public Func<WatchingList?, bool> ExpressionEmpty { get; set; } = default!;
-    [Parameter][EditorRequired] public string? UserId { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] [EditorRequired] public RenderControlCore<WatchingList?> Core { get; set; } = new();
+    [Parameter] [EditorRequired] public MediaType MediaType { get; set; }
+    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter] [EditorRequired] public bool ShowHeader { get; set; }
+    [Parameter] [EditorRequired] public bool FullScreen { get; set; }
+    [Parameter] [EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter] [EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter] [EditorRequired] public WishList? Wish { get; set; }
+    [Parameter] [EditorRequired] public Func<WatchingList?, bool> ExpressionEmpty { get; set; } = default!;
+    [Parameter] [EditorRequired] public string? UserId { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
     [Parameter] public string? CustomTitle { get; set; }
 
     private HashSet<WatchingListItem> Items => MediaType == MediaType.movie ? Watching?.Movies ?? new HashSet<WatchingListItem>() : Watching?.Shows ?? new HashSet<WatchingListItem>();
 
-    private int GetTotalItems => FullScreen ? SubscriptionHelper.GetRestrictions(AccountProduct.Premium).Watching : SubscriptionHelper.GetRestrictions(AccountProduct.Basic).Watching;
+    private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Watching : AccountProduct.Basic.GetRestrictions().Watching;
     private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? Translations.MyMovieWatching : Translations.MyShowWatching);
 
-    public bool Updating { get; set; } = false;
+    public bool Updating { get; set; }
     private readonly string SwiperId = $"swiper-{Guid.NewGuid()}";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -192,7 +197,7 @@
     {
         try
         {
-            var watching = await WatchingApi.Get(IsAuthenticated, Core, null); //get a new one (memory may be compromised/corrupted)
+            var watching = await WatchingApi.Get(IsAuthenticated, Core); //get a new one (memory may be compromised/corrupted)
             var client = await PrincipalApi.Get(IsAuthenticated);
 
             if (MediaType == MediaType.movie)
@@ -202,7 +207,7 @@
                 StateHasChanged();
                 Core?.ShowProcessing();
 
-                foreach (var tmdb_id in Watched?.GetItems(MediaType.movie) ?? new())
+                foreach (var tmdb_id in Watched?.GetItems(MediaType.movie) ?? new HashSet<string>())
                 {
                     try
                     {
@@ -256,7 +261,7 @@
                 StateHasChanged();
                 Core?.ShowProcessing();
 
-                foreach (var tmdb_id in Watched?.GetItems(MediaType.tv) ?? new())
+                foreach (var tmdb_id in Watched?.GetItems(MediaType.tv) ?? new HashSet<string>())
                 {
                     try
                     {
@@ -318,4 +323,5 @@
     {
         await JsRuntime.InvokeVoidAsync("share", link);
     }
+
 }

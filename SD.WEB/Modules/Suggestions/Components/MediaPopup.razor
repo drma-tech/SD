@@ -1,13 +1,9 @@
-﻿@using SD.Shared.Models;
-@using SD.Shared.Models.List.Imdb;
-@using SD.Shared.Models.List.Tmdb;
-@using SD.Shared.Models.List;
-@using SD.WEB.Modules.Suggestions.Core;
+﻿@using System.Globalization
+@using SD.Shared.Models.List
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Provider.Core;
+@using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Resources
-@using System.Globalization
-
+@using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<MediaPopup>
 
 @inject TmdbApi TmdbApi
@@ -21,10 +17,10 @@
     <ModalTitle Size="HeadingSize.Is5">
         @media?.title
     </ModalTitle>
-    <CloseButton />
+    <CloseButton/>
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <RenderControl Model="media" Core="Core" ExpressionEmpty="@((MediaDetail? obj)=>obj==null)">
+    <RenderControl Model="media" Core="Core" ExpressionEmpty="@((MediaDetail? obj) => obj == null)">
         <Row HorizontalGutter="8" VerticalGutter="8">
             <Column ColumnSize="ColumnSize.Is12.OnMobile.Is4.OnDesktop">
                 @if (string.IsNullOrEmpty(media?.poster_large))
@@ -34,7 +30,7 @@
                 else
                 {
                     <Div Style="position:relative;">
-                        @if (@media?.release_date < DateTime.Now.AddMonths(-3))
+                        @if (media?.release_date < DateTime.Now.AddMonths(-3))
                         {
                             <Badge Color="Color.Light" TextColor="TextColor.Dark" Style="position: absolute; top: 5px; left: 5px;">@media?.release_date?.Year</Badge>
                         }
@@ -74,7 +70,7 @@
                                 <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd.Is1.FromBottom">@item</Badge>
                             }
                             <Paragraph>
-                                <RenderControl PartialComponent="true" Core="CoreRatings" Model="ratingsCache" ExpressionEmpty="@((CacheDocument<Ratings>? obj)=>obj?.Data==null)">
+                                <RenderControl PartialComponent="true" Core="CoreRatings" Model="ratingsCache" ExpressionEmpty="@((CacheDocument<Ratings>? obj) => obj?.Data == null)">
                                     @if (ratingsCache != null && !string.IsNullOrEmpty(ratingsCache.Data?.imdb))
                                     {
                                         <Badge Color="GetColorByRating(ratingsCache.Data?.imdb)" Margin="Margin.Is1.FromEnd" Padding="Padding.Is1.FromStart.Is1.OnY" title="IMDb">
@@ -137,7 +133,8 @@
                         </TabPanel>
                         <TabPanel Name="Credits" Class="mt-2">
                             <CreditsComponent tmdb_id="@tmdb_id" type="@type" WatchedList="Watched" WatchingList="Watching" WishList="Wish"
-                                              ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated"></CreditsComponent>
+                                              ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
+                            </CreditsComponent>
                         </TabPanel>
                         @if (media?.Collection.Any() ?? false)
                         {
@@ -147,7 +144,7 @@
                                     {
                                         <Column ColumnSize="ColumnSize.Is6.OnMobile.Is4.OnWidescreen.Is3.OnFullHD">
                                             <Card>
-                                                <Blazorise.Link Clicked="@(async() => await CollectionClicked(item))" Style="position: relative; text-decoration: none; color: var(--bs-card-color);">
+                                                <Blazorise.Link Clicked="@(async () => await CollectionClicked(item))" Style="position: relative; text-decoration: none; color: var(--bs-card-color);">
                                                     @if (item.release_date.HasValue)
                                                     {
                                                         if (item.release_date.Value < DateTime.Now.AddMonths(-3))
@@ -171,7 +168,8 @@
                                                             if (wishedMovie)
                                                             {
                                                                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" TextColor="TextColor.Light"
-                                                                                Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
+                                                                                Style="position: absolute; bottom: 5px; left: 5px; z-index: 1;">
+                                                                </Blazorise.Icon>
                                                             }
                                                         }
 
@@ -180,10 +178,11 @@
                                                         if (movieWatched || showWatched)
                                                         {
                                                             <Blazorise.Icon Name="FontAwesomeIcons.Eye" TextColor="TextColor.Light"
-                                                                            Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
+                                                                            Style="position: absolute; bottom: 2px; right: 5px; z-index: 1;">
+                                                            </Blazorise.Icon>
                                                         }
 
-                                                        <CardImage Source="@item.poster_small" Alt="@item.title" title="@item.title" Style=@($"cursor: pointer;")></CardImage>
+                                                        <CardImage Source="@item.poster_small" Alt="@item.title" title="@item.title" Style=@("cursor: pointer;")></CardImage>
                                                     }
                                                     <CardBody Class="py-1" Style="cursor: pointer;">
                                                         @item.title
@@ -196,8 +195,9 @@
                             </TabPanel>
                         }
                         <TabPanel Name="Reviews" Class="mt-2">
-                            <ReviewComponent imdb_id="@imdb_id" english_title="@EnglishTitle?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ","-").ToLower()"
-                                             type="@type" release_date="@media?.release_date"></ReviewComponent>
+                            <ReviewComponent imdb_id="@imdb_id" english_title="@EnglishTitle?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").ToLower()"
+                                             type="@type" release_date="@media?.release_date">
+                            </ReviewComponent>
                         </TabPanel>
                     </Content>
                 </Tabs>
@@ -210,11 +210,11 @@
         @if (!IsAuthenticated)
         {
             <AlertMessage Style="margin-right: 0.3rem;">
-                @Resources.Translations.LoginNeeded
+                @Translations.LoginNeeded
             </AlertMessage>
         }
         <AlertDescription>
-            @Resources.Translations.PlatformForManaging
+            @Translations.PlatformForManaging
         </AlertDescription>
     </Alert>
 </ModalFooter>
@@ -225,65 +225,65 @@
             @if (Wish?.Movies.Any(a => a.id == tmdb_id) ?? false)
             {
                 <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Size="Size.Small">
-                    @Resources.Translations.RemoveWishlist
+                    @Translations.RemoveWishlist
                 </Button>
             }
             else if (Wish?.Shows.Any(a => a.id == tmdb_id) ?? false)
             {
                 <Button Color="Color.Danger" Clicked="Remove" Margin="Margin.Is2.FromEnd" Size="Size.Small">
-                    @Resources.Translations.RemoveWishlist
+                    @Translations.RemoveWishlist
                 </Button>
             }
             else if (!IsAuthenticated)
             {
                 <span onclick="animationShake('.alertLoginNeeded')">
                     <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd" Size="Size.Small">
-                        @Resources.Translations.AddWishlist
+                        @Translations.AddWishlist
                     </Button>
                 </span>
             }
             else
             {
                 <Button Color="Color.Primary" Clicked="Add" Margin="Margin.Is2.FromEnd" Size="Size.Small">
-                    @Resources.Translations.AddWishlist
+                    @Translations.AddWishlist
                 </Button>
             }
 
             @if (Watched?.Movies.Contains(tmdb_id ?? "") ?? false)
             {
                 <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Size="Size.Small">
-                    @Resources.Translations.ButtonNotWatched
+                    @Translations.ButtonNotWatched
                 </Button>
             }
             else if (Watched?.Shows.Contains(tmdb_id ?? "") ?? false)
             {
                 <Button Color="Color.Danger" Clicked="IsNotWatched" Margin="Margin.Is2.FromEnd" Size="Size.Small">
-                    @Resources.Translations.ButtonNotWatched
+                    @Translations.ButtonNotWatched
                 </Button>
             }
             else if (!IsAuthenticated)
             {
                 <span onclick="animationShake('.alertLoginNeeded')">
                     <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd" Size="Size.Small">
-                        @Resources.Translations.ButtonWatched
+                        @Translations.ButtonWatched
                     </Button>
                 </span>
             }
             else
             {
                 <Button Color="Color.Primary" Clicked="IsWatched" Margin="Margin.Is2.FromEnd" Size="Size.Small">
-                    @Resources.Translations.ButtonWatched
+                    @Translations.ButtonWatched
                 </Button>
             }
         }
         <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">
-            @WEB.Resources.Button.Close
+            @Button.Close
         </Button>
     </Container>
 </ModalFooter>
 
 @code {
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public WatchedList? Watched { get; set; }
     [Parameter] public WatchingList? Watching { get; set; }
@@ -311,9 +311,24 @@
         if (string.IsNullOrEmpty(tmdb_id)) throw new ArgumentNullException(nameof(tmdb_id));
         if (type == null) throw new ArgumentNullException(nameof(type));
 
-        WatchedListApi.DataChanged += (WatchedList? model) => { Watched = model; WatchedChanged.InvokeAsync(model); StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { Watching = model; WatchingChanged.InvokeAsync(model); StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { Wish = model; WishChanged.InvokeAsync(model); StateHasChanged(); };
+        WatchedListApi.DataChanged += model =>
+        {
+            Watched = model;
+            WatchedChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            Watching = model;
+            WatchingChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            Wish = model;
+            WishChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
     }
 
     protected override async Task LoadDataRender()
@@ -351,7 +366,7 @@
     {
         if (string.IsNullOrEmpty(rating)) return Color.Secondary;
 
-        float.TryParse(rating.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float val);
+        float.TryParse(rating.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var val);
 
         if (val > 10) val = val / 10;
 
@@ -359,14 +374,13 @@
         {
             return Color.Success;
         }
-        else if (val >= 6)
+
+        if (val >= 6)
         {
             return Color.Warning;
         }
-        else
-        {
-            return Color.Danger;
-        }
+
+        return Color.Danger;
     }
 
     public async Task HideModal()
@@ -388,7 +402,7 @@
 
         try
         {
-            Wish ??= new();
+            Wish ??= new WishList();
 
             var item = new WishListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.runtime);
             var client = await PrincipalApi.Get(true);
@@ -510,11 +524,12 @@
 
     private async Task OpenPopupMedia(Collection? collection, MediaType? mediaType)
     {
-        await ModalService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id?.ToString(), ShowPrivateAction, IsAuthenticated);
+        await ModalService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id, ShowPrivateAction, IsAuthenticated);
     }
 
     private async Task OpenPopupSeason(Collection? collection)
     {
         await ModalService.SeasonPopup(media?.title, collection?.title, tmdb_id, collection?.SeasonNumber, IsAuthenticated);
     }
+
 }

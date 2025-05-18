@@ -1,117 +1,117 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
-namespace SD.API.Functions
+namespace SD.API.Functions;
+
+public class MyProvidersFunction(CosmosRepository repo)
 {
-    public class MyProvidersFunction(CosmosRepository repo)
+    [Function("MyProviders")]
+    public async Task<HttpResponseData?> MyProviders(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "my-providers")]
+        HttpRequestData req, CancellationToken cancellationToken)
     {
-        [Function("MyProviders")]
-        public async Task<HttpResponseData?> MyProviders(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "my-providers")] HttpRequestData req, CancellationToken cancellationToken)
+        try
         {
-            try
-            {
-                var userId = req.GetUserId();
+            var userId = req.GetUserId();
 
-                var doc = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
+            var doc = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
 
-                return await req.CreateResponse(doc, ttlCache.one_day, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                req.ProcessException(ex);
-                throw;
-            }
+            return await req.CreateResponse(doc, ttlCache.one_day, cancellationToken);
         }
-
-        [Function("MyProvidersAdd")]
-        public async Task<MyProviders?> MyProvidersAdd(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/add")] HttpRequestData req,
-             CancellationToken cancellationToken)
+        catch (Exception ex)
         {
-            try
-            {
-                var userId = req.GetUserId();
-                if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
-
-                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
-
-                if (obj == null)
-                {
-                    obj = new();
-
-                    obj.Initialize(userId);
-                }
-
-                var item = await req.GetPublicBody<MyProvidersItem>(cancellationToken);
-                obj.AddItem([item]);
-
-                return await repo.Upsert(obj, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                req.ProcessException(ex);
-                throw;
-            }
+            req.ProcessException(ex);
+            throw;
         }
+    }
 
-        [Function("MyProvidersUpdate")]
-        public async Task<MyProviders?> MyProvidersUpdate(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/update")] HttpRequestData req,
-             CancellationToken cancellationToken)
+    [Function("MyProvidersAdd")]
+    public async Task<MyProviders?> MyProvidersAdd(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/add")]
+        HttpRequestData req,
+        CancellationToken cancellationToken)
+    {
+        try
         {
-            try
+            var userId = req.GetUserId();
+            if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+
+            var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
+
+            if (obj == null)
             {
-                var userId = req.GetUserId();
-                if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+                obj = new MyProviders();
 
-                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
-
-                if (obj == null)
-                {
-                    throw new InvalidOperationException("MyProviders null");
-                }
-
-                var model = await req.GetPublicBody<MyProviders>(cancellationToken);
-
-                return await repo.Upsert(model, cancellationToken);
+                obj.Initialize(userId);
             }
-            catch (Exception ex)
-            {
-                req.ProcessException(ex);
-                throw;
-            }
+
+            var item = await req.GetPublicBody<MyProvidersItem>(cancellationToken);
+            obj.AddItem([item]);
+
+            return await repo.Upsert(obj, cancellationToken);
         }
-
-        [Function("MyProvidersRemove")]
-        public async Task<MyProviders?> MyProvidersRemove(
-           [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/remove")] HttpRequestData req,
-            CancellationToken cancellationToken)
+        catch (Exception ex)
         {
-            try
+            req.ProcessException(ex);
+            throw;
+        }
+    }
+
+    [Function("MyProvidersUpdate")]
+    public async Task<MyProviders?> MyProvidersUpdate(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/update")]
+        HttpRequestData req,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var userId = req.GetUserId();
+            if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+
+            var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
+
+            if (obj == null) throw new InvalidOperationException("MyProviders null");
+
+            var model = await req.GetPublicBody<MyProviders>(cancellationToken);
+
+            return await repo.Upsert(model, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            throw;
+        }
+    }
+
+    [Function("MyProvidersRemove")]
+    public async Task<MyProviders?> MyProvidersRemove(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/remove")]
+        HttpRequestData req,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var userId = req.GetUserId();
+            if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+
+            var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
+
+            if (obj == null)
             {
-                var userId = req.GetUserId();
-                if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+                obj = new MyProviders();
 
-                var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
-
-                if (obj == null)
-                {
-                    obj = new();
-
-                    obj.Initialize(userId);
-                }
-
-                var item = await req.GetPublicBody<MyProvidersItem>(cancellationToken);
-                obj.RemoveItem(item);
-
-                return await repo.Upsert(obj, cancellationToken);
+                obj.Initialize(userId);
             }
-            catch (Exception ex)
-            {
-                req.ProcessException(ex);
-                throw;
-            }
+
+            var item = await req.GetPublicBody<MyProvidersItem>(cancellationToken);
+            obj.RemoveItem(item);
+
+            return await repo.Upsert(obj, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            throw;
         }
     }
 }

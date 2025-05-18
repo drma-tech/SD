@@ -1,5 +1,4 @@
-﻿@using SD.WEB.Modules.Profile
-@inherits FormBase<TValue, FieldSelect<TValue, TEnum>>
+﻿@inherits SD.WEB.Modules.Profile.FormBase<TValue, SD.WEB.Modules.Profile.FieldSelect<TValue, TEnum>>
 @typeparam TValue
 @typeparam TEnum where TEnum : struct, Enum, IConvertible
 
@@ -12,14 +11,14 @@
             <Addon AddonType="AddonType.Body">
                 <Select @bind-SelectedValue="@Continent" Disabled="@Disabled" Width="Width.Is50">
                     <SelectItem></SelectItem>
-                    @foreach (var group in EnumHelper.GetList<SD.Shared.Enums.Language>().Select(s => s.Group).Order().Distinct())
+                    @foreach (var group in EnumHelper.GetList<Language>().Select(s => s.Group).Order().Distinct())
                     {
                         <SelectItem Value="@group">@group</SelectItem>
                     }
                 </Select>
-                <Select TValue="SD.Shared.Enums.Language" SelectedValue="@SelectedValue" SelectedValueChanged="SelectedValueChanged" Disabled="@Disabled" Width="Width.Is50">
+                <Select TValue="Language" SelectedValue="@SelectedValue" SelectedValueChanged="SelectedValueChanged" Disabled="@Disabled" Width="Width.Is50">
                     <SelectItem></SelectItem>
-                    @foreach (var item in EnumHelper.GetList<SD.Shared.Enums.Language>().Where(w => w.Group == Continent).OrderBy(o => o.Name))
+                    @foreach (var item in EnumHelper.GetList<Language>().Where(w => w.Group == Continent).OrderBy(o => o.Name))
                     {
                         <SelectItem Value="@item.Value">@item.Name</SelectItem>
                     }
@@ -30,8 +29,8 @@
 </Field>
 
 @code {
-    [Parameter] public SD.Shared.Enums.Language SelectedValue { get; set; }
-    [Parameter] public EventCallback<SD.Shared.Enums.Language> SelectedValueChanged { get; set; }
+    [Parameter] public Language SelectedValue { get; set; }
+    [Parameter] public EventCallback<Language> SelectedValueChanged { get; set; }
 
     public string? Continent { get; set; }
 
@@ -39,4 +38,5 @@
     {
         Continent = SelectedValue.GetCustomAttribute()?.Group;
     }
+
 }

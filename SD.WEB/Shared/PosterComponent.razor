@@ -70,11 +70,13 @@
             if (wishedMovie || wishedShow)
             {
                 <Blazorise.Icon Name="FontAwesomeIcons.Bookmark" TextColor="TextColor.Light" Position="Position.Absolute"
-                                Style="bottom: 5px; left: 5px; z-index: 1;"></Blazorise.Icon>
+                                Style="bottom: 5px; left: 5px; z-index: 1;">
+                </Blazorise.Icon>
             }
         }
-        bool watchedMovie = false;
-        bool watchedShow = false;
+
+        var watchedMovie = false;
+        var watchedShow = false;
         if (ShowWatched)
         {
             watchedMovie = WatchedList?.Contains(MediaType.movie, TmdbId) ?? false;
@@ -82,9 +84,11 @@
             if (watchedMovie || watchedShow)
             {
                 <Blazorise.Icon Name="FontAwesomeIcons.Eye" TextColor="TextColor.Light" Position="Position.Absolute"
-                                Style="bottom: 2px; right: 5px; z-index: 1;"></Blazorise.Icon>
+                                Style="bottom: 2px; right: 5px; z-index: 1;">
+                </Blazorise.Icon>
             }
         }
+
         <CardImage Source="@Poster" Alt="@Title" title="@Title" Style=@($"cursor: pointer; border-radius: 6px; {(watchedMovie || watchedShow ? "filter: grayscale(100%);" : "")}")></CardImage>
     }
     @if (!string.IsNullOrEmpty(Comments))
@@ -96,7 +100,7 @@
                     @foreach (var item in Comments.Split(CommentsSeparator))
                     {
                         <Column ColumnSize="ColumnSize.Is4" Border="Border.Secondary" Style="border-color: lightgray !important; padding: 1px;">
-                            <Image Source="@item" alt="@item" title="@item.Replace("logo/","").Replace(".png","")" Style="width: 100%"></Image>
+                            <Image Source="@item" alt="@item" title="@item.Replace("logo/", "").Replace(".png", "")" Style="width: 100%"></Image>
                         </Column>
                     }
                 </Row>
@@ -115,8 +119,8 @@
 </Blazorise.Link>
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter] [EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter] [EditorRequired] public WishList? WishList { get; set; }
 
     [Parameter] public EventCallback<MouseEventArgs> Clicked { get; set; }
     [Parameter] public DateTime? Date { get; set; }
@@ -130,7 +134,7 @@
     [Parameter] public int? Runtime { get; set; }
     [Parameter] public bool ShowWished { get; set; } = true;
     [Parameter] public bool ShowWatched { get; set; } = true;
-    [Parameter] public bool OnlyYear { get; set; } = false;
+    [Parameter] public bool OnlyYear { get; set; }
     [Parameter] public string? RankUpDown { get; set; }
-    [Parameter] public bool CommentImage { get; set; } = false;
+    [Parameter] public bool CommentImage { get; set; }
 }

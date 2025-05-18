@@ -1,11 +1,10 @@
-﻿namespace SD.Shared.Enums
-{
-    public enum AccountCycle
-    {
-        [Custom(Name = "Monthly", Description = "Month")]
-        Monthly = 1,
+﻿namespace SD.Shared.Enums;
 
-        [Custom(Name = "Yearly", Description = "Year")]
-        Yearly = 2
-    }
+public enum AccountCycle
+{
+    [Custom(Name = "Monthly", Description = "Month", ResourceType = typeof(Resources.Enum.AccountCycle))]
+    Monthly = 1,
+
+    [Custom(Name = "Yearly", Description = "Year", ResourceType = typeof(Resources.Enum.AccountCycle))]
+    Yearly = 2
 }

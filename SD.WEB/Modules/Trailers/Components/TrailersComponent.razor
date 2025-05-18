@@ -1,20 +1,20 @@
-﻿@using SD.Shared.Models.News;
-@using SD.Shared.Models.Trailers;
+﻿@using SD.Shared.Models.Trailers
 @using SD.WEB.Modules.Trailers.Resources
+@using Item = SD.Shared.Models.Trailers.Item
 @inherits ComponentCore<TrailersComponent>
 
 @inject CacheYoutubeApi CacheYoutubeApi
 @inject IJSRuntime JsRuntime
 
 <HeaderComponent Title="@($"{Translations.TrailersTitle} - {Language.enUS.GetName()}")" IconImage="logo/one-media.png">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Type="ButtonType.Link" To="@($"/trailers")">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Type="ButtonType.Link" To="@("/trailers")">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
 <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
     <div id="@GallerySwiperId" class="swiper" style="height: 352px;">
         <div class="swiper-wrapper">
-            @foreach (var item in TrailerModel?.Data?.Items ?? new())
+            @foreach (var item in TrailerModel?.Data?.Items ?? new List<Item>())
             {
                 <div class="swiper-slide swiper-slide-grid">
                     <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}")">
@@ -61,4 +61,5 @@
     {
         TrailerModel = await CacheYoutubeApi.GetTrailers("compact", Core);
     }
+
 }

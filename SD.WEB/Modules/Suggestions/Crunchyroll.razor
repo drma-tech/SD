@@ -1,19 +1,19 @@
 ﻿@page "/suggestions/crunchyroll"
-<SeoHeader Title="Suggestions | Crunchyroll Anime Awards" Keywords="@(new []{"Crunchyroll Anime Awards"})" Url="/suggestions/crunchyroll"></SeoHeader>
-@inherits PageCore<Crunchyroll>
-
+<SeoHeader Title="Suggestions | Crunchyroll Anime Awards" Keywords="@(new[] { "Crunchyroll Anime Awards" })" Url="/suggestions/crunchyroll"></SeoHeader>
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
+@using SD.WEB.Modules.Suggestions.Core
+@inherits PageCore<Crunchyroll>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
 <HeadPage Title="Crunchyroll Anime Awards" ImageSource="logo/crunchyroll.png" Text="Since 2017, this global event has annually recognized anime’s finest series and films. During our voting period, you can vote here once per day in a variety of categories. Ultimately, Grand Winners are announced in-person at the 2023 Crunchyroll Anime Awards show on March 4, 2023."
-          Link="https://www.crunchyroll.com/animeawards/" IsAuthenticated="IsAuthenticated"></HeadPage>
+          Link="https://www.crunchyroll.com/animeawards/" IsAuthenticated="IsAuthenticated">
+</HeadPage>
 
-@if (Settings != null && Settings.ShowAdSense)
+@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
@@ -24,14 +24,19 @@
 }
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollAnimeoftheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
+</MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollBestContinuingSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
+</MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollBestFilm" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
+</MediaList>
 
 @code {
     public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
+
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
@@ -40,11 +45,24 @@
     {
         await base.OnInitializedAsync();
 
-        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+        WatchedListApi.DataChanged += model =>
+        {
+            WatchedList = model;
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            WatchingList = model;
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            WishList = model;
+            StateHasChanged();
+        };
 
         Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
     protected override async Task LoadDataRender()
@@ -53,4 +71,5 @@
         WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
         WishList = await WishListApi.Get(IsAuthenticated, null);
     }
+
 }

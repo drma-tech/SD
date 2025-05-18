@@ -1,9 +1,8 @@
-﻿@inherits ComponentCore<MediaListFull>
-@using SD.Shared.Models.List.Tmdb;
+﻿@using SD.Shared.Models.List.Tmdb
 @using SD.WEB.Modules.Suggestions.Core
-@using SD.Shared.Models
-@using SD.WEB.Modules.Suggestions.Interface;
-@using SD.WEB.Modules.Profile.Core;
+@using SD.WEB.Modules.Suggestions.Interface
+@using Button = SD.WEB.Resources.Button
+@inherits ComponentCore<MediaListFull>
 
 @inject ExternalIdApi ExternalIdApi
 @inject TmdbCreditApi TmdbCreditApi
@@ -14,12 +13,13 @@
 }
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
     <div class="grid-relative-container-sm">
-        @for (int i = 1; i <= Items.Count; i++)
+        @for (var i = 1; i <= Items.Count; i++)
         {
             var item = Items.ElementAt(i - 1);
             <Card TextAlignment="TextAlignment.Center">
                 <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments" CommentsSeparator="@CommentsSeparator"
-                                 TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" WatchedList="Watched" WishList="Wish" CommentImage="CommentImage"></PosterComponent>
+                                 TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" WatchedList="Watched" WishList="Wish" CommentImage="CommentImage">
+                </PosterComponent>
             </Card>
         }
     </div>
@@ -28,17 +28,17 @@
 {
     <Div TextAlignment="TextAlignment.Center">
         <Button Color="Color.Secondary" Size="Size.Small" Margin="Margin.Is2" Clicked="LoadMore" Disabled="DisableLoadMore">
-            @WEB.Resources.Button.LoadMore
+            @Button.LoadMore
         </Button>
     </Div>
 }
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
-    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
-    [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] [EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter] [EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter] [EditorRequired] public WishList? Wish { get; set; }
+    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
@@ -47,16 +47,16 @@
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
     [Parameter] public EventCallback<HashSet<MediaDetail>> ItemsChanged { get; set; }
 
-    [Parameter] public bool IsIMDB { get; set; } = false;
+    [Parameter] public bool IsIMDB { get; set; }
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public MediaType? TypeSelected { get; set; }
     [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
     [Parameter] public EnumLists? List { get; set; }
     [Parameter] public string? CommentsSeparator { get; set; } = ",";
-    [Parameter] public bool CommentImage { get; set; } = false;
+    [Parameter] public bool CommentImage { get; set; }
 
     private string? GetTitle => List != null ? List.GetName() : TitleHead;
-    public bool DisableLoadMore { get; set; } = false;
+    public bool DisableLoadMore { get; set; }
     private int currentPage = 1;
 
     // protected override void OnInitialized()
@@ -80,7 +80,7 @@
     {
         if (MediaListApi != null)
         {
-            var result = await MediaListApi.GetList(new(), TypeSelected, StringParameters, List, 1);
+            var result = await MediaListApi.GetList(new HashSet<MediaDetail>(), TypeSelected, StringParameters, List);
             // await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
 
             Items = result.list;
@@ -93,6 +93,7 @@
                 {
                     Items.Add(item);
                 }
+
                 DisableLoadMore = result.lastPage || Items.Count >= 250;
             }
         }
@@ -120,17 +121,18 @@
             {
                 var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
                 items.Add(new MediaDetail
-                    {
-                        tmdb_id = item.id.ToString(),
-                        title = type == MediaType.movie ? item.title : item.name,
-                        plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                        release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
-                        poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
-                        poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
-                        rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
-                        MediaType = type
-                    });
+                {
+                    tmdb_id = item.id.ToString(),
+                    title = type == MediaType.movie ? item.title : item.name,
+                    plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
+                    release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
+                    poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
+                    poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
+                    rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
+                    MediaType = type
+                });
             }
+
             foreach (var item in result?.cast ?? new List<CastByPerson>())
             {
                 var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
@@ -139,17 +141,17 @@
                 if (type == MediaType.tv && item.episode_count < 3) continue;
 
                 items.Add(new MediaDetail
-                    {
-                        tmdb_id = item.id.ToString(),
-                        title = type == MediaType.movie ? item.title : item.name,
-                        plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                        release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
-                        poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
-                        poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
-                        rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
-                        MediaType = type,
-                        comments = type == MediaType.tv ? $"{item.episode_count} episodes" : ""
-                    });
+                {
+                    tmdb_id = item.id.ToString(),
+                    title = type == MediaType.movie ? item.title : item.name,
+                    plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
+                    release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
+                    poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
+                    poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
+                    rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
+                    MediaType = type,
+                    comments = type == MediaType.tv ? $"{item.episode_count} episodes" : ""
+                });
             }
 
             await ModalService.CompleteListPopup($"{media?.title}", Watched, Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet(), ShowPrivateAction, IsAuthenticated);
@@ -171,4 +173,5 @@
             await ItemsChanged.InvokeAsync(Items);
         }
     }
+
 }

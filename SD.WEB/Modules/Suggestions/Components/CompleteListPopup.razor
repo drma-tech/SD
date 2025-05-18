@@ -1,8 +1,7 @@
-﻿@using SD.WEB.Modules.Suggestions.Core
-@using SD.Shared.Models
-@using SD.WEB.Modules.Suggestions.Interface;
-@using SD.WEB.Modules.Profile.Core;
-
+﻿@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Suggestions.Core
+@using SD.WEB.Modules.Suggestions.Interface
+@using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<CompleteListPopup>
 
 @inject ExternalIdApi ExternalIdApi
@@ -14,10 +13,15 @@
     <ModalTitle Size="HeadingSize.Is5">
         @GetTitle
     </ModalTitle>
-    <CloseButton />
+    <CloseButton/>
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list)=>{Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged();})"
+    <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) =>
+                                               {
+                                                   Items = list;
+                                                   ItemsChanged.InvokeAsync(list);
+                                                   StateHasChanged();
+                                               })"
                    IsIMDB="IsIMDB" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
                    StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false"
                    Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated" CommentImage="CommentImage">
@@ -25,30 +29,30 @@
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End" Size="Size.Small">
-        @WEB.Resources.Button.Close
+        @Button.Close
     </Button>
 </ModalFooter>
 
 @code {
-    [Parameter][EditorRequired] public string? TitleHead { get; set; }
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
-    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
-    [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] [EditorRequired] public string? TitleHead { get; set; }
+    [Parameter] [EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter] [EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter] [EditorRequired] public WishList? Wish { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
     [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
 
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
     [Parameter] public EventCallback<HashSet<MediaDetail>> ItemsChanged { get; set; }
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; }
-    [Parameter] public bool IsIMDB { get; set; } = false;
+    [Parameter] public bool IsIMDB { get; set; }
     [Parameter] public MediaType? TypeSelected { get; set; }
     [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
-    [Parameter] public bool CommentImage { get; set; } = false;
+    [Parameter] public bool CommentImage { get; set; }
 
     private string? GetTitle => List != null ? List.GetName() : TitleHead;
 
@@ -56,13 +60,29 @@
     {
         if (List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
 
-        WatchedListApi.DataChanged += (WatchedList? model) => { Watched = model; WatchedChanged.InvokeAsync(model); StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { Watching = model; WatchingChanged.InvokeAsync(model); StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { Wish = model; WishChanged.InvokeAsync(model); StateHasChanged(); };
+        WatchedListApi.DataChanged += model =>
+        {
+            Watched = model;
+            WatchedChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            Watching = model;
+            WatchingChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            Wish = model;
+            WishChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
     }
 
     public async Task HideModal()
     {
         await ModalService.Hide();
     }
+
 }

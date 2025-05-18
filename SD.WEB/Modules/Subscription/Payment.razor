@@ -1,17 +1,14 @@
 ﻿@page "/payment"
-@using SD.Shared.Models.Auth
-@using SD.Shared.Models.Subscription
-@using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Subscription.Core
 
 @inject IJSRuntime JsRuntime
 @inject PaddleConfigurationApi ConfigurationApi
 @inject PaddleSubscriptionApi SubscriptionApi
 
+@using SD.WEB.Modules.Subscription.Core
 @inherits ComponentCore<Payment>
 
 @code {
-    [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }
+    [SupplyParameterFromQuery] [Parameter] public string? _ptxn { get; set; }
 
     protected override async Task LoadDataRender()
     {
@@ -27,4 +24,5 @@
 
         await JsRuntime.InvokeVoidAsync("openCheckout", null, null, locale, null, null, _ptxn);
     }
+
 }

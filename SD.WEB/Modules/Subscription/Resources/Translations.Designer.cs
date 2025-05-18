@@ -160,6 +160,15 @@ namespace SD.WEB.Modules.Subscription.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No ads.
+        /// </summary>
+        public static string NoAds {
+            get {
+                return ResourceManager.GetString("NoAds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Previously Billed.
         /// </summary>
         public static string PreviouslyBilled {
@@ -183,6 +192,15 @@ namespace SD.WEB.Modules.Subscription.Resources {
         public static string RegistrationSuccessful {
             get {
                 return ResourceManager.GetString("RegistrationSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select.
+        /// </summary>
+        public static string Select {
+            get {
+                return ResourceManager.GetString("Select", resourceCulture);
             }
         }
         
@@ -232,7 +250,7 @@ namespace SD.WEB.Modules.Subscription.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to save 17%.
+        ///   Looks up a localized string similar to save 33%.
         /// </summary>
         public static string YearSave {
             get {

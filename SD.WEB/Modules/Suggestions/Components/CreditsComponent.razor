@@ -1,23 +1,22 @@
-﻿@using SD.Shared.Models.List.Tmdb;
-@using SD.WEB.Modules.Suggestions.Core;
+﻿@using SD.Shared.Models.List.Tmdb
+@using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Resources
-
 @inherits ComponentCore<CreditsComponent>
 
 @inject TmdbCreditApi TmdbCreditApi
 
-<RenderControl Core="Core" Model="Credits" ExpressionEmpty="@((Credits? obj)=>obj==null)">
+<RenderControl Core="Core" Model="Credits" ExpressionEmpty="@((Credits? obj) => obj == null)">
     @if (type == MediaType.movie)
     {
         var directors = Credits?.crew.Where(w => w.job == "Director").ToList() ?? new List<Crew>();
         if (directors.Any())
         {
-            <Divider DividerType="DividerType.TextContent" Text="@Translations.Directing" Background="Background.Secondary" Style="opacity: .75" />
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.Directing" Background="Background.Secondary" Style="opacity: .75"/>
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in directors)
                 {
                     <Column ColumnSize="ColumnSize.Is2">
-                        <Blazorise.Link Clicked="@(async() => await OpenCompleteList(item))" Style="cursor: pointer;">
+                        <Blazorise.Link Clicked="@(async () => await OpenCompleteList(item))" Style="cursor: pointer;">
                             @if (string.IsNullOrEmpty(item.profile_path))
                             {
                                 <Image Source="images/no-user.png" Text="@item.original_name" Style="width: 100%" alt="@item.original_name"></Image>
@@ -35,15 +34,16 @@
                 }
             </Row>
         }
+
         var writers = Credits?.crew.Where(w => w.job == "Writer" || w.job == "Screenplay" || w.job == "Author" || w.job == "Story").ToList() ?? new List<Crew>();
         if (writers.Any())
         {
-            <Divider DividerType="DividerType.TextContent" Text="@Translations.Writing" Background="Background.Secondary" Style="opacity: .75" />
+            <Divider DividerType="DividerType.TextContent" Text="@Translations.Writing" Background="Background.Secondary" Style="opacity: .75"/>
             <Row HorizontalGutter="4" VerticalGutter="4">
                 @foreach (var item in writers)
                 {
                     <Column ColumnSize="ColumnSize.Is2">
-                        <Blazorise.Link Clicked="@(async() => await OpenCompleteList(item))" Style="cursor: pointer;">
+                        <Blazorise.Link Clicked="@(async () => await OpenCompleteList(item))" Style="cursor: pointer;">
                             @if (string.IsNullOrEmpty(item.profile_path))
                             {
                                 <Image Source="images/no-user.png" Text="@item.original_name" Style="width: 100%" alt="@item.original_name"></Image>
@@ -62,12 +62,12 @@
             </Row>
         }
     }
-    <Divider DividerType="DividerType.TextContent" Text="@Translations.Cast" Background="Background.Secondary" Style="opacity: .75" />
+    <Divider DividerType="DividerType.TextContent" Text="@Translations.Cast" Background="Background.Secondary" Style="opacity: .75"/>
     <Row HorizontalGutter="4" VerticalGutter="4">
         @foreach (var item in Credits?.cast.OrderBy(o => o.order).Take(24) ?? new List<Cast>())
         {
             <Column ColumnSize="ColumnSize.Is2">
-                <Blazorise.Link Clicked="@(async() => await OpenCompleteList(item))" Style="cursor: pointer;">
+                <Blazorise.Link Clicked="@(async () => await OpenCompleteList(item))" Style="cursor: pointer;">
                     @if (string.IsNullOrEmpty(item.profile_path))
                     {
                         <Image Source="images/no-user.png" Text="@item.original_name" Style="width: 100%" alt="@item.original_name"></Image>
@@ -87,11 +87,11 @@
 </RenderControl>
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] [EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter] [EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter] [EditorRequired] public WishList? WishList { get; set; }
+    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public string? tmdb_id { get; set; }
     [Parameter] public MediaType? type { get; set; }
@@ -117,16 +117,16 @@
             {
                 var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
                 items.Add(new MediaDetail
-                    {
-                        tmdb_id = item.id.ToString(),
-                        title = type == MediaType.movie ? item.title : item.name,
-                        plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
-                        release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
-                        poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
-                        poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
-                        rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
-                        MediaType = type
-                    });
+                {
+                    tmdb_id = item.id.ToString(),
+                    title = type == MediaType.movie ? item.title : item.name,
+                    plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
+                    release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
+                    poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
+                    poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
+                    rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
+                    MediaType = type
+                });
             }
 
             await ModalService.CompleteListPopup($"{crew.original_name} ({crew.job})", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), ShowPrivateAction, IsAuthenticated);
@@ -152,17 +152,17 @@
                 if (type == MediaType.tv && item.episode_count < 3) continue;
 
                 items.Add(new MediaDetail
-                    {
-                        tmdb_id = item.id.ToString(),
-                        title = type == MediaType.movie ? item.title : item.name,
-                        plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
-                        release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
-                        poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
-                        poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
-                        rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
-                        MediaType = type,
-                        comments = type == MediaType.tv ? $"{item.episode_count} episodes" : ""
-                    });
+                {
+                    tmdb_id = item.id.ToString(),
+                    title = type == MediaType.movie ? item.title : item.name,
+                    plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
+                    release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
+                    poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
+                    poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
+                    rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
+                    MediaType = type,
+                    comments = type == MediaType.tv ? $"{item.episode_count} episodes" : ""
+                });
             }
 
             await ModalService.CompleteListPopup($"{cast.original_name}", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), ShowPrivateAction, IsAuthenticated);
@@ -172,4 +172,5 @@
             ex.ProcessException(Toast, Logger);
         }
     }
+
 }

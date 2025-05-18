@@ -1,7 +1,6 @@
-﻿namespace SD.Shared.Models
+﻿namespace SD.Shared.Models;
+
+public class Settings
 {
-    public class Settings
-    {
-        public bool ShowAdSense { get; set; }
-    }
+    public bool ShowAdSense { get; set; }
 }

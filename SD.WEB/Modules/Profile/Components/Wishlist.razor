@@ -11,7 +11,7 @@
             @if (Items.Empty())
             {
                 <span onclick="@($"animationShake('.{(MediaType == MediaType.movie ? "classWishlistMovie" : "classWishlistShow")}')")">
-                    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" title="@GlobalTranslations.SeeAllItems"  Class="ms-1">
+                    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" title="@GlobalTranslations.SeeAllItems" Class="ms-1">
                         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
                     </Button>
                 </span>
@@ -23,11 +23,11 @@
             }
             else
             {
-                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async()=>await OpenCompleteList())"
+                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async () => await OpenCompleteList())"
                         title="@GlobalTranslations.SeeAllItems" Class="ms-1">
                     <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
                 </Button>
-                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Clicked="@(()=>Share($"{Navigation.BaseUri}shared/wishlist/{MediaType}/{UserId}"))"
+                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Clicked="@(() => Share($"{Navigation.BaseUri}shared/wishlist/{MediaType}/{UserId}"))"
                         title="@GlobalTranslations.Share">
                     <Blazorise.Icon Name="FontAwesomeIcons.Share"></Blazorise.Icon>
                 </Button>
@@ -45,8 +45,9 @@
                 var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                 <Card Style="max-width: 100px;" TextAlignment="TextAlignment.Center">
                     <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType"
-                                     Clicked="@(async()=>await ShowMediaPopup(item.id, item.name))" ShowWished="false"
-                                     WatchedList="Watched" WishList="Wish"></PosterComponent>
+                                     Clicked="@(async () => await ShowMediaPopup(item.id, item.name))" ShowWished="false"
+                                     WatchedList="Watched" WishList="Wish">
+                    </PosterComponent>
                 </Card>
             }
         </div>
@@ -61,8 +62,9 @@
                     <div class="swiper-slide">
                         <Card>
                             <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType"
-                                             Clicked="@(async()=>await ShowMediaPopup(item.id, item.name))" ShowWished="false"
-                                             WatchedList="Watched" WishList="Wish"></PosterComponent>
+                                             Clicked="@(async () => await ShowMediaPopup(item.id, item.name))" ShowWished="false"
+                                             WatchedList="Watched" WishList="Wish">
+                            </PosterComponent>
                         </Card>
                     </div>
                 }
@@ -74,22 +76,22 @@
 </RenderControl>
 
 @code {
-    [Parameter][EditorRequired] public RenderControlCore<WishList?> Core { get; set; } = new();
-    [Parameter][EditorRequired] public MediaType MediaType { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
-    [Parameter][EditorRequired] public bool ShowHeader { get; set; }
-    [Parameter][EditorRequired] public bool FullScreen { get; set; }
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
-    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
-    [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public Func<WishList?, bool> ExpressionEmpty { get; set; } = default!;
-    [Parameter][EditorRequired] public string? UserId { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] [EditorRequired] public RenderControlCore<WishList?> Core { get; set; } = new();
+    [Parameter] [EditorRequired] public MediaType MediaType { get; set; }
+    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter] [EditorRequired] public bool ShowHeader { get; set; }
+    [Parameter] [EditorRequired] public bool FullScreen { get; set; }
+    [Parameter] [EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter] [EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter] [EditorRequired] public WishList? Wish { get; set; }
+    [Parameter] [EditorRequired] public Func<WishList?, bool> ExpressionEmpty { get; set; } = default!;
+    [Parameter] [EditorRequired] public string? UserId { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
     [Parameter] public string? CustomTitle { get; set; }
 
     private HashSet<WishListItem> Items => MediaType == MediaType.movie ? Wish?.Movies ?? new HashSet<WishListItem>() : Wish?.Shows ?? new HashSet<WishListItem>();
 
-    private int GetTotalItems => FullScreen ? SubscriptionHelper.GetRestrictions(AccountProduct.Premium).Wishlist : SubscriptionHelper.GetRestrictions(AccountProduct.Basic).Wishlist;
+    private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Wishlist : AccountProduct.Basic.GetRestrictions().Wishlist;
     private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? Translations.MyMovieWishlist : Translations.MyShowWishlist);
 
     private readonly string SwiperId = $"swiper-{Guid.NewGuid()}";
@@ -124,4 +126,5 @@
     {
         await JsRuntime.InvokeVoidAsync("share", link);
     }
+
 }

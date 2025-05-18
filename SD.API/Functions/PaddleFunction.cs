@@ -1,127 +1,139 @@
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
 using SD.Shared.Models.Auth;
 using SD.Shared.Models.Subscription;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 
-namespace SD.API.Functions
+namespace SD.API.Functions;
+
+public class PaddleFunction(CosmosRepository repo, IConfiguration configuration)
 {
-    public class PaddleFunction(CosmosRepository repo, IConfiguration configuration)
+    [Function("GetSubscription")]
+    public async Task<RootSubscription?> GetSubscription(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/subscription")]
+        HttpRequestData req, CancellationToken cancellationToken)
     {
-        [Function("GetSubscription")]
-        public async Task<RootSubscription?> GetSubscription(
-           [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/subscription")] HttpRequestData req, CancellationToken cancellationToken)
+        try
         {
-            try
-            {
-                var id = req.GetQueryParameters()["id"];
+            var id = req.GetQueryParameters()["id"];
 
-                var endpoint = configuration.GetValue<string>("Paddle:Endpoint");
-                var key = configuration.GetValue<string>("Paddle:Key");
+            var endpoint = configuration.GetValue<string>("Paddle:Endpoint");
+            var key = configuration.GetValue<string>("Paddle:Key");
 
-                ApiStartup.HttpClientPaddle.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
+            ApiStartup.HttpClientPaddle.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", key);
 
-                using var request = new HttpRequestMessage(HttpMethod.Get, $"{endpoint}subscriptions/{id}");
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"{endpoint}subscriptions/{id}");
 
-                var response = await ApiStartup.HttpClientPaddle.SendAsync(request, cancellationToken);
+            var response = await ApiStartup.HttpClientPaddle.SendAsync(request, cancellationToken);
 
-                if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
+            if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
 
-                return await response.Content.ReadFromJsonAsync<RootSubscription>(cancellationToken: cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                req.ProcessException(ex);
-                throw;
-            }
+            return await response.Content.ReadFromJsonAsync<RootSubscription>(cancellationToken);
         }
-
-        [Function("GetSubscriptionUpdate")]
-        public async Task<RootSubscription?> GetSubscriptionUpdate(
-          [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/subscription/update")] HttpRequestData req, CancellationToken cancellationToken)
+        catch (Exception ex)
         {
-            try
-            {
-                var id = req.GetQueryParameters()["id"];
-
-                var endpoint = configuration.GetValue<string>("Paddle:Endpoint");
-                var key = configuration.GetValue<string>("Paddle:Key");
-
-                ApiStartup.HttpClientPaddle.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
-
-                using var request = new HttpRequestMessage(HttpMethod.Get, $"{endpoint}subscriptions/{id}/update-payment-method-transaction");
-
-                var response = await ApiStartup.HttpClientPaddle.SendAsync(request, cancellationToken);
-
-                if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
-
-                return await response.Content.ReadFromJsonAsync<RootSubscription>(cancellationToken: cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                req.ProcessException(ex);
-                throw;
-            }
+            req.ProcessException(ex);
+            throw;
         }
+    }
 
-        [Function("PostSubscription")]
-        public async Task PostSubscription(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "public/paddle/subscription")] HttpRequestData req, CancellationToken cancellationToken)
+    [Function("GetSubscriptionUpdate")]
+    public async Task<RootSubscription?> GetSubscriptionUpdate(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/subscription/update")]
+        HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
         {
-            try
-            {
-                var validSignature = await req.ValidPaddleSignature(configuration["Paddle:Signature"], cancellationToken);
+            var id = req.GetQueryParameters()["id"];
 
-                if (!validSignature) throw new UnhandledException("wrong paddle signature");
+            var endpoint = configuration.GetValue<string>("Paddle:Endpoint");
+            var key = configuration.GetValue<string>("Paddle:Key");
 
-                var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new UnhandledException("body null");
-                if (body.data == null) throw new UnhandledException("body.data null");
+            ApiStartup.HttpClientPaddle.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", key);
 
-                //todo: find a better way to wait for the ClientePaddle to be saved or save before payment
-                await Task.Delay(1000, cancellationToken);
+            using var request = new HttpRequestMessage(HttpMethod.Get,
+                $"{endpoint}subscriptions/{id}/update-payment-method-transaction");
 
-                var result = await repo.Query<ClientePrincipal>(x => x.ClientePaddle != null && x.ClientePaddle.CustomerId == body.data.customer_id, DocumentType.Principal, cancellationToken) ?? throw new UnhandledException("ClientePrincipal null");
-                var client = result.FirstOrDefault() ?? throw new UnhandledException($"client null - customer_id:{body.data.customer_id}");
-                if (client.ClientePaddle == null) throw new UnhandledException("client.ClientePaddle null");
+            var response = await ApiStartup.HttpClientPaddle.SendAsync(request, cancellationToken);
 
-                client.ClientePaddle.SubscriptionId = body.data.id;
-                client.ClientePaddle.IsPaidUser = (body.data.status is "active" or "trialing");
+            if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
 
-                await repo.Upsert(client, cancellationToken);
-                req.LogWarning($"{body.data.id} - {body.data.status}");
-            }
-            catch (Exception ex)
-            {
-                req.ProcessException(ex);
-                throw;
-            }
+            return await response.Content.ReadFromJsonAsync<RootSubscription>(cancellationToken);
         }
-
-        [Function("Configurations")]
-        public Configurations Configurations([HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/configurations")] HttpRequestData req)
+        catch (Exception ex)
         {
-            try
-            {
-                var config = new Configurations
-                {
-                    Token = configuration.GetValue<string>("Paddle:Token"),
-                    ProductStandard = configuration.GetValue<string>("Paddle:Standard:Product"),
-                    ProductPremium = configuration.GetValue<string>("Paddle:Premium:Product"),
-                    PriceStandardMonth = configuration.GetValue<string>("Paddle:Standard:PriceMonth"),
-                    PriceStandardYear = configuration.GetValue<string>("Paddle:Standard:PriceYear"),
-                    PricePremiumMonth = configuration.GetValue<string>("Paddle:Premium:PriceMonth"),
-                    PricePremiumYear = configuration.GetValue<string>("Paddle:Premium:PriceYear")
-                };
+            req.ProcessException(ex);
+            throw;
+        }
+    }
 
-                return config;
-            }
-            catch (Exception ex)
+    [Function("PostSubscription")]
+    public async Task PostSubscription(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "public/paddle/subscription")]
+        HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var validSignature = await req.ValidPaddleSignature(configuration["Paddle:Signature"], cancellationToken);
+
+            if (!validSignature) throw new UnhandledException("wrong paddle signature");
+
+            var body = await req.GetPublicBody<RootEvent>(cancellationToken) ??
+                       throw new UnhandledException("body null");
+            if (body.data == null) throw new UnhandledException("body.data null");
+
+            //todo: find a better way to wait for the ClientePaddle to be saved or save before payment
+            await Task.Delay(1000, cancellationToken);
+
+            var result =
+                await repo.Query<ClientePrincipal>(
+                    x => x.ClientePaddle != null && x.ClientePaddle.CustomerId == body.data.customer_id,
+                    DocumentType.Principal, cancellationToken) ?? throw new UnhandledException("ClientePrincipal null");
+            var client = result.FirstOrDefault() ??
+                         throw new UnhandledException($"client null - customer_id:{body.data.customer_id}");
+            if (client.ClientePaddle == null) throw new UnhandledException("client.ClientePaddle null");
+
+            client.ClientePaddle.SubscriptionId = body.data.id;
+            client.ClientePaddle.IsPaidUser = body.data.status is "active" or "trialing";
+
+            await repo.Upsert(client, cancellationToken);
+            req.LogWarning($"{body.data.id} - {body.data.status}");
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            throw;
+        }
+    }
+
+    [Function("Configurations")]
+    public Configurations Configurations(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/configurations")]
+        HttpRequestData req)
+    {
+        try
+        {
+            var config = new Configurations
             {
-                req.ProcessException(ex);
-                throw;
-            }
+                Token = configuration.GetValue<string>("Paddle:Token"),
+                ProductStandard = configuration.GetValue<string>("Paddle:Standard:Product"),
+                ProductPremium = configuration.GetValue<string>("Paddle:Premium:Product"),
+                PriceStandardMonth = configuration.GetValue<string>("Paddle:Standard:PriceMonth"),
+                PriceStandardYear = configuration.GetValue<string>("Paddle:Standard:PriceYear"),
+                PricePremiumMonth = configuration.GetValue<string>("Paddle:Premium:PriceMonth"),
+                PricePremiumYear = configuration.GetValue<string>("Paddle:Premium:PriceYear")
+            };
+
+            return config;
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            throw;
         }
     }
 }

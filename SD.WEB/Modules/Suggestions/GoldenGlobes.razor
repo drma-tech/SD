@@ -1,11 +1,10 @@
 ﻿@page "/suggestions/golden-globes"
-<SeoHeader Title="Suggestions | Golden Globe Awards" Keywords="@(new []{"Golden Globe Awards"})" Url="/suggestions/golden-globes"></SeoHeader>
-@inherits PageCore<GoldenGlobes>
-
+<SeoHeader Title="Suggestions | Golden Globe Awards" Keywords="@(new[] { "Golden Globe Awards" })" Url="/suggestions/golden-globes"></SeoHeader>
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Provider.Resources
-@using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Components
+@using SD.WEB.Modules.Suggestions.Core
+@inherits PageCore<GoldenGlobes>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
@@ -13,7 +12,7 @@
 
 <HeadPage Title="Golden Globes" ImageSource="logo/golden-globes.png" Text="@Translations.golden_desc" Link="https://www.goldenglobes.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
-@if (Settings != null && Settings.ShowAdSense)
+@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
@@ -24,14 +23,19 @@
 }
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureDrama" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureMusicalComedy" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureAnimated" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MediaList>
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaList>
 
 @code {
     public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
+
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
@@ -40,11 +44,24 @@
     {
         await base.OnInitializedAsync();
 
-        WatchedListApi.DataChanged += (WatchedList? model) => { WatchedList = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += (WatchingList? model) => { WatchingList = model; StateHasChanged(); };
-        WishListApi.DataChanged += (WishList? model) => { WishList = model; StateHasChanged(); };
+        WatchedListApi.DataChanged += model =>
+        {
+            WatchedList = model;
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            WatchingList = model;
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            WishList = model;
+            StateHasChanged();
+        };
 
         Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
     protected override async Task LoadDataRender()
@@ -53,4 +70,5 @@
         WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
         WishList = await WishListApi.Get(IsAuthenticated, null);
     }
+
 }

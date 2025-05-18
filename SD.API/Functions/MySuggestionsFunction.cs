@@ -1,88 +1,86 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
-namespace SD.API.Functions
+namespace SD.API.Functions;
+
+public class MySuggestionsFunction(CosmosRepository repo)
 {
-    public class MySuggestionsFunction(CosmosRepository repo)
+    [Function("MySuggestionsGet")]
+    public async Task<HttpResponseData?> MySuggestionsGet(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "my-suggestions/get")]
+        HttpRequestData req, CancellationToken cancellationToken)
     {
-        [Function("MySuggestionsGet")]
-        public async Task<HttpResponseData?> MySuggestionsGet(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "my-suggestions/get")] HttpRequestData req, CancellationToken cancellationToken)
+        try
         {
-            try
-            {
-                var userId = req.GetUserId();
+            var userId = req.GetUserId();
 
-                var doc = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
+            var doc = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
 
-                return await req.CreateResponse(doc, ttlCache.one_day, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                req.ProcessException(ex);
-                throw;
-            }
+            return await req.CreateResponse(doc, ttlCache.one_day, cancellationToken);
         }
-
-        [Function("MySuggestionsSync")]
-        public async Task<MySuggestions?> MySuggestionsSync(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-suggestions/sync/{MediaType}")] HttpRequestData req,
-            string MediaType, CancellationToken cancellationToken)
+        catch (Exception ex)
         {
-            try
-            {
-                var userId = req.GetUserId();
-                if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
-
-                var obj = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
-                var body = await req.GetPublicBody<MySuggestions>(cancellationToken);
-
-                if (obj == null)
-                {
-                    obj = body;
-
-                    obj.Initialize(userId);
-                }
-                else
-                {
-                    obj = body;
-                }
-
-                var type = Enum.Parse<MediaType>(MediaType);
-
-                if (type == Shared.Enums.MediaType.movie)
-                {
-                    obj.MovieSyncDate = DateTime.Now;
-                }
-                else
-                {
-                    obj.ShowSyncDate = DateTime.Now;
-                }
-
-                return await repo.Upsert(obj, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                req.ProcessException(ex);
-                throw;
-            }
+            req.ProcessException(ex);
+            throw;
         }
+    }
 
-        [Function("MySuggestionsAdd")]
-        public async Task<MySuggestions?> MySuggestionsAdd(
-            [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-suggestions/add")] HttpRequestData req, CancellationToken cancellationToken)
+    [Function("MySuggestionsSync")]
+    public async Task<MySuggestions?> MySuggestionsSync(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-suggestions/sync/{MediaType}")]
+        HttpRequestData req,
+        string MediaType, CancellationToken cancellationToken)
+    {
+        try
         {
-            try
-            {
-                var body = await req.GetBody<MySuggestions>(cancellationToken);
+            var userId = req.GetUserId();
+            if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-                return await repo.Upsert(body, cancellationToken);
-            }
-            catch (Exception ex)
+            var obj = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
+            var body = await req.GetPublicBody<MySuggestions>(cancellationToken);
+
+            if (obj == null)
             {
-                req.ProcessException(ex);
-                throw;
+                obj = body;
+
+                obj.Initialize(userId);
             }
+            else
+            {
+                obj = body;
+            }
+
+            var type = Enum.Parse<MediaType>(MediaType);
+
+            if (type == Shared.Enums.MediaType.movie)
+                obj.MovieSyncDate = DateTime.Now;
+            else
+                obj.ShowSyncDate = DateTime.Now;
+
+            return await repo.Upsert(obj, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            throw;
+        }
+    }
+
+    [Function("MySuggestionsAdd")]
+    public async Task<MySuggestions?> MySuggestionsAdd(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-suggestions/add")]
+        HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var body = await req.GetBody<MySuggestions>(cancellationToken);
+
+            return await repo.Upsert(body, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            throw;
         }
     }
 }

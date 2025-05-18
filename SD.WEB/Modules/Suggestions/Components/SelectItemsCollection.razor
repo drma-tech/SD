@@ -1,25 +1,25 @@
-﻿@using SD.Shared.Models;
+﻿@using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<SelectItemsCollection>
 
 <ModalHeader>
     <ModalTitle>Quais itens já assistiu?</ModalTitle>
-    <CloseButton />
+    <CloseButton/>
 </ModalHeader>
 <ModalBody MaxHeight="70">
     @foreach (var item in ItemsCollection.OrderBy(o => o.release_date ?? DateTime.MaxValue))
     {
-        <Check TValue="bool" Checked="@SelectedItems.Any(a=>a==item.id)" CheckedChanged="(bool value)=>CheckedChanged(item.id, value)">@item.title (@item.release_date?.Year)</Check>
+        <Check TValue="bool" Checked="@SelectedItems.Any(a => a == item.id)" CheckedChanged="(bool value) => CheckedChanged(item.id, value)">@item.title (@item.release_date?.Year)</Check>
     }
 </ModalBody>
 <ModalFooter>
     <Button Color="Color.Primary" Clicked="SelectAll">
         All
     </Button>
-    <Button Color="Color.Primary" Clicked="@Confirm" Disabled="(SelectedItems.Empty())">
-        @WEB.Resources.Button.Ok
+    <Button Color="Color.Primary" Clicked="@Confirm" Disabled="SelectedItems.Empty()">
+        @Button.Ok
     </Button>
     <Button Color="Color.Secondary" Clicked="@HideModal" Float="Float.End">
-        @WEB.Resources.Button.Cancel
+        @Button.Cancel
     </Button>
 </ModalFooter>
 
@@ -64,4 +64,5 @@
     {
         await ModalService.Hide();
     }
+
 }

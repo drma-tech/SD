@@ -1,9 +1,8 @@
-﻿namespace SD.Shared.Core.Models
+﻿namespace SD.Shared.Core.Models;
+
+public abstract class LogDocument : CosmosDocument
 {
-    public abstract class LogDocument : CosmosDocument
+    protected LogDocument(string id) : base(id)
     {
-        protected LogDocument(string id) : base(id)
-        {
-        }
     }
 }
