@@ -88,8 +88,13 @@ function changeDarkMode() {
     theme = (theme == "light" ? "dark" : "light");
     SetLocalStorage('theme', theme);
 
-    document.body.setAttribute("data-bs-theme", theme);
+    document.documentElement.setAttribute("data-bs-theme", theme);
 }
+
+(function() {
+    let theme = GetLocalStorage('theme') || 'light';
+    document.documentElement.setAttribute('data-bs-theme', theme);
+})();
 
 function animationShake(cssClass) {
     const alertBoxes = document.querySelectorAll(cssClass);

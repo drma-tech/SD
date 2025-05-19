@@ -17,23 +17,23 @@
         </BarBrand>
         <BarMenu Style="flex-basis: unset !important;" Class="d-max-768-block d-min-768-contents">
             <BarStart Style="flex-flow: row;" Display="Display.None.Flex.Row.OnWidescreen">
-                <BarItem Margin="Margin.Is2.FromEnd">
-                    <BarLink To="/" CustomMatch="@IsHomeActive" Title="@Menu.Home">
+                <BarItem Margin="Margin.Is1.FromEnd">
+                    <BarLink To="/" CustomMatch="@IsHomeActive" Title="@Menu.Home" Class="menu-contrast">
                         <BarIcon IconName="FontAwesomeIcons.Home"/> @Menu.Home
                     </BarLink>
                 </BarItem>
-                <BarItem Margin="Margin.Is2.FromEnd">
-                    <BarLink To="/profile" Match="Match.Prefix" Title="@Menu.Profile">
+                <BarItem Margin="Margin.Is1.FromEnd">
+                    <BarLink To="/profile" Match="Match.Prefix" Title="@Menu.Profile" Class="menu-contrast">
                         <BarIcon IconName="FontAwesomeIcons.UserCircle"/> @Menu.Profile
                     </BarLink>
                 </BarItem>
-                <BarItem Margin="Margin.Is2.FromEnd">
-                    <BarLink To="/providers" Match="Match.Prefix" Title="@Menu.Platforms">
+                <BarItem Margin="Margin.Is1.FromEnd">
+                    <BarLink To="/providers" Match="Match.Prefix" Title="@Menu.Platforms" Class="menu-contrast">
                         <BarIcon IconName="FontAwesomeIcons.PlayCircle"/> @Menu.Platforms
                     </BarLink>
                 </BarItem>
-                <BarItem Margin="Margin.Is2.FromEnd">
-                    <BarLink To="/suggestions" Match="Match.Prefix" Title="@Menu.Collections">
+                <BarItem Margin="Margin.Is1.FromEnd">
+                    <BarLink To="/suggestions" Match="Match.Prefix" Title="@Menu.Collections" Class="menu-contrast">
                         <BarIcon IconName="FontAwesomeIcons.LayerGroup"/> @Menu.Collections
                     </BarLink>
                 </BarItem>

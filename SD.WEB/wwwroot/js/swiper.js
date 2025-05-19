@@ -107,5 +107,21 @@ window.initGrid = (id) => {
             [1600 - margin]: { slidesPerView: Math.floor(1600 / posterSize) },
             [2000 - margin]: { slidesPerView: Math.floor(2000 / posterSize) },
         },
+        on: {
+            init: function () {
+                setTimeout(function () {
+                    let slides = el.querySelectorAll('.swiper-slide');
+                    if (slides.length > 0) {
+                        let maxHeight = 0;
+                        slides.forEach(slide => {
+                            slide.style.height = 'auto';
+                            let h = slide.offsetHeight;
+                            if (h > maxHeight) maxHeight = h;
+                        });
+                        el.style.height = ((maxHeight * 2) + 8) + 'px';
+                    }
+                }, 100);
+            }
+        }
     });
 };

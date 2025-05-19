@@ -11,7 +11,7 @@
     </Button>
 </HeaderComponent>
 <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-    <div id="@_gallerySwiperId" class="swiper" style="height: 352px;">
+    <div id="@_gallerySwiperId" class="swiper">
         <div class="swiper-wrapper">
             @foreach (var item in TrailerModel?.Data?.Items ?? [])
             {
