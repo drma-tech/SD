@@ -3,12 +3,8 @@ using Newtonsoft.Json;
 
 namespace SD.Shared.Models;
 
-public class MySuggestions : PrivateMainDocument
+public class MySuggestions() : PrivateMainDocument(DocumentType.MySuggestions)
 {
-    public MySuggestions() : base(DocumentType.MySuggestions)
-    {
-    }
-
     public DateTime? MovieSyncDate { get; set; }
     public DateTime? ShowSyncDate { get; set; }
 

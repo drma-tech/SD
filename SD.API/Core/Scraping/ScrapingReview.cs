@@ -1,21 +1,33 @@
-﻿using System.Text.RegularExpressions;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using Newtonsoft.Json;
 using SD.Shared.Models.Reviews.MetaCriticSite;
+using System.Text.RegularExpressions;
 
 namespace SD.API.Core.Scraping;
 
 public class ScrapingReview
 {
-    private readonly string tv_url = "https://www.metacritic.com/tv/{0}/critic-reviews/?sort-by=Recently%20Added";
+    private const string TvUrl = "https://www.metacritic.com/tv/{0}/critic-reviews/?sort-by=Recently%20Added";
 
-    public RootMetacriticReview GetTvReviews(string? tv_name, int year)
+    public RootMetacriticReview GetTvReviews(string? tvName, int year)
     {
-        var result = ProcessHtml(string.Format(tv_url, tv_name));
+        if (tvName == null) return new RootMetacriticReview();
 
-        if (result == null) result = ProcessHtml(string.Format(tv_url, $"{tv_name}-{year}"));
+        var result = ProcessHtml(string.Format(TvUrl, tvName));
+
+        result ??= ProcessHtml(string.Format(TvUrl, $"{tvName}-{year}"));
+        result ??= ProcessHtml(string.Format(TvUrl, CleanTitle(tvName)));
+        result ??= ProcessHtml(string.Format(TvUrl, $"{CleanTitle(tvName)}-{year}"));
 
         return result ?? new RootMetacriticReview();
+    }
+
+    private static string CleanTitle(string tvName)
+    {
+        var wordsToRemove = new[] { "and", "the", "of", "a", "an", "or", "in", "on", "at", "for", "with" };
+        var cleanedName = string.Join("-", tvName.Split('-').Where(w => !wordsToRemove.Contains(w.ToLower()) && !string.IsNullOrWhiteSpace(w)));
+        cleanedName = Regex.Replace(cleanedName, "-+", "-").TrimEnd('.');
+        return cleanedName;
     }
 
     private static RootMetacriticReview? ProcessHtml(string path)
@@ -24,18 +36,18 @@ public class ScrapingReview
         var doc = web.Load(path);
         var htmlBody = doc.Text;
 
-        var startIndex = htmlBody.IndexOf("j.components=") + "j.components=".Length;
-        var endIndex = htmlBody.IndexOf(";j.footer=", startIndex);
+        var startIndex = htmlBody.IndexOf("j.components=", StringComparison.Ordinal) + "j.components=".Length;
+        var endIndex = htmlBody.IndexOf(";j.footer=", startIndex, StringComparison.Ordinal);
 
         if (startIndex < 0 || endIndex < 0)
         {
-            startIndex = htmlBody.IndexOf("k.components=") + "k.components=".Length;
-            endIndex = htmlBody.IndexOf(";k.footer=", startIndex);
+            startIndex = htmlBody.IndexOf("k.components=", StringComparison.Ordinal) + "k.components=".Length;
+            endIndex = htmlBody.IndexOf(";k.footer=", startIndex, StringComparison.Ordinal);
 
             if (startIndex < 0 || endIndex < 0)
             {
-                startIndex = htmlBody.IndexOf("l.components=") + "l.components=".Length;
-                endIndex = htmlBody.IndexOf(";l.footer=", startIndex);
+                startIndex = htmlBody.IndexOf("l.components=", StringComparison.Ordinal) + "l.components=".Length;
+                endIndex = htmlBody.IndexOf(";l.footer=", startIndex, StringComparison.Ordinal);
 
                 if (startIndex < 0 || endIndex < 0) return null;
             }

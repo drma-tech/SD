@@ -9,7 +9,7 @@ public static class ApiStartup
         { AutomaticDecompression = DecompressionMethods.GZip });
 
     public static HttpClient HttpClientPaddle { get; } = new();
-    public static CosmosClient CosmosClient { get; private set; } = default!;
+    public static CosmosClient CosmosClient { get; private set; } = null!;
 
     public static void Startup(string conn)
     {

@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using System.Globalization;
+using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 using SD.Shared.Models.List;
 
@@ -6,67 +7,67 @@ namespace SD.API.Core.Scraping;
 
 public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
 {
-    private readonly string imdb_rating_url = "https://www.imdb.com/title/{0}/ratings";
-    private readonly string imdb_url = "https://www.imdb.com/title/{0}";
-    private readonly string metacritic_movie_url = "https://www.metacritic.com/movie/{0}";
-    private readonly string metacritic_tv_url = "https://www.metacritic.com/tv/{0}";
-    private readonly string trakt_movie_url = "https://trakt.tv/movies/{0}-{1}";
-    private readonly string trakt_show_url = "https://trakt.tv/shows/{0}";
+    private const string ImdbRatingUrl = "https://www.imdb.com/title/{0}/ratings";
+    private const string ImdbUrl = "https://www.imdb.com/title/{0}";
+    private const string MetacriticMovieUrl = "https://www.metacritic.com/movie/{0}";
+    private const string MetacriticTvUrl = "https://www.metacritic.com/tv/{0}";
+    private const string TraktMovieUrl = "https://trakt.tv/movies/{0}-{1}";
+    private const string TraktShowUrl = "https://trakt.tv/shows/{0}";
 
-    public Ratings GetMovieData(string? imdb_id, string? tmdb_rating, string? title, string? year)
+    public Ratings GetMovieData(string? imdbId, string? tmdbRating, string? title, string? year)
     {
-        var title_meta = title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-")
+        var titleMeta = title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-")
             .ToLower();
-        var title_trakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-")
+        var titleTrakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-")
             .Replace("--", "-").Replace("--", "-").ToLower();
 
         var data = new Ratings
         {
-            imdbId = imdb_id,
+            imdbId = imdbId,
             type = MediaType.movie,
-            tmdb = tmdb_rating,
-            metacritic = ratingApiRoot?.result?.ratings?.Metacritic?.audience?.rating.ToString(),
-            imdb = ratingApiRoot?.result?.ratings?.IMDb?.audience?.rating.ToString(),
-            rottenTomatoes = ratingApiRoot?.result?.ratings?.RottenTomatoes?.audience?.rating.ToString(),
-            filmAffinity = ratingApiRoot?.result?.ratings?.FilmAffinity?.audience?.rating.ToString()
+            tmdb = tmdbRating,
+            metacritic = ratingApiRoot?.result?.ratings?.Metacritic?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            imdb = ratingApiRoot?.result?.ratings?.IMDb?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            rottenTomatoes = ratingApiRoot?.result?.ratings?.RottenTomatoes?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            filmAffinity = ratingApiRoot?.result?.ratings?.FilmAffinity?.audience?.rating.ToString(CultureInfo.InvariantCulture)
         };
 
-        if (imdb_id.NotEmpty() && data.imdb.Empty()) ProcessMovieImdb(data, string.Format(imdb_rating_url, imdb_id));
+        if (imdbId.NotEmpty() && data.imdb.Empty()) ProcessMovieImdb(data, string.Format(ImdbRatingUrl, imdbId));
         if (data.metacritic.Empty())
-            ProcessMovieMetacritic(data, string.Format(metacritic_movie_url, title_meta), year);
-        if (data.trakt.Empty()) ProcessTrack(data, string.Format(trakt_movie_url, title_trakt, year), year);
+            ProcessMovieMetacritic(data, string.Format(MetacriticMovieUrl, titleMeta), year);
+        if (data.trakt.Empty()) ProcessTrack(data, string.Format(TraktMovieUrl, titleTrakt, year), year);
 
         return data;
     }
 
-    public Ratings GetShowData(string? imdb_id, string? tmdb_rating, string? title, string? year)
+    public Ratings GetShowData(string? imdbId, string? tmdbRating, string? title, string? year)
     {
-        var title_meta = title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-")
+        var titleMeta = title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-")
             .ToLower();
-        var title_trakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-")
+        var titleTrakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-")
             .Replace("--", "-").Replace("--", "-").ToLower();
 
         var data = new Ratings
         {
-            imdbId = imdb_id,
+            imdbId = imdbId,
             type = MediaType.tv,
-            tmdb = tmdb_rating,
-            metacritic = ratingApiRoot?.result?.ratings?.Metacritic?.audience?.rating.ToString(),
-            imdb = ratingApiRoot?.result?.ratings?.IMDb?.audience?.rating.ToString(),
-            rottenTomatoes = ratingApiRoot?.result?.ratings?.RottenTomatoes?.audience?.rating.ToString(),
-            filmAffinity = ratingApiRoot?.result?.ratings?.FilmAffinity?.audience?.rating.ToString()
+            tmdb = tmdbRating,
+            metacritic = ratingApiRoot?.result?.ratings?.Metacritic?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            imdb = ratingApiRoot?.result?.ratings?.IMDb?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            rottenTomatoes = ratingApiRoot?.result?.ratings?.RottenTomatoes?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            filmAffinity = ratingApiRoot?.result?.ratings?.FilmAffinity?.audience?.rating.ToString(CultureInfo.InvariantCulture)
         };
 
-        if (imdb_id.NotEmpty() && data.imdb.Empty()) ProcessShowImdb(data, string.Format(imdb_url, imdb_id));
-        if (data.metacritic.Empty()) ProcessShowMetacritic(data, string.Format(metacritic_tv_url, title_meta), year);
-        if (data.trakt.Empty()) ProcessTrack(data, string.Format(trakt_show_url, title_trakt), year);
+        if (imdbId.NotEmpty() && data.imdb.Empty()) ProcessShowImdb(data, string.Format(ImdbUrl, imdbId));
+        if (data.metacritic.Empty()) ProcessShowMetacritic(data, string.Format(MetacriticTvUrl, titleMeta), year);
+        if (data.trakt.Empty()) ProcessTrack(data, string.Format(TraktShowUrl, titleTrakt), year);
 
         return data;
     }
 
     private static string? GetNodeInnerText(HtmlDocument doc, string xPath)
     {
-        return doc.DocumentNode.SelectNodes(xPath)?.FirstOrDefault()?.InnerText?.Trim();
+        return doc.DocumentNode.SelectNodes(xPath)?.FirstOrDefault()?.InnerText.Trim();
     }
 
     private void ProcessMovieMetacritic(Ratings data, string metacriticPath, string? year)
@@ -94,10 +95,10 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
                     "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span");
             }
 
-            var page_year = GetNodeInnerText(doc,
+            var pageYear = GetNodeInnerText(doc,
                 "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span");
 
-            if (year != null && page_year != null && year != page_year)
+            if (year != null && pageYear != null && year != pageYear)
             {
                 //probably wrong title, then try to search by other url
                 doc = web.Load($"{metacriticPath}-{year}");
@@ -109,15 +110,16 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
         }
         catch (Exception ex)
         {
-            logger?.LogError(ex, "Path: {MetacriticPath}, Year {Year}", metacriticPath, year);
+            logger.LogError(ex, "Path: {MetacriticPath}, Year {Year}", metacriticPath, year);
         }
     }
 
     /// <summary>
-    ///     some titles have year on path, some dont
+    ///     some titles have year on path, some don't
     /// </summary>
     /// <param name="data"></param>
     /// <param name="metacriticPath"></param>
+    /// <param name="year"></param>
     private void ProcessShowMetacritic(Ratings data, string metacriticPath, string? year)
     {
         var web = new HtmlWeb();
@@ -125,10 +127,6 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
 
         try
         {
-            //Fullmetal Alchemist: Brotherhood - doesnt exist
-            //Rick and Morty - changed 'and' by '&'
-            //Attack on Titan - doesnt exist
-
             if (doc.DocumentNode.InnerText.Contains("Page Not Found - Metacritic"))
             {
                 doc = web.Load($"{metacriticPath}-{year}");
@@ -147,10 +145,10 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
                     "html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span");
             }
 
-            var page_year = GetNodeInnerText(doc,
+            var pageYear = GetNodeInnerText(doc,
                 "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span");
 
-            if (year != null && page_year != null && year != page_year)
+            if (year != null && pageYear != null && year != pageYear)
             {
                 //probably wrong title, then try to search by other url
                 doc = web.Load($"{metacriticPath}-{year}");
@@ -162,7 +160,7 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
         }
         catch (Exception ex)
         {
-            logger?.LogError(ex, "Path: {MetacriticPath}, Year {Year}", metacriticPath, year);
+            logger.LogError(ex, "Path: {MetacriticPath}, Year {Year}", metacriticPath, year);
         }
     }
 
@@ -178,7 +176,7 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
         }
         catch (Exception ex)
         {
-            logger?.LogError(ex, "ImdbPath {ImdbPath}", imdbPath);
+            logger.LogError(ex, "ImdbPath {ImdbPath}", imdbPath);
         }
     }
 
@@ -194,7 +192,7 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
         }
         catch (Exception ex)
         {
-            logger?.LogError(ex, "ImdbPath {ImdbPath}", imdbPath);
+            logger.LogError(ex, "ImdbPath {ImdbPath}", imdbPath);
         }
     }
 
@@ -209,9 +207,9 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
         {
             if (doc.DocumentNode.InnerText.Contains("Page Not Found (404) - Trakt")) return;
 
-            var page_year = GetNodeInnerText(doc, "html/body/div[2]/section[1]/div[4]/div/div/div[2]/h1/span");
+            var pageYear = GetNodeInnerText(doc, "html/body/div[2]/section[1]/div[4]/div/div/div[2]/h1/span");
 
-            if (year != null && page_year != null && year != page_year)
+            if (year != null && pageYear != null && year != pageYear)
             {
                 //probably wrong title, then try to search by other url
                 doc = web.Load($"{traktUrl}-{year}");
@@ -230,7 +228,7 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
         }
         catch (Exception ex)
         {
-            logger?.LogError(ex, "TraktUrl {TraktUrl}, Year {Year}", traktUrl, year);
+            logger.LogError(ex, "TraktUrl {TraktUrl}, Year {Year}", traktUrl, year);
         }
     }
 }

@@ -6,14 +6,14 @@ public class PaddleConfigurationApi(IHttpClientFactory factory) : ApiCosmos<Conf
 {
     public async Task<Configurations?> GetConfigurations()
     {
-        return await GetAsync(Endpoint.configurations, null);
+        return await GetAsync(Endpoint.Configurations, null);
     }
 
     public async Task<string?> GetCountry()
     {
         try
         {
-            var response = await _http.GetAsync(new Uri("https://ipinfo.io/country"));
+            var response = await Http.GetAsync(new Uri("https://ipinfo.io/country"));
             return (await response.Content.ReadAsStringAsync()).Trim();
         }
         catch (Exception)
@@ -24,6 +24,6 @@ public class PaddleConfigurationApi(IHttpClientFactory factory) : ApiCosmos<Conf
 
     private struct Endpoint
     {
-        public const string configurations = "public/paddle/configurations";
+        public const string Configurations = "public/paddle/configurations";
     }
 }

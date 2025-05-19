@@ -21,8 +21,8 @@ public static class PopupHelper
     {
         await service.Show<CollectionPopup>(null, x =>
         {
-            x.Add(x => x.collection_id, collectionId);
-            x.Add(x => x.type, type);
+            x.Add(x => x.CollectionId, collectionId);
+            x.Add(x => x.Type, type);
             x.Add(x => x.Watched, watched);
             x.Add(x => x.Watching, watching);
             x.Add(x => x.Wish, wish);
@@ -73,7 +73,7 @@ public static class PopupHelper
 
             x.Add(x => x.MediaListApi, mediaListApi);
             x.Add(x => x.List, list);
-            x.Add(x => x.IsIMDB, isImdb);
+            x.Add(x => x.IsImdb, isImdb);
             x.Add(x => x.TypeSelected, typeSelected);
             x.Add(x => x.StringParameters, stringParameters);
             x.Add(x => x.ShowPrivateAction, showPrivateAction);
@@ -88,8 +88,8 @@ public static class PopupHelper
     {
         await service.Show<MediaPopup>(null, x =>
         {
-            x.Add(x => x.tmdb_id, tmdbId);
-            x.Add(x => x.type, type);
+            x.Add(x => x.TmdbId, tmdbId);
+            x.Add(x => x.Type, type);
             x.Add(x => x.Watched, watched);
             x.Add(x => x.Watching, watching);
             x.Add(x => x.Wish, wish);
@@ -165,7 +165,7 @@ public static class PopupHelper
     {
         await service.Show<ProviderPopup>(null, x =>
         {
-            x.Add(x => x.provider, provider);
+            x.Add(x => x.Provider, provider);
             x.Add(x => x.Watched, watched);
             x.Add(x => x.Watching, watching);
             x.Add(x => x.Wish, wish);
@@ -186,8 +186,8 @@ public static class PopupHelper
         {
             x.Add(x => x.ShowTitle, showTitle);
             x.Add(x => x.ShowSeasonName, showSeasonName);
-            x.Add(x => x.tmdb_id, tmdbId);
-            x.Add(x => x.season_number, seasonNumber);
+            x.Add(x => x.TmdbId, tmdbId);
+            x.Add(x => x.SeasonNumber, seasonNumber);
             x.Add(x => x.IsAuthenticated, isAuthenticated);
         }, Options(ModalSize.ExtraLarge));
     }

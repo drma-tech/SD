@@ -18,7 +18,7 @@
         <Column ColumnSize="ColumnSize.Is12.OnMobile.Is6.OnTablet">
             <Div>
                 <div class="container-buttons">
-                    @foreach (var provider in providers)
+                    @foreach (var provider in _providers)
                     {
                         var link = provider.Key;
                         if (link == "microsoft") link = "aad";
@@ -51,7 +51,7 @@
 
 @code {
 
-    private readonly Dictionary<string, string> providers = new()
+    private readonly Dictionary<string, string> _providers = new()
     {
         { "google", "Google" },
         { "microsoft", "Microsoft" }

@@ -24,8 +24,8 @@
 </ModalFooter>
 
 @code {
-    [Parameter] public List<Collection> ItemsCollection { get; set; } = new();
-    [Parameter] public HashSet<string> SelectedItems { get; set; } = new();
+    [Parameter] public List<Collection> ItemsCollection { get; set; } = [];
+    [Parameter] public HashSet<string> SelectedItems { get; set; } = [];
     [Parameter] public EventCallback<HashSet<string>> SelectedItemsChanged { get; set; }
 
     private void CheckedChanged(string? id, bool value)

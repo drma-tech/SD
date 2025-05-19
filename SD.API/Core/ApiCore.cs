@@ -7,10 +7,10 @@ namespace SD.API.Core;
 
 public static class ApiCore
 {
-    public static async Task<T?> Get<T>(this HttpClient http, string request_uri, CancellationToken cancellationToken)
+    public static async Task<T?> Get<T>(this HttpClient http, string requestUri, CancellationToken cancellationToken)
         where T : class
     {
-        var response = await http.GetAsync(request_uri, cancellationToken);
+        var response = await http.GetAsync(requestUri, cancellationToken);
 
         if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
 
@@ -41,7 +41,7 @@ public static class ApiCore
     public static async Task<T?> GetTrailersByYoutubeSearch<T>(this HttpClient http,
         CancellationToken cancellationToken) where T : class
     {
-        var id = "UCzcRQ3vRNr6fJ1A9rqFn7QA";
+        const string id = "UCzcRQ3vRNr6fJ1A9rqFn7QA";
         using var request = new HttpRequestMessage(HttpMethod.Get,
             $"https://youtube-search-and-download.p.rapidapi.com/channel?id={id}&sort=n");
 
@@ -83,16 +83,11 @@ public static class ApiCore
     {
         if (string.IsNullOrEmpty(imdbId)) return null;
 
-        using var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri($"https://film-show-ratings.p.rapidapi.com/item/?id={imdbId}"),
-            Headers =
-            {
-                { "x-rapidapi-key", "36af8735e3msh39423dcd3a94067p1975bdjsn4536c4c2ed8a" },
-                { "x-rapidapi-host", "film-show-ratings.p.rapidapi.com" }
-            }
-        };
+        using var request = new HttpRequestMessage();
+        request.Method = HttpMethod.Get;
+        request.RequestUri = new Uri($"https://film-show-ratings.p.rapidapi.com/item/?id={imdbId}");
+        request.Headers.Add("x-rapidapi-key", "36af8735e3msh39423dcd3a94067p1975bdjsn4536c4c2ed8a");
+        request.Headers.Add("x-rapidapi-host", "film-show-ratings.p.rapidapi.com");
 
         var response = await http.SendAsync(request, cancellationToken);
 

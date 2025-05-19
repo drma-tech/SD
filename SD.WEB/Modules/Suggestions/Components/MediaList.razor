@@ -1,10 +1,6 @@
 ﻿@inherits ComponentCore<MediaList>
 
 @inject ExternalIdApi ExternalIdApi
-@inject WatchedListApi WatchedApi
-@inject WatchingListApi WatchingApi
-@inject WishListApi WishApi
-@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Core
 @using SD.WEB.Modules.Suggestions.Interface
 @implements IDisposable
@@ -27,7 +23,7 @@
 }
 
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
-    <div id="@SwiperId" class="swiper mb-2">
+    <div id="@_swiperId" class="swiper mb-2">
         <div class="swiper-wrapper">
             @foreach (var item in Items)
             {
@@ -64,21 +60,18 @@
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; }
     [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
-    [Parameter] public bool IsIMDB { get; set; }
+    [Parameter] public bool IsImdb { get; set; }
 
     [Parameter] public bool MultiplesRegions { get; set; }
     [Parameter] public bool MultipleLanguages { get; set; } = true;
-
-    [Parameter] public int TotalItemsFullHD { get; set; } = 10;
-    [Parameter] public int TotalItemsNotFullHD { get; set; } = 8;
 
     [Parameter] public MediaType TypeSelected { get; set; } = MediaType.movie;
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
 
     public RenderControlCore<HashSet<MediaDetail>>? Core { get; set; } = new();
-    public HashSet<MediaDetail> Items { get; set; } = new();
+    public HashSet<MediaDetail> Items { get; set; } = [];
 
-    private readonly string SwiperId = $"swiper-{Guid.NewGuid()}";
+    private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
 
     protected override void OnInitialized()
     {
@@ -101,7 +94,7 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.InvokeVoidAsync("initSwiper", SwiperId);
+            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperId);
         }
         catch (Exception ex)
         {
@@ -112,14 +105,14 @@
     protected override async Task LoadDataRender()
     {
         Core?.ShowLoading();
-        await LoadItems(TypeSelected);
+        await LoadItems();
         Core?.HideLoading(Items);
     }
 
     protected async void LoadGenericVoid()
     {
         Core?.ShowLoading();
-        await LoadItems(TypeSelected);
+        await LoadItems();
         Core?.HideLoading(Items);
     }
 
@@ -127,17 +120,17 @@
     {
         Core?.ShowLoading();
         TypeSelected = type;
-        await LoadItems(type);
+        await LoadItems();
         Core?.HideLoading(Items);
     }
 
-    private async Task LoadItems(MediaType type)
+    private async Task LoadItems()
     {
         try
         {
             if (MediaListApi != null)
             {
-                var result = await MediaListApi.GetList(new HashSet<MediaDetail>(), TypeSelected, StringParameters, List);
+                var result = await MediaListApi.GetList([], TypeSelected, StringParameters, List);
                 Items = result.list;
 
                 if (Items.Count < 10) //force reload, if the filters bring few records
@@ -160,7 +153,7 @@
 
     public async Task OpenCompleteList()
     {
-        await ModalService.CompleteListPopup(TitleHead, Watched, Watching, Wish, Items, MediaListApi, List, IsIMDB, TypeSelected, StringParameters,
+        await ModalService.CompleteListPopup(TitleHead, Watched, Watching, Wish, Items, MediaListApi, List, IsImdb, TypeSelected, StringParameters,
             ShowPrivateAction, IsAuthenticated, CommentImage);
     }
 
@@ -168,19 +161,19 @@
     {
         try
         {
-            var tmdb_id = "";
+            string? tmdbId;
 
-            if (IsIMDB)
+            if (IsImdb)
             {
                 //for now, only tv series (imdb) need this kind of workaround (tmdb api only work with imdb id from movies - this info is not documented)
-                tmdb_id = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id);
+                tmdbId = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id);
             }
             else
             {
-                tmdb_id = media?.tmdb_id;
+                tmdbId = media?.tmdb_id;
             }
 
-            await ModalService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdb_id, ShowPrivateAction, IsAuthenticated);
+            await ModalService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId, ShowPrivateAction, IsAuthenticated);
         }
         catch (Exception ex)
         {

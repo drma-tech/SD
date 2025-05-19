@@ -41,7 +41,7 @@ public static class IsolatedFunctionHelper
         return model;
     }
 
-    public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, ttlCache maxAge,
+    public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, TtlCache maxAge,
         CancellationToken cancellationToken) where T : class
     {
         HttpResponseData? response;
@@ -59,7 +59,7 @@ public static class IsolatedFunctionHelper
 
         response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
         //response.Headers.Add("ETag", eTag); // unique identification to verify data changes
-        //response.Headers.Add("Access-Control-Expose-Headers", "ETag"); //dont using anymore
+        //response.Headers.Add("Access-Control-Expose-Headers", "ETag"); //don't using anymore
 
         return response;
     }
@@ -82,7 +82,7 @@ public static class IsolatedFunctionHelper
 
         const string messageTemplate = "ProcessException. State: {State}, Params: {Params}";
 
-        logger?.LogError(ex, messageTemplate, req.BuildState(), req.BuildParams());
+        logger.LogError(ex, messageTemplate, req.BuildState(), req.BuildParams());
     }
 
     public static void LogWarning(this HttpRequestData req, string? message)
@@ -91,7 +91,7 @@ public static class IsolatedFunctionHelper
 
         const string messageTemplate = "LogWarning. Message: {message} State: {State}, Params: {Params}";
 
-        logger?.LogWarning(messageTemplate, message, req.BuildState(), req.BuildParams());
+        logger.LogWarning(messageTemplate, message, req.BuildState(), req.BuildParams());
     }
 
     private static string BuildState(this HttpRequestData req)
@@ -112,11 +112,11 @@ public static class IsolatedFunctionHelper
 
 public struct Method
 {
-    public const string GET = "GET";
+    public const string Get = "GET";
 
-    public const string POST = "POST";
+    public const string Post = "POST";
 
-    public const string PUT = "PUT";
+    public const string Put = "PUT";
 
-    public const string DELETE = "DELETE";
+    public const string Delete = "DELETE";
 }

@@ -1,5 +1,4 @@
-﻿@typeparam TValue
-@typeparam TEnum where TEnum : struct, Enum, IConvertible
+﻿@typeparam TEnum where TEnum : struct, Enum, IConvertible
 
 <ModalHeader>
     <ModalTitle>@Title</ModalTitle>
@@ -58,25 +57,23 @@
     [Parameter] public bool HasGroup { get; set; }
     [Parameter] public Func<EnumObject, object> Order { get; set; } = o => o.Value;
 
-    [Parameter] public IReadOnlyList<TEnum> SelectedValues { get; set; } = Array.Empty<TEnum>();
+    [Parameter] public IReadOnlyList<TEnum> SelectedValues { get; set; } = [];
     [Parameter] public EventCallback<IReadOnlyList<TEnum>> SelectedValuesChanged { get; set; }
 
     [Parameter] public string? Title { get; set; }
 
-    [Inject] public IModalService ModalService { get; set; } = default!;
+    [Inject] public IModalService ModalService { get; set; } = null!;
 
     private bool Checked(EnumObject item)
     {
-        var result = SelectedValues?.Any(a => item.Value.Equals(a));
-        return result == null ? false : result.Value;
+        return SelectedValues.Any(a => item.Value.Equals(a));
     }
 
     void CheckedChanged(EnumObject item, bool value)
     {
         if (value) //add
         {
-            if (SelectedValues == null) SelectedValues = Array.Empty<TEnum>();
-            SelectedValues = SelectedValues.ToArray().Concat(new[] { (TEnum)item.Value }).ToList().AsReadOnly();
+            SelectedValues = SelectedValues.ToArray().Concat([(TEnum)item.Value]).ToList().AsReadOnly();
         }
         else //remove
         {

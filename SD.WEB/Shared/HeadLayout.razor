@@ -98,7 +98,7 @@
 
     private void Logout()
     {
-        Navigation.NavigateTo("/.auth/logout", true);
+        Navigation.NavigateTo("/.auth/logout?post_logout_redirect_uri=" + Navigation.BaseUri, true);
     }
 
     private async Task OpenConfigurations()

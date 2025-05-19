@@ -10,29 +10,17 @@ public class ProviderBase
     public string? provider_link { get; set; }
 }
 
-public class Free : ProviderBase
-{
-}
+public class Free : ProviderBase;
 
-public class Ads : ProviderBase
-{
-}
+public class Ads : ProviderBase;
 
-public class Flatrate : ProviderBase
-{
-}
+public class Flatrate : ProviderBase;
 
-public class FlatrateAndBuy : ProviderBase
-{
-}
+public class FlatrateAndBuy : ProviderBase;
 
-public class Rent : ProviderBase
-{
-}
+public class Rent : ProviderBase;
 
-public class Buy : ProviderBase
-{
-}
+public class Buy : ProviderBase;
 
 public class CountryBase
 {
@@ -45,561 +33,283 @@ public class CountryBase
     public List<Buy> buy { get; set; } = [];
 }
 
-public class AD : CountryBase
-{
-}
-
-public class AE : CountryBase
-{
-}
-
-public class AG : CountryBase
-{
-}
-
-public class AL : CountryBase
-{
-}
-
-public class AO : CountryBase
-{
-}
-
-public class AR : CountryBase
-{
-}
-
-public class AT : CountryBase
-{
-}
-
-public class AU : CountryBase
-{
-}
-
-public class AZ : CountryBase
-{
-}
-
-public class BA : CountryBase
-{
-}
-
-public class BB : CountryBase
-{
-}
-
-public class BE : CountryBase
-{
-}
-
-public class BF : CountryBase
-{
-}
-
-public class BG : CountryBase
-{
-}
-
-public class BH : CountryBase
-{
-}
-
-public class BM : CountryBase
-{
-}
-
-public class BO : CountryBase
-{
-}
-
-public class BR : CountryBase
-{
-}
-
-public class BS : CountryBase
-{
-}
-
-public class BY : CountryBase
-{
-}
-
-public class BZ : CountryBase
-{
-}
-
-public class CA : CountryBase
-{
-}
-
-public class CD : CountryBase
-{
-}
-
-public class CH : CountryBase
-{
-}
-
-public class CI : CountryBase
-{
-}
-
-public class CL : CountryBase
-{
-}
-
-public class CM : CountryBase
-{
-}
-
-public class CO : CountryBase
-{
-}
-
-public class CR : CountryBase
-{
-}
-
-public class CU : CountryBase
-{
-}
-
-public class CV : CountryBase
-{
-}
-
-public class CY : CountryBase
-{
-}
-
-public class CZ : CountryBase
-{
-}
-
-public class DE : CountryBase
-{
-}
-
-public class DK : CountryBase
-{
-}
-
-public class DO : CountryBase
-{
-}
-
-public class DZ : CountryBase
-{
-}
-
-public class EC : CountryBase
-{
-}
-
-public class EE : CountryBase
-{
-}
-
-public class EG : CountryBase
-{
-}
-
-public class ES : CountryBase
-{
-}
-
-public class FI : CountryBase
-{
-}
-
-public class FJ : CountryBase
-{
-}
-
-public class FR : CountryBase
-{
-}
-
-public class GB : CountryBase
-{
-}
-
-public class GF : CountryBase
-{
-}
-
-public class GH : CountryBase
-{
-}
-
-public class GI : CountryBase
-{
-}
-
-public class GP : CountryBase
-{
-}
-
-public class GQ : CountryBase
-{
-}
-
-public class GR : CountryBase
-{
-}
-
-public class GT : CountryBase
-{
-}
-
-public class GY : CountryBase
-{
-}
-
-public class HK : CountryBase
-{
-}
-
-public class HN : CountryBase
-{
-}
-
-public class HR : CountryBase
-{
-}
-
-public class HU : CountryBase
-{
-}
-
-public class ID : CountryBase
-{
-}
-
-public class IE : CountryBase
-{
-}
-
-public class IL : CountryBase
-{
-}
-
-public class IN : CountryBase
-{
-}
-
-public class IQ : CountryBase
-{
-}
-
-public class IS : CountryBase
-{
-}
-
-public class IT : CountryBase
-{
-}
-
-public class JM : CountryBase
-{
-}
-
-public class JO : CountryBase
-{
-}
-
-public class JP : CountryBase
-{
-}
-
-public class KE : CountryBase
-{
-}
-
-public class KR : CountryBase
-{
-}
-
-public class KW : CountryBase
-{
-}
-
-public class LB : CountryBase
-{
-}
-
-public class LC : CountryBase
-{
-}
-
-public class LI : CountryBase
-{
-}
-
-public class LT : CountryBase
-{
-}
-
-public class LU : CountryBase
-{
-}
-
-public class LV : CountryBase
-{
-}
-
-public class LY : CountryBase
-{
-}
-
-public class MA : CountryBase
-{
-}
-
-public class MC : CountryBase
-{
-}
-
-public class MD : CountryBase
-{
-}
-
-public class ME : CountryBase
-{
-}
-
-public class MG : CountryBase
-{
-}
-
-public class MK : CountryBase
-{
-}
-
-public class ML : CountryBase
-{
-}
-
-public class MT : CountryBase
-{
-}
-
-public class MU : CountryBase
-{
-}
-
-public class MW : CountryBase
-{
-}
-
-public class MX : CountryBase
-{
-}
-
-public class MY : CountryBase
-{
-}
-
-public class MZ : CountryBase
-{
-}
-
-public class NE : CountryBase
-{
-}
-
-public class NG : CountryBase
-{
-}
-
-public class NI : CountryBase
-{
-}
-
-public class NL : CountryBase
-{
-}
-
-public class NO : CountryBase
-{
-}
-
-public class NZ : CountryBase
-{
-}
-
-public class OM : CountryBase
-{
-}
-
-public class PA : CountryBase
-{
-}
-
-public class PE : CountryBase
-{
-}
-
-public class PF : CountryBase
-{
-}
-
-public class PG : CountryBase
-{
-}
-
-public class PH : CountryBase
-{
-}
-
-public class PK : CountryBase
-{
-}
-
-public class PL : CountryBase
-{
-}
-
-public class PS : CountryBase
-{
-}
-
-public class PT : CountryBase
-{
-}
-
-public class PY : CountryBase
-{
-}
-
-public class QA : CountryBase
-{
-}
-
-public class RO : CountryBase
-{
-}
-
-public class RS : CountryBase
-{
-}
-
-public class RU : CountryBase
-{
-}
-
-public class SA : CountryBase
-{
-}
-
-public class SC : CountryBase
-{
-}
-
-public class SE : CountryBase
-{
-}
-
-public class SG : CountryBase
-{
-}
-
-public class SI : CountryBase
-{
-}
-
-public class SK : CountryBase
-{
-}
-
-public class SM : CountryBase
-{
-}
-
-public class SN : CountryBase
-{
-}
-
-public class SV : CountryBase
-{
-}
-
-public class TC : CountryBase
-{
-}
-
-public class TD : CountryBase
-{
-}
-
-public class TH : CountryBase
-{
-}
-
-public class TN : CountryBase
-{
-}
-
-public class TR : CountryBase
-{
-}
-
-public class TT : CountryBase
-{
-}
-
-public class TW : CountryBase
-{
-}
-
-public class TZ : CountryBase
-{
-}
-
-public class UA : CountryBase
-{
-}
-
-public class UG : CountryBase
-{
-}
-
-public class US : CountryBase
-{
-}
-
-public class UY : CountryBase
-{
-}
-
-public class VA : CountryBase
-{
-}
-
-public class VE : CountryBase
-{
-}
-
-public class XK : CountryBase
-{
-}
-
-public class YE : CountryBase
-{
-}
-
-public class ZA : CountryBase
-{
-}
-
-public class ZM : CountryBase
-{
-}
-
-public class ZW : CountryBase
-{
-}
+public class AD : CountryBase;
+
+public class AE : CountryBase;
+
+public class AG : CountryBase;
+
+public class AL : CountryBase;
+
+public class AO : CountryBase;
+
+public class AR : CountryBase;
+
+public class AT : CountryBase;
+
+public class AU : CountryBase;
+
+public class AZ : CountryBase;
+
+public class BA : CountryBase;
+
+public class BB : CountryBase;
+
+public class BE : CountryBase;
+
+public class BF : CountryBase;
+
+public class BG : CountryBase;
+
+public class BH : CountryBase;
+
+public class BM : CountryBase;
+
+public class BO : CountryBase;
+
+public class BR : CountryBase;
+
+public class BS : CountryBase;
+
+public class BY : CountryBase;
+
+public class BZ : CountryBase;
+
+public class CA : CountryBase;
+
+public class CD : CountryBase;
+
+public class CH : CountryBase;
+
+public class CI : CountryBase;
+
+public class CL : CountryBase;
+
+public class CM : CountryBase;
+
+public class CO : CountryBase;
+
+public class CR : CountryBase;
+
+public class CU : CountryBase;
+
+public class CV : CountryBase;
+
+public class CY : CountryBase;
+
+public class CZ : CountryBase;
+
+public class DE : CountryBase;
+
+public class DK : CountryBase;
+
+public class DO : CountryBase;
+
+public class DZ : CountryBase;
+
+public class EC : CountryBase;
+
+public class EE : CountryBase;
+
+public class EG : CountryBase;
+
+public class ES : CountryBase;
+
+public class FI : CountryBase;
+
+public class FJ : CountryBase;
+
+public class FR : CountryBase;
+
+public class GB : CountryBase;
+
+public class GF : CountryBase;
+
+public class GH : CountryBase;
+
+public class GI : CountryBase;
+
+public class GP : CountryBase;
+
+public class GQ : CountryBase;
+
+public class GR : CountryBase;
+
+public class GT : CountryBase;
+
+public class GY : CountryBase;
+
+public class HK : CountryBase;
+
+public class HN : CountryBase;
+
+public class HR : CountryBase;
+
+public class HU : CountryBase;
+
+public class ID : CountryBase;
+
+public class IE : CountryBase;
+
+public class IL : CountryBase;
+
+public class IN : CountryBase;
+
+public class IQ : CountryBase;
+
+public class IS : CountryBase;
+
+public class IT : CountryBase;
+
+public class JM : CountryBase;
+
+public class JO : CountryBase;
+
+public class JP : CountryBase;
+
+public class KE : CountryBase;
+
+public class KR : CountryBase;
+
+public class KW : CountryBase;
+
+public class LB : CountryBase;
+
+public class LC : CountryBase;
+
+public class LI : CountryBase;
+
+public class LT : CountryBase;
+
+public class LU : CountryBase;
+
+public class LV : CountryBase;
+
+public class LY : CountryBase;
+
+public class MA : CountryBase;
+
+public class MC : CountryBase;
+
+public class MD : CountryBase;
+
+public class ME : CountryBase;
+
+public class MG : CountryBase;
+
+public class MK : CountryBase;
+
+public class ML : CountryBase;
+
+public class MT : CountryBase;
+
+public class MU : CountryBase;
+
+public class MW : CountryBase;
+
+public class MX : CountryBase;
+
+public class MY : CountryBase;
+
+public class MZ : CountryBase;
+
+public class NE : CountryBase;
+
+public class NG : CountryBase;
+
+public class NI : CountryBase;
+
+public class NL : CountryBase;
+
+public class NO : CountryBase;
+
+public class NZ : CountryBase;
+
+public class OM : CountryBase;
+
+public class PA : CountryBase;
+
+public class PE : CountryBase;
+
+public class PF : CountryBase;
+
+public class PG : CountryBase;
+
+public class PH : CountryBase;
+
+public class PK : CountryBase;
+
+public class PL : CountryBase;
+
+public class PS : CountryBase;
+
+public class PT : CountryBase;
+
+public class PY : CountryBase;
+
+public class QA : CountryBase;
+
+public class RO : CountryBase;
+
+public class RS : CountryBase;
+
+public class RU : CountryBase;
+
+public class SA : CountryBase;
+
+public class SC : CountryBase;
+
+public class SE : CountryBase;
+
+public class SG : CountryBase;
+
+public class SI : CountryBase;
+
+public class SK : CountryBase;
+
+public class SM : CountryBase;
+
+public class SN : CountryBase;
+
+public class SV : CountryBase;
+
+public class TC : CountryBase;
+
+public class TD : CountryBase;
+
+public class TH : CountryBase;
+
+public class TN : CountryBase;
+
+public class TR : CountryBase;
+
+public class TT : CountryBase;
+
+public class TW : CountryBase;
+
+public class TZ : CountryBase;
+
+public class UA : CountryBase;
+
+public class UG : CountryBase;
+
+public class US : CountryBase;
+
+public class UY : CountryBase;
+
+public class VA : CountryBase;
+
+public class VE : CountryBase;
+
+public class XK : CountryBase;
+
+public class YE : CountryBase;
+
+public class ZA : CountryBase;
+
+public class ZM : CountryBase;
+
+public class ZW : CountryBase;
 
 public class Results
 {
@@ -894,7 +604,7 @@ public class MediaProviders
             Region.ZA => results.ZA?.link,
             Region.ZM => results.ZM?.link,
             Region.ZW => results.ZW?.link,
-            _ => default
+            _ => null
         };
     }
 

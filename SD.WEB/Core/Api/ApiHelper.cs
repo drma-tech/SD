@@ -12,7 +12,7 @@ public static class ApiHelper
 
         if (response.IsSuccessStatusCode)
         {
-            if (response.StatusCode == HttpStatusCode.NoContent) return default;
+            if (response.StatusCode == HttpStatusCode.NoContent) return null;
 
             return await response.Content.ReadAsStringAsync();
         }

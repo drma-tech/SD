@@ -20,17 +20,17 @@ public struct Endpoint
         return $"public/cache/trailers?mode={mode}";
     }
 
-    public static string GetMovieRatings(string? id, string? tmdb_id, string? title, DateTime? date,
-        string? tmdb_rating)
+    public static string GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? date,
+        string? tmdbRating)
     {
         return
-            $"public/cache/ratings/movie?id={id}&tmdb_id={tmdb_id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdb_rating}";
+            $"public/cache/ratings/movie?id={id}&tmdb_id={tmdbId}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdbRating}";
     }
 
-    public static string GetShowRatings(string? id, string? tmdb_id, string? title, DateTime? date, string? tmdb_rating)
+    public static string GetShowRatings(string? id, string? tmdbId, string? title, DateTime? date, string? tmdbRating)
     {
         return
-            $"public/cache/ratings/show?id={id}&tmdb_id={tmdb_id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdb_rating}";
+            $"public/cache/ratings/show?id={id}&tmdb_id={tmdbId}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdbRating}";
     }
 
     public static string GetMovieReviews(string? id, string? title, DateTime? date)
@@ -72,16 +72,16 @@ public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<
 
 public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<Ratings>>(http, null)
 {
-    public async Task<CacheDocument<Ratings>?> GetMovieRatings(string? id, string? tmdb_id, string? title,
-        DateTime? releaseDate, string? tmdb_rating, RenderControlCore<CacheDocument<Ratings>?>? core)
+    public async Task<CacheDocument<Ratings>?> GetMovieRatings(string? id, string? tmdbId, string? title,
+        DateTime? releaseDate, string? tmdbRating, RenderControlCore<CacheDocument<Ratings>?>? core)
     {
-        return await GetAsync(Endpoint.GetMovieRatings(id, tmdb_id, title, releaseDate, tmdb_rating), core);
+        return await GetAsync(Endpoint.GetMovieRatings(id, tmdbId, title, releaseDate, tmdbRating), core);
     }
 
-    public async Task<CacheDocument<Ratings>?> GetShowRatings(string? id, string? tmdb_id, string? title,
-        DateTime? releaseDate, string? tmdb_rating, RenderControlCore<CacheDocument<Ratings>?>? core)
+    public async Task<CacheDocument<Ratings>?> GetShowRatings(string? id, string? tmdbId, string? title,
+        DateTime? releaseDate, string? tmdbRating, RenderControlCore<CacheDocument<Ratings>?>? core)
     {
-        return await GetAsync(Endpoint.GetShowRatings(id, tmdb_id, title, releaseDate, tmdb_rating), core);
+        return await GetAsync(Endpoint.GetShowRatings(id, tmdbId, title, releaseDate, tmdbRating), core);
     }
 }
 

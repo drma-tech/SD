@@ -37,7 +37,7 @@
 
     [Parameter] public string? SearchContent { get; set; }
 
-    private HashSet<MediaDetail> Items { get; set; } = new();
+    private HashSet<MediaDetail> Items { get; set; } = [];
     private RenderControlCore<HashSet<MediaDetail>> Core { get; } = new();
     private Dictionary<string, string> StringParameters => new() { { "query", SearchContent ?? "" } };
 

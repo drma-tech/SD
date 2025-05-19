@@ -40,7 +40,7 @@
     @if (FullScreen)
     {
         <div class="grid-relative-container-sm mb-2">
-            @foreach (var item in Items.Take(GetTotalItems) ?? [])
+            @foreach (var item in Items.Take(GetTotalItems))
             {
                 var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                 <Card Style="max-width: 100px;" TextAlignment="TextAlignment.Center">
@@ -54,9 +54,9 @@
     }
     else
     {
-        <div id="@SwiperId" class="swiper mb-2">
+        <div id="@_swiperId" class="swiper mb-2">
             <div class="swiper-wrapper">
-                @foreach (var item in Items.Take(GetTotalItems) ?? [])
+                @foreach (var item in Items.Take(GetTotalItems))
                 {
                     var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                     <div class="swiper-slide">
@@ -84,17 +84,17 @@
     [Parameter] [EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter] [EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter] [EditorRequired] public WishList? Wish { get; set; }
-    [Parameter] [EditorRequired] public Func<WishList?, bool> ExpressionEmpty { get; set; } = default!;
+    [Parameter] [EditorRequired] public Func<WishList?, bool> ExpressionEmpty { get; set; } = null!;
     [Parameter] [EditorRequired] public string? UserId { get; set; }
     [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
     [Parameter] public string? CustomTitle { get; set; }
 
-    private HashSet<WishListItem> Items => MediaType == MediaType.movie ? Wish?.Movies ?? new HashSet<WishListItem>() : Wish?.Shows ?? new HashSet<WishListItem>();
+    private HashSet<WishListItem> Items => MediaType == MediaType.movie ? Wish?.Movies ?? [] : Wish?.Shows ?? [];
 
     private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Wishlist : AccountProduct.Basic.GetRestrictions().Wishlist;
     private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? Translations.MyMovieWishlist : Translations.MyShowWishlist);
 
-    private readonly string SwiperId = $"swiper-{Guid.NewGuid()}";
+    private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -102,7 +102,7 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.InvokeVoidAsync("initSwiper", SwiperId);
+            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperId);
         }
         catch (Exception ex)
         {
@@ -115,11 +115,9 @@
         await ModalService.MyWishListPopup(Core, Watched, Watching, Wish, MediaType, ShowPrivateAction, IsAuthenticated, UserId);
     }
 
-    public Task ShowMediaPopup(string? tmdb_id, string? name)
+    public Task ShowMediaPopup(string? tmdbId, string? name)
     {
-        if (string.IsNullOrEmpty(tmdb_id)) return default!;
-
-        return ModalService.MediaPopup(Watched, Watching, Wish, MediaType, tmdb_id, ShowPrivateAction, IsAuthenticated);
+        return string.IsNullOrEmpty(tmdbId) ? null! : ModalService.MediaPopup(Watched, Watching, Wish, MediaType, tmdbId, ShowPrivateAction, IsAuthenticated);
     }
 
     private async Task Share(string? link)

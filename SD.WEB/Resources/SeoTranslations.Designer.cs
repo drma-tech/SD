@@ -115,7 +115,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to See suggestions for movies and series from different awards (Oscar, Golden Globes, Emmys, etc) or specialized websites (IMDB, TMDB, Rotten Tomatoes, etc)..
+        ///   Looks up a localized string similar to See suggestions for movies and series from different awards (Oscar, Golden Globes, Emmys, etc.) or specialized websites (IMDB, TMDB, Rotten Tomatoes, etc.)..
         /// </summary>
         public static string SuggestionsDescription {
             get {

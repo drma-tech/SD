@@ -5,11 +5,11 @@ namespace SD.WEB.Modules.Profile.Core;
 
 public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(factory, "wishlist")
 {
-    public async Task<WishList?> Get(bool IsUserAuthenticated, RenderControlCore<WishList?>? core, string? id = null)
+    public async Task<WishList?> Get(bool isUserAuthenticated, RenderControlCore<WishList?>? core, string? id = null)
     {
         if (!string.IsNullOrEmpty(id)) return await GetAsync($"{Endpoint.Get}?id={id}", core);
 
-        if (IsUserAuthenticated) return await GetAsync(Endpoint.Get, core);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, core);
 
         return new WishList();
     }

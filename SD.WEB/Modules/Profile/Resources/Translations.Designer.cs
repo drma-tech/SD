@@ -133,7 +133,7 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create your free account to track what you&apos;ve watched and what you&apos;re currently watching, save your favorite streamins platforms, and get personalized suggestions based on your preferences..
+        ///   Looks up a localized string similar to Create your free account to track what you&apos;ve watched and what you&apos;re currently watching, save your favorite streaming platforms, and get personalized suggestions based on your preferences..
         /// </summary>
         public static string HeroText {
             get {

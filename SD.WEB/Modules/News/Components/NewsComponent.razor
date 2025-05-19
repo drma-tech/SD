@@ -11,15 +11,15 @@
     </Button>
 </HeaderComponent>
 <RenderControl Core="Core" Model="News" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-    <div id="@GallerySwiperId" class="swiper">
+    <div id="@_gallerySwiperId" class="swiper">
         <div class="swiper-wrapper">
             @foreach (var item in News?.Data?.Items ?? [])
             {
                 <div class="swiper-slide">
-                    <Blazorise.Link To="@item?.link" Target="Target.Blank" Title="@item?.title">
-                        <Image Source="@item?.url_img" title="@item?.title" alt="@item?.title" Text="@item?.title" Display="Display.Block" Width="Width.Is100"/>
+                    <Blazorise.Link To="@item.link" Target="Target.Blank" Title="@item.title">
+                        <Image Source="@item.url_img" title="@item.title" alt="@item.title" Text="@item.title" Display="Display.Block" Width="Width.Is100"/>
                         <div class="carousel-caption d-none d-md-block p-1" style="background-color: lime; opacity: 70%; color: black;">
-                            @if (item?.title != null)
+                            @if (item.title != null)
                             {
                                 <p>@((MarkupString)item.title)</p>
                             }
@@ -44,13 +44,13 @@
     public RenderControlCore<CacheDocument<NewsModel>?> Core { get; set; } = new();
     private CacheDocument<NewsModel>? News { get; set; }
 
-    private readonly string GallerySwiperId = $"swiper-{Guid.NewGuid()}";
+    private readonly string _gallerySwiperId = $"swiper-{Guid.NewGuid()}";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         try
         {
-            await JsRuntime.InvokeVoidAsync("initCalendar", GallerySwiperId);
+            await JsRuntime.InvokeVoidAsync("initCalendar", _gallerySwiperId);
 
             await base.OnAfterRenderAsync(firstRender);
         }

@@ -6,17 +6,17 @@ namespace SD.API.Core.Scraping;
 
 public partial class ScrapingPopular
 {
-    private readonly string movie_url = "https://www.imdb.com/chart/moviemeter";
-    private readonly string tv_url = "https://www.imdb.com/chart/tvmeter";
+    private const string MovieUrl = "https://www.imdb.com/chart/moviemeter";
+    private const string TvUrl = "https://www.imdb.com/chart/tvmeter";
 
     public MostPopularData GetMovieData()
     {
-        return ProcessHtml(movie_url);
+        return ProcessHtml(MovieUrl);
     }
 
     public MostPopularData GetTvData()
     {
-        return ProcessHtml(tv_url);
+        return ProcessHtml(TvUrl);
     }
 
     private static MostPopularData ProcessHtml(string path)
@@ -38,7 +38,7 @@ public partial class ScrapingPopular
                     var idRegex = ImdbId().Match(id ?? "");
                     var year = node.SelectNodes("div/div/div/div/div[2]/div[3]/span[1]")?.FirstOrDefault()?.InnerText
                         .Trim().Split("–")[0];
-                    _ = int.TryParse(year, out var year_fix);
+                    _ = int.TryParse(year, out var yearFix);
                     var rating = node.SelectNodes("div/div/div/div/div[2]/span/div/span/span[1]/text()")
                         ?.FirstOrDefault()?.InnerText;
 
@@ -48,7 +48,7 @@ public partial class ScrapingPopular
                         RankUpDown = GetRankUpDown(node),
                         Title = node.SelectNodes("div/div/div/div/div[2]/div[2]/a/h3/text()")?.FirstOrDefault()
                             ?.InnerText,
-                        Year = year_fix == 0 ? "" : year_fix.ToString(),
+                        Year = yearFix == 0 ? "" : yearFix.ToString(),
                         Image = node.SelectNodes("div/div/div/div/div[1]/div/div[2]/img")?.FirstOrDefault()
                             ?.ChildAttributes("src").FirstOrDefault()?.Value,
                         IMDbRating = rating

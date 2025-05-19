@@ -7,7 +7,7 @@ public class WishListFunction(CosmosRepository repo)
 {
     [Function("WishListGet")]
     public async Task<HttpResponseData?> WishListGet(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/wishlist/get")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/wishlist/get")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try
@@ -27,7 +27,7 @@ public class WishListFunction(CosmosRepository repo)
                 doc = await repo.Get<WishList>(DocumentType.WishList, id, cancellationToken);
             }
 
-            return await req.CreateResponse(doc, ttlCache.one_day, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -38,7 +38,7 @@ public class WishListFunction(CosmosRepository repo)
 
     [Function("WishListAdd")]
     public async Task<WishList?> WishListAdd(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "wishlist/add/{type}")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "wishlist/add/{type}")]
         HttpRequestData req,
         string type, CancellationToken cancellationToken)
     {
@@ -70,7 +70,7 @@ public class WishListFunction(CosmosRepository repo)
 
     [Function("WishListRemove")]
     public async Task<WishList?> WishListRemove(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "wishlist/remove/{type}/{id}")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "wishlist/remove/{type}/{id}")]
         HttpRequestData req,
         string type, string id, CancellationToken cancellationToken)
     {

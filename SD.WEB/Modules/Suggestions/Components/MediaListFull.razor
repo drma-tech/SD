@@ -44,10 +44,10 @@
     [Parameter] public string? TitleHead { get; set; }
 
     [Parameter] public RenderControlCore<HashSet<MediaDetail>>? Core { get; set; } = new();
-    [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
+    [Parameter] public HashSet<MediaDetail> Items { get; set; } = [];
     [Parameter] public EventCallback<HashSet<MediaDetail>> ItemsChanged { get; set; }
 
-    [Parameter] public bool IsIMDB { get; set; }
+    [Parameter] public bool IsImdb { get; set; }
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public MediaType? TypeSelected { get; set; }
     [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
@@ -57,7 +57,7 @@
 
     private string? GetTitle => List != null ? List.GetName() : TitleHead;
     public bool DisableLoadMore { get; set; }
-    private int currentPage = 1;
+    private int _currentPage = 1;
 
     // protected override void OnInitialized()
     // {
@@ -80,15 +80,15 @@
     {
         if (MediaListApi != null)
         {
-            var result = await MediaListApi.GetList(new HashSet<MediaDetail>(), TypeSelected, StringParameters, List);
-            // await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazyload css class)
+            var result = await MediaListApi.GetList([], TypeSelected, StringParameters, List);
+            // await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazy-load css class)
 
             Items = result.list;
             DisableLoadMore = result.lastPage || Items.Count >= 250;
 
             if (Items.Count < 10) //force reload, if the filters bring few records
             {
-                var result2 = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++currentPage);
+                var result2 = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++_currentPage);
                 foreach (var item in result2.list)
                 {
                     Items.Add(item);
@@ -101,20 +101,20 @@
 
     private async Task OpenPopupMedia(MediaDetail? media)
     {
-        var tmdb_id = "";
+        string? tmdbId;
 
-        if (IsIMDB) //for now, only tv series (imdb) need this kind of workaround
+        if (IsImdb) //for now, only tv series (imdb) need this kind of workaround
         {
-            tmdb_id = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id);
+            tmdbId = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id);
         }
         else
         {
-            tmdb_id = media?.tmdb_id;
+            tmdbId = media?.tmdb_id;
         }
 
         if (media?.MediaType == MediaType.person)
         {
-            var result = await TmdbCreditApi.GetListByPerson(tmdb_id);
+            var result = await TmdbCreditApi.GetListByPerson(tmdbId);
             var items = new HashSet<MediaDetail>();
 
             foreach (var item in result?.crew ?? Enumerable.Empty<CrewByPerson>())
@@ -133,7 +133,7 @@
                 });
             }
 
-            foreach (var item in result?.cast ?? new List<CastByPerson>())
+            foreach (var item in result?.cast ?? [])
             {
                 var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
 
@@ -158,7 +158,7 @@
         }
         else
         {
-            await ModalService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdb_id, ShowPrivateAction, IsAuthenticated);
+            await ModalService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId, ShowPrivateAction, IsAuthenticated);
         }
     }
 
@@ -166,7 +166,7 @@
     {
         if (MediaListApi != null)
         {
-            var result = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++currentPage);
+            var result = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++_currentPage);
             Items = result.list;
             DisableLoadMore = result.lastPage || Items.Count >= 250;
 

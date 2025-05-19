@@ -67,12 +67,12 @@ else //ShowContent
 }
 
 @code {
-    [CascadingParameter] protected Task<AuthenticationState>? authenticationState { get; set; }
+    [CascadingParameter] protected Task<AuthenticationState>? AuthenticationState { get; set; }
 
-    [Parameter] [EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
-    [Parameter] [EditorRequired] public RenderControlCore<TModel> Core { get; set; } = default!;
-    [Parameter] [EditorRequired] public TModel Model { get; set; } = default!;
-    [Parameter] [EditorRequired] public Func<TModel, bool> ExpressionEmpty { get; set; } = default!;
+    [Parameter] [EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+    [Parameter] [EditorRequired] public RenderControlCore<TModel> Core { get; set; } = null!;
+    [Parameter] [EditorRequired] public TModel Model { get; set; } = null!;
+    [Parameter] [EditorRequired] public Func<TModel, bool> ExpressionEmpty { get; set; } = null!;
 
     [Parameter] public bool PrivateContent { get; set; }
     [Parameter] public string? CustomMessageError { get; set; }
@@ -94,17 +94,17 @@ else //ShowContent
         ArgumentNullException.ThrowIfNull(Core);
         ArgumentNullException.ThrowIfNull(ExpressionEmpty);
 
-        if (Model != null && ExpressionEmpty != null && !ExpressionEmpty(Model))
+        if (!ExpressionEmpty(Model))
             Status = LoadingStatus.ShowContent;
 
         Core.LoadingStarted += () => ShowLoading();
         Core.ProcessingStarted += () => ShowLoading("Processing...");
 
-        Core.LoadingFinished += model => ShowContent(model);
-        Core.ProcessingFinished += model => ShowContent(model);
+        Core.LoadingFinished += ShowContent;
+        Core.ProcessingFinished += ShowContent;
 
-        Core.WarningAction += msg => ShowWarning(msg);
-        Core.ErrorAction += msg => ShowError(msg);
+        Core.WarningAction += ShowWarning;
+        Core.ErrorAction += ShowError;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -113,11 +113,11 @@ else //ShowContent
 
         await base.OnAfterRenderAsync(firstRender);
 
-        if (firstRender && PrivateContent && authenticationState is not null)
+        if (firstRender && PrivateContent && AuthenticationState is not null)
         {
-            var authState = await authenticationState;
-            var user = authState?.User;
-            var isAuthenticated = user?.Identity is not null && user.Identity.IsAuthenticated;
+            var authState = await AuthenticationState;
+            var user = authState.User;
+            var isAuthenticated = user.Identity is not null && user.Identity.IsAuthenticated;
 
             if (!isAuthenticated)
             {
@@ -127,7 +127,7 @@ else //ShowContent
             if (PremiumFeature)
             {
                 var client = await PrincipalApi.Get(isAuthenticated);
-                if (client == null || client?.ClientePaddle == null || client?.ClientePaddle?.ActiveProduct == AccountProduct.Basic)
+                if (client?.ClientePaddle == null || client.ClientePaddle?.ActiveProduct == AccountProduct.Basic)
                 {
                     Status = LoadingStatus.Premium;
                 }
@@ -147,7 +147,7 @@ else //ShowContent
     {
         Reset();
 
-        if (Status == LoadingStatus.Error || Status == LoadingStatus.Locked || Status == LoadingStatus.Premium) return;
+        if (Status is LoadingStatus.Error or LoadingStatus.Locked or LoadingStatus.Premium) return;
 
         Status = LoadingStatus.Loading;
         MessageLoading = msg ?? GlobalTranslations.CustomVisibilityLoading;
@@ -166,9 +166,9 @@ else //ShowContent
             return;
         }
 
-        if (Status == LoadingStatus.Error || Status == LoadingStatus.Locked || Status == LoadingStatus.Premium) return;
+        if (Status is LoadingStatus.Error or LoadingStatus.Locked or LoadingStatus.Premium) return;
 
-        if (model == null || (ExpressionEmpty != null && ExpressionEmpty(model)))
+        if (model == null || (ExpressionEmpty(model)))
             Status = LoadingStatus.Warning;
         else
             Status = LoadingStatus.ShowContent;
@@ -183,7 +183,7 @@ else //ShowContent
     {
         Reset();
 
-        if (Status == LoadingStatus.Error || Status == LoadingStatus.Locked || Status == LoadingStatus.Premium) return;
+        if (Status is LoadingStatus.Error or LoadingStatus.Locked or LoadingStatus.Premium) return;
 
         Status = LoadingStatus.Warning;
         MessageWarning = CustomMessageWarning ?? msg;

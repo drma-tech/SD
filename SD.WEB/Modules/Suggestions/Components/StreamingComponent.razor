@@ -8,7 +8,7 @@
 
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbApi TmdbApi
-@inject IJSRuntime JS
+@inject IJSRuntime Js
 
 <RenderControl Core="Core" Model="Providers" ExpressionEmpty="@((MediaProviders? obj) => obj == null)">
     @{
@@ -29,7 +29,7 @@
                                 <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" alt="@item.provider_name" Style="width: 100%"></Image>
                                 <AuthorizeView Roles="administrator">
                                     <Authorized>
-                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.FREE))
+                                        @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.FREE))
                                         {
                                             <span>false</span>
                                         }
@@ -57,7 +57,7 @@
                                 <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" alt="@item.provider_name" Style="width: 100%"></Image>
                                 <AuthorizeView Roles="administrator">
                                     <Authorized>
-                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.AVOD))
+                                        @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.AVOD))
                                         {
                                             <span>false</span>
                                         }
@@ -85,7 +85,7 @@
                                 <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" alt="@item.provider_name" Style="width: 100%"></Image>
                                 <AuthorizeView Roles="administrator">
                                     <Authorized>
-                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.SVOD))
+                                        @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.SVOD))
                                         {
                                             <span>false</span>
                                         }
@@ -113,7 +113,7 @@
                                 <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" alt="@item.provider_name" Style="width: 100%"></Image>
                                 <AuthorizeView Roles="administrator">
                                     <Authorized>
-                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.PVOD))
+                                        @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.PVOD))
                                         {
                                             <span>false</span>
                                         }
@@ -141,7 +141,7 @@
                                 <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" alt="@item.provider_name" Style="width: 100%"></Image>
                                 <AuthorizeView Roles="administrator">
                                     <Authorized>
-                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
+                                        @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.TVOD))
                                         {
                                             <span>false</span>
                                         }
@@ -169,7 +169,7 @@
                                 <Image Source="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Text="@item.provider_name" alt="@item.provider_name" Style="width: 100%"></Image>
                                 <AuthorizeView Roles="administrator">
                                     <Authorized>
-                                        @if (!AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.Any(a => a == DeliveryModel.TVOD))
+                                        @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.TVOD))
                                         {
                                             <span>false</span>
                                         }
@@ -203,11 +203,11 @@
             }
         }
 
-        @if (!string.IsNullOrEmpty(homepage))
+        @if (!string.IsNullOrEmpty(Homepage))
         {
             <Divider DividerType="DividerType.TextContent" Text="@Translations.RelatedLinks" Background="Background.Secondary" Style="opacity: .75"/>
-            <a href="@homepage" target="_blank" rel="nofollow" style="float: left;">
-                @(new Uri(homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon>
+            <a href="@Homepage" target="_blank" rel="nofollow" style="float: left;">
+                @(new Uri(Homepage).Host) <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon>
             </a>
         }
 
@@ -220,9 +220,9 @@
 </RenderControl>
 
 @code {
-    [Parameter] public string? tmdb_id { get; set; }
-    [Parameter] public MediaType? type { get; set; }
-    [Parameter] public string? homepage { get; set; }
+    [Parameter] public string? TmdbId { get; set; }
+    [Parameter] public MediaType? Type { get; set; }
+    [Parameter] public string? Homepage { get; set; }
 
     public RenderControlCore<MediaProviders?>? Core { get; set; } = new();
     private MediaProviders? Providers { get; set; }
@@ -233,7 +233,7 @@
         AllProviders = await AllProvidersApi.GetAll(null);
 
         Core?.LoadingStarted?.Invoke();
-        Providers = await TmdbApi.GetWatchProvidersList(tmdb_id, type);
+        Providers = await TmdbApi.GetWatchProvidersList(TmdbId, Type);
         Core?.LoadingFinished?.Invoke(Providers);
     }
 
@@ -245,7 +245,7 @@
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
-            var model = DeliveryModel.FREE;
+            const DeliveryModel model = DeliveryModel.FREE;
 
             if (provider != null && !provider.models.Contains(model))
             {
@@ -259,7 +259,7 @@
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
-            var model = DeliveryModel.AVOD;
+            const DeliveryModel model = DeliveryModel.AVOD;
 
             if (provider != null && !provider.models.Contains(model))
             {
@@ -273,7 +273,7 @@
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
-            var model = DeliveryModel.SVOD;
+            const DeliveryModel model = DeliveryModel.SVOD;
 
             if (provider != null && !provider.models.Contains(model))
             {
@@ -287,7 +287,7 @@
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
-            var model = DeliveryModel.TVOD;
+            const DeliveryModel model = DeliveryModel.TVOD;
 
             if (provider != null && !provider.models.Contains(model))
             {
@@ -301,7 +301,7 @@
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
-            var model = DeliveryModel.TVOD;
+            const DeliveryModel model = DeliveryModel.TVOD;
 
             if (provider != null && !provider.models.Contains(model))
             {
@@ -315,7 +315,7 @@
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
-            var model = DeliveryModel.PVOD;
+            const DeliveryModel model = DeliveryModel.PVOD;
 
             if (provider != null && !provider.models.Contains(model))
             {
@@ -327,7 +327,7 @@
 
         if (AllProviders != null)
         {
-            await JS.InvokeVoidAsync("window.localStorage.setItem", "AllProviders", JsonSerializer.Serialize(AllProviders));
+            await Js.InvokeVoidAsync("window.localStorage.setItem", "AllProviders", JsonSerializer.Serialize(AllProviders));
         }
     }
 

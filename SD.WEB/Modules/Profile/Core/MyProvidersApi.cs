@@ -5,9 +5,9 @@ namespace SD.WEB.Modules.Profile.Core;
 
 public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>(factory, "my-providers")
 {
-    public async Task<MyProviders?> Get(bool IsUserAuthenticated, RenderControlCore<MyProviders?>? core)
+    public async Task<MyProviders?> Get(bool isUserAuthenticated, RenderControlCore<MyProviders?>? core)
     {
-        if (IsUserAuthenticated) return await GetAsync(Endpoint.MyProviders, core);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.MyProviders, core);
 
         return new MyProviders();
     }

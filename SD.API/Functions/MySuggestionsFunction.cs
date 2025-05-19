@@ -7,7 +7,7 @@ public class MySuggestionsFunction(CosmosRepository repo)
 {
     [Function("MySuggestionsGet")]
     public async Task<HttpResponseData?> MySuggestionsGet(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "my-suggestions/get")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "my-suggestions/get")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try
@@ -16,7 +16,7 @@ public class MySuggestionsFunction(CosmosRepository repo)
 
             var doc = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
 
-            return await req.CreateResponse(doc, ttlCache.one_day, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -27,9 +27,9 @@ public class MySuggestionsFunction(CosmosRepository repo)
 
     [Function("MySuggestionsSync")]
     public async Task<MySuggestions?> MySuggestionsSync(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-suggestions/sync/{MediaType}")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-suggestions/sync/{MediaType}")]
         HttpRequestData req,
-        string MediaType, CancellationToken cancellationToken)
+        string mediaType, CancellationToken cancellationToken)
     {
         try
         {
@@ -50,9 +50,9 @@ public class MySuggestionsFunction(CosmosRepository repo)
                 obj = body;
             }
 
-            var type = Enum.Parse<MediaType>(MediaType);
+            var type = Enum.Parse<MediaType>(mediaType);
 
-            if (type == Shared.Enums.MediaType.movie)
+            if (type == MediaType.movie)
                 obj.MovieSyncDate = DateTime.Now;
             else
                 obj.ShowSyncDate = DateTime.Now;
@@ -68,7 +68,7 @@ public class MySuggestionsFunction(CosmosRepository repo)
 
     [Function("MySuggestionsAdd")]
     public async Task<MySuggestions?> MySuggestionsAdd(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-suggestions/add")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-suggestions/add")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try

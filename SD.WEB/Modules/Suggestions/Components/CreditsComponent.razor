@@ -6,9 +6,9 @@
 @inject TmdbCreditApi TmdbCreditApi
 
 <RenderControl Core="Core" Model="Credits" ExpressionEmpty="@((Credits? obj) => obj == null)">
-    @if (type == MediaType.movie)
+    @if (Type == MediaType.movie)
     {
-        var directors = Credits?.crew.Where(w => w.job == "Director").ToList() ?? new List<Crew>();
+        var directors = Credits?.crew.Where(w => w.job == "Director").ToList() ?? [];
         if (directors.Any())
         {
             <Divider DividerType="DividerType.TextContent" Text="@Translations.Directing" Background="Background.Secondary" Style="opacity: .75"/>
@@ -35,7 +35,7 @@
             </Row>
         }
 
-        var writers = Credits?.crew.Where(w => w.job == "Writer" || w.job == "Screenplay" || w.job == "Author" || w.job == "Story").ToList() ?? new List<Crew>();
+        var writers = Credits?.crew.Where(w => w.job == "Writer" || w.job == "Screenplay" || w.job == "Author" || w.job == "Story").ToList() ?? [];
         if (writers.Any())
         {
             <Divider DividerType="DividerType.TextContent" Text="@Translations.Writing" Background="Background.Secondary" Style="opacity: .75"/>
@@ -93,8 +93,8 @@
     [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
 
-    [Parameter] public string? tmdb_id { get; set; }
-    [Parameter] public MediaType? type { get; set; }
+    [Parameter] public string? TmdbId { get; set; }
+    [Parameter] public MediaType? Type { get; set; }
 
     public RenderControlCore<Credits?>? Core { get; set; } = new();
     private Credits? Credits { get; set; }
@@ -102,7 +102,7 @@
     protected override async Task LoadDataRender()
     {
         Core?.LoadingStarted?.Invoke();
-        Credits = await TmdbCreditApi.GetList(type, tmdb_id);
+        Credits = await TmdbCreditApi.GetList(Type, TmdbId);
         Core?.LoadingFinished?.Invoke(Credits);
     }
 
@@ -113,7 +113,7 @@
             var result = await TmdbCreditApi.GetListByPerson(crew.id.ToString());
             var items = new HashSet<MediaDetail>();
 
-            foreach (var item in result?.crew.Where(w => w.job == crew.job) ?? Enumerable.Empty<CrewByPerson>())
+            foreach (var item in result?.crew.Where(w => w.job == crew.job) ?? [])
             {
                 var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
                 items.Add(new MediaDetail
@@ -144,7 +144,7 @@
             var result = await TmdbCreditApi.GetListByPerson(cast.id.ToString());
             var items = new HashSet<MediaDetail>();
 
-            foreach (var item in result?.cast ?? new List<CastByPerson>())
+            foreach (var item in result?.cast ?? [])
             {
                 var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
 

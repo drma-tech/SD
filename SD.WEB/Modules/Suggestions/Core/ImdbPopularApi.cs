@@ -11,7 +11,7 @@ public class ImdbPopularApi(IHttpClientFactory factory)
         MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null,
         int page = 1)
     {
-        var list_media = new HashSet<MediaDetail>();
+        var listMedia = new HashSet<MediaDetail>();
 
         if (type == MediaType.movie)
         {
@@ -26,10 +26,10 @@ public class ImdbPopularApi(IHttpClientFactory factory)
 
                 //TODO: tv api has wrong poster definitions
                 var shortImage = !string.IsNullOrEmpty(item.Image) && item.Image.Contains("_V1_")
-                    ? item.Image?.Remove(item.Image.IndexOf("_V1_")) + "_V1_UX185_CR0,12,185,278_AL_.jpg"
+                    ? item.Image?.Remove(item.Image.IndexOf("_V1_", StringComparison.Ordinal)) + "_V1_UX185_CR0,12,185,278_AL_.jpg"
                     : item.Image;
 
-                list_media.Add(new MediaDetail
+                listMedia.Add(new MediaDetail
                 {
                     tmdb_id = item.Id,
                     title = item.Title,
@@ -59,10 +59,10 @@ public class ImdbPopularApi(IHttpClientFactory factory)
 
                 //TODO: tv api has wrong poster definitions
                 var shortImage = !string.IsNullOrEmpty(item.Image) && item.Image.Contains("_V1_")
-                    ? item.Image?.Remove(item.Image.IndexOf("_V1_")) + "_V1_UX185_CR0,12,185,278_AL_.jpg"
+                    ? item.Image?.Remove(item.Image.IndexOf("_V1_", StringComparison.Ordinal)) + "_V1_UX185_CR0,12,185,278_AL_.jpg"
                     : item.Image;
 
-                list_media.Add(new MediaDetail
+                listMedia.Add(new MediaDetail
                 {
                     tmdb_id = item.Id,
                     title = item.Title,
@@ -80,6 +80,6 @@ public class ImdbPopularApi(IHttpClientFactory factory)
             }
         }
 
-        return (list_media, true);
+        return (listMedia, true);
     }
 }

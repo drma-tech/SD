@@ -5,12 +5,12 @@ namespace SD.WEB.Modules.Profile.Core;
 
 public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingList>(factory, "watchinglist")
 {
-    public async Task<WatchingList?> Get(bool IsUserAuthenticated, RenderControlCore<WatchingList?>? core,
+    public async Task<WatchingList?> Get(bool isUserAuthenticated, RenderControlCore<WatchingList?>? core,
         string? id = null)
     {
         if (!string.IsNullOrEmpty(id)) return await GetAsync($"{Endpoint.Get}?id={id}", core);
 
-        if (IsUserAuthenticated) return await GetAsync(Endpoint.Get, core);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, core);
 
         return new WatchingList();
     }
@@ -25,12 +25,12 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
         return await PostAsync(Endpoint.Add(mediaType), null, item);
     }
 
-    public async Task<WatchingList?> Remove(MediaType? mediaType, string? CollectionId, string? TmdbId = "null")
+    public async Task<WatchingList?> Remove(MediaType? mediaType, string? collectionId, string? tmdbId = "null")
     {
         ArgumentNullException.ThrowIfNull(mediaType);
-        ArgumentNullException.ThrowIfNull(CollectionId);
+        ArgumentNullException.ThrowIfNull(collectionId);
 
-        return await PostAsync<WatchingList>(Endpoint.Remove(mediaType, CollectionId, TmdbId ?? "null"), null, null);
+        return await PostAsync<WatchingList>(Endpoint.Remove(mediaType, collectionId, tmdbId ?? "null"), null, null);
     }
 
     public async Task<WatchingList?> Sync(MediaType? mediaType, WatchingList? obj,
@@ -51,9 +51,9 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
             return $"watchinglist/add/{type}";
         }
 
-        public static string Remove(MediaType? type, string CollectionId, string TmdbId)
+        public static string Remove(MediaType? type, string collectionId, string tmdbId)
         {
-            return $"watchinglist/remove/{type}/{CollectionId}/{TmdbId}";
+            return $"watchinglist/remove/{type}/{collectionId}/{tmdbId}";
         }
 
         public static string Sync(MediaType? type)

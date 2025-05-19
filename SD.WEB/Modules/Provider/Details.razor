@@ -19,11 +19,11 @@
     @if (Provider != null)
     {
         <HeadPage ImageSource="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Text="@Provider.description" Link="@Provider.link"
-                  provider="Provider" IsAuthenticated="IsAuthenticated">
+                  Provider="Provider" IsAuthenticated="IsAuthenticated">
         </HeadPage>
     }
 
-    @if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
+    @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
     {
         <Div TextAlignment="TextAlignment.Center">
             <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="2339718687"></ins>
@@ -33,19 +33,19 @@
         </Div>
     }
 
-    <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "popularity.desc")"
+    <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(Id, "popularity.desc")"
                ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
     </MediaList>
-    <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "primary_release_date.desc")"
+    <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")"
                ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
     </MediaList>
-    <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(id, "vote_average.desc")"
+    <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(Id, "vote_average.desc")"
                ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
     </MediaList>
 </RenderControl>
 
 @code {
-    [Parameter] public string? id { get; set; }
+    [Parameter] public string? Id { get; set; }
 
     public RenderControlCore<AllProviders?>? Core { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
@@ -87,7 +87,7 @@
 
         AllProviders = await AllProvidersApi.GetAll(Core);
 
-        Provider = AllProviders?.Items.SingleOrDefault(s => s.id == id);
+        Provider = AllProviders?.Items.SingleOrDefault(s => s.id == Id);
     }
 
     protected override async Task LoadDataRender()
@@ -97,12 +97,11 @@
         WishList = await WishListApi.Get(IsAuthenticated, CoreWishlist);
     }
 
-    private Dictionary<string, string> GetExtraParameters(string? provider_id, string sort_by)
+    private static Dictionary<string, string> GetExtraParameters(string? providerId, string sortBy)
     {
-        if (provider_id == null) throw new ArgumentNullException(nameof(provider_id));
+        if (providerId == null) throw new ArgumentNullException(nameof(providerId));
 
-        return new Dictionary<string, string> { { "with_watch_providers", provider_id }, { "sort_by", sort_by } };
-        ;
+        return new Dictionary<string, string> { { "with_watch_providers", providerId }, { "sort_by", sortBy } };
     }
 
 }

@@ -5,9 +5,9 @@ namespace SD.WEB.Modules.Suggestions.Core;
 
 public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
 {
-    public async Task<MediaDetail> GetMediaDetail(string? tmdb_id, MediaType type, string? language = null)
+    public async Task<MediaDetail> GetMediaDetail(string? tmdbId, MediaType type, string? language = null)
     {
-        ArgumentNullException.ThrowIfNull(tmdb_id);
+        ArgumentNullException.ThrowIfNull(tmdbId);
 
         var parameter = new Dictionary<string, string>
         {
@@ -16,16 +16,16 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
             { "append_to_response", "videos" }
         };
 
-        var obj_return = new MediaDetail();
+        var objReturn = new MediaDetail();
 
         if (type == MediaType.movie)
         {
             var item = await GetAsync<MovieDetail>(TmdbOptions.BaseUri + "movie/" +
-                                                   tmdb_id.ConfigureParameters(parameter));
+                                                   tmdbId.ConfigureParameters(parameter));
 
             if (item != null)
             {
-                obj_return = new MediaDetail
+                objReturn = new MediaDetail
                 {
                     tmdb_id = item.id.ToString(),
                     title = item.title,
@@ -56,23 +56,23 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
 
                     if (collection != null)
                     {
-                        obj_return.collectionId = collection.id;
-                        obj_return.collectionName = collection.name;
-                        obj_return.collectionLogo = collection.poster_path;
+                        objReturn.collectionId = collection.id;
+                        objReturn.collectionName = collection.name;
+                        objReturn.collectionLogo = collection.poster_path;
 
-                        foreach (var part in collection.parts ?? [])
-                            obj_return.Collection.Add(ConvertToCollection(part));
+                        foreach (var part in collection.parts)
+                            objReturn.Collection.Add(ConvertToCollection(part));
                     }
                 }
             }
         }
         else
         {
-            var item = await GetAsync<TVDetail>(TmdbOptions.BaseUri + "tv/" + tmdb_id.ConfigureParameters(parameter));
+            var item = await GetAsync<TVDetail>(TmdbOptions.BaseUri + "tv/" + tmdbId.ConfigureParameters(parameter));
 
             if (item != null)
             {
-                obj_return = new MediaDetail
+                objReturn = new MediaDetail
                 {
                     tmdb_id = item.id.ToString(),
                     title = item.name,
@@ -95,11 +95,11 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
                     MediaType = MediaType.tv
                 };
 
-                foreach (var season in item.seasons) obj_return.Collection.Add(ConvertToCollection(season));
+                foreach (var season in item.seasons) objReturn.Collection.Add(ConvertToCollection(season));
             }
         }
 
-        return obj_return;
+        return objReturn;
     }
 
     public static Collection ConvertToCollection(Part part)
@@ -131,7 +131,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
 
     public async Task<TmdbCollection?> GetCollection(string? collectionId, Dictionary<string, string> parameters)
     {
-        if (collectionId == null) return default;
+        if (collectionId == null) return null;
 
         return await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" +
                                               collectionId.ConfigureParameters(parameters));
@@ -139,16 +139,16 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
 
     public async Task<TmdbSeason?> GetSeason(string? tmdbId, int? seasonNumber, Dictionary<string, string> parameters)
     {
-        if (tmdbId == null) return default;
-        if (seasonNumber == null) return default;
+        if (tmdbId == null) return null;
+        if (seasonNumber == null) return null;
 
         return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri +
                                           $"tv/{tmdbId}/season/{seasonNumber}".ConfigureParameters(parameters));
     }
 
-    public async Task<MediaProviders?> GetWatchProvidersList(string? tmdb_id, MediaType? type)
+    public async Task<MediaProviders?> GetWatchProvidersList(string? tmdbId, MediaType? type)
     {
-        ArgumentNullException.ThrowIfNull(tmdb_id);
+        ArgumentNullException.ThrowIfNull(tmdbId);
         ArgumentNullException.ThrowIfNull(type);
 
         var parameter = new Dictionary<string, string>
@@ -158,17 +158,17 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
 
         if (type == MediaType.movie)
             return await GetAsync<MediaProviders>(TmdbOptions.BaseUri +
-                                                  $"movie/{tmdb_id}/watch/providers".ConfigureParameters(parameter));
+                                                  $"movie/{tmdbId}/watch/providers".ConfigureParameters(parameter));
 
         //tv
         return await GetAsync<MediaProviders>(TmdbOptions.BaseUri +
-                                              $"tv/{tmdb_id}/watch/providers".ConfigureParameters(parameter));
+                                              $"tv/{tmdbId}/watch/providers".ConfigureParameters(parameter));
     }
 }
 
 internal sealed class Ordem
 {
-    public MediaType type { get; set; }
-    public int id { get; set; }
+    public MediaType Type { get; set; }
+    public int Id { get; set; }
     public double Popularity { get; set; }
 }

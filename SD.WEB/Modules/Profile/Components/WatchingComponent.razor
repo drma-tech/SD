@@ -54,7 +54,7 @@
     @if (FullScreen)
     {
         <div class="grid-relative-container-sm mb-2">
-            @foreach (var item in Items.Take(GetTotalItems) ?? [])
+            @foreach (var item in Items.Take(GetTotalItems))
             {
                 var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                 var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
@@ -92,9 +92,9 @@
     }
     else
     {
-        <div id="@SwiperId" class="swiper mb-2">
+        <div id="@_swiperId" class="swiper mb-2">
             <div class="swiper-wrapper">
-                @foreach (var item in Items.Take(GetTotalItems) ?? [])
+                @foreach (var item in Items.Take(GetTotalItems))
                 {
                     var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                     var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
@@ -147,18 +147,18 @@
     [Parameter] [EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter] [EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter] [EditorRequired] public WishList? Wish { get; set; }
-    [Parameter] [EditorRequired] public Func<WatchingList?, bool> ExpressionEmpty { get; set; } = default!;
+    [Parameter] [EditorRequired] public Func<WatchingList?, bool> ExpressionEmpty { get; set; } = null!;
     [Parameter] [EditorRequired] public string? UserId { get; set; }
     [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
     [Parameter] public string? CustomTitle { get; set; }
 
-    private HashSet<WatchingListItem> Items => MediaType == MediaType.movie ? Watching?.Movies ?? new HashSet<WatchingListItem>() : Watching?.Shows ?? new HashSet<WatchingListItem>();
+    private HashSet<WatchingListItem> Items => MediaType == MediaType.movie ? Watching?.Movies ?? [] : Watching?.Shows ?? [];
 
     private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Watching : AccountProduct.Basic.GetRestrictions().Watching;
     private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? Translations.MyMovieWatching : Translations.MyShowWatching);
 
     public bool Updating { get; set; }
-    private readonly string SwiperId = $"swiper-{Guid.NewGuid()}";
+    private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -166,7 +166,7 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.InvokeVoidAsync("initSwiper", SwiperId);
+            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperId);
         }
         catch (Exception ex)
         {
@@ -179,18 +179,14 @@
         await ModalService.MyWatchingListPopup(Core, MediaType, Watched, Watching, Wish, ShowPrivateAction, IsAuthenticated, UserId);
     }
 
-    public Task ShowMediaPopup(string? tmdb_id, string? name)
+    public Task ShowMediaPopup(string? tmdbId, string? name)
     {
-        if (string.IsNullOrEmpty(tmdb_id)) return default!;
-
-        return ModalService.MediaPopup(Watched, Watching, Wish, MediaType, tmdb_id, ShowPrivateAction, IsAuthenticated);
+        return string.IsNullOrEmpty(tmdbId) ? null! : ModalService.MediaPopup(Watched, Watching, Wish, MediaType, tmdbId, ShowPrivateAction, IsAuthenticated);
     }
 
-    public Task ShowCollectionPopup(string? collection_id, string? name)
+    public Task ShowCollectionPopup(string? collectionId, string? name)
     {
-        if (string.IsNullOrEmpty(collection_id)) return default!;
-
-        return ModalService.CollectionPopup(Watched, Watching, Wish, MediaType, collection_id, ShowPrivateAction, IsAuthenticated);
+        return string.IsNullOrEmpty(collectionId) ? null! : ModalService.CollectionPopup(Watched, Watching, Wish, MediaType, collectionId, ShowPrivateAction, IsAuthenticated);
     }
 
     private async Task ImportFromWatched()
@@ -207,29 +203,27 @@
                 StateHasChanged();
                 Core?.ShowProcessing();
 
-                foreach (var tmdb_id in Watched?.GetItems(MediaType.movie) ?? new HashSet<string>())
+                foreach (var tmdbId in Watched?.GetItems(MediaType.movie) ?? [])
                 {
                     try
                     {
-                        var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.movie);
-                        if (media == null) continue;
+                        var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.movie);
                         var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-                        if (hasCollection && !watching!.DeletedMovies.Any(a => a == media.collectionId.ToString()))
+                        if (hasCollection && watching!.DeletedMovies.All(a => a != media.collectionId.ToString()))
                         {
                             var item = watching?.GetItem(MediaType.movie, media.collectionId?.ToString());
 
                             if (item == null)
                             {
-                                var items = new HashSet<string>();
-                                items.Add(tmdb_id);
+                                var items = new HashSet<string> { tmdbId };
 
                                 item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
                             }
                             else
                             {
                                 item.maxItems = media.Collection.Count;
-                                item.watched.Add(tmdb_id);
+                                item.watched.Add(tmdbId);
                             }
 
                             watching?.AddItem(MediaType.movie, item);
@@ -239,7 +233,7 @@
                     {
                         if (ex.Message.Contains("The resource you requested could not be found"))
                         {
-                            Watched = await WatchedApi.Remove(MediaType.movie, tmdb_id);
+                            Watched = await WatchedApi.Remove(MediaType.movie, tmdbId);
                         }
                         else
                         {
@@ -261,22 +255,20 @@
                 StateHasChanged();
                 Core?.ShowProcessing();
 
-                foreach (var tmdb_id in Watched?.GetItems(MediaType.tv) ?? new HashSet<string>())
+                foreach (var tmdbId in Watched?.GetItems(MediaType.tv) ?? [])
                 {
                     try
                     {
-                        var media = await TmdbApi.GetMediaDetail(tmdb_id, MediaType.tv);
-                        if (media == null) continue;
+                        var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.tv);
                         var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-                        if (hasCollection && !watching!.DeletedShows.Any(a => a == media.tmdb_id))
+                        if (hasCollection && watching!.DeletedShows.All(a => a != media.tmdb_id))
                         {
                             var item = watching?.GetItem(MediaType.tv, media.tmdb_id);
 
                             if (item == null)
                             {
-                                var items = new HashSet<string>();
-                                items.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+                                var items = new HashSet<string> { media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "" };
 
                                 item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
                             }
@@ -293,7 +285,7 @@
                     {
                         if (ex.Message.Contains("The resource you requested could not be found"))
                         {
-                            Watched = await WatchedApi.Remove(MediaType.tv, tmdb_id);
+                            Watched = await WatchedApi.Remove(MediaType.tv, tmdbId);
                         }
                         else
                         {

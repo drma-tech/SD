@@ -3,7 +3,6 @@
 @inherits ComponentCore<ProfilePopup>
 
 @inject IMessageService MessageService
-@inject IHttpClientFactory factory
 
 <ModalHeader>
     <ModalTitle Size="HeadingSize.Is5">
@@ -22,19 +21,19 @@
                     <FieldLabel>
                         @Translations.IdentityProvider
                     </FieldLabel>
-                    <TextEdit Text="@principal?.IdentityProvider" Disabled="true"/>
+                    <TextEdit Text="@Principal?.IdentityProvider" Disabled="true"/>
                 </Field>
                 <Field ColumnSize="ColumnSize.Is4.OnDesktop">
                     <FieldLabel>
                         @Translations.Identification
                     </FieldLabel>
-                    <TextEdit Text="@principal?.UserDetails" Disabled="true"/>
+                    <TextEdit Text="@Principal?.UserDetails" Disabled="true"/>
                 </Field>
                 <Field ColumnSize="ColumnSize.Is4.OnDesktop">
                     <FieldLabel>
                         @Translations.Email
                     </FieldLabel>
-                    <TextEdit Text="@principal?.Email" Disabled="true"/>
+                    <TextEdit Text="@Principal?.Email" Disabled="true"/>
                 </Field>
             </Fields>
         </CardBody>
@@ -44,7 +43,7 @@
             @Translations.Actions
         </CardHeader>
         <CardBody>
-            <Button Color="Color.Danger" Clicked="async () => { await DeleteAccount(principal?.IdentityProvider); }">
+            <Button Color="Color.Danger" Clicked="async () => { await DeleteAccount(Principal?.IdentityProvider); }">
                 <Blazorise.Icon Name="FontAwesomeIcons.UserSlash"/> @Translations.DeleteAccount
             </Button>
         </CardBody>
@@ -59,11 +58,11 @@
 @code {
     [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
 
-    private ClientePrincipal? principal { get; set; }
+    private ClientePrincipal? Principal { get; set; }
 
     protected override async Task LoadDataRender()
     {
-        principal = await PrincipalApi.Get(IsAuthenticated);
+        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
     private async Task DeleteAccount(string? provider)

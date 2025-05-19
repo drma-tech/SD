@@ -1,11 +1,7 @@
 ﻿namespace SD.Shared.Models;
 
-public class WatchedList : PrivateMainDocument
+public class WatchedList() : PrivateMainDocument(DocumentType.WatchedList)
 {
-    public WatchedList() : base(DocumentType.WatchedList)
-    {
-    }
-
     public HashSet<string> Movies { get; init; } = [];
     public HashSet<string> Shows { get; init; } = [];
 
@@ -16,9 +12,7 @@ public class WatchedList : PrivateMainDocument
 
     public bool Contains(MediaType? type, string? item)
     {
-        if (item == null) return false;
-
-        return Items(type).Contains(item);
+        return item != null && Items(type).Contains(item);
     }
 
     public void AddItem(MediaType? type, HashSet<string> items)

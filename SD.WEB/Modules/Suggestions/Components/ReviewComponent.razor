@@ -1,13 +1,11 @@
 ﻿@using SD.Shared.Models.Reviews
-@using SD.WEB.Modules.Suggestions.Core
 @inherits ComponentCore<ReviewComponent>
 
-@inject ExternalIdApi ExternalIdApi
 @inject CacheMetaCriticApi CacheMetaCriticApi
 
 <RenderControl Core="Core" Model="Model" ExpressionEmpty="@((CacheDocument<ReviewModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
     <ListGroup Flush>
-        @foreach (var item in Model?.Data?.Items ?? new List<Item>())
+        @foreach (var item in Model?.Data?.Items ?? [])
         {
             <ListGroupItem Padding="Padding.Is2">
                 <Heading Size="HeadingSize.Is6" Margin="Margin.Is1.FromBottom">
@@ -25,50 +23,45 @@
 </RenderControl>
 
 @code {
-    [Parameter] public string? imdb_id { get; set; }
-    [Parameter] public string? english_title { get; set; }
-    [Parameter] public DateTime? release_date { get; set; }
-    [Parameter] public MediaType? type { get; set; }
+    [Parameter] public string? ImdbId { get; set; }
+    [Parameter] public string? EnglishTitle { get; set; }
+    [Parameter] public DateTime? ReleaseDate { get; set; }
+    [Parameter] public MediaType? Type { get; set; }
 
     public RenderControlCore<CacheDocument<ReviewModel>?> Core { get; set; } = new();
     public CacheDocument<ReviewModel>? Model { get; set; }
 
     protected override async Task LoadDataRender()
     {
-        if (!string.IsNullOrEmpty(imdb_id))
+        if (!string.IsNullOrEmpty(ImdbId))
         {
-            if (type == MediaType.movie)
+            if (Type == MediaType.movie)
             {
-                Model = await CacheMetaCriticApi.GetMovieReviews(imdb_id, english_title, release_date, Core);
+                Model = await CacheMetaCriticApi.GetMovieReviews(ImdbId, EnglishTitle, ReleaseDate, Core);
             }
             else
             {
-                Model = await CacheMetaCriticApi.GetShowReviews(imdb_id, english_title, release_date, Core);
+                Model = await CacheMetaCriticApi.GetShowReviews(ImdbId, EnglishTitle, ReleaseDate, Core);
             }
         }
         else
         {
-            Core?.LoadingFinished?.Invoke(default);
+            Core.LoadingFinished?.Invoke(null);
         }
     }
 
-    private Color GetColorByRating(int? val)
+    private static Color GetColorByRating(int? val)
     {
         if (!val.HasValue) return Color.Secondary;
 
         val = val / 10;
 
-        if (val >= 8)
+        return val switch
         {
-            return Color.Success;
-        }
-
-        if (val >= 6)
-        {
-            return Color.Warning;
-        }
-
-        return Color.Danger;
+            >= 8 => Color.Success,
+            >= 6 => Color.Warning,
+            _ => Color.Danger
+        };
     }
 
 }

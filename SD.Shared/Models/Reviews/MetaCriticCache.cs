@@ -6,7 +6,7 @@ public class MetaCriticCache : CacheDocument<ReviewModel>
     {
     }
 
-    public MetaCriticCache(ReviewModel data, string key, ttlCache ttl) : base(key, data, ttl)
+    public MetaCriticCache(ReviewModel data, string key, TtlCache ttl) : base(key, data, ttl)
     {
     }
 }

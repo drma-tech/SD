@@ -6,12 +6,12 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<ClienteLogin>(fact
 {
     public async Task Add(string platform)
     {
-        var ip = "";
+        string ip;
 
         try
         {
             //TODO: TypeError: Failed to fetch
-            var response = await _http.GetAsync(new Uri("https://ipinfo.io/ip"));
+            var response = await Http.GetAsync(new Uri("https://ipinfo.io/ip"));
             ip = await response.Content.ReadAsStringAsync();
         }
         catch (Exception)

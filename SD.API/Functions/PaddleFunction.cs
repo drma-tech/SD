@@ -12,7 +12,7 @@ public class PaddleFunction(CosmosRepository repo, IConfiguration configuration)
 {
     [Function("GetSubscription")]
     public async Task<RootSubscription?> GetSubscription(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/subscription")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/paddle/subscription")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try
@@ -42,7 +42,7 @@ public class PaddleFunction(CosmosRepository repo, IConfiguration configuration)
 
     [Function("GetSubscriptionUpdate")]
     public async Task<RootSubscription?> GetSubscriptionUpdate(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/subscription/update")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/paddle/subscription/update")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try
@@ -73,7 +73,7 @@ public class PaddleFunction(CosmosRepository repo, IConfiguration configuration)
 
     [Function("PostSubscription")]
     public async Task PostSubscription(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "public/paddle/subscription")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/paddle/subscription")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try
@@ -112,7 +112,7 @@ public class PaddleFunction(CosmosRepository repo, IConfiguration configuration)
 
     [Function("Configurations")]
     public Configurations Configurations(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/paddle/configurations")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/paddle/configurations")]
         HttpRequestData req)
     {
         try

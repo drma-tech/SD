@@ -15,7 +15,7 @@
 @inject WishListApi WishApi
 @inject IJSRuntime JsRuntime
 
-@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
+@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="8246651489"></ins>
@@ -55,11 +55,11 @@
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "language")]
-    public string? language { get; set; }
+    public string? Language { get; set; }
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "platform")]
-    public string? platform { get; set; }
+    public string? Platform { get; set; }
 
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
@@ -80,28 +80,28 @@
         WatchedApi.DataChanged += model =>
         {
             Watched = model;
-            CoreWatched?.LoadingFinished?.Invoke(model);
+            CoreWatched.LoadingFinished?.Invoke(model);
             StateHasChanged();
         };
         WatchingApi.DataChanged += model =>
         {
             Watching = model;
-            CoreWatching?.LoadingFinished?.Invoke(model);
+            CoreWatching.LoadingFinished?.Invoke(model);
             StateHasChanged();
         };
         WishApi.DataChanged += model =>
         {
             Wish = model;
-            CoreWish?.LoadingFinished?.Invoke(model);
+            CoreWish.LoadingFinished?.Invoke(model);
             StateHasChanged();
         };
 
         Settings = await CacheSettingsApi.GetSettings();
         Principal = await PrincipalApi.Get(IsAuthenticated);
 
-        if (platform.NotEmpty())
+        if (Platform.NotEmpty())
         {
-            await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", platform);
+            await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", Platform);
         }
         else
         {

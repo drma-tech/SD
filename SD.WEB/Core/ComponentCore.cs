@@ -12,12 +12,12 @@ namespace SD.WEB.Core;
 /// <typeparam name="T"></typeparam>
 public abstract class ComponentCore<T> : ComponentBase where T : class
 {
-    [Inject] protected ILogger<T> Logger { get; set; } = default!;
-    [Inject] protected INotificationService Toast { get; set; } = default!;
-    [Inject] protected IModalService ModalService { get; set; } = default!;
-    [Inject] protected NavigationManager Navigation { get; set; } = default!;
-    [Inject] protected PrincipalApi PrincipalApi { get; set; } = default!;
-    [Inject] protected CacheSettingsApi CacheSettingsApi { get; set; } = default!;
+    [Inject] protected ILogger<T> Logger { get; set; } = null!;
+    [Inject] protected INotificationService Toast { get; set; } = null!;
+    [Inject] protected IModalService ModalService { get; set; } = null!;
+    [Inject] protected NavigationManager Navigation { get; set; } = null!;
+    [Inject] protected PrincipalApi PrincipalApi { get; set; } = null!;
+    [Inject] protected CacheSettingsApi CacheSettingsApi { get; set; } = null!;
 
     protected virtual Task LoadDataRender()
     {
@@ -53,7 +53,7 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
 /// <typeparam name="T"></typeparam>
 public abstract class PageCore<T> : ComponentCore<T> where T : class
 {
-    [CascadingParameter] protected Task<AuthenticationState>? authenticationState { get; set; }
+    [CascadingParameter] protected Task<AuthenticationState>? AuthenticationState { get; set; }
 
     protected bool IsAuthenticated { get; set; }
     protected ClaimsPrincipal? User { get; set; }
@@ -61,11 +61,11 @@ public abstract class PageCore<T> : ComponentCore<T> where T : class
 
     protected override async Task OnInitializedAsync()
     {
-        if (authenticationState is not null)
+        if (AuthenticationState is not null)
         {
-            var authState = await authenticationState;
+            var authState = await AuthenticationState;
 
-            User = authState?.User;
+            User = authState.User;
             IsAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
             UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         }

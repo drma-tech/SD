@@ -6,11 +6,10 @@ namespace SD.API.Core;
 public sealed class CosmosLoggerProvider(CosmosLogRepository repo) : ILoggerProvider
 {
     private readonly ConcurrentDictionary<string, CosmosLogger> _loggers = new();
-    private readonly CosmosLogRepository _repo = repo;
 
     public ILogger CreateLogger(string categoryName)
     {
-        return _loggers.GetOrAdd(categoryName, name => new CosmosLogger(name, _repo));
+        return _loggers.GetOrAdd(categoryName, name => new CosmosLogger(name, repo));
     }
 
     public void Dispose()
@@ -21,12 +20,9 @@ public sealed class CosmosLoggerProvider(CosmosLogRepository repo) : ILoggerProv
 
 public class CosmosLogger(string name, CosmosLogRepository repo) : ILogger
 {
-    private readonly string _name = name;
-    private readonly CosmosLogRepository _repo = repo;
-
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull
     {
-        return default;
+        return null;
     }
 
     public bool IsEnabled(LogLevel logLevel)
@@ -41,13 +37,13 @@ public class CosmosLogger(string name, CosmosLogRepository repo) : ILogger
 
         if (exception is NotificationException) return;
 
-        _ = _repo.Add(new LogModel
+        _ = repo.Add(new LogModel
         {
-            Name = _name,
+            Name = name,
             State = formatter(state, exception),
             Message = exception?.Message,
             StackTrace = exception?.StackTrace,
-            Ttl = (int)ttlCache.three_months
+            Ttl = (int)TtlCache.ThreeMonths
         });
     }
 }

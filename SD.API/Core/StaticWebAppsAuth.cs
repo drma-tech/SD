@@ -15,16 +15,16 @@ public class ClientPrincipal
 
 public static class StaticWebAppsAuth
 {
-    private static readonly string[] roles = ["anonymous"];
-    private static readonly JsonSerializerOptions options = new() { PropertyNameCaseInsensitive = true };
+    private static readonly string[] Roles = ["anonymous"];
+    private static readonly JsonSerializerOptions Options = new() { PropertyNameCaseInsensitive = true };
 
     public static string GetUserId(this HttpRequestData req)
     {
         if (req.Url.Host.Contains("localhost"))
         {
-            var local_id = "8ed6f45c90ac43248353b90a846a8519";
+            const string localId = "8ed6f45c90ac43248353b90a846a8519";
 
-            return local_id;
+            return localId;
         }
 
         var principal = req.Parse();
@@ -42,23 +42,20 @@ public static class StaticWebAppsAuth
             var data = header.First();
             var decoded = Convert.FromBase64String(data);
             var json = Encoding.ASCII.GetString(decoded);
-            principal = JsonSerializer.Deserialize<ClientPrincipal>(json, options);
+            principal = JsonSerializer.Deserialize<ClientPrincipal>(json, Options);
         }
 
-        if (principal != null)
-        {
-            principal.UserRoles = principal.UserRoles?.Except(roles, StringComparer.CurrentCultureIgnoreCase) ?? [];
+        if (principal == null) return null;
+        principal.UserRoles = principal.UserRoles.Except(Roles, StringComparer.CurrentCultureIgnoreCase);
 
-            if (!principal.UserRoles?.Any() ?? true) return new ClaimsPrincipal();
+        var principalUserRoles = principal.UserRoles.ToList();
+        if (!principalUserRoles.Any()) return new ClaimsPrincipal();
 
-            var identity = new ClaimsIdentity(principal.IdentityProvider);
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, principal.UserId ?? ""));
-            identity.AddClaim(new Claim(ClaimTypes.Name, principal.UserDetails ?? ""));
-            identity.AddClaims(principal.UserRoles?.Select(r => new Claim(ClaimTypes.Role, r)) ?? []);
+        var identity = new ClaimsIdentity(principal.IdentityProvider);
+        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, principal.UserId ?? ""));
+        identity.AddClaim(new Claim(ClaimTypes.Name, principal.UserDetails ?? ""));
+        identity.AddClaims(principalUserRoles.Select(r => new Claim(ClaimTypes.Role, r)));
 
-            return new ClaimsPrincipal(identity);
-        }
-
-        return null;
+        return new ClaimsPrincipal(identity);
     }
 }

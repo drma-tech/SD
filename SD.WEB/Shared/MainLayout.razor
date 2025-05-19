@@ -5,7 +5,6 @@
 @inherits LayoutComponentBase
 
 @inject NavigationManager Navigation
-@inject ILogger<MainLayout> Logger
 @inject INotificationService Toast
 @inject IJSRuntime JsRuntime
 @inject PaddleConfigurationApi PaddleApi
@@ -62,7 +61,7 @@
 <PWAUpdater Text="@GlobalTranslations.PWAUpdaterText" ButtonCaption="@GlobalTranslations.PWAUpdaterButton"/>
 
 @code {
-    [CascadingParameter] protected Task<AuthenticationState> authenticationState { get; set; } = default!;
+    [CascadingParameter] protected Task<AuthenticationState> AuthenticationState { get; set; } = null!;
 
     public string GetMargin => "me-4 mb-lg-4 mb-6";
 
@@ -75,7 +74,7 @@
         Support
     }
 
-    private TypeButton CurrentButton;
+    private TypeButton _currentButton;
 
     protected override void OnInitialized()
     {
@@ -93,11 +92,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (User == null && authenticationState is not null)
+        if (User == null)
         {
-            var authState = await authenticationState;
+            var authState = await AuthenticationState;
 
-            User = authState?.User;
+            User = authState.User;
             IsAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
             UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         }
@@ -114,7 +113,7 @@
             {
                 region = await PaddleApi.GetCountry();
 
-                region ??= Region.US.ToString();
+                region ??= nameof(Region.US);
 
                 await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", region);
             }
@@ -132,16 +131,16 @@
 
     private void ChangeCurrentButton(string location)
     {
-        if (location.Contains("/profile")) CurrentButton = TypeButton.Profile;
-        else if (location.Contains("/providers")) CurrentButton = TypeButton.Providers;
-        else if (location.Contains("/suggestions")) CurrentButton = TypeButton.Suggestions;
-        else if (location.Contains("/support")) CurrentButton = TypeButton.Support;
-        else CurrentButton = TypeButton.Home;
+        if (location.Contains("/profile")) _currentButton = TypeButton.Profile;
+        else if (location.Contains("/providers")) _currentButton = TypeButton.Providers;
+        else if (location.Contains("/suggestions")) _currentButton = TypeButton.Suggestions;
+        else if (location.Contains("/support")) _currentButton = TypeButton.Support;
+        else _currentButton = TypeButton.Home;
     }
 
     private Color GetColor(TypeButton type)
     {
-        if (CurrentButton == type)
+        if (_currentButton == type)
             return Color.Dark;
         return Color.Secondary;
     }

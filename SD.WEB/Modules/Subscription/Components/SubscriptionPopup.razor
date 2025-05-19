@@ -1,6 +1,5 @@
 ﻿@inherits ComponentCore<SubscriptionPopup>
 
-@inject NavigationManager navigation
 @inject IJSRuntime JsRuntime
 @using SD.Shared.Models.Subscription
 @using SD.WEB.Modules.Subscription.Core
@@ -22,7 +21,7 @@
 {
     <Alert Visible="true" Color="Color.Warning">
         <AlertMessage>
-            @($"Unfortunately, due to legal and policy restrictions, we are unable to offer our services in {Countries[CurrentCountry!]}.")
+            @($"Unfortunately, due to legal and policy restrictions, we are unable to offer our services in {_countries[CurrentCountry!]}.")
         </AlertMessage>
     </Alert>
 }
@@ -396,7 +395,7 @@ else
     private string? CurrentCountry { get; set; }
     private bool BlockedCountry { get; set; }
 
-    private readonly Dictionary<string, string> Countries = new()
+    private readonly Dictionary<string, string> _countries = new()
     {
         { "AF", "Afghanistan" },
         { "BY", "Belarus" },
@@ -459,13 +458,13 @@ else
         if (CurrentCountry.NotEmpty())
         {
             //https://www.xolo.io/zz-en/faq/xolo-leap/category/get-started/article/do-you-accept-customers-from-all-countries
-            BlockedCountry = Countries.ContainsKey(CurrentCountry!);
+            BlockedCountry = _countries.ContainsKey(CurrentCountry!);
 
             if (BlockedCountry) return;
         }
 
         Config = await ConfigurationApi.GetConfigurations();
-        if (Config == null) throw new NotificationException("server comunication error");
+        if (Config == null) throw new NotificationException("server communication error");
 
         if (Client?.ClientePaddle == null && string.IsNullOrEmpty(Client?.ClientePaddle?.SubscriptionId))
         {
@@ -486,7 +485,7 @@ else
     {
         try
         {
-            var locale = AppStateStatic.Language.ToString()?.Substring(0, 2);
+            var locale = AppStateStatic.Language.ToString().Substring(0, 2);
 
             await JsRuntime.InvokeVoidAsync("openCheckout", priceId, Client?.Email, locale, Client?.ClientePaddle?.CustomerId, Client?.ClientePaddle?.AddressId);
         }
@@ -507,7 +506,7 @@ else
                 if (Config == null)
                 {
                     Config = await ConfigurationApi.GetConfigurations();
-                    if (Config == null) throw new NotificationException("server comunication error");
+                    if (Config == null) throw new NotificationException("server communication error");
                 }
 
                 await JsRuntime.InvokeVoidAsync("startPaddle", Config.Token);
@@ -520,7 +519,7 @@ else
             {
                 CustomerId = client.CustomerId,
                 AddressId = client.AddressId,
-                Items = new List<PaddleItem> { new() { ProductId = client.ProductId, Product = product } }
+                Items = [new() { ProductId = client.ProductId, Product = product }]
             };
 
             Client = await PrincipalApi.Paddle(Client);

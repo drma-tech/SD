@@ -9,7 +9,7 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
+@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
@@ -19,7 +19,7 @@
     </Div>
 }
 
-<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingMarvelMoviesTVShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingMarvelMoviesTvShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaListFull>
 

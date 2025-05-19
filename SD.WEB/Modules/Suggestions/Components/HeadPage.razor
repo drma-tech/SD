@@ -4,7 +4,7 @@
 @inherits ComponentCore<HeadPage>
 
 @inject MyProvidersApi MyProvidersApi
-@inject IJSRuntime JS
+@inject IJSRuntime Js
 
 <Alert Color="Color.Info" Visible="true" Padding="Padding.Is2">
     <AlertDescription>
@@ -56,19 +56,19 @@
                         <Blazorise.Icon Name="FontAwesomeIcons.Share"></Blazorise.Icon> Share
                     </Button>
                 }
-                @if (provider != null)
+                @if (Provider != null)
                 {
-                    <RenderControl PartialComponent="true" PrivateContent="true" Core="Core" Model="myProviders"
+                    <RenderControl PartialComponent="true" PrivateContent="true" Core="Core" Model="MyProviders"
                                    ExpressionEmpty="@((MyProviders? obj) => obj == null || obj.Items.Empty())">
-                        @if (myProviders?.Items.Any(a => a.id == provider?.id) ?? false)
+                        @if (MyProviders?.Items.Any(a => a.id == Provider?.id) ?? false)
                         {
-                            <Button Color="Color.Danger" Clicked="Remove" Size="Size.Small" Disabled="!IsAuthenticated" Style="display: block; width: 100%;">
+                            <Button Color="Color.Danger" Clicked="Remove" Size="Size.Small" Disabled="@(!IsAuthenticated)" Style="display: block; width: 100%;">
                                 <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @Button.Remove
                             </Button>
                         }
                         else
                         {
-                            <Button Color="Color.Primary" Clicked="Add" Size="Size.Small" Disabled="!IsAuthenticated" Style="display: block; width: 100%;">
+                            <Button Color="Color.Primary" Clicked="Add" Size="Size.Small" Disabled="@(!IsAuthenticated)" Style="display: block; width: 100%;">
                                 <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @Button.Add
                             </Button>
                         }
@@ -76,40 +76,40 @@
                 }
             </Column>
         </Row>
-        @if (provider != null)
+        @if (Provider != null)
         {
             <Row HorizontalGutter="8" VerticalGutter="8">
                 <Column>
                     <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">
-                        @Provider.Resources.Translations.DeliveryModel:
+                        @Modules.Provider.Resources.Translations.DeliveryModel:
                     </Badge>
-                    @foreach (var item in provider?.models ?? new List<DeliveryModel>())
+                    @foreach (var item in Provider?.models ?? [])
                     {
                         <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" title="@item.GetDescription()" Style="cursor: help;">
                             @item.GetName() <Blazorise.Icon Name="FontAwesomeIcons.QuestionCircle"></Blazorise.Icon>
                         </Badge>
                     }
                     <Badge Color="Color.Primary">
-                        Contries:
+                        Countries:
                     </Badge>
                     <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">
-                        @provider?.regions.Count
+                        @Provider?.regions.Count
                     </Badge>
-                    @if (provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
+                    @if (Provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
                     {
                         <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">
-                            @Provider.Resources.Translations.Plans:
+                            @Modules.Provider.Resources.Translations.Plans:
                         </Badge>
-                        @if (provider.plans.Any())
+                        @if (Provider.plans.Any())
                         {
-                            @foreach (var item in provider.plans)
+                            @foreach (var item in Provider.plans)
                             {
                                 <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.name: @item.price.ToString("C")</Badge>
                             }
                         }
                         else
                         {
-                            <Badge Color="Color.Danger">@Provider.Resources.Translations.NotFound</Badge>
+                            <Badge Color="Color.Danger">@Modules.Provider.Resources.Translations.NotFound</Badge>
                         }
                     }
                 </Column>
@@ -127,25 +127,25 @@
     [Parameter] public string? Link { get; set; }
     [Parameter] public bool ShowShare { get; set; }
 
-    [Parameter] public ProviderModel? provider { get; set; }
+    [Parameter] public ProviderModel? Provider { get; set; }
 
     public RenderControlCore<MyProviders?>? Core { get; set; } = new();
-    [Parameter] public MyProviders? myProviders { get; set; }
+    [Parameter] public MyProviders? MyProviders { get; set; }
 
     protected override async Task LoadDataRender()
     {
-        myProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
+        MyProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
     }
 
     private async Task Add()
     {
         try
         {
-            myProviders ??= new MyProviders();
+            MyProviders ??= new MyProviders();
 
-            var item = new MyProvidersItem { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = AppStateStatic.Region };
+            var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = AppStateStatic.Region };
             var client = await PrincipalApi.Get(true);
-            myProviders = await MyProvidersApi.Add(myProviders, item, client?.ClientePaddle);
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, client?.ClientePaddle);
 
             await Toast.Success(Translations.PlatformAdded);
         }
@@ -159,9 +159,9 @@
     {
         try
         {
-            myProviders ??= new MyProviders();
+            MyProviders ??= new MyProviders();
 
-            myProviders = await MyProvidersApi.Remove(myProviders.Items.First(f => f.id == provider?.id));
+            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == Provider?.id));
 
             await Toast.Success(Translations.PlatformRemoved);
         }
@@ -173,7 +173,7 @@
 
     private async Task Share(string? link)
     {
-        await JS.InvokeVoidAsync("share", link);
+        await Js.InvokeVoidAsync("share", link);
     }
 
 }

@@ -5,11 +5,11 @@ namespace SD.API.Core.Scraping;
 
 public class ScrapingNews
 {
-    private readonly string news_url = "https://editorial.rottentomatoes.com/news";
+    private const string NewsUrl = "https://editorial.rottentomatoes.com/news";
 
     public NewsModel GetNews()
     {
-        return ProcessHtml(news_url);
+        return ProcessHtml(NewsUrl);
     }
 
     private static NewsModel ProcessHtml(string path)

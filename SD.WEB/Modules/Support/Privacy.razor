@@ -1,15 +1,15 @@
 ﻿@page "/support/privacy/{lang}"
-<SeoHeader Title="Privacy" Url=@($"/support/privacy/{lang}")></SeoHeader>
+<SeoHeader Title="Privacy" Url=@($"/support/privacy/{Lang}")></SeoHeader>
 
 <div class="article">
     <div class="row justify-content-md-center">
         <div class="col-lg-10">
             <div class="ibox">
                 <div class="ibox-content" style="text-align: justify;">
-                    @if (lang == "pt")
+                    @if (Lang == "pt")
                     {
                         <div class="text-center article-title">
-                            <span class="text-muted"><i class="fa fa-clock-o"></i> 25 de Dezembro de 2023</span>
+                            <span class="text-muted"><i class="fa fa-clock-o"></i> 25 de dezembro de 2023</span>
                             <h1>
                                 Política de Privacidade
                             </h1>
@@ -26,7 +26,7 @@
 
                         <p>Como qualquer outro site, a @ProjectTitle usa 'cookies'. Esses cookies são usados para armazenar informações, incluindo as preferências dos visitantes, e as páginas do site que o visitante acessou ou visitou. As informações são usadas para otimizar a experiência dos usuários, personalizando o conteúdo de nossa página da web com base no tipo de navegador dos visitantes e/ou outras informações.</p>
 
-                        <p>Para obter informações mais gerais sobre cookies, leia o artigo "O que são cookies" em <a href=@("https://seguranca.uol.com.br/antivirus/dicas/curiosidades/o-que-sao-cookies-e-como-eles-podem-me-prejudicar.html#rmcl") target="_blank"> site de consentimento de cookies </a>.</p>
+                        <p>Para obter informações mais gerais sobre cookies, leia o artigo "O que são cookies" em <a href=@("https://seguranca.uol.com.br/antivirus/dicas/curiosidades/o-que-sao-cookies-e-como-eles-podem-me-prejudicar.html#rmcl") target="_blank"> site de consentimento de cookies.</a></p>
 
                         <h2>Google DoubleClick DART Cookie</h2>
 
@@ -44,9 +44,9 @@
 
                         <h2>Políticas de Privacidade</h2>
 
-                        <p>Servidores ou redes de anúncios de terceiros usam tecnologias como cookies, JavaScript ou Web Beacons que são usados em seus respectivos anúncios e links que aparecem na @ProjectTitle, que são enviados diretamente ao navegador dos usuários. Eles recebem automaticamente seu endereço IP quando isso ocorre. Essas tecnologias são usadas para medir a eficácia de suas campanhas publicitárias e/ou para personalizar o conteúdo de publicidade exibido nos sites que você visita.</p>
+                        <p>Servidores ou redes de anúncios de terceiros usam tecnologias como cookies, JavaScript ou Web Beacons usados em seus respectivos anúncios e links que aparecem na @ProjectTitle, que são enviados diretamente ao navegador dos usuários. Eles recebem automaticamente seu endereço IP quando isso ocorre. Essas tecnologias são usadas para medir a eficácia de suas campanhas publicitárias e/ou para personalizar o conteúdo de publicidade exibido nos sites que você visita.</p>
 
-                        <p>Observe que a @ProjectTitle não tem acesso ou controle sobre esses cookies que são usados por anunciantes de terceiros.</p>
+                        <p>Observe que a @ProjectTitle não tem acesso ou controle sobre esses cookies usados por anunciantes de terceiros.</p>
 
                         <h2>Políticas de Privacidade de Terceiros</h2>
 
@@ -62,7 +62,7 @@
 
                         <h2>Apenas Política de Privacidade Online</h2>
 
-                        <p>Esta Política de Privacidade aplica-se apenas às nossas atividades online e é válida para os visitantes do nosso site no que diz respeito às informações que eles compartilharam e/ou coletam na @ProjectTitle. Esta política não é aplicável a nenhuma informação coletada offline ou através de canais diferentes deste site.</p>
+                        <p>Esta Política de Privacidade aplica-se apenas às nossas atividades online e é válida para os visitantes do nosso site no que diz respeito às informações que eles compartilharam e/ou coletam na @ProjectTitle. Esta política não é aplicável a nenhuma informação coletada offline ou mediante canais diferentes deste site.</p>
 
                         <h2>Consentimento</h2>
 
@@ -96,7 +96,7 @@
 
                         <h2>Our Advertising Partners</h2>
 
-                        <p>Some of advertisers on our site may use cookies and web beacons. Our advertising partners are listed below. Each of our advertising partners has their own Privacy Policy for their policies on user data. For easier access, we hyperlinked to their Privacy Policies below.</p>
+                        <p>Some of the advertisers on our site may use cookies and web beacons. Our advertising partners are listed below. Each of our advertising partners has their own Privacy Policy for their policies on user data. For easier access, we hyperlinked to their Privacy Policies below.</p>
 
                         <ul>
                             <li>
@@ -123,11 +123,11 @@
 
                         <p>Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity.</p>
 
-                        <p>@ProjectTitle does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately and we will do our best efforts to promptly remove such information from our records.</p>
+                        <p>@ProjectTitle does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately, and we will do our best efforts to promptly remove such information from our records.</p>
 
                         <h2>Online Privacy Policy Only</h2>
 
-                        <p>This Privacy Policy applies only to our online activities and is valid for visitors to our website with regards to the information that they shared and/or collect in @ProjectTitle. This policy is not applicable to any information collected offline or via channels other than this website.</p>
+                        <p>This Privacy Policy applies only to our online activities and is valid for visitors to our website in regard to the information that they shared and/or collect in @ProjectTitle. This policy is not applicable to any information collected offline or via channels other than this website.</p>
 
                         <h2>Consent</h2>
 
@@ -140,8 +140,8 @@
 </div>
 
 @code {
-    [Parameter] public string? lang { get; set; }
+    [Parameter] public string? Lang { get; set; }
 
     public string? ProjectTitle => SeoTranslations.AppName;
-    public string? ProjectDomain => "www.streamingdiscovery.com";
+    public string ProjectDomain => "www.streamingdiscovery.com";
 }

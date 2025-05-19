@@ -7,7 +7,7 @@ public class MyProvidersFunction(CosmosRepository repo)
 {
     [Function("MyProviders")]
     public async Task<HttpResponseData?> MyProviders(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "my-providers")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "my-providers")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try
@@ -16,7 +16,7 @@ public class MyProvidersFunction(CosmosRepository repo)
 
             var doc = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
 
-            return await req.CreateResponse(doc, ttlCache.one_day, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -27,7 +27,7 @@ public class MyProvidersFunction(CosmosRepository repo)
 
     [Function("MyProvidersAdd")]
     public async Task<MyProviders?> MyProvidersAdd(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/add")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-providers/add")]
         HttpRequestData req,
         CancellationToken cancellationToken)
     {
@@ -59,7 +59,7 @@ public class MyProvidersFunction(CosmosRepository repo)
 
     [Function("MyProvidersUpdate")]
     public async Task<MyProviders?> MyProvidersUpdate(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/update")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-providers/update")]
         HttpRequestData req,
         CancellationToken cancellationToken)
     {
@@ -85,7 +85,7 @@ public class MyProvidersFunction(CosmosRepository repo)
 
     [Function("MyProvidersRemove")]
     public async Task<MyProviders?> MyProvidersRemove(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "my-providers/remove")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-providers/remove")]
         HttpRequestData req,
         CancellationToken cancellationToken)
     {

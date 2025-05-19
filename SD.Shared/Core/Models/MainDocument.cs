@@ -52,14 +52,9 @@ public abstract class ProtectedMainDocument : MainDocument
 /// <summary>
 ///     Private read and write
 /// </summary>
-public abstract class PrivateMainDocument : MainDocument
+public abstract class PrivateMainDocument(DocumentType type) : MainDocument(type)
 {
-    private readonly DocumentType type;
-
-    protected PrivateMainDocument(DocumentType type) : base(type)
-    {
-        this.type = type;
-    }
+    private readonly DocumentType type = type;
 
     public virtual void Initialize(string userId)
     {

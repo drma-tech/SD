@@ -11,7 +11,7 @@ public class AllProvidersApi(IHttpClientFactory factory) : ApiCore(factory, null
         var result = new AllProviders();
         try
         {
-            result = await _http.GetFromJsonAsync<AllProviders>("/data/providers.json");
+            result = await Http.GetFromJsonAsync<AllProviders>("/data/providers.json");
             return result;
         }
         finally

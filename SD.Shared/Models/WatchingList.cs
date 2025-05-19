@@ -3,12 +3,8 @@ using Newtonsoft.Json;
 
 namespace SD.Shared.Models;
 
-public class WatchingList : PrivateMainDocument
+public class WatchingList() : PrivateMainDocument(DocumentType.WatchingList)
 {
-    public WatchingList() : base(DocumentType.WatchingList)
-    {
-    }
-
     public DateTime? MovieSyncDate { get; set; }
     public DateTime? ShowSyncDate { get; set; }
 

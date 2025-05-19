@@ -4,9 +4,9 @@ namespace SD.WEB.Modules.Suggestions.Core;
 
 public class TmdbCreditApi(IHttpClientFactory factory) : ApiExternal(factory)
 {
-    public async Task<Credits?> GetList(MediaType? type, string? tmdb_id)
+    public async Task<Credits?> GetList(MediaType? type, string? tmdbId)
     {
-        if (string.IsNullOrEmpty(tmdb_id)) return default;
+        if (string.IsNullOrEmpty(tmdbId)) return null;
 
         var parameter = new Dictionary<string, string>
         {
@@ -16,14 +16,14 @@ public class TmdbCreditApi(IHttpClientFactory factory) : ApiExternal(factory)
 
         if (type == MediaType.movie)
             return await GetAsync<Credits>(TmdbOptions.BaseUri +
-                                           $"movie/{tmdb_id}/credits".ConfigureParameters(parameter));
+                                           $"movie/{tmdbId}/credits".ConfigureParameters(parameter));
 
-        return await GetAsync<Credits>(TmdbOptions.BaseUri + $"tv/{tmdb_id}/credits".ConfigureParameters(parameter));
+        return await GetAsync<Credits>(TmdbOptions.BaseUri + $"tv/{tmdbId}/credits".ConfigureParameters(parameter));
     }
 
-    public async Task<CreditsByPerson?> GetListByPerson(string? person_id)
+    public async Task<CreditsByPerson?> GetListByPerson(string? personId)
     {
-        if (string.IsNullOrEmpty(person_id)) return default;
+        if (string.IsNullOrEmpty(personId)) return null;
 
         var parameter = new Dictionary<string, string>
         {
@@ -32,6 +32,6 @@ public class TmdbCreditApi(IHttpClientFactory factory) : ApiExternal(factory)
         };
 
         return await GetAsync<CreditsByPerson>(TmdbOptions.BaseUri +
-                                               $"person/{person_id}/combined_credits".ConfigureParameters(parameter));
+                                               $"person/{personId}/combined_credits".ConfigureParameters(parameter));
     }
 }

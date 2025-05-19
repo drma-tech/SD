@@ -1,5 +1,5 @@
 ﻿@page "/suggestions/peoples"
-<SeoHeader Title="Suggestions | People's Choise Awards" Keywords="@(new[] { "People's Choise Awards" })" Url="/suggestions/peoples"></SeoHeader>
+<SeoHeader Title="Suggestions | People's Choice Awards" Keywords="@(new[] { "People's Choice Awards" })" Url="/suggestions/peoples"></SeoHeader>
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Suggestions.Components
 @using SD.WEB.Modules.Suggestions.Core
@@ -9,11 +9,11 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="People's Choise" ImageSource="logo/peoples.png" Text="Submit your votes for the People’s Choice Awards."
+<HeadPage Title="People's Choice" ImageSource="logo/peoples.png" Text="Submit your votes for the People’s Choice Awards."
           Link="https://pca.votenow.nbc.com/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 
-@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
+@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
@@ -23,16 +23,16 @@
     </Div>
 }
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.PeoplesChoiseTheMovie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.PeoplesChoiceTheMovie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.PeoplesChoiseTheActionMovie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.PeoplesChoiceTheActionMovie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.PeoplesChoiseTheComedyMovie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.PeoplesChoiceTheComedyMovie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.PeoplesChoiseTheDramaMovie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.PeoplesChoiceTheDramaMovie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
 

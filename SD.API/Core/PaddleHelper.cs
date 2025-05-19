@@ -29,8 +29,10 @@ public static class PaddleHelper
 
     public static string ByteToString(byte[] buff)
     {
-        var sbinary = new StringBuilder();
-        for (var i = 0; i < buff.Length; i++) sbinary.Append(buff[i].ToString("X2")); // hex format
-        return sbinary.ToString();
+        var sb = new StringBuilder();
+        foreach (var t in buff)
+            sb.Append(t.ToString("X2")); // hex format
+
+        return sb.ToString();
     }
 }

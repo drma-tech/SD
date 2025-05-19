@@ -8,7 +8,7 @@ public class LoginFunction(CosmosRepository repo)
 {
     [Function("LoginAdd")]
     public async Task LoginAdd(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "login/add")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "login/add")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try

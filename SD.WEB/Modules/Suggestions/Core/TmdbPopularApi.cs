@@ -12,7 +12,7 @@ public class TmdbPopularApi(IHttpClientFactory factory) : ApiExternal(factory), 
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            //{ "region", AppStateStatic.Region.ToString() }, //region doesnt affect popular list
+            //{ "region", AppStateStatic.Region.ToString() }, //region doesn't affect popular list
             { "language", AppStateStatic.Language.GetName(false) ?? "en-US" },
             { "page", page.ToString() }
         };
@@ -26,15 +26,15 @@ public class TmdbPopularApi(IHttpClientFactory factory) : ApiExternal(factory), 
             var listOrder = new List<Ordem>();
 
             listOrder.AddRange(movies?.results.Select(s => new Ordem
-                { id = s.id, type = MediaType.movie, Popularity = s.popularity }) ?? []);
+                { Id = s.id, Type = MediaType.movie, Popularity = s.popularity }) ?? []);
             listOrder.AddRange(shows?.results.Select(s => new Ordem
-                { id = s.id, type = MediaType.tv, Popularity = s.popularity }) ?? []);
+                { Id = s.id, Type = MediaType.tv, Popularity = s.popularity }) ?? []);
 
             foreach (var ordem in listOrder.OrderByDescending(o => o.Popularity))
-                if (ordem.type == MediaType.movie)
+                if (ordem.Type == MediaType.movie)
                 {
                     if (movies == null) break;
-                    var item = movies.results.Single(s => s.id == ordem.id);
+                    var item = movies.results.Single(s => s.id == ordem.Id);
 
                     if (item.vote_count < 50) continue; //ignore low-rated movie
 
@@ -58,7 +58,7 @@ public class TmdbPopularApi(IHttpClientFactory factory) : ApiExternal(factory), 
                 else // if (ordem.type == MediaType.tv)
                 {
                     if (shows == null) break;
-                    var item = shows.results.Single(s => s.id == ordem.id);
+                    var item = shows.results.Single(s => s.id == ordem.Id);
 
                     if (item.vote_count < 50) continue; //ignore low-rated movie
                     if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster

@@ -12,11 +12,11 @@
 @inject WishListApi WishListApi
 
 <ModalHeader>
-    <ModalTitle Size="HeadingSize.Is5">@provider?.name</ModalTitle>
+    <ModalTitle Size="HeadingSize.Is5">@Provider?.name</ModalTitle>
     <CloseButton/>
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    @if (provider == null)
+    @if (Provider == null)
     {
         <Alert Color="Color.Danger" Visible="true">
             <AlertMessage>
@@ -26,7 +26,7 @@
     }
     else
     {
-        <Tabs @bind-SelectedTab="@selectedTab" FullWidth="true" Justified="true" RenderMode="TabsRenderMode.LazyLoad">
+        <Tabs @bind-SelectedTab="@_selectedTab" FullWidth="true" Justified="true" RenderMode="TabsRenderMode.LazyLoad">
             <Items>
                 <Tab Name="About">@Translations.ProviderPopupTabAbout</Tab>
                 <Tab Name="Details">@Translations.ProviderPopupTabDetails</Tab>
@@ -36,23 +36,23 @@
                 <TabPanel Name="About" Class="mt-3">
                     <Row Margin="Margin.Is2.FromBottom" HorizontalGutter="4" VerticalGutter="4">
                         <Column ColumnSize="ColumnSize.IsAuto">
-                            @if (!string.IsNullOrEmpty(provider?.logo_path))
+                            @if (!string.IsNullOrEmpty(Provider?.logo_path))
                             {
-                                <Image Source="@(TmdbOptions.OriginalPosterPath + provider.logo_path)" Text="@provider.name" alt="@provider.name"></Image>
+                                <Image Source="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Text="@Provider.name" alt="@Provider.name"></Image>
                             }
                         </Column>
                         <Column>
                             <Paragraph TextAlignment="TextAlignment.Justified" Margin="Margin.Is2.FromBottom">
-                                @provider?.description
+                                @Provider?.description
                             </Paragraph>
                             <Paragraph>
-                                @if (string.IsNullOrEmpty(provider?.link))
+                                @if (string.IsNullOrEmpty(Provider?.link))
                                 {
-                                    <a href="@($"https://www.google.com/search?q=streaming+{provider?.name?.Replace("&", "")}")" target="_blank" rel="nofollow" style="float: left;">search on google</a>
+                                    <a href="@($"https://www.google.com/search?q=streaming+{Provider?.name?.Replace("&", "")}")" target="_blank" rel="nofollow" style="float: left;">search on google</a>
                                 }
                                 else
                                 {
-                                    <a href="@provider.link" target="_blank" rel="nofollow" style="float: left;">@(new Uri(provider.link).Host)</a>
+                                    <a href="@Provider.link" target="_blank" rel="nofollow" style="float: left;">@(new Uri(Provider.link).Host)</a>
                                 }
                             </Paragraph>
                         </Column>
@@ -60,28 +60,28 @@
                 </TabPanel>
                 <TabPanel Name="Details" Class="mt-3">
                     <Divider DividerType="DividerType.TextContent" Text="@Translations.MediaTypes"/>
-                    @foreach (var item in provider?.types ?? new List<MediaType>())
+                    @foreach (var item in Provider?.types ?? [])
                     {
                         <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
                     }
                     <Divider DividerType="DividerType.TextContent" Text="@Translations.Regions"/>
-                    @foreach (var item in provider?.regions.OrderBy(o => o.GetName()).ToList() ?? new List<Region>())
+                    @foreach (var item in Provider?.regions.OrderBy(o => o.GetName()).ToList() ?? [])
                     {
                         <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.GetName()</Badge>
                     }
                     <Divider DividerType="DividerType.TextContent" Text="@Translations.DeliveryModel"/>
-                    @foreach (var item in provider?.models ?? new List<DeliveryModel>())
+                    @foreach (var item in Provider?.models ?? [])
                     {
                         <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd" title="@item.GetDescription()" Style="cursor: help;">
                             @item.GetName() <Blazorise.Icon Name="FontAwesomeIcons.QuestionCircle"></Blazorise.Icon>
                         </Badge>
                     }
-                    @if (provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
+                    @if (Provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
                     {
                         <Divider DividerType="DividerType.TextContent" Text="@Translations.Plans"/>
-                        @if (provider.plans.Any())
+                        @if (Provider.plans.Any())
                         {
-                            @foreach (var item in provider.plans)
+                            @foreach (var item in Provider.plans)
                             {
                                 <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">@item.name: @item.price.ToString("C")</Badge>
                             }
@@ -108,15 +108,15 @@
     }
 </ModalBody>
 <ModalFooter>
-    @if (myProviders?.Items.Any(a => a.id == ProviderId) ?? false)
+    @if (MyProviders?.Items.Any(a => a.id == ProviderId) ?? false)
     {
-        <Button Color="Color.Danger" Clicked="Remove" Disabled="!IsAuthenticated" Size="Size.Small">
+        <Button Color="Color.Danger" Clicked="Remove" Disabled="@(!IsAuthenticated)" Size="Size.Small">
             <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @Button.Remove
         </Button>
     }
     else
     {
-        <Button Color="Color.Primary" Clicked="Add" Disabled="!IsAuthenticated" Size="Size.Small">
+        <Button Color="Color.Primary" Clicked="Add" Disabled="@(!IsAuthenticated)" Size="Size.Small">
             <Blazorise.Icon Name="FontAwesomeIcons.Star"></Blazorise.Icon> @Button.Add
         </Button>
     }
@@ -128,7 +128,7 @@
 @code {
     [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
 
-    [Parameter] public ProviderModel? provider { get; set; }
+    [Parameter] public ProviderModel? Provider { get; set; }
     [Parameter] public WatchedList? Watched { get; set; }
     [Parameter] public WatchingList? Watching { get; set; }
     [Parameter] public WishList? Wish { get; set; }
@@ -139,8 +139,8 @@
     [Parameter] public string? WatchRegion { get; set; }
     [Parameter] public string? ProviderId { get; set; }
 
-    private string selectedTab = "About";
-    private MyProviders? myProviders { get; set; }
+    private string _selectedTab = "About";
+    private MyProviders? MyProviders { get; set; }
 
     protected override void OnInitialized()
     {
@@ -166,27 +166,27 @@
 
     protected override async Task LoadDataRender()
     {
-        myProviders = await MyProvidersApi.Get(IsAuthenticated, null);
+        MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
     }
 
-    private Dictionary<string, string> GetExtraParameters(string? provider_id, string? sort_by, string? watch_region)
+    private static Dictionary<string, string> GetExtraParameters(string? providerId, string? sortBy, string? watchRegion)
     {
-        if (provider_id == null) throw new ArgumentNullException(nameof(provider_id));
-        if (sort_by == null) throw new ArgumentNullException(nameof(sort_by));
-        if (watch_region == null) throw new ArgumentNullException(nameof(watch_region));
+        if (providerId == null) throw new ArgumentNullException(nameof(providerId));
+        if (sortBy == null) throw new ArgumentNullException(nameof(sortBy));
+        if (watchRegion == null) throw new ArgumentNullException(nameof(watchRegion));
 
-        return new Dictionary<string, string> { { "with_watch_providers", provider_id }, { "sort_by", sort_by }, { "watch_region", watch_region } };
+        return new Dictionary<string, string> { { "with_watch_providers", providerId }, { "sort_by", sortBy }, { "watch_region", watchRegion } };
     }
 
     private async Task Add()
     {
         try
         {
-            myProviders ??= new MyProviders();
+            MyProviders ??= new MyProviders();
 
-            var item = new MyProvidersItem { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = AppStateStatic.Region };
+            var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = AppStateStatic.Region };
             var client = await PrincipalApi.Get(true);
-            myProviders = await MyProvidersApi.Add(myProviders, item, client?.ClientePaddle);
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, client?.ClientePaddle);
 
             await Toast.Success(GlobalTranslations.OperationCompleted);
         }
@@ -200,9 +200,9 @@
     {
         try
         {
-            myProviders ??= new MyProviders();
+            MyProviders ??= new MyProviders();
 
-            myProviders = await MyProvidersApi.Remove(myProviders.Items.First(f => f.id == ProviderId));
+            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == ProviderId));
 
             await Toast.Success(GlobalTranslations.OperationCompleted);
         }

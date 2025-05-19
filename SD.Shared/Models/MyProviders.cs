@@ -1,11 +1,7 @@
 ﻿namespace SD.Shared.Models;
 
-public class MyProviders : PrivateMainDocument
+public class MyProviders() : PrivateMainDocument(DocumentType.MyProvider)
 {
-    public MyProviders() : base(DocumentType.MyProvider)
-    {
-    }
-
     public List<MyProvidersItem> Items { get; set; } = [];
 
     public override bool HasValidData()
@@ -33,10 +29,8 @@ public sealed class MyProvidersItem
 
     public bool Equals(MyProvidersItem? other)
     {
-        if (other is null || other.id is null) return false;
-        if (id is null) return false;
-
-        return id.Equals(other.id);
+        if (other?.id is null) return false;
+        return id is not null && id.Equals(other.id);
     }
 
     public override bool Equals(object? obj)

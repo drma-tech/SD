@@ -14,14 +14,14 @@
 </HeaderComponent>
 @if (TypeSelected == PopularType.Movie)
 {
-    <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsIMDB="true" ShowHead="false" MultipleLanguages="false"
+    <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" MultipleLanguages="false"
                StringParameters="Params" TypeSelected="MediaType.movie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                ShowPrivateAction="ShowPrivateAction" OnlyYear="true" IsAuthenticated="IsAuthenticated">
     </MediaList>
 }
 else if (TypeSelected == PopularType.Show)
 {
-    <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsIMDB="true" ShowHead="false" MultipleLanguages="false"
+    <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" MultipleLanguages="false"
                StringParameters="Params" TypeSelected="MediaType.tv" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                ShowPrivateAction="ShowPrivateAction" OnlyYear="true" IsAuthenticated="IsAuthenticated">
     </MediaList>

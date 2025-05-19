@@ -8,7 +8,7 @@
 
 <SeoHeader Title="News" Keywords="@(new[] { "News" })" Url="/news"></SeoHeader>
 
-@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
+@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
@@ -21,7 +21,7 @@
 <HeaderComponent Title="@($"{Translations.NewsTitle} - Rotten Tomatoes")"/>
 <RenderControl Core="Core" Model="NewsList" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
     <div class="grid-relative-container-lg">
-        @foreach (var item in NewsList?.Data?.Items ?? new List<Item>())
+        @foreach (var item in NewsList?.Data?.Items ?? [])
         {
             <Card>
                 <CardImage Source="@item.url_img" Alt="@item.title">
@@ -45,7 +45,7 @@
 @code {
     public RenderControlCore<CacheDocument<NewsModel>?> Core { get; set; } = new();
     private CacheDocument<NewsModel>? NewsList { get; set; }
-    public string? selectedSlide { get; set; }
+    public string? SelectedSlide { get; set; }
 
     public Settings? Settings { get; set; }
     public ClientePrincipal? Principal { get; set; }

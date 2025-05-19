@@ -7,7 +7,7 @@ public class WatchedListFunction(CosmosRepository repo)
 {
     [Function("WatchedListGet")]
     public async Task<HttpResponseData?> WatchedListGet(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/watchedlist/get")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/watchedlist/get")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try
@@ -27,7 +27,7 @@ public class WatchedListFunction(CosmosRepository repo)
                 doc = await repo.Get<WatchedList>(DocumentType.WatchedList, id, cancellationToken);
             }
 
-            return await req.CreateResponse(doc, ttlCache.one_day, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -38,9 +38,9 @@ public class WatchedListFunction(CosmosRepository repo)
 
     [Function("WatchedListAdd")]
     public async Task<WatchedList?> WatchedListAdd(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchedlist/add/{MediaType}/{TmdbId}")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchedlist/add/{MediaType}/{TmdbId}")]
         HttpRequestData req,
-        string MediaType, string TmdbId, CancellationToken cancellationToken)
+        string mediaType, string tmdbId, CancellationToken cancellationToken)
     {
         try
         {
@@ -56,8 +56,8 @@ public class WatchedListFunction(CosmosRepository repo)
                 obj.Initialize(userId);
             }
 
-            var ids = TmdbId.Split(',');
-            obj.AddItem(Enum.Parse<MediaType>(MediaType), new HashSet<string>(ids));
+            var ids = tmdbId.Split(',');
+            obj.AddItem(Enum.Parse<MediaType>(mediaType), [..ids]);
 
             return await repo.Upsert(obj, cancellationToken);
         }
@@ -70,9 +70,9 @@ public class WatchedListFunction(CosmosRepository repo)
 
     [Function("WatchedListRemove")]
     public async Task<WatchedList?> WatchedListRemove(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchedlist/remove/{MediaType}/{TmdbId}")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchedlist/remove/{MediaType}/{TmdbId}")]
         HttpRequestData req,
-        string MediaType, string TmdbId, CancellationToken cancellationToken)
+        string mediaType, string tmdbId, CancellationToken cancellationToken)
     {
         try
         {
@@ -88,7 +88,7 @@ public class WatchedListFunction(CosmosRepository repo)
                 obj.Initialize(userId);
             }
 
-            obj.RemoveItem(Enum.Parse<MediaType>(MediaType), TmdbId);
+            obj.RemoveItem(Enum.Parse<MediaType>(mediaType), tmdbId);
 
             return await repo.Upsert(obj, cancellationToken);
         }

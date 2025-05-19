@@ -1,11 +1,7 @@
 ﻿namespace SD.Shared.Models;
 
-public class WishList : PrivateMainDocument
+public class WishList() : PrivateMainDocument(DocumentType.WishList)
 {
-    public WishList() : base(DocumentType.WishList)
-    {
-    }
-
     public HashSet<WishListItem> Movies { get; init; } = [];
 
     public HashSet<WishListItem> Shows { get; init; } = [];
@@ -17,9 +13,7 @@ public class WishList : PrivateMainDocument
 
     public bool Contains(MediaType? type, string? id)
     {
-        if (id == null) return false;
-
-        return Items(type).Contains(new WishListItem(id, null, null, null));
+        return id != null && Items(type).Contains(new WishListItem(id, null, null, null));
     }
 
     public void AddItem(MediaType? type, WishListItem item)

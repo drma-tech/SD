@@ -16,7 +16,7 @@ public static class AppStateStatic
     public static Region Region { get; private set; } = Region.US;
 
     [Custom(Name = "Language", ResourceType = typeof(GlobalTranslations))]
-    public static Language Language { get; private set; } = Language.enUS;
+    public static Language Language { get; private set; }
 
     public static Action? RegionChanged { get; set; }
     public static Action<TempClientePaddle>? RegistrationSuccessful { get; set; }
@@ -26,7 +26,7 @@ public static class AppStateStatic
     {
         if (!Enum.TryParse<Region>(regionName, out var region) || !Enum.IsDefined(region))
         {
-            regionName = Region.US.ToString();
+            regionName = nameof(Region.US);
 
             _ = Enum.TryParse(regionName, out region);
         }

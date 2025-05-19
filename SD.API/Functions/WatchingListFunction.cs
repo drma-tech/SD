@@ -7,7 +7,7 @@ public class WatchingListFunction(CosmosRepository repo)
 {
     [Function("WatchingListGet")]
     public async Task<HttpResponseData?> WatchingListGet(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.GET, Route = "public/watchinglist/get")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/watchinglist/get")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try
@@ -27,7 +27,7 @@ public class WatchingListFunction(CosmosRepository repo)
                 doc = await repo.Get<WatchingList>(DocumentType.WatchingList, id, cancellationToken);
             }
 
-            return await req.CreateResponse(doc, ttlCache.one_day, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -38,9 +38,9 @@ public class WatchingListFunction(CosmosRepository repo)
 
     [Function("WatchingListAdd")]
     public async Task<WatchingList?> WatchingListAdd(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchinglist/add/{MediaType}")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchinglist/add/{MediaType}")]
         HttpRequestData req,
-        string MediaType, CancellationToken cancellationToken)
+        string mediaType, CancellationToken cancellationToken)
     {
         try
         {
@@ -57,7 +57,7 @@ public class WatchingListFunction(CosmosRepository repo)
                 obj.Initialize(userId);
             }
 
-            obj.AddItem(Enum.Parse<MediaType>(MediaType), newItem);
+            obj.AddItem(Enum.Parse<MediaType>(mediaType), newItem);
 
             return await repo.Upsert(obj, cancellationToken);
         }
@@ -70,10 +70,10 @@ public class WatchingListFunction(CosmosRepository repo)
 
     [Function("WatchingListRemove")]
     public async Task<WatchingList?> WatchingListRemove(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST,
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post,
             Route = "watchinglist/remove/{MediaType}/{CollectionId}/{TmdbId}")]
         HttpRequestData req,
-        string MediaType, string CollectionId, string TmdbId, CancellationToken cancellationToken)
+        string mediaType, string collectionId, string tmdbId, CancellationToken cancellationToken)
     {
         try
         {
@@ -89,7 +89,7 @@ public class WatchingListFunction(CosmosRepository repo)
                 obj.Initialize(userId);
             }
 
-            obj.RemoveItem(Enum.Parse<MediaType>(MediaType), CollectionId, TmdbId == "null" ? null : TmdbId);
+            obj.RemoveItem(Enum.Parse<MediaType>(mediaType), collectionId, tmdbId == "null" ? null : tmdbId);
 
             return await repo.Upsert(obj, cancellationToken);
         }
@@ -102,9 +102,9 @@ public class WatchingListFunction(CosmosRepository repo)
 
     [Function("WatchingListSync")]
     public async Task<WatchingList?> WatchingListSync(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.POST, Route = "watchinglist/sync/{MediaType}")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchinglist/sync/{MediaType}")]
         HttpRequestData req,
-        string MediaType, CancellationToken cancellationToken)
+        string mediaType, CancellationToken cancellationToken)
     {
         try
         {
@@ -121,16 +121,16 @@ public class WatchingListFunction(CosmosRepository repo)
                 obj.Initialize(userId);
             }
 
-            var type = Enum.Parse<MediaType>(MediaType);
+            var type = Enum.Parse<MediaType>(mediaType);
 
-            if (type == Shared.Enums.MediaType.movie)
+            if (type == MediaType.movie)
             {
-                foreach (var item in newItem.Movies) obj.AddItem(Shared.Enums.MediaType.movie, item);
+                foreach (var item in newItem.Movies) obj.AddItem(MediaType.movie, item);
                 obj.MovieSyncDate = DateTime.Now;
             }
             else
             {
-                foreach (var item in newItem.Shows) obj.AddItem(Shared.Enums.MediaType.tv, item);
+                foreach (var item in newItem.Shows) obj.AddItem(MediaType.tv, item);
                 obj.ShowSyncDate = DateTime.Now;
             }
 

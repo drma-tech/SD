@@ -61,7 +61,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ad-based video on demand doesn’t require a subscription or transactional fee, as it’s ad-supported content..
+        ///   Looks up a localized string similar to Ad-based video on demand doesn&apos;t require a subscription or transactional fee, as it’s ad-supported content..
         /// </summary>
         public static string AVODDescription {
             get {

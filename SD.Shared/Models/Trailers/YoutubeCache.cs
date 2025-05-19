@@ -6,7 +6,7 @@ public class YoutubeCache : CacheDocument<TrailerModel>
     {
     }
 
-    public YoutubeCache(TrailerModel data, string key) : base(key, data, ttlCache.six_hours)
+    public YoutubeCache(TrailerModel data, string key) : base(key, data, TtlCache.SixHours)
     {
     }
 }

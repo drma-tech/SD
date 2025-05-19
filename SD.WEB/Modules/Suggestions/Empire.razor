@@ -13,7 +13,7 @@
           Link="https://www.empireonline.com/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 
-@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
+@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
@@ -26,7 +26,7 @@
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestTVShowsOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestTvShowsOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
 

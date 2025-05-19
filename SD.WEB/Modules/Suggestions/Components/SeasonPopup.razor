@@ -12,7 +12,7 @@
 <ModalBody MaxHeight="70">
     <RenderControl Core="Core" Model="Season" ExpressionEmpty="@((TmdbSeason? obj) => obj == null || obj.episodes.Empty())">
         <ListGroup Flush>
-            @foreach (var item in Season?.episodes ?? new List<Episode>())
+            @foreach (var item in Season?.episodes ?? [])
             {
                 <ListGroupItem Padding="Padding.Is2">
                     <Row VerticalGutter="8" HorizontalGutter="8">
@@ -54,8 +54,8 @@
 
     [Parameter] public string? ShowTitle { get; set; }
     [Parameter] public string? ShowSeasonName { get; set; }
-    [Parameter] public string? tmdb_id { get; set; }
-    [Parameter] public int? season_number { get; set; }
+    [Parameter] public string? TmdbId { get; set; }
+    [Parameter] public int? SeasonNumber { get; set; }
 
     public RenderControlCore<TmdbSeason?>? Core { get; set; } = new();
     public TmdbSeason? Season { get; set; }
@@ -69,7 +69,7 @@
         };
 
         Core?.LoadingStarted?.Invoke();
-        Season = await TmdbApi.GetSeason(tmdb_id, season_number, parameters);
+        Season = await TmdbApi.GetSeason(TmdbId, SeasonNumber, parameters);
         Core?.LoadingFinished?.Invoke(Season);
     }
 

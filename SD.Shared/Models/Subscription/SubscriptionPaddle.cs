@@ -114,7 +114,7 @@ public class Data
 
     /// <summary>
     ///     active = Subscription is active. Paddle is billing for this subscription and related transactions are not past due.
-    ///     canceled = Subscription is canceled. Automatically set by Paddle when a scheduled change for a cancelation takes
+    ///     canceled = Subscription is canceled. Automatically set by Paddle when a scheduled change for a cancellation takes
     ///     effect.
     ///     past_due = Subscription has an overdue payment. Automatically set by Paddle when payment fails for an
     ///     automatically-collected transaction, or payment terms have elapsed for a manually-collected transaction

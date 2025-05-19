@@ -384,7 +384,7 @@ public enum Region
     TT = 780,
 
     [Custom(Name = "TW", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
-    TW = 99999, //doesnt have a code
+    TW = 99999, //doesn't have a code
 
     [Custom(Name = "TZ", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
     TZ = 834,
@@ -408,7 +408,7 @@ public enum Region
     VE = 862,
 
     [Custom(Name = "XK", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
-    XK = 88888, //doesnt have a code
+    XK = 88888, //doesn't have a code
 
     [Custom(Name = "YE", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
     YE = 887,

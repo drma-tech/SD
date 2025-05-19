@@ -13,7 +13,7 @@
           Link="https://www.rollingstone.com/tv-movies/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 
-@if (Settings != null && Settings.ShowAdSense && (Principal == null || Principal.ClientePaddle == null || !Principal.ClientePaddle.IsPaidUser))
+@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
     <Div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
@@ -23,10 +23,10 @@
     </Div>
 }
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RollingStoneBestMoviesofAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RollingStoneBestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RollingStoneBestTVShowsofAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RollingStoneBestTvShowsOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
 

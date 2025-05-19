@@ -1,5 +1,5 @@
 ﻿@page "/shared/wishlist/{type}/{token}"
-<SeoHeader Title="@($"Wishlist ({Email}) | {(type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")"></SeoHeader>
+<SeoHeader Title="@($"Wishlist ({Email}) | {(Type == "movie" ? MediaType.movie.GetName() : MediaType.tv.GetName())}")"></SeoHeader>
 
 @using SD.WEB.Modules.Profile.Components
 @using SD.WEB.Modules.Profile.Core
@@ -8,7 +8,7 @@
 @inject WatchingListApi WatchingApi
 @inject WatchedListApi WatchedApi
 
-@if (type == "movie")
+@if (Type == "movie")
 {
     <Wishlist Core="CoreWishlist" MediaType="MediaType.movie" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
               Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="@UserId"
@@ -24,8 +24,8 @@ else
 }
 
 @code {
-    [Parameter] public string? type { get; set; }
-    [Parameter] public string? token { get; set; }
+    [Parameter] public string? Type { get; set; }
+    [Parameter] public string? Token { get; set; }
 
     public RenderControlCore<WishList?> CoreWishlist { get; set; } = new();
     public WatchedList? Watched { get; set; }
@@ -38,12 +38,12 @@ else
     {
         await base.OnInitializedAsync();
 
-        Email = await PrincipalApi.GetEmail(token);
+        Email = await PrincipalApi.GetEmail(Token);
     }
 
     protected override async Task LoadDataRender()
     {
-        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null, token), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, CoreWishlist, token));
+        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null, Token), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, CoreWishlist, Token));
     }
 
 }

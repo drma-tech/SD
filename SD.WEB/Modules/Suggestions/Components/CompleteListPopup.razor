@@ -4,7 +4,6 @@
 @using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<CompleteListPopup>
 
-@inject ExternalIdApi ExternalIdApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
@@ -22,7 +21,7 @@
                                                    ItemsChanged.InvokeAsync(list);
                                                    StateHasChanged();
                                                })"
-                   IsIMDB="IsIMDB" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
+                   IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
                    StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false"
                    Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated" CommentImage="CommentImage">
     </MediaListFull>
@@ -44,12 +43,12 @@
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
     [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
 
-    [Parameter] public HashSet<MediaDetail> Items { get; set; } = new();
+    [Parameter] public HashSet<MediaDetail> Items { get; set; } = [];
     [Parameter] public EventCallback<HashSet<MediaDetail>> ItemsChanged { get; set; }
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; }
-    [Parameter] public bool IsIMDB { get; set; }
+    [Parameter] public bool IsImdb { get; set; }
     [Parameter] public MediaType? TypeSelected { get; set; }
     [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
     [Parameter] public bool CommentImage { get; set; }

@@ -18,10 +18,10 @@
     }
 </HeaderComponent>
 
-<RenderControl Core="Core" Model="myProviders" ExpressionEmpty="(MyProviders? obj) => obj == null || obj.Items.Empty()" PrivateContent="true">
-    <div id="@SwiperId" class="swiper mb-2">
+<RenderControl Core="Core" Model="MyProviders" ExpressionEmpty="(MyProviders? obj) => obj == null || obj.Items.Empty()" PrivateContent="true">
+    <div id="@_swiperId" class="swiper mb-2">
         <div class="swiper-wrapper">
-            @foreach (var item in myProviders?.Items.Take(AccountProduct.Premium.GetRestrictions().MySuggestions) ?? new List<MyProvidersItem>())
+            @foreach (var item in MyProviders?.Items.Take(AccountProduct.Premium.GetRestrictions().MySuggestions) ?? new List<MyProvidersItem>())
             {
                 <div class="swiper-slide">
                     <Card Style="position: relative;">
@@ -29,7 +29,7 @@
                                title="@item.region?.GetCustomAttribute()?.Name">
                             @item.region?.ToString()
                         </Badge>
-                        @if (allProviders != null && (!allProviders.Items.Any(a => a.id == item.id) || !allProviders.Items.Any(a => a.id == item.id && a.regions.Contains(item.region ?? AppStateStatic.Region))))
+                        @if (AllProviders != null && (AllProviders.Items.All(a => a.id != item.id) || !AllProviders.Items.Any(a => a.id == item.id && a.regions.Contains(item.region ?? AppStateStatic.Region))))
                         {
                             <Badge Color="Color.Danger" Style="position: absolute; bottom: 0; z-index: 1; width: 100%;">
                                 <Blazorise.Icon Name="FontAwesomeIcons.Trash" TextColor="TextColor.Light" IconSize="IconSize.x2"></Blazorise.Icon>
@@ -55,18 +55,18 @@
     [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
 
     public RenderControlCore<MyProviders?> Core { get; set; } = new();
-    private AllProviders? allProviders { get; set; }
-    private MyProviders? myProviders { get; set; }
+    private AllProviders? AllProviders { get; set; }
+    private MyProviders? MyProviders { get; set; }
     private bool ProvidersChanged { get; set; }
 
-    private readonly string SwiperId = $"swiper-{Guid.NewGuid()}";
+    private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
 
     protected override void OnInitialized()
     {
         MyProvidersApi.DataChanged += model =>
         {
-            myProviders = model;
-            Core?.LoadingFinished?.Invoke(model);
+            MyProviders = model;
+            Core.LoadingFinished?.Invoke(model);
             StateHasChanged();
         };
     }
@@ -77,7 +77,7 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.InvokeVoidAsync("initSwiper", SwiperId);
+            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperId);
         }
         catch (Exception ex)
         {
@@ -87,12 +87,12 @@
 
     protected override async Task LoadDataRender()
     {
-        myProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
-        if (allProviders == null) allProviders = await AllProvidersApi.GetAll(null);
+        MyProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
+        AllProviders ??= await AllProvidersApi.GetAll(null);
 
-        foreach (var item in myProviders?.Items ?? [])
+        foreach (var item in MyProviders?.Items ?? [])
         {
-            var provider = allProviders?.Items.Find(f => f.id == item.id);
+            var provider = AllProviders?.Items.Find(f => f.id == item.id);
 
             if (provider?.name != item.name || provider?.logo_path != item.logo)
             {
@@ -100,33 +100,26 @@
             }
         }
 
-        if (myProviders != null)
+        if (MyProviders != null)
         {
-            if (myProviders.Items.Any(a => !a.region.HasValue)) //update region (legacy)
+            if (MyProviders.Items.Any(a => !a.region.HasValue)) //update region (legacy)
             {
-                foreach (var item in myProviders.Items)
+                foreach (var item in MyProviders.Items)
                 {
                     if (!item.region.HasValue)
                     {
-                        var provider = allProviders?.Items.FirstOrDefault(f => f.id == item.id);
+                        var provider = AllProviders?.Items.FirstOrDefault(f => f.id == item.id);
 
                         if (provider != null)
                         {
-                            if (provider.regions.Any(a => a == AppStateStatic.Region))
-                            {
-                                item.region = AppStateStatic.Region;
-                            }
-                            else
-                            {
-                                item.region = provider.regions[0];
-                            }
+                            item.region = provider.regions.Any(a => a == AppStateStatic.Region) ? AppStateStatic.Region : provider.regions[0];
                         }
                     }
                 }
 
                 var client = await PrincipalApi.Get(IsAuthenticated);
                 await Toast.Warning(Translations.RegionsApplied);
-                await MyProvidersApi.Update(myProviders, client?.ClientePaddle);
+                await MyProvidersApi.Update(MyProviders, client?.ClientePaddle);
 
                 StateHasChanged();
             }
@@ -135,26 +128,24 @@
 
     public async Task ShowProviderPopup(MyProvidersItem item)
     {
-        if (allProviders == null) allProviders = await AllProvidersApi.GetAll(null);
+        AllProviders ??= await AllProvidersApi.GetAll(null);
 
-        await ModalService.ProviderPopup(allProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList, ShowPrivateAction,
+        await ModalService.ProviderPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList, ShowPrivateAction,
             item.region?.ToString(), item.id, IsAuthenticated);
     }
 
     private async Task UpdateProviders()
     {
-        foreach (var item in myProviders?.Items ?? [])
+        foreach (var item in MyProviders?.Items ?? [])
         {
-            var provider = allProviders?.Items.Find(f => f.id == item.id);
+            var provider = AllProviders?.Items.Find(f => f.id == item.id);
 
-            if (provider != null)
-            {
-                item.name = provider.name;
-                item.logo = provider.logo_path;
-            }
+            if (provider == null) continue;
+            item.name = provider.name;
+            item.logo = provider.logo_path;
         }
 
-        myProviders = await MyProvidersApi.Update(myProviders, null, false);
+        MyProviders = await MyProvidersApi.Update(MyProviders, null, false);
         ProvidersChanged = false;
     }
 

@@ -6,7 +6,7 @@
 {
     <Field Horizontal="true">
         <FieldLabel ColumnSize="@GetLabelSize()">
-            <Blazorise.Icon Name="@CssIcon"></Blazorise.Icon> @For?.GetCustomAttribute()?.Name
+            <Blazorise.Icon Name="@CssIcon"></Blazorise.Icon> @For?.GetCustomAttribute().Name
             @if (Required)
             {
                 <div style="color: red; display: initial;"> *</div>
@@ -66,11 +66,11 @@
                         </Select>
                     }
                 </Addon>
-                @if (ButtomClicked.HasDelegate) //custom button
+                @if (ButtonClicked.HasDelegate) //custom button
                 {
                     <Addon AddonType="AddonType.End">
-                        <Button Color="Color.Primary" Outline="true" Clicked="@ButtomClicked" title="@ButtomTitle" Disabled="@Disabled">
-                            <Blazorise.Icon Name="@ButtomCssIcon"></Blazorise.Icon>
+                        <Button Color="Color.Primary" Outline="true" Clicked="@ButtonClicked" title="@ButtonTitle" Disabled="@Disabled">
+                            <Blazorise.Icon Name="@ButtonCssIcon"></Blazorise.Icon>
                         </Button>
                     </Addon>
                 }
