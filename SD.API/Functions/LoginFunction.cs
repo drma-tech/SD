@@ -47,7 +47,7 @@ public class LoginFunction(CosmosRepository repo)
     }
 
     [Function("Test")]
-    public static HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "info/test")] HttpRequestData req)
+    public static HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "public/test")] HttpRequestData req)
     {
         var response = req.CreateResponse(HttpStatusCode.OK);
         response.WriteString("OK");
