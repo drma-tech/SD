@@ -1,6 +1,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using SD.Shared.Models.Auth;
+using System.Net;
 
 namespace SD.API.Functions;
 
@@ -43,5 +44,13 @@ public class LoginFunction(CosmosRepository repo)
             req.ProcessException(ex);
             throw;
         }
+    }
+
+    [Function("Test")]
+    public static HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "info/test")] HttpRequestData req)
+    {
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        response.WriteString("OK");
+        return response;
     }
 }
