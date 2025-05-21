@@ -16,6 +16,10 @@ var app = new HostBuilder()
         }
 
         ApiStartup.Startup(config.Build().GetValue<string>("CosmosDB:ConnectionString")!);
+        ApiStartup.Settings = new Settings
+        {
+            ShowAdSense = config.Build().GetValue<bool>("Settings:ShowAdSense")
+        };
     })
     .ConfigureServices(ConfigureServices)
     .ConfigureLogging(ConfigureLogging)

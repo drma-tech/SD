@@ -120,7 +120,7 @@ window.initGrid = (id) => {
                         });
                         el.style.height = ((maxHeight * 2) + 8) + 'px';
                     }
-                }, 500);
+                }, 1000);
             }
         }
     });

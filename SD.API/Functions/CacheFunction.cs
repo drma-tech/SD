@@ -22,12 +22,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
     {
         try
         {
-            var settings = new Settings
-            {
-                ShowAdSense = configuration.GetValue<bool>("Settings:ShowAdSense")
-            };
-
-            return await req.CreateResponse(settings, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse(ApiStartup.Settings, TtlCache.OneDay, cancellationToken);
         }
         catch (Exception ex)
         {
