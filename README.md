@@ -1,7 +1,7 @@
 # Streaming Discovery
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdrma-tech%2FSD.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdrma-tech%2FSD?ref=badge_shield)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdrma-tech%2FSD.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdrma-tech%2FSD?ref=badge_shield&issueType=security)
-[![CodeFactor](https://www.codefactor.io/repository/github/drma-tech/sd/badge)](https://www.codefactor.io/repository/github/drma-tech/sd)
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=drma-tech_SD)](https://sonarcloud.io/summary/new_code?id=drma-tech_SD)
 
 Streaming Discovery: Your Ultimate Streaming Organizer
 Tired of wasting time deciding what to watch? Streaming Discovery is here to help! We’re your all-in-one platform to manage, organize, and discover movies and series across hundreds of streaming services like Netflix, Disney+, Amazon Prime Video, HBO Max, and many more.
