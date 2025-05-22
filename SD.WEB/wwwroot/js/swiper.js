@@ -75,12 +75,16 @@ window.initGrid = (id) => {
     let posterSize = 130;
     let margin = 4;
 
+    if (el.swiper && typeof el.swiper.destroy === 'function') {
+        el.swiper.destroy(true, true);
+    }
+
     var swiper = new Swiper(el, {
         slidesPerView: 'auto',
         spaceBetween: 4,
         breakpointsBase: 'container',
         grid: {
-            rows: 2,
+            rows: 2
         },
         navigation:
         {
@@ -109,7 +113,8 @@ window.initGrid = (id) => {
         },
         on: {
             init: function () {
-                setTimeout(function () {
+                // Function to set the height of the grid based on the tallest slide
+                function setGridHeight() {
                     let slides = el.querySelectorAll('.swiper-slide');
                     if (slides.length > 0) {
                         let maxHeight = 0;
@@ -120,7 +125,29 @@ window.initGrid = (id) => {
                         });
                         el.style.height = ((maxHeight * 2) + 8) + 'px';
                     }
-                }, 1000);
+                }
+                // Set the height of the grid after all images are loaded
+                let images = el.querySelectorAll('img');
+                let loaded = 0;
+                if (images.length === 0) {
+                    setGridHeight();
+                } else {
+                    images.forEach(img => {
+                        if (img.complete) {
+                            loaded++;
+                        } else {
+                            img.addEventListener('load', () => {
+                                loaded++;
+                                if (loaded === images.length) setGridHeight();
+                            });
+                            img.addEventListener('error', () => {
+                                loaded++;
+                                if (loaded === images.length) setGridHeight();
+                            });
+                        }
+                    });
+                    if (loaded === images.length) setGridHeight();
+                }
             }
         }
     });

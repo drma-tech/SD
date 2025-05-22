@@ -46,3 +46,12 @@ window.addEventListener('unhandledrejection', function (e) {
     showError(e.reason.message);
     //todo: send log to server
 });
+
+window.addEventListener('resize', function () {
+    var divs = document.querySelectorAll('[id^="swiper-trailer-"]');
+    divs.forEach(function (el) {
+        if (window.initGrid) {
+            window.initGrid(el.id);
+        }
+    });
+});

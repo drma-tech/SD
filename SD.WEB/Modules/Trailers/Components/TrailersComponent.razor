@@ -40,7 +40,7 @@
     public RenderControlCore<CacheDocument<TrailerModel>?> Core { get; set; } = new();
     private CacheDocument<TrailerModel>? TrailerModel { get; set; }
 
-    private readonly string _gallerySwiperId = $"swiper-{Guid.NewGuid()}";
+    private readonly string _gallerySwiperId = $"swiper-trailer-{Guid.NewGuid()}";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
