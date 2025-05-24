@@ -8,7 +8,7 @@
     <ModalTitle Size="HeadingSize.Is5">
         @Translations.MyProfile
     </ModalTitle>
-    <CloseButton/>
+    <CloseButton />
 </ModalHeader>
 <ModalBody MaxHeight="70">
     <Card Margin="Margin.Is2.FromBottom">
@@ -21,19 +21,19 @@
                     <FieldLabel>
                         @Translations.IdentityProvider
                     </FieldLabel>
-                    <TextEdit Text="@Principal?.IdentityProvider" Disabled="true"/>
+                    <TextEdit Text="@Principal?.IdentityProvider" Disabled="true" />
                 </Field>
                 <Field ColumnSize="ColumnSize.Is4.OnDesktop">
                     <FieldLabel>
                         @Translations.Identification
                     </FieldLabel>
-                    <TextEdit Text="@Principal?.UserDetails" Disabled="true"/>
+                    <TextEdit Text="@Principal?.UserDetails" Disabled="true" />
                 </Field>
                 <Field ColumnSize="ColumnSize.Is4.OnDesktop">
                     <FieldLabel>
                         @Translations.Email
                     </FieldLabel>
-                    <TextEdit Text="@Principal?.Email" Disabled="true"/>
+                    <TextEdit Text="@Principal?.Email" Disabled="true" />
                 </Field>
             </Fields>
         </CardBody>
@@ -44,7 +44,7 @@
         </CardHeader>
         <CardBody>
             <Button Color="Color.Danger" Clicked="async () => { await DeleteAccount(Principal?.IdentityProvider); }">
-                <Blazorise.Icon Name="FontAwesomeIcons.UserSlash"/> @Translations.DeleteAccount
+                <Blazorise.Icon Name="FontAwesomeIcons.UserSlash" /> @Translations.DeleteAccount
             </Button>
         </CardBody>
     </Card>
@@ -56,7 +56,7 @@
 </ModalFooter>
 
 @code {
-    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     private ClientePrincipal? Principal { get; set; }
 
@@ -69,6 +69,12 @@
     {
         try
         {
+            if (Principal?.ClientePaddle is { IsPaidUser: true })
+            {
+                await MessageService.Warning("You still have an active subscription. Please cancel your subscription before deleting your profile.");
+                return;
+            }
+
             if (await MessageService.Confirm(GlobalTranslations.SureDeleteAccount, SeoTranslations.AppName, opt => { opt.ShowMessageIcon = false; }))
             {
                 //remove data from cosmos db

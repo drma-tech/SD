@@ -1,6 +1,6 @@
 ﻿namespace SD.Shared.Models.Subscription;
 
-public class Configurations
+public class PaddleConfigurations
 {
     public string? Token { get; set; }
     public string? ProductStandard { get; set; }

@@ -118,7 +118,7 @@
                                     @foreach (var item in Media.Videos)
                                     {
                                         <ListGroupItem Padding="Padding.Is1">
-                                            <Button Type="ButtonType.Link" To="@($"https://www.youtube.com/watch?v={item.key}")" Target="Target.Blank" Color="Color.Light"
+                                            <Button Type="@ButtonType.Link" To="@($"https://www.youtube.com/watch?v={item.key}")" Target="Target.Blank" Color="Color.Light"
                                                     TextAlignment="TextAlignment.Justified" Width="Width.Is100">
                                                 <Blazorise.Icon Name="FontAwesomeIcons.Youtube" Class="fa-brands"></Blazorise.Icon>
                                                 @item.name

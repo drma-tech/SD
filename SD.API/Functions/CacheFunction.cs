@@ -1,28 +1,27 @@
-using System.Globalization;
-using System.Net;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Configuration;
 using SD.API.Core.Scraping;
 using SD.Shared.Models.List;
 using SD.Shared.Models.List.Imdb;
 using SD.Shared.Models.News;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
+using System.Globalization;
+using System.Net;
 using Item = SD.Shared.Models.News.Item;
 
 namespace SD.API.Functions;
 
-public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration configuration)
+public class CacheFunction(CosmosCacheRepository cacheRepo)
 {
     [Function("Settings")]
-    public async Task<HttpResponseData> Configurations(
+    public static async Task<HttpResponseData> Configurations(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/settings")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
-            return await req.CreateResponse(ApiStartup.Settings, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse(ApiStartup.Configurations.Settings, TtlCache.OneDay, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -43,8 +42,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
 
             if (doc == null)
             {
-                var scraping = new ScrapingNews();
-                var obj = scraping.GetNews();
+                var obj = ScrapingNews.GetNews();
 
                 if (mode == "compact")
                 {
@@ -55,8 +53,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
                         compactModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link));
                     }
 
-                    doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, "lastnews_compact"),
-                        cancellationToken);
+                    doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, "lastnews_compact"), cancellationToken);
                 }
                 else
                 {
@@ -67,8 +64,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
                         fullModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link));
                     }
 
-                    doc = await cacheRepo.UpsertItemAsync(new NewsCache(fullModels, "lastnews_full"),
-                        cancellationToken);
+                    doc = await cacheRepo.UpsertItemAsync(new NewsCache(fullModels, "lastnews_full"), cancellationToken);
                 }
             }
 
@@ -110,12 +106,10 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
                     foreach (var item in obj?.contents?.Take(12).Select(s => s.video) ?? [])
                     {
                         if (item == null) continue;
-                        compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title,
-                            item.thumbnails[0].url));
+                        compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url));
                     }
 
-                    doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, "lasttrailers_compact"),
-                        cancellationToken);
+                    doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, "lasttrailers_compact"), cancellationToken);
                 }
                 else
                 {
@@ -124,12 +118,10 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
                     foreach (var item in obj?.contents?.Select(s => s.video) ?? [])
                     {
                         if (item == null) continue;
-                        fullModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title,
-                            item.thumbnails[2].url));
+                        fullModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[2].url));
                     }
 
-                    doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(fullModels, "lasttrailers_full"),
-                        cancellationToken);
+                    doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(fullModels, "lasttrailers_full"), cancellationToken);
                 }
             }
 
@@ -162,8 +154,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
 
             if (doc == null)
             {
-                var scraping = new ScrapingPopular();
-                var obj = scraping.GetMovieData();
+                var obj = ScrapingPopular.GetMovieData();
 
                 if (mode == "compact")
                 {
@@ -174,8 +165,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
                         compactModels.Items.Add(item);
                     }
 
-                    doc = await cacheRepo.UpsertItemAsync(
-                        new MostPopularDataCache(compactModels, "popularmovies_compact"), cancellationToken);
+                    doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, "popularmovies_compact"), cancellationToken);
                 }
                 else
                 {
@@ -186,8 +176,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
                         fullModels.Items.Add(item);
                     }
 
-                    doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(fullModels, "popularmovies_full"),
-                        cancellationToken);
+                    doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(fullModels, "popularmovies_full"), cancellationToken);
                 }
             }
 
@@ -220,8 +209,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
 
             if (doc == null)
             {
-                var scraping = new ScrapingPopular();
-                var obj = scraping.GetTvData();
+                var obj = ScrapingPopular.GetTvData();
 
                 doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
             }
@@ -239,8 +227,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
         catch (Exception ex)
         {
             req.ProcessException(ex);
-            return await req.CreateResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours,
-                cancellationToken);
+            return await req.CreateResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
 
@@ -268,55 +255,15 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
             {
                 var objRatings = await ApiStartup.HttpClient.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
 
-                var scraping =
-                    new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name),
-                        objRatings);
+                var scraping = new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name), objRatings);
                 var obj = scraping.GetMovieData(id, tmdbRating, title, releaseDate.Year.ToString());
 
-                if (releaseDate > DateTime.Now.AddDays(-7)) // < 1 week launch
-                    ttl = TtlCache.OneDay;
-                else if (releaseDate > DateTime.Now.AddMonths(-1)) // < 1 month launch
-                    ttl = TtlCache.OneWeek;
-                else // > 1 month launch
-                    ttl = TtlCache.ThreeMonths;
+                ttl = CalculateTtl(releaseDate);
 
-                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, obj, ttl),
-                    cancellationToken);
+                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, obj, ttl), cancellationToken);
             }
 
-            //add on sd certified list
-            if (doc?.Data != null && releaseDate < DateTime.Now.AddDays(-30)) // at least 1 month launch
-            {
-                var rating = doc.Data;
-
-                var imdbOk = float.TryParse(rating.imdb?.Replace(",", "."), NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out var imdb);
-                var tmdbOk = float.TryParse(rating.tmdb?.Replace(",", "."), NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out var tmdb);
-                var metaOk = float.TryParse(rating.metacritic?.Replace(",", "."), NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out var meta);
-                var tracOk = float.TryParse(rating.trakt?.Replace(",", "."), NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out var trac);
-                var rotoOk = float.TryParse(rating.rottenTomatoes?.Replace(",", "."), NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out var roto);
-                var fiafOk = float.TryParse(rating.filmAffinity?.Replace(",", "."), NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out var fiaf);
-
-                var count = 0;
-                if (imdbOk && imdb >= 8) count++;
-                if (tmdbOk && tmdb >= 8) count++;
-                if (metaOk && meta >= 8) count++;
-                if (tracOk && trac >= 80) count++;
-                if (rotoOk && roto >= 80) count++;
-                if (fiafOk && fiaf >= 8) count++;
-
-                if (count >= 5) //if there is at least 5 green ratings
-                {
-                    var tmdbWriteToken = configuration.GetValue<string>("TMDB:WriteToken");
-                    await ApiStartup.HttpClient.AddTmdbListItem(8498673, int.Parse(tmdbId!), MediaType.movie,
-                        tmdbWriteToken, cancellationToken);
-                }
-            }
+            await TrySaveCertifiedSd(doc, releaseDate, 8498673, tmdbId, MediaType.movie, cancellationToken);
 
             return await req.CreateResponse(doc, ttl, cancellationToken);
         }
@@ -359,55 +306,15 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
             {
                 var objRatings = await ApiStartup.HttpClient.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
 
-                var scraping =
-                    new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name),
-                        objRatings);
+                var scraping = new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name), objRatings);
                 var obj = scraping.GetShowData(id, tmdbRating, title, releaseDate.Year.ToString());
 
-                if (releaseDate > DateTime.Now.AddDays(-7)) // < 1 week launch
-                    ttl = TtlCache.OneDay;
-                else if (releaseDate > DateTime.Now.AddMonths(-1)) // < 1 month launch
-                    ttl = TtlCache.OneWeek;
-                else // > 1 month launch
-                    ttl = TtlCache.ThreeMonths;
+                ttl = CalculateTtl(releaseDate);
 
-                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, obj, ttl),
-                    cancellationToken);
+                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, obj, ttl), cancellationToken);
             }
 
-            //add on sd certified list
-            if (doc?.Data != null && releaseDate < DateTime.Now.AddDays(-30)) // at least 1 month launch
-            {
-                var rating = doc.Data;
-
-                var imdbOk = float.TryParse(rating.imdb?.Replace(",", "."), NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out var imdb);
-                var tmdbOk = float.TryParse(rating.tmdb?.Replace(",", "."), NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out var tmdb);
-                var metaOk = float.TryParse(rating.metacritic?.Replace(",", "."), NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out var meta);
-                var tracOk = float.TryParse(rating.trakt?.Replace(",", "."), NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out var trac);
-                var rotoOk = float.TryParse(rating.rottenTomatoes?.Replace(",", "."), NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out var roto);
-                var fiafOk = float.TryParse(rating.filmAffinity?.Replace(",", "."), NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out var fiaf);
-
-                var count = 0;
-                if (imdbOk && imdb >= 8) count++;
-                if (tmdbOk && tmdb >= 8) count++;
-                if (metaOk && meta >= 8) count++;
-                if (tracOk && trac >= 80) count++;
-                if (rotoOk && roto >= 80) count++;
-                if (fiafOk && fiaf >= 8) count++;
-
-                if (count >= 5) //if there is at least 5 green ratings
-                {
-                    var tmdbWriteToken = configuration.GetValue<string>("TMDB:WriteToken");
-                    await ApiStartup.HttpClient.AddTmdbListItem(8498675, int.Parse(tmdbId!), MediaType.tv,
-                        tmdbWriteToken, cancellationToken);
-                }
-            }
+            await TrySaveCertifiedSd(doc, releaseDate, 8498675, tmdbId, MediaType.tv, cancellationToken);
 
             return await req.CreateResponse(doc, ttl, cancellationToken);
         }
@@ -424,6 +331,58 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
             req.ProcessException(ex);
             return await req.CreateResponse<CacheDocument<Ratings>>(null, TtlCache.SixHours, cancellationToken);
         }
+    }
+
+    private static async Task TrySaveCertifiedSd(CacheDocument<Ratings>? doc, DateTime releaseDate, int listId, string? tmdbId, MediaType type, CancellationToken token)
+    {
+        if (tmdbId == null) return;
+
+        if (doc?.Data != null && releaseDate < DateTime.Now.AddDays(-30)) // at least 1 month launch
+        {
+            var rating = doc.Data;
+
+            var imdbOk = float.TryParse(rating.imdb?.Replace(",", "."), NumberStyles.Any,
+                CultureInfo.InvariantCulture, out var imdb);
+            var tmdbOk = float.TryParse(rating.tmdb?.Replace(",", "."), NumberStyles.Any,
+                CultureInfo.InvariantCulture, out var tmdb);
+            var metaOk = float.TryParse(rating.metacritic?.Replace(",", "."), NumberStyles.Any,
+                CultureInfo.InvariantCulture, out var meta);
+            var tracOk = float.TryParse(rating.trakt?.Replace(",", "."), NumberStyles.Any,
+                CultureInfo.InvariantCulture, out var trac);
+            var rotoOk = float.TryParse(rating.rottenTomatoes?.Replace(",", "."), NumberStyles.Any,
+                CultureInfo.InvariantCulture, out var roto);
+            var fiafOk = float.TryParse(rating.filmAffinity?.Replace(",", "."), NumberStyles.Any,
+                CultureInfo.InvariantCulture, out var fiaf);
+
+            var count = 0;
+            if (imdbOk && imdb >= 8) count++;
+            if (tmdbOk && tmdb >= 8) count++;
+            if (metaOk && meta >= 8) count++;
+            if (tracOk && trac >= 80) count++;
+            if (rotoOk && roto >= 80) count++;
+            if (fiafOk && fiaf >= 8) count++;
+
+            if (count >= 5) //if there is at least 5 green ratings
+            {
+                var tmdbWriteToken = ApiStartup.Configurations.TMDB?.WriteToken;
+                await ApiStartup.HttpClient.AddTmdbListItem(listId, int.Parse(tmdbId), type, tmdbWriteToken, token);
+            }
+        }
+    }
+
+    private static TtlCache CalculateTtl(DateTime releaseDate)
+    {
+        if (releaseDate > DateTime.Now.AddDays(-7)) // < 1 week launch
+        {
+            return TtlCache.OneDay;
+        }
+
+        if (releaseDate > DateTime.Now.AddMonths(-1)) // < 1 month launch
+        {
+            return TtlCache.OneWeek;
+        }
+
+        return TtlCache.ThreeMonths; // > 1 month launch
     }
 
     [Function("CacheMovieReviews")]
@@ -454,15 +413,9 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
                         node?.reviewer, node?.score, node?.quote?.value));
                 }
 
-                if (releaseDate > DateTime.Now.AddDays(-7)) // < 1 week launch
-                    ttl = TtlCache.OneDay;
-                else if (releaseDate > DateTime.Now.AddMonths(-1)) // < 1 month launch
-                    ttl = TtlCache.OneWeek;
-                else // > 1 month launch
-                    ttl = TtlCache.ThreeMonths;
+                ttl = CalculateTtl(releaseDate);
 
-                doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", TtlCache.OneDay),
-                    cancellationToken);
+                doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
             }
 
             return await req.CreateResponse(doc, ttl, cancellationToken);
@@ -500,27 +453,19 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IConfiguration confi
 
             if (doc == null)
             {
-                var scraping = new ScrapingReview();
-                var obj = scraping.GetTvReviews(title, releaseDate.Year);
+                var obj = ScrapingReview.GetTvReviews(title, releaseDate.Year);
                 //if (obj.meta?.title == "undefined critic reviews") return null;
 
                 var newModel = new ReviewModel();
 
                 foreach (var item in obj.items)
                 {
-                    newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author,
-                        item.score, item.quote));
+                    newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));
                 }
 
-                if (releaseDate > DateTime.Now.AddDays(-7)) // < 1 week launch
-                    ttl = TtlCache.OneDay;
-                else if (releaseDate > DateTime.Now.AddMonths(-1)) // < 1 month launch
-                    ttl = TtlCache.OneWeek;
-                else // > 1 month launch
-                    ttl = TtlCache.ThreeMonths;
+                ttl = CalculateTtl(releaseDate);
 
-                doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", TtlCache.OneDay),
-                    cancellationToken);
+                doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
             }
 
             return await req.CreateResponse(doc, ttl, cancellationToken);

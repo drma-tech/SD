@@ -8,7 +8,7 @@ async function startPaddle(token) {
         token: token,
         eventCallback: function (data) {
             if (data.name == "checkout.completed") {
-                let client = {
+                const client = {
                     CustomerId: data.data.customer.id,
                     AddressId: data.data.customer.address.id,
                     ProductId: data.data.items[0].product.id
@@ -20,17 +20,17 @@ async function startPaddle(token) {
     });
 }
 
-async function getPlans(price_standard_month, price_standard_year, price_premium_month, price_premium_year) {
-    let request = {
+async function getPlans(priceStandardMonth, priceStandardYear, pricePremiumMonth, pricePremiumYear) {
+    const request = {
         items: [
-            { quantity: 1, priceId: price_standard_month },
-            { quantity: 1, priceId: price_standard_year },
-            { quantity: 1, priceId: price_premium_month },
-            { quantity: 1, priceId: price_premium_year }
+            { quantity: 1, priceId: priceStandardMonth },
+            { quantity: 1, priceId: priceStandardYear },
+            { quantity: 1, priceId: pricePremiumMonth },
+            { quantity: 1, priceId: pricePremiumYear }
         ]
-    }
+    };
 
-    let list = [];
+    const list = [];
 
     await Paddle.PricePreview(request)
         .then((result) => {

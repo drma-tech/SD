@@ -17,7 +17,7 @@
             @if (Items.Empty())
             {
                 <span onclick="@($"animationShake('.{(MediaType == MediaType.movie ? "classWatchingMovie" : "classWatchingShow")}')")">
-                    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" title="@GlobalTranslations.SeeAllItems" Class="ms-1">
+                    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" title="@GlobalTranslations.SeeAllItems" Class="ms-1">
                         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
                     </Button>
                 </span>
@@ -29,7 +29,7 @@
             }
             else
             {
-                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Secondary" Clicked="@(async () => await OpenCompleteList())"
+                <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Clicked="@(async () => await OpenCompleteList())"
                         title="@GlobalTranslations.SeeAllItems" Class="ms-1">
                     <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
                 </Button>
@@ -42,7 +42,7 @@
             @if ((Watching?.CanSync(MediaType) ?? false) && (Watching?.Items(MediaType).Any() ?? false))
             {
                 <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Warning" Margin="Margin.Is1.FromEnd" Clicked="() => ImportFromWatched()"
-                        title="@Button.Update" Disabled="Updating">
+                        title="@Button.Update" Disabled="@Updating">
                     <Blazorise.Icon Name="FontAwesomeIcons.Rotate"></Blazorise.Icon> @Button.Update
                 </Button>
             }

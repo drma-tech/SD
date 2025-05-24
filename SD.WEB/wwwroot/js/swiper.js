@@ -1,13 +1,13 @@
 ﻿window.initSwiper = (id) => {
-    let el = document.getElementById(id);
+    const el = document.getElementById(id);
     if (!el) return;
-    let posterSize = 100;
-    let margin = 4;
+    const posterSize = 100;
+    const margin = 4;
 
     var swiper = new Swiper(el, {
-        slidesPerView: 'auto',
+        slidesPerView: "auto",
         spaceBetween: 4,
-        breakpointsBase: 'container',
+        breakpointsBase: "container",
         navigation:
         {
             nextEl: ".swiper-button-next",
@@ -37,7 +37,7 @@
 };
 
 window.initCalendar = (id) => {
-    let el = document.getElementById(id);
+    const el = document.getElementById(id);
     if (!el) return;
 
     const progressCircle = document.querySelector(".autoplay-progress svg");
@@ -70,19 +70,19 @@ window.initCalendar = (id) => {
 };
 
 window.initGrid = (id) => {
-    let el = document.getElementById(id);
+    const el = document.getElementById(id);
     if (!el) return;
-    let posterSize = 130;
-    let margin = 4;
+    const posterSize = 130;
+    const margin = 4;
 
-    if (el.swiper && typeof el.swiper.destroy === 'function') {
+    if (el.swiper && typeof el.swiper.destroy === "function") {
         el.swiper.destroy(true, true);
     }
 
     var swiper = new Swiper(el, {
-        slidesPerView: 'auto',
+        slidesPerView: "auto",
         spaceBetween: 4,
-        breakpointsBase: 'container',
+        breakpointsBase: "container",
         grid: {
             rows: 2
         },
@@ -115,19 +115,20 @@ window.initGrid = (id) => {
             init: function () {
                 // Function to set the height of the grid based on the tallest slide
                 function setGridHeight() {
-                    let slides = el.querySelectorAll('.swiper-slide');
+                    const slides = el.querySelectorAll(".swiper-slide");
                     if (slides.length > 0) {
                         let maxHeight = 0;
                         slides.forEach(slide => {
-                            slide.style.height = 'auto';
-                            let h = slide.offsetHeight;
+                            slide.style.height = "auto";
+                            const h = slide.offsetHeight;
                             if (h > maxHeight) maxHeight = h;
                         });
-                        el.style.height = ((maxHeight * 2) + 8) + 'px';
+                        el.style.height = ((maxHeight * 2) + 8) + "px";
                     }
                 }
+
                 // Set the height of the grid after all images are loaded
-                let images = el.querySelectorAll('img');
+                const images = el.querySelectorAll("img");
                 let loaded = 0;
                 if (images.length === 0) {
                     setGridHeight();
@@ -136,11 +137,11 @@ window.initGrid = (id) => {
                         if (img.complete) {
                             loaded++;
                         } else {
-                            img.addEventListener('load', () => {
+                            img.addEventListener("load", () => {
                                 loaded++;
                                 if (loaded === images.length) setGridHeight();
                             });
-                            img.addEventListener('error', () => {
+                            img.addEventListener("error", () => {
                                 loaded++;
                                 if (loaded === images.length) setGridHeight();
                             });

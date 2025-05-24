@@ -9,10 +9,12 @@ public static class ApiStartup
 
     public static HttpClient HttpClientPaddle { get; } = new();
     public static CosmosClient CosmosClient { get; private set; } = null!;
-    public static Settings Settings { get; set; } = new();
+    public static Configurations Configurations { get; set; } = null!;
 
-    public static void Startup(string conn)
+    public static void Startup(string? conn)
     {
+        ArgumentNullException.ThrowIfNull(conn);
+
         CosmosClient = new CosmosClient(conn, new CosmosClientOptions
         {
             SerializerOptions = new CosmosSerializationOptions

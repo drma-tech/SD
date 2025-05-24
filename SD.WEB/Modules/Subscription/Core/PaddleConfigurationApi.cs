@@ -2,9 +2,9 @@
 
 namespace SD.WEB.Modules.Subscription.Core;
 
-public class PaddleConfigurationApi(IHttpClientFactory factory) : ApiCosmos<Configurations>(factory, null)
+public class PaddleConfigurationApi(IHttpClientFactory factory) : ApiCosmos<PaddleConfigurations>(factory, null)
 {
-    public async Task<Configurations?> GetConfigurations()
+    public async Task<PaddleConfigurations?> GetConfigurations()
     {
         return await GetAsync(Endpoint.Configurations, null);
     }

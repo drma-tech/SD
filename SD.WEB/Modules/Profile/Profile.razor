@@ -39,21 +39,21 @@
                 @if (Platform == "play")
                 {
                     <Button Color="Color.Secondary" Size="Size.Small" Clicked="SetReviewed"
-                            To="https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa" Type="ButtonType.Link" Target="Target.Blank">
+                            To="https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa" Type="@ButtonType.Link" Target="Target.Blank">
                         <Image Source="/logo/google-play.png" Width="Width.Px(16)"></Image> Google Play
                     </Button>
                 }
                 @if (Platform == "windows")
                 {
                     <Button Color="Color.Secondary" Size="Size.Small" Clicked="SetReviewed"
-                            To="https://apps.microsoft.com/detail/9PB1PKRDD8L0" Type="ButtonType.Link" Target="Target.Blank">
+                            To="https://apps.microsoft.com/detail/9PB1PKRDD8L0" Type="@ButtonType.Link" Target="Target.Blank">
                         <Image Source="/logo/microsoft-store.png" Width="Width.Px(16)"></Image> Microsoft Store
                     </Button>
                 }
                 @if (Platform == "webapp")
                 {
                     <Button Color="Color.Secondary" Size="Size.Small" Clicked="SetReviewed"
-                            To="https://www.trustpilot.com/review/streamingdiscovery.com" Type="ButtonType.Link" Target="Target.Blank">
+                            To="https://www.trustpilot.com/review/streamingdiscovery.com" Type="@ButtonType.Link" Target="Target.Blank">
                         <Image Source="/logo/trustpilot.png" Width="Width.Px(16)"></Image> Trustpilot
                     </Button>
                 }
@@ -70,7 +70,7 @@ else
         <JumbotronSubtitle Class="mb-3" TextAlignment="TextAlignment.Justified">
             @Translations.HeroText
         </JumbotronSubtitle>
-        <Button Type="ButtonType.Link" Color="Color.Warning" To="/login-providers">
+        <Button Type="@ButtonType.Link" Color="Color.Warning" To="/login-providers">
             @Translations.HeroButton
         </Button>
         <Divider Background="Background.White" Style="opacity: .75"></Divider>
@@ -87,7 +87,7 @@ else
                 <Blazorise.Icon Name="@FontAwesomeIcons.Star" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Providers
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(MyProviders?.Items.Count ?? 0)</Badge>
+                <Badge Color="Color.Primary" Padding="Padding.Is1">@(MyProviders?.Items.Count ?? 0)</Badge>
             </Div>
         </Alert>
     </Column>
@@ -97,8 +97,8 @@ else
                 <Blazorise.Icon Name="@FontAwesomeIcons.Bookmark" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Wishlist
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Wish?.Movies.Count ?? 0) @PopularType.MovieName</Badge>
-                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Wish?.Shows.Count ?? 0) @PopularType.ShowName</Badge>
+                <Badge Color="Color.Primary" Padding="Padding.Is1">@(Wish?.Movies.Count ?? 0) @PopularType.MovieName</Badge>
+                <Badge Color="Color.Primary" Padding="Padding.Is1">@(Wish?.Shows.Count ?? 0) @PopularType.ShowName</Badge>
             </Div>
         </Alert>
     </Column>
@@ -108,8 +108,8 @@ else
                 <Blazorise.Icon Name="@FontAwesomeIcons.Eye" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Watching
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watching?.Movies.Count ?? 0) @PopularType.MovieName</Badge>
-                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watching?.Shows.Count ?? 0) @PopularType.ShowName</Badge>
+                <Badge Color="Color.Primary" Padding="Padding.Is1">@(Watching?.Movies.Count ?? 0) @PopularType.MovieName</Badge>
+                <Badge Color="Color.Primary" Padding="Padding.Is1">@(Watching?.Shows.Count ?? 0) @PopularType.ShowName</Badge>
             </Div>
         </Alert>
     </Column>
@@ -119,8 +119,8 @@ else
                 <Blazorise.Icon Name="@FontAwesomeIcons.ClockRotateLeft" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Watched
             </AlertMessage>
             <Div>
-                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watched?.Movies.Count ?? 0) @PopularType.MovieName</Badge>
-                <Badge Color="Color.Secondary" Padding="Padding.Is1">@(Watched?.Shows.Count ?? 0) @PopularType.ShowName</Badge>
+                <Badge Color="Color.Primary" Padding="Padding.Is1">@(Watched?.Movies.Count ?? 0) @PopularType.MovieName</Badge>
+                <Badge Color="Color.Primary" Padding="Padding.Is1">@(Watched?.Shows.Count ?? 0) @PopularType.ShowName</Badge>
             </Div>
         </Alert>
     </Column>

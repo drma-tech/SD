@@ -9,12 +9,12 @@ public partial class ScrapingPopular
     private const string MovieUrl = "https://www.imdb.com/chart/moviemeter";
     private const string TvUrl = "https://www.imdb.com/chart/tvmeter";
 
-    public MostPopularData GetMovieData()
+    public static MostPopularData GetMovieData()
     {
         return ProcessHtml(MovieUrl);
     }
 
-    public MostPopularData GetTvData()
+    public static MostPopularData GetTvData()
     {
         return ProcessHtml(TvUrl);
     }

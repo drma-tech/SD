@@ -3,11 +3,11 @@ using SD.Shared.Models.News;
 
 namespace SD.API.Core.Scraping;
 
-public class ScrapingNews
+public static class ScrapingNews
 {
     private const string NewsUrl = "https://editorial.rottentomatoes.com/news";
 
-    public NewsModel GetNews()
+    public static NewsModel GetNews()
     {
         return ProcessHtml(NewsUrl);
     }
@@ -21,10 +21,11 @@ public class ScrapingNews
 
         var div = doc.DocumentNode.SelectNodes("//div[starts-with(@class,'panel-body')]/div")?.FirstOrDefault();
 
-        if (div != null)
+        if (div == null) return data;
+        
+        var index = 0;
+        foreach (var row in div.ChildNodes.Where(w => w.Name == "div"))
         {
-            var index = 0;
-            foreach (var row in div.ChildNodes.Where(w => w.Name == "div"))
             foreach (var col in row.ChildNodes.Where(w => w.Name == "div"))
             {
                 var item = new Item

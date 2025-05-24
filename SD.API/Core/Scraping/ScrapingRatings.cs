@@ -16,10 +16,8 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
 
     public Ratings GetMovieData(string? imdbId, string? tmdbRating, string? title, string? year)
     {
-        var titleMeta = title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-")
-            .ToLower();
-        var titleTrakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-")
-            .Replace("--", "-").Replace("--", "-").ToLower();
+        var titleMeta = title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
+        var titleTrakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-").Replace("--", "-").Replace("--", "-").ToLower();
 
         var data = new Ratings
         {
@@ -33,8 +31,7 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
         };
 
         if (imdbId.NotEmpty() && data.imdb.Empty()) ProcessMovieImdb(data, string.Format(ImdbRatingUrl, imdbId));
-        if (data.metacritic.Empty())
-            ProcessMovieMetacritic(data, string.Format(MetacriticMovieUrl, titleMeta), year);
+        if (data.metacritic.Empty()) ProcessMovieMetacritic(data, string.Format(MetacriticMovieUrl, titleMeta), year);
         if (data.trakt.Empty()) ProcessTrack(data, string.Format(TraktMovieUrl, titleTrakt, year), year);
 
         return data;

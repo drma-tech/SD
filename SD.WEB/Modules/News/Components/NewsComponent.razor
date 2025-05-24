@@ -6,7 +6,7 @@
 @inject IJSRuntime JsRuntime
 
 <HeaderComponent Title="@($"{Translations.NewsTitle} - {Language.enUS.GetName()}")" IconImage="logo/rotten-tomatoes.png">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Type="ButtonType.Link" To="@("/news")">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Type="@ButtonType.Link" To="@("/news")">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>
@@ -18,7 +18,7 @@
                 <div class="swiper-slide">
                     <Blazorise.Link To="@item.link" Target="Target.Blank" Title="@item.title">
                         <Image Source="@item.url_img" title="@item.title" alt="@item.title" Text="@item.title" Display="Display.Block" Width="Width.Is100"/>
-                        <div class="carousel-caption d-none d-md-block p-1" style="background-color: lime; opacity: 70%; color: black;">
+                        <div class="carousel-caption d-none d-md-block p-1" style="background-color: lime; opacity: 0.6; color: black;">
                             @if (item.title != null)
                             {
                                 <p>@((MarkupString)item.title)</p>

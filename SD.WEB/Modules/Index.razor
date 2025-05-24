@@ -30,7 +30,7 @@
         <TextEdit @bind-Text="@Search" Placeholder="@GlobalTranslations.TypeSomething" Size="Size.Small" KeyPress="KeyPress"/>
     </Column>
     <Column ColumnSize="ColumnSize.IsAuto">
-        <Button Color="Color.Primary" Block="true" Disabled="string.IsNullOrEmpty(Search)" Size="Size.Small" Type="ButtonType.Link" To="@($"/search/{Search}")">
+        <Button Color="Color.Primary" Block="true" Disabled="@string.IsNullOrEmpty(Search)" Size="Size.Small" Type="@ButtonType.Link" To="@($"/search/{Search}")">
             @Button.Search
         </Button>
     </Column>

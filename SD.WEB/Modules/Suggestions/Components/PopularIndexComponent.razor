@@ -6,7 +6,7 @@
 @inject TmdbNowPlayingApi TmdbNowPlayingApi
 
 <HeaderComponent Title="@Translations.Popular" IconImage="logo/imdb.png">
-    <RadioGroup @bind-CheckedValue="@TypeSelected" Buttons="true" Float="Float.End" Size="Size.ExtraSmall">
+    <RadioGroup @bind-CheckedValue="@TypeSelected" Buttons="true" Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary">
         <Radio Value="PopularType.Movie">@(PopularType.Movie.GetName())</Radio>
         <Radio Value="PopularType.Show">@(PopularType.Show.GetName())</Radio>
         <Radio Value="PopularType.Cinema">@(PopularType.Cinema.GetName())</Radio>

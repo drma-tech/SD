@@ -6,7 +6,7 @@
 @inject IJSRuntime JsRuntime
 
 <HeaderComponent Title="@($"{Translations.TrailersTitle} - {Language.enUS.GetName()}")" IconImage="logo/one-media.png">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Type="ButtonType.Link" To="@("/trailers")">
+    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Type="@ButtonType.Link" To="@("/trailers")">
         <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
     </Button>
 </HeaderComponent>

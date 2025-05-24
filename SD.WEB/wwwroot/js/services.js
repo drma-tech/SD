@@ -4,17 +4,17 @@
 window.initGoogleAnalytics = function (code) {
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    gtag("js", new Date());
 
     getUserInfo()
         .then(userId => {
             if (userId) {
-                gtag('config', code, {
+                gtag("config", code, {
                     'user_id': userId
                 });
             }
             else {
-                gtag('config', code);
+                gtag("config", code);
             }
         })
         .catch(error => {
@@ -24,7 +24,7 @@ window.initGoogleAnalytics = function (code) {
 
 // Microsoft Clarity
 window.initClarity = function (code) {
-    if (!window.location.host.includes('localhost')) {
+    if (!window.location.host.includes("localhost")) {
         (function (c, l, a, r, i, t, y) {
             c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
             t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
@@ -32,9 +32,9 @@ window.initClarity = function (code) {
         })(window, document, "clarity", "script", code);
 
         // Check if Clarity is loaded and call the consent function
-        let clarityCheckInterval = setInterval(function () {
+        const clarityCheckInterval = setInterval(function () {
             if (window.clarity) {
-                window.clarity('consent');
+                window.clarity("consent");
                 clearInterval(clarityCheckInterval);
             }
         }, 5000);
@@ -43,8 +43,8 @@ window.initClarity = function (code) {
 
 // Disable robots for dev environment
 window.setRobotsMeta = function () {
-    const meta = document.createElement('meta');
-    meta.name = 'robots';
-    meta.content = window.location.hostname.includes('dev') ? 'noindex, nofollow' : "index";
+    const meta = document.createElement("meta");
+    meta.name = "robots";
+    meta.content = window.location.hostname.includes("dev") ? "noindex, nofollow" : "index";
     document.head.appendChild(meta);
 };

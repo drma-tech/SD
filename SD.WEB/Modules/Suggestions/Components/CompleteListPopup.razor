@@ -15,12 +15,7 @@
     <CloseButton/>
 </ModalHeader>
 <ModalBody MaxHeight="70">
-    <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) =>
-                                               {
-                                                   Items = list;
-                                                   ItemsChanged.InvokeAsync(list);
-                                                   StateHasChanged();
-                                               })"
+    <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) => { Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged(); })"
                    IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
                    StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false"
                    Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated" CommentImage="CommentImage">

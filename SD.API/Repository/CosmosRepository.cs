@@ -1,10 +1,9 @@
-﻿using System.Linq.Expressions;
-using System.Net;
-using Microsoft.Azure.Cosmos;
+﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SD.API.Repository.Core;
+using System.Linq.Expressions;
+using System.Net;
 
 namespace SD.API.Repository;
 
@@ -12,11 +11,11 @@ public class CosmosRepository
 {
     private readonly ILogger<CosmosRepository> _logger;
 
-    public CosmosRepository(IConfiguration config, ILogger<CosmosRepository> logger)
+    public CosmosRepository(ILogger<CosmosRepository> logger)
     {
         _logger = logger;
 
-        var databaseId = config.GetValue<string>("CosmosDB:DatabaseId");
+        var databaseId = ApiStartup.Configurations.CosmosDB?.DatabaseId;
 
         Container = ApiStartup.CosmosClient.GetContainer(databaseId, "main");
     }

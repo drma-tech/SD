@@ -1,7 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using Microsoft.Azure.Cosmos;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Azure.Cosmos;
 using SD.API.Repository.Core;
+using System.Text.Json.Serialization;
 
 namespace SD.API.Repository;
 
@@ -19,9 +18,9 @@ public class LogModel
 
 public class CosmosLogRepository
 {
-    public CosmosLogRepository(IConfiguration config)
+    public CosmosLogRepository()
     {
-        var databaseId = config.GetValue<string>("CosmosDB:DatabaseId");
+        var databaseId = ApiStartup.Configurations.CosmosDB?.DatabaseId;
 
         Container = ApiStartup.CosmosClient.GetContainer(databaseId, "logs");
     }

@@ -31,21 +31,21 @@ public abstract class MainDocument : CosmosDocument
 /// </summary>
 public abstract class ProtectedMainDocument : MainDocument
 {
-    private readonly DocumentType type;
+    private readonly DocumentType _type;
 
     protected ProtectedMainDocument(DocumentType type) : base(type)
     {
-        this.type = type;
+        this._type = type;
     }
 
     protected ProtectedMainDocument(string id, DocumentType type) : base($"{type}:{id}", type)
     {
-        this.type = type;
+        this._type = type;
     }
 
     public virtual void Initialize(string id)
     {
-        SetIds($"{type}:{id}");
+        SetIds($"{_type}:{id}");
     }
 }
 
@@ -54,10 +54,10 @@ public abstract class ProtectedMainDocument : MainDocument
 /// </summary>
 public abstract class PrivateMainDocument(DocumentType type) : MainDocument(type)
 {
-    private readonly DocumentType type = type;
+    private readonly DocumentType _type = type;
 
     public virtual void Initialize(string userId)
     {
-        SetIds($"{type}:{userId}");
+        SetIds($"{_type}:{userId}");
     }
 }

@@ -15,17 +15,19 @@ var app = new HostBuilder()
             config.AddUserSecrets<Program>();
         }
 
-        ApiStartup.Startup(config.Build().GetValue<string>("CosmosDB:ConnectionString")!);
-        ApiStartup.Settings = new Settings
-        {
-            ShowAdSense = config.Build().GetValue<bool>("Settings:ShowAdSense")
-        };
+        var cfg = new Configurations();
+        config.Build().Bind(cfg);
+        ApiStartup.Configurations = cfg;
+
+        ApiStartup.Startup(ApiStartup.Configurations.CosmosDB?.ConnectionString);
     })
     .ConfigureServices(ConfigureServices)
     .ConfigureLogging(ConfigureLogging)
     .Build();
 
 await app.RunAsync();
+
+return;
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
@@ -37,5 +39,5 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
 
 static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder builder)
 {
-    builder.AddProvider(new CosmosLoggerProvider(new CosmosLogRepository(context.Configuration)));
+    builder.AddProvider(new CosmosLoggerProvider(new CosmosLogRepository()));
 }

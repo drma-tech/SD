@@ -5,11 +5,11 @@ using System.Text.RegularExpressions;
 
 namespace SD.API.Core.Scraping;
 
-public class ScrapingReview
+public static class ScrapingReview
 {
     private const string TvUrl = "https://www.metacritic.com/tv/{0}/critic-reviews/?sort-by=Recently%20Added";
 
-    public RootMetacriticReview GetTvReviews(string? tvName, int year)
+    public static RootMetacriticReview GetTvReviews(string? tvName, int year)
     {
         if (tvName == null) return new RootMetacriticReview();
 
@@ -26,7 +26,7 @@ public class ScrapingReview
     {
         var wordsToRemove = new[] { "and", "the", "of", "a", "an", "or", "in", "on", "at", "for", "with" };
         var cleanedName = string.Join("-", tvName.Split('-').Where(w => !wordsToRemove.Contains(w.ToLower()) && !string.IsNullOrWhiteSpace(w)));
-        cleanedName = Regex.Replace(cleanedName, "-+", "-").TrimEnd('.');
+        cleanedName = Regex.Replace(cleanedName, "-+", "-", RegexOptions.None, TimeSpan.FromMilliseconds(100)).TrimEnd('.');
         return cleanedName;
     }
 
@@ -55,9 +55,9 @@ public class ScrapingReview
 
         var jsonContent = htmlBody.Substring(startIndex, endIndex - startIndex).Trim();
 
-        jsonContent = Regex.Replace(jsonContent, @",[b-t],", ",\"\",");
-        jsonContent = Regex.Replace(jsonContent, @":[b-t]", ":\"\"");
-        jsonContent = Regex.Replace(jsonContent, @":\[[b-t]\]", ":[\"\"]");
+        jsonContent = Regex.Replace(jsonContent, @",[b-t],", ",\"\",", RegexOptions.None, TimeSpan.FromMilliseconds(100));
+        jsonContent = Regex.Replace(jsonContent, @":[b-t]", ":\"\"", RegexOptions.None, TimeSpan.FromMilliseconds(100));
+        jsonContent = Regex.Replace(jsonContent, @":\[[b-t]\]", ":[\"\"]", RegexOptions.None, TimeSpan.FromMilliseconds(100));
 
         var result = JsonConvert.DeserializeObject<List<RootMetacriticReview>>(jsonContent)?[2];
 
