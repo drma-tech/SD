@@ -6,8 +6,7 @@ namespace SD.WEB.Modules.Suggestions.Core;
 public class TmdbListApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
 {
     public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList,
-        MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null,
-        int page = 1)
+        MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
     {
         if (list == null) throw new ArgumentException(null, nameof(list));
 
@@ -16,11 +15,10 @@ public class TmdbListApi(IHttpClientFactory factory) : ApiExternal(factory), IMe
             { "api_key", TmdbOptions.ApiKey },
             { "language", AppStateStatic.Language.GetName(false) ?? "en-US" },
             { "page", page.ToString() }
-            //{ "sort_by", "original_order.asc" }
         };
 
-        var result = await GetByRequest<CustomListNew>(TmdbOptions.BaseUriNew + "list/" +
-                                                       ((int)list).ToString().ConfigureParameters(parameter));
+        var result = await GetAsync<CustomListNew>($"{BaseEndpoint}public/tmdb?url=" + 
+                                                   TmdbOptions.BaseUriNew + "list/" + ((int)list).ToString().ConfigureParameters(parameter));
 
         if (result != null)
             foreach (var item in result.results)

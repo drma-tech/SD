@@ -1,5 +1,6 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Caching.Distributed;
 using SD.API.Core.Scraping;
 using SD.Shared.Models.List;
 using SD.Shared.Models.List.Imdb;
@@ -8,11 +9,12 @@ using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
 using System.Globalization;
 using System.Net;
+using System.Text.Json;
 using Item = SD.Shared.Models.News.Item;
 
 namespace SD.API.Functions;
 
-public class CacheFunction(CosmosCacheRepository cacheRepo)
+public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache distributedCache)
 {
     [Function("Settings")]
     public static async Task<HttpResponseData> Configurations(
@@ -38,34 +40,46 @@ public class CacheFunction(CosmosCacheRepository cacheRepo)
         try
         {
             var mode = req.GetQueryParameters()["mode"];
-            var doc = await cacheRepo.Get<NewsModel>($"lastnews_{mode}", cancellationToken);
-
-            if (doc == null)
+            var cacheKey = $"lastnews_{mode}";
+            CacheDocument<NewsModel>? doc;
+            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            if (cachedBytes is { Length: > 0 })
             {
-                var obj = ScrapingNews.GetNews();
+                doc = JsonSerializer.Deserialize<CacheDocument<NewsModel>>(cachedBytes);
+            }
+            else
+            {
+                doc = await cacheRepo.Get<NewsModel>(cacheKey, cancellationToken);
 
-                if (mode == "compact")
+                if (doc == null)
                 {
-                    var compactModels = new NewsModel();
+                    var obj = ScrapingNews.GetNews();
 
-                    foreach (var item in obj.Items.Take(10))
+                    if (mode == "compact")
                     {
-                        compactModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link));
+                        var compactModels = new NewsModel();
+
+                        foreach (var item in obj.Items.Take(10))
+                        {
+                            compactModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link));
+                        }
+
+                        doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, "lastnews_compact"), cancellationToken);
                     }
-
-                    doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, "lastnews_compact"), cancellationToken);
-                }
-                else
-                {
-                    var fullModels = new NewsModel();
-
-                    foreach (var item in obj.Items)
+                    else
                     {
-                        fullModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link));
-                    }
+                        var fullModels = new NewsModel();
 
-                    doc = await cacheRepo.UpsertItemAsync(new NewsCache(fullModels, "lastnews_full"), cancellationToken);
+                        foreach (var item in obj.Items)
+                        {
+                            fullModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link));
+                        }
+
+                        doc = await cacheRepo.UpsertItemAsync(new NewsCache(fullModels, "lastnews_full"), cancellationToken);
+                    }
                 }
+
+                await SaveCache(doc, cacheKey, TtlCache.SixHours);
             }
 
             return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
@@ -93,36 +107,49 @@ public class CacheFunction(CosmosCacheRepository cacheRepo)
         try
         {
             var mode = req.GetQueryParameters()["mode"];
-            var doc = await cacheRepo.Get<TrailerModel>($"lasttrailers_{mode}", cancellationToken);
+            var cacheKey = $"lasttrailers_{mode}";
+            CacheDocument<TrailerModel>? doc;
 
-            if (doc == null)
+            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            if (cachedBytes is { Length: > 0 })
             {
-                var obj = await ApiStartup.HttpClient.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
+                doc = JsonSerializer.Deserialize<CacheDocument<TrailerModel>>(cachedBytes);
+            }
+            else
+            {
+                doc = await cacheRepo.Get<TrailerModel>(cacheKey, cancellationToken);
 
-                if (mode == "compact")
+                if (doc == null)
                 {
-                    var compactModels = new TrailerModel();
+                    var obj = await ApiStartup.HttpClient.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
 
-                    foreach (var item in obj?.contents?.Take(12).Select(s => s.video) ?? [])
+                    if (mode == "compact")
                     {
-                        if (item == null) continue;
-                        compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url));
+                        var compactModels = new TrailerModel();
+
+                        foreach (var item in obj?.contents?.Take(12).Select(s => s.video) ?? [])
+                        {
+                            if (item == null) continue;
+                            compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url));
+                        }
+
+                        doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, "lasttrailers_compact"), cancellationToken);
                     }
-
-                    doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, "lasttrailers_compact"), cancellationToken);
-                }
-                else
-                {
-                    var fullModels = new TrailerModel();
-
-                    foreach (var item in obj?.contents?.Select(s => s.video) ?? [])
+                    else
                     {
-                        if (item == null) continue;
-                        fullModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[2].url));
-                    }
+                        var fullModels = new TrailerModel();
 
-                    doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(fullModels, "lasttrailers_full"), cancellationToken);
+                        foreach (var item in obj?.contents?.Select(s => s.video) ?? [])
+                        {
+                            if (item == null) continue;
+                            fullModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[2].url));
+                        }
+
+                        doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(fullModels, "lasttrailers_full"), cancellationToken);
+                    }
                 }
+
+                await SaveCache(doc, cacheKey, TtlCache.SixHours);
             }
 
             return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
@@ -150,34 +177,46 @@ public class CacheFunction(CosmosCacheRepository cacheRepo)
         try
         {
             var mode = req.GetQueryParameters()["mode"];
-            var doc = await cacheRepo.Get<MostPopularData>($"popularmovies_{mode}", cancellationToken);
-
-            if (doc == null)
+            var cacheKey = $"popularmovies_{mode}";
+            CacheDocument<MostPopularData>? doc;
+            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            if (cachedBytes is { Length: > 0 })
             {
-                var obj = ScrapingPopular.GetMovieData();
+                doc = JsonSerializer.Deserialize<CacheDocument<MostPopularData>>(cachedBytes);
+            }
+            else
+            {
+                doc = await cacheRepo.Get<MostPopularData>(cacheKey, cancellationToken);
 
-                if (mode == "compact")
+                if (doc == null)
                 {
-                    var compactModels = new MostPopularData { ErrorMessage = obj.ErrorMessage };
+                    var obj = ScrapingPopular.GetMovieData();
 
-                    foreach (var item in obj.Items.Take(20))
+                    if (mode == "compact")
                     {
-                        compactModels.Items.Add(item);
+                        var compactModels = new MostPopularData { ErrorMessage = obj.ErrorMessage };
+
+                        foreach (var item in obj.Items.Take(20))
+                        {
+                            compactModels.Items.Add(item);
+                        }
+
+                        doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, "popularmovies_compact"), cancellationToken);
                     }
-
-                    doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, "popularmovies_compact"), cancellationToken);
-                }
-                else
-                {
-                    var fullModels = new MostPopularData { ErrorMessage = obj.ErrorMessage };
-
-                    foreach (var item in obj.Items)
+                    else
                     {
-                        fullModels.Items.Add(item);
-                    }
+                        var fullModels = new MostPopularData { ErrorMessage = obj.ErrorMessage };
 
-                    doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(fullModels, "popularmovies_full"), cancellationToken);
+                        foreach (var item in obj.Items)
+                        {
+                            fullModels.Items.Add(item);
+                        }
+
+                        doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(fullModels, "popularmovies_full"), cancellationToken);
+                    }
                 }
+
+                await SaveCache(doc, cacheKey, TtlCache.SixHours);
             }
 
             return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
@@ -205,13 +244,25 @@ public class CacheFunction(CosmosCacheRepository cacheRepo)
     {
         try
         {
-            var doc = await cacheRepo.Get<MostPopularData>("populartvs", cancellationToken);
-
-            if (doc == null)
+            var cacheKey = "populartvs";
+            CacheDocument<MostPopularData>? doc;
+            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            if (cachedBytes is { Length: > 0 })
             {
-                var obj = ScrapingPopular.GetTvData();
+                doc = JsonSerializer.Deserialize<CacheDocument<MostPopularData>>(cachedBytes);
+            }
+            else
+            {
+                doc = await cacheRepo.Get<MostPopularData>(cacheKey, cancellationToken);
 
-                doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
+                if (doc == null)
+                {
+                    var obj = ScrapingPopular.GetTvData();
+
+                    doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
+                }
+
+                await SaveCache(doc, cacheKey, TtlCache.SixHours);
             }
 
             return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
@@ -245,22 +296,34 @@ public class CacheFunction(CosmosCacheRepository cacheRepo)
 
             DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture,
                 DateTimeStyles.None, out var releaseDate);
-
-            var doc = await cacheRepo.Get<Ratings>($"rating_{(id.NotEmpty() ? id : tmdbId)}", cancellationToken);
+            var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
+            CacheDocument<Ratings>? doc;
+            var cachedBytes = await distributedCache.GetAsync(cacheKey);
             var ttl = TtlCache.OneDay;
 
-            if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (one week)
-
-            if (doc == null)
+            if (cachedBytes is { Length: > 0 })
             {
-                var objRatings = await ApiStartup.HttpClient.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
+                doc = JsonSerializer.Deserialize<CacheDocument<Ratings>>(cachedBytes);
+            }
+            else
+            {
+                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (one week)
 
-                var scraping = new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name), objRatings);
-                var obj = scraping.GetMovieData(id, tmdbRating, title, releaseDate.Year.ToString());
+                doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
 
-                ttl = CalculateTtl(releaseDate);
+                if (doc == null)
+                {
+                    var objRatings = await ApiStartup.HttpClient.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
 
-                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, obj, ttl), cancellationToken);
+                    var scraping = new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name), objRatings);
+                    var obj = scraping.GetMovieData(id, tmdbRating, title, releaseDate.Year.ToString());
+
+                    ttl = CalculateTtl(releaseDate);
+
+                    doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, obj, ttl), cancellationToken);
+                }
+
+                await SaveCache(doc, cacheKey, ttl);
             }
 
             await TrySaveCertifiedSd(doc, releaseDate, 8498673, tmdbId, MediaType.movie, cancellationToken);
@@ -296,22 +359,34 @@ public class CacheFunction(CosmosCacheRepository cacheRepo)
 
             DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture,
                 DateTimeStyles.None, out var releaseDate);
-
-            var doc = await cacheRepo.Get<Ratings>($"rating_{(id.NotEmpty() ? id : tmdbId)}", cancellationToken);
+            var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
+            CacheDocument<Ratings>? doc;
+            var cachedBytes = await distributedCache.GetAsync(cacheKey);
             var ttl = TtlCache.OneDay;
 
-            if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (one week)
-
-            if (doc == null)
+            if (cachedBytes is { Length: > 0 })
             {
-                var objRatings = await ApiStartup.HttpClient.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
+                doc = JsonSerializer.Deserialize<CacheDocument<Ratings>>(cachedBytes);
+            }
+            else
+            {
+                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (one week)
 
-                var scraping = new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name), objRatings);
-                var obj = scraping.GetShowData(id, tmdbRating, title, releaseDate.Year.ToString());
+                doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
 
-                ttl = CalculateTtl(releaseDate);
+                if (doc == null)
+                {
+                    var objRatings = await ApiStartup.HttpClient.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
 
-                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, obj, ttl), cancellationToken);
+                    var scraping = new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name), objRatings);
+                    var obj = scraping.GetShowData(id, tmdbRating, title, releaseDate.Year.ToString());
+
+                    ttl = CalculateTtl(releaseDate);
+
+                    doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, obj, ttl), cancellationToken);
+                }
+
+                await SaveCache(doc, cacheKey, ttl);
             }
 
             await TrySaveCertifiedSd(doc, releaseDate, 8498675, tmdbId, MediaType.tv, cancellationToken);
@@ -330,6 +405,132 @@ public class CacheFunction(CosmosCacheRepository cacheRepo)
         {
             req.ProcessException(ex);
             return await req.CreateResponse<CacheDocument<Ratings>>(null, TtlCache.SixHours, cancellationToken);
+        }
+    }
+
+    [Function("CacheMovieReviews")]
+    public async Task<HttpResponseData?> CacheMovieReviews(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/movies")]
+        HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var id = req.GetQueryParameters()["id"];
+            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out var releaseDate);
+            var cacheKey = $"review_{id}";
+            CacheDocument<ReviewModel>? doc;
+            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            var ttl = TtlCache.OneDay;
+
+            if (cachedBytes is { Length: > 0 })
+            {
+                doc = JsonSerializer.Deserialize<CacheDocument<ReviewModel>>(cachedBytes);
+            }
+            else
+            {
+                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get reviews for new releases (one week)
+
+                doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
+
+                if (doc == null)
+                {
+                    var obj = await ApiStartup.HttpClient.GetReviewsByImdb8<RootMetacritic>(id, cancellationToken);
+                    if (obj == null) return null;
+
+                    var newModel = new ReviewModel();
+
+                    foreach (var node in obj.data?.title?.metacritic?.reviews?.edges.Select(s => s.node) ?? [])
+                    {
+                        newModel.Items.Add(new Shared.Models.Reviews.Item(node?.site, node?.url,
+                            node?.reviewer, node?.score, node?.quote?.value));
+                    }
+
+                    ttl = CalculateTtl(releaseDate);
+
+                    doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
+                }
+
+                await SaveCache(doc, cacheKey, ttl);
+            }
+
+            return await req.CreateResponse(doc, ttl, cancellationToken);
+        }
+        catch (TaskCanceledException ex)
+        {
+            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+                ? new NotificationException("Cancellation Requested")
+                : new NotificationException("Timeout occurred"));
+
+            return req.CreateResponse(HttpStatusCode.RequestTimeout);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            return await req.CreateResponse<CacheDocument<ReviewModel>>(null, TtlCache.SixHours, cancellationToken);
+        }
+    }
+
+    [Function("CacheShowReviews")]
+    public async Task<HttpResponseData?> CacheShowReviews(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/shows")]
+        HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var id = req.GetQueryParameters()["id"];
+            var title = req.GetQueryParameters()["title"];
+            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out var releaseDate);
+            var cacheKey = $"review_{id}";
+            CacheDocument<ReviewModel>? doc;
+            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            var ttl = TtlCache.OneDay;
+
+            if (cachedBytes is { Length: > 0 })
+            {
+                doc = JsonSerializer.Deserialize<CacheDocument<ReviewModel>>(cachedBytes);
+            }
+            else
+            {
+                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get reviews for new releases (one week)
+
+                doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
+
+                if (doc == null)
+                {
+                    var obj = ScrapingReview.GetTvReviews(title, releaseDate.Year);
+                    //if (obj.meta?.title == "undefined critic reviews") return null;
+
+                    var newModel = new ReviewModel();
+
+                    foreach (var item in obj.items)
+                    {
+                        newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));
+                    }
+
+                    ttl = CalculateTtl(releaseDate);
+
+                    doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
+                }
+
+                await SaveCache(doc, cacheKey, ttl);
+            }
+
+            return await req.CreateResponse(doc, ttl, cancellationToken);
+        }
+        catch (TaskCanceledException ex)
+        {
+            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+                ? new NotificationException("Cancellation Requested")
+                : new NotificationException("Timeout occurred"));
+
+            return req.CreateResponse(HttpStatusCode.RequestTimeout);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            return await req.CreateResponse<CacheDocument<ReviewModel>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
 
@@ -385,103 +586,12 @@ public class CacheFunction(CosmosCacheRepository cacheRepo)
         return TtlCache.ThreeMonths; // > 1 month launch
     }
 
-    [Function("CacheMovieReviews")]
-    public async Task<HttpResponseData?> CacheMovieReviews(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/movies")]
-        HttpRequestData req, CancellationToken cancellationToken)
+    private async Task SaveCache<TData>(CacheDocument<TData>? doc, string cacheKey, TtlCache ttl) where TData : class, new()
     {
-        try
+        if (doc != null)
         {
-            var id = req.GetQueryParameters()["id"];
-            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture,
-                DateTimeStyles.None, out var releaseDate);
-            var doc = await cacheRepo.Get<ReviewModel>($"review_{id}", cancellationToken);
-            var ttl = TtlCache.OneDay;
-
-            if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get reviews for new releases (one week)
-
-            if (doc == null)
-            {
-                var obj = await ApiStartup.HttpClient.GetReviewsByImdb8<RootMetacritic>(id, cancellationToken);
-                if (obj == null) return null;
-
-                var newModel = new ReviewModel();
-
-                foreach (var node in obj.data?.title?.metacritic?.reviews?.edges.Select(s => s.node) ?? [])
-                {
-                    newModel.Items.Add(new Shared.Models.Reviews.Item(node?.site, node?.url,
-                        node?.reviewer, node?.score, node?.quote?.value));
-                }
-
-                ttl = CalculateTtl(releaseDate);
-
-                doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
-            }
-
-            return await req.CreateResponse(doc, ttl, cancellationToken);
-        }
-        catch (TaskCanceledException ex)
-        {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
-
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
-        catch (Exception ex)
-        {
-            req.ProcessException(ex);
-            return await req.CreateResponse<CacheDocument<ReviewModel>>(null, TtlCache.SixHours, cancellationToken);
-        }
-    }
-
-    [Function("CacheShowReviews")]
-    public async Task<HttpResponseData?> CacheShowReviews(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/shows")]
-        HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var id = req.GetQueryParameters()["id"];
-            var title = req.GetQueryParameters()["title"];
-            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture,
-                DateTimeStyles.None, out var releaseDate);
-            var doc = await cacheRepo.Get<ReviewModel>($"review_{id}", cancellationToken);
-            var ttl = TtlCache.OneDay;
-
-            if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get reviews for new releases (one week)
-
-            if (doc == null)
-            {
-                var obj = ScrapingReview.GetTvReviews(title, releaseDate.Year);
-                //if (obj.meta?.title == "undefined critic reviews") return null;
-
-                var newModel = new ReviewModel();
-
-                foreach (var item in obj.items)
-                {
-                    newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));
-                }
-
-                ttl = CalculateTtl(releaseDate);
-
-                doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
-            }
-
-            return await req.CreateResponse(doc, ttl, cancellationToken);
-        }
-        catch (TaskCanceledException ex)
-        {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
-
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
-        catch (Exception ex)
-        {
-            req.ProcessException(ex);
-            return await req.CreateResponse<CacheDocument<ReviewModel>>(null, TtlCache.SixHours, cancellationToken);
+            var bytes = JsonSerializer.SerializeToUtf8Bytes(doc);
+            await distributedCache.SetAsync(cacheKey, bytes, new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds((int)ttl) });
         }
     }
 }
