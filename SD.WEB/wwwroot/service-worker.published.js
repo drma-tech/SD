@@ -6,10 +6,12 @@ self.addEventListener("install", event => event.waitUntil(onInstall(event)));
 self.addEventListener("activate", event => event.waitUntil(onActivate(event)));
 self.addEventListener("fetch", event => {
     const requestUrl = new URL(event.request.url);
+
     const isApiCall = requestUrl.pathname.startsWith("/api/");
+    const isAuthCall = requestUrl.pathname.startsWith("/.auth/");
     const isExternalResource = !requestUrl.href.startsWith(self.origin);
 
-    if (isApiCall || isExternalResource) {
+    if (isApiCall || isAuthCall || isExternalResource) {
         return;
     }
 
@@ -58,7 +60,6 @@ async function onFetch(event) {
         // unless that request is for an offline resource.
         // If you need some URLs to be server-rendered, edit the following check to exclude those URLs
         const shouldServeIndexHtml = event.request.mode === "navigate"
-            && !event.request.url.includes("/.auth/")
             && !manifestUrlList.some(url => url === event.request.url);
 
         const request = shouldServeIndexHtml ? "index.html" : event.request;
