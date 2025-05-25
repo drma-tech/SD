@@ -43,12 +43,11 @@ async function onActivate(event) {
 async function onFetch(event) {
     const url = new URL(event.request.url);
 
-    // Ignore requests not for the current origin
+    // Ignore requests other than the service worker's origin
     if (url.origin !== self.origin) return;
 
-    // Ignore requests that are not assets from the manifest
-    const isAsset = manifestUrlList.includes(url.href);
-    if (!isAsset) return;
+    // Ignore API requests
+    if (url.pathname.startsWith("/api")) return;
 
     let cachedResponse = null;
     if (event.request.method === "GET") {
