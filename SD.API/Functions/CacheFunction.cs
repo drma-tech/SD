@@ -1,8 +1,6 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Logging;
-using SD.API.Core.Middleware;
 using SD.API.Core.Scraping;
 using SD.Shared.Models.List;
 using SD.Shared.Models.List.Imdb;
@@ -16,7 +14,7 @@ using Item = SD.Shared.Models.News.Item;
 
 namespace SD.API.Functions;
 
-public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache distributedCache, ILogger<CacheFunction> logger)
+public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache distributedCache)
 {
     [Function("Settings")]
     public static async Task<HttpResponseData> Configurations(
@@ -106,8 +104,6 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/trailers")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
-        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        logger.LogWarning("[CacheTrailers] Início da execução");
         try
         {
             var mode = req.GetQueryParameters()["mode"];
@@ -115,7 +111,6 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             CacheDocument<TrailerModel>? doc;
 
             var cachedBytes = await distributedCache.GetAsync(cacheKey);
-            logger.LogWarning("[CacheTrailers] Após leitura do distributed cache: {Elapsed}ms", stopwatch.ElapsedMilliseconds);
             if (cachedBytes is { Length: > 0 })
             {
                 doc = JsonSerializer.Deserialize<CacheDocument<TrailerModel>>(cachedBytes);
@@ -123,50 +118,52 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             else
             {
                 doc = await cacheRepo.Get<TrailerModel>(cacheKey, cancellationToken);
-                logger.LogWarning("[CacheTrailers] Após leitura do CosmosDB: {Elapsed}ms", stopwatch.ElapsedMilliseconds);
+
                 if (doc == null)
                 {
                     var obj = await ApiStartup.HttpClient.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
-                    logger.LogWarning("[CacheTrailers] Após scraping: {Elapsed}ms", stopwatch.ElapsedMilliseconds);
+
                     if (mode == "compact")
                     {
                         var compactModels = new TrailerModel();
+
                         foreach (var item in obj?.contents?.Take(12).Select(s => s.video) ?? [])
                         {
                             if (item == null) continue;
                             compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url));
                         }
+
                         doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, "lasttrailers_compact"), cancellationToken);
                     }
                     else
                     {
                         var fullModels = new TrailerModel();
+
                         foreach (var item in obj?.contents?.Select(s => s.video) ?? [])
                         {
                             if (item == null) continue;
                             fullModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[2].url));
                         }
+
                         doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(fullModels, "lasttrailers_full"), cancellationToken);
                     }
-                    logger.LogWarning("[CacheTrailers] Após upsert no CosmosDB: {Elapsed}ms", stopwatch.ElapsedMilliseconds);
                 }
+
                 await SaveCache(doc, cacheKey, TtlCache.SixHours);
-                logger.LogWarning("[CacheTrailers] Após salvar no distributed cache: {Elapsed}ms", stopwatch.ElapsedMilliseconds);
             }
-            logger.LogWarning("[CacheTrailers] Fim da execução. Tempo total: {Elapsed}ms", stopwatch.ElapsedMilliseconds);
+
             return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
-            logger.LogError(ex, "[CacheTrailers] TaskCanceledException");
             req.ProcessException(ex.CancellationToken.IsCancellationRequested
                 ? new NotificationException("Cancellation Requested")
                 : new NotificationException("Timeout occurred"));
+
             return req.CreateResponse(HttpStatusCode.RequestTimeout);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "[CacheTrailers] Exception");
             req.ProcessException(ex);
             return await req.CreateResponse<CacheDocument<TrailerModel>>(null, TtlCache.SixHours, cancellationToken);
         }
