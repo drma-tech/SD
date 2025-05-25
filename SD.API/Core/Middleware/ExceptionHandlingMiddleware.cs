@@ -6,14 +6,19 @@ using Microsoft.Extensions.Logging;
 
 namespace SD.API.Core.Middleware;
 
-internal sealed class ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger)
-    : IFunctionsWorkerMiddleware
+internal sealed class ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger) : IFunctionsWorkerMiddleware
 {
-    private readonly ILogger<ExceptionHandlingMiddleware> _logger =
-        logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly ILogger<ExceptionHandlingMiddleware> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
     {
+        var functionName = context.FunctionDefinition.Name;
+        var isTrailerFunction = functionName == "CacheTrailers";
+        var stopwatch = isTrailerFunction ? System.Diagnostics.Stopwatch.StartNew() : null;
+
+        if (isTrailerFunction)
+            _logger.LogWarning("[Middleware] Início do processamento da request para {Function}", functionName);
+
         try
         {
             await next(context);
@@ -25,9 +30,6 @@ internal sealed class ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddl
         }
         catch (CosmosException ex)
         {
-            //var result = JsonSerializer.Deserialize<CosmosExceptionStructure>("{" + cex.ResponseBody.Replace("Errors", "\"Errors\"") + "}", options: null);
-            //return result?.Message?.Errors.FirstOrDefault();
-
             _logger.LogError(ex, "CosmosException");
             await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "Invocation failed!");
         }
@@ -39,6 +41,14 @@ internal sealed class ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddl
         {
             _logger.LogError(ex, "Exception");
             await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "Invocation failed!");
+        }
+        finally
+        {
+            if (isTrailerFunction && stopwatch != null)
+            {
+                stopwatch.Stop();
+                _logger.LogWarning("[Middleware] Fim do processamento da request para {Function}. Tempo total: {Elapsed}ms", functionName, stopwatch.ElapsedMilliseconds);
+            }
         }
     }
 }
