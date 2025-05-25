@@ -41,20 +41,15 @@ async function onActivate(event) {
 }
 
 async function onFetch(event) {
-    const url = new URL(event.request.url);
-
-    // Ignore requests other than the service worker's origin
-    if (url.origin !== self.origin) return;
-
-    // Ignore API requests
-    if (url.pathname.startsWith("/api")) return;
-
     let cachedResponse = null;
+
     if (event.request.method === "GET") {
         // For all navigation requests, try to serve index.html from cache,
         // unless that request is for an offline resource.
         // If you need some URLs to be server-rendered, edit the following check to exclude those URLs
-        const shouldServeIndexHtml = event.request.mode === "navigate" && !event.request.url.includes("/.auth/")
+        const shouldServeIndexHtml = event.request.mode === "navigate"
+            && !event.request.url.includes("/.auth/")
+            && !event.request.url.includes("/api/")
             && !manifestUrlList.some(url => url === event.request.url);
 
         const request = shouldServeIndexHtml ? "index.html" : event.request;
