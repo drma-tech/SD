@@ -17,8 +17,8 @@ public class TmdbListApi(IHttpClientFactory factory) : ApiExternal(factory), IMe
             { "page", page.ToString() }
         };
 
-        var result = await GetAsync<CustomListNew>($"{BaseEndpoint}public/tmdb?url=" + 
-                                                   TmdbOptions.BaseUriNew + "list/" + ((int)list).ToString().ConfigureParameters(parameter));
+        var result = await GetAsync<CustomListNew>($"{BaseEndpoint}public/tmdb?url=" +
+                        $"{TmdbOptions.BaseUriNew}list/{((int)list).ToString().ConfigureParameters(parameter)}".ConvertFromStringToBase64());
 
         if (result != null)
             foreach (var item in result.results)
