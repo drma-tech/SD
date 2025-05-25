@@ -4,7 +4,17 @@
 self.importScripts("./service-worker-assets.js");
 self.addEventListener("install", event => event.waitUntil(onInstall(event)));
 self.addEventListener("activate", event => event.waitUntil(onActivate(event)));
-self.addEventListener("fetch", event => event.respondWith(onFetch(event)));
+self.addEventListener("fetch", event => {
+    const requestUrl = new URL(event.request.url);
+    const isApiCall = requestUrl.pathname.startsWith("/api/");
+    const isExternalResource = !requestUrl.href.startsWith(self.origin);
+
+    if (isApiCall || isExternalResource) {
+        return;
+    }
+
+    event.respondWith(onFetch(event));
+});
 self.addEventListener("message", event => {
     if (event.data?.type === "SKIP_WAITING") self.skipWaiting();
 });
@@ -49,7 +59,6 @@ async function onFetch(event) {
         // If you need some URLs to be server-rendered, edit the following check to exclude those URLs
         const shouldServeIndexHtml = event.request.mode === "navigate"
             && !event.request.url.includes("/.auth/")
-            && !event.request.url.includes("/api/")
             && !manifestUrlList.some(url => url === event.request.url);
 
         const request = shouldServeIndexHtml ? "index.html" : event.request;
