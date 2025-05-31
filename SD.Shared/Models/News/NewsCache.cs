@@ -6,7 +6,7 @@ public class NewsCache : CacheDocument<NewsModel>
     {
     }
 
-    public NewsCache(NewsModel data, string key) : base(key, data, TtlCache.SixHours)
+    public NewsCache(NewsModel data, string key) : base(key, data, TtlCache.HalfDay)
     {
     }
 }

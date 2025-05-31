@@ -129,7 +129,7 @@
                             }
                         </TabPanel>
                         <TabPanel Name="WhereToWatch" Class="mt-2">
-                            <StreamingComponent TmdbId="@TmdbId" Type="@Type" Homepage="@Media?.homepage"></StreamingComponent>
+                            <StreamingComponent TmdbId="@TmdbId" Type="@Type" Homepage="@Media?.homepage" ReleaseDate="@Media?.release_date"></StreamingComponent>
                         </TabPanel>
                         <TabPanel Name="Credits" Class="mt-2">
                             <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish"

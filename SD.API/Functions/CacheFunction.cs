@@ -79,10 +79,10 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
                     }
                 }
 
-                await SaveCache(doc, cacheKey, TtlCache.SixHours);
+                await SaveCache(doc, cacheKey, TtlCache.HalfDay);
             }
 
-            return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.HalfDay, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -216,10 +216,10 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
                     }
                 }
 
-                await SaveCache(doc, cacheKey, TtlCache.SixHours);
+                await SaveCache(doc, cacheKey, TtlCache.OneDay);
             }
 
-            return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -262,10 +262,10 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
                     doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
                 }
 
-                await SaveCache(doc, cacheKey, TtlCache.SixHours);
+                await SaveCache(doc, cacheKey, TtlCache.OneDay);
             }
 
-            return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {

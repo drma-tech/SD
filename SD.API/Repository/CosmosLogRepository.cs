@@ -16,20 +16,12 @@ public class LogModel
     [JsonInclude] public int Ttl { get; init; }
 }
 
-public class CosmosLogRepository
+public class CosmosLogRepository()
 {
-    public CosmosLogRepository()
-    {
-        var databaseId = ApiStartup.Configurations.CosmosDB?.DatabaseId;
-
-        Container = ApiStartup.CosmosClient.GetContainer(databaseId, "logs");
-    }
-
-    public Container Container { get; }
+    public Container Container { get; } = ApiStartup.CosmosClient.GetContainer(ApiStartup.Configurations.CosmosDB?.DatabaseId, "logs");
 
     public async Task Add(LogModel log)
     {
-        await Container.CreateItemAsync(log, new PartitionKey(log.Id),
-            CosmosRepositoryExtensions.GetItemRequestOptions());
+        await Container.CreateItemAsync(log, new PartitionKey(log.Id), CosmosRepositoryExtensions.GetItemRequestOptions());
     }
 }

@@ -313,6 +313,15 @@ namespace SD.WEB.Modules.Suggestions.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Movie/Series not yet released.
+        /// </summary>
+        public static string TitleNotReleased {
+            get {
+                return ResourceManager.GetString("TitleNotReleased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specialized Sites.
         /// </summary>
         public static string TitleSpecializedSites {

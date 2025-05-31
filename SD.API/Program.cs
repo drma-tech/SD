@@ -6,7 +6,10 @@ using Microsoft.Extensions.Logging;
 using SD.API.Core.Middleware;
 
 var app = new HostBuilder()
-    .ConfigureFunctionsWorkerDefaults(worker => { worker.UseMiddleware<ExceptionHandlingMiddleware>(); })
+    .ConfigureFunctionsWorkerDefaults(worker =>
+    {
+        worker.UseMiddleware<ExceptionHandlingMiddleware>();
+    })
     .ConfigureAppConfiguration((hostContext, config) =>
     {
         if (hostContext.HostingEnvironment.IsDevelopment())
@@ -21,8 +24,8 @@ var app = new HostBuilder()
 
         ApiStartup.Startup(ApiStartup.Configurations.CosmosDB?.ConnectionString);
     })
-    .ConfigureServices(ConfigureServices)
     .ConfigureLogging(ConfigureLogging)
+    .ConfigureServices(ConfigureServices)
     .Build();
 
 await app.RunAsync();
@@ -38,7 +41,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
     services.AddDistributedMemoryCache();
 }
 
-static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder builder)
+static void ConfigureLogging(ILoggingBuilder builder)
 {
     builder.AddProvider(new CosmosLoggerProvider(new CosmosLogRepository()));
 }

@@ -6,7 +6,7 @@ public class MostPopularDataCache : CacheDocument<MostPopularData>
     {
     }
 
-    public MostPopularDataCache(MostPopularData data, string key) : base(key, data, TtlCache.SixHours)
+    public MostPopularDataCache(MostPopularData data, string key) : base(key, data, TtlCache.OneDay)
     {
     }
 }

@@ -184,9 +184,18 @@
 
         @if (!hasProvider)
         {
-            <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is2.FromTop" Visible="true">
-                @(string.Format(Translations.TitleNotAvailable, AppStateStatic.Region.GetName()))
-            </Alert>
+            @if (ReleaseDate?.Date > DateTime.Now.Date)
+            {
+                <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is2.FromTop" Visible="true">
+                    @Translations.TitleNotReleased
+                </Alert>
+            }
+            else
+            {
+                <Alert Color="Color.Info" Padding="Padding.Is1" Margin="Margin.Is2.FromTop" Visible="true">
+                    @(string.Format(Translations.TitleNotAvailable, AppStateStatic.Region.GetName()))
+                </Alert>
+            }
 
             @if (AppStateStatic.Region.GetName().Empty())
             {
@@ -223,6 +232,7 @@
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
     [Parameter] public string? Homepage { get; set; }
+    [Parameter] public DateTime? ReleaseDate { get; set; }
 
     public RenderControlCore<MediaProviders?>? Core { get; set; } = new();
     private MediaProviders? Providers { get; set; }
