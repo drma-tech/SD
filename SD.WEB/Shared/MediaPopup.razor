@@ -33,7 +33,7 @@
                                         @Media?.release_date?.ToShortDateString()
                                     </MudChip>
                                 }
-                                <MudImage Src="@Media?.poster_large" FallbackSrc="images/no-image.png" Alt="@Media?.title" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                <MudImage Src="@(Media?.poster_large ?? "images/no-image.png")" FallbackSrc="images/no-image.png" Alt="@Media?.title" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                             </div>
                         </MudItem>
                         <MudItem xs="12" md="8">
@@ -174,7 +174,7 @@
                                             <MudIcon Icon="@Icons.Material.Filled.Visibility" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
                                         }
 
-                                        <MudImage Src="@item.poster_small" FallbackSrc="images/no-image.png" Alt="@item.title" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                        <MudImage Src="@(item.poster_small ?? "images/no-image.png")" FallbackSrc="images/no-image.png" Alt="@item.title" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                                     }
                                 </div>
                                 <MudText Align="Align.Center">@item.title</MudText>

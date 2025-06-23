@@ -39,7 +39,7 @@
         <div class="grid-relative-container-md mb-2">
             @foreach (var item in Items.Take(GetTotalItems))
             {
-                var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.png" : TmdbOptions.SmallPosterPath + item.logo;
                 var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
                 var resultPerc = $"{percentComplete}%";
 
@@ -60,9 +60,9 @@
                               Style="cursor: pointer;" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                     @if (string.IsNullOrEmpty(item.logo))
                     {
-                        <div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 2rem; color: black; text-align: center; font-weight: 500;">
+                        <MudText Typo="Typo.h6" Color="Color.Secondary" Class="absolute" Style="top: 3rem; width: 100%; text-align: center; line-height: normal;">
                             @item.name
-                        </div>
+                        </MudText>
                     }
                 </div>
             }
@@ -74,7 +74,7 @@
             <div class="swiper-wrapper">
                 @foreach (var item in Items.Take(GetTotalItems))
                 {
-                    var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                    var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.png" : TmdbOptions.SmallPosterPath + item.logo;
                     var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
                     var resultPerc = $"{percentComplete}%";
 
@@ -96,9 +96,9 @@
                                       Style="cursor: pointer;" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                             @if (string.IsNullOrEmpty(item.logo))
                             {
-                                <div Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 2rem; color: black; text-align: center; font-weight: 500;">
+                                <MudText Color="Color.Secondary" Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 2rem; text-align: center; font-weight: 500;">
                                     @item.name
-                                </div>
+                                </MudText>
                             }
                         </div>
                     </div>

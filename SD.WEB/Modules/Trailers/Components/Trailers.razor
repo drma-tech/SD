@@ -9,8 +9,8 @@
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
-    <div TextAlignment="TextAlignment.Center">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
+    <div style="text-align: center;">
+        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5145928155833172" data-ad-slot="4650130753"></ins>
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
@@ -24,7 +24,7 @@
             <MudLink Href="@($"https://www.youtube.com/watch?v={item.id}")" Target="_blank">
                 <MudCard Outlined="true">
                     <MudCardContent Style="padding: 0;">
-                        <MudImage Src="@item?.url" Alt="@item?.title" Style="width: 100%;"></MudImage>
+                        <MudImage Src="@item?.url" FallbackSrc="images/no-image.png" Alt="@item?.title" Style="width: 100%;"></MudImage>
                     </MudCardContent>
                     <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
                         @item.title

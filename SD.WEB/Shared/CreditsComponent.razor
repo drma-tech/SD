@@ -24,12 +24,12 @@
                     <MudItem xs="6" sm="3">
                         <MudLink OnClick="@(async () => await OpenCompleteList(item))" style="display: flex; gap: 8px;">
                             <MudAvatar Size="Size.Large" Style="width: 66px; height: 66px;">
-                                <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" Alt="@item.original_name" FallbackSrc="images/no-user.png" Style="width: 66px;">
+                                <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" FallbackSrc="images/no-user.png" Alt="@item.original_name" Style="width: 66px;">
                                 </MudImage>
                             </MudAvatar>
                             <div style="align-content: center;">
                                 <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Style="line-height: normal;">@item.original_name</MudText>
-                                <MudText Typo="Typo.body1" Color="Color.Dark" Style="line-height: normal; font-size: small;">@item.job</MudText>
+                                <MudText Typo="Typo.body1" Color=Color.Tertiary Style="line-height: normal; font-size: small;">@item.job</MudText>
                             </div>
                         </MudLink>
                     </MudItem>
@@ -54,12 +54,12 @@
                     <MudItem xs="6" sm="3">
                         <MudLink OnClick="@(async () => await OpenCompleteList(item))" style="display: flex; gap: 8px;">
                             <MudAvatar Size="Size.Large" Style="width: 66px; height: 66px;">
-                                <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" Alt="@item.original_name" FallbackSrc="images/no-user.png" Style="width: 66px;">
+                                <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" FallbackSrc="images/no-user.png" Alt="@item.original_name" Style="width: 66px;">
                                 </MudImage>
                             </MudAvatar>
                             <div style="align-content: center;">
                                 <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Style="line-height: normal;">@item.original_name</MudText>
-                                <MudText Typo="Typo.body1" Color="Color.Dark" Style="line-height: normal; font-size: small;">@item.job</MudText>
+                                <MudText Typo="Typo.body1" Color="Color.Tertiary" Style="line-height: normal; font-size: small;">@item.job</MudText>
                             </div>
                         </MudLink>
                     </MudItem>
@@ -81,12 +81,12 @@
             <MudItem xs="6" sm="3">
                 <MudLink OnClick="@(async () => await OpenCompleteList(item))" style="display: flex; gap: 8px;">
                     <MudAvatar Size="Size.Large" Style="width: 66px; height: 66px;">
-                        <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" Alt="@item.original_name" FallbackSrc="images/no-user.png" Style="width: 66px;">
+                        <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" FallbackSrc="images/no-user.png" Alt="@item.original_name" Style="width: 66px;">
                         </MudImage>
                     </MudAvatar>
                     <div style="align-content: center;">
                         <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Style="line-height: normal;">@item.original_name</MudText>
-                        <MudText Typo="Typo.body1" Color="Color.Dark" Style="line-height: normal; font-size: small;">@item.character</MudText>
+                        <MudText Typo="Typo.body1" Color="Color.Tertiary" Style="line-height: normal; font-size: small;">@item.character</MudText>
                     </div>
                 </MudLink>
             </MudItem>

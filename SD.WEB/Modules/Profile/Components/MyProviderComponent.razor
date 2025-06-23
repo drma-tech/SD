@@ -31,7 +31,7 @@
                                 <MudIcon Icon="@Icons.Material.Filled.Delete"></MudIcon> Deleted
                             </MudChip>
                         }
-                        <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name"></MudImage>
+                        <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" FallbackSrc="images/no-image.png" Alt="@item.name"></MudImage>
                     </div>
                 </div>
             }

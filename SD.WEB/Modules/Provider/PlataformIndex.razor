@@ -13,8 +13,8 @@
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
-    <div TextAlignment="TextAlignment.Center">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="5179836142"></ins>
+    <div style="text-align: center;">
+        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5145928155833172" data-ad-slot="5359194302"></ins>
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
@@ -50,7 +50,7 @@
                     <MudLink Href="@($"/platforms/{item.id}")" Target="_self" Style="position: relative;">
                         <MudCard Outlined="true">
                             <MudCardContent Style="padding: 0;">
-                                <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                                 @if (favorite)
                                 {
                                     <MudChip T="string" Icon="@Icons.Material.Filled.Star" Color="Color.Success" Size="Size.Medium" Label="true" Class="chip-no-text"
