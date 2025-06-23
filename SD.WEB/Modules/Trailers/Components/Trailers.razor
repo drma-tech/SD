@@ -1,7 +1,6 @@
 ﻿@page "/trailers"
 @using SD.Shared.Models.Trailers
 @using SD.WEB.Modules.Trailers.Resources
-@using Item = SD.Shared.Models.Trailers.Item
 @inherits PageCore<Trailers>
 
 @inject CacheYoutubeApi CacheYoutubeApi
@@ -10,29 +9,28 @@
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
-    <Div TextAlignment="TextAlignment.Center">
+    <div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
-    </Div>
+    </div>
 }
-<HeaderComponent Title="@($"{Translations.TrailersTitle} - ONE Media")"/>
+<HeaderComponent Title="@($"{Translations.TrailersTitle} - ONE Media")" IconImage="logo/one-media.png" />
 <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-    <div class="grid-relative-container-md">
+    <div class="grid-relative-container-lg">
         @foreach (var item in TrailerModel?.Data?.Items ?? [])
         {
-            <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}")">
-                <Card>
-                    <CardImage Source="@item?.url" Alt="@item?.title">
-                    </CardImage>
-                    <CardBody>
-                        <CardText Style="line-height: normal; font-size: 0.8rem;">
-                            @item?.title
-                        </CardText>
-                    </CardBody>
-                </Card>
-            </Blazorise.Link>
+            <MudLink Href="@($"https://www.youtube.com/watch?v={item.id}")" Target="_blank">
+                <MudCard Outlined="true">
+                    <MudCardContent Style="padding: 0;">
+                        <MudImage Src="@item?.url" Alt="@item?.title" Style="width: 100%;"></MudImage>
+                    </MudCardContent>
+                    <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
+                        @item.title
+                    </MudCardContent>
+                </MudCard>
+            </MudLink>
         }
     </div>
 </RenderControl>

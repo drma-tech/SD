@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
-using Blazorise;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using MudBlazor;
 using SD.WEB.Modules.Auth.Core;
 
 namespace SD.WEB.Core;
@@ -13,8 +13,8 @@ namespace SD.WEB.Core;
 public abstract class ComponentCore<T> : ComponentBase where T : class
 {
     [Inject] protected ILogger<T> Logger { get; set; } = null!;
-    [Inject] protected INotificationService Toast { get; set; } = null!;
-    [Inject] protected IModalService ModalService { get; set; } = null!;
+    [Inject] protected ISnackbar Snackbar { get; set; } = null!;
+    [Inject] protected IDialogService DialogService { get; set; } = null!;
     [Inject] protected NavigationManager Navigation { get; set; } = null!;
     [Inject] protected PrincipalApi PrincipalApi { get; set; } = null!;
     [Inject] protected CacheSettingsApi CacheSettingsApi { get; set; } = null!;
@@ -42,7 +42,7 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Toast, Logger);
+            ex.ProcessException(Snackbar, Logger);
         }
     }
 }

@@ -1,42 +1,46 @@
-﻿@inherits SD.WEB.Modules.Profile.FormBase<TValue, SD.WEB.Modules.Profile.FieldSelect<TValue, TEnum>>
+﻿@inherits SD.WEB.Modules.Profile.FormBase<TValue, Language<TValue, TEnum>>
 @typeparam TValue
 @typeparam TEnum where TEnum : struct, Enum, IConvertible
 
-<Field Horizontal="true">
-    <FieldLabel ColumnSize="@GetLabelSize()">
-        <Blazorise.Icon Name="@FontAwesomeIcons.Language"></Blazorise.Icon> @For?.GetCustomAttribute()?.Name
-    </FieldLabel>
-    <FieldBody ColumnSize="@GetBodySize()">
-        <Addons>
-            <Addon AddonType="AddonType.Body">
-                <Select @bind-SelectedValue="@Continent" Disabled="@Disabled" Width="Width.Is50">
-                    <SelectItem></SelectItem>
-                    @foreach (var group in EnumHelper.GetList<Language>().Select(s => s.Group).Order().Distinct())
-                    {
-                        <SelectItem Value="@group">@group</SelectItem>
-                    }
-                </Select>
-                <Select TValue="Language" SelectedValue="@SelectedValue" SelectedValueChanged="SelectedValueChanged" Disabled="@Disabled" Width="Width.Is50">
-                    <SelectItem></SelectItem>
-                    @foreach (var item in EnumHelper.GetList<Language>().Where(w => w.Group == Continent).OrderBy(o => o.Name))
-                    {
-                        <SelectItem Value="@item.Value">@item.Name</SelectItem>
-                    }
-                </Select>
-            </Addon>
-        </Addons>
-    </FieldBody>
-</Field>
+<MudGrid Class="mb-6">
+    <MudItem xs="12" sm="5">
+        <MudSelect @bind-Value="@Continent" Label="Translate" Disabled="@Disabled" FullWidth="true">
+            @foreach (var group in Languages.Select(s => s.Group).Order().Distinct())
+            {
+                <MudSelectItem Value="@group">@group</MudSelectItem>
+            }
+        </MudSelect>
+    </MudItem>
+    <MudItem xs="12" sm="7">
+        <MudSelect Value="@SelectedValue" ValueChanged="SelectedValueChanged" Label="@For?.GetCustomAttribute().Name" Disabled="@Disabled" FullWidth="true">
+            @foreach (var item in Languages.Where(w => w.Group == Continent).OrderBy(o => o.Name))
+            {
+                <MudSelectItem Value="@item.Value">@item.Name</MudSelectItem>
+            }
+        </MudSelect>
+    </MudItem>
+</MudGrid>
 
 @code {
     [Parameter] public Language SelectedValue { get; set; }
     [Parameter] public EventCallback<Language> SelectedValueChanged { get; set; }
 
+    public IEnumerable<EnumObject<Language>> Languages { get; set; } = [];
     public string? Continent { get; set; }
 
     protected override void OnInitialized()
     {
         Continent = SelectedValue.GetCustomAttribute()?.Group;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            Languages = EnumHelper.GetList<Language>();
+        }
     }
 
 }

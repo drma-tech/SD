@@ -1,18 +1,25 @@
-﻿@using SD.WEB.Modules.Suggestions.Components
-@using SD.WEB.Modules.Suggestions.Core
-@using SD.WEB.Modules.Suggestions.Resources
+﻿@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Collections.Resources
 @inherits ComponentCore<CertifiedSDComponent>
 
 @inject TmdbListApi TmdbListApi
 
-<HeaderComponent Title="@Translations.TitleCertifiedSD">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Type="@ButtonType.Link" To="@($"/certified-sd/{TypeSelected}")">
-        <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
-    </Button>
-    <RadioGroup @bind-CheckedValue="@TypeSelected" Buttons="true" Float="Float.End" Size="Size.ExtraSmall" Margin="Margin.Is2.FromEnd" Color="Color.Primary">
-        <Radio Value="MediaType.movie">@(MediaType.movie.GetName())</Radio>
-        <Radio Value="MediaType.tv">@(MediaType.tv.GetName())</Radio>
-    </RadioGroup>
+<HeaderComponent Title="@Translations.TitleCertifiedSD" IconImage="icon/icon-71.png">
+    <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="TypeSelected" Color="Color.Primary" Class="me-2">
+        <MudToggleItem Value="@MediaType.movie" SelectedIcon="@Icons.Material.Filled.Check">
+            <MudIcon Icon="@Icons.Material.Filled.Movie" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                @MediaType.movie.GetName()
+            </MudHidden>
+        </MudToggleItem>
+        <MudToggleItem Value="@MediaType.tv">
+            <MudIcon Icon="@Icons.Material.Filled.Tv" Title="@MediaType.tv.GetName()" Class="me-1"></MudIcon>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                @MediaType.tv.GetName()
+            </MudHidden>
+        </MudToggleItem>
+    </MudToggleGroup>
+    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Href="@($"/certified-sd/{TypeSelected}")" />
 </HeaderComponent>
 @if (TypeSelected == MediaType.movie)
 {
@@ -28,11 +35,11 @@ else if (TypeSelected == MediaType.tv)
 }
 
 @code {
-    [Parameter] [EditorRequired] public WatchedList? Watched { get; set; }
-    [Parameter] [EditorRequired] public WatchingList? Watching { get; set; }
-    [Parameter] [EditorRequired] public WishList? Wish { get; set; }
-    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
-    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     public MediaType TypeSelected { get; set; } = MediaType.movie;
 

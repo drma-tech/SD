@@ -1,0 +1,180 @@
+﻿@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Collections.Resources
+@using Button = SD.WEB.Resources.Button
+@inherits ComponentCore<HeadPage>
+
+@inject MyProvidersApi MyProvidersApi
+@inject IJSRuntime Js
+
+<MudPaper Class="mb-2" Outlined="true">
+    <MudStack StretchItems="StretchItems.Middle" Row="true">
+        <div class="pa-2" style="align-self: center;">
+            @if (string.IsNullOrEmpty(Link))
+            {
+                <MudImage Src="@ImageSource" Style="height: 50px;" Alt="@ImageSource"></MudImage>
+            }
+            else
+            {
+                <a href="@Link" target="_blank" rel="nofollow">
+                    <MudImage Src="@ImageSource" Style="height: 50px;" Alt="@ImageSource"></MudImage>
+                </a>
+            }
+        </div>
+        <div class="pa-2">
+            <MudText Typo="Typo.h6" Color="Color.Primary">
+                @if (string.IsNullOrEmpty(Link))
+                {
+                    @Title
+                }
+                else
+                {
+                    <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+                        <div class="mud-primary-text">@Title</div>
+                        <a href="@Link" target="_blank" rel="nofollow" class="mud-info-text">@(new Uri(Link ?? "").Host)</a>
+                    </MudHidden>
+                    <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+                        @($"{Title} ▪ ")
+                        <a href="@Link" target="_blank" rel="nofollow" class="mud-info-text">@(new Uri(Link ?? "").Host)</a>
+                    </MudHidden>
+                }
+            </MudText>
+            <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+                <MudText Typo="Typo.body1">
+                    @Text
+                </MudText>
+            </MudHidden>
+        </div>
+        <div class="pa-2" style="align-self: center;">
+            @if (Provider != null)
+            {
+                <RenderControl PartialComponent="true" PrivateContent="true" Core="Core" Model="MyProviders"
+                               ExpressionEmpty="@((MyProviders? obj) => obj == null || obj.Items.Empty())">
+                    @if (MyProviders?.Items.Any(a => a.id == Provider?.id) ?? false)
+                    {
+                        <MudButton StartIcon="@Icons.Material.Filled.Star" Color="Color.Error" Variant="Variant.Filled" Class="me-2"
+                                   Disabled="@(!IsAuthenticated)" OnClick="@Remove">
+                            @Button.Remove
+                        </MudButton>
+                    }
+                    else
+                    {
+                        <MudButton StartIcon="@Icons.Material.Filled.Star" Color="Color.Primary" Variant="Variant.Filled" Class="me-2"
+                                   Disabled="@(!IsAuthenticated)" OnClick="@Add">
+                            @Button.Add
+                        </MudButton>
+                    }
+                </RenderControl>
+            }
+            @if (ShowShare)
+            {
+                <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => Share(Navigation.Uri))"></MudIconButton>
+            }
+        </div>
+    </MudStack>
+    @if (Provider != null)
+    {
+        <MudStack Justify="Justify.FlexStart" Row="true">
+            <div class="pa-1">
+                <MudChip T="string" Color="Color.Primary" Size="Size.Small">
+                    @Modules.Provider.Resources.Translations.DeliveryModel:
+                </MudChip>
+                @foreach (var item in Provider?.models ?? [])
+                {
+                    <MudTooltip Text="@item.GetDescription()">
+                        <MudChip T="string" Color="Color.Info" Style="cursor: help;" Size="Size.Small"
+                                 Icon="@Icons.Material.Filled.QuestionMark">
+                            @item.GetName()
+                        </MudChip>
+                    </MudTooltip>
+                }
+                <MudChip T="string" Color="Color.Primary" Size="Size.Small">
+                    Countries:
+                </MudChip>
+                <MudChip T="string" Color="Color.Info" Size="Size.Small">
+                    @Provider?.regions.Count
+                </MudChip>
+                @if (Provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
+                {
+                    <MudChip T="string" Color="Color.Primary" Size="Size.Small">
+                        @Modules.Provider.Resources.Translations.Plans:
+                    </MudChip>
+                    @if (Provider.plans.Any())
+                    {
+                        @foreach (var item in Provider.plans)
+                        {
+                            <MudChip T="string" Color="Color.Info" Size="Size.Small">
+                                @item.name: @item.price.ToString("C")
+                            </MudChip>
+                        }
+                    }
+                    else
+                    {
+                        <MudChip T="string" Color="Color.Error" Size="Size.Small">
+                            @Modules.Provider.Resources.Translations.NotFound
+                        </MudChip>
+                    }
+                }
+            </div>
+        </MudStack>
+    }
+</MudPaper>
+
+@code {
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+
+    [Parameter] public string? ImageSource { get; set; }
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Text { get; set; }
+    [Parameter] public string? Link { get; set; }
+    [Parameter] public bool ShowShare { get; set; } = true;
+
+    [Parameter] public ProviderModel? Provider { get; set; }
+
+    public RenderControlCore<MyProviders?>? Core { get; set; } = new();
+    [Parameter] public MyProviders? MyProviders { get; set; }
+
+    protected override async Task LoadDataRender()
+    {
+        MyProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
+    }
+
+    private async Task Add()
+    {
+        try
+        {
+            MyProviders ??= new MyProviders();
+
+            var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = AppStateStatic.Region };
+            var client = await PrincipalApi.Get(true);
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, client?.ClientePaddle);
+
+            Snackbar.Add(Translations.PlatformAdded, Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    private async Task Remove()
+    {
+        try
+        {
+            MyProviders ??= new MyProviders();
+
+            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == Provider?.id));
+
+            Snackbar.Add(Translations.PlatformRemoved, Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    private async Task Share(string? link)
+    {
+        await Js.InvokeVoidAsync("share", link);
+    }
+
+}

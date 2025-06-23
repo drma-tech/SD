@@ -1,0 +1,72 @@
+﻿@page "/collections/rotten-tomatoes"
+<SeoHeader Title="Collections | Rotten Tomatoes" Keywords="@(new[] { "Rotten Tomatoes" })" Url="/collections/rotten-tomatoes"></SeoHeader>
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Collections.Components
+@inherits PageCore<RottenTomatoes>
+@inject TmdbListApi TmdbListApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
+
+<HeadPage Title="Rotten Tomatoes" ImageSource="logo/rotten-tomatoes.png" Text="Rotten Tomatoes, home of the Tomatometer, is the most trusted measurement of quality for Movies & TV. The definitive site for Reviews, Trailers, Showtimes, and Tickets"
+          Link="https://www.rottentomatoes.com/" IsAuthenticated="IsAuthenticated">
+</HeadPage>
+
+@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
+{
+    <div TextAlignment="TextAlignment.Center">
+        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+}
+
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesTomatoMeter" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesAudienceScore" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaList>
+
+@code {
+    public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
+
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        WatchedListApi.DataChanged += model =>
+        {
+            WatchedList = model;
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            WatchingList = model;
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            WishList = model;
+            StateHasChanged();
+        };
+
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
+        WishList = await WishListApi.Get(IsAuthenticated, null);
+    }
+
+}

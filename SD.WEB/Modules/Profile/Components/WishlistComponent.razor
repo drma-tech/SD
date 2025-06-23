@@ -1,0 +1,105 @@
+﻿@using SD.WEB.Modules.Profile.Resources
+@inherits ComponentCore<WishlistComponent>
+
+@inject IJSRuntime JsRuntime
+
+@if (ShowHeader)
+{
+    <HeaderComponent IconName="@Icons.Material.Filled.Bookmark" Title="@Title">
+        @if (ShowPrivateAction)
+        {
+            <MudTooltip Text="@GlobalTranslations.Share">
+                <MudIconButton Icon="@Icons.Material.Filled.Share" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
+                               OnClick="@(() => Share($"{Navigation.BaseUri}shared/wishlist/{MediaType}/{UserId}"))" />
+            </MudTooltip>
+            <MudTooltip Text="@GlobalTranslations.SeeAllItems">
+                <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
+                               OnClick="@(async () => await OpenCompleteList())" />
+            </MudTooltip>
+        }
+    </HeaderComponent>
+}
+<RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Wish" ExpressionEmpty="ExpressionEmpty">
+    @if (FullScreen)
+    {
+        <div class="grid-relative-container-md mb-2">
+            @foreach (var item in Items.Take(GetTotalItems))
+            {
+                var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType"
+                                 Clicked="@(async () => await ShowMediaPopup(item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                </PosterComponent>
+            }
+        </div>
+    }
+    else
+    {
+        <div id="@_swiperId" class="swiper mb-2">
+            <div class="swiper-wrapper">
+                @foreach (var item in Items.Take(GetTotalItems))
+                {
+                    var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                    <div class="swiper-slide">
+                        <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType"
+                                         Clicked="@(async () => await ShowMediaPopup(item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                        </PosterComponent>
+                    </div>
+                }
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    }
+</RenderControl>
+
+@code {
+    [Parameter][EditorRequired] public RenderControlCore<WishList?> Core { get; set; } = new();
+    [Parameter][EditorRequired] public MediaType MediaType { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter][EditorRequired] public bool ShowHeader { get; set; }
+    [Parameter][EditorRequired] public bool FullScreen { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public Func<WishList?, bool> ExpressionEmpty { get; set; } = null!;
+    [Parameter][EditorRequired] public string? UserId { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] public string? CustomTitle { get; set; }
+
+    private HashSet<WishListItem> Items => MediaType == MediaType.movie ? Wish?.Movies ?? [] : Wish?.Shows ?? [];
+
+    private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Wishlist : AccountProduct.Basic.GetRestrictions().Wishlist;
+    private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? Translations.MyMovieWishlist : Translations.MyShowWishlist);
+
+    private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperId);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    private async Task OpenCompleteList()
+    {
+        await DialogService.MyWishListPopup(Core, Watched, Watching, Wish, MediaType, ShowPrivateAction, IsAuthenticated, UserId);
+    }
+
+    public Task ShowMediaPopup(string? tmdbId, string? name)
+    {
+        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, MediaType, tmdbId, ShowPrivateAction, IsAuthenticated);
+    }
+
+    private async Task Share(string? link)
+    {
+        await JsRuntime.InvokeVoidAsync("share", link);
+    }
+
+}

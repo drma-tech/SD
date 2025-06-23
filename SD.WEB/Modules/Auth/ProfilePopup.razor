@@ -1,62 +1,38 @@
 ﻿@using SD.WEB.Modules.Profile.Resources
-@using Button = SD.WEB.Resources.Button
+
 @inherits ComponentCore<ProfilePopup>
 
-@inject IMessageService MessageService
-
-<ModalHeader>
-    <ModalTitle Size="HeadingSize.Is5">
-        @Translations.MyProfile
-    </ModalTitle>
-    <CloseButton />
-</ModalHeader>
-<ModalBody MaxHeight="70">
-    <Card Margin="Margin.Is2.FromBottom">
-        <CardHeader>
-            @Translations.AccessInformation
-        </CardHeader>
-        <CardBody>
-            <Fields>
-                <Field ColumnSize="ColumnSize.Is4.OnDesktop">
-                    <FieldLabel>
-                        @Translations.IdentityProvider
-                    </FieldLabel>
-                    <TextEdit Text="@Principal?.IdentityProvider" Disabled="true" />
-                </Field>
-                <Field ColumnSize="ColumnSize.Is4.OnDesktop">
-                    <FieldLabel>
-                        @Translations.Identification
-                    </FieldLabel>
-                    <TextEdit Text="@Principal?.UserDetails" Disabled="true" />
-                </Field>
-                <Field ColumnSize="ColumnSize.Is4.OnDesktop">
-                    <FieldLabel>
-                        @Translations.Email
-                    </FieldLabel>
-                    <TextEdit Text="@Principal?.Email" Disabled="true" />
-                </Field>
-            </Fields>
-        </CardBody>
-    </Card>
-    <Card Margin="Margin.Is2.FromBottom">
-        <CardHeader>
-            @Translations.Actions
-        </CardHeader>
-        <CardBody>
-            <Button Color="Color.Danger" Clicked="async () => { await DeleteAccount(Principal?.IdentityProvider); }">
-                <Blazorise.Icon Name="FontAwesomeIcons.UserSlash" /> @Translations.DeleteAccount
-            </Button>
-        </CardBody>
-    </Card>
-</ModalBody>
-<ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
-        @Button.Close
-    </Button>
-</ModalFooter>
+<MudDialog Style="width: 100%">
+    <DialogContent>
+        <MudCard Outlined="true">
+            <MudCardContent>
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudTextField T="@string" Label="@Translations.IdentityProvider" Text="@Principal?.IdentityProvider" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTextField T="@string" Label="@Translations.Identification" Text="@Principal?.UserDetails" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTextField T="@string" Label="@Translations.Email" Text="@Principal?.Email" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+        </MudCard>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Error" OnClick="@DeleteAccount">
+            @Translations.DeleteAccount
+        </MudButton>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })">
+            @Button.Close
+        </MudButton>
+    </DialogActions>
+</MudDialog>
 
 @code {
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
     private ClientePrincipal? Principal { get; set; }
 
@@ -65,38 +41,38 @@
         Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
-    private async Task DeleteAccount(string? provider)
+    private async Task DeleteAccount()
     {
         try
         {
             if (Principal?.ClientePaddle is { IsPaidUser: true })
             {
-                await MessageService.Warning("You still have an active subscription. Please cancel your subscription before deleting your profile.");
+                await DialogService.ShowMessageBox("You still have an active subscription", "Please cancel your subscription before deleting your profile.");
                 return;
             }
 
-            if (await MessageService.Confirm(GlobalTranslations.SureDeleteAccount, SeoTranslations.AppName, opt => { opt.ShowMessageIcon = false; }))
+            if (await DialogService.ShowMessageBox(SeoTranslations.AppName, GlobalTranslations.SureDeleteAccount) ?? false)
             {
                 //remove data from cosmos db
                 await PrincipalApi.Remove();
 
                 //close popup
-                await ModalService.Hide();
+                MudDialog?.Close();
 
                 //remove data from azure
-                Navigation.NavigateTo("/.auth/purge/" + provider);
+                Navigation.NavigateTo("/.auth/purge/" + Principal?.IdentityProvider);
 
                 //close session
                 Navigation.NavigateTo("/.auth/logout", true);
             }
             else
             {
-                await Toast.Warning(GlobalTranslations.OperationCanceled);
+                Snackbar.Add(GlobalTranslations.OperationCanceled, Severity.Warning);
             }
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Toast, Logger);
+            ex.ProcessException(Snackbar, Logger);
         }
     }
 

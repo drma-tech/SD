@@ -1,6 +1,7 @@
 ﻿@page "/profile"
 
 @using SD.Shared.Resources.Enum
+@using SD.WEB.Modules.Profile.Components
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Subscription.Core
@@ -17,12 +18,12 @@
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
-    <Div TextAlignment="TextAlignment.Center">
+    <div style="text-align: center;">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="3844372040"></ins>
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
-    </Div>
+    </div>
 }
 
 @if (IsAuthenticated)
@@ -63,84 +64,103 @@
 }
 else
 {
-    <Jumbotron Background="Background.Primary" TextColor="TextColor.Light" Padding="Padding.Is3" Margin="Margin.Is3.FromBottom">
-        <JumbotronTitle Size="JumbotronTitleSize.Is4">
-            @Translations.HeroTitle
-        </JumbotronTitle>
-        <JumbotronSubtitle Class="mb-3" TextAlignment="TextAlignment.Justified">
-            @Translations.HeroText
-        </JumbotronSubtitle>
-        <Button Type="@ButtonType.Link" Color="Color.Warning" To="/login-providers">
-            @Translations.HeroButton
-        </Button>
-        <Divider Background="Background.White" Style="opacity: .75"></Divider>
-        <Paragraph>
-            @Translations.HeroNote
-        </Paragraph>
-    </Jumbotron>
+    <MudCard Class="mb-2 mud-theme-info" Outlined="true">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h3">@Translations.HeroTitle</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudText Typo="Typo.h6">@Translations.HeroText</MudText>
+            <MudText Typo="Typo.caption">@Translations.HeroNote</MudText>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="/login-providers">@Translations.HeroButton</MudButton>
+        </MudCardActions>
+    </MudCard>
 }
 
-<Row Gutter="(8, 8)">
-    <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
-        <Alert Visible="true" Color="Color.Secondary">
-            <AlertMessage>
-                <Blazorise.Icon Name="@FontAwesomeIcons.Star" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Providers
-            </AlertMessage>
-            <Div>
-                <Badge Color="Color.Primary" Padding="Padding.Is1">@(MyProviders?.Items.Count ?? 0)</Badge>
-            </Div>
-        </Alert>
-    </Column>
-    <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
-        <Alert Visible="true" Color="Color.Secondary">
-            <AlertMessage>
-                <Blazorise.Icon Name="@FontAwesomeIcons.Bookmark" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Wishlist
-            </AlertMessage>
-            <Div>
-                <Badge Color="Color.Primary" Padding="Padding.Is1">@(Wish?.Movies.Count ?? 0) @PopularType.MovieName</Badge>
-                <Badge Color="Color.Primary" Padding="Padding.Is1">@(Wish?.Shows.Count ?? 0) @PopularType.ShowName</Badge>
-            </Div>
-        </Alert>
-    </Column>
-    <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
-        <Alert Visible="true" Color="Color.Secondary">
-            <AlertMessage>
-                <Blazorise.Icon Name="@FontAwesomeIcons.Eye" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Watching
-            </AlertMessage>
-            <Div>
-                <Badge Color="Color.Primary" Padding="Padding.Is1">@(Watching?.Movies.Count ?? 0) @PopularType.MovieName</Badge>
-                <Badge Color="Color.Primary" Padding="Padding.Is1">@(Watching?.Shows.Count ?? 0) @PopularType.ShowName</Badge>
-            </Div>
-        </Alert>
-    </Column>
-    <Column ColumnSize="ColumnSize.Is3.OnFullHD.Is6.OnMobile">
-        <Alert Visible="true" Color="Color.Secondary">
-            <AlertMessage>
-                <Blazorise.Icon Name="@FontAwesomeIcons.ClockRotateLeft" Margin="Margin.Is1.FromEnd"></Blazorise.Icon>@Translations.Watched
-            </AlertMessage>
-            <Div>
-                <Badge Color="Color.Primary" Padding="Padding.Is1">@(Watched?.Movies.Count ?? 0) @PopularType.MovieName</Badge>
-                <Badge Color="Color.Primary" Padding="Padding.Is1">@(Watched?.Shows.Count ?? 0) @PopularType.ShowName</Badge>
-            </Div>
-        </Alert>
-    </Column>
-</Row>
+<MudGrid Spacing="2" Class="mb-2">
+    <MudItem xs="6" md="3">
+        <MudPaper Outlined="true" Class="pa-1">
+            <div class="d-flex" style="align-self: center;">
+                <MudIcon Icon="@Icons.Material.Filled.Star" Color="Color.Primary"></MudIcon>
+                <MudText Typo="Typo.subtitle1" Color="Color.Primary">
+                    @Translations.Providers
+                </MudText>
+            </div>
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+                @(MyProviders?.Items.Count ?? 0)
+            </MudChip>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="6" md="3">
+        <MudPaper Outlined="true" Class="pa-1">
+            <div class="d-flex" style="align-self: center;">
+                <MudIcon Icon="@Icons.Material.Filled.Bookmark" Color="Color.Primary"></MudIcon>
+                <MudText Typo="Typo.subtitle1" Color="Color.Primary">
+                    @Translations.Wishlist
+                </MudText>
+            </div>
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+                @(Wish?.Movies.Count ?? 0) @PopularType.MovieName
+            </MudChip>
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+                @(Wish?.Shows.Count ?? 0) @PopularType.ShowName
+            </MudChip>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="6" md="3">
+        <MudPaper Outlined="true" Class="pa-1">
+            <div class="d-flex" style="align-self: center;">
+                <MudIcon Icon="@Icons.Material.Filled.Visibility" Color="Color.Primary"></MudIcon>
+                <MudText Typo="Typo.subtitle1" Color="Color.Primary">
+                    @Translations.Watching
+                </MudText>
+            </div>
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+                @(Watching?.Movies.Count ?? 0) @PopularType.MovieName
+            </MudChip>
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+                @(Watching?.Shows.Count ?? 0) @PopularType.ShowName
+            </MudChip>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="6" md="3">
+        <MudPaper Outlined="true" Class="pa-1">
+            <div class="d-flex" style="align-self: center;">
+                <MudIcon Icon="@Icons.Material.Filled.History" Color="Color.Primary"></MudIcon>
+                <MudText Typo="Typo.subtitle1" Color="Color.Primary">
+                    @Translations.Watched
+                </MudText>
+            </div>
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+                @(Watched?.Movies.Count ?? 0) @PopularType.MovieName
+            </MudChip>
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+                @(Watched?.Shows.Count ?? 0) @PopularType.ShowName
+            </MudChip>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
 
 <MyProviderComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MyProviderComponent>
 
 <MySuggestions Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MySuggestions>
 
-<Row HorizontalGutter="8" VerticalGutter="8">
-    <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWishListComponent Watched="Watched" Watching="Watching" Wish="Wish" CoreWishlist="CoreWish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" UserId="@UserId"></MyWishListComponent>
-    </Column>
-    <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnDesktop">
-        <MyWatchingListComponent Watched="Watched" Watching="Watching" Wish="Wish" CoreWatching="CoreWatching" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" UserId="@UserId"></MyWatchingListComponent>
-    </Column>
-</Row>
+<MudGrid Spacing="2" Class="mb-2">
+    <MudItem xs="12" md="6">
+        <MyWishListGroup Watched="Watched" Watching="Watching" Wish="Wish" CoreWishlist="CoreWish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"
+                         UserId="@UserId"></MyWishListGroup>
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <MyWatchingListGroup Watched="Watched" Watching="Watching" Wish="Wish" CoreWatching="CoreWatching" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"
+                             UserId="@UserId"></MyWatchingListGroup>
+    </MudItem>
+</MudGrid>
 
 @code {
-    [SupplyParameterFromQuery] [Parameter] public string? _ptxn { get; set; }
+    [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }
 
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();

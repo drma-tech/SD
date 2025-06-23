@@ -1,0 +1,184 @@
+﻿@using SD.Shared.Models.List.Tmdb
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Collections.Resources
+@inherits ComponentCore<CreditsComponent>
+
+@inject TmdbCreditApi TmdbCreditApi
+
+<RenderControl Core="Core" Model="Credits" ExpressionEmpty="@((Credits? obj) => obj == null)">
+    @if (Type == MediaType.movie)
+    {
+        var directors = Credits?.crew.Where(w => w.job == "Director").ToList() ?? [];
+        if (directors.Any())
+        {
+            <MudGrid Spacing="2" Class="mb-2">
+                <MudItem xs="6" sm="3">
+                    <MudPaper Outlined="true" Height="66px" Style="align-content: center; text-align: center;">
+                        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                            @Translations.Directing
+                        </MudText>
+                    </MudPaper>
+                </MudItem>
+                @foreach (var item in directors)
+                {
+                    <MudItem xs="6" sm="3">
+                        <MudLink OnClick="@(async () => await OpenCompleteList(item))" style="display: flex; gap: 8px;">
+                            <MudAvatar Size="Size.Large" Style="width: 66px; height: 66px;">
+                                <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" Alt="@item.original_name" FallbackSrc="images/no-user.png" Style="width: 66px;">
+                                </MudImage>
+                            </MudAvatar>
+                            <div style="align-content: center;">
+                                <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Style="line-height: normal;">@item.original_name</MudText>
+                                <MudText Typo="Typo.body1" Color="Color.Dark" Style="line-height: normal; font-size: small;">@item.job</MudText>
+                            </div>
+                        </MudLink>
+                    </MudItem>
+                }
+            </MudGrid>
+        }
+
+        var writers = Credits?.crew.Where(w => w.job == "Writer" || w.job == "Screenplay" || w.job == "Author" || w.job == "Story").ToList() ?? [];
+        if (writers.Any())
+        {
+            <MudDivider Class="my-2"></MudDivider>
+            <MudGrid Spacing="2" Class="mb-2">
+                <MudItem xs="6" sm="3">
+                    <MudPaper Outlined="true" Height="66px" Style="align-content: center; text-align: center;">
+                        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                            @Translations.Writing
+                        </MudText>
+                    </MudPaper>
+                </MudItem>
+                @foreach (var item in writers)
+                {
+                    <MudItem xs="6" sm="3">
+                        <MudLink OnClick="@(async () => await OpenCompleteList(item))" style="display: flex; gap: 8px;">
+                            <MudAvatar Size="Size.Large" Style="width: 66px; height: 66px;">
+                                <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" Alt="@item.original_name" FallbackSrc="images/no-user.png" Style="width: 66px;">
+                                </MudImage>
+                            </MudAvatar>
+                            <div style="align-content: center;">
+                                <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Style="line-height: normal;">@item.original_name</MudText>
+                                <MudText Typo="Typo.body1" Color="Color.Dark" Style="line-height: normal; font-size: small;">@item.job</MudText>
+                            </div>
+                        </MudLink>
+                    </MudItem>
+                }
+            </MudGrid>
+        }
+    }
+    <MudDivider Class="my-2"></MudDivider>
+    <MudGrid Spacing="2" Class="mb-2">
+        <MudItem xs="6" sm="3">
+            <MudPaper Outlined="true" Height="66px" Style="align-content: center; text-align: center;">
+                <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                    @Translations.Cast
+                </MudText>
+            </MudPaper>
+        </MudItem>
+        @foreach (var item in Credits?.cast.OrderBy(o => o.order).Take(24) ?? new List<Cast>())
+        {
+            <MudItem xs="6" sm="3">
+                <MudLink OnClick="@(async () => await OpenCompleteList(item))" style="display: flex; gap: 8px;">
+                    <MudAvatar Size="Size.Large" Style="width: 66px; height: 66px;">
+                        <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" Alt="@item.original_name" FallbackSrc="images/no-user.png" Style="width: 66px;">
+                        </MudImage>
+                    </MudAvatar>
+                    <div style="align-content: center;">
+                        <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Style="line-height: normal;">@item.original_name</MudText>
+                        <MudText Typo="Typo.body1" Color="Color.Dark" Style="line-height: normal; font-size: small;">@item.character</MudText>
+                    </div>
+                </MudLink>
+            </MudItem>
+        }
+    </MudGrid>
+</RenderControl>
+
+@code {
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+
+    [Parameter] public string? TmdbId { get; set; }
+    [Parameter] public MediaType? Type { get; set; }
+
+    public RenderControlCore<Credits?>? Core { get; set; } = new();
+    private Credits? Credits { get; set; }
+
+    protected override async Task LoadDataRender()
+    {
+        Core?.LoadingStarted?.Invoke();
+        Credits = await TmdbCreditApi.GetList(Type, TmdbId);
+        Core?.LoadingFinished?.Invoke(Credits);
+    }
+
+    private async Task OpenCompleteList(Crew crew)
+    {
+        try
+        {
+            var result = await TmdbCreditApi.GetListByPerson(crew.id.ToString());
+            var items = new HashSet<MediaDetail>();
+
+            foreach (var item in result?.crew.Where(w => w.job == crew.job) ?? [])
+            {
+                var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
+                items.Add(new MediaDetail
+                {
+                    tmdb_id = item.id.ToString(),
+                    title = type == MediaType.movie ? item.title : item.name,
+                    plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
+                    release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
+                    poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
+                    poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
+                    rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
+                    MediaType = type
+                });
+            }
+
+            await DialogService.CompleteListPopup($"{crew.original_name} ({crew.job})", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), ShowPrivateAction, IsAuthenticated);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    private async Task OpenCompleteList(Cast cast)
+    {
+        try
+        {
+            var result = await TmdbCreditApi.GetListByPerson(cast.id.ToString());
+            var items = new HashSet<MediaDetail>();
+
+            foreach (var item in result?.cast ?? [])
+            {
+                var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
+
+                if (type == MediaType.movie && item.order > 24) continue;
+                if (type == MediaType.tv && item.episode_count < 3) continue;
+
+                items.Add(new MediaDetail
+                {
+                    tmdb_id = item.id.ToString(),
+                    title = type == MediaType.movie ? item.title : item.name,
+                    plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
+                    release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
+                    poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
+                    poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
+                    rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
+                    MediaType = type,
+                    comments = type == MediaType.tv ? $"{item.episode_count} episodes" : ""
+                });
+            }
+
+            await DialogService.CompleteListPopup($"{cast.original_name}", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), ShowPrivateAction, IsAuthenticated);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+}

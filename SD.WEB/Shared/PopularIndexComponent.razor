@@ -1,0 +1,61 @@
+﻿@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Provider.Resources
+@inherits ComponentCore<PopularIndexComponent>
+
+@inject ImdbPopularApi ImdbPopularApi
+@inject TmdbNowPlayingApi TmdbNowPlayingApi
+
+<HeaderComponent Title="@Translations.Popular" IconImage="logo/imdb.png">
+    <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="TypeSelected" Color="Color.Primary">
+        <MudToggleItem Value="@PopularType.Movie" SelectedIcon="@Icons.Material.Filled.Check" >
+            <MudIcon Icon="@Icons.Material.Filled.Movie" Title="@PopularType.Movie.GetName()" Class="me-1"></MudIcon>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                @PopularType.Movie.GetName()
+            </MudHidden>
+        </MudToggleItem>
+        <MudToggleItem Value="@PopularType.Show">
+            <MudIcon Icon="@Icons.Material.Filled.Tv" Title="@PopularType.Show.GetName()" Class="me-1"></MudIcon>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                @PopularType.Show.GetName()
+            </MudHidden>
+        </MudToggleItem>
+        <MudToggleItem Value="@PopularType.Cinema">
+            <MudIcon Icon="@Icons.Material.Filled.Theaters" Title="@PopularType.Cinema.GetName()" Class="me-1"></MudIcon>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                @PopularType.Cinema.GetName()
+            </MudHidden>
+        </MudToggleItem>
+    </MudToggleGroup>
+</HeaderComponent>
+@if (TypeSelected == PopularType.Movie)
+{
+    <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" MultipleLanguages="false"
+               StringParameters="Params" TypeSelected="MediaType.movie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+               ShowPrivateAction="ShowPrivateAction" OnlyYear="true" IsAuthenticated="IsAuthenticated">
+    </MediaList>
+}
+else if (TypeSelected == PopularType.Show)
+{
+    <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" MultipleLanguages="false"
+               StringParameters="Params" TypeSelected="MediaType.tv" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+               ShowPrivateAction="ShowPrivateAction" OnlyYear="true" IsAuthenticated="IsAuthenticated">
+    </MediaList>
+}
+else if (TypeSelected == PopularType.Cinema)
+{
+    <MediaList ShowHead="false" MediaListApi="TmdbNowPlayingApi" MultiplesRegions="true"
+               Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
+    </MediaList>
+}
+
+@code {
+    [Parameter] [EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter] [EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter] [EditorRequired] public WishList? WishList { get; set; }
+    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
+
+    public PopularType TypeSelected { get; set; } = PopularType.Movie;
+
+    public Dictionary<string, string> Params { get; set; } = new() { { "mode", "compact" } };
+}

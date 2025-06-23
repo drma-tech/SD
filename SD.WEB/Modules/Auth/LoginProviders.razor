@@ -3,51 +3,62 @@
 @inherits PageCore<LoginProviders>
 <SeoHeader Title="@Translations.LoginProvidersTitle" Url="/login-providers" ShowH1="false"></SeoHeader>
 
-<Container>
-    <Heading Size="HeadingSize.Is4" TextColor="TextColor.Success" TextAlignment="TextAlignment.Center">Welcome to @SeoTranslations.AppName</Heading>
-    <Divider></Divider>
-    <Row>
-        <Column ColumnSize="ColumnSize.Is12.OnMobile.Is6.OnTablet" TextAlignment="TextAlignment.Center">
-            <Alert Background="Background.Dark" Visible="true" Padding="Padding.Is2" Margin="Margin.Is3.FromBottom">
-                <Paragraph TextColor="TextColor.White50">
-                    @SeoTranslations.Description
-                </Paragraph>
-                <Image Source="icon/icon-full.png" Width="Width.Is50.OnMobile.Is66.OnTablet"/>
-            </Alert>
-        </Column>
-        <Column ColumnSize="ColumnSize.Is12.OnMobile.Is6.OnTablet">
-            <Div>
-                <div class="container-buttons">
-                    @foreach (var provider in _providers)
-                    {
-                        var link = provider.Key;
-                        if (link == "microsoft") link = "aad";
-                        <a class="@($"button {provider.Key}")" href="@("/.auth/login/" + link + "?post_login_redirect_uri=" + Navigation.BaseUri + "login-success")">
-                            <span>
-                                <i class="fa-brands fa-@provider.Key" aria-hidden="true"></i>
-                            </span>
-                            <p style="font-size: 16px;">@Translations.LoginWith @provider.Value</p>
-                        </a>
-                    }
-                </div>
-            </Div>
-            <Div>
-                <Alert Visible="true" Color="Color.Warning">
-                    @if (AppStateStatic.Language == Language.ptBR || AppStateStatic.Language == Language.ptPT)
-                    {
-                        <Span>Ao fazer login, você confirma que leu e concorda com os </Span>
-                        <Blazorise.Link To="support/terms/pt" Target="Target.Blank">Termos de Uso</Blazorise.Link>
-                    }
-                    else
-                    {
-                        <Span>By logging in, you confirm that you have read and agree to the </Span>
-                        <Blazorise.Link To="support/terms/en" Target="Target.Blank">Terms of Use</Blazorise.Link>
-                    }
-                </Alert>
-            </Div>
-        </Column>
-    </Row>
-</Container>
+<MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Primary">
+    Welcome to @SeoTranslations.AppName
+</MudText>
+<MudDivider Class="my-3"></MudDivider>
+<MudGrid Spacing="4">
+    <MudItem xs="12" sm="6">
+        <MudPaper Class="pa-2 mud-theme-dark" Style="text-align: center;">
+            <MudText Typo="Typo.body1" Align="Align.Justify">
+                @SeoTranslations.Description
+            </MudText>
+            <MudImage Src="icon/icon-full.png" Alt="@SeoTranslations.AppName" Style="width: 50%;" />
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6">
+        <div>
+            <div class="container-buttons">
+                @foreach (var provider in _providers)
+                {
+                    var link = provider.Key;
+                    if (link == "microsoft") link = "aad";
+                    <a class="@($"button {provider.Key}")" href="@("/.auth/login/" + link + "?post_login_redirect_uri=" + Navigation.BaseUri + "login-success")">
+                        <span>
+                            @if (@provider.Key == "google")
+                            {
+                                <MudIcon Icon="@Icons.Custom.Brands.Google" />
+                            }
+                            else if (provider.Key == "microsoft")
+                            {
+                                <MudIcon Icon="@Icons.Custom.Brands.Microsoft" />
+                            }
+                            else
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.Login" />
+                            }
+                        </span>
+                        <p style="font-size: 16px;">@Translations.LoginWith @provider.Value</p>
+                    </a>
+                }
+            </div>
+        </div>
+        <div>
+            <MudAlert Variant="Variant.Outlined" Severity="Severity.Warning" Dense="true">
+                @if (AppStateStatic.Language == Language.ptBR || AppStateStatic.Language == Language.ptPT)
+                {
+                    <MudText Inline="true">Ao fazer login, você confirma que leu e concorda com os </MudText>
+                    <MudLink Href="support/terms/pt" Target="_blank">Termos de Uso</MudLink>
+                }
+                else
+                {
+                    <MudText Inline="true">By logging in, you confirm that you have read and agree to the </MudText>
+                    <MudLink Href="support/terms/en" Target="_blank">Terms of Use</MudLink>
+                }
+            </MudAlert>
+        </div>
+    </MudItem>
+</MudGrid>
 
 @code {
 

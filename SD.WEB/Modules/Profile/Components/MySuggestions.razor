@@ -1,0 +1,348 @@
+﻿@using SD.Shared.Models.List.Tmdb
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Profile.Resources
+@using SD.WEB.Modules.Collections.Core
+@using Button = SD.WEB.Resources.Button
+@inherits ComponentCore<MySuggestions>
+
+@inject MyProvidersApi MyProvidersApi
+@inject MySuggestionsApi MySuggestionsApi
+@inject TmdbDiscoveryApi TmdbDiscoveryApi
+@inject TmdbApi TmdbApi
+@inject IJSRuntime JsRuntime
+
+<HeaderComponent IconName="@Icons.Material.Filled.ThumbUp" Title="@Translations.MySuggestions">
+    @if (Client?.ClientePaddle?.IsPaidUser ?? false)
+    {
+        @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (MyProviders?.Items.Any() ?? false))
+        {
+            <MudButton StartIcon="@Icons.Material.Filled.Refresh" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
+                       OnClick="() => ImportFromProviders(MediaType.movie)" Disabled="@MovieUpdating">
+                @Button.Update
+            </MudButton>
+        }
+        @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync) && (MyProviders?.Items.Any() ?? false))
+        {
+            <MudButton StartIcon="@Icons.Material.Filled.Refresh" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
+                       OnClick="() => ImportFromProviders(MediaType.tv)" Disabled="@ShowUpdating">
+                @Button.Update
+            </MudButton>
+        }
+        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Value="SearchType" ValueChanged="(MediaType type) => CheckedValueChanged(type)"
+                        Color="Color.Primary" Class="me-2">
+            <MudToggleItem Value="@MediaType.movie" SelectedIcon="@Icons.Material.Filled.Check">
+                <MudIcon Icon="@Icons.Material.Filled.Movie" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
+                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                    @MediaType.movie.GetName()
+                </MudHidden>
+            </MudToggleItem>
+            <MudToggleItem Value="@MediaType.tv">
+                <MudIcon Icon="@Icons.Material.Filled.Tv" Title="@MediaType.tv.GetName()" Class="me-1"></MudIcon>
+                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                    @MediaType.tv.GetName()
+                </MudHidden>
+            </MudToggleItem>
+        </MudToggleGroup>
+        <MudIconButton Icon="@Icons.Material.Filled.FilterAlt" Variant="Variant.Filled" Color="@(GenresChanged? Color.Secondary: Color.Primary)"
+                       OnClick="@(async () => await OpenConfigurations())" Disabled="@(MyProviders == null || MyProviders.Items.Empty())" />
+    }
+</HeaderComponent>
+
+<RenderControl @ref="_render" Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())"
+               PrivateContent="true" PremiumFeature="true" PremiumDescription="@Translations.OurSuggestions2">
+
+    <div id="@_swiperId" class="swiper mb-2">
+        <div class="swiper-wrapper">
+            @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)) ?? new List<SuggestionListItem>())
+            {
+                <div class="swiper-slide">
+                    <div style="cursor: pointer;" @onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))">
+                        <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                    </div>
+                    <MudGrid Spacing="2" Justify="Justify.FlexStart">
+                        @foreach (var provider in item.Providers)
+                        {
+                            <MudItem xs="4">
+                                <MudImage Src="@(TmdbOptions.OriginalPosterPath + provider)" Alt="@provider" Style="width: 100%;"></MudImage>
+                            </MudItem>
+                        }
+                    </MudGrid>
+                </div>
+            }
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</RenderControl>
+
+@code {
+    private MyProviders? MyProviders { get; set; }
+    private SD.Shared.Models.MySuggestions? mySuggestions { get; set; }
+    public MediaType SearchType { get; set; } = MediaType.movie;
+
+    public bool MovieUpdating { get; set; }
+    public bool ShowUpdating { get; set; }
+    private RenderControl<SD.Shared.Models.MySuggestions>? _render;
+
+    public RenderControlCore<SD.Shared.Models.MySuggestions?>? Core { get; set; } = new();
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+
+    public ClientePrincipal? Client { get; set; }
+    private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
+
+    private bool GenresChanged => (mySuggestions?.MovieGenres.Any() ?? false) || (mySuggestions?.TvGenres.Any() ?? false);
+
+    protected override void OnInitialized()
+    {
+        PrincipalApi.DataChanged += async model =>
+        {
+            Client = model;
+            await LoadData();
+            StateHasChanged();
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperId);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        Core?.ShowLoading();
+
+        MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
+
+        if (MyProviders == null || MyProviders.Items.Empty())
+        {
+            Core?.ShowWarning(Translations.OurSuggestions1);
+        }
+        else
+        {
+            if (Client != null && _render != null) _render.Status = LoadingStatus.Loading; //force reset Premium status
+
+            Client ??= await PrincipalApi.Get(IsAuthenticated);
+            mySuggestions = await MySuggestionsApi.Get(Client?.ClientePaddle?.ActiveProduct, IsAuthenticated, Core);
+
+            if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
+            {
+                Core?.ShowWarning(Translations.OurSuggestions2);
+            }
+        }
+
+        Core?.HideLoading(mySuggestions);
+    }
+
+    public Task ShowMediaPopup(string? tmdbId, string? name, MediaType type)
+    {
+        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, type, tmdbId, ShowPrivateAction, IsAuthenticated);
+    }
+
+    private Dictionary<string, string> GetExtraParameters(string? providerId, string? region, string sortBy)
+    {
+        if (providerId == null) throw new ArgumentNullException(nameof(providerId));
+        if (region == null) throw new ArgumentNullException(nameof(region));
+
+        string genres;
+
+        if (SearchType == MediaType.movie)
+        {
+            genres = string.Join("|", mySuggestions?.MovieGenres.Select(s => (int)s) ?? []);
+        }
+        else
+        {
+            genres = string.Join("|", mySuggestions?.TvGenres.Select(s => (int)s) ?? []);
+        }
+
+        return new Dictionary<string, string> { { "with_watch_providers", providerId }, { "sort_by", sortBy }, { "with_genres", genres }, { "watch_region", region } };
+    }
+
+    private async Task ImportFromProviders(MediaType type)
+    {
+        try
+        {
+            mySuggestions ??= new SD.Shared.Models.MySuggestions();
+
+            var qtd = Client?.ClientePaddle?.ActiveProduct switch
+            {
+                AccountProduct.Standard => AccountProduct.Standard.GetRestrictions().MySuggestions,
+                AccountProduct.Premium => AccountProduct.Premium.GetRestrictions().MySuggestions,
+                _ => 0
+            };
+
+            var regions = MyProviders?.Items.Select(s => s.region).Distinct().ToList() ?? [];
+
+            if (type == MediaType.movie)
+            {
+                mySuggestions.Movies.Clear();
+                MovieUpdating = true;
+                Core?.ShowProcessing();
+
+                //search best titles by provider (TMDB)
+                var titles = new HashSet<MediaDetail>();
+                foreach (var provider in MyProviders?.Items ?? [])
+                {
+                    var result = await TmdbDiscoveryApi.GetList([], MediaType.movie, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"));
+
+                    foreach (var item in result.list)
+                    {
+                        titles.Add(item);
+                    }
+                }
+
+                //select titles for the user
+                foreach (var item in titles.OrderByDescending(o => o.rating))
+                {
+                    if (Watched != null && Watched.Movies.Any(a => a == item.tmdb_id)) continue;
+                    if (Wish != null && Wish.Movies.Any(a => a.id == item.tmdb_id)) continue;
+
+                    if (mySuggestions.Movies.Count < qtd)
+                    {
+                        var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.movie);
+                        if (providers != null && MyProviders != null)
+                        {
+                            List<ProviderBase> allProviders = [];
+                            foreach (var region in regions) //test all possible regions added by user
+                            {
+                                var freeList = providers.GetFreeListProviders(region).Where(w => MyProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                                var adsList = providers.GetAdsListProviders(region).Where(w => MyProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                                var flatRateList = providers.GetFlatRateListProviders(region).Where(w => MyProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                                var flatRateBuyList = providers.GetFlatRateBuyListProviders(region).Where(w => MyProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                                var rentList = providers.GetRentListProviders(region).Where(w => MyProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                                var buyList = providers.GetBuyListProviders(region).Where(w => MyProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+
+                                allProviders.AddRange(freeList.Concat(adsList).Concat(flatRateList).Concat(flatRateBuyList).Concat(rentList).Concat(buyList));
+                            }
+
+                            mySuggestions.Items(MediaType.movie).Add(new SuggestionListItem(item.tmdb_id, item.title, item.poster_small, allProviders.Select(s => s.logo_path ?? "").Distinct().ToArray()));
+                        }
+                    }
+                }
+
+                if (mySuggestions.Items(MediaType.movie).Empty()) Core?.ShowWarning(null);
+
+                mySuggestions = await MySuggestionsApi.Sync(MediaType.movie, mySuggestions, Core);
+                MovieUpdating = false;
+            }
+            else
+            {
+                mySuggestions.Shows.Clear();
+                ShowUpdating = true;
+                Core?.ShowProcessing();
+
+                //search best titles by provider (TMDB)
+                var titles = new HashSet<MediaDetail>();
+                foreach (var provider in MyProviders?.Items ?? [])
+                {
+                    var result = await TmdbDiscoveryApi.GetList([], MediaType.tv, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"));
+
+                    foreach (var item in result.list)
+                    {
+                        titles.Add(item);
+                    }
+                }
+
+                //select titles for the user
+                foreach (var item in titles.OrderByDescending(o => o.rating))
+                {
+                    if (Watched != null && Watched.Shows.Any(a => a == item.tmdb_id)) continue;
+                    if (Wish != null && Wish.Shows.Any(a => a.id == item.tmdb_id)) continue;
+
+                    if (mySuggestions.Shows.Count < qtd)
+                    {
+                        var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.tv);
+                        if (providers != null && MyProviders != null)
+                        {
+                            List<ProviderBase> allProviders = [];
+                            foreach (var region in regions) //test all possible regions added by user
+                            {
+                                var freeList = providers.GetFreeListProviders(region).Where(w => MyProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                                var adsList = providers.GetAdsListProviders(region).Where(w => MyProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                                var flatRateList = providers.GetFlatRateListProviders(region).Where(w => MyProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                                var flatRateBuyList = providers.GetFlatRateBuyListProviders(region).Where(w => MyProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                                var rentList = providers.GetRentListProviders(region).Where(w => MyProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+                                var buyList = providers.GetBuyListProviders(region).Where(w => MyProviders.Items.Any(a => a.id == w.provider_id.ToString()));
+
+                                allProviders.AddRange(freeList.Concat(adsList).Concat(flatRateList).Concat(flatRateBuyList).Concat(rentList).Concat(buyList) ?? []);
+                            }
+
+                            mySuggestions.Items(MediaType.tv).Add(new SuggestionListItem(item.tmdb_id, item.title, item.poster_small, allProviders.Select(s => s.logo_path ?? "").Distinct().ToArray()));
+                        }
+                    }
+                }
+
+                if (mySuggestions.Items(MediaType.tv).Empty()) Core?.ShowWarning(null);
+
+                mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions, Core);
+                ShowUpdating = false;
+            }
+
+            Core?.HideProcessing(mySuggestions);
+        }
+        catch (Exception ex)
+        {
+            MovieUpdating = false;
+            ShowUpdating = false;
+            Core?.ShowError(ex.Message);
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    private bool IsWatched(MediaType type, SuggestionListItem item)
+    {
+        if (type == MediaType.movie)
+        {
+            if (Watched != null && Watched.Movies.Any(a => a == item.id)) return true;
+            if (Wish != null && Wish.Movies.Any(a => a.id == item.id)) return true;
+
+            return false;
+        }
+
+        if (Watched != null && Watched.Shows.Any(a => a == item.id)) return true;
+        if (Wish != null && Wish.Shows.Any(a => a.id == item.id)) return true;
+
+        return false;
+    }
+
+    private async Task OpenConfigurations()
+    {
+        mySuggestions ??= new SD.Shared.Models.MySuggestions();
+
+        await DialogService.MySuggestionsPopup(mySuggestions,
+            new EventCallbackFactory().Create(this, async (SD.Shared.Models.MySuggestions value) => await UpdateMySuggestions(value)));
+    }
+
+    private async Task UpdateMySuggestions(SD.Shared.Models.MySuggestions obj)
+    {
+        mySuggestions = await MySuggestionsApi.Add(obj);
+
+        StateHasChanged();
+
+        Snackbar.Add(Translations.UpdateMySuggestions, Severity.Warning);
+    }
+
+    private void CheckedValueChanged(MediaType type)
+    {
+        SearchType = type;
+        Core?.LoadingFinished?.Invoke(mySuggestions);
+    }
+
+}

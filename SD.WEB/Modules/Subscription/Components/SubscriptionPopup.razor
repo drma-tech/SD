@@ -1,390 +1,324 @@
 ﻿@inherits ComponentCore<SubscriptionPopup>
 
-@inject IJSRuntime JsRuntime
 @using SD.Shared.Models.Subscription
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Modules.Subscription.Resources
 @using Button = SD.WEB.Resources.Button
-@using Card = Blazorise.Card
+
 @implements IDisposable
 @inject PaddleConfigurationApi ConfigurationApi
 @inject PaddleSubscriptionApi SubscriptionApi
+@inject IJSRuntime JsRuntime
 
-<ModalHeader>
-    <ModalTitle Size="HeadingSize.Is5">
-        @Translations.MySubscription
-    </ModalTitle>
-    <CloseButton/>
-</ModalHeader>
-<ModalBody MaxHeight="70">
-@if (BlockedCountry)
-{
-    <Alert Visible="true" Color="Color.Warning">
-        <AlertMessage>
-            @($"Unfortunately, due to legal and policy restrictions, we are unable to offer our services in {_countries[CurrentCountry!]}.")
-        </AlertMessage>
-    </Alert>
-}
-else if (IsAuthenticated && Client == null)
-{
-    <Alert Color="Color.Warning" Visible="true">
-        <AlertMessage>
-            <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @GlobalTranslations.CustomVisibilityLoading
-        </AlertMessage>
-    </Alert>
-}
-else
-{
-    @if (Client?.ClientePaddle == null)
-    {
-        <Alert Visible="true" Color="Color.Warning">
-            <AlertMessage>
-                <Blazorise.Icon Name="FontAwesomeIcons.Gift"></Blazorise.Icon> @Translations.FreePeriod
-            </AlertMessage>
-        </Alert>
-        <div class="mt-2" style="text-align: center;">
-            <RadioGroup @bind-CheckedValue="Cycle" Buttons="true" Color="Color.Primary">
-                <Radio Value="AccountCycle.Monthly">
-                    @AccountCycle.Monthly.GetName()
-                </Radio>
-                <Radio Value="AccountCycle.Yearly">
-                    @AccountCycle.Yearly.GetName()
-                    <Badge Color="Color.Success">@Translations.YearSave</Badge>
-                </Radio>
-            </RadioGroup>
-        </div>
-        <CardDeck Class="mt-2">
-            <Card Background="Background.Secondary" WhiteText="true">
-                <CardBody>
-                    <CardTitle Size="6" TextAlignment="TextAlignment.Center">
-                        @AccountProduct.Basic.GetName()
-                    </CardTitle>
-                    <CardTitle Size="4" TextAlignment="TextAlignment.Center">
-                        @Translations.Free
-                    </CardTitle>
-                    <CardText>
-                        <ListGroup Flush="true">
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Translations.NoAds
-                                <Badge Color="Color.Danger">
-                                    <Blazorise.Icon Name="@FontAwesomeIcons.Xmark"></Blazorise.Icon>
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.MyProviders
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Basic.GetRestrictions().FavoriteProviders
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.MySuggestions
-                                <Badge Color="Color.Danger">
-                                    @AccountProduct.Basic.GetRestrictions().MySuggestions
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.Watched
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Basic.GetRestrictions().Watched
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.Watching
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Basic.GetRestrictions().Watching
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.Wishlist
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Basic.GetRestrictions().Wishlist
-                                </Badge>
-                            </ListGroupItem>
-                        </ListGroup>
-                    </CardText>
-                </CardBody>
-            </Card>
-            <Card Background="Background.Secondary" WhiteText="true">
-                <CardBody>
-                    <CardTitle Size="6" TextAlignment="TextAlignment.Center">
-                        @AccountProduct.Standard.GetName()
-                    </CardTitle>
-                    <CardTitle Size="4" TextAlignment="TextAlignment.Center">
-                        @GetSubscription(AccountProduct.Standard)?.Price / @Cycle.GetDescription()
-                    </CardTitle>
-                    <CardText>
-                        <ListGroup Flush="true">
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Translations.NoAds
-                                <Badge Color="Color.Primary">
-                                    <Blazorise.Icon Name="@FontAwesomeIcons.Check"></Blazorise.Icon>
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.MyProviders
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Standard.GetRestrictions().FavoriteProviders
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.MySuggestions
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Standard.GetRestrictions().MySuggestions
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.Watched
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Standard.GetRestrictions().Watched
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.Watching
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Standard.GetRestrictions().Watching
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.Wishlist
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Standard.GetRestrictions().Wishlist
-                                </Badge>
-                            </ListGroupItem>
-                        </ListGroup>
-                    </CardText>
-                    @if (Client == null)
-                    {
-                        <span onclick="animationShake('.alertLoginNeeded')">
-                            <Button Color="Color.Primary" Block="true" Class="mt-3">
-                                @Translations.Select
-                            </Button>
-                        </span>
-                    }
-                    else
-                    {
-                        <Button Color="Color.Primary" Block="true" Class="mt-3" Clicked="@(() => OpenCheckout(GetSubscription(AccountProduct.Standard)?.PriceId))">
-                            @Translations.Select
-                        </Button>
-                    }
-                </CardBody>
-            </Card>
-            <Card Background="Background.Secondary" WhiteText="true">
-                <CardBody>
-                    <CardTitle Size="6" TextAlignment="TextAlignment.Center">
-                        @AccountProduct.Premium.GetName()
-                    </CardTitle>
-                    <CardTitle Size="4" TextAlignment="TextAlignment.Center">
-                        @GetSubscription(AccountProduct.Premium)?.Price / @Cycle.GetDescription()
-                    </CardTitle>
-                    <CardText>
-                        <ListGroup Flush="true">
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Translations.NoAds
-                                <Badge Color="Color.Primary">
-                                    <Blazorise.Icon Name="@FontAwesomeIcons.Check"></Blazorise.Icon>
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.MyProviders
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Premium.GetRestrictions().FavoriteProviders
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.MySuggestions
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Premium.GetRestrictions().MySuggestions
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.Watched
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Premium.GetRestrictions().Watched
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.Watching
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Premium.GetRestrictions().Watching
-                                </Badge>
-                            </ListGroupItem>
-                            <ListGroupItem Flex="Flex.JustifyContent.Between.AlignItems.Center" Background="Background.Secondary">
-                                @Profile.Resources.Translations.Wishlist
-                                <Badge Color="Color.Primary">
-                                    @AccountProduct.Premium.GetRestrictions().Wishlist
-                                </Badge>
-                            </ListGroupItem>
-                        </ListGroup>
-                    </CardText>
-                    @if (Client == null)
-                    {
-                        <span onclick="animationShake('.alertLoginNeeded')">
-                            <Button Color="Color.Primary" Block="true" Class="mt-3">
-                                @Translations.Select
-                            </Button>
-                        </span>
-                    }
-                    else
-                    {
-                        <Button Color="Color.Primary" Block="true" Class="mt-3" Clicked="@(() => OpenCheckout(GetSubscription(AccountProduct.Premium)?.PriceId))">
-                            @Translations.Select
-                        </Button>
-                    }
-                </CardBody>
-            </Card>
-        </CardDeck>
-    }
-    else
-    {
-        @if (Subscription == null)
+<MudDialog Style="width: 100%">
+    <DialogContent>
+        @if (BlockedCountry)
         {
-            <Alert Color="Color.Warning" Visible="true">
-                <AlertDescription>
-                    <Blazorise.Icon Class="spinner-border spinner-border-sm"></Blazorise.Icon> @Translations.SubscriptionProcessed
-                </AlertDescription>
-            </Alert>
+            <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
+                @($"Unfortunately, due to legal and policy restrictions, we are unable to offer our services in {_countries[CurrentCountry!]}.")
+            </MudAlert>
+        }
+        else if (IsAuthenticated && Client == null)
+        {
+            <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
+                @GlobalTranslations.CustomVisibilityLoading
+            </MudAlert>
         }
         else
         {
-            <Card Margin="Margin.Is2.FromBottom">
-                <CardHeader>
-                    @Translations.Details
-                </CardHeader>
-                <CardBody>
-                    <Fields>
-                        <Field ColumnSize="ColumnSize.Is6.OnDesktop" TextSize="TextSize.Small">
-                            <FieldLabel>
-                                @Translations.SubscriptionId
-                            </FieldLabel>
-                            <TextEdit Text="@Subscription?.data?.id" Disabled="true" Size="Size.Small"/>
-                        </Field>
-                        <Field ColumnSize="ColumnSize.Is6.OnDesktop" TextSize="TextSize.Small">
-                            <FieldLabel>
-                                @Translations.Status
-                            </FieldLabel>
-                            <TextEdit Text="@Subscription.data?.status" Disabled="true" Size="Size.Small"/>
-                        </Field>
-                    </Fields>
-                    <Fields>
-                        <Field ColumnSize="ColumnSize.Is6.OnDesktop" TextSize="TextSize.Small">
-                            <FieldLabel>
-                                @Translations.NextBilled
-                            </FieldLabel>
-                            <TextEdit Text="@Subscription?.data?.next_billed_at?.ToShortDateString()" Disabled="true" Size="Size.Small"/>
-                        </Field>
-                        <Field ColumnSize="ColumnSize.Is6.OnDesktop" TextSize="TextSize.Small">
-                            <FieldLabel>
-                                @Translations.Canceled
-                            </FieldLabel>
-                            <TextEdit Text="@Subscription.data?.canceled_at?.ToShortDateString()" Disabled="true" Size="Size.Small"/>
-                        </Field>
-                    </Fields>
-                </CardBody>
-            </Card>
-            <Card Margin="Margin.Is2.FromBottom">
-                <CardHeader>
-                    @Translations.Items
-                </CardHeader>
-                <CardBody>
-                    <Table Narrow="true" Bordered="true" Striped="true" Margin="Margin.Is0.FromBottom">
-                        <TableHeader>
-                            <TableRow>
-                                <TableHeaderCell>@Translations.Product</TableHeaderCell>
-                                <TableHeaderCell>@Translations.PreviouslyBilled</TableHeaderCell>
-                                <TableHeaderCell>@Translations.NextBilled</TableHeaderCell>
-                                <TableHeaderCell>@Translations.Status</TableHeaderCell>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            @foreach (var item in Subscription.data?.items ?? [])
-                            {
-                                <TableRow>
-                                    <TableRowCell>
-                                        @Config?.GetAccountProduct(item.price?.product_id).GetCustomAttribute()?.Name
-                                    </TableRowCell>
-                                    <TableRowCell>
-                                        @item.previously_billed_at?.ToShortDateString()
-                                    </TableRowCell>
-                                    <TableRowCell>
-                                        @if (item.next_billed_at.HasValue)
-                                        {
-                                            @item.next_billed_at?.ToShortDateString()
-                                        }
-                                        else
-                                        {
-                                            <Badge Color="Color.Warning">@Translations.InactiveBilling</Badge>
-                                        }
-                                    </TableRowCell>
-                                    <TableRowCell>
-                                        @item.status
-                                    </TableRowCell>
-                                </TableRow>
-                            }
-                        </TableBody>
-                    </Table>
-                </CardBody>
-            </Card>
-            <Card Margin="Margin.Is2.FromBottom">
-                <CardHeader>
-                    @Translations.Management
-                </CardHeader>
-                <CardBody>
+            if (Client?.ClientePaddle == null)
+            {
+                <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.CardGiftcard" Class="mb-3" Dense="true">
+                    @Translations.FreePeriod
+                </MudAlert>
+                <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary" Class="mb-3">
+                    <MudToggleItem Value="@AccountCycle.Monthly">
+                        @AccountCycle.Monthly.GetName()
+                    </MudToggleItem>
+                    <MudToggleItem Value="@AccountCycle.Yearly">
+                        @AccountCycle.Yearly.GetName()
+                        <MudChip Size="Size.Small" Color="Color.Success">@Translations.YearSave</MudChip>
+                    </MudToggleItem>
+                </MudToggleGroup>
+                <MudStack Row="true" Class="mb-3" Breakpoint="Breakpoint.Xs">
+                    <MudCard Outlined="true" Elevation="4">
+                        <MudCardContent Class="pa-3">
+                            <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Basic.GetName()</MudText>
+                            <MudText Typo="Typo.h6" Align="Align.Center">@Translations.Free</MudText>
+                            <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
+                                <MudItem xs="9">
+                                    <MudText>@Translations.NoAds</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Icon="@Icons.Material.Filled.Close" Color="Color.Error" Size="Size.Small" Label="true" Class="chip-no-text" />
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText>@Profile.Resources.Translations.MyProviders</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Basic.GetRestrictions().FavoriteProviders.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText>@Profile.Resources.Translations.MySuggestions</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Error" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Basic.GetRestrictions().MySuggestions.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText>@Profile.Resources.Translations.Watched</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Basic.GetRestrictions().Watched.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText>@Profile.Resources.Translations.Watching</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Basic.GetRestrictions().Watching.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText>@Profile.Resources.Translations.Wishlist</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Basic.GetRestrictions().Wishlist.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                    <MudCard Outlined="true" Elevation="4">
+                        <MudCardContent Class="pa-3">
+                            <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Standard.GetName()</MudText>
+                            <MudText Typo="Typo.h6" Align="Align.Center">@GetSubscription(AccountProduct.Standard)?.Price / @Cycle.GetDescription()</MudText>
+                            <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
+                                <MudItem xs="9">
+                                    <MudText>@Translations.NoAds</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Icon="@Icons.Material.Filled.Check" Color="Color.Default" Size="Size.Small" Label="true" Class="chip-no-text" />
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText>@Profile.Resources.Translations.MyProviders</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Standard.GetRestrictions().FavoriteProviders.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText>@Profile.Resources.Translations.MySuggestions</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Standard.GetRestrictions().MySuggestions.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                                <MudItem xs="8">
+                                    <MudText>@Profile.Resources.Translations.Watched</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Standard.GetRestrictions().Watched.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText>@Profile.Resources.Translations.Watching</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Standard.GetRestrictions().Watching.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText>@Profile.Resources.Translations.Wishlist</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Standard.GetRestrictions().Wishlist.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="@(() => OpenCheckout(GetSubscription(AccountProduct.Standard)?.PriceId))">
+                                @Translations.Select
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                    <MudCard Outlined="true" Elevation="4">
+                        <MudCardContent Class="pa-3">
+                            <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Premium.GetName()</MudText>
+                            <MudText Typo="Typo.h6" Align="Align.Center">@GetSubscription(AccountProduct.Premium)?.Price / @Cycle.GetDescription()</MudText>
+                            <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
+                                <MudItem xs="9">
+                                    <MudText>@Translations.NoAds</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Icon="@Icons.Material.Filled.Check" Color="Color.Default" Size="Size.Small" Label="true" Class="chip-no-text" />
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText>@Profile.Resources.Translations.MyProviders</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Premium.GetRestrictions().FavoriteProviders.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText>@Profile.Resources.Translations.MySuggestions</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Premium.GetRestrictions().MySuggestions.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                                <MudItem xs="8">
+                                    <MudText>@Profile.Resources.Translations.Watched</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Premium.GetRestrictions().Watched.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText>@Profile.Resources.Translations.Watching</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Premium.GetRestrictions().Watching.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText>@Profile.Resources.Translations.Wishlist</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                                        <MudText>@AccountProduct.Premium.GetRestrictions().Wishlist.ToString()</MudText>
+                                    </MudChip>
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="@(() => OpenCheckout(GetSubscription(AccountProduct.Premium)?.PriceId))">
+                                @Translations.Select
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudStack>
+                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Info" Dense="true" Class="alertLoginNeeded">
+                    @Collections.Resources.Translations.PlatformForManaging
+                    @if (Client == null)
+                    {
+                        <MudButton Target="/login-providers" Color="Color.Primary" Size="Size.Small" Style="float: right;">
+                            @Collections.Resources.Translations.LoginNeeded
+                        </MudButton>
+                    }
+                </MudAlert>
+            }
+            else
+            {
+                if (Subscription == null)
+                {
+                    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
+                        @Translations.SubscriptionProcessed
+                    </MudAlert>
+                }
+                else
+                {
+                    <MudCard Outlined="true" Elevation="4" Class="mb-3">
+                        <MudCardContent Class="pa-3">
+                            <MudGrid Class="mb-6">
+                                <MudItem xs="12" sm="6">
+                                    <MudTextField T="string" Label="@Translations.SubscriptionId" Text="@Subscription?.data?.id" ReadOnly="true"></MudTextField>
+                                </MudItem>
+                                <MudItem xs="12" sm="6">
+                                    <MudTextField T="string" Label="@Translations.Status" Text="@Subscription?.data?.status" ReadOnly="true"></MudTextField>
+                                </MudItem>
+                                <MudItem xs="12" sm="6">
+                                    <MudTextField T="string" Label="@Translations.NextBilled" Text="@Subscription?.data?.next_billed_at?.ToShortDateString()" ReadOnly="true"></MudTextField>
+                                </MudItem>
+                                <MudItem xs="12" sm="6">
+                                    <MudTextField T="string" Label="@Translations.Canceled" Text="@Subscription?.data?.canceled_at?.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                    <MudCard Outlined="true" Elevation="4" Class="mb-3">
+                        <MudCardContent Class="pa-3">
+                            <MudDataGrid Items="@(Subscription.data?.items ?? [])" Dense="true">
+                                <Columns>
+                                    <TemplateColumn Title="@Translations.Product">
+                                        <CellTemplate>
+                                            @Config?.GetAccountProduct(context.Item.price?.product_id).GetCustomAttribute()?.Name
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn Title="@Translations.PreviouslyBilled">
+                                        <CellTemplate>
+                                            @context.Item.previously_billed_at?.ToShortDateString()
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn Title="@Translations.NextBilled">
+                                        <CellTemplate>
+                                            @if (context.Item.next_billed_at.HasValue)
+                                            {
+                                                context.Item.next_billed_at?.ToShortDateString();
+                                            }
+                                            else
+                                            {
+                                                <MudChip T="string" Color="Color.Warning">@Translations.InactiveBilling</MudChip>
+                                            }
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <PropertyColumn Title="@Translations.Status" Property="x => x.status" />
+                                </Columns>
+                            </MudDataGrid>
+                        </MudCardContent>
+                    </MudCard>
                     @if (Subscription?.data?.IsCanceled ?? true)
                     {
-                        <Button Color="Color.Primary" Margin="Margin.Is1.FromEnd" Clicked="CreateNewSubscription">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Gem"/> @Translations.CreateNewSubscription
-                        </Button>
+                        <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Diamond" Variant="Variant.Filled" Class="me-2 mb-2"
+                                   OnClick="@CreateNewSubscription">
+                            @Translations.CreateNewSubscription
+                        </MudButton>
                     }
                     else
                     {
-                        <Button Color="Color.Primary" Type="@ButtonType.Link" Target="Target.Blank" Margin="Margin.Is1.FromEnd"
-                                To="@Subscription?.data?.management_urls?.update_payment_method">
-                            <Blazorise.Icon Name="FontAwesomeIcons.CreditCard"/> @Translations.UpdatePaymentDetails
-                        </Button>
-                        <Button Color="Color.Danger" Type="@ButtonType.Link" Target="Target.Blank"
-                                To="@Subscription?.data?.management_urls?.cancel">
-                            <Blazorise.Icon Name="FontAwesomeIcons.UserAltSlash"/> @Translations.CancelSubscription
-                        </Button>
+                        <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.CreditCard" Variant="Variant.Outlined" Class="me-2 mb-2"
+                                   Href="@Subscription?.data?.management_urls?.update_payment_method" Target="_blank">
+                            @Translations.UpdatePaymentDetails
+                        </MudButton>
+                        <MudButton Color="Color.Error" StartIcon="@Icons.Material.Filled.Cancel" Variant="Variant.Outlined" Class="me-2 mb-2"
+                                   Href="@Subscription?.data?.management_urls?.cancel" Target="_blank">
+                            @Translations.CancelSubscription
+                        </MudButton>
                     }
-                </CardBody>
-            </Card>
+                }
+            }
         }
-    }
-}
-</ModalBody>
-<ModalFooter>
-    <Alert Color="Color.Info" Margin="Margin.Is0" Visible="true" Width="Width.Is100" Class="alertLoginNeeded">
-        @if (Client == null)
-        {
-            <AlertMessage Style="margin-right: 0.3rem;">
-                @Suggestions.Resources.Translations.LoginNeeded
-            </AlertMessage>
-        }
-        <AlertDescription>
-            @Suggestions.Resources.Translations.PlatformForManaging
-        </AlertDescription>
-    </Alert>
-</ModalFooter>
-<ModalFooter>
-    <Container Fluid="true" Margin="Margin.Is0" Padding="Padding.Is0.OnX">
-        <Row HorizontalGutter="4" VerticalGutter="4">
-            <Column>
-                Powered by
-                <a href="https://www.paddle.com/" target="_blank" rel="nofollow">
-                    <Image Source="/logo/paddle.avif" Style="height: 30px;" alt="paddle"></Image>
-                </a>
-            </Column>
-            <Column ColumnSize="ColumnSize.IsAuto">
-                <Button Color="Color.Secondary" Clicked="@ModalService.Hide" Size="Size.Small">
-                    @Button.Close
-                </Button>
-            </Column>
-        </Row>
-    </Container>
-</ModalFooter>
+    </DialogContent>
+    <DialogActions>
+        <MudText Class="ms-4">Powered by</MudText>
+        <a href="https://www.paddle.com/" target="_blank" rel="nofollow">
+            <img src="/logo/paddle.avif" style="height: 30px;" alt="paddle" />
+        </a>
+        <MudSpacer></MudSpacer>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })">@Button.Close</MudButton>
+    </DialogActions>
+</MudDialog>
 
 @code {
-    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
+    [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
+
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
     private ClientePrincipal? Client { get; set; }
 
     public RootSubscription? Subscription { get; set; }
@@ -434,25 +368,9 @@ else
         AppStateStatic.RegistrationSuccessful += Registration;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        try
-        {
-            if (firstRender)
-            {
-                Client = await PrincipalApi.Get(IsAuthenticated);
-            }
-
-            await base.OnAfterRenderAsync(firstRender);
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Toast, Logger);
-        }
-    }
-
     protected override async Task LoadDataRender()
     {
+        Client = await PrincipalApi.Get(IsAuthenticated);
         CurrentCountry = await ConfigurationApi.GetCountry();
 
         if (CurrentCountry.NotEmpty())
@@ -473,7 +391,7 @@ else
         }
         else if (string.IsNullOrEmpty(Client?.ClientePaddle?.SubscriptionId))
         {
-            await Toast.Error(Translations.UnableReadSubscription);
+            Snackbar.Add(Translations.UnableReadSubscription, Severity.Error);
         }
         else
         {
@@ -491,7 +409,7 @@ else
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Toast, Logger);
+            ex.ProcessException(Snackbar, Logger);
         }
     }
 
@@ -519,14 +437,14 @@ else
             {
                 CustomerId = client.CustomerId,
                 AddressId = client.AddressId,
-                Items = [new() { ProductId = client.ProductId, Product = product }]
+                Items = [new PaddleItem { ProductId = client.ProductId, Product = product }]
             };
 
             Client = await PrincipalApi.Paddle(Client);
 
             StateHasChanged();
 
-            await Toast.Success(Translations.RegistrationSuccessful);
+            Snackbar.Add(Translations.RegistrationSuccessful, Severity.Success);
 
             for (var i = 0; i < 20; i++)
             {
@@ -542,7 +460,7 @@ else
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Toast, Logger);
+            ex.ProcessException(Snackbar, Logger);
         }
     }
 
@@ -557,7 +475,7 @@ else
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Toast, Logger);
+            ex.ProcessException(Snackbar, Logger);
         }
     }
 
@@ -571,7 +489,7 @@ else
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Toast, Logger);
+            ex.ProcessException(Snackbar, Logger);
         }
     }
 

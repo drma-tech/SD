@@ -1,20 +1,18 @@
-using System.Globalization;
 using AzureStaticWebApps.Blazor.Authentication;
-using Blazorise;
-using Blazorise.Bootstrap5;
-using Blazorise.Icons.FontAwesome;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
+using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
 using SD.WEB;
 using SD.WEB.Modules.Auth.Core;
+using SD.WEB.Modules.Collections.Core;
 using SD.WEB.Modules.Profile.Core;
 using SD.WEB.Modules.Provider.Core;
 using SD.WEB.Modules.Subscription.Core;
-using SD.WEB.Modules.Suggestions.Core;
+using System.Globalization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -35,10 +33,7 @@ await app.RunAsync();
 
 static void ConfigureServices(IServiceCollection collection, string baseAddress)
 {
-    collection
-        .AddBlazorise(options => options.Immediate = true)
-        .AddBootstrap5Providers()
-        .AddFontAwesomeIcons();
+    collection.AddMudServices();
 
     collection.AddPWAUpdater();
 

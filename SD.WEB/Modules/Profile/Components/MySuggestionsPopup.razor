@@ -1,0 +1,39 @@
+﻿@using Button = SD.WEB.Resources.Button
+@inherits ComponentCore<MySuggestionsPopup>
+
+<MudDialog Style="width: 100%">
+    <DialogContent>
+        <MudGrid Class="mb-6">
+            <MudItem xs="12">
+                <MudSelect T="MovieGenre" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Movie" Label="Movie Genres" Clearable="true"
+                           Placeholder="Select your favorite movie genres" MultiSelection="true" FullWidth="true" @bind-SelectedValues="@MySuggestions!.MovieGenres">
+                    @foreach (var genre in EnumHelper.GetArray<MovieGenre>())
+                    {
+                        <MudSelectItem Value="@genre">@genre.GetName()</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12">
+                <MudSelect T="TvGenre" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Tv" Label="TV Genres" Clearable="true"
+                           Placeholder="Select your favorite tv genres" MultiSelection="true" FullWidth="true" @bind-SelectedValues="@MySuggestions!.TvGenres">
+                    @foreach (var genre in EnumHelper.GetArray<TvGenre>())
+                    {
+                        <MudSelectItem Value="@genre">@genre.GetName()</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); MySuggestionsChanged?.InvokeAsync(MySuggestions); })" Color="Color.Primary">
+            @Button.Ok
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
+
+    [Parameter][EditorRequired] public SD.Shared.Models.MySuggestions? MySuggestions { get; set; }
+    [Parameter] public EventCallback<SD.Shared.Models.MySuggestions>? MySuggestionsChanged { get; set; }
+}

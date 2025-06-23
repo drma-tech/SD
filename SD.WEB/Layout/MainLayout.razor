@@ -1,0 +1,122 @@
+﻿@using System.Security.Claims
+@using SD.WEB.Modules.Subscription.Core
+@using SD.WEB.Properties
+@using Toolbelt.Blazor.PWA.Updater
+@inherits LayoutComponentBase
+
+@inject IJSRuntime JsRuntime
+@inject PaddleConfigurationApi PaddleApi
+@inject ISnackbar Snackbar
+
+<MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@AppStateStatic.DarkMode" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudMessageBox />
+<MudSnackbarProvider />
+
+<PWAUpdater Text="@GlobalTranslations.PWAUpdaterText" ButtonCaption="@GlobalTranslations.PWAUpdaterButton" />
+
+<MudLayout>
+    <MudAppBar Fixed="true" Elevation="1" Color="Color.Dark">
+        <HeadLayout IsAuthenticated="IsAuthenticated"></HeadLayout>
+    </MudAppBar>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="my-3">
+            @Body
+        </MudContainer>
+
+        <FooterComponent></FooterComponent>
+        <MudDivider Class="my-3"></MudDivider>
+        <MudText Align="Align.Center" Class="mb-3">
+            © 2021-@DateTime.Now.Year - DRMA Tech. All rights reserved.
+        </MudText>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    [CascadingParameter] protected Task<AuthenticationState> AuthenticationState { get; set; } = null!;
+
+    private MudThemeProvider? _mudThemeProvider;
+
+    protected override void OnInitialized()
+    {
+        AppStateStatic.ShowError = msg => { Snackbar.Add(msg, Severity.Error); };
+    }
+
+    protected bool IsAuthenticated { get; set; }
+    protected string? UserId { get; set; }
+    public ClaimsPrincipal? User { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (User == null)
+        {
+            var authState = await AuthenticationState;
+
+            User = authState.User;
+            IsAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
+            UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        }
+
+        AppStateStatic.DarkModeChanged += StateHasChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            //REGION
+            var region = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "region");
+
+            if (region.Empty())
+            {
+                //get new region by IP
+                region = await PaddleApi.GetCountry();
+
+                region ??= nameof(Region.US);
+
+                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", region);
+            }
+
+            AppStateStatic.ChangeRegion(AppStateStatic.GetValidRegion(region));
+
+            //DARK MODE
+            var darkMode = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "dark-mode");
+
+            if (darkMode.Empty())
+            {
+                darkMode = (await _mudThemeProvider!.GetSystemDarkModeAsync()).ToString();
+
+                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", darkMode);
+            }
+
+            AppStateStatic.ChangeDarkMode(bool.Parse(darkMode));
+        }
+    }
+
+    [JSInvokable]
+    public static void RegistrationSuccessful(TempClientePaddle client)
+    {
+        AppStateStatic.RegistrationSuccessful?.Invoke(client);
+    }
+
+    [JSInvokable]
+    public static void ShowError(string error)
+    {
+        AppStateStatic.ShowError?.Invoke(error);
+    }
+
+    //https://swharden.com/blog/2020-12-29-blazor-build-info/
+    public static string BuildDateString()
+    {
+        try
+        {
+            return Resources.BuildDate.ReplaceLineEndings("");
+        }
+        catch (Exception)
+        {
+            return "Version Error";
+        }
+    }
+
+}

@@ -1,22 +1,23 @@
-﻿window.initSwiper = (id) => {
+﻿//lists
+window.initSwiper = (id, size) => {
     const el = document.getElementById(id);
     if (!el) return;
-    const posterSize = 100;
-    const margin = 4;
+    const posterSize = size ?? 128;
+    const margin = 8;
 
     var swiper = new Swiper(el, {
         slidesPerView: "auto",
-        spaceBetween: 4,
+        spaceBetween: (size <= 100 ? 4 : 8),
         breakpointsBase: "container",
         navigation:
         {
             nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
+            prevEl: ".swiper-button-prev"
         },
         pagination:
         {
             el: ".swiper-pagination",
-            clickable: true,
+            clickable: true
         },
         breakpoints: {
             [250 - margin]: { slidesPerView: Math.floor(250 / posterSize) },
@@ -32,10 +33,11 @@
             [1400 - margin]: { slidesPerView: Math.floor(1400 / posterSize) },
             [1600 - margin]: { slidesPerView: Math.floor(1600 / posterSize) },
             [2000 - margin]: { slidesPerView: Math.floor(2000 / posterSize) },
-        },
+        }
     });
 };
 
+//news
 window.initCalendar = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -53,7 +55,7 @@ window.initCalendar = (id) => {
         navigation:
         {
             nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
+            prevEl: ".swiper-button-prev"
         },
         pagination:
         {
@@ -69,10 +71,11 @@ window.initCalendar = (id) => {
     });
 };
 
+//trailers
 window.initGrid = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
-    const posterSize = 130;
+    const posterSize = 160;
     const margin = 4;
 
     if (el.swiper && typeof el.swiper.destroy === "function") {
@@ -89,12 +92,12 @@ window.initGrid = (id) => {
         navigation:
         {
             nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
+            prevEl: ".swiper-button-prev"
         },
         pagination:
         {
             el: ".swiper-pagination",
-            clickable: true,
+            clickable: true
         },
         breakpoints: {
             [250 - margin]: { slidesPerView: Math.floor(250 / posterSize) },

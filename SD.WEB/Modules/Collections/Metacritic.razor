@@ -1,0 +1,73 @@
+﻿@page "/collections/metacritic"
+<SeoHeader Title="Collections | Metacritic" Keywords="@(new[] { "Metacritic" })" Url="/collections/metacritic"></SeoHeader>
+
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Collections.Components
+@inherits PageCore<Metacritic>
+@inject TmdbListApi TmdbListApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
+
+<HeadPage Title="Metacritic" ImageSource="logo/metacritic.png" Text="Metacritic aggregates music, game, tv, and movie reviews from the leading critics. Only Metacritic.com uses METASCORES, which let you know at a glance how each item was reviewed."
+          Link="https://www.metacritic.com/" IsAuthenticated="IsAuthenticated">
+</HeadPage>
+
+@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
+{
+    <div TextAlignment="TextAlignment.Center">
+        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+}
+
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestTvShowsOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaList>
+
+@code {
+    public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
+
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        WatchedListApi.DataChanged += model =>
+        {
+            WatchedList = model;
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            WatchingList = model;
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            WishList = model;
+            StateHasChanged();
+        };
+
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
+        WishList = await WishListApi.Get(IsAuthenticated, null);
+    }
+
+}

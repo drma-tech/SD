@@ -1,8 +1,6 @@
 ﻿@page "/search/{SearchContent}"
+@using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Suggestions.Components
-@using SD.WEB.Modules.Suggestions.Core
-@using Button = SD.WEB.Resources.Button
 @inherits PageCore<Search>
 
 @inject TmdbSearchApi TmdbSearch
@@ -12,17 +10,10 @@
 
 <SeoHeader Title="Search" Url="/search"></SeoHeader>
 
-<Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
-    <Column>
-        <TextEdit @bind-Text="@SearchContent" Placeholder="@GlobalTranslations.TypeSomething" Size="Size.Small" KeyPress="KeyPress"/>
-    </Column>
-    <Column ColumnSize="ColumnSize.IsAuto">
-        <Button Color="Color.Primary" Block="true" Disabled="string.IsNullOrEmpty(SearchContent)" Size="Size.Small"
-                Clicked="@(() => Navigation.NavigateTo($"/search/{SearchContent}", true))">
-            @Button.Search
-        </Button>
-    </Column>
-</Row>
+<MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@SearchContent" Immediate="true" OnKeyDown="@KeyPress"
+              AdornmentIcon="@Icons.Material.Filled.Search" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined" Margin="Margin.Dense"
+              OnAdornmentClick="@(() => Navigation.NavigateTo($"/search/{SearchContent}"))" Class="mb-3">
+</MudTextField>
 
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
     <MediaListFull MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false"

@@ -11,9 +11,11 @@ public class MySuggestions() : PrivateMainDocument(DocumentType.MySuggestions)
     public HashSet<SuggestionListItem> Movies { get; init; } = [];
     public HashSet<SuggestionListItem> Shows { get; init; } = [];
 
-    [Custom(Name = "Movie Genres")] public IReadOnlyList<MovieGenre> MovieGenres { get; set; } = [];
+    [Custom(Name = "Movie Genres")] 
+    public IEnumerable<MovieGenre> MovieGenres { get; set; } = [];
 
-    [Custom(Name = "TV Genres")] public IReadOnlyList<TvGenre> TvGenres { get; set; } = [];
+    [Custom(Name = "TV Genres")] 
+    public IEnumerable<TvGenre> TvGenres { get; set; } = [];
 
     [JsonIgnore]
     [NotMapped]

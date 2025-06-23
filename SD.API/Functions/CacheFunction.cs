@@ -170,8 +170,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
     }
 
     [Function("ImdbPopularMovies")]
-    public async Task<HttpResponseData?> ImdbPopularMovies(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-movies")]
+    public async Task<HttpResponseData?> ImdbPopularMovies([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-movies")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try

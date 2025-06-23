@@ -1,13 +1,11 @@
 ﻿@page "/"
 @page "/index"
 <SeoHeader Title="Home" Description="@SeoTranslations.Description" Url="/"></SeoHeader>
-@using SD.WEB.Modules.AwardsOfTheYear.Components
-@using SD.WEB.Modules.CertifiedSD.Components
-@using SD.WEB.Modules.News.Components
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Suggestions.Components
+@using SD.WEB.Modules.CertifiedSD.Components
+@using SD.WEB.Modules.AwardsOfTheYear.Components
 @using SD.WEB.Modules.Trailers.Components
-@using Button = Button
+@using SD.WEB.Modules.News.Components
 @inherits PageCore<Index>
 
 @inject WatchedListApi WatchedApi
@@ -17,24 +15,18 @@
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
-    <Div TextAlignment="TextAlignment.Center">
+    <div style="text-align: center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="8246651489"></ins>
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
-    </Div>
+    </div>
 }
 
-<Row VerticalGutter="4" HorizontalGutter="4" Margin="Margin.Is2.FromBottom">
-    <Column>
-        <TextEdit @bind-Text="@Search" Placeholder="@GlobalTranslations.TypeSomething" Size="Size.Small" KeyPress="KeyPress"/>
-    </Column>
-    <Column ColumnSize="ColumnSize.IsAuto">
-        <Button Color="Color.Primary" Block="true" Disabled="@string.IsNullOrEmpty(Search)" Size="Size.Small" Type="@ButtonType.Link" To="@($"/search/{Search}")">
-            @Button.Search
-        </Button>
-    </Column>
-</Row>
+<MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress"
+              AdornmentIcon="@Icons.Material.Filled.Search" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined" Margin="Margin.Dense"
+              OnAdornmentClick="@(() =>{ if (Search.NotEmpty()) Navigation.NavigateTo($"/search/{Search}"); })" Class="mb-3">
+</MudTextField>
 
 <PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></PopularIndexComponent>
 
@@ -42,14 +34,14 @@
 
 <AwardsOfTheYearComponent></AwardsOfTheYearComponent>
 
-<Row HorizontalGutter="8" VerticalGutter="8">
-    <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnWidescreen.Is7.OnFullHD">
+<MudGrid Spacing="4">
+    <MudItem xs="12" sm="6" md="7">
         <TrailersComponent></TrailersComponent>
-    </Column>
-    <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnWidescreen.Is5.OnFullHD">
+    </MudItem>
+    <MudItem xs="12" sm="6" md="5">
         <NewsComponent></NewsComponent>
-    </Column>
-</Row>
+    </MudItem>
+</MudGrid>
 
 @code {
 
@@ -116,6 +108,8 @@
 
     private void KeyPress(KeyboardEventArgs args)
     {
+        if (Search.Empty()) return;
+
         if (args.Key == "Enter")
         {
             Navigation.NavigateTo($"/search/{Search}");

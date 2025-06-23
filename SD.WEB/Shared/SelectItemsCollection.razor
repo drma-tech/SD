@@ -1,0 +1,72 @@
+﻿@using Button = SD.WEB.Resources.Button
+@inherits ComponentCore<SelectItemsCollection>
+
+<MudDialog Style="width: 100%">
+    <DialogContent>
+        @foreach (var item in ItemsCollection.OrderBy(o => o.release_date ?? DateTime.MaxValue))
+        {
+            <MudCheckBox Value="@SelectedItems.Any(a => a == item.id)" ValueChanged="(bool value) => CheckedChanged(item.id, value)"
+                         Color="Color.Primary" UncheckedColor="Color.Dark" 
+                         CheckedIcon="@Icons.Material.Filled.Visibility" UncheckedIcon="@Icons.Material.Outlined.Visibility">
+                @item.title (@item.release_date?.Year)
+            </MudCheckBox>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@SelectAll" Color="Color.Primary">
+            All
+        </MudButton>
+        <MudButton OnClick="@Confirm" Color="Color.Primary" Disabled="SelectedItems.Empty()">
+            @Button.Ok
+        </MudButton>
+        <MudButton OnClick="@HideModal" Color="Color.Error">
+            @Button.Cancel
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
+
+    [Parameter] public List<Collection> ItemsCollection { get; set; } = [];
+    [Parameter] public HashSet<string> SelectedItems { get; set; } = [];
+    [Parameter] public EventCallback<HashSet<string>> SelectedItemsChanged { get; set; }
+
+    private void CheckedChanged(string? id, bool value)
+    {
+        if (id == null) return;
+
+        if (value)
+            SelectedItems.Add(id);
+        else
+            SelectedItems.Remove(id);
+    }
+
+    private void SelectAll()
+    {
+        foreach (var item in ItemsCollection)
+        {
+            if (!string.IsNullOrEmpty(item?.id))
+                SelectedItems.Add(item.id);
+        }
+    }
+
+    private async Task Confirm()
+    {
+        try
+        {
+            await SelectedItemsChanged.InvokeAsync(SelectedItems);
+            MudDialog?.Close();
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    public void HideModal()
+    {
+        MudDialog?.Close();
+    }
+
+}

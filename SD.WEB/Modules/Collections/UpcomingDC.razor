@@ -1,0 +1,65 @@
+﻿@page "/collections/upcoming-dc"
+<SeoHeader Title="Collections | Upcoming DC Movies & TV Shows" Keywords="@(new[] { "Upcoming DC Movies & TV Shows" })" Url="/collections/upcoming-dc"></SeoHeader>
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Collections.Components
+@inherits PageCore<UpcomingDC>
+@inject TmdbListApi TmdbListApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
+
+@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
+{
+    <div TextAlignment="TextAlignment.Center">
+        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+}
+
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingDcMoviesTvShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaListFull>
+
+@code {
+    public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
+
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        WatchedListApi.DataChanged += model =>
+        {
+            WatchedList = model;
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            WatchingList = model;
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            WishList = model;
+            StateHasChanged();
+        };
+
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
+        WishList = await WishListApi.Get(IsAuthenticated, null);
+    }
+
+}

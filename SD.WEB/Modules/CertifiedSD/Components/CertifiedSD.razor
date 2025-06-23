@@ -5,33 +5,32 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
+@using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Suggestions.Components
-@using SD.WEB.Modules.Suggestions.Core
 @inherits PageCore<CertifiedSD>
 
 <SeoHeader Title="Certified by SD" Keywords="@(new[] { "Certified by SD" })" Url="@($"/certified-sd/{Type}")"></SeoHeader>
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
-    <Div TextAlignment="TextAlignment.Center">
+    <div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
-    </Div>
+    </div>
 }
 
 @if (MediaType == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconImage="icon/icon-71.png">
     </MediaListFull>
 }
 else
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconImage="icon/icon-71.png">
     </MediaListFull>
 }
 

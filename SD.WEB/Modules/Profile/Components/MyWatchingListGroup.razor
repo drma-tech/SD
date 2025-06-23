@@ -1,0 +1,19 @@
+﻿@using SD.WEB.Modules.Profile.Components
+
+<WatchingComponent MediaType="MediaType.movie" ShowPrivateAction="ShowPrivateAction" ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish"
+                   Core="CoreWatching" ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()" IsAuthenticated="IsAuthenticated" UserId="@UserId">
+</WatchingComponent>
+
+<WatchingComponent MediaType="MediaType.tv" ShowPrivateAction="ShowPrivateAction" ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish"
+                   Core="CoreWatching" ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()" IsAuthenticated="IsAuthenticated" UserId="@UserId">
+</WatchingComponent>
+
+@code {
+    [Parameter] [EditorRequired] public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
+    [Parameter] [EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter] [EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter] [EditorRequired] public WishList? Wish { get; set; }
+    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] [EditorRequired] public string? UserId { get; set; }
+}

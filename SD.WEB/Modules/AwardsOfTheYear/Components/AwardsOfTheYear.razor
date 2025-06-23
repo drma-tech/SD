@@ -5,25 +5,24 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
+@using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Suggestions.Components
-@using SD.WEB.Modules.Suggestions.Core
 @inherits PageCore<AwardsOfTheYear>
 
 <SeoHeader Title="Best awards of the year" Keywords="@(new[] { "Best awards of the year" })" Url="/best-awards-year"></SeoHeader>
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
-    <Div TextAlignment="TextAlignment.Center">
+    <div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
-    </Div>
+    </div>
 }
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" CommentImage="true">
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" CommentImage="true" IconName="@Icons.Material.Filled.Verified">
 </MediaListFull>
 
 @code {

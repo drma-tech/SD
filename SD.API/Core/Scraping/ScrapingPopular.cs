@@ -30,32 +30,30 @@ public partial class ScrapingPopular
 
             var ul = doc.DocumentNode.SelectNodes("//ul[starts-with(@class,'ipc-metadata-list')]")?.FirstOrDefault();
 
-            if (ul != null)
-                foreach (var node in ul.ChildNodes.Take(40))
+            if (ul == null) return data;
+
+            foreach (var node in ul.ChildNodes.Take(40))
+            {
+                var id = node.SelectNodes("div/div/div/div/div[2]/div[2]/a")?.FirstOrDefault()?.ChildAttributes("href").FirstOrDefault()?.Value;
+                var idRegex = ImdbId().Match(id ?? "");
+                var year = node.SelectNodes("div/div/div/div/div[2]/div[3]/span[1]")?.FirstOrDefault()?.InnerText.Trim().Split("–")[0];
+                _ = int.TryParse(year, out var yearFix);
+                var rating = node.SelectNodes("div/div/div/div/div[2]/span/div/span/span[1]/text()")?.FirstOrDefault()?.InnerText;
+
+                var item = new MostPopularDataDetail
                 {
-                    var id = node.SelectNodes("div/div/div/div/div[2]/div[2]/a")?.FirstOrDefault()
-                        ?.ChildAttributes("href").FirstOrDefault()?.Value;
-                    var idRegex = ImdbId().Match(id ?? "");
-                    var year = node.SelectNodes("div/div/div/div/div[2]/div[3]/span[1]")?.FirstOrDefault()?.InnerText
-                        .Trim().Split("–")[0];
-                    _ = int.TryParse(year, out var yearFix);
-                    var rating = node.SelectNodes("div/div/div/div/div[2]/span/div/span/span[1]/text()")
-                        ?.FirstOrDefault()?.InnerText;
+                    Id = $"tt{idRegex.Value}",
+                    RankUpDown = GetRankUpDown(node),
+                    Title = node.SelectNodes("div/div/div/div/div[2]/div[2]/a/h3/text()")?.FirstOrDefault()?.InnerText,
+                    Year = yearFix == 0 ? "" : yearFix.ToString(),
+                    Image = node.SelectNodes("div/div/div/div/div[1]/div/div[2]/img")?.FirstOrDefault()?.ChildAttributes("src").FirstOrDefault()?.Value,
+                    IMDbRating = rating
+                };
 
-                    var item = new MostPopularDataDetail
-                    {
-                        Id = $"tt{idRegex.Value}",
-                        RankUpDown = GetRankUpDown(node),
-                        Title = node.SelectNodes("div/div/div/div/div[2]/div[2]/a/h3/text()")?.FirstOrDefault()
-                            ?.InnerText,
-                        Year = yearFix == 0 ? "" : yearFix.ToString(),
-                        Image = node.SelectNodes("div/div/div/div/div[1]/div/div[2]/img")?.FirstOrDefault()
-                            ?.ChildAttributes("src").FirstOrDefault()?.Value,
-                        IMDbRating = rating
-                    };
+                if (item.Id is null or "tt") continue; //filter movie with bug on website
 
-                    data.Items.Add(item);
-                }
+                data.Items.Add(item);
+            }
 
             return data;
         }
@@ -75,8 +73,7 @@ public partial class ScrapingPopular
 
         var rankRegex = RankValue().Match(rank);
 
-        var imageRank = node.SelectNodes("div/div/div/div/div[2]/div[1]/span/svg")?.FirstOrDefault()
-            ?.ChildAttributes("class").FirstOrDefault()?.Value;
+        var imageRank = node.SelectNodes("div/div/div/div/div[2]/div[1]/span/svg")?.FirstOrDefault()?.ChildAttributes("class").FirstOrDefault()?.Value;
 
         if (string.IsNullOrEmpty(imageRank)) return null;
 

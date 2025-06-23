@@ -1,0 +1,66 @@
+﻿@using SD.WEB.Modules.Support.Resources
+
+<MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="@(!Support)" Style="overflow: auto;">
+    <MudDivider Class="mb-3 mt-8"></MudDivider>
+    <MudGrid Justify="Justify.Center" Style="overflow: auto;">
+        <MudItem xs="12" sm="12" md="3">
+            <MudList T="string" Color="Color.Surface">
+                <MudListSubheader>
+                    <MudText Typo="Typo.button">
+                        @SeoTranslations.AppName
+                    </MudText>
+                </MudListSubheader>
+                <MudListItem Text="@SeoTranslations.Description" Dense="true" Style="text-align: justify" />
+            </MudList>
+        </MudItem>
+        <MudItem xs="12" sm="3" md="2">
+            <MudList T="string">
+                <MudListSubheader>
+                    <MudText Typo="Typo.button">
+                        COMPANY
+                    </MudText>
+                </MudListSubheader>
+                <MudListItem Text="Website" Href="https://www.drma-tech.com/" Dense="true" Target="_blank" />
+            </MudList>
+        </MudItem>
+        <MudItem xs="12" sm="3" md="2">
+            <MudList T="string">
+                <MudListSubheader>
+                    <MudText Typo="Typo.button">
+                        PRODUCT
+                    </MudText>
+                </MudListSubheader>
+                <MudListItem Text="Website" Href="https://www.streamingdiscovery.com/" Dense="true" Target="_blank" />
+                <MudListItem Text="Google Play" Href="https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa" Dense="true" Target="_blank" />
+                <MudListItem Text="Microsoft Store" Href="https://apps.microsoft.com/store/detail/streaming-discovery/9PB1PKRDD8L0" Dense="true" Target="_blank" />
+                <MudListItem Text="HUAWEI AppGallery" Href="https://appgallery.huawei.com/app/C111325113" Dense="true" Target="_blank" />
+            </MudList>
+        </MudItem>
+        <MudItem xs="12" sm="3" md="2">
+            <MudList T="string">
+                <MudListSubheader>
+                    <MudText Typo="Typo.button">
+                        SUPPORT
+                    </MudText>
+                </MudListSubheader>
+                <MudListItem Text="Contact" Href="mailto:support@streamingdiscovery.com" Dense="true" />
+            </MudList>
+        </MudItem>
+        <MudItem xs="12" sm="3" md="2">
+            <MudList T="string">
+                <MudListSubheader>
+                    <MudText Typo="Typo.button">
+                        LEGAL
+                    </MudText>
+                </MudListSubheader>
+                <MudListItem Text="@Translations.LinkTerm" Href="@("support/terms/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))" Dense="true" Target="_self" />
+                <MudListItem Text="@Translations.LinkPrivacy" Href="@("support/privacy/" + (AppStateStatic.Language == Language.ptBR ? "pt" : "en"))" Dense="true" Target="_self" />
+                <MudListItem Text="Credits" Href="support/credits" Dense="true" Target="_self" />
+            </MudList>
+        </MudItem>
+    </MudGrid>
+</MudHidden>
+
+@code {
+    [Parameter] public bool Support { get; set; }
+}

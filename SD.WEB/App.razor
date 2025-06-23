@@ -1,4 +1,5 @@
-﻿@using SD.WEB.Modules.Auth.Resources
+﻿@using SD.WEB.Layout
+@using SD.WEB.Modules.Auth.Resources
 <ErrorBoundary @ref="_boundary">
     <ChildContent>
         <CascadingAuthenticationState>
@@ -6,45 +7,34 @@
                 <Found Context="routeData">
                     <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                         <NotAuthorized>
-                            <div class="alert alert-danger" role="alert">
+                            <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Dense="true">
                                 @Translations.YouAreNotAuthorized
-                            </div>
+                            </MudAlert>
                         </NotAuthorized>
                         <Authorizing>
-                            <div class="alert alert-warning" role="alert">
-                                <div class="spinner-border spinner-border-sm" role="status">
-                                    <span class="sr-only">@Translations.AuthenticationInProgress</span>
-                                </div>
+                            <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">
                                 @Translations.AuthenticationInProgress
-                            </div>
+                            </MudAlert>
                         </Authorizing>
                     </AuthorizeRouteView>
-                    <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+                    <FocusOnNavigate RouteData="@routeData" Selector="h1" />
                 </Found>
                 <NotFound>
                     <PageTitle>Not found</PageTitle>
                     <LayoutView Layout="@typeof(MainLayout)">
-                        <div class="alert alert-danger" role="alert">
+                        <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Dense="true">
                             @Translations.NothingThisAddress
-                        </div>
+                        </MudAlert>
                     </LayoutView>
                 </NotFound>
             </Router>
-
-            <ModalProvider></ModalProvider>
-            <MessageProvider/>
         </CascadingAuthenticationState>
     </ChildContent>
     <ErrorContent Context="ex">
-        <Alert Color="Color.Danger" Visible="true">
-            <AlertMessage>
-                <Blazorise.Icon Name="FontAwesomeIcons.Bug"></Blazorise.Icon>
-                This operation could not be processed. Please email our <Blazorise.Link To="mailto:support@streamingdiscovery.com" style="cursor: pointer;">support</Blazorise.Link> with the following details:
-            </AlertMessage>
-            <AlertDescription>
-                @ex.StackTrace
-            </AlertDescription>
-        </Alert>
+        <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Dense="true">
+            This operation could not be processed. Please email our <MudLink Href="mailto:support@streamingdiscovery.com" style="cursor: pointer;">support</MudLink> with the following details:
+            @ex.StackTrace
+        </MudAlert>
     </ErrorContent>
 </ErrorBoundary>
 

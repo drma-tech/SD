@@ -5,10 +5,8 @@
 @inject CacheYoutubeApi CacheYoutubeApi
 @inject IJSRuntime JsRuntime
 
-<HeaderComponent Title="@($"{Translations.TrailersTitle} - {Language.enUS.GetName()}")" IconImage="logo/one-media.png">
-    <Button Float="Float.End" Size="Size.ExtraSmall" Color="Color.Primary" Type="@ButtonType.Link" To="@("/trailers")">
-        <Blazorise.Icon Name="FontAwesomeIcons.ExpandArrowsAlt"></Blazorise.Icon>
-    </Button>
+<HeaderComponent Title="@($"{Translations.TrailersTitle}")" IconImage="logo/one-media.png">
+    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Href="@("/trailers")" />
 </HeaderComponent>
 <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
     <div id="@_gallerySwiperId" class="swiper">
@@ -16,17 +14,16 @@
             @foreach (var item in TrailerModel?.Data?.Items ?? [])
             {
                 <div class="swiper-slide swiper-slide-grid">
-                    <Blazorise.Link Target="Target.Blank" To="@($"https://www.youtube.com/watch?v={item?.id}")">
-                        <Card>
-                            <CardImage Source="@item?.url" Alt="@item?.title">
-                            </CardImage>
-                            <CardBody>
-                                <CardText Style="line-height: normal; font-size: 0.8rem;">
-                                    @item?.title.GetResume(50)
-                                </CardText>
-                            </CardBody>
-                        </Card>
-                    </Blazorise.Link>
+                    <MudLink Href="@($"https://www.youtube.com/watch?v={item?.id}")" Target="_blank">
+                        <MudCard Outlined="true">
+                            <MudCardContent Style="padding: 0;">
+                                <MudImage Src="@item?.url" Alt="@item?.title" Style="width: 100%;"></MudImage>
+                            </MudCardContent>
+                            <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
+                                @item?.title.GetResume(50)
+                            </MudCardContent>
+                        </MudCard>
+                    </MudLink>
                 </div>
             }
         </div>
@@ -52,7 +49,7 @@
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Toast, Logger);
+            ex.ProcessException(Snackbar, Logger);
         }
     }
 

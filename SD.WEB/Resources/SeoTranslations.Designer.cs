@@ -70,6 +70,24 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to See suggestions for movies and series from different awards (Oscar, Golden Globes, Emmys, etc.) or specialized websites (IMDB, TMDB, Rotten Tomatoes, etc.)..
+        /// </summary>
+        public static string CollectionsDescription {
+            get {
+                return ResourceManager.GetString("CollectionsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collections.
+        /// </summary>
+        public static string CollectionsTitle {
+            get {
+                return ResourceManager.GetString("CollectionsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manage your streaming platforms, track your watch progress, and discover what to watch next with ease. Browse expert-curated lists like award winners and critic picks - all in one place..
         /// </summary>
         public static string Description {
@@ -111,24 +129,6 @@ namespace SD.WEB.Resources {
         public static string ProvidersTitle {
             get {
                 return ResourceManager.GetString("ProvidersTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to See suggestions for movies and series from different awards (Oscar, Golden Globes, Emmys, etc.) or specialized websites (IMDB, TMDB, Rotten Tomatoes, etc.)..
-        /// </summary>
-        public static string SuggestionsDescription {
-            get {
-                return ResourceManager.GetString("SuggestionsDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Suggestions.
-        /// </summary>
-        public static string SuggestionsTitle {
-            get {
-                return ResourceManager.GetString("SuggestionsTitle", resourceCulture);
             }
         }
     }

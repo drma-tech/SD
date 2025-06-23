@@ -84,38 +84,10 @@ function showToast(message) {
     }, 5000);
 }
 
-function changeDarkMode() {
-    let theme = GetLocalStorage("theme");
-    theme = (theme == "light" ? "dark" : "light");
-    SetLocalStorage("theme", theme);
-
-    document.documentElement.setAttribute("data-bs-theme", theme);
-}
-
 (function () {
     const theme = GetLocalStorage("theme") || "light";
     document.documentElement.setAttribute("data-bs-theme", theme);
 })();
-
-function animationShake(cssClass) {
-    const alertBoxes = document.querySelectorAll(cssClass);
-
-    alertBoxes.forEach(el => {
-        el.classList.add("shake");
-        setTimeout(() => el.classList.remove("shake"), 300);
-    });
-
-    if (navigator.vibrate) { navigator.vibrate(200); }
-}
-
-function animationBlink(cssClass) {
-    const alertBoxes = document.querySelectorAll(cssClass);
-
-    alertBoxes.forEach(el => {
-        el.classList.add("blink");
-        setTimeout(() => { el.classList.remove("blink"); }, 1500);
-    });
-}
 
 async function detectBrowserFeatures() {
     const [simd, bulkMemory, bigInt] = await Promise.all([

@@ -1,0 +1,65 @@
+﻿@using SD.Shared.Models.Reviews
+@inherits ComponentCore<ReviewComponent>
+
+@inject CacheMetaCriticApi CacheMetaCriticApi
+
+<RenderControl Core="Core" Model="Model" ExpressionEmpty="@((CacheDocument<ReviewModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+    <MudList T="string">
+        @foreach (var item in Model?.Data?.Items ?? [])
+        {
+            <MudListItem Class="px-2 py-1">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <MudChip Color="GetColorByRating(item?.score)" Label="true" Style="padding: 0.2rem; height: auto;">@item?.score</MudChip>
+                    <MudText Typo="Typo.subtitle1" Color="Color.Secondary">@item?.reviewSite</MudText>
+                    <MudText Typo="Typo.subtitle1" Color="Color.Tertiary">@item?.reviewer</MudText>
+                </div>
+                <MudText Typo="Typo.body1" Align="Align.Justify" Style="line-height: normal;" Inline="true">@item?.quote</MudText>
+                <MudLink Href="@item?.reviewUrl" Target="_blank">Read full review</MudLink>
+            </MudListItem>
+        }
+    </MudList>
+</RenderControl>
+
+@code {
+    [Parameter] public string? ImdbId { get; set; }
+    [Parameter] public string? EnglishTitle { get; set; }
+    [Parameter] public DateTime? ReleaseDate { get; set; }
+    [Parameter] public MediaType? Type { get; set; }
+
+    public RenderControlCore<CacheDocument<ReviewModel>?> Core { get; set; } = new();
+    public CacheDocument<ReviewModel>? Model { get; set; }
+
+    protected override async Task LoadDataRender()
+    {
+        if (!string.IsNullOrEmpty(ImdbId))
+        {
+            if (Type == MediaType.movie)
+            {
+                Model = await CacheMetaCriticApi.GetMovieReviews(ImdbId, EnglishTitle, ReleaseDate, Core);
+            }
+            else
+            {
+                Model = await CacheMetaCriticApi.GetShowReviews(ImdbId, EnglishTitle, ReleaseDate, Core);
+            }
+        }
+        else
+        {
+            Core.LoadingFinished?.Invoke(null);
+        }
+    }
+
+    private static Color GetColorByRating(int? val)
+    {
+        if (!val.HasValue) return Color.Secondary;
+
+        val = val / 10;
+
+        return val switch
+        {
+            >= 8 => Color.Success,
+            >= 6 => Color.Warning,
+            _ => Color.Error
+        };
+    }
+
+}

@@ -1,5 +1,3 @@
-﻿<Alert Color="Color.Warning" Visible="true">
-    <Blazorise.Icon Name="FontAwesomeIcons.Bullhorn"></Blazorise.Icon>
-    <AlertMessage>@GlobalTranslations.FeatureUnavailableMessage</AlertMessage>
-    <AlertDescription>@GlobalTranslations.FeatureUnavailableDescription</AlertDescription>
-</Alert>
+﻿<MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">
+    @GlobalTranslations.FeatureUnavailableMessage @GlobalTranslations.FeatureUnavailableDescription
+</MudAlert>

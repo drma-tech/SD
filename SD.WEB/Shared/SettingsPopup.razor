@@ -1,29 +1,27 @@
-﻿@using SD.WEB.Modules.Profile
-@using Button = Button
-@using SD.WEB.Modules.Shared
+﻿@using SD.WEB.Modules.Shared
+
 @inherits ComponentCore<SettingsPopup>
 
 @inject IJSRuntime JsRuntime
 
-<ModalHeader>
-    <ModalTitle Size="HeadingSize.Is5">@GlobalTranslations.Settings</ModalTitle>
-    <CloseButton/>
-</ModalHeader>
-<ModalBody MaxHeight="70">
-    <Country TValue="Region" TEnum="Region" For="@(() => AppStateStatic.Region)" SelectedValue="@AppStateStatic.Region"
-             SelectedValueChanged="RegionValueChanged" LabelSize="LabelSize.Short">
-    </Country>
-    <Language TValue="Language" TEnum="Language" For="@(() => AppStateStatic.Language)" SelectedValue="@AppStateStatic.Language"
-              SelectedValueChanged="LanguageValueChanged" LabelSize="LabelSize.Short">
-    </Language>
-</ModalBody>
-<ModalFooter>
-    <Button Color="Color.Secondary" Clicked="@(() => { ModalService.Hide(); })" Size="Size.Small">
-        @Button.Close
-    </Button>
-</ModalFooter>
+<MudDialog Style="width: 100%">
+    <DialogContent>
+        <Country TEnum="Region" TValue="Region" For="@(() => AppStateStatic.Region)" SelectedValue="@AppStateStatic.Region" SelectedValueChanged="RegionValueChanged">
+        </Country>
+        <Language TEnum="Language" TValue="Language" For="@(() => AppStateStatic.Language)" SelectedValue="@AppStateStatic.Language" SelectedValueChanged="LanguageValueChanged">
+        </Language>
+        <MudToggleIconButton Toggled="@AppStateStatic.DarkMode" ToggledChanged="DarkModeChanged"
+                             Icon="@Icons.Material.Filled.DarkMode" ToggledIcon="@Icons.Material.Filled.LightMode" />
+        <span>@(AppStateStatic.DarkMode ? "Light" : "Dark") Mode</span>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })">@Button.Close</MudButton>
+    </DialogActions>
+</MudDialog>
 
 @code {
+
+    [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
     protected override async Task LoadDataRender()
     {
@@ -46,6 +44,13 @@
     {
         await JsRuntime.InvokeAsync<string>("SetLocalStorage", "language", value.GetName(false));
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("language", value.GetName(false)), true);
+    }
+
+    protected async Task DarkModeChanged(bool value)
+    {
+        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", value.ToString());
+
+        AppStateStatic.ChangeDarkMode(value);
     }
 
 }

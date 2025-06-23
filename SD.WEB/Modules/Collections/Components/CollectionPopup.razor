@@ -1,0 +1,242 @@
+﻿@using SD.Shared.Models.List.Tmdb
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Collections.Resources
+@using Button = SD.WEB.Resources.Button
+@inherits ComponentCore<CollectionPopup>
+
+@inject TmdbApi TmdbApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
+
+<MudDialog Style="width: 100%">
+    <DialogContent>
+        <RenderControl Core="Core" Model="Collection" ExpressionEmpty="@((TmdbCollection? obj) => obj == null || obj.parts.Empty())">
+            <div class="grid-relative-container-md mb-2">
+                @foreach (var item in Collection?.parts.OrderBy(o => o.release_date.GetDate()) ?? Enumerable.Empty<Part>())
+                {
+                    <div>
+                        <div onclick="@(async () => await CollectionClicked(item))" style="position: relative;">
+                            @{
+                                var releaseDate = item.release_date.GetDate();
+                            }
+                            @if (releaseDate.HasValue)
+                            {
+                                if (releaseDate.Value < DateTime.Now.AddMonths(-3))
+                                {
+                                    <MudChip T="string" Color="Color.Info" Size="Size.Medium" Label="true"
+                                             Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
+                                        @releaseDate.Value.Year
+                                    </MudChip>
+                                }
+                                else
+                                {
+                                    <MudChip T="string" Color="Color.Info" Size="Size.Medium" Label="true"
+                                             Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
+                                        @releaseDate.Value.ToShortDateString()
+                                    </MudChip>
+                                }
+                            }
+                            @{
+                                if (Type == MediaType.movie) //you don't put seasons as wishes
+                                {
+                                    var wishedMovie = Wish?.Contains(MediaType.movie, item.id.ToString()) ?? false;
+                                    if (wishedMovie)
+                                    {
+                                        <MudIcon Icon="@Icons.Material.Filled.Bookmark" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
+                                    }
+                                }
+
+                                var watching = Watching?.GetWatchingItems(Type, Collection?.id.ToString()).Any(a => a == item.id.ToString()) ?? false;
+                                if (watching)
+                                {
+                                    <MudIcon Icon="@Icons.Material.Filled.Visibility" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
+                                }
+
+                                <MudImage Src="@(TmdbOptions.SmallPosterPath + item.poster_path)" FallbackSrc="images/no-image.png" Alt="@item.title"
+                                          Fluid="true" ObjectFit="ObjectFit.Contain" Style=@($"cursor: pointer;")>
+                                </MudImage>
+                            }
+                        </div>
+
+                        @item.title
+                    </div>
+                }
+            </div>
+        </RenderControl>
+    </DialogContent>
+    <DialogActions>
+        @if (ShowPrivateAction)
+        {
+            <MudButton Color="Color.Primary" OnClick="@IsWatched">
+                @Translations.ButtonWatched
+            </MudButton>
+            <MudButton Color="Color.Error" OnClick="@RemoveCollection">
+                @GlobalTranslations.RemoveCollection
+            </MudButton>
+        }
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })">
+            @Button.Close
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
+
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
+    [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
+    [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+
+    [Parameter] public string? CollectionId { get; set; }
+    [Parameter] public MediaType? Type { get; set; }
+
+    private RenderControlCore<TmdbCollection?>? Core { get; } = new();
+    private TmdbCollection? Collection { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (string.IsNullOrEmpty(CollectionId)) throw new ArgumentNullException(nameof(CollectionId));
+        if (Type == null) throw new ArgumentNullException(nameof(Type));
+
+        WatchedListApi.DataChanged += model =>
+        {
+            Watched = model;
+            WatchedChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            Watching = model;
+            WatchingChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            Wish = model;
+            WishChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        Core?.LoadingStarted?.Invoke();
+
+        if (Type == MediaType.movie)
+        {
+            var parameters = new Dictionary<string, string>
+            {
+                { "api_key", TmdbOptions.ApiKey },
+                { "language", AppStateStatic.Language.GetName(false) ?? "en-US" }
+            };
+
+            Collection = await TmdbApi.GetCollection(CollectionId, parameters);
+        }
+        else
+        {
+            var show = await TmdbApi.GetMediaDetail(CollectionId, MediaType.tv);
+
+            Collection = new TmdbCollection
+            {
+                id = int.Parse(show.tmdb_id ?? "0"),
+                name = show.title ?? "error"
+            };
+
+            foreach (var season in show.Collection)
+            {
+                Collection.parts.Add(new Part
+                {
+                    id = int.Parse(season.id ?? "0"),
+                    season_number = season.SeasonNumber,
+                    title = season.title ?? "error",
+                    release_date = season.release_date.ToString() ?? "",
+                    poster_path = string.IsNullOrEmpty(season.poster_small) ? "" : TmdbOptions.SmallPosterPath + season.poster_small
+                });
+            }
+        }
+
+        await MudDialog!.SetTitleAsync(Collection?.name);
+        Core?.LoadingFinished?.Invoke(Collection);
+    }
+
+    public void HideModal()
+    {
+        MudDialog?.Close();
+    }
+
+    private async Task CollectionClicked(Part? item)
+    {
+        if (Type == MediaType.movie)
+            await OpenPopupMedia(item, Type);
+        else
+            await OpenPopupSeason(item);
+    }
+
+    private async Task OpenPopupMedia(Part? part, MediaType? mediaType)
+    {
+        await DialogService.MediaPopup(Watched, Watching, Wish, mediaType, part?.id.ToString(), ShowPrivateAction, IsAuthenticated);
+    }
+
+    private async Task OpenPopupSeason(Part? part)
+    {
+        await DialogService.SeasonPopup(Collection?.name, part?.title, CollectionId, part?.season_number, IsAuthenticated);
+    }
+
+    private async Task IsWatched()
+    {
+        await DialogService.SelectItemsCollection(
+            Collection?.parts.Select(TmdbApi.ConvertToCollection).ToList() ?? [],
+            Watching?.GetWatchingItems(Type, Collection?.id.ToString()).ToHashSet() ?? [],
+            new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(Type, Collection, CollectionId, list, Collection?.parts.Count ?? 0)));
+    }
+
+    private async Task SelectedItemsChanged(MediaType? type, TmdbCollection? collection, string? tmdbId, HashSet<string> items, int collectionItemsCount)
+    {
+        if (type == null) throw new ArgumentNullException(nameof(type));
+        if (collection == null) throw new ArgumentNullException(nameof(collection));
+        if (tmdbId.Empty()) throw new ArgumentNullException(nameof(tmdbId));
+        if (items.Empty()) throw new ArgumentNullException(nameof(items));
+        var client = await PrincipalApi.Get(true);
+
+        //watched list
+
+        if (type == MediaType.movie)
+        {
+            Watched = await WatchedListApi.Add(type, Watched, string.Join(',', items), client?.ClientePaddle);
+        }
+
+        //watching list
+
+        WatchingListItem item;
+
+        if (type == MediaType.movie)
+        {
+            item = new WatchingListItem(collection.id.ToString(), collection?.name, collection?.poster_path?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
+        }
+        else
+        {
+            var media = await TmdbApi.GetMediaDetail(tmdbId, type.Value);
+
+            item = new WatchingListItem(tmdbId, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
+        }
+
+        Watching = await WatchingListApi.Add(type, Watching, item, client?.ClientePaddle);
+
+        HideModal();
+    }
+
+    private async Task RemoveCollection()
+    {
+        Watching = await WatchingListApi.Remove(Type, CollectionId);
+
+        HideModal();
+    }
+
+}

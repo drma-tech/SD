@@ -1,0 +1,162 @@
+﻿@page "/collections"
+<SeoHeader Title="@SeoTranslations.CollectionsTitle" Description="@SeoTranslations.CollectionsDescription" Url="/collections"></SeoHeader>
+@using SD.WEB.Modules.Collections.Resources
+@inherits PageCore<CollectionsPage>
+
+@inject IJSRuntime JsRuntime
+
+@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
+{
+    <div TextAlignment="TextAlignment.Center">
+        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="3652800350"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+}
+
+<HeaderComponent Title="@Translations.TitleAwards" IconName="@Icons.Material.Filled.EmojiEvents"></HeaderComponent>
+<div id="@_swiperAwards" class="swiper mb-2">
+    <div class="swiper-wrapper">
+        @foreach (var item in Awards)
+        {
+            <div class="swiper-slide">
+                <MudLink Href="@item.Link" Target="_self">
+                    <MudCard Outlined="true">
+                        <MudCardContent Style="padding: 0;">
+                            <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                        </MudCardContent>
+                        <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
+                            @item.Name
+                        </MudCardContent>
+                    </MudCard>
+                </MudLink>
+            </div>
+        }
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+<HeaderComponent Title="@Translations.TitleSpecializedSites" IconName="@Icons.Material.Filled.Verified"></HeaderComponent>
+<div id="@_swiperSites" class="swiper mb-2">
+    <div class="swiper-wrapper">
+        @foreach (var item in Sites)
+        {
+            <div class="swiper-slide">
+                <MudLink Href="@item.Link" Target="_self">
+                    <MudCard Outlined="true">
+                        <MudCardContent Style="padding: 0;">
+                            <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                        </MudCardContent>
+                        <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
+                            @item.Name
+                        </MudCardContent>
+                    </MudCard>
+                </MudLink>
+            </div>
+        }
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+<HeaderComponent Title="@Translations.TitleSpecials" IconName="@Icons.Material.Filled.NewReleases"></HeaderComponent>
+<div id="@_swiperSpecials" class="swiper mb-2">
+    <div class="swiper-wrapper">
+        @foreach (var item in Specials)
+        {
+            <div class="swiper-slide">
+                <MudLink Href="@item.Link" Target="_self">
+                    <MudCard Outlined="true">
+                        <MudCardContent Style="padding: 0;">
+                            <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                        </MudCardContent>
+                        <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
+                            @item.Name
+                        </MudCardContent>
+                    </MudCard>
+                </MudLink>
+            </div>
+        }
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+@code {
+    private List<Item> Awards { get; } = [];
+    private List<Item> Sites { get; } = [];
+    private List<Item> Specials { get; } = [];
+
+    public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
+
+    private readonly string _swiperAwards = $"swiper-{Guid.NewGuid()}";
+    private readonly string _swiperSites = $"swiper-{Guid.NewGuid()}";
+    private readonly string _swiperSpecials = $"swiper-{Guid.NewGuid()}";
+
+    public class Item
+    {
+        public string? Name { get; set; }
+        public string? LogoPath { get; set; }
+        public string? Link { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
+
+        Awards.Add(new Item { Name = "Oscar", LogoPath = "logo/oscar.png", Link = "/collections/oscar" });
+        Awards.Add(new Item { Name = "Emmy Awards", LogoPath = "logo/emmy-awards.png", Link = "/collections/emmy-awards" });
+        Awards.Add(new Item { Name = "Golden Globe Awards", LogoPath = "logo/golden-globes.png", Link = "/collections/golden-globes" });
+        Awards.Add(new Item { Name = "Bafta", LogoPath = "logo/bafta.png", Link = "/collections/bafta" });
+        Awards.Add(new Item { Name = "Critics Choice Awards", LogoPath = "logo/critics.png", Link = "/collections/critics-choice" });
+        Awards.Add(new Item { Name = "People's Choice Awards", LogoPath = "logo/peoples.png", Link = "/collections/peoples" });
+        Awards.Add(new Item { Name = "Festival de Cannes", LogoPath = "logo/festival-cannes.png", Link = "/collections/festival-cannes" });
+        Awards.Add(new Item { Name = "Crunchyroll Anime Awards", LogoPath = "logo/crunchyroll.png", Link = "/collections/crunchyroll" });
+        Awards.Add(new Item { Name = "Annie Awards", LogoPath = "logo/annie.png", Link = "/collections/annie" });
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Sites.Add(new Item { Name = "IMDB", LogoPath = "logo/imdb.png", Link = "/collections/imdb" });
+        Sites.Add(new Item { Name = "Rotten Tomatoes", LogoPath = "logo/rotten-tomatoes.png", Link = "/collections/rotten-tomatoes" });
+        Sites.Add(new Item { Name = "Metacritic", LogoPath = "logo/metacritic.png", Link = "/collections/metacritic" });
+        Sites.Add(new Item { Name = "TMDB", LogoPath = "logo/tmdb.png", Link = "/collections/tmdb" });
+        Sites.Add(new Item { Name = "Trakt", LogoPath = "logo/trakt.png", Link = "/collections/trakt" });
+        Sites.Add(new Item { Name = "Hollywood Reporter", LogoPath = "logo/hollywood-reporter.png", Link = "/collections/hollywood-reporter" });
+        Sites.Add(new Item { Name = "Empire", LogoPath = "logo/empire.png", Link = "/collections/empire" });
+        Sites.Add(new Item { Name = "Rolling Stone", LogoPath = "logo/rolling-stone.png", Link = "/collections/rolling-stone" });
+        Sites.Add(new Item { Name = "Filmaffinity", LogoPath = "logo/film-affinity.png", Link = "/collections/film-affinity" });
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Specials.Add(new Item { Name = "Marvel", LogoPath = "logo/marvel.png", Link = "/collections/upcoming-marvel" });
+        Specials.Add(new Item { Name = "DC", LogoPath = "logo/dc.png", Link = "/collections/upcoming-dc" });
+        Specials.Add(new Item { Name = "Star Wars", LogoPath = "logo/star-wars.png", Link = "/collections/upcoming-star-wars" });
+        Specials.Add(new Item { Name = "Netflix", LogoPath = "logo/netflix-logo.png", Link = "/collections/upcoming-netflix" });
+        Specials.Add(new Item { Name = "Walt Disney Pictures", LogoPath = "logo/disney.png", Link = "/collections/upcoming-disney" });
+        Specials.Add(new Item { Name = "Highest grossing movies", LogoPath = "logo/grossing-movies.png", Link = "/collections/grossing-movies" });
+        Specials.Add(new Item { Name = "Most Expected Movies of 2025", LogoPath = "logo/rotten-tomatoes.png", Link = "/collections/movies-2025" });
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperAwards, 100);
+            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperSites, 100);
+            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperSpecials, 100);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+}

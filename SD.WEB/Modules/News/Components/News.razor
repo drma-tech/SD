@@ -10,34 +10,35 @@
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
-    <Div TextAlignment="TextAlignment.Center">
+    <div TextAlignment="TextAlignment.Center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5922021468622891" data-ad-slot="1935613755"></ins>
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
-    </Div>
+    </div>
 }
 
-<HeaderComponent Title="@($"{Translations.NewsTitle} - Rotten Tomatoes")"/>
+<HeaderComponent Title="@($"{Translations.NewsTitle} - Rotten Tomatoes")" IconImage="logo/rotten-tomatoes.png" />
 <RenderControl Core="Core" Model="NewsList" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
     <div class="grid-relative-container-lg">
         @foreach (var item in NewsList?.Data?.Items ?? [])
         {
-            <Card>
-                <CardImage Source="@item.url_img" Alt="@item.title">
-                </CardImage>
-                <CardBody>
-                    <CardText Style="font-size: 0.8rem;">
+            <MudCard Outlined="true">
+                <MudCardContent Style="padding: 0; text-align: justify; line-height: normal;">
+                    <MudImage Src="@item.url_img" Alt="@item.title" Style="width: 100%;"></MudImage>
+                    <div class="pa-2">
                         @if (!string.IsNullOrEmpty(item.title))
                         {
                             @((MarkupString)item.title)
                         }
-                    </CardText>
-                    <Button Color="Color.Primary" Type="@ButtonType.Link" To="@item.link" Target="Target.Blank" Size="Size.Small" Class="mt-2">
+                    </div>
+                </MudCardContent>
+                <MudCardActions style="align-self: center;">
+                    <MudButton Color="Color.Primary" Variant="Variant.Text" Href="@item.link" Target="_blank">
                         @Button.ReadMore
-                    </Button>
-                </CardBody>
-            </Card>
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
         }
     </div>
 </RenderControl>

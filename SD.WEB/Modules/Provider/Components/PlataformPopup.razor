@@ -1,0 +1,135 @@
+﻿@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Provider.Resources
+@using SD.WEB.Modules.Collections.Core
+@using Button = SD.WEB.Resources.Button
+@inherits ComponentCore<PlataformPopup>
+
+@inject MyProvidersApi MyProvidersApi
+@inject TmdbDiscoveryApi TmdbDiscoveryApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
+
+<MudDialog Style="width: 100%">
+    <DialogContent>
+        @if (Provider == null)
+        {
+            <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Delete">
+                @Translations.NotFound
+            </MudAlert>
+        }
+        else
+        {
+            <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
+                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
+            </MediaList>
+            <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
+                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
+            </MediaList>
+            <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
+                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
+            </MediaList>
+        }
+    </DialogContent>
+    <DialogActions>
+        @if (MyProviders?.Items.Any(a => a.id == ProviderId) ?? false)
+        {
+            <MudButton Color="Color.Error" StartIcon="@Icons.Material.Filled.Star" OnClick="@Remove" Disabled="@(!IsAuthenticated)">@Button.Remove</MudButton>
+        }
+        else
+        {
+            <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Star" OnClick="@Add" Disabled="@(!IsAuthenticated)">@Button.Add</MudButton>
+        }
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })">@Button.Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
+
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+
+    [Parameter] public ProviderModel? Provider { get; set; }
+    [Parameter] public WatchedList? Watched { get; set; }
+    [Parameter] public WatchingList? Watching { get; set; }
+    [Parameter] public WishList? Wish { get; set; }
+    [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
+    [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
+    [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
+    [Parameter] public bool ShowPrivateAction { get; set; }
+    [Parameter] public string? WatchRegion { get; set; }
+    [Parameter] public string? ProviderId { get; set; }
+
+    private MyProviders? MyProviders { get; set; }
+
+    protected override void OnInitialized()
+    {
+        WatchedListApi.DataChanged += model =>
+        {
+            Watched = model;
+            WatchedChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            Watching = model;
+            WatchingChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            Wish = model;
+            WishChanged.InvokeAsync(model);
+            StateHasChanged();
+        };
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
+    }
+
+    private static Dictionary<string, string> GetExtraParameters(string? providerId, string? sortBy, string? watchRegion)
+    {
+        if (providerId == null) throw new ArgumentNullException(nameof(providerId));
+        if (sortBy == null) throw new ArgumentNullException(nameof(sortBy));
+        if (watchRegion == null) throw new ArgumentNullException(nameof(watchRegion));
+
+        return new Dictionary<string, string> { { "with_watch_providers", providerId }, { "sort_by", sortBy }, { "watch_region", watchRegion } };
+    }
+
+    private async Task Add()
+    {
+        try
+        {
+            MyProviders ??= new MyProviders();
+
+            var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = AppStateStatic.Region };
+            var client = await PrincipalApi.Get(true);
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, client?.ClientePaddle);
+
+            Snackbar.Add(GlobalTranslations.OperationCompleted, Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    private async Task Remove()
+    {
+        try
+        {
+            MyProviders ??= new MyProviders();
+
+            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == ProviderId));
+
+            Snackbar.Add(GlobalTranslations.OperationCompleted, Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+}
