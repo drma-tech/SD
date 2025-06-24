@@ -71,20 +71,15 @@ public partial class ScrapingPopular
 
         if (string.IsNullOrEmpty(rank)) return null;
 
-        var rankRegex = RankValue().Match(rank);
-
         var imageRank = node.SelectNodes("div/div/div/div/div[2]/div[1]/span/svg")?.FirstOrDefault()?.ChildAttributes("class").FirstOrDefault()?.Value;
 
         if (string.IsNullOrEmpty(imageRank)) return null;
 
         if (imageRank.Contains("base flat")) return "0";
-        if (imageRank.Contains("base up")) return $"+{rankRegex.Value}";
-        if (imageRank.Contains("base down")) return $"-{rankRegex.Value}";
+        if (imageRank.Contains("base up")) return $"+{rank}";
+        if (imageRank.Contains("base down")) return $"-{rank}";
         return null;
     }
-
-    [GeneratedRegex("(?<=\\()([0-9]+)(?=\\))")]
-    private static partial Regex RankValue();
 
     [GeneratedRegex("(?<=\\/tt)(\\w*)(?=\\/)")]
     private static partial Regex ImdbId();
