@@ -43,10 +43,11 @@ public partial class ScrapingPopular
                 string? image = null;
                 if (srcset != null)
                 {
-                    var set = srcset.Split(',');
-                    if (set.Length > 1)
+                    var matches = ImageSrcSet().Matches(srcset);
+
+                    if (matches.Count > 1)
                     {
-                        image = set[1].Trim().Split(' ')[0];
+                        image = matches[1].Groups[1].Value;
                     }
                 }
 
@@ -93,4 +94,7 @@ public partial class ScrapingPopular
 
     [GeneratedRegex("(?<=\\/tt)(\\w*)(?=\\/)")]
     private static partial Regex ImdbId();
+
+    [GeneratedRegex(@"(https:[^\s]+)\s\d+w")]
+    private static partial Regex ImageSrcSet();
 }
