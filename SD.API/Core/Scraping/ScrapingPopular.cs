@@ -39,6 +39,16 @@ public partial class ScrapingPopular
                 var year = node.SelectNodes("div/div/div/div/div[2]/div[3]/span[1]")?.FirstOrDefault()?.InnerText.Trim().Split("–")[0];
                 _ = int.TryParse(year, out var yearFix);
                 var rating = node.SelectNodes("div/div/div/div/div[2]/span/div/span/span[1]/text()")?.FirstOrDefault()?.InnerText;
+                var srcset = node.SelectNodes("div/div/div/div/div[1]/div/div[1]/img")?.FirstOrDefault()?.ChildAttributes("srcset").FirstOrDefault()?.Value;
+                string? image = null;
+                if (srcset != null)
+                {
+                    var set = srcset.Split(',');
+                    if (set.Length > 1)
+                    {
+                        image = set[1].Trim().Split(' ')[0];
+                    }
+                }
 
                 var item = new MostPopularDataDetail
                 {
@@ -46,7 +56,7 @@ public partial class ScrapingPopular
                     RankUpDown = GetRankUpDown(node),
                     Title = node.SelectNodes("div/div/div/div/div[2]/div[2]/a/h3/text()")?.FirstOrDefault()?.InnerText,
                     Year = yearFix == 0 ? "" : yearFix.ToString(),
-                    Image = node.SelectNodes("div/div/div/div/div[1]/div/div[1]/img")?.FirstOrDefault()?.ChildAttributes("src").FirstOrDefault()?.Value,
+                    Image = image,
                     IMDbRating = rating
                 };
 
