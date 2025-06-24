@@ -46,7 +46,7 @@ public partial class ScrapingPopular
                     RankUpDown = GetRankUpDown(node),
                     Title = node.SelectNodes("div/div/div/div/div[2]/div[2]/a/h3/text()")?.FirstOrDefault()?.InnerText,
                     Year = yearFix == 0 ? "" : yearFix.ToString(),
-                    Image = node.SelectNodes("div/div/div/div/div[1]/div/div[2]/img")?.FirstOrDefault()?.ChildAttributes("src").FirstOrDefault()?.Value,
+                    Image = node.SelectNodes("div/div/div/div/div[1]/div/div[1]/img")?.FirstOrDefault()?.ChildAttributes("src").FirstOrDefault()?.Value,
                     IMDbRating = rating
                 };
 
@@ -67,7 +67,7 @@ public partial class ScrapingPopular
     {
         if (node == null) return null;
 
-        var rank = node.SelectNodes("div/div/div/div/div[2]/div[1]")?.FirstOrDefault()?.InnerText;
+        var rank = node.SelectNodes("div/div/div/div/div[2]/div[1]/span")?.FirstOrDefault()?.InnerText;
 
         if (string.IsNullOrEmpty(rank)) return null;
 
