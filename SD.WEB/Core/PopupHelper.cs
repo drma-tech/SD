@@ -60,7 +60,7 @@ public static class PopupHelper
 
     public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchedList? watched, WatchingList? watching, WishList? wish,
         HashSet<MediaDetail> items, IMediaListApi? mediaListApi, EnumLists? list, bool isImdb, MediaType? typeSelected, Dictionary<string, string> stringParameters,
-        bool showPrivateAction, bool isAuthenticated, bool commentImage = false)
+        bool showPrivateAction, bool isAuthenticated, bool commentsIsImage = false)
     {
         var parameters = new DialogParameters<CompleteListPopup>
         {
@@ -81,7 +81,7 @@ public static class PopupHelper
             { x => x.StringParameters, stringParameters },
             { x => x.ShowPrivateAction, showPrivateAction },
             { x => x.IsAuthenticated, isAuthenticated },
-            { x => x.CommentImage, commentImage },
+            { x => x.CommentsIsImage, commentsIsImage },
         };
 
         await service.ShowAsync<CompleteListPopup>(list != null ? list.GetName() : titleHead, parameters, Options(MaxWidth.Large));

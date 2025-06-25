@@ -20,11 +20,11 @@
     <div class="swiper-wrapper">
         @foreach (var item in Awards)
         {
-            <div class="swiper-slide">
+            <div class="swiper-slide" style="height: auto !important;">
                 <MudLink Href="@item.Link" Target="_self">
                     <MudCard Outlined="true">
                         <MudCardContent Style="padding: 0;">
-                            <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                            <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
                         </MudCardContent>
                         <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
                             @item.Name
@@ -43,11 +43,11 @@
     <div class="swiper-wrapper">
         @foreach (var item in Sites)
         {
-            <div class="swiper-slide">
+            <div class="swiper-slide" style="height: auto !important;">
                 <MudLink Href="@item.Link" Target="_self">
                     <MudCard Outlined="true">
                         <MudCardContent Style="padding: 0;">
-                            <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                            <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
                         </MudCardContent>
                         <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
                             @item.Name
@@ -66,11 +66,11 @@
     <div class="swiper-wrapper">
         @foreach (var item in Specials)
         {
-            <div class="swiper-slide">
+            <div class="swiper-slide" style="height: auto !important;">
                 <MudLink Href="@item.Link" Target="_self">
                     <MudCard Outlined="true">
                         <MudCardContent Style="padding: 0;">
-                            <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                            <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
                         </MudCardContent>
                         <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
                             @item.Name

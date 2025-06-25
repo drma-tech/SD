@@ -39,7 +39,7 @@
                 @foreach (var item in Items.Take(GetTotalItems))
                 {
                     var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-                    <div class="swiper-slide">
+                    <div class="swiper-slide" style="height: auto !important;">
                         <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType"
                                          Clicked="@(async () => await ShowMediaPopup(item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
                         </PosterComponent>

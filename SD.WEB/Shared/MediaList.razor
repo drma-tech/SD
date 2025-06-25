@@ -11,7 +11,7 @@
     <HeaderComponent Title="@Title" IconImage="@IconImage">
         @if (ShowFilter)
         {
-            <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Value="TypeSelected" ValueChanged="@(async (MediaType type) => await TypeSelectedChanged(type))" 
+            <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Value="TypeSelected" ValueChanged="@(async (MediaType type) => await TypeSelectedChanged(type))"
                             Color="Color.Primary" Class="me-2">
                 <MudToggleItem Value="@MediaType.movie" SelectedIcon="@Icons.Material.Filled.Check">
                     <MudIcon Icon="@Icons.Material.Filled.Movie" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
@@ -27,19 +27,21 @@
                 </MudToggleItem>
             </MudToggleGroup>
         }
-        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" OnClick="@OpenCompleteList"/>
+        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" OnClick="@OpenCompleteList" />
     </HeaderComponent>
 }
 
-<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())" >
+<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
     <div id="@_swiperId" class="swiper mb-2">
         <div class="swiper-wrapper">
             @foreach (var item in Items)
             {
-                <div class="swiper-slide">
-                    <PosterComponent Date="@(item.release_date ?? DateTime.MaxValue)" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" Comments="@item.comments"
-                                     TmdbId="@item.tmdb_id" MediaType="@item.MediaType" Clicked="@(() => OpenPopupMedia(item))" RankUpDown="@item.RankUpDown"
-                                     WatchedList="Watched" WishList="Wish" OnlyYear="OnlyYear" CommentImage="CommentImage">
+                <div class="swiper-slide" style="height: auto !important;">
+                    <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                     Date="@item.release_date" OnlyYear="OnlyYear"
+                                     RankUpDown="@item.RankUpDown" Rating="@item.rating"
+                                     WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id"
+                                     Comments="@item.comments" CommentsIsImage="CommentsIsImage">
                     </PosterComponent>
                 </div>
             }
@@ -62,7 +64,7 @@
     [Parameter] public bool ShowFilter { get; set; }
     [Parameter] public bool OnlyYear { get; set; }
     [Parameter] public bool OrderByComments { get; set; }
-    [Parameter] public bool CommentImage { get; set; }
+    [Parameter] public bool CommentsIsImage { get; set; }
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; }
@@ -161,7 +163,7 @@
     public async Task OpenCompleteList()
     {
         await DialogService.CompleteListPopup(TitleHead, Watched, Watching, Wish, Items, MediaListApi, List, IsImdb, TypeSelected, StringParameters,
-            ShowPrivateAction, IsAuthenticated, CommentImage);
+            ShowPrivateAction, IsAuthenticated, CommentsIsImage);
     }
 
     private async Task OpenPopupMedia(MediaDetail? media)

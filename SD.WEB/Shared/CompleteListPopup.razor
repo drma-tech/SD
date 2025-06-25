@@ -13,7 +13,7 @@
         <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) => { Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged(); })"
                        IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
                        StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false"
-                       Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated" CommentImage="CommentImage">
+                       Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated" CommentsIsImage="CommentsIsImage">
         </MediaListFull>
     </DialogContent>
     <DialogActions>
@@ -44,7 +44,7 @@
     [Parameter] public bool IsImdb { get; set; }
     [Parameter] public MediaType? TypeSelected { get; set; }
     [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
-    [Parameter] public bool CommentImage { get; set; }
+    [Parameter] public bool CommentsIsImage { get; set; }
 
     protected override void OnInitialized()
     {

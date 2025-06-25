@@ -1,122 +1,54 @@
 ﻿@inherits ComponentCore<PosterComponent>
 
-<div>
-    <div @onclick="@Clicked" style="cursor: pointer; position: relative;">
-        @if (MediaType == MediaType.person)
-        {
-            <MudChip T="string" Color="Color.Info" Size="Size.Medium" Label="true"
-                     Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1; text-align: center;">
-                @Title
-            </MudChip>
-        }
-        @if (Runtime.HasValue)
-        {
-            <MudChip T="string" Color="Color.Info" Size="Size.Medium" Label="true"
-                     Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
-                @Runtime.FormatRuntime()
-            </MudChip>
-        }
-        @if (Date.HasValue)
-        {
-            if (Date.Value < DateTime.Now.AddMonths(-3) || OnlyYear)
-            {
-                <MudChip T="string" Color="Color.Info" Size="Size.Medium" Label="true"
-                         Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
-                    @Date.Value.Year
-                </MudChip>
-            }
-            else
-            {
-                <MudChip T="string" Color="Color.Info" Size="Size.Medium" Label="true"
-                         Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
-                    @Date.Value.ToShortDateString()
-                </MudChip>
-            }
-        }
-        @if (Rating.HasValue && string.IsNullOrEmpty(RankUpDown))
-        {
-            if (Rating >= 7.95)
-            {
-                <MudChip T="string" Color="Color.Success" Size="Size.Medium" Label="true"
-                         Style="padding: 0.2rem; position: absolute; top: 0; right: 0; white-space: inherit; height: auto; z-index: 1;">
-                    @Rating.Value.ToString("#.#")
-                </MudChip>
-            }
-            else if (Rating >= 5.95)
-            {
-                <MudChip T="string" Color="Color.Warning" Size="Size.Medium" Label="true"
-                         Style="padding: 0.2rem; position: absolute; top: 0; right: 0; white-space: inherit; height: auto; z-index: 1;">
-                    @Rating.Value.ToString("#.#")
-                </MudChip>
-            }
-            else if (Rating > 0)
-            {
-                <MudChip T="string" Color="Color.Error" Size="Size.Medium" Label="true"
-                         Style="padding: 0.2rem; position: absolute; top: 0; right: 0; white-space: inherit; height: auto; z-index: 1;">
-                    @Rating.Value.ToString("#.#")
-                </MudChip>
-            }
-        }
-        @if (!string.IsNullOrEmpty(RankUpDown) && RankUpDown != "0")
-        {
-            @if (RankUpDown.Contains("+"))
-            {
-                <MudChip T="string" Color="Color.Success" Size="Size.Medium" Label="true" Icon="@Icons.Material.Filled.ArrowUpward"
-                         Style="padding: 0.2rem; position: absolute; top: 0; right: 0; white-space: inherit; height: auto; z-index: 1;">
-                    @RankUpDown.Replace("+", "")
-                </MudChip>
-            }
-            else
-            {
-                <MudChip T="string" Color="Color.Error" Size="Size.Medium" Label="true" Icon="@Icons.Material.Filled.ArrowDownward"
-                         Style="padding: 0.2rem; position: absolute; top: 0; right: 0; white-space: inherit; height: auto; z-index: 1;">
-                    @RankUpDown.Replace("+", "")
-                </MudChip>
-            }
-        }
-        @{
-            if (ShowWished)
-            {
-                var wishedMovie = WishList?.Contains(MediaType.movie, TmdbId) ?? false;
-                var wishedShow = WishList?.Contains(MediaType.tv, TmdbId) ?? false;
-                if (wishedMovie || wishedShow)
-                {
-                    <MudIcon Icon="@Icons.Material.Filled.Bookmark" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
-                }
-            }
+<div @onclick="@Clicked" style="cursor: pointer; position: relative; height: 100%; align-content: center;">
+    <MudTooltip Text="@(string.IsNullOrEmpty(Poster) ? null : Title)" RootClass="tooltip-image">
+        <MudImage Src="@(Poster ?? "images/no-image.png")" FallbackSrc="images/no-image.png" Alt="@Title" Fluid="true" ObjectFit="ObjectFit.Contain"
+                  Style="vertical-align: bottom;" />
+    </MudTooltip>
 
-            var watchedMovie = false;
-            var watchedShow = false;
-            if (ShowWatched)
-            {
-                watchedMovie = WatchedList?.Contains(MediaType.movie, TmdbId) ?? false;
-                watchedShow = WatchedList?.Contains(MediaType.tv, TmdbId) ?? false;
-                if (watchedMovie || watchedShow)
-                {
-                    <MudIcon Icon="@Icons.Material.Filled.Visibility" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
-                }
-            }
-
-            <MudImage Src="@(Poster ?? "images/no-image.png")" FallbackSrc="images/no-image.png" Alt="@Title" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
-
-            if (string.IsNullOrEmpty(Poster))
-            {
-                <MudText Typo="Typo.h6" Color="Color.Secondary" Class="absolute" Style="top: 3rem; width: 100%; text-align: center; line-height: normal;">
-                    @Title
-                </MudText>
-            }
-        }
-    </div>
-    @if (!string.IsNullOrEmpty(Comments))
+    @if (TopLeft != null)
     {
-        if (CommentImage)
+        <MudChip T="string" Color="TopLeft.Color" Label="true" Class="poster-chip" Style="top: 0; left: 0;" Icon="@TopLeft.Icon">
+            @TopLeft.Text
+        </MudChip>
+    }
+    @if (TopRight != null)
+    {
+        <MudChip T="string" Color="TopRight.Color" Label="true" Class="poster-chip" Style="top: 0; right: 0;" Icon="@TopRight.Icon">
+            @TopRight.Text
+        </MudChip>
+    }
+    @if (CenterLeft != null)
+    {
+        <MudChip T="string" Color="CenterLeft.Color" Label="true" Class="poster-icon chip-no-text" Style="left: 0;" Icon="@CenterLeft.Icon">
+        </MudChip>
+    }
+    @if (CenterRight != null)
+    {
+        <MudChip T="string" Color="CenterRight.Color" Label="true" Class="poster-icon chip-no-text" Style="right: 0;" Icon="@CenterRight.Icon">
+        </MudChip>
+    }
+    @if (string.IsNullOrEmpty(Poster) || ForceShowTitle)
+    {
+        <div class="absolute my-1" style="width: 100%; bottom: 0; background-color: rgba(255, 255, 255, 0.7); text-align: center;">
+            <MudText Typo="Typo.h6" Color="Color.Dark" Style="line-height: normal;">
+                @Title
+            </MudText>
+        </div>
+
+    }
+    @if (Comments.NotEmpty())
+    {
+        if (CommentsIsImage)
         {
-            <MudGrid Spacing="2" Justify="Justify.FlexStart">
-                @foreach (var item in Comments.Split(CommentsSeparator))
+            <MudGrid Spacing="0" Justify="Justify.SpaceEvenly" Class="absolute" Style="bottom: 0; background-color: rgba(255, 255, 255, 0.7);">
+                @foreach (var item in Comments!.Split(CommentsSeparator))
                 {
-                    <MudItem xs="4">
-                        <MudTooltip Text="@item.Replace("logo/", "").Replace(".png", "")">
-                            <MudImage Src="@item" Alt="@item" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                    <MudItem xs="3">
+                        <MudTooltip RootClass="tooltip-image" Text="@item.Replace("logo/", "").Replace(".png", "")">
+                            <MudPaper Outlined="true" Class="my-1">
+                                <MudImage Src="@item" Alt="@item" Fluid="true" ObjectFit="ObjectFit.Contain" Class="rounded-lg" Style="vertical-align: bottom;"></MudImage>
+                            </MudPaper>
                         </MudTooltip>
                     </MudItem>
                 }
@@ -124,33 +56,177 @@
         }
         else
         {
-            @foreach (var item in Comments.Split(CommentsSeparator))
-            {
-                <MudChip T="string" Color="Color.Secondary" Size="Size.Medium" Label="true" Style="padding: 0.2rem; white-space: inherit; height: auto; text-align: center;">
-                    @item
-                </MudChip>
-            }
+            <div class="absolute" style="bottom: 0; background-color: rgba(255, 255, 255, 0.7); width: 100%; text-align: center;">
+                @foreach (var item in Comments!.Split(CommentsSeparator))
+                {
+                    <MudChip T="string" Color="Color.Secondary" Label="true" Class="poster-chip" Style="bottom: 0; z-index: 1; position: inherit !important;">
+                        @item
+                    </MudChip>
+                }
+            </div>
         }
     }
 </div>
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
-    [Parameter][EditorRequired] public WishList? WishList { get; set; }
-
-    [Parameter] public EventCallback<MouseEventArgs> Clicked { get; set; }
-    [Parameter] public DateTime? Date { get; set; }
-    [Parameter] public double? Rating { get; set; }
+    [Parameter] public MediaType? MediaType { get; set; }
     [Parameter] public string? Poster { get; set; }
     [Parameter] public string? Title { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> Clicked { get; set; }
+    [Parameter] public bool ForceShowTitle { get; set; }
+    // TOP LEFT
+    [Parameter] public DateTime? Date { get; set; }
+    [Parameter] public bool OnlyYear { get; set; }
+    [Parameter] public int? Runtime { get; set; }
+    [Parameter] public int? Percent { get; set; }
+    // TOP RIGHT
+    [Parameter] public string? RankUpDown { get; set; }
+    [Parameter] public double? Rating { get; set; }
+    // CENTER LEFT/RIGHT
+    [Parameter] public string? TmdbId { get; set; }
+    [Parameter] public bool ShowWished { get; set; } = true;
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter] public bool ShowWatched { get; set; } = true;
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter] public string? CollectionId { get; set; }
+    [Parameter] public WatchingList? WatchingList { get; set; }
+    //BOTTOM
     [Parameter] public string? Comments { get; set; }
     [Parameter] public string? CommentsSeparator { get; set; } = ",";
-    [Parameter] public string? TmdbId { get; set; }
-    [Parameter] public MediaType MediaType { get; set; }
-    [Parameter] public int? Runtime { get; set; }
-    [Parameter] public bool ShowWished { get; set; } = true;
-    [Parameter] public bool ShowWatched { get; set; } = true;
-    [Parameter] public bool OnlyYear { get; set; }
-    [Parameter] public string? RankUpDown { get; set; }
-    [Parameter] public bool CommentImage { get; set; }
+    [Parameter] public bool CommentsIsImage { get; set; }
+
+    class PosterBadge
+    {
+        public string? Icon { get; set; }
+        public string? Text { get; set; }
+        public Color Color { get; set; } = Color.Info;
+    }
+
+    private PosterBadge? TopLeft { get; set; }
+    private PosterBadge? TopRight { get; set; }
+    private PosterBadge? CenterLeft { get; set; }
+    private PosterBadge? CenterRight { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        SetTopLeft();
+        SetTopRight();
+        SetCenterLeft();
+        SetCenterRight();
+    }
+
+    private void SetTopLeft()
+    {
+        if (Runtime.HasValue)
+        {
+            TopLeft = new PosterBadge
+            {
+                Text = @Runtime.FormatRuntime()
+            };
+        }
+        else if (Date.HasValue)
+        {
+            TopLeft = new PosterBadge
+            {
+                Text = Date.Value < DateTime.Now.AddMonths(-3) || OnlyYear ? Date.Value.Year.ToString() : Date.Value.ToShortDateString(),
+            };
+        }
+        else if (Percent.HasValue)
+        {
+            TopLeft = new PosterBadge
+            {
+                Text = $"{Percent.Value}%",
+                Color = Percent == 100 ? Color.Success : Color.Warning
+            };
+        }
+    }
+
+    private void SetTopRight()
+    {
+        if (RankUpDown.NotEmpty())
+        {
+            if (RankUpDown!.Contains("+"))
+            {
+                TopRight = new PosterBadge
+                {
+                    Icon = Icons.Material.Filled.ArrowUpward,
+                    Text = RankUpDown.Replace("+", ""),
+                    Color = Color.Success
+                };
+            }
+            else
+            {
+                TopRight = new PosterBadge
+                {
+                    Icon = Icons.Material.Filled.ArrowDownward,
+                    Text = RankUpDown.Replace("-", ""),
+                    Color = Color.Error
+                };
+            }
+        }
+        else if (Rating.HasValue)
+        {
+            if (Rating >= 7.95)
+            {
+                TopRight = new PosterBadge
+                {
+                    Text = Rating.Value.ToString("#.#"),
+                    Color = Color.Success
+                };
+            }
+            else if (Rating >= 5.95)
+            {
+                TopRight = new PosterBadge
+                {
+                    Text = Rating.Value.ToString("#.#"),
+                    Color = Color.Warning
+                };
+            }
+            else if (Rating > 0)
+            {
+                TopRight = new PosterBadge
+                {
+                    Text = Rating.Value.ToString("#.#"),
+                    Color = Color.Error
+                };
+            }
+        }
+    }
+
+    private void SetCenterLeft()
+    {
+        if (ShowWished)
+        {
+            var wished = WishList?.Contains(MediaType, TmdbId) ?? false;
+
+            if (wished)
+            {
+                CenterLeft = new PosterBadge
+                {
+                    Icon = Icons.Material.Filled.Bookmark,
+                    Color = Color.Dark
+                };
+            }
+        }
+    }
+
+    private void SetCenterRight()
+    {
+        if (ShowWatched)
+        {
+            var watched = CollectionId.NotEmpty() ?
+                WatchingList?.GetWatchingItems(MediaType, CollectionId).Contains(TmdbId!) ?? false :
+                WatchedList?.Contains(MediaType, TmdbId) ?? false;
+
+            if (watched)
+            {
+                CenterRight = new PosterBadge
+                {
+                    Icon = Icons.Material.Filled.Visibility,
+                    Color = Color.Dark
+                };
+            }
+        }
+    }
+
 }

@@ -39,32 +39,12 @@
         <div class="grid-relative-container-md mb-2">
             @foreach (var item in Items.Take(GetTotalItems))
             {
-                var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.png" : TmdbOptions.SmallPosterPath + item.logo;
+                var logo = string.IsNullOrEmpty(item.logo) ? null : TmdbOptions.SmallPosterPath + item.logo;
                 var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
-                var resultPerc = $"{percentComplete}%";
 
-                <div style="position: relative; text-align: center;">
-                    @if (percentComplete == 100)
-                    {
-                        <MudChip T="string" Color="Color.Success" Size="Size.Medium" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
-                            @resultPerc
-                        </MudChip>
-                    }
-                    else
-                    {
-                        <MudChip T="string" Color="Color.Warning" Size="Size.Medium" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
-                            @resultPerc
-                        </MudChip>
-                    }
-                    <MudImage Src="@logo" FallbackSrc="images/no-image.png" Alt="@item.name" @onclick="@(async () => await ShowCollectionPopup(item.id, item.name))"
-                              Style="cursor: pointer;" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
-                    @if (string.IsNullOrEmpty(item.logo))
-                    {
-                        <MudText Typo="Typo.h6" Color="Color.Secondary" Class="absolute" Style="top: 3rem; width: 100%; text-align: center; line-height: normal;">
-                            @item.name
-                        </MudText>
-                    }
-                </div>
+                <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                 Clicked="@(async () => await ShowCollectionPopup(item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                </PosterComponent>
             }
         </div>
     }
@@ -76,31 +56,11 @@
                 {
                     var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.png" : TmdbOptions.SmallPosterPath + item.logo;
                     var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
-                    var resultPerc = $"{percentComplete}%";
 
-                    <div class="swiper-slide">
-                        <div style="position: relative;">
-                            @if (percentComplete == 100)
-                            {
-                                <MudChip T="string" Color="Color.Success" Size="Size.Medium" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
-                                    @resultPerc
-                                </MudChip>
-                            }
-                            else
-                            {
-                                <MudChip T="string" Color="Color.Warning" Size="Size.Medium" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
-                                    @resultPerc
-                                </MudChip>
-                            }
-                            <MudImage Src="@logo" FallbackSrc="images/no-image.png" Alt="@item.name" @onclick="@(async () => await ShowCollectionPopup(item.id, item.name))"
-                                      Style="cursor: pointer;" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
-                            @if (string.IsNullOrEmpty(item.logo))
-                            {
-                                <MudText Color="Color.Secondary" Style="position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 2rem; text-align: center; font-weight: 500;">
-                                    @item.name
-                                </MudText>
-                            }
-                        </div>
+                    <div class="swiper-slide" style="height: auto !important;">
+                        <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                         Clicked="@(async () => await ShowCollectionPopup(item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                        </PosterComponent>
                     </div>
                 }
             </div>

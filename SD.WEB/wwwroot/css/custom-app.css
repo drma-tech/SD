@@ -7,6 +7,25 @@
     margin-bottom: 0.6rem;
 }
 
+.poster-chip {
+    padding: 0.2rem !important;
+    position: absolute !important;
+    white-space: normal !important;
+    height: auto !important;
+}
+
+    .poster-chip svg {
+        height: 16px;
+        width: 16px;
+    }
+
+.poster-icon {
+    position: absolute !important;
+    top: calc(50% - 10px);
+    padding-inline: 6px !important;
+    height: auto !important;
+}
+
 /*SWIPER*/
 
 .swiper {
@@ -188,5 +207,9 @@
 
 .mud-image.fluid {
     width: 100% !important;
-    height: 100% !important;
+    /*height: 100% !important;*/
+}
+
+.tooltip-image.mud-tooltip-root.mud-tooltip-inline {
+    width: 100%;
 }

@@ -14,54 +14,14 @@
     <DialogContent>
         <RenderControl Core="Core" Model="Collection" ExpressionEmpty="@((TmdbCollection? obj) => obj == null || obj.parts.Empty())">
             <div class="grid-relative-container-md mb-2">
-                @foreach (var item in Collection?.parts.OrderBy(o => o.release_date.GetDate()) ?? Enumerable.Empty<Part>())
+                @foreach (var item in Collection?.parts.OrderBy(o => o.release_date.GetDate() ?? DateTime.MaxValue) ?? Enumerable.Empty<Part>())
                 {
-                    <div>
-                        <div onclick="@(async () => await CollectionClicked(item))" style="position: relative;">
-                            @{
-                                var releaseDate = item.release_date.GetDate();
-                            }
-                            @if (releaseDate.HasValue)
-                            {
-                                if (releaseDate.Value < DateTime.Now.AddMonths(-3))
-                                {
-                                    <MudChip T="string" Color="Color.Info" Size="Size.Medium" Label="true"
-                                             Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
-                                        @releaseDate.Value.Year
-                                    </MudChip>
-                                }
-                                else
-                                {
-                                    <MudChip T="string" Color="Color.Info" Size="Size.Medium" Label="true"
-                                             Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
-                                        @releaseDate.Value.ToShortDateString()
-                                    </MudChip>
-                                }
-                            }
-                            @{
-                                if (Type == MediaType.movie) //you don't put seasons as wishes
-                                {
-                                    var wishedMovie = Wish?.Contains(MediaType.movie, item.id.ToString()) ?? false;
-                                    if (wishedMovie)
-                                    {
-                                        <MudIcon Icon="@Icons.Material.Filled.Bookmark" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
-                                    }
-                                }
+                    var logo = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path;
 
-                                var watching = Watching?.GetWatchingItems(Type, Collection?.id.ToString()).Any(a => a == item.id.ToString()) ?? false;
-                                if (watching)
-                                {
-                                    <MudIcon Icon="@Icons.Material.Filled.Visibility" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
-                                }
-
-                                <MudImage Src="@(TmdbOptions.SmallPosterPath + item.poster_path)" FallbackSrc="images/no-image.png" Alt="@item.title"
-                                          Fluid="true" ObjectFit="ObjectFit.Contain" Style=@($"cursor: pointer;")>
-                                </MudImage>
-                            }
-                        </div>
-
-                        @item.title
-                    </div>
+                    <PosterComponent Poster="@logo" Title="@item.title" MediaType="Type" TmdbId="@item.id.ToString()" CollectionId="@Collection?.id.ToString()"
+                                     Date="item.release_date.GetDate()" Clicked="@(async () => await CollectionClicked(item))" ForceShowTitle="Type == MediaType.tv"
+                                     ShowWished="Type == MediaType.movie" WishList="Wish" WatchedList="Watched" WatchingList="Watching">
+                    </PosterComponent>
                 }
             </div>
         </RenderControl>

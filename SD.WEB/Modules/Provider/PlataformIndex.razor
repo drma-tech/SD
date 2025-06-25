@@ -50,7 +50,8 @@
                     <MudLink Href="@($"/platforms/{item.id}")" Target="_self" Style="position: relative;">
                         <MudCard Outlined="true">
                             <MudCardContent Style="padding: 0;">
-                                <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.name"
+                                          Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
                                 @if (favorite)
                                 {
                                     <MudChip T="string" Icon="@Icons.Material.Filled.Star" Color="Color.Success" Size="Size.Medium" Label="true" Class="chip-no-text"

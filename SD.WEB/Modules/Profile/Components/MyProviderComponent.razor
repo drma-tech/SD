@@ -20,7 +20,7 @@
         <div class="swiper-wrapper">
             @foreach (var item in MyProviders?.Items.Take(AccountProduct.Premium.GetRestrictions().MySuggestions) ?? new List<MyProvidersItem>())
             {
-                <div class="swiper-slide">
+                <div class="swiper-slide" style="height: auto !important;">
                     <div style="position: relative; cursor: pointer;" @onclick="@(() => ShowProviderPopup(item))">
                         <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
                             @item.region?.ToString()
@@ -31,7 +31,7 @@
                                 <MudIcon Icon="@Icons.Material.Filled.Delete"></MudIcon> Deleted
                             </MudChip>
                         }
-                        <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" FallbackSrc="images/no-image.png" Alt="@item.name"></MudImage>
+                        <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" FallbackSrc="images/no-image.png" Alt="@item.name" Style="vertical-align: bottom;"></MudImage>
                     </div>
                 </div>
             }

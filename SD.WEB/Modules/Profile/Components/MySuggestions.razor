@@ -55,7 +55,7 @@
         <div class="swiper-wrapper">
             @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)) ?? new List<SuggestionListItem>())
             {
-                <div class="swiper-slide">
+                <div class="swiper-slide" style="height: auto !important;">
                     <div style="cursor: pointer;" @onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))">
                         <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" FallbackSrc="images/no-image.png" Alt="@item.name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                     </div>
@@ -63,7 +63,7 @@
                         @foreach (var provider in item.Providers)
                         {
                             <MudItem xs="4">
-                                <MudImage Src="@(TmdbOptions.OriginalPosterPath + provider)" Alt="@provider" Style="width: 100%;"></MudImage>
+                                <MudImage Src="@(TmdbOptions.OriginalPosterPath + provider)" Alt="@provider" Style="width: 100%; vertical-align: bottom;"></MudImage>
                             </MudItem>
                         }
                     </MudGrid>

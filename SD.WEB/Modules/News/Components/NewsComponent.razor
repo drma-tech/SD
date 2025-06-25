@@ -13,7 +13,7 @@
         <div class="swiper-wrapper">
             @foreach (var item in News?.Data?.Items ?? [])
             {
-                <div class="swiper-slide">
+                <div class="swiper-slide" style="height: auto !important;">
                     <MudLink Href="@item.link" Target="_blank">
                         <MudImage Src="@item.url_img" FallbackSrc="images/no-image.png" Alt="@item.title" Class="d-block" Style="width: 100%;"></MudImage>
                         <MudText Typo="Typo.caption" Class="carousel-caption d-none d-md-block p-1">
