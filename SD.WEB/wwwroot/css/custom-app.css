@@ -7,6 +7,11 @@
     margin-bottom: 0.6rem;
 }
 
+body .pwa-updater[b-pwa-updater] {
+    --pwa-updater-bar-backcolor: forestgreen;
+    --pwa-updater-bar-z-index: 2000;
+}
+
 .poster-chip {
     padding: 0.2rem !important;
     position: absolute !important;
