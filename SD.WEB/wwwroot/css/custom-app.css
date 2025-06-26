@@ -86,7 +86,7 @@
 .grid-relative-container-sm {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-    gap: 6px;
+    gap: 8px;
 }
 
 .grid-relative-container-md {
@@ -98,7 +98,13 @@
 .grid-relative-container-lg {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(192px, 1fr));
-    gap: 10px;
+    gap: 8px;
+}
+
+.grid-relative-container-x-lg {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
+    gap: 8px;
 }
 
 @media (max-width: 768px) {

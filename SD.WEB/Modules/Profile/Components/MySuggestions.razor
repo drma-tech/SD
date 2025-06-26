@@ -11,69 +11,72 @@
 @inject TmdbApi TmdbApi
 @inject IJSRuntime JsRuntime
 
-<HeaderComponent IconName="@Icons.Material.Filled.ThumbUp" Title="@Translations.MySuggestions">
-    @if (Client?.ClientePaddle?.IsPaidUser ?? false)
-    {
-        @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (MyProviders?.Items.Any() ?? false))
+<SectionComponent IconName="@Icons.Material.Filled.ThumbUp" Title="@Translations.MySuggestions">
+    <ActionFragment>
+        @if (Client?.ClientePaddle?.IsPaidUser ?? false)
         {
-            <MudButton StartIcon="@Icons.Material.Filled.Refresh" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
-                       OnClick="() => ImportFromProviders(MediaType.movie)" Disabled="@MovieUpdating">
-                @Button.Update
-            </MudButton>
-        }
-        @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync) && (MyProviders?.Items.Any() ?? false))
-        {
-            <MudButton StartIcon="@Icons.Material.Filled.Refresh" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
-                       OnClick="() => ImportFromProviders(MediaType.tv)" Disabled="@ShowUpdating">
-                @Button.Update
-            </MudButton>
-        }
-        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Value="SearchType" ValueChanged="(MediaType type) => CheckedValueChanged(type)"
-                        Color="Color.Primary" Class="me-2">
-            <MudToggleItem Value="@MediaType.movie" SelectedIcon="@Icons.Material.Filled.Check">
-                <MudIcon Icon="@Icons.Material.Filled.Movie" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
-                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                    @MediaType.movie.GetName()
-                </MudHidden>
-            </MudToggleItem>
-            <MudToggleItem Value="@MediaType.tv">
-                <MudIcon Icon="@Icons.Material.Filled.Tv" Title="@MediaType.tv.GetName()" Class="me-1"></MudIcon>
-                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                    @MediaType.tv.GetName()
-                </MudHidden>
-            </MudToggleItem>
-        </MudToggleGroup>
-        <MudIconButton Icon="@Icons.Material.Filled.FilterAlt" Variant="Variant.Filled" Color="@(GenresChanged? Color.Secondary: Color.Primary)"
-                       OnClick="@(async () => await OpenConfigurations())" Disabled="@(MyProviders == null || MyProviders.Items.Empty())" />
-    }
-</HeaderComponent>
-
-<RenderControl @ref="_render" Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())"
-               PrivateContent="true" PremiumFeature="true" PremiumDescription="@Translations.OurSuggestions2">
-
-    <div id="@_swiperId" class="swiper mb-2">
-        <div class="swiper-wrapper">
-            @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)) ?? new List<SuggestionListItem>())
+            @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (MyProviders?.Items.Any() ?? false))
             {
-                <div class="swiper-slide" style="height: auto !important;">
-                    <div style="cursor: pointer;" @onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))">
-                        <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" FallbackSrc="images/no-image.png" Alt="@item.name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
-                    </div>
-                    <MudGrid Spacing="2" Justify="Justify.FlexStart">
-                        @foreach (var provider in item.Providers)
-                        {
-                            <MudItem xs="4">
-                                <MudImage Src="@(TmdbOptions.OriginalPosterPath + provider)" Alt="@provider" Style="width: 100%; vertical-align: bottom;"></MudImage>
-                            </MudItem>
-                        }
-                    </MudGrid>
-                </div>
+                <MudButton StartIcon="@Icons.Material.Filled.Refresh" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
+                           OnClick="() => ImportFromProviders(MediaType.movie)" Disabled="@MovieUpdating">
+                    @Button.Update
+                </MudButton>
             }
-        </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </div>
-</RenderControl>
+            @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync) && (MyProviders?.Items.Any() ?? false))
+            {
+                <MudButton StartIcon="@Icons.Material.Filled.Refresh" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
+                           OnClick="() => ImportFromProviders(MediaType.tv)" Disabled="@ShowUpdating">
+                    @Button.Update
+                </MudButton>
+            }
+            <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Value="SearchType" ValueChanged="(MediaType type) => CheckedValueChanged(type)"
+                            Color="Color.Primary" Class="me-2">
+                <MudToggleItem Value="@MediaType.movie" SelectedIcon="@Icons.Material.Filled.Check">
+                    <MudIcon Icon="@Icons.Material.Filled.Movie" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
+                    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                        @MediaType.movie.GetName()
+                    </MudHidden>
+                </MudToggleItem>
+                <MudToggleItem Value="@MediaType.tv">
+                    <MudIcon Icon="@Icons.Material.Filled.Tv" Title="@MediaType.tv.GetName()" Class="me-1"></MudIcon>
+                    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                        @MediaType.tv.GetName()
+                    </MudHidden>
+                </MudToggleItem>
+            </MudToggleGroup>
+            <MudIconButton Icon="@Icons.Material.Filled.FilterAlt" Variant="Variant.Filled" Color="@(GenresChanged? Color.Secondary: Color.Primary)"
+                           OnClick="@(async () => await OpenConfigurations())" Disabled="@(MyProviders == null || MyProviders.Items.Empty())" />
+        }
+    </ActionFragment>
+    <BodyFragment>
+        <RenderControl @ref="_render" Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())"
+                       PrivateContent="true" PremiumFeature="true" PremiumDescription="@Translations.OurSuggestions2">
+
+            <div id="@_swiperId" class="swiper mb-2">
+                <div class="swiper-wrapper">
+                    @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)) ?? new List<SuggestionListItem>())
+                    {
+                        <div class="swiper-slide" style="height: auto !important;">
+                            <div style="cursor: pointer;" @onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))">
+                                <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" FallbackSrc="images/no-image.png" Alt="@item.name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                            </div>
+                            <MudGrid Spacing="2" Justify="Justify.FlexStart">
+                                @foreach (var provider in item.Providers)
+                                {
+                                    <MudItem xs="4">
+                                        <MudImage Src="@(TmdbOptions.OriginalPosterPath + provider)" Alt="@provider" Style="width: 100%; vertical-align: bottom;"></MudImage>
+                                    </MudItem>
+                                }
+                            </MudGrid>
+                        </div>
+                    }
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </RenderControl>
+    </BodyFragment>
+</SectionComponent>
 
 @code {
     private MyProviders? MyProviders { get; set; }

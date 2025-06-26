@@ -30,7 +30,7 @@
     }
     @if (string.IsNullOrEmpty(Poster) || ForceShowTitle)
     {
-        <div class="absolute my-1" style="width: 100%; bottom: 0; background-color: rgba(255, 255, 255, 0.7); text-align: center;">
+        <div class="absolute my-1" style="width: 100%; background-color: rgba(255, 255, 255, 0.7); text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%);">
             <MudText Typo="Typo.h6" Color="Color.Dark" Style="line-height: normal;">
                 @Title
             </MudText>

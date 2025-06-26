@@ -12,7 +12,7 @@
     <DialogContent>
         <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) => { Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged(); })"
                        IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
-                       StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false"
+                       StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false" FullPage="true"
                        Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated" CommentsIsImage="CommentsIsImage">
         </MediaListFull>
     </DialogContent>

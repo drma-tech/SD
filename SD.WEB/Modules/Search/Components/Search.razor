@@ -11,12 +11,12 @@
 <SeoHeader Title="Search" Url="/search"></SeoHeader>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@SearchContent" Immediate="true" OnKeyDown="@KeyPress"
-              AdornmentIcon="@Icons.Material.Filled.Search" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined" Margin="Margin.Dense"
-              OnAdornmentClick="@(() => Navigation.NavigateTo($"/search/{SearchContent}"))" Class="mb-3">
+              AdornmentIcon="@Icons.Material.Filled.Search" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
+              OnAdornmentClick="@(() => Navigation.NavigateTo($"/search/{SearchContent}"))" Class="mb-4">
 </MudTextField>
 
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
-    <MediaListFull MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false"
+    <MediaListFull MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false" FullPage="true"
                    Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
     </MediaListFull>
 </RenderControl>

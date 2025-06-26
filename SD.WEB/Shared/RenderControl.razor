@@ -8,26 +8,26 @@
 {
     if (PartialComponent)
     {
-        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Sync" Class="mb-2">
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Sync">
             @MessageLoading
         </MudAlert>
     }
     else
     {
-        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Sync" Class="mb-2">
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Sync">
             @MessageLoading
         </MudAlert>
     }
 }
 else if (Status == LoadingStatus.Locked && !PartialComponent)
 {
-    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Lock" Class="mb-2">
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Lock">
         @Translations.UnauthenticatedUser
     </MudAlert>
 }
 else if (Status == LoadingStatus.Premium && !PartialComponent)
 {
-    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Diamond" Class="mb-2">
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Diamond">
         @GlobalTranslations.PremiumFeature
         @if (!string.IsNullOrEmpty(PremiumDescription))
         {
@@ -37,13 +37,13 @@ else if (Status == LoadingStatus.Premium && !PartialComponent)
 }
 else if (Status == LoadingStatus.Error && !PartialComponent)
 {
-    <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Error" Class="mb-2">
+    <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Error">
         @(MessageError ?? GlobalTranslations.CustomVisibilityInvalid)
     </MudAlert>
 }
 else if (Status == LoadingStatus.Warning && !PartialComponent)
 {
-    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Warning" Class="mb-2">
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Warning">
         @(MessageWarning ?? GlobalTranslations.CustomVisibilityNoData)
     </MudAlert>
 }

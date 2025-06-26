@@ -23,9 +23,9 @@
     </div>
 }
 
-<MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress"
-              AdornmentIcon="@Icons.Material.Filled.Search" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined" Margin="Margin.Dense"
-              OnAdornmentClick="@(() =>{ if (Search.NotEmpty()) Navigation.NavigateTo($"/search/{Search}"); })" Class="mb-3">
+<MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-4"
+              AdornmentIcon="@Icons.Material.Filled.Search" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
+              OnAdornmentClick="@(() =>{ if (Search.NotEmpty()) Navigation.NavigateTo($"/search/{Search}"); })">
 </MudTextField>
 
 <PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></PopularIndexComponent>
@@ -34,7 +34,7 @@
 
 <AwardsOfTheYearComponent></AwardsOfTheYearComponent>
 
-<MudGrid Spacing="4">
+<MudGrid Spacing="3">
     <MudItem xs="12" sm="6" md="7">
         <TrailersComponent></TrailersComponent>
     </MudItem>

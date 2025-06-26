@@ -16,24 +16,27 @@
         </script>
     </div>
 }
-<HeaderComponent Title="@($"{Translations.TrailersTitle} - ONE Media")" IconImage="logo/one-media.png" />
-<RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-    <div class="grid-relative-container-lg">
-        @foreach (var item in TrailerModel?.Data?.Items ?? [])
-        {
-            <MudLink Href="@($"https://www.youtube.com/watch?v={item.id}")" Target="_blank">
-                <MudCard Outlined="true">
-                    <MudCardContent Style="padding: 0;">
-                        <MudImage Src="@item?.url" FallbackSrc="images/no-image.png" Alt="@item?.title" Style="width: 100%;"></MudImage>
-                    </MudCardContent>
-                    <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
-                        @item.title
-                    </MudCardContent>
-                </MudCard>
-            </MudLink>
-        }
-    </div>
-</RenderControl>
+<SectionComponent Title="@($"{Translations.TrailersTitle} - ONE Media")" IconImage="logo/one-media.png" FullPage="true">
+    <BodyFragment>
+        <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+            <div class="grid-relative-container-x-lg">
+                @foreach (var item in TrailerModel?.Data?.Items ?? [])
+                {
+                    <MudLink Href="@($"https://www.youtube.com/watch?v={item.id}")" Target="_blank">
+                        <MudCard Outlined="true">
+                            <MudCardContent Style="padding: 0;">
+                                <MudImage Src="@item?.url" FallbackSrc="images/no-image.png" Alt="@item?.title" Style="width: 100%;"></MudImage>
+                            </MudCardContent>
+                            <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
+                                @item.title
+                            </MudCardContent>
+                        </MudCard>
+                    </MudLink>
+                }
+            </div>
+        </RenderControl>
+    </BodyFragment>
+</SectionComponent>
 
 @code {
     public RenderControlCore<CacheDocument<TrailerModel>?> Core { get; set; } = new();

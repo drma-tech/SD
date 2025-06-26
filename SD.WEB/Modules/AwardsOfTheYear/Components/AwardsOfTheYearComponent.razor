@@ -6,12 +6,16 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeaderComponent Title="@EnumLists.AwardsOfTheYear.GetName()" IconName="@Icons.Material.Filled.EmojiEvents">
-    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Href="@("/best-awards-year")" />
-</HeaderComponent>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" CommentsIsImage="true" ShowHead="false">
-</MediaList>
+<SectionComponent Title="@EnumLists.AwardsOfTheYear.GetName()" IconName="@Icons.Material.Filled.EmojiEvents">
+    <ActionFragment>
+        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Href="@("/best-awards-year")" />
+    </ActionFragment>
+    <BodyFragment>
+        <MediaList MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" CommentsIsImage="true" ShowHead="false">
+        </MediaList>
+    </BodyFragment>
+</SectionComponent>
 
 @code {
     public WatchedList? WatchedList { get; set; }

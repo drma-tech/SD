@@ -63,7 +63,7 @@ function showError(message) {
         try {
             DotNet.invokeMethodAsync("SD.WEB", "ShowError", message);
         }
-        catch (ex) {
+        catch {
             showToast(message);
         }
     }

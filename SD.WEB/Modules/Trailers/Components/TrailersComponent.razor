@@ -5,33 +5,37 @@
 @inject CacheYoutubeApi CacheYoutubeApi
 @inject IJSRuntime JsRuntime
 
-<HeaderComponent Title="@($"{Translations.TrailersTitle}")" IconImage="logo/one-media.png">
-    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Href="@("/trailers")" />
-</HeaderComponent>
-<RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-    <div id="@_gallerySwiperId" class="swiper">
-        <div class="swiper-wrapper">
-            @foreach (var item in TrailerModel?.Data?.Items ?? [])
-            {
-                <div class="swiper-slide swiper-slide-grid">
-                    <MudLink Href="@($"https://www.youtube.com/watch?v={item?.id}")" Target="_blank">
-                        <MudCard Outlined="true">
-                            <MudCardContent Style="padding: 0;">
-                                <MudImage Src="@item?.url" FallbackSrc="images/no-image.png" Alt="@item?.title" Style="width: 100%;"></MudImage>
-                            </MudCardContent>
-                            <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
-                                @item?.title.GetResume(50)
-                            </MudCardContent>
-                        </MudCard>
-                    </MudLink>
+<SectionComponent Title="@($"{Translations.TrailersTitle}")" IconImage="logo/one-media.png">
+    <ActionFragment>
+        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Href="@("/trailers")" />
+    </ActionFragment>
+    <BodyFragment>
+        <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+            <div id="@_gallerySwiperId" class="swiper">
+                <div class="swiper-wrapper">
+                    @foreach (var item in TrailerModel?.Data?.Items ?? [])
+                    {
+                        <div class="swiper-slide swiper-slide-grid">
+                            <MudLink Href="@($"https://www.youtube.com/watch?v={item?.id}")" Target="_blank">
+                                <MudCard Outlined="true">
+                                    <MudCardContent Style="padding: 0;">
+                                        <MudImage Src="@item?.url" FallbackSrc="images/no-image.png" Alt="@item?.title" Style="width: 100%;"></MudImage>
+                                    </MudCardContent>
+                                    <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
+                                        @item?.title.GetResume(50)
+                                    </MudCardContent>
+                                </MudCard>
+                            </MudLink>
+                        </div>
+                    }
                 </div>
-            }
-        </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        @* <div class="swiper-pagination"></div> *@
-    </div>
-</RenderControl>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                @* <div class="swiper-pagination"></div> *@
+            </div>
+        </RenderControl>
+    </BodyFragment>
+</SectionComponent>
 
 @code {
     public RenderControlCore<CacheDocument<TrailerModel>?> Core { get; set; } = new();

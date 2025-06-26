@@ -3,9 +3,8 @@
 
 @inject IJSRuntime JsRuntime
 
-@if (ShowHeader)
-{
-    <HeaderComponent IconName="@Icons.Material.Filled.Bookmark" Title="@Title">
+<SectionComponent IconName="@Icons.Material.Filled.Bookmark" Title="@Title" ShowHead="ShowHeader" FullPage="FullScreen">
+    <ActionFragment>
         @if (ShowPrivateAction)
         {
             <MudTooltip Text="@GlobalTranslations.Share">
@@ -17,40 +16,42 @@
                                OnClick="@(async () => await OpenCompleteList())" />
             </MudTooltip>
         }
-    </HeaderComponent>
-}
-<RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Wish" ExpressionEmpty="ExpressionEmpty">
-    @if (FullScreen)
-    {
-        <div class="grid-relative-container-md mb-2">
-            @foreach (var item in Items.Take(GetTotalItems))
+    </ActionFragment>
+    <BodyFragment>
+        <RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Wish" ExpressionEmpty="ExpressionEmpty">
+            @if (FullScreen)
             {
-                var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-                <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType"
-                                 Clicked="@(async () => await ShowMediaPopup(item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
-                </PosterComponent>
-            }
-        </div>
-    }
-    else
-    {
-        <div id="@_swiperId" class="swiper mb-2">
-            <div class="swiper-wrapper">
-                @foreach (var item in Items.Take(GetTotalItems))
-                {
-                    var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-                    <div class="swiper-slide" style="height: auto !important;">
+                <div class="grid-relative-container-md">
+                    @foreach (var item in Items.Take(GetTotalItems))
+                    {
+                        var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                         <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType"
                                          Clicked="@(async () => await ShowMediaPopup(item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
                         </PosterComponent>
+                    }
+                </div>
+            }
+            else
+            {
+                <div id="@_swiperId" class="swiper">
+                    <div class="swiper-wrapper">
+                        @foreach (var item in Items.Take(GetTotalItems))
+                        {
+                            var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                            <div class="swiper-slide" style="height: auto !important;">
+                                <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType"
+                                                 Clicked="@(async () => await ShowMediaPopup(item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                </PosterComponent>
+                            </div>
+                        }
                     </div>
-                }
-            </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-        </div>
-    }
-</RenderControl>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            }
+        </RenderControl>
+    </BodyFragment>
+</SectionComponent>
 
 @code {
     [Parameter][EditorRequired] public RenderControlCore<WishList?> Core { get; set; } = new();

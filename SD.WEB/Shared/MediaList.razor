@@ -6,9 +6,8 @@
 @implements IDisposable
 @inject IJSRuntime JsRuntime
 
-@if (ShowHead)
-{
-    <HeaderComponent Title="@Title" IconImage="@IconImage">
+<SectionComponent Title="@Title" IconImage="@IconImage" ShowHead="ShowHead">
+    <ActionFragment>
         @if (ShowFilter)
         {
             <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Value="TypeSelected" ValueChanged="@(async (MediaType type) => await TypeSelectedChanged(type))"
@@ -28,28 +27,29 @@
             </MudToggleGroup>
         }
         <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" OnClick="@OpenCompleteList" />
-    </HeaderComponent>
-}
-
-<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
-    <div id="@_swiperId" class="swiper mb-2">
-        <div class="swiper-wrapper">
-            @foreach (var item in Items)
-            {
-                <div class="swiper-slide" style="height: auto !important;">
-                    <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                     Date="@item.release_date" OnlyYear="OnlyYear"
-                                     RankUpDown="@item.RankUpDown" Rating="@item.rating"
-                                     WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id"
-                                     Comments="@item.comments" CommentsIsImage="CommentsIsImage">
-                    </PosterComponent>
+    </ActionFragment>
+    <BodyFragment>
+        <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+            <div id="@_swiperId" class="swiper">
+                <div class="swiper-wrapper">
+                    @foreach (var item in Items)
+                    {
+                        <div class="swiper-slide" style="height: auto !important;">
+                            <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                             Date="@item.release_date" OnlyYear="OnlyYear"
+                                             RankUpDown="@item.RankUpDown" Rating="@item.rating"
+                                             WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id"
+                                             Comments="@item.comments" CommentsIsImage="CommentsIsImage">
+                            </PosterComponent>
+                        </div>
+                    }
                 </div>
-            }
-        </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </div>
-</RenderControl>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </RenderControl>
+    </BodyFragment>
+</SectionComponent>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }

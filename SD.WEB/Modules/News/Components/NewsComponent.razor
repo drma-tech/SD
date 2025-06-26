@@ -5,38 +5,42 @@
 @inject CacheFlixsterApi CacheFlixsterApi
 @inject IJSRuntime JsRuntime
 
-<HeaderComponent Title="@($"{Translations.NewsTitle}")" IconImage="logo/rotten-tomatoes.png">
-    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Href="@("/news")" />
-</HeaderComponent>
-<RenderControl Core="Core" Model="News" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-    <div id="@_gallerySwiperId" class="swiper">
-        <div class="swiper-wrapper">
-            @foreach (var item in News?.Data?.Items ?? [])
-            {
-                <div class="swiper-slide" style="height: auto !important;">
-                    <MudLink Href="@item.link" Target="_blank">
-                        <MudImage Src="@item.url_img" FallbackSrc="images/no-image.png" Alt="@item.title" Class="d-block" Style="width: 100%;"></MudImage>
-                        <MudText Typo="Typo.caption" Class="carousel-caption d-none d-md-block p-1">
-                            @if (item.title != null)
-                            {
-                                <p>@((MarkupString)item.title)</p>
-                            }
-                        </MudText>
-                    </MudLink>
+<SectionComponent Title="@($"{Translations.NewsTitle}")" IconImage="logo/rotten-tomatoes.png">
+    <ActionFragment>
+        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Href="@("/news")" />
+    </ActionFragment>
+    <BodyFragment>
+        <RenderControl Core="Core" Model="News" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+            <div id="@_gallerySwiperId" class="swiper">
+                <div class="swiper-wrapper">
+                    @foreach (var item in News?.Data?.Items ?? [])
+                    {
+                        <div class="swiper-slide" style="height: auto !important;">
+                            <MudLink Href="@item.link" Target="_blank">
+                                <MudImage Src="@item.url_img" FallbackSrc="images/no-image.png" Alt="@item.title" Class="d-block" Style="width: 100%;"></MudImage>
+                                <MudText Typo="Typo.caption" Class="carousel-caption d-none d-md-block p-1">
+                                    @if (item.title != null)
+                                    {
+                                        <p>@((MarkupString)item.title)</p>
+                                    }
+                                </MudText>
+                            </MudLink>
+                        </div>
+                    }
                 </div>
-            }
-        </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        @* <div class="swiper-pagination"></div> *@
-        <div class="autoplay-progress">
-            <svg viewBox="0 0 48 48">
-                <circle cx="24" cy="24" r="20"></circle>
-            </svg>
-            <span></span>
-        </div>
-    </div>
-</RenderControl>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                @* <div class="swiper-pagination"></div> *@
+                <div class="autoplay-progress">
+                    <svg viewBox="0 0 48 48">
+                        <circle cx="24" cy="24" r="20"></circle>
+                    </svg>
+                    <span></span>
+                </div>
+            </div>
+        </RenderControl>
+    </BodyFragment>
+</SectionComponent>
 
 @code {
     public RenderControlCore<CacheDocument<NewsModel>?> Core { get; set; } = new();

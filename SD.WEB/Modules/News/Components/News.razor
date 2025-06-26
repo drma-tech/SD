@@ -18,30 +18,33 @@
     </div>
 }
 
-<HeaderComponent Title="@($"{Translations.NewsTitle} - Rotten Tomatoes")" IconImage="logo/rotten-tomatoes.png" />
-<RenderControl Core="Core" Model="NewsList" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-    <div class="grid-relative-container-lg">
-        @foreach (var item in NewsList?.Data?.Items ?? [])
-        {
-            <MudCard Outlined="true">
-                <MudCardContent Style="padding: 0; text-align: justify; line-height: normal;">
-                    <MudImage Src="@item.url_img" FallbackSrc="images/no-image.png" Alt="@item.title" Style="width: 100%;"></MudImage>
-                    <div class="pa-2">
-                        @if (!string.IsNullOrEmpty(item.title))
-                        {
-                            @((MarkupString)item.title)
-                        }
-                    </div>
-                </MudCardContent>
-                <MudCardActions style="align-self: center;">
-                    <MudButton Color="Color.Primary" Variant="Variant.Text" Href="@item.link" Target="_blank">
-                        @Button.ReadMore
-                    </MudButton>
-                </MudCardActions>
-            </MudCard>
-        }
-    </div>
-</RenderControl>
+<SectionComponent Title="@($"{Translations.NewsTitle} - Rotten Tomatoes")" IconImage="logo/rotten-tomatoes.png" FullPage="true">
+    <BodyFragment>
+        <RenderControl Core="Core" Model="NewsList" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+            <div class="grid-relative-container-x-lg">
+                @foreach (var item in NewsList?.Data?.Items ?? [])
+                {
+                    <MudCard Outlined="true">
+                        <MudCardContent Style="padding: 0; text-align: justify; line-height: normal;">
+                            <MudImage Src="@item.url_img" FallbackSrc="images/no-image.png" Alt="@item.title" Style="width: 100%;"></MudImage>
+                            <div class="pa-2">
+                                @if (!string.IsNullOrEmpty(item.title))
+                                {
+                                    @((MarkupString)item.title)
+                                }
+                            </div>
+                        </MudCardContent>
+                        <MudCardActions style="align-self: center; padding: 0;">
+                            <MudButton Color="Color.Primary" Variant="Variant.Text" Href="@item.link" Target="_blank">
+                                @Button.ReadMore
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                }
+            </div>
+        </RenderControl>
+    </BodyFragment>
+</SectionComponent>
 
 @code {
     public RenderControlCore<CacheDocument<NewsModel>?> Core { get; set; } = new();

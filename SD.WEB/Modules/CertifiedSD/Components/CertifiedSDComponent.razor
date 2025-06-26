@@ -4,35 +4,39 @@
 
 @inject TmdbListApi TmdbListApi
 
-<HeaderComponent Title="@Translations.TitleCertifiedSD" IconImage="icon/icon-71.png">
-    <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="TypeSelected" Color="Color.Primary" Class="me-2">
-        <MudToggleItem Value="@MediaType.movie" SelectedIcon="@Icons.Material.Filled.Check">
-            <MudIcon Icon="@Icons.Material.Filled.Movie" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
-            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                @MediaType.movie.GetName()
-            </MudHidden>
-        </MudToggleItem>
-        <MudToggleItem Value="@MediaType.tv">
-            <MudIcon Icon="@Icons.Material.Filled.Tv" Title="@MediaType.tv.GetName()" Class="me-1"></MudIcon>
-            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                @MediaType.tv.GetName()
-            </MudHidden>
-        </MudToggleItem>
-    </MudToggleGroup>
-    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Href="@($"/certified-sd/{TypeSelected}")" />
-</HeaderComponent>
-@if (TypeSelected == MediaType.movie)
-{
-    <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish"
-               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false">
-    </MediaList>
-}
-else if (TypeSelected == MediaType.tv)
-{
-    <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish"
-               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false">
-    </MediaList>
-}
+<SectionComponent Title="@Translations.TitleCertifiedSD" IconImage="icon/icon-71.png">
+    <ActionFragment>
+        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="TypeSelected" Color="Color.Primary" Class="me-2">
+            <MudToggleItem Value="@MediaType.movie" SelectedIcon="@Icons.Material.Filled.Check">
+                <MudIcon Icon="@Icons.Material.Filled.Movie" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
+                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                    @MediaType.movie.GetName()
+                </MudHidden>
+            </MudToggleItem>
+            <MudToggleItem Value="@MediaType.tv">
+                <MudIcon Icon="@Icons.Material.Filled.Tv" Title="@MediaType.tv.GetName()" Class="me-1"></MudIcon>
+                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                    @MediaType.tv.GetName()
+                </MudHidden>
+            </MudToggleItem>
+        </MudToggleGroup>
+        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Href="@($"/certified-sd/{TypeSelected}")" />
+    </ActionFragment>
+    <BodyFragment>
+        @if (TypeSelected == MediaType.movie)
+        {
+            <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish"
+                       ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false">
+            </MediaList>
+        }
+        else if (TypeSelected == MediaType.tv)
+        {
+            <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish"
+                       ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false">
+            </MediaList>
+        }
+    </BodyFragment>
+</SectionComponent>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }

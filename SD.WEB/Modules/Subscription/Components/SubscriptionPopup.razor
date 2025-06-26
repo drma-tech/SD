@@ -214,15 +214,6 @@
                         </MudCardActions>
                     </MudCard>
                 </MudStack>
-                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Info" Dense="true" Class="alertLoginNeeded">
-                    @Collections.Resources.Translations.PlatformForManaging
-                    @if (Client == null)
-                    {
-                        <MudButton Target="/login-providers" Color="Color.Primary" Size="Size.Small" Style="float: right;">
-                            @Collections.Resources.Translations.LoginNeeded
-                        </MudButton>
-                    }
-                </MudAlert>
             }
             else
             {

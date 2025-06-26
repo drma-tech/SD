@@ -54,49 +54,61 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.imdb))
                                     {
                                         <MudTooltip Text="IMDb">
-                                            <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.imdb)" title="" Variant="Variant.Outlined">
-                                                <MudImage Src="logo/imdb.png" Class="me-1" Style="height: 20px;" Alt="imdb"></MudImage>@_ratingsCache.Data?.imdb
-                                            </MudChip>
+                                            <MudLink Href="@_ratingsCache.Data?.imdbLink" Target="_blank">
+                                                <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.imdb)" title="" Variant="Variant.Outlined">
+                                                    <MudImage Src="logo/imdb.png" Class="me-1" Style="height: 20px;" Alt="imdb"></MudImage>@_ratingsCache.Data?.imdb
+                                                </MudChip>
+                                            </MudLink>
                                         </MudTooltip>
                                     }
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.tmdb))
                                     {
                                         <MudTooltip Text="TMDB">
-                                            <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.tmdb)" Variant="Variant.Outlined">
-                                                <MudImage Src="logo/tmdb.png" Class="me-1" Style="height: 20px;" Alt="tmdb"></MudImage>@_ratingsCache.Data?.tmdb
-                                            </MudChip>
+                                            <MudLink Href="@_ratingsCache.Data?.tmdbLink" Target="_blank">
+                                                <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.tmdb)" Variant="Variant.Outlined">
+                                                    <MudImage Src="logo/tmdb.png" Class="me-1" Style="height: 20px;" Alt="tmdb"></MudImage>@_ratingsCache.Data?.tmdb
+                                                </MudChip>
+                                            </MudLink>
                                         </MudTooltip>
                                     }
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.metacritic))
                                     {
                                         <MudTooltip Text="Metacritic">
-                                            <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.metacritic)" Variant="Variant.Outlined">
-                                                <MudImage Src="logo/metacritic.png" Class="me-1" Style="height: 20px;" Alt="metacritic"></MudImage>@_ratingsCache.Data?.metacritic
-                                            </MudChip>
+                                            <MudLink Href="@_ratingsCache.Data?.metacriticLink" Target="_blank">
+                                                <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.metacritic)" Variant="Variant.Outlined">
+                                                    <MudImage Src="logo/metacritic.png" Class="me-1" Style="height: 20px;" Alt="metacritic"></MudImage>@_ratingsCache.Data?.metacritic
+                                                </MudChip>
+                                            </MudLink>
                                         </MudTooltip>
                                     }
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.trakt))
                                     {
                                         <MudTooltip Text="Trakt">
-                                            <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.trakt)" Variant="Variant.Outlined">
-                                                <MudImage Src="logo/trakt.png" Class="me-1" Style="height: 20px;" Alt="trakt"></MudImage>@_ratingsCache.Data?.trakt
-                                            </MudChip>
+                                            <MudLink Href="@_ratingsCache.Data?.traktLink" Target="_blank">
+                                                <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.trakt)" Variant="Variant.Outlined">
+                                                    <MudImage Src="logo/trakt.png" Class="me-1" Style="height: 20px;" Alt="trakt"></MudImage>@_ratingsCache.Data?.trakt
+                                                </MudChip>
+                                            </MudLink>
                                         </MudTooltip>
                                     }
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.rottenTomatoes))
                                     {
                                         <MudTooltip Text="Rotten Tomatoes">
-                                            <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.rottenTomatoes)" Variant="Variant.Outlined">
-                                                <MudImage Src="logo/rotten-tomatoes.png" Class="me-1" Style="height: 20px;" Alt="rotten tomatoes"></MudImage>@_ratingsCache.Data?.rottenTomatoes
-                                            </MudChip>
+                                            <MudLink Href="@_ratingsCache.Data?.rottenTomatoesLink" Target="_blank">
+                                                <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.rottenTomatoes)" Variant="Variant.Outlined">
+                                                    <MudImage Src="logo/rotten-tomatoes.png" Class="me-1" Style="height: 20px;" Alt="rotten tomatoes"></MudImage>@_ratingsCache.Data?.rottenTomatoes
+                                                </MudChip>
+                                            </MudLink>
                                         </MudTooltip>
                                     }
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.filmAffinity))
                                     {
                                         <MudTooltip Text="Film Affinity">
-                                            <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.filmAffinity)" Variant="Variant.Outlined">
-                                                <MudImage Src="logo/film-affinity.png" Class="me-1" Style="height: 20px;" Alt="film affinity"></MudImage>@_ratingsCache.Data?.filmAffinity
-                                            </MudChip>
+                                            <MudLink Href="@_ratingsCache.Data?.filmAffinityLink" Target="_blank">
+                                                <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.filmAffinity)" Variant="Variant.Outlined">
+                                                    <MudImage Src="logo/film-affinity.png" Class="me-1" Style="height: 20px;" Alt="film affinity"></MudImage>@_ratingsCache.Data?.filmAffinity
+                                                </MudChip>
+                                            </MudLink>
                                         </MudTooltip>
                                     }
                                 </RenderControl>
@@ -104,11 +116,7 @@
                             <MudText Typo="Typo.body1" Align="Align.Justify" Class="my-3">
                                 @Media?.plot
                             </MudText>
-                            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="alertLoginNeeded">
-                                @if (!IsAuthenticated)
-                                {
-                                    @Translations.LoginNeeded
-                                }
+                            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
                                 @Translations.PlatformForManaging
                             </MudAlert>
                         </MudItem>

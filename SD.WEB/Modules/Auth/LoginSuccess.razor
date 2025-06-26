@@ -7,12 +7,9 @@
 @inject LoginApi LoginApi
 @inject IJSRuntime JsRuntime
 
-<div class="alert alert-warning" role="alert">
-    <div class="spinner-border spinner-border-sm" role="status">
-        <span class="sr-only">@Translations.AuthenticationInProgress</span>
-    </div>
+<MudAlert Variant="Variant.Filled" Severity="Severity.Warning" Dense="true">
     @Translations.AuthenticationInProgress
-</div>
+</MudAlert>
 
 @code {
     private ClientePrincipal? Principal { get; set; } = new();

@@ -24,10 +24,15 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
             imdbId = imdbId,
             type = MediaType.movie,
             tmdb = tmdbRating,
+            tmdbLink = ratingApiRoot?.result?.links?.TMDB,
             metacritic = ratingApiRoot?.result?.ratings?.Metacritic?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            metacriticLink = ratingApiRoot?.result?.links?.Metacritic,
             imdb = ratingApiRoot?.result?.ratings?.IMDb?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            imdbLink = ratingApiRoot?.result?.links?.IMDb,
             rottenTomatoes = ratingApiRoot?.result?.ratings?.RottenTomatoes?.audience?.rating.ToString(CultureInfo.InvariantCulture),
-            filmAffinity = ratingApiRoot?.result?.ratings?.FilmAffinity?.audience?.rating.ToString(CultureInfo.InvariantCulture)
+            rottenTomatoesLink = ratingApiRoot?.result?.links?.RottenTomatoes,
+            filmAffinity = ratingApiRoot?.result?.ratings?.FilmAffinity?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            filmAffinityLink = ratingApiRoot?.result?.links?.FilmAffinity
         };
 
         if (imdbId.NotEmpty() && data.imdb.Empty()) ProcessMovieImdb(data, string.Format(ImdbRatingUrl, imdbId));
@@ -49,10 +54,15 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
             imdbId = imdbId,
             type = MediaType.tv,
             tmdb = tmdbRating,
+            tmdbLink = ratingApiRoot?.result?.links?.TMDB,
             metacritic = ratingApiRoot?.result?.ratings?.Metacritic?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            metacriticLink = ratingApiRoot?.result?.links?.Metacritic,
             imdb = ratingApiRoot?.result?.ratings?.IMDb?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            imdbLink = ratingApiRoot?.result?.links?.IMDb,
             rottenTomatoes = ratingApiRoot?.result?.ratings?.RottenTomatoes?.audience?.rating.ToString(CultureInfo.InvariantCulture),
-            filmAffinity = ratingApiRoot?.result?.ratings?.FilmAffinity?.audience?.rating.ToString(CultureInfo.InvariantCulture)
+            rottenTomatoesLink = ratingApiRoot?.result?.links?.RottenTomatoes,
+            filmAffinity = ratingApiRoot?.result?.ratings?.FilmAffinity?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            filmAffinityLink = ratingApiRoot?.result?.links?.FilmAffinity
         };
 
         if (imdbId.NotEmpty() && data.imdb.Empty()) ProcessShowImdb(data, string.Format(ImdbUrl, imdbId));
@@ -132,25 +142,21 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
             }
 
             //getting user score
-            data.metacritic = GetNodeInnerText(doc,
-                "html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span");
+            data.metacritic = GetNodeInnerText(doc, "html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span");
 
             if (data.metacritic == "tbd")
             {
                 doc = web.Load($"{metacriticPath}-{year}");
-                data.metacritic = GetNodeInnerText(doc,
-                    "html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span");
+                data.metacritic = GetNodeInnerText(doc, "html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span");
             }
 
-            var pageYear = GetNodeInnerText(doc,
-                "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span");
+            var pageYear = GetNodeInnerText(doc, "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span");
 
             if (year != null && pageYear != null && year != pageYear)
             {
                 //probably wrong title, then try to search by other url
                 doc = web.Load($"{metacriticPath}-{year}");
-                data.metacritic = GetNodeInnerText(doc,
-                    "html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span");
+                data.metacritic = GetNodeInnerText(doc, "html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[4]/div[2]/div[1]/div[2]/div/div/span");
             }
 
             if (data.metacritic == "tbd") data.metacritic = null;
@@ -168,8 +174,7 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
 
         try
         {
-            data.imdb = GetNodeInnerText(doc,
-                "//*[@id=\"__next\"]/main/div/section/div/section/div/div[1]/section[1]/div[2]/div[2]/div[1]/div[2]/div[2]/div[1]/span[1]");
+            data.imdb = GetNodeInnerText(doc, "//*[@id=\"__next\"]/main/div/section/div/section/div/div[1]/section[1]/div[2]/div[2]/div[1]/div[2]/div[2]/div[1]/span[1]");
         }
         catch (Exception ex)
         {
@@ -184,8 +189,7 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
 
         try
         {
-            data.imdb = GetNodeInnerText(doc,
-                "//*[@id=\"__next\"]/main/div/section[1]/section/div[3]/section/section/div[2]/div[2]/div/div[1]/a/span/div/div[2]/div[1]/span[1]");
+            data.imdb = GetNodeInnerText(doc, "//*[@id=\"__next\"]/main/div/section[1]/section/div[3]/section/section/div[2]/div[2]/div/div[1]/a/span/div/div[2]/div[1]/span[1]");
         }
         catch (Exception ex)
         {
@@ -210,17 +214,13 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
             {
                 //probably wrong title, then try to search by other url
                 doc = web.Load($"{traktUrl}-{year}");
-                data.trakt =
-                    GetNodeInnerText(doc,
-                            "//*[@id=\"summary-ratings-wrapper\"]/div/div/div/ul[1]/li[1]/a/div[2]/div[1]")
-                        ?.Replace("%", "");
+                data.trakt = GetNodeInnerText(doc, "//*[@id=\"summary-ratings-wrapper\"]/div/div/div/ul[1]/li[1]/a/div[2]/div[1]")?.Replace("%", "");
+                data.traktLink = traktUrl;
             }
             else
             {
-                data.trakt =
-                    GetNodeInnerText(doc,
-                            "//*[@id=\"summary-ratings-wrapper\"]/div/div/div/ul[1]/li[1]/a/div[2]/div[1]")
-                        ?.Replace("%", "");
+                data.trakt = GetNodeInnerText(doc, "//*[@id=\"summary-ratings-wrapper\"]/div/div/div/ul[1]/li[1]/a/div[2]/div[1]")?.Replace("%", "");
+                data.traktLink = traktUrl;
             }
         }
         catch (Exception ex)

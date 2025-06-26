@@ -159,7 +159,8 @@ public class RatingsApi
     public Letterboxd? Letterboxd { get; set; }
     public Metacritic? Metacritic { get; set; }
 
-    [JsonPropertyName("Rotten Tomatoes")] public RottenTomatoes? RottenTomatoes { get; set; }
+    [JsonPropertyName("Rotten Tomatoes")] 
+    public RottenTomatoes? RottenTomatoes { get; set; }
 
     public TMDB? TMDB { get; set; }
 }

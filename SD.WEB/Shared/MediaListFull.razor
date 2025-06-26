@@ -7,29 +7,29 @@
 @inject ExternalIdApi ExternalIdApi
 @inject TmdbCreditApi TmdbCreditApi
 
-@if (ShowHead)
-{
-    <HeaderComponent Title="@GetTitle" IconImage="@IconImage" IconName="@IconName"></HeaderComponent>
-}
-<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
-    <div class="grid-relative-container-md">
-        @foreach (var item in Items)
+<SectionComponent Title="@GetTitle" IconImage="@IconImage" IconName="@IconName" ShowHead="ShowHead" FullPage="FullPage">
+    <BodyFragment>
+        <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+            <div class="grid-relative-container-md">
+                @foreach (var item in Items)
+                {
+                    <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title"
+                                     Comments="@item.comments" CommentsSeparator="@CommentsSeparator" TmdbId="@item.tmdb_id" MediaType="@item.MediaType"
+                                     Clicked="@(() => OpenPopupMedia(item))" WatchedList="Watched" WishList="Wish" CommentsIsImage="CommentsIsImage">
+                    </PosterComponent>
+                }
+            </div>
+        </RenderControl>
+        @if (MediaListApi != null)
         {
-            <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title"
-                             Comments="@item.comments" CommentsSeparator="@CommentsSeparator" TmdbId="@item.tmdb_id" MediaType="@item.MediaType"
-                             Clicked="@(() => OpenPopupMedia(item))" WatchedList="Watched" WishList="Wish" CommentsIsImage="CommentsIsImage">
-            </PosterComponent>
+            <div style="text-align: center;" class="pt-3">
+                <MudButton StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Primary" OnClick="@LoadMore" Disabled="@DisableLoadMore" Variant="Variant.Outlined">
+                    @Button.LoadMore
+                </MudButton>
+            </div>
         }
-    </div>
-</RenderControl>
-@if (MediaListApi != null)
-{
-    <div style="text-align: center;" class="pa-2">
-        <MudButton StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Primary" OnClick="@LoadMore" Disabled="@DisableLoadMore" Variant="Variant.Outlined">
-            @Button.LoadMore
-        </MudButton>
-    </div>
-}
+    </BodyFragment>
+</SectionComponent>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
@@ -42,6 +42,7 @@
     [Parameter] public string? TitleHead { get; set; }
     [Parameter] public string? IconImage { get; set; }
     [Parameter] public string? IconName { get; set; }
+    [Parameter] public bool FullPage { get; set; } = false;
 
     [Parameter] public RenderControlCore<HashSet<MediaDetail>>? Core { get; set; } = new();
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = [];

@@ -10,9 +10,8 @@
 
 @inject IJSRuntime JsRuntime
 
-@if (ShowHeader)
-{
-    <HeaderComponent IconName="@Icons.Material.Filled.Visibility" Title="@Title">
+<SectionComponent IconName="@Icons.Material.Filled.Visibility" Title="@Title" ShowHead="ShowHeader" FullPage="FullScreen">
+    <ActionFragment>
         @if ((Watching?.CanSync(MediaType) ?? false) && (Watching?.Items(MediaType).Any() ?? false))
         {
             <MudButton StartIcon="@Icons.Material.Filled.Refresh" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
@@ -31,45 +30,46 @@
                                OnClick="@(async () => await OpenCompleteList())" />
             </MudTooltip>
         }
-    </HeaderComponent>
-}
-<RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Watching" ExpressionEmpty="ExpressionEmpty">
-    @if (FullScreen)
-    {
-        <div class="grid-relative-container-md mb-2">
-            @foreach (var item in Items.Take(GetTotalItems))
+    </ActionFragment>
+    <BodyFragment>
+        <RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Watching" ExpressionEmpty="ExpressionEmpty">
+            @if (FullScreen)
             {
-                var logo = string.IsNullOrEmpty(item.logo) ? null : TmdbOptions.SmallPosterPath + item.logo;
-                var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                <div class="grid-relative-container-md">
+                    @foreach (var item in Items.Take(GetTotalItems))
+                    {
+                        var logo = string.IsNullOrEmpty(item.logo) ? null : TmdbOptions.SmallPosterPath + item.logo;
+                        var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
 
-                <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
-                                 Clicked="@(async () => await ShowCollectionPopup(item.id, item.name))" WatchedList="Watched" WishList="Wish">
-                </PosterComponent>
-            }
-        </div>
-    }
-    else
-    {
-        <div id="@_swiperId" class="swiper mb-2">
-            <div class="swiper-wrapper">
-                @foreach (var item in Items.Take(GetTotalItems))
-                {
-                    var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.png" : TmdbOptions.SmallPosterPath + item.logo;
-                    var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
-
-                    <div class="swiper-slide" style="height: auto !important;">
                         <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
                                          Clicked="@(async () => await ShowCollectionPopup(item.id, item.name))" WatchedList="Watched" WishList="Wish">
                         </PosterComponent>
-                    </div>
-                }
-            </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-        </div>
-    }
+                    }
+                </div>
+            }
+            else
+            {
+                <div id="@_swiperId" class="swiper">
+                    <div class="swiper-wrapper">
+                        @foreach (var item in Items.Take(GetTotalItems))
+                        {
+                            var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.png" : TmdbOptions.SmallPosterPath + item.logo;
+                            var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
 
-</RenderControl>
+                            <div class="swiper-slide" style="height: auto !important;">
+                                <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                                 Clicked="@(async () => await ShowCollectionPopup(item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                                </PosterComponent>
+                            </div>
+                        }
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            }
+        </RenderControl>
+    </BodyFragment>
+</SectionComponent>
 
 @code {
     [Parameter][EditorRequired] public RenderControlCore<WatchingList?> Core { get; set; } = new();

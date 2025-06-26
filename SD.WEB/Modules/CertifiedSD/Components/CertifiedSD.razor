@@ -24,13 +24,13 @@
 @if (MediaType == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconImage="icon/icon-71.png">
+                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconImage="icon/icon-71.png" FullPage="true">
     </MediaListFull>
 }
 else
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconImage="icon/icon-71.png">
+                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconImage="icon/icon-71.png" FullPage="true">
     </MediaListFull>
 }
 
