@@ -26,13 +26,13 @@
         @if (TypeSelected == MediaType.movie)
         {
             <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish"
-                       ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false">
+                       ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false" FullPage="true">
             </MediaList>
         }
         else if (TypeSelected == MediaType.tv)
         {
             <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish"
-                       ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false">
+                       ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" ShowHead="false" FullPage="true">
             </MediaList>
         }
     </BodyFragment>

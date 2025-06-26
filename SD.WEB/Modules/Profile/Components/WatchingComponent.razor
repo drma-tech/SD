@@ -32,7 +32,8 @@
         }
     </ActionFragment>
     <BodyFragment>
-        <RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Watching" ExpressionEmpty="ExpressionEmpty">
+        <RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Watching" ExpressionEmpty="ExpressionEmpty"
+                       CustomMessageWarning="@Resources.Translations.MarkTitlesWatched">
             @if (FullScreen)
             {
                 <div class="grid-relative-container-md">

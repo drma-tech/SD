@@ -8,7 +8,7 @@
 @inject AllProvidersApi AllProvidersApi
 @inject IJSRuntime JsRuntime
 
-<SectionComponent IconName="@Icons.Material.Filled.Star" Title="@Translations.MyProviders">
+<SectionComponent IconName="@Icons.Material.Filled.Star" Title="@Translations.MyPlatforms">
     <ActionFragment>
         @if (ProvidersChanged)
         {
@@ -16,7 +16,8 @@
         }
     </ActionFragment>
     <BodyFragment>
-        <RenderControl Core="Core" Model="MyProviders" ExpressionEmpty="(MyProviders? obj) => obj == null || obj.Items.Empty()" PrivateContent="true">
+        <RenderControl Core="Core" Model="MyProviders" ExpressionEmpty="(MyProviders? obj) => obj == null || obj.Items.Empty()" PrivateContent="true"
+                       CustomMessageWarning="@Resources.Translations.MarkPlatforms">
             <div id="@_swiperId" class="swiper mb-2">
                 <div class="swiper-wrapper">
                     @foreach (var item in MyProviders?.Items.Take(AccountProduct.Premium.GetRestrictions().MySuggestions) ?? new List<MyProvidersItem>())

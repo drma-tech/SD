@@ -8,15 +8,11 @@
 {
     if (PartialComponent)
     {
-        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Sync">
-            @MessageLoading
-        </MudAlert>
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="40px" Animation="Animation.Wave" />
     }
     else
     {
-        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Sync">
-            @MessageLoading
-        </MudAlert>
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="100px" Animation="Animation.Wave" />
     }
 }
 else if (Status == LoadingStatus.Locked && !PartialComponent)
@@ -27,8 +23,8 @@ else if (Status == LoadingStatus.Locked && !PartialComponent)
 }
 else if (Status == LoadingStatus.Premium && !PartialComponent)
 {
-    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Diamond">
-        @GlobalTranslations.PremiumFeature
+    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Diamond">
+        <span class="me-2" style="font-weight: bold;">@GlobalTranslations.PremiumFeature</span>
         @if (!string.IsNullOrEmpty(PremiumDescription))
         {
             @PremiumDescription
@@ -153,9 +149,13 @@ else //ShowContent
         if (Status is LoadingStatus.Error or LoadingStatus.Locked or LoadingStatus.Premium) return;
 
         if (model == null || (ExpressionEmpty(model)))
-            Status = LoadingStatus.Warning;
+        {
+            ShowWarning(GlobalTranslations.CustomVisibilityNoData);
+        }
         else
+        {
             Status = LoadingStatus.ShowContent;
+        }
 
         StateHasChanged();
     }

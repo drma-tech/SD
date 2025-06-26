@@ -88,6 +88,15 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add titles to your wishlist to appear here.
+        /// </summary>
+        public static string AddTitlesWishlist {
+            get {
+                return ResourceManager.GetString("AddTitlesWishlist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear Cache.
         /// </summary>
         public static string ClearCache {
@@ -169,6 +178,24 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mark platforms as favorites to appear here.
+        /// </summary>
+        public static string MarkPlatforms {
+            get {
+                return ResourceManager.GetString("MarkPlatforms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark titles as watched to appear here (if it is a series or a film that belongs to a sequence).
+        /// </summary>
+        public static string MarkTitlesWatched {
+            get {
+                return ResourceManager.GetString("MarkTitlesWatched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Watching - Movies.
         /// </summary>
         public static string MyMovieWatching {
@@ -187,20 +214,20 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Favorite Platforms.
+        /// </summary>
+        public static string MyPlatforms {
+            get {
+                return ResourceManager.GetString("MyPlatforms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to My Profile.
         /// </summary>
         public static string MyProfile {
             get {
                 return ResourceManager.GetString("MyProfile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Favorite Providers.
-        /// </summary>
-        public static string MyProviders {
-            get {
-                return ResourceManager.GetString("MyProviders", resourceCulture);
             }
         }
         
