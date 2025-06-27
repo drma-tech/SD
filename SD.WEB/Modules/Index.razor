@@ -88,9 +88,6 @@
             StateHasChanged();
         };
 
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
-
         if (Platform.NotEmpty())
         {
             await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", Platform);
@@ -103,6 +100,9 @@
 
     protected override async Task LoadDataRender()
     {
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
+
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
     }
 

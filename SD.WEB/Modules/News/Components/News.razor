@@ -54,16 +54,11 @@
     public Settings? Settings { get; set; }
     public ClientePrincipal? Principal { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
-    }
-
     protected override async Task LoadDataRender()
     {
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
+
         NewsList = await CacheFlixsterApi.GetNews("full", Core);
     }
 

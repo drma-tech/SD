@@ -82,9 +82,6 @@
             StateHasChanged();
         };
 
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
-
         AllProviders = await AllProvidersApi.GetAll(Core);
 
         Provider = AllProviders?.Items.SingleOrDefault(s => s.id == Id);
@@ -92,6 +89,9 @@
 
     protected override async Task LoadDataRender()
     {
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
+
         WatchedList = await WatchedListApi.Get(IsAuthenticated, CoreWatchedList);
         WatchingList = await WatchingListApi.Get(IsAuthenticated, CoreWatchingList);
         WishList = await WishListApi.Get(IsAuthenticated, CoreWishlist);
