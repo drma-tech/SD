@@ -1,142 +1,203 @@
 ﻿@page "/support/privacy/{lang}"
 <SeoHeader Title="Privacy" Url=@($"/support/privacy/{Lang}")></SeoHeader>
 
-<div class="article">
-    <div class="row justify-content-md-center">
-        <div class="col-lg-10">
-            <div class="ibox">
-                <div class="ibox-content" style="text-align: justify;">
-                    @if (Lang == "pt")
-                    {
-                        <div class="text-center article-title">
-                            <span class="text-muted"><i class="fa fa-clock-o"></i> 25 de dezembro de 2023</span>
-                            <h1>
-                                Política de Privacidade
-                            </h1>
-                        </div>
-                        <p>Na @ProjectTitle, acessível em @ProjectDomain, uma de nossas principais prioridades é a privacidade de nossos visitantes. Este documento da Política de Privacidade contém tipos de informações coletadas e registradas pela @ProjectTitle e como as usamos.</p>
+<style>
+    .privacy-container {
+        max-width: 900px;
+        margin: 32px auto;
+        padding: 40px 24px 32px 24px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+    }
 
-                        <p>Se você tiver dúvidas adicionais ou precisar de mais informações sobre nossa Política de Privacidade, não hesite em nos contactar.</p>
+    .privacy-title {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
 
-                        <h2>Arquivos de log</h2>
+    .privacy-subtitle {
+        text-align: center;
+        color: #555;
+        font-size: 1.1rem;
+        margin-bottom: 2.2rem;
+    }
 
-                        <p>A @ProjectTitle segue um procedimento padrão de uso de arquivos de log. Esses arquivos registram os visitantes quando eles visitam sites. Todas as empresas de hospedagem fazem isso e fazem parte da análise dos serviços de hospedagem. As informações coletadas pelos arquivos de log incluem endereços de protocolo da Internet (IP), tipo de navegador, provedor de serviços de Internet (ISP), carimbo de data e hora, páginas de referência/saída e, possivelmente, o número de cliques. Estes não estão vinculados a nenhuma informação que seja pessoalmente identificável. O objetivo das informações é analisar tendências, administrar o site, rastrear o movimento dos usuários no site e coletar informações demográficas.</p>
+    .privacy-section {
+        margin-bottom: 2.2rem;
+    }
 
-                        <h2>Cookies e Web Beacons</h2>
+        .privacy-section h3 {
+            margin-bottom: 0.7rem;
+            color: #1976d2;
+            font-size: 1.18rem;
+            font-weight: 500;
+        }
 
-                        <p>Como qualquer outro site, a @ProjectTitle usa 'cookies'. Esses cookies são usados para armazenar informações, incluindo as preferências dos visitantes, e as páginas do site que o visitante acessou ou visitou. As informações são usadas para otimizar a experiência dos usuários, personalizando o conteúdo de nossa página da web com base no tipo de navegador dos visitantes e/ou outras informações.</p>
+        .privacy-section p {
+            text-align: justify;
+            margin-bottom: 0.5rem;
+            color: #333;
+            line-height: 1.7;
+        }
+</style>
 
-                        <p>Para obter informações mais gerais sobre cookies, leia o artigo "O que são cookies" em <a href=@("https://seguranca.uol.com.br/antivirus/dicas/curiosidades/o-que-sao-cookies-e-como-eles-podem-me-prejudicar.html#rmcl") target="_blank"> site de consentimento de cookies.</a></p>
-
-                        <h2>Google DoubleClick DART Cookie</h2>
-
-                        <p>O Google é um fornecedor de terceiros em nosso site. Ele também usa cookies, conhecidos como DART cookies, para veicular anúncios para os visitantes do nosso site com base em sua visita a @ProjectDomain e outros sites na Internet. No entanto, os visitantes podem optar por recusar o uso de DART cookies visitando a Política de Privacidade da rede de anúncios e conteúdo do Google no seguinte URL - <a href=@("https://policies.google.com/technologies/ads") target="_blank">https://policies.google.com/technologies/ads</a></p>
-
-                        <h2>Nossos parceiros de publicidade</h2>
-
-                        <p>Alguns anunciantes em nosso site podem usar cookies e web beacons. Nossos parceiros de publicidade estão listados abaixo. Cada um de nossos parceiros de publicidade possui sua própria Política de Privacidade para suas políticas de dados do usuário. Para facilitar o acesso, criamos um link para as políticas de privacidade abaixo:</p>
-
-                        <ul>
-                            <li>
-                                <p>Google - <a href=@("https://policies.google.com/technologies/ads") target="_blank">https://policies.google.com/technologies/ads</a></p>
-                            </li>
-                        </ul>
-
-                        <h2>Políticas de Privacidade</h2>
-
-                        <p>Servidores ou redes de anúncios de terceiros usam tecnologias como cookies, JavaScript ou Web Beacons usados em seus respectivos anúncios e links que aparecem na @ProjectTitle, que são enviados diretamente ao navegador dos usuários. Eles recebem automaticamente seu endereço IP quando isso ocorre. Essas tecnologias são usadas para medir a eficácia de suas campanhas publicitárias e/ou para personalizar o conteúdo de publicidade exibido nos sites que você visita.</p>
-
-                        <p>Observe que a @ProjectTitle não tem acesso ou controle sobre esses cookies usados por anunciantes de terceiros.</p>
-
-                        <h2>Políticas de Privacidade de Terceiros</h2>
-
-                        <p>A Política de Privacidade da @ProjectTitle não se aplica a outros anunciantes ou sites. Portanto, recomendamos que você consulte as respectivas Políticas de Privacidade desses servidores de anúncios de terceiros para obter informações mais detalhadas. Pode incluir suas práticas e instruções sobre como desativar determinadas opções.</p>
-
-                        <p>Você pode optar por desativar os cookies através das opções individuais do seu navegador. Para conhecer informações mais detalhadas sobre o gerenciamento de cookies com navegadores específicos, ele pode ser encontrado nos respectivos sites. <a href=@("https://seguranca.uol.com.br/antivirus/dicas/curiosidades/o-que-sao-cookies-e-como-eles-podem-me-prejudicar.html#rmcl") target="_blank">O que são cookies?</a></p>
-
-                        <h2>Informações para Crianças</h2>
-
-                        <p>Outra parte de nossa prioridade é adicionar proteção para crianças enquanto estiver usando a Internet. Incentivamos os pais e responsáveis a observar, participar e/ou monitorar e orientar suas atividades on-line.</p>
-
-                        <p>A @ProjectTitle não coleta intencionalmente quaisquer Informações Pessoais Identificáveis de crianças menores de 13 anos. Se você acha que seu filho forneceu esse tipo de informação em nosso site, recomendamos que você entre em contato imediatamente e faremos o possível para prontamente remova essas informações de nossos registros.</p>
-
-                        <h2>Apenas Política de Privacidade Online</h2>
-
-                        <p>Esta Política de Privacidade aplica-se apenas às nossas atividades online e é válida para os visitantes do nosso site no que diz respeito às informações que eles compartilharam e/ou coletam na @ProjectTitle. Esta política não é aplicável a nenhuma informação coletada offline ou mediante canais diferentes deste site.</p>
-
-                        <h2>Consentimento</h2>
-
-                        <p>Ao usar nosso site, você concorda com nossa Política de Privacidade e concorda com seus <a href="support/terms/pt">Termos e Condições</a>.</p>
-                    }
-                    else
-                    {
-                        <div class="text-center article-title">
-                            <span class="text-muted"><i class="fa fa-clock-o"></i> December 25, 2023</span>
-                            <h1>
-                                Privacy Policy
-                            </h1>
-                        </div>
-                        <p>At @ProjectTitle, accessible from @ProjectDomain, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by @ProjectTitle and how we use it.</p>
-
-                        <p>If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.</p>
-
-                        <h2>Log Files</h2>
-
-                        <p>@ProjectTitle follows a standard procedure of using log files. These files log visitors when they visit websites. All hosting companies do this and a part of hosting services' analytics. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users' movement on the website, and gathering demographic information.</p>
-
-                        <h2>Cookies and Web Beacons</h2>
-
-                        <p>Like any other website, @ProjectTitle uses 'cookies'. These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.</p>
-
-                        <p>For more general information on cookies, please read the "What Are Cookies" article on <a href=@("https://www.cookieconsent.com/what-are-cookies/") target="_blank">Cookie Consent website</a>.</p>
-
-                        <h2>Google DoubleClick DART Cookie</h2>
-
-                        <p>Google is one of a third-party vendor on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to www.website.com and other sites on the internet. However, visitors may choose to decline the use of DART cookies by visiting the Google ad and content network Privacy Policy at the following URL – <a href=@("https://policies.google.com/technologies/ads") target="_blank">https://policies.google.com/technologies/ads</a></p>
-
-                        <h2>Our Advertising Partners</h2>
-
-                        <p>Some of the advertisers on our site may use cookies and web beacons. Our advertising partners are listed below. Each of our advertising partners has their own Privacy Policy for their policies on user data. For easier access, we hyperlinked to their Privacy Policies below.</p>
-
-                        <ul>
-                            <li>
-                                <p>Google</p>
-                                <p>
-                                    <a href=@("https://policies.google.com/technologies/ads") target="_blank">https://policies.google.com/technologies/ads</a>
-                                </p>
-                            </li>
-                        </ul>
-
-                        <h2>Privacy Policies</h2>
-
-                        <p>Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on @ProjectTitle, which are sent directly to users' browser. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.</p>
-
-                        <p>Note that @ProjectTitle has no access to or control over these cookies that are used by third-party advertisers.</p>
-
-                        <h2>Third Party Privacy Policies</h2>
-
-                        <p>@ProjectTitle's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options. </p>
-
-                        <p>You can choose to disable cookies through your individual browser options. To know more detailed information about cookie management with specific web browsers, it can be found at the browsers' respective websites. <a href=@("https://www.cookieconsent.com/what-are-cookies/") target="_blank">What Are Cookies?</a></p>
-
-                        <h2>Children's Information</h2>
-
-                        <p>Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity.</p>
-
-                        <p>@ProjectTitle does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately, and we will do our best efforts to promptly remove such information from our records.</p>
-
-                        <h2>Online Privacy Policy Only</h2>
-
-                        <p>This Privacy Policy applies only to our online activities and is valid for visitors to our website in regard to the information that they shared and/or collect in @ProjectTitle. This policy is not applicable to any information collected offline or via channels other than this website.</p>
-
-                        <h2>Consent</h2>
-
-                        <p>By using our website, you hereby consent to our Privacy Policy and agree to its <a href="/support/terms/en">Terms and Conditions</a>.</p>
-                    }
-                </div>
-            </div>
+<div class="privacy-container">
+    @if (Lang == "pt")
+    {
+        <div class="privacy-title">Política de Privacidade</div>
+        <div class="privacy-subtitle">
+            Sua privacidade é prioridade no <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>).<br />
+            Leia atentamente esta política para entender como tratamos seus dados.
         </div>
-    </div>
+        <div class="privacy-section">
+            <h3>1. Dados coletados</h3>
+            <p>Coletamos e armazenamos: e-mail, data e IP do login, país de acesso (via IP), e preferências/configurações básicas do usuário. O uso do serviço pode ser feito sem login, mas algumas funcionalidades exigem autenticação. Alguns dados podem ser coletados mesmo sem autenticação, conforme navegação e uso da plataforma.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>2. Cookies e tecnologias similares</h3>
+            <p>Utilizamos cookies e sessões para armazenar configurações básicas e preferências do usuário. Também usamos cookies de terceiros, como Google AdSense, para exibir publicidade personalizada.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>3. Ferramentas de análise</h3>
+            <p>Utilizamos Google Analytics e Microsoft Clarity para entender o uso do site e melhorar a experiência do usuário. Essas ferramentas podem coletar informações como IP, localização aproximada, tipo de navegador e páginas acessadas.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>4. Compartilhamento de dados</h3>
+            <p>Não compartilhamos seus dados pessoais com terceiros, exceto parceiros técnicos necessários para funcionamento do serviço (ex: provedores de login, hospedagem, análise e publicidade).</p>
+        </div>
+        <div class="privacy-section">
+            <h3>5. Armazenamento</h3>
+            <p>Os dados são armazenados em servidores Azure localizados nos EUA, podendo ser replicados em outros países para backup e alta disponibilidade.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>6. Direitos do usuário</h3>
+            <p>Você pode excluir sua conta e todos os dados armazenados a qualquer momento. O usuário pode acessar, utilizar e alterar seus dados e preferências disponíveis na plataforma, de acordo com o contexto de uso (ex: se está logado ou não, se é assinante ou não), respeitando as permissões e funcionalidades oferecidas em cada situação.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>7. Crianças e menores de idade</h3>
+            <p>Não há distinção de idade para uso do serviço. Não coletamos informações sensíveis ou perigosas para menores.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>8. Legislação</h3>
+            <p>O serviço segue as exigências legais de privacidade e proteção de dados aplicáveis em cada região.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>9. Contato</h3>
+            <p>Para dúvidas ou solicitações sobre privacidade, acesse a página de suporte.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>10. Atualizações</h3>
+            <p>Esta política pode ser alterada a qualquer momento. Recomendamos revisá-la periodicamente.</p>
+        </div>
+        <div class="privacy-section" style="text-align:center; color:#888; font-size:0.95rem;">
+            Ao usar nosso site, você concorda com esta Política de Privacidade e com os <a href="/support/terms/pt">Termos de Uso</a>.
+        </div>
+    }
+    else if (Lang == "es")
+    {
+        <div class="privacy-title">Política de Privacidad</div>
+        <div class="privacy-subtitle">
+            Su privacidad es una prioridad en <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>).<br />
+            Lea atentamente esta política para entender cómo tratamos sus datos.
+        </div>
+        <div class="privacy-section">
+            <h3>1. Datos recopilados</h3>
+            <p>Recopilamos y almacenamos: correo electrónico, fecha e IP de inicio de sesión, país de acceso (a través de IP) y preferencias/configuraciones básicas del usuario. El servicio puede utilizarse sin iniciar sesión, pero algunas funciones requieren autenticación. Algunos datos pueden recopilarse incluso sin autenticación, según la navegación y el uso de la plataforma.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>2. Cookies y tecnologías similares</h3>
+            <p>Utilizamos cookies y sesiones para almacenar configuraciones y preferencias básicas del usuario. También utilizamos cookies de terceros, como Google AdSense, para mostrar publicidad personalizada.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>3. Herramientas de análisis</h3>
+            <p>Utilizamos Google Analytics y Microsoft Clarity para comprender el uso del sitio y mejorar la experiencia del usuario. Estas herramientas pueden recopilar información como IP, ubicación aproximada, tipo de navegador y páginas visitadas.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>4. Compartición de datos</h3>
+            <p>No compartimos sus datos personales con terceros, excepto socios técnicos necesarios para el funcionamiento del servicio (por ejemplo, proveedores de inicio de sesión, alojamiento, análisis y publicidad).</p>
+        </div>
+        <div class="privacy-section">
+            <h3>5. Almacenamiento</h3>
+            <p>Los datos se almacenan en servidores de Azure ubicados en EE. UU. y pueden replicarse en otros países para copias de seguridad y alta disponibilidad.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>6. Derechos del usuario</h3>
+            <p>Puede eliminar su cuenta y todos los datos almacenados en cualquier momento. El usuario puede acceder, utilizar y modificar sus datos y preferencias disponibles en la plataforma, de acuerdo con el contexto de uso (por ejemplo, si está autenticado o no, si es suscriptor o no), respetando los permisos y funcionalidades ofrecidos en cada situación.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>7. Niños y menores de edad</h3>
+            <p>No hay distinción de edad para el uso del servicio. No recopilamos información sensible o peligrosa para menores.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>8. Legislación</h3>
+            <p>El servicio cumple con los requisitos legales de privacidad y protección de datos aplicables en cada región.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>9. Contacto</h3>
+            <p>Para preguntas o solicitudes sobre privacidad, visite la página de soporte.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>10. Actualizaciones</h3>
+            <p>Esta política puede cambiar en cualquier momento. Recomendamos revisarla periódicamente.</p>
+        </div>
+        <div class="privacy-section" style="text-align:center; color:#888; font-size:0.95rem;">
+            Al utilizar nuestro sitio, usted acepta esta Política de Privacidad y los <a href="/support/terms/es">Términos de Uso</a>.
+        </div>
+    }
+    else
+    {
+        <div class="privacy-title">Privacy Policy</div>
+        <div class="privacy-subtitle">
+            Your privacy is a priority at <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>).<br />
+            Please read this policy to understand how we handle your data.
+        </div>
+        <div class="privacy-section">
+            <h3>1. Data collected</h3>
+            <p>We collect and store: email, login date and IP, country of access (via IP), and basic user preferences/settings. The service can be used without logging in, but some features require authentication. Some data may be collected even without authentication, depending on your navigation and use of the platform.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>2. Cookies and similar technologies</h3>
+            <p>We use cookies and sessions to store basic settings and user preferences. We also use third-party cookies, such as Google AdSense, to display personalized advertising.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>3. Analytics tools</h3>
+            <p>We use Google Analytics and Microsoft Clarity to understand site usage and improve user experience. These tools may collect information such as IP, approximate location, browser type, and accessed pages.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>4. Data sharing</h3>
+            <p>We do not share your personal data with third parties, except for technical partners necessary for the service to function (e.g., login providers, hosting, analytics, and advertising).</p>
+        </div>
+        <div class="privacy-section">
+            <h3>5. Storage</h3>
+            <p>Data is stored on Azure servers located in the USA and may be replicated to other countries for backup and high availability.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>6. User rights</h3>
+            <p>You may delete your account and all stored data at any time. Users can access, use, and modify their data and preferences available on the platform, according to their usage context (e.g., whether logged in or not, whether a subscriber or not), respecting the permissions and features offered in each situation.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>7. Children and minors</h3>
+            <p>There is no age distinction for using the service. We do not collect sensitive or dangerous information for minors.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>8. Legislation</h3>
+            <p>The service complies with applicable privacy and data protection laws in each region.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>9. Contact</h3>
+            <p>For privacy questions or requests, visit the support page.</p>
+        </div>
+        <div class="privacy-section">
+            <h3>10. Updates</h3>
+            <p>This policy may be changed at any time. We recommend reviewing it periodically.</p>
+        </div>
+        <div class="privacy-section" style="text-align:center; color:#888; font-size:0.95rem;">
+            By using our site, you agree to this Privacy Policy and the <a href="/support/terms/en">Terms of Use</a>.
+        </div>
+    }
 </div>
 
 @code {
