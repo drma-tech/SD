@@ -16,7 +16,7 @@
 <MudDialog Style="width: 100%">
     <DialogContent>
         <RenderControl Model="Media" Core="Core" ExpressionEmpty="@((MediaDetail? obj) => obj == null)">
-            <MudTabs Border="true" Outlined="true" PanelClass="pt-2">
+            <MudTabs Border="true" Outlined="true" PanelClass="pt-2" MinimumTabWidth="100px">
                 <MudTabPanel Tag="@Translations.TabAbout" Text="@Translations.TabAbout">
                     <MudGrid Spacing="4">
                         <MudItem xs="12" md="4">
