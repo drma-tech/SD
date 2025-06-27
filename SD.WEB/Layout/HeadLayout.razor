@@ -24,7 +24,7 @@
     </MudIconButton>
     <MudSpacer />
     <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit">
-        <MudMenuItem Icon="@Icons.Material.Outlined.Diamond" Label="@Translations.Subscription" IconColor="Color.Warning" />
+        <MudMenuItem Icon="@Icons.Material.Outlined.Diamond" Label="@Translations.Subscription" IconColor="Color.Warning" OnClick="@OpenSubscription" />
         <AuthorizeView>
             <Authorized>
                 <MudMenuItem Icon="@Icons.Material.Outlined.Person" Label="@Menu.Profile" OnClick="@MyAccount" />

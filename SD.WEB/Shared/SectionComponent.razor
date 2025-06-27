@@ -1,14 +1,14 @@
-﻿<MudPaper Class="@(FullPage ? "" : "mb-3 px-2 pb-2 pt-1")" Outlined="!FullPage" Elevation="0">
+﻿<MudPaper Class="@(FullPage ? "" : "mb-3 pa-2")" Outlined="!FullPage" Elevation="0">
     @if (ShowHead)
     {
-        <MudToolBar WrapContent="true" Dense="true" Gutters="false" Class="mb-2">
+        <MudToolBar WrapContent="true" Dense="true" Gutters="false" Class="mb-2" Style="min-height: auto;">
             @if (!string.IsNullOrEmpty(IconName))
             {
                 <MudIcon Icon="@IconName" Size="Size.Large" Class="me-2"></MudIcon>
             }
             else if (!string.IsNullOrEmpty(IconImage))
             {
-                <MudImage Src="@IconImage" Class="me-2" Style="height: 40px; vertical-align: sub;" Alt="@IconName"></MudImage>
+                <MudImage Src="@IconImage" Class="me-2" Style="height: 36px; vertical-align: sub;" Alt="@IconName"></MudImage>
             }
             <MudText Typo="Typo.h6">@Title</MudText>
             <MudSpacer></MudSpacer>

@@ -20,9 +20,7 @@
         }
         else if (IsAuthenticated && Client == null)
         {
-            <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
-                @GlobalTranslations.CustomVisibilityLoading
-            </MudAlert>
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="100px" Animation="Animation.Wave" />
         }
         else
         {
@@ -40,7 +38,7 @@
                         <MudChip Size="Size.Small" Color="Color.Success">@Translations.YearSave</MudChip>
                     </MudToggleItem>
                 </MudToggleGroup>
-                <MudStack Row="true" Class="mb-3" Breakpoint="Breakpoint.Xs">
+                <MudStack Row="true" Class="mb-3" Breakpoint="Breakpoint.Xs" Spacing="2">
                     <MudCard Outlined="true" Elevation="4">
                         <MudCardContent Class="pa-3">
                             <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Basic.GetName()</MudText>

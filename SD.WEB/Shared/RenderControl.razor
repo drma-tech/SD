@@ -17,13 +17,13 @@
 }
 else if (Status == LoadingStatus.Locked && !PartialComponent)
 {
-    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Lock">
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Lock" Style="text-align: justify;">
         @Translations.UnauthenticatedUser
     </MudAlert>
 }
 else if (Status == LoadingStatus.Premium && !PartialComponent)
 {
-    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Diamond">
+    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Diamond" Style="text-align: justify;">
         <span class="me-2" style="font-weight: bold;">@GlobalTranslations.PremiumFeature</span>
         @if (!string.IsNullOrEmpty(PremiumDescription))
         {
@@ -33,13 +33,13 @@ else if (Status == LoadingStatus.Premium && !PartialComponent)
 }
 else if (Status == LoadingStatus.Error && !PartialComponent)
 {
-    <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Error">
+    <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Error" Style="text-align: justify;">
         @(MessageError ?? GlobalTranslations.CustomVisibilityInvalid)
     </MudAlert>
 }
 else if (Status == LoadingStatus.Warning && !PartialComponent)
 {
-    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Warning">
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Warning" Style="text-align: justify;">
         @(MessageWarning ?? GlobalTranslations.CustomVisibilityNoData)
     </MudAlert>
 }

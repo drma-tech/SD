@@ -2,11 +2,11 @@
 <SeoHeader Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")"
            Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)">
 </SeoHeader>
-@using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Provider.Core
-@using SD.WEB.Modules.Provider.Resources
 @using SD.WEB.Modules.Collections.Components
 @using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Platform.Core
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Platform.Resources
 @inherits PageCore<PlataformDetail>
 
 @inject AllProvidersApi AllProvidersApi

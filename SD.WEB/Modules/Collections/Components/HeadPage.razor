@@ -7,7 +7,7 @@
 @inject IJSRuntime Js
 
 <MudPaper Class="mb-2" Outlined="true">
-    <MudStack StretchItems="StretchItems.Middle" Row="true">
+    <MudStack StretchItems="StretchItems.Middle" Row="true" Spacing="2">
         <div class="pa-2" style="align-self: center;">
             @if (string.IsNullOrEmpty(Link))
             {
@@ -39,7 +39,7 @@
                 }
             </MudText>
             <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-                <MudText Typo="Typo.body1">
+                <MudText Typo="Typo.body1" Align="Align.Justify">
                     @Text
                 </MudText>
             </MudHidden>
@@ -73,10 +73,10 @@
     </MudStack>
     @if (Provider != null)
     {
-        <MudStack Justify="Justify.FlexStart" Row="true">
+        <MudStack Justify="Justify.FlexStart" Row="true" Spacing="2">
             <div class="pa-1">
                 <MudChip T="string" Color="Color.Primary" Size="Size.Small">
-                    @Modules.Provider.Resources.Translations.DeliveryModel:
+                    @Modules.Platform.Resources.Translations.DeliveryModel:
                 </MudChip>
                 @foreach (var item in Provider?.models ?? [])
                 {
@@ -96,7 +96,7 @@
                 @if (Provider?.models.Any(a => a == DeliveryModel.SVOD) ?? false)
                 {
                     <MudChip T="string" Color="Color.Primary" Size="Size.Small">
-                        @Modules.Provider.Resources.Translations.Plans:
+                        @Modules.Platform.Resources.Translations.Plans:
                     </MudChip>
                     @if (Provider.plans.Any())
                     {
@@ -110,7 +110,7 @@
                     else
                     {
                         <MudChip T="string" Color="Color.Error" Size="Size.Small">
-                            @Modules.Provider.Resources.Translations.NotFound
+                            @Modules.Platform.Resources.Translations.NotFound
                         </MudChip>
                     }
                 }

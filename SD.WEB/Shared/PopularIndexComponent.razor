@@ -1,5 +1,5 @@
 ﻿@using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Provider.Resources
+@using SD.WEB.Modules.Platform.Resources
 @inherits ComponentCore<PopularIndexComponent>
 
 @inject ImdbPopularApi ImdbPopularApi
@@ -38,7 +38,7 @@
         }
         else if (TypeSelected == PopularType.Show)
         {
-            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" MultipleLanguages="false"
+            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" MultipleLanguages="false" FullPage="true"
                        StringParameters="Params" TypeSelected="MediaType.tv" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                        ShowPrivateAction="ShowPrivateAction" OnlyYear="true" IsAuthenticated="IsAuthenticated">
             </MediaList>

@@ -277,11 +277,11 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Providers.
+        ///   Looks up a localized string similar to Platforms.
         /// </summary>
-        public static string Providers {
+        public static string Platforms {
             get {
-                return ResourceManager.GetString("Providers", resourceCulture);
+                return ResourceManager.GetString("Platforms", resourceCulture);
             }
         }
         

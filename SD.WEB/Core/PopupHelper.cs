@@ -4,9 +4,9 @@ using SD.WEB.Modules.Auth;
 using SD.WEB.Modules.Collections.Components;
 using SD.WEB.Modules.Collections.Core;
 using SD.WEB.Modules.Collections.Interface;
+using SD.WEB.Modules.Platform.Components;
 using SD.WEB.Modules.Profile.Components;
 using SD.WEB.Modules.Profile.Resources;
-using SD.WEB.Modules.Provider.Components;
 using SD.WEB.Modules.Subscription.Components;
 using SD.WEB.Shared;
 

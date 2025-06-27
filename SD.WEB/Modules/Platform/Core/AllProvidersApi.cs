@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using SD.WEB.Shared;
 
-namespace SD.WEB.Modules.Provider.Core;
+namespace SD.WEB.Modules.Platform.Core;
 
 public class AllProvidersApi(IHttpClientFactory factory) : ApiCore(factory, null)
 {

@@ -54,7 +54,7 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Translations.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Modules\Provider\Resources\Translations.Designer.cs">
+		<Compile Update="Modules\Platform\Resources\Translations.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Translations.resx</DependentUpon>
@@ -116,7 +116,7 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Modules\Provider\Resources\Translations.resx">
+		<EmbeddedResource Update="Modules\Platform\Resources\Translations.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
