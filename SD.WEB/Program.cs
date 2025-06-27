@@ -17,13 +17,13 @@ using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress);
-
 if (builder.RootComponents.Empty())
 {
     builder.RootComponents.Add<App>("#app");
     builder.RootComponents.Add<HeadOutlet>("head::after");
 }
+
+ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress);
 
 var app = builder.Build();
 

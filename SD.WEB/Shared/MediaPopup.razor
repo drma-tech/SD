@@ -144,7 +144,7 @@
                              Visible="@(Media?.Collection.Any() ?? false)">
 
                     <div class="grid-relative-container-md">
-                        @foreach (var item in Media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue))
+                        @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
                         {
                             <div>
                                 <div @onclick="@(async () => await CollectionClicked(item))" style="cursor: pointer; position: relative;">
@@ -176,7 +176,7 @@
                                         }
 
                                         var movieWatched = Watched?.Contains(MediaType.movie, item.id) ?? false;
-                                        var showWatched = Watching?.GetWatchingItems(MediaType.tv, Media.tmdb_id).Any(a => a == item.id) ?? false;
+                                        var showWatched = Watching?.GetWatchingItems(MediaType.tv, Media?.tmdb_id).Any(a => a == item.id) ?? false;
                                         if (movieWatched || showWatched)
                                         {
                                             <MudIcon Icon="@Icons.Material.Filled.Visibility" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>

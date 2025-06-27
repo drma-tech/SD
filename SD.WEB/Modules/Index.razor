@@ -87,15 +87,23 @@
             CoreWish.LoadingFinished?.Invoke(model);
             StateHasChanged();
         };
+    }
 
-        if (Platform.NotEmpty())
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
         {
-            await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", Platform);
+            if (Platform.NotEmpty())
+            {
+                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", Platform);
+            }
+            else
+            {
+                await JsRuntime.InvokeAsync<string>("TryDetectPlatform");
+            }
         }
-        else
-        {
-            await JsRuntime.InvokeAsync<string>("TryDetectPlatform");
-        }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     protected override async Task LoadDataRender()
