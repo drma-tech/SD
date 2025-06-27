@@ -114,10 +114,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
+        await base.OnInitializedAsync();      
 
         Awards.Add(new Item { Name = "Oscar", LogoPath = "logo/oscar.png", Link = "/collections/oscar" });
         Awards.Add(new Item { Name = "Emmy Awards", LogoPath = "logo/emmy-awards.png", Link = "/collections/emmy-awards" });
@@ -166,6 +163,12 @@
         {
             ex.ProcessException(Snackbar, Logger);
         }
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
 }

@@ -119,15 +119,14 @@
 
         AppStateStatic.RegionChanged += StateHasChanged;
 
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
-
         //it is in initialize so it can be recognized by link mapping
         AllProviders = await AllProvidersApi.GetAll(Core);
     }
 
     protected override async Task LoadDataRender()
     {
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
     }
 
