@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-namespace SD.Shared.Models.List.Tmdb;
+﻿namespace SD.Shared.Models.List.Tmdb;
 
 public class CreatedByCustomListNew
 {
@@ -35,14 +33,13 @@ public class CustomListNew
 {
     public double average_rating { get; set; }
     public object? backdrop_path { get; set; }
-    public JsonElement comments { get; set; }
+    public Dictionary<string, string>? comments { get; set; }
     public CreatedByCustomListNew? created_by { get; set; }
     public string? description { get; set; }
     public int id { get; set; }
     public string? iso_3166_1 { get; set; }
     public string? iso_639_1 { get; set; }
     public string? name { get; set; }
-    public JsonElement object_ids { get; set; }
     public int page { get; set; }
     public object? poster_path { get; set; }
     public bool @public { get; set; }

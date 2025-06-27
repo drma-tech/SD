@@ -21,11 +21,13 @@ public class TmdbListApi(IHttpClientFactory factory) : ApiExternal(factory), IMe
                         $"{TmdbOptions.BaseUriNew}list/{((int)list).ToString().ConfigureParameters(parameter)}".ConvertFromStringToBase64());
 
         if (result != null)
+        {
             foreach (var item in result.results)
             {
                 var tv = item.media_type == "tv";
 
-                result.comments.TryGetProperty($"{(tv ? "tv" : "movie")}:{item.id}", out var value);
+                string? value = null;
+                result.comments?.TryGetValue($"{(tv ? "tv" : "movie")}:{item.id}", out value);
 
                 currentList.Add(new MediaDetail
                 {
@@ -41,9 +43,10 @@ public class TmdbListApi(IHttpClientFactory factory) : ApiExternal(factory), IMe
                         : TmdbOptions.LargePosterPath + item.poster_path,
                     rating = item.vote_count > 10 ? item.vote_average : 0,
                     MediaType = tv ? MediaType.tv : MediaType.movie,
-                    comments = value.GetString()
+                    comments = value
                 });
             }
+        }
 
         return new ValueTuple<HashSet<MediaDetail>, bool>(currentList, page >= result?.total_pages);
     }
