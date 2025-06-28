@@ -23,7 +23,7 @@
                 {
                     var link = provider.Key;
                     if (link == "microsoft") link = "aad";
-                    <a class="@($"button {provider.Key}")" href="@("/.auth/login/" + link + "?post_login_redirect_uri=" + Navigation.BaseUri + "login-success")">
+                    <a class="@($"button {provider.Key}")" href="@("/.auth/login/" + link + "?post_login_redirect_uri=" + Navigation.BaseUri + "login-success")" rel="nofollow">
                         <span>
                             @if (@provider.Key == "google")
                             {

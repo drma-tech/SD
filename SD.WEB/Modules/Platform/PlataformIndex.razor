@@ -49,7 +49,7 @@
                         var favorite = MyProviders?.Items.Any(a => a.id == item.id) ?? false;
 
                         <div>
-                            <MudLink Href="@($"/platforms/{item.id}")" Target="_self" Style="position: relative;">
+                            <MudLink Href="@($"/platforms/{item.id}")" Style="position: relative;">
                                 <MudCard Outlined="true">
                                     <MudCardContent Style="padding: 0;">
                                         <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.name"

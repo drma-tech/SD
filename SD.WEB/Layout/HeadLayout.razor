@@ -6,7 +6,8 @@
 
 @inject PaddleConfigurationApi ConfigurationApi
 
-<MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+@if (Breakpoint <= Breakpoint.Sm)
+{
     <MudIconButton Icon="@Icons.Material.Filled.Home" Color="@GetColor("/")" Class="me-2" Href="/" Variant="@GetVariant("/")">
         @Menu.Home
     </MudIconButton>
@@ -41,8 +42,9 @@
             </NotAuthorized>
         </AuthorizeView>
     </MudMenu>
-</MudHidden>
-<MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+}
+else
+{
     <MudButton StartIcon="@Icons.Material.Filled.Home" Color="@GetColor("/")" Class="me-2" Href="/" Variant="@GetVariant("/")">
         @Menu.Home
     </MudButton>
@@ -71,7 +73,7 @@
             <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="/login-providers" StartIcon="@Icons.Material.Outlined.Login">@Button.Login</MudButton>
         </NotAuthorized>
     </AuthorizeView>
-</MudHidden>
+}
 
 @code {
     [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }

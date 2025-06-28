@@ -1,8 +1,10 @@
 ﻿@using SD.WEB.Modules.Support.Resources
+@inherits ComponentCore<FooterComponent>
 
-<MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="@(!Support)" Style="overflow: auto;">
+@if ((Support && Breakpoint <= Breakpoint.Sm) || (!Support && Breakpoint > Breakpoint.Sm))
+{
     <MudDivider Class="mb-3 mt-10"></MudDivider>
-    <MudGrid Justify="Justify.Center" Style="overflow: auto;">
+    <MudGrid Justify="Justify.Center" Style="overflow: auto;" Spacing="2">
         <MudItem xs="12" sm="12" md="3">
             <MudList T="string" Color="Color.Surface">
                 <MudListSubheader>
@@ -53,13 +55,13 @@
                         LEGAL
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="@Translations.LinkTerm" Href="@GetLegalUrl("terms")" Dense="true" Target="_self" />
-                <MudListItem Text="@Translations.LinkPrivacy" Href="@GetLegalUrl("privacy")" Dense="true" Target="_self" />
-                <MudListItem Text="Credits" Href="support/credits" Dense="true" Target="_self" />
+                <MudListItem Text="@Translations.LinkTerm" Href="@GetLegalUrl("terms")" Dense="true" />
+                <MudListItem Text="@Translations.LinkPrivacy" Href="@GetLegalUrl("privacy")" Dense="true" />
+                <MudListItem Text="Credits" Href="/support/credits" Dense="true" />
             </MudList>
         </MudItem>
     </MudGrid>
-</MudHidden>
+}
 
 @code {
     [Parameter] public bool Support { get; set; }
@@ -96,6 +98,6 @@
                 lang = "en";
                 break;
         }
-        return $"support/{type}/{lang}";
+        return $"/support/{type}/{lang}";
     }
 }
