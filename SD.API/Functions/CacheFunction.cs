@@ -293,8 +293,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
             var title = req.GetQueryParameters()["title"];
 
-            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture,
-                DateTimeStyles.None, out var releaseDate);
+            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
             var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
             CacheDocument<Ratings>? doc;
             var cachedBytes = await distributedCache.GetAsync(cacheKey);
@@ -356,8 +355,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
             var title = req.GetQueryParameters()["title"];
 
-            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture,
-                DateTimeStyles.None, out var releaseDate);
+            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
             var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
             CacheDocument<Ratings>? doc;
             var cachedBytes = await distributedCache.GetAsync(cacheKey);
@@ -415,8 +413,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         try
         {
             var id = req.GetQueryParameters()["id"];
-            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture,
-                DateTimeStyles.None, out var releaseDate);
+            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
             var cacheKey = $"review_{id}";
             CacheDocument<ReviewModel>? doc;
             var cachedBytes = await distributedCache.GetAsync(cacheKey);
@@ -479,8 +476,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         {
             var id = req.GetQueryParameters()["id"];
             var title = req.GetQueryParameters()["title"];
-            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture,
-                DateTimeStyles.None, out var releaseDate);
+            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
             var cacheKey = $"review_{id}";
             CacheDocument<ReviewModel>? doc;
             var cachedBytes = await distributedCache.GetAsync(cacheKey);
@@ -572,17 +568,17 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
 
     private static TtlCache CalculateTtl(DateTime releaseDate)
     {
-        if (releaseDate > DateTime.Now.AddDays(-7)) // < 1 week launch
-        {
-            return TtlCache.OneDay;
-        }
-
-        if (releaseDate > DateTime.Now.AddMonths(-1)) // < 1 month launch
+        if (releaseDate > DateTime.Now.AddDays(-7)) // 1 week launch or future releases
         {
             return TtlCache.OneWeek;
         }
 
-        return TtlCache.ThreeMonths; // > 1 month launch
+        if (releaseDate > DateTime.Now.AddDays(-30)) // 1 month launch
+        {
+            return TtlCache.OneMonth;
+        }
+
+        return TtlCache.SixMonths; // older then one month
     }
 
     private async Task SaveCache<TData>(CacheDocument<TData>? doc, string cacheKey, TtlCache ttl) where TData : class, new()
