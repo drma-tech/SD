@@ -19,7 +19,7 @@
                             <MudLink Href="@($"https://www.youtube.com/watch?v={item?.id}")" Target="_blank">
                                 <MudCard Outlined="true">
                                     <MudCardContent Style="padding: 0;">
-                                        <MudImage Src="@item?.url" FallbackSrc="images/no-image.png" Alt="@item?.title" Style="width: 100%;"></MudImage>
+                                        <MudImage Src="@item?.url" FallbackSrc="images/no-image.png" Alt="@item?.title" Style="width: 100%; max-height: 94px;" ObjectFit="ObjectFit.Contain"></MudImage>
                                     </MudCardContent>
                                     <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
                                         @item?.title.GetResume(50)

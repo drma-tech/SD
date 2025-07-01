@@ -32,7 +32,7 @@ public class ResultCustomListNew
 public class CustomListNew
 {
     public double average_rating { get; set; }
-    public object? backdrop_path { get; set; }
+    public string? backdrop_path { get; set; }
     public Dictionary<string, string>? comments { get; set; }
     public CreatedByCustomListNew? created_by { get; set; }
     public string? description { get; set; }
@@ -41,7 +41,7 @@ public class CustomListNew
     public string? iso_639_1 { get; set; }
     public string? name { get; set; }
     public int page { get; set; }
-    public object? poster_path { get; set; }
+    public string? poster_path { get; set; }
     public bool @public { get; set; }
     public List<ResultCustomListNew> results { get; set; } = [];
     public long revenue { get; set; }
