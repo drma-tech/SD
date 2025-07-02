@@ -210,6 +210,10 @@ body .pwa-updater[b-pwa-updater] {
     margin-inline: -4px !important;
 }
 
+.chip-no-text > span.mud-icon-root {
+    margin-inline: -4px !important;
+}
+
 .carousel-caption {
     position: absolute;
     background-color: lime;
