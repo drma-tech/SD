@@ -18,7 +18,7 @@
     </div>
 }
 
-<SectionComponent Title="@($"{Translations.NewsTitle} - Rotten Tomatoes")" IconImage="logo/rotten-tomatoes.png" FullPage="true">
+<SectionComponent Title="@($"{Translations.NewsTitle} - Rotten Tomatoes")" IconName="@IconsFA.Solid.Icon("newspaper").Font" FullPage="true">
     <BodyFragment>
         <RenderControl Core="Core" Model="NewsList" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
             <div class="grid-relative-container-x-lg">

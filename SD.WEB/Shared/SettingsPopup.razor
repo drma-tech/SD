@@ -11,7 +11,7 @@
         <Language TEnum="Language" TValue="Language" For="@(() => AppStateStatic.Language)" SelectedValue="@AppStateStatic.Language" SelectedValueChanged="LanguageValueChanged">
         </Language>
         <MudToggleIconButton Toggled="@AppStateStatic.DarkMode" ToggledChanged="DarkModeChanged"
-                             Icon="@Icons.Material.Filled.DarkMode" ToggledIcon="@Icons.Material.Filled.LightMode" />
+                             Icon="@IconsFA.Solid.Icon("moon").Font" ToggledIcon="@IconsFA.Solid.Icon("sun").Font" />
         <span>@(AppStateStatic.DarkMode ? "Light" : "Dark") Mode</span>
     </DialogContent>
     <DialogActions>

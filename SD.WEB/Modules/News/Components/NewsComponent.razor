@@ -5,9 +5,9 @@
 @inject CacheFlixsterApi CacheFlixsterApi
 @inject IJSRuntime JsRuntime
 
-<SectionComponent Title="@($"{Translations.NewsTitle}")" IconImage="logo/rotten-tomatoes.png">
+<SectionComponent Title="@($"{Translations.NewsTitle}")" IconName="@IconsFA.Solid.Icon("newspaper").Font">
     <ActionFragment>
-        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Href="@("/news")" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@("/news")" />
     </ActionFragment>
     <BodyFragment>
         <RenderControl Core="Core" Model="News" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">

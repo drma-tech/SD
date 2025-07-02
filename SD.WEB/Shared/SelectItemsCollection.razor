@@ -7,7 +7,7 @@
         {
             <MudCheckBox Value="@SelectedItems.Any(a => a == item.id)" ValueChanged="(bool value) => CheckedChanged(item.id, value)"
                          Color="Color.Primary" UncheckedColor="Color.Dark" 
-                         CheckedIcon="@Icons.Material.Filled.Visibility" UncheckedIcon="@Icons.Material.Outlined.Visibility">
+                         CheckedIcon="@IconsFA.Solid.Icon("eye").Font" UncheckedIcon="@IconsFA.Solid.Icon("eye").Font">
                 @item.title (@item.release_date?.Year)
             </MudCheckBox>
         }

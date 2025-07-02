@@ -10,23 +10,23 @@
     <ActionFragment>
         @if (ShowFilter)
         {
-            <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Value="TypeSelected" ValueChanged="@(async (MediaType type) => await TypeSelectedChanged(type))"
+            <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Value="TypeSelected" ValueChanged="@(async (MediaType type) => await TypeSelectedChanged(type))"
                             Color="Color.Primary" Class="me-2">
-                <MudToggleItem Value="@MediaType.movie" SelectedIcon="@Icons.Material.Filled.Check">
-                    <MudIcon Icon="@Icons.Material.Filled.Movie" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
+                <MudToggleItem Value="@MediaType.movie">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
                     <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                         @MediaType.movie.GetName()
                     </MudHidden>
                 </MudToggleItem>
                 <MudToggleItem Value="@MediaType.tv">
-                    <MudIcon Icon="@Icons.Material.Filled.Tv" Title="@MediaType.tv.GetName()" Class="me-1"></MudIcon>
+                    <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@MediaType.tv.GetName()" Class="me-1"></MudIcon>
                     <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                         @MediaType.tv.GetName()
                     </MudHidden>
                 </MudToggleItem>
             </MudToggleGroup>
         }
-        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" OnClick="@OpenCompleteList" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" OnClick="@OpenCompleteList" />
     </ActionFragment>
     <BodyFragment>
         <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">

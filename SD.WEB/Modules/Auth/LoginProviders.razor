@@ -25,18 +25,7 @@
                     if (link == "microsoft") link = "aad";
                     <a class="@($"button {provider.Key}")" href="@("/.auth/login/" + link + "?post_login_redirect_uri=" + Navigation.BaseUri + "login-success")" rel="nofollow" target="_self">
                         <span>
-                            @if (@provider.Key == "google")
-                            {
-                                <MudIcon Icon="@Icons.Custom.Brands.Google" />
-                            }
-                            else if (provider.Key == "microsoft")
-                            {
-                                <MudIcon Icon="@Icons.Custom.Brands.Microsoft" />
-                            }
-                            else
-                            {
-                                <MudIcon Icon="@Icons.Material.Filled.Login" />
-                            }
+                            <MudIcon Icon="@IconsFA.Brands.Icon(provider.Key).Font" />
                         </span>
                         <p style="font-size: 16px;">@Translations.LoginWith @provider.Value</p>
                     </a>
@@ -44,7 +33,7 @@
             </div>
         </div>
         <div>
-            <MudAlert Variant="Variant.Outlined" Severity="Severity.Warning" Dense="true">
+            <MudAlert Variant="Variant.Outlined" Severity="Severity.Warning" Dense="true" Icon="@IconsFA.Solid.Icon("circle-exclamation").Font">
                 @if (AppStateStatic.Language == Language.ptBR || AppStateStatic.Language == Language.ptPT)
                 {
                     <MudText Inline="true">Ao fazer login, você confirma que leu e concorda com os </MudText>

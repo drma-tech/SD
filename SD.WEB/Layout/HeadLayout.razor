@@ -8,69 +8,65 @@
 
 @if (Breakpoint <= Breakpoint.Sm)
 {
-    <MudIconButton Icon="@Icons.Material.Filled.Home" Color="@GetColor("/")" Class="me-2" Href="/" Variant="@GetVariant("/")">
-        @Menu.Home
-    </MudIconButton>
-    <MudIconButton Icon="@Icons.Material.Filled.Person" Color="@GetColor("/profile")" Class="me-2" Href="/profile" Variant="@GetVariant("/profile")" Target="_self" Rel="nofollow">
-        @Menu.Profile
-    </MudIconButton>
-    <MudIconButton Icon="@Icons.Material.Filled.PlayCircle" Color="@GetColor("/platforms")" Class="me-2" Href="/platforms" Variant="@GetVariant("/platforms")">
-        @Menu.Platforms
-    </MudIconButton>
-    <MudIconButton Icon="@Icons.Material.Filled.Layers" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")">
-        @Menu.Collections
-    </MudIconButton>
-    <MudIconButton Icon="@Icons.Material.Filled.SupportAgent" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")">
-        @Menu.Support
-    </MudIconButton>
+    <MudIconButton Icon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Class="me-2" Href="/" Variant="@GetVariant("/")" />
+    <MudIconButton Icon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Class="me-2" Href="/profile" Variant="@GetVariant("/profile")" Target="_self" Rel="nofollow" />
+    <MudIconButton Icon="@IconsFA.Solid.Icon("circle-play").Font" Color="@GetColor("/platforms")" Class="me-2" Href="/platforms" Variant="@GetVariant("/platforms")" />
+    <MudIconButton Icon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" />
+    <MudIconButton Icon="@IconsFA.Solid.Icon("headset").Font" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")" />
     <MudSpacer />
-    <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit">
-        <MudMenuItem Icon="@Icons.Material.Outlined.Diamond" Label="@Translations.Subscription" IconColor="Color.Warning" OnClick="@OpenSubscription" />
+    <MudMenu Icon="@IconsFA.Solid.Icon("bars").Font" Color="Color.Inherit">
+        <MudMenuItem Icon="@IconsFA.Solid.Icon("gem").Font" Label="@Translations.Subscription" IconColor="Color.Warning" OnClick="@OpenSubscription" />
         <AuthorizeView>
             <Authorized>
-                <MudMenuItem Icon="@Icons.Material.Outlined.Person" Label="@Menu.Profile" OnClick="@MyAccount" />
+                <MudMenuItem Icon="@IconsFA.Solid.Icon("circle-user").Font" Label="@Menu.Profile" OnClick="@MyAccount" />
             </Authorized>
         </AuthorizeView>
-        <MudMenuItem Icon="@Icons.Material.Outlined.Settings" Label="Settings" OnClick="@OpenConfigurations" />
+        <MudMenuItem Icon="@IconsFA.Solid.Icon("cog").Font" Label="Settings" OnClick="@OpenConfigurations" />
         <MudDivider></MudDivider>
         <AuthorizeView>
             <Authorized>
-                <MudMenuItem Icon="@Icons.Material.Outlined.Logout" Label="@Button.Logout" OnClick="@Logout" IconColor="Color.Error" />
+                <MudMenuItem Icon="@IconsFA.Solid.Icon("right-from-bracket").Font" Label="@Button.Logout" OnClick="@Logout" IconColor="Color.Error" />
             </Authorized>
             <NotAuthorized>
-                <MudMenuItem Icon="@Icons.Material.Outlined.Login" Label="@Button.Login" Href="/login-providers" />
+                <MudMenuItem Icon="@IconsFA.Solid.Icon("right-to-bracket").Font" Label="@Button.Login" Href="/login-providers" />
             </NotAuthorized>
         </AuthorizeView>
     </MudMenu>
 }
 else
 {
-    <MudButton StartIcon="@Icons.Material.Filled.Home" Color="@GetColor("/")" Class="me-2" Href="/" Variant="@GetVariant("/")">
+    <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Class="me-2" Href="/" Variant="@GetVariant("/")">
         @Menu.Home
     </MudButton>
-    <MudButton StartIcon="@Icons.Material.Filled.Person" Color="@GetColor("/profile")" Class="me-2" Href="/profile" Variant="@GetVariant("/profile")" Target="_self" Rel="nofollow">
+    <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Class="me-2" Href="/profile" Variant="@GetVariant("/profile")" Target="_self" Rel="nofollow">
         @Menu.Profile
     </MudButton>
-    <MudButton StartIcon="@Icons.Material.Filled.PlayCircle" Color="@GetColor("/platforms")" Class="me-2" Href="/platforms" Variant="@GetVariant("/platforms")">
+    <MudButton StartIcon="@IconsFA.Solid.Icon("circle-play").Font" Color="@GetColor("/platforms")" Class="me-2" Href="/platforms" Variant="@GetVariant("/platforms")">
         @Menu.Platforms
     </MudButton>
-    <MudButton StartIcon="@Icons.Material.Filled.Layers" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")">
+    <MudButton StartIcon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")">
         @Menu.Collections
     </MudButton>
     <MudSpacer />
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Warning" StartIcon="@Icons.Material.Outlined.Diamond" Class="me-2" OnClick="@OpenSubscription">@Translations.Subscription</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Warning" StartIcon="@IconsFA.Solid.Icon("gem").Font" Class="me-2" OnClick="@OpenSubscription">
+        @Translations.Subscription
+    </MudButton>
     <AuthorizeView>
         <Authorized>
-            <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Material.Outlined.Person" Class="me-2" OnClick="@MyAccount" />
+            <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
         </Authorized>
     </AuthorizeView>
-    <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Material.Outlined.Settings" Class="me-2" OnClick="@OpenConfigurations"></MudIconButton>
+    <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
     <AuthorizeView>
         <Authorized>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Error" OnClick="@Logout" StartIcon="@Icons.Material.Outlined.Logout">@Button.Logout</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Error" OnClick="@Logout" StartIcon="@IconsFA.Solid.Icon("right-from-bracket").Font">
+                @Button.Logout
+            </MudButton>
         </Authorized>
         <NotAuthorized>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="/login-providers" StartIcon="@Icons.Material.Outlined.Login">@Button.Login</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="/login-providers" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
+                @Button.Login
+            </MudButton>
         </NotAuthorized>
     </AuthorizeView>
 }

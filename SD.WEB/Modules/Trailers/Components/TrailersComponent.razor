@@ -5,9 +5,9 @@
 @inject CacheYoutubeApi CacheYoutubeApi
 @inject IJSRuntime JsRuntime
 
-<SectionComponent Title="@($"{Translations.TrailersTitle}")" IconImage="logo/one-media.png">
+<SectionComponent Title="@($"{Translations.TrailersTitle}")" IconName="@IconsFA.Brands.Icon("youtube").Font">
     <ActionFragment>
-        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Href="@("/trailers")" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@("/trailers")" />
     </ActionFragment>
     <BodyFragment>
         <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">

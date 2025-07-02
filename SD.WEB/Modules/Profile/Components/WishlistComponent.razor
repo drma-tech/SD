@@ -3,16 +3,16 @@
 
 @inject IJSRuntime JsRuntime
 
-<SectionComponent IconName="@Icons.Material.Filled.Bookmark" Title="@Title" ShowHead="ShowHeader" FullPage="FullScreen">
+<SectionComponent IconName="@IconsFA.Solid.Icon("bookmark").Font" Title="@Title" ShowHead="ShowHeader" FullPage="FullScreen">
     <ActionFragment>
         @if (ShowPrivateAction)
         {
             <MudTooltip Text="@GlobalTranslations.Share">
-                <MudIconButton Icon="@Icons.Material.Filled.Share" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
+                <MudIconButton Icon="@IconsFA.Solid.Icon("share").Font" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
                                OnClick="@(() => Share($"{Navigation.BaseUri}shared/wishlist/{MediaType}/{UserId}"))" />
             </MudTooltip>
             <MudTooltip Text="@GlobalTranslations.SeeAllItems">
-                <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
+                <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
                                OnClick="@(async () => await OpenCompleteList())" />
             </MudTooltip>
         }

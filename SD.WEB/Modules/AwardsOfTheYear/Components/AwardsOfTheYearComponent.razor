@@ -6,9 +6,9 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<SectionComponent Title="@EnumLists.AwardsOfTheYear.GetName()" IconName="@Icons.Material.Filled.EmojiEvents">
+<SectionComponent Title="@EnumLists.AwardsOfTheYear.GetName()" IconName="@IconsFA.Solid.Icon("trophy").Font">
     <ActionFragment>
-        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Variant="Variant.Filled" Color="Color.Primary" Href="@("/best-awards-year")" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@("/best-awards-year")" />
     </ActionFragment>
     <BodyFragment>
         <MediaList MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"

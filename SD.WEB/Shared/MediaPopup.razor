@@ -129,7 +129,7 @@
                     <MudList T="string" Dense="true">
                         @foreach (var item in Media?.Videos ?? [])
                         {
-                            <MudListItem Icon="@Icons.Custom.Brands.YouTube" Text="@item.name"
+                            <MudListItem Icon="@IconsFA.Brands.Icon("youtube").Font" Text="@item.name"
                                          Href="@($"https://www.youtube.com/watch?v={item.key}")" Target="_blank">
                             </MudListItem>
                         }
@@ -171,7 +171,7 @@
                                             var wishedMovie = Wish?.Contains(MediaType.movie, item.id) ?? false;
                                             if (wishedMovie)
                                             {
-                                                <MudIcon Icon="@Icons.Material.Filled.Bookmark" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
+                                                <MudIcon Icon="@IconsFA.Solid.Icon("bookmark").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
                                             }
                                         }
 
@@ -179,7 +179,7 @@
                                         var showWatched = Watching?.GetWatchingItems(MediaType.tv, Media?.tmdb_id).Any(a => a == item.id) ?? false;
                                         if (movieWatched || showWatched)
                                         {
-                                            <MudIcon Icon="@Icons.Material.Filled.Visibility" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
+                                            <MudIcon Icon="@IconsFA.Solid.Icon("eye").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
                                         }
 
                                         <MudImage Src="@(item.poster_small ?? "images/no-image.png")" FallbackSrc="images/no-image.png" Alt="@item.title" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>

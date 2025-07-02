@@ -7,21 +7,21 @@
 
 <SectionComponent Title="@Translations.Popular" IconImage="logo/imdb.png">
     <ActionFragment>
-        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="TypeSelected" Color="Color.Primary">
-            <MudToggleItem Value="@PopularType.Movie" SelectedIcon="@Icons.Material.Filled.Check">
-                <MudIcon Icon="@Icons.Material.Filled.Movie" Title="@PopularType.Movie.GetName()" Class="me-1"></MudIcon>
+        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary">
+            <MudToggleItem Value="@PopularType.Movie">
+                <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@PopularType.Movie.GetName()" Class="me-1"></MudIcon>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                     @PopularType.Movie.GetName()
                 </MudHidden>
             </MudToggleItem>
             <MudToggleItem Value="@PopularType.Show">
-                <MudIcon Icon="@Icons.Material.Filled.Tv" Title="@PopularType.Show.GetName()" Class="me-1"></MudIcon>
+                <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@PopularType.Show.GetName()" Class="me-1"></MudIcon>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                     @PopularType.Show.GetName()
                 </MudHidden>
             </MudToggleItem>
             <MudToggleItem Value="@PopularType.Cinema">
-                <MudIcon Icon="@Icons.Material.Filled.Theaters" Title="@PopularType.Cinema.GetName()" Class="me-1"></MudIcon>
+                <MudIcon Icon="@IconsFA.Solid.Icon("ticket-simple").Font" Title="@PopularType.Cinema.GetName()" Class="me-1"></MudIcon>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                     @PopularType.Cinema.GetName()
                 </MudHidden>

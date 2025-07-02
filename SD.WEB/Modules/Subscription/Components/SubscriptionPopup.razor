@@ -26,7 +26,7 @@
         {
             if (Client?.ClientePaddle == null)
             {
-                <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.CardGiftcard" Class="mb-3" Dense="true">
+                <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("gift").Font" Class="mb-3" Dense="true">
                     @Translations.FreePeriod
                 </MudAlert>
                 <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary" Class="mb-3">
@@ -48,7 +48,7 @@
                                     <MudText>@Translations.NoAds</MudText>
                                 </MudItem>
                                 <MudItem>
-                                    <MudChip T="string" Icon="@Icons.Material.Filled.Close" Color="Color.Error" Size="Size.Small" Label="true" Class="chip-no-text" />
+                                    <MudChip T="string" Icon="@IconsFA.Solid.Icon("xmark").Font" Color="Color.Error" Size="Size.Small" Label="true" Class="chip-no-text" />
                                 </MudItem>
                                 <MudItem xs="9">
                                     <MudText>@Profile.Resources.Translations.MyPlatforms</MudText>
@@ -102,7 +102,7 @@
                                     <MudText>@Translations.NoAds</MudText>
                                 </MudItem>
                                 <MudItem>
-                                    <MudChip T="string" Icon="@Icons.Material.Filled.Check" Color="Color.Default" Size="Size.Small" Label="true" Class="chip-no-text" />
+                                    <MudChip T="string" Icon="@IconsFA.Solid.Icon("check").Font" Color="Color.Default" Size="Size.Small" Label="true" Class="chip-no-text" />
                                 </MudItem>
                                 <MudItem xs="9">
                                     <MudText>@Profile.Resources.Translations.MyPlatforms</MudText>
@@ -161,7 +161,7 @@
                                     <MudText>@Translations.NoAds</MudText>
                                 </MudItem>
                                 <MudItem>
-                                    <MudChip T="string" Icon="@Icons.Material.Filled.Check" Color="Color.Default" Size="Size.Small" Label="true" Class="chip-no-text" />
+                                    <MudChip T="string" Icon="@IconsFA.Solid.Icon("check").Font" Color="Color.Default" Size="Size.Small" Label="true" Class="chip-no-text" />
                                 </MudItem>
                                 <MudItem xs="9">
                                     <MudText>@Profile.Resources.Translations.MyPlatforms</MudText>
@@ -274,18 +274,18 @@
                     </MudCard>
                     @if (Subscription?.data?.IsCanceled ?? true)
                     {
-                        <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Diamond" Variant="Variant.Filled" Class="me-2 mb-2"
+                        <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("gem").Font" Variant="Variant.Filled" Class="me-2 mb-2"
                                    OnClick="@CreateNewSubscription">
                             @Translations.CreateNewSubscription
                         </MudButton>
                     }
                     else
                     {
-                        <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.CreditCard" Variant="Variant.Outlined" Class="me-2 mb-2"
+                        <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("credit-card").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
                                    Href="@Subscription?.data?.management_urls?.update_payment_method" Target="_blank">
                             @Translations.UpdatePaymentDetails
                         </MudButton>
-                        <MudButton Color="Color.Error" StartIcon="@Icons.Material.Filled.Cancel" Variant="Variant.Outlined" Class="me-2 mb-2"
+                        <MudButton Color="Color.Error" StartIcon="@IconsFA.Solid.Icon("ban").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
                                    Href="@Subscription?.data?.management_urls?.cancel" Target="_blank">
                             @Translations.CancelSubscription
                         </MudButton>

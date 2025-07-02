@@ -568,12 +568,12 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
 
     private static TtlCache CalculateTtl(DateTime releaseDate)
     {
-        if (releaseDate > DateTime.Now.AddDays(-7)) // 1 week launch or future releases
+        if (releaseDate > DateTime.Now.AddDays(-14)) // 1 week launch or future releases
         {
             return TtlCache.OneWeek;
         }
 
-        if (releaseDate > DateTime.Now.AddDays(-30)) // 1 month launch
+        if (releaseDate > DateTime.Now.AddDays(-30)) // less than 1 month launch
         {
             return TtlCache.OneMonth;
         }

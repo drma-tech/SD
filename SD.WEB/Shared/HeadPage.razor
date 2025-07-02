@@ -51,14 +51,14 @@
                                ExpressionEmpty="@((MyProviders? obj) => obj == null || obj.Items.Empty())">
                     @if (MyProviders?.Items.Any(a => a.id == Provider?.id) ?? false)
                     {
-                        <MudButton StartIcon="@Icons.Material.Filled.Star" Color="Color.Error" Variant="Variant.Filled" Class="me-2"
+                        <MudButton StartIcon="@IconsFA.Solid.Icon("minus").Font" Color="Color.Error" Variant="Variant.Filled" Class="me-2"
                                    Disabled="@(!IsAuthenticated)" OnClick="@Remove">
                             @Button.Remove
                         </MudButton>
                     }
                     else
                     {
-                        <MudButton StartIcon="@Icons.Material.Filled.Star" Color="Color.Primary" Variant="Variant.Filled" Class="me-2"
+                        <MudButton StartIcon="@IconsFA.Solid.Icon("plus").Font" Color="Color.Primary" Variant="Variant.Filled" Class="me-2"
                                    Disabled="@(!IsAuthenticated)" OnClick="@Add">
                             @Button.Add
                         </MudButton>
@@ -67,7 +67,7 @@
             }
             @if (ShowShare)
             {
-                <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => Share(Navigation.Uri))"></MudIconButton>
+                <MudIconButton Icon="@IconsFA.Solid.Icon("share").Font" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => Share(Navigation.Uri))"></MudIconButton>
             }
         </div>
     </MudStack>
@@ -82,7 +82,7 @@
                 {
                     <MudTooltip Text="@item.GetDescription()">
                         <MudChip T="string" Color="Color.Info" Style="cursor: help;" Size="Size.Small"
-                                 Icon="@Icons.Material.Filled.QuestionMark">
+                                 Icon="@IconsFA.Solid.Icon("circle-info").Font">
                             @item.GetName()
                         </MudChip>
                     </MudTooltip>

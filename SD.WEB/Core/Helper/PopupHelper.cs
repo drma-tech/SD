@@ -10,7 +10,7 @@ using SD.WEB.Modules.Profile.Resources;
 using SD.WEB.Modules.Subscription.Components;
 using SD.WEB.Shared;
 
-namespace SD.WEB.Core;
+namespace SD.WEB.Core.Helper;
 
 public static class PopupHelper
 {

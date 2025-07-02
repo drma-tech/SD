@@ -11,40 +11,40 @@
 @inject TmdbApi TmdbApi
 @inject IJSRuntime JsRuntime
 
-<SectionComponent IconName="@Icons.Material.Filled.ThumbUp" Title="@Translations.MySuggestions">
+<SectionComponent IconName="@IconsFA.Solid.Icon("thumbs-up").Font" Title="@Translations.MySuggestions">
     <ActionFragment>
         @if (Client?.ClientePaddle?.IsPaidUser ?? false)
         {
             @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (MyProviders?.Items.Any() ?? false))
             {
-                <MudButton StartIcon="@Icons.Material.Filled.Refresh" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
+                <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
                            OnClick="() => ImportFromProviders(MediaType.movie)" Disabled="@MovieUpdating">
                     @Button.Update
                 </MudButton>
             }
             @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync) && (MyProviders?.Items.Any() ?? false))
             {
-                <MudButton StartIcon="@Icons.Material.Filled.Refresh" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
+                <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
                            OnClick="() => ImportFromProviders(MediaType.tv)" Disabled="@ShowUpdating">
                     @Button.Update
                 </MudButton>
             }
-            <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Value="SearchType" ValueChanged="(MediaType type) => CheckedValueChanged(type)"
+            <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Value="SearchType" ValueChanged="(MediaType type) => CheckedValueChanged(type)"
                             Color="Color.Primary" Class="me-2">
-                <MudToggleItem Value="@MediaType.movie" SelectedIcon="@Icons.Material.Filled.Check">
-                    <MudIcon Icon="@Icons.Material.Filled.Movie" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
+                <MudToggleItem Value="@MediaType.movie">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
                     <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                         @MediaType.movie.GetName()
                     </MudHidden>
                 </MudToggleItem>
                 <MudToggleItem Value="@MediaType.tv">
-                    <MudIcon Icon="@Icons.Material.Filled.Tv" Title="@MediaType.tv.GetName()" Class="me-1"></MudIcon>
+                    <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@MediaType.tv.GetName()" Class="me-1"></MudIcon>
                     <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                         @MediaType.tv.GetName()
                     </MudHidden>
                 </MudToggleItem>
             </MudToggleGroup>
-            <MudIconButton Icon="@Icons.Material.Filled.FilterAlt" Variant="Variant.Filled" Color="@(GenresChanged? Color.Secondary: Color.Primary)"
+            <MudIconButton Icon="@IconsFA.Solid.Icon("filter").Font" Variant="Variant.Filled" Color="@(GenresChanged? Color.Secondary: Color.Primary)"
                            OnClick="@(async () => await OpenConfigurations())" Disabled="@(MyProviders == null || MyProviders.Items.Empty())" />
         }
     </ActionFragment>

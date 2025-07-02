@@ -8,11 +8,11 @@
 @inject AllProvidersApi AllProvidersApi
 @inject IJSRuntime JsRuntime
 
-<SectionComponent IconName="@Icons.Material.Filled.Star" Title="@Translations.MyPlatforms">
+<SectionComponent IconName="@IconsFA.Solid.Icon("circle-play").Font" Title="@Translations.MyPlatforms">
     <ActionFragment>
         @if (ProvidersChanged)
         {
-            <MudIconButton Icon="@Icons.Material.Filled.Update" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" />
+            <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" />
         }
     </ActionFragment>
     <BodyFragment>
@@ -30,7 +30,7 @@
                                 @if (AllProviders != null && (AllProviders.Items.All(a => a.id != item.id) || !AllProviders.Items.Any(a => a.id == item.id && a.regions.Contains(item.region ?? AppStateStatic.Region))))
                                 {
                                     <MudChip T="string" Color="Color.Error" Style="padding: 0.2rem; position: absolute; bottom: 5px; height: auto; z-index: 1; width: 90%;">
-                                        <MudIcon Icon="@Icons.Material.Filled.Delete"></MudIcon> Deleted
+                                        <MudIcon Icon="@IconsFA.Solid.Icon("trash").Font"></MudIcon> Deleted
                                     </MudChip>
                                 }
                                 <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" FallbackSrc="images/no-image.png" Alt="@item.name" Style="vertical-align: bottom;"></MudImage>
