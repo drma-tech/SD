@@ -18,7 +18,7 @@
     </div>
 }
 
-<SectionComponent Title="@($"{Translations.NewsTitle} - Rotten Tomatoes")" IconName="@IconsFA.Solid.Icon("newspaper").Font" FullPage="true">
+<SectionComponent Title="@($"{Translations.NewsTitle}")" IconName="@IconsFA.Solid.Icon("newspaper").Font" FullPage="true">
     <BodyFragment>
         <RenderControl Core="Core" Model="NewsList" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
             <div class="grid-relative-container-x-lg">
@@ -35,7 +35,7 @@
                             </div>
                         </MudCardContent>
                         <MudCardActions style="align-self: center; padding: 0;">
-                            <MudButton Color="Color.Primary" Variant="Variant.Text" Href="@item.link" Target="_blank">
+                            <MudButton Color="Color.Primary" Variant="Variant.Text" Href="@item.link" Target="_blank" Rel="nofollow">
                                 @Button.ReadMore
                             </MudButton>
                         </MudCardActions>

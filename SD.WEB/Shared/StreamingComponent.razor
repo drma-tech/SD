@@ -29,7 +29,7 @@
                     @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                     {
                         var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
-                        <MudLink Href="@provider.link" Target="_blank">
+                        <MudLink Href="@provider.link" Target="_blank" rel="nofollow">
                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.provider_name" Style="width: 50px;"></MudImage>
                             <AuthorizeView Roles="administrator">
                                 <Authorized>
@@ -60,7 +60,7 @@
                     @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                     {
                         var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
-                        <MudLink Href="@provider.link" Target="_blank">
+                        <MudLink Href="@provider.link" Target="_blank" rel="nofollow">
                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.provider_name" Style="width: 50px;"></MudImage>
                             <AuthorizeView Roles="administrator">
                                 <Authorized>
@@ -91,7 +91,7 @@
                     @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                     {
                         var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
-                        <MudLink Href="@provider.link" Target="_blank">
+                        <MudLink Href="@provider.link" Target="_blank" rel="nofollow">
                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.provider_name" Style="width: 50px;"></MudImage>
                             <AuthorizeView Roles="administrator">
                                 <Authorized>
@@ -122,7 +122,7 @@
                     @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                     {
                         var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
-                        <MudLink Href="@provider.link" Target="_blank">
+                        <MudLink Href="@provider.link" Target="_blank" rel="nofollow">
                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.provider_name" Style="width: 50px;"></MudImage>
                             <AuthorizeView Roles="administrator">
                                 <Authorized>
@@ -153,7 +153,7 @@
                     @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                     {
                         var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
-                        <MudLink Href="@provider.link" Target="_blank">
+                        <MudLink Href="@provider.link" Target="_blank" rel="nofollow">
                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.provider_name" Style="width: 50px;"></MudImage>
                             <AuthorizeView Roles="administrator">
                                 <Authorized>
@@ -184,7 +184,7 @@
                     @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                     {
                         var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
-                        <MudLink Href="@provider.link" Target="_blank">
+                        <MudLink Href="@provider.link" Target="_blank" rel="nofollow">
                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.provider_name" Style="width: 50px;"></MudImage>
                             <AuthorizeView Roles="administrator">
                                 <Authorized>

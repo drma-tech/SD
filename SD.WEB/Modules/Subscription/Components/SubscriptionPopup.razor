@@ -282,11 +282,11 @@
                     else
                     {
                         <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("credit-card").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
-                                   Href="@Subscription?.data?.management_urls?.update_payment_method" Target="_blank">
+                                   Href="@Subscription?.data?.management_urls?.update_payment_method" Target="_blank" rel="nofollow">
                             @Translations.UpdatePaymentDetails
                         </MudButton>
                         <MudButton Color="Color.Error" StartIcon="@IconsFA.Solid.Icon("ban").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
-                                   Href="@Subscription?.data?.management_urls?.cancel" Target="_blank">
+                                   Href="@Subscription?.data?.management_urls?.cancel" Target="_blank" rel="nofollow">
                             @Translations.CancelSubscription
                         </MudButton>
                     }

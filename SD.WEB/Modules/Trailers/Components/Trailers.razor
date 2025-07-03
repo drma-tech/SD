@@ -22,7 +22,7 @@
             <div class="grid-relative-container-x-lg">
                 @foreach (var item in TrailerModel?.Data?.Items ?? [])
                 {
-                    <MudLink Href="@($"https://www.youtube.com/watch?v={item.id}")" Target="_blank">
+                    <MudLink Href="@($"https://www.youtube.com/watch?v={item.id}")" Target="_blank" rel="nofollow">
                         <MudCard Outlined="true">
                             <MudCardContent Style="padding: 0;">
                                 <MudImage Src="@item?.url" FallbackSrc="images/no-image.png" Alt="@item?.title" Style="width: 100%;"></MudImage>

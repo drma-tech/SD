@@ -8,7 +8,7 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
-<SeoHeader Title="Search" Url="/search"></SeoHeader>
+<SeoHeader Title="Search" Index="false"></SeoHeader>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@SearchContent" Immediate="true" OnKeyDown="@KeyPress"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined"

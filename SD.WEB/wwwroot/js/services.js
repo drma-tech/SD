@@ -43,8 +43,10 @@ window.initClarity = function (code) {
 
 // Disable robots for dev environment
 window.setRobotsMeta = function () {
-    const meta = document.createElement("meta");
-    meta.name = "robots";
-    meta.content = window.location.hostname.includes("dev") ? "noindex, nofollow" : "index";
-    document.head.appendChild(meta);
+    if (window.location.hostname.includes("dev")) {
+        const meta = document.createElement("meta");
+        meta.name = "robots";
+        meta.content = "noindex, nofollow";
+        document.head.appendChild(meta);
+    }
 };
