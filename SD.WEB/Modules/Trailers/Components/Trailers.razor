@@ -16,7 +16,7 @@
         </script>
     </div>
 }
-<SectionComponent Title="@($"{Translations.TrailersTitle} - ONE Media")" IconName="@IconsFA.Brands.Icon("youtube").Font" FullPage="true">
+<SectionComponent Title="@($"{Translations.TrailersTitle}")" IconName="@IconsFA.Brands.Icon("youtube").Font" FullPage="true">
     <BodyFragment>
         <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
             <div class="grid-relative-container-x-lg">
