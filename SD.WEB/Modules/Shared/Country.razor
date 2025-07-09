@@ -30,17 +30,8 @@
 
     protected override void OnInitialized()
     {
+        Regions = EnumHelper.GetList<Region>();
         Continent = SelectedValue.GetCustomAttribute()?.Group;
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
-
-        if (firstRender)
-        {
-            Regions = EnumHelper.GetList<Region>();
-        }
     }
 
 }

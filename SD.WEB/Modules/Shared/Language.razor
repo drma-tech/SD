@@ -30,17 +30,8 @@
 
     protected override void OnInitialized()
     {
+        Languages = EnumHelper.GetList<Language>();
         Continent = SelectedValue.GetCustomAttribute()?.Group;
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
-
-        if (firstRender)
-        {
-            Languages = EnumHelper.GetList<Language>();
-        }
     }
 
 }

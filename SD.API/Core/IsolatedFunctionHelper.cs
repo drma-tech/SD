@@ -1,10 +1,10 @@
-﻿using System.Collections.Specialized;
+﻿using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
+using System.Collections.Specialized;
 using System.Net;
 using System.Text.Json;
 using System.Web;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
 
 namespace SD.API.Core;
 
@@ -41,20 +41,27 @@ public static class IsolatedFunctionHelper
         return model;
     }
 
-    public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, TtlCache maxAge,
-        CancellationToken cancellationToken) where T : class
+    public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, TtlCache maxAge, CancellationToken cancellationToken)
+        where T : class
     {
-        HttpResponseData? response;
+        var response = req.CreateResponse();
 
         if (doc != null)
         {
-            response = req.CreateResponse();
+            //its giving error with the following line (when called twice in parallel)
+            //await response.WriteAsJsonAsync(doc, cancellationToken);
 
-            await response.WriteAsJsonAsync(doc, cancellationToken);
+            await using var ms = new MemoryStream();
+            await JsonSerializer.SerializeAsync(ms, doc, doc.GetType(), cancellationToken: cancellationToken);
+            ms.Position = 0;
+
+            await ms.CopyToAsync(response.Body, cancellationToken);
+
+            response.Headers.Add("Content-Type", "application/json");
         }
         else
         {
-            response = req.CreateResponse(HttpStatusCode.NoContent);
+            response.StatusCode = HttpStatusCode.NoContent;
         }
 
         response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
@@ -98,8 +105,7 @@ public static class IsolatedFunctionHelper
     {
         var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
 
-        return string.Join("",
-            valueCollection.AllKeys.Select(key => $"{key?.ToLowerInvariant()}={{{key?.ToLowerInvariant()}}}|"));
+        return string.Join("", valueCollection.AllKeys.Select(key => $"{key?.ToLowerInvariant()}={{{key?.ToLowerInvariant()}}}|"));
     }
 
     private static string[] BuildParams(this HttpRequestData req)

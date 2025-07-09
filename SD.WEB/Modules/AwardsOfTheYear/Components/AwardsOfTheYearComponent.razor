@@ -1,6 +1,7 @@
 ﻿@using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
-@inherits PageCore<AwardsOfTheYearComponent>
+@inherits ComponentCore<AwardsOfTheYearComponent>
+
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
@@ -11,41 +12,36 @@
         <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@("/best-awards-year")" />
     </ActionFragment>
     <BodyFragment>
-        <MediaList MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" CommentsIsImage="true" ShowHead="false" FullPage="true">
+        <MediaList MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="Watched" Watching="Watching" Wish="Wish"
+                   ShowPrivateAction="@ShowPrivateAction" IsAuthenticated="IsAuthenticated" CommentsIsImage="true" ShowHead="false" FullPage="true">
         </MediaList>
     </BodyFragment>
 </SectionComponent>
 
 @code {
-    public WatchedList? WatchedList { get; set; }
-    public WatchingList? WatchingList { get; set; }
-    public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     protected override void OnInitialized()
     {
         WatchedListApi.DataChanged += model =>
         {
-            WatchedList = model;
+            Watched = model;
             StateHasChanged();
         };
         WatchingListApi.DataChanged += model =>
         {
-            WatchingList = model;
+            Watching = model;
             StateHasChanged();
         };
         WishListApi.DataChanged += model =>
         {
-            WishList = model;
+            Wish = model;
             StateHasChanged();
         };
-    }
-
-    protected override async Task LoadDataRender()
-    {
-        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
-        WishList = await WishListApi.Get(IsAuthenticated, null);
     }
 
 }

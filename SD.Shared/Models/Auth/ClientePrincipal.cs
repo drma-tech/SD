@@ -9,7 +9,8 @@ public class ClientePrincipal() : PrivateMainDocument(DocumentType.Principal)
     public string? UserDetails { get; set; }
     public string[] UserRoles { get; set; } = [];
 
-    [DataType(DataType.EmailAddress)] public string? Email { get; set; }
+    [DataType(DataType.EmailAddress)] 
+    public string? Email { get; set; }
 
     public ClientePaddle? ClientePaddle { get; set; }
 

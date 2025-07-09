@@ -10,8 +10,7 @@ public class TmdbFunction(IDistributedCache distributedCache)
 {
     [Function("List4")]
     public async Task<HttpResponseData> List4(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/tmdb")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/tmdb")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {

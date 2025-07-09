@@ -7,11 +7,6 @@ public static class EnumHelper
         return Enum.GetValues<TEnum>();
     }
 
-    public static EnumObject<TEnum>[] GetObjArray<TEnum>(bool translate = true) where TEnum : struct, Enum
-    {
-        return GetList<TEnum>(translate).ToArray();
-    }
-
     public static IEnumerable<EnumObject<TEnum>> GetList<TEnum>(bool translate = true) where TEnum : struct, Enum
     {
         foreach (var val in GetArray<TEnum>())

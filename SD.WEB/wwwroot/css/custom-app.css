@@ -214,6 +214,14 @@ body .pwa-updater[b-pwa-updater] {
     margin-inline: -4px !important;
 }
 
+.chip-no-text-lg svg {
+    margin-inline: 0px !important;
+}
+
+.chip-no-text-lg > span.mud-icon-root {
+    margin-inline: 0px !important;
+}
+
 .carousel-caption {
     position: absolute;
     background-color: lime;

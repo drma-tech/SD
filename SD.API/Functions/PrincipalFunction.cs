@@ -8,8 +8,7 @@ public class PrincipalFunction(CosmosRepository repo)
 {
     [Function("PrincipalGet")]
     public async Task<HttpResponseData?> PrincipalGet(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "principal/get")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "principal/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -29,8 +28,7 @@ public class PrincipalFunction(CosmosRepository repo)
 
     [Function("PrincipalGetEmail")]
     public async Task<string?> PrincipalGetEmail(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/principal/get-email")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/principal/get-email")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -49,8 +47,7 @@ public class PrincipalFunction(CosmosRepository repo)
 
     [Function("PrincipalAdd")]
     public async Task<ClientePrincipal?> PrincipalAdd(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/add")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/add")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -67,8 +64,7 @@ public class PrincipalFunction(CosmosRepository repo)
 
     [Function("PrincipalPaddle")]
     public async Task<ClientePrincipal> PrincipalPaddle(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/paddle")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/paddle")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -95,8 +91,7 @@ public class PrincipalFunction(CosmosRepository repo)
 
     [Function("PrincipalRemove")]
     public async Task PrincipalRemove(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Delete, Route = "principal/remove")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Delete, Route = "principal/remove")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
