@@ -15,7 +15,7 @@
               OnAdornmentClick="@(() => Navigation.NavigateTo($"/search/{SearchContent}"))" Class="mb-4">
 </MudTextField>
 
-<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())" CustomMessageWarning="@GlobalTranslations.SearchReturnedNothing">
     <MediaListFull MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false" FullPage="true"
                    Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
     </MediaListFull>

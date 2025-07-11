@@ -196,6 +196,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your search returned nothing. Please try again..
+        /// </summary>
+        public static string SearchReturnedNothing {
+            get {
+                return ResourceManager.GetString("SearchReturnedNothing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to See all items.
         /// </summary>
         public static string SeeAllItems {

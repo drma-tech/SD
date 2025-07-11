@@ -4,6 +4,7 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+		<BlazorWasmPrerenderingUrlPathToExplicitFetch>/certified-sd/tv</BlazorWasmPrerenderingUrlPathToExplicitFetch>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
