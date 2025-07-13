@@ -51,10 +51,16 @@ public static class IsolatedFunctionHelper
             //its giving error with the following line (when called twice in parallel)
             //await response.WriteAsJsonAsync(doc, cancellationToken);
 
-            await using var ms = new MemoryStream();
-            await JsonSerializer.SerializeAsync(ms, doc, doc.GetType(), cancellationToken: cancellationToken);
-            ms.Position = 0;
+            //still getting same error
+            //await using var ms = new MemoryStream();
+            //await JsonSerializer.SerializeAsync(ms, doc, doc.GetType(), cancellationToken: cancellationToken);
+            //ms.Position = 0;
+            //await ms.CopyToAsync(response.Body, cancellationToken);
 
+            await using var ms = new MemoryStream();
+            using var writer = new Utf8JsonWriter(ms);
+            JsonSerializer.Serialize(writer, doc);
+            ms.Position = 0;
             await ms.CopyToAsync(response.Body, cancellationToken);
 
             response.Headers.Add("Content-Type", "application/json");
@@ -65,8 +71,6 @@ public static class IsolatedFunctionHelper
         }
 
         response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
-        //response.Headers.Add("ETag", eTag); // unique identification to verify data changes
-        //response.Headers.Add("Access-Control-Expose-Headers", "ETag"); //don't using anymore
 
         return response;
     }
