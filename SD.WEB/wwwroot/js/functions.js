@@ -96,12 +96,7 @@ async function detectBrowserFeatures() {
         wasmFeatureDetect.bigInt()
     ]);
 
-    if (!simd || !bulkMemory || !bigInt) {
-        showBrowserWarning();
-        return false;
-    }
-
-    return true;
+    return simd && bulkMemory && bigInt;
 }
 
 function showBrowserWarning() {

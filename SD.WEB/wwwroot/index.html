@@ -52,6 +52,12 @@
         <span class="dismiss">🗙</span>
     </div>
 
+    <noscript>
+        <div style="background: #fff3cd; color: #856404; padding: 1em; border: 1px solid #ffeeba; text-align: center;">
+            This site requires JavaScript to function properly. Please enable JavaScript in your browser.
+        </div>
+    </noscript>
+
     <div id="error-container" class="error-container"></div>
 
     <script src="https://unpkg.com/wasm-feature-detect/dist/umd/index.js"></script>
@@ -70,9 +76,7 @@
         // check is browser is compatible with blazor
         detectBrowserFeatures()
             .then((ok) => {
-                if (!ok) {
-                    showBrowserWarning();
-                }
+                if (!ok) { showBrowserWarning(); }
             })
             .catch((error) => {
                 showError(`Browser not supported: ${error.message}`);
