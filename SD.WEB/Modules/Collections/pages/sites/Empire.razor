@@ -1,16 +1,18 @@
-﻿@page "/collections/golden-globes"
-<SeoHeader Title="Collections | Golden Globe Awards" Keywords="@(new[] { "Golden Globe Awards" })" Url="/collections/golden-globes"></SeoHeader>
+﻿@page "/collections/empire"
+<SeoHeader Title="Collections | Empire" Keywords="@(new[] { "Empire" })" Url="/collections/empire"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<GoldenGlobes>
+@inherits PageCore<Empire>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
+@inject IJSRuntime JS
 
-<HeadPage Title="Golden Globes" ImageSource="logo/golden-globes.png" Text="@Translations.golden_desc" Link="https://www.goldenglobes.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<HeadPage Title="Empire" ImageSource="logo/empire.png" Text="Find the latest film reviews, news and celebrity interviews from Empire, the world's biggest movie destination. Discover our new TV and gaming content."
+          Link="https://www.empireonline.com/" IsAuthenticated="IsAuthenticated">
+</HeadPage>
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
@@ -22,15 +24,16 @@
     </div>
 }
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureDrama" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureMusicalComedy" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestTvShowsOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureAnimated" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
-</MediaList>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+</div>
 
 @code {
     public Settings? Settings { get; set; }
@@ -58,7 +61,7 @@
         {
             WishList = model;
             StateHasChanged();
-        };
+        };        
     }
 
     protected override async Task LoadDataRender()

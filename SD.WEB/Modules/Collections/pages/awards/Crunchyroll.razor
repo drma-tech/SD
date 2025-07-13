@@ -1,16 +1,18 @@
-﻿@page "/collections/emmy-awards"
-<SeoHeader Title="Collections | Emmy Awards" Keywords="@(new[] { "Emmy Awards" })" Url="/collections/emmy-awards"></SeoHeader>
+﻿@page "/collections/crunchyroll"
+<SeoHeader Title="Collections | Crunchyroll Anime Awards" Keywords="@(new[] { "Crunchyroll Anime Awards" })" Url="/collections/crunchyroll"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<Emmys>
+@inherits PageCore<Crunchyroll>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
+@inject IJSRuntime JS
 
-<HeadPage Title="Emmy Awards" ImageSource="logo/emmy-awards.png" Text="@Translations.emmys_desc" Link="https://www.emmys.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<HeadPage Title="Crunchyroll Anime Awards" ImageSource="logo/crunchyroll.png" Text="Since 2017, this global event has annually recognized anime’s finest series and films. During our voting period, you can vote here once per day in a variety of categories. Ultimately, Grand Winners are announced in-person at the 2023 Crunchyroll Anime Awards show on March 4, 2023."
+          Link="https://www.crunchyroll.com/animeawards/" IsAuthenticated="IsAuthenticated">
+</HeadPage>
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
@@ -22,15 +24,19 @@
     </div>
 }
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingDramaSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollAnimeOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingComedySeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollBestContinuingSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingLimitedSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollBestFilm" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
 </MediaList>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+</div>
 
 @code {
     public Settings? Settings { get; set; }

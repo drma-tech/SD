@@ -1,16 +1,17 @@
-﻿@page "/collections/critics-choice"
-<SeoHeader Title="Collections | Critics Choice Awards" Keywords="@(new[] { "Critics Choice Awards" })" Url="/collections/critics-choice"></SeoHeader>
+﻿@page "/collections/trakt"
+<SeoHeader Title="Collections | Trakt" Keywords="@(new[] { "Trakt" })" Url="/collections/trakt"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<CriticsChoice>
+@inherits PageCore<Trakt>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
+@inject IJSRuntime JS
 
-<HeadPage Title="Critics Choice" ImageSource="logo/critics.png" Text="The Critics Choice Association (CCA) is a group of broadcast, radio and online critics as well as entertainment journalists who review films and documentaries as well as scripted and unscripted television."
-          Link="https://www.criticschoice.com/" IsAuthenticated="IsAuthenticated">
+<HeadPage Title="Trakt" ImageSource="logo/trakt.png" Text="Track what you watch and when. Discover what's hot and where you can watch it. Share comments, ratings and recommendations."
+          Link="https://trakt.tv/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
@@ -23,12 +24,18 @@
     </div>
 }
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CriticsChoiceBestPicture" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+@*https://trakt.tv/movies/recommended/all*@
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CriticsChoiceBestLimitedSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+@*https://trakt.tv/shows/recommended/all*@
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedTvShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+</div>
 
 @code {
     public Settings? Settings { get; set; }

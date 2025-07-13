@@ -31,21 +31,21 @@
     <BodyFragment>
         @if (TypeSelected == PopularType.Movie)
         {
-            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" MultipleLanguages="false" FullPage="true"
+            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" FullPage="true"
                        StringParameters="Params" TypeSelected="MediaType.movie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                        ShowPrivateAction="ShowPrivateAction" OnlyYear="true" IsAuthenticated="IsAuthenticated">
             </MediaList>
         }
         else if (TypeSelected == PopularType.Show)
         {
-            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" MultipleLanguages="false" FullPage="true"
+            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" FullPage="true"
                        StringParameters="Params" TypeSelected="MediaType.tv" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                        ShowPrivateAction="ShowPrivateAction" OnlyYear="true" IsAuthenticated="IsAuthenticated">
             </MediaList>
         }
         else if (TypeSelected == PopularType.Cinema)
         {
-            <MediaList ShowHead="false" MediaListApi="TmdbNowPlayingApi" MultiplesRegions="true" FullPage="true"
+            <MediaList ShowHead="false" MediaListApi="TmdbNowPlayingApi" DetectRegions="true" FullPage="true"
                        Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
             </MediaList>
         }

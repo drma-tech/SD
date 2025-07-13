@@ -1,16 +1,17 @@
-﻿@page "/collections/annie"
-<SeoHeader Title="Collections | Annie Awards" Keywords="@(new[] { "Annie Awards" })" Url="/collections/annie"></SeoHeader>
+﻿@page "/collections/festival-cannes"
+<SeoHeader Title="Collections | Festival de Cannes" Keywords="@(new[] { "Festival de Cannes" })" Url="/collections/festival-cannes"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<AnnieAwards>
+@inherits PageCore<FestivalCannes>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
+@inject IJSRuntime JS
 
-<HeadPage Title="Annie Awards" ImageSource="logo/annie.png" Text="Honoring excellence in the field of animation, the 52nd Annual Annie Awards will be presented in 37 categories including Animated Feature, Animated Feature-Independent, Television/Media Production(s), Sponsored Production, Short Subject and Student Film, as well as the Achievement and Honorary awards."
-          Link="https://www.annieawards.org/" IsAuthenticated="IsAuthenticated">
+<HeadPage Title="Festival de Cannes" ImageSource="logo/festival-cannes.png" Text="All the news from the 1st film festival in the world."
+          Link="https://www.festival-cannes.com/en/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
@@ -23,12 +24,19 @@
     </div>
 }
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.AnnieAwardsBestAnimatedFeature" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesPalme" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.AnnieAwardsBestAnimatedIndependentFeature" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesGrandPrix" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesPalmeShortFilm" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaList>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+</div>
 
 @code {
     public Settings? Settings { get; set; }

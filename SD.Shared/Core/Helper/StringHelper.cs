@@ -46,4 +46,19 @@ public static partial class StringHelper
     {
         return DiacriticsRegex().Replace(Text.Normalize(NormalizationForm.FormD), string.Empty);
     }
+
+    public static string? ToSlug(this string? str)
+    {
+        if (str == null) return null;
+
+        str = str.ToLowerInvariant();
+        str = str.RemoveDiacritics();
+        str = str.RemoveSpecialCharacters();
+
+        str = Regex.Replace(str, @"\s+", "-"); // Replace spaces with hyphens
+        str = Regex.Replace(str, @"-+", "-"); // Replace multiple hyphens with a single one
+        str = str.Trim('-'); // Trim leading and trailing hyphens
+
+        return str;
+    }
 }

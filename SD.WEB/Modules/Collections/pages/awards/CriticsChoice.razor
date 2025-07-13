@@ -1,16 +1,17 @@
-﻿@page "/collections/peoples"
-<SeoHeader Title="Collections | People's Choice Awards" Keywords="@(new[] { "People's Choice Awards" })" Url="/collections/peoples"></SeoHeader>
+﻿@page "/collections/critics-choice"
+<SeoHeader Title="Collections | Critics Choice Awards" Keywords="@(new[] { "Critics Choice Awards" })" Url="/collections/critics-choice"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<PeoplesChoice>
+@inherits PageCore<CriticsChoice>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
+@inject IJSRuntime JS
 
-<HeadPage Title="People's Choice" ImageSource="logo/peoples.png" Text="Submit your votes for the People’s Choice Awards."
-          Link="https://pca.votenow.nbc.com/" IsAuthenticated="IsAuthenticated">
+<HeadPage Title="Critics Choice" ImageSource="logo/critics.png" Text="The Critics Choice Association (CCA) is a group of broadcast, radio and online critics as well as entertainment journalists who review films and documentaries as well as scripted and unscripted television."
+          Link="https://www.criticschoice.com/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
@@ -23,18 +24,16 @@
     </div>
 }
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.PeoplesChoiceTheMovie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CriticsChoiceBestPicture" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.PeoplesChoiceTheActionMovie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CriticsChoiceBestLimitedSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.PeoplesChoiceTheComedyMovie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
-</MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.PeoplesChoiceTheDramaMovie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
-</MediaList>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+</div>
 
 @code {
     public Settings? Settings { get; set; }

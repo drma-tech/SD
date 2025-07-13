@@ -10,6 +10,7 @@
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
+@inject IJSRuntime JS
 
 <HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@Translations.imdb_desc" Link="https://www.imdb.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
@@ -23,12 +24,17 @@
     </div>
 }
 
-<MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowFilter="true" MultipleLanguages="false"
+<MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" CustomExpand="@("/collections/imdb/popular/{0}")" IsImdb="true" ShowFilter="true"
            StringParameters="Params" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OnlyYear="true">
 </MediaList>
-<MediaList MediaListApi="ImdbTopRatedApi" List="EnumLists.ImdbTop250Movies" ShowFilter="true" Watched="WatchedList"
-           Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OnlyYear="true">
+<MediaList MediaListApi="ImdbTopRatedApi" List="TypeSelected == MediaType.movie ? EnumLists.ImdbTop250Movies : EnumLists.ImdbTop250Shows"
+           TypeSelected="TypeSelected" TypeSelectedChanged="@((value)=>{TypeSelected=value;StateHasChanged();})"
+           ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OnlyYear="true">
 </MediaList>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+</div>
 
 @code {
     public Dictionary<string, string> Params { get; set; } = new() { { "mode", "full" } };
@@ -40,27 +46,17 @@
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    public MediaType TypeSelected { get; set; } = MediaType.movie;
+
+    protected override void OnInitialized()
     {
-        await base.OnInitializedAsync();
+        base.OnInitialized();
 
         AppStateStatic.RegionChanged += StateHasChanged;
 
-        WatchedListApi.DataChanged += model =>
-        {
-            WatchedList = model;
-            StateHasChanged();
-        };
-        WatchingListApi.DataChanged += model =>
-        {
-            WatchingList = model;
-            StateHasChanged();
-        };
-        WishListApi.DataChanged += model =>
-        {
-            WishList = model;
-            StateHasChanged();
-        };
+        WatchedListApi.DataChanged += model => { WatchedList = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += model => { WatchingList = model; StateHasChanged(); };
+        WishListApi.DataChanged += model => { WishList = model; StateHasChanged(); };
     }
 
     protected override async Task LoadDataRender()

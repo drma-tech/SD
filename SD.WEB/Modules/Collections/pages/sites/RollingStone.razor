@@ -1,16 +1,17 @@
-﻿@page "/collections/crunchyroll"
-<SeoHeader Title="Collections | Crunchyroll Anime Awards" Keywords="@(new[] { "Crunchyroll Anime Awards" })" Url="/collections/crunchyroll"></SeoHeader>
+﻿@page "/collections/rolling-stone"
+<SeoHeader Title="Collections | Rolling Stone" Keywords="@(new[] { "Rolling Stone" })" Url="/collections/rolling-stone"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<Crunchyroll>
+@inherits PageCore<RollingStone>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
+@inject IJSRuntime JS
 
-<HeadPage Title="Crunchyroll Anime Awards" ImageSource="logo/crunchyroll.png" Text="Since 2017, this global event has annually recognized anime’s finest series and films. During our voting period, you can vote here once per day in a variety of categories. Ultimately, Grand Winners are announced in-person at the 2023 Crunchyroll Anime Awards show on March 4, 2023."
-          Link="https://www.crunchyroll.com/animeawards/" IsAuthenticated="IsAuthenticated">
+<HeadPage Title="Rolling Stone" ImageSource="logo/rolling-stone.png" Text="insights, announcements, music biz commentary, rs recommends lists, music biz lists, music country videos, music latin lists, music country pictures, politics pictures, tv & movies pictures, (sub)culture videos, politics videos, cultural commentary, tv & movies videos, finance, rs recommends pictures, books, smart home, expert panels, (sub)culture pictures"
+          Link="https://www.rollingstone.com/tv-movies/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
@@ -23,15 +24,16 @@
     </div>
 }
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollAnimeOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RollingStoneBestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollBestContinuingSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RollingStoneBestTvShowsOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollBestFilm" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
-</MediaList>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+</div>
 
 @code {
     public Settings? Settings { get; set; }

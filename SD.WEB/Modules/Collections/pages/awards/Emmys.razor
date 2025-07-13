@@ -1,18 +1,17 @@
-﻿@page "/collections/tmdb"
-<SeoHeader Title="Collections | TMDB" Keywords="@(new[] { "TMDB" })" Url="/collections/tmdb"></SeoHeader>
+﻿@page "/collections/emmy-awards"
+<SeoHeader Title="Collections | Emmy Awards" Keywords="@(new[] { "Emmy Awards" })" Url="/collections/emmy-awards"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Platform.Resources
+@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<Tmdb>
-@inject TmdbPopularApi TmdbPopularApi
-@inject TmdbTopRatedApi TmdbTopRatedApi
-@inject TmdbUpcomingApi TmdbUpcomingApi
+@inherits PageCore<Emmys>
+@inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
+@inject IJSRuntime JS
 
-<HeadPage Title="TMDB" ImageSource="logo/tmdb.png" Text="@Translations.tmdb_desc" Link="https://www.themoviedb.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<HeadPage Title="Emmy Awards" ImageSource="logo/emmy-awards.png" Text="@Translations.emmys_desc" Link="https://www.emmys.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
@@ -24,15 +23,19 @@
     </div>
 }
 
-<MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbPopularApi" ShowFilter="true"
-           Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingDramaSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
 </MediaList>
-<MediaList TitleHead="@($"{Translations.TopRated} ({AppStateStatic.Region})")" MediaListApi="TmdbTopRatedApi" ShowFilter="true"
-           MultiplesRegions="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingComedySeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
 </MediaList>
-<MediaList TitleHead="@($"{Translations.ComingSoon} ({AppStateStatic.Region})")" MediaListApi="TmdbUpcomingApi"
-           MultiplesRegions="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingLimitedSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
 </MediaList>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+</div>
 
 @code {
     public Settings? Settings { get; set; }
@@ -45,8 +48,6 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-
-        AppStateStatic.RegionChanged += StateHasChanged;
 
         WatchedListApi.DataChanged += model =>
         {

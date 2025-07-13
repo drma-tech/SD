@@ -10,7 +10,7 @@ public class ImdbTopRatedApi(IHttpClientFactory factory, TmdbListApi tmdbListApi
     {
         if (type == MediaType.movie)
             return tmdbListApi.GetList(currentList, type, stringParameters, EnumLists.ImdbTop250Movies, page);
-
-        return tmdbListApi.GetList(currentList, type, stringParameters, EnumLists.ImdbTop250Shows, page);
+        else
+            return tmdbListApi.GetList(currentList, type, stringParameters, EnumLists.ImdbTop250Shows, page);
     }
 }

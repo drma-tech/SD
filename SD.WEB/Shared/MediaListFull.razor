@@ -6,6 +6,7 @@
 
 @inject ExternalIdApi ExternalIdApi
 @inject TmdbCreditApi TmdbCreditApi
+@inject IJSRuntime JS
 
 <SectionComponent Title="@GetTitle" IconImage="@IconImage" IconName="@IconName" ShowHead="ShowHead" FullPage="FullPage">
     <BodyFragment>
@@ -13,7 +14,7 @@
             <div class="grid-relative-container-md">
                 @foreach (var item in Items)
                 {
-                    <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title"
+                    <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" OnlyYear="OnlyYear"
                                      Comments="@item.comments" CommentsSeparator="@CommentsSeparator" TmdbId="@item.tmdb_id" MediaType="@item.MediaType"
                                      Clicked="@(() => OpenPopupMedia(item))" WatchedList="Watched" WishList="Wish" CommentsIsImage="CommentsIsImage">
                     </PosterComponent>
@@ -31,6 +32,10 @@
     </BodyFragment>
 </SectionComponent>
 
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+</div>
+
 @code {
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
@@ -43,6 +48,7 @@
     [Parameter] public string? IconImage { get; set; }
     [Parameter] public string? IconName { get; set; }
     [Parameter] public bool FullPage { get; set; } = false;
+    [Parameter] public bool OnlyYear { get; set; }
 
     [Parameter] public RenderControlCore<HashSet<MediaDetail>>? Core { get; set; } = new();
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = [];
@@ -55,22 +61,34 @@
     [Parameter] public EnumLists? List { get; set; }
     [Parameter] public string? CommentsSeparator { get; set; } = ",";
     [Parameter] public bool CommentsIsImage { get; set; }
+    [Parameter] public bool OrderByComments { get; set; }
+    
+    [Parameter] public bool DetectRegions { get; set; }
 
     private string? GetTitle => List != null ? List.GetName() : TitleHead;
     public bool DisableLoadMore { get; set; }
     private int _currentPage = 1;
 
-    // protected override void OnInitialized()
-    // {
-    //     //if (!string.IsNullOrEmpty(list_id) && !NextPage.HasDelegate) throw new ArgumentNullException(nameof(NextPage));
-    //     //if (NextPage.HasDelegate && string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
+    protected override void OnInitialized()
+    {
+        //if (!string.IsNullOrEmpty(list_id) && !NextPage.HasDelegate) throw new ArgumentNullException(nameof(NextPage));
+        //if (NextPage.HasDelegate && string.IsNullOrEmpty(list_id)) throw new ArgumentNullException(nameof(list_id));
 
-    //     //TODO: analyse this
-    //     // AppState.WishListChanged += StateHasChanged;
-    //     // AppState.WatchedListChanged += StateHasChanged;
-    // }
+        //TODO: analyse this
+        // AppState.WishListChanged += StateHasChanged;
+        // AppState.WatchedListChanged += StateHasChanged;
+
+        if (DetectRegions) AppStateStatic.RegionChanged += LoadGenericVoid;
+    }
 
     protected override async Task LoadDataRender()
+    {
+        Core?.ShowLoading();
+        await LoadItems();
+        Core?.HideLoading(Items);
+    }
+
+    protected async void LoadGenericVoid()
     {
         Core?.ShowLoading();
         await LoadItems();
@@ -97,6 +115,10 @@
 
                 DisableLoadMore = result.lastPage || Items.Count >= 250;
             }
+
+            if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",").Last() ?? "0")).ToHashSet();
+
+            await ItemsChanged.InvokeAsync(Items);
         }
     }
 
@@ -170,6 +192,8 @@
             var result = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++_currentPage);
             Items = result.list;
             DisableLoadMore = result.lastPage || Items.Count >= 250;
+
+            if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",").Last() ?? "0")).ToHashSet();
 
             await ItemsChanged.InvokeAsync(Items);
         }

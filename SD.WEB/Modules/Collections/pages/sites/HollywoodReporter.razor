@@ -1,17 +1,17 @@
-﻿@page "/collections/rolling-stone"
-<SeoHeader Title="Collections | Rolling Stone" Keywords="@(new[] { "Rolling Stone" })" Url="/collections/rolling-stone"></SeoHeader>
+﻿@page "/collections/hollywood-reporter"
+<SeoHeader Title="Collections | Hollywood Reporter" Keywords="@(new[] { "Hollywood Reporter" })" Url="/collections/hollywood-reporter"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<RollingStone>
+@inherits PageCore<HollywoodReporter>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
+@inject IJSRuntime JS
 
-<HeadPage Title="Rolling Stone" ImageSource="logo/rolling-stone.png" Text="insights, announcements, music biz commentary, rs recommends lists, music biz lists, music country videos, music latin lists, music country pictures, politics pictures, tv & movies pictures, (sub)culture videos, politics videos, cultural commentary, tv & movies videos, finance, rs recommends pictures, books, smart home, expert panels, (sub)culture pictures"
-          Link="https://www.rollingstone.com/tv-movies/" IsAuthenticated="IsAuthenticated">
-</HeadPage>
+<HeadPage Title="Hollywood Reporter" ImageSource="logo/hollywood-reporter.png" Text="@Translations.thr_desc" Link="https://www.hollywoodreporter.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 @if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
@@ -23,12 +23,16 @@
     </div>
 }
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RollingStoneBestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100Movies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RollingStoneBestTvShowsOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100TvShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+</div>
 
 @code {
     public Settings? Settings { get; set; }

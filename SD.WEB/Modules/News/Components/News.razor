@@ -5,6 +5,7 @@
 @inherits PageCore<News>
 
 @inject CacheFlixsterApi CacheFlixsterApi
+@inject IJSRuntime JS
 
 <SeoHeader Title="News" Keywords="@(new[] { "News" })" Url="/news"></SeoHeader>
 
@@ -45,6 +46,10 @@
         </RenderControl>
     </BodyFragment>
 </SectionComponent>
+
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+</div>
 
 @code {
     public RenderControlCore<CacheDocument<NewsModel>?> Core { get; set; } = new();

@@ -1,0 +1,285 @@
+﻿@page "/list/{id}"
+@page "/collections/imdb/popular/{Type}"
+@page "/collections/tmdb/popular/{Type}"
+@page "/collections/tmdb/top/{Type}"
+@page "/collections/tmdb/upcoming"
+@page "/platforms/{id}/popular/{Type}"
+@page "/platforms/{id}/new/{Type}"
+@page "/platforms/{id}/top/{Type}"
+
+<SeoHeader Title="@($"{Title}")" Keywords="@(new[] { Title })" Url="@($"/list/{id}")"></SeoHeader>
+
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Collections.Interface
+@using SD.WEB.Modules.Platform.Core
+@using SD.WEB.Modules.Profile.Core
+@using Button = SD.WEB.Resources.Button
+@inherits PageCore<CompleteListPage>
+
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
+@inject AllProvidersApi AllProvidersApi
+@inject IHttpClientFactory factory
+
+<SectionComponent Title="@($"{Title}")" FullPage="true">
+    <BodyFragment>
+        @if (MediaListApi != null)
+        {
+            <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) => { Items = list; StateHasChanged(); })"
+                           IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" DetectRegions="DetectRegions"
+                           StringParameters="StringParameters" List="List" TitleHead="@Title" ShowHead="false" FullPage="true"
+                           Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated"
+                           CommentsIsImage="CommentsIsImage" OrderByComments="OrderByComments" OnlyYear="OnlyYear">
+            </MediaListFull>
+        }
+    </BodyFragment>
+</SectionComponent>
+
+@code {
+    [Parameter] public string? id { get; set; }
+
+    public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
+
+    public HashSet<MediaDetail> Items { get; set; } = [];
+    public WatchedList? Watched { get; set; }
+    public WatchingList? Watching { get; set; }
+    public WishList? Wish { get; set; }
+    public bool OrderByComments { get; set; }
+    public bool ShowPrivateAction { get; set; } = true;
+
+    public IMediaListApi? MediaListApi { get; set; }
+    public bool IsImdb { get; set; } = false;
+    public MediaType? TypeSelected { get; set; } = MediaType.movie;
+    public Dictionary<string, string> StringParameters { get; set; } = new();
+    public bool CommentsIsImage { get; set; } = false;
+    [Parameter] public bool OnlyYear { get; set; }
+    [Parameter] public string? Type { get; set; }
+    public string? TitleHead { get; set; }
+    public bool DetectRegions { get; set; }
+
+    private EnumLists? List { get; set; }
+    private string Title => TitleHead ?? $"{List?.GetCustomAttribute()?.Group} - {List?.GetName()}" ?? "Title Error";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (id.NotEmpty() && Navigation.Uri.Contains("list")) List = Enum.Parse<EnumLists>(id!);
+        if (Type.NotEmpty()) TypeSelected = Enum.Parse<MediaType>(Type!, true);
+
+        WatchedListApi.DataChanged += model => { Watched = model; StateHasChanged(); };
+        WatchingListApi.DataChanged += model => { Watching = model; StateHasChanged(); };
+        WishListApi.DataChanged += model => { Wish = model; StateHasChanged(); };
+
+        ProcessList();
+        await ProcessNonList();
+
+        MediaListApi ??= new TmdbListApi(factory);
+    }
+
+    private void ProcessList()
+    {
+        if (List == null)
+        {
+            return;
+        }
+
+        switch (List)
+        {
+            case EnumLists.OscarBestMotionPicture:
+                break;
+            case EnumLists.OscarBestAnimatedFeatureFilm:
+                break;
+            case EnumLists.OscarInternationalFeatureFilm:
+                break;
+            case EnumLists.OscarDocumentaryFeature:
+                break;
+            case EnumLists.GoldenGlobesBestMotionPictureDrama:
+                break;
+            case EnumLists.GoldenGlobesBestMotionPictureMusicalComedy:
+                break;
+            case EnumLists.GoldenGlobesBestMotionPictureAnimated:
+                break;
+            case EnumLists.EmmysOutstandingDramaSeries:
+                OrderByComments = true;
+                break;
+            case EnumLists.EmmysOutstandingComedySeries:
+                OrderByComments = true;
+                break;
+            case EnumLists.EmmysOutstandingLimitedSeries:
+                OrderByComments = true;
+                break;
+            case EnumLists.HollywoodReporterTop100TvShows:
+                break;
+            case EnumLists.HollywoodReporterTop100Movies:
+                break;
+            case EnumLists.ImdbTop250Movies:
+                TypeSelected = MediaType.movie;
+                OnlyYear = true;
+                MediaListApi = new ImdbTopRatedApi(factory, new TmdbListApi(factory));
+                break;
+            case EnumLists.ImdbTop250Shows:
+                TypeSelected = MediaType.tv;
+                OnlyYear = true;
+                MediaListApi = new ImdbTopRatedApi(factory, new TmdbListApi(factory));
+                break;
+            case EnumLists.BaftaBestFilm:
+                break;
+            case EnumLists.BaftaBestAnimatedFeatureFilm:
+                break;
+            case EnumLists.BaftaBestDocumentary:
+                break;
+            case EnumLists.CriticsChoiceBestPicture:
+                break;
+            case EnumLists.CriticsChoiceBestLimitedSeries:
+                break;
+            case EnumLists.FestivalCannesPalme:
+                break;
+            case EnumLists.FestivalCannesGrandPrix:
+                break;
+            case EnumLists.FestivalCannesPalmeShortFilm:
+                break;
+            case EnumLists.RottenTomatoesMoviesTomatoMeter:
+                break;
+            case EnumLists.RottenTomatoesMoviesAudienceScore:
+                break;
+            case EnumLists.MetacriticBestMoviesOfAllTime:
+                break;
+            case EnumLists.MetacriticBestTvShowsOfAllTime:
+                break;
+            case EnumLists.EmpireThe100BestMoviesOfAllTime:
+                break;
+            case EnumLists.EmpireThe100BestTvShowsOfAllTime:
+                break;
+            case EnumLists.RollingStoneBestMoviesOfAllTime:
+                break;
+            case EnumLists.RollingStoneBestTvShowsOfAllTime:
+                break;
+            case EnumLists.ExpectedMovieOf2025:
+                break;
+            case EnumLists.FilmaffinityBestMovies:
+                break;
+            case EnumLists.FilmaffinityBestSeriesAndTv:
+                break;
+            case EnumLists.FilmaffinityBestAnimation:
+                break;
+            case EnumLists.UpcomingMarvelMoviesTvShows:
+                break;
+            case EnumLists.UpcomingDcMoviesTvShows:
+                break;
+            case EnumLists.UpcomingStarWarsMoviesTvShows:
+                break;
+            case EnumLists.UpcomingNetflixMovies:
+                break;
+            case EnumLists.UpcomingWaltDisneyPictures:
+                break;
+            case EnumLists.TraktRecommendedMovies:
+                break;
+            case EnumLists.TraktRecommendedTvShows:
+                break;
+            case EnumLists.GrossingMovies:
+                break;
+            case EnumLists.CrunchyrollAnimeOfTheYear:
+                OrderByComments = true;
+                break;
+            case EnumLists.CrunchyrollBestContinuingSeries:
+                OrderByComments = true;
+                break;
+            case EnumLists.CrunchyrollBestFilm:
+                OrderByComments = true;
+                break;
+            case EnumLists.AwardsOfTheYear:
+                break;
+            case EnumLists.CertifiedStreamingDiscoveryMovies:
+                break;
+            case EnumLists.CertifiedStreamingDiscoveryShows:
+                break;
+            case EnumLists.PeoplesChoiceTheMovie:
+                break;
+            case EnumLists.PeoplesChoiceTheActionMovie:
+                break;
+            case EnumLists.PeoplesChoiceTheComedyMovie:
+                break;
+            case EnumLists.PeoplesChoiceTheDramaMovie:
+                break;
+            case EnumLists.AnnieAwardsBestAnimatedFeature:
+                break;
+            case EnumLists.AnnieAwardsBestAnimatedIndependentFeature:
+                break;
+            default:
+                break;
+        }
+    }
+
+    private async Task ProcessNonList()
+    {
+        if (Navigation.Uri.Contains("imdb/popular"))
+        {
+            IsImdb = true;
+            StringParameters = new() { { "mode", "full" } };
+            OnlyYear = true;
+            TitleHead = $"IMDB - {Modules.Platform.Resources.Translations.Popular} - {TypeSelected!.GetName()}";
+            MediaListApi = new ImdbPopularApi(factory);
+        }
+        else if (Navigation.Uri.Contains("tmdb/popular"))
+        {
+            TitleHead = $"TMDB - {Modules.Platform.Resources.Translations.Popular} - {TypeSelected!.GetName()}";
+            MediaListApi = new TmdbPopularApi(factory);
+        }
+        else if (Navigation.Uri.Contains("tmdb/top"))
+        {
+            TitleHead = $"TMDB - {Modules.Platform.Resources.Translations.TopRated} ({AppStateStatic.Region}) - {TypeSelected!.GetName()}";
+            DetectRegions = true;
+            MediaListApi = new TmdbTopRatedApi(factory);
+        }
+        else if (Navigation.Uri.Contains("tmdb/upcoming"))
+        {
+            TitleHead = $"TMDB - {Modules.Platform.Resources.Translations.ComingSoon} ({AppStateStatic.Region}) - {TypeSelected!.GetName()}";
+            DetectRegions = true;
+            MediaListApi = new TmdbUpcomingApi(factory);
+        }
+        else if (Navigation.Uri.Contains("platforms"))
+        {
+            var providers = await AllProvidersApi.GetAll(null);
+            var provider = providers?.Items.SingleOrDefault(s => s.id == id);
+
+            if (Navigation.Uri.Contains("popular"))
+            {
+                TitleHead = $"{provider?.name} - {Modules.Platform.Resources.Translations.Popular} - {TypeSelected!.GetName()}";
+                StringParameters = GetExtraParameters(id, "popularity.desc");
+            }
+            else if (Navigation.Uri.Contains("new"))
+            {
+                TitleHead = $"{provider?.name} - {Modules.Platform.Resources.Translations.Release} - {TypeSelected!.GetName()}";
+                DetectRegions = true;
+                StringParameters = GetExtraParameters(id, "primary_release_date.desc");
+            }
+            else if (Navigation.Uri.Contains("top"))
+            {
+                TitleHead = $"{provider?.name} - {Modules.Platform.Resources.Translations.TopRated} - {TypeSelected!.GetName()}";
+                DetectRegions = true;
+                StringParameters = GetExtraParameters(id, "vote_average.desc");
+            }
+
+            MediaListApi = new TmdbDiscoveryApi(factory);
+        }
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
+
+        Watched = await WatchedListApi.Get(IsAuthenticated, null);
+        Watching = await WatchingListApi.Get(IsAuthenticated, null);
+        Wish = await WishListApi.Get(IsAuthenticated, null);
+    }
+
+    private static Dictionary<string, string> GetExtraParameters(string? providerId, string sortBy)
+    {
+        if (providerId == null) throw new ArgumentNullException(nameof(providerId));
+
+        return new Dictionary<string, string> { { "with_watch_providers", providerId }, { "sort_by", sortBy } };
+    }
+
+}

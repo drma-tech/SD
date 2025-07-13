@@ -10,7 +10,7 @@
     <ActionFragment>
         @if (ShowFilter)
         {
-            <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Value="TypeSelected" ValueChanged="@(async (MediaType type) => await TypeSelectedChanged(type))"
+            <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Value="TypeSelected" ValueChanged="@(async (MediaType type) => await TypeSelectedChangedHandle(type))"
                             Color="Color.Primary" Class="me-2">
                 <MudToggleItem Value="@MediaType.movie">
                     <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
@@ -26,7 +26,8 @@
                 </MudToggleItem>
             </MudToggleGroup>
         }
-        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" OnClick="@OpenCompleteList" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary"
+                       Href="@GetCustomExpandUrl()" Disabled="@(List == null && CustomExpand.Empty())" />
     </ActionFragment>
     <BodyFragment>
         <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
@@ -66,16 +67,18 @@
     [Parameter] public bool OrderByComments { get; set; }
     [Parameter] public bool CommentsIsImage { get; set; }
     [Parameter] public bool FullPage { get; set; } = false;
+    [Parameter] public string? CustomExpand { get; set; }
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; }
     [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
     [Parameter] public bool IsImdb { get; set; }
 
-    [Parameter] public bool MultiplesRegions { get; set; }
-    [Parameter] public bool MultipleLanguages { get; set; } = true;
+    [Parameter] public bool DetectRegions { get; set; }
 
     [Parameter] public MediaType TypeSelected { get; set; } = MediaType.movie;
+    [Parameter] public EventCallback<MediaType> TypeSelectedChanged { get; set; }
+
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
 
     public RenderControlCore<HashSet<MediaDetail>>? Core { get; set; } = new();
@@ -90,7 +93,7 @@
             if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
             if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
 
-            if (MultiplesRegions) AppStateStatic.RegionChanged += LoadGenericVoid;
+            if (DetectRegions) AppStateStatic.RegionChanged += LoadGenericVoid;
         }
         catch (Exception ex)
         {
@@ -126,10 +129,11 @@
         Core?.HideLoading(Items);
     }
 
-    private async Task TypeSelectedChanged(MediaType type)
+    private async Task TypeSelectedChangedHandle(MediaType type)
     {
         Core?.ShowLoading();
         TypeSelected = type;
+        await TypeSelectedChanged.InvokeAsync(type);
         await LoadItems();
         Core?.HideLoading(Items);
     }
@@ -161,10 +165,20 @@
         }
     }
 
-    public async Task OpenCompleteList()
+    private string GetCustomExpandUrl()
     {
-        await DialogService.CompleteListPopup(TitleHead, Watched, Watching, Wish, Items, MediaListApi, List, IsImdb, TypeSelected, StringParameters,
-            ShowPrivateAction, IsAuthenticated, CommentsIsImage);
+        if (List != null)
+        {
+            return $"/list/{(int)List}";
+        }
+        else if (!string.IsNullOrEmpty(CustomExpand))
+        {
+            return string.Format(CustomExpand, TypeSelected);
+        }
+        else
+        {
+            return string.Empty;
+        }
     }
 
     private async Task OpenPopupMedia(MediaDetail? media)
