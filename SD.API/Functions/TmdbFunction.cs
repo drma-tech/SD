@@ -34,7 +34,7 @@ public class TmdbFunction(IDistributedCache distributedCache)
 
             await SaveCache(result, cacheKey, TtlCache.OneDay);
 
-            return await req.CreateResponse(result, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse().ProcessResponse(result, TtlCache.OneDay, cancellationToken);
         }
         catch (Exception ex)
         {

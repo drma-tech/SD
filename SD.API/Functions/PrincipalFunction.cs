@@ -17,7 +17,7 @@ public class PrincipalFunction(CosmosRepository repo)
 
             var doc = await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken);
 
-            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse().ProcessResponse(doc, TtlCache.OneDay, cancellationToken);
         }
         catch (Exception ex)
         {

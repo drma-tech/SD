@@ -41,29 +41,12 @@ public static class IsolatedFunctionHelper
         return model;
     }
 
-    public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, TtlCache maxAge, CancellationToken cancellationToken)
+    public static async Task<HttpResponseData> ProcessResponse<T>(this HttpResponseData response, T? doc, TtlCache maxAge, CancellationToken cancellationToken)
         where T : class
     {
-        var response = req.CreateResponse();
-
         if (doc != null)
         {
-            //its giving error with the following line (when called twice in parallel)
-            //await response.WriteAsJsonAsync(doc, cancellationToken);
-
-            //still getting same error
-            //await using var ms = new MemoryStream();
-            //await JsonSerializer.SerializeAsync(ms, doc, doc.GetType(), cancellationToken: cancellationToken);
-            //ms.Position = 0;
-            //await ms.CopyToAsync(response.Body, cancellationToken);
-
-            await using var ms = new MemoryStream();
-            using var writer = new Utf8JsonWriter(ms);
-            JsonSerializer.Serialize(writer, doc);
-            ms.Position = 0;
-            await ms.CopyToAsync(response.Body, cancellationToken);
-
-            response.Headers.Add("Content-Type", "application/json");
+            await response.WriteAsJsonAsync(doc, cancellationToken);
         }
         else
         {
