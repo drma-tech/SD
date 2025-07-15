@@ -41,9 +41,11 @@ public static class IsolatedFunctionHelper
         return model;
     }
 
-    public static async Task<HttpResponseData> ProcessResponse<T>(this HttpResponseData response, T? doc, TtlCache maxAge, CancellationToken cancellationToken)
+    public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, TtlCache maxAge, CancellationToken cancellationToken)
         where T : class
     {
+        var response = req.CreateResponse();
+
         if (doc != null)
         {
             await response.WriteAsJsonAsync(doc, cancellationToken);

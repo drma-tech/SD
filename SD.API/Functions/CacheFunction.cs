@@ -23,7 +23,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
     {
         try
         {
-            return await req.CreateResponse().ProcessResponse(ApiStartup.Configurations.Settings, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse(ApiStartup.Configurations.Settings, TtlCache.OneDay, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -82,7 +82,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
                 await SaveCache(doc, cacheKey, TtlCache.HalfDay);
             }
 
-            return await req.CreateResponse().ProcessResponse(doc, TtlCache.HalfDay, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.HalfDay, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -95,7 +95,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         catch (Exception ex)
         {
             req.ProcessException(ex);
-            return await req.CreateResponse().ProcessResponse<CacheDocument<NewsModel>>(null, TtlCache.SixHours, cancellationToken);
+            return await req.CreateResponse<CacheDocument<NewsModel>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
 
@@ -152,7 +152,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
                 await SaveCache(doc, cacheKey, TtlCache.SixHours);
             }
 
-            return await req.CreateResponse().ProcessResponse(doc, TtlCache.SixHours, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -165,7 +165,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         catch (Exception ex)
         {
             req.ProcessException(ex);
-            return await req.CreateResponse().ProcessResponse<CacheDocument<TrailerModel>>(null, TtlCache.SixHours, cancellationToken);
+            return await req.CreateResponse<CacheDocument<TrailerModel>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
 
@@ -218,7 +218,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
                 await SaveCache(doc, cacheKey, TtlCache.OneDay);
             }
 
-            return await req.CreateResponse().ProcessResponse(doc, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -231,7 +231,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         catch (Exception ex)
         {
             req.ProcessException(ex);
-            return await req.CreateResponse().ProcessResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours,
+            return await req.CreateResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours,
                 cancellationToken);
         }
     }
@@ -264,7 +264,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
                 await SaveCache(doc, cacheKey, TtlCache.OneDay);
             }
 
-            return await req.CreateResponse().ProcessResponse(doc, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -277,7 +277,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         catch (Exception ex)
         {
             req.ProcessException(ex);
-            return await req.CreateResponse().ProcessResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours, cancellationToken);
+            return await req.CreateResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
 
@@ -326,7 +326,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
 
             await TrySaveCertifiedSd(doc, releaseDate, 8498673, tmdbId, MediaType.movie, cancellationToken);
 
-            return await req.CreateResponse().ProcessResponse(doc, ttl, cancellationToken);
+            return await req.CreateResponse(doc, ttl, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -339,7 +339,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         catch (Exception ex)
         {
             req.ProcessException(ex);
-            return await req.CreateResponse().ProcessResponse<CacheDocument<Ratings>>(null, TtlCache.SixHours, cancellationToken);
+            return await req.CreateResponse<CacheDocument<Ratings>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
 
@@ -388,7 +388,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
 
             await TrySaveCertifiedSd(doc, releaseDate, 8498675, tmdbId, MediaType.tv, cancellationToken);
 
-            return await req.CreateResponse().ProcessResponse(doc, ttl, cancellationToken);
+            return await req.CreateResponse(doc, ttl, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -401,7 +401,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         catch (Exception ex)
         {
             req.ProcessException(ex);
-            return await req.CreateResponse().ProcessResponse<CacheDocument<Ratings>>(null, TtlCache.SixHours, cancellationToken);
+            return await req.CreateResponse<CacheDocument<Ratings>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
 
@@ -450,7 +450,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
                 await SaveCache(doc, cacheKey, ttl);
             }
 
-            return await req.CreateResponse().ProcessResponse(doc, ttl, cancellationToken);
+            return await req.CreateResponse(doc, ttl, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -463,7 +463,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         catch (Exception ex)
         {
             req.ProcessException(ex);
-            return await req.CreateResponse().ProcessResponse<CacheDocument<ReviewModel>>(null, TtlCache.SixHours, cancellationToken);
+            return await req.CreateResponse<CacheDocument<ReviewModel>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
 
@@ -512,7 +512,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
                 await SaveCache(doc, cacheKey, ttl);
             }
 
-            return await req.CreateResponse().ProcessResponse(doc, ttl, cancellationToken);
+            return await req.CreateResponse(doc, ttl, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -525,7 +525,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         catch (Exception ex)
         {
             req.ProcessException(ex);
-            return await req.CreateResponse().ProcessResponse<CacheDocument<ReviewModel>>(null, TtlCache.SixHours, cancellationToken);
+            return await req.CreateResponse<CacheDocument<ReviewModel>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
 

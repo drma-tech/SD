@@ -29,12 +29,12 @@ public class TmdbFunction(IDistributedCache distributedCache)
 
                 request.Headers.TryAddWithoutValidation("content-type", "application/json;charset=utf-8");
 
-                result = await ApiStartup.HttpClient.GetJsonFromApi<CustomListNew>(request);
+                result = await ApiStartup.HttpClient.GetJsonFromApi<CustomListNew>(request, cancellationToken);
             }
 
             await SaveCache(result, cacheKey, TtlCache.OneDay);
 
-            return await req.CreateResponse().ProcessResponse(result, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse(result, TtlCache.OneDay, cancellationToken);
         }
         catch (Exception ex)
         {

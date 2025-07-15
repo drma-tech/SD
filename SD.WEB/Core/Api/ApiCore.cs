@@ -21,43 +21,43 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key)
         return new Dictionary<string, string> { { "v", CacheVersion[key!].ToString() } };
     }
 
-    protected async Task<string?> GetValueAsync(string uri)
+    protected async Task<string?> GetValueAsync(string uri, CancellationToken cancellationToken = default)
     {
         if (key.NotEmpty())
-            return await Http.GetValueAsync(uri.ConfigureParameters(GetVersion()));
-        return await Http.GetValueAsync(uri);
+            return await Http.GetValueAsync(uri.ConfigureParameters(GetVersion()), cancellationToken);
+        return await Http.GetValueAsync(uri, cancellationToken);
     }
 
-    protected async Task<T?> GetAsync<T>(string uri, bool setNewVersion = false)
+    protected async Task<T?> GetAsync<T>(string uri, bool setNewVersion = false, CancellationToken cancellationToken = default)
     {
         if (setNewVersion) SetNewVersion(key);
 
         if (key.NotEmpty())
-            return await Http.GetJsonFromApi<T>(uri.ConfigureParameters(GetVersion()));
-        return await Http.GetJsonFromApi<T>(uri);
+            return await Http.GetJsonFromApi<T>(uri.ConfigureParameters(GetVersion()), cancellationToken);
+        return await Http.GetJsonFromApi<T>(uri, cancellationToken);
     }
 
-    protected async Task<HashSet<T>> GetListAsync<T>(string uri)
+    protected async Task<HashSet<T>> GetListAsync<T>(string uri, CancellationToken cancellationToken = default)
     {
         if (key.NotEmpty())
         {
-            var result = await Http.GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetVersion()));
+            var result = await Http.GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetVersion()), cancellationToken);
             return result ?? [];
         }
         else
         {
-            var result = await Http.GetJsonFromApi<HashSet<T>>(uri);
+            var result = await Http.GetJsonFromApi<HashSet<T>>(uri, cancellationToken);
             return result ?? [];
         }
     }
 
-    protected async Task<T?> GetByRequest<T>(string uri)
+    protected async Task<T?> GetByRequest<T>(string uri, CancellationToken cancellationToken = default)
     {
         using var request = new HttpRequestMessage(HttpMethod.Get, uri);
 
         request.Headers.TryAddWithoutValidation("content-type", "application/json;charset=utf-8");
 
-        return await Http.GetJsonFromApi<T>(request);
+        return await Http.GetJsonFromApi<T>(request, cancellationToken);
     }
 
     protected async Task<O?> PostAsync<I, O>(string uri, I? obj)

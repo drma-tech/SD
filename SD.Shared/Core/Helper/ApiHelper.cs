@@ -6,31 +6,31 @@ namespace SD.Shared.Core.Helper;
 
 public static class ApiHelper
 {
-    public static async Task<string?> GetValueAsync(this HttpClient httpClient, string uri)
+    public static async Task<string?> GetValueAsync(this HttpClient httpClient, string uri, CancellationToken cancellationToken)
     {
-        var response = await httpClient.GetAsync(uri);
+        var response = await httpClient.GetAsync(uri, cancellationToken);
 
         if (response.IsSuccessStatusCode)
         {
             if (response.StatusCode == HttpStatusCode.NoContent) return null;
 
-            return await response.Content.ReadAsStringAsync();
+            return await response.Content.ReadAsStringAsync(cancellationToken);
         }
 
-        var content = await response.Content.ReadAsStringAsync();
+        var content = await response.Content.ReadAsStringAsync(cancellationToken);
         throw new NotificationException(content);
     }
 
-    public static async Task<T?> GetJsonFromApi<T>(this HttpClient httpClient, string uri)
+    public static async Task<T?> GetJsonFromApi<T>(this HttpClient httpClient, string uri, CancellationToken cancellationToken)
     {
-        var response = await httpClient.GetAsync(uri);
+        var response = await httpClient.GetAsync(uri, cancellationToken);
 
         if (response.IsSuccessStatusCode)
             try
             {
                 if (response.StatusCode == HttpStatusCode.NoContent) return default;
 
-                return await response.Content.ReadFromJsonAsync<T>();
+                return await response.Content.ReadFromJsonAsync<T>(new JsonSerializerOptions(), cancellationToken);
             }
             catch (NotSupportedException ex) // When content type is not valid
             {
@@ -41,20 +41,20 @@ public static class ApiHelper
                 throw new InvalidDataException("invalid json", ex.InnerException ?? ex);
             }
 
-        var content = await response.Content.ReadAsStringAsync();
+        var content = await response.Content.ReadAsStringAsync(cancellationToken);
         throw new NotificationException(content);
     }
 
-    public static async Task<T?> GetJsonFromApi<T>(this HttpClient httpClient, HttpRequestMessage request)
+    public static async Task<T?> GetJsonFromApi<T>(this HttpClient httpClient, HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var response = await httpClient.SendAsync(request);
+        var response = await httpClient.SendAsync(request, cancellationToken);
 
         if (response.IsSuccessStatusCode)
             try
             {
                 if (response.StatusCode == HttpStatusCode.NoContent) return default;
 
-                return await response.Content.ReadFromJsonAsync<T>();
+                return await response.Content.ReadFromJsonAsync<T>(new JsonSerializerOptions(), cancellationToken);
             }
             catch (NotSupportedException ex) // When content type is not valid
             {
@@ -65,7 +65,7 @@ public static class ApiHelper
                 throw new InvalidDataException("invalid json", ex.InnerException ?? ex);
             }
 
-        var content = await response.Content.ReadAsStringAsync();
+        var content = await response.Content.ReadAsStringAsync(cancellationToken);
         throw new NotificationException(content);
     }
 }

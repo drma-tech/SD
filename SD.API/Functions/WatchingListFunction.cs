@@ -27,7 +27,7 @@ public class WatchingListFunction(CosmosRepository repo)
                 doc = await repo.Get<WatchingList>(DocumentType.WatchingList, id, cancellationToken);
             }
 
-            return await req.CreateResponse().ProcessResponse(doc, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
         catch (Exception ex)
         {

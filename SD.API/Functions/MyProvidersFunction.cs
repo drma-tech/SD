@@ -16,7 +16,7 @@ public class MyProvidersFunction(CosmosRepository repo)
 
             var doc = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
 
-            return await req.CreateResponse().ProcessResponse(doc, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
         catch (Exception ex)
         {
