@@ -1,32 +1,27 @@
-﻿@page "/collections/hollywood-reporter"
-<SeoHeader Title="Collections | Hollywood Reporter" Keywords="@(new[] { "Hollywood Reporter" })" Url="/collections/hollywood-reporter"></SeoHeader>
+﻿@page "/collections/golden-globes"
+<SeoHeader Title="Collections | Golden Globe Awards" Keywords="@(new[] { "Golden Globe Awards" })" Url="/collections/golden-globes"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<HollywoodReporter>
+@inherits PageCore<GoldenGlobes>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Hollywood Reporter" ImageSource="logo/hollywood-reporter.png" Text="@Translations.thr_desc" Link="https://www.hollywoodreporter.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<HeadPage Title="Golden Globes" ImageSource="logo/golden-globes.png" Text="@Translations.golden_desc" Link="https://www.goldenglobes.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
-@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
-{
-    <div style="text-align: center;">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5145928155833172" data-ad-slot="6686117213"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-}
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100Movies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureDrama" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100TvShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureMusicalComedy" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureAnimated" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
 

@@ -1,33 +1,25 @@
-﻿@page "/collections/critics-choice"
-<SeoHeader Title="Collections | Critics Choice Awards" Keywords="@(new[] { "Critics Choice Awards" })" Url="/collections/critics-choice"></SeoHeader>
+﻿@page "/collections/annie"
+<SeoHeader Title="Collections | Annie Awards" Keywords="@(new[] { "Annie Awards" })" Url="/collections/annie"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<CriticsChoice>
+@inherits PageCore<AnnieAwards>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Critics Choice" ImageSource="logo/critics.png" Text="The Critics Choice Association (CCA) is a group of broadcast, radio and online critics as well as entertainment journalists who review films and documentaries as well as scripted and unscripted television."
-          Link="https://www.criticschoice.com/" IsAuthenticated="IsAuthenticated">
+<HeadPage Title="Annie Awards" ImageSource="logo/annie.png" Text="Honoring excellence in the field of animation, the 52nd Annual Annie Awards will be presented in 37 categories including Animated Feature, Animated Feature-Independent, Television/Media Production(s), Sponsored Production, Short Subject and Student Film, as well as the Achievement and Honorary awards."
+          Link="https://www.annieawards.org/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 
-@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
-{
-    <div style="text-align: center;">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5145928155833172" data-ad-slot="6686117213"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-}
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CriticsChoiceBestPicture" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.AnnieAwardsBestAnimatedFeature" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CriticsChoiceBestLimitedSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.AnnieAwardsBestAnimatedIndependentFeature" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
 

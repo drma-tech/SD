@@ -1,37 +1,29 @@
-﻿@page "/collections/film-affinity"
-<SeoHeader Title="Collections | Filmaffinity" Keywords="@(new[] { "Filmaffinity" })" Url="/collections/film-affinity"></SeoHeader>
+﻿@page "/collections/crunchyroll"
+<SeoHeader Title="Collections | Crunchyroll Anime Awards" Keywords="@(new[] { "Crunchyroll Anime Awards" })" Url="/collections/crunchyroll"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<Filmaffinity>
+@inherits PageCore<Crunchyroll>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Filmaffinity" ImageSource="logo/film-affinity.png" Text="Filmaffinity: Rate Movies and TV Shows & Find Movie Recommendations"
-          Link="https://www.filmaffinity.com/" IsAuthenticated="IsAuthenticated">
+<HeadPage Title="Crunchyroll Anime Awards" ImageSource="logo/crunchyroll.png" Text="Since 2017, this global event has annually recognized anime’s finest series and films. During our voting period, you can vote here once per day in a variety of categories. Ultimately, Grand Winners are announced in-person at the 2023 Crunchyroll Anime Awards show on March 4, 2023."
+          Link="https://www.crunchyroll.com/animeawards/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 
-@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
-{
-    <div style="text-align: center;">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5145928155833172" data-ad-slot="6686117213"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-}
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollAnimeOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestSeriesAndTv" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollBestContinuingSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestAnimation" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollBestFilm" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
 </MediaList>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">

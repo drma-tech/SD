@@ -1,33 +1,26 @@
-﻿@page "/collections/rolling-stone"
-<SeoHeader Title="Collections | Rolling Stone" Keywords="@(new[] { "Rolling Stone" })" Url="/collections/rolling-stone"></SeoHeader>
+﻿@page "/collections/metacritic"
+<SeoHeader Title="Collections | Metacritic" Keywords="@(new[] { "Metacritic" })" Url="/collections/metacritic"></SeoHeader>
+
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<RollingStone>
+@inherits PageCore<Metacritic>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Rolling Stone" ImageSource="logo/rolling-stone.png" Text="insights, announcements, music biz commentary, rs recommends lists, music biz lists, music country videos, music latin lists, music country pictures, politics pictures, tv & movies pictures, (sub)culture videos, politics videos, cultural commentary, tv & movies videos, finance, rs recommends pictures, books, smart home, expert panels, (sub)culture pictures"
-          Link="https://www.rollingstone.com/tv-movies/" IsAuthenticated="IsAuthenticated">
+<HeadPage Title="Metacritic" ImageSource="logo/metacritic.png" Text="Metacritic aggregates music, game, tv, and movie reviews from the leading critics. Only Metacritic.com uses METASCORES, which let you know at a glance how each item was reviewed."
+          Link="https://www.metacritic.com/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 
-@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
-{
-    <div style="text-align: center;">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5145928155833172" data-ad-slot="6686117213"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-}
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RollingStoneBestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RollingStoneBestTvShowsOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestTvShowsOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
 

@@ -61,11 +61,29 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Films and series that won the main awards of the year (for more details, check the Collections/Awards section).
+        /// </summary>
+        public static string AwardsYearDescription {
+            get {
+                return ResourceManager.GetString("AwardsYearDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beta Version!.
         /// </summary>
         public static string BetaVersion {
             get {
                 return ResourceManager.GetString("BetaVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exclusive selection from Streaming Discovery (Only films and series with 5 or more green ratings are included in this list).
+        /// </summary>
+        public static string CertifiedDescription {
+            get {
+                return ResourceManager.GetString("CertifiedDescription", resourceCulture);
             }
         }
         
@@ -138,6 +156,15 @@ namespace SD.WEB.Resources {
         public static string OperationCompleted {
             get {
                 return ResourceManager.GetString("OperationCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IMDB&apos;s most popular titles of the last week.
+        /// </summary>
+        public static string PopularDescription {
+            get {
+                return ResourceManager.GetString("PopularDescription", resourceCulture);
             }
         }
         

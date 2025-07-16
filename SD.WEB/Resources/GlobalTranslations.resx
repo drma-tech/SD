@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AwardsYearDescription" xml:space="preserve">
+    <value>Films and series that won the main awards of the year (for more details, check the Collections/Awards section)</value>
+  </data>
   <data name="BetaVersion" xml:space="preserve">
     <value>Beta Version!</value>
+  </data>
+  <data name="CertifiedDescription" xml:space="preserve">
+    <value>Exclusive selection from Streaming Discovery (Only films and series with 5 or more green ratings are included in this list)</value>
   </data>
   <data name="CustomVisibilityInvalid" xml:space="preserve">
     <value>Invalid operation. Please try again.</value>
@@ -143,6 +149,9 @@
   </data>
   <data name="OperationCompleted" xml:space="preserve">
     <value>Operation completed successfully!</value>
+  </data>
+  <data name="PopularDescription" xml:space="preserve">
+    <value>IMDB's most popular titles of the last week</value>
   </data>
   <data name="PremiumFeature" xml:space="preserve">
     <value>Premium Feature</value>

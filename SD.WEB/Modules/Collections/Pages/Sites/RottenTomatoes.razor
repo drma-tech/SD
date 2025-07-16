@@ -1,34 +1,25 @@
-﻿@page "/collections/metacritic"
-<SeoHeader Title="Collections | Metacritic" Keywords="@(new[] { "Metacritic" })" Url="/collections/metacritic"></SeoHeader>
-
+﻿@page "/collections/rotten-tomatoes"
+<SeoHeader Title="Collections | Rotten Tomatoes" Keywords="@(new[] { "Rotten Tomatoes" })" Url="/collections/rotten-tomatoes"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<Metacritic>
+@inherits PageCore<RottenTomatoes>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Metacritic" ImageSource="logo/metacritic.png" Text="Metacritic aggregates music, game, tv, and movie reviews from the leading critics. Only Metacritic.com uses METASCORES, which let you know at a glance how each item was reviewed."
-          Link="https://www.metacritic.com/" IsAuthenticated="IsAuthenticated">
+<HeadPage Title="Rotten Tomatoes" ImageSource="logo/rotten-tomatoes.png" Text="Rotten Tomatoes, home of the Tomatometer, is the most trusted measurement of quality for Movies & TV. The definitive site for Reviews, Trailers, Showtimes, and Tickets"
+          Link="https://www.rottentomatoes.com/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 
-@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
-{
-    <div style="text-align: center;">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5145928155833172" data-ad-slot="6686117213"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-}
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesTomatoMeter" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestTvShowsOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesAudienceScore" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
 

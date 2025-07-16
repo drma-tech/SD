@@ -3,7 +3,7 @@
 @typeparam TEnum where TEnum : struct, Enum, IConvertible
 
 <MudGrid Class="mb-6">
-    <MudItem xs="12" sm="5">
+    <MudItem xs="12" sm="6">
         <MudSelect @bind-Value="@Continent" Label="Continent" Disabled="@Disabled" FullWidth="true">
             @foreach (var group in Regions.Select(s => s.Group).Order().Distinct())
             {
@@ -11,7 +11,7 @@
             }
         </MudSelect>
     </MudItem>
-    <MudItem xs="12" sm="7">
+    <MudItem xs="12" sm="6">
         <MudSelect Value="@SelectedValue" ValueChanged="SelectedValueChanged" Label="@For?.GetCustomAttribute().Name" Disabled="@Disabled" FullWidth="true">
             @foreach (var item in Regions.Where(w => w.Group == Continent).OrderBy(o => o.Name))
             {

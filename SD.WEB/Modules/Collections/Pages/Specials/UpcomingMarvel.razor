@@ -1,36 +1,21 @@
-﻿@page "/certified-sd/{type}"
-
+﻿@page "/collections/upcoming-marvel"
+<SeoHeader Title="Collections | Upcoming Marvel Movies & TV Shows" Keywords="@(new[] { "Upcoming Marvel Movies & TV Shows" })" Url="/collections/upcoming-marvel"></SeoHeader>
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Collections.Components
+@inherits PageCore<UpcomingMarvel>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-@using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Profile.Core
-@inherits PageCore<CertifiedSD>
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
-<SeoHeader Title="Certified by SD" Keywords="@(new[] { "Certified by SD" })" Url="@($"/certified-sd/{Type}")"></SeoHeader>
-
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
-
-@if (MediaType == MediaType.movie)
-{
-    <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconImage="icon/icon-71.png" FullPage="true">
-    </MediaListFull>
-}
-else
-{
-    <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconImage="icon/icon-71.png" FullPage="true">
-    </MediaListFull>
-}
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingMarvelMoviesTvShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" FullPage="true">
+</MediaListFull>
 
 @code {
-    [Parameter] public string? Type { get; set; }
-
-    public MediaType MediaType => Enum.Parse<MediaType>(Type ?? "movie");
-
     public Settings? Settings { get; set; }
     public ClientePrincipal? Principal { get; set; }
 

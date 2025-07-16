@@ -11,15 +11,7 @@
 
 <SeoHeader Title="Best awards of the year" Keywords="@(new[] { "Best awards of the year" })" Url="/best-awards-year"></SeoHeader>
 
-@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
-{
-    <div style="text-align: center;">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5145928155833172" data-ad-slot="6686117213"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-}
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" CommentsIsImage="true" IconName="@IconsFA.Solid.Icon("trophy").Font" FullPage="true">

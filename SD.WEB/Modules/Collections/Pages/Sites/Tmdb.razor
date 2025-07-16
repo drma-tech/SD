@@ -1,36 +1,30 @@
-﻿@page "/collections/trakt"
-<SeoHeader Title="Collections | Trakt" Keywords="@(new[] { "Trakt" })" Url="/collections/trakt"></SeoHeader>
+﻿@page "/collections/tmdb"
+<SeoHeader Title="Collections | TMDB" Keywords="@(new[] { "TMDB" })" Url="/collections/tmdb"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<Trakt>
-@inject TmdbListApi TmdbListApi
+@inherits PageCore<Tmdb>
+@inject TmdbPopularApi TmdbPopularApi
+@inject TmdbTopRatedApi TmdbTopRatedApi
+@inject TmdbUpcomingApi TmdbUpcomingApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Trakt" ImageSource="logo/trakt.png" Text="Track what you watch and when. Discover what's hot and where you can watch it. Share comments, ratings and recommendations."
-          Link="https://trakt.tv/" IsAuthenticated="IsAuthenticated">
-</HeadPage>
+<HeadPage Title="TMDB" ImageSource="logo/tmdb.png" Text="@Translations.tmdb_desc" Link="https://www.themoviedb.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
-@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
-{
-    <div style="text-align: center;">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5145928155833172" data-ad-slot="6686117213"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-}
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
-@*https://trakt.tv/movies/recommended/all*@
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+<MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbPopularApi" CustomExpand="@("/collections/tmdb/popular/{0}")" ShowFilter="true"
+           Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-@*https://trakt.tv/shows/recommended/all*@
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedTvShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+<MediaList TitleHead="@($"{Translations.TopRated} ({AppStateStatic.Region})")" MediaListApi="TmdbTopRatedApi" CustomExpand="@("/collections/tmdb/top/{0}")" ShowFilter="true"
+           DetectRegions="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+</MediaList>
+<MediaList TitleHead="@($"{Translations.ComingSoon} ({AppStateStatic.Region})")" MediaListApi="TmdbUpcomingApi" CustomExpand="@("/collections/tmdb/upcoming")"
+           DetectRegions="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
@@ -48,6 +42,8 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
+        AppStateStatic.RegionChanged += StateHasChanged;
 
         WatchedListApi.DataChanged += model =>
         {

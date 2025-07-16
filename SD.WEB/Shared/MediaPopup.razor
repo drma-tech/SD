@@ -39,13 +39,13 @@
                         <MudItem xs="12" md="8">
                             @if (Media?.runtime != null && Media.runtime > 0)
                             {
-                                <MudChip T="string" Color="Color.Secondary">
+                                <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined">
                                     @Media.runtime.FormatRuntime()
                                 </MudChip>
                             }
                             @foreach (var item in Media?.Genres ?? [])
                             {
-                                <MudChip T="string" Color="Color.Secondary">
+                                <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined">
                                     @item
                                 </MudChip>
                             }
@@ -116,7 +116,8 @@
                             <MudText Typo="Typo.body1" Align="Align.Justify" Class="my-3">
                                 @Media?.plot
                             </MudText>
-                            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
+                            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true"
+                                      Icon="@IconsFA.Solid.Icon("circle-exclamation").WithAnimation(IconAnimation.Beat).Font">
                                 @Translations.PlatformForManaging
                             </MudAlert>
                         </MudItem>

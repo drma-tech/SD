@@ -1,36 +1,29 @@
-﻿@page "/collections/emmy-awards"
-<SeoHeader Title="Collections | Emmy Awards" Keywords="@(new[] { "Emmy Awards" })" Url="/collections/emmy-awards"></SeoHeader>
+﻿@page "/collections/film-affinity"
+<SeoHeader Title="Collections | Filmaffinity" Keywords="@(new[] { "Filmaffinity" })" Url="/collections/film-affinity"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<Emmys>
+@inherits PageCore<Filmaffinity>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Emmy Awards" ImageSource="logo/emmy-awards.png" Text="@Translations.emmys_desc" Link="https://www.emmys.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<HeadPage Title="Filmaffinity" ImageSource="logo/film-affinity.png" Text="Filmaffinity: Rate Movies and TV Shows & Find Movie Recommendations"
+          Link="https://www.filmaffinity.com/" IsAuthenticated="IsAuthenticated">
+</HeadPage>
 
-@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
-{
-    <div style="text-align: center;">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5145928155833172" data-ad-slot="6686117213"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-}
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingDramaSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingComedySeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestSeriesAndTv" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingLimitedSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestAnimation" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
 </MediaList>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">

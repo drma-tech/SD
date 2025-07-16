@@ -1,34 +1,28 @@
-﻿@page "/collections/rotten-tomatoes"
-<SeoHeader Title="Collections | Rotten Tomatoes" Keywords="@(new[] { "Rotten Tomatoes" })" Url="/collections/rotten-tomatoes"></SeoHeader>
+﻿@page "/collections/emmy-awards"
+<SeoHeader Title="Collections | Emmy Awards" Keywords="@(new[] { "Emmy Awards" })" Url="/collections/emmy-awards"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
-@inherits PageCore<RottenTomatoes>
+@inherits PageCore<Emmys>
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Rotten Tomatoes" ImageSource="logo/rotten-tomatoes.png" Text="Rotten Tomatoes, home of the Tomatometer, is the most trusted measurement of quality for Movies & TV. The definitive site for Reviews, Trailers, Showtimes, and Tickets"
-          Link="https://www.rottentomatoes.com/" IsAuthenticated="IsAuthenticated">
-</HeadPage>
+<HeadPage Title="Emmy Awards" ImageSource="logo/emmy-awards.png" Text="@Translations.emmys_desc" Link="https://www.emmys.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
-@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
-{
-    <div style="text-align: center;">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5145928155833172" data-ad-slot="6686117213"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-}
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesTomatoMeter" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingDramaSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesAudienceScore" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingComedySeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
+</MediaList>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingLimitedSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" OrderByComments="true">
 </MediaList>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">

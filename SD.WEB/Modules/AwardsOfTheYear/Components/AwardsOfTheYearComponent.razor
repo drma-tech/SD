@@ -7,7 +7,7 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<SectionComponent Title="@EnumLists.AwardsOfTheYear.GetName()" IconName="@IconsFA.Solid.Icon("trophy").Font">
+<SectionComponent Title="@EnumLists.AwardsOfTheYear.GetName()" Description="@GlobalTranslations.AwardsYearDescription" IconName="@IconsFA.Solid.Icon("trophy").Font">
     <ActionFragment>
         <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@("/best-awards-year")" />
     </ActionFragment>

@@ -10,9 +10,17 @@
         </Country>
         <Language TEnum="Language" TValue="Language" For="@(() => AppStateStatic.Language)" SelectedValue="@AppStateStatic.Language" SelectedValueChanged="LanguageValueChanged">
         </Language>
-        <MudToggleIconButton Toggled="@AppStateStatic.DarkMode" ToggledChanged="DarkModeChanged"
-                             Icon="@IconsFA.Solid.Icon("moon").Font" ToggledIcon="@IconsFA.Solid.Icon("sun").Font" />
-        <span>@(AppStateStatic.DarkMode ? "Light" : "Dark") Mode</span>
+        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Color="Color.Primary"
+                        Value="AppStateStatic.DarkMode" ValueChanged="(bool vl) => DarkModeChanged(vl)">
+            <MudToggleItem Value="false">
+                <MudIcon Icon="@IconsFA.Solid.Icon("sun").Font" Title="Light Mode" Class="me-1"></MudIcon>
+                Light Mode
+            </MudToggleItem>
+            <MudToggleItem Value="true">
+                <MudIcon Icon="@IconsFA.Solid.Icon("moon").Font" Title="Dark Mode" Class="me-1"></MudIcon>
+                Dark Mode
+            </MudToggleItem>
+        </MudToggleGroup>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">@Button.Close</MudButton>

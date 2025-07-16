@@ -1,5 +1,5 @@
-﻿@page "/collections/grossing-movies"
-<SeoHeader Title="Collections | Highest grossing movies" Keywords="@(new[] { "Highest grossing movies" })" Url="/collections/grossing-movies"></SeoHeader>
+﻿@page "/collections/upcoming-netflix"
+<SeoHeader Title="Collections | Upcoming Netflix Movies" Keywords="@(new[] { "Upcoming Netflix Movies" })" Url="/collections/upcoming-netflix"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -9,17 +9,9 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
-{
-    <div style="text-align: center;">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-5145928155833172" data-ad-slot="6686117213"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-}
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
-<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.GrossingMovies" CommentsSeparator="|" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingNetflixMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" FullPage="true">
 </MediaListFull>
 

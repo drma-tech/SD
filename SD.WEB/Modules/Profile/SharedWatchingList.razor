@@ -8,6 +8,8 @@
 @inject WatchingListApi WatchingApi
 @inject WatchedListApi WatchedApi
 
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Profile"></GoogleAdSense>
+
 @if (Type == "movie")
 {
     <WatchingComponent Core="CoreWatching" MediaType="MediaType.movie" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
@@ -32,6 +34,9 @@ else
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
+    public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
+
     public string? Email { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -43,6 +48,9 @@ else
 
     protected override async Task LoadDataRender()
     {
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
+
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null, Token), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, null, Token));
     }
 
