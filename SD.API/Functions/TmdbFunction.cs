@@ -25,11 +25,7 @@ public class TmdbFunction(IDistributedCache distributedCache)
             }
             else
             {
-                using var request = new HttpRequestMessage(HttpMethod.Get, cacheKey);
-
-                request.Headers.TryAddWithoutValidation("content-type", "application/json;charset=utf-8");
-
-                result = await ApiStartup.HttpClient.GetJsonFromApi<CustomListNew>(request, cancellationToken);
+                result = await ApiStartup.HttpClient.GetJsonFromApi<CustomListNew>(cacheKey, cancellationToken);
             }
 
             await SaveCache(result, cacheKey, TtlCache.OneDay);

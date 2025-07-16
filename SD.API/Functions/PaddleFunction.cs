@@ -23,6 +23,7 @@ public class PaddleFunction(CosmosRepository repo)
 
             ApiStartup.HttpClientPaddle.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
 
+            //todo: remove request from function, cause it not thread safe
             using var request = new HttpRequestMessage(HttpMethod.Get, $"{endpoint}subscriptions/{id}");
 
             var response = await ApiStartup.HttpClientPaddle.SendAsync(request, cancellationToken);
@@ -52,6 +53,7 @@ public class PaddleFunction(CosmosRepository repo)
 
             ApiStartup.HttpClientPaddle.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
 
+            //todo: remove request from function, cause it not thread safe
             using var request = new HttpRequestMessage(HttpMethod.Get, $"{endpoint}subscriptions/{id}/update-payment-method-transaction");
 
             var response = await ApiStartup.HttpClientPaddle.SendAsync(request, cancellationToken);
@@ -83,7 +85,7 @@ public class PaddleFunction(CosmosRepository repo)
 
             await Task.Delay(200, cancellationToken);
 
-            var result = await repo.Query<ClientePrincipal>(x => x.ClientePaddle != null && x.ClientePaddle.CustomerId == body.data.customer_id, DocumentType.Principal, 
+            var result = await repo.Query<ClientePrincipal>(x => x.ClientePaddle != null && x.ClientePaddle.CustomerId == body.data.customer_id, DocumentType.Principal,
                 cancellationToken) ?? throw new UnhandledException("ClientePrincipal null");
             var client = result.FirstOrDefault() ?? throw new UnhandledException($"client null - customer_id:{body.data.customer_id}");
             if (client.ClientePaddle == null) throw new UnhandledException("client.ClientePaddle null");

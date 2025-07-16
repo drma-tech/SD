@@ -20,8 +20,7 @@ public class TmdbSearchApi(IHttpClientFactory factory) : ApiExternal(factory), I
             foreach (var item in stringParameters)
                 parameter.TryAdd(item.Key, item.Value);
 
-        var result =
-            await GetByRequest<TmdbSearch>(TmdbOptions.BaseUri + "search/multi".ConfigureParameters(parameter));
+        var result = await GetAsync<TmdbSearch>(TmdbOptions.BaseUri + "search/multi".ConfigureParameters(parameter));
 
         if (result != null)
             foreach (var item in result.results.OrderByDescending(o => o.popularity))

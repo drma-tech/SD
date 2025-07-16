@@ -51,15 +51,6 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key)
         }
     }
 
-    protected async Task<T?> GetByRequest<T>(string uri, CancellationToken cancellationToken = default)
-    {
-        using var request = new HttpRequestMessage(HttpMethod.Get, uri);
-
-        request.Headers.TryAddWithoutValidation("content-type", "application/json;charset=utf-8");
-
-        return await Http.GetJsonFromApi<T>(request, cancellationToken);
-    }
-
     protected async Task<O?> PostAsync<I, O>(string uri, I? obj)
     {
         SetNewVersion(key);
