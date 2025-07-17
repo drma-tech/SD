@@ -7,7 +7,7 @@ using System.Net.Http.Json;
 
 namespace SD.API.Functions;
 
-public class PaddleFunction(CosmosRepository repo)
+public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
 {
     [Function("GetSubscription")]
     public async Task<RootSubscription?> GetSubscription(
@@ -21,42 +21,12 @@ public class PaddleFunction(CosmosRepository repo)
             var endpoint = ApiStartup.Configurations.Paddle?.Endpoint;
             var key = ApiStartup.Configurations.Paddle?.Key;
 
-            ApiStartup.HttpClientPaddle.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
+            var client = factory.CreateClient("paddle");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
 
-            //todo: remove request from function, cause it not thread safe
             using var request = new HttpRequestMessage(HttpMethod.Get, $"{endpoint}subscriptions/{id}");
 
-            var response = await ApiStartup.HttpClientPaddle.SendAsync(request, cancellationToken);
-
-            if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
-
-            return await response.Content.ReadFromJsonAsync<RootSubscription>(cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            req.ProcessException(ex);
-            throw;
-        }
-    }
-
-    [Function("GetSubscriptionUpdate")]
-    public async Task<RootSubscription?> GetSubscriptionUpdate(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/paddle/subscription/update")]
-        HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var id = req.GetQueryParameters()["id"];
-
-            var endpoint = ApiStartup.Configurations.Paddle?.Endpoint;
-            var key = ApiStartup.Configurations.Paddle?.Key;
-
-            ApiStartup.HttpClientPaddle.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
-
-            //todo: remove request from function, cause it not thread safe
-            using var request = new HttpRequestMessage(HttpMethod.Get, $"{endpoint}subscriptions/{id}/update-payment-method-transaction");
-
-            var response = await ApiStartup.HttpClientPaddle.SendAsync(request, cancellationToken);
+            var response = await client.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
 
@@ -94,7 +64,7 @@ public class PaddleFunction(CosmosRepository repo)
             client.ClientePaddle.IsPaidUser = body.data.status is "active" or "trialing";
 
             await repo.Upsert(client, cancellationToken);
-            req.LogWarning($"{body.data.id} - {body.data.status}");
+            req.LogWarning($"id: {body.data.id} - status: {body.data.status}");
         }
         catch (Exception ex)
         {

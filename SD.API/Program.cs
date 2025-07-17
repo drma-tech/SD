@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SD.API.Core.Middleware;
+using System.Net;
 
 var app = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults(worker =>
@@ -34,6 +35,11 @@ return;
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
+    services.AddHttpClient("tmdb");
+    services.AddHttpClient("paddle");
+    services.AddHttpClient("rapidapi");
+    services.AddHttpClient("rapidapi-gzip").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
+
     services.AddSingleton<CosmosRepository>();
     services.AddSingleton<CosmosCacheRepository>();
     services.AddApplicationInsightsTelemetryWorkerService();

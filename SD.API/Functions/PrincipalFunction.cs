@@ -70,8 +70,7 @@ public class PrincipalFunction(CosmosRepository repo)
         {
             var userId = req.GetUserId();
 
-            var client = await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken) ??
-                         throw new UnhandledException("Client null");
+            var client = await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
             var body = await req.GetBody<ClientePrincipal>(cancellationToken);
 
             client.ClientePaddle = body.ClientePaddle;

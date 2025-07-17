@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace SD.API.Functions;
 
-public class TmdbFunction(IDistributedCache distributedCache)
+public class TmdbFunction(IDistributedCache distributedCache, IHttpClientFactory factory)
 {
     [Function("List4")]
     public async Task<HttpResponseData> List4(
@@ -25,7 +25,8 @@ public class TmdbFunction(IDistributedCache distributedCache)
             }
             else
             {
-                result = await ApiStartup.HttpClient.GetJsonFromApi<CustomListNew>(cacheKey, cancellationToken);
+                var client = factory.CreateClient("tmdb");
+                result = await client.GetJsonFromApi<CustomListNew>(cacheKey, cancellationToken);
             }
 
             await SaveCache(result, cacheKey, TtlCache.OneDay);

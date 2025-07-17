@@ -16,8 +16,7 @@ public class ClientePaddle
 
     public List<PaddleItem> Items { get; set; } = [];
 
-    public AccountProduct ActiveProduct =>
-        IsPaidUser ? Items.SingleOrDefault()?.Product ?? AccountProduct.Basic : AccountProduct.Basic;
+    public AccountProduct ActiveProduct => IsPaidUser ? Items.SingleOrDefault()?.Product ?? AccountProduct.Basic : AccountProduct.Basic;
 }
 
 public class PaddleItem

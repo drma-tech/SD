@@ -281,7 +281,7 @@
                     }
                     else
                     {
-                        <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("credit-card").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
+                        <MudButton Color="Color.Secondary" StartIcon="@IconsFA.Solid.Icon("credit-card").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
                                    Href="@Subscription?.data?.management_urls?.update_payment_method" Target="_blank" rel="nofollow">
                             @Translations.UpdatePaymentDetails
                         </MudButton>
@@ -357,9 +357,26 @@
         AppStateStatic.RegistrationSuccessful += Registration;
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                //client cannot be on load data render
+                Client = await PrincipalApi.Get(IsAuthenticated);
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
     protected override async Task LoadDataRender()
     {
-        Client = await PrincipalApi.Get(IsAuthenticated);
         CurrentCountry = await ConfigurationApi.GetCountry();
 
         if (CurrentCountry.NotEmpty())
@@ -422,12 +439,13 @@
 
             var product = Plans.Single(w => w.ProductId == client.ProductId && w.Cycle == Cycle).Product;
 
-            Client.ClientePaddle = new ClientePaddle
+            Client.ClientePaddle ??= new ClientePaddle
             {
-                CustomerId = client.CustomerId,
-                AddressId = client.AddressId,
-                Items = [new PaddleItem { ProductId = client.ProductId, Product = product }]
+                CustomerId = client.CustomerId
             };
+
+            Client.ClientePaddle.AddressId = client.AddressId;
+            Client.ClientePaddle.Items.Add(new PaddleItem { ProductId = client.ProductId, Product = product });
 
             Client = await PrincipalApi.Paddle(Client);
 

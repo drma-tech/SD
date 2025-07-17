@@ -1,7 +1,7 @@
-﻿using System.Net;
+﻿using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text;
-using Newtonsoft.Json;
 
 namespace SD.API.Core;
 
@@ -39,8 +39,7 @@ public static class ApiCore
     public static async Task<T?> GetTrailersByYoutubeSearch<T>(this HttpClient http, CancellationToken cancellationToken) where T : class
     {
         const string id = "UCzcRQ3vRNr6fJ1A9rqFn7QA";
-        using var request = new HttpRequestMessage(HttpMethod.Get,
-            $"https://youtube-search-and-download.p.rapidapi.com/channel?id={id}&sort=n");
+        using var request = new HttpRequestMessage(HttpMethod.Get, $"https://youtube-search-and-download.p.rapidapi.com/channel?id={id}&sort=n");
 
         request.Headers.TryAddWithoutValidation("X-RapidAPI-Key", ApiStartup.Configurations.RapidAPI?.Key);
         request.Headers.TryAddWithoutValidation("X-RapidAPI-Host", "youtube-search-and-download.p.rapidapi.com");
@@ -61,8 +60,7 @@ public static class ApiCore
     {
         if (string.IsNullOrEmpty(tconst)) return null;
 
-        using var request = new HttpRequestMessage(HttpMethod.Get,
-            $"https://imdb8.p.rapidapi.com/title/v2/get-metacritic?tconst={tconst}");
+        using var request = new HttpRequestMessage(HttpMethod.Get, $"https://imdb8.p.rapidapi.com/title/v2/get-metacritic?tconst={tconst}");
 
         request.Headers.TryAddWithoutValidation("X-RapidAPI-Key", ApiStartup.Configurations.RapidAPI?.Key);
         request.Headers.TryAddWithoutValidation("X-RapidAPI-Host", "imdb8.p.rapidapi.com");

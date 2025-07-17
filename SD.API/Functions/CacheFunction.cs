@@ -14,7 +14,7 @@ using Item = SD.Shared.Models.News.Item;
 
 namespace SD.API.Functions;
 
-public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache distributedCache)
+public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache distributedCache, IHttpClientFactory factory)
 {
     [Function("Settings")]
     public static async Task<HttpResponseData> Configurations(
@@ -121,7 +121,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
 
                 if (doc == null)
                 {
-                    var obj = await ApiStartup.HttpClient.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
+                    var client = factory.CreateClient("rapidapi");
+                    var obj = await client.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
 
                     if (mode == "compact")
                     {
@@ -311,7 +312,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
 
                 if (doc == null)
                 {
-                    var objRatings = await ApiStartup.HttpClient.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
+                    var client = factory.CreateClient("rapidapi-gzip");
+                    var objRatings = await client.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
 
                     var scraping = new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name), objRatings);
                     var obj = scraping.GetMovieData(id, tmdbRating, title, releaseDate.Year.ToString());
@@ -324,7 +326,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
                 await SaveCache(doc, cacheKey, ttl);
             }
 
-            await TrySaveCertifiedSd(doc, releaseDate, 8498673, tmdbId, MediaType.movie, cancellationToken);
+            await TrySaveCertifiedSd(doc, releaseDate, 8498673, tmdbId, MediaType.movie, cancellationToken, factory);
 
             return await req.CreateResponse(doc, ttl, cancellationToken);
         }
@@ -373,7 +375,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
 
                 if (doc == null)
                 {
-                    var objRatings = await ApiStartup.HttpClient.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
+                    var client = factory.CreateClient("rapidapi-gzip");
+                    var objRatings = await client.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
 
                     var scraping = new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name), objRatings);
                     var obj = scraping.GetShowData(id, tmdbRating, title, releaseDate.Year.ToString());
@@ -386,7 +389,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
                 await SaveCache(doc, cacheKey, ttl);
             }
 
-            await TrySaveCertifiedSd(doc, releaseDate, 8498675, tmdbId, MediaType.tv, cancellationToken);
+            await TrySaveCertifiedSd(doc, releaseDate, 8498675, tmdbId, MediaType.tv, cancellationToken, factory);
 
             return await req.CreateResponse(doc, ttl, cancellationToken);
         }
@@ -431,7 +434,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
 
                 if (doc == null)
                 {
-                    var obj = await ApiStartup.HttpClient.GetReviewsByImdb8<RootMetacritic>(id, cancellationToken);
+                    var client = factory.CreateClient("rapidapi");
+                    var obj = await client.GetReviewsByImdb8<RootMetacritic>(id, cancellationToken);
                     if (obj == null) return null;
 
                     var newModel = new ReviewModel();
@@ -529,7 +533,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         }
     }
 
-    private static async Task TrySaveCertifiedSd(CacheDocument<Ratings>? doc, DateTime releaseDate, int listId, string? tmdbId, MediaType type, CancellationToken token)
+    private static async Task TrySaveCertifiedSd(CacheDocument<Ratings>? doc, DateTime releaseDate, int listId, string? tmdbId, MediaType type, CancellationToken token, IHttpClientFactory factory)
     {
         if (tmdbId == null) return;
 
@@ -561,7 +565,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             if (count >= 5) //if there is at least 5 green ratings
             {
                 var tmdbWriteToken = ApiStartup.Configurations.TMDB?.WriteToken;
-                await ApiStartup.HttpClient.AddTmdbListItem(listId, int.Parse(tmdbId), type, tmdbWriteToken, token);
+                var client = factory.CreateClient("tmdb");
+                await client.AddTmdbListItem(listId, int.Parse(tmdbId), type, tmdbWriteToken, token);
             }
         }
     }
