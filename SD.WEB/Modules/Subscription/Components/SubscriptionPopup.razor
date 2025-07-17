@@ -423,7 +423,8 @@
     {
         try
         {
-            if (Client == null) throw new NotificationException("Client null");
+            var freshClient = await PrincipalApi.Get(true, true);
+            if (freshClient == null) throw new NotificationException("Client null");
 
             if (Plans.Empty()) //for some reason, the list is getting empty (maybe is cause is calling twice)
             {
@@ -439,15 +440,13 @@
 
             var product = Plans.Single(w => w.ProductId == client.ProductId && w.Cycle == Cycle).Product;
 
-            Client.ClientePaddle ??= new ClientePaddle
-            {
-                CustomerId = client.CustomerId
-            };
+            freshClient.ClientePaddle ??= new ClientePaddle();
 
-            Client.ClientePaddle.AddressId = client.AddressId;
-            Client.ClientePaddle.Items.Add(new PaddleItem { ProductId = client.ProductId, Product = product });
+            freshClient.ClientePaddle.CustomerId = client.CustomerId;
+            freshClient.ClientePaddle.AddressId = client.AddressId;
+            freshClient.ClientePaddle.Items = [new PaddleItem { ProductId = client.ProductId, Product = product }];
 
-            Client = await PrincipalApi.Paddle(Client);
+            Client = await PrincipalApi.Paddle(freshClient);
 
             StateHasChanged();
 

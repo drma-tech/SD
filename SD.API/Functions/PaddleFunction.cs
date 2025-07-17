@@ -53,8 +53,6 @@ public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
             var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new UnhandledException("body null");
             if (body.data == null) throw new UnhandledException("body.data null");
 
-            await Task.Delay(200, cancellationToken);
-
             var result = await repo.Query<ClientePrincipal>(x => x.ClientePaddle != null && x.ClientePaddle.CustomerId == body.data.customer_id, DocumentType.Principal,
                 cancellationToken) ?? throw new UnhandledException("ClientePrincipal null");
             var client = result.FirstOrDefault() ?? throw new UnhandledException($"client null - customer_id:{body.data.customer_id}");
