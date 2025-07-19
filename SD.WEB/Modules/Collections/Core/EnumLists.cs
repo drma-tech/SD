@@ -65,9 +65,6 @@ public enum EnumLists
     [Custom(Name = "Grand Prix", Group = "Festival de Cannes")]
     FestivalCannesGrandPrix = 8228362,
 
-    [Custom(Name = "Palme d'Or - Short Film", Group = "Festival de Cannes")]
-    FestivalCannesPalmeShortFilm = 8228361,
-
     [Custom(Name = "Movies - Tomato Meter", Group = "Rotten Tomatoes")]
     RottenTomatoesMoviesTomatoMeter = 8228415,
 

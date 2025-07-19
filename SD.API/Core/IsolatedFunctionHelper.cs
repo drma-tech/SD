@@ -79,6 +79,11 @@ public static class IsolatedFunctionHelper
         const string messageTemplate = "ProcessException. State: {State}, Params: {Params}";
 
         logger.LogError(ex, messageTemplate, req.BuildState(), req.BuildParams());
+
+        if (ex.InnerException != null)
+        {
+            logger.LogError(ex.InnerException, "InnerException: {Message}", ex.InnerException.Message);
+        }
     }
 
     public static void LogWarning(this HttpRequestData req, string? message)

@@ -55,3 +55,7 @@ window.addEventListener("resize", function () {
         }
     });
 });
+
+window.addEventListener('offline', () => {
+    showError("It looks like you're offline. Please check your connection.");
+});

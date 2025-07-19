@@ -26,6 +26,7 @@ public static class ApiHelper
         var response = await httpClient.GetAsync(uri, cancellationToken);
 
         if (response.IsSuccessStatusCode)
+        {
             try
             {
                 if (response.StatusCode == HttpStatusCode.NoContent) return default;
@@ -40,8 +41,11 @@ public static class ApiHelper
             {
                 throw new InvalidDataException("invalid json", ex.InnerException ?? ex);
             }
-
-        var content = await response.Content.ReadAsStringAsync(cancellationToken);
-        throw new NotificationException(content);
+        }
+        else
+        {
+            var content = await response.Content.ReadAsStringAsync(cancellationToken);
+            throw new NotificationException(content);
+        }
     }
 }
