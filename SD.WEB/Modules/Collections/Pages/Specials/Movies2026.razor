@@ -1,0 +1,57 @@
+﻿@page "/collections/movies-2026"
+<SeoHeader Title="Collections | Most Expected Movies of 2025" Keywords="@(new[] { "Rotten Tomatoes" })" Url="/collections/movies-2026"></SeoHeader>
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Collections.Components
+@inherits PageCore<Movies2025>
+@inject TmdbListApi TmdbListApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
+
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" FullPage="true">
+</MediaListFull>
+
+@code {
+    public Settings? Settings { get; set; }
+    public ClientePrincipal? Principal { get; set; }
+
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        WatchedListApi.DataChanged += model =>
+        {
+            WatchedList = model;
+            StateHasChanged();
+        };
+        WatchingListApi.DataChanged += model =>
+        {
+            WatchingList = model;
+            StateHasChanged();
+        };
+        WishListApi.DataChanged += model =>
+        {
+            WishList = model;
+            StateHasChanged();
+        };
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
+
+        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
+        WishList = await WishListApi.Get(IsAuthenticated, null);
+    }
+
+}

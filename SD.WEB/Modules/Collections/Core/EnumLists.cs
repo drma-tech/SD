@@ -38,19 +38,19 @@ public enum EnumLists
     [Custom(Name = "Top 100 Movies", Group = "Hollywood Reporter")]
     HollywoodReporterTop100Movies = 8222343,
 
-    [Custom(Name = "Top 250 Movies", Group = "IMDB")] 
+    [Custom(Name = "Top 250 Movies", Group = "IMDB")]
     ImdbTop250Movies = 8223821,
 
-    [Custom(Name = "Top 250 Shows", Group = "IMDB")] 
+    [Custom(Name = "Top 250 Shows", Group = "IMDB")]
     ImdbTop250Shows = 8223826,
 
-    [Custom(Name = "Best Film", Group = "Bafta")] 
+    [Custom(Name = "Best Film", Group = "Bafta")]
     BaftaBestFilm = 8228253,
 
     [Custom(Name = "Best Animated Feature Film", Group = "Bafta")]
     BaftaBestAnimatedFeatureFilm = 8228257,
 
-    [Custom(Name = "Best Documentary", Group = "Bafta")] 
+    [Custom(Name = "Best Documentary", Group = "Bafta")]
     BaftaBestDocumentary = 8228258,
 
     [Custom(Name = "Best Picture", Group = "Critics Choice")]
@@ -91,6 +91,9 @@ public enum EnumLists
 
     [Custom(Name = "Most Expected Movies of 2025", Group = "")]
     ExpectedMovieOf2025 = 8300898,
+
+    [Custom(Name = "Most Expected Movies of 2026", Group = "")]
+    ExpectedMovieOf2026 = 8544544,
 
     [Custom(Name = "Best Movies", Group = "Filmaffinity")]
     FilmaffinityBestMovies = 8232832,

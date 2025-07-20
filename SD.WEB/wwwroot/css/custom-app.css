@@ -13,10 +13,12 @@ body .pwa-updater[b-pwa-updater] {
 }
 
 .poster-chip {
-    padding: 0.2rem !important;
+    padding-block: 0.2rem !important;
+    padding-inline: 0.3rem !important;
     position: absolute !important;
     white-space: normal !important;
     height: auto !important;
+    align-items: normal !important;
 }
 
     .poster-chip svg {
@@ -240,6 +242,10 @@ body .pwa-updater[b-pwa-updater] {
 
 .tooltip-image.mud-tooltip-root.mud-tooltip-inline {
     width: 100%;
+}
+
+.mud-alert-icon {
+    align-self: center;
 }
 
 /* FONT AWESOME */
