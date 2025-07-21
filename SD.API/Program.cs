@@ -35,10 +35,12 @@ return;
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
-    services.AddHttpClient("tmdb");
+    services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(30); })
+        .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 16 });
     services.AddHttpClient("paddle");
     services.AddHttpClient("rapidapi");
-    services.AddHttpClient("rapidapi-gzip").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
+    services.AddHttpClient("rapidapi-gzip")
+        .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
 
     services.AddSingleton<CosmosRepository>();
     services.AddSingleton<CosmosCacheRepository>();
