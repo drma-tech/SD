@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using Microsoft.Extensions.Logging;
 
 namespace SD.Shared.Core.Helper;
 
@@ -22,11 +21,9 @@ public static class ApiHelper
         throw new NotificationException(content);
     }
 
-    public static async Task<T?> GetJsonFromApi<T>(this HttpClient httpClient, string uri, CancellationToken cancellationToken, ILogger? logger = null)
+    public static async Task<T?> GetJsonFromApi<T>(this HttpClient httpClient, string uri, CancellationToken cancellationToken)
     {
-        logger?.LogWarning($"[ApiHelper] before GetAsync: Timeout={httpClient.Timeout.TotalSeconds}s, TokenCanBeCanceled={cancellationToken.CanBeCanceled}, IsCancellationRequested={cancellationToken.IsCancellationRequested}");
         var response = await httpClient.GetAsync(uri, cancellationToken);
-        logger?.LogWarning($"[ApiHelper] after GetAsync: IsCancellationRequested={cancellationToken.IsCancellationRequested}, ResponseSuccess={response.IsSuccessStatusCode}");
 
         if (response.IsSuccessStatusCode)
         {

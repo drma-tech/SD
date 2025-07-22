@@ -1,7 +1,6 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Logging;
 using SD.Shared.Models.List.Tmdb;
 using System.Text.Json;
 
@@ -26,10 +25,8 @@ public class TmdbFunction(IDistributedCache distributedCache, IHttpClientFactory
             }
             else
             {
-                var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
                 var client = factory.CreateClient("tmdb");
-                logger.LogWarning($"[List4] Timeout: {client.Timeout.TotalSeconds}s, CancellationToken: {cancellationToken.CanBeCanceled}, IsCancellationRequested: {cancellationToken.IsCancellationRequested}");
-                result = await client.GetJsonFromApi<CustomListNew>(cacheKey, cancellationToken, logger);
+                result = await client.GetJsonFromApi<CustomListNew>(cacheKey, cancellationToken);
             }
 
             await SaveCache(result, cacheKey, TtlCache.OneDay);
