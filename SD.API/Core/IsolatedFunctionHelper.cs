@@ -76,23 +76,18 @@ public static class IsolatedFunctionHelper
     {
         var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
 
-        const string messageTemplate = "ProcessException. State: {State}, Params: {Params}";
+        const string messageTemplate = "ProcessException. InvocationId: {InvocationId}, State: {State}, Params: {Params}";
 
-        logger.LogError(ex, messageTemplate, req.BuildState(), req.BuildParams());
-
-        if (ex.InnerException != null)
-        {
-            logger.LogError(ex.InnerException, "InnerException: {Message}", ex.InnerException.Message);
-        }
+        logger.LogError(ex, messageTemplate, req.FunctionContext.InvocationId, req.BuildState(), req.BuildParams());
     }
 
     public static void LogWarning(this HttpRequestData req, string? message)
     {
         var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
 
-        const string messageTemplate = "LogWarning. Message: {message} State: {State}, Params: {Params}";
+        const string messageTemplate = "LogWarning. Message: {message}, InvocationId: {InvocationId}, State: {State}, Params: {Params}";
 
-        logger.LogWarning(messageTemplate, message, req.BuildState(), req.BuildParams());
+        logger.LogWarning(messageTemplate, message, req.FunctionContext.InvocationId, req.BuildState(), req.BuildParams());
     }
 
     private static string BuildState(this HttpRequestData req)
