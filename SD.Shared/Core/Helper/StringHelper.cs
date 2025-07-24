@@ -55,8 +55,8 @@ public static partial class StringHelper
         str = str.RemoveDiacritics();
         str = str.RemoveSpecialCharacters();
 
-        str = Regex.Replace(str, @"\s+", "-"); // Replace spaces with hyphens
-        str = Regex.Replace(str, @"-+", "-"); // Replace multiple hyphens with a single one
+        str = Regex.Replace(str, @"\s+", "-", RegexOptions.NonBacktracking); // Replace spaces with hyphens
+        str = Regex.Replace(str, @"-+", "-", RegexOptions.NonBacktracking); // Replace multiple hyphens with a single one
         str = str.Trim('-'); // Trim leading and trailing hyphens
 
         return str;

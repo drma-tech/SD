@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using System.Security.Cryptography;
 using System.Text.Json;
 
 namespace SD.WEB.Core.Api;
@@ -11,12 +12,12 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key)
 
     public static void SetNewVersion(string? key)
     {
-        if (key.NotEmpty()) CacheVersion[key!] = new Random().Next(1, 999999);
+        if (key.NotEmpty()) CacheVersion[key!] = RandomNumberGenerator.GetInt32(1, 999999);
     }
 
     private Dictionary<string, string> GetVersion()
     {
-        if (!CacheVersion.TryGetValue(key!, out _)) CacheVersion[key!] = new Random().Next(1, 999999);
+        if (!CacheVersion.TryGetValue(key!, out _)) CacheVersion[key!] = RandomNumberGenerator.GetInt32(1, 999999);
 
         return new Dictionary<string, string> { { "v", CacheVersion[key!].ToString() } };
     }

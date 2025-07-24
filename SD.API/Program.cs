@@ -35,7 +35,8 @@ return;
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
-    services.AddHttpClient("tmdb");
+    services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(90); })
+      .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
     services.AddHttpClient("paddle");
     services.AddHttpClient("rapidapi");
     services.AddHttpClient("rapidapi-gzip")

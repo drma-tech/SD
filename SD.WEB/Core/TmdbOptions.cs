@@ -7,8 +7,8 @@ public static class TmdbOptions
 {
     public const string Section = "TMDB";
 
-    public const string BaseUri = "https://api.tmdb.org/3/";
-    public const string BaseUriNew = "https://api.tmdb.org/4/";
+    public const string BaseUri = "https://api.themoviedb.org/3/";
+    public const string BaseUriNew = "https://api.themoviedb.org/4/";
     public const string ApiKey = "4e0dee3ee7786c86df1f434849570b55";
     public const string SmallPosterPath = "https://image.tmdb.org/t/p/w185/";
     public const string LargePosterPath = "https://image.tmdb.org/t/p/w300/";
