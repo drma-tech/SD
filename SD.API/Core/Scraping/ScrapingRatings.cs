@@ -1,7 +1,7 @@
-﻿using System.Globalization;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 using SD.Shared.Models.List;
+using System.Globalization;
 
 namespace SD.API.Core.Scraping;
 
@@ -36,18 +36,16 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
         };
 
         if (imdbId.NotEmpty() && data.imdb.Empty()) ProcessMovieImdb(data, string.Format(ImdbRatingUrl, imdbId));
-        if (data.metacritic.Empty()) ProcessMovieMetacritic(data, string.Format(MetacriticMovieUrl, titleMeta), year);
-        if (data.trakt.Empty()) ProcessTrack(data, string.Format(TraktMovieUrl, titleTrakt, year), year);
+        if (data.metacritic.Empty() && titleMeta.NotEmpty()) ProcessMovieMetacritic(data, string.Format(MetacriticMovieUrl, titleMeta), year);
+        if (data.trakt.Empty() && titleTrakt.NotEmpty()) ProcessTrack(data, string.Format(TraktMovieUrl, titleTrakt, year), year);
 
         return data;
     }
 
     public Ratings GetShowData(string? imdbId, string? tmdbRating, string? title, string? year)
     {
-        var titleMeta = title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-")
-            .ToLower();
-        var titleTrakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-")
-            .Replace("--", "-").Replace("--", "-").ToLower();
+        var titleMeta = title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
+        var titleTrakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-").Replace("--", "-").Replace("--", "-").ToLower();
 
         var data = new Ratings
         {
@@ -79,11 +77,11 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
 
     private void ProcessMovieMetacritic(Ratings data, string metacriticPath, string? year)
     {
-        var web = new HtmlWeb();
-        var doc = web.Load(metacriticPath);
-
         try
         {
+            var web = new HtmlWeb();
+            var doc = web.Load(metacriticPath);
+
             if (doc.DocumentNode.InnerText.Contains("Page Not Found - Metacritic"))
             {
                 doc = web.Load($"{metacriticPath}-{year}");
@@ -92,25 +90,21 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
             }
 
             //getting user score
-            data.metacritic = GetNodeInnerText(doc,
-                "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span");
+            data.metacritic = GetNodeInnerText(doc, "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span");
 
             if (data.metacritic == "tbd")
             {
                 doc = web.Load($"{metacriticPath}-{year}");
-                data.metacritic = GetNodeInnerText(doc,
-                    "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span");
+                data.metacritic = GetNodeInnerText(doc, "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span");
             }
 
-            var pageYear = GetNodeInnerText(doc,
-                "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span");
+            var pageYear = GetNodeInnerText(doc, "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div[1]/div[2]/div/ul/li[1]/span");
 
             if (year != null && pageYear != null && year != pageYear)
             {
                 //probably wrong title, then try to search by other url
                 doc = web.Load($"{metacriticPath}-{year}");
-                data.metacritic = GetNodeInnerText(doc,
-                    "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span");
+                data.metacritic = GetNodeInnerText(doc, "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/div[2]/div[1]/div[2]/div/div/span");
             }
 
             if (data.metacritic == "tbd") data.metacritic = null;
@@ -129,11 +123,11 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
     /// <param name="year"></param>
     private void ProcessShowMetacritic(Ratings data, string metacriticPath, string? year)
     {
-        var web = new HtmlWeb();
-        var doc = web.Load(metacriticPath);
-
         try
         {
+            var web = new HtmlWeb();
+            var doc = web.Load(metacriticPath);
+
             if (doc.DocumentNode.InnerText.Contains("Page Not Found - Metacritic"))
             {
                 doc = web.Load($"{metacriticPath}-{year}");
@@ -169,11 +163,11 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
 
     private void ProcessMovieImdb(Ratings data, string imdbPath)
     {
-        var web = new HtmlWeb();
-        var doc = web.Load(imdbPath);
-
         try
         {
+            var web = new HtmlWeb();
+            var doc = web.Load(imdbPath);
+
             data.imdb = GetNodeInnerText(doc, "//*[@id=\"__next\"]/main/div/section/div/section/div/div[1]/section[1]/div[2]/div[2]/div[1]/div[2]/div[2]/div[1]/span[1]");
         }
         catch (Exception ex)
@@ -184,11 +178,11 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
 
     private void ProcessShowImdb(Ratings data, string imdbPath)
     {
-        var web = new HtmlWeb();
-        var doc = web.Load(imdbPath);
-
         try
         {
+            var web = new HtmlWeb();
+            var doc = web.Load(imdbPath);
+
             data.imdb = GetNodeInnerText(doc, "//*[@id=\"__next\"]/main/div/section[1]/section/div[3]/section/section/div[2]/div[2]/div/div[1]/a/span/div/div[2]/div[1]/span[1]");
         }
         catch (Exception ex)
@@ -201,11 +195,11 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
     {
         traktUrl = traktUrl.Replace("--", "-");
 
-        var web = new HtmlWeb();
-        var doc = web.Load(traktUrl);
-
         try
         {
+            var web = new HtmlWeb();
+            var doc = web.Load(traktUrl);
+
             if (doc.DocumentNode.InnerText.Contains("Page Not Found (404) - Trakt")) return;
 
             var pageYear = GetNodeInnerText(doc, "html/body/div[2]/section[1]/div[4]/div/div/div[2]/h1/span");
