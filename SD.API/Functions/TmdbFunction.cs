@@ -8,19 +8,15 @@ namespace SD.API.Functions;
 
 public class TmdbFunction(IDistributedCache distributedCache, IHttpClientFactory factory)
 {
-    private static readonly SemaphoreSlim _lock = new(1, 1);
-
     [Function("List4")]
     public async Task<HttpResponseData> List4(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/tmdb")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var client = factory.CreateClient("tmdb");
-        var cacheKey = req.GetQueryParameters()["url"]?.ConvertFromBase64ToString() ?? throw new NotificationException("url null");
-
         try
         {
             CustomListNew? result;
 
+            var cacheKey = req.GetQueryParameters()["url"]?.ConvertFromBase64ToString() ?? throw new NotificationException("url null");
             var cachedBytes = await distributedCache.GetAsync(cacheKey);
             if (cachedBytes is { Length: > 0 })
             {
@@ -28,15 +24,9 @@ public class TmdbFunction(IDistributedCache distributedCache, IHttpClientFactory
             }
             else
             {
-                await _lock.WaitAsync(cancellationToken);
-                try
-                {
-                    result = await client.GetJsonFromApi<CustomListNew>(cacheKey, cancellationToken);
-                }
-                finally
-                {
-                    _lock.Release();
-                }
+                var tmdbWriteToken = ApiStartup.Configurations.TMDB?.WriteToken;
+                var client = factory.CreateClient("tmdb");
+                result = await client.GetdTmdbList<CustomListNew>(cacheKey, tmdbWriteToken, cancellationToken);
             }
 
             await SaveCache(result, cacheKey, TtlCache.OneDay);

@@ -7,10 +7,16 @@ namespace SD.API.Core;
 
 public static class ApiCore
 {
-    public static async Task<T?> Get<T>(this HttpClient http, string requestUri, CancellationToken cancellationToken)
+    public static async Task<T?> GetdTmdbList<T>(this HttpClient http, string requestUri, string? token, CancellationToken cancellationToken)
         where T : class
     {
-        var response = await http.GetAsync(requestUri, cancellationToken);
+        using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+
+        request.Headers.Add("Accept", "application/json");
+        request.Headers.TryAddWithoutValidation("content-type", "application/json");
+        request.Headers.Add("Authorization", $"Bearer {token}");
+
+        var response = await http.SendAsync(request, cancellationToken);
 
         if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
 
