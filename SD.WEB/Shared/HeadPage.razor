@@ -6,17 +6,17 @@
 @inject MyProvidersApi MyProvidersApi
 @inject IJSRuntime Js
 
-<MudPaper Class="mb-2" Outlined="true">
+<MudPaper Class="@(IncludeMB ? "mb-2" : "")" Outlined="true">
     <MudStack StretchItems="StretchItems.Middle" Row="true" Spacing="2">
         <div class="pa-2" style="align-self: center;">
             @if (string.IsNullOrEmpty(Link))
             {
-                <MudImage Src="@ImageSource" Style="height: 50px;" Alt="@ImageSource"></MudImage>
+                <MudImage Src="@ImageSource" Style="max-height: 50px; max-width: 50px;" Alt="@ImageSource"></MudImage>
             }
             else
             {
                 <a href="@Link" target="_blank" rel="nofollow">
-                    <MudImage Src="@ImageSource" Style="height: 50px;" Alt="@ImageSource"></MudImage>
+                    <MudImage Src="@ImageSource" Style="max-height: 50px; max-width: 50px;" Alt="@ImageSource"></MudImage>
                 </a>
             }
         </div>
@@ -127,6 +127,7 @@
     [Parameter] public string? Text { get; set; }
     [Parameter] public string? Link { get; set; }
     [Parameter] public bool ShowShare { get; set; } = true;
+    [Parameter] public bool IncludeMB { get; set; } = true;
 
     [Parameter] public ProviderModel? Provider { get; set; }
 

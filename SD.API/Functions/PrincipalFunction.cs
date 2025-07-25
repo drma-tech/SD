@@ -51,9 +51,9 @@ public class PrincipalFunction(CosmosRepository repo)
     {
         try
         {
-            var body = await req.GetBody<ClientePrincipal>(cancellationToken);
+            var principal = await req.GetBody<ClientePrincipal>(cancellationToken);
 
-            return await repo.Upsert(body, cancellationToken);
+            return await repo.Upsert(principal, cancellationToken);
         }
         catch (Exception ex)
         {
