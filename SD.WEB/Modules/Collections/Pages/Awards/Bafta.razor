@@ -1,5 +1,5 @@
 ﻿@page "/collections/bafta"
-<SeoHeader Title="Collections | Bafta" Keywords="@(new[] { "Bafta" })" Url="/collections/bafta"></SeoHeader>
+<SeoHeader Title="Collections | Bafta" Description="@SD.WEB.Resources.Credit.Bafta" Keywords="@(new[] { "Bafta" })" Url="/collections/bafta"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -11,7 +11,7 @@
 @inject TmdbListApi TmdbListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Bafta" ImageSource="logo/bafta.png" Text="An independent British charity that supports, develops & promotes the art forms of the moving image"
+<HeadPage Title="Bafta" ImageSource="logo/bafta.png" Text="@SD.WEB.Resources.Credit.Bafta"
           Link="https://www.bafta.org/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 

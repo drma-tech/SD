@@ -1,5 +1,5 @@
 ﻿@page "/collections/rotten-tomatoes"
-<SeoHeader Title="Collections | Rotten Tomatoes" Keywords="@(new[] { "Rotten Tomatoes" })" Url="/collections/rotten-tomatoes"></SeoHeader>
+<SeoHeader Title="Collections | Rotten Tomatoes" Description="@SD.WEB.Resources.Credit.RottenTomatoes" Keywords="@(new[] { "Rotten Tomatoes" })" Url="/collections/rotten-tomatoes"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -10,7 +10,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Rotten Tomatoes" ImageSource="logo/rotten-tomatoes.png" Text="Rotten Tomatoes, home of the Tomatometer, is the most trusted measurement of quality for Movies & TV. The definitive site for Reviews, Trailers, Showtimes, and Tickets"
+<HeadPage Title="Rotten Tomatoes" ImageSource="logo/rotten-tomatoes.png" Text="@SD.WEB.Resources.Credit.RottenTomatoes"
           Link="https://www.rottentomatoes.com/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 

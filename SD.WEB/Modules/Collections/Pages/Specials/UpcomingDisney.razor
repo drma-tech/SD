@@ -1,5 +1,5 @@
 ﻿@page "/collections/upcoming-disney"
-<SeoHeader Title="Collections | Upcoming Walt Disney Pictures" Keywords="@(new[] { "Upcoming Walt Disney Pictures" })" Url="/collections/upcoming-disney"></SeoHeader>
+<SeoHeader Title="Collections | Upcoming Walt Disney Pictures" Description="@SD.WEB.Resources.Credit.UpcomingWaltDisneyPictures" Keywords="@(new[] { "Upcoming Walt Disney Pictures" })" Url="/collections/upcoming-disney"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -9,11 +9,13 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
+<HeadPage Title="Upcoming Walt Disney Pictures" ImageSource="logo/disney.png" Text="@SD.WEB.Resources.Credit.UpcomingWaltDisneyPictures" IsAuthenticated="IsAuthenticated"></HeadPage>
+
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 @*https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films*@
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingWaltDisneyPictures" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" FullPage="true">
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" FullPage="true" ShowHead="false">
 </MediaListFull>
 
 @code {

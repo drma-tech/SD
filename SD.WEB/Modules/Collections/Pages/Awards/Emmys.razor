@@ -1,5 +1,5 @@
 ﻿@page "/collections/emmy-awards"
-<SeoHeader Title="Collections | Emmy Awards" Keywords="@(new[] { "Emmy Awards" })" Url="/collections/emmy-awards"></SeoHeader>
+<SeoHeader Title="Collections | Emmy Awards" Description="@SD.WEB.Resources.Credit.EmmyAwards" Keywords="@(new[] { "Emmy Awards" })" Url="/collections/emmy-awards"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Profile.Core
@@ -11,7 +11,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Emmy Awards" ImageSource="logo/emmy-awards.png" Text="@Translations.emmys_desc" Link="https://www.emmys.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<HeadPage Title="Emmy Awards" ImageSource="logo/emmy-awards.png" Text="@SD.WEB.Resources.Credit.EmmyAwards" Link="https://www.emmys.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 

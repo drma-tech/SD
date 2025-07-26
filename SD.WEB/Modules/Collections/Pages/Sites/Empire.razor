@@ -1,5 +1,5 @@
 ﻿@page "/collections/empire"
-<SeoHeader Title="Collections | Empire" Keywords="@(new[] { "Empire" })" Url="/collections/empire"></SeoHeader>
+<SeoHeader Title="Collections | Empire" Description="@SD.WEB.Resources.Credit.Empire" Keywords="@(new[] { "Empire" })" Url="/collections/empire"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -10,7 +10,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Empire" ImageSource="logo/empire.png" Text="Find the latest film reviews, news and celebrity interviews from Empire, the world's biggest movie destination. Discover our new TV and gaming content."
+<HeadPage Title="Empire" ImageSource="logo/empire.png" Text="@SD.WEB.Resources.Credit.Empire"
           Link="https://www.empireonline.com/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 

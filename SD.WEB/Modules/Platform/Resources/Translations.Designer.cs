@@ -79,33 +79,6 @@ namespace SD.WEB.Modules.Platform.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Primetime Emmy Award is an American award bestowed by the Academy of Television Arts &amp; Sciences in recognition of excellence in American primetime television programming..
-        /// </summary>
-        public static string emmys_desc {
-            get {
-                return ResourceManager.GetString("emmys_desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Official site of the Golden Globes with Winners &amp; Nominees, exclusive Hollywood interviews, and historical pieces from the Hollywood Foreign Press Association..
-        /// </summary>
-        public static string golden_desc {
-            get {
-                return ResourceManager.GetString("golden_desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to IMDb is the world&apos;s most popular and authoritative source for movie, TV and celebrity content. Find ratings and reviews for the newest movie and TV shows. Get personalized recommendations, and learn where to watch across hundreds of streaming providers..
-        /// </summary>
-        public static string imdb_desc {
-            get {
-                return ResourceManager.GetString("imdb_desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Media.
         /// </summary>
         public static string MediaTypes {
@@ -120,15 +93,6 @@ namespace SD.WEB.Modules.Platform.Resources {
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Official site of the Academy with history and general information on the Academy Awards, as well as photographs, events and screenings, and press releases..
-        /// </summary>
-        public static string oscar_desc {
-            get {
-                return ResourceManager.GetString("oscar_desc", resourceCulture);
             }
         }
         
@@ -196,29 +160,11 @@ namespace SD.WEB.Modules.Platform.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Hollywood Reporter is the premier destination &amp; most widely trusted resource for entertainment news, reviews, videos &amp; more..
-        /// </summary>
-        public static string thr_desc {
-            get {
-                return ResourceManager.GetString("thr_desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Platforms ({0}).
         /// </summary>
         public static string TitleProviders {
             get {
                 return ResourceManager.GetString("TitleProviders", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The Movie Database (TMDb) is a popular, user editable database for movies and TV shows..
-        /// </summary>
-        public static string tmdb_desc {
-            get {
-                return ResourceManager.GetString("tmdb_desc", resourceCulture);
             }
         }
         

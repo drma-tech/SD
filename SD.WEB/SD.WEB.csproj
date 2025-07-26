@@ -81,6 +81,11 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Button.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Resources\Credit.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Credit.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\GlobalTranslations.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -137,6 +142,10 @@
 		<EmbeddedResource Update="Resources\Button.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Button.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Credit.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Credit.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\GlobalTranslations.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>

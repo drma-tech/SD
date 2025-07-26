@@ -1,5 +1,5 @@
 ﻿@page "/collections/hollywood-reporter"
-<SeoHeader Title="Collections | Hollywood Reporter" Keywords="@(new[] { "Hollywood Reporter" })" Url="/collections/hollywood-reporter"></SeoHeader>
+<SeoHeader Title="Collections | Hollywood Reporter" Description="@SD.WEB.Resources.Credit.HollywoodReporter" Keywords="@(new[] { "Hollywood Reporter" })" Url="/collections/hollywood-reporter"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Profile.Core
@@ -11,7 +11,8 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Hollywood Reporter" ImageSource="logo/hollywood-reporter.png" Text="@Translations.thr_desc" Link="https://www.hollywoodreporter.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<HeadPage Title="Hollywood Reporter" ImageSource="logo/hollywood-reporter.png" Text="@SD.WEB.Resources.Credit.HollywoodReporter" Link="https://www.hollywoodreporter.com/"
+          IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 

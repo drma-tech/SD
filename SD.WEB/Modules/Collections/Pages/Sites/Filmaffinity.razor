@@ -1,5 +1,5 @@
 ﻿@page "/collections/film-affinity"
-<SeoHeader Title="Collections | Filmaffinity" Keywords="@(new[] { "Filmaffinity" })" Url="/collections/film-affinity"></SeoHeader>
+<SeoHeader Title="Collections | Filmaffinity" Description="@SD.WEB.Resources.Credit.Filmaffinity" Keywords="@(new[] { "Filmaffinity" })" Url="/collections/film-affinity"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -10,7 +10,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Filmaffinity" ImageSource="logo/film-affinity.png" Text="Filmaffinity: Rate Movies and TV Shows & Find Movie Recommendations"
+<HeadPage Title="Filmaffinity" ImageSource="logo/film-affinity.png" Text="@SD.WEB.Resources.Credit.Filmaffinity"
           Link="https://www.filmaffinity.com/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 

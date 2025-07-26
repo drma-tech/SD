@@ -1,5 +1,5 @@
 ﻿@page "/collections/trakt"
-<SeoHeader Title="Collections | Trakt" Keywords="@(new[] { "Trakt" })" Url="/collections/trakt"></SeoHeader>
+<SeoHeader Title="Collections | Trakt" Description="@SD.WEB.Resources.Credit.Trakt" Keywords="@(new[] { "Trakt" })" Url="/collections/trakt"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -10,7 +10,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Trakt" ImageSource="logo/trakt.png" Text="Track what you watch and when. Discover what's hot and where you can watch it. Share comments, ratings and recommendations."
+<HeadPage Title="Trakt" ImageSource="logo/trakt.png" Text="@SD.WEB.Resources.Credit.Trakt"
           Link="https://trakt.tv/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 

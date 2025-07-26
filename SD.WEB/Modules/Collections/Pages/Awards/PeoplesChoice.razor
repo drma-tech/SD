@@ -1,5 +1,5 @@
 ﻿@page "/collections/peoples"
-<SeoHeader Title="Collections | People's Choice Awards" Keywords="@(new[] { "People's Choice Awards" })" Url="/collections/peoples"></SeoHeader>
+<SeoHeader Title="Collections | People's Choice Awards" Description="@SD.WEB.Resources.Credit.PeoplesChoiceAwards" Keywords="@(new[] { "People's Choice Awards" })" Url="/collections/peoples"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -10,7 +10,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="People's Choice" ImageSource="logo/peoples.png" Text="Submit your votes for the People’s Choice Awards."
+<HeadPage Title="People's Choice" ImageSource="logo/peoples.png" Text="@SD.WEB.Resources.Credit.PeoplesChoiceAwards"
           Link="https://pca.votenow.nbc.com/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 

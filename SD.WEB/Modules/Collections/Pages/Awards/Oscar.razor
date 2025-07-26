@@ -1,5 +1,5 @@
 ﻿@page "/collections/oscar"
-<SeoHeader Title="Collections | Oscar" Description="@Translations.oscar_desc" Keywords="@(new[] { "Oscar" })" Url="/collections/oscar"></SeoHeader>
+<SeoHeader Title="Collections | Oscar" Description="@SD.WEB.Resources.Credit.Oscar" Keywords="@(new[] { "Oscar" })" Url="/collections/oscar"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Platform.Resources
@@ -11,7 +11,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Oscar" ImageSource="logo/oscar.png" Text="@Translations.oscar_desc" Link="https://www.oscars.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<HeadPage Title="Oscar" ImageSource="logo/oscar.png" Text="@SD.WEB.Resources.Credit.Oscar" Link="https://www.oscars.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 

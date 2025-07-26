@@ -1,29 +1,26 @@
 ﻿@page "/support/credits"
-@using SD.WEB.Modules.Platform.Resources
-@using SD.WEB.Modules.Collections.Components
 @inherits PageCore<Credits>
 
 <SeoHeader Title="Credits" Url=@("/support/credits")></SeoHeader>
 
 <MudGrid>
     <MudItem xs="12" sm="6">
-        <HeadPage Title="The Movie Database (TMDB)" ImageSource="logo/tmdb.png" Link="https://www.themoviedb.org/" Text="@Translations.tmdb_desc"
+        <HeadPage Title="TMDB" ImageSource="logo/tmdb.png" Link="https://www.themoviedb.org/" Text="@SD.WEB.Resources.Credit.TMDB"
                   IsAuthenticated="IsAuthenticated" ShowShare="false" IncludeMB="false">
         </HeadPage>
     </MudItem>
     <MudItem xs="12" sm="6">
-        <HeadPage Title="JustWatch - The Streaming Guide" ImageSource="logo/justwatch.png" Link="https://www.justwatch.com/" Text="All your streaming services in one app."
+        <HeadPage Title="JustWatch" ImageSource="logo/justwatch.png" Link="https://www.justwatch.com/" Text="@SD.WEB.Resources.Credit.JustWatch"
                   IsAuthenticated="IsAuthenticated" ShowShare="false" IncludeMB="false">
         </HeadPage>
     </MudItem>
     <MudItem xs="12" sm="6">
-        <HeadPage Title="IMDb: Ratings, Reviews, and Where to Watch the Best Movies & TV Shows" ImageSource="logo/imdb.png" Link="https://www.imdb.com/" Text="@Translations.imdb_desc"
+        <HeadPage Title="IMDb" ImageSource="logo/imdb.png" Link="https://www.imdb.com/" Text="@SD.WEB.Resources.Credit.IMDb"
                   IsAuthenticated="IsAuthenticated" ShowShare="false" IncludeMB="false">
         </HeadPage>
     </MudItem>
     <MudItem xs="12" sm="6">
-        <HeadPage Title="MudBlazor - Blazor Component Library" ImageSource="logo/mudblazor.png" Link="https://mudblazor.com/"
-                  Text="Blazor Component Library based on Material Design. MudBlazor is easy to use and extend, especially for .NET devs because it uses almost no Javascript."
+        <HeadPage Title="MudBlazor" ImageSource="logo/mudblazor.png" Link="https://mudblazor.com/" Text="@SD.WEB.Resources.Credit.MudBlazor"
                   IsAuthenticated="IsAuthenticated" ShowShare="false" IncludeMB="false">
         </HeadPage>
     </MudItem>

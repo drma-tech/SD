@@ -1,5 +1,5 @@
 ﻿@page "/collections/imdb"
-<SeoHeader Title="Collections | IMDB" Keywords="@(new[] { "IMDB" })" Url="/collections/imdb"></SeoHeader>
+<SeoHeader Title="Collections | IMDB" Description="@SD.WEB.Resources.Credit.IMDb" Keywords="@(new[] { "IMDB" })" Url="/collections/imdb"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Platform.Resources
@@ -12,7 +12,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@Translations.imdb_desc" Link="https://www.imdb.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@SD.WEB.Resources.Credit.IMDb" Link="https://www.imdb.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 

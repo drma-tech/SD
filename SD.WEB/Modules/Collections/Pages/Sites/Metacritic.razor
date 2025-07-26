@@ -1,5 +1,5 @@
 ﻿@page "/collections/metacritic"
-<SeoHeader Title="Collections | Metacritic" Keywords="@(new[] { "Metacritic" })" Url="/collections/metacritic"></SeoHeader>
+<SeoHeader Title="Collections | Metacritic" Description="@SD.WEB.Resources.Credit.Metacritic" Keywords="@(new[] { "Metacritic" })" Url="/collections/metacritic"></SeoHeader>
 
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
@@ -11,7 +11,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Metacritic" ImageSource="logo/metacritic.png" Text="Metacritic aggregates music, game, tv, and movie reviews from the leading critics. Only Metacritic.com uses METASCORES, which let you know at a glance how each item was reviewed."
+<HeadPage Title="Metacritic" ImageSource="logo/metacritic.png" Text="@SD.WEB.Resources.Credit.Metacritic"
           Link="https://www.metacritic.com/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 

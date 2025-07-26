@@ -1,5 +1,5 @@
 ﻿@page "/collections/golden-globes"
-<SeoHeader Title="Collections | Golden Globe Awards" Keywords="@(new[] { "Golden Globe Awards" })" Url="/collections/golden-globes"></SeoHeader>
+<SeoHeader Title="Collections | Golden Globe Awards" Description="@SD.WEB.Resources.Credit.GoldenGlobeAwards" Keywords="@(new[] { "Golden Globe Awards" })" Url="/collections/golden-globes"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Profile.Core
@@ -11,7 +11,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Golden Globes" ImageSource="logo/golden-globes.png" Text="@Translations.golden_desc" Link="https://www.goldenglobes.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<HeadPage Title="Golden Globes" ImageSource="logo/golden-globes.png" Text="@SD.WEB.Resources.Credit.GoldenGlobeAwards" Link="https://www.goldenglobes.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 

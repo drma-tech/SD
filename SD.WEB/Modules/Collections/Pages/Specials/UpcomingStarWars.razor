@@ -1,5 +1,5 @@
 ﻿@page "/collections/upcoming-star-wars"
-<SeoHeader Title="Collections | Upcoming Star Wars Movies & TV Shows" Keywords="@(new[] { "Upcoming Star Wars Movies & TV Shows" })" Url="/collections/upcoming-star-wars"></SeoHeader>
+<SeoHeader Title="Collections | Upcoming Star Wars Movies & TV Shows" Description="@SD.WEB.Resources.Credit.UpcomingStarWarsMoviesTVShows" Keywords="@(new[] { "Upcoming Star Wars Movies & TV Shows" })" Url="/collections/upcoming-star-wars"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -9,10 +9,12 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
+<HeadPage Title="Upcoming Star Wars Movies & TV Shows" ImageSource="logo/star-wars.png" Text="@SD.WEB.Resources.Credit.UpcomingStarWarsMoviesTVShows" IsAuthenticated="IsAuthenticated"></HeadPage>
+
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingStarWarsMoviesTvShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" FullPage="true">
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" FullPage="true" ShowHead="false">
 </MediaListFull>
 
 @code {

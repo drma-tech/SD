@@ -1,5 +1,5 @@
 ﻿@page "/collections/annie"
-<SeoHeader Title="Collections | Annie Awards" Keywords="@(new[] { "Annie Awards" })" Url="/collections/annie"></SeoHeader>
+<SeoHeader Title="Collections | Annie Awards" Description="@SD.WEB.Resources.Credit.AnnieAwards" Keywords="@(new[] { "Annie Awards" })" Url="/collections/annie"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -10,7 +10,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Annie Awards" ImageSource="logo/annie.png" Text="Honoring excellence in the field of animation, the 52nd Annual Annie Awards will be presented in 37 categories including Animated Feature, Animated Feature-Independent, Television/Media Production(s), Sponsored Production, Short Subject and Student Film, as well as the Achievement and Honorary awards."
+<HeadPage Title="Annie Awards" ImageSource="logo/annie.png" Text="@SD.WEB.Resources.Credit.AnnieAwards"
           Link="https://www.annieawards.org/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 

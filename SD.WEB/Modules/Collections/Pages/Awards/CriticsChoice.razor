@@ -1,5 +1,5 @@
 ﻿@page "/collections/critics-choice"
-<SeoHeader Title="Collections | Critics Choice Awards" Keywords="@(new[] { "Critics Choice Awards" })" Url="/collections/critics-choice"></SeoHeader>
+<SeoHeader Title="Collections | Critics Choice Awards" Description="@SD.WEB.Resources.Credit.CriticsChoiceAwards" Keywords="@(new[] { "Critics Choice Awards" })" Url="/collections/critics-choice"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -10,7 +10,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Critics Choice" ImageSource="logo/critics.png" Text="The Critics Choice Association (CCA) is a group of broadcast, radio and online critics as well as entertainment journalists who review films and documentaries as well as scripted and unscripted television."
+<HeadPage Title="Critics Choice" ImageSource="logo/critics.png" Text="@SD.WEB.Resources.Credit.CriticsChoiceAwards"
           Link="https://www.criticschoice.com/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 

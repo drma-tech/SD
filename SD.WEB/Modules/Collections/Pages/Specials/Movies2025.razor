@@ -1,5 +1,5 @@
 ﻿@page "/collections/movies-2025"
-<SeoHeader Title="Collections | Most Expected Movies of 2025" Keywords="@(new[] { "Rotten Tomatoes" })" Url="/collections/movies-2025"></SeoHeader>
+<SeoHeader Title="Collections | Most Expected Movies of 2025" Description="@SD.WEB.Resources.Credit.MostExpectedMovies2025" Keywords="@(new[] { "Most Expected Movies of 2025" })" Url="/collections/movies-2025"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -9,10 +9,12 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
+<HeadPage Title="Most Expected Movies of 2025" ImageSource="logo/rotten-tomatoes.png" Text="@SD.WEB.Resources.Credit.MostExpectedMovies2025" IsAuthenticated="IsAuthenticated"></HeadPage>
+
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2025" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" FullPage="true">
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" FullPage="true" ShowHead="false">
 </MediaListFull>
 
 @code {

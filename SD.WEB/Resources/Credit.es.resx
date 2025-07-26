@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AnnieAwards" xml:space="preserve">
+    <value>Los Premios Annie reconocen la excelencia en la animación en las industrias del cine, la televisión y otros medios de comunicación en todo el mundo.</value>
+  </data>
+  <data name="Bafta" xml:space="preserve">
+    <value>BAFTA (Academia Británica de Cine y Televisión) celebra logros destacados en cine, televisión y videojuegos.</value>
+  </data>
+  <data name="CriticsChoiceAwards" xml:space="preserve">
+    <value>Los premios Critics Choice Awards reconocen la excelencia en cine y televisión, según lo juzga un grupo de críticos profesionales.</value>
+  </data>
+  <data name="CrunchyrollAnimeAwards" xml:space="preserve">
+    <value>Los Crunchyroll Anime Awards celebran los logros y la creatividad más destacados en la industria mundial del anime.</value>
+  </data>
+  <data name="EmmyAwards" xml:space="preserve">
+    <value>Los premios Emmy honran la excelencia en la industria de la televisión, reconociendo logros destacados en programación y producción.</value>
+  </data>
+  <data name="Empire" xml:space="preserve">
+    <value>Empire es una popular revista de cine británica que presenta noticias de cine, reseñas, entrevistas y perspectivas de la industria.</value>
+  </data>
+  <data name="FestivalCannes" xml:space="preserve">
+    <value>El Festival de Cine de Cannes es un evento anual que celebra la excelencia y la innovación en el cine internacional.</value>
+  </data>
+  <data name="Filmaffinity" xml:space="preserve">
+    <value>Filmaffinity es una plataforma de recomendaciones y reseñas de películas donde los usuarios pueden calificar películas y descubrir sugerencias personalizadas.</value>
+  </data>
+  <data name="GoldenGlobeAwards" xml:space="preserve">
+    <value>Los Premios Globo de Oro reconocen logros destacados en cine y televisión, presentados por la Asociación de Prensa Extranjera de Hollywood.</value>
+  </data>
+  <data name="HighestGrossingMovies" xml:space="preserve">
+    <value>Una colección de películas clasificadas según sus ganancias de taquilla en todo el mundo, mostrando las películas más taquilleras de todos los tiempos.</value>
+  </data>
+  <data name="HollywoodReporter" xml:space="preserve">
+    <value>The Hollywood Reporter es una revista de la industria del entretenimiento que cubre noticias y análisis de cine, televisión y Hollywood.</value>
+  </data>
+  <data name="IMDb" xml:space="preserve">
+    <value>IMDb es una base de datos en línea de información relacionada con películas, programas de televisión, actores y profesionales de la industria del entretenimiento.</value>
+  </data>
+  <data name="JustWatch" xml:space="preserve">
+    <value>JustWatch es una guía de streaming que ayuda a los usuarios a encontrar dónde están disponibles películas y programas de TV en línea.</value>
+  </data>
+  <data name="Metacritic" xml:space="preserve">
+    <value>Metacritic agrega reseñas de críticos y asigna una puntuación ponderada a películas, programas de televisión, juegos y música.</value>
+  </data>
+  <data name="MostExpectedMovies2025" xml:space="preserve">
+    <value>Una colección de las películas más esperadas de 2025, basada en comentarios, anuncios e interés de la audiencia.</value>
+  </data>
+  <data name="MostExpectedMovies2026" xml:space="preserve">
+    <value>Una colección de las películas más esperadas de 2026, basada en anuncios anticipados, publicidad y expectativas de los fanáticos.</value>
+  </data>
+  <data name="MudBlazor" xml:space="preserve">
+    <value>MudBlazor es una biblioteca de componentes de interfaz de usuario de código abierto para crear aplicaciones web modernas con Blazor y Material Design.</value>
+  </data>
+  <data name="Oscar" xml:space="preserve">
+    <value>Los Oscar, o premios de la Academia, honran logros excepcionales en la industria cinematográfica, incluida la actuación, la dirección y la producción.</value>
+  </data>
+  <data name="PeoplesChoiceAwards" xml:space="preserve">
+    <value>Los premios People’s Choice Awards celebran la cultura popular y honran a los favoritos en películas, televisión, música y entretenimiento digital según la votación del público.</value>
+  </data>
+  <data name="RollingStone" xml:space="preserve">
+    <value>Rolling Stone es una revista que cubre noticias sobre música, cultura pop, política y entretenimiento con informes y reseñas en profundidad.</value>
+  </data>
+  <data name="RottenTomatoes" xml:space="preserve">
+    <value>Rotten Tomatoes recopila reseñas de películas y programas de televisión para proporcionar calificaciones de audiencia y críticos que reflejen la recepción general.</value>
+  </data>
+  <data name="TMDB" xml:space="preserve">
+    <value>TMDB (The Movie Database) es una base de datos creada por la comunidad para películas, programas de televisión y metadatos e imágenes relacionados.</value>
+  </data>
+  <data name="Trakt" xml:space="preserve">
+    <value>Trakt es una plataforma que ayuda a los usuarios a rastrear, calificar y descubrir películas y programas de TV en múltiples dispositivos.</value>
+  </data>
+  <data name="UpcomingDCMoviesTVShows" xml:space="preserve">
+    <value>Una colección de las próximas películas y programas de televisión de DC, con héroes, villanos e historias del Universo DC.</value>
+  </data>
+  <data name="UpcomingMarvelMoviesTVShows" xml:space="preserve">
+    <value>Una colección de las próximas películas y programas de televisión de Marvel, que continúan las historias de los superhéroes icónicos del Universo Marvel.</value>
+  </data>
+  <data name="UpcomingNetflixMovies" xml:space="preserve">
+    <value>Una colección de próximas películas originales de Netflix, que abarcan varios géneros y presentan talento global y lanzamientos exclusivos.</value>
+  </data>
+  <data name="UpcomingStarWarsMoviesTVShows" xml:space="preserve">
+    <value>Una colección de las próximas películas y programas de televisión de Star Wars, que amplía la saga con nuevas historias de una galaxia muy, muy lejana.</value>
+  </data>
+  <data name="UpcomingWaltDisneyPictures" xml:space="preserve">
+    <value>Una colección de las próximas películas de Walt Disney Pictures, con nuevos lanzamientos animados y de acción real para todos los públicos.</value>
+  </data>
+</root>

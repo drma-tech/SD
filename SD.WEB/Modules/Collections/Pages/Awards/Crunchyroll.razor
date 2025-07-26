@@ -1,5 +1,5 @@
 ﻿@page "/collections/crunchyroll"
-<SeoHeader Title="Collections | Crunchyroll Anime Awards" Keywords="@(new[] { "Crunchyroll Anime Awards" })" Url="/collections/crunchyroll"></SeoHeader>
+<SeoHeader Title="Collections | Crunchyroll Anime Awards" Description="@SD.WEB.Resources.Credit.CrunchyrollAnimeAwards" Keywords="@(new[] { "Crunchyroll Anime Awards" })" Url="/collections/crunchyroll"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -10,7 +10,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Crunchyroll Anime Awards" ImageSource="logo/crunchyroll.png" Text="Since 2017, this global event has annually recognized anime’s finest series and films. During our voting period, you can vote here once per day in a variety of categories. Ultimately, Grand Winners are announced in-person at the 2023 Crunchyroll Anime Awards show on March 4, 2023."
+<HeadPage Title="Crunchyroll Anime Awards" ImageSource="logo/crunchyroll.png" Text="@SD.WEB.Resources.Credit.CrunchyrollAnimeAwards"
           Link="https://www.crunchyroll.com/animeawards/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 

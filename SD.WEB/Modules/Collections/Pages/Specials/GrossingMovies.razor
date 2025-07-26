@@ -1,5 +1,5 @@
 ﻿@page "/collections/grossing-movies"
-<SeoHeader Title="Collections | Highest grossing movies" Keywords="@(new[] { "Highest grossing movies" })" Url="/collections/grossing-movies"></SeoHeader>
+<SeoHeader Title="Collections | Highest grossing movies" Description="@SD.WEB.Resources.Credit.HighestGrossingMovies" Keywords="@(new[] { "Highest grossing movies" })" Url="/collections/grossing-movies"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -9,10 +9,12 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
+<HeadPage Title="Highest grossing movies" ImageSource="logo/grossing-movies.png" Text="@SD.WEB.Resources.Credit.HighestGrossingMovies" IsAuthenticated="IsAuthenticated"></HeadPage>
+
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.GrossingMovies" CommentsSeparator="|" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" FullPage="true">
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" FullPage="true" ShowHead="false">
 </MediaListFull>
 
 @code {

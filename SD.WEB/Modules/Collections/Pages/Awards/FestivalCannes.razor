@@ -1,5 +1,5 @@
 ﻿@page "/collections/festival-cannes"
-<SeoHeader Title="Collections | Festival de Cannes" Keywords="@(new[] { "Festival de Cannes" })" Url="/collections/festival-cannes"></SeoHeader>
+<SeoHeader Title="Collections | Festival de Cannes" Description="@SD.WEB.Resources.Credit.FestivalCannes" Keywords="@(new[] { "Festival de Cannes" })" Url="/collections/festival-cannes"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -10,7 +10,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Festival de Cannes" ImageSource="logo/festival-cannes.png" Text="All the news from the 1st film festival in the world."
+<HeadPage Title="Festival de Cannes" ImageSource="logo/festival-cannes.png" Text="@SD.WEB.Resources.Credit.FestivalCannes"
           Link="https://www.festival-cannes.com/en/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 

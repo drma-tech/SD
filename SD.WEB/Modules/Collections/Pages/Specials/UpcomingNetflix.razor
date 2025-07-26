@@ -1,5 +1,5 @@
 ﻿@page "/collections/upcoming-netflix"
-<SeoHeader Title="Collections | Upcoming Netflix Movies" Keywords="@(new[] { "Upcoming Netflix Movies" })" Url="/collections/upcoming-netflix"></SeoHeader>
+<SeoHeader Title="Collections | Upcoming Netflix Movies" Description="@SD.WEB.Resources.Credit.UpcomingNetflixMovies" Keywords="@(new[] { "Upcoming Netflix Movies" })" Url="/collections/upcoming-netflix"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -9,10 +9,12 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
+<HeadPage Title="Upcoming Netflix Movies" ImageSource="logo/netflix-logo.png" Text="@SD.WEB.Resources.Credit.UpcomingNetflixMovies" IsAuthenticated="IsAuthenticated"></HeadPage>
+
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingNetflixMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" FullPage="true">
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" FullPage="true" ShowHead="false">
 </MediaListFull>
 
 @code {

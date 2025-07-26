@@ -1,5 +1,5 @@
 ﻿@page "/collections/tmdb"
-<SeoHeader Title="Collections | TMDB" Keywords="@(new[] { "TMDB" })" Url="/collections/tmdb"></SeoHeader>
+<SeoHeader Title="Collections | TMDB" Description="@SD.WEB.Resources.Credit.TMDB" Keywords="@(new[] { "TMDB" })" Url="/collections/tmdb"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Platform.Resources
@@ -13,7 +13,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="TMDB" ImageSource="logo/tmdb.png" Text="@Translations.tmdb_desc" Link="https://www.themoviedb.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<HeadPage Title="TMDB" ImageSource="logo/tmdb.png" Text="@SD.WEB.Resources.Credit.TMDB" Link="https://www.themoviedb.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 

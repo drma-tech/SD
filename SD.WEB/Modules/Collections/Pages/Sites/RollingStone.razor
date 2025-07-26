@@ -1,5 +1,5 @@
 ﻿@page "/collections/rolling-stone"
-<SeoHeader Title="Collections | Rolling Stone" Keywords="@(new[] { "Rolling Stone" })" Url="/collections/rolling-stone"></SeoHeader>
+<SeoHeader Title="Collections | Rolling Stone" Description="@SD.WEB.Resources.Credit.RollingStone" Keywords="@(new[] { "Rolling Stone" })" Url="/collections/rolling-stone"></SeoHeader>
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Components
@@ -10,7 +10,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Rolling Stone" ImageSource="logo/rolling-stone.png" Text="insights, announcements, music biz commentary, rs recommends lists, music biz lists, music country videos, music latin lists, music country pictures, politics pictures, tv & movies pictures, (sub)culture videos, politics videos, cultural commentary, tv & movies videos, finance, rs recommends pictures, books, smart home, expert panels, (sub)culture pictures"
+<HeadPage Title="Rolling Stone" ImageSource="logo/rolling-stone.png" Text="@SD.WEB.Resources.Credit.RollingStone"
           Link="https://www.rollingstone.com/tv-movies/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
 
