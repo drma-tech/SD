@@ -10,10 +10,10 @@
 @inject MyProvidersApi MyProvidersApi
 
 <SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/platforms"></SeoHeader>
-
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
-<SectionComponent Title="@Translations.TitleProviders.Format(AppStateStatic.Region.GetName() ?? "invalid country")" FullPage="true">
+<SectionComponent Title="@Translations.TitleProviders.Format(AppStateStatic.Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription"
+                  FullPage="true" MainPage="true">
     <ActionFragment>
         <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Placeholder="Filter">
             @foreach (var item in DeliveryModels)
@@ -44,7 +44,7 @@
                             <MudLink Href="@($"/platforms/{item.id}")" Style="position: relative;">
                                 <MudCard Outlined="true">
                                     <MudCardContent Style="padding: 0;">
-                                        <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.name"
+                                        <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" FallbackSrc="images/no-image.png"
                                                   Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
                                         @if (favorite)
                                         {

@@ -15,13 +15,13 @@
                 <MudToggleItem Value="@MediaType.movie">
                     <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
                     <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                        @MediaType.movie.GetName()
+                        <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@MediaType.movie.GetName()</MudText>
                     </MudHidden>
                 </MudToggleItem>
                 <MudToggleItem Value="@MediaType.tv">
                     <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@MediaType.tv.GetName()" Class="me-1"></MudIcon>
                     <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                        @MediaType.tv.GetName()
+                        <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@MediaType.tv.GetName()</MudText>
                     </MudHidden>
                 </MudToggleItem>
             </MudToggleGroup>

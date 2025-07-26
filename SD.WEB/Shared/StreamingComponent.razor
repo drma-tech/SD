@@ -30,7 +30,7 @@
                     {
                         var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
                         <MudLink Href="@provider.link" Target="_blank" rel="nofollow">
-                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.provider_name" Style="width: 50px;"></MudImage>
+                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png" Style="width: 50px;"></MudImage>
                             <AuthorizeView Roles="administrator">
                                 <Authorized>
                                     @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.FREE))
@@ -61,7 +61,7 @@
                     {
                         var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
                         <MudLink Href="@provider.link" Target="_blank" rel="nofollow">
-                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.provider_name" Style="width: 50px;"></MudImage>
+                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png" Style="width: 50px;"></MudImage>
                             <AuthorizeView Roles="administrator">
                                 <Authorized>
                                     @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.AVOD))
@@ -92,7 +92,7 @@
                     {
                         var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
                         <MudLink Href="@provider.link" Target="_blank" rel="nofollow">
-                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.provider_name" Style="width: 50px;"></MudImage>
+                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png" Style="width: 50px;"></MudImage>
                             <AuthorizeView Roles="administrator">
                                 <Authorized>
                                     @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.SVOD))
@@ -123,7 +123,7 @@
                     {
                         var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
                         <MudLink Href="@provider.link" Target="_blank" rel="nofollow">
-                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.provider_name" Style="width: 50px;"></MudImage>
+                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png" Style="width: 50px;"></MudImage>
                             <AuthorizeView Roles="administrator">
                                 <Authorized>
                                     @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.PVOD))
@@ -154,7 +154,7 @@
                     {
                         var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
                         <MudLink Href="@provider.link" Target="_blank" rel="nofollow">
-                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.provider_name" Style="width: 50px;"></MudImage>
+                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png" Style="width: 50px;"></MudImage>
                             <AuthorizeView Roles="administrator">
                                 <Authorized>
                                     @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.TVOD))
@@ -185,7 +185,7 @@
                     {
                         var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
                         <MudLink Href="@provider.link" Target="_blank" rel="nofollow">
-                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" FallbackSrc="images/no-image.png" Alt="@item.provider_name" Style="width: 50px;"></MudImage>
+                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png" Style="width: 50px;"></MudImage>
                             <AuthorizeView Roles="administrator">
                                 <Authorized>
                                     @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.TVOD))

@@ -209,6 +209,32 @@ body .pwa-updater[b-pwa-updater] {
 
 /* MUD BLAZOR */
 
+.custom-h1 {
+    font-size: 23px !important;
+    line-height: 1.6 !important;
+}
+
+.custom-h1-menu {
+    font-size: 14px !important;
+    text-transform: uppercase !important;
+    line-height: 1.75 !important;
+}
+
+.custom-h2 {
+    font-size: 23px !important;
+    line-height: 1.6 !important;
+}
+
+.custom-h3 {
+    font-size: 14px !important;
+    text-transform: uppercase !important;
+    line-height: 1.75 !important;
+}
+
+.custom-h3-list {
+    font-size: 0.73rem !important;
+}
+
 .chip-no-text svg {
     margin-inline: -4px !important;
 }

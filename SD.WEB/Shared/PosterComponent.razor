@@ -2,7 +2,7 @@
 
 <div @onclick="@Clicked" style="cursor: pointer; position: relative; height: 100%; align-content: center;">
     <MudTooltip Text="@(string.IsNullOrEmpty(Poster) ? null : Title)" RootClass="tooltip-image">
-        <MudImage Src="@(Poster ?? "images/no-image.png")" FallbackSrc="images/no-image.png" Alt="@Title" Fluid="true" ObjectFit="ObjectFit.Contain"
+        <MudImage Src="@(Poster ?? "images/no-image.png")" Alt="@Title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"
                   Style="vertical-align: bottom;" />
     </MudTooltip>
 

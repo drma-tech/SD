@@ -11,19 +11,19 @@
             <MudToggleItem Value="@PopularType.Movie">
                 <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@PopularType.Movie.GetName()" Class="me-1"></MudIcon>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                    @PopularType.Movie.GetName()
+                    <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@PopularType.Movie.GetName()</MudText>
                 </MudHidden>
             </MudToggleItem>
             <MudToggleItem Value="@PopularType.Show">
                 <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@PopularType.Show.GetName()" Class="me-1"></MudIcon>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                    @PopularType.Show.GetName()
+                    <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@PopularType.Show.GetName()</MudText>
                 </MudHidden>
             </MudToggleItem>
             <MudToggleItem Value="@PopularType.Cinema">
                 <MudIcon Icon="@IconsFA.Solid.Icon("ticket-simple").Font" Title="@PopularType.Cinema.GetName()" Class="me-1"></MudIcon>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                    @PopularType.Cinema.GetName()
+                    <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@PopularType.Cinema.GetName()</MudText>
                 </MudHidden>
             </MudToggleItem>
         </MudToggleGroup>

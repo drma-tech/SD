@@ -33,7 +33,7 @@
                                         @Media?.release_date?.ToShortDateString()
                                     </MudChip>
                                 }
-                                <MudImage Src="@(Media?.poster_large ?? "images/no-image.png")" FallbackSrc="images/no-image.png" Alt="@Media?.title" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                <MudImage Src="@(Media?.poster_large ?? "images/no-image.png")" Alt="@Media?.title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                             </div>
                         </MudItem>
                         <MudItem xs="12" md="8">
@@ -56,7 +56,7 @@
                                         <MudTooltip Text="IMDb">
                                             <MudLink Href="@_ratingsCache.Data?.imdbLink" Target="_blank" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.imdb)" title="" Variant="Variant.Outlined">
-                                                    <MudImage Src="logo/imdb.png" Class="me-1" Style="height: 20px;" Alt="imdb"></MudImage>@_ratingsCache.Data?.imdb
+                                                    <MudImage Src="logo/imdb.png" Alt="imdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.imdb
                                                 </MudChip>
                                             </MudLink>
                                         </MudTooltip>
@@ -66,7 +66,7 @@
                                         <MudTooltip Text="TMDB">
                                             <MudLink Href="@_ratingsCache.Data?.tmdbLink" Target="_blank" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.tmdb)" Variant="Variant.Outlined">
-                                                    <MudImage Src="logo/tmdb.png" Class="me-1" Style="height: 20px;" Alt="tmdb"></MudImage>@_ratingsCache.Data?.tmdb
+                                                    <MudImage Src="logo/tmdb.png" Alt="tmdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.tmdb
                                                 </MudChip>
                                             </MudLink>
                                         </MudTooltip>
@@ -76,7 +76,7 @@
                                         <MudTooltip Text="Metacritic">
                                             <MudLink Href="@_ratingsCache.Data?.metacriticLink" Target="_blank" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.metacritic)" Variant="Variant.Outlined">
-                                                    <MudImage Src="logo/metacritic.png" Class="me-1" Style="height: 20px;" Alt="metacritic"></MudImage>@_ratingsCache.Data?.metacritic
+                                                    <MudImage Src="logo/metacritic.png" Alt="metacritic" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.metacritic
                                                 </MudChip>
                                             </MudLink>
                                         </MudTooltip>
@@ -86,7 +86,7 @@
                                         <MudTooltip Text="Trakt">
                                             <MudLink Href="@_ratingsCache.Data?.traktLink" Target="_blank" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.trakt)" Variant="Variant.Outlined">
-                                                    <MudImage Src="logo/trakt.png" Class="me-1" Style="height: 20px;" Alt="trakt"></MudImage>@_ratingsCache.Data?.trakt
+                                                    <MudImage Src="logo/trakt.png" Alt="trakt" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.trakt
                                                 </MudChip>
                                             </MudLink>
                                         </MudTooltip>
@@ -96,7 +96,7 @@
                                         <MudTooltip Text="Rotten Tomatoes">
                                             <MudLink Href="@_ratingsCache.Data?.rottenTomatoesLink" Target="_blank" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.rottenTomatoes)" Variant="Variant.Outlined">
-                                                    <MudImage Src="logo/rotten-tomatoes.png" Class="me-1" Style="height: 20px;" Alt="rotten tomatoes"></MudImage>@_ratingsCache.Data?.rottenTomatoes
+                                                    <MudImage Src="logo/rotten-tomatoes.png" Alt="rotten tomatoes" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.rottenTomatoes
                                                 </MudChip>
                                             </MudLink>
                                         </MudTooltip>
@@ -106,7 +106,7 @@
                                         <MudTooltip Text="Film Affinity">
                                             <MudLink Href="@_ratingsCache.Data?.filmAffinityLink" Target="_blank" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.filmAffinity)" Variant="Variant.Outlined">
-                                                    <MudImage Src="logo/film-affinity.png" Class="me-1" Style="height: 20px;" Alt="film affinity"></MudImage>@_ratingsCache.Data?.filmAffinity
+                                                    <MudImage Src="logo/film-affinity.png" Alt="film affinity" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.filmAffinity
                                                 </MudChip>
                                             </MudLink>
                                         </MudTooltip>
@@ -183,7 +183,7 @@
                                             <MudIcon Icon="@IconsFA.Solid.Icon("eye").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
                                         }
 
-                                        <MudImage Src="@(item.poster_small ?? "images/no-image.png")" FallbackSrc="images/no-image.png" Alt="@item.title" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                        <MudImage Src="@(item.poster_small ?? "images/no-image.png")" Alt="@item.title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                                     }
                                 </div>
                                 <MudText Align="Align.Center">@item.title</MudText>

@@ -35,11 +35,6 @@
     <link rel="icon" type="image/png" href="@Icon" />
 </HeadContent>
 
-@if (ShowH1)
-{
-    <MudText Typo="Typo.h1" Style="display: none;">@Title</MudText>
-}
-
 @code {
     private const string ProjectName = "Streaming Discovery";
     private const string ProjectUrl = "https://www.streamingdiscovery.com";
@@ -49,7 +44,6 @@
     [Parameter] public string? Url { get; set; }
     [Parameter] public string? Icon { get; set; } = "favicon.ico";
     [Parameter] public IEnumerable<string> Keywords { get; set; } = [];
-    [Parameter] public bool ShowH1 { get; set; } = true;
     [Parameter] public bool Index { get; set; } = true;
 
     string GetTitle()

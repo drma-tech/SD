@@ -61,6 +61,24 @@ namespace SD.WEB.Modules.Trailers.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discover the hottest new movie trailers and teasers – your ultimate source for HD previews of upcoming films, blockbusters, and must-watch releases..
+        /// </summary>
+        public static string TrailersDescription {
+            get {
+                return ResourceManager.GetString("TrailersDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discover the hottest new movie trailers and teasers.
+        /// </summary>
+        public static string TrailersDescriptionShort {
+            get {
+                return ResourceManager.GetString("TrailersDescriptionShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Trailers.
         /// </summary>
         public static string TrailersTitle {

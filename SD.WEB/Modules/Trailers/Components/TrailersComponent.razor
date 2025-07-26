@@ -5,7 +5,7 @@
 @inject CacheYoutubeApi CacheYoutubeApi
 @inject IJSRuntime JsRuntime
 
-<SectionComponent Title="@($"{Translations.TrailersTitle}")" IconName="@IconsFA.Brands.Icon("youtube").Font">
+<SectionComponent Title="@($"{Translations.TrailersTitle}")" Description="@Translations.TrailersDescriptionShort" IconName="@IconsFA.Brands.Icon("youtube").Font">
     <ActionFragment>
         <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@("/trailers")" />
     </ActionFragment>
@@ -19,7 +19,7 @@
                             <MudLink Href="@($"https://www.youtube.com/watch?v={item?.id}")" Target="_blank" rel="nofollow">
                                 <MudCard Outlined="true">
                                     <MudCardContent Style="padding: 0;">
-                                        <MudImage Src="@item?.url" FallbackSrc="images/no-image.png" Alt="@item?.title" Style="width: 100%; max-height: 94px;" ObjectFit="ObjectFit.Contain"></MudImage>
+                                        <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%; max-height: 94px;" ObjectFit="ObjectFit.Contain"></MudImage>
                                     </MudCardContent>
                                     <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
                                         @item?.title.GetResume(50)

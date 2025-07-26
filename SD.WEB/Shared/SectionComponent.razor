@@ -8,9 +8,9 @@
             }
             else if (!string.IsNullOrEmpty(IconImage))
             {
-                <MudImage Src="@IconImage" Class="me-2" Style="height: 36px; vertical-align: sub;" Alt="@IconName"></MudImage>
+                <MudImage Src="@IconImage" Class="me-2" Style="height: 36px; vertical-align: sub;" Alt="@IconImage"></MudImage>
             }
-            <MudText Typo="Typo.h6" Color="Color.Primary">@Title</MudText>
+            <MudText Typo="@(FullPage && !MainPage ? Typo.h1 : Typo.h2)" Color="Color.Primary" Class="custom-h1">@Title</MudText>
             <MudSpacer></MudSpacer>
             @if (ActionFragment != null)
             {
@@ -35,6 +35,7 @@
     [Parameter] public string? Description { get; set; }
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public bool FullPage { get; set; } = false;
+    [Parameter] public bool MainPage { get; set; } = false;
 
     [Parameter] public RenderFragment? ActionFragment { get; set; }
     [Parameter][EditorRequired] public RenderFragment? BodyFragment { get; set; }

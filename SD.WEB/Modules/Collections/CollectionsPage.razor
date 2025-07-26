@@ -1,10 +1,11 @@
 ﻿@page "/collections"
-<SeoHeader Title="@SeoTranslations.CollectionsTitle" Description="@SeoTranslations.CollectionsDescription" Url="/collections"></SeoHeader>
+
 @using SD.WEB.Modules.Collections.Resources
 @inherits PageCore<CollectionsPage>
 
 @inject IJSRuntime JsRuntime
 
+<SeoHeader Title="@SeoTranslations.CollectionsTitle" Description="@SeoTranslations.CollectionsDescription" Url="/collections"></SeoHeader>
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 <SectionComponent Title="@Translations.AwardsTitle" Description="@Translations.AwardsDescription" IconName="@IconsFA.Solid.Icon("trophy").Font">
@@ -20,7 +21,7 @@
                                     <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
                                 </MudCardContent>
                                 <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
-                                    @item.Name
+                                    <MudText Typo="Typo.h3" Class="custom-h3-list">@item.Name</MudText>
                                 </MudCardContent>
                             </MudCard>
                         </MudLink>
@@ -46,7 +47,7 @@
                                     <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
                                 </MudCardContent>
                                 <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
-                                    @item.Name
+                                    <MudText Typo="Typo.h3" Class="custom-h3-list">@item.Name</MudText>
                                 </MudCardContent>
                             </MudCard>
                         </MudLink>
@@ -72,7 +73,7 @@
                                     <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
                                 </MudCardContent>
                                 <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
-                                    @item.Name
+                                    <MudText Typo="Typo.h3" Class="custom-h3-list">@item.Name</MudText>
                                 </MudCardContent>
                             </MudCard>
                         </MudLink>

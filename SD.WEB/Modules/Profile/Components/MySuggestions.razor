@@ -58,7 +58,7 @@
                     {
                         <div class="swiper-slide" style="height: auto !important;">
                             <div style="cursor: pointer;" @onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))">
-                                <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" FallbackSrc="images/no-image.png" Alt="@item.name" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                             </div>
                             <MudGrid Spacing="2" Justify="Justify.FlexStart">
                                 @foreach (var provider in item.Providers)

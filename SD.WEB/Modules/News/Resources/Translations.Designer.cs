@@ -61,6 +61,24 @@ namespace SD.WEB.Modules.News.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stay updated with the latest movies, TV shows, celebrity news, and pop culture trends. Your go-to source for entertainment updates..
+        /// </summary>
+        public static string NewsDescription {
+            get {
+                return ResourceManager.GetString("NewsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your daily source for movies, TV, and celebrity news..
+        /// </summary>
+        public static string NewsDescriptionShort {
+            get {
+                return ResourceManager.GetString("NewsDescriptionShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last News.
         /// </summary>
         public static string NewsTitle {

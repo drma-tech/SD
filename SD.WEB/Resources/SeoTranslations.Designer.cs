@@ -115,7 +115,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to See streaming providers for movies, series and documentaries from around the world..
+        ///   Looks up a localized string similar to A comprehensive list of streaming services offering movies, TV series, and documentaries. Explore diverse platforms catering to all tastes, from mainstream entertainment to niche content..
         /// </summary>
         public static string ProvidersDescription {
             get {

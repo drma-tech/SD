@@ -6,11 +6,11 @@
 @inject CacheYoutubeApi CacheYoutubeApi
 @inject IJSRuntime JS
 
-<SeoHeader Title="Trailers" Description="@GlobalTranslations.TrailersDescription" Keywords="@(new[] { "Trailers" })" Url="/trailers"></SeoHeader>
+<SeoHeader Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Keywords="@(new[] { "Trailers" })" Url="/trailers"></SeoHeader>
 
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
 
-<SectionComponent Title="@($"{Translations.TrailersTitle}")" Description="@GlobalTranslations.TrailersDescription" IconName="@IconsFA.Brands.Icon("youtube").Font" FullPage="true">
+<SectionComponent Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" IconName="@IconsFA.Brands.Icon("youtube").Font" FullPage="true">
     <BodyFragment>
         <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
             <div class="grid-relative-container-x-lg">
@@ -19,7 +19,7 @@
                     <MudLink Href="@($"https://www.youtube.com/watch?v={item.id}")" Target="_blank" rel="nofollow">
                         <MudCard Outlined="true">
                             <MudCardContent Style="padding: 0;">
-                                <MudImage Src="@item?.url" FallbackSrc="images/no-image.png" Alt="@item?.title" Style="width: 100%;"></MudImage>
+                                <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%;"></MudImage>
                             </MudCardContent>
                             <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
                                 @item.title
