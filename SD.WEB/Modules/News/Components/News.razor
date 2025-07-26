@@ -7,11 +7,11 @@
 @inject CacheFlixsterApi CacheFlixsterApi
 @inject IJSRuntime JS
 
-<SeoHeader Title="News" Keywords="@(new[] { "News" })" Url="/news"></SeoHeader>
+<SeoHeader Title="News" Description="@GlobalTranslations.NewsDescription" Keywords="@(new[] { "News" })" Url="/news"></SeoHeader>
 
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
 
-<SectionComponent Title="@($"{Translations.NewsTitle}")" IconName="@IconsFA.Solid.Icon("newspaper").Font" FullPage="true">
+<SectionComponent Title="@($"{Translations.NewsTitle}")" Description="@GlobalTranslations.NewsDescription" IconName="@IconsFA.Solid.Icon("newspaper").Font" FullPage="true">
     <BodyFragment>
         <RenderControl Core="Core" Model="NewsList" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
             <div class="grid-relative-container-x-lg">

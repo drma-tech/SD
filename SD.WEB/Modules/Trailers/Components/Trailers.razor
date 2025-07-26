@@ -6,11 +6,11 @@
 @inject CacheYoutubeApi CacheYoutubeApi
 @inject IJSRuntime JS
 
-<SeoHeader Title="Trailers" Keywords="@(new[] { "Trailers" })" Url="/trailers"></SeoHeader>
+<SeoHeader Title="Trailers" Description="@GlobalTranslations.TrailersDescription" Keywords="@(new[] { "Trailers" })" Url="/trailers"></SeoHeader>
 
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
 
-<SectionComponent Title="@($"{Translations.TrailersTitle}")" IconName="@IconsFA.Brands.Icon("youtube").Font" FullPage="true">
+<SectionComponent Title="@($"{Translations.TrailersTitle}")" Description="@GlobalTranslations.TrailersDescription" IconName="@IconsFA.Brands.Icon("youtube").Font" FullPage="true">
     <BodyFragment>
         <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
             <div class="grid-relative-container-x-lg">

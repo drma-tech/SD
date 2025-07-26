@@ -6,23 +6,26 @@
 @inject WishListApi WishListApi
 
 @using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Collections.Resources
 @using SD.WEB.Modules.Profile.Core
 @inherits PageCore<CertifiedSD>
 
-<SeoHeader Title="Certified by SD" Keywords="@(new[] { "Certified by SD" })" Url="@($"/certified-sd/{Type}")"></SeoHeader>
+<SeoHeader Title="@Translations.CertifiedSDTitle" Description="@GlobalTranslations.CertifiedDescription" Keywords="@(new[] { "Certified by SD" })" Url="@($"/certified-sd/{Type}")"></SeoHeader>
 
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
 
 @if (MediaType == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconImage="icon/icon-71.png" FullPage="true">
+                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconName="@IconsFA.Solid.Icon("award").Font" FullPage="true"
+                   Description="@GlobalTranslations.CertifiedDescription">
     </MediaListFull>
 }
 else
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconImage="icon/icon-71.png" FullPage="true">
+                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconName="@IconsFA.Solid.Icon("award").Font" FullPage="true"
+                   Description="@GlobalTranslations.CertifiedDescription">
     </MediaListFull>
 }
 

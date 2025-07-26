@@ -5,7 +5,7 @@
 @inject ImdbPopularApi ImdbPopularApi
 @inject TmdbNowPlayingApi TmdbNowPlayingApi
 
-<SectionComponent Title="@Translations.Popular" Description="@GlobalTranslations.PopularDescription" IconImage="logo/imdb.png">
+<SectionComponent Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" IconName="@IconsFA.Solid.Icon("fire").Font">
     <ActionFragment>
         <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary">
             <MudToggleItem Value="@PopularType.Movie">

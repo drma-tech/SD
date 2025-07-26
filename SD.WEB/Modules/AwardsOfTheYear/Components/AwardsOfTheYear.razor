@@ -9,12 +9,13 @@
 @using SD.WEB.Modules.Profile.Core
 @inherits PageCore<AwardsOfTheYear>
 
-<SeoHeader Title="Best awards of the year" Keywords="@(new[] { "Best awards of the year" })" Url="/best-awards-year"></SeoHeader>
+<SeoHeader Title="@EnumLists.AwardsOfTheYear.GetName()" Description="@GlobalTranslations.AwardsYearDescription" Keywords="@(new[] { "Best awards of the year" })" Url="/best-awards-year"></SeoHeader>
 
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" CommentsIsImage="true" IconName="@IconsFA.Solid.Icon("trophy").Font" FullPage="true">
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" CommentsIsImage="true" IconName="@IconsFA.Solid.Icon("trophy").Font" FullPage="true"
+               Description="@GlobalTranslations.AwardsYearDescription">
 </MediaListFull>
 
 @code {

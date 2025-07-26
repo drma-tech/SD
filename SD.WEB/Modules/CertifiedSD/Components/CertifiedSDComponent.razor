@@ -4,7 +4,7 @@
 
 @inject TmdbListApi TmdbListApi
 
-<SectionComponent Title="@Translations.TitleCertifiedSD" Description="@GlobalTranslations.CertifiedDescription" IconImage="icon/icon-71.png">
+<SectionComponent Title="@Translations.CertifiedSDTitle" Description="@GlobalTranslations.CertifiedDescription" IconName="@IconsFA.Solid.Icon("award").Font">
     <ActionFragment>
         <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary" Class="me-2">
             <MudToggleItem Value="@MediaType.movie">

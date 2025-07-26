@@ -142,6 +142,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stay updated with the latest movies, TV shows, celebrity news, and pop culture trends. Your go-to source for entertainment updates..
+        /// </summary>
+        public static string NewsDescription {
+            get {
+                return ResourceManager.GetString("NewsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation cancelled!.
         /// </summary>
         public static string OperationCanceled {
@@ -160,11 +169,11 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IMDB&apos;s most popular titles of the last week.
+        ///   Looks up a localized string similar to Most popular movies, series, and theatrical releases from the past week based on audience interest..
         /// </summary>
-        public static string PopularDescription {
+        public static string PopularIndexDescription {
             get {
-                return ResourceManager.GetString("PopularDescription", resourceCulture);
+                return ResourceManager.GetString("PopularIndexDescription", resourceCulture);
             }
         }
         
@@ -264,6 +273,15 @@ namespace SD.WEB.Resources {
         public static string SureDeleteAccount {
             get {
                 return ResourceManager.GetString("SureDeleteAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Watch the newest HD trailers and teasers for upcoming movies and TV shows..
+        /// </summary>
+        public static string TrailersDescription {
+            get {
+                return ResourceManager.GetString("TrailersDescription", resourceCulture);
             }
         }
         

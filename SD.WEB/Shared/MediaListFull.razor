@@ -8,7 +8,7 @@
 @inject TmdbCreditApi TmdbCreditApi
 @inject IJSRuntime JS
 
-<SectionComponent Title="@GetTitle" IconImage="@IconImage" IconName="@IconName" ShowHead="ShowHead" FullPage="FullPage">
+<SectionComponent Title="@GetTitle" IconImage="@IconImage" IconName="@IconName" ShowHead="ShowHead" FullPage="FullPage" Description="@Description">
     <BodyFragment>
         <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
             <div class="grid-relative-container-md">
@@ -45,6 +45,7 @@
 
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
+    [Parameter] public string? Description { get; set; }
     [Parameter] public string? IconImage { get; set; }
     [Parameter] public string? IconName { get; set; }
     [Parameter] public bool FullPage { get; set; } = false;

@@ -144,14 +144,17 @@
   <data name="Language" xml:space="preserve">
     <value>Idioma</value>
   </data>
+  <data name="NewsDescription" xml:space="preserve">
+    <value>Mantente al día con las últimas películas, series, noticias de famosos y tendencias de la cultura pop. Tu fuente de referencia para enterarte de las últimas novedades en entretenimiento.</value>
+  </data>
   <data name="OperationCanceled" xml:space="preserve">
     <value>Operación cancelada!</value>
   </data>
   <data name="OperationCompleted" xml:space="preserve">
     <value>¡La operación se realizó con éxito!</value>
   </data>
-  <data name="PopularDescription" xml:space="preserve">
-    <value>Los títulos más populares de IMDB de la última semana</value>
+  <data name="PopularIndexDescription" xml:space="preserve">
+    <value>Películas, series y estrenos cinematográficos más populares de la última semana según el interés de la audiencia.</value>
   </data>
   <data name="PremiumFeature" xml:space="preserve">
     <value>Característica prémium</value>
@@ -185,6 +188,9 @@
   </data>
   <data name="SureDeleteAccount" xml:space="preserve">
     <value>¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.</value>
+  </data>
+  <data name="TrailersDescription" xml:space="preserve">
+    <value>Mira los trailers y avances en HD más nuevos de las próximas películas y programas de TV.</value>
   </data>
   <data name="TypeSomething" xml:space="preserve">
     <value>Buscar películas, series o personas</value>
