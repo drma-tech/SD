@@ -34,11 +34,6 @@ internal sealed class ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddl
         {
             await context.SetHttpResponseStatusCode(HttpStatusCode.BadRequest, ex.Message);
         }
-        catch (TaskCanceledException ex)
-        {
-            _logger.LogError(ex, "TaskCanceledException");
-            await context.SetHttpResponseStatusCode(HttpStatusCode.RequestTimeout, "Request Timeout!");
-        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Exception");

@@ -56,7 +56,7 @@ public static class ScrapingReview
         var jsonContent = htmlBody.Substring(startIndex, endIndex - startIndex).Trim();
 
         jsonContent = Regex.Replace(jsonContent, @",[b-t],", ",\"\",", RegexOptions.None, TimeSpan.FromMilliseconds(100));
-        jsonContent = Regex.Replace(jsonContent, @":[b-t]", ":\"\"", RegexOptions.None, TimeSpan.FromMilliseconds(100));
+        jsonContent = Regex.Replace(jsonContent, @":[b-t](?=[^a-z])", ":\"\"", RegexOptions.None, TimeSpan.FromMilliseconds(100));
         jsonContent = Regex.Replace(jsonContent, @":\[[b-t]\]", ":[\"\"]", RegexOptions.None, TimeSpan.FromMilliseconds(100));
 
         var result = JsonConvert.DeserializeObject<List<RootMetacriticReview>>(jsonContent)?[2];

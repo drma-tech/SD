@@ -2,6 +2,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using SD.Shared.Models.List.Tmdb;
+using System.Net;
 using System.Text.Json;
 
 namespace SD.API.Functions;
@@ -32,6 +33,14 @@ public class TmdbFunction(IDistributedCache distributedCache, IHttpClientFactory
             await SaveCache(result, cacheKey, TtlCache.OneDay);
 
             return await req.CreateResponse(result, TtlCache.OneDay, cancellationToken);
+        }
+        catch (TaskCanceledException ex)
+        {
+            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+                ? new NotificationException("Cancellation Requested")
+                : new NotificationException("Timeout occurred"));
+
+            return req.CreateResponse(HttpStatusCode.RequestTimeout);
         }
         catch (Exception ex)
         {
