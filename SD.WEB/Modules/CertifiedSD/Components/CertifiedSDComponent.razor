@@ -7,13 +7,19 @@
 <SectionComponent Title="@Translations.CertifiedSDTitle" Description="@GlobalTranslations.CertifiedDescription" IconName="@IconsFA.Solid.Icon("award").Font">
     <ActionFragment>
         <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary" Class="me-2"
-                        CheckMark="true" CheckMarkClass="mx-0">
+                        CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0">
             <MudToggleItem Value="@MediaType.movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
+                <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()"></MudIcon>
+                </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                     <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@MediaType.movie.GetName()</MudText>
                 </MudHidden>
             </MudToggleItem>
             <MudToggleItem Value="@MediaType.tv" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
+                <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@MediaType.movie.GetName()"></MudIcon>
+                </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                     <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@MediaType.tv.GetName()</MudText>
                 </MudHidden>

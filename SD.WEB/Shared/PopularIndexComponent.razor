@@ -8,18 +8,27 @@
 <SectionComponent Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" IconName="@IconsFA.Solid.Icon("fire").Font">
     <ActionFragment>
         <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary"
-                        CheckMark="true" CheckMarkClass="mx-0">
+                        CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0">
             <MudToggleItem Value="@PopularType.Movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
+                <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()"></MudIcon>
+                </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                     <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@PopularType.Movie.GetName()</MudText>
                 </MudHidden>
             </MudToggleItem>
             <MudToggleItem Value="@PopularType.Show" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
+                <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@MediaType.movie.GetName()"></MudIcon>
+                </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                     <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@PopularType.Show.GetName()</MudText>
                 </MudHidden>
             </MudToggleItem>
             <MudToggleItem Value="@PopularType.Cinema" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
+                <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("ticket-simple").Font" Title="@PopularType.Cinema.GetName()"></MudIcon>
+                </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                     <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@PopularType.Cinema.GetName()</MudText>
                 </MudHidden>
