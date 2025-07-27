@@ -30,15 +30,13 @@
                 </MudButton>
             }
             <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Value="SearchType" ValueChanged="(MediaType type) => CheckedValueChanged(type)"
-                            Color="Color.Primary" Class="me-2">
-                <MudToggleItem Value="@MediaType.movie">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
+                            Color="Color.Primary" Class="me-2" CheckMark="true" CheckMarkClass="mx-0">
+                <MudToggleItem Value="@MediaType.movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
                     <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                         @MediaType.movie.GetName()
                     </MudHidden>
                 </MudToggleItem>
-                <MudToggleItem Value="@MediaType.tv">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@MediaType.tv.GetName()" Class="me-1"></MudIcon>
+                <MudToggleItem Value="@MediaType.tv" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
                     <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                         @MediaType.tv.GetName()
                     </MudHidden>

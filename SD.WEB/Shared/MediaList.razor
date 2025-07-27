@@ -10,16 +10,14 @@
     <ActionFragment>
         @if (ShowFilter)
         {
-            <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Value="TypeSelected" ValueChanged="@(async (MediaType type) => await TypeSelectedChangedHandle(type))"
-                            Color="Color.Primary" Class="me-2">
-                <MudToggleItem Value="@MediaType.movie">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()" Class="me-1"></MudIcon>
+            <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Value="TypeSelected" CheckMark="true" CheckMarkClass="mx-0"
+                            ValueChanged="@(async (MediaType type) => await TypeSelectedChangedHandle(type))" Color="Color.Primary" Class="me-2">
+                <MudToggleItem Value="@MediaType.movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
                     <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                         <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@MediaType.movie.GetName()</MudText>
                     </MudHidden>
                 </MudToggleItem>
-                <MudToggleItem Value="@MediaType.tv">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@MediaType.tv.GetName()" Class="me-1"></MudIcon>
+                <MudToggleItem Value="@MediaType.tv" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
                     <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                         <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@MediaType.tv.GetName()</MudText>
                     </MudHidden>
