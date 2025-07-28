@@ -97,7 +97,7 @@ public class CosmosRepository
                 results.AddRange(response.Resource);
             }
 
-            if (charges > 15)
+            if (charges > 30)
                 _logger.LogWarning("Query - Type {Type}, RequestCharge {Charges}", type.ToString(), charges);
 
             return results;
@@ -115,7 +115,7 @@ public class CosmosRepository
             var response = await Container.UpsertItemAsync(item, new PartitionKey(item.Id),
                 CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-            if (response.RequestCharge > 15)
+            if (response.RequestCharge > 20)
                 _logger.LogWarning("Upsert - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);
 
             return response.Resource;
@@ -139,7 +139,7 @@ public class CosmosRepository
             var response = await Container.PatchItemAsync<T>($"{type}:{id}", new PartitionKey($"{type}:{id}"),
                 operations, CosmosRepositoryExtensions.GetPatchItemRequestOptions(), cancellationToken);
 
-            if (response.RequestCharge > 15)
+            if (response.RequestCharge > 20)
                 _logger.LogWarning("PatchItem - ID {Id}, RequestCharge {Charges}", id, response.RequestCharge);
 
             return response.Resource;
@@ -157,7 +157,7 @@ public class CosmosRepository
             var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Id),
                 CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-            if (response.RequestCharge > 15)
+            if (response.RequestCharge > 20)
                 _logger.LogWarning("Delete - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);
 
             return response.StatusCode == HttpStatusCode.OK;
