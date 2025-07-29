@@ -19,8 +19,7 @@
     },
     {
       "route": "/suggestions/{slug}",
-      "rewrite": "/api/suggestions/{slug}",
-      "statusCode": 301
+      "rewrite": "/api/suggestions/{slug}"
     }
   ],
   "navigationFallback": {
