@@ -24,9 +24,6 @@ internal sealed class ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddl
         }
         catch (CosmosException ex)
         {
-            //var result = JsonSerializer.Deserialize<CosmosExceptionStructure>("{" + cex.ResponseBody.Replace("Errors", "\"Errors\"") + "}", options: null);
-            //return result?.Message?.Errors.FirstOrDefault();
-
             _logger.LogError(ex, "CosmosException");
             await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "Invocation failed!");
         }
