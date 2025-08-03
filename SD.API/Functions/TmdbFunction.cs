@@ -25,9 +25,9 @@ public class TmdbFunction(IDistributedCache distributedCache, IHttpClientFactory
             }
             else
             {
-                var tmdbWriteToken = ApiStartup.Configurations.TMDB?.WriteToken;
+                var tmdbReadToken = ApiStartup.Configurations.TMDB?.ReadToken;
                 var client = factory.CreateClient("tmdb");
-                result = await client.GetdTmdbList<CustomListNew>(cacheKey, tmdbWriteToken, cancellationToken);
+                result = await client.GetdTmdbList<CustomListNew>(cacheKey, tmdbReadToken, cancellationToken);
             }
 
             await SaveCache(result, cacheKey, TtlCache.OneDay);

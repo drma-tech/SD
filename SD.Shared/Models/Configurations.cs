@@ -46,6 +46,7 @@ public class Google
 
 public class TMDB
 {
+    public string? ReadToken { get; set; }
     public string? WriteToken { get; set; }
 }
 
