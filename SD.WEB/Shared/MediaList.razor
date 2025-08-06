@@ -31,7 +31,7 @@
             </MudToggleGroup>
         }
         <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary"
-                       Href="@GetCustomExpandUrl()" Disabled="@(List == null && CustomExpand.Empty())" />
+                       Href="@GetCustomExpandUrl()" Rel="nofollow" Disabled="@(List == null && CustomExpand.Empty())" />
     </ActionFragment>
     <BodyFragment>
         <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">

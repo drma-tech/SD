@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace SD.Shared.Core.Helper;
 
@@ -14,7 +15,7 @@ public static class ExtensionMethods
         return !source.Any(predicate);
     }
 
-    public static bool Empty(this string? value)
+    public static bool Empty([NotNullWhen(false)] this string? value)
     {
         return string.IsNullOrEmpty(value);
     }
@@ -24,7 +25,7 @@ public static class ExtensionMethods
         return source.Any();
     }
 
-    public static bool NotEmpty(this string? value)
+    public static bool NotEmpty([NotNullWhen(true)] this string? value)
     {
         return !string.IsNullOrEmpty(value);
     }

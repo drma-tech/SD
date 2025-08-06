@@ -15,10 +15,16 @@
         @if (BlockedCountry)
         {
             <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
-                @($"Unfortunately, due to legal and policy restrictions, we are unable to offer our services in {_countries[CurrentCountry!]}.")
+                @($"Unfortunately, due to legal and policy restrictions, we are unable to offer our services in {_BlockedCountries[CurrentCountry!]}.")
             </MudAlert>
         }
-        else if (IsAuthenticated && Client == null)
+        @if (AppleNotAllowed)
+        {
+            <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
+                @($"Subscriptions are not available in this region through the app. Please see our website for more information.")
+            </MudAlert>
+        }
+        else if (IsAuthenticated && (Client == null || Config == null))
         {
             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="100px" Animation="Animation.Wave" />
         }
@@ -92,6 +98,11 @@
                                 </MudItem>
                             </MudGrid>
                         </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" FullWidth="true" Disabled="true">
+                                Your current plan
+                            </MudButton>
+                        </MudCardActions>
                     </MudCard>
                     <MudCard Outlined="true" Elevation="4">
                         <MudCardContent Class="pa-3">
@@ -147,7 +158,7 @@
                             </MudGrid>
                         </MudCardContent>
                         <MudCardActions>
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Disabled="Client == null"
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
                                        OnClick="@(() => OpenCheckout(GetSubscription(AccountProduct.Standard)?.PriceId))">
                                 @Translations.Select
                             </MudButton>
@@ -207,7 +218,7 @@
                             </MudGrid>
                         </MudCardContent>
                         <MudCardActions>
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Disabled="Client == null"
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
                                        OnClick="@(() => OpenCheckout(GetSubscription(AccountProduct.Premium)?.PriceId))">
                                 @Translations.Select
                             </MudButton>
@@ -318,9 +329,11 @@
     private AccountCycle Cycle { get; set; } = AccountCycle.Monthly;
 
     private string? CurrentCountry { get; set; }
+    private string? CurrentPlatform { get; set; }
     private bool BlockedCountry { get; set; }
+    private bool AppleNotAllowed { get; set; }
 
-    private readonly Dictionary<string, string> _countries = new()
+    private readonly Dictionary<string, string> _BlockedCountries = new()
     {
         { "AF", "Afghanistan" },
         { "BY", "Belarus" },
@@ -333,6 +346,11 @@
         { "RU", "Russia" },
         { "SY", "Syria" },
         { "VE", "Venezuela" }
+    };
+
+    private readonly Dictionary<string, string> _iosAllowedCountries = new()
+    {
+        { "US", "United States" }
     };
 
     private class Plan
@@ -384,9 +402,17 @@
         if (CurrentCountry.NotEmpty())
         {
             //https://www.xolo.io/zz-en/faq/xolo-leap/category/get-started/article/do-you-accept-customers-from-all-countries
-            BlockedCountry = _countries.ContainsKey(CurrentCountry!);
+            BlockedCountry = _BlockedCountries.ContainsKey(CurrentCountry);
 
             if (BlockedCountry) return;
+        }
+
+        CurrentPlatform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
+
+        if (CurrentCountry.NotEmpty() && CurrentPlatform == "ios")
+        {
+            //https://developer.apple.com/app-store/review/guidelines/#link-to-other-purchase-methods
+            AppleNotAllowed = !_iosAllowedCountries.ContainsKey(CurrentCountry);
         }
 
         Config = await ConfigurationApi.GetConfigurations();
@@ -411,9 +437,17 @@
     {
         try
         {
-            var locale = AppStateStatic.Language.ToString().Substring(0, 2);
+            if (IsAuthenticated)
+            {
+                var locale = AppStateStatic.Language.ToString().Substring(0, 2);
 
-            await JsRuntime.InvokeVoidAsync("openCheckout", priceId, Client?.Email, locale, Client?.ClientePaddle?.CustomerId, Client?.ClientePaddle?.AddressId);
+                await JsRuntime.InvokeVoidAsync("openCheckout", priceId, Client?.Email, locale, Client?.ClientePaddle?.CustomerId, Client?.ClientePaddle?.AddressId);
+            }
+            else
+            {
+                Snackbar.Add("You must be logged in to subscribe", Severity.Warning);
+                Navigation.NavigateTo("/login-providers");
+            }
         }
         catch (Exception ex)
         {
