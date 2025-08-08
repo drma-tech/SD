@@ -2,24 +2,26 @@
 
 // Google Analytics
 window.initGoogleAnalytics = function (code) {
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag("js", new Date());
+    if (!window.location.host.includes("localhost") && GetLocalStorage("platform") !== "ios") {
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag("js", new Date());
 
-    getUserInfo()
-        .then(user => {
-            if (user) {
-                gtag("config", code, {
-                    'user_id': user?.userId
-                });
-            }
-            else {
-                gtag("config", code);
-            }
-        })
-        .catch(error => {
-            showError(error.message);
-        });
+        getUserInfo()
+            .then(user => {
+                if (user) {
+                    gtag("config", code, {
+                        'user_id': user?.userId
+                    });
+                }
+                else {
+                    gtag("config", code);
+                }
+            })
+            .catch(error => {
+                showError(error.message);
+            });
+    }
 };
 
 // Microsoft Clarity
