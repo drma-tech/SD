@@ -19,23 +19,28 @@
   "prefer_related_applications": true,
   "related_applications": [
     {
+      "platform": "windows",
+      "url": "https://apps.microsoft.com/detail/9PB1PKRDD8L0",
+      "id": "9PB1PKRDD8L0"
+    },
+    {
       "platform": "play",
       "url": "https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa",
       "id": "com.streamingdiscovery.www.twa"
     },
     {
-      "platform": "windows",
-      "url": "https://apps.microsoft.com/detail/9PB1PKRDD8L0?hl=en-us&gl=US",
-      "id": "9PB1PKRDD8L0"
-    },
-    {
-      "platform": "webapp",
-      "url": "https://www.streamingdiscovery.com/"
+      "platform": "ios",
+      "url": "https://apps.apple.com/us/app/streaming-discovery/id6749285238",
+      "id": "id6749285238"
     },
     {
       "platform": "huawei",
       "url": "https://appgallery.huawei.com/app/C111325113",
       "id": "C111325113"
+    },
+    {
+      "platform": "webapp",
+      "url": "https://www.streamingdiscovery.com/"
     }
   ],
   "categories": [

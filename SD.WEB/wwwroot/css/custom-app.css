@@ -275,6 +275,10 @@ body .pwa-updater[b-pwa-updater] {
     align-self: center;
 }
 
+.mud-list-item-icon {
+    min-width: 40px !important;
+}
+
 /* FONT AWESOME */
 
 .fa-sm, .fa-md, .fa-lg {

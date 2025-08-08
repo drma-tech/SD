@@ -232,8 +232,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         catch (Exception ex)
         {
             req.ProcessException(ex);
-            return await req.CreateResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours,
-                cancellationToken);
+            return await req.CreateResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
 

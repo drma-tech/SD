@@ -1,6 +1,10 @@
-﻿@using SD.WEB.Modules.Profile.Resources
+﻿@using SD.WEB.Modules.Auth.Core
+@using SD.WEB.Modules.Profile.Resources
 
 @inherits ComponentCore<ProfilePopup>
+@inject IJSRuntime JsRuntime
+
+@inject LoginApi LoginApi
 
 <MudDialog Style="width: 100%">
     <DialogContent>
@@ -16,14 +20,21 @@
                     <MudItem xs="12">
                         <MudTextField T="@string" Label="@Translations.Email" Text="@Principal?.Email" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
+                    <MudItem xs="12" sm="6">
+                        <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DownloadData" Disabled="Principal == null">
+                            Download Data
+                        </MudButton>
+                    </MudItem>
+                    <MudItem xs="12" sm="6">
+                        <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DeleteAccount" Color="Color.Error">
+                            @Translations.DeleteAccount
+                        </MudButton>
+                    </MudItem>
                 </MudGrid>
             </MudCardContent>
         </MudCard>
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Error" OnClick="@DeleteAccount">
-            @Translations.DeleteAccount
-        </MudButton>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">
             @Button.Close
         </MudButton>
@@ -41,6 +52,23 @@
         Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
+    private async Task DownloadData()
+    {
+        try
+        {
+            var data = new SuperData() { Principal = Principal };
+
+            data.Login = await LoginApi.Get(IsAuthenticated);
+
+            var fileName = $"{SeoTranslations.AppName.ToSlug()}_{Principal!.IdentityProvider}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
+            await JsRuntime.InvokeVoidAsync("jsSaveAsFile", fileName, "application/json", data.ConvertFromObjectToBytes());
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
     private async Task DeleteAccount()
     {
         try
@@ -51,7 +79,7 @@
                 return;
             }
 
-            if (await DialogService.ShowMessageBox(SeoTranslations.AppName, GlobalTranslations.SureDeleteAccount) ?? false)
+            if (await DialogService.ShowMessageBox(SeoTranslations.AppName, GlobalTranslations.SureDeleteAccount, Button.Ok, Button.Cancel) ?? false)
             {
                 //remove data from cosmos db
                 await PrincipalApi.Remove();
@@ -59,10 +87,10 @@
                 //close popup
                 MudDialog?.Close();
 
-                //remove data from azure
+                //remove authentication data from azure (its not working)
                 Navigation.NavigateTo("/.auth/purge/" + Principal?.IdentityProvider);
 
-                //close session
+                //close current login session
                 Navigation.NavigateTo("/.auth/logout", true);
             }
             else

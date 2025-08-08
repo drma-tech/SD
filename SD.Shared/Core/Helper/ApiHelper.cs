@@ -18,6 +18,7 @@ public static class ApiHelper
         }
 
         var content = await response.Content.ReadAsStringAsync(cancellationToken);
+        if (content.Empty()) content = response.ReasonPhrase ?? "Unknown error";
         throw new NotificationException(content);
     }
 
@@ -45,6 +46,7 @@ public static class ApiHelper
         else
         {
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
+            if (content.Empty()) content = response.ReasonPhrase ?? "Unknown error";
             throw new NotificationException(content);
         }
     }

@@ -1,5 +1,5 @@
 ﻿@page "/support/terms/{lang}"
-<SeoHeader Title="Terms" Url=@($"/support/terms/{Lang}")></SeoHeader>
+<SeoHeader Title="Terms of Use" Url=@($"/support/terms/{Lang}")></SeoHeader>
 
 <style>
     .terms-container {
@@ -206,51 +206,58 @@
         </div>
         <div class="terms-section">
             <h2>1. About the Service</h2>
-            <p><b>@ProjectTitle</b> is a global platform designed to help users discover, organize, and manage streaming content across various services. While most features are available for free, some are exclusive to authenticated users or subscribers with active monthly or annual plans.</p>
+            <p><b>@ProjectTitle</b> is a global platform designed to help users discover, organize, and manage streaming content across various services. While most features are available for free, some require authentication or an active subscription.</p>
             <p>The service is operated by Delivering Reliable Modern Apps Tech OÜ, registered in Estonia, and is intended for personal, non-commercial use only.</p>
         </div>
         <div class="terms-section">
             <h2>2. Account, Data, and Privacy</h2>
-            <p>You may use the platform anonymously. However, features such as creating private lists or managing account preferences require authentication. Upon login, we collect your email, login timestamp, and IP address. These details are used for security, diagnostics, and personalization.</p>
-            <p>Some basic user preferences can be configured, but we do not collect or store sensitive or geolocation data.</p>
-            <p>We use analytics tools such as Google Analytics and Microsoft Clarity to understand usage patterns. See our Privacy Policy for more details on how your data is processed.</p>
+            <p>You may use the platform anonymously. However, features such as creating private lists or managing account preferences require authentication. Upon login, we collect your email, login timestamps, IP address, and device information. This data is used solely for security, diagnostics, personalization, and analytics.</p>
+            <p>We do not collect or store sensitive personal data or precise geolocation without explicit consent.</p>
+            <p>We implement reasonable technical and organizational measures to protect your data from unauthorized access or disclosure.</p>
+            <p>We use analytics tools such as Google Analytics and Microsoft Clarity to understand usage patterns. For more details, please refer to our <a href="/support/privacy/en">Privacy Policy</a>.</p>
         </div>
         <div class="terms-section">
             <h2>3. Features and Subscription</h2>
-            <p><b>@ProjectTitle</b> includes both public and private lists:</p>
+            <p><b>@ProjectTitle</b> offers both public and private lists:</p>
             <ul>
-                <li><b>Public lists</b> are curated and maintained by the platform and can be accessed or shared by any user, whether authenticated or not.</li>
-                <li><b>Private lists</b> are created by authenticated users. Free users have a limited number of items they can include per list. Subscribers gain access to higher limits for these lists.</li>
+                <li><b>Public lists</b> are curated by the platform and accessible to all users, authenticated or not.</li>
+                <li><b>Private lists</b> are created by authenticated users. Free accounts have limits on the number of items per list, while subscribers enjoy higher limits and additional features.</li>
             </ul>
-            <p>Subscriptions are available on a monthly or annual basis, renew automatically unless cancelled, and are processed by our payment partner (Paddle). Pricing is shown in USD and converted when necessary by the payment processor.</p>
+            <p>Subscriptions are available monthly or annually, renew automatically unless cancelled, and are processed through our payment partner (Paddle). Prices are displayed in USD and may be converted to local currencies by the payment processor. Availability and payment methods vary by country.</p>
         </div>
         <div class="terms-section">
             <h2>4. Third-party Content</h2>
-            <p><b>@ProjectTitle</b> uses data, images, and metadata from external providers such as TMDb, JustWatch, and others. We are not affiliated with these services, and all third-party content remains the property of its respective owners.</p>
-            <p>We do not provide streaming, downloads, or playback of copyrighted content. Full attribution is provided on our credits page.</p>
+            <p><b>@ProjectTitle</b> displays data, images, and metadata sourced from third parties such as TMDb and JustWatch. These third-party contents remain the property of their respective owners.</p>
+            <p>We do not host or provide streaming, downloads, or playback of copyrighted content. Attribution and licensing details are available on our credits page.</p>
         </div>
         <div class="terms-section">
             <h2>5. Intellectual Property</h2>
-            <p>The structure, organization, and visual presentation of data within <b>@ProjectTitle</b> are original and protected under the MPL-2.0 license or similar open licenses. All third-party assets remain under their respective copyrights and trademarks.</p>
-            <p>Reproduction, scraping, reverse engineering, or unauthorized redistribution of platform elements is strictly prohibited.</p>
+            <p>The structure, design, and presentation of data on <b>@ProjectTitle</b> are protected under the MPL-2.0 license or similar open-source licenses. Third-party assets are governed by their respective copyrights and trademarks.</p>
+            <p>Unauthorized copying, scraping, reverse engineering, or redistribution of platform elements is strictly prohibited.</p>
         </div>
         <div class="terms-section">
             <h2>6. Acceptable Use</h2>
-            <p>You agree to use the platform lawfully and in compliance with applicable laws. Abuse of functionality, circumvention of limits, or misuse of public data is prohibited. You must not use the service to infringe upon third-party rights or distribute unauthorized content.</p>
+            <p>Users agree to use the platform lawfully and responsibly. Prohibited actions include:</p>
+            <ul>
+                <li>Attempting to circumvent platform limits or restrictions.</li>
+                <li>Using bots, scrapers, or automated tools without explicit permission.</li>
+                <li>Uploading or sharing content that infringes intellectual property rights or applicable laws.</li>
+            </ul>
         </div>
         <div class="terms-section">
             <h2>7. User Lists</h2>
-            <p>Authenticated users may create private lists to organize content. These lists are personal and not visible to others unless explicitly shared by the user. The number of items per list is limited for free users and increased for subscribers.</p>
-            <p>Public lists are curated by the platform and available to all users. They can be browsed and shared freely without authentication.</p>
+            <p>Authenticated users may create private lists to organize streaming content. These lists are personal and not visible to others unless the user chooses to share them externally.</p>
+            <p>Public lists are curated by the platform and accessible to all users without authentication.</p>
         </div>
         <div class="terms-section">
-            <h2>8. Limitation of Liability</h2>
-            <p><b>@ProjectTitle</b> is provided "as is" and "as available." We do not guarantee uninterrupted service, complete accuracy, or fitness for a particular purpose.</p>
-            <p>We are not liable for inaccuracies, outdated metadata, or omissions in third-party content. Usage is at your own discretion and risk.</p>
+            <h2>8. Limitation of Liability and Service Availability</h2>
+            <p><b>@ProjectTitle</b> is provided "as is" and "as available." We do not guarantee uninterrupted access, accuracy, or completeness of content and metadata. Use of the platform is at your own risk.</p>
+            <p>We are not responsible for errors, outdated information, or third-party content availability.</p>
+            <p>The platform may be modified, suspended, or discontinued at any time without prior notice.</p>
         </div>
         <div class="terms-section">
-            <h2>9. Changes</h2>
-            <p>These Terms may be updated without prior notice. Significant changes will be communicated via email or platform notification when possible. Continued use of the platform after such updates implies acceptance of the new terms.</p>
+            <h2>9. Changes to Terms</h2>
+            <p>We may update these Terms periodically. Significant changes affecting your rights or obligations will be communicated via email or platform notifications when feasible. Continued use after updates constitutes acceptance of the new Terms.</p>
         </div>
         <div class="terms-section">
             <h2>10. Contact</h2>
@@ -258,12 +265,16 @@
         </div>
         <div class="terms-section">
             <h2>11. Legal Compliance</h2>
-            <p>You are responsible for using the service in accordance with local laws, including copyright and data privacy regulations. The platform is developed to comply with GDPR and related international standards.</p>
-            <p>The service is governed under Estonian jurisdiction.</p>
+            <p>You are responsible for complying with local laws, including copyright and privacy regulations. <b>@ProjectTitle</b> complies with applicable international data protection laws such as GDPR and LGPD.</p>
+            <p>The platform is governed by Estonian law.</p>
         </div>
         <div class="terms-section">
             <h2>12. Governing Law and Dispute Resolution</h2>
-            <p>These Terms are governed by the laws of Estonia. Any disputes will be resolved under the exclusive jurisdiction of the courts of Tallinn, Estonia, in English, unless otherwise required by applicable local laws or in the context of criminal investigations.</p>
+            <p>These Terms are governed by the laws of Estonia. Any disputes will be resolved under the exclusive jurisdiction of the courts of Tallinn, Estonia, in English, except where local laws require otherwise.</p>
+        </div>
+        <div class="privacy-section">
+            <p style="text-align:center; color:#888; font-size:0.9rem;">Last updated: August 5, 2025</p>
+            <p style="text-align:center; color:#888; font-size:0.9rem;">By using the platform, you agree to this Terms of Use and the <a href="/support/privacy/en">Privacy Policy</a>.</p>
         </div>
     }
 </div>

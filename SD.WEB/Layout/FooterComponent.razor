@@ -46,6 +46,7 @@
                     </MudText>
                 </MudListSubheader>
                 <MudListItem Text="Contact" Href="mailto:support@streamingdiscovery.com" Dense="true" />
+                <MudListItem Text="FAQ" Href="@GetSupportUrl("faq")" Dense="true" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
@@ -55,8 +56,8 @@
                         LEGAL
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="@Translations.LinkTerm" Href="@GetLegalUrl("terms")" Dense="true" />
-                <MudListItem Text="@Translations.LinkPrivacy" Href="@GetLegalUrl("privacy")" Dense="true" />
+                <MudListItem Text="@Translations.LinkTerm" Href="@GetSupportUrl("terms")" Dense="true" />
+                <MudListItem Text="@Translations.LinkPrivacy" Href="@GetSupportUrl("privacy")" Dense="true" />
                 <MudListItem Text="Credits" Href="/support/credits" Dense="true" />
             </MudList>
         </MudItem>
@@ -66,7 +67,7 @@
 @code {
     [Parameter] public bool Support { get; set; }
 
-    private string GetLegalUrl(string type)
+    private string GetSupportUrl(string type)
     {
         string lang;
         switch (AppStateStatic.Language)

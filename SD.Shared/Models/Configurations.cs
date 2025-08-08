@@ -41,6 +41,7 @@ public class Sendgrid
 
 public class Google
 {
+    public string? ApiKey { get; set; }
     public string? Captcha { get; set; }
 }
 

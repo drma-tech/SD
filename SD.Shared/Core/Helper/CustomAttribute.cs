@@ -12,6 +12,7 @@ public class CustomAttribute : Attribute
     public string? Name { get; set; }
     public string? Placeholder { get; set; }
     public string? Description { get; set; }
+    public bool ShowDescription { get; set; } = true;
 
     public Type? ResourceType { get; set; }
 }

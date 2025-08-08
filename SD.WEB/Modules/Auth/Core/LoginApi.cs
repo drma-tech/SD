@@ -4,6 +4,13 @@ namespace SD.WEB.Modules.Auth.Core;
 
 public class LoginApi(IHttpClientFactory factory) : ApiCosmos<ClienteLogin>(factory, null)
 {
+    public async Task<ClienteLogin?> Get(bool isUserAuthenticated)
+    {
+        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, null);
+
+        return null;
+    }
+
     public async Task Add(string platform)
     {
         string ip;
@@ -24,6 +31,8 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<ClienteLogin>(fact
 
     private struct Endpoint
     {
+        public const string Get = "login/get";
+
         public static string Add(string platform, string? ip)
         {
             return $"login/add?platform={platform}&ip={ip}";

@@ -31,6 +31,7 @@
     <script src="js/services.min.js"></script>
 
     <script type="text/javascript">
+        TryDetectPlatform();
         window.setRobotsMeta();
         window.initGoogleAnalytics("G-4PREF5QX1F");
         window.initClarity("r2iwqdpwtv");
@@ -83,6 +84,17 @@
                 showError(`Browser not supported: ${error.message}`);
             });
     </script>
+
+    <!--<script>
+        window.Userback = window.Userback || {};
+        Userback.access_token = "A-A2J4M5NKCbDp1QyQe7ogemmmq";
+        (function (d) {
+            var s = d.createElement('script'); s.async = true; s.src = 'https://static.userback.io/widget/v1.js'; (d.head || d.body).appendChild(s);
+        })(document);
+        const browserLang = navigator.language || navigator.userLanguage;
+        Userback.widget_settings = { language: GetLocalStorage("language") ?? browserLang.slice(0, 2) };
+        window.initUserBack();
+    </script>-->
 
     <script rel="preload" src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
     <script rel="preload" src="_framework/blazor.webassembly.js"></script>

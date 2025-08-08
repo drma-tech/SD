@@ -7,10 +7,10 @@ window.initGoogleAnalytics = function (code) {
     gtag("js", new Date());
 
     getUserInfo()
-        .then(userId => {
-            if (userId) {
+        .then(user => {
+            if (user) {
                 gtag("config", code, {
-                    'user_id': userId
+                    'user_id': user?.userId
                 });
             }
             else {
@@ -24,7 +24,7 @@ window.initGoogleAnalytics = function (code) {
 
 // Microsoft Clarity
 window.initClarity = function (code) {
-    if (!window.location.host.includes("localhost")) {
+    if (!window.location.host.includes("localhost") && GetLocalStorage("platform") !== "ios") {
         (function (c, l, a, r, i, t, y) {
             c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
             t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
@@ -49,4 +49,23 @@ window.setRobotsMeta = function () {
         meta.content = "noindex, nofollow";
         document.head.appendChild(meta);
     }
+};
+
+// userback
+window.initUserBack = function () {
+    getUserInfo()
+        .then(user => {
+            if (user) {
+                Userback.user_data = {
+                    id: user?.userId,
+                    info: {
+                        name: user?.userDetails,
+                        email: user?.userDetails
+                    }
+                };
+            }
+        })
+        .catch(error => {
+            showError(error.message);
+        });
 };

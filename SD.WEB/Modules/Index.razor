@@ -42,10 +42,6 @@
     [SupplyParameterFromQuery(Name = "language")]
     public string? Language { get; set; }
 
-    [Parameter]
-    [SupplyParameterFromQuery(Name = "platform")]
-    public string? Platform { get; set; }
-
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
     public RenderControlCore<WishList?> CoreWish { get; set; } = new();
@@ -80,23 +76,6 @@
             CoreWish.LoadingFinished?.Invoke(model);
             StateHasChanged();
         };
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            if (Platform.NotEmpty())
-            {
-                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "platform", Platform);
-            }
-            else
-            {
-                await JsRuntime.InvokeAsync<string>("TryDetectPlatform");
-            }
-        }
-
-        await base.OnAfterRenderAsync(firstRender);
     }
 
     protected override async Task LoadDataRender()
