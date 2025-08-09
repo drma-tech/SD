@@ -21,7 +21,7 @@
         @if (AppleNotAllowed)
         {
             <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
-                @($"Subscriptions are not available in this region through the app. Please see our website for more information.")
+                @($"Subscriptions are not available in this region through the app.")
             </MudAlert>
         }
         else if (IsAuthenticated && (Client == null || Config == null))

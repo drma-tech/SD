@@ -58,11 +58,12 @@ window.initUserBack = function () {
     getUserInfo()
         .then(user => {
             if (user) {
+                const email = user?.userDetails;
                 Userback.user_data = {
                     id: user?.userId,
                     info: {
-                        name: user?.userDetails,
-                        email: user?.userDetails
+                        name: email?.split("@")[0],
+                        email: email
                     }
                 };
             }

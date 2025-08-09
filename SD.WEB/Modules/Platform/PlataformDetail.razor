@@ -26,14 +26,17 @@
 
     <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
-    <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")" StringParameters="@GetExtraParameters(Id, "popularity.desc")"
-               ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+    <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")" ShowFilter="Provider?.types.Count == 2"
+               StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
     </MediaList>
-    <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/new/{{0}}")" StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")"
-               ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+    <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/new/{{0}}")" ShowFilter="Provider?.types.Count == 2"
+               StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
     </MediaList>
-    <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/top/{{0}}")" StringParameters="@GetExtraParameters(Id, "vote_average.desc")"
-               ShowFilter="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+    <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/top/{{0}}")" ShowFilter="Provider?.types.Count == 2"
+               StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+               ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
     </MediaList>
 </RenderControl>
 

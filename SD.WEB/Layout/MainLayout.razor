@@ -17,9 +17,7 @@
 <PWAUpdater Text="@GlobalTranslations.PWAUpdaterText" ButtonCaption="@GlobalTranslations.PWAUpdaterButton" />
 
 <MudLayout>
-    <MudAppBar Fixed="true" Elevation="1" Color="Color.Dark">
-        <HeadLayout IsAuthenticated="IsAuthenticated"></HeadLayout>
-    </MudAppBar>
+    <HeadLayout IsAuthenticated="IsAuthenticated"></HeadLayout>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="my-3" Style="min-height: calc(100vh - 64px - 32px);">
             @Body

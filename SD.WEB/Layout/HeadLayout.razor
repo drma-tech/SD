@@ -6,102 +6,146 @@
 
 @inject PaddleConfigurationApi ConfigurationApi
 
-@if (Breakpoint <= Breakpoint.Sm)
-{
-    <MudIconButton Icon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Style="padding: 8px;" />
-    <MudIconButton Icon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Style="padding: 8px;" Target="_self" Rel="nofollow" />
-    <MudIconButton Icon="@IconsFA.Solid.Icon("circle-play").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Style="padding: 8px;" />
-    <MudIconButton Icon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Style="padding: 8px;" />
-    <MudIconButton Icon="@IconsFA.Solid.Icon("headset").Font" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")" Style="padding: 8px;" />
-    <MudSpacer />
-    <MudMenu Icon="@IconsFA.Solid.Icon("bars").Font" Color="Color.Inherit">
-        <MudMenuItem Icon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Label="@Translations.Subscription" IconColor="Color.Warning" OnClick="@OpenSubscription" />
+<MudAppBar Fixed="true" Elevation="1" Color="Color.Dark">
+    @if (Breakpoint <= Breakpoint.Xs) //mobile view
+    {
+        <MudIconButton Icon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Style="padding: 8px;" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Style="padding: 8px;" Target="_self" Rel="nofollow" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("circle-play").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Style="padding: 8px;" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Style="padding: 8px;" />
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { _open = true; })" />
+    }
+    else if (Breakpoint == Breakpoint.Sm) //tablet view
+    {
+        <MudIconButton Icon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Style="padding: 8px;" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Style="padding: 8px;" Target="_self" Rel="nofollow" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("circle-play").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Style="padding: 8px;" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Style="padding: 8px;" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("headset").Font" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")" Style="padding: 8px;" />
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Warning" StartIcon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Class="me-2" OnClick="@OpenSubscription">
+            @Translations.Subscription
+        </MudButton>
         <AuthorizeView>
             <Authorized>
-                <MudMenuItem Icon="@IconsFA.Solid.Icon("circle-user").Font" Label="@Menu.Profile" OnClick="@MyAccount" />
+                <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
             </Authorized>
         </AuthorizeView>
-        <MudMenuItem Icon="@IconsFA.Solid.Icon("cog").Font" Label="Settings" OnClick="@OpenConfigurations" />
-        <MudDivider></MudDivider>
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
         <AuthorizeView>
             <Authorized>
-                <MudMenuItem Icon="@IconsFA.Solid.Icon("right-from-bracket").Font" Label="@Button.Logout" OnClick="@Logout" IconColor="Color.Error" />
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Error" OnClick="@Logout" StartIcon="@IconsFA.Solid.Icon("right-from-bracket").Font">
+                    @Button.Logout
+                </MudButton>
             </Authorized>
             <NotAuthorized>
-                <MudMenuItem Icon="@IconsFA.Solid.Icon("right-to-bracket").Font" Label="@Button.Login" Href="/login-providers" />
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="/login-providers" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
+                    @Button.Login
+                </MudButton>
             </NotAuthorized>
         </AuthorizeView>
-    </MudMenu>
-}
-else
+    }
+    else //desktop view
+    {
+        <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="px-3">
+            @if (Focused("/"))
+            {
+                <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Home</MudText>
+            }
+            else
+            {
+                @Menu.Home
+            }
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="px-3" Target="_self" Rel="nofollow">
+            @if (Focused("/profile"))
+            {
+                <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Profile</MudText>
+            }
+            else
+            {
+                @Menu.Profile
+            }
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-play").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="px-3">
+            @if (Focused("/platforms"))
+            {
+                <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Platforms</MudText>
+            }
+            else
+            {
+                @Menu.Platforms
+            }
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Class="px-3">
+            @if (Focused("/collections"))
+            {
+                <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Collections</MudText>
+            }
+            else
+            {
+                @Menu.Collections
+            }
+        </MudButton>
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Warning" StartIcon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Class="me-2" OnClick="@OpenSubscription">
+            @Translations.Subscription
+        </MudButton>
+        <AuthorizeView>
+            <Authorized>
+                <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
+            </Authorized>
+        </AuthorizeView>
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
+        <AuthorizeView>
+            <Authorized>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Error" OnClick="@Logout" StartIcon="@IconsFA.Solid.Icon("right-from-bracket").Font">
+                    @Button.Logout
+                </MudButton>
+            </Authorized>
+            <NotAuthorized>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="/login-providers" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
+                    @Button.Login
+                </MudButton>
+            </NotAuthorized>
+        </AuthorizeView>
+    }
+</MudAppBar>
+
+@if (Breakpoint <= Breakpoint.Xs)
 {
-    <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="px-3">
-        @if (Focused("/"))
-        {
-            <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Home</MudText>
-        }
-        else
-        {
-            @Menu.Home
-        }
-    </MudButton>
-    <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="px-3" Target="_self" Rel="nofollow">
-        @if (Focused("/profile"))
-        {
-            <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Profile</MudText>
-        }
-        else
-        {
-            @Menu.Profile
-        }
-    </MudButton>
-    <MudButton StartIcon="@IconsFA.Solid.Icon("circle-play").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="px-3">
-        @if (Focused("/platforms"))
-        {
-            <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Platforms</MudText>
-        }
-        else
-        {
-            @Menu.Platforms
-        }
-    </MudButton>
-    <MudButton StartIcon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Class="px-3">
-        @if (Focused("/collections"))
-        {
-            <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Collections</MudText>
-        }
-        else
-        {
-            @Menu.Collections
-        }
-    </MudButton>
-    <MudSpacer />
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Warning" StartIcon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Class="me-2" OnClick="@OpenSubscription">
-        @Translations.Subscription
-    </MudButton>
-    <AuthorizeView>
-        <Authorized>
-            <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
-        </Authorized>
-    </AuthorizeView>
-    <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
-    <AuthorizeView>
-        <Authorized>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Error" OnClick="@Logout" StartIcon="@IconsFA.Solid.Icon("right-from-bracket").Font">
-                @Button.Logout
-            </MudButton>
-        </Authorized>
-        <NotAuthorized>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="/login-providers" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
-                @Button.Login
-            </MudButton>
-        </NotAuthorized>
-    </AuthorizeView>
+    <MudDrawer @bind-Open="@_open" Anchor="Anchor.Right" Elevation="1" OverlayAutoClose="true">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">@SeoTranslations.AppName</MudText>
+        </MudDrawerHeader>
+        <MudNavMenu>
+            <MudNavLink Icon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" IconColor="Color.Warning" OnClick="@OpenSubscription">@Translations.Subscription</MudNavLink>
+            <AuthorizeView>
+                <Authorized>
+                    <MudNavLink Icon="@IconsFA.Solid.Icon("circle-user").Font" OnClick="@MyAccount">@Menu.Profile</MudNavLink>
+                </Authorized>
+            </AuthorizeView>
+            <MudNavLink Icon="@IconsFA.Solid.Icon("cog").Font" OnClick="@OpenConfigurations">Settings</MudNavLink>
+            <MudNavLink Icon="@IconsFA.Solid.Icon("headset").Font" Href="/support">Support</MudNavLink>
+            <MudDivider></MudDivider>
+            <AuthorizeView>
+                <Authorized>
+                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-from-bracket").Font" OnClick="@Logout" IconColor="Color.Error">@Button.Logout</MudNavLink>
+                </Authorized>
+                <NotAuthorized>
+                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-to-bracket").Font" Href="/login-providers">@Button.Login</MudNavLink>
+                </NotAuthorized>
+            </AuthorizeView>
+        </MudNavMenu>
+    </MudDrawer>
 }
 
 @code {
     [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }
     [Parameter] public bool IsAuthenticated { get; set; }
+
+    private bool _open = false;
 
     protected override void OnInitialized()
     {
