@@ -93,6 +93,7 @@
         })(document);
         const browserLang = navigator.language || navigator.userLanguage;
         Userback.widget_settings = { language: GetLocalStorage("language") ?? browserLang.slice(0, 2) };
+        window.initUserBack();
     </script>
 
     <script rel="preload" src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
