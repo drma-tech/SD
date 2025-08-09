@@ -30,6 +30,8 @@ window.addEventListener("load", function () {
             if (progress >= 100) clearInterval(checkConnection);
         }, 1000);
     }
+
+    window.initUserBack();
 });
 
 window.addEventListener("error", function (e) {
