@@ -43,7 +43,7 @@ else
     {
         await base.OnInitializedAsync();
 
-        Email = await PrincipalApi.GetEmail(Token);
+        Email = (await PrincipalApi.GetEmail(Token))?.Split("@")[0];
     }
 
     protected override async Task LoadDataRender()
