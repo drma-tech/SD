@@ -18,14 +18,6 @@ self.addEventListener("fetch", event => {
     event.respondWith(onFetch(event));
 });
 self.addEventListener("message", event => {
-    try {
-        if (event.origin) {
-            const url = new URL(event.origin);
-            if (!url.hostname.endsWith(".streamingdiscovery.com")) return;
-        }
-        else { return; }
-    } catch { return; }
-
     if (event.data?.type === "SKIP_WAITING") self.skipWaiting();
 });
 
