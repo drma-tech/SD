@@ -32,7 +32,7 @@
     {
         <link rel="canonical" href="@GetCanonicalUrl()" />
     }    
-    <link rel="icon" type="image/png" href="@Icon" />
+    <link rel="icon" type="image/png" href="favicon.ico" />
 </HeadContent>
 
 @code {
@@ -42,7 +42,7 @@
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Description { get; set; }
     [Parameter] public string? Url { get; set; }
-    [Parameter] public string? Icon { get; set; } = "favicon.ico";
+    [Parameter] public string? Icon { get; set; } = $"{ProjectUrl}/icon/icon-192.png";
     [Parameter] public IEnumerable<string> Keywords { get; set; } = [];
     [Parameter] public bool Index { get; set; } = true;
 
