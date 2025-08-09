@@ -22,7 +22,7 @@ window.initGoogleAnalytics = function (code) {
                 showError(error.message);
             });
     }
-};
+}
 
 // Microsoft Clarity
 window.initClarity = function (code) {
@@ -41,7 +41,7 @@ window.initClarity = function (code) {
             }
         }, 5000);
     }
-};
+}
 
 // Disable robots for dev environment
 window.setRobotsMeta = function () {
@@ -51,24 +51,23 @@ window.setRobotsMeta = function () {
         meta.content = "noindex, nofollow";
         document.head.appendChild(meta);
     }
-};
+}
 
 // userback
 window.initUserBack = function () {
-    getUserInfo()
-        .then(user => {
-            if (user) {
-                const email = user?.userDetails;
-                Userback.user_data = {
-                    id: user?.userId,
-                    info: {
+    Userback.on_load = () => {
+        getUserInfo()
+            .then(user => {
+                if (user) {
+                    const email = user?.userDetails;
+                    Userback.identify(user?.userId, {
                         name: email?.split("@")[0],
                         email: email
-                    }
-                };
-            }
-        })
-        .catch(error => {
-            showError(error.message);
-        });
-};
+                    });
+                }
+            })
+            .catch(error => {
+                showError(error.message);
+            });
+    };   
+}
