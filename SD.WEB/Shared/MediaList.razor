@@ -60,7 +60,6 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public bool ShowHead { get; set; } = true;
@@ -71,6 +70,7 @@
     [Parameter] public bool OrderByComments { get; set; }
     [Parameter] public bool CommentsIsImage { get; set; }
     [Parameter] public bool FullPage { get; set; } = false;
+    [Parameter] public bool Popup { get; set; } = false;
     [Parameter] public string? CustomExpand { get; set; }
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
@@ -201,7 +201,14 @@
                 tmdbId = media?.tmdb_id;
             }
 
-            await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId, ShowPrivateAction, IsAuthenticated);
+            if (Popup)
+            {
+                await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId, IsAuthenticated);
+            }
+            else
+            {
+                Navigation.NavigateTo($"/media/{media?.MediaType.ToString().ToLower()}/{tmdbId}");
+            }
         }
         catch (Exception ex)
         {

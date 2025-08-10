@@ -49,7 +49,6 @@
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     public RenderControlCore<MyProviders?> Core { get; set; } = new();
@@ -128,7 +127,7 @@
     {
         AllProviders ??= await AllProvidersApi.GetAll(null);
 
-        await DialogService.PlataformPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList, ShowPrivateAction,
+        await DialogService.PlataformPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList,
             item.region?.ToString(), item.id, IsAuthenticated);
     }
 

@@ -12,8 +12,8 @@
     <DialogContent>
         <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) => { Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged(); })"
                        IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
-                       StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false" FullPage="true"
-                       Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated" CommentsIsImage="CommentsIsImage">
+                       StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false" FullPage="true" Popup="true"
+                       Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" CommentsIsImage="CommentsIsImage">
         </MediaListFull>
     </DialogContent>
     <DialogActions>
@@ -26,15 +26,14 @@
 @code {
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-    [Parameter] [EditorRequired] public string? TitleHead { get; set; }
-    [Parameter] [EditorRequired] public WatchedList? Watched { get; set; }
-    [Parameter] [EditorRequired] public WatchingList? Watching { get; set; }
-    [Parameter] [EditorRequired] public WishList? Wish { get; set; }
-    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter][EditorRequired] public string? TitleHead { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
     [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
-    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
 
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = [];
     [Parameter] public EventCallback<HashSet<MediaDetail>> ItemsChanged { get; set; }

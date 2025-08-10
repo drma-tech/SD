@@ -95,7 +95,6 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     public ClientePrincipal? Client { get; set; }
@@ -160,7 +159,7 @@
 
     public Task ShowMediaPopup(string? tmdbId, string? name, MediaType type)
     {
-        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, type, tmdbId, ShowPrivateAction, IsAuthenticated);
+        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, type, tmdbId, IsAuthenticated);
     }
 
     private Dictionary<string, string> GetExtraParameters(string? providerId, string? region, string sortBy)

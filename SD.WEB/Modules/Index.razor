@@ -21,11 +21,11 @@
               OnAdornmentClick="@(() =>{ if (Search.NotEmpty()) Navigation.NavigateTo($"/search/{Search}"); })">
 </MudTextField>
 
-<PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></PopularIndexComponent>
+<PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" IsAuthenticated="IsAuthenticated"></PopularIndexComponent>
 
-<CertifiedSDComponent Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></CertifiedSDComponent>
+<CertifiedSDComponent Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated"></CertifiedSDComponent>
 
-<AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></AwardsOfTheYearComponent>
+<AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated"></AwardsOfTheYearComponent>
 
 <MudGrid Spacing="3">
     <MudItem xs="12" sm="6" md="7">

@@ -12,13 +12,13 @@
     <DialogContent>
         @if (MediaType == MediaType.movie)
         {
-            <WatchingComponent MediaType="MediaType" ShowPrivateAction="ShowPrivateAction" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+            <WatchingComponent MediaType="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
                                Core="Core" ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()" IsAuthenticated="IsAuthenticated" UserId="@UserId">
             </WatchingComponent>
         }
         else
         {
-            <WatchingComponent MediaType="MediaType" ShowPrivateAction="ShowPrivateAction" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+            <WatchingComponent MediaType="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
                                Core="Core" ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()" IsAuthenticated="IsAuthenticated" UserId="@UserId">
             </WatchingComponent>
         }
@@ -33,17 +33,16 @@
 @code {
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-    [Parameter] [EditorRequired] public RenderControlCore<WatchingList?>? Core { get; set; }
-    [Parameter] [EditorRequired] public WatchedList? Watched { get; set; }
-    [Parameter] [EditorRequired] public WatchingList? Watching { get; set; }
-    [Parameter] [EditorRequired] public WishList? Wish { get; set; }
-    [Parameter] [EditorRequired] public bool IsAuthenticated { get; set; }
-    [Parameter] [EditorRequired] public string? UserId { get; set; }
+    [Parameter][EditorRequired] public RenderControlCore<WatchingList?>? Core { get; set; }
+    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
+    [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
+    [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter][EditorRequired] public string? UserId { get; set; }
 
     [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
-    [Parameter] [EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter] public MediaType MediaType { get; set; }
 
     private string Title => MediaType == MediaType.movie ? Translations.MyMovieWatching : Translations.MyShowWatching;

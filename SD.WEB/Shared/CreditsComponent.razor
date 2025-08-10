@@ -11,94 +11,88 @@
         var directors = Credits?.crew.Where(w => w.job == "Director").ToList() ?? [];
         if (directors.Any())
         {
-            <MudGrid Spacing="2" Class="mb-2">
-                <MudItem xs="6" sm="3">
-                    <MudPaper Outlined="true" Height="66px" Style="align-content: center; text-align: center;">
-                        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                            @Translations.Directing
-                        </MudText>
-                    </MudPaper>
-                </MudItem>
-                @foreach (var item in directors)
-                {
-                    <MudItem xs="6" sm="3">
-                        <MudLink OnClick="@(async () => await OpenCompleteList(item))" style="display: flex; gap: 8px;">
-                            <MudAvatar Size="Size.Large" Style="width: 66px; height: 66px;">
-                                <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" Alt="@item.original_name" FallbackSrc="images/no-user.png" Style="width: 66px;">
-                                </MudImage>
-                            </MudAvatar>
-                            <div style="align-content: center;">
-                                <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Style="line-height: normal;">@item.original_name</MudText>
-                                <MudText Typo="Typo.body1" Color=Color.Tertiary Style="line-height: normal; font-size: small;">@item.job</MudText>
-                            </div>
-                        </MudLink>
-                    </MudItem>
-                }
-            </MudGrid>
+            <MudPaper Outlined="true" Class="pt-2 px-2 mb-2">
+                <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                    @Translations.Directing
+                </MudText>
+                <MudDivider Class="mb-2"></MudDivider>
+                <MudGrid Spacing="2" Class="mb-2">
+                    @foreach (var item in directors)
+                    {
+                        <MudItem xs="6" sm="4" md="3" lg="2">
+                            <MudLink OnClick="@(async () => await OpenCompleteList(item))" style="display: flex; gap: 8px;">
+                                <MudAvatar Size="Size.Large" Style="width: 66px; height: 66px;">
+                                    <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" Alt="@item.original_name" FallbackSrc="images/no-user.png" Style="width: 66px;">
+                                    </MudImage>
+                                </MudAvatar>
+                                <div style="align-content: center;">
+                                    <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Style="line-height: normal;">@item.original_name</MudText>
+                                    <MudText Typo="Typo.body1" Color=Color.Tertiary Style="line-height: normal; font-size: small;">@item.job</MudText>
+                                </div>
+                            </MudLink>
+                        </MudItem>
+                    }
+                </MudGrid>
+            </MudPaper>
         }
 
         var writers = Credits?.crew.Where(w => w.job == "Writer" || w.job == "Screenplay" || w.job == "Author" || w.job == "Story").ToList() ?? [];
         if (writers.Any())
         {
-            <MudDivider Class="my-2"></MudDivider>
-            <MudGrid Spacing="2" Class="mb-2">
-                <MudItem xs="6" sm="3">
-                    <MudPaper Outlined="true" Height="66px" Style="align-content: center; text-align: center;">
-                        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                            @Translations.Writing
-                        </MudText>
-                    </MudPaper>
-                </MudItem>
-                @foreach (var item in writers)
-                {
-                    <MudItem xs="6" sm="3">
-                        <MudLink OnClick="@(async () => await OpenCompleteList(item))" style="display: flex; gap: 8px;">
-                            <MudAvatar Size="Size.Large" Style="width: 66px; height: 66px;">
-                                <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" Alt="@item.original_name" FallbackSrc="images/no-user.png" Style="width: 66px;">
-                                </MudImage>
-                            </MudAvatar>
-                            <div style="align-content: center;">
-                                <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Style="line-height: normal;">@item.original_name</MudText>
-                                <MudText Typo="Typo.body1" Color="Color.Tertiary" Style="line-height: normal; font-size: small;">@item.job</MudText>
-                            </div>
-                        </MudLink>
-                    </MudItem>
-                }
-            </MudGrid>
+            <MudPaper Outlined="true" Class="pt-2 px-2 mb-2">
+                <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                    @Translations.Writing
+                </MudText>
+                <MudDivider Class="mb-2"></MudDivider>
+                <MudGrid Spacing="2" Class="mb-2">
+                    @foreach (var item in writers)
+                    {
+                        <MudItem xs="6" sm="4" md="3" lg="2">
+                            <MudLink OnClick="@(async () => await OpenCompleteList(item))" style="display: flex; gap: 8px;">
+                                <MudAvatar Size="Size.Large" Style="width: 66px; height: 66px;">
+                                    <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" Alt="@item.original_name" FallbackSrc="images/no-user.png" Style="width: 66px;">
+                                    </MudImage>
+                                </MudAvatar>
+                                <div style="align-content: center;">
+                                    <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Style="line-height: normal;">@item.original_name</MudText>
+                                    <MudText Typo="Typo.body1" Color="Color.Tertiary" Style="line-height: normal; font-size: small;">@item.job</MudText>
+                                </div>
+                            </MudLink>
+                        </MudItem>
+                    }
+                </MudGrid>
+            </MudPaper>
         }
     }
-    <MudDivider Class="my-2"></MudDivider>
-    <MudGrid Spacing="2" Class="mb-2">
-        <MudItem xs="6" sm="3">
-            <MudPaper Outlined="true" Height="66px" Style="align-content: center; text-align: center;">
-                <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                    @Translations.Cast
-                </MudText>
-            </MudPaper>
-        </MudItem>
-        @foreach (var item in Credits?.cast.OrderBy(o => o.order).Take(24) ?? new List<Cast>())
-        {
-            <MudItem xs="6" sm="3">
-                <MudLink OnClick="@(async () => await OpenCompleteList(item))" style="display: flex; gap: 8px;">
-                    <MudAvatar Size="Size.Large" Style="width: 66px; height: 66px;">
-                        <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" Alt="@item.original_name" FallbackSrc="images/no-user.png" Style="width: 66px;">
-                        </MudImage>
-                    </MudAvatar>
-                    <div style="align-content: center;">
-                        <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Style="line-height: normal;">@item.original_name</MudText>
-                        <MudText Typo="Typo.body1" Color="Color.Tertiary" Style="line-height: normal; font-size: small;">@item.character</MudText>
-                    </div>
-                </MudLink>
-            </MudItem>
-        }
-    </MudGrid>
+    <MudPaper Outlined="true" Class="pt-2 px-2 mb-2">
+        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+            @Translations.Cast
+        </MudText>
+        <MudDivider Class="mb-2"></MudDivider>
+        <MudGrid Spacing="2" Class="mb-2">
+            @foreach (var item in Credits?.cast.OrderBy(o => o.order).Take(24) ?? new List<Cast>())
+            {
+                <MudItem xs="6" sm="4" md="3" lg="2">
+                    <MudLink OnClick="@(async () => await OpenCompleteList(item))" style="display: flex; gap: 8px;">
+                        <MudAvatar Size="Size.Large" Style="width: 66px; height: 66px;">
+                            <MudImage Src="@(TmdbOptions.FacePath + item.profile_path)" Alt="@item.original_name" FallbackSrc="images/no-user.png" Style="width: 66px;">
+                            </MudImage>
+                        </MudAvatar>
+                        <div style="align-content: center;">
+                            <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Style="line-height: normal;">@item.original_name</MudText>
+                            <MudText Typo="Typo.body1" Color="Color.Tertiary" Style="line-height: normal; font-size: small;">@item.character</MudText>
+                        </div>
+                    </MudLink>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudPaper>
 </RenderControl>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public string? TmdbId { get; set; }
@@ -137,7 +131,7 @@
                 });
             }
 
-            await DialogService.CompleteListPopup($"{crew.original_name} ({crew.job})", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), ShowPrivateAction, IsAuthenticated);
+            await DialogService.CompleteListPopup($"{crew.original_name} ({crew.job})", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), IsAuthenticated);
         }
         catch (Exception ex)
         {
@@ -173,7 +167,7 @@
                 });
             }
 
-            await DialogService.CompleteListPopup($"{cast.original_name}", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), ShowPrivateAction, IsAuthenticated);
+            await DialogService.CompleteListPopup($"{cast.original_name}", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), IsAuthenticated);
         }
         catch (Exception ex)
         {

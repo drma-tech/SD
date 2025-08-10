@@ -27,7 +27,7 @@
         </RenderControl>
     </DialogContent>
     <DialogActions>
-        @if (ShowPrivateAction)
+        @if (IsAuthenticated)
         {
             <MudButton Color="Color.Primary" OnClick="@IsWatched">
                 @Translations.ButtonWatched
@@ -51,7 +51,6 @@
     [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public string? CollectionId { get; set; }
@@ -141,7 +140,7 @@
 
     private async Task OpenPopupMedia(Part? part, MediaType? mediaType)
     {
-        await DialogService.MediaPopup(Watched, Watching, Wish, mediaType, part?.id.ToString(), ShowPrivateAction, IsAuthenticated);
+        await DialogService.MediaPopup(Watched, Watching, Wish, mediaType, part?.id.ToString(), IsAuthenticated);
     }
 
     private async Task OpenPopupSeason(Part? part)

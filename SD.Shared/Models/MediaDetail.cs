@@ -43,6 +43,8 @@ public class Video
     public string? id { get; set; }
     public string? key { get; set; }
     public string? name { get; set; }
+    public string? type { get; set; }
+    public DateTime? published_at { get; set; }
 }
 
 public class Collection

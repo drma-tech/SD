@@ -12,15 +12,15 @@
 
 <SectionComponent IconName="@IconsFA.Solid.Icon("eye").Font" Title="@Title" ShowHead="ShowHeader" FullPage="FullScreen">
     <ActionFragment>
-        @if ((Watching?.CanSync(MediaType) ?? false) && (Watching?.Items(MediaType).Any() ?? false))
+        @if (!Shared)
         {
-            <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
-                       OnClick="() => ImportFromWatched()" Disabled="@Updating">
-                @Button.Update
-            </MudButton>
-        }
-        @if (ShowPrivateAction)
-        {
+            @if ((Watching?.CanSync(MediaType) ?? false) && (Watching?.Items(MediaType).Any() ?? false))
+            {
+                <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
+                           OnClick="() => ImportFromWatched()" Disabled="@Updating">
+                    @Button.Update
+                </MudButton>
+            }
             <MudTooltip Text="@GlobalTranslations.Share">
                 <MudIconButton Icon="@IconsFA.Solid.Icon("share").Font" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
                                OnClick="@(() => Share($"{Navigation.BaseUri}shared/watching/{MediaType}/{UserId}"))" />
@@ -32,7 +32,7 @@
         }
     </ActionFragment>
     <BodyFragment>
-        <RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Watching" ExpressionEmpty="ExpressionEmpty"
+        <RenderControl Core="Core" PrivateContent="true" Model="Watching" ExpressionEmpty="ExpressionEmpty"
                        CustomMessageWarning="@Resources.Translations.MarkTitlesWatched">
             @if (FullScreen)
             {
@@ -75,7 +75,6 @@
 @code {
     [Parameter][EditorRequired] public RenderControlCore<WatchingList?> Core { get; set; } = new();
     [Parameter][EditorRequired] public MediaType MediaType { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
@@ -84,6 +83,7 @@
     [Parameter][EditorRequired] public Func<WatchingList?, bool> ExpressionEmpty { get; set; } = null!;
     [Parameter][EditorRequired] public string? UserId { get; set; }
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] public bool Shared { get; set; }
     [Parameter] public string? CustomTitle { get; set; }
 
     private HashSet<WatchingListItem> Items => MediaType == MediaType.movie ? Watching?.Movies ?? [] : Watching?.Shows ?? [];
@@ -110,17 +110,17 @@
 
     private async Task OpenCompleteList()
     {
-        await DialogService.MyWatchingListPopup(Core, MediaType, Watched, Watching, Wish, ShowPrivateAction, IsAuthenticated, UserId);
+        await DialogService.MyWatchingListPopup(Core, MediaType, Watched, Watching, Wish, IsAuthenticated, UserId);
     }
 
     public Task ShowMediaPopup(string? tmdbId, string? name)
     {
-        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, MediaType, tmdbId, ShowPrivateAction, IsAuthenticated);
+        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, MediaType, tmdbId, IsAuthenticated);
     }
 
     public Task ShowCollectionPopup(string? collectionId, string? name)
     {
-        return string.IsNullOrEmpty(collectionId) ? null! : DialogService.CollectionPopup(Watched, Watching, Wish, MediaType, collectionId, ShowPrivateAction, IsAuthenticated);
+        return string.IsNullOrEmpty(collectionId) ? null! : DialogService.CollectionPopup(Watched, Watching, Wish, MediaType, collectionId, IsAuthenticated);
     }
 
     private async Task ImportFromWatched()

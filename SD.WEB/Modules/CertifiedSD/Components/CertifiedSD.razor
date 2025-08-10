@@ -17,14 +17,14 @@
 @if (MediaType == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconName="@IconsFA.Solid.Icon("award").Font" FullPage="true"
+                   IsAuthenticated="IsAuthenticated" IconName="@IconsFA.Solid.Icon("award").Font" FullPage="true"
                    Description="@GlobalTranslations.CertifiedDescription">
     </MediaListFull>
 }
 else
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   ShowPrivateAction="true" IsAuthenticated="IsAuthenticated" IconName="@IconsFA.Solid.Icon("award").Font" FullPage="true"
+                   IsAuthenticated="IsAuthenticated" IconName="@IconsFA.Solid.Icon("award").Font" FullPage="true"
                    Description="@GlobalTranslations.CertifiedDescription">
     </MediaListFull>
 }

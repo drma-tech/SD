@@ -126,19 +126,31 @@
                 <MudTabPanel Tag="@Translations.TabWhereToWatch" Text="@Translations.TabWhereToWatch">
                     <StreamingComponent TmdbId="@TmdbId" Type="@Type" Homepage="@Media?.homepage" ReleaseDate="@Media?.release_date"></StreamingComponent>
                 </MudTabPanel>
-                <MudTabPanel Tag="@("Trailers")" Text="Trailers" Visible="@(Media != null && Media.Videos.Any())">
-                    <MudList T="string" Dense="true">
-                        @foreach (var item in Media?.Videos ?? [])
-                        {
-                            <MudListItem Icon="@IconsFA.Brands.Icon("youtube").Font" Text="@item.name"
-                                         Href="@($"https://www.youtube.com/watch?v={item.key}")" Target="_blank">
-                            </MudListItem>
-                        }
-                    </MudList>
+                <MudTabPanel Tag="@("Trailers")" Text="Videos" Visible="@(Media != null && Media.Videos.Any())">
+                    @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])
+                    {
+                        <MudPaper Outlined="true" Class="pa-2 mb-2">
+                            <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                                @group
+                            </MudText>
+                            <MudDivider Class="mb-2"></MudDivider>
+                            <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap">
+                                @foreach (var item in Media?.Videos.Where(w => w.type == group) ?? [])
+                                {
+                                    <div>
+                                        <MudIcon Icon="@IconsFA.Brands.Icon("youtube").Font" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
+                                        <MudLink Href="@($"https://www.youtube.com/watch?v={item.key}")" Target="_blank" Color="Color.Secondary">
+                                            @item.name
+                                        </MudLink>
+                                    </div>
+                                }
+                            </MudStack>
+                        </MudPaper>
+                    }
                 </MudTabPanel>
                 <MudTabPanel Tag="@Translations.TabCredits" Text="@Translations.TabCredits">
                     <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish"
-                                      ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
+                                      IsAuthenticated="IsAuthenticated">
                     </CreditsComponent>
                 </MudTabPanel>
                 <MudTabPanel Tag="@("Collections")" Text="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)"
@@ -200,7 +212,7 @@
         </RenderControl>
     </DialogContent>
     <DialogActions>
-        @if (ShowPrivateAction)
+        @if (IsAuthenticated)
         {
             @if (Wish?.Movies.Any(a => a.id == TmdbId) ?? false)
             {
@@ -242,7 +254,6 @@
     [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
-    [Parameter] public bool ShowPrivateAction { get; set; }
 
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
@@ -469,7 +480,7 @@
 
     private async Task OpenPopupMedia(Collection? collection, MediaType? mediaType)
     {
-        await DialogService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id, ShowPrivateAction, IsAuthenticated);
+        await DialogService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id, IsAuthenticated);
     }
 
     private async Task OpenPopupSeason(Collection? collection)

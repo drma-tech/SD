@@ -21,13 +21,13 @@
         else
         {
             <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
-                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
+                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" Popup="true">
             </MediaList>
             <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
-                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
+                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" Popup="true">
             </MediaList>
             <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
-                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated">
+                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" Popup="true">
             </MediaList>
         }
     </DialogContent>
@@ -56,7 +56,6 @@
     [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
-    [Parameter] public bool ShowPrivateAction { get; set; }
     [Parameter] public string? WatchRegion { get; set; }
     [Parameter] public string? ProviderId { get; set; }
 

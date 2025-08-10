@@ -13,7 +13,7 @@
     </ActionFragment>
     <BodyFragment>
         <MediaList MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="Watched" Watching="Watching" Wish="Wish"
-                   ShowPrivateAction="@ShowPrivateAction" IsAuthenticated="IsAuthenticated" CommentsIsImage="true" ShowHead="false" FullPage="true">
+                   IsAuthenticated="IsAuthenticated" CommentsIsImage="true" ShowHead="false" FullPage="true">
         </MediaList>
     </BodyFragment>
 </SectionComponent>
@@ -22,7 +22,6 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     protected override void OnInitialized()

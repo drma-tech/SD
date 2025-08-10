@@ -12,13 +12,13 @@
     <DialogContent>
         @if (MediaType == MediaType.movie)
         {
-            <WishlistComponent MediaType="MediaType" ShowPrivateAction="ShowPrivateAction" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+            <WishlistComponent MediaType="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
                                Core="Core" ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()" IsAuthenticated="IsAuthenticated" UserId="@UserId">
             </WishlistComponent>
         }
         else
         {
-            <WishlistComponent MediaType="MediaType" ShowPrivateAction="ShowPrivateAction" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+            <WishlistComponent MediaType="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
                                Core="Core" ExpressionEmpty="(WishList? list) => list == null || list.Shows.Empty()" IsAuthenticated="IsAuthenticated" UserId="@UserId">
             </WishlistComponent>
         }
@@ -43,7 +43,6 @@
     [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public MediaType MediaType { get; set; }
 
     private string Title => MediaType == MediaType.movie ? Translations.MyMovieWishlist : Translations.MyShowWishlist;

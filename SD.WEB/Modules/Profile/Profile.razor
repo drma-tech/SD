@@ -136,17 +136,17 @@ else
     </MudItem>
 </MudGrid>
 
-<MyProviderComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MyProviderComponent>
+<MyProviderComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" IsAuthenticated="IsAuthenticated"></MyProviderComponent>
 
-<MySuggestions Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"></MySuggestions>
+<MySuggestions Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated"></MySuggestions>
 
 <MudGrid Spacing="2" Class="mb-2">
     <MudItem xs="12" md="6">
-        <MyWishListGroup Watched="Watched" Watching="Watching" Wish="Wish" CoreWishlist="CoreWish" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"
+        <MyWishListGroup Watched="Watched" Watching="Watching" Wish="Wish" CoreWishlist="CoreWish" IsAuthenticated="IsAuthenticated"
                          UserId="@UserId"></MyWishListGroup>
     </MudItem>
     <MudItem xs="12" md="6">
-        <MyWatchingListGroup Watched="Watched" Watching="Watching" Wish="Wish" CoreWatching="CoreWatching" ShowPrivateAction="true" IsAuthenticated="IsAuthenticated"
+        <MyWatchingListGroup Watched="Watched" Watching="Watching" Wish="Wish" CoreWatching="CoreWatching" IsAuthenticated="IsAuthenticated"
                              UserId="@UserId"></MyWatchingListGroup>
     </MudItem>
 </MudGrid>

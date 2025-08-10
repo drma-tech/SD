@@ -12,14 +12,14 @@
 
 @if (Type == "movie")
 {
-    <WishlistComponent Core="CoreWishlist" MediaType="MediaType.movie" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
+    <WishlistComponent Core="CoreWishlist" MediaType="MediaType.movie" ShowHeader="true" FullScreen="true" Shared="true"
               Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="@UserId"
               ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()" CustomTitle="@($"Wishlist ({Email}) | {MediaType.movie.GetName()}")">
     </WishlistComponent>
 }
 else
 {
-    <WishlistComponent Core="CoreWishlist" MediaType="MediaType.tv" ShowPrivateAction="false" ShowHeader="true" FullScreen="true"
+    <WishlistComponent Core="CoreWishlist" MediaType="MediaType.tv" ShowHeader="true" FullScreen="true" Shared="true"
               Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" UserId="@UserId"
               ExpressionEmpty="(WishList? list) => list == null || list.Shows.Empty()" CustomTitle="@($"Wishlist ({Email}) | {MediaType.tv.GetName()}")">
     </WishlistComponent>

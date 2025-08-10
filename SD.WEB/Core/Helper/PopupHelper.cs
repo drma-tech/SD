@@ -15,7 +15,7 @@ public static class PopupHelper
     public static readonly EventCallbackFactory Factory = new();
 
     public static async Task CollectionPopup(this IDialogService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type,
-        string? collectionId, bool showPrivateAction, bool isAuthenticated)
+        string? collectionId, bool isAuthenticated)
     {
         var parameters = new DialogParameters<CollectionPopup>
         {
@@ -27,7 +27,6 @@ public static class PopupHelper
             { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? lst) => { watched = lst; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
-            { x => x.ShowPrivateAction, showPrivateAction },
             { x => x.IsAuthenticated, isAuthenticated },
         };
 
@@ -35,7 +34,7 @@ public static class PopupHelper
     }
 
     public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchedList? watched, WatchingList? watching, WishList? wish,
-        HashSet<MediaDetail> items, bool showPrivateAction, bool isAuthenticated)
+        HashSet<MediaDetail> items, bool isAuthenticated)
     {
         var parameters = new DialogParameters<CompleteListPopup>
         {
@@ -49,7 +48,6 @@ public static class PopupHelper
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
 
-            { x => x.ShowPrivateAction, showPrivateAction },
             { x => x.IsAuthenticated, isAuthenticated },
         };
 
@@ -57,7 +55,7 @@ public static class PopupHelper
     }
 
     public static async Task MediaPopup(this IDialogService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? tmdbId,
-        bool showPrivateAction, bool isAuthenticated)
+        bool isAuthenticated)
     {
         var parameters = new DialogParameters<MediaPopup>
         {
@@ -69,11 +67,10 @@ public static class PopupHelper
             { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? lst) => { watched = lst; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
-            { x => x.ShowPrivateAction, showPrivateAction },
             { x => x.IsAuthenticated, isAuthenticated },
         };
 
-        await service.ShowAsync<MediaPopup>(null, parameters, Options(MaxWidth.Medium));
+        await service.ShowAsync<MediaPopup>(null, parameters, Options(MaxWidth.Large));
     }
 
     public static async Task MySuggestionsPopup(this IDialogService service, SD.Shared.Models.MySuggestions? mySuggestions,
@@ -89,7 +86,7 @@ public static class PopupHelper
     }
 
     public static async Task MyWatchingListPopup(this IDialogService service, RenderControlCore<WatchingList?>? core, MediaType type,
-        WatchedList? watched, WatchingList? watching, WishList? wish, bool showPrivateAction, bool isAuthenticated, string? userId)
+        WatchedList? watched, WatchingList? watching, WishList? wish, bool isAuthenticated, string? userId)
     {
         var parameters = new DialogParameters<MyWatchingListPopup>
         {
@@ -101,7 +98,6 @@ public static class PopupHelper
             { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }) },
-            { x => x.ShowPrivateAction, showPrivateAction },
             { x => x.IsAuthenticated, isAuthenticated },
             { x => x.UserId, userId }
         };
@@ -113,7 +109,7 @@ public static class PopupHelper
     }
 
     public static async Task MyWishListPopup(this IDialogService service, RenderControlCore<WishList?>? core, WatchedList? watched, WatchingList? watching, WishList? wish,
-        MediaType type, bool showPrivateAction, bool isAuthenticated, string? userId)
+        MediaType type, bool isAuthenticated, string? userId)
     {
         var parameters = new DialogParameters<MyWishListPopup>
         {
@@ -125,7 +121,6 @@ public static class PopupHelper
             { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }) },
-            { x => x.ShowPrivateAction, showPrivateAction },
             { x => x.IsAuthenticated, isAuthenticated },
             { x => x.UserId, userId }
         };
@@ -147,7 +142,7 @@ public static class PopupHelper
     }
 
     public static async Task PlataformPopup(this IDialogService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish,
-        bool showPrivateAction, string? watchRegion, string? providerId, bool isAuthenticated)
+        string? watchRegion, string? providerId, bool isAuthenticated)
     {
         var parameters = new DialogParameters<PlataformPopup>
         {
@@ -158,7 +153,6 @@ public static class PopupHelper
             { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }) },
-            { x => x.ShowPrivateAction, showPrivateAction },
             { x => x.WatchRegion, watchRegion },
             { x => x.ProviderId, providerId },
             { x => x.IsAuthenticated, isAuthenticated }

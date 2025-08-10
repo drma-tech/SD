@@ -17,10 +17,10 @@
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+           IsAuthenticated="IsAuthenticated">
 </MediaList>
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmpireThe100BestTvShowsOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           ShowPrivateAction="true" IsAuthenticated="IsAuthenticated">
+           IsAuthenticated="IsAuthenticated">
 </MediaList>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
@@ -53,7 +53,7 @@
         {
             WishList = model;
             StateHasChanged();
-        };        
+        };
     }
 
     protected override async Task LoadDataRender()

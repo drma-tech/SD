@@ -4,20 +4,24 @@
 @inject CacheMetaCriticApi CacheMetaCriticApi
 
 <RenderControl Core="Core" Model="Model" ExpressionEmpty="@((CacheDocument<ReviewModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-    <MudList T="string">
+    <MudGrid Spacing="2">
         @foreach (var item in Model?.Data?.Items ?? [])
         {
-            <MudListItem Class="px-2 py-1">
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <MudChip Color="GetColorByRating(item?.score)" Label="true" Style="padding: 0.2rem; height: auto;">@item?.score</MudChip>
-                    <MudText Typo="Typo.subtitle1" Color="Color.Secondary">@item?.reviewSite</MudText>
-                    <MudText Typo="Typo.subtitle1" Color="Color.Tertiary">@item?.reviewer</MudText>
-                </div>
-                <MudText Typo="Typo.body1" Align="Align.Justify" Style="line-height: normal;" Inline="true">@item?.quote</MudText>
-                <MudLink Href="@item?.reviewUrl" Target="_blank" rel="nofollow">Read full review</MudLink>
-            </MudListItem>
+            <MudItem xs="12" md="6" Style="text-align: justify;">
+                <MudPaper Outlined="true" Class="pa-2">
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <MudChip T="string" Color="GetColorByRating(item?.score)" Label="true" Style="padding: 0.2rem; height: auto; margin: 0; margin-bottom: 4px;">
+                            @item?.score
+                        </MudChip>
+                        <MudText Typo="Typo.subtitle1" Color="Color.Primary">@item?.reviewSite</MudText>
+                        <MudText Typo="Typo.subtitle1" Color="Color.Secondary">@item?.reviewer</MudText>
+                    </div>
+                    <MudText Typo="Typo.body1" Align="Align.Justify" Style="line-height: normal;" Inline="true">@item?.quote</MudText>
+                    <MudLink Href="@item?.reviewUrl" Target="_blank" rel="nofollow" Color="Color.Info">Read full review</MudLink>
+                </MudPaper>
+            </MudItem>
         }
-    </MudList>
+    </MudGrid>
 </RenderControl>
 
 @code {

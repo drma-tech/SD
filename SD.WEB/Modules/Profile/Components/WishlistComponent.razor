@@ -5,20 +5,23 @@
 
 <SectionComponent IconName="@IconsFA.Solid.Icon("bookmark").Font" Title="@Title" ShowHead="ShowHeader" FullPage="FullScreen">
     <ActionFragment>
-        @if (ShowPrivateAction)
+        @if (!Shared)
         {
-            <MudTooltip Text="@GlobalTranslations.Share">
-                <MudIconButton Icon="@IconsFA.Solid.Icon("share").Font" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
-                               OnClick="@(() => Share($"{Navigation.BaseUri}shared/wishlist/{MediaType}/{UserId}"))" />
-            </MudTooltip>
-            <MudTooltip Text="@GlobalTranslations.SeeAllItems">
-                <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
-                               OnClick="@(async () => await OpenCompleteList())" />
-            </MudTooltip>
+            @if (IsAuthenticated)
+            {
+                <MudTooltip Text="@GlobalTranslations.Share">
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("share").Font" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
+                                   OnClick="@(() => Share($"{Navigation.BaseUri}shared/wishlist/{MediaType}/{UserId}"))" />
+                </MudTooltip>
+                <MudTooltip Text="@GlobalTranslations.SeeAllItems">
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
+                                   OnClick="@(async () => await OpenCompleteList())" />
+                </MudTooltip>
+            }
         }
     </ActionFragment>
     <BodyFragment>
-        <RenderControl Core="Core" PrivateContent="ShowPrivateAction" Model="Wish" ExpressionEmpty="ExpressionEmpty"
+        <RenderControl Core="Core" PrivateContent="true" Model="Wish" ExpressionEmpty="ExpressionEmpty"
                        CustomMessageWarning="@Resources.Translations.AddTitlesWishlist">
             @if (FullScreen)
             {
@@ -57,7 +60,6 @@
 @code {
     [Parameter][EditorRequired] public RenderControlCore<WishList?> Core { get; set; } = new();
     [Parameter][EditorRequired] public MediaType MediaType { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
@@ -66,6 +68,7 @@
     [Parameter][EditorRequired] public Func<WishList?, bool> ExpressionEmpty { get; set; } = null!;
     [Parameter][EditorRequired] public string? UserId { get; set; }
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] public bool Shared { get; set; }
     [Parameter] public string? CustomTitle { get; set; }
 
     private HashSet<WishListItem> Items => MediaType == MediaType.movie ? Wish?.Movies ?? [] : Wish?.Shows ?? [];
@@ -91,12 +94,12 @@
 
     private async Task OpenCompleteList()
     {
-        await DialogService.MyWishListPopup(Core, Watched, Watching, Wish, MediaType, ShowPrivateAction, IsAuthenticated, UserId);
+        await DialogService.MyWishListPopup(Core, Watched, Watching, Wish, MediaType, IsAuthenticated, UserId);
     }
 
     public Task ShowMediaPopup(string? tmdbId, string? name)
     {
-        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, MediaType, tmdbId, ShowPrivateAction, IsAuthenticated);
+        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, MediaType, tmdbId, IsAuthenticated);
     }
 
     private async Task Share(string? link)

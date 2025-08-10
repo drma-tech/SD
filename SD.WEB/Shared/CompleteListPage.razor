@@ -29,7 +29,7 @@
             <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) => { Items = list; StateHasChanged(); })"
                            IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" DetectRegions="DetectRegions"
                            StringParameters="StringParameters" List="List" TitleHead="@Title" ShowHead="false" FullPage="true"
-                           Watched="Watched" Watching="Watching" Wish="Wish" ShowPrivateAction="ShowPrivateAction" IsAuthenticated="IsAuthenticated"
+                           Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated"
                            CommentsIsImage="CommentsIsImage" OrderByComments="OrderByComments" OnlyYear="OnlyYear">
             </MediaListFull>
         }
@@ -47,7 +47,6 @@
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
     public bool OrderByComments { get; set; }
-    public bool ShowPrivateAction { get; set; } = true;
 
     public IMediaListApi? MediaListApi { get; set; }
     public bool IsImdb { get; set; } = false;

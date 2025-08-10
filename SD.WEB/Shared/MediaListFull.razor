@@ -32,15 +32,17 @@
     </BodyFragment>
 </SectionComponent>
 
-<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
-    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
-</div>
+@if (!Popup)
+{
+    <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+    </div>
+}
 
 @code {
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool ShowPrivateAction { get; set; }
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public bool ShowHead { get; set; } = true;
@@ -49,6 +51,7 @@
     [Parameter] public string? IconImage { get; set; }
     [Parameter] public string? IconName { get; set; }
     [Parameter] public bool FullPage { get; set; } = false;
+    [Parameter] public bool Popup { get; set; } = false;
     [Parameter] public bool OnlyYear { get; set; }
 
     [Parameter] public RenderControlCore<HashSet<MediaDetail>>? Core { get; set; } = new();
@@ -63,7 +66,7 @@
     [Parameter] public string? CommentsSeparator { get; set; } = ",";
     [Parameter] public bool CommentsIsImage { get; set; }
     [Parameter] public bool OrderByComments { get; set; }
-    
+
     [Parameter] public bool DetectRegions { get; set; }
 
     private string? GetTitle => List != null ? List.GetName() : TitleHead;
@@ -178,11 +181,18 @@
                 });
             }
 
-            await DialogService.CompleteListPopup($"{media.title}", Watched, Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet(), ShowPrivateAction, IsAuthenticated);
+            await DialogService.CompleteListPopup($"{media.title}", Watched, Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet(), IsAuthenticated);
         }
         else
         {
-            await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId, ShowPrivateAction, IsAuthenticated);
+            if (Popup)
+            {
+                await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId, IsAuthenticated);
+            }
+            else
+            {
+                Navigation.NavigateTo($"/media/{media?.MediaType.ToString().ToLower()}/{tmdbId}");
+            }
         }
     }
 
