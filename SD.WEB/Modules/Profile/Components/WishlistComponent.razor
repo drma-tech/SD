@@ -7,17 +7,14 @@
     <ActionFragment>
         @if (!Shared)
         {
-            @if (IsAuthenticated)
-            {
-                <MudTooltip Text="@GlobalTranslations.Share">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("share").Font" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
-                                   OnClick="@(() => Share($"{Navigation.BaseUri}shared/wishlist/{MediaType}/{UserId}"))" />
-                </MudTooltip>
-                <MudTooltip Text="@GlobalTranslations.SeeAllItems">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
-                                   OnClick="@(async () => await OpenCompleteList())" />
-                </MudTooltip>
-            }
+            <MudTooltip Text="@GlobalTranslations.Share">
+                <MudIconButton Icon="@IconsFA.Solid.Icon("share").Font" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
+                               OnClick="@(() => Share($"{Navigation.BaseUri}shared/wishlist/{MediaType}/{UserId}"))" />
+            </MudTooltip>
+            <MudTooltip Text="@GlobalTranslations.SeeAllItems">
+                <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
+                               OnClick="@(async () => await OpenCompleteList())" />
+            </MudTooltip>
         }
     </ActionFragment>
     <BodyFragment>

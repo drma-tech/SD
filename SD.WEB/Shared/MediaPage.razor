@@ -123,39 +123,36 @@
                               Icon="@IconsFA.Solid.Icon("circle-exclamation").WithAnimation(IconAnimation.Beat).Font">
                         @Translations.PlatformForManaging
                     </MudAlert>
-                    @if (IsAuthenticated)
-                    {
-                        <MudGrid Spacing="4">
-                            <MudItem xs="12" sm="6" md="5" lg="4">
-                                @if (Wish?.Movies.Any(a => a.id == TmdbId) ?? false)
-                                {
-                                    <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@Remove">@Translations.RemoveWishlist</MudButton>
-                                }
-                                else if (Wish?.Shows.Any(a => a.id == TmdbId) ?? false)
-                                {
-                                    <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@Remove">@Translations.RemoveWishlist</MudButton>
-                                }
-                                else
-                                {
-                                    <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" OnClick="@Add" Disabled="!IsAuthenticated">@Translations.AddWishlist</MudButton>
-                                }
-                            </MudItem>
-                            <MudItem xs="12" sm="6" md="5" lg="4">
-                                @if (Watched?.Movies.Contains(TmdbId ?? "") ?? false)
-                                {
-                                    <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@IsNotWatched">@Translations.ButtonNotWatched</MudButton>
-                                }
-                                else if (Watched?.Shows.Contains(TmdbId ?? "") ?? false)
-                                {
-                                    <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@IsNotWatched">@Translations.ButtonNotWatched</MudButton>
-                                }
-                                else
-                                {
-                                    <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" OnClick="@IsWatched" Disabled="!IsAuthenticated">@Translations.ButtonWatched</MudButton>
-                                }
-                            </MudItem>
-                        </MudGrid>
-                    }
+                    <MudGrid Spacing="4">
+                        <MudItem xs="12" sm="6" md="5" lg="4">
+                            @if (Wish?.Movies.Any(a => a.id == TmdbId) ?? false)
+                            {
+                                <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@Remove">@Translations.RemoveWishlist</MudButton>
+                            }
+                            else if (Wish?.Shows.Any(a => a.id == TmdbId) ?? false)
+                            {
+                                <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@Remove">@Translations.RemoveWishlist</MudButton>
+                            }
+                            else
+                            {
+                                <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" OnClick="@Add" Disabled="!IsAuthenticated">@Translations.AddWishlist</MudButton>
+                            }
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="5" lg="4">
+                            @if (Watched?.Movies.Contains(TmdbId ?? "") ?? false)
+                            {
+                                <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@IsNotWatched">@Translations.ButtonNotWatched</MudButton>
+                            }
+                            else if (Watched?.Shows.Contains(TmdbId ?? "") ?? false)
+                            {
+                                <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@IsNotWatched">@Translations.ButtonNotWatched</MudButton>
+                            }
+                            else
+                            {
+                                <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" OnClick="@IsWatched" Disabled="!IsAuthenticated">@Translations.ButtonWatched</MudButton>
+                            }
+                        </MudItem>
+                    </MudGrid>
                 </MudItem>
             </MudGrid>
         </MudTabPanel>
