@@ -22,11 +22,12 @@
                     <FocusOnNavigate RouteData="@routeData" Selector="h1" />
                 </Found>
                 <NotFound>
-                    <MainLayout>
-                        <Body>
-                            <NotFoundPage />
-                        </Body>
-                    </MainLayout>
+                    <PageTitle>Not found</PageTitle>
+                    <LayoutView Layout="@typeof(MainLayout)">
+                        <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Dense="true">
+                            @Translations.NothingThisAddress
+                        </MudAlert>
+                    </LayoutView>
                 </NotFound>
             </Router>
         </CascadingAuthenticationState>

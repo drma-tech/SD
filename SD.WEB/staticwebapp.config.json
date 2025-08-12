@@ -17,11 +17,11 @@
       "allowedRoles": [ "authenticated" ]
     },
     {
-      "route": "/.auth/login/x",
+      "route": "/suggestions/*",
       "statusCode": 404
     },
     {
-      "route": "/.auth/login/404",
+      "route": "/providers/*",
       "statusCode": 404
     }
   ],
