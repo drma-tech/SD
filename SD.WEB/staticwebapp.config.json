@@ -21,15 +21,14 @@
       "statusCode": 404
     },
     {
-      "route": "/404",
+      "route": "/.auth/login/404",
       "statusCode": 404
     }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [
-      "*.{css,scss,js,png,gif,ico,jpg,svg,ttf,woff2,webmanifest}",
-      "/404"
+      "*.{css,scss,js,png,gif,ico,jpg,svg,ttf,woff2,webmanifest}"
     ]
   },
   "globalHeaders": {
