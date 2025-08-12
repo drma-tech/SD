@@ -28,7 +28,9 @@
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [
-      "*.{css,scss,js,png,gif,ico,jpg,svg,ttf,woff2,webmanifest}"
+      "*.{css,scss,js,png,gif,ico,jpg,svg,ttf,woff2,webmanifest}",
+      "/suggestions/*",
+      "/providers/*"
     ]
   },
   "globalHeaders": {
