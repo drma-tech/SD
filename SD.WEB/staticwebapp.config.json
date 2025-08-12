@@ -17,22 +17,23 @@
       "allowedRoles": [ "authenticated" ]
     },
     {
+      "route": "/.auth/login/x",
+      "statusCode": 404
+    },
+    {
       "route": "/404",
-      "statusCode": 404,
-      "rewrite": "/404.html"
+      "statusCode": 404
     }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [
-      "*.{css,scss,js,png,gif,ico,jpg,svg,ttf,woff2,webmanifest}",
-      "/404.html"
+      "*.{css,scss,js,png,gif,ico,jpg,svg,ttf,woff2,webmanifest}"
     ]
   },
   "responseOverrides": {
     "404": {
-      "rewrite": "/404.html",
-      "statusCode": 404
+      "rewrite": "/404.html"
     }
   },
   "globalHeaders": {
