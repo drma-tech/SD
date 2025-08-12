@@ -15,14 +15,6 @@
     {
       "route": "/api/*",
       "allowedRoles": [ "authenticated" ]
-    },
-    {
-      "route": "/suggestions/*",
-      "statusCode": 404
-    },
-    {
-      "route": "/providers/*",
-      "statusCode": 404
     }
   ],
   "navigationFallback": {
