@@ -55,6 +55,16 @@ window.setRobotsMeta = function () {
 
 // userback
 window.initUserBack = function () {
+    window.Userback = window.Userback || {};
+    Userback.access_token = "A-A2J4M5NKCbDp1QyQe7ogemmmq";
+    (function (d) {
+        var s = d.createElement('script'); s.async = true; s.src = 'https://static.userback.io/widget/v1.js'; (d.head || d.body).appendChild(s);
+    })(document);
+    const browserLang = navigator.language || navigator.userLanguage;
+    Userback.widget_settings = {
+        language: GetLocalStorage("language") ?? browserLang.slice(0, 2),
+        logo: window.location.origin + "/icon/icon-71.png"
+    };
     Userback.on_load = () => {
         getUserInfo()
             .then(user => {
@@ -69,5 +79,29 @@ window.initUserBack = function () {
             .catch(error => {
                 showError(error.message);
             });
-    };   
+    };
+}
+
+window.initUsetiful = function () {
+    getUserInfo()
+        .then(user => {
+            if (user) {
+                window.usetifulTags = {
+                    userId: user?.userId
+                };
+
+                (function (w, d, s) {
+                    var a = d.getElementsByTagName('head')[0];
+                    var r = d.createElement('script');
+                    r.async = 1;
+                    r.src = s;
+                    r.setAttribute('id', 'usetifulScript');
+                    r.dataset.token = "7a15ef5f4b9e80c2902d622ee3dd32be";  // This is your unique USETIFUL token. Don’t change it.
+                    a.appendChild(r);
+                })(window, document, "https://www.usetiful.com/dist/usetiful.js");
+            }
+        })
+        .catch(error => {
+            showError(error.message);
+        });
 }

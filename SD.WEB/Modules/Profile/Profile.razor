@@ -56,20 +56,73 @@
 }
 else
 {
-    <MudCard Class="mb-2 mud-theme-primary" Outlined="true">
-        <MudCardHeader>
-            <CardHeaderContent>
-                <MudText Typo="Typo.h3">@Translations.HeroTitle</MudText>
-            </CardHeaderContent>
-        </MudCardHeader>
-        <MudCardContent>
-            <MudText Typo="Typo.h6">@Translations.HeroText</MudText>
-            <MudText Typo="Typo.caption">@Translations.HeroNote</MudText>
-        </MudCardContent>
-        <MudCardActions>
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="/login-providers">@Translations.HeroButton</MudButton>
-        </MudCardActions>
-    </MudCard>
+    <MudCarousel ShowArrows="true" AutoCycle="true" TData="object" Class="mud-width-full mb-5" Style="@($"height: {(Breakpoint <= Breakpoint.Xs ? 450 : 300)}px;")">
+        <MudCarouselItem Transition="Transition.Slide" Color="@Color.Primary" Class="px-12 pt-2 pb-6" Style="text-align: center; height: 100%;">
+            <MudGrid Spacing="6" Justify="Justify.Center" Style="@($"{(Breakpoint <= Breakpoint.Xs ? "max-height" : "height")}: 100%; align-content: center;")">
+                <MudItem xs="12" sm="6" Style="height: 100%; align-content: center;">
+                    <MudImage Src="visitor-slide-1.png" Style="max-height: 100%; max-width: 100%;"></MudImage>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
+                        Streaming Discovery
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Justify" Class="my-3">
+                        Manage your streaming platforms, track your watch progress, and discover what to watch next with ease. Browse expert-curated lists like award winners and critic picks - all in one place.
+                    </MudText>
+                </MudItem>
+            </MudGrid>
+        </MudCarouselItem>
+        <MudCarouselItem Transition="Transition.Slide" Color="@Color.Primary" Class="px-12 pt-2 pb-6" Style="text-align: center; height: 100%;">
+            <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
+                Top Features
+            </MudText>
+            <MudGrid Spacing="4" Justify="Justify.Center">
+                <MudItem xs="12" sm="6" lg="3">
+                    <MudPaper Class="pa-2" Elevation="3" Style="text-align:center">
+                        <MudIcon Icon="@IconsFA.Solid.Icon("fire").Font" Size="Size.Large"></MudIcon>
+                        <MudText Typo="Typo.subtitle1" Class="mt-2">
+                            Discover What's Trending
+                        </MudText>
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12" sm="6" lg="3">
+                    <MudPaper Class="pa-2" Elevation="3" Style="text-align:center">
+                        <MudIcon Icon="@IconsFA.Solid.Icon("circle-play").Font" Size="Size.Large"></MudIcon>
+                        <MudText Typo="Typo.subtitle1" Class="mt-2">
+                            Find New Streaming Platforms
+                        </MudText>
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12" sm="6" lg="3">
+                    <MudPaper Class="pa-2" Elevation="3" Style="text-align:center">
+                        <MudIcon Icon="@IconsFA.Solid.Icon("list-check").Font" Size="Size.Large"></MudIcon>
+                        <MudText Typo="Typo.subtitle1" Class="mt-2">
+                            Manage Your Platforms and Wishlists
+                        </MudText>
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12" sm="6" lg="3">
+                    <MudPaper Class="pa-2" Elevation="3" Style="text-align:center">
+                        <MudIcon Icon="@IconsFA.Solid.Icon("list-ol").Font" Size="Size.Large"></MudIcon>
+                        <MudText Typo="Typo.subtitle1" Class="mt-2">
+                            Explore Curated Collections
+                        </MudText>
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </MudCarouselItem>
+        <MudCarouselItem Transition="Transition.Slide" Color="@Color.Primary" Class="px-12 pt-2 pb-6" Style="text-align: center; height: 100%;">
+            <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
+                Start tracking your watchlist today — it’s free!
+            </MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="/login-providers" Class="my-4">
+                @Translations.HeroButton
+            </MudButton>
+            <MudText Typo="Typo.caption" Align="Align.Center" Class="my-3 d-block" Style="bottom: 50px; position: absolute; left: 0; right: 0;">
+                @Translations.HeroNote
+            </MudText>
+        </MudCarouselItem>
+    </MudCarousel>
 }
 
 <MudGrid Spacing="2" Class="mb-2">
@@ -212,13 +265,6 @@ else
         Platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
         Reviewed = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "reviewed");
     }
-
-    // protected async Task OpenCheckout(string? priceId)
-    // {
-    //     var locale = AppStateStatic.Language.ToString()?.Substring(0, 2);
-
-    //     await JsRuntime.InvokeVoidAsync("openCheckout", null, null, locale, null, null, _ptxn);
-    // }
 
     // private async Task SetReviewed()
     // {
