@@ -70,7 +70,7 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movies.
+        ///   Looks up a localized string similar to Movie.
         /// </summary>
         public static string MovieName {
             get {

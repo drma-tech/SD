@@ -72,44 +72,48 @@ else
                 </MudItem>
             </MudGrid>
         </MudCarouselItem>
-        <MudCarouselItem Transition="Transition.Slide" Color="@Color.Primary" Class="px-12 pt-2 pb-6" Style="text-align: center; height: 100%;">
-            <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
-                Top Features
-            </MudText>
-            <MudGrid Spacing="4" Justify="Justify.Center">
-                <MudItem xs="12" sm="6" lg="3">
-                    <MudPaper Class="pa-2" Elevation="3" Style="text-align:center">
-                        <MudIcon Icon="@IconsFA.Solid.Icon("fire").Font" Size="Size.Large"></MudIcon>
-                        <MudText Typo="Typo.subtitle1" Class="mt-2">
-                            Discover What's Trending
-                        </MudText>
-                    </MudPaper>
-                </MudItem>
-                <MudItem xs="12" sm="6" lg="3">
-                    <MudPaper Class="pa-2" Elevation="3" Style="text-align:center">
-                        <MudIcon Icon="@IconsFA.Solid.Icon("circle-play").Font" Size="Size.Large"></MudIcon>
-                        <MudText Typo="Typo.subtitle1" Class="mt-2">
-                            Find New Streaming Platforms
-                        </MudText>
-                    </MudPaper>
-                </MudItem>
-                <MudItem xs="12" sm="6" lg="3">
-                    <MudPaper Class="pa-2" Elevation="3" Style="text-align:center">
-                        <MudIcon Icon="@IconsFA.Solid.Icon("list-check").Font" Size="Size.Large"></MudIcon>
-                        <MudText Typo="Typo.subtitle1" Class="mt-2">
-                            Manage Your Platforms and Wishlists
-                        </MudText>
-                    </MudPaper>
-                </MudItem>
-                <MudItem xs="12" sm="6" lg="3">
-                    <MudPaper Class="pa-2" Elevation="3" Style="text-align:center">
-                        <MudIcon Icon="@IconsFA.Solid.Icon("list-ol").Font" Size="Size.Large"></MudIcon>
-                        <MudText Typo="Typo.subtitle1" Class="mt-2">
-                            Explore Curated Collections
-                        </MudText>
-                    </MudPaper>
-                </MudItem>
-            </MudGrid>
+        <MudCarouselItem Transition="Transition.Slide" Color="@Color.Primary" Class="px-12 pt-2 pb-12" Style="text-align: center; height: 100%;">
+            <MudStack Style="@($"{(Breakpoint <= Breakpoint.Xs ? "max-height" : "height")}: 100%;")">
+                <MudText Typo="Typo.h5" Align="Align.Center" Class="mt-3">
+                    Top Features
+                </MudText>
+                <MudStack Row="true" Style="height: calc(100% - 44px);">
+                    <MudGrid Spacing="3" Justify="Justify.Center" Style="height: 100%; align-content: center;">
+                        <MudItem xs="6" sm="3" Style="height: 100%; align-content: center;">
+                            <MudPaper Class="pa-2" Elevation="3" Style="text-align:center; width: 100%; height: 100%;">
+                                <MudImage Src="visitor-slide-2-trending.png" Style="max-height: calc(100% - 64px); max-width: 100%;"></MudImage>
+                                <MudText Typo="Typo.subtitle1" Style="line-height: 1.3">
+                                    Discover What's Trending
+                                </MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="6" sm="3" Style="height: 100%; align-content: center;">
+                            <MudPaper Class="pa-2" Elevation="3" Style="text-align:center; width: 100%; height: 100%;">
+                                <MudImage Src="visitor-slide-2-platforms.png" Style="max-height: calc(100% - 64px); max-width: 100%;"></MudImage>
+                                <MudText Typo="Typo.subtitle1" Style="line-height: 1.3">
+                                    Find New Streaming Platforms
+                                </MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="6" sm="3" Style="height: 100%; align-content: center;">
+                            <MudPaper Class="pa-2" Elevation="3" Style="text-align:center; width: 100%; height: 100%;">
+                                <MudImage Src="visitor-slide-2-manage.png" Style="max-height: calc(100% - 64px); max-width: 100%;"></MudImage>
+                                <MudText Typo="Typo.subtitle1" Style="line-height: 1.3">
+                                    Manage Your Platforms and Wishlists
+                                </MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="6" sm="3" Style="height: 100%; align-content: center;">
+                            <MudPaper Class="pa-2" Elevation="3" Style="text-align:center; width: 100%; height: 100%;">
+                                <MudImage Src="visitor-slide-2-collections.png" Style="max-height: calc(100% - 64px); max-width: 100%;"></MudImage>
+                                <MudText Typo="Typo.subtitle1" Style="line-height: 1.3">
+                                    Explore Curated Collections
+                                </MudText>
+                            </MudPaper>
+                        </MudItem>
+                    </MudGrid>
+                </MudStack>
+            </MudStack>
         </MudCarouselItem>
         <MudCarouselItem Transition="Transition.Slide" Color="@Color.Primary" Class="px-12 pt-2 pb-6" Style="text-align: center; height: 100%;">
             <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">

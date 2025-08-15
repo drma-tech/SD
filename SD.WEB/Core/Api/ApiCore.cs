@@ -24,73 +24,127 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key)
 
     protected async Task<string?> GetValueAsync(string uri, CancellationToken cancellationToken = default)
     {
-        if (key.NotEmpty())
-            return await Http.GetValueAsync(uri.ConfigureParameters(GetVersion()), cancellationToken);
-        return await Http.GetValueAsync(uri, cancellationToken);
+        try
+        {
+            AppStateStatic.ProcessingStarted?.Invoke();
+
+            if (key.NotEmpty())
+                return await Http.GetValueAsync(uri.ConfigureParameters(GetVersion()), cancellationToken);
+            return await Http.GetValueAsync(uri, cancellationToken);
+        }
+        finally
+        {
+            AppStateStatic.ProcessingFinished?.Invoke();
+        }
     }
 
     protected async Task<T?> GetAsync<T>(string uri, bool setNewVersion = false, CancellationToken cancellationToken = default)
     {
-        if (setNewVersion) SetNewVersion(key);
+        try
+        {
+            AppStateStatic.ProcessingStarted?.Invoke();
 
-        if (key.NotEmpty())
-            return await Http.GetJsonFromApi<T>(uri.ConfigureParameters(GetVersion()), cancellationToken);
-        return await Http.GetJsonFromApi<T>(uri, cancellationToken);
+            if (setNewVersion) SetNewVersion(key);
+
+            if (key.NotEmpty())
+                return await Http.GetJsonFromApi<T>(uri.ConfigureParameters(GetVersion()), cancellationToken);
+            return await Http.GetJsonFromApi<T>(uri, cancellationToken);
+        }
+        finally
+        {
+            AppStateStatic.ProcessingFinished?.Invoke();
+        }
     }
 
     protected async Task<HashSet<T>> GetListAsync<T>(string uri, CancellationToken cancellationToken = default)
     {
-        if (key.NotEmpty())
+        try
         {
-            var result = await Http.GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetVersion()), cancellationToken);
-            return result ?? [];
+            AppStateStatic.ProcessingStarted?.Invoke();
+
+            if (key.NotEmpty())
+            {
+                var result = await Http.GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetVersion()), cancellationToken);
+                return result ?? [];
+            }
+            else
+            {
+                var result = await Http.GetJsonFromApi<HashSet<T>>(uri, cancellationToken);
+                return result ?? [];
+            }
         }
-        else
+        finally
         {
-            var result = await Http.GetJsonFromApi<HashSet<T>>(uri, cancellationToken);
-            return result ?? [];
+            AppStateStatic.ProcessingFinished?.Invoke();
         }
     }
 
     protected async Task<O?> PostAsync<I, O>(string uri, I? obj)
     {
-        SetNewVersion(key);
+        try
+        {
+            AppStateStatic.ProcessingStarted?.Invoke();
 
-        var response = await Http.PostAsJsonAsync(uri, obj, new JsonSerializerOptions());
+            SetNewVersion(key);
 
-        if (response.StatusCode == HttpStatusCode.NoContent) return default;
+            var response = await Http.PostAsJsonAsync(uri, obj, new JsonSerializerOptions());
 
-        if (response.IsSuccessStatusCode) return await response.Content.ReadFromJsonAsync<O>();
+            if (response.StatusCode == HttpStatusCode.NoContent) return default;
 
-        var content = await response.Content.ReadAsStringAsync();
-        throw new NotificationException(content);
+            if (response.IsSuccessStatusCode) return await response.Content.ReadFromJsonAsync<O>();
+
+            var content = await response.Content.ReadAsStringAsync();
+            throw new NotificationException(content);
+        }
+        finally
+        {
+            AppStateStatic.ProcessingFinished?.Invoke();
+        }
     }
 
     protected async Task<O?> PutAsync<I, O>(string uri, I? obj)
     {
-        SetNewVersion(key);
+        try
+        {
+            AppStateStatic.ProcessingStarted?.Invoke();
 
-        var response = await Http.PutAsJsonAsync(uri, obj, new JsonSerializerOptions());
+            SetNewVersion(key);
 
-        if (response.StatusCode == HttpStatusCode.NoContent) return default;
+            var response = await Http.PutAsJsonAsync(uri, obj, new JsonSerializerOptions());
 
-        if (response.IsSuccessStatusCode) return await response.Content.ReadFromJsonAsync<O>();
+            if (response.StatusCode == HttpStatusCode.NoContent) return default;
 
-        var content = await response.Content.ReadAsStringAsync();
-        throw new NotificationException(content);
+            if (response.IsSuccessStatusCode) return await response.Content.ReadFromJsonAsync<O>();
+
+            var content = await response.Content.ReadAsStringAsync();
+            throw new NotificationException(content);
+        }
+        finally
+        {
+            AppStateStatic.ProcessingFinished?.Invoke();
+        }
     }
 
     protected async Task<T?> DeleteAsync<T>(string uri)
     {
-        SetNewVersion(key);
+        try
+        {
+            AppStateStatic.ProcessingStarted?.Invoke();
 
-        var response = await Http.DeleteAsync(uri);
+            SetNewVersion(key);
 
-        if (response.StatusCode == HttpStatusCode.NoContent) return default;
+            var response = await Http.DeleteAsync(uri);
 
-        if (response.IsSuccessStatusCode) return await response.Content.ReadFromJsonAsync<T>();
+            if (response.StatusCode == HttpStatusCode.NoContent) return default;
 
-        var content = await response.Content.ReadAsStringAsync();
-        throw new NotificationException(content);
+            if (response.IsSuccessStatusCode) return await response.Content.ReadFromJsonAsync<T>();
+
+            var content = await response.Content.ReadAsStringAsync();
+            throw new NotificationException(content);
+        }
+        finally
+        {
+            AppStateStatic.ProcessingFinished?.Invoke();
+        }
     }
 }

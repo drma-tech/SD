@@ -19,7 +19,7 @@
 <SeoHeader Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")"></SeoHeader>
 
 <RenderControl Model="Media" Core="Core" ExpressionEmpty="@((MediaDetail? obj) => obj == null)">
-    <MudTabs Border="true" Outlined="true" PanelClass="pt-2" MinimumTabWidth="100px">
+    <MudTabs Border="true" Outlined="true" PanelClass="pt-2" MinimumTabWidth="48px">
         <MudTabPanel Tag="@Translations.TabAbout" Text="@Translations.TabAbout">
             <MudGrid Spacing="4">
                 <MudItem xs="12" sm="5" md="4" lg="3">

@@ -25,6 +25,8 @@ public static class AppStateStatic
     public static Action? DarkModeChanged { get; set; }
     public static Action<TempClientePaddle>? RegistrationSuccessful { get; set; }
     public static Action<string>? ShowError { get; set; }
+    public static Action? ProcessingStarted { get; set; }
+    public static Action? ProcessingFinished { get; set; }
 
     public static Region GetValidRegion(string? regionName)
     {

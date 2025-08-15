@@ -11,7 +11,7 @@
                         CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0">
             <MudToggleItem Value="@PopularType.Movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
                 <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()"></MudIcon>
+                    <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@PopularType.Movie.GetName()"></MudIcon>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                     <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@PopularType.Movie.GetName()</MudText>
@@ -19,7 +19,7 @@
             </MudToggleItem>
             <MudToggleItem Value="@PopularType.Show" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
                 <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@MediaType.movie.GetName()"></MudIcon>
+                    <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@PopularType.Show.GetName()"></MudIcon>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                     <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@PopularType.Show.GetName()</MudText>
