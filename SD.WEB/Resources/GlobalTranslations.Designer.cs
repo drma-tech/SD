@@ -275,5 +275,14 @@ namespace SD.WEB.Resources {
                 return ResourceManager.GetString("WriteReviewTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must be logged in to subscribe.
+        /// </summary>
+        public static string YouMustLoggedSubscribe {
+            get {
+                return ResourceManager.GetString("YouMustLoggedSubscribe", resourceCulture);
+            }
+        }
     }
 }

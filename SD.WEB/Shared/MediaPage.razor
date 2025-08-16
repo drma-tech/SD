@@ -135,7 +135,7 @@
                             }
                             else
                             {
-                                <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" OnClick="@Add" Disabled="!IsAuthenticated">@Translations.AddWishlist</MudButton>
+                                <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" OnClick="@Add">@Translations.AddWishlist</MudButton>
                             }
                         </MudItem>
                         <MudItem xs="12" sm="6" md="5" lg="4">
@@ -149,7 +149,7 @@
                             }
                             else
                             {
-                                <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" OnClick="@IsWatched" Disabled="!IsAuthenticated">@Translations.ButtonWatched</MudButton>
+                                <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" OnClick="@IsWatched">@Translations.ButtonWatched</MudButton>
                             }
                         </MudItem>
                     </MudGrid>
@@ -363,6 +363,12 @@
 
         try
         {
+            if (!IsAuthenticated)
+            {
+                Snackbar.Add(GlobalTranslations.YouMustLoggedSubscribe, Severity.Warning);
+                Navigation.NavigateTo("/login-providers");
+            }
+
             Wish ??= new WishList();
 
             var item = new WishListItem(Media.tmdb_id, Media.title, Media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), Media.runtime);
@@ -396,6 +402,12 @@
 
         try
         {
+            if (!IsAuthenticated)
+            {
+                Snackbar.Add(GlobalTranslations.YouMustLoggedSubscribe, Severity.Warning);
+                Navigation.NavigateTo("/login-providers");
+            }
+
             var hasCollection = Media.Collection.Any() && Media.Collection.Count > 1;
 
             if (hasCollection)
