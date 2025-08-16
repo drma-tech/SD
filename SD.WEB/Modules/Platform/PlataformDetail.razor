@@ -1,6 +1,6 @@
 ﻿@page "/platforms/{id}"
 <SeoHeader Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")"
-           Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)">
+           Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Keywords="@([Provider?.name])">
 </SeoHeader>
 @using SD.WEB.Modules.Collections.Components
 @using SD.WEB.Modules.Collections.Core
