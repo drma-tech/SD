@@ -81,27 +81,3 @@ window.initUserBack = function () {
             });
     };
 }
-
-window.initUsetiful = function () {
-    getUserInfo()
-        .then(user => {
-            if (user) {
-                window.usetifulTags = {
-                    userId: user?.userId
-                };
-
-                (function (w, d, s) {
-                    var a = d.getElementsByTagName('head')[0];
-                    var r = d.createElement('script');
-                    r.async = 1;
-                    r.src = s;
-                    r.setAttribute('id', 'usetifulScript');
-                    r.dataset.token = "7a15ef5f4b9e80c2902d622ee3dd32be";  // This is your unique USETIFUL token. Don’t change it.
-                    a.appendChild(r);
-                })(window, document, "https://www.usetiful.com/dist/usetiful.js");
-            }
-        })
-        .catch(error => {
-            showError(error.message);
-        });
-}
