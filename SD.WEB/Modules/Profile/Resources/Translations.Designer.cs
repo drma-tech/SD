@@ -133,7 +133,7 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start tracking your streaming life today — it&apos;s free!.
+        ///   Looks up a localized string similar to Start managing your streaming life today — it&apos;s free!.
         /// </summary>
         public static string HeroCall {
             get {
