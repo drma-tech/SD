@@ -20,7 +20,7 @@
 
 @if (!IsAuthenticated)
 {
-    <MudCarousel ShowArrows="true" AutoCycle="false" TData="object" Class="mud-width-full mb-5" Style="@($"height: {(Breakpoint <= Breakpoint.Xs ? 450 : 300)}px;")">
+    <MudCarousel ShowArrows="true" AutoCycle="true" TData="object" Class="mud-width-full mb-5" Style="@($"height: {(Breakpoint <= Breakpoint.Xs ? 450 : 300)}px;")">
         <MudCarouselItem Transition="Transition.Slide" Color="@Color.Primary" Class="px-10 pt-2 pb-10" Style="text-align: center; height: 100%;">
             <MudGrid Spacing="2" Justify="Justify.Center" Style="@($"{(Breakpoint <= Breakpoint.Xs ? "max-height" : "height")}: 100%; align-content: center;")">
                 <MudItem xs="12" sm="6" Style="height: 100%; align-content: center;">
