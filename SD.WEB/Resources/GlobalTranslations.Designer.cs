@@ -70,15 +70,6 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Beta Version!.
-        /// </summary>
-        public static string BetaVersion {
-            get {
-                return ResourceManager.GetString("BetaVersion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Exclusive selection from Streaming Discovery (Only films and series with 5 or more green ratings are included in this list).
         /// </summary>
         public static string CertifiedDescription {
@@ -174,15 +165,6 @@ namespace SD.WEB.Resources {
         public static string PremiumFeature {
             get {
                 return ResourceManager.GetString("PremiumFeature", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Product still under development, so a lot of things will still be improved. If you have any suggestions, please ask in the support section of the app or email us..
-        /// </summary>
-        public static string ProductUnderDevelopment {
-            get {
-                return ResourceManager.GetString("ProductUnderDevelopment", resourceCulture);
             }
         }
         

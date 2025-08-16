@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppDescription" xml:space="preserve">
+    <value>Manage your streaming platforms, track your watch progress, and discover what to watch next with ease. Browse expert-curated lists like award winners and critic picks - all in one place.</value>
+  </data>
   <data name="AppName" xml:space="preserve">
     <value>Streaming Discovery</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Manage your streaming platforms, track your watch progress, and discover what to watch next with ease. Browse expert-curated lists like award winners and critic picks - all in one place.</value>
+  <data name="CollectionsDescription" xml:space="preserve">
+    <value>See suggestions for movies and series from different awards (Oscar, Golden Globes, Emmys, etc.) or specialized websites (IMDB, TMDB, Rotten Tomatoes, etc.).</value>
+  </data>
+  <data name="CollectionsTitle" xml:space="preserve">
+    <value>Collections</value>
   </data>
   <data name="ProfileDescription" xml:space="preserve">
     <value>See your favorite streaming providers, wishlists (movies, series and documentaries), what you're currently watching and much more.</value>
@@ -134,11 +140,5 @@
   </data>
   <data name="ProvidersTitle" xml:space="preserve">
     <value>Platforms</value>
-  </data>
-  <data name="CollectionsDescription" xml:space="preserve">
-    <value>See suggestions for movies and series from different awards (Oscar, Golden Globes, Emmys, etc.) or specialized websites (IMDB, TMDB, Rotten Tomatoes, etc.).</value>
-  </data>
-  <data name="CollectionsTitle" xml:space="preserve">
-    <value>Collections</value>
   </data>
 </root>

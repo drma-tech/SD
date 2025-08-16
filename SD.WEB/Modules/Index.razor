@@ -13,7 +13,7 @@
 @inject WishListApi WishApi
 @inject IJSRuntime JsRuntime
 
-<SeoHeader Title="Home" Description="@SeoTranslations.Description" Url="/"></SeoHeader>
+<SeoHeader Title="Home" Description="@SeoTranslations.AppDescription" Url="/"></SeoHeader>
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-4"

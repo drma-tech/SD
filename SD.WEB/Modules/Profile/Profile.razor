@@ -18,43 +18,7 @@
 
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Profile"></GoogleAdSense>
 
-@if (IsAuthenticated)
-{
-    @* @if (Platform.NotEmpty() && Reviewed.Empty() && Client != null
-     && (Client.ClientePaddle == null || !Client.ClientePaddle.IsPaidUser))
-    {
-        <Alert Visible="true" Color="Color.Info" Class="mb-3">
-            <AlertMessage Display="Display.Inline.OnTablet.Block.OnMobile">
-                @GlobalTranslations.WriteReviewTitle
-            </AlertMessage>
-            <AlertDescription>
-                <Span Margin="Margin.Is2.FromEnd">@GlobalTranslations.WriteReviewMessage</Span>
-                @if (Platform == "play")
-                {
-                    <Button Color="Color.Secondary" Size="Size.Small" Clicked="SetReviewed"
-                            To="https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa" Type="@ButtonType.Link" Target="Target.Blank">
-                        <Image Source="/logo/google-play.png" Width="Width.Px(16)"></Image> Google Play
-                    </Button>
-                }
-                @if (Platform == "windows")
-                {
-                    <Button Color="Color.Secondary" Size="Size.Small" Clicked="SetReviewed"
-                            To="https://apps.microsoft.com/detail/9PB1PKRDD8L0" Type="@ButtonType.Link" Target="Target.Blank">
-                        <Image Source="/logo/microsoft-store.png" Width="Width.Px(16)"></Image> Microsoft Store
-                    </Button>
-                }
-                @if (Platform == "webapp")
-                {
-                    <Button Color="Color.Secondary" Size="Size.Small" Clicked="SetReviewed"
-                            To="https://www.trustpilot.com/review/streamingdiscovery.com" Type="@ButtonType.Link" Target="Target.Blank">
-                        <Image Source="/logo/trustpilot.png" Width="Width.Px(16)"></Image> Trustpilot
-                    </Button>
-                }
-            </AlertDescription>
-        </Alert>
-    } *@
-}
-else
+@if (!IsAuthenticated)
 {
     <MudCarousel ShowArrows="true" AutoCycle="true" TData="object" Class="mud-width-full mb-5" Style="@($"height: {(Breakpoint <= Breakpoint.Xs ? 450 : 300)}px;")">
         <MudCarouselItem Transition="Transition.Slide" Color="@Color.Primary" Class="px-12 pt-2 pb-6" Style="text-align: center; height: 100%;">
@@ -64,10 +28,10 @@ else
                 </MudItem>
                 <MudItem xs="12" sm="6">
                     <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
-                        Streaming Discovery
+                        @SeoTranslations.AppName
                     </MudText>
                     <MudText Typo="Typo.body1" Align="Align.Justify" Class="my-3">
-                        Manage your streaming platforms, track your watch progress, and discover what to watch next with ease. Browse expert-curated lists like award winners and critic picks - all in one place.
+                        @SeoTranslations.AppDescription
                     </MudText>
                 </MudItem>
             </MudGrid>
@@ -75,39 +39,39 @@ else
         <MudCarouselItem Transition="Transition.Slide" Color="@Color.Primary" Class="px-12 pt-2 pb-12" Style="text-align: center; height: 100%;">
             <MudStack Style="@($"{(Breakpoint <= Breakpoint.Xs ? "max-height" : "height")}: 100%;")">
                 <MudText Typo="Typo.h5" Align="Align.Center" Class="mt-3">
-                    Top Features
+                    @Resources.Translations.TopFeatures
                 </MudText>
                 <MudStack Row="true" Style="height: calc(100% - 44px);">
                     <MudGrid Spacing="3" Justify="Justify.Center" Style="height: 100%; align-content: center;">
-                        <MudItem xs="6" sm="3" Style="height: 100%; align-content: center;">
+                        <MudItem xs="6" sm="3" Style="max-height: 100%; align-content: center;">
                             <MudPaper Class="pa-2" Elevation="3" Style="text-align:center; width: 100%; height: 100%;">
-                                <MudImage Src="visitor-slide-2-trending.png" Style="max-height: calc(100% - 64px); max-width: 100%;"></MudImage>
+                                <MudImage Src="visitor-slide-2-trending.png" Style="max-height: calc(100% - 64px); max-width: 70%;"></MudImage>
                                 <MudText Typo="Typo.subtitle1" Style="line-height: 1.3">
-                                    Discover What's Trending
+                                    @Resources.Translations.TopFeaturesTitle1
                                 </MudText>
                             </MudPaper>
                         </MudItem>
-                        <MudItem xs="6" sm="3" Style="height: 100%; align-content: center;">
+                        <MudItem xs="6" sm="3" Style="max-height: 100%; align-content: center;">
                             <MudPaper Class="pa-2" Elevation="3" Style="text-align:center; width: 100%; height: 100%;">
-                                <MudImage Src="visitor-slide-2-platforms.png" Style="max-height: calc(100% - 64px); max-width: 100%;"></MudImage>
+                                <MudImage Src="visitor-slide-2-platforms.png" Style="max-height: calc(100% - 64px); max-width: 70%;"></MudImage>
                                 <MudText Typo="Typo.subtitle1" Style="line-height: 1.3">
-                                    Find New Streaming Platforms
+                                    @Resources.Translations.TopFeaturesTitle2
                                 </MudText>
                             </MudPaper>
                         </MudItem>
-                        <MudItem xs="6" sm="3" Style="height: 100%; align-content: center;">
+                        <MudItem xs="6" sm="3" Style="max-height: 100%; align-content: center;">
                             <MudPaper Class="pa-2" Elevation="3" Style="text-align:center; width: 100%; height: 100%;">
-                                <MudImage Src="visitor-slide-2-manage.png" Style="max-height: calc(100% - 64px); max-width: 100%;"></MudImage>
+                                <MudImage Src="visitor-slide-2-manage.png" Style="max-height: calc(100% - 64px); max-width: 70%;"></MudImage>
                                 <MudText Typo="Typo.subtitle1" Style="line-height: 1.3">
-                                    Manage Your Platforms and Wishlists
+                                    @Resources.Translations.TopFeaturesTitle3
                                 </MudText>
                             </MudPaper>
                         </MudItem>
-                        <MudItem xs="6" sm="3" Style="height: 100%; align-content: center;">
+                        <MudItem xs="6" sm="3" Style="max-height: 100%; align-content: center;">
                             <MudPaper Class="pa-2" Elevation="3" Style="text-align:center; width: 100%; height: 100%;">
-                                <MudImage Src="visitor-slide-2-collections.png" Style="max-height: calc(100% - 64px); max-width: 100%;"></MudImage>
+                                <MudImage Src="visitor-slide-2-collections.png" Style="max-height: calc(100% - 64px); max-width: 70%;"></MudImage>
                                 <MudText Typo="Typo.subtitle1" Style="line-height: 1.3">
-                                    Explore Curated Collections
+                                    @Resources.Translations.TopFeaturesTitle4
                                 </MudText>
                             </MudPaper>
                         </MudItem>
@@ -117,7 +81,7 @@ else
         </MudCarouselItem>
         <MudCarouselItem Transition="Transition.Slide" Color="@Color.Primary" Class="px-12 pt-2 pb-6" Style="text-align: center; height: 100%;">
             <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
-                Start tracking your watchlist today — it’s free!
+                @Translations.HeroCall
             </MudText>
             <MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="/login-providers" Class="my-4">
                 @Translations.HeroButton
