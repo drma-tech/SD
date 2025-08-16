@@ -367,6 +367,7 @@
             {
                 Snackbar.Add(GlobalTranslations.YouMustLoggedSubscribe, Severity.Warning);
                 Navigation.NavigateTo("/login-providers");
+                return;
             }
 
             Wish ??= new WishList();
@@ -406,6 +407,7 @@
             {
                 Snackbar.Add(GlobalTranslations.YouMustLoggedSubscribe, Severity.Warning);
                 Navigation.NavigateTo("/login-providers");
+                return;
             }
 
             var hasCollection = Media.Collection.Any() && Media.Collection.Count > 1;
