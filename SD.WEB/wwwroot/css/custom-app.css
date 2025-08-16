@@ -8,8 +8,13 @@
 }
 
 body .pwa-updater[b-pwa-updater] {
-    --pwa-updater-bar-backcolor: forestgreen;
+    --pwa-updater-bar-backcolor: var(--mud-palette-primary);
     --pwa-updater-bar-z-index: 2000;
+    height: 64px;
+}
+
+.pwa-updater-close-button {
+    display: none;
 }
 
 .poster-chip {

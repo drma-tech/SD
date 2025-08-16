@@ -149,14 +149,32 @@
     [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }
     [Parameter] public bool IsAuthenticated { get; set; }
 
-    private bool _processing = false;
     private bool _open = false;
+
+    private int _processingCount = 0;
+    private bool _processing => _processingCount > 0;
 
     protected override void OnInitialized()
     {
         Navigation.LocationChanged += delegate { StateHasChanged(); };
-        AppStateStatic.ProcessingStarted += delegate { _processing = true; StateHasChanged(); };
-        AppStateStatic.ProcessingFinished += delegate { _processing = false; StateHasChanged(); };
+
+        AppStateStatic.ProcessingStarted += () =>
+        {
+            Interlocked.Increment(ref _processingCount);
+            InvokeAsync(StateHasChanged);
+        };
+
+        AppStateStatic.ProcessingFinished += async () =>
+        {
+            Interlocked.Decrement(ref _processingCount);
+
+            await Task.Delay(200);
+
+            if (_processingCount == 0)
+            {
+                await InvokeAsync(StateHasChanged);
+            }
+        };
     }
 
     private void Logout()
