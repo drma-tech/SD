@@ -25,13 +25,18 @@
     [Parameter] public Region SelectedValue { get; set; }
     [Parameter] public EventCallback<Region> SelectedValueChanged { get; set; }
 
-    public IEnumerable<EnumObject<Region>> Regions { get; set; } = [];
+    public List<EnumObject<Region>> Regions { get; set; } = [];
     public string? Continent { get; set; }
 
-    protected override void OnInitialized()
+    protected override void OnAfterRender(bool firstRender)
     {
-        Regions = EnumHelper.GetList<Region>();
-        Continent = SelectedValue.GetCustomAttribute()?.Group;
+        if (firstRender)
+        {
+            Regions = EnumHelper.GetList<Region>().ToList();
+            Continent = SelectedValue.GetCustomAttribute()?.Group;
+        }
+
+        base.OnAfterRender(firstRender);
     }
 
 }

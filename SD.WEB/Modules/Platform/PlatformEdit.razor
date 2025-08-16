@@ -85,11 +85,11 @@
 
     private AllProviders? AllProviders { get; set; }
 
-    public IEnumerable<EnumObject<Language>> Languages { get; set; } = Array.Empty<EnumObject<Language>>();
+    public List<EnumObject<Language>> Languages { get; set; } = [];
 
     protected override void OnInitialized()
     {
-        Languages = EnumHelper.GetList<Language>();
+        Languages = EnumHelper.GetList<Language>().ToList();
     }
 
     protected override async Task LoadDataRender()

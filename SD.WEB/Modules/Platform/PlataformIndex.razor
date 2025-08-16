@@ -96,16 +96,16 @@
 
     [Custom(Name = "Model")] public DeliveryModel? DeliveryModel { get; set; }
 
-    public IEnumerable<ProviderModel> GetFilteredProviders()
+    public List<ProviderModel> GetFilteredProviders()
     {
         return AllProviders?.Items
                    .Where(p => p.regions.Any(a => a == AppStateStatic.Region))
                    .Where(p => p.models.Any(a => DeliveryModel == null || a == DeliveryModel))
-                   .OrderBy(o => o.priority).AsEnumerable()
+                   .OrderBy(o => o.priority).ToList()
                ?? [];
     }
 
-    public IEnumerable<EnumObject<DeliveryModel>> DeliveryModels { get; set; } = [];
+    public List<EnumObject<DeliveryModel>> DeliveryModels { get; set; } = [];
 
     protected override async Task OnInitializedAsync()
     {
@@ -113,7 +113,7 @@
 
         AppStateStatic.RegionChanged += StateHasChanged;
 
-        DeliveryModels = EnumHelper.GetList<DeliveryModel>();
+        DeliveryModels = EnumHelper.GetList<DeliveryModel>().ToList();
 
         //it is in initialize so it can be recognized by link mapping
         AllProviders = await AllProvidersApi.GetAll(Core);
