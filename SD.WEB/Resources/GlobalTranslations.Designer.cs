@@ -277,6 +277,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You must be logged in.
+        /// </summary>
+        public static string YouMustLogged {
+            get {
+                return ResourceManager.GetString("YouMustLogged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You must be logged in to subscribe.
         /// </summary>
         public static string YouMustLoggedSubscribe {

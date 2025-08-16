@@ -365,7 +365,7 @@
         {
             if (!IsAuthenticated)
             {
-                Snackbar.Add(GlobalTranslations.YouMustLoggedSubscribe, Severity.Warning);
+                Snackbar.Add(GlobalTranslations.YouMustLogged, Severity.Warning);
                 Navigation.NavigateTo("/login-providers");
                 return;
             }
@@ -405,7 +405,7 @@
         {
             if (!IsAuthenticated)
             {
-                Snackbar.Add(GlobalTranslations.YouMustLoggedSubscribe, Severity.Warning);
+                Snackbar.Add(GlobalTranslations.YouMustLogged, Severity.Warning);
                 Navigation.NavigateTo("/login-providers");
                 return;
             }
