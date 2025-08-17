@@ -13,29 +13,16 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<ClienteLogin>(fact
 
     public async Task Add(string platform)
     {
-        string ip;
-
-        try
-        {
-            //TODO: TypeError: Failed to fetch
-            var response = await Http.GetAsync(new Uri("https://ipinfo.io/ip"));
-            ip = await response.Content.ReadAsStringAsync();
-        }
-        catch (Exception)
-        {
-            ip = "0.0.0.0";
-        }
-
-        await PostAsync<ClienteLogin>(Endpoint.Add(platform, ip?.Trim()), null, null);
+        await PostAsync<ClienteLogin>(Endpoint.Add(platform), null, null);
     }
 
     private struct Endpoint
     {
         public const string Get = "login/get";
 
-        public static string Add(string platform, string? ip)
+        public static string Add(string platform)
         {
-            return $"login/add?platform={platform}&ip={ip}";
+            return $"login/add?platform={platform}";
         }
     }
 }

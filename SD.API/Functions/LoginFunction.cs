@@ -32,8 +32,7 @@ public class LoginFunction(CosmosRepository repo)
         try
         {
             var platform = req.GetQueryParameters()["platform"] ?? "webapp";
-            var ip = req.GetQueryParameters()["ip"] ?? "null ip";
-            var ip2 = req.GetUserIP();
+            var ip = req.GetUserIP();
             var userId = req.GetUserId();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
             var login = await repo.Get<ClienteLogin>(DocumentType.Login, userId, cancellationToken);
@@ -52,8 +51,7 @@ public class LoginFunction(CosmosRepository repo)
             else
             {
                 login.Accesses = login.Accesses
-                    .Union([new Access { Date = DateTimeOffset.Now, Platform = platform, Ip = ip }]).ToArray()
-                    .Union([new Access { Date = DateTimeOffset.Now, Platform = "ip2", Ip = ip2 }]).ToArray();
+                    .Union([new Access { Date = DateTimeOffset.Now, Platform = platform, Ip = ip }]).ToArray();
 
                 await repo.Upsert(login, cancellationToken);
             }

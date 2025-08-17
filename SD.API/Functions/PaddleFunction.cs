@@ -62,7 +62,6 @@ public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
             client.ClientePaddle.IsPaidUser = body.data.status is "active" or "trialing";
 
             await repo.Upsert(client, cancellationToken);
-            req.LogWarning($"id: {body.data.id} - status: {body.data.status}");
         }
         catch (Exception ex)
         {

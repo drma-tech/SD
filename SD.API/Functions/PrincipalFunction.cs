@@ -82,10 +82,6 @@ public class PrincipalFunction(CosmosRepository repo)
             req.ProcessException(ex);
             throw;
         }
-        finally
-        {
-            req.LogWarning(req.GetUserId());
-        }
     }
 
     [Function("PrincipalRemove")]
