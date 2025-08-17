@@ -18,12 +18,6 @@
                 @($"Unfortunately, due to legal and policy restrictions, we are unable to offer our services in {_BlockedCountries[CurrentCountry!]}.")
             </MudAlert>
         }
-        @if (AppleNotAllowed)
-        {
-            <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
-                @($"Subscriptions are not available in this region through the app.")
-            </MudAlert>
-        }
         else if (IsAuthenticated && (Client == null || Config == null))
         {
             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="100px" Animation="Animation.Wave" />
@@ -331,7 +325,6 @@
     private string? CurrentCountry { get; set; }
     private string? CurrentPlatform { get; set; }
     private bool BlockedCountry { get; set; }
-    private bool AppleNotAllowed { get; set; }
 
     private readonly Dictionary<string, string> _BlockedCountries = new()
     {
@@ -346,11 +339,6 @@
         { "RU", "Russia" },
         { "SY", "Syria" },
         { "VE", "Venezuela" }
-    };
-
-    private readonly Dictionary<string, string> _iosAllowedCountries = new()
-    {
-        { "US", "United States" }
     };
 
     private class Plan
@@ -408,12 +396,6 @@
         }
 
         CurrentPlatform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
-
-        if (CurrentCountry.NotEmpty() && CurrentPlatform == "ios")
-        {
-            //https://developer.apple.com/app-store/review/guidelines/#link-to-other-purchase-methods
-            AppleNotAllowed = !_iosAllowedCountries.ContainsKey(CurrentCountry);
-        }
 
         Config = await ConfigurationApi.GetConfigurations();
         if (Config == null) throw new NotificationException("server communication error");

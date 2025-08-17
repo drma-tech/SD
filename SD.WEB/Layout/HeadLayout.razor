@@ -28,9 +28,12 @@
         <MudIconButton Icon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Style="padding: 8px;" />
         <MudIconButton Icon="@IconsFA.Solid.Icon("headset").Font" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")" Style="padding: 8px;" />
         <MudSpacer />
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Warning" StartIcon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Class="me-2" OnClick="@OpenSubscription">
-            @Translations.Subscription
-        </MudButton>
+        @if (SubscriptionAllowed)
+        {
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Warning" StartIcon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Class="me-2" OnClick="@OpenSubscription">
+                @Translations.Subscription
+            </MudButton>
+        }
         <AuthorizeView>
             <Authorized>
                 <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
@@ -93,9 +96,12 @@
             }
         </MudButton>
         <MudSpacer />
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Warning" StartIcon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Class="me-2" OnClick="@OpenSubscription">
-            @Translations.Subscription
-        </MudButton>
+        @if (SubscriptionAllowed)
+        {
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Warning" StartIcon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Class="me-2" OnClick="@OpenSubscription">
+                @Translations.Subscription
+            </MudButton>
+        }
         <AuthorizeView>
             <Authorized>
                 <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
@@ -124,7 +130,10 @@
             <MudText Typo="Typo.h6">@SeoTranslations.AppName</MudText>
         </MudDrawerHeader>
         <MudNavMenu>
-            <MudNavLink Icon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" IconColor="Color.Warning" OnClick="@OpenSubscription">@Translations.Subscription</MudNavLink>
+            @if (SubscriptionAllowed)
+            {
+                <MudNavLink Icon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" IconColor="Color.Warning" OnClick="@OpenSubscription">@Translations.Subscription</MudNavLink>
+            }
             <AuthorizeView>
                 <Authorized>
                     <MudNavLink Icon="@IconsFA.Solid.Icon("circle-user").Font" OnClick="@MyAccount">@Menu.Profile</MudNavLink>
@@ -150,9 +159,15 @@
     [Parameter] public bool IsAuthenticated { get; set; }
 
     private bool _open = false;
+    private bool SubscriptionAllowed { get; set; } = true;
 
     private int _processingCount = 0;
     private bool _processing => _processingCount > 0;
+
+    private readonly Dictionary<string, string> _iosAllowedCountries = new()
+    {
+        { "US", "United States" }
+    };
 
     protected override void OnInitialized()
     {
@@ -175,6 +190,18 @@
                 await InvokeAsync(StateHasChanged);
             }
         };
+    }
+
+    protected override async Task LoadDataRender()
+    {
+        var CurrentCountry = await ConfigurationApi.GetCountry();
+        var CurrentPlatform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
+
+        if (CurrentCountry.NotEmpty() && CurrentPlatform == "ios")
+        {
+            //https://developer.apple.com/app-store/review/guidelines/#link-to-other-purchase-methods
+            SubscriptionAllowed = _iosAllowedCountries.ContainsKey(CurrentCountry);
+        }
     }
 
     private void Logout()
