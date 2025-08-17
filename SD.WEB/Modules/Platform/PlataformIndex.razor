@@ -113,7 +113,7 @@
 
         AppStateStatic.RegionChanged += StateHasChanged;
 
-        DeliveryModels = EnumHelper.GetList<DeliveryModel>().ToList();
+        DeliveryModels = EnumHelper.GetList<DeliveryModel>();
 
         //it is in initialize so it can be recognized by link mapping
         AllProviders = await AllProvidersApi.GetAll(Core);

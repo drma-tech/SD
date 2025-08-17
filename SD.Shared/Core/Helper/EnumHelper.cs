@@ -7,14 +7,16 @@ public static class EnumHelper
         return Enum.GetValues<TEnum>();
     }
 
-    public static IEnumerable<EnumObject<TEnum>> GetList<TEnum>(bool translate = true) where TEnum : struct, Enum
+    public static List<EnumObject<TEnum>> GetList<TEnum>(bool translate = true) where TEnum : struct, Enum
     {
+        var result = new List<EnumObject<TEnum>>();
         foreach (var val in GetArray<TEnum>())
         {
             var attr = val.GetCustomAttribute(translate);
 
-            yield return new EnumObject<TEnum>(val, attr?.Name, attr?.Description, attr?.Group);
+            result.Add(new EnumObject<TEnum>(val, attr?.Name, attr?.Description, attr?.Group));
         }
+        return result;
     }
 }
 

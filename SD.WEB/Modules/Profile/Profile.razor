@@ -173,8 +173,6 @@
 </MudGrid>
 
 @code {
-    [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }
-
     public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
     public RenderControlCore<WishList?> CoreWish { get; set; } = new();
@@ -218,14 +216,6 @@
     {
         Settings = await CacheSettingsApi.GetSettings();
         Principal = await PrincipalApi.Get(IsAuthenticated);
-
-        if (!string.IsNullOrEmpty(_ptxn))
-        {
-            var config = await ConfigurationApi.GetConfigurations();
-            if (config == null) throw new NotificationException("server comunication error");
-
-            await JsRuntime.InvokeVoidAsync("startPaddle", config.Token);
-        }
 
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
 

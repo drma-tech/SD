@@ -78,7 +78,7 @@ public static class IsolatedFunctionHelper
 
         const string messageTemplate = "ProcessException. UserId: {UserId}, IP: {IP}, State: {State}, Params: {Params}";
 
-        logger.LogError(ex, messageTemplate, req.GetUserId(), req.GetUserIP(), req.BuildState(), req.BuildParams());
+        logger.LogError(ex, messageTemplate, req.GetUserId(false), req.GetUserIP(), req.BuildState(), req.BuildParams());
     }
 
     private static string BuildState(this HttpRequestData req)

@@ -117,7 +117,7 @@
     }
 </MudAppBar>
 
-@if (Breakpoint <= Breakpoint.Xs)
+@if (Breakpoint <= Breakpoint.Xs) //mobile menu
 {
     <MudDrawer @bind-Open="@_open" Anchor="Anchor.Right" Elevation="1" OverlayAutoClose="true">
         <MudDrawerHeader>

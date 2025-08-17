@@ -32,7 +32,7 @@
     {
         if (firstRender)
         {
-            Regions = EnumHelper.GetList<Region>().ToList();
+            Regions = EnumHelper.GetList<Region>();
             Continent = SelectedValue.GetCustomAttribute()?.Group;
         }
 

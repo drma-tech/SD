@@ -18,7 +18,7 @@ public static class StaticWebAppsAuth
     private static readonly string[] Roles = ["anonymous"];
     private static readonly JsonSerializerOptions Options = new() { PropertyNameCaseInsensitive = true };
 
-    public static string GetUserId(this HttpRequestData req)
+    public static string? GetUserId(this HttpRequestData req, bool required = true)
     {
         if (req.Url.Host.Contains("localhost"))
         {
@@ -29,8 +29,10 @@ public static class StaticWebAppsAuth
 
         var principal = req.Parse();
 
-        return principal?.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value ??
-               throw new UnhandledException("user id not available");
+        if (required)
+            return principal?.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value ?? throw new UnhandledException("user id not available");
+        else
+            return principal?.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
     }
 
     public static string? GetUserIP(this HttpRequestData req)

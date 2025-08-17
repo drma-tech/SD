@@ -89,7 +89,7 @@
 
     protected override void OnInitialized()
     {
-        Languages = EnumHelper.GetList<Language>().ToList();
+        Languages = EnumHelper.GetList<Language>();
     }
 
     protected override async Task LoadDataRender()

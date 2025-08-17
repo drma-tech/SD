@@ -32,7 +32,7 @@
     {
         if (firstRender)
         {
-            Languages = EnumHelper.GetList<Language>().ToList();
+            Languages = EnumHelper.GetList<Language>();
             Type = SelectedValue.GetCustomAttribute()?.Group;
         }
 
