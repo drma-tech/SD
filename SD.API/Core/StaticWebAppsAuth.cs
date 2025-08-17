@@ -33,6 +33,13 @@ public static class StaticWebAppsAuth
                throw new UnhandledException("user id not available");
     }
 
+    public static string? GetUserIP(this HttpRequestData req)
+    {
+        return req.Headers.TryGetValues("X-Forwarded-For", out var values)
+            ? values.FirstOrDefault()?.Split(',')[0]
+            : null;
+    }
+
     private static ClaimsPrincipal? Parse(this HttpRequestData req)
     {
         var principal = new ClientPrincipal();
