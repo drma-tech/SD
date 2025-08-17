@@ -76,9 +76,9 @@ public static class IsolatedFunctionHelper
     {
         var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
 
-        const string messageTemplate = "ProcessException. UserId: {UserId} InvocationId: {InvocationId}, State: {State}, Params: {Params}";
+        const string messageTemplate = "ProcessException. UserId: {UserId}, IP: {IP}, InvocationId: {InvocationId}, State: {State}, Params: {Params}";
 
-        logger.LogError(ex, messageTemplate, req.GetUserId(), req.FunctionContext.InvocationId, req.BuildState(), req.BuildParams());
+        logger.LogError(ex, messageTemplate, req.GetUserId(), req.GetUserIP(), req.FunctionContext.InvocationId, req.BuildState(), req.BuildParams());
     }
 
     private static string BuildState(this HttpRequestData req)
