@@ -37,9 +37,9 @@
 			<DependentUpon>Translations.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Modules\Collections\Resources\Translations.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>Translations.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Translations.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Modules\News\Resources\Translations.Designer.cs">
 			<DesignTime>True</DesignTime>
@@ -87,9 +87,9 @@
 			<DependentUpon>Button.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\Credit.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>Credit.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Credit.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\GlobalTranslations.Designer.cs">
 			<DesignTime>True</DesignTime>
@@ -113,8 +113,8 @@
 			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Modules\Collections\Resources\Translations.resx">
-		  <Generator>PublicResXFileCodeGenerator</Generator>
-		  <LastGenOutput>Translations.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Modules\News\Resources\Translations.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
@@ -153,8 +153,8 @@
 			<LastGenOutput>Button.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Credit.resx">
-		  <Generator>PublicResXFileCodeGenerator</Generator>
-		  <LastGenOutput>Credit.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Credit.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\GlobalTranslations.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>

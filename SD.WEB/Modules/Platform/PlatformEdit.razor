@@ -19,61 +19,61 @@
     Save Session
 </MudButton>
 
-<MudDataGrid T="ProviderModel" Items="@AllProviders?.Items" Filterable="true" Dense="true" EditMode="DataGridEditMode.Form" EditTrigger="DataGridEditTrigger.OnRowClick"
-             FilterMode="DataGridFilterMode.ColumnFilterMenu" Class="mt-3" RowsPerPage="8">
+<MudDataGrid T="ProviderModel" Items="@AllProviders?.Items" ReadOnly="false" Filterable="true" Dense="true"
+             EditMode="DataGridEditMode.Form" EditTrigger="DataGridEditTrigger.Manual"
+             FilterMode="DataGridFilterMode.ColumnFilterMenu" Class="mt-3" RowsPerPage="8"
+             CommittedItemChanges="RowUpdated" EditDialogOptions="new DialogOptions(){ FullWidth=true}">
     <Columns>
-        @*  <DataGridCommandColumn TItem="ProviderModel" Width="140px">
-            <ClearFilterCommandTemplate>
+        <TemplateColumn>
+            @*  <ClearFilterCommandTemplate>
                 <Button Color="Color.Secondary" Clicked="@context.Clicked" Size="Size.Small">
                     <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
                 </Button>
-            </ClearFilterCommandTemplate>
-            <NewCommandTemplate>
+            </ClearFilterCommandTemplate> *@
+            @*   <NewCommandTemplate>
                 <Button Color="Color.Success" Clicked="@context.Clicked" Size="Size.Small">
                     <Blazorise.Icon Name="FontAwesomeIcons.Plus"></Blazorise.Icon>
                 </Button>
-            </NewCommandTemplate>
-            <EditCommandTemplate>
+            </NewCommandTemplate> *@
+            @*  <EditCommandTemplate>
                 <Button Color="Color.Primary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.Edit"></Blazorise.Icon>
                 </Button>
-            </EditCommandTemplate>
-            <SaveCommandTemplate>
+            </EditCommandTemplate> *@
+            <CellTemplate>
+                <div style="width: 60px;">
+                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
+                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Link" Disabled="context.Item.link.NotEmpty()" Target="_blank"
+                                   Href="@($"https://www.google.com/search?q=streaming+{context.Item.name}")" />
+                </div>
+            </CellTemplate>
+            @*  <SaveCommandTemplate>
                 <Button Color="Color.Primary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.Save"></Blazorise.Icon>
                 </Button>
-            </SaveCommandTemplate>
-            <CancelCommandTemplate>
+            </SaveCommandTemplate> *@
+            @*   <CancelCommandTemplate>
                 <Button Color="Color.Secondary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.Ban"></Blazorise.Icon>
                 </Button>
-            </CancelCommandTemplate>
-            <DeleteCommandTemplate>
-                <Button Color="Color.Secondary" Clicked="@(async() => await ShowPopupProvider(context.Item))" Size="Size.Small">
-                    <Blazorise.Icon Name=" FontAwesomeIcons.Eye">
-                    </Blazorise.Icon>
-                </Button>
-                <Button Color="Color.Link" To="@($"https://www.google.com/search?q=streaming+{context.Item.name}".HideExternalLink())" Type="ButtonType.Link" Target="Target.Blank" Size="Size.Small" Visibility="@(string.IsNullOrEmpty(context.Item.link)?Visibility.Visible:Visibility.Invisible)">
-                    <Blazorise.Icon Name="FontAwesomeIcons.ExternalLinkAlt"></Blazorise.Icon>
-                </Button>
-            </DeleteCommandTemplate>
-        </DataGridCommandColumn> *@
-        <PropertyColumn Property="x => x.name" Title="Name" />
-        <PropertyColumn Property="x => x.description" Title="Description" Editable="true">
-           @*  <EditTemplate>
-                <Addons>
-                    <Addon AddonType="AddonType.Body">
-                        <MemoEdit Text="@((string)context.CellValue)" TextChanged="@((v) => context.CellValue = v)" Rows="3" />
-                    </Addon>
-                    <Addon AddonType="AddonType.End">
-                        <Button Color="Color.Success" Clicked="@(async () => { context.CellValue = "searching..."; context.CellValue = await GetDescriptionOnClick(context.Item.link); })" Size="Size.Small" Visibility="@(string.IsNullOrEmpty(context.Item.link) ? Visibility.Invisible : Visibility.Visible)">
-                            <Blazorise.Icon Name="FontAwesomeIcons.Sync"></Blazorise.Icon>
-                        </Button>
-                    </Addon>
-                </Addons>
-            </EditTemplate> *@
+            </CancelCommandTemplate> *@
+        </TemplateColumn>
+        <TemplateColumn>
+            <CellTemplate>
+                <MudImage Src="@($"https://image.tmdb.org/t/p/original/{context.Item.logo_path}")" Style="width: 34px;"></MudImage>
+            </CellTemplate>
+        </TemplateColumn>
+        <PropertyColumn Property="x => x.name" Title="Name" Editable="false" />
+        <PropertyColumn Property="x => x.description" Title="Description">
+            <EditTemplate>
+                <MudTextField @bind-Value="context.Item.description" Lines="3" />
+                <MudButton Variant="Variant.Filled" Color="Color.Success" Class="mt-2" StartIcon="@Icons.Material.Filled.Sync" Size="Size.Small" Disabled="context.Item.link.Empty()"
+                           OnClick="@(async () => { context.Item.description = "searching..."; context.Item.description = await GetDescriptionOnClick(context.Item.link); })">
+                </MudButton>
+            </EditTemplate>
         </PropertyColumn>
         <PropertyColumn Property="x => x.link" Title="Link" Editable="true"></PropertyColumn>
+        <PropertyColumn Property="x => x.regions_str" Title="Regions" Editable="false" Style="width: 34px;" />
     </Columns>
     <PagerContent>
         <MudDataGridPager T="ProviderModel" />
@@ -95,11 +95,6 @@
     protected override async Task LoadDataRender()
     {
         AllProviders = await AllProvidersApi.GetAll(null);
-    }
-
-    private async Task ShowPopupProvider(ProviderModel item)
-    {
-        // await ModalService.ProviderPopup(item, null, null, null, true, null, item.id, true);
     }
 
     protected async Task SaveSession()
@@ -196,12 +191,12 @@
         }
     }
 
-    // protected void RowUpdated(ProviderModel item)
-    // {
-    //     var item = AllProviders?.Items.FirstOrDefault(f => f.id == e.OldItem.id);
+    protected void RowUpdated(ProviderModel model)
+    {
+        var item = AllProviders?.Items.FirstOrDefault(f => f.id == model.id);
 
-    //     item = e.OldItem;
-    // }
+        item = model;
+    }
 
     protected async Task<string> GetDescriptionOnClick(string? url)
     {

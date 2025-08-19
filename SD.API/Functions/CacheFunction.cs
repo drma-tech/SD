@@ -305,7 +305,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             }
             else
             {
-                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (one week)
+                if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get ratings for new releases (one week)
 
                 doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
 
@@ -368,7 +368,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             }
             else
             {
-                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (one week)
+                if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get ratings for new releases (one week)
 
                 doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
 
@@ -427,7 +427,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             }
             else
             {
-                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get reviews for new releases (one week)
+                if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (one week)
 
                 doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
 
@@ -491,7 +491,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             }
             else
             {
-                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get reviews for new releases (one week)
+                if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (one week)
 
                 doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
 

@@ -1,4 +1,6 @@
-﻿namespace SD.Shared.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace SD.Shared.Models;
 
 public class AllProviders
 {
@@ -17,6 +19,9 @@ public class ProviderModel
     public List<MediaType> types { get; set; } = [];
     public List<DeliveryModel> models { get; set; } = [];
     public List<Plan> plans { get; set; } = [];
+
+    [JsonIgnore]
+    public string? regions_str => string.Join(", ", regions.Select(r => r.ToString())).Truncate(10);
 }
 
 public class Plan
