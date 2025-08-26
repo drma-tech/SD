@@ -1,6 +1,5 @@
 ﻿@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
     <div style="text-align: center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"></ins>
         <script>
