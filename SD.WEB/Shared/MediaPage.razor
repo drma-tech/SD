@@ -304,7 +304,7 @@
         Core?.LoadingStarted?.Invoke();
         Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
         Media.Videos.Reverse();
-        ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId);
+       
         Core?.LoadingFinished?.Invoke(Media);
 
         EnglishTitle = Media?.original_title;
@@ -320,6 +320,13 @@
 
         StateHasChanged();
 
+        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
+
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
+
+        ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId);
+
         if (Media?.MediaType == MediaType.movie)
         {
             _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), CoreRatings);
@@ -328,11 +335,6 @@
         {
             _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), CoreRatings);
         }
-
-        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
     private Color GetColorByRating(string? rating)
