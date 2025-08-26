@@ -10,11 +10,11 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+
 <HeadPage Title="Trakt" ImageSource="logo/trakt.png" Text="@SD.WEB.Resources.Credit.Trakt"
           Link="https://trakt.tv/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
-
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 @*https://trakt.tv/movies/recommended/all*@
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.TraktRecommendedMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"

@@ -13,9 +13,9 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="TMDB" ImageSource="logo/tmdb.png" Text="@SD.WEB.Resources.Credit.TMDB" Link="https://www.themoviedb.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
-
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+
+<HeadPage Title="TMDB" ImageSource="logo/tmdb.png" Text="@SD.WEB.Resources.Credit.TMDB" Link="https://www.themoviedb.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbPopularApi" CustomExpand="@("/collections/tmdb/popular/{0}")" ShowFilter="true"
            Watched="WatchedList" Watching="WatchingList" Wish="WishList" IsAuthenticated="IsAuthenticated">

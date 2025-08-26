@@ -7,8 +7,6 @@
 @page "/platforms/{id}/new/{Type}"
 @page "/platforms/{id}/top/{Type}"
 
-<SeoHeader Title="@($"{Title}")" Keywords="@(new[] { Title })" Url="@($"/list/{id}")"></SeoHeader>
-
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Interface
 @using SD.WEB.Modules.Platform.Core
@@ -21,6 +19,8 @@
 @inject WishListApi WishListApi
 @inject AllProvidersApi AllProvidersApi
 @inject IHttpClientFactory factory
+
+<SeoHeader Title="@($"{Title}")" Keywords="@(new[] { Title })" Url="@($"/list/{id}")"></SeoHeader>
 
 <SectionComponent Title="@($"{Title}")" FullPage="true">
     <BodyFragment>

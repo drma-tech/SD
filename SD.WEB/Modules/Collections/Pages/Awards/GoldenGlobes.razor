@@ -11,9 +11,9 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="Golden Globes" ImageSource="logo/golden-globes.png" Text="@SD.WEB.Resources.Credit.GoldenGlobeAwards" Link="https://www.goldenglobes.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
-
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+
+<HeadPage Title="Golden Globes" ImageSource="logo/golden-globes.png" Text="@SD.WEB.Resources.Credit.GoldenGlobeAwards" Link="https://www.goldenglobes.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.GoldenGlobesBestMotionPictureDrama" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            IsAuthenticated="IsAuthenticated">

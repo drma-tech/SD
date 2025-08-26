@@ -10,11 +10,11 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+
 <HeadPage Title="People's Choice" ImageSource="logo/peoples.png" Text="@SD.WEB.Resources.Credit.PeoplesChoiceAwards"
           Link="https://pca.votenow.nbc.com/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
-
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.PeoplesChoiceTheMovie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            IsAuthenticated="IsAuthenticated">

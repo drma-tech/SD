@@ -9,9 +9,9 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="Upcoming Netflix Movies" ImageSource="logo/netflix-logo.png" Text="@SD.WEB.Resources.Credit.UpcomingNetflixMovies" IsAuthenticated="IsAuthenticated"></HeadPage>
-
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+
+<HeadPage Title="Upcoming Netflix Movies" ImageSource="logo/netflix-logo.png" Text="@SD.WEB.Resources.Credit.UpcomingNetflixMovies" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingNetflixMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                IsAuthenticated="IsAuthenticated" FullPage="true" ShowHead="false">

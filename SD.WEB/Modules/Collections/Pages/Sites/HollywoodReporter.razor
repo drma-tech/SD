@@ -11,10 +11,10 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+
 <HeadPage Title="Hollywood Reporter" ImageSource="logo/hollywood-reporter.png" Text="@SD.WEB.Resources.Credit.HollywoodReporter" Link="https://www.hollywoodreporter.com/"
           IsAuthenticated="IsAuthenticated"></HeadPage>
-
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.HollywoodReporterTop100Movies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            IsAuthenticated="IsAuthenticated">

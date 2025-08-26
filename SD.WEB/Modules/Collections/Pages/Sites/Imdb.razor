@@ -12,9 +12,9 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@SD.WEB.Resources.Credit.IMDb" Link="https://www.imdb.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
-
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+
+<HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@SD.WEB.Resources.Credit.IMDb" Link="https://www.imdb.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" CustomExpand="@("/collections/imdb/popular/{0}")" IsImdb="true" ShowFilter="true"
            StringParameters="Params" Watched="WatchedList" Watching="WatchingList" Wish="WishList" IsAuthenticated="IsAuthenticated" OnlyYear="true">

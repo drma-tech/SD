@@ -1,7 +1,5 @@
 ﻿@page "/platforms/{id}"
-<SeoHeader Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")"
-           Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Keywords="@([Provider?.name])">
-</SeoHeader>
+
 @using SD.WEB.Modules.Collections.Components
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Platform.Core
@@ -16,6 +14,11 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
+<SeoHeader Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")"
+           Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Keywords="@([Provider?.name])">
+</SeoHeader>
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
+
 <RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null)">
     @if (Provider != null)
     {
@@ -23,8 +26,6 @@
                   Provider="Provider" IsAuthenticated="IsAuthenticated">
         </HeadPage>
     }
-
-    <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
     <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")" ShowFilter="Provider?.types.Count == 2"
                StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
