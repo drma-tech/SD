@@ -1,71 +1,73 @@
 ﻿@inherits ComponentCore<PosterComponent>
 
-<div @onclick="@Clicked" style="cursor: pointer; position: relative; height: 100%; align-content: center;">
-    <MudTooltip Text="@(string.IsNullOrEmpty(Poster) ? null : Title)" RootClass="tooltip-image">
+<div>
+    <div @onclick="@Clicked" style="cursor: pointer; position: relative;">
         <MudImage Src="@(Poster ?? "images/no-image.png")" Alt="@Title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"
                   Style="vertical-align: bottom;" />
-    </MudTooltip>
 
-    @if (TopLeft != null)
-    {
-        <MudChip T="string" Color="TopLeft.Color" Label="true" Class="poster-chip" Style="top: 0; left: 0;" Icon="@TopLeft.Icon">
-            @TopLeft.Text
-        </MudChip>
-    }
-    @if (TopRight != null)
-    {
-        <MudChip T="string" Color="TopRight.Color" Label="true" Class="poster-chip" Style="top: 0; right: 0;" Icon="@TopRight.Icon">
-            @TopRight.Text
-        </MudChip>
-    }
-    @if (CenterLeft != null)
-    {
-        <MudChip T="string" Color="CenterLeft.Color" Label="true" Class="poster-icon chip-no-text" Style="left: 0;" Icon="@CenterLeft.Icon">
-        </MudChip>
-    }
-    @if (CenterRight != null)
-    {
-        <MudChip T="string" Color="CenterRight.Color" Label="true" Class="poster-icon chip-no-text" Style="right: 0;" Icon="@CenterRight.Icon">
-        </MudChip>
-    }
-    @if (string.IsNullOrEmpty(Poster) || ForceShowTitle)
-    {
-        <div class="absolute my-1" style="width: 100%; background-color: rgba(255, 255, 255, 0.7); text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-            <MudText Typo="Typo.h6" Color="Color.Dark" Style="line-height: normal;">
-                @Title
-            </MudText>
-        </div>
-
-    }
-    @if (Comments.NotEmpty())
-    {
-        if (CommentsIsImage)
+        @if (TopLeft != null)
         {
-            <MudGrid Spacing="0" Justify="Justify.SpaceEvenly" Class="absolute" Style="bottom: 0; background-color: rgba(255, 255, 255, 0.7);">
-                @foreach (var item in Comments!.Split(CommentsSeparator))
-                {
-                    <MudItem xs="3">
-                        <MudTooltip RootClass="tooltip-image" Text="@item.Replace("logo/", "").Replace(".png", "")">
-                            <MudPaper Outlined="true" Class="my-1">
-                                <MudImage Src="@item" Alt="@item" Fluid="true" ObjectFit="ObjectFit.Contain" Class="rounded-lg" Style="vertical-align: bottom;"></MudImage>
-                            </MudPaper>
-                        </MudTooltip>
-                    </MudItem>
-                }
-            </MudGrid>
+            <MudChip T="string" Color="TopLeft.Color" Label="true" Class="poster-chip" Style="top: 0; left: 0;" Icon="@TopLeft.Icon">
+                @TopLeft.Text
+            </MudChip>
         }
-        else
+        @if (TopRight != null)
         {
-            <div class="absolute" style="bottom: 0; background-color: rgba(255, 255, 255, 0.7); width: 100%; text-align: center;">
-                @foreach (var item in Comments!.Split(CommentsSeparator))
-                {
-                    <MudChip T="string" Color="Color.Secondary" Label="true" Class="poster-chip" Style="bottom: 0; z-index: 1; position: inherit !important;">
-                        @item
-                    </MudChip>
-                }
+            <MudChip T="string" Color="TopRight.Color" Label="true" Class="poster-chip" Style="top: 0; right: 0;" Icon="@TopRight.Icon">
+                @TopRight.Text
+            </MudChip>
+        }
+        @if (CenterLeft != null)
+        {
+            <MudChip T="string" Color="CenterLeft.Color" Label="true" Class="poster-icon chip-no-text" Style="left: 0;" Icon="@CenterLeft.Icon">
+            </MudChip>
+        }
+        @if (CenterRight != null)
+        {
+            <MudChip T="string" Color="CenterRight.Color" Label="true" Class="poster-icon chip-no-text" Style="right: 0;" Icon="@CenterRight.Icon">
+            </MudChip>
+        }
+        @if (ForceShowTitle)
+        {
+            <div class="absolute my-1" style="width: 100%; background-color: rgba(255, 255, 255, 0.7); text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                <MudText Typo="Typo.h6" Color="Color.Dark" Style="line-height: normal;">
+                    @Title
+                </MudText>
             </div>
         }
-    }
+        @if (Comments.NotEmpty())
+        {
+            if (CommentsIsImage)
+            {
+                <MudGrid Spacing="0" Justify="Justify.SpaceEvenly" Class="absolute" Style="bottom: 0; background-color: rgba(255, 255, 255, 0.5);">
+                    @foreach (var item in Comments!.Split(CommentsSeparator))
+                    {
+                        <MudItem xs="3">
+                            <MudTooltip RootClass="tooltip-image" Text="@item.Replace("logo/", "").Replace(".png", "")">
+                                <MudPaper Outlined="true" Class="my-1">
+                                    <MudImage Src="@item" Alt="@item" Fluid="true" ObjectFit="ObjectFit.Contain" Class="rounded-lg" Style="vertical-align: bottom;"></MudImage>
+                                </MudPaper>
+                            </MudTooltip>
+                        </MudItem>
+                    }
+                </MudGrid>
+            }
+            else
+            {
+                <div class="absolute" style="bottom: 0; background-color: rgba(255, 255, 255, 0.5); width: 100%; text-align: center;">
+                    @foreach (var item in Comments!.Split(CommentsSeparator))
+                    {
+                        <MudChip T="string" Color="Color.Secondary" Label="true" Class="poster-chip" Style="bottom: 0; z-index: 1; position: inherit !important;">
+                            @item
+                        </MudChip>
+                    }
+                </div>
+            }
+        }
+    </div>
+    <div style="text-align: center; line-height: normal; font-size: 0.73rem;" class="mt-1">
+        <MudText Typo="@(ForceTypoTitle ?? (FullPage ? Typo.h2 : Typo.h3))" Class="custom-h3-list">@Title</MudText>
+    </div>
 </div>
 
 @code {
@@ -74,6 +76,8 @@
     [Parameter] public string? Title { get; set; }
     [Parameter] public EventCallback<MouseEventArgs> Clicked { get; set; }
     [Parameter] public bool ForceShowTitle { get; set; }
+    [Parameter] public bool FullPage { get; set; } = false;
+    [Parameter] public Typo? ForceTypoTitle { get; set; }
     // TOP LEFT
     [Parameter] public DateTime? Date { get; set; }
     [Parameter] public bool OnlyYear { get; set; }

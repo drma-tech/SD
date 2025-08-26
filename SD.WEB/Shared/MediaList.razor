@@ -41,7 +41,7 @@
                     {
                         <div class="swiper-slide" style="height: auto !important;">
                             <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                             Date="@item.release_date" OnlyYear="OnlyYear"
+                                             Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
                                              RankUpDown="@item.RankUpDown" Rating="@item.rating"
                                              WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id"
                                              Comments="@item.comments" CommentsIsImage="CommentsIsImage">
@@ -72,6 +72,7 @@
     [Parameter] public bool FullPage { get; set; } = false;
     [Parameter] public bool Popup { get; set; } = false;
     [Parameter] public string? CustomExpand { get; set; }
+    [Parameter] public Typo? ForceTypoTitle { get; set; }
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; }

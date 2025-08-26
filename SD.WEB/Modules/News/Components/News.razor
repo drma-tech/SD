@@ -20,12 +20,12 @@
                     <MudCard Outlined="true">
                         <MudCardContent Style="padding: 0; text-align: justify; line-height: normal;">
                             <MudImage Src="@item.url_img" Alt="@item.title" FallbackSrc="images/no-image.png" Style="width: 100%;" ObjectFit="ObjectFit.Contain"></MudImage>
-                            <div class="pa-2">
+                            <h2 class="pa-2" style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
                                 @if (!string.IsNullOrEmpty(item.title))
                                 {
                                     @((MarkupString)item.title)
                                 }
-                            </div>
+                            </h2>
                         </MudCardContent>
                         <MudCardActions style="align-self: center; padding: 0;">
                             <MudButton Color="Color.Primary" Variant="Variant.Text" Href="@item.link" Target="_blank" Rel="nofollow">

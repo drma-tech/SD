@@ -16,11 +16,11 @@
 @inject WishListApi WishApi
 @inject IJSRuntime JS
 
-<SeoHeader Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")"></SeoHeader>
+<SeoHeader Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")" Keywords="new[] {Media?.title}"></SeoHeader>
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
 
 <RenderControl Model="Media" Core="Core" ExpressionEmpty="@((MediaDetail? obj) => obj == null)">
-    <MudTabs Border="true" Outlined="true" PanelClass="pt-2" MinimumTabWidth="48px">
+    <MudTabs Border="true" Outlined="true" PanelClass="pt-2">
         <MudTabPanel Tag="@Translations.TabAbout" Text="@Translations.TabAbout">
             <MudGrid Spacing="4">
                 <MudItem xs="12" sm="5" md="4" lg="3">
@@ -304,7 +304,7 @@
         Core?.LoadingStarted?.Invoke();
         Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
         Media.Videos.Reverse();
-       
+
         Core?.LoadingFinished?.Invoke(Media);
 
         EnglishTitle = Media?.original_title;
