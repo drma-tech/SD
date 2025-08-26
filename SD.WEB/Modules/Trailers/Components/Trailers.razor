@@ -45,10 +45,10 @@
 
     protected override async Task LoadDataRender()
     {
+        TrailerModel = await CacheYoutubeApi.GetTrailers("full", Core);
+
         Settings = await CacheSettingsApi.GetSettings();
         Principal = await PrincipalApi.Get(IsAuthenticated);
-
-        TrailerModel = await CacheYoutubeApi.GetTrailers("full", Core);
     }
 
 }

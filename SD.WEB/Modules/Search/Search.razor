@@ -62,10 +62,10 @@
         Items = result.list;
         Core?.LoadingFinished?.Invoke(Items);
 
+        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
+
         Settings = await CacheSettingsApi.GetSettings();
         Principal = await PrincipalApi.Get(IsAuthenticated);
-
-        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
     }
 
     private void KeyPress(KeyboardEventArgs args)

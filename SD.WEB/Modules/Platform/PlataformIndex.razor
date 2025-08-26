@@ -121,9 +121,10 @@
 
     protected override async Task LoadDataRender()
     {
+        MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
+
         Settings = await CacheSettingsApi.GetSettings();
         Principal = await PrincipalApi.Get(IsAuthenticated);
-        MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
     }
 
 }
