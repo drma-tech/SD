@@ -1,10 +1,9 @@
-﻿@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
+﻿@inject IJSRuntime JsRuntime
+
+@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
-    <div style="text-align: center">
+    <div style="text-align: center" @key="@Guid.NewGuid()">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
     </div>
 }
 
@@ -21,5 +20,13 @@
         Profile = 4650130753,
         Platforms = 5359194302,
         Collections = 1353899488
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
+        {
+            await JsRuntime.InvokeVoidAsync("adsbygoogle.push", new object[] { new { } });
+        }
     }
 }
