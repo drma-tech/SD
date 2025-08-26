@@ -10,11 +10,11 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+
 <HeadPage Title="Annie Awards" ImageSource="logo/annie.png" Text="@SD.WEB.Resources.Credit.AnnieAwards"
           Link="https://www.annieawards.org/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
-
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.AnnieAwardsBestAnimatedFeature" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            IsAuthenticated="IsAuthenticated">

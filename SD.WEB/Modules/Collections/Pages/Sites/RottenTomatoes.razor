@@ -10,11 +10,11 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
+<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+
 <HeadPage Title="Rotten Tomatoes" ImageSource="logo/rotten-tomatoes.png" Text="@SD.WEB.Resources.Credit.RottenTomatoes"
           Link="https://www.rottentomatoes.com/" IsAuthenticated="IsAuthenticated">
 </HeadPage>
-
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.RottenTomatoesMoviesTomatoMeter" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            IsAuthenticated="IsAuthenticated">

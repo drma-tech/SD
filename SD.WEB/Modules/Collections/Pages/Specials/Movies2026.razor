@@ -9,9 +9,9 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<HeadPage Title="Most Expected Movies of 2026" ImageSource="logo/rotten-tomatoes.png" Text="@SD.WEB.Resources.Credit.MostExpectedMovies2026" IsAuthenticated="IsAuthenticated"></HeadPage>
-
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+
+<HeadPage Title="Most Expected Movies of 2026" ImageSource="logo/rotten-tomatoes.png" Text="@SD.WEB.Resources.Credit.MostExpectedMovies2026" IsAuthenticated="IsAuthenticated"></HeadPage>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                IsAuthenticated="IsAuthenticated" FullPage="true" ShowHead="false">
