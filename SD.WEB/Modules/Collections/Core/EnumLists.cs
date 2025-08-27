@@ -140,10 +140,10 @@ public enum EnumLists
     [Custom(Name = "Best awards of the year", Group = "")]
     AwardsOfTheYear = 8498534,
 
-    [Custom(Name = "Certified by SD", Group = "")]
+    [Custom(Name = "Editor’s Choice", Group = "")]
     CertifiedStreamingDiscoveryMovies = 8498673,
 
-    [Custom(Name = "Certified by SD", Group = "")]
+    [Custom(Name = "Editor’s Choice", Group = "")]
     CertifiedStreamingDiscoveryShows = 8498675,
 
     [Custom(Name = "The Movie of the Year", Group = "People's Choice")]

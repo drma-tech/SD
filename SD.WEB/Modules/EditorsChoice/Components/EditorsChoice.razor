@@ -1,4 +1,4 @@
-﻿@page "/certified-sd/{type}"
+﻿@page "/editors-choice/{type}"
 
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedListApi
@@ -8,9 +8,9 @@
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Resources
 @using SD.WEB.Modules.Profile.Core
-@inherits PageCore<CertifiedSD>
+@inherits PageCore<EditorsChoice>
 
-<SeoHeader Title="@Translations.CertifiedSDTitle" Description="@GlobalTranslations.CertifiedDescription" Keywords="@(new[] { "Certified by SD" })" Url="@($"/certified-sd/{Type}")"></SeoHeader>
+<SeoHeader Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Keywords="@(new[] { "Editor’s Choice" })" Url="@($"/editors-choice/{Type}")"></SeoHeader>
 
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
 

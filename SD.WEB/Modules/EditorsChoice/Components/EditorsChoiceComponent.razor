@@ -1,10 +1,10 @@
 ﻿@using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Resources
-@inherits ComponentCore<CertifiedSDComponent>
+@inherits ComponentCore<EditorsChoiceComponent>
 
 @inject TmdbListApi TmdbListApi
 
-<SectionComponent Title="@Translations.CertifiedSDTitle" Description="@GlobalTranslations.CertifiedDescription" IconName="@IconsFA.Solid.Icon("award").Font">
+<SectionComponent Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" IconName="@IconsFA.Solid.Icon("award").Font">
     <ActionFragment>
         <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary" Class="me-2"
                         CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0">
@@ -25,7 +25,7 @@
                 </MudHidden>
             </MudToggleItem>
         </MudToggleGroup>
-        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@($"/certified-sd/{TypeSelected}")" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@($"/editors-choice/{TypeSelected}")" />
     </ActionFragment>
     <BodyFragment>
         @if (TypeSelected == MediaType.movie)

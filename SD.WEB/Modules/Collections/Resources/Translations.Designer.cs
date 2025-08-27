@@ -115,15 +115,6 @@ namespace SD.WEB.Modules.Collections.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Certified by SD.
-        /// </summary>
-        public static string CertifiedSDTitle {
-            get {
-                return ResourceManager.GetString("CertifiedSDTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Ads.
         /// </summary>
         public static string DeliveryModelAds {
@@ -183,6 +174,15 @@ namespace SD.WEB.Modules.Collections.Resources {
         public static string Directing {
             get {
                 return ResourceManager.GetString("Directing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Editor’s Choice.
+        /// </summary>
+        public static string EditorsChoiceTitle {
+            get {
+                return ResourceManager.GetString("EditorsChoiceTitle", resourceCulture);
             }
         }
         
