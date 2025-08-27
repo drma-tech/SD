@@ -1,5 +1,3 @@
-"use strict";
-
 // Google Analytics
 window.initGoogleAnalytics = function (code) {
     if (!window.location.host.includes("localhost") && GetLocalStorage("platform") !== "ios") {
@@ -80,4 +78,12 @@ window.initUserBack = function () {
                 showError(error.message);
             });
     };
+}
+
+window.loadAds = function () {
+    try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (error) {
+        showError(error.message);
+    }
 }

@@ -1,18 +1,11 @@
-﻿@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
+﻿@inject IJSRuntime JS
+
+@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
-    <div style="text-align: center" @key="@Guid.NewGuid()">
+    <div style="text-align: center">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
     </div>
 }
-
-<style>
-    ins.adsbygoogle[data-ad-status="unfilled"] {
-        display: none !important;
-    }
-</style>
 
 @code {
     [Parameter][EditorRequired] public Settings? Settings { get; set; }
@@ -20,6 +13,14 @@
     [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Main;
 
     private const string AdClientId = "5145928155833172";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
+        {
+            await JS.InvokeVoidAsync("loadAds");
+        }
+    }
 
     public enum AdUnit : long
     {
