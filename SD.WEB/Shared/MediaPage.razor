@@ -316,14 +316,14 @@
             EnglishTitle = enMedia.title;
         }
 
+        Settings = await CacheSettingsApi.GetSettings();
+        Principal = await PrincipalApi.Get(IsAuthenticated);
+
         EnglishTitle = EnglishTitle?.Replace("&", "");
 
         StateHasChanged();
 
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
 
         ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId);
 
