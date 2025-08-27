@@ -81,9 +81,12 @@ window.initUserBack = function () {
 }
 
 window.loadAds = function () {
-    try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (error) {
-        showError(error.message);
+    var ad = document.querySelector('.adsbygoogle:not([data-adsbygoogle-status])');
+    if (ad) {
+        try {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (error) {
+            showError(error.message);
+        }
     }
 }
