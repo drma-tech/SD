@@ -88,11 +88,6 @@ public class WatchingList() : PrivateMainDocument(DocumentType.WatchingList)
             }
         }
     }
-
-    public override bool HasValidData()
-    {
-        return Movies.Count != 0 || Shows.Count != 0;
-    }
 }
 
 public sealed class WatchingListItem : IEquatable<WatchingListItem>

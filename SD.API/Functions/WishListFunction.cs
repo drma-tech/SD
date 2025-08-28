@@ -59,7 +59,7 @@ public class WishListFunction(CosmosRepository repo)
 
             obj.AddItem(Enum.Parse<MediaType>(type), newItem);
 
-            return await repo.Upsert(obj, cancellationToken);
+            return await repo.UpsertItemAsync(obj, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -90,7 +90,7 @@ public class WishListFunction(CosmosRepository repo)
 
             obj.RemoveItem(Enum.Parse<MediaType>(type), id);
 
-            return await repo.Upsert(obj, cancellationToken);
+            return await repo.UpsertItemAsync(obj, cancellationToken);
         }
         catch (Exception ex)
         {

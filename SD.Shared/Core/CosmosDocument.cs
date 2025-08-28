@@ -24,8 +24,6 @@ public abstract class CosmosDocument
 
     [JsonIgnore] public DateTime DateTime => DateTimeOffset.FromUnixTimeSeconds(Timestamp).UtcDateTime;
 
-    public abstract bool HasValidData();
-
     public void SetIds(string id)
     {
         if (_fixedId) throw new InvalidOperationException();

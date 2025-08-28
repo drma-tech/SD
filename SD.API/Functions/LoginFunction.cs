@@ -9,7 +9,7 @@ public class LoginFunction(CosmosRepository repo)
 {
     [Function("LoginGet")]
     public async Task<ClienteLogin?> LoginGet(
-      [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "login/get")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "login/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -17,6 +17,21 @@ public class LoginFunction(CosmosRepository repo)
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
 
             return await repo.Get<ClienteLogin>(DocumentType.Login, userId, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            throw;
+        }
+    }
+
+    [Function("LoginRoles")]
+    public static string[] LoginRoles(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "login/roles")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return ["authenticated"];
         }
         catch (Exception ex)
         {
@@ -46,14 +61,14 @@ public class LoginFunction(CosmosRepository repo)
                 };
                 newLogin.Initialize(userId);
 
-                await repo.Upsert(newLogin, cancellationToken);
+                await repo.UpsertItemAsync(newLogin, cancellationToken);
             }
             else
             {
                 login.Accesses = login.Accesses
                     .Union([new Access { Date = DateTimeOffset.Now, Platform = platform, Ip = ip }]).ToArray();
 
-                await repo.Upsert(login, cancellationToken);
+                await repo.UpsertItemAsync(login, cancellationToken);
             }
         }
         catch (Exception ex)

@@ -29,9 +29,4 @@ public class WatchedList() : PrivateMainDocument(DocumentType.WatchedList)
     {
         return type == MediaType.movie ? Movies : Shows;
     }
-
-    public override bool HasValidData()
-    {
-        return Movies.Count != 0 || Shows.Count != 0;
-    }
 }

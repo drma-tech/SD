@@ -11,8 +11,7 @@ public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
 {
     [Function("GetSubscription")]
     public async Task<RootSubscription?> GetSubscription(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/paddle/subscription")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/paddle/subscription")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -41,8 +40,7 @@ public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
 
     [Function("PostSubscription")]
     public async Task PostSubscription(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/paddle/subscription")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/paddle/subscription")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -61,7 +59,7 @@ public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
             client.ClientePaddle.SubscriptionId = body.data.id;
             client.ClientePaddle.IsPaidUser = body.data.status is "active" or "trialing";
 
-            await repo.Upsert(client, cancellationToken);
+            await repo.UpsertItemAsync(client, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -72,8 +70,7 @@ public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
 
     [Function("Configurations")]
     public static PaddleConfigurations Configurations(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/paddle/configurations")]
-        HttpRequestData req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/paddle/configurations")] HttpRequestData req)
     {
         try
         {

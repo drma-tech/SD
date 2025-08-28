@@ -48,7 +48,7 @@ public class MyProvidersFunction(CosmosRepository repo)
             var item = await req.GetPublicBody<MyProvidersItem>(cancellationToken);
             obj.AddItem([item]);
 
-            return await repo.Upsert(obj, cancellationToken);
+            return await repo.UpsertItemAsync(obj, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -74,7 +74,7 @@ public class MyProvidersFunction(CosmosRepository repo)
 
             var model = await req.GetPublicBody<MyProviders>(cancellationToken);
 
-            return await repo.Upsert(model, cancellationToken);
+            return await repo.UpsertItemAsync(model, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -106,7 +106,7 @@ public class MyProvidersFunction(CosmosRepository repo)
             var item = await req.GetPublicBody<MyProvidersItem>(cancellationToken);
             obj.RemoveItem(item);
 
-            return await repo.Upsert(obj, cancellationToken);
+            return await repo.UpsertItemAsync(obj, cancellationToken);
         }
         catch (Exception ex)
         {

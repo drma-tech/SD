@@ -14,7 +14,9 @@ using Item = SD.Shared.Models.News.Item;
 
 namespace SD.API.Functions;
 
-public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache distributedCache, IHttpClientFactory factory)
+public class CacheFunction(CosmosCacheRepository cacheRepo, 
+    IDistributedCache distributedCache, 
+    IHttpClientFactory factory)
 {
     [Function("Settings")]
     public static async Task<HttpResponseData> Configurations(

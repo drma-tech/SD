@@ -47,7 +47,7 @@
                 </MudButton>
             </Authorized>
             <NotAuthorized>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="/login-providers" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="@($"/.auth/login/aad?post_login_redirect_uri={Navigation.BaseUri}login-success")" Rel="nofollow" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
                     @Button.Login
                 </MudButton>
             </NotAuthorized>
@@ -115,7 +115,7 @@
                 </MudButton>
             </Authorized>
             <NotAuthorized>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="/login-providers" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="@($"/.auth/login/aad?post_login_redirect_uri={Navigation.BaseUri}login-success")" Rel="nofollow" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
                     @Button.Login
                 </MudButton>
             </NotAuthorized>
@@ -147,7 +147,7 @@
                     <MudNavLink Icon="@IconsFA.Solid.Icon("right-from-bracket").Font" OnClick="@Logout" IconColor="Color.Error">@Button.Logout</MudNavLink>
                 </Authorized>
                 <NotAuthorized>
-                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-to-bracket").Font" Href="/login-providers">@Button.Login</MudNavLink>
+                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-to-bracket").Font" Href="@($"/.auth/login/aad?post_login_redirect_uri={Navigation.BaseUri}login-success")">@Button.Login</MudNavLink>
                 </NotAuthorized>
             </AuthorizeView>
         </MudNavMenu>

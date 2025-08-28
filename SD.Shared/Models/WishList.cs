@@ -33,11 +33,6 @@ public class WishList() : PrivateMainDocument(DocumentType.WishList)
     {
         return type == MediaType.movie ? Movies : Shows;
     }
-
-    public override bool HasValidData()
-    {
-        return Movies.Count != 0 || Shows.Count != 0;
-    }
 }
 
 public class WishListItem : IEquatable<WishListItem>

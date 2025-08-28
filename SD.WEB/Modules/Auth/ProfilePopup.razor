@@ -15,7 +15,10 @@
                         <MudTextField T="@string" Label="@Translations.IdentityProvider" Text="@Principal?.IdentityProvider" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField T="@string" Label="@Translations.Identification" Text="@Principal?.UserDetails" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
+                        <MudTextField T="@string" Label="@Translations.Identification" Text="@Principal?.UserId" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTextField T="@string" Label="Display Name" Text="@Principal?.DisplayName" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                     <MudItem xs="12">
                         <MudTextField T="@string" Label="@Translations.Email" Text="@Principal?.Email" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
@@ -59,6 +62,12 @@
             var data = new SuperData() { Principal = Principal };
 
             data.Login = await LoginApi.Get(IsAuthenticated);
+            // data.Filter = await FilterApi.GetAll(Principal.Id);
+            // data.Settings = await SettingsApi.Get(Principal.Id);
+            // data.Suggestions = await SuggestionApi.GetAll(Principal.Id);
+            // data.Likes = await LikeApi.GetAll(Principal.Id);
+            // data.Matches = await MatchApi.GetAll(Principal.Id);
+            // data.Validations = await ValidationApi.GetAll(Principal.Id);
 
             var fileName = $"{SeoTranslations.AppName.ToSlug()}_{Principal!.IdentityProvider}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
             await JsRuntime.InvokeVoidAsync("jsSaveAsFile", fileName, "application/json", data.ConvertFromObjectToBytes());
@@ -87,8 +96,8 @@
                 //close popup
                 MudDialog?.Close();
 
-                //remove authentication data from azure (its not working)
-                Navigation.NavigateTo("/.auth/purge/" + Principal?.IdentityProvider);
+                //remove authentication data from azure (todo: its not working)
+                Navigation.NavigateTo("/.auth/purge/aad");
 
                 //close current login session
                 Navigation.NavigateTo("/.auth/logout", true);

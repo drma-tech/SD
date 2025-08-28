@@ -1,7 +1,7 @@
-﻿using System.Security.Claims;
+﻿using Microsoft.Azure.Functions.Worker.Http;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
-using Microsoft.Azure.Functions.Worker.Http;
 
 namespace SD.API.Core;
 
@@ -35,11 +35,22 @@ public static class StaticWebAppsAuth
             return principal?.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
     }
 
-    public static string? GetUserIP(this HttpRequestData req)
+    public static string? GetUserIP(this HttpRequestData req, bool includePort = true)
     {
-        return req.Headers.TryGetValues("X-Forwarded-For", out var values)
-            ? values.FirstOrDefault()?.Split(',')[0]
-            : null;
+        if (req.Headers.TryGetValues("X-Forwarded-For", out var values))
+        {
+            if (includePort)
+                return values.FirstOrDefault()?.Split(',')[0];
+            else
+                return values.FirstOrDefault()?.Split(',')[0].Split(':')[0];
+        }
+
+        if (Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development")
+        {
+            return "127.0.0.1";
+        }
+
+        return null;
     }
 
     private static ClaimsPrincipal? Parse(this HttpRequestData req)

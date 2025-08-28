@@ -97,24 +97,6 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Login / Register.
-        /// </summary>
-        public static string LoginProvidersTitle {
-            get {
-                return ResourceManager.GetString("LoginProvidersTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Login with.
-        /// </summary>
-        public static string LoginWith {
-            get {
-                return ResourceManager.GetString("LoginWith", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Sorry, there&apos;s nothing at this address..
         /// </summary>
         public static string NothingThisAddress {

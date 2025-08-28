@@ -43,16 +43,31 @@ public class CosmosCacheRepository
         }
     }
 
-    public async Task<CacheDocument<TData>?> UpsertItemAsync<TData>(CacheDocument<TData> cache,
-        CancellationToken cancellationToken) where TData : class, new()
+    public async Task<CacheDocument<TData>?> CreateItemAsync<TData>(CacheDocument<TData> cache, CancellationToken cancellationToken) where TData : class, new()
     {
         try
         {
-            var response = await Container.UpsertItemAsync(cache, new PartitionKey(cache.Id),
-                CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+            var response = await Container.CreateItemAsync(cache, new PartitionKey(cache.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
             if (response.RequestCharge > 15)
-                _logger.LogWarning("Add - Id {Id}, RequestCharge {RequestCharge}", cache.Id, response.RequestCharge);
+                _logger.LogWarning("CreateItemAsync - Id {Id}, RequestCharge {RequestCharge}", cache.Id, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosOperationCanceledException)
+        {
+            return null;
+        }
+    }
+
+    public async Task<CacheDocument<TData>?> UpsertItemAsync<TData>(CacheDocument<TData> cache, CancellationToken cancellationToken) where TData : class, new()
+    {
+        try
+        {
+            var response = await Container.UpsertItemAsync(cache, new PartitionKey(cache.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+
+            if (response.RequestCharge > 15)
+                _logger.LogWarning("UpsertItemAsync - Id {Id}, RequestCharge {RequestCharge}", cache.Id, response.RequestCharge);
 
             return response.Resource;
         }

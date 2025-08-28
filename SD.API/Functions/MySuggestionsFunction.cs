@@ -57,7 +57,7 @@ public class MySuggestionsFunction(CosmosRepository repo)
             else
                 obj.ShowSyncDate = DateTime.Now;
 
-            return await repo.Upsert(obj, cancellationToken);
+            return await repo.UpsertItemAsync(obj, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -75,7 +75,7 @@ public class MySuggestionsFunction(CosmosRepository repo)
         {
             var body = await req.GetBody<MySuggestions>(cancellationToken);
 
-            return await repo.Upsert(body, cancellationToken);
+            return await repo.UpsertItemAsync(body, cancellationToken);
         }
         catch (Exception ex)
         {

@@ -59,7 +59,7 @@ public class WatchingListFunction(CosmosRepository repo)
 
             obj.AddItem(Enum.Parse<MediaType>(mediaType), newItem);
 
-            return await repo.Upsert(obj, cancellationToken);
+            return await repo.UpsertItemAsync(obj, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -91,7 +91,7 @@ public class WatchingListFunction(CosmosRepository repo)
 
             obj.RemoveItem(Enum.Parse<MediaType>(mediaType), collectionId, tmdbId == "null" ? null : tmdbId);
 
-            return await repo.Upsert(obj, cancellationToken);
+            return await repo.UpsertItemAsync(obj, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -134,7 +134,7 @@ public class WatchingListFunction(CosmosRepository repo)
                 obj.ShowSyncDate = DateTime.Now;
             }
 
-            return await repo.Upsert(obj, cancellationToken);
+            return await repo.UpsertItemAsync(obj, cancellationToken);
         }
         catch (Exception ex)
         {

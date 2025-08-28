@@ -11,13 +11,6 @@ public class ClienteLogin() : PrivateMainDocument(DocumentType.Login)
         base.Initialize(userId);
         UserId = userId;
     }
-
-    public override bool HasValidData()
-    {
-        if (string.IsNullOrEmpty(UserId)) return false;
-
-        return true;
-    }
 }
 
 public class Access

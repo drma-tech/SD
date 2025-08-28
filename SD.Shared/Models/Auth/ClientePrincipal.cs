@@ -6,11 +6,8 @@ public class ClientePrincipal() : PrivateMainDocument(DocumentType.Principal)
 {
     public string? UserId { get; set; }
     public string? IdentityProvider { get; set; }
-    public string? UserDetails { get; set; }
-    public string[] UserRoles { get; set; } = [];
-
-    [DataType(DataType.EmailAddress)] 
-    public string? Email { get; set; }
+    public string? DisplayName { get; set; }
+    [DataType(DataType.EmailAddress)] public string? Email { get; set; }
 
     public ClientePaddle? ClientePaddle { get; set; }
 
@@ -18,15 +15,5 @@ public class ClientePrincipal() : PrivateMainDocument(DocumentType.Principal)
     {
         base.Initialize(userId);
         UserId = userId;
-    }
-
-    public override bool HasValidData()
-    {
-        if (string.IsNullOrEmpty(UserId)) return false;
-        if (string.IsNullOrEmpty(IdentityProvider)) return false;
-        if (string.IsNullOrEmpty(UserDetails)) return false;
-        if (UserRoles.Length == 0) return false;
-
-        return true;
     }
 }

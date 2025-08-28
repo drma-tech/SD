@@ -59,7 +59,7 @@ public class WatchedListFunction(CosmosRepository repo)
             var ids = tmdbId.Split(',');
             obj.AddItem(Enum.Parse<MediaType>(mediaType), [..ids]);
 
-            return await repo.Upsert(obj, cancellationToken);
+            return await repo.UpsertItemAsync(obj, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -90,7 +90,7 @@ public class WatchedListFunction(CosmosRepository repo)
 
             obj.RemoveItem(Enum.Parse<MediaType>(mediaType), tmdbId);
 
-            return await repo.Upsert(obj, cancellationToken);
+            return await repo.UpsertItemAsync(obj, cancellationToken);
         }
         catch (Exception ex)
         {

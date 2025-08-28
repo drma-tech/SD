@@ -24,13 +24,10 @@
             {
                 Principal = new ClientePrincipal
                 {
-                    UserId = UserId,
-                    IdentityProvider = User.Identity?.AuthenticationType,
-                    UserDetails = User.Identity?.Name,
-                    UserRoles = User.Claims.Where(w => w.Type == ClaimTypes.Role)?.Select(s => s.Value).ToArray() ?? []
+                    IdentityProvider = User.FindFirst("http://schemas.microsoft.com/identity/claims/identityprovider")?.Value,
+                    DisplayName = User.FindFirst("name")?.Value,
+                    Email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value                 
                 };
-
-                Principal.Email = Principal.UserDetails;
 
                 Principal = await PrincipalApi.Add(Principal);
             }

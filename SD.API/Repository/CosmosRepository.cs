@@ -47,7 +47,8 @@ public class CosmosRepository
         }
     }
 
-    public async Task<List<T>> ListAll<T>(DocumentType type, CancellationToken cancellationToken) where T : MainDocument
+    public async Task<List<T>> ListAll<T>(DocumentType type, CancellationToken cancellationToken)
+        where T : MainDocument
     {
         try
         {
@@ -77,8 +78,8 @@ public class CosmosRepository
         }
     }
 
-    public async Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, DocumentType type,
-        CancellationToken cancellationToken) where T : MainDocument
+    public async Task<List<T>> Query<T>(Expression<Func<T, bool>> predicate, DocumentType type, CancellationToken cancellationToken)
+        where T : MainDocument
     {
         try
         {
@@ -108,15 +109,33 @@ public class CosmosRepository
         }
     }
 
-    public async Task<T> Upsert<T>(T item, CancellationToken cancellationToken) where T : CosmosDocument, new()
+    public async Task<T> CreateItemAsync<T>(T item, CancellationToken cancellationToken) 
+        where T : CosmosDocument, new()
     {
         try
         {
-            var response = await Container.UpsertItemAsync(item, new PartitionKey(item.Id),
-                CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+            var response = await Container.CreateItemAsync(item, new PartitionKey(item.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
             if (response.RequestCharge > 20)
-                _logger.LogWarning("Upsert - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);
+                _logger.LogWarning("CreateItemAsync - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);
+
+            return response.Resource;
+        }
+        catch (CosmosOperationCanceledException)
+        {
+            return new T();
+        }
+    }
+
+    public async Task<T> UpsertItemAsync<T>(T item, CancellationToken cancellationToken)
+        where T : CosmosDocument, new()
+    {
+        try
+        {
+            var response = await Container.UpsertItemAsync(item, new PartitionKey(item.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+
+            if (response.RequestCharge > 20)
+                _logger.LogWarning("UpsertItemAsync - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);
 
             return response.Resource;
         }
@@ -129,8 +148,8 @@ public class CosmosRepository
     /// <summary>
     ///     to update arrays, there is no performance gain
     /// </summary>
-    public async Task<T> PatchItem<T>(DocumentType type, string? id, List<PatchOperation> operations,
-        CancellationToken cancellationToken) where T : CosmosDocument, new()
+    public async Task<T> PatchItem<T>(DocumentType type, string? id, List<PatchOperation> operations, CancellationToken cancellationToken)
+        where T : CosmosDocument, new()
     {
         //https://learn.microsoft.com/en-us/azure/cosmos-db/partial-document-update-getting-started?tabs=dotnet
 
@@ -150,7 +169,8 @@ public class CosmosRepository
         }
     }
 
-    public async Task<bool> Delete<T>(T item, CancellationToken cancellationToken) where T : CosmosDocument
+    public async Task<bool> Delete<T>(T item, CancellationToken cancellationToken)
+        where T : CosmosDocument
     {
         try
         {

@@ -11,10 +11,10 @@ public class MySuggestions() : PrivateMainDocument(DocumentType.MySuggestions)
     public HashSet<SuggestionListItem> Movies { get; init; } = [];
     public HashSet<SuggestionListItem> Shows { get; init; } = [];
 
-    [Custom(Name = "Movie Genres")] 
+    [Custom(Name = "Movie Genres")]
     public IEnumerable<MovieGenre> MovieGenres { get; set; } = [];
 
-    [Custom(Name = "TV Genres")] 
+    [Custom(Name = "TV Genres")]
     public IEnumerable<TvGenre> TvGenres { get; set; } = [];
 
     [JsonIgnore]
@@ -45,11 +45,6 @@ public class MySuggestions() : PrivateMainDocument(DocumentType.MySuggestions)
     public void AddItem(MediaType? type, SuggestionListItem item)
     {
         Items(type).Add(item);
-    }
-
-    public override bool HasValidData()
-    {
-        return Movies.Count != 0 || Shows.Count != 0;
     }
 }
 

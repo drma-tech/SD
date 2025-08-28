@@ -4,11 +4,6 @@ public class MyProviders() : PrivateMainDocument(DocumentType.MyProvider)
 {
     public List<MyProvidersItem> Items { get; set; } = [];
 
-    public override bool HasValidData()
-    {
-        return Items.Count != 0;
-    }
-
     public void AddItem(HashSet<MyProvidersItem> items)
     {
         foreach (var item in items) Items.Add(item);
