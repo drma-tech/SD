@@ -256,19 +256,6 @@
             }
         }
 
-        @if (!string.IsNullOrEmpty(Homepage))
-        {
-            <MudPaper Outlined="true" Class="pa-2 mb-2">
-                <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                    @Translations.RelatedLinks
-                </MudText>
-                <MudDivider Class="mb-2"></MudDivider>
-                <MudLink Href="@Homepage" Target="_blank" Color="Color.Secondary">
-                    @(new Uri(Homepage).Host)
-                </MudLink>
-            </MudPaper>
-        }
-
         // <AuthorizeView Roles="administrator">
         //     <Authorized>
         //         <Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false" Margin="Margin.Is2.FromTop">Atualizar</Button>
@@ -280,7 +267,6 @@
 @code {
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
-    [Parameter] public string? Homepage { get; set; }
     [Parameter] public DateTime? ReleaseDate { get; set; }
 
     public RenderControlCore<MediaProviders?>? Core { get; set; } = new();

@@ -214,6 +214,15 @@ namespace SD.WEB.Modules.Collections.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Official Site.
+        /// </summary>
+        public static string OfficialSite {
+            get {
+                return ResourceManager.GetString("OfficialSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Platform added successfully!.
         /// </summary>
         public static string PlatformAdded {
@@ -237,15 +246,6 @@ namespace SD.WEB.Modules.Collections.Resources {
         public static string PlatformRemoved {
             get {
                 return ResourceManager.GetString("PlatformRemoved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Related links.
-        /// </summary>
-        public static string RelatedLinks {
-            get {
-                return ResourceManager.GetString("RelatedLinks", resourceCulture);
             }
         }
         
@@ -331,11 +331,11 @@ namespace SD.WEB.Modules.Collections.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Where to Watch.
+        ///   Looks up a localized string similar to Platforms.
         /// </summary>
-        public static string TabWhereToWatch {
+        public static string TabPlatforms {
             get {
-                return ResourceManager.GetString("TabWhereToWatch", resourceCulture);
+                return ResourceManager.GetString("TabPlatforms", resourceCulture);
             }
         }
         

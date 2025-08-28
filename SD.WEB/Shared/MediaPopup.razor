@@ -116,6 +116,18 @@
                             <MudText Typo="Typo.body1" Align="Align.Justify" Class="my-3">
                                 @Media?.plot
                             </MudText>
+                            @if (!string.IsNullOrEmpty(Media?.homepage))
+                            {
+                                <MudPaper Outlined="true" Class="pa-2 mb-3">
+                                    <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                                        @Translations.OfficialSite
+                                    </MudText>
+                                    <MudDivider Class="mb-2"></MudDivider>
+                                    <MudLink Href="@Media.homepage" Target="_blank" Color="Color.Secondary">
+                                        @(new Uri(Media.homepage).Host)
+                                    </MudLink>
+                                </MudPaper>
+                            }
                             <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true"
                                       Icon="@IconsFA.Solid.Icon("circle-exclamation").WithAnimation(IconAnimation.Beat).Font">
                                 @Translations.PlatformForManaging
@@ -123,8 +135,8 @@
                         </MudItem>
                     </MudGrid>
                 </MudTabPanel>
-                <MudTabPanel Tag="@Translations.TabWhereToWatch" Text="@Translations.TabWhereToWatch">
-                    <StreamingComponent TmdbId="@TmdbId" Type="@Type" Homepage="@Media?.homepage" ReleaseDate="@Media?.release_date"></StreamingComponent>
+                <MudTabPanel Tag="@Translations.TabPlatforms" Text="@Translations.TabPlatforms">
+                    <StreamingComponent TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></StreamingComponent>
                 </MudTabPanel>
                 <MudTabPanel Tag="@("Trailers")" Text="Videos" Visible="@(Media != null && Media.Videos.Any())">
                     @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])

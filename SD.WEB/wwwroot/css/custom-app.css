@@ -7,6 +7,12 @@
     margin-bottom: 0.6rem;
 }
 
+@media (max-width: 425px) {
+    .google-ads {
+        min-height: 60px !important;
+    }
+}
+
 body .pwa-updater[b-pwa-updater] {
     --pwa-updater-bar-backcolor: var(--mud-palette-primary);
     --pwa-updater-bar-z-index: 2000;

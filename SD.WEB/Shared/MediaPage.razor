@@ -16,232 +16,248 @@
 @inject WishListApi WishApi
 @inject IJSRuntime JS
 
-<SeoHeader Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")" Keywords="new[] {Media?.title}"></SeoHeader>
+<SeoHeader Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")" Keywords="new[] { Media?.title }"></SeoHeader>
 <GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
 
 <RenderControl Model="Media" Core="Core" ExpressionEmpty="@((MediaDetail? obj) => obj == null)">
-    <MudTabs Border="true" Outlined="true" PanelClass="pt-2">
-        <MudTabPanel Tag="@Translations.TabAbout" Text="@Translations.TabAbout">
-            <MudGrid Spacing="4">
-                <MudItem xs="12" sm="5" md="4" lg="3">
-                    <div Style="position: relative;">
-                        @if (Media?.release_date < DateTime.Now.AddMonths(-3))
-                        {
-                            <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
-                                @Media?.release_date?.Year
-                            </MudChip>
-                        }
-                        else
-                        {
-                            <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
-                                @Media?.release_date?.ToShortDateString()
-                            </MudChip>
-                        }
-                        <MudImage Src="@(Media?.poster_large ?? "images/no-image.png")" Alt="@Media?.title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
-                    </div>
-                </MudItem>
-                <MudItem xs="12" sm="7" md="8" lg="9">
-                    @if (Media?.runtime != null && Media.runtime > 0)
-                    {
-                        <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined">
-                            @Media.runtime.FormatRuntime()
-                        </MudChip>
-                    }
-                    @foreach (var item in Media?.Genres ?? [])
-                    {
-                        <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined">
-                            @item
-                        </MudChip>
-                    }
-                    <div>
-                        <RenderControl PartialComponent="true" Core="CoreRatings" Model="_ratingsCache" ExpressionEmpty="@((CacheDocument<Ratings>? obj) => obj?.Data == null)">
-                            @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.imdb))
-                            {
-                                <MudTooltip Text="IMDb">
-                                    <MudLink Href="@_ratingsCache.Data?.imdbLink" Target="_blank" rel="nofollow">
-                                        <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.imdb)" title="" Variant="Variant.Outlined">
-                                            <MudImage Src="logo/imdb.png" Alt="imdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.imdb
-                                        </MudChip>
-                                    </MudLink>
-                                </MudTooltip>
-                            }
-                            @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.tmdb))
-                            {
-                                <MudTooltip Text="TMDB">
-                                    <MudLink Href="@_ratingsCache.Data?.tmdbLink" Target="_blank" rel="nofollow">
-                                        <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.tmdb)" Variant="Variant.Outlined">
-                                            <MudImage Src="logo/tmdb.png" Alt="tmdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.tmdb
-                                        </MudChip>
-                                    </MudLink>
-                                </MudTooltip>
-                            }
-                            @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.metacritic))
-                            {
-                                <MudTooltip Text="Metacritic">
-                                    <MudLink Href="@_ratingsCache.Data?.metacriticLink" Target="_blank" rel="nofollow">
-                                        <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.metacritic)" Variant="Variant.Outlined">
-                                            <MudImage Src="logo/metacritic.png" Alt="metacritic" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.metacritic
-                                        </MudChip>
-                                    </MudLink>
-                                </MudTooltip>
-                            }
-                            @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.trakt))
-                            {
-                                <MudTooltip Text="Trakt">
-                                    <MudLink Href="@_ratingsCache.Data?.traktLink" Target="_blank" rel="nofollow">
-                                        <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.trakt)" Variant="Variant.Outlined">
-                                            <MudImage Src="logo/trakt.png" Alt="trakt" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.trakt
-                                        </MudChip>
-                                    </MudLink>
-                                </MudTooltip>
-                            }
-                            @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.rottenTomatoes))
-                            {
-                                <MudTooltip Text="Rotten Tomatoes">
-                                    <MudLink Href="@_ratingsCache.Data?.rottenTomatoesLink" Target="_blank" rel="nofollow">
-                                        <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.rottenTomatoes)" Variant="Variant.Outlined">
-                                            <MudImage Src="logo/rotten-tomatoes.png" Alt="rotten tomatoes" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.rottenTomatoes
-                                        </MudChip>
-                                    </MudLink>
-                                </MudTooltip>
-                            }
-                            @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.filmAffinity))
-                            {
-                                <MudTooltip Text="Film Affinity">
-                                    <MudLink Href="@_ratingsCache.Data?.filmAffinityLink" Target="_blank" rel="nofollow">
-                                        <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.filmAffinity)" Variant="Variant.Outlined">
-                                            <MudImage Src="logo/film-affinity.png" Alt="film affinity" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.filmAffinity
-                                        </MudChip>
-                                    </MudLink>
-                                </MudTooltip>
-                            }
-                        </RenderControl>
-                    </div>
-                    <MudText Typo="Typo.body1" Align="Align.Justify" Class="my-3">
-                        @Media?.plot
-                    </MudText>
-                    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mb-4"
-                              Icon="@IconsFA.Solid.Icon("circle-exclamation").WithAnimation(IconAnimation.Beat).Font">
-                        @Translations.PlatformForManaging
-                    </MudAlert>
+    <SectionComponent Title="@Media?.title" FullPage="true">
+        <BodyFragment>
+            <MudTabs Border="true" Outlined="true" PanelClass="pt-2" MinimumTabWidth="100">
+                <MudTabPanel Tag="@Translations.TabAbout" Text="@Translations.TabAbout">
                     <MudGrid Spacing="4">
-                        <MudItem xs="12" sm="6" md="5" lg="4">
-                            @if (Wish?.Movies.Any(a => a.id == TmdbId) ?? false)
-                            {
-                                <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@Remove">@Translations.RemoveWishlist</MudButton>
-                            }
-                            else if (Wish?.Shows.Any(a => a.id == TmdbId) ?? false)
-                            {
-                                <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@Remove">@Translations.RemoveWishlist</MudButton>
-                            }
-                            else
-                            {
-                                <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" OnClick="@Add">@Translations.AddWishlist</MudButton>
-                            }
-                        </MudItem>
-                        <MudItem xs="12" sm="6" md="5" lg="4">
-                            @if (Watched?.Movies.Contains(TmdbId ?? "") ?? false)
-                            {
-                                <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@IsNotWatched">@Translations.ButtonNotWatched</MudButton>
-                            }
-                            else if (Watched?.Shows.Contains(TmdbId ?? "") ?? false)
-                            {
-                                <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@IsNotWatched">@Translations.ButtonNotWatched</MudButton>
-                            }
-                            else
-                            {
-                                <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" OnClick="@IsWatched">@Translations.ButtonWatched</MudButton>
-                            }
-                        </MudItem>
-                    </MudGrid>
-                </MudItem>
-            </MudGrid>
-        </MudTabPanel>
-        <MudTabPanel Tag="@Translations.TabWhereToWatch" Text="@Translations.TabWhereToWatch">
-            <StreamingComponent TmdbId="@TmdbId" Type="@Type" Homepage="@Media?.homepage" ReleaseDate="@Media?.release_date"></StreamingComponent>
-        </MudTabPanel>
-        <MudTabPanel Tag="@("Trailers")" Text="Videos" Visible="@(Media != null && Media.Videos.Any())">
-            @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])
-            {
-                <MudPaper Outlined="true" Class="pa-2 mb-2">
-                    <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                        @group
-                    </MudText>
-                    <MudDivider Class="mb-2"></MudDivider>
-                    <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap">
-                        @foreach (var item in Media?.Videos.Where(w => w.type == group) ?? [])
-                        {
-                            <div>
-                                <MudIcon Icon="@IconsFA.Brands.Icon("youtube").Font" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
-                                <MudLink Href="@($"https://www.youtube.com/watch?v={item.key}")" Target="_blank" Color="Color.Secondary">
-                                    @item.name
-                                </MudLink>
-                            </div>
-                        }
-                    </MudStack>
-                </MudPaper>
-            }
-        </MudTabPanel>
-        <MudTabPanel Tag="@Translations.TabCredits" Text="@Translations.TabCredits">
-            <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" IsAuthenticated="IsAuthenticated">
-            </CreditsComponent>
-        </MudTabPanel>
-        <MudTabPanel Tag="@("Collections")" Text="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)"
-                     Visible="@(Media?.Collection.Any() ?? false)">
-
-            <div class="grid-relative-container-md">
-                @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
-                {
-                    <div>
-                        <div @onclick="@(async () => await CollectionClicked(item))" style="cursor: pointer; position: relative;">
-                            @if (item.release_date.HasValue)
-                            {
-                                if (item.release_date.Value < DateTime.Now.AddMonths(-3))
+                        <MudItem xs="12" sm="5" md="4" lg="3">
+                            <div Style="position: relative;">
+                                @if (Media?.release_date < DateTime.Now.AddMonths(-3))
                                 {
-                                    <MudChip T="string" Color="Color.Info" Size="Size.Medium" Label="true"
-                                             Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
-                                        @item.release_date.Value.Year
+                                    <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
+                                        @Media?.release_date?.Year
                                     </MudChip>
                                 }
                                 else
                                 {
-                                    <MudChip T="string" Color="Color.Info" Size="Size.Medium" Label="true"
-                                             Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
-                                        @item.release_date.Value.ToShortDateString()
+                                    <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
+                                        @Media?.release_date?.ToShortDateString()
                                     </MudChip>
                                 }
+                                <MudImage Src="@(Media?.poster_large ?? "images/no-image.png")" Alt="@Media?.title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                            </div>
+                        </MudItem>
+                        <MudItem xs="12" sm="7" md="8" lg="9">
+                            @if (Media?.runtime != null && Media.runtime > 0)
+                            {
+                                <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined">
+                                    @Media.runtime.FormatRuntime()
+                                </MudChip>
                             }
-                            @{
-                                if (Type == MediaType.movie) //you don't put seasons as wishes
-                                {
-                                    var wishedMovie = Wish?.Contains(MediaType.movie, item.id) ?? false;
-                                    if (wishedMovie)
+                            @foreach (var item in Media?.Genres ?? [])
+                            {
+                                <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined">
+                                    @item
+                                </MudChip>
+                            }
+                            <div>
+                                <RenderControl PartialComponent="true" Core="CoreRatings" Model="_ratingsCache" ExpressionEmpty="@((CacheDocument<Ratings>? obj) => obj?.Data == null)">
+                                    @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.imdb))
                                     {
-                                        <MudIcon Icon="@IconsFA.Solid.Icon("bookmark").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
+                                        <MudTooltip Text="IMDb">
+                                            <MudLink Href="@_ratingsCache.Data?.imdbLink" Target="_blank" rel="nofollow">
+                                                <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.imdb)" title="" Variant="Variant.Outlined">
+                                                    <MudImage Src="logo/imdb.png" Alt="imdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.imdb
+                                                </MudChip>
+                                            </MudLink>
+                                        </MudTooltip>
                                     }
-                                }
-
-                                var movieWatched = Watched?.Contains(MediaType.movie, item.id) ?? false;
-                                var showWatched = Watching?.GetWatchingItems(MediaType.tv, Media?.tmdb_id).Any(a => a == item.id) ?? false;
-                                if (movieWatched || showWatched)
-                                {
-                                    <MudIcon Icon="@IconsFA.Solid.Icon("eye").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
-                                }
-
-                                <MudImage Src="@(item.poster_small ?? "images/no-image.png")" Alt="@item.title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                    @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.tmdb))
+                                    {
+                                        <MudTooltip Text="TMDB">
+                                            <MudLink Href="@_ratingsCache.Data?.tmdbLink" Target="_blank" rel="nofollow">
+                                                <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.tmdb)" Variant="Variant.Outlined">
+                                                    <MudImage Src="logo/tmdb.png" Alt="tmdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.tmdb
+                                                </MudChip>
+                                            </MudLink>
+                                        </MudTooltip>
+                                    }
+                                    @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.metacritic))
+                                    {
+                                        <MudTooltip Text="Metacritic">
+                                            <MudLink Href="@_ratingsCache.Data?.metacriticLink" Target="_blank" rel="nofollow">
+                                                <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.metacritic)" Variant="Variant.Outlined">
+                                                    <MudImage Src="logo/metacritic.png" Alt="metacritic" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.metacritic
+                                                </MudChip>
+                                            </MudLink>
+                                        </MudTooltip>
+                                    }
+                                    @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.trakt))
+                                    {
+                                        <MudTooltip Text="Trakt">
+                                            <MudLink Href="@_ratingsCache.Data?.traktLink" Target="_blank" rel="nofollow">
+                                                <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.trakt)" Variant="Variant.Outlined">
+                                                    <MudImage Src="logo/trakt.png" Alt="trakt" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.trakt
+                                                </MudChip>
+                                            </MudLink>
+                                        </MudTooltip>
+                                    }
+                                    @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.rottenTomatoes))
+                                    {
+                                        <MudTooltip Text="Rotten Tomatoes">
+                                            <MudLink Href="@_ratingsCache.Data?.rottenTomatoesLink" Target="_blank" rel="nofollow">
+                                                <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.rottenTomatoes)" Variant="Variant.Outlined">
+                                                    <MudImage Src="logo/rotten-tomatoes.png" Alt="rotten tomatoes" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.rottenTomatoes
+                                                </MudChip>
+                                            </MudLink>
+                                        </MudTooltip>
+                                    }
+                                    @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.filmAffinity))
+                                    {
+                                        <MudTooltip Text="Film Affinity">
+                                            <MudLink Href="@_ratingsCache.Data?.filmAffinityLink" Target="_blank" rel="nofollow">
+                                                <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.filmAffinity)" Variant="Variant.Outlined">
+                                                    <MudImage Src="logo/film-affinity.png" Alt="film affinity" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.filmAffinity
+                                                </MudChip>
+                                            </MudLink>
+                                        </MudTooltip>
+                                    }
+                                </RenderControl>
+                            </div>
+                            <MudText Typo="Typo.body1" Align="Align.Justify" Class="my-3">
+                                @Media?.plot
+                            </MudText>
+                            @if (!string.IsNullOrEmpty(Media?.homepage))
+                            {
+                                <MudPaper Outlined="true" Class="pa-2 mb-3">
+                                    <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                                        @Translations.OfficialSite
+                                    </MudText>
+                                    <MudDivider Class="mb-2"></MudDivider>
+                                    <MudLink Href="@Media.homepage" Target="_blank" Color="Color.Secondary">
+                                        @(new Uri(Media.homepage).Host)
+                                    </MudLink>
+                                </MudPaper>
                             }
-                        </div>
-                        <MudText Align="Align.Center">@item.title</MudText>
+                            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mb-4"
+                                      Icon="@IconsFA.Solid.Icon("circle-exclamation").WithAnimation(IconAnimation.Beat).Font">
+                                @Translations.PlatformForManaging
+                            </MudAlert>
+                            <MudGrid Spacing="4">
+                                <MudItem xs="12" sm="6" md="5" lg="4">
+                                    @if (Wish?.Movies.Any(a => a.id == TmdbId) ?? false)
+                                    {
+                                        <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@Remove">@Translations.RemoveWishlist</MudButton>
+                                    }
+                                    else if (Wish?.Shows.Any(a => a.id == TmdbId) ?? false)
+                                    {
+                                        <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@Remove">@Translations.RemoveWishlist</MudButton>
+                                    }
+                                    else
+                                    {
+                                        <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" OnClick="@Add">@Translations.AddWishlist</MudButton>
+                                    }
+                                </MudItem>
+                                <MudItem xs="12" sm="6" md="5" lg="4">
+                                    @if (Watched?.Movies.Contains(TmdbId ?? "") ?? false)
+                                    {
+                                        <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@IsNotWatched">@Translations.ButtonNotWatched</MudButton>
+                                    }
+                                    else if (Watched?.Shows.Contains(TmdbId ?? "") ?? false)
+                                    {
+                                        <MudButton Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="@IsNotWatched">@Translations.ButtonNotWatched</MudButton>
+                                    }
+                                    else
+                                    {
+                                        <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" OnClick="@IsWatched">@Translations.ButtonWatched</MudButton>
+                                    }
+                                </MudItem>
+                            </MudGrid>
+                        </MudItem>
+                    </MudGrid>
+                </MudTabPanel>
+                <MudTabPanel Tag="@Translations.TabPlatforms" Text="@Translations.TabPlatforms">
+                    <StreamingComponent TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></StreamingComponent>
+                </MudTabPanel>
+                <MudTabPanel Tag="@("Trailers")" Text="Videos" Visible="@(Media != null && Media.Videos.Any())">
+                    @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])
+                    {
+                        <MudPaper Outlined="true" Class="pa-2 mb-2">
+                            <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                                @group
+                            </MudText>
+                            <MudDivider Class="mb-2"></MudDivider>
+                            <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap">
+                                @foreach (var item in Media?.Videos.Where(w => w.type == group) ?? [])
+                                {
+                                    <div>
+                                        <MudIcon Icon="@IconsFA.Brands.Icon("youtube").Font" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
+                                        <MudLink Href="@($"https://www.youtube.com/watch?v={item.key}")" Target="_blank" Color="Color.Secondary">
+                                            @item.name
+                                        </MudLink>
+                                    </div>
+                                }
+                            </MudStack>
+                        </MudPaper>
+                    }
+                </MudTabPanel>
+                <MudTabPanel Tag="@Translations.TabCredits" Text="@Translations.TabCredits">
+                    <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" IsAuthenticated="IsAuthenticated">
+                    </CreditsComponent>
+                </MudTabPanel>
+                <MudTabPanel Tag="@("Collections")" Text="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)"
+                             Visible="@(Media?.Collection.Any() ?? false)">
+
+                    <div class="grid-relative-container-md">
+                        @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
+                        {
+                            <div>
+                                <div @onclick="@(async () => await CollectionClicked(item))" style="cursor: pointer; position: relative;">
+                                    @if (item.release_date.HasValue)
+                                    {
+                                        if (item.release_date.Value < DateTime.Now.AddMonths(-3))
+                                        {
+                                            <MudChip T="string" Color="Color.Info" Size="Size.Medium" Label="true"
+                                                     Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
+                                                @item.release_date.Value.Year
+                                            </MudChip>
+                                        }
+                                        else
+                                        {
+                                            <MudChip T="string" Color="Color.Info" Size="Size.Medium" Label="true"
+                                                     Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
+                                                @item.release_date.Value.ToShortDateString()
+                                            </MudChip>
+                                        }
+                                    }
+                                    @{
+                                        if (Type == MediaType.movie) //you don't put seasons as wishes
+                                        {
+                                            var wishedMovie = Wish?.Contains(MediaType.movie, item.id) ?? false;
+                                            if (wishedMovie)
+                                            {
+                                                <MudIcon Icon="@IconsFA.Solid.Icon("bookmark").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
+                                            }
+                                        }
+
+                                        var movieWatched = Watched?.Contains(MediaType.movie, item.id) ?? false;
+                                        var showWatched = Watching?.GetWatchingItems(MediaType.tv, Media?.tmdb_id).Any(a => a == item.id) ?? false;
+                                        if (movieWatched || showWatched)
+                                        {
+                                            <MudIcon Icon="@IconsFA.Solid.Icon("eye").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
+                                        }
+
+                                        <MudImage Src="@(item.poster_small ?? "images/no-image.png")" Alt="@item.title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                    }
+                                </div>
+                                <MudText Align="Align.Center">@item.title</MudText>
+                            </div>
+                        }
                     </div>
-                }
-            </div>
-        </MudTabPanel>
-        <MudTabPanel Tag="@("Reviews")" Text="Reviews">
-            <ReviewComponent ImdbId="@ImdbId" EnglishTitle="@EnglishTitle?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").ToLower()"
-                             Type="@Type" ReleaseDate="@Media?.release_date">
-            </ReviewComponent>
-        </MudTabPanel>
-    </MudTabs>
+                </MudTabPanel>
+                <MudTabPanel Tag="@("Reviews")" Text="Reviews">
+                    <ReviewComponent ImdbId="@ImdbId" EnglishTitle="@EnglishTitle?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").ToLower()"
+                                     Type="@Type" ReleaseDate="@Media?.release_date">
+                    </ReviewComponent>
+                </MudTabPanel>
+            </MudTabs>
+        </BodyFragment>
+    </SectionComponent>
 </RenderControl>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
