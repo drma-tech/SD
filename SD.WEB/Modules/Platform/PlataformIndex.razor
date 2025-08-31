@@ -10,7 +10,7 @@
 @inject MyProvidersApi MyProvidersApi
 
 <SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/platforms"></SeoHeader>
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <SectionComponent Title="@Translations.TitleProviders.Format(AppStateStatic.Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription"
                   FullPage="true" MainPage="true">
@@ -90,8 +90,6 @@
     public RenderControlCore<AllProviders?>? Core { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
 
-    public Settings? Settings { get; set; }
-    public ClientePrincipal? Principal { get; set; }
     private MyProviders? MyProviders { get; set; }
 
     [Custom(Name = "Model")] public DeliveryModel? DeliveryModel { get; set; }
@@ -122,9 +120,6 @@
     protected override async Task LoadDataRender()
     {
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
 }

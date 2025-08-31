@@ -3,20 +3,20 @@
 namespace SD.WEB.Modules.Profile.Core;
 
 public class MySuggestionsApi(IHttpClientFactory factory)
-    : ApiCosmos<SD.Shared.Models.MySuggestions>(factory, "my-suggestions")
+    : ApiCosmos<MySuggestions>(factory, "my-suggestions")
 {
-    public async Task<SD.Shared.Models.MySuggestions?> Get(AccountProduct? product, bool isUserAuthenticated,
-        RenderControlCore<SD.Shared.Models.MySuggestions?>? core)
+    public async Task<MySuggestions?> Get(AccountProduct? product, bool isUserAuthenticated,
+        RenderControlCore<MySuggestions?>? core)
     {
-        if (product is null or AccountProduct.Basic) return new SD.Shared.Models.MySuggestions();
+        if (product is null or AccountProduct.Basic) return new MySuggestions();
 
         if (isUserAuthenticated) return await GetAsync(Endpoint.Get, core);
 
-        return new SD.Shared.Models.MySuggestions();
+        return new MySuggestions();
     }
 
-    public async Task<SD.Shared.Models.MySuggestions?> Sync(MediaType? mediaType, SD.Shared.Models.MySuggestions obj,
-        RenderControlCore<SD.Shared.Models.MySuggestions?>? core)
+    public async Task<MySuggestions?> Sync(MediaType? mediaType, MySuggestions obj,
+        RenderControlCore<MySuggestions?>? core)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(obj);
@@ -24,7 +24,7 @@ public class MySuggestionsApi(IHttpClientFactory factory)
         return await PostAsync(Endpoint.Sync(mediaType), core, obj);
     }
 
-    public async Task<SD.Shared.Models.MySuggestions?> Add(SD.Shared.Models.MySuggestions obj)
+    public async Task<MySuggestions?> Add(MySuggestions obj)
     {
         return await PostAsync(Endpoint.Add, null, obj);
     }

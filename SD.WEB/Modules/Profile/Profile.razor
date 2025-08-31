@@ -16,7 +16,7 @@
 
 <SeoHeader Title="@SeoTranslations.ProfileTitle" Description="@SeoTranslations.ProfileDescription" Index="false"></SeoHeader>
 
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Profile"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Profile" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 @if (!IsAuthenticated)
 {
@@ -177,9 +177,6 @@
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
     public RenderControlCore<WishList?> CoreWish { get; set; } = new();
 
-    public Settings? Settings { get; set; }
-    public ClientePrincipal? Principal { get; set; }
-
     private MyProviders? MyProviders { get; set; }
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
@@ -219,9 +216,6 @@
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
         Platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
         Reviewed = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "reviewed");
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
     // private async Task SetReviewed()

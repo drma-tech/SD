@@ -12,7 +12,7 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <HeadPage Title="IMDB" ImageSource="logo/imdb.png" Text="@SD.WEB.Resources.Credit.IMDb" Link="https://www.imdb.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
 
@@ -30,9 +30,6 @@
 
 @code {
     public Dictionary<string, string> Params { get; set; } = new() { { "mode", "full" } };
-
-    public Settings? Settings { get; set; }
-    public ClientePrincipal? Principal { get; set; }
 
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
@@ -56,9 +53,6 @@
         WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
         WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
         WishList = await WishListApi.Get(IsAuthenticated, null);
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
 }

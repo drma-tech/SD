@@ -11,7 +11,7 @@
 @inject TmdbListApi TmdbListApi
 @inject IJSRuntime JS
 
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <HeadPage Title="Bafta" ImageSource="logo/bafta.png" Text="@SD.WEB.Resources.Credit.Bafta"
           Link="https://www.bafta.org/" IsAuthenticated="IsAuthenticated">
@@ -32,9 +32,6 @@
 </div>
 
 @code {
-    public Settings? Settings { get; set; }
-    public ClientePrincipal? Principal { get; set; }
-
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
@@ -65,9 +62,6 @@
         WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
         WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
         WishList = await WishListApi.Get(IsAuthenticated, null);
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
 }

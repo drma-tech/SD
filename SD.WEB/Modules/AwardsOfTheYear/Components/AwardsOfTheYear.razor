@@ -11,7 +11,7 @@
 
 <SeoHeader Title="@EnumLists.AwardsOfTheYear.GetName()" Description="@GlobalTranslations.AwardsYearDescription" Keywords="@(new[] { "Best awards of the year" })" Url="/best-awards-year"></SeoHeader>
 
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Main" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                IsAuthenticated="IsAuthenticated" CommentsIsImage="true" IconName="@IconsFA.Solid.Icon("trophy").Font" FullPage="true"
@@ -19,9 +19,6 @@
 </MediaListFull>
 
 @code {
-    public Settings? Settings { get; set; }
-    public ClientePrincipal? Principal { get; set; }
-
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
@@ -52,9 +49,6 @@
         WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
         WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
         WishList = await WishListApi.Get(IsAuthenticated, null);
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
 }

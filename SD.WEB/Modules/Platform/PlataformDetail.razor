@@ -17,7 +17,7 @@
 <SeoHeader Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")"
            Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Keywords="@([Provider?.name])">
 </SeoHeader>
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null)">
     @if (Provider != null)
@@ -56,9 +56,6 @@
     public RenderControlCore<WatchingList?> CoreWatchingList { get; set; } = new();
     public RenderControlCore<WishList?> CoreWishlist { get; set; } = new();
 
-    public Settings? Settings { get; set; }
-    public ClientePrincipal? Principal { get; set; }
-
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
@@ -93,9 +90,6 @@
         WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
         WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
         WishList = await WishListApi.Get(IsAuthenticated, null);
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
     private static Dictionary<string, string> GetExtraParameters(string? providerId, string sortBy)

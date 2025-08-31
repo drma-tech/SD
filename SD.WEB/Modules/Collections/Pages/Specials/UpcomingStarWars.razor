@@ -9,7 +9,7 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <HeadPage Title="Upcoming Star Wars Movies & TV Shows" ImageSource="logo/star-wars.png" Text="@SD.WEB.Resources.Credit.UpcomingStarWarsMoviesTVShows" IsAuthenticated="IsAuthenticated"></HeadPage>
 
@@ -18,9 +18,6 @@
 </MediaListFull>
 
 @code {
-    public Settings? Settings { get; set; }
-    public ClientePrincipal? Principal { get; set; }
-
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
@@ -51,9 +48,6 @@
         WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
         WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
         WishList = await WishListApi.Get(IsAuthenticated, null);
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
 }

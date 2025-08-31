@@ -6,7 +6,7 @@
 @inject IJSRuntime JsRuntime
 
 <SeoHeader Title="@SeoTranslations.CollectionsTitle" Description="@SeoTranslations.CollectionsDescription" Url="/collections"></SeoHeader>
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <SectionComponent Title="@Translations.AwardsTitle" Description="@Translations.AwardsDescription" IconName="@IconsFA.Solid.Icon("trophy").Font">
     <BodyFragment>
@@ -91,9 +91,6 @@
     private List<Item> Sites { get; } = [];
     private List<Item> Specials { get; } = [];
 
-    public Settings? Settings { get; set; }
-    public ClientePrincipal? Principal { get; set; }
-
     private readonly string _swiperAwards = $"swiper-{Guid.NewGuid()}";
     private readonly string _swiperSites = $"swiper-{Guid.NewGuid()}";
     private readonly string _swiperSpecials = $"swiper-{Guid.NewGuid()}";
@@ -157,12 +154,6 @@
         {
             ex.ProcessException(Snackbar, Logger);
         }
-    }
-
-    protected override async Task LoadDataRender()
-    {
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
 }
