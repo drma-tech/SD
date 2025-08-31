@@ -10,6 +10,9 @@
 @media (max-width: 425px) {
     .google-ads {
         min-height: 50px !important;
+    }
+
+    .google-ads-wrapper {
         max-height: 200px !important;
     }
 }
