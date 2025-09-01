@@ -48,8 +48,7 @@ window.addEventListener("unhandledrejection", function (e) {
 });
 
 window.addEventListener("securitypolicyviolation", (e) => {
-    const msg = `CSP violation: Violated directive: ${e.violatedDirective} | Blocked URI: ${e.blockedURI}`;
-    showError(msg);
+    showError(e.reason.message);
 });
 
 window.addEventListener("resize", function () {
