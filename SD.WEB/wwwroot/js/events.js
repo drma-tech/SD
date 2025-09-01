@@ -47,6 +47,10 @@ window.addEventListener("unhandledrejection", function (e) {
     //todo: send log to server
 });
 
+window.addEventListener("securitypolicyviolation", (e) => {
+    showError(e.reason.message);
+});
+
 window.addEventListener("resize", function () {
     const divs = document.querySelectorAll('[id^="swiper-trailer-"]');
     divs.forEach(function (el) {
