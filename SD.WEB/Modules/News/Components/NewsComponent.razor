@@ -52,9 +52,9 @@
     {
         try
         {
-            await JsRuntime.InvokeVoidAsync("initCalendar", _gallerySwiperId);
-
             await base.OnAfterRenderAsync(firstRender);
+
+            await JsRuntime.InvokeVoidAsync("initCalendar", _gallerySwiperId);
         }
         catch (Exception ex)
         {
