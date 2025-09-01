@@ -31,6 +31,7 @@
         {
             Settings = await CacheSettingsApi.GetSettings();
             Principal = await PrincipalApi.Get(IsAuthenticated);
+            StateHasChanged();
         }
 
         if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
