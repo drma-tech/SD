@@ -64,10 +64,18 @@ public class LoginFunction(CosmosRepository repo)
     }
 
     [Function("Test")]
-    public static HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "public/test")] HttpRequestData req)
+    public static HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/test")] HttpRequestData req)
     {
         var response = req.CreateResponse(HttpStatusCode.OK);
         response.WriteString("OK");
         return response;
+    }
+
+    [Function("Logger")]
+    public static async Task Logger([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/logger")] HttpRequestData req)
+    {
+        var body = await new StreamReader(req.Body).ReadToEndAsync();
+
+        req.ProcessException(new Exception(body));
     }
 }
