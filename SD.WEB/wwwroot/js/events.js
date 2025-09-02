@@ -38,18 +38,18 @@ window.addEventListener("error", function (e) {
     }
     else {
         showError(e.message);
-        //todo: send log to server
+        sendLog(e.message);
     }
 });
 
 window.addEventListener("unhandledrejection", function (e) {
     showError(e.reason.message);
-    //todo: send log to server
+    sendLog(e.reason.message);
 });
 
 window.addEventListener("securitypolicyviolation", (e) => {
     const msg = `CSP violation: Violated directive: ${e.violatedDirective} | Blocked URI: ${e.blockedURI}`;
-    showError(msg);
+    sendLog(msg);
 });
 
 window.addEventListener("resize", function () {
