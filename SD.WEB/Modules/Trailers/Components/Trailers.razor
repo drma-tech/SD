@@ -8,7 +8,7 @@
 
 <SeoHeader Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Keywords="@(new[] { "Trailers" })" Url="/trailers"></SeoHeader>
 
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Main" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <SectionComponent Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" IconName="@IconsFA.Brands.Icon("youtube").Font" FullPage="true">
     <BodyFragment>
@@ -40,15 +40,9 @@
     public RenderControlCore<CacheDocument<TrailerModel>?> Core { get; set; } = new();
     private CacheDocument<TrailerModel>? TrailerModel { get; set; }
 
-    public Settings? Settings { get; set; }
-    public ClientePrincipal? Principal { get; set; }
-
     protected override async Task LoadDataRender()
     {
         TrailerModel = await CacheYoutubeApi.GetTrailers("full", Core);
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
 }

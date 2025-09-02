@@ -47,6 +47,11 @@ window.addEventListener("unhandledrejection", function (e) {
     //todo: send log to server
 });
 
+window.addEventListener("securitypolicyviolation", (e) => {
+    const msg = `CSP violation: Violated directive: ${e.violatedDirective} | Blocked URI: ${e.blockedURI}`;
+    showError(msg);
+});
+
 window.addEventListener("resize", function () {
     const divs = document.querySelectorAll('[id^="swiper-trailer-"]');
     divs.forEach(function (el) {

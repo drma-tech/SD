@@ -10,7 +10,7 @@
 
 <SeoHeader Title="Search" Index="false"></SeoHeader>
 
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Main" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@SearchContent" Immediate="true" OnKeyDown="@KeyPress"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
@@ -24,8 +24,6 @@
 </RenderControl>
 
 @code {
-    public Settings? Settings { get; set; }
-    public ClientePrincipal? Principal { get; set; }
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
@@ -63,9 +61,6 @@
         Core?.LoadingFinished?.Invoke(Items);
 
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
     private void KeyPress(KeyboardEventArgs args)

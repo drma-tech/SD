@@ -12,7 +12,7 @@
 
 <SeoHeader Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Keywords="@(new[] { "Editor’s Choice" })" Url="@($"/editors-choice/{Type}")"></SeoHeader>
 
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Main" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 @if (MediaType == MediaType.movie)
 {
@@ -33,9 +33,6 @@ else
     [Parameter] public string? Type { get; set; }
 
     public MediaType MediaType => Enum.Parse<MediaType>(Type ?? "movie");
-
-    public Settings? Settings { get; set; }
-    public ClientePrincipal? Principal { get; set; }
 
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
@@ -67,9 +64,6 @@ else
         WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
         WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
         WishList = await WishListApi.Get(IsAuthenticated, null);
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
 }

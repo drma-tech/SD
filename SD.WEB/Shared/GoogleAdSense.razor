@@ -1,28 +1,41 @@
-﻿@inject IJSRuntime JS
+﻿@inherits ComponentCore<GoogleAdSense>
 
-@if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
+@inject IJSRuntime JS
+
+@if (!Navigation.BaseUri.Contains("localhost") && Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
 {
     <div style="text-align: center" @key="_instanceKey">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"></ins>
     </div>
+
+    <style>
+        ins.adsbygoogle[data-ad-status='unfilled'] {
+            display: none !important;
+        }
+    </style>
 }
 
-<style>
-    ins.adsbygoogle[data-ad-status='unfilled'] {
-        display: none !important;
-    }
-</style>
-
 @code {
-    [Parameter][EditorRequired] public Settings? Settings { get; set; }
-    [Parameter][EditorRequired] public ClientePrincipal? Principal { get; set; }
     [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Main;
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+
+    private Settings? Settings { get; set; }
+    private ClientePrincipal? Principal { get; set; }
 
     private const string AdClientId = "5145928155833172";
     private readonly Guid _instanceKey = Guid.NewGuid();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            Settings = await CacheSettingsApi.GetSettings();
+            Principal = await PrincipalApi.Get(IsAuthenticated);
+            StateHasChanged();
+        }
+
         if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
         {
             await JS.InvokeVoidAsync("loadAds");

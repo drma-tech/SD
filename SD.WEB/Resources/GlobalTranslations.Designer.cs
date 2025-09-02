@@ -232,15 +232,6 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Share.
-        /// </summary>
-        public static string Share {
-            get {
-                return ResourceManager.GetString("Share", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete your account? This action cannot be undone..
         /// </summary>
         public static string SureDeleteAccount {

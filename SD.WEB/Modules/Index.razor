@@ -14,7 +14,7 @@
 @inject IJSRuntime JsRuntime
 
 <SeoHeader Title="Home" Description="@SeoTranslations.AppDescription" Url="/"></SeoHeader>
-<GoogleAdSense Settings="@Settings" Principal="@Principal" Section="@GoogleAdSense.AdUnit.Main"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Main" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-4"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
@@ -46,8 +46,6 @@
     public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
     public RenderControlCore<WishList?> CoreWish { get; set; } = new();
 
-    public Settings? Settings { get; set; }
-    public ClientePrincipal? Principal { get; set; }
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
@@ -81,9 +79,6 @@
     protected override async Task LoadDataRender()
     {
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
-
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
     }
 
     private void KeyPress(KeyboardEventArgs args)
