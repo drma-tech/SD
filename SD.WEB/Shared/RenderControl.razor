@@ -23,7 +23,7 @@ else if (Status == LoadingStatus.Locked && !PartialComponent)
 }
 else if (Status == LoadingStatus.Premium && !PartialComponent)
 {
-    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Icon="@IconsFA.Solid.Icon("gem").Font" Style="text-align: justify;">
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@IconsFA.Solid.Icon("gem").Font" Style="text-align: justify;">
         <span class="me-2" style="font-weight: bold;">@GlobalTranslations.PremiumFeature</span>
         @if (!string.IsNullOrEmpty(PremiumDescription))
         {
