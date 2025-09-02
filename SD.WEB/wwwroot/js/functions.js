@@ -1,12 +1,12 @@
 ﻿"use strict";
 
-function sendLog(msgObj) {
+function sendLog(msg) {
     const baseUrl = window.location.hostname === "localhost" ? "http://localhost:7071" : "";
 
     fetch(`${baseUrl}/api/public/logger`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(msgObj)
+        body: msg
     }).catch(() => { /* do nothing */ });
 }
 
