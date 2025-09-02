@@ -20,8 +20,6 @@
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [
-      "/api/*",
-      "404.html",
       "*.{css,scss,js,png,gif,ico,jpg,svg,ttf,woff2,webmanifest}"
     ]
   },
