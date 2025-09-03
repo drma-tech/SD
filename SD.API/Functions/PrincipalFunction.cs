@@ -53,12 +53,14 @@ public class PrincipalFunction(CosmosRepository repo,
     public async Task<AuthPrincipal?> PrincipalAdd(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/add")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        //note: its called once per user (first acccess)
+        //note: its called once per user (first access)
 
         try
         {
             var userId = req.GetUserId();
             var body = await req.GetBody<AuthPrincipal>(cancellationToken);
+
+            if (userId.Empty()) throw new InvalidOperationException("unauthenticated user");
 
             //check if user ip is blocked for insert
             var ip = req.GetUserIP(false) ?? throw new NotificationException("Failed to retrieve IP");
@@ -84,7 +86,8 @@ public class PrincipalFunction(CosmosRepository repo,
             {
                 IdentityProvider = body.IdentityProvider,
                 DisplayName = body.DisplayName,
-                Email = body.Email
+                Email = body.Email,
+                Events = body.Events
             };
             model.Initialize(userId);
 
