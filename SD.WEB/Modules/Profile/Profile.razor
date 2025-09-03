@@ -83,7 +83,7 @@
             <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
                 @Translations.HeroCall
             </MudText>
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="/login-providers" Class="my-4">
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="@($"/.auth/login/aad?post_login_redirect_uri={Navigation.BaseUri}login-success")" Rel="nofollow" Class="my-4">
                 @Translations.HeroButton
             </MudButton>
             <MudText Typo="Typo.caption" Align="Align.Center" Class="my-3 d-block" Style="bottom: 50px; position: absolute; left: 0; right: 0;">
