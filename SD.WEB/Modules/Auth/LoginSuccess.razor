@@ -61,22 +61,29 @@
 
     protected override async Task LoadDataRender()
     {
-        if (IsAuthenticated)
+        try
         {
-            Principal = await PrincipalApi.Get(IsAuthenticated);
+            if (IsAuthenticated)
+            {
+                Principal = await PrincipalApi.Get(IsAuthenticated);
 
-            if (Principal == null) //first access
-            {
-                //wait the user answer the terms of use
+                if (Principal == null) //first access
+                {
+                    //wait the user answer the terms of use
+                }
+                else //just do login
+                {
+                    await RegisterLogin();
+                }
             }
-            else //just do login
+            else
             {
-                await RegisterLogin();
+                Navigation.NavigateTo("/");
             }
         }
-        else
+        catch (Exception ex)
         {
-            Navigation.NavigateTo("/");
+            ex.ProcessException(Snackbar, Logger);
         }
     }
 
@@ -112,26 +119,33 @@
 
     private async Task CreateAccount()
     {
-        if (Principal != null) throw new InvalidOperationException("Principal is already set.");
-        if (User == null) throw new InvalidOperationException("User is null.");
-
-        Principal = new AuthPrincipal
+        try
         {
-            IdentityProvider = User.FindFirst("http://schemas.microsoft.com/identity/claims/identityprovider")?.Value,
-            DisplayName = User.FindFirst("name")?.Value,
-            Email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value
-        };
+            if (Principal != null) throw new InvalidOperationException("Principal is already set.");
+            if (User == null) throw new InvalidOperationException("User is null.");
 
-        if (_terms1)
-        {
-            Principal.Events = new Event[] { new Event { Description = "terms of use accepted" } };
+            Principal = new AuthPrincipal
+            {
+                IdentityProvider = User.FindFirst("http://schemas.microsoft.com/identity/claims/identityprovider")?.Value,
+                DisplayName = User.FindFirst("name")?.Value,
+                Email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value
+            };
+
+            if (_terms1)
+            {
+                Principal.Events = new Event[] { new Event { Description = "terms of use accepted" } };
+            }
+
+            Principal = await PrincipalApi.Add(Principal);
+
+            if (Principal == null) throw new InvalidOperationException("Failed to create principal.");
+
+            await RegisterLogin();
         }
-
-        Principal = await PrincipalApi.Add(Principal);
-
-        if (Principal == null) throw new InvalidOperationException("Failed to create principal.");
-
-        await RegisterLogin();
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
     }
 
     private async Task RegisterLogin()
