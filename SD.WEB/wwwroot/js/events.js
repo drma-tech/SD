@@ -38,13 +38,13 @@ window.addEventListener("error", function (e) {
     }
     else {
         showError(e.message);
-        sendLog(e.message);
+        sendLog(`error: ${e.message}`);
     }
 });
 
 window.addEventListener("unhandledrejection", function (e) {
     showError(e.reason.message);
-    sendLog(e.reason.message);
+    sendLog(`unhandledrejection: ${e.reason.message}`);
 });
 
 window.addEventListener("securitypolicyviolation", (e) => {
