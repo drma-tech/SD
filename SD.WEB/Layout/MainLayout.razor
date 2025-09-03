@@ -47,6 +47,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        //its called once per request
         if (User == null)
         {
             var authState = await AuthenticationState;

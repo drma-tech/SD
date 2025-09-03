@@ -16,7 +16,7 @@
 }
 
 @code {
-    [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Main;
+    [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Index;
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     private Settings? Settings { get; set; }
@@ -44,9 +44,11 @@
 
     public enum AdUnit : long
     {
-        Main = 4046112630,
+        Index = 4046112630,
         Profile = 4650130753,
         Platforms = 5359194302,
-        Collections = 1353899488
+        Collections = 1353899488,
+        Search = 8540150517,
+        Media = 8348578821
     }
 }

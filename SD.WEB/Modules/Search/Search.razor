@@ -10,7 +10,7 @@
 
 <SeoHeader Title="Search" Index="false"></SeoHeader>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Main" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Search" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@SearchContent" Immediate="true" OnKeyDown="@KeyPress"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined"

@@ -79,6 +79,15 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Account.
+        /// </summary>
+        public static string CreateAccount {
+            get {
+                return ResourceManager.GetString("CreateAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string Email {

@@ -14,7 +14,7 @@
 @inject IJSRuntime JsRuntime
 
 <SeoHeader Title="Home" Description="@SeoTranslations.AppDescription" Url="/"></SeoHeader>
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Main" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-4"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined"

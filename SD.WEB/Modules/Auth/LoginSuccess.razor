@@ -7,12 +7,57 @@
 @inject LoginApi LoginApi
 @inject IJSRuntime JsRuntime
 
-<MudAlert Variant="Variant.Filled" Severity="Severity.Warning" Dense="true" Icon="@IconsFA.Solid.Icon("spinner").WithAnimation(IconAnimation.Spin).Font">
-    @Translations.AuthenticationInProgress
-</MudAlert>
+@if (IsAuthenticated)
+{
+    if (Principal == null)
+    {
+        <MudPaper Elevation="0" Outlined="true" Class="pa-3">
+            <MudText Typo="Typo.h1" Color="Color.Primary" Class="custom-h1 mb-4">
+                @Translations.CreateAccount
+            </MudText>
+
+            <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="mb-2">
+                @if (GetGeneralLanguage() == "pt")
+                {
+                    <MudText Inline="true">Li e concordo com os </MudText>
+                    <MudLink Href="support/terms/pt" Target="_blank">Termos de Uso</MudLink>
+                }
+                else if (GetGeneralLanguage() == "es")
+                {
+                    <MudText Inline="true">He leído y acepto los </MudText>
+                    <MudLink Href="support/terms/es" Target="_blank">Términos de uso</MudLink>
+                }
+                else
+                {
+                    <MudText Inline="true">I have read and agree to the </MudText>
+                    <MudLink Href="support/terms/en" Target="_blank">Terms of Use</MudLink>
+                }
+            </MudCheckBox>
+            <MudCheckBox @bind-Value="_terms2" Color="Color.Primary">
+                <MudText Inline="true">I understand this platform does not stream movies or shows. It is for tracking and discovery only.</MudText>
+            </MudCheckBox>
+
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="mt-4 me-2">
+                @Button.Confirm
+            </MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Logout" Class="mt-4">
+                @Button.Cancel
+            </MudButton>
+        </MudPaper>
+    }
+    else
+    {
+        <MudAlert Variant="Variant.Filled" Severity="Severity.Warning" Dense="true" Icon="@IconsFA.Solid.Icon("spinner").WithAnimation(IconAnimation.Spin).Font">
+            @Translations.AuthenticationInProgress
+        </MudAlert>
+    }
+}
 
 @code {
     private ClientePrincipal? Principal { get; set; } = new();
+
+    private bool _terms1 { get; set; } = false;
+    private bool _terms2 { get; set; } = false;
 
     protected override async Task LoadDataRender()
     {
@@ -20,24 +65,82 @@
         {
             Principal = await PrincipalApi.Get(IsAuthenticated);
 
-            if (Principal == null && User != null)
+            if (Principal == null) //first access
             {
-                Principal = new ClientePrincipal
-                {
-                    IdentityProvider = User.FindFirst("http://schemas.microsoft.com/identity/claims/identityprovider")?.Value,
-                    DisplayName = User.FindFirst("name")?.Value,
-                    Email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value                 
-                };
-
-                Principal = await PrincipalApi.Add(Principal);
+                //wait the user answer the terms of use
             }
-
-            var platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
-
-            await LoginApi.Add(platform);
-
-            Navigation.NavigateTo("/profile");
+            else //just do login
+            {
+                await RegisterLogin();
+            }
         }
+        else
+        {
+            Navigation.NavigateTo("/");
+        }
+    }
+
+    private string GetGeneralLanguage()
+    {
+        switch (AppStateStatic.Language)
+        {
+            case Language.ptAO:
+            case Language.ptBR:
+            case Language.ptMZ:
+            case Language.ptPT:
+                return "pt";
+            case Language.esAR:
+            case Language.esCL:
+            case Language.esDO:
+            case Language.esEC:
+            case Language.esES:
+            case Language.esGQ:
+            case Language.esGT:
+            case Language.esHN:
+            case Language.esMX:
+            case Language.esNI:
+            case Language.esPA:
+            case Language.esPE:
+            case Language.esPY:
+            case Language.esSV:
+            case Language.esUY:
+                return "es";
+            default:
+                return "en";
+        }
+    }
+
+    private async Task CreateAccount()
+    {
+        if (Principal != null) throw new InvalidOperationException("Principal is already set.");
+        if (User == null) throw new InvalidOperationException("User is null.");
+
+        Principal = new ClientePrincipal
+        {
+            IdentityProvider = User.FindFirst("http://schemas.microsoft.com/identity/claims/identityprovider")?.Value,
+            DisplayName = User.FindFirst("name")?.Value,
+            Email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value
+        };
+
+        Principal = await PrincipalApi.Add(Principal);
+
+        if (Principal == null) throw new InvalidOperationException("Failed to create principal.");
+
+        await RegisterLogin();
+    }
+
+    private async Task RegisterLogin()
+    {
+        var platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
+
+        await LoginApi.Add(platform);
+
+        Navigation.NavigateTo("/profile");
+    }
+
+    private void Logout()
+    {
+        Navigation.NavigateTo("/.auth/logout?post_logout_redirect_uri=" + Navigation.BaseUri, true);
     }
 
 }

@@ -91,5 +91,15 @@ public abstract class PageCore<T> : ComponentCore<T> where T : class
             IsAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
             UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         }
+
+        if (IsAuthenticated)
+        {
+            var principal = await PrincipalApi.Get(true);
+
+            if (principal == null)
+            {
+                Navigation.NavigateTo("/login-success");
+            }
+        }
     }
 }
