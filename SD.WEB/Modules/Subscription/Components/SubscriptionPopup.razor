@@ -282,6 +282,10 @@
                             </MudDataGrid>
                         </MudCardContent>
                     </MudCard>
+                    <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("list-check").Font" Variant="Variant.Filled" Class="me-2 mb-2"
+                               Href="https://customer-portal.paddle.com/cpl_01hgm3yymgzezgejt0fzbypag3" Target="_blank" Rel="nofollow">
+                        Customer portal
+                    </MudButton>
                     @if (Subscription?.data?.IsCanceled ?? true)
                     {
                         <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("gem").Font" Variant="Variant.Filled" Class="me-2 mb-2"
@@ -292,14 +296,14 @@
                     else
                     {
                         <MudButton Color="Color.Secondary" StartIcon="@IconsFA.Solid.Icon("credit-card").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
-                                   Href="@Subscription?.data?.management_urls?.update_payment_method" Target="_blank" rel="nofollow">
+                                   Href="@Subscription?.data?.management_urls?.update_payment_method" Target="_blank" Rel="nofollow">
                             @Translations.UpdatePaymentDetails
                         </MudButton>
                         <MudButton Color="Color.Error" StartIcon="@IconsFA.Solid.Icon("ban").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
-                                   Href="@Subscription?.data?.management_urls?.cancel" Target="_blank" rel="nofollow">
+                                   Href="@Subscription?.data?.management_urls?.cancel" Target="_blank" Rel="nofollow">
                             @Translations.CancelSubscription
                         </MudButton>
-                    }
+                    }                   
                 }
             }
         }
