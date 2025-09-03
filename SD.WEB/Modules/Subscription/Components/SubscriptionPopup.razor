@@ -24,7 +24,7 @@
         }
         else
         {
-            if (Client?.ClientePaddle == null)
+            if (Client?.AuthPaddle == null)
             {
              @*    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("gift").Font" Class="mb-3" Dense="true">
                     @Translations.FreePeriod
@@ -318,7 +318,7 @@
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
-    private ClientePrincipal? Client { get; set; }
+    private AuthPrincipal? Client { get; set; }
 
     public RootSubscription? Subscription { get; set; }
     public PaddleConfigurations? Config { get; set; }
@@ -361,7 +361,7 @@
         return Plans.FirstOrDefault(f => f.Product == product && f.Cycle == Cycle);
     }
 
-    private Action<TempClientePaddle> Registration => async client => await RegistrationSuccessful(client);
+    private Action<TempAuthPaddle> Registration => async client => await RegistrationSuccessful(client);
 
     protected override void OnInitialized()
     {
@@ -403,18 +403,18 @@
         Config = await ConfigurationApi.GetConfigurations();
         if (Config == null) throw new NotificationException("server communication error");
 
-        if (Client?.ClientePaddle == null && string.IsNullOrEmpty(Client?.ClientePaddle?.SubscriptionId))
+        if (Client?.AuthPaddle == null && string.IsNullOrEmpty(Client?.AuthPaddle?.SubscriptionId))
         {
             await JsRuntime.InvokeVoidAsync("startPaddle", Config.Token);
             Plans = await JsRuntime.InvokeAsync<IEnumerable<Plan>>("getPlans", Config.PriceStandardMonth, Config.PriceStandardYear, Config.PricePremiumMonth, Config.PricePremiumYear);
         }
-        else if (string.IsNullOrEmpty(Client?.ClientePaddle?.SubscriptionId))
+        else if (string.IsNullOrEmpty(Client?.AuthPaddle?.SubscriptionId))
         {
             Snackbar.Add(Translations.UnableReadSubscription, Severity.Error);
         }
         else
         {
-            Subscription = await SubscriptionApi.GetSubscription(Client?.ClientePaddle?.SubscriptionId);
+            Subscription = await SubscriptionApi.GetSubscription(Client?.AuthPaddle?.SubscriptionId);
         }
     }
 
@@ -426,7 +426,7 @@
             {
                 var locale = AppStateStatic.Language.ToString().Substring(0, 2);
 
-                await JsRuntime.InvokeVoidAsync("openCheckout", priceId, Client?.Email, locale, Client?.ClientePaddle?.CustomerId, Client?.ClientePaddle?.AddressId);
+                await JsRuntime.InvokeVoidAsync("openCheckout", priceId, Client?.Email, locale, Client?.AuthPaddle?.CustomerId, Client?.AuthPaddle?.AddressId);
             }
             else
             {
@@ -440,7 +440,7 @@
         }
     }
 
-    private async Task RegistrationSuccessful(TempClientePaddle client)
+    private async Task RegistrationSuccessful(TempAuthPaddle client)
     {
         try
         {
@@ -461,11 +461,11 @@
 
             var product = Plans.Single(w => w.ProductId == client.ProductId && w.Cycle == Cycle).Product;
 
-            freshClient.ClientePaddle ??= new ClientePaddle();
+            freshClient.AuthPaddle ??= new AuthPaddle();
 
-            freshClient.ClientePaddle.CustomerId = client.CustomerId;
-            freshClient.ClientePaddle.AddressId = client.AddressId;
-            freshClient.ClientePaddle.Items = [new PaddleItem { ProductId = client.ProductId, Product = product }];
+            freshClient.AuthPaddle.CustomerId = client.CustomerId;
+            freshClient.AuthPaddle.AddressId = client.AddressId;
+            freshClient.AuthPaddle.Items = [new PaddleItem { ProductId = client.ProductId, Product = product }];
 
             Client = await PrincipalApi.Paddle(freshClient);
 
@@ -478,7 +478,7 @@
                 await Task.Delay(2000);
                 var principal = await PrincipalApi.Get(IsAuthenticated, true);
 
-                if (principal?.ClientePaddle != null && principal.ClientePaddle.SubscriptionId.NotEmpty())
+                if (principal?.AuthPaddle != null && principal.AuthPaddle.SubscriptionId.NotEmpty())
                 {
                     await UpdateData();
                     break;
@@ -510,7 +510,7 @@
     {
         try
         {
-            if (Client != null) Client.ClientePaddle = null;
+            if (Client != null) Client.AuthPaddle = null;
             Subscription = null;
             await LoadDataRender();
         }

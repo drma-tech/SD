@@ -116,7 +116,7 @@
 
                 var client = await PrincipalApi.Get(IsAuthenticated);
                 Snackbar.Add(Translations.RegionsApplied, Severity.Warning);
-                await MyProvidersApi.Update(MyProviders, client?.ClientePaddle);
+                await MyProvidersApi.Update(MyProviders, client?.AuthPaddle);
 
                 StateHasChanged();
             }

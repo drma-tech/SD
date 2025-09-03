@@ -1,13 +1,13 @@
 ﻿namespace SD.Shared.Models.Auth;
 
-public class TempClientePaddle
+public class TempAuthPaddle
 {
     public string? CustomerId { get; set; }
     public string? AddressId { get; set; }
     public string? ProductId { get; set; }
 }
 
-public class ClientePaddle
+public class AuthPaddle
 {
     public string? SubscriptionId { get; set; }
     public string? CustomerId { get; set; }

@@ -4,7 +4,7 @@ namespace SD.WEB.Modules.Auth.Core
 {
     public class SuperData
     {
-        public ClientePrincipal? Principal { get; set; }
-        public ClienteLogin? Login { get; set; }
+        public AuthPrincipal? Principal { get; set; }
+        public AuthLogin? Login { get; set; }
     }
 }

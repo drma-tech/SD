@@ -12,7 +12,7 @@ public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>
         return new MyProviders();
     }
 
-    public async Task<MyProviders?> Add(MyProviders? obj, MyProvidersItem? item, ClientePaddle? paddle)
+    public async Task<MyProviders?> Add(MyProviders? obj, MyProvidersItem? item, AuthPaddle? paddle)
     {
         ArgumentNullException.ThrowIfNull(item);
         SubscriptionHelper.ValidateFavoriteProviders(paddle?.ActiveProduct, (obj?.Items.Count ?? 0) + 1);
@@ -20,7 +20,7 @@ public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>
         return await PostAsync(Endpoint.MyProvidersAdd, null, item);
     }
 
-    public async Task<MyProviders?> Update(MyProviders? obj, ClientePaddle? paddle, bool validatePlan = true)
+    public async Task<MyProviders?> Update(MyProviders? obj, AuthPaddle? paddle, bool validatePlan = true)
     {
         ArgumentNullException.ThrowIfNull(obj);
         if (validatePlan) SubscriptionHelper.ValidateFavoriteProviders(paddle?.ActiveProduct, obj.Items.Count + 1);

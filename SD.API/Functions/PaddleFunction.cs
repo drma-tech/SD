@@ -51,13 +51,13 @@ public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
             var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new UnhandledException("body null");
             if (body.data == null) throw new UnhandledException("body.data null");
 
-            var result = await repo.Query<ClientePrincipal>(x => x.ClientePaddle != null && x.ClientePaddle.CustomerId == body.data.customer_id, DocumentType.Principal,
-                cancellationToken) ?? throw new UnhandledException("ClientePrincipal null");
+            var result = await repo.Query<AuthPrincipal>(x => x.AuthPaddle != null && x.AuthPaddle.CustomerId == body.data.customer_id, DocumentType.Principal, cancellationToken) ??
+                throw new UnhandledException("AuthPrincipal null");
             var client = result.FirstOrDefault() ?? throw new UnhandledException($"client null - customer_id:{body.data.customer_id}");
-            if (client.ClientePaddle == null) throw new UnhandledException("client.ClientePaddle null");
+            if (client.AuthPaddle == null) throw new UnhandledException("client.AuthPaddle null");
 
-            client.ClientePaddle.SubscriptionId = body.data.id;
-            client.ClientePaddle.IsPaidUser = body.data.status is "active" or "trialing";
+            client.AuthPaddle.SubscriptionId = body.data.id;
+            client.AuthPaddle.IsPaidUser = body.data.status is "active" or "trialing";
 
             await repo.UpsertItemAsync(client, cancellationToken);
         }

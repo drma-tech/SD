@@ -14,7 +14,7 @@ public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(facto
         return new WishList();
     }
 
-    public async Task<WishList?> Add(MediaType? mediaType, WishList? obj, WishListItem item, ClientePaddle? paddle)
+    public async Task<WishList?> Add(MediaType? mediaType, WishList? obj, WishListItem item, AuthPaddle? paddle)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(item);

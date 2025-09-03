@@ -54,7 +54,7 @@
 }
 
 @code {
-    private ClientePrincipal? Principal { get; set; } = new();
+    private AuthPrincipal? Principal { get; set; } = new();
 
     private bool _terms1 { get; set; } = false;
     private bool _terms2 { get; set; } = false;
@@ -115,12 +115,17 @@
         if (Principal != null) throw new InvalidOperationException("Principal is already set.");
         if (User == null) throw new InvalidOperationException("User is null.");
 
-        Principal = new ClientePrincipal
+        Principal = new AuthPrincipal
         {
             IdentityProvider = User.FindFirst("http://schemas.microsoft.com/identity/claims/identityprovider")?.Value,
             DisplayName = User.FindFirst("name")?.Value,
             Email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value
         };
+
+        if (_terms1)
+        {
+            Principal.Events = new Event[] { new Event { Description = "terms of use accepted" } };
+        }
 
         Principal = await PrincipalApi.Add(Principal);
 

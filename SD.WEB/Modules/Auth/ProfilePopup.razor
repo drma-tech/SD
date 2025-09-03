@@ -48,7 +48,7 @@
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-    private ClientePrincipal? Principal { get; set; }
+    private AuthPrincipal? Principal { get; set; }
 
     protected override async Task LoadDataRender()
     {
@@ -82,7 +82,7 @@
     {
         try
         {
-            if (Principal?.ClientePaddle is { IsPaidUser: true })
+            if (Principal?.AuthPaddle is { IsPaidUser: true })
             {
                 await DialogService.ShowMessageBox("You still have an active subscription", "Please cancel your subscription before deleting your profile.");
                 return;

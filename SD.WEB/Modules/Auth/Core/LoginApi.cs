@@ -2,9 +2,9 @@
 
 namespace SD.WEB.Modules.Auth.Core;
 
-public class LoginApi(IHttpClientFactory factory) : ApiCosmos<ClienteLogin>(factory, null)
+public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, null)
 {
-    public async Task<ClienteLogin?> Get(bool isUserAuthenticated)
+    public async Task<AuthLogin?> Get(bool isUserAuthenticated)
     {
         if (isUserAuthenticated) return await GetAsync(Endpoint.Get, null);
 
@@ -13,7 +13,7 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<ClienteLogin>(fact
 
     public async Task Add(string platform)
     {
-        await PostAsync<ClienteLogin>(Endpoint.Add(platform), null, null);
+        await PostAsync<AuthLogin>(Endpoint.Add(platform), null, null);
     }
 
     private struct Endpoint

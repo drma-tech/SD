@@ -145,7 +145,7 @@
 
             var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = AppStateStatic.Region };
             var client = await PrincipalApi.Get(true);
-            MyProviders = await MyProvidersApi.Add(MyProviders, item, client?.ClientePaddle);
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, client?.AuthPaddle);
 
             Snackbar.Add(Translations.PlatformAdded, Severity.Success);
         }

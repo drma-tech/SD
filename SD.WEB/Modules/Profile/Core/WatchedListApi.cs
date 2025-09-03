@@ -15,7 +15,7 @@ public class WatchedListApi(IHttpClientFactory factory) : ApiCosmos<WatchedList>
         return new WatchedList();
     }
 
-    public async Task<WatchedList?> Add(MediaType? mediaType, WatchedList? obj, string? tmdbId, ClientePaddle? paddle)
+    public async Task<WatchedList?> Add(MediaType? mediaType, WatchedList? obj, string? tmdbId, AuthPaddle? paddle)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(tmdbId);

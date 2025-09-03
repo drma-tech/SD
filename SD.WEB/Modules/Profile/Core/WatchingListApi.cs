@@ -16,7 +16,7 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
     }
 
     public async Task<WatchingList?> Add(MediaType? mediaType, WatchingList? obj, WatchingListItem? item,
-        ClientePaddle? paddle)
+        AuthPaddle? paddle)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(item);

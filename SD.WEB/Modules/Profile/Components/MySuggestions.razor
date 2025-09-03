@@ -13,7 +13,7 @@
 
 <SectionComponent IconName="@IconsFA.Solid.Icon("thumbs-up").Font" Title="@Translations.MySuggestions">
     <ActionFragment>
-        @if (Client?.ClientePaddle?.IsPaidUser ?? false)
+        @if (Client?.AuthPaddle?.IsPaidUser ?? false)
         {
             @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (MyProviders?.Items.Any() ?? false))
             {
@@ -97,7 +97,7 @@
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
-    public ClientePrincipal? Client { get; set; }
+    public AuthPrincipal? Client { get; set; }
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
 
     private bool GenresChanged => (mySuggestions?.MovieGenres.Any() ?? false) || (mySuggestions?.TvGenres.Any() ?? false);
@@ -146,7 +146,7 @@
             if (Client != null && _render != null) _render.Status = LoadingStatus.Loading; //force reset Premium status
 
             Client ??= await PrincipalApi.Get(IsAuthenticated);
-            mySuggestions = await MySuggestionsApi.Get(Client?.ClientePaddle?.ActiveProduct, IsAuthenticated, Core);
+            mySuggestions = await MySuggestionsApi.Get(Client?.AuthPaddle?.ActiveProduct, IsAuthenticated, Core);
 
             if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
             {
@@ -187,7 +187,7 @@
         {
             mySuggestions ??= new SD.Shared.Models.MySuggestions();
 
-            var qtd = Client?.ClientePaddle?.ActiveProduct switch
+            var qtd = Client?.AuthPaddle?.ActiveProduct switch
             {
                 AccountProduct.Standard => AccountProduct.Standard.GetRestrictions().MySuggestions,
                 AccountProduct.Premium => AccountProduct.Premium.GetRestrictions().MySuggestions,

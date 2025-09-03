@@ -2,9 +2,9 @@
 
 namespace SD.WEB.Modules.Auth.Core;
 
-public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<ClientePrincipal>(factory, "principal")
+public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>(factory, "principal")
 {
-    public async Task<ClientePrincipal?> Get(bool isUserAuthenticated, bool setNewVersion = false)
+    public async Task<AuthPrincipal?> Get(bool isUserAuthenticated, bool setNewVersion = false)
     {
         if (isUserAuthenticated) return await GetAsync(Endpoint.Get, null, setNewVersion);
 
@@ -16,14 +16,14 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<ClientePrincip
         return await GetValueAsync($"{Endpoint.GetEmail}?token={token}", null);
     }
 
-    public async Task<ClientePrincipal?> Add(ClientePrincipal? obj)
+    public async Task<AuthPrincipal?> Add(AuthPrincipal? obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
 
         return await PostAsync(Endpoint.Add, null, obj);
     }
 
-    public async Task<ClientePrincipal?> Paddle(ClientePrincipal? obj)
+    public async Task<AuthPrincipal?> Paddle(AuthPrincipal? obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
 

@@ -19,7 +19,7 @@ public class PrincipalFunction(CosmosRepository repo,
             var userId = req.GetUserId();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
-            var model = await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken);
+            var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
 
             return await req.CreateResponse(model, TtlCache.OneDay, cancellationToken);
         }
@@ -38,7 +38,7 @@ public class PrincipalFunction(CosmosRepository repo,
         {
             var token = req.GetQueryParameters()["token"];
 
-            var principal = await repo.Get<ClientePrincipal>(DocumentType.Principal, token, cancellationToken);
+            var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, token, cancellationToken);
 
             return principal?.Email;
         }
@@ -50,7 +50,7 @@ public class PrincipalFunction(CosmosRepository repo,
     }
 
     [Function("PrincipalAdd")]
-    public async Task<ClientePrincipal?> PrincipalAdd(
+    public async Task<AuthPrincipal?> PrincipalAdd(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/add")] HttpRequestData req, CancellationToken cancellationToken)
     {
         //note: its called once per user (first acccess)
@@ -58,7 +58,7 @@ public class PrincipalFunction(CosmosRepository repo,
         try
         {
             var userId = req.GetUserId();
-            var body = await req.GetBody<ClientePrincipal>(cancellationToken);
+            var body = await req.GetBody<AuthPrincipal>(cancellationToken);
 
             //check if user ip is blocked for insert
             var ip = req.GetUserIP(false) ?? throw new NotificationException("Failed to retrieve IP");
@@ -80,7 +80,7 @@ public class PrincipalFunction(CosmosRepository repo,
                 _ = repoCache.CreateItemAsync(new DataBlockedCache(new DataBlocked(), $"block-{ip}", TtlCache.OneWeek), cancellationToken);
             }
 
-            var model = new ClientePrincipal
+            var model = new AuthPrincipal
             {
                 IdentityProvider = body.IdentityProvider,
                 DisplayName = body.DisplayName,
@@ -98,17 +98,17 @@ public class PrincipalFunction(CosmosRepository repo,
     }
 
     [Function("PrincipalPaddle")]
-    public async Task<ClientePrincipal> PrincipalPaddle(
+    public async Task<AuthPrincipal> PrincipalPaddle(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/paddle")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
             var userId = req.GetUserId();
 
-            var model = await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
-            var body = await req.GetBody<ClientePrincipal>(cancellationToken);
+            var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
+            var body = await req.GetBody<AuthPrincipal>(cancellationToken);
 
-            model.ClientePaddle = body.ClientePaddle;
+            model.AuthPaddle = body.AuthPaddle;
 
             return await repo.UpsertItemAsync(model, cancellationToken);
         }
@@ -129,13 +129,13 @@ public class PrincipalFunction(CosmosRepository repo,
 
             var userId = id ?? req.GetUserId();
 
-            var myPrincipal = await repo.Get<ClientePrincipal>(DocumentType.Principal, userId, cancellationToken);
+            var myPrincipal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
             if (myPrincipal != null) await repo.Delete(myPrincipal, cancellationToken);
 
             var myProviders = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
             if (myProviders != null) await repo.Delete(myProviders, cancellationToken);
 
-            var myLogins = await repo.Get<ClienteLogin>(DocumentType.Login, userId, cancellationToken);
+            var myLogins = await repo.Get<AuthLogin>(DocumentType.Login, userId, cancellationToken);
             if (myLogins != null) await repo.Delete(myLogins, cancellationToken);
 
             var mySuggestions = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);

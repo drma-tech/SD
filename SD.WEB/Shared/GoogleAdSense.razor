@@ -2,7 +2,7 @@
 
 @inject IJSRuntime JS
 
-@if (!Navigation.BaseUri.Contains("localhost") && Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
+@if (!Navigation.BaseUri.Contains("localhost") && Settings is { ShowAdSense: true } && Principal?.AuthPaddle is not { IsPaidUser: true })
 {
     <div style="text-align: center" @key="_instanceKey">
         <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"></ins>
@@ -20,7 +20,7 @@
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     private Settings? Settings { get; set; }
-    private ClientePrincipal? Principal { get; set; }
+    private AuthPrincipal? Principal { get; set; }
 
     private const string AdClientId = "5145928155833172";
     private readonly Guid _instanceKey = Guid.NewGuid();
@@ -36,7 +36,7 @@
             StateHasChanged();
         }
 
-        if (Settings is { ShowAdSense: true } && Principal?.ClientePaddle is not { IsPaidUser: true })
+        if (Settings is { ShowAdSense: true } && Principal?.AuthPaddle is not { IsPaidUser: true })
         {
             await JS.InvokeVoidAsync("loadAds");
         }

@@ -8,7 +8,7 @@ namespace SD.API.Functions;
 public class LoginFunction(CosmosRepository repo)
 {
     [Function("LoginGet")]
-    public async Task<ClienteLogin?> LoginGet(
+    public async Task<AuthLogin?> LoginGet(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "login/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
@@ -16,7 +16,7 @@ public class LoginFunction(CosmosRepository repo)
             var userId = req.GetUserId();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
 
-            return await repo.Get<ClienteLogin>(DocumentType.Login, userId, cancellationToken);
+            return await repo.Get<AuthLogin>(DocumentType.Login, userId, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -50,11 +50,11 @@ public class LoginFunction(CosmosRepository repo)
             var ip = req.GetUserIP();
             var userId = req.GetUserId();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
-            var login = await repo.Get<ClienteLogin>(DocumentType.Login, userId, cancellationToken);
+            var login = await repo.Get<AuthLogin>(DocumentType.Login, userId, cancellationToken);
 
             if (login == null)
             {
-                var newLogin = new ClienteLogin
+                var newLogin = new AuthLogin
                 {
                     UserId = userId,
                     Accesses = [new Access { Date = DateTimeOffset.Now, Platform = platform, Ip = ip }]
