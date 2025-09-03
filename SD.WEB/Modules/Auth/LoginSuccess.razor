@@ -17,24 +17,22 @@
             </MudText>
 
             <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="mb-2">
+                <MudText Inline="true">@Resources.Translations.Terms1 </MudText>
                 @if (GetGeneralLanguage() == "pt")
                 {
-                    <MudText Inline="true">Li e concordo com os </MudText>
                     <MudLink Href="support/terms/pt" Target="_blank">Termos de Uso</MudLink>
                 }
                 else if (GetGeneralLanguage() == "es")
                 {
-                    <MudText Inline="true">He leído y acepto los </MudText>
                     <MudLink Href="support/terms/es" Target="_blank">Términos de uso</MudLink>
                 }
                 else
                 {
-                    <MudText Inline="true">I have read and agree to the </MudText>
                     <MudLink Href="support/terms/en" Target="_blank">Terms of Use</MudLink>
                 }
             </MudCheckBox>
             <MudCheckBox @bind-Value="_terms2" Color="Color.Primary">
-                <MudText Inline="true">I understand this platform does not stream movies or shows. It is for tracking and discovery only.</MudText>
+                <MudText Inline="true">@Resources.Translations.Terms2</MudText>
             </MudCheckBox>
 
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="mt-4 me-2">

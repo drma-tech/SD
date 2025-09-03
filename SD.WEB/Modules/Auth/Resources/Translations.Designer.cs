@@ -124,6 +124,24 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to I have read and agree to the.
+        /// </summary>
+        public static string Terms1 {
+            get {
+                return ResourceManager.GetString("Terms1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I understand that this platform is not for watching and/or downloading movies and TV shows..
+        /// </summary>
+        public static string Terms2 {
+            get {
+                return ResourceManager.GetString("Terms2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unauthenticated User.
         /// </summary>
         public static string UnauthenticatedUser {
