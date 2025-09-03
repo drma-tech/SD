@@ -1,10 +1,16 @@
 ﻿@using SD.WEB.Modules.Auth.Core
+@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
 
 @inherits ComponentCore<ProfilePopup>
 @inject IJSRuntime JsRuntime
 
 @inject LoginApi LoginApi
+@inject MyProvidersApi MyProvidersApi
+@inject MySuggestionsApi MySuggestionsApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
 
 <MudDialog Style="width: 100%">
     <DialogContent>
@@ -62,12 +68,12 @@
             var data = new SuperData() { Principal = Principal };
 
             data.Login = await LoginApi.Get(IsAuthenticated);
-            // data.Filter = await FilterApi.GetAll(Principal.Id);
-            // data.Settings = await SettingsApi.Get(Principal.Id);
-            // data.Suggestions = await SuggestionApi.GetAll(Principal.Id);
-            // data.Likes = await LikeApi.GetAll(Principal.Id);
-            // data.Matches = await MatchApi.GetAll(Principal.Id);
-            // data.Validations = await ValidationApi.GetAll(Principal.Id);
+            data.Providers = await MyProvidersApi.Get(IsAuthenticated, null);
+            if (Principal!.AuthPaddle?.ActiveProduct is null or AccountProduct.Basic) data.Suggestions = null;
+            else data.Suggestions = await MySuggestionsApi.Get(Principal!.AuthPaddle?.ActiveProduct, IsAuthenticated, null);
+            data.WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
+            data.WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
+            data.WishList = await WishListApi.Get(IsAuthenticated, null);
 
             var fileName = $"{SeoTranslations.AppName.ToSlug()}_{Principal!.IdentityProvider}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
             await JsRuntime.InvokeVoidAsync("jsSaveAsFile", fileName, "application/json", data.ConvertFromObjectToBytes());

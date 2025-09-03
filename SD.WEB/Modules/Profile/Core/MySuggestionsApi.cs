@@ -2,11 +2,9 @@
 
 namespace SD.WEB.Modules.Profile.Core;
 
-public class MySuggestionsApi(IHttpClientFactory factory)
-    : ApiCosmos<MySuggestions>(factory, "my-suggestions")
+public class MySuggestionsApi(IHttpClientFactory factory) : ApiCosmos<MySuggestions>(factory, "my-suggestions")
 {
-    public async Task<MySuggestions?> Get(AccountProduct? product, bool isUserAuthenticated,
-        RenderControlCore<MySuggestions?>? core)
+    public async Task<MySuggestions?> Get(AccountProduct? product, bool isUserAuthenticated, RenderControlCore<MySuggestions?>? core)
     {
         if (product is null or AccountProduct.Basic) return new MySuggestions();
 
@@ -15,8 +13,7 @@ public class MySuggestionsApi(IHttpClientFactory factory)
         return new MySuggestions();
     }
 
-    public async Task<MySuggestions?> Sync(MediaType? mediaType, MySuggestions obj,
-        RenderControlCore<MySuggestions?>? core)
+    public async Task<MySuggestions?> Sync(MediaType? mediaType, MySuggestions obj, RenderControlCore<MySuggestions?>? core)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(obj);

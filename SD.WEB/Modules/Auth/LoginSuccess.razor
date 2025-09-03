@@ -17,7 +17,7 @@
             </MudText>
 
             <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="mb-2">
-                <MudText Inline="true">@Resources.Translations.Terms1 </MudText>
+                <MudText Inline="true" Class="me-1">@Resources.Translations.Terms1</MudText>
                 @if (GetGeneralLanguage() == "pt")
                 {
                     <MudLink Href="support/terms/pt" Target="_blank">Termos de Uso</MudLink>
