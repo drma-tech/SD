@@ -2,6 +2,7 @@
 
 public class PaddleConfigurations
 {
+    public string? CustomerPortalEndpoint { get; set; }
     public string? Token { get; set; }
     public string? ProductStandard { get; set; }
     public string? ProductPremium { get; set; }

@@ -279,8 +279,8 @@
                             </MudDataGrid>
                         </MudCardContent>
                     </MudCard>
-                    <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("list-check").Font" Variant="Variant.Filled" Class="me-2 mb-2"
-                               Href="https://customer-portal.paddle.com/cpl_01hgm3yymgzezgejt0fzbypag3" Target="_blank" Rel="nofollow">
+                    <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("list-check").Font" Variant="Variant.Filled" Class="me-3 mb-2"
+                               Href="@CustomerPortalUrl" Target="_blank" Rel="nofollow">
                         Customer portal
                     </MudButton>
                     @if (Subscription?.data?.IsCanceled ?? true)
@@ -324,6 +324,7 @@
     private string? CurrentCountry { get; set; }
     private string? CurrentPlatform { get; set; }
     private bool BlockedCountry { get; set; }
+    private string? CustomerPortalUrl { get; set; }
 
     private readonly Dictionary<string, string> _BlockedCountries = new()
     {
@@ -411,6 +412,8 @@
         else
         {
             Subscription = await SubscriptionApi.GetSubscription(Client?.AuthPaddle?.SubscriptionId);
+
+            CustomerPortalUrl = $"{Config.CustomerPortalEndpoint}?token={Subscription?.data?.management_urls?.update_payment_method?.GetParameter("token")}";
         }
     }
 

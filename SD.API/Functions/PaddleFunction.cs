@@ -81,6 +81,7 @@ public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
         {
             var config = new PaddleConfigurations
             {
+                CustomerPortalEndpoint = ApiStartup.Configurations.Paddle?.CustomerPortalEndpoint,
                 Token = ApiStartup.Configurations.Paddle?.Token,
                 ProductStandard = ApiStartup.Configurations.Paddle?.Standard?.Product,
                 ProductPremium = ApiStartup.Configurations.Paddle?.Premium?.Product,

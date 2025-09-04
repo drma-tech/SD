@@ -19,6 +19,7 @@ public class CosmosDB
 
 public class Paddle
 {
+    public string? CustomerPortalEndpoint { get; set; } = string.Empty;
     public string? Endpoint { get; set; } = string.Empty;
     public string? Token { get; set; } = string.Empty;
     public string? Key { get; set; } = string.Empty;
