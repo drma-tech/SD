@@ -20,12 +20,12 @@ public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
             var endpoint = ApiStartup.Configurations.Paddle?.Endpoint;
             var key = ApiStartup.Configurations.Paddle?.Key;
 
-            var client = factory.CreateClient("paddle");
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
+            var http = factory.CreateClient("paddle");
+            http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
 
             using var request = new HttpRequestMessage(HttpMethod.Get, $"{endpoint}subscriptions/{id}");
 
-            var response = await client.SendAsync(request, cancellationToken);
+            var response = await http.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
 
@@ -60,6 +60,8 @@ public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             client.AuthPaddle.SubscriptionId = body.data.id;
             client.AuthPaddle.IsPaidUser = body.data.status is "active" or "trialing";
+
+            client.Events = client.Events.Union([new Event { Description = $"subscription = {body.data.status}" }]).ToArray();
 
             await repo.UpsertItemAsync(client, cancellationToken);
         }
