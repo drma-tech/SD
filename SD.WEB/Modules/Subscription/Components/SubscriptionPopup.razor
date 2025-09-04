@@ -26,11 +26,8 @@
         {
             if (Client?.AuthPaddle == null)
             {
-             @*    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("gift").Font" Class="mb-3" Dense="true">
+                <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("gift").Font" Class="mb-3" Dense="true">
                     @Translations.FreePeriod
-                </MudAlert> *@
-                <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Class="mb-3" Dense="true">
-                    Sorry, we're in the process of changing our payment provider. Stay tuned for updates...
                 </MudAlert>
                 <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary" Class="mb-3">
                     <MudToggleItem Value="@AccountCycle.Monthly">
@@ -155,7 +152,7 @@
                             </MudGrid>
                         </MudCardContent>
                         <MudCardActions>
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Disabled="true"
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
                                        OnClick="@(() => OpenCheckout(GetSubscription(AccountProduct.Standard)?.PriceId))">
                                 @Translations.Select
                             </MudButton>
@@ -215,7 +212,7 @@
                             </MudGrid>
                         </MudCardContent>
                         <MudCardActions>
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Disabled="true"
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
                                        OnClick="@(() => OpenCheckout(GetSubscription(AccountProduct.Premium)?.PriceId))">
                                 @Translations.Select
                             </MudButton>
@@ -303,16 +300,16 @@
                                    Href="@Subscription?.data?.management_urls?.cancel" Target="_blank" Rel="nofollow">
                             @Translations.CancelSubscription
                         </MudButton>
-                    }                   
+                    }
                 }
             }
         }
     </DialogContent>
     <DialogActions>
-       @*  <MudText Class="ms-4">Powered by</MudText>
+        <MudText Class="ms-4">Powered by</MudText>
         <a href="https://www.paddle.com/" target="_blank" rel="nofollow">
             <img src="/logo/paddle.avif" style="height: 30px;" alt="paddle" />
-        </a> *@
+        </a>
         <MudSpacer></MudSpacer>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">@Button.Close</MudButton>
     </DialogActions>

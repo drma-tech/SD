@@ -44,7 +44,7 @@ window.addEventListener("error", function (e) {
 
 window.addEventListener("unhandledrejection", function (e) {
     showError(e.reason.message);
-    sendLog(`unhandledrejection: ${e.reason.message}`);
+    //sendLog(`unhandledrejection: ${e.reason.message}`); //i cant control (usually its connection/internet error)
 });
 
 window.addEventListener("securitypolicyviolation", (e) => {
