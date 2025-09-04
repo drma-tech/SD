@@ -52,7 +52,7 @@ public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
             var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new UnhandledException("body null");
             if (body.data == null) throw new UnhandledException("body.data null");
 
-            await Task.Delay(300, cancellationToken); //wait for user be updated in cosmos
+            await Task.Delay(1000, cancellationToken); //wait for user be updated in cosmos
 
             var result = await repo.Query<AuthPrincipal>(x => x.AuthPaddle != null && x.AuthPaddle.CustomerId == body.data.customer_id, DocumentType.Principal, cancellationToken) ??
                 throw new UnhandledException("AuthPrincipal null");
