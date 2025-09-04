@@ -56,7 +56,7 @@ public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             var result = await repo.Query<AuthPrincipal>(x => x.AuthPaddle != null && x.AuthPaddle.CustomerId == body.data.customer_id, DocumentType.Principal, cancellationToken) ??
                 throw new UnhandledException("AuthPrincipal null");
-            var client = result.FirstOrDefault() ?? throw new UnhandledException($"client null - customer_id:{body.data.customer_id}");
+            var client = result.LastOrDefault() ?? throw new UnhandledException($"client null - customer_id:{body.data.customer_id}");
             if (client.AuthPaddle == null) throw new UnhandledException("client.AuthPaddle null");
 
             client.AuthPaddle.SubscriptionId = body.data.id;
