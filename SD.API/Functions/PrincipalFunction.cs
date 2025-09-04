@@ -72,7 +72,7 @@ public class PrincipalFunction(CosmosRepository repo,
 
                 if (blockedIp.Data?.Quantity > 2)
                 {
-                    //todo: create a mecanism to increase block time if user persist on this action (first = block one hour, second = block 24 hours)
+                    //todo: create a mechanism to increase block time if user persist on this action (first = block one hour, second = block 24 hours)
                     logger.LogWarning("PrincipalAdd blocked IP {IP}", ip);
                     throw new NotificationException("You've reached the limit for creating profiles. Please try again later.");
                 }
