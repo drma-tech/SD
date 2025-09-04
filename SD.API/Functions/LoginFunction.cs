@@ -57,7 +57,7 @@ public class LoginFunction(CosmosRepository repo)
                 var newLogin = new AuthLogin
                 {
                     UserId = userId,
-                    Accesses = [new Access { Date = DateTimeOffset.Now, Platform = platform, Ip = ip }]
+                    Accesses = [new Access { Date = DateTimeOffset.UtcNow, Platform = platform, Ip = ip }]
                 };
                 newLogin.Initialize(userId);
 
@@ -66,7 +66,7 @@ public class LoginFunction(CosmosRepository repo)
             else
             {
                 login.Accesses = login.Accesses
-                    .Union([new Access { Date = DateTimeOffset.Now, Platform = platform, Ip = ip }]).ToArray();
+                    .Union([new Access { Date = DateTimeOffset.UtcNow, Platform = platform, Ip = ip }]).ToArray();
 
                 await repo.UpsertItemAsync(login, cancellationToken);
             }

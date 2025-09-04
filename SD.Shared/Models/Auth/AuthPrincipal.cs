@@ -21,6 +21,6 @@ public class AuthPrincipal() : PrivateMainDocument(DocumentType.Principal)
 
 public class Event
 {
-    public DateTimeOffset Date { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset Date { get; set; } = DateTimeOffset.UtcNow;
     public string? Description { get; set; }
 }

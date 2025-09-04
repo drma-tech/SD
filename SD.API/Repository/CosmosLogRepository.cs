@@ -11,7 +11,7 @@ public class LogModel
     public string? State { get; set; }
     public string? Message { get; set; }
     public string? StackTrace { get; set; }
-    public DateTimeOffset DateTime { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset DateTime { get; set; } = DateTimeOffset.UtcNow;
 
     [JsonInclude] public int Ttl { get; init; }
 }
