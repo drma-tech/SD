@@ -44,6 +44,8 @@ public class PaddleFunction(CosmosRepository repo, IHttpClientFactory factory)
     {
         try
         {
+            await Task.Delay(200, cancellationToken); //wait for user be updated in cosmos
+
             var validSignature = await req.ValidPaddleSignature(ApiStartup.Configurations.Paddle?.Signature, cancellationToken);
 
             if (!validSignature) throw new UnhandledException("wrong paddle signature");

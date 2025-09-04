@@ -111,7 +111,10 @@ public class PrincipalFunction(CosmosRepository repo,
             var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
             var body = await req.GetBody<AuthPrincipal>(cancellationToken);
 
-            model.AuthPaddle = body.AuthPaddle;
+            model.AuthPaddle ??= new AuthPaddle();
+            model.AuthPaddle.CustomerId = body.AuthPaddle!.CustomerId;
+            model.AuthPaddle.AddressId = body.AuthPaddle.AddressId;
+            model.AuthPaddle.Items = body.AuthPaddle.Items;
 
             return await repo.UpsertItemAsync(model, cancellationToken);
         }
