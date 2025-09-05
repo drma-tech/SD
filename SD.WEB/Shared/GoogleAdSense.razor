@@ -2,10 +2,10 @@
 
 @inject IJSRuntime JS
 
-@if (!Navigation.BaseUri.Contains("localhost") && Principal?.AuthPaddle is not { IsPaidUser: true })
+@if (Principal?.AuthPaddle is not { IsPaidUser: true })
 {
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display: block; text-align: center; margin-bottom: 12px" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"
+    <ins class="adsbygoogle" style="display: block; text-align: center; margin-bottom: 12px;" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"
          data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
