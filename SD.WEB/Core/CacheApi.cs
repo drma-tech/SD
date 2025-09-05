@@ -8,8 +8,6 @@ namespace SD.WEB.Core;
 
 public struct Endpoint
 {
-    public static string Settings => "public/settings";
-
     public static string News(string mode)
     {
         return $"public/cache/news?mode={mode}";
@@ -41,14 +39,6 @@ public struct Endpoint
     public static string GetShowReviews(string? id, string? title, DateTime? date)
     {
         return $"public/cache/reviews/shows?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}";
-    }
-}
-
-public class CacheSettingsApi(IHttpClientFactory http) : ApiCosmos<Settings>(http, null)
-{
-    public async Task<Settings?> GetSettings()
-    {
-        return await GetAsync(Endpoint.Settings, null);
     }
 }
 

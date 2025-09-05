@@ -39,9 +39,6 @@
 @code {
     [Parameter] public string? id { get; set; }
 
-    public Settings? Settings { get; set; }
-    public AuthPrincipal? Principal { get; set; }
-
     public HashSet<MediaDetail> Items { get; set; } = [];
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
@@ -264,9 +261,6 @@
 
     protected override async Task LoadDataRender()
     {
-        Settings = await CacheSettingsApi.GetSettings();
-        Principal = await PrincipalApi.Get(IsAuthenticated);
-
         Watched = await WatchedListApi.Get(IsAuthenticated, null);
         Watching = await WatchingListApi.Get(IsAuthenticated, null);
         Wish = await WishListApi.Get(IsAuthenticated, null);

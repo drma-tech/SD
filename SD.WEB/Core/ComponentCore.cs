@@ -17,7 +17,6 @@ public abstract class ComponentCore<T> : ComponentBase, IBrowserViewportObserver
     [Inject] protected IDialogService DialogService { get; set; } = null!;
     [Inject] protected NavigationManager Navigation { get; set; } = null!;
     [Inject] protected PrincipalApi PrincipalApi { get; set; } = null!;
-    [Inject] protected CacheSettingsApi CacheSettingsApi { get; set; } = null!;
 
     [Inject] private IBrowserViewportService BrowserViewportService { get; set; } = null!;
     public Breakpoint Breakpoint { get; set; }

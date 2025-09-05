@@ -14,26 +14,10 @@ using Item = SD.Shared.Models.News.Item;
 
 namespace SD.API.Functions;
 
-public class CacheFunction(CosmosCacheRepository cacheRepo, 
-    IDistributedCache distributedCache, 
+public class CacheFunction(CosmosCacheRepository cacheRepo,
+    IDistributedCache distributedCache,
     IHttpClientFactory factory)
 {
-    [Function("Settings")]
-    public static async Task<HttpResponseData> Configurations(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/settings")]
-        HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            return await req.CreateResponse(ApiStartup.Configurations.Settings, TtlCache.OneDay, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            req.ProcessException(ex);
-            throw;
-        }
-    }
-
     [Function("CacheNew")]
     public async Task<HttpResponseData?> CacheNew(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")]

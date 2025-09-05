@@ -2,14 +2,11 @@
 
 @inject IJSRuntime JS
 
-@if (!Navigation.BaseUri.Contains("localhost") && Settings is { ShowAdSense: true } && Principal?.AuthPaddle is not { IsPaidUser: true })
+@if (!Navigation.BaseUri.Contains("localhost") && Principal?.AuthPaddle is not { IsPaidUser: true })
 {
-    <HeadContent>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
-    </HeadContent>
-    <div style="text-align: center" @key="_instanceKey">
-        <ins class="adsbygoogle google-ads" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"></ins>
-    </div>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
+    <ins class="adsbygoogle" style="display: block; text-align: center; margin-bottom: 12px" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"
+         data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
@@ -19,11 +16,9 @@
     [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Index;
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
-    private Settings? Settings { get; set; }
     private AuthPrincipal? Principal { get; set; }
 
     private const string AdClientId = "5145928155833172";
-    private readonly Guid _instanceKey = Guid.NewGuid();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -31,7 +26,6 @@
 
         if (firstRender)
         {
-            Settings = await CacheSettingsApi.GetSettings();
             Principal = await PrincipalApi.Get(IsAuthenticated);
             StateHasChanged();
         }
