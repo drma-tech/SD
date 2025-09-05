@@ -131,18 +131,16 @@ public class PrincipalFunction(CosmosRepository repo,
     {
         try
         {
-            var id = req.GetQueryParameters()["offlineId"];
-
-            var userId = id ?? req.GetUserId();
+            var userId = req.GetUserId();
 
             var myPrincipal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
             if (myPrincipal != null) await repo.Delete(myPrincipal, cancellationToken);
 
-            var myProviders = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
-            if (myProviders != null) await repo.Delete(myProviders, cancellationToken);
-
             var myLogins = await repo.Get<AuthLogin>(DocumentType.Login, userId, cancellationToken);
             if (myLogins != null) await repo.Delete(myLogins, cancellationToken);
+
+            var myProviders = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
+            if (myProviders != null) await repo.Delete(myProviders, cancellationToken);
 
             var mySuggestions = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
             if (mySuggestions != null) await repo.Delete(mySuggestions, cancellationToken);

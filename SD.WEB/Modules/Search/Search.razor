@@ -14,7 +14,7 @@
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@SearchContent" Immediate="true" OnKeyDown="@KeyPress"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
-              OnAdornmentClick="@(() => Navigation.NavigateTo($"/search/{SearchContent}"))" Class="mb-4">
+              OnAdornmentClick="@(() => Navigation.NavigateTo($"/search/{SearchContent}", true))" Class="mb-4">
 </MudTextField>
 
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())" CustomMessageWarning="@GlobalTranslations.SearchReturnedNothing">

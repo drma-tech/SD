@@ -119,11 +119,6 @@ function showToast(message) {
     }, 5000);
 }
 
-(function () {
-    const theme = GetLocalStorage("theme") || "light";
-    document.documentElement.setAttribute("data-bs-theme", theme);
-})();
-
 async function detectBrowserFeatures() {
     const [simd, bulkMemory, bigInt] = await Promise.all([
         wasmFeatureDetect.simd(),

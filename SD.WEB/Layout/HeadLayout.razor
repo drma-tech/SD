@@ -132,7 +132,9 @@
         <MudNavMenu>
             @if (SubscriptionAllowed)
             {
-                <MudNavLink Icon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" IconColor="Color.Warning" OnClick="@OpenSubscription">@Translations.Subscription</MudNavLink>
+                <MudNavLink Icon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" IconColor="Color.Warning" OnClick="@OpenSubscription">
+                    @Translations.Subscription
+                </MudNavLink>
             }
             <AuthorizeView>
                 <Authorized>
