@@ -7,6 +7,7 @@
 @inject IJSRuntime JsRuntime
 @inject PaddleConfigurationApi PaddleApi
 @inject ISnackbar Snackbar
+@inject ILogger<MainLayout> Logger
 
 <MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@AppStateStatic.DarkMode" />
 <MudPopoverProvider />
@@ -47,49 +48,63 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //its called once per request
-        if (User == null)
+        try
         {
-            var authState = await AuthenticationState;
+            //its called once per request
+            if (User == null)
+            {
+                var authState = await AuthenticationState;
 
-            User = authState.User;
-            IsAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
-            UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                User = authState.User;
+                IsAuthenticated = User?.Identity is not null && User.Identity.IsAuthenticated;
+                UserId = User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            }
+
+            AppStateStatic.DarkModeChanged += StateHasChanged;
         }
-
-        AppStateStatic.DarkModeChanged += StateHasChanged;
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        try
         {
-            //REGION
-            var region = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "region");
-
-            if (region.Empty())
+            if (firstRender)
             {
-                //get new region by IP
-                region = await PaddleApi.GetCountry();
+                //REGION
+                var region = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "region");
 
-                region ??= nameof(Region.US);
+                if (region.Empty())
+                {
+                    //get new region by IP
+                    region = await PaddleApi.GetCountry();
 
-                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", region);
+                    region ??= nameof(Region.US);
+
+                    await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", region);
+                }
+
+                AppStateStatic.ChangeRegion(AppStateStatic.GetValidRegion(region));
+
+                //DARK MODE
+                var darkMode = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "dark-mode");
+
+                if (darkMode.Empty())
+                {
+                    darkMode = (await _mudThemeProvider!.GetSystemDarkModeAsync()).ToString();
+
+                    await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", darkMode);
+                }
+
+                AppStateStatic.ChangeDarkMode(bool.Parse(darkMode));
             }
-
-            AppStateStatic.ChangeRegion(AppStateStatic.GetValidRegion(region));
-
-            //DARK MODE
-            var darkMode = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "dark-mode");
-
-            if (darkMode.Empty())
-            {
-                darkMode = (await _mudThemeProvider!.GetSystemDarkModeAsync()).ToString();
-
-                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", darkMode);
-            }
-
-            AppStateStatic.ChangeDarkMode(bool.Parse(darkMode));
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
         }
     }
 

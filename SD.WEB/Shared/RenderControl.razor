@@ -1,6 +1,5 @@
-﻿@inject PrincipalApi PrincipalApi
+﻿@inherits ComponentCore<RenderControl<TModel>>
 
-@using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Auth.Resources
 @typeparam TModel where TModel : class
 
@@ -89,31 +88,38 @@ else //ShowContent
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        ArgumentNullException.ThrowIfNull(Core);
-
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (firstRender && PrivateContent && AuthenticationState is not null)
+        try
         {
-            var authState = await AuthenticationState;
-            var user = authState.User;
-            var isAuthenticated = user.Identity is not null && user.Identity.IsAuthenticated;
+            ArgumentNullException.ThrowIfNull(Core);
 
-            if (!isAuthenticated)
-            {
-                Status = LoadingStatus.Locked;
-            }
+            await base.OnAfterRenderAsync(firstRender);
 
-            if (PremiumFeature)
+            if (firstRender && PrivateContent && AuthenticationState is not null)
             {
-                var client = await PrincipalApi.Get(isAuthenticated);
-                if (client?.AuthPaddle == null || client.AuthPaddle?.ActiveProduct == AccountProduct.Basic)
+                var authState = await AuthenticationState;
+                var user = authState.User;
+                var isAuthenticated = user.Identity is not null && user.Identity.IsAuthenticated;
+
+                if (!isAuthenticated)
                 {
-                    Status = LoadingStatus.Premium;
+                    Status = LoadingStatus.Locked;
                 }
-            }
 
-            StateHasChanged();
+                if (PremiumFeature)
+                {
+                    var client = await PrincipalApi.Get(isAuthenticated);
+                    if (client?.AuthPaddle == null || client.AuthPaddle?.ActiveProduct == AccountProduct.Basic)
+                    {
+                        Status = LoadingStatus.Premium;
+                    }
+                }
+
+                StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
         }
     }
 
