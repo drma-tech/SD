@@ -80,3 +80,14 @@ window.initUserBack = function () {
             });
     };
 }
+
+window.loadAds = function () {
+    try {
+        const ins = document.querySelector('ins.adsbygoogle');
+        if (ins) {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        }
+    } catch (e) {
+        sendLog(`error: ${e.message}`);
+    }
+};
