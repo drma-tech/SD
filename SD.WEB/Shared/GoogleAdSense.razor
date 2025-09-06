@@ -21,6 +21,7 @@
     {
         try
         {
+            await base.OnInitializedAsync();
             Principal = await PrincipalApi.Get(IsAuthenticated);
         }
         catch (Exception ex)

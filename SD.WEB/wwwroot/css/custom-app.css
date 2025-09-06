@@ -1,4 +1,9 @@
-﻿body .pwa-updater[b-pwa-updater] {
+﻿html, body * {
+    scrollbar-color: var(--mud-palette-primary) transparent !important;
+    scrollbar-width: auto !important;
+}
+
+body .pwa-updater[b-pwa-updater] {
     --pwa-updater-bar-backcolor: var(--mud-palette-primary);
     --pwa-updater-bar-z-index: 2000;
     height: 64px;
@@ -285,4 +290,30 @@
     .fa-sm::before, .fa-md::before, .fa-lg::before {
         display: inline-block;
         transform: scale(0.85);
+    }
+
+/* ADSENSE */
+
+ins[data-ad-status="unfilled"] {
+    position: relative;
+}
+
+    ins[data-ad-status="unfilled"]::before {
+        content: "Ad not available";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #888;
+        font-size: 14px;
+        pointer-events: none;
+        z-index: 10;
+    }
+
+    ins[data-ad-status="unfilled"] > div {
+        background-color: rgba(0, 0, 0, 0.2) !important;
     }
