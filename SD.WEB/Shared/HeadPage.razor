@@ -53,12 +53,6 @@
                     }
                 </RenderControl>
             }
-            @if (ShowShare)
-            {
-                <MudButton StartIcon="@IconsFA.Solid.Icon("share").Font" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => Share(Navigation.Uri))">
-                    @Button.Share
-                </MudButton>
-            }
         </div>
     </MudStack>
     @if (Text.NotEmpty())
@@ -124,7 +118,6 @@
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Text { get; set; }
     [Parameter] public string? Link { get; set; }
-    [Parameter] public bool ShowShare { get; set; } = true;
     [Parameter] public bool IncludeMB { get; set; } = true;
 
     [Parameter] public ProviderModel? Provider { get; set; }
