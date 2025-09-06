@@ -301,15 +301,10 @@ ins[data-ad-status="unfilled"] {
     ins[data-ad-status="unfilled"]::before {
         content: "Ad not available";
         position: absolute;
-        top: 0;
+        top: 30px;
         left: 0;
         right: 0;
-        bottom: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         color: #888;
-        font-size: 14px;
         pointer-events: none;
         z-index: 10;
     }
