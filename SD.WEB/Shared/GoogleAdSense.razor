@@ -8,7 +8,7 @@
     <ins class="adsbygoogle" style="display: block; text-align: center; margin-bottom: 12px;" data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"
          data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
+        window.renderAdsense();
     </script>
 }
 
@@ -20,17 +20,11 @@
 
     private const string AdClientId = "5145928155833172";
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
         try
         {
-            await base.OnAfterRenderAsync(firstRender);
-
-            if (firstRender)
-            {
-                Principal = await PrincipalApi.Get(IsAuthenticated);
-                StateHasChanged();
-            }
+            Principal = await PrincipalApi.Get(IsAuthenticated);
         }
         catch (Exception ex)
         {

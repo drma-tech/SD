@@ -100,6 +100,28 @@ public class PrincipalFunction(CosmosRepository repo,
         }
     }
 
+    [Function("PrincipalEvent")]
+    public async Task<AuthPrincipal> PrincipalEvent(
+       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/event")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var userId = req.GetUserId();
+
+            var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
+            var msg = req.GetQueryParameters()["msg"];
+
+            model.Events = model.Events.Union([new Event { Description = msg }]).ToArray();
+
+            return await repo.UpsertItemAsync(model, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            throw;
+        }
+    }
+
     [Function("PrincipalPaddle")]
     public async Task<AuthPrincipal> PrincipalPaddle(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/paddle")] HttpRequestData req, CancellationToken cancellationToken)

@@ -80,3 +80,19 @@ window.initUserBack = function () {
             });
     };
 }
+
+// Google Adsense
+window.renderAdsense = function () {
+    const ads = document.querySelectorAll("ins.adsbygoogle");
+    ads.forEach(ins => {
+        const tryLoad = () => {
+            if (ins.offsetWidth > 0 && !ins.dataset.loaded) {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                ins.dataset.loaded = "true"; // flag to not boot twice
+            } else if (!ins.dataset.loaded) {
+                setTimeout(tryLoad, 200);
+            }
+        };
+        tryLoad();
+    });
+};
