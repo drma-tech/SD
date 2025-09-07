@@ -39,7 +39,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
 
     collection.AddHttpClient("LocalHttpClient", c => { c.BaseAddress = new Uri(baseAddress); });
 
-    collection.AddHttpClient("ApiHttpClient", c => { c.BaseAddress = new Uri(configuration.GetValue<string>("ApiBaseAddress") ?? throw new NotificationException("ApiBaseAddress")); })
+    collection.AddHttpClient("ApiHttpClient", c => { c.BaseAddress = new Uri(configuration.GetValue<string>("ApiBaseAddress") ?? baseAddress); })
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddHttpClient("ExternalHttpClient")
