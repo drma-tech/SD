@@ -16,7 +16,7 @@
                     @foreach (var item in News?.Data?.Items ?? [])
                     {
                         <div class="swiper-slide" style="height: auto !important;">
-                            <MudLink Href="@item.link" Target="_blank" rel="nofollow">
+                            <MudLink Href="@item.link" Target="_blank" rel="noindex, nofollow">
                                 <MudImage Src="@item.url_img" Alt="@item.title" FallbackSrc="images/no-image.png" Class="d-block" Style="width: 100%;" ObjectFit="ObjectFit.Contain"></MudImage>
                                 <MudText Typo="Typo.caption" Class="carousel-caption d-none d-md-block p-1">
                                     @if (item.title != null)
@@ -62,7 +62,7 @@
         }
     }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadEssentialDataAsync()
     {
         News = await CacheFlixsterApi.GetNews("compact", Core);
     }

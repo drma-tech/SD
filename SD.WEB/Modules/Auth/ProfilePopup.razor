@@ -56,7 +56,7 @@
 
     private AuthPrincipal? Principal { get; set; }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadNonEssentialDataAsync()
     {
         Principal = await PrincipalApi.Get(IsAuthenticated);
     }

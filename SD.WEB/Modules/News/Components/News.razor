@@ -28,7 +28,7 @@
                             </h2>
                         </MudCardContent>
                         <MudCardActions style="align-self: center; padding: 0;">
-                            <MudButton Color="Color.Primary" Variant="Variant.Text" Href="@item.link" Target="_blank" Rel="nofollow">
+                            <MudButton Color="Color.Primary" Variant="Variant.Text" Href="@item.link" Target="_blank" Rel="noindex, nofollow">
                                 @Button.ReadMore
                             </MudButton>
                         </MudCardActions>
@@ -48,7 +48,7 @@
     private CacheDocument<NewsModel>? NewsList { get; set; }
     public string? SelectedSlide { get; set; }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadEssentialDataAsync()
     {
         NewsList = await CacheFlixsterApi.GetNews("full", Core);
     }

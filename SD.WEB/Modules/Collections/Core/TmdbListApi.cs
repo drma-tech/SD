@@ -3,7 +3,7 @@ using SD.WEB.Modules.Collections.Interface;
 
 namespace SD.WEB.Modules.Collections.Core;
 
-public class TmdbListApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
+public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(factory, null), IMediaListApi
 {
     public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList,
         MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
@@ -17,8 +17,7 @@ public class TmdbListApi(IHttpClientFactory factory) : ApiExternal(factory), IMe
             { "page", page.ToString() }
         };
 
-        var result = await GetAsync<CustomListNew>($"{BaseEndpoint}public/tmdb?url=" +
-                        $"{TmdbOptions.BaseUriNew}list/{((int)list).ToString().ConfigureParameters(parameter)}".ConvertFromStringToBase64());
+        var result = await GetAsync<CustomListNew>($"public/tmdb?url=" + $"{TmdbOptions.BaseUriNew}list/{((int)list).ToString().ConfigureParameters(parameter)}".ConvertFromStringToBase64());
 
         if (result != null)
         {

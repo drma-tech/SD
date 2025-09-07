@@ -60,7 +60,7 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.imdb))
                                     {
                                         <MudTooltip Text="IMDb">
-                                            <MudLink Href="@_ratingsCache.Data?.imdbLink" Target="_blank" rel="nofollow">
+                                            <MudLink Href="@_ratingsCache.Data?.imdbLink" Target="_blank" rel="noindex, nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.imdb)" title="" Variant="Variant.Outlined">
                                                     <MudImage Src="logo/imdb.png" Alt="imdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.imdb
                                                 </MudChip>
@@ -70,7 +70,7 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.tmdb))
                                     {
                                         <MudTooltip Text="TMDB">
-                                            <MudLink Href="@_ratingsCache.Data?.tmdbLink" Target="_blank" rel="nofollow">
+                                            <MudLink Href="@_ratingsCache.Data?.tmdbLink" Target="_blank" rel="noindex, nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.tmdb)" Variant="Variant.Outlined">
                                                     <MudImage Src="logo/tmdb.png" Alt="tmdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.tmdb
                                                 </MudChip>
@@ -80,7 +80,7 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.metacritic))
                                     {
                                         <MudTooltip Text="Metacritic">
-                                            <MudLink Href="@_ratingsCache.Data?.metacriticLink" Target="_blank" rel="nofollow">
+                                            <MudLink Href="@_ratingsCache.Data?.metacriticLink" Target="_blank" rel="noindex, nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.metacritic)" Variant="Variant.Outlined">
                                                     <MudImage Src="logo/metacritic.png" Alt="metacritic" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.metacritic
                                                 </MudChip>
@@ -90,7 +90,7 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.trakt))
                                     {
                                         <MudTooltip Text="Trakt">
-                                            <MudLink Href="@_ratingsCache.Data?.traktLink" Target="_blank" rel="nofollow">
+                                            <MudLink Href="@_ratingsCache.Data?.traktLink" Target="_blank" rel="noindex, nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.trakt)" Variant="Variant.Outlined">
                                                     <MudImage Src="logo/trakt.png" Alt="trakt" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.trakt
                                                 </MudChip>
@@ -100,7 +100,7 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.rottenTomatoes))
                                     {
                                         <MudTooltip Text="Rotten Tomatoes">
-                                            <MudLink Href="@_ratingsCache.Data?.rottenTomatoesLink" Target="_blank" rel="nofollow">
+                                            <MudLink Href="@_ratingsCache.Data?.rottenTomatoesLink" Target="_blank" rel="noindex, nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.rottenTomatoes)" Variant="Variant.Outlined">
                                                     <MudImage Src="logo/rotten-tomatoes.png" Alt="rotten tomatoes" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.rottenTomatoes
                                                 </MudChip>
@@ -110,7 +110,7 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.filmAffinity))
                                     {
                                         <MudTooltip Text="Film Affinity">
-                                            <MudLink Href="@_ratingsCache.Data?.filmAffinityLink" Target="_blank" rel="nofollow">
+                                            <MudLink Href="@_ratingsCache.Data?.filmAffinityLink" Target="_blank" rel="noindex, nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.filmAffinity)" Variant="Variant.Outlined">
                                                     <MudImage Src="logo/film-affinity.png" Alt="film affinity" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.filmAffinity
                                                 </MudChip>
@@ -312,7 +312,7 @@
     //     };
     // }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadEssentialDataAsync()
     {
         Core?.LoadingStarted?.Invoke();
         Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
@@ -332,9 +332,10 @@
         EnglishTitle = EnglishTitle?.Replace("&", "");
 
         StateHasChanged();
+    }
 
-        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
-
+    protected override async Task LoadNonEssentialDataAsync()
+    {
         ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId);
 
         if (Media?.MediaType == MediaType.movie)
@@ -345,7 +346,10 @@
         {
             _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), CoreRatings);
         }
+
+        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
     }
+
 
     private Color GetColorByRating(string? rating)
     {

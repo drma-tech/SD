@@ -89,10 +89,11 @@
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         Languages = EnumHelper.GetList<Language>();
     }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadNonEssentialDataAsync()
     {
         AllProviders = await AllProvidersApi.GetAll(null);
     }

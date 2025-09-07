@@ -17,7 +17,7 @@
                         <MudText Typo="Typo.subtitle1" Color="Color.Secondary">@item?.reviewer</MudText>
                     </div>
                     <MudText Typo="Typo.body1" Align="Align.Justify" Style="line-height: normal;" Inline="true">@item?.quote</MudText>
-                    <MudLink Href="@item?.reviewUrl" Target="_blank" rel="nofollow" Color="Color.Info">Read full review</MudLink>
+                    <MudLink Href="@item?.reviewUrl" Target="_blank" rel="noindex, nofollow" Color="Color.Info">Read full review</MudLink>
                 </MudPaper>
             </MudItem>
         }
@@ -33,7 +33,7 @@
     public RenderControlCore<CacheDocument<ReviewModel>?> Core { get; set; } = new();
     public CacheDocument<ReviewModel>? Model { get; set; }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadEssentialDataAsync()
     {
         if (!string.IsNullOrEmpty(ImdbId))
         {

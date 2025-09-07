@@ -1,7 +1,7 @@
 ﻿@page "/support/faq/{lang}"
 @inherits PageCore<Faq>
 
-<SeoHeader Title="FAQ" Url=@($"/support/faq/{Lang}")></SeoHeader>
+<SeoHeader Title="FAQ" Description="@SeoTranslations.AppDescription" Url=@($"/support/faq/{Lang}")></SeoHeader>
 
 <MudExpansionPanels Outlined="true" Elevation="0" Class="mb-2">
     <MudExpansionPanel Disabled="true" HideIcon="true">

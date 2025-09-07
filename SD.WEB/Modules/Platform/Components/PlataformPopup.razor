@@ -83,7 +83,7 @@
         };
     }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadNonEssentialDataAsync()
     {
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
     }

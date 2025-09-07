@@ -5,7 +5,7 @@
 @inherits LayoutComponentBase
 
 @inject IJSRuntime JsRuntime
-@inject PaddleConfigurationApi PaddleApi
+@inject IpInfoApi IpInfoApi
 @inject ISnackbar Snackbar
 @inject ILogger<MainLayout> Logger
 
@@ -50,7 +50,8 @@
     {
         try
         {
-            //its called once per request
+            //here its called once per request
+
             if (User == null)
             {
                 var authState = await AuthenticationState;
@@ -80,7 +81,7 @@
                 if (region.Empty())
                 {
                     //get new region by IP
-                    region = await PaddleApi.GetCountry();
+                    region = await IpInfoApi.GetCountry();
 
                     region ??= nameof(Region.US);
 

@@ -85,7 +85,7 @@
         if (DetectRegions) AppStateStatic.RegionChanged += LoadGenericVoid;
     }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadEssentialDataAsync()
     {
         Core?.ShowLoading();
         await LoadItems();

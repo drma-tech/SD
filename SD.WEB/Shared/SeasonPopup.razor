@@ -51,7 +51,7 @@
     public RenderControlCore<TmdbSeason?>? Core { get; set; } = new();
     public TmdbSeason? Season { get; set; }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadNonEssentialDataAsync()
     {
         var parameters = new Dictionary<string, string>
         {

@@ -107,7 +107,7 @@
         PrincipalApi.DataChanged += async model =>
         {
             Client = model;
-            await LoadData();
+            await LoadNonEssentialDataAsync();
             StateHasChanged();
         };
     }
@@ -126,12 +126,7 @@
         }
     }
 
-    protected override async Task LoadDataRender()
-    {
-        await LoadData();
-    }
-
-    private async Task LoadData()
+    protected override async Task LoadNonEssentialDataAsync()
     {
         Core?.ShowLoading();
 

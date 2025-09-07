@@ -16,7 +16,7 @@
             <div class="grid-relative-container-x-lg">
                 @foreach (var item in TrailerModel?.Data?.Items ?? [])
                 {
-                    <MudLink Href="@($"https://www.youtube.com/watch?v={item.id}")" Target="_blank" rel="nofollow">
+                    <MudLink Href="@($"https://www.youtube.com/watch?v={item.id}")" Target="_blank" rel="noindex, nofollow">
                         <MudCard Outlined="true">
                             <MudCardContent Style="padding: 0;">
                                 <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%;"></MudImage>
@@ -40,7 +40,7 @@
     public RenderControlCore<CacheDocument<TrailerModel>?> Core { get; set; } = new();
     private CacheDocument<TrailerModel>? TrailerModel { get; set; }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadEssentialDataAsync()
     {
         TrailerModel = await CacheYoutubeApi.GetTrailers("full", Core);
     }

@@ -6,6 +6,7 @@
 @using Button = SD.WEB.Resources.Button
 
 @implements IDisposable
+@inject IpInfoApi IpInfoApi
 @inject PaddleConfigurationApi ConfigurationApi
 @inject PaddleSubscriptionApi SubscriptionApi
 @inject IJSRuntime JsRuntime
@@ -280,7 +281,7 @@
                         </MudCardContent>
                     </MudCard>
                     <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("list-check").Font" Variant="Variant.Filled" Class="me-3 mb-2"
-                               Href="@CustomerPortalUrl" Target="_blank" Rel="nofollow">
+                               Href="@CustomerPortalUrl" Target="_blank" Rel="noindex, nofollow">
                         Customer portal
                     </MudButton>
                     @if (Subscription?.data?.IsCanceled ?? true)
@@ -293,11 +294,11 @@
                     else
                     {
                         <MudButton Color="Color.Secondary" StartIcon="@IconsFA.Solid.Icon("credit-card").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
-                                   Href="@Subscription?.data?.management_urls?.update_payment_method" Target="_blank" Rel="nofollow">
+                                   Href="@Subscription?.data?.management_urls?.update_payment_method" Target="_blank" Rel="noindex, nofollow">
                             @Translations.UpdatePaymentDetails
                         </MudButton>
                         <MudButton Color="Color.Error" StartIcon="@IconsFA.Solid.Icon("ban").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
-                                   Href="@Subscription?.data?.management_urls?.cancel" Target="_blank" Rel="nofollow">
+                                   Href="@Subscription?.data?.management_urls?.cancel" Target="_blank" Rel="noindex, nofollow">
                             @Translations.CancelSubscription
                         </MudButton>
                     }
@@ -383,9 +384,9 @@
         }
     }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadNonEssentialDataAsync()
     {
-        CurrentCountry = await ConfigurationApi.GetCountry();
+        CurrentCountry = await IpInfoApi.GetCountry();
 
         if (CurrentCountry.NotEmpty())
         {
@@ -495,7 +496,7 @@
         {
             Client = await PrincipalApi.Get(true, true);
             PrincipalApi.DataChanged?.Invoke(Client);
-            await LoadDataRender();
+            await LoadNonEssentialDataAsync();
             StateHasChanged();
         }
         catch (Exception ex)
@@ -510,7 +511,7 @@
         {
             if (Client != null) Client.AuthPaddle = null;
             Subscription = null;
-            await LoadDataRender();
+            await LoadNonEssentialDataAsync();
         }
         catch (Exception ex)
         {

@@ -102,9 +102,9 @@
         public string? Link { get; set; }
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await base.OnInitializedAsync();
+        base.OnInitialized();
 
         Awards.Add(new Item { Name = "Oscar", LogoPath = "logo/oscar.png", Link = "/collections/oscar" });
         Awards.Add(new Item { Name = "Emmy Awards", LogoPath = "logo/emmy-awards.png", Link = "/collections/emmy-awards" });

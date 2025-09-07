@@ -5,6 +5,7 @@
 @inject IJSRuntime JsRuntime
 
 @inject PaddleConfigurationApi ConfigurationApi
+@inject IpInfoApi IpInfoApi
 
 @if (_processing)
 {
@@ -14,7 +15,7 @@
     @if (Breakpoint <= Breakpoint.Xs) //mobile view
     {
         <MudIconButton Icon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Style="padding: 8px;" />
-        <MudIconButton Icon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Style="padding: 8px;" Target="_self" Rel="nofollow" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Style="padding: 8px;" Target="_self" Rel="noindex, nofollow" />
         <MudIconButton Icon="@IconsFA.Solid.Icon("circle-play").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Style="padding: 8px;" />
         <MudIconButton Icon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Style="padding: 8px;" />
         <MudSpacer />
@@ -23,7 +24,7 @@
     else if (Breakpoint == Breakpoint.Sm) //tablet view
     {
         <MudIconButton Icon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Style="padding: 8px;" />
-        <MudIconButton Icon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Style="padding: 8px;" Target="_self" Rel="nofollow" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Style="padding: 8px;" Target="_self" Rel="noindex, nofollow" />
         <MudIconButton Icon="@IconsFA.Solid.Icon("circle-play").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Style="padding: 8px;" />
         <MudIconButton Icon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Style="padding: 8px;" />
         <MudIconButton Icon="@IconsFA.Solid.Icon("headset").Font" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")" Style="padding: 8px;" />
@@ -47,7 +48,8 @@
                 </MudButton>
             </Authorized>
             <NotAuthorized>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="@($"/.auth/login/aad?post_login_redirect_uri={Navigation.BaseUri}login-success")" Rel="nofollow" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="@($"/.auth/login/aad?post_login_redirect_uri={Navigation.BaseUri}login-success")"
+                           Rel="noindex, nofollow" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
                     @Button.Login
                 </MudButton>
             </NotAuthorized>
@@ -65,7 +67,7 @@
                 @Menu.Home
             }
         </MudButton>
-        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="px-3" Target="_self" Rel="nofollow">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="px-3" Target="_self" Rel="noindex, nofollow">
             @if (Focused("/profile"))
             {
                 <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Profile</MudText>
@@ -115,7 +117,8 @@
                 </MudButton>
             </Authorized>
             <NotAuthorized>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="@($"/.auth/login/aad?post_login_redirect_uri={Navigation.BaseUri}login-success")" Rel="nofollow" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" Href="@($"/.auth/login/aad?post_login_redirect_uri={Navigation.BaseUri}login-success")"
+                           Rel="noindex, nofollow" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
                     @Button.Login
                 </MudButton>
             </NotAuthorized>
@@ -149,7 +152,10 @@
                     <MudNavLink Icon="@IconsFA.Solid.Icon("right-from-bracket").Font" OnClick="@Logout" IconColor="Color.Error">@Button.Logout</MudNavLink>
                 </Authorized>
                 <NotAuthorized>
-                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-to-bracket").Font" Href="@($"/.auth/login/aad?post_login_redirect_uri={Navigation.BaseUri}login-success")">@Button.Login</MudNavLink>
+                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-to-bracket").Font" Href="@($"/.auth/login/aad?post_login_redirect_uri={Navigation.BaseUri}login-success")"
+                                UserAttributes="@(new Dictionary<string, object>(){{"rel","noindex, nofollow"}})">
+                        @Button.Login
+                    </MudNavLink>
                 </NotAuthorized>
             </AuthorizeView>
         </MudNavMenu>
@@ -194,15 +200,20 @@
         };
     }
 
-    protected override async Task LoadDataRender()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var CurrentCountry = await ConfigurationApi.GetCountry();
-        var CurrentPlatform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
+        await base.OnAfterRenderAsync(firstRender);
 
-        if (CurrentCountry.NotEmpty() && CurrentPlatform == "ios")
+        if (firstRender)
         {
-            //https://developer.apple.com/app-store/review/guidelines/#link-to-other-purchase-methods
-            SubscriptionAllowed = _iosAllowedCountries.ContainsKey(CurrentCountry);
+            var CurrentCountry = await IpInfoApi.GetCountry();
+            var CurrentPlatform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
+
+            if (CurrentCountry.NotEmpty() && CurrentPlatform == "ios")
+            {
+                //https://developer.apple.com/app-store/review/guidelines/#link-to-other-purchase-methods
+                SubscriptionAllowed = _iosAllowedCountries.ContainsKey(CurrentCountry);
+            }
         }
     }
 

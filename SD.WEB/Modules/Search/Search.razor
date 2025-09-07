@@ -8,7 +8,7 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
-<SeoHeader Title="Search" Index="false"></SeoHeader>
+<SeoHeader Title="Search" Description="@SeoTranslations.AppDescription" Url="/search/{SearchContent}" Index="false"></SeoHeader>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@SearchContent" Immediate="true" OnKeyDown="@KeyPress"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
@@ -53,7 +53,7 @@
         };
     }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadNonEssentialDataAsync()
     {
         Core?.LoadingStarted?.Invoke();
         var result = await TmdbSearch.GetList(Items, null, StringParameters);

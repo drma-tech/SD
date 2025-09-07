@@ -105,19 +105,21 @@
 
     public List<EnumObject<DeliveryModel>> DeliveryModels { get; set; } = [];
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await base.OnInitializedAsync();
+        base.OnInitialized();
 
         AppStateStatic.RegionChanged += StateHasChanged;
+    } 
 
+    protected override async Task LoadEssentialDataAsync()
+    {
         DeliveryModels = EnumHelper.GetList<DeliveryModel>();
 
-        //it is in initialize so it can be recognized by link mapping
         AllProviders = await AllProvidersApi.GetAll(Core);
     }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadNonEssentialDataAsync()
     {
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
     }

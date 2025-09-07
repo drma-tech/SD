@@ -2,13 +2,9 @@
 
 namespace SD.WEB.Core.Api;
 
-public abstract class ApiCosmos<T>(IHttpClientFactory factory, string? key) : ApiCore(factory, key) where T : class
+public abstract class ApiCosmos<T>(IHttpClientFactory factory, string? key) : ApiCore(factory, key, ApiType.Api) where T : class
 {
     public Action<T?>? DataChanged { get; set; }
-
-    private string BaseEndpoint => Http.BaseAddress?.ToString().Contains("localhost") ?? true
-        ? "http://localhost:7071/api/"
-        : $"{Http.BaseAddress}api/";
 
     protected async Task<string?> GetValueAsync(string endpoint, RenderControlCore<string?>? core)
     {
@@ -18,7 +14,7 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, string? key) : Ap
 
         try
         {
-            result = await GetValueAsync($"{BaseEndpoint}{endpoint}");
+            result = await GetValueAsync(endpoint);
             return result;
         }
         finally
@@ -35,7 +31,7 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, string? key) : Ap
 
         try
         {
-            obj = await GetAsync<T>($"{BaseEndpoint}{endpoint}", setNewVersion);
+            obj = await GetAsync<T>(endpoint, setNewVersion);
             return obj;
         }
         finally
@@ -52,7 +48,7 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, string? key) : Ap
 
         try
         {
-            list = await GetListAsync<T>($"{BaseEndpoint}{endpoint}");
+            list = await GetListAsync<T>(endpoint);
             return list;
         }
         finally
@@ -74,7 +70,7 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, string? key) : Ap
         {
             core?.ProcessingStarted?.Invoke();
 
-            result = await PostAsync<I, T>($"{BaseEndpoint}{endpoint}", obj);
+            result = await PostAsync<I, T>(endpoint, obj);
 
             DataChanged?.Invoke(result);
 
@@ -94,7 +90,7 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, string? key) : Ap
         {
             core?.ProcessingStarted?.Invoke();
 
-            result = await PutAsync<I, T>($"{BaseEndpoint}{endpoint}", obj);
+            result = await PutAsync<I, T>(endpoint, obj);
 
             DataChanged?.Invoke(result);
 
@@ -114,7 +110,7 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, string? key) : Ap
         {
             core?.ProcessingStarted?.Invoke();
 
-            result = await DeleteAsync<T>($"{BaseEndpoint}{endpoint}");
+            result = await DeleteAsync<T>(endpoint);
 
             DataChanged?.Invoke(result);
 

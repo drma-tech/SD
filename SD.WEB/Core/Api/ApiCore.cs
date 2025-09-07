@@ -5,9 +5,21 @@ using System.Text.Json;
 
 namespace SD.WEB.Core.Api;
 
-public abstract class ApiCore(IHttpClientFactory factory, string? key)
+public enum ApiType
 {
-    protected HttpClient Http => factory.CreateClient("RetryHttpClient");
+    Local,
+    Api,
+    External
+}
+
+public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType type)
+{
+    protected HttpClient LocalHttp => factory.CreateClient("LocalHttpClient");
+    protected HttpClient ApiHttp => factory.CreateClient("ApiHttpClient");
+    protected HttpClient ExternalHttp => factory.CreateClient("ExternalHttpClient");
+
+    private HttpClient Http => type == ApiType.Local ? LocalHttp : (type == ApiType.Api ? ApiHttp : ExternalHttp);
+
     protected static Dictionary<string, int> CacheVersion { get; set; } = [];
 
     public static void SetNewVersion(string? key)

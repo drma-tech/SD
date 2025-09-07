@@ -23,7 +23,7 @@ if (builder.RootComponents.Empty())
     builder.RootComponents.Add<HeadOutlet>("head::after");
 }
 
-ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress);
+ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress, builder.Configuration);
 
 var app = builder.Build();
 
@@ -31,17 +31,19 @@ await ConfigureCulture(app);
 
 await app.RunAsync();
 
-static void ConfigureServices(IServiceCollection collection, string baseAddress)
+static void ConfigureServices(IServiceCollection collection, string baseAddress, IConfiguration configuration)
 {
     collection.AddMudServices();
 
     collection.AddPWAUpdater();
 
-    collection.AddHttpClient("RetryHttpClient", c => { c.BaseAddress = new Uri(baseAddress); })
-        .AddPolicyHandler(request =>
-            request.Method == HttpMethod.Get
-                ? GetRetryPolicy()
-                : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
+    collection.AddHttpClient("LocalHttpClient", c => { c.BaseAddress = new Uri(baseAddress); });
+
+    collection.AddHttpClient("ApiHttpClient", c => { c.BaseAddress = new Uri(configuration.GetValue<string>("ApiBaseAddress") ?? throw new NotificationException("ApiBaseAddress")); })
+        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
+
+    collection.AddHttpClient("ExternalHttpClient")
+        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddStaticWebAppsAuthentication();
     collection.AddCascadingAuthenticationState();
@@ -79,6 +81,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress)
 
     collection.AddScoped<PaddleConfigurationApi>();
     collection.AddScoped<PaddleSubscriptionApi>();
+    collection.AddScoped<IpInfoApi>();
 
     collection.AddLogging(logging => { logging.AddProvider(new CosmosLoggerProvider()); });
 }

@@ -15,7 +15,7 @@
             }
             else
             {
-                <a href="@Link" target="_blank" rel="nofollow">
+                <a href="@Link" target="_blank" rel="noindex, nofollow">
                     <MudImage Src="@ImageSource" Alt="@ImageSource" Style="max-height: 50px; max-width: 50px;"></MudImage>
                 </a>
             }
@@ -28,7 +28,7 @@
                 }
                 else
                 {
-                    <a href="@Link" target="_blank" rel="nofollow" class="mud-primary-text">@Title</a>
+                    <a href="@Link" target="_blank" rel="noindex, nofollow" class="mud-primary-text">@Title</a>
                 }
             </MudText>
         </div>
@@ -125,7 +125,7 @@
     public RenderControlCore<MyProviders?>? Core { get; set; } = new();
     [Parameter] public MyProviders? MyProviders { get; set; }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadNonEssentialDataAsync()
     {
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
     }

@@ -31,7 +31,7 @@
 
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadNonEssentialDataAsync()
     {
         var language = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "language");
 

@@ -16,7 +16,7 @@
                     @foreach (var item in TrailerModel?.Data?.Items ?? [])
                     {
                         <div class="swiper-slide swiper-slide-grid">
-                            <MudLink Href="@($"https://www.youtube.com/watch?v={item?.id}")" Target="_blank" rel="nofollow">
+                            <MudLink Href="@($"https://www.youtube.com/watch?v={item?.id}")" Target="_blank" rel="noindex, nofollow">
                                 <MudCard Outlined="true">
                                     <MudCardContent Style="padding: 0;">
                                         <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%; max-height: 94px;" ObjectFit="ObjectFit.Contain"></MudImage>
@@ -57,7 +57,7 @@
         }
     }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadEssentialDataAsync()
     {
         TrailerModel = await CacheYoutubeApi.GetTrailers("compact", Core);
     }

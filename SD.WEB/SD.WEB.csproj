@@ -4,7 +4,6 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
-		<BlazorWasmPrerenderingUrlPathToExplicitFetch>/certified-sd/tv</BlazorWasmPrerenderingUrlPathToExplicitFetch>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
@@ -27,9 +26,9 @@
 		<ProjectReference Include="..\SD.Shared\SD.Shared.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Reference Include="StaticWebAppsAuthenticationExtensions">
-	    <HintPath>ReferenceDll\StaticWebAppsAuthenticationExtensions.dll</HintPath>
-	  </Reference>
+		<Reference Include="StaticWebAppsAuthenticationExtensions">
+			<HintPath>ReferenceDll\StaticWebAppsAuthenticationExtensions.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 	<ItemGroup>
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
@@ -175,6 +174,8 @@
 	</ItemGroup>
 	<PropertyGroup>
 		<BlazorWasmPrerenderingMode>Static</BlazorWasmPrerenderingMode>
+		<BlazorWasmPrerenderingDeleteLoadingContents>true</BlazorWasmPrerenderingDeleteLoadingContents>
+		<BlazorWasmPrerenderingUrlPathToExplicitFetch>/certified-sd/tv</BlazorWasmPrerenderingUrlPathToExplicitFetch>
 		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
 		<CurrentDate>$([System.DateTime]::Now.ToString(yyyy.MM.dd))</CurrentDate>
 	</PropertyGroup>

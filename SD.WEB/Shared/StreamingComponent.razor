@@ -31,7 +31,7 @@
                             var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
 
                             <MudTooltip Text="@item.provider_name">
-                                <MudLink Href="@provider.link" Target="_blank" rel="nofollow" Class="me-2">
+                                <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
                                     <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
                                               Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
                                     <AuthorizeView Roles="administrator">
@@ -67,7 +67,7 @@
                             var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
 
                             <MudTooltip Text="@item.provider_name">
-                                <MudLink Href="@provider.link" Target="_blank" rel="nofollow" Class="me-2">
+                                <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
                                     <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
                                               Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
                                     <AuthorizeView Roles="administrator">
@@ -103,7 +103,7 @@
                             var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
 
                             <MudTooltip Text="@item.provider_name">
-                                <MudLink Href="@provider.link" Target="_blank" rel="nofollow" Class="me-2">
+                                <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
                                     <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
                                               Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
                                     <AuthorizeView Roles="administrator">
@@ -139,7 +139,7 @@
                             var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
 
                             <MudTooltip Text="@item.provider_name">
-                                <MudLink Href="@provider.link" Target="_blank" rel="nofollow" Class="me-2">
+                                <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
                                     <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
                                               Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
                                     <AuthorizeView Roles="administrator">
@@ -175,7 +175,7 @@
                             var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
 
                             <MudTooltip Text="@item.provider_name">
-                                <MudLink Href="@provider.link" Target="_blank" rel="nofollow" Class="me-2">
+                                <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
                                     <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
                                               Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
                                     <AuthorizeView Roles="administrator">
@@ -211,7 +211,7 @@
                             var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
 
                             <MudTooltip Text="@item.provider_name">
-                                <MudLink Href="@provider.link" Target="_blank" rel="nofollow" Class="me-2">
+                                <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
                                     <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
                                               Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
                                     <AuthorizeView Roles="administrator">
@@ -273,7 +273,7 @@
     private MediaProviders? Providers { get; set; }
     private AllProviders? AllProviders { get; set; }
 
-    protected override async Task LoadDataRender()
+    protected override async Task LoadEssentialDataAsync()
     {
         AllProviders = await AllProvidersApi.GetAll(null);
 
