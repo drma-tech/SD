@@ -197,20 +197,15 @@
         };
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task LoadNonEssentialDataAsync()
     {
-        await base.OnAfterRenderAsync(firstRender);
+        var CurrentCountry = await IpInfoApi.GetCountry();
+        var CurrentPlatform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
 
-        if (firstRender)
+        if (CurrentCountry.NotEmpty() && CurrentPlatform == "ios")
         {
-            var CurrentCountry = await IpInfoApi.GetCountry();
-            var CurrentPlatform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
-
-            if (CurrentCountry.NotEmpty() && CurrentPlatform == "ios")
-            {
-                //https://developer.apple.com/app-store/review/guidelines/#link-to-other-purchase-methods
-                SubscriptionAllowed = _iosAllowedCountries.ContainsKey(CurrentCountry);
-            }
+            //https://developer.apple.com/app-store/review/guidelines/#link-to-other-purchase-methods
+            SubscriptionAllowed = _iosAllowedCountries.ContainsKey(CurrentCountry);
         }
     }
 

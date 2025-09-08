@@ -4,6 +4,7 @@
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Modules.Subscription.Resources
 @using Button = SD.WEB.Resources.Button
+@using System.ComponentModel.DataAnnotations
 
 @implements IDisposable
 @inject IpInfoApi IpInfoApi
@@ -30,15 +31,36 @@
                 <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("gift").Font" Class="mb-3" Dense="true">
                     @Translations.FreePeriod
                 </MudAlert>
-                <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary" Class="mb-3">
-                    <MudToggleItem Value="@AccountCycle.Monthly">
-                        @AccountCycle.Monthly.GetName()
-                    </MudToggleItem>
-                    <MudToggleItem Value="@AccountCycle.Yearly">
-                        @AccountCycle.Yearly.GetName()
-                        <MudChip Size="Size.Small" Color="Color.Success">@Translations.YearSave</MudChip>
-                    </MudToggleItem>
-                </MudToggleGroup>
+                <MudGrid Class="mb-3">
+                    <MudItem xs="12" sm="8">
+                        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary">
+                            <MudToggleItem Value="@AccountCycle.Monthly">
+                                @AccountCycle.Monthly.GetName()
+                            </MudToggleItem>
+                            <MudToggleItem Value="@AccountCycle.Yearly">
+                                @AccountCycle.Yearly.GetName()
+                                <MudChip Size="Size.Small" Color="Color.Success">@Translations.YearSave</MudChip>
+                            </MudToggleItem>
+                        </MudToggleGroup>
+                    </MudItem>
+                    <MudItem xs="12" sm="4">
+                        <MudSelect @bind-Value="@Provider" Label="Payment Provider" Dense="true">
+                            @foreach (var item in EnumHelper.GetList<PaymentProvider>())
+                            {
+                                <MudSelectItem T="PaymentProvider" Value="@item.Value" Disabled="@(item.Value != PaymentProvider.Paddle)">
+                                    @if (item.Value == PaymentProvider.Paddle)
+                                    {
+                                        @item.Name
+                                    }
+                                    else
+                                    {
+                                        @($"{item.Name} (coming soon)")
+                                    }
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                </MudGrid>
                 <MudStack Row="true" Class="mb-3" Breakpoint="Breakpoint.Xs" Spacing="2">
                     <MudCard Outlined="true" Elevation="4">
                         <MudCardContent Class="pa-3">
@@ -322,6 +344,8 @@
 
     private AccountCycle Cycle { get; set; } = AccountCycle.Monthly;
 
+    private PaymentProvider Provider { get; set; } = PaymentProvider.Paddle;
+
     private string? CurrentCountry { get; set; }
     private string? CurrentPlatform { get; set; }
     private bool BlockedCountry { get; set; }
@@ -352,7 +376,7 @@
         public string? PriceId { get; set; }
     }
 
-    private IEnumerable<Plan> Plans { get; set; } = [];
+    private List<Plan> Plans { get; set; } = [];
 
     private Plan? GetSubscription(AccountProduct product)
     {
@@ -404,7 +428,7 @@
         if (Client?.AuthPaddle == null && string.IsNullOrEmpty(Client?.AuthPaddle?.SubscriptionId))
         {
             await JsRuntime.InvokeVoidAsync("startPaddle", Config.Token);
-            Plans = await JsRuntime.InvokeAsync<IEnumerable<Plan>>("getPlans", Config.PriceStandardMonth, Config.PriceStandardYear, Config.PricePremiumMonth, Config.PricePremiumYear);
+            Plans = await JsRuntime.InvokeAsync<List<Plan>>("getPlans", Config.PriceStandardMonth, Config.PriceStandardYear, Config.PricePremiumMonth, Config.PricePremiumYear);
         }
         else if (string.IsNullOrEmpty(Client?.AuthPaddle?.SubscriptionId))
         {
@@ -455,7 +479,7 @@
                 }
 
                 await JsRuntime.InvokeVoidAsync("startPaddle", Config.Token);
-                Plans = await JsRuntime.InvokeAsync<IEnumerable<Plan>>("getPlans", Config.PriceStandardMonth, Config.PriceStandardYear, Config.PricePremiumMonth, Config.PricePremiumYear);
+                Plans = await JsRuntime.InvokeAsync<List<Plan>>("getPlans", Config.PriceStandardMonth, Config.PriceStandardYear, Config.PricePremiumMonth, Config.PricePremiumYear);
             }
 
             var product = Plans.Single(w => w.ProductId == client.ProductId && w.Cycle == Cycle).Product;
