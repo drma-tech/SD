@@ -216,7 +216,7 @@
 
     private void Login()
     {
-        Navigation.NavigateTo("/.auth/login/aad?post_login_redirect_uri=" + Navigation.BaseUri + "login-success");
+        Navigation.NavigateTo("/.auth/login/aad?post_login_redirect_uri=" + Navigation.BaseUri + "login-success", true);
     }
 
     private void Logout()
