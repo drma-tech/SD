@@ -83,7 +83,7 @@
             <MudText Typo="Typo.h5" Align="Align.Center" Class="my-3">
                 @Translations.HeroCall
             </MudText>
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="@($"/.auth/login/aad?post_login_redirect_uri={Navigation.BaseUri}login-success")" Rel="noindex, nofollow" Class="my-4">
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="Login" Class="my-4">
                 @Translations.HeroButton
             </MudButton>
             <MudText Typo="Typo.caption" Align="Align.Center" Class="my-3 d-block" Style="bottom: 50px; position: absolute; left: 0; right: 0;">
@@ -216,6 +216,11 @@
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
         Platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
         Reviewed = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "reviewed");
+    }
+
+    private void Login()
+    {
+        Navigation.NavigateTo("/.auth/login/aad?post_login_redirect_uri=" + Navigation.BaseUri + "login-success");
     }
 
     // private async Task SetReviewed()
