@@ -8,7 +8,6 @@ public class Configurations
     public Google? Google { get; set; }
     public TMDB? TMDB { get; set; }
     public RapidAPI? RapidAPI { get; set; }
-    public Settings? Settings { get; set; }
 }
 
 public class CosmosDB
@@ -55,9 +54,4 @@ public class TMDB
 public class RapidAPI
 {
     public string? Key { get; set; }
-}
-
-public class Settings
-{
-    public bool ShowAdSense { get; set; }
 }
