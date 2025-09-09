@@ -63,22 +63,18 @@
                 AppStateStatic.User = authState.User;
                 AppStateStatic.IsAuthenticated = AppStateStatic.User?.Identity is not null && AppStateStatic.User.Identity.IsAuthenticated;
                 AppStateStatic.UserId = AppStateStatic.User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-                Snackbar.Add("IsAuthenticated: " + AppStateStatic.IsAuthenticated, Severity.Info);
             }
 
             if (AppStateStatic.IsAuthenticated)
             {
                 var principal = await PrincipalApi.Get(true);
 
-                Snackbar.Add("principal: " + (principal != null), Severity.Info);
-
                 if (principal == null)
                 {
                     Navigation.NavigateTo("/login-success");
                     return;
                 }
-            }
+            }            
         }
         catch (Exception ex)
         {
