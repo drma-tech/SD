@@ -332,10 +332,7 @@
         EnglishTitle = EnglishTitle?.Replace("&", "");
 
         StateHasChanged();
-    }
 
-    protected override async Task LoadNonEssentialDataAsync()
-    {
         ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId);
 
         if (Media?.MediaType == MediaType.movie)
@@ -346,7 +343,10 @@
         {
             _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), CoreRatings);
         }
+    }
 
+    protected override async Task LoadNonEssentialDataAsync()
+    {
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
     }
 

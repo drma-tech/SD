@@ -27,6 +27,8 @@ public abstract class ComponentCore<T> : ComponentBase, IBrowserViewportObserver
 
     /// <summary>
     /// Non-critical data that may be delayed (popups, javascript handling, authenticated user data, etc.)
+    /// 
+    /// NOTE: This method cannot depend on previously loaded variables, as events can be executed in parallel.
     /// </summary>
     /// <returns></returns>
     protected virtual Task LoadNonEssentialDataAsync()
