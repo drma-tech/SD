@@ -55,17 +55,17 @@ function SetLocalStorage(key, value) {
 function TryDetectPlatform() {
     if (GetLocalStorage("platform")) return; //if populate before, cancel, cause detection (windows) only works for first call
 
-    const isWindows = document.referrer == "app-info://platform/microsoft-store";
-    const isAndroid = /(android)/i.test(navigator.userAgent);
+    const isWindows = document.referrer == "app-info://platform/microsoft-store" || /microsoft-store/i.test(navigator.userAgent);
+    const isAndroid = /android/i.test(navigator.userAgent);
     const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    //const isMac = /macintosh|mac os x/i.test(navigator.userAgent);
+    const isMac = /macintosh|mac os x/i.test(navigator.userAgent);
     const isHuawei = /huawei|honor/i.test(navigator.userAgent);
 
     if (isWindows)
         SetLocalStorage("platform", "windows");
     else if (isAndroid)
         SetLocalStorage("platform", "play");
-    else if (isIOS)
+    else if (isIOS || isMac)
         SetLocalStorage("platform", "ios");
     else if (isHuawei)
         SetLocalStorage("platform", "huawei");

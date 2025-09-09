@@ -1,5 +1,6 @@
 ﻿using SD.Shared.Models.Auth;
 using System.Globalization;
+using System.Security.Claims;
 
 namespace SD.WEB.Core;
 
@@ -9,6 +10,10 @@ public static class AppStateStatic
     {
         Language = GetValidLanguage();
     }
+
+    public static bool IsAuthenticated { get; set; }
+    public static ClaimsPrincipal? User { get; set; }
+    public static string? UserId { get; set; }
 
     public static List<LogContainer> Logs { get; private set; } = [];
 
