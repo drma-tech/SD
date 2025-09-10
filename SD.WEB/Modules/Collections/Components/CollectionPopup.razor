@@ -19,8 +19,7 @@
                     var logo = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path;
 
                     <PosterComponent Poster="@logo" Title="@item.title" MediaType="Type" TmdbId="@item.id.ToString()" CollectionId="@Collection?.id.ToString()"
-                                     Date="item.release_date.GetDate()" Clicked="@(async () => await CollectionClicked(item))" ForceShowTitle="Type == MediaType.tv"
-                                     ShowWished="Type == MediaType.movie" WishList="Wish" WatchedList="Watched" WatchingList="Watching">
+                                     Date="item.release_date.GetDate()" ShowWished="Type == MediaType.movie" WishList="Wish" WatchedList="Watched" WatchingList="Watching">
                     </PosterComponent>
                 }
             </div>
@@ -128,24 +127,6 @@
     public void HideModal()
     {
         MudDialog?.Close();
-    }
-
-    private async Task CollectionClicked(Part? item)
-    {
-        if (Type == MediaType.movie)
-            await OpenPopupMedia(item, Type);
-        else
-            await OpenPopupSeason(item);
-    }
-
-    private async Task OpenPopupMedia(Part? part, MediaType? mediaType)
-    {
-        await DialogService.MediaPopup(Watched, Watching, Wish, mediaType, part?.id.ToString(), IsAuthenticated);
-    }
-
-    private async Task OpenPopupSeason(Part? part)
-    {
-        await DialogService.SeasonPopup(Collection?.name, part?.title, CollectionId, part?.season_number, IsAuthenticated);
     }
 
     private async Task IsWatched()

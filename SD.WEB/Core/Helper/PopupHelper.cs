@@ -141,10 +141,10 @@ public static class PopupHelper
         await service.ShowAsync<ProfilePopup>(Translations.MyProfile, parameters, Options(MaxWidth.ExtraSmall));
     }
 
-    public static async Task PlataformPopup(this IDialogService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish,
+    public static async Task PlatformPopup(this IDialogService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish,
         string? watchRegion, string? providerId, bool isAuthenticated)
     {
-        var parameters = new DialogParameters<PlataformPopup>
+        var parameters = new DialogParameters<PlatformPopup>
         {
             { x => x.Provider, provider },
             { x => x.Watched, watched },
@@ -158,19 +158,7 @@ public static class PopupHelper
             { x => x.IsAuthenticated, isAuthenticated }
         };
 
-        await service.ShowAsync<PlataformPopup>(provider?.name, parameters, Options(MaxWidth.Large));
-    }
-
-    public static async Task SeasonPopup(this IDialogService service, string? showTitle, string? showSeasonName, string? tmdbId, int? seasonNumber, bool isAuthenticated)
-    {
-        var parameters = new DialogParameters<SeasonPopup>
-        {
-            { x => x.TmdbId, tmdbId },
-            { x => x.SeasonNumber, seasonNumber },
-            { x => x.IsAuthenticated, isAuthenticated }
-        };
-
-        await service.ShowAsync<SeasonPopup>($"{showTitle} ({showSeasonName})", parameters, Options(MaxWidth.Medium));
+        await service.ShowAsync<PlatformPopup>(provider?.name, parameters, Options(MaxWidth.Large));
     }
 
     public static async Task SelectItemsCollection(this IDialogService service, List<Collection> items, HashSet<string> selectedItems,

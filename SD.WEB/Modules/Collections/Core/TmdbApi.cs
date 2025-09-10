@@ -135,15 +135,6 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
                                               collectionId.ConfigureParameters(parameters));
     }
 
-    public async Task<TmdbSeason?> GetSeason(string? tmdbId, int? seasonNumber, Dictionary<string, string> parameters)
-    {
-        if (tmdbId == null) return null;
-        if (seasonNumber == null) return null;
-
-        return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri +
-                                          $"tv/{tmdbId}/season/{seasonNumber}".ConfigureParameters(parameters));
-    }
-
     public async Task<MediaProviders?> GetWatchProvidersList(string? tmdbId, MediaType? type)
     {
         ArgumentNullException.ThrowIfNull(tmdbId);
@@ -164,7 +155,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
     }
 }
 
-internal sealed class Ordem
+internal sealed class Order
 {
     public MediaType Type { get; set; }
     public int Id { get; set; }

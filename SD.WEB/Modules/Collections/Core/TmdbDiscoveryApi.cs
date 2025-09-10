@@ -48,11 +48,11 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
                 await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter));
             var shows = await GetAsync<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter));
 
-            var listOrder = new List<Ordem>();
+            var listOrder = new List<Order>();
 
-            listOrder.AddRange(movies?.results.Select(s => new Ordem
+            listOrder.AddRange(movies?.results.Select(s => new Order
                 { Id = s.id, Type = MediaType.movie, Popularity = s.popularity }) ?? []);
-            listOrder.AddRange(shows?.results.Select(s => new Ordem
+            listOrder.AddRange(shows?.results.Select(s => new Order
                 { Id = s.id, Type = MediaType.tv, Popularity = s.popularity }) ?? []);
 
             foreach (var ordem in listOrder.OrderByDescending(o => o.Popularity))

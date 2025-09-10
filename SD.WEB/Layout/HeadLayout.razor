@@ -16,7 +16,7 @@
     {
         <MudIconButton Icon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Style="padding: 8px;" />
         <MudIconButton Icon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Style="padding: 8px;" Target="_self" Rel="noindex, nofollow" />
-        <MudIconButton Icon="@IconsFA.Solid.Icon("circle-play").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Style="padding: 8px;" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Style="padding: 8px;" />
         <MudIconButton Icon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Style="padding: 8px;" />
         <MudSpacer />
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { _open = true; })" />
@@ -25,7 +25,7 @@
     {
         <MudIconButton Icon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Style="padding: 8px;" />
         <MudIconButton Icon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Style="padding: 8px;" Target="_self" Rel="noindex, nofollow" />
-        <MudIconButton Icon="@IconsFA.Solid.Icon("circle-play").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Style="padding: 8px;" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Style="padding: 8px;" />
         <MudIconButton Icon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Style="padding: 8px;" />
         <MudIconButton Icon="@IconsFA.Solid.Icon("headset").Font" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")" Style="padding: 8px;" />
         <MudSpacer />
@@ -76,7 +76,7 @@
                 @Menu.Profile
             }
         </MudButton>
-        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-play").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="px-3">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="px-3">
             @if (Focused("/platforms"))
             {
                 <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Platforms</MudText>

@@ -8,7 +8,7 @@
 @inject AllProvidersApi AllProvidersApi
 @inject IJSRuntime JsRuntime
 
-<SectionComponent IconName="@IconsFA.Solid.Icon("circle-play").Font" Title="@Translations.MyPlatforms">
+<SectionComponent IconName="@IconsFA.Solid.Icon("clapperboard").Font" Title="@Translations.MyPlatforms">
     <ActionFragment>
         @if (ProvidersChanged)
         {
@@ -127,7 +127,7 @@
     {
         AllProviders ??= await AllProvidersApi.GetAll(null);
 
-        await DialogService.PlataformPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList,
+        await DialogService.PlatformPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList,
             item.region?.ToString(), item.id, IsAuthenticated);
     }
 

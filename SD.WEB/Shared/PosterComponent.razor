@@ -1,7 +1,7 @@
 ﻿@inherits ComponentCore<PosterComponent>
 
 <div>
-    <div @onclick="@Clicked" style="cursor: pointer; position: relative;">
+    <div @onclick="@Clicked" style="@($"{(Clicked.HasDelegate ? "cursor: pointer;" : "")} position: relative;")">
         <MudImage Src="@(Poster ?? "images/no-image.png")" Alt="@Title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"
                   Style="vertical-align: bottom;" />
 
