@@ -44,7 +44,7 @@
                         </MudToggleGroup>
                     </MudItem>
                     <MudItem xs="12" sm="4">
-                        <MudSelect @bind-Value="@Provider" Label="Payment Provider" Dense="true">
+                        <MudSelect @bind-Value="@Provider" Label="@Resources.Translations.PaymentProvider" Dense="true">
                             @foreach (var item in EnumHelper.GetList<PaymentProvider>())
                             {
                                 <MudSelectItem T="PaymentProvider" Value="@item.Value" Disabled="@(item.Value != PaymentProvider.Paddle)">
@@ -117,7 +117,7 @@
                         </MudCardContent>
                         <MudCardActions>
                             <MudButton Variant="Variant.Filled" Color="Color.Success" FullWidth="true" Disabled="true">
-                                Your current plan
+                                @Resources.Translations.YourCurrentPlan
                             </MudButton>
                         </MudCardActions>
                     </MudCard>

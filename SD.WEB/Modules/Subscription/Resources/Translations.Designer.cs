@@ -169,6 +169,15 @@ namespace SD.WEB.Modules.Subscription.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment provider.
+        /// </summary>
+        public static string PaymentProvider {
+            get {
+                return ResourceManager.GetString("PaymentProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Previously Billed.
         /// </summary>
         public static string PreviouslyBilled {
@@ -255,6 +264,15 @@ namespace SD.WEB.Modules.Subscription.Resources {
         public static string YearSave {
             get {
                 return ResourceManager.GetString("YearSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your current plan.
+        /// </summary>
+        public static string YourCurrentPlan {
+            get {
+                return ResourceManager.GetString("YourCurrentPlan", resourceCulture);
             }
         }
     }
