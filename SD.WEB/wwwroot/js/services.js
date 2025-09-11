@@ -83,11 +83,24 @@ window.initUserBack = function () {
 
 window.loadAds = function () {
     try {
-        const ins = document.querySelector('ins.adsbygoogle');
-        if (ins) {
-            (adsbygoogle = window.adsbygoogle || []).push({});
+        // Push ads for all <ins class="adsbygoogle"> elements that are not yet filled.
+        const pushForAll = () => {
+            const nodes = document.querySelectorAll('ins.adsbygoogle');
+            nodes.forEach(ins => {
+                // Adsense marks elements with data-adsbygoogle-status="done" after rendering.
+                const status = ins.getAttribute('data-adsbygoogle-status') || ins.getAttribute('data-ad-status');
+                if (status !== 'done') {
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                }
+            });
+        };
+
+        // If the global adsbygoogle object already exists, just push for all ads.
+        if (window.adsbygoogle) {
+            pushForAll();
+            return;
         }
     } catch (e) {
-        sendLog(`error: ${e.message}`);
+        sendLog(`error: ${e?.message}`);
     }
 };
