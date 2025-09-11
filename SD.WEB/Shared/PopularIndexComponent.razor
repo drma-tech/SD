@@ -3,7 +3,6 @@
 @inherits ComponentCore<PopularIndexComponent>
 
 @inject ImdbPopularApi ImdbPopularApi
-@inject TmdbNowPlayingApi TmdbNowPlayingApi
 
 <SectionComponent Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" IconName="@IconsFA.Solid.Icon("fire").Font">
     <ActionFragment>
@@ -25,14 +24,6 @@
                     <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@PopularType.Show.GetName()</MudText>
                 </MudHidden>
             </MudToggleItem>
-            <MudToggleItem Value="@PopularType.Cinema" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
-                <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("ticket-simple").Font" Title="@PopularType.Cinema.GetName()"></MudIcon>
-                </MudHidden>
-                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                    <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@PopularType.Cinema.GetName()</MudText>
-                </MudHidden>
-            </MudToggleItem>
         </MudToggleGroup>
     </ActionFragment>
     <BodyFragment>
@@ -48,12 +39,6 @@
             <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" FullPage="true"
                        StringParameters="Params" TypeSelected="MediaType.tv" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                        OnlyYear="true" IsAuthenticated="IsAuthenticated">
-            </MediaList>
-        }
-        else if (TypeSelected == PopularType.Cinema)
-        {
-            <MediaList ShowHead="false" MediaListApi="TmdbNowPlayingApi" DetectRegions="true" FullPage="true"
-                       Watched="WatchedList" Watching="WatchingList" Wish="WishList" IsAuthenticated="IsAuthenticated">
             </MediaList>
         }
     </BodyFragment>

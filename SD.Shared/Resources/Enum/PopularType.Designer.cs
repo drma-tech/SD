@@ -61,15 +61,6 @@ namespace SD.Shared.Resources.Enum {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cinema.
-        /// </summary>
-        public static string CinemaName {
-            get {
-                return ResourceManager.GetString("CinemaName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Movie.
         /// </summary>
         public static string MovieName {

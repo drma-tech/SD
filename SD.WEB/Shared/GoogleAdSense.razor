@@ -6,12 +6,15 @@
 {
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
     <ins class="adsbygoogle" style="display: block; min-width: 320px; text-align: center; margin-bottom: 12px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);"
-         data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+         data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())" data-ad-format="@AdFormat" data-full-width-responsive="true"></ins>
 }
 
 @code {
     [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Index;
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+    [Parameter] public string? Format { get; set; }
+
+    private string? AdFormat => Format ?? (Breakpoint >= Breakpoint.Sm ? "auto" : "horizontal");
 
     private AuthPrincipal? Principal { get; set; }
 
@@ -45,6 +48,8 @@
         Platforms = 5359194302,
         Collections = 1353899488,
         Search = 8540150517,
-        Media = 8348578821
+        Media = 8348578821,
+        Media2 = 6804406755,
+        Media3 = 6612835066
     }
 }

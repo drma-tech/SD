@@ -6,8 +6,5 @@ public enum PopularType
     Movie,
 
     [Custom(Name = "ShowName", ResourceType = typeof(Resources.Enum.PopularType))]
-    Show,
-
-    [Custom(Name = "CinemaName", ResourceType = typeof(Resources.Enum.PopularType))]
-    Cinema
+    Show
 }

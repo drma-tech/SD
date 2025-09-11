@@ -1,0 +1,322 @@
+﻿@using SD.Shared.Models.List
+@using System.Globalization
+@using SD.WEB.Modules.Collections.Resources
+@using SD.WEB.Modules.Profile.Core
+
+@inherits ComponentCore<MediaAbout>
+
+@inject WatchedListApi WatchedApi
+@inject WatchingListApi WatchingApi
+@inject WishListApi WishApi
+
+<MudStack Row="false" Breakpoint="Breakpoint.SmAndUp">
+    <div Style="position: relative; min-width: 300px;">
+        @if (Media?.release_date < DateTime.Now.AddMonths(-3))
+        {
+            <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
+                @Media?.release_date?.Year
+            </MudChip>
+        }
+        else
+        {
+            <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
+                @Media?.release_date?.ToShortDateString()
+            </MudChip>
+        }
+        <MudImage Src="@(Media?.poster_large ?? "images/no-image.png")" Alt="@Media?.title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+    </div>
+    <div>
+        @if (Media?.runtime != null && Media.runtime > 0)
+        {
+            <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined">
+                @Media.runtime.FormatRuntime()
+            </MudChip>
+        }
+        @foreach (var item in Media?.Genres ?? [])
+        {
+            <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined">
+                @item
+            </MudChip>
+        }
+        <div>
+            <RenderControl PartialComponent="true" Core="CoreRatings" Model="RatingsCache" ExpressionEmpty="@((CacheDocument<Ratings>? obj) => obj?.Data == null)">
+                @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.imdb))
+                {
+                    <MudTooltip Text="IMDb">
+                        <MudLink Href="@RatingsCache.Data?.imdbLink" Target="_blank" rel="noindex, nofollow">
+                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.imdb)" title="" Variant="Variant.Outlined">
+                                <MudImage Src="logo/imdb.png" Alt="imdb" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.imdb
+                            </MudChip>
+                        </MudLink>
+                    </MudTooltip>
+                }
+                @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.tmdb))
+                {
+                    <MudTooltip Text="TMDB">
+                        <MudLink Href="@RatingsCache.Data?.tmdbLink" Target="_blank" rel="noindex, nofollow">
+                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.tmdb)" Variant="Variant.Outlined">
+                                <MudImage Src="logo/tmdb.png" Alt="tmdb" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.tmdb
+                            </MudChip>
+                        </MudLink>
+                    </MudTooltip>
+                }
+                @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.metacritic))
+                {
+                    <MudTooltip Text="Metacritic">
+                        <MudLink Href="@RatingsCache.Data?.metacriticLink" Target="_blank" rel="noindex, nofollow">
+                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.metacritic)" Variant="Variant.Outlined">
+                                <MudImage Src="logo/metacritic.png" Alt="metacritic" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.metacritic
+                            </MudChip>
+                        </MudLink>
+                    </MudTooltip>
+                }
+                @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.trakt))
+                {
+                    <MudTooltip Text="Trakt">
+                        <MudLink Href="@RatingsCache.Data?.traktLink" Target="_blank" rel="noindex, nofollow">
+                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.trakt)" Variant="Variant.Outlined">
+                                <MudImage Src="logo/trakt.png" Alt="trakt" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.trakt
+                            </MudChip>
+                        </MudLink>
+                    </MudTooltip>
+                }
+                @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.rottenTomatoes))
+                {
+                    <MudTooltip Text="Rotten Tomatoes">
+                        <MudLink Href="@RatingsCache.Data?.rottenTomatoesLink" Target="_blank" rel="noindex, nofollow">
+                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.rottenTomatoes)" Variant="Variant.Outlined">
+                                <MudImage Src="logo/rotten-tomatoes.png" Alt="rotten tomatoes" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.rottenTomatoes
+                            </MudChip>
+                        </MudLink>
+                    </MudTooltip>
+                }
+                @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.filmAffinity))
+                {
+                    <MudTooltip Text="Film Affinity">
+                        <MudLink Href="@RatingsCache.Data?.filmAffinityLink" Target="_blank" rel="noindex, nofollow">
+                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.filmAffinity)" Variant="Variant.Outlined">
+                                <MudImage Src="logo/film-affinity.png" Alt="film affinity" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.filmAffinity
+                            </MudChip>
+                        </MudLink>
+                    </MudTooltip>
+                }
+            </RenderControl>
+        </div>
+        <MudText Typo="Typo.body1" Align="Align.Justify" Class="my-3">
+            @Media?.plot
+        </MudText>
+        @if (!string.IsNullOrEmpty(Media?.homepage))
+        {
+            <MudPaper Outlined="true" Class="pa-2 mb-3">
+                <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                    @Translations.OfficialSite
+                </MudText>
+                <MudDivider Class="mb-2"></MudDivider>
+                <MudLink Href="@Media.homepage" Target="_blank" Color="Color.Secondary">
+                    @(new Uri(Media.homepage).Host)
+                </MudLink>
+            </MudPaper>
+        }
+        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mb-4"
+                  Icon="@IconsFA.Solid.Icon("circle-exclamation").WithAnimation(IconAnimation.Beat).Font">
+            @Translations.PlatformForManaging
+        </MudAlert>
+        @if (Wish?.Movies.Any(a => a.id == TmdbId) ?? false)
+        {
+            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@Remove" Class="me-2 mb-2">@Translations.RemoveWishlist</MudButton>
+        }
+        else if (Wish?.Shows.Any(a => a.id == TmdbId) ?? false)
+        {
+            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@Remove" Class="me-2 mb-2">@Translations.RemoveWishlist</MudButton>
+        }
+        else
+        {
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@Add" Class="me-2 mb-2">@Translations.AddWishlist</MudButton>
+        }
+        @if (Watched?.Movies.Contains(TmdbId ?? "") ?? false)
+        {
+            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@IsNotWatched" Class="me-2 mb-2">@Translations.ButtonNotWatched</MudButton>
+        }
+        else if (Watched?.Shows.Contains(TmdbId ?? "") ?? false)
+        {
+            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@IsNotWatched" Class="me-2 mb-2">@Translations.ButtonNotWatched</MudButton>
+        }
+        else
+        {
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@IsWatched" Class="me-2 mb-2">@Translations.ButtonWatched</MudButton>
+        }
+    </div>
+</MudStack>
+
+@code {
+    [Parameter] public MediaDetail? Media { get; set; }
+    [Parameter] public string? ImdbId { get; set; }
+    [Parameter] public string? TmdbId { get; set; }
+    [Parameter] public string? EnglishTitle { get; set; }
+    [Parameter] public MediaType? Type { get; set; }
+
+    [Parameter] public WatchedList? Watched { get; set; }
+    [Parameter] public WatchingList? Watching { get; set; }
+    [Parameter] public WishList? Wish { get; set; }
+
+    [Parameter] public RenderControlCore<CacheDocument<Ratings>?>? CoreRatings { get; set; } 
+    [Parameter] public CacheDocument<Ratings>? RatingsCache { get; set; }
+
+    private Color GetColorByRating(string? rating)
+    {
+        if (string.IsNullOrEmpty(rating)) return Color.Secondary;
+
+        float.TryParse(rating.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var val);
+
+        if (val > 10) val = val / 10;
+
+        if (val >= 8)
+        {
+            return Color.Success;
+        }
+
+        if (val >= 6)
+        {
+            return Color.Warning;
+        }
+
+        return Color.Error;
+    }
+
+    private async Task Add()
+    {
+        if (Media == null) throw new ArgumentNullException(nameof(Media));
+
+        try
+        {
+            if (!AppStateStatic.IsAuthenticated)
+            {
+                Snackbar.Add(GlobalTranslations.YouMustLogged, Severity.Warning);
+                return;
+            }
+
+            Wish ??= new WishList();
+
+            var item = new WishListItem(Media.tmdb_id, Media.title, Media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), Media.runtime);
+            var client = await PrincipalApi.Get(true);
+
+            Wish = await WishApi.Add(Media.MediaType, Wish, item, client?.AuthPaddle);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    private async Task Remove()
+    {
+        ArgumentNullException.ThrowIfNull(Media);
+
+        try
+        {
+            Wish = await WishApi.Remove(Media.MediaType, Media?.tmdb_id);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    private async Task IsWatched()
+    {
+        if (Media == null) throw new ArgumentNullException(nameof(Media));
+
+        try
+        {
+            if (!AppStateStatic.IsAuthenticated)
+            {
+                Snackbar.Add(GlobalTranslations.YouMustLogged, Severity.Warning);
+                return;
+            }
+
+            var hasCollection = Media.Collection.Any() && Media.Collection.Count > 1;
+
+            if (hasCollection)
+            {
+                var watching = Watching ?? new WatchingList();
+                var collectionId = Media.MediaType == MediaType.movie ? Media.collectionId?.ToString() : Media.tmdb_id;
+
+                await DialogService.SelectItemsCollection(
+                    Media.Collection,
+                    watching.GetWatchingItems(Media.MediaType, collectionId),
+                    new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(Media, list, Media.Collection.Count)));
+            }
+            else
+            {
+                var client = await PrincipalApi.Get(true);
+                Watched = await WatchedApi.Add(Media.MediaType, Watched, Media.tmdb_id, client?.AuthPaddle);
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    private async Task IsNotWatched()
+    {
+        if (Media == null) throw new ArgumentNullException(nameof(Media));
+
+        try
+        {
+            //watched
+
+            Watched = await WatchedApi.Remove(Media.MediaType, Media.tmdb_id);
+
+            //watching
+
+            var hasCollection = Media.Collection.Any() && Media.Collection.Count > 1;
+
+            if (hasCollection)
+            {
+                Watching = Media.MediaType switch
+                {
+                    MediaType.movie => await WatchingApi.Remove(Media.MediaType, Media.collectionId?.ToString(), Media.tmdb_id),
+                    MediaType.tv => await WatchingApi.Remove(Media.MediaType, Media.tmdb_id, null),
+                    _ => Watching
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    private async Task SelectedItemsChanged(MediaDetail media, HashSet<string> items, int collectionItemsCount)
+    {
+        var client = await PrincipalApi.Get(true);
+
+        //watched list
+
+        if (media.MediaType == MediaType.movie)
+        {
+            Watched = await WatchedApi.Add(MediaType.movie, Watched, string.Join(',', items), client?.AuthPaddle);
+        }
+        else
+        {
+            Watched = await WatchedApi.Add(MediaType.tv, Watched, media.tmdb_id, client?.AuthPaddle);
+        }
+
+        //watching list
+
+        WatchingListItem item;
+
+        if (media.MediaType == MediaType.movie)
+        {
+            item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
+        }
+        else
+        {
+            item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
+        }
+
+        Watching = await WatchingApi.Add(Type, Watching, item, client?.AuthPaddle);
+    }
+
+}

@@ -1,0 +1,389 @@
+﻿@using System.Globalization
+@using System.Text.Json
+@using SD.Shared.Models.List.Tmdb
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Collections.Resources
+@using SD.WEB.Modules.Platform.Core
+@inherits ComponentCore<MediaStreaming>
+
+@inject AllProvidersApi AllProvidersApi
+@inject TmdbApi TmdbApi
+@inject IJSRuntime Js
+
+<RenderControl Core="Core" Model="Providers" ExpressionEmpty="@((MediaProviders? obj) => obj == null)">
+    @{
+        var hasProvider = false;
+
+        <MudGrid Spacing="4">
+            @if (Providers?.GetFreeListProviders(AppStateStatic.Region).Any() ?? false)
+            {
+                hasProvider = true;
+
+                <MudItem xs="12" md="6" lg="4">
+                    <MudPaper Outlined="true" Class="pt-2 px-2">
+                        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                            @Translations.DeliveryModelFree
+                        </MudText>
+                        <MudDivider Class="mb-2"></MudDivider>
+                        <MudToolBar WrapContent="true" Gutters="false">
+                            @foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
+                            {
+                                @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
+                                {
+                                    var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
+
+                                    <MudTooltip Text="@item.provider_name">
+                                        <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
+                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
+                                                      Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
+                                            <AuthorizeView Roles="administrator">
+                                                <Authorized>
+                                                    @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.FREE))
+                                                    {
+                                                        <span>false</span>
+                                                    }
+                                                </Authorized>
+                                            </AuthorizeView>
+                                        </MudLink>
+                                    </MudTooltip>
+                                }
+                            }
+                        </MudToolBar>
+                    </MudPaper>
+                </MudItem>
+            }
+
+            @if (Providers?.GetAdsListProviders(AppStateStatic.Region).Any() ?? false)
+            {
+                hasProvider = true;
+                <MudItem xs="12" md="6" lg="4">
+                    <MudPaper Outlined="true" Class="pt-2 px-2">
+                        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                            @Translations.DeliveryModelAds
+                        </MudText>
+                        <MudDivider Class="mb-2"></MudDivider>
+                        <MudToolBar WrapContent="true" Gutters="false">
+                            @foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
+                            {
+                                @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
+                                {
+                                    var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
+
+                                    <MudTooltip Text="@item.provider_name">
+                                        <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
+                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
+                                                      Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
+                                            <AuthorizeView Roles="administrator">
+                                                <Authorized>
+                                                    @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.AVOD))
+                                                    {
+                                                        <span>false</span>
+                                                    }
+                                                </Authorized>
+                                            </AuthorizeView>
+                                        </MudLink>
+                                    </MudTooltip>
+                                }
+                            }
+                        </MudToolBar>
+                    </MudPaper>
+                </MudItem>
+            }
+
+            @if (Providers?.GetFlatRateListProviders(AppStateStatic.Region).Any() ?? false)
+            {
+                hasProvider = true;
+                <MudItem xs="12" md="6" lg="4">
+                    <MudPaper Outlined="true" Class="pt-2 px-2">
+                        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                            @Translations.DeliveryModelFlatRate
+                        </MudText>
+                        <MudDivider Class="mb-2"></MudDivider>
+                        <MudToolBar WrapContent="true" Gutters="false">
+                            @foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
+                            {
+                                @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
+                                {
+                                    var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
+
+                                    <MudTooltip Text="@item.provider_name">
+                                        <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
+                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
+                                                      Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
+                                            <AuthorizeView Roles="administrator">
+                                                <Authorized>
+                                                    @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.SVOD))
+                                                    {
+                                                        <span>false</span>
+                                                    }
+                                                </Authorized>
+                                            </AuthorizeView>
+                                        </MudLink>
+                                    </MudTooltip>
+                                }
+                            }
+                        </MudToolBar>
+                    </MudPaper>
+                </MudItem>
+            }
+
+            @if (Providers?.GetFlatRateBuyListProviders(AppStateStatic.Region).Any() ?? false)
+            {
+                hasProvider = true;
+                <MudItem xs="12" md="6" lg="4">
+                    <MudPaper Outlined="true" Class="pt-2 px-2">
+                        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                            @Translations.DeliveryModelFlatRateBuy
+                        </MudText>
+                        <MudDivider Class="mb-2"></MudDivider>
+                        <MudToolBar WrapContent="true" Gutters="false">
+                            @foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
+                            {
+                                @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
+                                {
+                                    var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
+
+                                    <MudTooltip Text="@item.provider_name">
+                                        <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
+                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
+                                                      Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
+                                            <AuthorizeView Roles="administrator">
+                                                <Authorized>
+                                                    @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.PVOD))
+                                                    {
+                                                        <span>false</span>
+                                                    }
+                                                </Authorized>
+                                            </AuthorizeView>
+                                        </MudLink>
+                                    </MudTooltip>
+                                }
+                            }
+                        </MudToolBar>
+                    </MudPaper>
+                </MudItem>
+            }
+
+            @if (Providers?.GetRentListProviders(AppStateStatic.Region).Any() ?? false)
+            {
+                hasProvider = true;
+                <MudItem xs="12" md="6" lg="4">
+                    <MudPaper Outlined="true" Class="pt-2 px-2">
+                        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                            @Translations.DeliveryModelRent
+                        </MudText>
+                        <MudDivider Class="mb-2"></MudDivider>
+                        <MudToolBar WrapContent="true" Gutters="false">
+                            @foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
+                            {
+                                @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
+                                {
+                                    var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
+
+                                    <MudTooltip Text="@item.provider_name">
+                                        <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
+                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
+                                                      Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
+                                            <AuthorizeView Roles="administrator">
+                                                <Authorized>
+                                                    @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.TVOD))
+                                                    {
+                                                        <span>false</span>
+                                                    }
+                                                </Authorized>
+                                            </AuthorizeView>
+                                        </MudLink>
+                                    </MudTooltip>
+                                }
+                            }
+                        </MudToolBar>
+                    </MudPaper>
+                </MudItem>
+            }
+
+            @if (Providers?.GetBuyListProviders(AppStateStatic.Region).Any() ?? false)
+            {
+                hasProvider = true;
+                <MudItem xs="12" md="6" lg="4">
+                    <MudPaper Outlined="true" Class="pt-2 px-2">
+                        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                            @Translations.DeliveryModelBuy
+                        </MudText>
+                        <MudDivider Class="mb-2"></MudDivider>
+                        <MudToolBar WrapContent="true" Gutters="false">
+                            @foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
+                            {
+                                @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
+                                {
+                                    var provider = AllProviders.Items.Single(s => s.id == item.provider_id.ToString());
+
+                                    <MudTooltip Text="@item.provider_name">
+                                        <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
+                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
+                                                      Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
+                                            <AuthorizeView Roles="administrator">
+                                                <Authorized>
+                                                    @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.TVOD))
+                                                    {
+                                                        <span>false</span>
+                                                    }
+                                                </Authorized>
+                                            </AuthorizeView>
+                                        </MudLink>
+                                    </MudTooltip>
+                                }
+                            }
+                        </MudToolBar>
+                    </MudPaper>
+                </MudItem>
+            }
+            <MudItem xs="12">
+                @if (!hasProvider)
+                {
+                    @if (ReleaseDate?.Date > DateTime.Now.Date)
+                    {
+                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mb-2">
+                            @Translations.TitleNotReleased
+                        </MudAlert>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mb-2">
+                            @(string.Format(Translations.TitleNotAvailable, AppStateStatic.Region.GetName()))
+                        </MudAlert>
+                    }
+
+                    @if (AppStateStatic.Region.GetName().Empty())
+                    {
+                        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true" Class="mb-2">
+                            <MudText Typo="Typo.h6">There was an error detecting your region</MudText>
+                            <MudText Typo="Typo.body1">Please contact support and provide the following information:</MudText>
+                            <MudText Typo="Typo.body1">CurrentRegion: @RegionInfo.CurrentRegion.Name</MudText>
+                            <MudText Typo="Typo.body1">CurrentCulture: @CultureInfo.CurrentCulture.Name</MudText>
+                        </MudAlert>
+                    }
+                }
+            </MudItem>
+        </MudGrid>
+
+        // <AuthorizeView Roles="administrator">
+        //     <Authorized>
+        //         <Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false" Margin="Margin.Is2.FromTop">Atualizar</Button>
+        //     </Authorized>
+        // </AuthorizeView>
+    }
+</RenderControl>
+
+@code {
+    [Parameter] public string? TmdbId { get; set; }
+    [Parameter] public MediaType? Type { get; set; }
+    [Parameter] public DateTime? ReleaseDate { get; set; }
+
+    public RenderControlCore<MediaProviders?>? Core { get; set; } = new();
+    private MediaProviders? Providers { get; set; }
+    private AllProviders? AllProviders { get; set; }
+
+    protected override async Task LoadEssentialDataAsync()
+    {
+        AllProviders = await AllProvidersApi.GetAll(null);
+
+        Core?.LoadingStarted?.Invoke();
+        Providers = await TmdbApi.GetWatchProvidersList(TmdbId, Type);
+        Core?.LoadingFinished?.Invoke(Providers);
+    }
+
+    private async Task Atualizar()
+    {
+        if (Providers == null) return;
+
+        foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
+        {
+            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+            const DeliveryModel model = DeliveryModel.FREE;
+
+            if (provider != null && !provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
+        {
+            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+            const DeliveryModel model = DeliveryModel.AVOD;
+
+            if (provider != null && !provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
+        {
+            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+            const DeliveryModel model = DeliveryModel.SVOD;
+
+            if (provider != null && !provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
+        {
+            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+            const DeliveryModel model = DeliveryModel.TVOD;
+
+            if (provider != null && !provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
+        {
+            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+            const DeliveryModel model = DeliveryModel.TVOD;
+
+            if (provider != null && !provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
+        {
+            var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
+
+            const DeliveryModel model = DeliveryModel.PVOD;
+
+            if (provider != null && !provider.models.Contains(model))
+            {
+                provider.models.Add(model);
+
+                provider.models = provider.models.OrderBy(o => o).ToList();
+            }
+        }
+
+        if (AllProviders != null)
+        {
+            await Js.InvokeVoidAsync("window.localStorage.setItem", "AllProviders", JsonSerializer.Serialize(AllProviders));
+        }
+    }
+
+}
