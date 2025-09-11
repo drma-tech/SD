@@ -34,7 +34,7 @@
                     <MediaStreaming TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaStreaming>
                 </BodyFragment>
             </SectionComponent>
-            <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media2" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+            <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media2" IsAuthenticated="IsAuthenticated" Format="horizontal"></GoogleAdSense>
             <SectionComponent Title="Videos" Color="Color.Secondary" Visible="@(Media != null && Media.Videos.Any())">
                 <BodyFragment>
                     @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])
@@ -65,7 +65,7 @@
                     </CreditsComponent>
                 </BodyFragment>
             </SectionComponent>
-            <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media2" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+            <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media2" IsAuthenticated="IsAuthenticated" Format="horizontal"></GoogleAdSense>
             <SectionComponent Title="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
                 <BodyFragment>
                     <div class="grid-relative-container-md">
