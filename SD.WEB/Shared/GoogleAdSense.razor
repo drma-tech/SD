@@ -6,7 +6,7 @@
 {
     <div style="text-align: center;">
         <ins class="adsbygoogle mb-3" data-ad-status="unfilled"
-             style="@($"display: block; min-width: 300px; height: {(IsMobile ? "90" : "250")}px; text-align: center; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs); background-color: white;")">
+             style="@($"display: block; min-width: 300px; min-height: {(IsMobile ? "90" : "280")}px; text-align: center; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs); background-color: white;")">
             <div></div>
         </ins>
     </div>
@@ -15,7 +15,7 @@ else if (Principal?.AuthPaddle is not { IsPaidUser: true })
 {
     <div style="text-align: center;">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
-        <ins class="adsbygoogle mb-3" style="@($"display: block; min-width: 300px; height: {(IsMobile ? "90" : "250")}px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);" )"
+        <ins class="adsbygoogle mb-3" style="@($"display: block; min-width: 300px; max-height: {(IsMobile ? "90" : "280")}px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);" )"
              data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())"></ins>
     </div>
     <script>
