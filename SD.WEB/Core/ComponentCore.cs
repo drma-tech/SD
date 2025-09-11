@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace SD.WEB.Core;
 
-public abstract class ComponentCore<T> : ComponentBase, IBrowserViewportObserver, IAsyncDisposable where T : class
+public abstract class ComponentCore<T> : ComponentBase where T : class
 {
     [Inject] protected ILogger<T> Logger { get; set; } = null!;
     [Inject] protected ISnackbar Snackbar { get; set; } = null!;
@@ -13,8 +13,7 @@ public abstract class ComponentCore<T> : ComponentBase, IBrowserViewportObserver
     [Inject] protected NavigationManager Navigation { get; set; } = null!;
     [Inject] protected PrincipalApi PrincipalApi { get; set; } = null!;
 
-    [Inject] private IBrowserViewportService BrowserViewportService { get; set; } = null!;
-    public Breakpoint Breakpoint { get; set; }
+    protected static Breakpoint Breakpoint => AppStateStatic.Breakpoint;
 
     /// <summary>
     /// Mandatory data to fill out the page/component without delay (essential for bots, SEO, etc.)
@@ -27,7 +26,7 @@ public abstract class ComponentCore<T> : ComponentBase, IBrowserViewportObserver
 
     /// <summary>
     /// Non-critical data that may be delayed (popups, javascript handling, authenticated user data, etc.)
-    /// 
+    ///
     /// NOTE: This method cannot depend on previously loaded variables, as events can be executed in parallel.
     /// </summary>
     /// <returns></returns>
@@ -36,8 +35,11 @@ public abstract class ComponentCore<T> : ComponentBase, IBrowserViewportObserver
         return Task.CompletedTask;
     }
 
+    private Action<Breakpoint> BreakpointChanged => client => StateHasChanged();
+
     protected override async Task OnInitializedAsync()
     {
+        AppStateStatic.BreakpointChanged += BreakpointChanged;
         await LoadEssentialDataAsync();
     }
 
@@ -47,10 +49,35 @@ public abstract class ComponentCore<T> : ComponentBase, IBrowserViewportObserver
         {
             if (firstRender)
             {
-                await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
                 await LoadNonEssentialDataAsync();
                 StateHasChanged();
             }
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+}
+
+public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, IAsyncDisposable where T : class
+{
+    protected static bool IsAuthenticated => AppStateStatic.IsAuthenticated;
+    protected static ClaimsPrincipal? User => AppStateStatic.User;
+    protected static string? UserId => AppStateStatic.UserId;
+
+    [Inject] private IBrowserViewportService BrowserViewportService { get; set; } = null!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
         }
         catch (Exception ex)
         {
@@ -64,7 +91,8 @@ public abstract class ComponentCore<T> : ComponentBase, IBrowserViewportObserver
 
     Task IBrowserViewportObserver.NotifyBrowserViewportChangeAsync(BrowserViewportEventArgs browserViewportEventArgs)
     {
-        Breakpoint = browserViewportEventArgs.Breakpoint;
+        AppStateStatic.Breakpoint = browserViewportEventArgs.Breakpoint;
+        AppStateStatic.BreakpointChanged?.Invoke(browserViewportEventArgs.Breakpoint);
 
         return InvokeAsync(StateHasChanged);
     }
@@ -76,11 +104,4 @@ public abstract class ComponentCore<T> : ComponentBase, IBrowserViewportObserver
     }
 
     #endregion BrowserViewportObserver
-}
-
-public abstract class PageCore<T> : ComponentCore<T> where T : class
-{
-    protected static bool IsAuthenticated => AppStateStatic.IsAuthenticated;
-    protected static ClaimsPrincipal? User => AppStateStatic.User;
-    protected static string? UserId => AppStateStatic.UserId;
 }
