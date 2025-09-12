@@ -70,6 +70,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage streaming, track progress &amp; find what to watch - all in one place..
+        /// </summary>
+        public static string AppDescriptionShort {
+            get {
+                return ResourceManager.GetString("AppDescriptionShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Streaming Discovery.
         /// </summary>
         public static string AppName {

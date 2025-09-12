@@ -4,62 +4,63 @@
 @if ((Support && Breakpoint <= Breakpoint.Sm) || (!Support && Breakpoint > Breakpoint.Sm))
 {
     <MudDivider Class="mb-3 mt-10"></MudDivider>
-    <MudGrid Justify="Justify.Center" Style="overflow: auto;" Spacing="2">
+    <MudGrid Justify="Justify.Center" Style="overflow: auto;" Spacing="4">
         <MudItem xs="12" sm="12" md="3">
-            <MudList T="string" Color="Color.Surface">
+            <MudList T="string" Color="Color.Surface" Dense="true">
                 <MudListSubheader>
-                    <MudText Typo="Typo.button" Color="Color.Primary">
+                    <MudText Color="Color.Primary" Typo="Typo.h6">
                         @SeoTranslations.AppName
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="@SeoTranslations.AppDescription" Dense="true" Style="text-align: justify" />
+                <MudListItem Text="@SeoTranslations.AppDescriptionShort" Style="text-align: justify" Class="py-0" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
-            <MudList T="string">
+            <MudList T="string" Dense="true">
                 <MudListSubheader>
-                    <MudText Typo="Typo.button" Color="Color.Secondary">
-                        COMPANY
+                    <MudText Color="Color.Secondary">
+                        Company
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="Website" Href="https://www.drma-tech.com/" Dense="true" Target="_blank" />
+                <MudListItem Text="About us" Href="/about" Class="py-0" Disabled="true" />
+                <MudListItem Text="Website" Href="https://www.drma-tech.com/" Target="_blank" Class="py-0" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
-            <MudList T="string">
+            <MudList T="string" Dense="true">
                 <MudListSubheader>
-                    <MudText Typo="Typo.button" Color="Color.Secondary">
-                        PRODUCT
+                    <MudText Color="Color.Secondary">
+                        Product
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="Website" Href="https://www.streamingdiscovery.com" Dense="true" Target="_blank" />
-                <MudListItem Text="Google Play" Href="https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa" Dense="true" Target="_blank" />
-                <MudListItem Text="Microsoft Store" Href="https://apps.microsoft.com/detail/9pb1pkrdd8l0" Dense="true" Target="_blank" />
-                <MudListItem Text="HUAWEI AppGallery" Href="https://appgallery.huawei.com/app/C111325113" Dense="true" Target="_blank" />
-                <MudListItem Text="Xiaomi GetApps" Href="https://global.app.mi.com/details?lo=ID&id=com.streamingdiscovery.www.twa" Dense="true" Target="_blank" />
+                <MudListItem Text="Website" Href="https://www.streamingdiscovery.com" Target="_blank" Class="py-0" />
+                <MudListItem Text="Google Play" Href="https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa" Target="_blank" Class="py-0" />
+                <MudListItem Text="Microsoft Store" Href="https://apps.microsoft.com/detail/9pb1pkrdd8l0" Target="_blank" Class="py-0" />
+                <MudListItem Text="Huawei AppGallery" Href="https://appgallery.huawei.com/app/C111325113" Target="_blank" Class="py-0" />
+                <MudListItem Text="Xiaomi GetApps" Href="https://global.app.mi.com/details?lo=ID&id=com.streamingdiscovery.www.twa" Target="_blank" Class="py-0" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
-            <MudList T="string">
+            <MudList T="string" Dense="true">
                 <MudListSubheader>
-                    <MudText Typo="Typo.button" Color="Color.Secondary">
-                        SUPPORT
+                    <MudText Color="Color.Secondary">
+                        Support
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="Contact" Href="mailto:support@streamingdiscovery.com" Dense="true" />
-                <MudListItem Text="FAQ" Href="@GetSupportUrl("faq")" Dense="true" />
+                <MudListItem Text="Contact" Href="mailto:support@streamingdiscovery.com" Class="py-0" />
+                <MudListItem Text="FAQ" Href="@GetSupportUrl("faq")" Class="py-0" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
-            <MudList T="string">
+            <MudList T="string" Dense="true">
                 <MudListSubheader>
-                    <MudText Typo="Typo.button" Color="Color.Secondary">
-                        LEGAL
+                    <MudText Color="Color.Secondary">
+                        Legal
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="@Translations.LinkTerm" Href="@GetSupportUrl("terms")" Dense="true" />
-                <MudListItem Text="@Translations.LinkPrivacy" Href="@GetSupportUrl("privacy")" Dense="true" />
-                <MudListItem Text="Credits" Href="/support/credits" Dense="true" />
+                <MudListItem Text="@Translations.LinkTerm" Href="@GetSupportUrl("terms")" Class="py-0" />
+                <MudListItem Text="@Translations.LinkPrivacy" Href="@GetSupportUrl("privacy")" Class="py-0" />
+                <MudListItem Text="Credits" Href="/support/credits" Class="py-0" />
             </MudList>
         </MudItem>
     </MudGrid>
