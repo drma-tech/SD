@@ -200,9 +200,8 @@
     protected override async Task LoadNonEssentialDataAsync()
     {
         var CurrentCountry = await IpInfoApi.GetCountry();
-        var CurrentPlatform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
 
-        if (CurrentCountry.NotEmpty() && CurrentPlatform == "ios")
+        if (CurrentCountry.NotEmpty() && AppStateStatic.Platform == Platform.ios)
         {
             //https://developer.apple.com/app-store/review/guidelines/#link-to-other-purchase-methods
             SubscriptionAllowed = _iosAllowedCountries.ContainsKey(CurrentCountry);

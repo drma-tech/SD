@@ -329,6 +329,8 @@
         }
     </DialogContent>
     <DialogActions>
+        <span class="ma-2">Platform: @AppStateStatic.Platform</span>
+        <MudSpacer></MudSpacer>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">@Button.Close</MudButton>
     </DialogActions>
 </MudDialog>
@@ -347,7 +349,6 @@
     private PaymentProvider Provider { get; set; } = PaymentProvider.Paddle;
 
     private string? CurrentCountry { get; set; }
-    private string? CurrentPlatform { get; set; }
     private bool BlockedCountry { get; set; }
     private string? CustomerPortalUrl { get; set; }
 
@@ -419,8 +420,6 @@
 
             if (BlockedCountry) return;
         }
-
-        CurrentPlatform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
 
         Config = await ConfigurationApi.GetConfigurations();
         if (Config == null) throw new NotificationException("server communication error");

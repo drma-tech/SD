@@ -148,9 +148,7 @@
 
     private async Task RegisterLogin()
     {
-        var platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
-
-        await LoginApi.Add(platform);
+        await LoginApi.Add(AppStateStatic.Platform.ToString());
 
         Navigation.NavigateTo("/profile");
     }

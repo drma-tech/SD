@@ -48,7 +48,7 @@ window.addEventListener("unhandledrejection", function (e) {
 });
 
 window.addEventListener("securitypolicyviolation", (e) => {
-    const msg = `CSP violation: Violated directive: ${e.violatedDirective} | Blocked URI: ${e.blockedURI}`;
+    const msg = `CSP violation: Violated directive: ${e.violatedDirective} | Blocked URI: ${e.blockedURI} | Source File: ${e.sourceFile} | Line: ${e.lineNumber}`;
     sendLog(msg);
 });
 

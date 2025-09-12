@@ -60,6 +60,7 @@ function TryDetectPlatform() {
     const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
     const isMac = /macintosh|mac os x/i.test(navigator.userAgent);
     const isHuawei = /huawei|honor/i.test(navigator.userAgent);
+    const isXiaomi = /xiaomi/i.test(navigator.userAgent);
 
     if (isWindows)
         SetLocalStorage("platform", "windows");
@@ -69,6 +70,8 @@ function TryDetectPlatform() {
         SetLocalStorage("platform", "ios");
     else if (isHuawei)
         SetLocalStorage("platform", "huawei");
+    else if (isXiaomi)
+        SetLocalStorage("platform", "xiaomi");
     else
         SetLocalStorage("platform", "webapp");
 }

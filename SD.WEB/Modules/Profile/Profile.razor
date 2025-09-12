@@ -182,7 +182,6 @@
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
-    public string? Platform { get; set; }
     public string? Reviewed { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -214,7 +213,6 @@
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
 
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
-        Platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
         Reviewed = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "reviewed");
     }
 

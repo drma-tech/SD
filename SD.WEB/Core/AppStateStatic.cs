@@ -29,6 +29,8 @@ public static class AppStateStatic
     [Custom(Name = "Dark Mode")]
     public static bool DarkMode { get; private set; }
 
+    public static Platform Platform { get; set; } = Platform.webapp;
+
     public static Action? RegionChanged { get; set; }
     public static Action? DarkModeChanged { get; set; }
     public static Action<TempAuthPaddle>? RegistrationSuccessful { get; set; }

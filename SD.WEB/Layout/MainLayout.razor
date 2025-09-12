@@ -119,6 +119,12 @@
                 }
 
                 AppStateStatic.ChangeDarkMode(bool.Parse(darkMode));
+
+                //PLATFORM
+
+                var platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
+
+                AppStateStatic.Platform = Enum.Parse<Platform>(platform);
             }
         }
         catch (Exception ex)
