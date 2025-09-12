@@ -45,16 +45,16 @@
                     </MudItem>
                     <MudItem xs="12" sm="4">
                         <MudSelect @bind-Value="@Provider" Label="@Resources.Translations.PaymentProvider" Dense="true">
-                            @foreach (var item in EnumHelper.GetList<PaymentProvider>())
+                            @foreach (var item in Providers)
                             {
-                                <MudSelectItem T="PaymentProvider" Value="@item.Value" Disabled="@(item.Value != PaymentProvider.Paddle)">
-                                    @if (item.Value == PaymentProvider.Paddle)
+                                <MudSelectItem T="PaymentProvider?" Value="@item" Disabled="@(item != PaymentProvider.Paddle)">
+                                    @if (item == PaymentProvider.Paddle)
                                     {
-                                        @item.Name
+                                        @item.GetName()
                                     }
                                     else
                                     {
-                                        @($"{item.Name} (coming soon)")
+                                        @($"{@item.GetName()} (coming soon)")
                                     }
                                 </MudSelectItem>
                             }
@@ -346,7 +346,8 @@
 
     private AccountCycle Cycle { get; set; } = AccountCycle.Monthly;
 
-    private PaymentProvider Provider { get; set; } = PaymentProvider.Paddle;
+    private List<PaymentProvider> Providers { get; set; } = [];
+    private PaymentProvider? Provider { get; set; }
 
     private string? CurrentCountry { get; set; }
     private bool BlockedCountry { get; set; }
@@ -420,6 +421,32 @@
 
             if (BlockedCountry) return;
         }
+
+        Providers.Clear();
+
+        if (AppStateStatic.Platform == SD.Shared.Enums.Platform.ios)
+        {
+            if (CurrentCountry == "US")
+            {
+                Providers.Add(PaymentProvider.Paddle);
+                Providers.Add(PaymentProvider.Apple);
+            }
+            else
+            {
+                Providers.Add(PaymentProvider.Apple);
+            }
+        }
+        else if (AppStateStatic.Platform == SD.Shared.Enums.Platform.windows)
+        {
+            Providers.Add(PaymentProvider.Paddle);
+            Providers.Add(PaymentProvider.Microsoft);
+        }
+        else
+        {
+            Providers.Add(PaymentProvider.Paddle);
+        }
+
+        Provider = Providers[0];
 
         Config = await ConfigurationApi.GetConfigurations();
         if (Config == null) throw new NotificationException("server communication error");
