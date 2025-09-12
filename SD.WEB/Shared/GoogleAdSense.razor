@@ -2,7 +2,7 @@
 
 @inject IJSRuntime JS
 
-@if (Navigation.BaseUri.Contains("localhost"))
+@if (IsLocalhost)
 {
     <div style="text-align: center;">
         <ins class="adsbygoogle mb-3" data-ad-status="unfilled"
@@ -11,16 +11,16 @@
         </ins>
     </div>
 }
-else if (Principal?.AuthPaddle is not { IsPaidUser: true })
+else if (!IsPaidUser)
 {
     <div style="text-align: center;">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
         <ins class="adsbygoogle" style="display: block; min-width: 300px; margin-bottom: 12px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);"
-             data-ad-client="ca-pub-@AdClientId" data-ad-slot="@(((long)Section).ToString())" data-ad-format="@AdFormat" data-full-width-responsive="true"></ins>
+             data-ad-client="ca-pub-@AdClientId"
+             data-ad-slot="@(((long)Section).ToString())"
+             data-ad-format="@AdFormat"
+             data-full-width-responsive="true">
+        </ins>
     </div>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
 }
 
 @code {
@@ -30,6 +30,8 @@ else if (Principal?.AuthPaddle is not { IsPaidUser: true })
 
     private bool IsMobile => Breakpoint < Breakpoint.Sm;
     private string? AdFormat => Format ?? (IsMobile ? "horizontal" : "auto");
+    private bool IsLocalhost => Navigation.BaseUri.Contains("localhost");
+    private bool IsPaidUser => Principal?.AuthPaddle is { IsPaidUser: true };
 
     private AuthPrincipal? Principal { get; set; }
 
@@ -41,6 +43,22 @@ else if (Principal?.AuthPaddle is not { IsPaidUser: true })
         {
             await base.OnInitializedAsync();
             Principal = await PrincipalApi.Get(IsAuthenticated);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender && !IsLocalhost && !IsPaidUser)
+            {
+                await JS.InvokeVoidAsync("adsenseManager.load", AdClientId);
+                await JS.InvokeVoidAsync("adsenseManager.push");
+            }
         }
         catch (Exception ex)
         {

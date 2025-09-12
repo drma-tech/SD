@@ -80,3 +80,24 @@ window.initUserBack = function () {
             });
     };
 }
+
+// adsense
+window.adsenseManager = {
+    load: function (client) {
+        return new Promise((resolve, reject) => {
+            if (document.querySelector(`script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]`)) {
+                return resolve(); // já carregado
+            }
+            const s = document.createElement("script");
+            s.async = true;
+            s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}`;
+            s.crossOrigin = "anonymous";
+            s.onload = () => resolve();
+            s.onerror = (e) => reject(e);
+            document.head.appendChild(s);
+        });
+    },
+    push: function () {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    }
+};
