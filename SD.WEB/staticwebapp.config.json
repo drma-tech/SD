@@ -24,7 +24,7 @@
     ]
   },
   "globalHeaders": {
-    "content-security-policy": "default-src 'self'; frame-src 'self' *.google.com *.adtrafficquality.google *.paddle.com *.doubleclick.net *.ideas.userback.io *.googlesyndication.com; frame-ancestors 'self' google.com *.google.com *.doubleclick.net; script-src 'self' 'wasm-eval' *.paddle.com *.profitwell.com *.googletagmanager.com cdn.jsdelivr.net unpkg.com *.clarity.ms *.googlesyndication.com *.adtrafficquality.google *.google.com *.userback.io *.ampproject.org; connect-src *; style-src * 'unsafe-inline'; img-src * data: blob:; font-src * data:;",
+    "content-security-policy": "default-src 'self'; frame-src 'self' *.google.com *.adtrafficquality.google *.paddle.com *.doubleclick.net *.ideas.userback.io *.googlesyndication.com; frame-ancestors 'self' google.com *.google.com *.doubleclick.net; script-src 'self' 'wasm-eval' *.paddle.com *.profitwell.com *.googletagmanager.com cdn.jsdelivr.net unpkg.com *.clarity.ms *.googlesyndication.com *.adtrafficquality.google *.google.com *.userback.io *.ampproject.org; script-src-elem 'self' 'unsafe-inline'; connect-src *; style-src * 'unsafe-inline'; img-src * data: blob:; font-src * data:;",
     "Access-Control-Allow-Origin": "https://www.web-standards.com"
   },
   "auth": {
