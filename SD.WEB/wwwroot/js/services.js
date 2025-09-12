@@ -83,21 +83,64 @@ window.initUserBack = function () {
 
 // adsense
 window.adsenseManager = {
+    isLoaded: false,
+    observers: new Map(),
+
     load: function (client) {
         return new Promise((resolve, reject) => {
-            if (document.querySelector(`script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]`)) {
-                return resolve(); // já carregado
+            if (window.adsenseManager.isLoaded) return resolve();
+
+            if (document.querySelector(`script[src*="pagead2.googlesyndication.com"]`)) {
+                window.adsenseManager.isLoaded = true;
+                return resolve();
             }
+
             const s = document.createElement("script");
             s.async = true;
             s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}`;
             s.crossOrigin = "anonymous";
-            s.onload = () => resolve();
-            s.onerror = (e) => reject(e);
+            s.onload = () => {
+                window.adsenseManager.isLoaded = true;
+                resolve();
+            };
+            s.onerror = reject;
             document.head.appendChild(s);
         });
     },
-    push: function () {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    }
+
+    observeAd: function (adId) {
+        const adElement = document.getElementById(adId);
+        if (!adElement) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.pushAd(adId);
+                    observer.unobserve(adElement);
+                    this.observers.delete(adId);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        observer.observe(adElement);
+        this.observers.set(adId, observer);
+    },
+
+    pushAd: function (adId) {
+        try {
+            if (window.adsbygoogle) {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            }
+        } catch (error) {
+            showError(error.message);
+        }
+    },
+
+    removeObserver: function (adId) {
+        if (this.observers.has(adId)) {
+            const observer = this.observers.get(adId);
+            observer.disconnect();
+            this.observers.delete(adId);
+        }
+    },
 };
