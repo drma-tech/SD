@@ -1,6 +1,8 @@
 ﻿@inherits ComponentCore<MediaList>
 
 @inject ExternalIdApi ExternalIdApi
+@inject TmdbCreditApi TmdbCreditApi
+@using SD.Shared.Models.List.Tmdb
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Interface
 @implements IDisposable
@@ -202,13 +204,60 @@
                 tmdbId = media?.tmdb_id;
             }
 
-            if (Popup)
+            if (media?.MediaType == MediaType.person)
             {
-                await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId, IsAuthenticated);
+                var result = await TmdbCreditApi.GetListByPerson(tmdbId);
+                var items = new HashSet<MediaDetail>();
+
+                foreach (var item in result?.crew ?? Enumerable.Empty<CrewByPerson>())
+                {
+                    var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
+                    items.Add(new MediaDetail
+                    {
+                        tmdb_id = item.id.ToString(),
+                        title = type == MediaType.movie ? item.title : item.name,
+                        plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
+                        release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
+                        poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
+                        poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
+                        rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
+                        MediaType = type
+                    });
+                }
+
+                foreach (var item in result?.cast ?? [])
+                {
+                    var type = item.media_type == "tv" ? MediaType.tv : MediaType.movie;
+
+                    if (type == MediaType.movie && item.order > 24) continue;
+                    if (type == MediaType.tv && item.episode_count < 3) continue;
+
+                    items.Add(new MediaDetail
+                    {
+                        tmdb_id = item.id.ToString(),
+                        title = type == MediaType.movie ? item.title : item.name,
+                        plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
+                        release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
+                        poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
+                        poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
+                        rating = item.vote_count > 10 ? item.vote_average ?? 0 : 0,
+                        MediaType = type,
+                        comments = type == MediaType.tv ? $"{item.episode_count} episodes" : ""
+                    });
+                }
+
+                await DialogService.CompleteListPopup($"{media.title}", Watched, Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet(), IsAuthenticated);
             }
             else
             {
-                Navigation.NavigateTo($"/media/{media?.MediaType.ToString().ToLower()}/{tmdbId}");
+                if (Popup)
+                {
+                    await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId, IsAuthenticated);
+                }
+                else
+                {
+                    Navigation.NavigateTo($"/media/{media?.MediaType.ToString().ToLower()}/{tmdbId}");
+                }
             }
         }
         catch (Exception ex)

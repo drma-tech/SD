@@ -18,7 +18,12 @@ public class ExternalIdApi(IHttpClientFactory factory) : ApiExternal(factory)
         var result = await GetAsync<FindByImdb>(TmdbOptions.BaseUri + $"find/{imdbId}".ConfigureParameters(parameter));
         if (type == MediaType.movie)
             return result?.movie_results.FirstOrDefault()?.id.ToString();
-        return result?.tv_results.FirstOrDefault()?.id.ToString();
+        else if (type == MediaType.tv)
+            return result?.tv_results.FirstOrDefault()?.id.ToString();
+        else if (type == MediaType.person)
+            return result?.person_results.FirstOrDefault()?.id.ToString();
+        else
+            return null;
     }
 
     public async Task<string?> GetImdbId(MediaType? type, string? tmdbId)

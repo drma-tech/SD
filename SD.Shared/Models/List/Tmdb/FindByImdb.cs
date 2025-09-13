@@ -36,10 +36,24 @@ public class MovieResult
     public int vote_count { get; set; }
 }
 
+public class PersonResult
+{
+    public bool adult { get; set; }
+    public int id { get; set; }
+    public string? name { get; set; }
+    public string? original_name { get; set; }
+    public string? media_type { get; set; }
+    public double popularity { get; set; }
+    public int gender { get; set; }
+    public string? known_for_department { get; set; }
+    public string? profile_path { get; set; }
+    public List<KnownFor> known_for { get; set; } = [];
+}
+
 public class FindByImdb
 {
     public List<MovieResult> movie_results { get; set; } = [];
-    public List<object>? person_results { get; set; }
+    public List<PersonResult>? person_results { get; set; } = [];
     public List<TvResultFindByImdb> tv_results { get; set; } = [];
     public List<object>? tv_episode_results { get; set; }
     public List<object>? tv_season_results { get; set; }
