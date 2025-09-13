@@ -15,7 +15,7 @@
               OnAdornmentClick="@(() => Navigation.NavigateTo($"/search/{SearchContent}", true))" Class="mb-4">
 </MudTextField>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Search" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Search" IsAuthenticated="IsAuthenticated" Format="horizontal"></GoogleAdSense>
 
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())" CustomMessageWarning="@GlobalTranslations.SearchReturnedNothing">
     <MediaListFull MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false" FullPage="true"

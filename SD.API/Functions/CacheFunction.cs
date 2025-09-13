@@ -157,7 +157,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
     }
 
     [Function("ImdbPopularMovies")]
-    public async Task<HttpResponseData?> ImdbPopularMovies([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-movies")]
+    public async Task<HttpResponseData?> ImdbPopularMovies(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-movies")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try
@@ -245,6 +246,51 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
                     var obj = ScrapingPopular.GetTvData();
 
                     doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
+                }
+
+                await SaveCache(doc, cacheKey, TtlCache.OneDay);
+            }
+
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
+        }
+        catch (TaskCanceledException ex)
+        {
+            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+                ? new NotificationException("Cancellation Requested")
+                : new NotificationException("Timeout occurred"));
+
+            return req.CreateResponse(HttpStatusCode.RequestTimeout);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            return await req.CreateResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours, cancellationToken);
+        }
+    }
+
+    [Function("ImdbPopularStar")]
+    public async Task<HttpResponseData?> ImdbPopularStar(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-star")]
+        HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var cacheKey = "popularstar";
+            CacheDocument<MostPopularData>? doc;
+            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            if (cachedBytes is { Length: > 0 })
+            {
+                doc = JsonSerializer.Deserialize<CacheDocument<MostPopularData>>(cachedBytes);
+            }
+            else
+            {
+                doc = await cacheRepo.Get<MostPopularData>(cacheKey, cancellationToken);
+
+                if (doc == null)
+                {
+                    var obj = ScrapingPopular.GetStarData();
+
+                    doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(obj, "popularstar"), cancellationToken);
                 }
 
                 await SaveCache(doc, cacheKey, TtlCache.OneDay);

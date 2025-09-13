@@ -39,15 +39,13 @@
                                ExpressionEmpty="@((MyProviders? obj) => obj == null || obj.Items.Empty())">
                     @if (MyProviders?.Items.Any(a => a.id == Provider?.id) ?? false)
                     {
-                        <MudButton StartIcon="@IconsFA.Solid.Icon("minus").Font" Color="Color.Error" Variant="Variant.Filled" Class="me-2"
-                                   Disabled="@(!IsAuthenticated)" OnClick="@Remove">
+                        <MudButton StartIcon="@IconsFA.Solid.Icon("minus").Font" Color="Color.Error" Variant="Variant.Filled" Class="me-2" OnClick="@Remove">
                             @Button.Remove
                         </MudButton>
                     }
                     else
                     {
-                        <MudButton StartIcon="@IconsFA.Solid.Icon("plus").Font" Color="Color.Primary" Variant="Variant.Filled" Class="me-2"
-                                   Disabled="@(!IsAuthenticated)" OnClick="@Add">
+                        <MudButton StartIcon="@IconsFA.Solid.Icon("plus").Font" Color="Color.Primary" Variant="Variant.Filled" Class="me-2" OnClick="@Add">
                             @Button.Add
                         </MudButton>
                     }
@@ -134,6 +132,12 @@
     {
         try
         {
+            if (!AppStateStatic.IsAuthenticated)
+            {
+                Snackbar.Add(GlobalTranslations.YouMustLogged, Severity.Warning);
+                return;
+            }
+
             MyProviders ??= new MyProviders();
 
             var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = AppStateStatic.Region };
@@ -152,6 +156,12 @@
     {
         try
         {
+            if (!AppStateStatic.IsAuthenticated)
+            {
+                Snackbar.Add(GlobalTranslations.YouMustLogged, Severity.Warning);
+                return;
+            }
+
             MyProviders ??= new MyProviders();
 
             MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == Provider?.id));

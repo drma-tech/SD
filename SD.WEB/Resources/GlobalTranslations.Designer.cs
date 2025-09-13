@@ -151,7 +151,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Most popular movies, series, and theatrical releases from the past week based on audience interest..
+        ///   Looks up a localized string similar to Last week&apos;s most popular movies, TV shows, and movie stars based on audience interest..
         /// </summary>
         public static string PopularIndexDescription {
             get {

@@ -77,5 +77,14 @@ namespace SD.Shared.Resources.Enum {
                 return ResourceManager.GetString("ShowName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Star.
+        /// </summary>
+        public static string StarName {
+            get {
+                return ResourceManager.GetString("StarName", resourceCulture);
+            }
+        }
     }
 }
