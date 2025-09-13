@@ -136,7 +136,7 @@
                     </MudGrid>
                 </MudTabPanel>
                 <MudTabPanel Tag="@Translations.TabPlatforms" Text="@Translations.TabPlatforms">
-                    <StreamingComponent TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></StreamingComponent>
+                    <MediaStreaming TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaStreaming>
                 </MudTabPanel>
                 <MudTabPanel Tag="@("Trailers")" Text="Videos" Visible="@(Media != null && Media.Videos.Any())">
                     @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])
