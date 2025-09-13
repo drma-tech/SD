@@ -1,6 +1,6 @@
-﻿using System.Text.RegularExpressions;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using SD.Shared.Models.List.Imdb;
+using System.Text.RegularExpressions;
 
 namespace SD.API.Core.Scraping;
 
@@ -108,14 +108,14 @@ public partial class ScrapingPopular
 
                     if (matches.Count > 1)
                     {
-                        image = matches[1].Groups[1].Value;
+                        image = matches[3].Groups[1].Value;
                     }
                 }
 
                 var item = new MostPopularDataDetail
                 {
                     Id = $"nm{idRegex.Value}",
-                    RankUpDown = GetRankUpDown(node),
+                    RankUpDown = GetRankUpDown(node, true),
                     Title = node.SelectNodes("div/div/div/div/div[2]/div[2]/a/h3/text()")?.FirstOrDefault()?.InnerText,
                     //Year = yearFix == 0 ? "" : yearFix.ToString(),
                     Image = image,
@@ -135,15 +135,31 @@ public partial class ScrapingPopular
         }
     }
 
-    private static string? GetRankUpDown(HtmlNode? node)
+    private static string? GetRankUpDown(HtmlNode? node, bool person = false)
     {
         if (node == null) return null;
 
-        var rank = node.SelectNodes("div/div/div/div/div[2]/div[1]/span")?.FirstOrDefault()?.InnerText;
+        string? rank;
+        if (person)
+        {
+            rank = node.SelectNodes("div[1]/div/div/div/div[2]/div[1]/div/span")?.FirstOrDefault()?.InnerText;
+        }
+        else
+        {
+            rank = node.SelectNodes("div/div/div/div/div[2]/div[1]/span")?.FirstOrDefault()?.InnerText;
+        }
 
         if (string.IsNullOrEmpty(rank)) return null;
 
-        var imageRank = node.SelectNodes("div/div/div/div/div[2]/div[1]/span/svg")?.FirstOrDefault()?.ChildAttributes("class").FirstOrDefault()?.Value;
+        string? imageRank;
+        if (person)
+        {
+            imageRank = node.SelectNodes("div[1]/div/div/div/div[2]/div[1]/div/span/svg")?.FirstOrDefault()?.ChildAttributes("class").FirstOrDefault()?.Value;
+        }
+        else
+        {
+            imageRank = node.SelectNodes("div/div/div/div/div[2]/div[1]/span/svg")?.FirstOrDefault()?.ChildAttributes("class").FirstOrDefault()?.Value;
+        }
 
         if (string.IsNullOrEmpty(imageRank)) return null;
 

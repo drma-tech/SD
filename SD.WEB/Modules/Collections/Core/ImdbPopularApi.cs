@@ -84,14 +84,10 @@ public class ImdbPopularApi(IHttpClientFactory factory)
                     tmdb_id = item.Id,
                     title = item.Title,
                     //plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                    release_date = string.IsNullOrEmpty(item.Year)
-                        ? DateTime.MaxValue
-                        : new DateTime(int.Parse(item.Year), 1, 1),
+                    //release_date = null,
                     poster_small = item.Image,
-                    rating = string.IsNullOrEmpty(item.IMDbRating)
-                        ? 0
-                        : double.Parse(item.IMDbRating, CultureInfo.InvariantCulture),
-                    MediaType = MediaType.tv,
+                    //rating = 0,
+                    MediaType = MediaType.person,
                     RankUpDown = item.RankUpDown
                 });
             }
