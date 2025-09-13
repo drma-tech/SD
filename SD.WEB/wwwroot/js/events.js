@@ -38,13 +38,13 @@ window.addEventListener("error", function (e) {
     }
     else {
         showError(e.message);
-        sendLog(`error: ${e.message}`);
+        sendLog(`error: message: ${e.error.message} | stack: ${e.error.stack}`);
     }
 });
 
 window.addEventListener("unhandledrejection", function (e) {
     showError(e.reason.message);
-    //sendLog(`unhandledrejection: ${e.reason.message}`); //i cant control (usually its connection/internet error)
+    sendLog(`unhandledrejection: message: ${e.reason.message} | stack: ${e.reason.stack}`);
 });
 
 window.addEventListener("securitypolicyviolation", (e) => {
