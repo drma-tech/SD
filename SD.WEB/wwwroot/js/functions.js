@@ -163,3 +163,30 @@ function showBrowserWarning() {
         </div>
     `;
 }
+
+function getBrowserName() {
+    const ua = navigator.userAgent;
+    if (ua.includes("Firefox/")) return "Firefox";
+    if (ua.includes("Edg/")) return "Edge";
+    if (ua.includes("Chrome/")) return "Chrome";
+    if (ua.includes("Safari/")) return "Safari";
+    if (ua.includes("OPR/")) return "Opera";
+    if (ua.includes("MSIE") || ua.includes("Trident/")) return "Internet Explorer";
+    return "Unknown";
+}
+
+function getBrowserVersion() {
+    const ua = navigator.userAgent;
+    const matches = RegExp(/(Firefox|Edg|Chrome|Safari|Version)\/([0-9.]+)/).exec(ua);
+    return matches ? matches[2] : "unknown";
+}
+
+function getOperatingSystem() {
+    const ua = navigator.userAgent;
+    if (ua.includes("Windows")) return "Windows";
+    if (ua.includes("Mac")) return "Mac OS";
+    if (ua.includes("Linux")) return "Linux";
+    if (ua.includes("Android")) return "Android";
+    if (ua.includes("iOS") || ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
+    return "Unknown";
+}
