@@ -17,7 +17,7 @@
 
 @inject IJSRuntime JS
 
-<SeoHeader Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")" Keywords="new[] { Media?.title }"></SeoHeader>
+<SeoHeader Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")" Keywords="new[] { Media?.title }" Index="false"></SeoHeader>
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <RenderControl Model="Media" Core="Core" ExpressionEmpty="@((MediaDetail? obj) => obj == null)">

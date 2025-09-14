@@ -71,11 +71,6 @@
             navigator.serviceWorker.register('service-worker.js'); //Error occurring: rejected
         }
 
-        //capture height of the app
-        const appHeight = () => document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
-        window.addEventListener('resize', appHeight);
-        appHeight();
-
         // check is browser is compatible with blazor
         detectBrowserFeatures()
             .then((ok) => {
