@@ -68,7 +68,10 @@
         //avoid google (and others) search console execute this
         if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex/i.test(window.navigator.userAgent) &&
             window.navigator.serviceWorker && window.navigator.serviceWorker.register) {
-            navigator.serviceWorker.register('service-worker.js'); //Error occurring: rejected
+            navigator.serviceWorker.register('service-worker.js')
+                .catch(err => {
+                    showError("Failed to register the service worker, which may affect platform functionality. This can occur if your browser blocks certain features or if there's a network issue.");
+                });
         }
 
         // check is browser is compatible with blazor
