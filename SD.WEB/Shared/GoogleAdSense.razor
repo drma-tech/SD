@@ -29,7 +29,6 @@ else if (!IsPaidUser)
                 const checkAds = setInterval(() => {
                     const ins = document.getElementById(adId);
 
-                    // só processa se o ins existe, ainda não tem status, e adsbygoogle está pronto
                     if (ins && !ins.hasAttribute("data-adsbygoogle-status") && window.adsbygoogle) {
                         (adsbygoogle = window.adsbygoogle || []).push({});
                         console.log("AdSense ad requested for", adId);
