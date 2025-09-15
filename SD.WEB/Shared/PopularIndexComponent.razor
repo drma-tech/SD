@@ -6,7 +6,7 @@
 
 <SectionComponent Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" IconName="@IconsFA.Solid.Icon("fire").Font">
     <ActionFragment>
-        <MudBadge Content="@("New")" Color="Color.Secondary" Overlap="true" Bordered="true" Style="margin-left: -10px;">
+        <MudBadge Content="@("New")" Color="Color.Secondary" Overlap="true" Bordered="true">
             <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary"
                             CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0">
                 <MudToggleItem Value="@PopularType.Movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">

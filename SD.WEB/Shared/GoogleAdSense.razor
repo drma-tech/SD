@@ -24,10 +24,16 @@ else if (!IsPaidUser)
              data-full-width-responsive="true">
         </ins>
         <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
+            const checkAds = setInterval(() => {
+                const ins = document.querySelector('ins.adsbygoogle');
+                if (ins && window.adsbygoogle) {
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    clearInterval(checkAds);
+                }
+            }, 100); // tenta a cada 300ms
         </script>
 
-       @*  <ins id="@_adId" class="adsbygoogle"
+        @*  <ins id="@_adId" class="adsbygoogle"
              style="display: block; min-width: 300px; margin-bottom: 12px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);"
              data-ad-client="ca-pub-@AdClientId"
              data-ad-slot="@(((long)Section).ToString())"
