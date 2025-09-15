@@ -82,19 +82,6 @@ window.initUserBack = function () {
 }
 
 // adsense
-window.adsenseScriptLoaded = false;
-
-window.loadAdsenseScriptOnce = function (adClient) {
-    if (window.adsenseScriptLoaded) return;
-    window.adsenseScriptLoaded = true;
-
-    const script = document.createElement('script');
-    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-" + adClient;
-    script.async = true;
-    script.crossOrigin = "anonymous";
-    document.head.appendChild(script);
-};
-
 window.createAd = function (adClient, adSlot, adFormat, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -110,3 +97,12 @@ window.createAd = function (adClient, adSlot, adFormat, containerId) {
 
     (adsbygoogle = window.adsbygoogle || []).push({});
 };
+
+function removeAdsenseScript() {
+    const script = document.querySelector('script[src*="googlesyndication"]');
+    if (script) script.remove();
+
+    document.querySelectorAll('ins.adsbygoogle, iframe[src*="googlesyndication"]').forEach(el => el.remove());
+
+    window.adsbygoogle = [];
+}
