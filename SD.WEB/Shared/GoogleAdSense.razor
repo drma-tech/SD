@@ -1,7 +1,6 @@
 ﻿@inherits ComponentCore<GoogleAdSense>
 
 @inject IJSRuntime JS
-@implements IDisposable
 
 @if (IsLocalhost)
 {
@@ -14,18 +13,8 @@
 }
 else if (!IsPaidUser)
 {
-    <div style="text-align: center;">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-@AdClientId" crossorigin="anonymous"></script>
-        <ins id="@_adId" @key="@_adId" class="adsbygoogle"
-             style="display: block; min-width: 300px; margin-bottom: 12px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);"
-             data-ad-client="ca-pub-@AdClientId"
-             data-ad-slot="@(((long)Section).ToString())"
-             data-ad-format="@AdFormat"
-             data-full-width-responsive="true">
-        </ins>
-    </div>
+    <div id="@_containerId" style="text-align: center;"></div>
 }
-
 
 @code {
     [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Index;
@@ -40,7 +29,7 @@ else if (!IsPaidUser)
     private AuthPrincipal? Principal { get; set; }
 
     private const string AdClientId = "5145928155833172";
-    private readonly string _adId = $"adsense-{Guid.NewGuid()}";
+    private readonly string _containerId = $"ad-container-{Guid.NewGuid()}";
 
     protected override async Task OnInitializedAsync()
     {
@@ -59,15 +48,7 @@ else if (!IsPaidUser)
     {
         if (firstRender && !IsLocalhost && !IsPaidUser)
         {
-            await JS.InvokeVoidAsync("loadAdById", _adId);
-        }
-    }
-
-    public void Dispose()
-    {
-        if (!IsLocalhost && !IsPaidUser)
-        {
-            _ = JS.InvokeVoidAsync("removeAdById", _adId);
+            await JS.InvokeVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
         }
     }
 

@@ -82,21 +82,18 @@ window.initUserBack = function () {
 }
 
 // adsense
-window.loadAdById = function (adId) {
-    let checkAds = setInterval(() => {
-        let ins = document.getElementById(adId);
+window.createAd = function (adClient, adSlot, adFormat, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
 
-        if (ins && !ins.hasAttribute("data-adsbygoogle-status") && window.adsbygoogle) {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            console.log("AdSense ad requested for", adId);
-            clearInterval(checkAds);
-        }
-    }, 200);
-};
+    container.innerHTML = ""; // remove old ad
 
-window.removeAdById = function (adId) {
-    const el = document.getElementById(adId);
-    if (el && el.parentNode) {
-        el.parentNode.removeChild(el);
-    }
+    const ins = document.createElement('ins');
+    ins.className = 'adsbygoogle custom-ad';
+    ins.setAttribute('data-ad-client', adClient);
+    ins.setAttribute('data-ad-slot', adSlot);
+    ins.setAttribute('data-ad-format', adFormat);
+    container.appendChild(ins);
+
+    (adsbygoogle = window.adsbygoogle || []).push({});
 };
