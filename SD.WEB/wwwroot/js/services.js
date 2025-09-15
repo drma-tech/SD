@@ -97,12 +97,3 @@ window.createAd = function (adClient, adSlot, adFormat, containerId) {
 
     (adsbygoogle = window.adsbygoogle || []).push({});
 };
-
-function removeAdsenseScript() {
-    const script = document.querySelector('script[src*="googlesyndication"]');
-    if (script) script.remove();
-
-    document.querySelectorAll('ins.adsbygoogle, iframe[src*="googlesyndication"]').forEach(el => el.remove());
-
-    window.adsbygoogle = [];
-}
