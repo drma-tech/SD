@@ -78,11 +78,11 @@
                 }
             }
 
-            // if (principal?.AuthPaddle is not { IsPaidUser: true })
-            // {
-            //     //load adsense script on initialize (cause auto ads requires this)
-            //     await JsRuntime.InvokeVoidAsync("loadAdsenseScriptOnce");
-            // }
+            if (principal?.AuthPaddle is not { IsPaidUser: true })
+            {
+                //load adsense script on initialize (cause auto ads requires this)
+                await JsRuntime.InvokeVoidAsync("loadAdsenseScriptOnce");
+            }
         }
         catch (Exception ex)
         {
