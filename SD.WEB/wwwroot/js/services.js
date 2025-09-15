@@ -82,21 +82,32 @@ window.initUserBack = function () {
 }
 
 // adsense
-window.loadAdById = function (adId) {
-    const checkAds = setInterval(() => {
-        const ins = document.getElementById(adId);
+window.adsenseScriptLoaded = false;
 
-        if (ins && !ins.hasAttribute("data-adsbygoogle-status") && window.adsbygoogle) {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            console.log("AdSense ad requested for", adId);
-            clearInterval(checkAds);
-        }
-    }, 200);
+window.loadAdsenseScriptOnce = function (adClient) {
+    if (window.adsenseScriptLoaded) return;
+    window.adsenseScriptLoaded = true;
+
+    const script = document.createElement('script');
+    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-" + adClient;
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    document.head.appendChild(script);
 };
 
-window.removeAdById = function (adId) {
-    const el = document.getElementById(adId);
-    if (el && el.parentNode) {
-        el.parentNode.removeChild(el);
-    }
+window.createAd = function (adClient, adSlot, adFormat, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = ""; // remove ad antigo
+
+    const ins = document.createElement('ins');
+    ins.className = 'adsbygoogle';
+    ins.style.display = 'block';
+    ins.setAttribute('data-ad-client', adClient);
+    ins.setAttribute('data-ad-slot', adSlot);
+    ins.setAttribute('data-ad-format', adFormat);
+    container.appendChild(ins);
+
+    (adsbygoogle = window.adsbygoogle || []).push({});
 };
