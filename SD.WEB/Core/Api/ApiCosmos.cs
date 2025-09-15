@@ -17,6 +17,11 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, string? key) : Ap
             result = await GetValueAsync(endpoint);
             return result;
         }
+        catch (Exception ex)
+        {
+            core?.ShowError(ex.Message);
+            return null;
+        }
         finally
         {
             core?.LoadingFinished?.Invoke(result);
@@ -34,6 +39,11 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, string? key) : Ap
             obj = await GetAsync<T>(endpoint, setNewVersion);
             return obj;
         }
+        catch (Exception ex)
+        {
+            core?.ShowError(ex.Message);
+            return null;
+        }
         finally
         {
             core?.LoadingFinished?.Invoke(obj);
@@ -50,6 +60,11 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, string? key) : Ap
         {
             list = await GetListAsync<T>(endpoint);
             return list;
+        }
+        catch (Exception ex)
+        {
+            core?.ShowError(ex.Message);
+            return [];
         }
         finally
         {

@@ -123,18 +123,8 @@ else //ShowContent
         }
     }
 
-    private void Reset()
-    {
-        MessageError = null;
-        MessageWarning = null;
-
-        StateHasChanged();
-    }
-
     private void ShowLoading(string? msg = null)
     {
-        Reset();
-
         if (Status is LoadingStatus.Error or LoadingStatus.Locked or LoadingStatus.Premium) return;
 
         Status = LoadingStatus.Loading;
@@ -145,8 +135,6 @@ else //ShowContent
 
     private void ShowContent(TModel? model)
     {
-        Reset();
-
         if (PartialComponent)
         {
             Status = LoadingStatus.ShowContent;
@@ -173,8 +161,6 @@ else //ShowContent
     /// <param name="msg">Default: no data</param>
     private void ShowWarning(string? msg)
     {
-        Reset();
-
         if (Status is LoadingStatus.Error or LoadingStatus.Locked or LoadingStatus.Premium) return;
 
         Status = LoadingStatus.Warning;
@@ -188,8 +174,6 @@ else //ShowContent
     /// <param name="msg">Default: invalid operation</param>
     private void ShowError(string? msg)
     {
-        Reset();
-
         Status = LoadingStatus.Error;
         MessageError = CustomMessageError ?? msg;
 

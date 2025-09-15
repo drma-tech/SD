@@ -1,13 +1,12 @@
-﻿using System.Net;
-using Microsoft.Azure.Functions.Worker;
+﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using System.Net;
 
 namespace SD.API.Core.Middleware;
 
 public static class FunctionContextExtensions
 {
-    public static async Task SetHttpResponseStatusCode(this FunctionContext context, HttpStatusCode statusCode,
-        string message)
+    public static async Task SetHttpResponseStatusCode(this FunctionContext context, HttpStatusCode statusCode, string message)
     {
         var req = await context.GetHttpRequestDataAsync();
 
@@ -24,8 +23,7 @@ public static class FunctionContextExtensions
             invocationResult.Value = response;
     }
 
-    private static OutputBindingData<HttpResponseData>? GetHttpOutputBindingFromMultipleOutputBinding(
-        FunctionContext context)
+    private static OutputBindingData<HttpResponseData>? GetHttpOutputBindingFromMultipleOutputBinding(FunctionContext context)
     {
         // The output binding entry name will be "$return" only when the function return type is HttpResponseData
         var httpOutputBinding = context.GetOutputBindings<HttpResponseData>()

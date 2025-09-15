@@ -582,7 +582,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
 
     private static async Task TrySaveCertifiedSd(CacheDocument<Ratings>? doc, DateTime releaseDate, int listId, string? tmdbId, MediaType type, CancellationToken token, IHttpClientFactory factory)
     {
-        if (tmdbId == null) return;
+        if (tmdbId.Empty()) return;
 
         if (doc?.Data != null && releaseDate < DateTime.Now.AddDays(-30)) // at least 1 month launch
         {

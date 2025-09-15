@@ -127,13 +127,7 @@ window.adsenseManager = {
     },
 
     pushAd: function (adId) {
-        try {
-            if (window.adsbygoogle) {
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            }
-        } catch (error) {
-            showError(error.message);
-        }
+        (adsbygoogle = window.adsbygoogle || []).push({});
     },
 
     removeObserver: function (adId) {

@@ -1,7 +1,7 @@
 ﻿@inherits ComponentCore<GoogleAdSense>
 
 @inject IJSRuntime JS
-@implements IDisposable
+@* @implements IDisposable *@
 
 @if (IsLocalhost)
 {
@@ -14,15 +14,29 @@
 }
 else if (!IsPaidUser)
 {
-    <div style="text-align: center;">
-        <ins id="@_adId" class="adsbygoogle" style="display: block; min-width: 300px; margin-bottom: 12px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);"
+    <div style="text-align: center;" @key="@_adId">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-@AdClientId" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display: block; min-width: 300px; margin-bottom: 12px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);"
              data-ad-client="ca-pub-@AdClientId"
              data-ad-slot="@(((long)Section).ToString())"
              data-ad-format="@AdFormat"
              data-full-width-responsive="true">
         </ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+
+       @*  <ins id="@_adId" class="adsbygoogle"
+             style="display: block; min-width: 300px; margin-bottom: 12px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);"
+             data-ad-client="ca-pub-@AdClientId"
+             data-ad-slot="@(((long)Section).ToString())"
+             data-ad-format="@AdFormat"
+             data-full-width-responsive="true">
+        </ins> *@
     </div>
 }
+
 
 @code {
     [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Index;
@@ -52,29 +66,29 @@ else if (!IsPaidUser)
         }
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        try
-        {
-            if (firstRender && !IsLocalhost && !IsPaidUser)
-            {
-                await JS.InvokeVoidAsync("adsenseManager.load", AdClientId);
-                await JS.InvokeVoidAsync("adsenseManager.observeAd", _adId);
-            }
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Snackbar, Logger);
-        }
-    }
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     try
+    //     {
+    //         if (firstRender && !IsLocalhost && !IsPaidUser)
+    //         {
+    //             await JS.InvokeVoidAsync("adsenseManager.load", AdClientId);
+    //             await JS.InvokeVoidAsync("adsenseManager.observeAd", _adId);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         ex.ProcessException(Snackbar, Logger);
+    //     }
+    // }
 
-    public void Dispose()
-    {
-        if (!IsLocalhost && !IsPaidUser)
-        {
-            JS.InvokeVoidAsync("adsenseManager.removeObserver", _adId).AsTask().ContinueWith(t => { /* Ignore errors */ });
-        }
-    }
+    // public void Dispose()
+    // {
+    //     if (!IsLocalhost && !IsPaidUser)
+    //     {
+    //         JS.InvokeVoidAsync("adsenseManager.removeObserver", _adId).AsTask().ContinueWith(t => { /* Ignore errors */ });
+    //     }
+    // }
 
     public enum AdUnit : long
     {

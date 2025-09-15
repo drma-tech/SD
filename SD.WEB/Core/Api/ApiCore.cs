@@ -31,7 +31,12 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
     {
         if (!CacheVersion.TryGetValue(key!, out _)) CacheVersion[key!] = RandomNumberGenerator.GetInt32(1, 999999);
 
-        return new Dictionary<string, string> { { "v", CacheVersion[key!].ToString() } };
+        return new Dictionary<string, string> { { "v", CacheVersion[key!].ToString() }, { "vs", AppStateStatic.Version } };
+    }
+
+    private static Dictionary<string, string> GetSystemVersion()
+    {
+        return new Dictionary<string, string> { { "vs", AppStateStatic.Version } };
     }
 
     protected async Task<string?> GetValueAsync(string uri, CancellationToken cancellationToken = default)
@@ -42,7 +47,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
 
             if (key.NotEmpty())
                 return await Http.GetValueAsync(uri.ConfigureParameters(GetVersion()), cancellationToken);
-            return await Http.GetValueAsync(uri, cancellationToken);
+            return await Http.GetValueAsync(uri.ConfigureParameters(GetSystemVersion()), cancellationToken);
         }
         finally
         {
@@ -60,7 +65,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
 
             if (key.NotEmpty())
                 return await Http.GetJsonFromApi<T>(uri.ConfigureParameters(GetVersion()), cancellationToken);
-            return await Http.GetJsonFromApi<T>(uri, cancellationToken);
+            return await Http.GetJsonFromApi<T>(uri.ConfigureParameters(GetSystemVersion()), cancellationToken);
         }
         finally
         {
@@ -81,7 +86,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
             }
             else
             {
-                var result = await Http.GetJsonFromApi<HashSet<T>>(uri, cancellationToken);
+                var result = await Http.GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetSystemVersion()), cancellationToken);
                 return result ?? [];
             }
         }

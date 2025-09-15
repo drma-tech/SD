@@ -125,6 +125,7 @@
                 var platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
 
                 AppStateStatic.Platform = Enum.Parse<Platform>(platform);
+                AppStateStatic.Version = BuildDateString();
             }
         }
         catch (Exception ex)
@@ -150,7 +151,7 @@
     {
         try
         {
-            return Resources.BuildDate.ReplaceLineEndings("");
+            return Resources.BuildDate.ReplaceLineEndings("").Trim();
         }
         catch (Exception)
         {
