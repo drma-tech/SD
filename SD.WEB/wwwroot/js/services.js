@@ -99,11 +99,10 @@ window.createAd = function (adClient, adSlot, adFormat, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    container.innerHTML = ""; // remove ad antigo
+    container.innerHTML = ""; // remove old ad
 
     const ins = document.createElement('ins');
-    ins.className = 'adsbygoogle';
-    ins.style.display = 'block';
+    ins.className = 'adsbygoogle custom-ad';
     ins.setAttribute('data-ad-client', adClient);
     ins.setAttribute('data-ad-slot', adSlot);
     ins.setAttribute('data-ad-format', adFormat);
