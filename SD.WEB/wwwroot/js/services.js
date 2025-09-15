@@ -138,3 +138,15 @@ window.adsenseManager = {
         }
     },
 };
+
+window.loadAdById = function (adId) {
+    const checkAds = setInterval(() => {
+        const ins = document.getElementById(adId);
+
+        if (ins && !ins.hasAttribute("data-adsbygoogle-status") && window.adsbygoogle) {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            console.log("AdSense ad requested for", adId);
+            clearInterval(checkAds);
+        }
+    }, 200);
+};
