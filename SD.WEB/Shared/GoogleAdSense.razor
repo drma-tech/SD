@@ -23,28 +23,6 @@ else if (!IsPaidUser)
              data-ad-format="@AdFormat"
              data-full-width-responsive="true">
         </ins>
-       @*  <script>
-            (() => {
-                const adId = "@_adId"; // pega o id renderizado pelo Blazor
-                const checkAds = setInterval(() => {
-                    const ins = document.getElementById(adId);
-
-                    if (ins && !ins.hasAttribute("data-adsbygoogle-status") && window.adsbygoogle) {
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                        console.log("AdSense ad requested for", adId);
-                        clearInterval(checkAds);
-                    }
-                }, 200);
-            })();
-        </script> *@
-
-        @*  <ins id="@_adId" class="adsbygoogle"
-             style="display: block; min-width: 300px; margin-bottom: 12px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);"
-             data-ad-client="ca-pub-@AdClientId"
-             data-ad-slot="@(((long)Section).ToString())"
-             data-ad-format="@AdFormat"
-             data-full-width-responsive="true">
-        </ins> *@
     </div>
 }
 
@@ -79,7 +57,7 @@ else if (!IsPaidUser)
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (firstRender && !IsLocalhost && !IsPaidUser)
         {
             await JS.InvokeVoidAsync("loadAdById", _adId);
         }
@@ -87,32 +65,11 @@ else if (!IsPaidUser)
 
     public void Dispose()
     {
-        _ = JS.InvokeVoidAsync("removeAdById", _adId);
+        if (!IsLocalhost && !IsPaidUser)
+        {
+            _ = JS.InvokeVoidAsync("removeAdById", _adId);
+        }
     }
-
-    // protected override async Task OnAfterRenderAsync(bool firstRender)
-    // {
-    //     try
-    //     {
-    //         if (firstRender && !IsLocalhost && !IsPaidUser)
-    //         {
-    //             await JS.InvokeVoidAsync("adsenseManager.load", AdClientId);
-    //             await JS.InvokeVoidAsync("adsenseManager.observeAd", _adId);
-    //         }
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         ex.ProcessException(Snackbar, Logger);
-    //     }
-    // }
-
-    // public void Dispose()
-    // {
-    //     if (!IsLocalhost && !IsPaidUser)
-    //     {
-    //         JS.InvokeVoidAsync("adsenseManager.removeObserver", _adId).AsTask().ContinueWith(t => { /* Ignore errors */ });
-    //     }
-    // }
 
     public enum AdUnit : long
     {
