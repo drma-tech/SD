@@ -24,15 +24,17 @@ else if (!IsPaidUser)
              data-full-width-responsive="true">
         </ins>
         <script>
-            if (typeof checkAds === "undefined") {
-                let checkAds = setInterval(() => {
-                    const ins = document.querySelector('ins.adsbygoogle:not([data-adsbygoogle-status])');
-                    if (ins && window.adsbygoogle) {
-                        (adsbygoogle = window.adsbygoogle || []).push({});
+            (() => {
+                const checkAds = setInterval(() => {
+                    const insList = document.querySelectorAll('ins.adsbygoogle:not([data-adsbygoogle-status])');
+                    if (insList.length > 0 && window.adsbygoogle) {
+                        insList.forEach(() => {
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        });
                         clearInterval(checkAds);
                     }
-                }, 100);
-            }
+                }, 200);
+            })();
         </script>
 
         @*  <ins id="@_adId" class="adsbygoogle"
