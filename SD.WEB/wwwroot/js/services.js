@@ -82,19 +82,21 @@ window.initUserBack = function () {
 }
 
 // adsense
-window.createAd = function (adClient, adSlot, adFormat, containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
+window.loadAdById = function (adId) {
+    let checkAds = setInterval(() => {
+        let ins = document.getElementById(adId);
 
-    container.innerHTML = ""; // remove ad antigo
+        if (ins && !ins.hasAttribute("data-adsbygoogle-status") && window.adsbygoogle) {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            console.log("AdSense ad requested for", adId);
+            clearInterval(checkAds);
+        }
+    }, 200);
+};
 
-    const ins = document.createElement('ins');
-    ins.className = 'adsbygoogle';
-    ins.style.display = 'block';
-    ins.setAttribute('data-ad-client', adClient);
-    ins.setAttribute('data-ad-slot', adSlot);
-    ins.setAttribute('data-ad-format', adFormat);
-    container.appendChild(ins);
-
-    (adsbygoogle = window.adsbygoogle || []).push({});
+window.removeAdById = function (adId) {
+    const el = document.getElementById(adId);
+    if (el && el.parentNode) {
+        el.parentNode.removeChild(el);
+    }
 };
