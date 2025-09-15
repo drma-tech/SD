@@ -65,15 +65,23 @@
                 AppStateStatic.UserId = AppStateStatic.User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             }
 
+            AuthPrincipal? principal = null;
+
             if (AppStateStatic.IsAuthenticated)
             {
-                var principal = await PrincipalApi.Get(true);
+                principal = await PrincipalApi.Get(true);
 
                 if (principal == null)
                 {
                     Navigation.NavigateTo("/login-success");
                     return;
                 }
+            }
+
+            if (principal?.AuthPaddle is not { IsPaidUser: true })
+            {
+                //load adsense script on initialize (cause auto ads requires this)
+                await JsRuntime.InvokeVoidAsync("loadAdsenseScriptOnce");
             }
         }
         catch (Exception ex)

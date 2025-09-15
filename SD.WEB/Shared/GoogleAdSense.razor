@@ -13,7 +13,7 @@
 }
 else if (!IsPaidUser)
 {
-    <div id="@_containerId"></div>
+    <div id="@_containerId" style="text-align: center;"></div>
 }
 
 
@@ -49,7 +49,6 @@ else if (!IsPaidUser)
     {
         if (firstRender && !IsLocalhost && !IsPaidUser)
         {
-            await JS.InvokeVoidAsync("loadAdsenseScriptOnce", AdClientId);
             await JS.InvokeVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
         }
     }
