@@ -14,9 +14,9 @@
 }
 else if (!IsPaidUser)
 {
-    <div style="text-align: center;" @key="@_adId">
+    <div style="text-align: center;">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-@AdClientId" crossorigin="anonymous"></script>
-        <ins class="adsbygoogle"
+        <ins id="@_adId" class="adsbygoogle"
              style="display: block; min-width: 300px; margin-bottom: 12px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);"
              data-ad-client="ca-pub-@AdClientId"
              data-ad-slot="@(((long)Section).ToString())"
@@ -25,12 +25,14 @@ else if (!IsPaidUser)
         </ins>
         <script>
             (() => {
+                const adId = "@_adId"; // pega o id renderizado pelo Blazor
                 const checkAds = setInterval(() => {
-                    const insList = document.querySelectorAll('ins.adsbygoogle:not([data-adsbygoogle-status])');
-                    if (insList.length > 0 && window.adsbygoogle) {
-                        insList.forEach(() => {
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                        });
+                    const ins = document.getElementById(adId);
+
+                    // só processa se o ins existe, ainda não tem status, e adsbygoogle está pronto
+                    if (ins && !ins.hasAttribute("data-adsbygoogle-status") && window.adsbygoogle) {
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                        console.log("AdSense ad requested for", adId);
                         clearInterval(checkAds);
                     }
                 }, 200);
