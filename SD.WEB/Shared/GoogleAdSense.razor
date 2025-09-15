@@ -24,13 +24,15 @@ else if (!IsPaidUser)
              data-full-width-responsive="true">
         </ins>
         <script>
-            const checkAds = setInterval(() => {
-                const ins = document.querySelector('ins.adsbygoogle');
-                if (ins && window.adsbygoogle) {
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    clearInterval(checkAds);
-                }
-            }, 100); // tenta a cada 300ms
+            if (typeof checkAds === "undefined") {
+                let checkAds = setInterval(() => {
+                    const ins = document.querySelector('ins.adsbygoogle');
+                    if (ins && window.adsbygoogle) {
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                        clearInterval(checkAds);
+                    }
+                }, 100);
+            }
         </script>
 
         @*  <ins id="@_adId" class="adsbygoogle"
