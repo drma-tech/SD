@@ -26,7 +26,7 @@ else if (!IsPaidUser)
         <script>
             if (typeof checkAds === "undefined") {
                 let checkAds = setInterval(() => {
-                    const ins = document.querySelector('ins.adsbygoogle');
+                    const ins = document.querySelector('ins.adsbygoogle:not([data-adsbygoogle-status])');
                     if (ins && window.adsbygoogle) {
                         (adsbygoogle = window.adsbygoogle || []).push({});
                         clearInterval(checkAds);
