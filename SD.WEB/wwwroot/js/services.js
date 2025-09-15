@@ -97,3 +97,10 @@ window.createAd = function (adClient, adSlot, adFormat, containerId) {
 
     (adsbygoogle = window.adsbygoogle || []).push({});
 };
+
+window.removeAdById = function (adId) {
+    const el = document.getElementById(adId);
+    if (el && el.parentNode) {
+        el.parentNode.removeChild(el);
+    }
+};
