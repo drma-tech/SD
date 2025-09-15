@@ -1,7 +1,7 @@
 ﻿@inherits ComponentCore<GoogleAdSense>
 
 @inject IJSRuntime JS
-@* @implements IDisposable *@
+@implements IDisposable
 
 @if (IsLocalhost)
 {
@@ -16,7 +16,7 @@ else if (!IsPaidUser)
 {
     <div style="text-align: center;">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-@AdClientId" crossorigin="anonymous"></script>
-        <ins id="@_adId" class="adsbygoogle"
+        <ins id="@_adId" @key="@_adId" class="adsbygoogle"
              style="display: block; min-width: 300px; margin-bottom: 12px; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs);"
              data-ad-client="ca-pub-@AdClientId"
              data-ad-slot="@(((long)Section).ToString())"
@@ -83,6 +83,11 @@ else if (!IsPaidUser)
         {
             await JS.InvokeVoidAsync("loadAdById", _adId);
         }
+    }
+
+    public void Dispose()
+    {
+        _ = JS.InvokeVoidAsync("removeAdById", _adId);
     }
 
     // protected override async Task OnAfterRenderAsync(bool firstRender)

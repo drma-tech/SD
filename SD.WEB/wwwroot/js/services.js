@@ -150,3 +150,10 @@ window.loadAdById = function (adId) {
         }
     }, 200);
 };
+
+window.removeAdById = function (adId) {
+    const el = document.getElementById(adId);
+    if (el && el.parentNode) {
+        el.parentNode.removeChild(el);
+    }
+};
