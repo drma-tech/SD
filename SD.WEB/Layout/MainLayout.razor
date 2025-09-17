@@ -80,10 +80,6 @@
         {
             ex.ProcessException(Snackbar, Logger);
         }
-        finally
-        {          
-            StateHasChanged();
-        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -134,6 +130,7 @@
         finally
         {
             IsLoading = false;
+            StateHasChanged();
         }
     }
 
