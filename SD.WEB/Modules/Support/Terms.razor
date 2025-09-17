@@ -199,7 +199,7 @@
             <p>Estos Términos se rigen por las leyes de Estonia. Cualquier disputa se resolverá bajo la jurisdicción exclusiva de los tribunales de Tallin, Estonia, en inglés, salvo que las leyes locales aplicables indiquen lo contrario o se trate de investigaciones criminales.</p>
         </div>
     }
-    else if (AppStateStatic.AppLanguage == AppLanguage.ch)
+    else if (AppStateStatic.AppLanguage == AppLanguage.zh)
     {
         <h1 class="terms-title">使用条款</h1>
         <div class="terms-subtitle">
@@ -364,4 +364,13 @@
 @code {
     public string? ProjectTitle => SeoTranslations.AppName;
     public string? ProjectDomain => "www.streamingdiscovery.com";
+
+    // País/Região Exigência de Tradução   Base Legal Principal
+    // China   Explícita e obrigatória PIPL, CSL
+    // União Europeia  Implícita e obrigatória(prática)   GDPR
+    // Turquia Explícita e obrigatória KVKK
+    // Rússia Explícita e obrigatória Lei Federal No. 152-FZ
+    // Japão   Implícita e esperada APPI
+    // Coreia do Sul Implícita e esperada    PIPA
+    // Brasil  Implícita e obrigatória(prática)   LGPD
 }

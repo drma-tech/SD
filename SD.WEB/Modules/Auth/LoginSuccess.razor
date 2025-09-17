@@ -19,11 +19,12 @@
             </MudText>
 
             <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="mb-2">
-                <MudText Inline="true" Class="me-1">@Resources.Translations.Terms1</MudText>
-                <MudLink Href="support/terms" Target="_blank">@Support.Resources.Translations.TermsUse</MudLink>
+                <MudText Inline="true">
+                    @((MarkupString)string.Format(Translations.Terms1, $"<a href='support/terms' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Support.Resources.Translations.TermsUse}</a>", $"<a href='support/privacy' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Support.Resources.Translations.PrivacyPolicy}</a>"))
+                </MudText>
             </MudCheckBox>
             <MudCheckBox @bind-Value="_terms2" Color="Color.Primary">
-                <MudText Inline="true">@Resources.Translations.Terms2</MudText>
+                <MudText Inline="true">@Translations.Terms2</MudText>
             </MudCheckBox>
 
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="mt-4 me-2">
@@ -43,7 +44,7 @@
 }
 
 @code {
-    private AuthPrincipal? Principal { get; set; } = new();
+    private AuthPrincipal? Principal { get; set; }
 
     private bool _terms1 { get; set; } = false;
     private bool _terms2 { get; set; } = false;

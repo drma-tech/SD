@@ -124,7 +124,7 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I have read and agree to the.
+        ///   Looks up a localized string similar to I have read and agree to the {0} and {1}.
         /// </summary>
         public static string Terms1 {
             get {

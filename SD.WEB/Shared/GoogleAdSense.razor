@@ -31,6 +31,14 @@ else if (!IsPaidUser)
     private const string AdClientId = "5145928155833172";
     private readonly string _containerId = $"ad-container-{Guid.NewGuid()}";
 
+    private readonly Dictionary<string, string> _BlockedCountries = new()
+    {
+        { "CU", "Cuba" },
+        { "IR", "Iran" },
+        { "KP", "North Korea" },
+        { "CN", "China (Mainland)" }
+    };
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -48,7 +56,20 @@ else if (!IsPaidUser)
     {
         if (firstRender && !IsLocalhost && !IsPaidUser)
         {
-            await JS.InvokeVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
+            var region = await JS.InvokeAsync<string>("GetLocalStorage", "region");
+
+            if (region == "CN")
+            {
+                //todo: implement https://www.baiduadvertising.com/
+            }
+            else if (_BlockedCountries.ContainsKey(region))
+            {
+                //do not show ads
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
+            }
         }
     }
 

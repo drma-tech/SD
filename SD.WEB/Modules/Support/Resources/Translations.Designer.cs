@@ -79,11 +79,11 @@ namespace SD.WEB.Modules.Support.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Privacy Policies.
+        ///   Looks up a localized string similar to Privacy Policy.
         /// </summary>
-        public static string PrivacyPolicies {
+        public static string PrivacyPolicy {
             get {
-                return ResourceManager.GetString("PrivacyPolicies", resourceCulture);
+                return ResourceManager.GetString("PrivacyPolicy", resourceCulture);
             }
         }
         

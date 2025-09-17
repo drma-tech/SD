@@ -5,13 +5,13 @@
         [Custom(Name = "English")]
         en = 1,
 
-        [Custom(Name = "Português")]
+        [Custom(Name = "Português")] //Portuguese
         pt = 2,
 
-        [Custom(Name = "Español")]
+        [Custom(Name = "Español")] //Spanish
         es = 3,
 
-        [Custom(Name = "中文")]
-        ch = 4
+        [Custom(Name = "中文")] //Chinese
+        zh = 4
     }
 }
