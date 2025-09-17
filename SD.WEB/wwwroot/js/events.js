@@ -64,6 +64,11 @@ window.addEventListener("unhandledrejection", function (event) {
 
     showError(reasonMessage);
 
+    if (reasonMessage.includes('Rejected') || reasonMessage.includes('Failed to register a ServiceWorker')) {
+        //just ignore, probably a bot
+        return;
+    }
+
     const obj = {
         reasonMessage: reasonMessage,
         reasonStack: reasonStack,
