@@ -11,7 +11,7 @@ public class TmdbSearchApi(IHttpClientFactory factory) : ApiExternal(factory), I
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", AppStateStatic.Language.GetName(false) ?? "en-US" },
+            { "language", AppStateStatic.ContentLanguage.GetName(false) ?? "en-US" },
             { "page", page.ToString() },
             { "include_adult", "false" }
         };

@@ -61,38 +61,38 @@ namespace SD.WEB.Modules.Support.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import Last Error.
+        ///   Looks up a localized string similar to Credits.
         /// </summary>
-        public static string ImportLastError {
+        public static string Credits {
             get {
-                return ResourceManager.GetString("ImportLastError", resourceCulture);
+                return ResourceManager.GetString("Credits", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Questions.
+        ///   Looks up a localized string similar to FAQ.
         /// </summary>
-        public static string LinkFAQ {
+        public static string FAQ {
             get {
-                return ResourceManager.GetString("LinkFAQ", resourceCulture);
+                return ResourceManager.GetString("FAQ", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Privacy Policies.
         /// </summary>
-        public static string LinkPrivacy {
+        public static string PrivacyPolicies {
             get {
-                return ResourceManager.GetString("LinkPrivacy", resourceCulture);
+                return ResourceManager.GetString("PrivacyPolicies", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Terms of Use.
         /// </summary>
-        public static string LinkTerm {
+        public static string TermsUse {
             get {
-                return ResourceManager.GetString("LinkTerm", resourceCulture);
+                return ResourceManager.GetString("TermsUse", resourceCulture);
             }
         }
     }

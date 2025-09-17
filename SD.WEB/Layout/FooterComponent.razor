@@ -27,7 +27,7 @@
                         Company
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="About us" Href="@GetSupportUrl("about-us")" Class="py-0" />
+                <MudListItem Text="About us" Href="/support/about-us" Class="py-0" />
                 <MudListItem Text="Website" Href="https://www.drma-tech.com/" Target="_blank" Class="py-0" />
             </MudList>
         </MudItem>
@@ -53,7 +53,7 @@
                     </MudText>
                 </MudListSubheader>
                 <MudListItem Text="Contact" Href="mailto:support@streamingdiscovery.com" Class="py-0" />
-                <MudListItem Text="FAQ" Href="@GetSupportUrl("faq")" Class="py-0" />
+                <MudListItem Text="@WEB.Modules.Support.Resources.Translations.FAQ" Href="/support/faq" Class="py-0" />
             </MudList>
         </MudItem>
         <MudItem xs="12" sm="3" md="2">
@@ -63,9 +63,9 @@
                         Legal
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Text="@Translations.LinkTerm" Href="@GetSupportUrl("terms")" Class="py-0" />
-                <MudListItem Text="@Translations.LinkPrivacy" Href="@GetSupportUrl("privacy")" Class="py-0" />
-                <MudListItem Text="Credits" Href="/support/credits" Class="py-0" />
+                <MudListItem Text="@WEB.Modules.Support.Resources.Translations.TermsUse" Href="/support/terms" Class="py-0" />
+                <MudListItem Text="@WEB.Modules.Support.Resources.Translations.PrivacyPolicies" Href="/support/privacy" Class="py-0" />
+                <MudListItem Text="@WEB.Modules.Support.Resources.Translations.Credits" Href="/support/credits" Class="py-0" />
             </MudList>
         </MudItem>
     </MudGrid>
@@ -73,39 +73,4 @@
 
 @code {
     [Parameter] public bool Support { get; set; }
-
-    private string GetSupportUrl(string type)
-    {
-        string lang;
-        switch (AppStateStatic.Language)
-        {
-            case Language.ptAO:
-            case Language.ptBR:
-            case Language.ptMZ:
-            case Language.ptPT:
-                lang = "pt";
-                break;
-            case Language.esAR:
-            case Language.esCL:
-            case Language.esDO:
-            case Language.esEC:
-            case Language.esES:
-            case Language.esGQ:
-            case Language.esGT:
-            case Language.esHN:
-            case Language.esMX:
-            case Language.esNI:
-            case Language.esPA:
-            case Language.esPE:
-            case Language.esPY:
-            case Language.esSV:
-            case Language.esUY:
-                lang = "es";
-                break;
-            default:
-                lang = "en";
-                break;
-        }
-        return $"/support/{type}/{lang}";
-    }
 }

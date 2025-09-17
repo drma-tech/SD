@@ -40,7 +40,7 @@
     {
         await base.OnInitializedAsync();
 
-        AppStateStatic.RegionChanged += StateHasChanged;
+        AppStateStatic.RegionChanged += region => StateHasChanged();
 
         WatchedListApi.DataChanged += model =>
         {

@@ -13,7 +13,7 @@ public class TmdbPopularApi(IHttpClientFactory factory) : ApiExternal(factory), 
         {
             { "api_key", TmdbOptions.ApiKey },
             //{ "region", AppStateStatic.Region.ToString() }, //region doesn't affect popular list
-            { "language", AppStateStatic.Language.GetName(false) ?? "en-US" },
+            { "language", AppStateStatic.ContentLanguage.GetName(false) ?? "en-US" },
             { "page", page.ToString() }
         };
 

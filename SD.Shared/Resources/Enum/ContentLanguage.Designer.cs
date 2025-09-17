@@ -22,14 +22,14 @@ namespace SD.Shared.Resources.Enum {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Language {
+    public class ContentLanguage {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Language() {
+        internal ContentLanguage() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace SD.Shared.Resources.Enum {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.Shared.Resources.Enum.Language", typeof(Language).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SD.Shared.Resources.Enum.ContentLanguage", typeof(ContentLanguage).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

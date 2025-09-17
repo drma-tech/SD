@@ -12,7 +12,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", language ?? AppStateStatic.Language.GetName(false) ?? "en-US" },
+            { "language", language ?? AppStateStatic.ContentLanguage.GetName(false) ?? "en-US" },
             { "append_to_response", "videos" }
         };
 
@@ -20,8 +20,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
 
         if (type == MediaType.movie)
         {
-            var item = await GetAsync<MovieDetail>(TmdbOptions.BaseUri + "movie/" +
-                                                   tmdbId.ConfigureParameters(parameter));
+            var item = await GetAsync<MovieDetail>(TmdbOptions.BaseUri + "movie/" + tmdbId.ConfigureParameters(parameter));
 
             if (item != null)
             {
@@ -131,8 +130,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
     {
         if (collectionId == null) return null;
 
-        return await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" +
-                                              collectionId.ConfigureParameters(parameters));
+        return await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" + collectionId.ConfigureParameters(parameters));
     }
 
     public async Task<MediaProviders?> GetWatchProvidersList(string? tmdbId, MediaType? type)
@@ -146,12 +144,10 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
         };
 
         if (type == MediaType.movie)
-            return await GetAsync<MediaProviders>(TmdbOptions.BaseUri +
-                                                  $"movie/{tmdbId}/watch/providers".ConfigureParameters(parameter));
+            return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"movie/{tmdbId}/watch/providers".ConfigureParameters(parameter));
 
         //tv
-        return await GetAsync<MediaProviders>(TmdbOptions.BaseUri +
-                                              $"tv/{tmdbId}/watch/providers".ConfigureParameters(parameter));
+        return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"tv/{tmdbId}/watch/providers".ConfigureParameters(parameter));
     }
 }
 

@@ -53,7 +53,7 @@
     {
         try
         {
-            AppStateStatic.DarkModeChanged += StateHasChanged;
+            AppStateStatic.DarkModeChanged += dark => StateHasChanged();
             AppStateStatic.ShowError = msg => { Snackbar.Add(msg, Severity.Error); };
 
             if (AppStateStatic.User == null)

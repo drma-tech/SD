@@ -281,6 +281,10 @@ body .pwa-updater[b-pwa-updater] {
     min-width: 40px !important;
 }
 
+.mud-swipearea {
+    touch-action: pan-y !important;
+}
+
 /* FONT AWESOME */
 
 .fa-sm, .fa-md, .fa-lg {

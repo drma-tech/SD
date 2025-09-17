@@ -41,7 +41,7 @@
     {
         base.OnInitialized();
 
-        AppStateStatic.RegionChanged += StateHasChanged;
+        AppStateStatic.RegionChanged += region => StateHasChanged();
 
         WatchedListApi.DataChanged += model => { WatchedList = model; StateHasChanged(); };
         WatchingListApi.DataChanged += model => { WatchingList = model; StateHasChanged(); };

@@ -11,7 +11,7 @@ public class ExternalIdApi(IHttpClientFactory factory) : ApiExternal(factory)
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", AppStateStatic.Language.GetName(false) ?? "en-US" },
+            { "language", AppStateStatic.ContentLanguage.GetName(false) ?? "en-US" },
             { "external_source", "imdb_id" }
         };
 
@@ -34,21 +34,18 @@ public class ExternalIdApi(IHttpClientFactory factory) : ApiExternal(factory)
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", AppStateStatic.Language.GetName(false) ?? "en-US" }
+            { "language", AppStateStatic.ContentLanguage.GetName(false) ?? "en-US" }
         };
 
         if (type == MediaType.movie)
         {
-            var result = await GetAsync<MovieExternalIds>(TmdbOptions.BaseUri +
-                                                          $"movie/{tmdbId}/external_ids"
-                                                              .ConfigureParameters(parameter));
+            var result = await GetAsync<MovieExternalIds>(TmdbOptions.BaseUri + $"movie/{tmdbId}/external_ids".ConfigureParameters(parameter));
 
             return result?.imdb_id;
         }
         else
         {
-            var result = await GetAsync<ShowExternalIds>(TmdbOptions.BaseUri +
-                                                         $"tv/{tmdbId}/external_ids".ConfigureParameters(parameter));
+            var result = await GetAsync<ShowExternalIds>(TmdbOptions.BaseUri + $"tv/{tmdbId}/external_ids".ConfigureParameters(parameter));
 
             return result?.imdb_id;
         }

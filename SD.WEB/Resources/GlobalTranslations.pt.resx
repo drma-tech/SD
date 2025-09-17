@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppLanguage" xml:space="preserve">
+    <value>Idioma do App</value>
+  </data>
+  <data name="AppLanguageDesc" xml:space="preserve">
+    <value>Traduz a interface do aplicativo. Traduções parciais podem ser aplicadas em alguns idiomas.</value>
+  </data>
   <data name="AwardsYearDescription" xml:space="preserve">
     <value>Filmes e séries que ganharam os principais prêmios do ano (para mais detalhes, confira a seção Coleções/Premiações)</value>
   </data>
   <data name="CertifiedDescription" xml:space="preserve">
     <value>Seleção exclusiva do Streaming Discovery (apenas filmes e séries com 5 ou mais classificações verdes estão incluídos nesta lista)</value>
+  </data>
+  <data name="ContentLanguage" xml:space="preserve">
+    <value>Idioma do Conteúdo</value>
+  </data>
+  <data name="ContentLanguageDesc" xml:space="preserve">
+    <value>Traduz títulos, descrições, pôsteres e outros conteúdos de filmes ou séries.</value>
   </data>
   <data name="CustomVisibilityInvalid" xml:space="preserve">
     <value>Operação inválida. Por favor, tente novamente.</value>
@@ -132,14 +144,17 @@
   <data name="CustomVisibilityNoData" xml:space="preserve">
     <value>Dados não disponíveis</value>
   </data>
+  <data name="DarkMode" xml:space="preserve">
+    <value>Modo Escuro</value>
+  </data>
   <data name="FeatureUnavailableDescription" xml:space="preserve">
     <value>Aguarde novidades...</value>
   </data>
   <data name="FeatureUnavailableMessage" xml:space="preserve">
     <value>Em desenvolvimento</value>
   </data>
-  <data name="Language" xml:space="preserve">
-    <value>Idioma</value>
+  <data name="LightMode" xml:space="preserve">
+    <value>Modo Claro</value>
   </data>
   <data name="OperationCanceled" xml:space="preserve">
     <value>Operação cancelada!</value>
@@ -161,6 +176,9 @@
   </data>
   <data name="Region" xml:space="preserve">
     <value>Região</value>
+  </data>
+  <data name="RegionDesc" xml:space="preserve">
+    <value>Filtra plataformas e conteúdo por região.</value>
   </data>
   <data name="RemoveCollection" xml:space="preserve">
     <value>Remover coleção</value>

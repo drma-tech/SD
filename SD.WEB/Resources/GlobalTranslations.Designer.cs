@@ -61,6 +61,24 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to App Language.
+        /// </summary>
+        public static string AppLanguage {
+            get {
+                return ResourceManager.GetString("AppLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Translates the app interface. Partial translations may apply for some languages..
+        /// </summary>
+        public static string AppLanguageDesc {
+            get {
+                return ResourceManager.GetString("AppLanguageDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Films and series that won the main awards of the year (for more details, check the Collections/Awards section).
         /// </summary>
         public static string AwardsYearDescription {
@@ -75,6 +93,24 @@ namespace SD.WEB.Resources {
         public static string CertifiedDescription {
             get {
                 return ResourceManager.GetString("CertifiedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content Language.
+        /// </summary>
+        public static string ContentLanguage {
+            get {
+                return ResourceManager.GetString("ContentLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Translates titles, descriptions, posters, and other content from movies or TV shows..
+        /// </summary>
+        public static string ContentLanguageDesc {
+            get {
+                return ResourceManager.GetString("ContentLanguageDesc", resourceCulture);
             }
         }
         
@@ -106,6 +142,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dark Mode.
+        /// </summary>
+        public static string DarkMode {
+            get {
+                return ResourceManager.GetString("DarkMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wait for news....
         /// </summary>
         public static string FeatureUnavailableDescription {
@@ -124,11 +169,11 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Language.
+        ///   Looks up a localized string similar to Light Mode.
         /// </summary>
-        public static string Language {
+        public static string LightMode {
             get {
-                return ResourceManager.GetString("Language", resourceCulture);
+                return ResourceManager.GetString("LightMode", resourceCulture);
             }
         }
         
@@ -192,6 +237,15 @@ namespace SD.WEB.Resources {
         public static string Region {
             get {
                 return ResourceManager.GetString("Region", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter platforms and content by region..
+        /// </summary>
+        public static string RegionDesc {
+            get {
+                return ResourceManager.GetString("RegionDesc", resourceCulture);
             }
         }
         

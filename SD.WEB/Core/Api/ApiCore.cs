@@ -31,12 +31,12 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
     {
         if (!CacheVersion.TryGetValue(key!, out _)) CacheVersion[key!] = RandomNumberGenerator.GetInt32(1, 999999);
 
-        return new Dictionary<string, string> { { "v", CacheVersion[key!].ToString() }, { "vs", AppStateStatic.Version } };
+        return new Dictionary<string, string> { { "v", CacheVersion[key!].ToString() }, { "vs", AppStateStatic.Version ?? "" } };
     }
 
     private static Dictionary<string, string> GetSystemVersion()
     {
-        return new Dictionary<string, string> { { "vs", AppStateStatic.Version } };
+        return new Dictionary<string, string> { { "vs", AppStateStatic.Version ?? "" } };
     }
 
     protected async Task<string?> GetValueAsync(string uri, CancellationToken cancellationToken = default)

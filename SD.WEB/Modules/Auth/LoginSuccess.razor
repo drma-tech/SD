@@ -7,7 +7,7 @@
 @inject LoginApi LoginApi
 @inject IJSRuntime JsRuntime
 
-<SeoHeader Title="login-success" Description="login-success" Url="/best-awards-year" Index="false"></SeoHeader>
+<SeoHeader Title="login-success" Description="login-success" Url="/best-awards-year" Index="false" Keywords="@([])"></SeoHeader>
 
 @if (IsAuthenticated)
 {
@@ -20,18 +20,7 @@
 
             <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="mb-2">
                 <MudText Inline="true" Class="me-1">@Resources.Translations.Terms1</MudText>
-                @if (GetGeneralLanguage() == "pt")
-                {
-                    <MudLink Href="support/terms/pt" Target="_blank">Termos de Uso</MudLink>
-                }
-                else if (GetGeneralLanguage() == "es")
-                {
-                    <MudLink Href="support/terms/es" Target="_blank">Términos de uso</MudLink>
-                }
-                else
-                {
-                    <MudLink Href="support/terms/en" Target="_blank">Terms of Use</MudLink>
-                }
+                <MudLink Href="support/terms" Target="_blank">@Support.Resources.Translations.TermsUse</MudLink>
             </MudCheckBox>
             <MudCheckBox @bind-Value="_terms2" Color="Color.Primary">
                 <MudText Inline="true">@Resources.Translations.Terms2</MudText>
@@ -84,36 +73,6 @@
         catch (Exception ex)
         {
             ex.ProcessException(Snackbar, Logger);
-        }
-    }
-
-    private string GetGeneralLanguage()
-    {
-        switch (AppStateStatic.Language)
-        {
-            case Language.ptAO:
-            case Language.ptBR:
-            case Language.ptMZ:
-            case Language.ptPT:
-                return "pt";
-            case Language.esAR:
-            case Language.esCL:
-            case Language.esDO:
-            case Language.esEC:
-            case Language.esES:
-            case Language.esGQ:
-            case Language.esGT:
-            case Language.esHN:
-            case Language.esMX:
-            case Language.esNI:
-            case Language.esPA:
-            case Language.esPE:
-            case Language.esPY:
-            case Language.esSV:
-            case Language.esUY:
-                return "es";
-            default:
-                return "en";
         }
     }
 

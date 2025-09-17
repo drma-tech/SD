@@ -1,7 +1,7 @@
-﻿@page "/support/faq/{lang}"
+﻿@page "/support/faq"
 @inherits PageCore<Faq>
 
-<SeoHeader Title="FAQ" Description="@SeoTranslations.AppDescription" Url=@($"/support/faq/{Lang}")></SeoHeader>
+<SeoHeader Title="FAQ" Description="@SeoTranslations.AppDescription" Url=@($"/support/faq") Keywords="@(["faq"])"></SeoHeader>
 
 <MudExpansionPanels Outlined="true" Elevation="0" Class="mb-2">
     <MudExpansionPanel Disabled="true" HideIcon="true">
@@ -99,7 +99,3 @@
         The platform interface supports English, Portuguese, and Spanish. Movie and show metadata is available in multiple languages but does not affect site language.
     </MudExpansionPanel>
 </MudExpansionPanels>
-
-@code {
-    [Parameter] public string? Lang { get; set; }
-}

@@ -1,7 +1,7 @@
-﻿@page "/support/terms/{lang}"
+﻿@page "/support/terms"
 @inherits PageCore<Terms>
 
-<SeoHeader Title="Terms of Use" Description="@SeoTranslations.AppDescription" Url=@($"/support/terms/{Lang}")></SeoHeader>
+<SeoHeader Title="Terms of Use" Description="@SeoTranslations.AppDescription" Url=@($"/support/terms") Keywords="@(["Terms of Use"])"></SeoHeader>
 
 <style>
     .terms-container {
@@ -61,7 +61,7 @@
 </style>
 
 <div class="terms-container">
-    @if (Lang == "pt")
+    @if (AppStateStatic.AppLanguage == AppLanguage.pt)
     {
         <h1 class="terms-title">Termos de Uso</h1>
         <div class="terms-subtitle">
@@ -71,7 +71,7 @@
         <div class="terms-section">
             <h2>1. Sobre o Serviço</h2>
             <p>O <b>@ProjectTitle</b> é uma plataforma global projetada para ajudar usuários a descobrir, organizar e gerenciar conteúdo de streaming em diversos serviços. Embora a maioria dos recursos esteja disponível gratuitamente, alguns são exclusivos para usuários autenticados ou assinantes com planos mensais ou anuais ativos.</p>
-            <p>O serviço é operado pela Delivering Reliable Modern Apps Tech OÜ, registrada na Estônia, e é destinado apenas para uso pessoal e não comercial.</p>
+            <p>O serviço é operado pela DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), registrada na Estônia, e é destinado apenas para uso pessoal e não comercial.</p>
         </div>
         <div class="terms-section">
             <h2>2. Conta, Dados e Privacidade</h2>
@@ -130,7 +130,7 @@
             <p>Estes Termos são regidos pelas leis da Estônia. Quaisquer disputas serão resolvidas sob a jurisdição exclusiva dos tribunais de Tallinn, Estônia, em inglês, salvo exigência contrária por leis locais aplicáveis ou em casos de investigações criminais.</p>
         </div>
     }
-    else if (Lang == "es")
+    else if (AppStateStatic.AppLanguage == AppLanguage.es)
     {
         <h1 class="terms-title">Términos de Uso</h1>
         <div class="terms-subtitle">
@@ -140,7 +140,7 @@
         <div class="terms-section">
             <h2>1. Sobre el Servicio</h2>
             <p><b>@ProjectTitle</b> es una plataforma global diseñada para ayudar a los usuarios a descubrir, organizar y gestionar contenido de streaming de varios servicios. Aunque la mayoría de las funciones están disponibles de forma gratuita, algunas son exclusivas para usuarios autenticados o suscriptores con planes mensuales o anuales activos.</p>
-            <p>El servicio es operado por Delivering Reliable Modern Apps Tech OÜ, registrada en Estonia, y está destinado únicamente para uso personal y no comercial.</p>
+            <p>El servicio es operado por DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), registrada en Estonia, y está destinado únicamente para uso personal y no comercial.</p>
         </div>
         <div class="terms-section">
             <h2>2. Cuenta, Datos y Privacidad</h2>
@@ -199,6 +199,86 @@
             <p>Estos Términos se rigen por las leyes de Estonia. Cualquier disputa se resolverá bajo la jurisdicción exclusiva de los tribunales de Tallin, Estonia, en inglés, salvo que las leyes locales aplicables indiquen lo contrario o se trate de investigaciones criminales.</p>
         </div>
     }
+    else if (AppStateStatic.AppLanguage == AppLanguage.ch)
+    {
+        <h1 class="terms-title">使用条款</h1>
+        <div class="terms-subtitle">
+            欢迎使用 <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>)！<br />
+            访问或使用本服务，即表示您同意本《使用条款》。请仔细阅读。
+        </div>
+        <div class="terms-section">
+            <h2>1. 关于服务</h2>
+            <p><b>@ProjectTitle</b> 是一个全球平台，旨在帮助用户发现、整理和管理来自各种服务的流媒体内容。大多数功能可免费使用，但部分功能需要身份验证或有效订阅。</p>
+            <p>本服务由 DRMA Tech（Delivering Reliable Modern Apps Tech OÜ）运营，该公司在爱沙尼亚注册，仅供个人、非商业用途。</p>
+        </div>
+        <div class="terms-section">
+            <h2>2. 账户、数据与隐私</h2>
+            <p>您可以匿名使用本平台。但若要使用创建私人清单或管理账户偏好等功能，则需要身份验证。登录后，我们会收集您的电子邮箱、登录时间戳、IP 地址和设备信息。这些数据仅用于安全、诊断、个性化和分析。</p>
+            <p>未经明确同意，我们不会收集或存储敏感的个人数据或精确的地理位置。</p>
+            <p>我们采取合理的技术和组织措施，防止您的数据遭到未经授权的访问或泄露。</p>
+            <p>我们使用 Google Analytics 和 Microsoft Clarity 等分析工具来了解使用情况。详情请参阅我们的 <a href="/support/privacy/en">隐私政策</a>。</p>
+        </div>
+        <div class="terms-section">
+            <h2>3. 功能与订阅</h2>
+            <p><b>@ProjectTitle</b> 提供公共清单和私人清单：</p>
+            <ul>
+                <li><b>公共清单</b> 由平台策划，所有用户均可访问，无需身份验证。</li>
+                <li><b>私人清单</b> 由已验证用户创建。免费账户在每个清单的项目数量上有限制，而订阅用户可享受更高的限制和额外功能。</li>
+            </ul>
+            <p>订阅可按月或按年计费，除非取消，否则会自动续订，并通过我们的支付合作伙伴（Paddle）处理。价格以美元显示，支付处理方可能会将其转换为当地货币。可用性和支付方式因国家而异。</p>
+        </div>
+        <div class="terms-section">
+            <h2>4. 第三方内容</h2>
+            <p><b>@ProjectTitle</b> 显示的数据、图片和元数据来自第三方，如 TMDb 和 JustWatch。这些第三方内容仍归其各自所有者所有。</p>
+            <p>我们不托管或提供受版权保护内容的流媒体、下载或播放。署名和许可详情请见我们的鸣谢页面。</p>
+        </div>
+        <div class="terms-section">
+            <h2>5. 知识产权</h2>
+            <p><b>@ProjectTitle</b> 上的数据结构、设计和展示受 MPL-2.0 许可证或类似开源许可证保护。第三方资源受其各自版权和商标约束。</p>
+            <p>严禁未经授权的复制、爬取、逆向工程或重新分发平台元素。</p>
+        </div>
+        <div class="terms-section">
+            <h2>6. 可接受使用</h2>
+            <p>用户同意合法、负责任地使用本平台。禁止的行为包括：</p>
+            <ul>
+                <li>试图绕过平台限制或约束。</li>
+                <li>未经明确许可使用机器人、爬虫或自动化工具。</li>
+                <li>上传或分享侵犯知识产权或违反适用法律的内容。</li>
+            </ul>
+        </div>
+        <div class="terms-section">
+            <h2>7. 用户清单</h2>
+            <p>已验证用户可以创建私人清单来整理流媒体内容。这些清单是个人的，除非用户选择外部分享，否则其他人不可见。</p>
+            <p>公共清单由平台策划，所有用户无需身份验证即可访问。</p>
+        </div>
+        <div class="terms-section">
+            <h2>8. 责任限制与服务可用性</h2>
+            <p><b>@ProjectTitle</b> 按“现状”和“可用性”提供。我们不保证不间断访问、内容和元数据的准确性或完整性。使用本平台的风险由您自行承担。</p>
+            <p>我们不对错误、过时信息或第三方内容的可用性负责。</p>
+            <p>平台可能随时修改、暂停或终止，恕不另行通知。</p>
+        </div>
+        <div class="terms-section">
+            <h2>9. 条款变更</h2>
+            <p>我们可能会定期更新这些条款。涉及您权利或义务的重要变更将在可行时通过电子邮件或平台通知告知。更新后继续使用即表示接受新条款。</p>
+        </div>
+        <div class="terms-section">
+            <h2>10. 联系方式</h2>
+            <p>如需支持、反馈或法律咨询，请访问我们的支持页面或使用平台的联系工具。</p>
+        </div>
+        <div class="terms-section">
+            <h2>11. 法律合规</h2>
+            <p>您有责任遵守当地法律，包括版权和隐私法规。<b>@ProjectTitle</b> 遵守适用的国际数据保护法律，如 GDPR 和 LGPD。</p>
+            <p>本平台受爱沙尼亚法律管辖。</p>
+        </div>
+        <div class="terms-section">
+            <h2>12. 管辖法律与争议解决</h2>
+            <p>本条款受爱沙尼亚法律管辖。任何争议将由爱沙尼亚塔林法院专属管辖，并以英语进行审理，除非当地法律另有要求。</p>
+        </div>
+        <div class="privacy-section">
+            <p style="text-align:center; color:#888; font-size:0.9rem;">最后更新日期：2025 年 8 月 5 日</p>
+            <p style="text-align:center; color:#888; font-size:0.9rem;">使用本平台即表示您同意本《使用条款》和 <a href="/support/privacy/en">隐私政策</a>。</p>
+        </div>
+    }
     else
     {
         <h1 class="terms-title">Terms of Use</h1>
@@ -209,7 +289,7 @@
         <div class="terms-section">
             <h2>1. About the Service</h2>
             <p><b>@ProjectTitle</b> is a global platform designed to help users discover, organize, and manage streaming content across various services. While most features are available for free, some require authentication or an active subscription.</p>
-            <p>The service is operated by Delivering Reliable Modern Apps Tech OÜ, registered in Estonia, and is intended for personal, non-commercial use only.</p>
+            <p>The service is operated by DRMA Tech (Delivering Reliable Modern Apps Tech OÜ), registered in Estonia, and is intended for personal, non-commercial use only.</p>
         </div>
         <div class="terms-section">
             <h2>2. Account, Data, and Privacy</h2>
@@ -282,8 +362,6 @@
 </div>
 
 @code {
-    [Parameter] public string? Lang { get; set; }
-
     public string? ProjectTitle => SeoTranslations.AppName;
     public string? ProjectDomain => "www.streamingdiscovery.com";
 }

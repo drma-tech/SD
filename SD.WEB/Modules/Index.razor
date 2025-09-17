@@ -13,7 +13,7 @@
 @inject WishListApi WishApi
 @inject IJSRuntime JsRuntime
 
-<SeoHeader Title="Manage, Track, Discover" Description="@SeoTranslations.AppDescription" Url="/"></SeoHeader>
+<SeoHeader Title="Manage, Track, Discover" Description="@SeoTranslations.AppDescription" Url="/" Keywords="@(["streaming"])"></SeoHeader>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-4"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined"

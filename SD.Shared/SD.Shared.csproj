@@ -18,10 +18,10 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>DeliveryModel.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Resources\Enum\Language.Designer.cs">
+		<Compile Update="Resources\Enum\ContentLanguage.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
-			<DependentUpon>Language.resx</DependentUpon>
+			<DependentUpon>ContentLanguage.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\Enum\MediaType.Designer.cs">
 			<DesignTime>True</DesignTime>
@@ -70,9 +70,9 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>DeliveryModel.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Enum\Language.resx">
+		<EmbeddedResource Update="Resources\Enum\ContentLanguage.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Language.Designer.cs</LastGenOutput>
+			<LastGenOutput>ContentLanguage.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Enum\MediaType.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>

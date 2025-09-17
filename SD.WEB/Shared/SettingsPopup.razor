@@ -1,26 +1,51 @@
-﻿@using SD.WEB.Modules.Shared
-
-@inherits ComponentCore<SettingsPopup>
+﻿@inherits ComponentCore<SettingsPopup>
 
 @inject IJSRuntime JsRuntime
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <Country TEnum="Region" TValue="Region" For="@(() => AppStateStatic.Region)" SelectedValue="@AppStateStatic.Region" SelectedValueChanged="RegionValueChanged">
-        </Country>
-        <Language TEnum="Language" TValue="Language" For="@(() => AppStateStatic.Language)" SelectedValue="@AppStateStatic.Language" SelectedValueChanged="LanguageValueChanged">
-        </Language>
-        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Color="Color.Primary"
-                        Value="AppStateStatic.DarkMode" ValueChanged="(bool vl) => DarkModeChanged(vl)">
-            <MudToggleItem Value="false">
-                <MudIcon Icon="@IconsFA.Solid.Icon("sun").Font" Title="Light Mode" Class="me-1"></MudIcon>
-                Light Mode
-            </MudToggleItem>
-            <MudToggleItem Value="true">
-                <MudIcon Icon="@IconsFA.Solid.Icon("moon").Font" Title="Dark Mode" Class="me-1"></MudIcon>
-                Dark Mode
-            </MudToggleItem>
-        </MudToggleGroup>
+        <MudGrid Class="mb-6">
+            <MudItem xs="12">
+                <MudSelect Value="@AppStateStatic.AppLanguage" ValueChanged="@((AppLanguage vl) => AppLanguageValueChanged(vl))" Label="@GlobalTranslations.AppLanguage"
+                           HelperText="@GlobalTranslations.AppLanguageDesc" FullWidth="true">
+                    @foreach (var item in appLanguages)
+                    {
+                        <MudSelectItem Value="@item">@item.GetName()</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12">
+                <MudSelect Value="@AppStateStatic.Region" ValueChanged="@((Region vl) => RegionValueChanged(vl))" Label="@GlobalTranslations.Region"
+                           HelperText="@GlobalTranslations.RegionDesc" FullWidth="true">
+                    @foreach (var item in regions)
+                    {
+                        <MudSelectItem Value="@item">@item.GetName()</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12">
+                <MudSelect Value="@AppStateStatic.ContentLanguage" ValueChanged="@((ContentLanguage vl) => ContentLanguageValueChanged(vl))" Label="@GlobalTranslations.ContentLanguage"
+                           HelperText="@GlobalTranslations.ContentLanguageDesc" FullWidth="true">
+                    @foreach (var item in contentLanguages)
+                    {
+                        <MudSelectItem Value="@item">@item.GetName()</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12">
+                <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Color="Color.Primary"
+                                Value="AppStateStatic.DarkMode" ValueChanged="(bool vl) => DarkModeChanged(vl)">
+                    <MudToggleItem Value="false">
+                        <MudIcon Icon="@IconsFA.Solid.Icon("sun").Font" Title="@GlobalTranslations.LightMode" Class="me-1"></MudIcon>
+                        @GlobalTranslations.LightMode
+                    </MudToggleItem>
+                    <MudToggleItem Value="true">
+                        <MudIcon Icon="@IconsFA.Solid.Icon("moon").Font" Title="@GlobalTranslations.DarkMode" Class="me-1"></MudIcon>
+                        @GlobalTranslations.DarkMode
+                    </MudToggleItem>
+                </MudToggleGroup>
+            </MudItem>
+        </MudGrid>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">@Button.Close</MudButton>
@@ -31,15 +56,9 @@
 
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-    protected override async Task LoadNonEssentialDataAsync()
-    {
-        var language = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "language");
-
-        if (language.NotEmpty())
-        {
-            AppStateStatic.ChangeLanguage((Language)Enum.Parse(typeof(Language), language.Replace("-", "")));
-        }
-    }
+    private readonly Region[] regions = Enum.GetValues<Region>();
+    private readonly AppLanguage[] appLanguages = Enum.GetValues<AppLanguage>();
+    private readonly ContentLanguage[] contentLanguages = Enum.GetValues<ContentLanguage>();
 
     protected async Task RegionValueChanged(Region value)
     {
@@ -48,10 +67,18 @@
         AppStateStatic.ChangeRegion(value);
     }
 
-    protected async Task LanguageValueChanged(Language value)
+    protected async Task AppLanguageValueChanged(AppLanguage value)
     {
-        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "language", value.GetName(false));
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("language", value.GetName(false)), true);
+        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "app-language", value.ToString());
+
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("app-language", value.ToString()), true);
+    }
+
+    protected async Task ContentLanguageValueChanged(ContentLanguage value)
+    {
+        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "content-language", value.ToString());
+
+        AppStateStatic.ChangeContentLanguage(value);
     }
 
     protected async Task DarkModeChanged(bool value)

@@ -9,7 +9,8 @@
 @inject AllProvidersApi AllProvidersApi
 @inject MyProvidersApi MyProvidersApi
 
-<SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/platforms"></SeoHeader>
+<SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/platforms"
+           Keywords="@(["platforms", "streaming", "Netflix", "Disney", "Apple", "Amazon Prime"])"></SeoHeader>
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <SectionComponent Title="@Translations.TitleProviders.Format(AppStateStatic.Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription"
@@ -109,8 +110,8 @@
     {
         base.OnInitialized();
 
-        AppStateStatic.RegionChanged += StateHasChanged;
-    } 
+        AppStateStatic.RegionChanged += region => StateHasChanged();
+    }
 
     protected override async Task LoadEssentialDataAsync()
     {

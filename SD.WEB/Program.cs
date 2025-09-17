@@ -81,30 +81,31 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddScoped<PaddleConfigurationApi>();
     collection.AddScoped<PaddleSubscriptionApi>();
     collection.AddScoped<IpInfoApi>();
-
-    collection.AddLogging(logging => { logging.AddProvider(new CosmosLoggerProvider()); });
 }
 
 static async Task ConfigureCulture(WebAssemblyHost? app)
 {
     if (app != null)
     {
-        var nav = app.Services.GetService<NavigationManager>();
-        var language = nav?.QueryString("language");
+        var jsRuntime = app.Services.GetRequiredService<IJSRuntime>();
 
-        if (language.Empty())
+        //app language
+
+        var nav = app.Services.GetService<NavigationManager>();
+        var appLanguage = nav?.QueryString("app-language");
+
+        if (appLanguage.Empty())
         {
-            var jsRuntime = app.Services.GetRequiredService<IJSRuntime>();
-            language = await jsRuntime.InvokeAsync<string>("GetLocalStorage", "language");
+            appLanguage = await jsRuntime.InvokeAsync<string>("GetLocalStorage", "app-language");
         }
 
-        if (language.NotEmpty())
+        if (appLanguage.NotEmpty())
         {
             CultureInfo cultureInfo;
 
             try
             {
-                cultureInfo = new CultureInfo(language!);
+                cultureInfo = new CultureInfo(appLanguage!);
             }
             catch (Exception)
             {
@@ -114,6 +115,27 @@ static async Task ConfigureCulture(WebAssemblyHost? app)
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         }
+
+        AppStateStatic.AppLanguage = AppStateStatic.GetValidAppLanguage(CultureInfo.DefaultThreadCurrentUICulture);
+        await jsRuntime.InvokeAsync<string>("SetLocalStorage", "app-language", AppStateStatic.AppLanguage.ToString());
+
+        //content language
+
+        var contentLanguage = await jsRuntime.InvokeAsync<string>("GetLocalStorage", "content-language");
+
+        if (contentLanguage.Empty())
+        {
+            AppStateStatic.ContentLanguage = AppStateStatic.GetValidContentLanguage(CultureInfo.DefaultThreadCurrentUICulture);
+        }
+        else
+        {
+            if (Enum.TryParse<ContentLanguage>(contentLanguage, true, out var lang) && Enum.IsDefined(lang))
+                AppStateStatic.ContentLanguage = lang;
+            else
+                AppStateStatic.ContentLanguage = ContentLanguage.enUS;
+        }
+
+        await jsRuntime.InvokeAsync<string>("SetLocalStorage", "content-language", AppStateStatic.ContentLanguage.ToString());
     }
 }
 

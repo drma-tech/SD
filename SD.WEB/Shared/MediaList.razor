@@ -5,7 +5,6 @@
 @using SD.Shared.Models.List.Tmdb
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Interface
-@implements IDisposable
 @inject IJSRuntime JsRuntime
 
 <SectionComponent Title="@Title" IconImage="@IconImage" ShowHead="ShowHead" FullPage="FullPage">
@@ -100,7 +99,7 @@
             if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
             if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
 
-            if (DetectRegions) AppStateStatic.RegionChanged += LoadGenericVoid;
+            if (DetectRegions) AppStateStatic.RegionChanged += region => LoadGenericVoid();
         }
         catch (Exception ex)
         {
@@ -264,11 +263,6 @@
         {
             Core?.ShowError(ex.Message);
         }
-    }
-
-    void IDisposable.Dispose()
-    {
-        AppStateStatic.RegionChanged -= LoadGenericVoid;
     }
 
 }

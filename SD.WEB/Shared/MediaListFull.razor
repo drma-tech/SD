@@ -82,7 +82,7 @@
         // AppState.WishListChanged += StateHasChanged;
         // AppState.WatchedListChanged += StateHasChanged;
 
-        if (DetectRegions) AppStateStatic.RegionChanged += LoadGenericVoid;
+        if (DetectRegions) AppStateStatic.RegionChanged += Region => LoadGenericVoid();
     }
 
     protected override async Task LoadEssentialDataAsync()

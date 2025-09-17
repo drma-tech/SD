@@ -474,7 +474,7 @@
         {
             if (IsAuthenticated)
             {
-                var locale = AppStateStatic.Language.ToString().Substring(0, 2);
+                var locale = AppStateStatic.ContentLanguage.ToString().Substring(0, 2);
 
                 await JsRuntime.InvokeVoidAsync("openCheckout", priceId, Client?.Email, locale, Client?.AuthPaddle?.CustomerId, Client?.AuthPaddle?.AddressId);
             }
