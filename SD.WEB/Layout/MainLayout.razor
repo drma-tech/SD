@@ -88,6 +88,8 @@
         {
             if (firstRender)
             {
+                IsLoading = true; StateHasChanged();
+
                 //REGION
                 var region = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "region");
 
@@ -121,16 +123,14 @@
 
                 AppStateStatic.Platform = Enum.Parse<Platform>(platform);
                 AppStateStatic.Version = BuildDateString();
+
+                IsLoading = false; StateHasChanged();
             }
         }
         catch (Exception ex)
         {
             ex.ProcessException(Snackbar, Logger);
-        }
-        finally
-        {
-            IsLoading = false;
-            StateHasChanged();
+            IsLoading = false; StateHasChanged();
         }
     }
 
