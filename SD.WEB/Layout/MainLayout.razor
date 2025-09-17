@@ -81,8 +81,7 @@
             ex.ProcessException(Snackbar, Logger);
         }
         finally
-        {
-            IsLoading = false;
+        {          
             StateHasChanged();
         }
     }
@@ -131,6 +130,10 @@
         catch (Exception ex)
         {
             ex.ProcessException(Snackbar, Logger);
+        }
+        finally
+        {
+            IsLoading = false;
         }
     }
 
