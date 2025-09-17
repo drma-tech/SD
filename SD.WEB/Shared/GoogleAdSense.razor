@@ -58,7 +58,7 @@ else if (!IsPaidUser)
         {
             var region = await JS.InvokeAsync<string>("GetLocalStorage", "region");
 
-            if (region == "CN")
+            if (region.Trim() == "CN")
             {
                 //todo: implement https://www.baiduadvertising.com/
             }
