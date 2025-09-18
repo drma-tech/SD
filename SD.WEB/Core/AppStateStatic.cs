@@ -179,6 +179,11 @@ public static class AppStateStatic
             return null;
     }
 
+    public static void ChangeContentLanguage(ContentLanguage value)
+    {
+        _contentLanguage = value;
+    }
+
     #endregion ContentLanguage
 
     #region Region

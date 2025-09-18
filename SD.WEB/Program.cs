@@ -115,6 +115,10 @@ static async Task ConfigureCulture(WebAssemblyHost? app)
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         }
+
+        //content language
+
+        _ = await AppStateStatic.GetContentLanguage(jsRuntime);
     }
 }
 

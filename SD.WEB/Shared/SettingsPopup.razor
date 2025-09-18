@@ -65,9 +65,9 @@
 
     protected override async Task LoadEssentialDataAsync()
     {
-        Language = await AppStateStatic.GetAppLanguage(null);
-        ContentLanguage = await AppStateStatic.GetContentLanguage(null);
-        DarkMode = await AppStateStatic.GetDarkMode(null) ?? false;
+        Language = await AppStateStatic.GetAppLanguage(JsRuntime);
+        ContentLanguage = await AppStateStatic.GetContentLanguage(JsRuntime);
+        DarkMode = await AppStateStatic.GetDarkMode(JsRuntime) ?? false;
     }
 
     protected async Task RegionValueChanged(Region value)
@@ -91,6 +91,8 @@
         ContentLanguage = value;
 
         await JsRuntime.InvokeAsync<string>("SetLocalStorage", "content-language", value.ToString());
+
+        AppStateStatic.ChangeContentLanguage(value);
     }
 
     protected async Task DarkModeChanged(bool value)
