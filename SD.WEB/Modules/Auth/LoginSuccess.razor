@@ -110,7 +110,9 @@
 
     private async Task RegisterLogin()
     {
-        await LoginApi.Add(AppStateStatic.Platform.ToString());
+         var platform = await AppStateStatic.GetPlatform(JsRuntime);
+
+        await LoginApi.Add(platform);
 
         Navigation.NavigateTo("/profile");
     }

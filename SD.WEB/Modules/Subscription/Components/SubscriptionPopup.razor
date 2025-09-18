@@ -329,7 +329,7 @@
         }
     </DialogContent>
     <DialogActions>
-        <span class="ma-2">Platform: @AppStateStatic.Platform</span>
+        <span class="ma-2">Platform: @Platform</span>
         <MudSpacer></MudSpacer>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">@Button.Close</MudButton>
     </DialogActions>
@@ -352,6 +352,7 @@
     private string? CurrentCountry { get; set; }
     private bool BlockedCountry { get; set; }
     private string? CustomerPortalUrl { get; set; }
+    private SD.Shared.Enums.Platform Platform { get; set; }
 
     private readonly Dictionary<string, string> _BlockedCountries = new()
     {
@@ -424,7 +425,9 @@
 
         Providers.Clear();
 
-        if (AppStateStatic.Platform == SD.Shared.Enums.Platform.ios)
+        Platform = await AppStateStatic.GetPlatform(JsRuntime);
+
+        if (Platform == SD.Shared.Enums.Platform.ios)
         {
             if (CurrentCountry == "US")
             {
@@ -436,7 +439,7 @@
                 Providers.Add(PaymentProvider.Apple);
             }
         }
-        else if (AppStateStatic.Platform == SD.Shared.Enums.Platform.windows)
+        else if (Platform == SD.Shared.Enums.Platform.windows)
         {
             Providers.Add(PaymentProvider.Paddle);
             Providers.Add(PaymentProvider.Microsoft);
@@ -474,9 +477,9 @@
         {
             if (IsAuthenticated)
             {
-                var locale = AppStateStatic.ContentLanguage.ToString().Substring(0, 2);
+                var lang = await AppStateStatic.GetAppLanguage(JsRuntime);
 
-                await JsRuntime.InvokeVoidAsync("openCheckout", priceId, Client?.Email, locale, Client?.AuthPaddle?.CustomerId, Client?.AuthPaddle?.AddressId);
+                await JsRuntime.InvokeVoidAsync("openCheckout", priceId, Client?.Email, lang.ToString(), Client?.AuthPaddle?.CustomerId, Client?.AuthPaddle?.AddressId);
             }
             else
             {

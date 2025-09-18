@@ -13,7 +13,7 @@ public class TmdbTopRatedApi(IHttpClientFactory factory) : ApiExternal(factory),
         {
             { "api_key", TmdbOptions.ApiKey },
             { "region", AppStateStatic.Region.ToString() },
-            { "language", AppStateStatic.ContentLanguage.GetName(false) ?? "en-US" },
+            { "language", (await AppStateStatic.GetContentLanguage()).GetName(false) ?? "en-US" },
             { "page", page.ToString() }
         };
 

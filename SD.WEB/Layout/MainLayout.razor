@@ -6,13 +6,13 @@
 @inherits LayoutComponentBase
 
 @inject IJSRuntime JsRuntime
-@inject IpInfoApi IpInfoApi
-@inject PrincipalApi PrincipalApi
 @inject ISnackbar Snackbar
 @inject ILogger<MainLayout> Logger
+
+@inject PrincipalApi PrincipalApi
 @inject NavigationManager Navigation
 
-<MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@AppStateStatic.DarkMode" />
+<MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@_darkMode" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudMessageBox />
@@ -48,12 +48,15 @@
 
     private bool IsLoading = true;
     private MudThemeProvider? _mudThemeProvider;
+    private bool _darkMode = false;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            AppStateStatic.DarkModeChanged += dark => StateHasChanged();
+            IsLoading = true; StateHasChanged();
+
+            AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
             AppStateStatic.ShowError = msg => { Snackbar.Add(msg, Severity.Error); };
 
             if (AppStateStatic.User == null)
@@ -75,62 +78,36 @@
                     return;
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            ex.ProcessException(Snackbar, Logger);
-        }
-    }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        try
-        {
-            if (firstRender)
-            {
-                IsLoading = true; StateHasChanged();
+            AppStateStatic.Version = BuildDateString();
 
-                //REGION
-                var region = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "region");
-
-                if (region.Empty())
-                {
-                    //get new region by IP
-                    region = await IpInfoApi.GetCountry();
-
-                    region ??= nameof(Region.US);
-
-                    await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", region);
-                }
-
-                AppStateStatic.ChangeRegion(AppStateStatic.GetValidRegion(region));
-
-                //DARK MODE
-                var darkMode = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "dark-mode");
-
-                if (darkMode.Empty())
-                {
-                    darkMode = (await _mudThemeProvider!.GetSystemDarkModeAsync()).ToString();
-
-                    await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", darkMode);
-                }
-
-                AppStateStatic.ChangeDarkMode(bool.Parse(darkMode));
-
-                //PLATFORM
-
-                var platform = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "platform");
-
-                AppStateStatic.Platform = Enum.Parse<Platform>(platform);
-                AppStateStatic.Version = BuildDateString();
-
-                IsLoading = false; StateHasChanged();
-            }
+            IsLoading = false; StateHasChanged();
         }
         catch (Exception ex)
         {
             ex.ProcessException(Snackbar, Logger);
             IsLoading = false; StateHasChanged();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            //DARK MODE
+            var darkMode = await AppStateStatic.GetDarkMode(JsRuntime);
+
+            if (darkMode == null && _mudThemeProvider != null)
+            {
+                var system = await _mudThemeProvider.GetSystemDarkModeAsync();
+                darkMode = system;
+
+                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", darkMode.ToString()?.ToLower());
+            }
+
+            AppStateStatic.ChangeDarkMode(darkMode ?? false);
         }
     }
 

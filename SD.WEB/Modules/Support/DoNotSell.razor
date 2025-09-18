@@ -61,7 +61,7 @@
 </style>
 
 <div class="privacy-container">
-    @if (AppStateStatic.AppLanguage == AppLanguage.pt)
+    @if (Language == AppLanguage.pt)
     {
         <h1 class="privacy-title">Não Vender ou Compartilhar Meus Dados Pessoais</h1>
         <div class="privacy-section">
@@ -71,7 +71,7 @@
             <p>Se você reside na Califórnia e tiver dúvidas, entre em contato: support@streamingdiscovery.com</p>
         </div>
     }
-    else if (AppStateStatic.AppLanguage == AppLanguage.es)
+    else if (Language == AppLanguage.es)
     {
         <h1 class="privacy-title">No Vender ni Compartir Mi Información Personal</h1>
         <div class="privacy-section">
@@ -96,4 +96,11 @@
 @code {
     public string? ProjectTitle => SeoTranslations.AppName;
     public string ProjectDomain => "www.streamingdiscovery.com";
+
+    public AppLanguage Language { get; set; } = AppLanguage.en;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Language = await AppStateStatic.GetAppLanguage(null);
+    }
 }

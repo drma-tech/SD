@@ -11,7 +11,7 @@ public class ExternalIdApi(IHttpClientFactory factory) : ApiExternal(factory)
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", AppStateStatic.ContentLanguage.GetName(false) ?? "en-US" },
+            { "language", (await AppStateStatic.GetContentLanguage()).GetName(false) ?? "en-US" },
             { "external_source", "imdb_id" }
         };
 
@@ -34,7 +34,7 @@ public class ExternalIdApi(IHttpClientFactory factory) : ApiExternal(factory)
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", AppStateStatic.ContentLanguage.GetName(false) ?? "en-US" }
+            { "language", (await AppStateStatic.GetContentLanguage()).GetName(false) ?? "en-US" }
         };
 
         if (type == MediaType.movie)

@@ -61,7 +61,7 @@
 </style>
 
 <div class="terms-container">
-    @if (AppStateStatic.AppLanguage == AppLanguage.pt)
+    @if (Language == AppLanguage.pt)
     {
         <div class="terms-title">Sobre a DRMA Tech</div>
         <div class="terms-subtitle">
@@ -100,7 +100,7 @@
             <p style="text-align:center; color:#888; font-size:0.9rem;">Última atualização: 13 de setembro de 2025</p>
         </div>
     }
-    else if (AppStateStatic.AppLanguage == AppLanguage.es)
+    else if (Language == AppLanguage.es)
     {
         <div class="terms-title">Sobre DRMA Tech</div>
         <div class="terms-subtitle">
@@ -177,10 +177,17 @@
         <div class="privacy-section">
             <p style="text-align:center; color:#888; font-size:0.9rem;">Last updated: September 13, 2025</p>
         </div>
-    }   
+    }
 </div>
 
 @code {
     public string? ProjectTitle => SeoTranslations.AppName;
     public string? ProjectDomain => "www.streamingdiscovery.com";
+
+    public AppLanguage Language { get; set; } = AppLanguage.en;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Language = await AppStateStatic.GetAppLanguage(null);
+    }
 }

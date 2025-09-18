@@ -6,7 +6,7 @@
     <DialogContent>
         <MudGrid Class="mb-6">
             <MudItem xs="12">
-                <MudSelect Value="@AppStateStatic.AppLanguage" ValueChanged="@((AppLanguage vl) => AppLanguageValueChanged(vl))" Label="@GlobalTranslations.AppLanguage"
+                <MudSelect Value="@Language" ValueChanged="@((AppLanguage vl) => AppLanguageValueChanged(vl))" Label="@GlobalTranslations.AppLanguage"
                            HelperText="@GlobalTranslations.AppLanguageDesc" FullWidth="true">
                     @foreach (var item in appLanguages)
                     {
@@ -24,7 +24,7 @@
                 </MudSelect>
             </MudItem>
             <MudItem xs="12">
-                <MudSelect Value="@AppStateStatic.ContentLanguage" ValueChanged="@((ContentLanguage vl) => ContentLanguageValueChanged(vl))" Label="@GlobalTranslations.ContentLanguage"
+                <MudSelect Value="@ContentLanguage" ValueChanged="@((ContentLanguage vl) => ContentLanguageValueChanged(vl))" Label="@GlobalTranslations.ContentLanguage"
                            HelperText="@GlobalTranslations.ContentLanguageDesc" FullWidth="true">
                     @foreach (var item in contentLanguages)
                     {
@@ -33,8 +33,7 @@
                 </MudSelect>
             </MudItem>
             <MudItem xs="12">
-                <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Color="Color.Primary"
-                                Value="AppStateStatic.DarkMode" ValueChanged="(bool vl) => DarkModeChanged(vl)">
+                <MudToggleGroup Value="DarkMode" ValueChanged="(bool vl) => DarkModeChanged(vl)" SelectionMode="SelectionMode.SingleSelection" Vertical="false" Color="Color.Primary">
                     <MudToggleItem Value="false">
                         <MudIcon Icon="@IconsFA.Solid.Icon("sun").Font" Title="@GlobalTranslations.LightMode" Class="me-1"></MudIcon>
                         @GlobalTranslations.LightMode
@@ -60,6 +59,17 @@
     private readonly AppLanguage[] appLanguages = Enum.GetValues<AppLanguage>();
     private readonly ContentLanguage[] contentLanguages = Enum.GetValues<ContentLanguage>();
 
+    public AppLanguage Language { get; set; } = AppLanguage.en;
+    public ContentLanguage ContentLanguage { get; set; } = ContentLanguage.enUS;
+    public bool DarkMode { get; set; } = false;
+
+    protected override async Task LoadEssentialDataAsync()
+    {
+        Language = await AppStateStatic.GetAppLanguage(null);
+        ContentLanguage = await AppStateStatic.GetContentLanguage(null);
+        DarkMode = await AppStateStatic.GetDarkMode(null) ?? false;
+    }
+
     protected async Task RegionValueChanged(Region value)
     {
         await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", value.GetName(false));
@@ -69,6 +79,8 @@
 
     protected async Task AppLanguageValueChanged(AppLanguage value)
     {
+        Language = value;
+
         await JsRuntime.InvokeAsync<string>("SetLocalStorage", "app-language", value.ToString());
 
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("app-language", value.ToString()), true);
@@ -76,14 +88,16 @@
 
     protected async Task ContentLanguageValueChanged(ContentLanguage value)
     {
-        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "content-language", value.ToString());
+        ContentLanguage = value;
 
-        AppStateStatic.ChangeContentLanguage(value);
+        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "content-language", value.ToString());
     }
 
     protected async Task DarkModeChanged(bool value)
     {
-        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", value.ToString());
+        DarkMode = value;
+
+        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", value.ToString()?.ToLower());
 
         AppStateStatic.ChangeDarkMode(value);
     }

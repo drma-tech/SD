@@ -13,7 +13,7 @@ public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", AppStateStatic.ContentLanguage.GetName(false) ?? "en-US" },
+            { "language", (await AppStateStatic.GetContentLanguage()).GetName(false) ?? "en-US" },
             { "page", page.ToString() }
         };
 

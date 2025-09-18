@@ -61,7 +61,7 @@
 </style>
 
 <div class="terms-container">
-    @if (AppStateStatic.AppLanguage == AppLanguage.pt)
+    @if (Language == AppLanguage.pt)
     {
         <h1 class="terms-title">Termos de Uso</h1>
         <div class="terms-subtitle">
@@ -130,7 +130,7 @@
             <p>Estes Termos são regidos pelas leis da Estônia. Quaisquer disputas serão resolvidas sob a jurisdição exclusiva dos tribunais de Tallinn, Estônia, em inglês, salvo exigência contrária por leis locais aplicáveis ou em casos de investigações criminais.</p>
         </div>
     }
-    else if (AppStateStatic.AppLanguage == AppLanguage.es)
+    else if (Language == AppLanguage.es)
     {
         <h1 class="terms-title">Términos de Uso</h1>
         <div class="terms-subtitle">
@@ -199,7 +199,7 @@
             <p>Estos Términos se rigen por las leyes de Estonia. Cualquier disputa se resolverá bajo la jurisdicción exclusiva de los tribunales de Tallin, Estonia, en inglés, salvo que las leyes locales aplicables indiquen lo contrario o se trate de investigaciones criminales.</p>
         </div>
     }
-    else if (AppStateStatic.AppLanguage == AppLanguage.zh)
+    else if (Language == AppLanguage.zh)
     {
         <h1 class="terms-title">使用条款</h1>
         <div class="terms-subtitle">
@@ -364,6 +364,13 @@
 @code {
     public string? ProjectTitle => SeoTranslations.AppName;
     public string? ProjectDomain => "www.streamingdiscovery.com";
+
+    public AppLanguage Language { get; set; } = AppLanguage.en;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Language = await AppStateStatic.GetAppLanguage(null);
+    }
 
     // País/Região Exigência de Tradução   Base Legal Principal
     // China   Explícita e obrigatória PIPL, CSL

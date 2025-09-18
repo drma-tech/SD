@@ -199,12 +199,13 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        var CurrentCountry = await IpInfoApi.GetCountry();
+        var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
+        var platform = await AppStateStatic.GetPlatform(JsRuntime);
 
-        if (CurrentCountry.NotEmpty() && AppStateStatic.Platform == Platform.ios)
+        if (country.NotEmpty() && platform == Platform.ios)
         {
             //https://developer.apple.com/app-store/review/guidelines/#link-to-other-purchase-methods
-            SubscriptionAllowed = _iosAllowedCountries.ContainsKey(CurrentCountry);
+            SubscriptionAllowed = _iosAllowedCountries.ContainsKey(country);
         }
     }
 

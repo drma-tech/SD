@@ -27,7 +27,7 @@ public class TmdbCreditApi(IHttpClientFactory factory) : ApiExternal(factory)
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", AppStateStatic.ContentLanguage.GetName(false) ?? "en-US" }
+            { "language", (await AppStateStatic.GetContentLanguage()).GetName(false) ?? "en-US" }
         };
 
         return await GetAsync<CreditsByPerson>(TmdbOptions.BaseUri + $"person/{personId}/combined_credits".ConfigureParameters(parameter));

@@ -12,7 +12,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", language ?? AppStateStatic.ContentLanguage.GetName(false) ?? "en-US" },
+            { "language", language ?? (await AppStateStatic.GetContentLanguage()).GetName(false) ?? "en-US" },
             { "append_to_response", "videos" }
         };
 

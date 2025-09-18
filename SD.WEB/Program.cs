@@ -96,7 +96,7 @@ static async Task ConfigureCulture(WebAssemblyHost? app)
 
         if (appLanguage.Empty())
         {
-            appLanguage = await jsRuntime.InvokeAsync<string>("GetLocalStorage", "app-language");
+            appLanguage = (await AppStateStatic.GetAppLanguage(jsRuntime)).ToString();
         }
 
         if (appLanguage.NotEmpty())
@@ -105,7 +105,7 @@ static async Task ConfigureCulture(WebAssemblyHost? app)
 
             try
             {
-                cultureInfo = new CultureInfo(appLanguage!);
+                cultureInfo = new CultureInfo(appLanguage);
             }
             catch (Exception)
             {
@@ -115,27 +115,6 @@ static async Task ConfigureCulture(WebAssemblyHost? app)
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         }
-
-        AppStateStatic.AppLanguage = AppStateStatic.GetValidAppLanguage(CultureInfo.DefaultThreadCurrentUICulture);
-        await jsRuntime.InvokeAsync<string>("SetLocalStorage", "app-language", AppStateStatic.AppLanguage.ToString());
-
-        //content language
-
-        var contentLanguage = await jsRuntime.InvokeAsync<string>("GetLocalStorage", "content-language");
-
-        if (contentLanguage.Empty())
-        {
-            AppStateStatic.ContentLanguage = AppStateStatic.GetValidContentLanguage(CultureInfo.DefaultThreadCurrentUICulture);
-        }
-        else
-        {
-            if (Enum.TryParse<ContentLanguage>(contentLanguage, true, out var lang) && Enum.IsDefined(lang))
-                AppStateStatic.ContentLanguage = lang;
-            else
-                AppStateStatic.ContentLanguage = ContentLanguage.enUS;
-        }
-
-        await jsRuntime.InvokeAsync<string>("SetLocalStorage", "content-language", AppStateStatic.ContentLanguage.ToString());
     }
 }
 

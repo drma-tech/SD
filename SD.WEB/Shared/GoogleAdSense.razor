@@ -1,5 +1,7 @@
-﻿@inherits ComponentCore<GoogleAdSense>
+﻿@using SD.WEB.Modules.Subscription.Core
+@inherits ComponentCore<GoogleAdSense>
 
+@inject IpInfoApi IpInfoApi
 @inject IJSRuntime JS
 
 @if (IsLocalhost)
@@ -56,13 +58,13 @@ else if (!IsPaidUser)
     {
         if (firstRender && !IsLocalhost && !IsPaidUser)
         {
-            var region = await JS.InvokeAsync<string>("GetLocalStorage", "region");
+            var country = await AppStateStatic.GetCountry(IpInfoApi, JS);
 
-            if (region.Trim() == "CN")
+            if (country == "CN")
             {
                 //todo: implement https://www.baiduadvertising.com/
             }
-            else if (_BlockedCountries.ContainsKey(region))
+            else if (_BlockedCountries.ContainsKey(country))
             {
                 //do not show ads
             }

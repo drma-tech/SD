@@ -11,9 +11,9 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory
         return null;
     }
 
-    public async Task Add(string platform)
+    public async Task Add(SD.Shared.Enums.Platform platform)
     {
-        await PostAsync<AuthLogin>(Endpoint.Add(platform), null, null);
+        await PostAsync<AuthLogin>(Endpoint.Add(platform.ToString()), null, null);
     }
 
     private struct Endpoint

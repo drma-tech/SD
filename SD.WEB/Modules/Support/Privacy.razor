@@ -61,7 +61,7 @@
 </style>
 
 <div class="privacy-container">
-    @if (AppStateStatic.AppLanguage == AppLanguage.pt)
+    @if (Language == AppLanguage.pt)
     {
         <h1 class="privacy-title">Política de Privacidade</h1>
         <div class="privacy-subtitle">
@@ -118,7 +118,7 @@
             Ao utilizar este site, você concorda com esta Política de Privacidade e com os <a href="/support/terms/pt">Termos de Uso</a>.
         </div>
     }
-    else if (AppStateStatic.AppLanguage == AppLanguage.es)
+    else if (Language == AppLanguage.es)
     {
         <h1 class="privacy-title">Política de Privacidad</h1>
         <div class="privacy-subtitle">
@@ -175,7 +175,7 @@
             Al utilizar este sitio, aceptas esta Política de Privacidad y los <a href="/support/terms/es">Términos de Uso</a>.
         </div>
     }
-    else if (AppStateStatic.AppLanguage == AppLanguage.zh)
+    else if (Language == AppLanguage.zh)
     {
         <h1 class="privacy-title">隐私政策</h1>
         <div class="privacy-subtitle">
@@ -304,4 +304,11 @@
 @code {
     public string? ProjectTitle => SeoTranslations.AppName;
     public string ProjectDomain => "www.streamingdiscovery.com";
+
+    public AppLanguage Language { get; set; } = AppLanguage.en;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Language = await AppStateStatic.GetAppLanguage(null);
+    }
 }
