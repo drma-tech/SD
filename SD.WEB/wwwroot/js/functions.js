@@ -191,16 +191,3 @@ function getOperatingSystem() {
     if (ua.includes("iOS") || ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
     return "Unknown";
 }
-
-window.onAppVersionReady = (version) => {
-    SetLocalStorage("app-version", version);
-
-    const PLATFORM = GetLocalStorage("platform");
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('set', {
-        'app_version': version,
-        'platform': PLATFORM
-    });
-};
