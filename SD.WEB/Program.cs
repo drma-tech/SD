@@ -27,7 +27,12 @@ ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress, builder
 
 var app = builder.Build();
 
-await ConfigureCulture(app);
+var js = app.Services.GetRequiredService<IJSRuntime>();
+
+await ConfigureCulture(app, js);
+
+var version = SD.WEB.Layout.MainLayout.GetAppVersion();
+await js.InvokeVoidAsync("onAppVersionReady", version);
 
 await app.RunAsync();
 
@@ -83,12 +88,10 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddScoped<IpInfoApi>();
 }
 
-static async Task ConfigureCulture(WebAssemblyHost? app)
+static async Task ConfigureCulture(WebAssemblyHost? app, IJSRuntime js)
 {
     if (app != null)
     {
-        var jsRuntime = app.Services.GetRequiredService<IJSRuntime>();
-
         //app language
 
         var nav = app.Services.GetService<NavigationManager>();
@@ -96,7 +99,7 @@ static async Task ConfigureCulture(WebAssemblyHost? app)
 
         if (appLanguage.Empty())
         {
-            appLanguage = (await AppStateStatic.GetAppLanguage(jsRuntime)).ToString();
+            appLanguage = (await AppStateStatic.GetAppLanguage(js)).ToString();
         }
 
         if (appLanguage.NotEmpty())
@@ -118,7 +121,7 @@ static async Task ConfigureCulture(WebAssemblyHost? app)
 
         //content language
 
-        _ = await AppStateStatic.GetContentLanguage(jsRuntime);
+        _ = await AppStateStatic.GetContentLanguage(js); //force read previously saved
     }
 }
 

@@ -12,7 +12,7 @@ public class TmdbTopRatedApi(IHttpClientFactory factory) : ApiExternal(factory),
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "region", AppStateStatic.Region.ToString() },
+            { "region", (await AppStateStatic.GetRegion()).ToString() },
             { "language", (await AppStateStatic.GetContentLanguage()).GetName(false) ?? "en-US" },
             { "page", page.ToString() }
         };

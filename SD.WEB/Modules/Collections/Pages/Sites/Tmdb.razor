@@ -4,6 +4,7 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Collections.Components
+@using SD.WEB.Modules.Subscription.Core
 @inherits PageCore<Tmdb>
 @inject TmdbPopularApi TmdbPopularApi
 @inject TmdbTopRatedApi TmdbTopRatedApi
@@ -11,7 +12,8 @@
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
-@inject IJSRuntime JS
+@inject IpInfoApi IpInfoApi
+@inject IJSRuntime JsRuntime
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
@@ -20,21 +22,23 @@
 <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbPopularApi" CustomExpand="@("/collections/tmdb/popular/{0}")" ShowFilter="true"
            Watched="WatchedList" Watching="WatchingList" Wish="WishList" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList TitleHead="@($"{Translations.TopRated} ({AppStateStatic.Region})")" MediaListApi="TmdbTopRatedApi" CustomExpand="@("/collections/tmdb/top/{0}")" ShowFilter="true"
+<MediaList TitleHead="@($"{Translations.TopRated} ({Region})")" MediaListApi="TmdbTopRatedApi" CustomExpand="@("/collections/tmdb/top/{0}")" ShowFilter="true"
            DetectRegions="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" IsAuthenticated="IsAuthenticated">
 </MediaList>
-<MediaList TitleHead="@($"{Translations.ComingSoon} ({AppStateStatic.Region})")" MediaListApi="TmdbUpcomingApi" CustomExpand="@("/collections/tmdb/upcoming")"
+<MediaList TitleHead="@($"{Translations.ComingSoon} ({Region})")" MediaListApi="TmdbUpcomingApi" CustomExpand="@("/collections/tmdb/upcoming")"
            DetectRegions="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" IsAuthenticated="IsAuthenticated">
 </MediaList>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
-    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JsRuntime.InvokeVoidAsync("history.back"))" />
 </div>
 
 @code {
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
+
+    public Region Region { get; set; } = Region.US;
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,6 +68,8 @@
         WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
         WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
         WishList = await WishListApi.Get(IsAuthenticated, null);
+
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
     }
 
 }

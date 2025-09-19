@@ -188,26 +188,62 @@ public static class AppStateStatic
 
     #region Region
 
-    [Custom(Name = "Region", ResourceType = typeof(GlobalTranslations))]
-    public static Region Region { get; set; } = Region.US;
+    private static Region? _region;
+    private static readonly SemaphoreSlim _regionSemaphore = new(1, 1);
 
     public static Action<Region>? RegionChanged { get; set; }
 
-    public static Region GetValidRegion(string? regionName)
+    public static async Task<Region> GetRegion(IpInfoApi? api = null, IJSRuntime? js = null)
     {
-        if (!Enum.TryParse<Region>(regionName, out var region) || !Enum.IsDefined(region))
+        await _regionSemaphore.WaitAsync();
+        try
         {
-            regionName = nameof(Region.US);
+            if (_region.HasValue)
+            {
+                return _region.Value;
+            }
 
-            _ = Enum.TryParse(regionName, out region);
+            var cache = js != null ? await js.InvokeAsync<string>("GetLocalStorage", "region") : null;
+
+            if (cache.NotEmpty())
+            {
+                _region = ConvertRegion(cache);
+
+                if (_region == null)
+                {
+                    _region = Region.US;
+                    if (js != null) await js.InvokeVoidAsync("SetLocalStorage", "region", _region.ToString()?.ToLower());
+                }
+            }
+            else
+            {
+                var code = await GetCountry(api, js);
+
+                _region = ConvertRegion(code) ?? Region.US;
+                if (js != null) await js.InvokeVoidAsync("SetLocalStorage", "region", _region.ToString()?.ToLower());
+            }
+
+            return _region.Value;
         }
+        finally
+        {
+            _regionSemaphore.Release();
+        }
+    }
 
-        return region;
+    private static Region? ConvertRegion(string? code)
+    {
+        if (code.Empty()) return null;
+
+        if (Enum.TryParse<Region>(code, true, out var region) && Enum.IsDefined(region))
+            return region;
+        else
+            return null;
     }
 
     public static void ChangeRegion(Region value)
     {
-        Region = value;
+        _region = value;
         RegionChanged?.Invoke(value);
     }
 
@@ -266,7 +302,7 @@ public static class AppStateStatic
     private static string? _country;
     private static readonly SemaphoreSlim _countrySemaphore = new(1, 1);
 
-    public static async Task<string> GetCountry(IpInfoApi api, IJSRuntime? js = null)
+    public static async Task<string> GetCountry(IpInfoApi? api, IJSRuntime? js = null)
     {
         await _countrySemaphore.WaitAsync();
         try
@@ -284,7 +320,7 @@ public static class AppStateStatic
             }
             else
             {
-                _country = (await api.GetCountry())?.Trim();
+                _country = api != null ? (await api.GetCountry())?.Trim() : "US";
                 if (js != null) await js.InvokeVoidAsync("SetLocalStorage", "country", _country);
             }
 

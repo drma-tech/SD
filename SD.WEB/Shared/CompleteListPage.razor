@@ -12,6 +12,7 @@
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Profile.Core
 @using Button = SD.WEB.Resources.Button
+@using SD.WEB.Modules.Subscription.Core
 @inherits PageCore<CompleteListPage>
 
 @inject WatchedListApi WatchedListApi
@@ -19,6 +20,8 @@
 @inject WishListApi WishListApi
 @inject AllProvidersApi AllProvidersApi
 @inject IHttpClientFactory factory
+@inject IpInfoApi IpInfoApi
+@inject IJSRuntime JsRuntime
 
 <SeoHeader Title="@($"{Title}")" Description="@SeoTranslations.AppDescription" Keywords="@(new[] { Title })" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")"></SeoHeader>
 
@@ -58,6 +61,8 @@
     private EnumLists? List { get; set; }
     private string Title => TitleHead ?? $"{List?.GetCustomAttribute()?.Group} - {List?.GetName()}" ?? "Title Error";
 
+    public Region Region { get; set; } = Region.US;
+
     protected override async Task OnInitializedAsync()
     {
         if (id.NotEmpty() && Navigation.Uri.Contains("list")) List = Enum.Parse<EnumLists>(id!);
@@ -66,6 +71,8 @@
         WatchedListApi.DataChanged += model => { Watched = model; StateHasChanged(); };
         WatchingListApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishListApi.DataChanged += model => { Wish = model; StateHasChanged(); };
+
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
 
         ProcessList();
         await ProcessNonList();
@@ -222,13 +229,13 @@
         }
         else if (Navigation.Uri.Contains("tmdb/top"))
         {
-            TitleHead = $"TMDB - {Modules.Platform.Resources.Translations.TopRated} ({AppStateStatic.Region}) - {TypeSelected!.GetName()}";
+            TitleHead = $"TMDB - {Modules.Platform.Resources.Translations.TopRated} ({Region}) - {TypeSelected!.GetName()}";
             DetectRegions = true;
             MediaListApi = new TmdbTopRatedApi(factory);
         }
         else if (Navigation.Uri.Contains("tmdb/upcoming"))
         {
-            TitleHead = $"TMDB - {Modules.Platform.Resources.Translations.ComingSoon} ({AppStateStatic.Region}) - {TypeSelected!.GetName()}";
+            TitleHead = $"TMDB - {Modules.Platform.Resources.Translations.ComingSoon} ({Region}) - {TypeSelected!.GetName()}";
             DetectRegions = true;
             MediaListApi = new TmdbUpcomingApi(factory);
         }

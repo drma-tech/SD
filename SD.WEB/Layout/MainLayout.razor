@@ -54,6 +54,10 @@
     {
         try
         {
+            // *************************************
+            // attention: avoid using asynchronous calls here, as it may affect static html generation (especially for anonymous users)
+            // *************************************
+
             IsLoading = true; StateHasChanged();
 
             AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
@@ -79,7 +83,7 @@
                 }
             }
 
-            AppStateStatic.Version = BuildDateString();
+            AppStateStatic.Version = GetAppVersion();
 
             IsLoading = false; StateHasChanged();
         }
@@ -122,17 +126,18 @@
     {
         AppStateStatic.ShowError?.Invoke(error);
     }
-
-    //https://swharden.com/blog/2020-12-29-blazor-build-info/
-    public static string BuildDateString()
+    
+    [JSInvokable]
+    public static string GetAppVersion()
     {
         try
         {
+            //https://swharden.com/blog/2020-12-29-blazor-build-info/
             return Resources.BuildDate.ReplaceLineEndings("").Trim();
         }
         catch (Exception)
         {
-            return "Version Error";
+            return "version-error";
         }
     }
 

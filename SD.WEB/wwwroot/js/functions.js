@@ -52,28 +52,29 @@ function SetLocalStorage(key, value) {
     return window.localStorage.setItem(key, value);
 }
 
-function TryDetectPlatform() {
-    if (GetLocalStorage("platform")) return; //if populate before, cancel, cause detection (windows) only works for first call
+function LoadAppVariables() {
+    //platform
+    if (!GetLocalStorage("platform")) {
+        const isWindows = document.referrer == "app-info://platform/microsoft-store" || /microsoft-store/i.test(navigator.userAgent);
+        const isAndroid = /android/i.test(navigator.userAgent);
+        const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+        const isMac = /macintosh|mac os x/i.test(navigator.userAgent);
+        const isHuawei = /huawei|honor/i.test(navigator.userAgent);
+        const isXiaomi = /xiaomi/i.test(navigator.userAgent);
 
-    const isWindows = document.referrer == "app-info://platform/microsoft-store" || /microsoft-store/i.test(navigator.userAgent);
-    const isAndroid = /android/i.test(navigator.userAgent);
-    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    const isMac = /macintosh|mac os x/i.test(navigator.userAgent);
-    const isHuawei = /huawei|honor/i.test(navigator.userAgent);
-    const isXiaomi = /xiaomi/i.test(navigator.userAgent);
-
-    if (isWindows)
-        SetLocalStorage("platform", "windows");
-    else if (isAndroid)
-        SetLocalStorage("platform", "play");
-    else if (isIOS || isMac)
-        SetLocalStorage("platform", "ios");
-    else if (isHuawei)
-        SetLocalStorage("platform", "huawei");
-    else if (isXiaomi)
-        SetLocalStorage("platform", "xiaomi");
-    else
-        SetLocalStorage("platform", "webapp");
+        if (isWindows)
+            SetLocalStorage("platform", "windows");
+        else if (isAndroid)
+            SetLocalStorage("platform", "play");
+        else if (isIOS || isMac)
+            SetLocalStorage("platform", "ios");
+        else if (isHuawei)
+            SetLocalStorage("platform", "huawei");
+        else if (isXiaomi)
+            SetLocalStorage("platform", "xiaomi");
+        else
+            SetLocalStorage("platform", "webapp");
+    }
 }
 
 async function getUserInfo() {
@@ -190,3 +191,16 @@ function getOperatingSystem() {
     if (ua.includes("iOS") || ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
     return "Unknown";
 }
+
+window.onAppVersionReady = (version) => {
+    SetLocalStorage("app-version", version);
+
+    const PLATFORM = GetLocalStorage("platform");
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('set', {
+        'app_version': version,
+        'platform': PLATFORM
+    });
+};

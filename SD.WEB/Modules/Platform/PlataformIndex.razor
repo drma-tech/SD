@@ -4,16 +4,19 @@
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Platform.Resources
+@using SD.WEB.Modules.Subscription.Core
 @inherits PageCore<PlataformIndex>
 
 @inject AllProvidersApi AllProvidersApi
 @inject MyProvidersApi MyProvidersApi
+@inject IpInfoApi IpInfoApi
+@inject IJSRuntime JsRuntime
 
 <SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/platforms"
            Keywords="@(["platforms", "streaming", "Netflix", "Disney", "Apple", "Amazon Prime"])"></SeoHeader>
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
-<SectionComponent Title="@Translations.TitleProviders.Format(AppStateStatic.Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription"
+<SectionComponent Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription"
                   FullPage="true" MainPage="true">
     <ActionFragment>
         <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Placeholder="Filter">
@@ -25,64 +28,52 @@
     </ActionFragment>
     <BodyFragment>
         <RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null || obj.Items.Empty())">
-            @if (AppStateStatic.Region.GetName().Empty())
-            {
-                <MudAlert Severity="Severity.Error" Dense="true" Variant="Variant.Outlined">
-                    <MudText Typo="Typo.h6">There was an error detecting your region</MudText>
-                    <MudText Typo="Typo.body1">Please contact support and provide the following information:</MudText>
-                    <MudText Typo="Typo.body1">CurrentRegion: @RegionInfo.CurrentRegion.Name</MudText>
-                    <MudText Typo="Typo.body1">CurrentCulture: @CultureInfo.CurrentCulture.Name</MudText>
-                </MudAlert>
-            }
-            else
-            {
-                <div class="grid-relative-container-sm">
-                    @foreach (var item in GetFilteredProviders())
-                    {
-                        var favorite = MyProviders?.Items.Any(a => a.id == item.id) ?? false;
+            <div class="grid-relative-container-sm">
+                @foreach (var item in GetFilteredProviders())
+                {
+                    var favorite = MyProviders?.Items.Any(a => a.id == item.id) ?? false;
 
-                        <div>
-                            <MudLink Href="@($"/platforms/{item.id}")" Style="position: relative;">
-                                <MudCard Outlined="true">
-                                    <MudCardContent Style="padding: 0;">
-                                        <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" FallbackSrc="images/no-image.png"
-                                                  Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
-                                        @if (favorite)
-                                        {
-                                            <MudChip T="string" Icon="@IconsFA.Solid.Icon("star").Font" Color="Color.Success" Size="Size.Medium" Label="true" Class="chip-no-text"
-                                                     Style="padding: 0.2rem; position: absolute; top: 0; right: 0; white-space: inherit; height: auto; width: 26.4px; z-index: 1;">
-                                            </MudChip>
-                                        }
-                                    </MudCardContent>
-                                    <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
-                                        <MudText Typo="Typo.h3" Class="custom-h3-list">@item.name</MudText>
-                                    </MudCardContent>
-                                </MudCard>
-                            </MudLink>
-                            <AuthorizeView Roles="administrator">
-                                <Authorized>
-                                    @*  @if (string.IsNullOrEmpty(item.link))
+                    <div>
+                        <MudLink Href="@($"/platforms/{item.id}")" Style="position: relative;">
+                            <MudCard Outlined="true">
+                                <MudCardContent Style="padding: 0;">
+                                    <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" FallbackSrc="images/no-image.png"
+                                              Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
+                                    @if (favorite)
+                                    {
+                                        <MudChip T="string" Icon="@IconsFA.Solid.Icon("star").Font" Color="Color.Success" Size="Size.Medium" Label="true" Class="chip-no-text"
+                                                 Style="padding: 0.2rem; position: absolute; top: 0; right: 0; white-space: inherit; height: auto; width: 26.4px; z-index: 1;">
+                                        </MudChip>
+                                    }
+                                </MudCardContent>
+                                <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
+                                    <MudText Typo="Typo.h3" Class="custom-h3-list">@item.name</MudText>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudLink>
+                        <AuthorizeView Roles="administrator">
+                            <Authorized>
+                                @*  @if (string.IsNullOrEmpty(item.link))
                         {
                             <p class="m-0" style="color: red">link</p>
                         } *@
-                                    @*  @if (string.IsNullOrEmpty(item.description))
+                                @*  @if (string.IsNullOrEmpty(item.description))
                         {
                             <p class="m-0" style="color: red">description</p>
                         } *@
-                                    @if (item.models.Empty())
-                                    {
-                                        <p class="m-0" style="color: red">model</p>
-                                    }
-                                    @*  @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && item.plans.Empty())
+                                @if (item.models.Empty())
+                                {
+                                    <p class="m-0" style="color: red">model</p>
+                                }
+                                @*  @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && item.plans.Empty())
                         {
                             <p class="m-0" style="color: red">plan</p>
                         } *@
-                                </Authorized>
-                            </AuthorizeView>
-                        </div>
-                    }
-                </div>
-            }
+                            </Authorized>
+                        </AuthorizeView>
+                    </div>
+                }
+            </div>
         </RenderControl>
     </BodyFragment>
 </SectionComponent>
@@ -95,10 +86,12 @@
 
     [Custom(Name = "Model")] public DeliveryModel? DeliveryModel { get; set; }
 
+    public Region Region { get; set; } = Region.US;
+
     public List<ProviderModel> GetFilteredProviders()
     {
         return AllProviders?.Items
-                   .Where(p => p.regions.Any(a => a == AppStateStatic.Region))
+                   .Where(p => p.regions.Contains(Region))
                    .Where(p => p.models.Any(a => DeliveryModel == null || a == DeliveryModel))
                    .OrderBy(o => o.priority).ToList()
                ?? [];
@@ -123,6 +116,8 @@
     protected override async Task LoadNonEssentialDataAsync()
     {
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
+
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
     }
 
 }

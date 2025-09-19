@@ -32,7 +32,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
         {
             { "api_key", TmdbOptions.ApiKey },
             { "language", (await AppStateStatic.GetContentLanguage()).GetName(false) ?? "en-US" },
-            { "watch_region", region ?? AppStateStatic.Region.ToString() },
+            { "watch_region", region ?? (await AppStateStatic.GetRegion()).ToString() },
             { "include_adult", "false" },
             { "include_video", "false" },
             { "page", page.ToString() }

@@ -1,5 +1,7 @@
-﻿@inherits ComponentCore<SettingsPopup>
+﻿@using SD.WEB.Modules.Subscription.Core
+@inherits ComponentCore<SettingsPopup>
 
+@inject IpInfoApi IpInfoApi
 @inject IJSRuntime JsRuntime
 
 <MudDialog Style="width: 100%">
@@ -15,7 +17,7 @@
                 </MudSelect>
             </MudItem>
             <MudItem xs="12">
-                <MudSelect Value="@AppStateStatic.Region" ValueChanged="@((Region vl) => RegionValueChanged(vl))" Label="@GlobalTranslations.Region"
+                <MudSelect Value="@Region" ValueChanged="@((Region vl) => RegionValueChanged(vl))" Label="@GlobalTranslations.Region"
                            HelperText="@GlobalTranslations.RegionDesc" FullWidth="true">
                     @foreach (var item in regions)
                     {
@@ -60,37 +62,41 @@
     private readonly ContentLanguage[] contentLanguages = Enum.GetValues<ContentLanguage>();
 
     public AppLanguage Language { get; set; } = AppLanguage.en;
+    public Region Region { get; set; } = Region.US;
     public ContentLanguage ContentLanguage { get; set; } = ContentLanguage.enUS;
     public bool DarkMode { get; set; } = false;
 
     protected override async Task LoadEssentialDataAsync()
     {
         Language = await AppStateStatic.GetAppLanguage(JsRuntime);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
         ContentLanguage = await AppStateStatic.GetContentLanguage(JsRuntime);
         DarkMode = await AppStateStatic.GetDarkMode(JsRuntime) ?? false;
-    }
-
-    protected async Task RegionValueChanged(Region value)
-    {
-        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", value.GetName(false));
-
-        AppStateStatic.ChangeRegion(value);
     }
 
     protected async Task AppLanguageValueChanged(AppLanguage value)
     {
         Language = value;
 
-        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "app-language", value.ToString());
+        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "app-language", value.ToString()?.ToLower());
 
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("app-language", value.ToString()), true);
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("app-language", value.ToString()?.ToLower()), true);
+    }
+
+    protected async Task RegionValueChanged(Region value)
+    {
+        Region = value;
+
+        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", value.GetName(false)?.ToLower());
+
+        AppStateStatic.ChangeRegion(value);
     }
 
     protected async Task ContentLanguageValueChanged(ContentLanguage value)
     {
         ContentLanguage = value;
 
-        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "content-language", value.ToString());
+        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "content-language", value.ToString()?.ToLower());
 
         AppStateStatic.ChangeContentLanguage(value);
     }

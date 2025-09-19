@@ -2,10 +2,12 @@
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
+@using SD.WEB.Modules.Subscription.Core
 @inherits ComponentCore<MyProviderComponent>
 
 @inject MyProvidersApi MyProvidersApi
 @inject AllProvidersApi AllProvidersApi
+@inject IpInfoApi IpInfoApi
 @inject IJSRuntime JsRuntime
 
 <SectionComponent IconName="@IconsFA.Solid.Icon("clapperboard").Font" Title="@Translations.MyPlatforms">
@@ -27,7 +29,7 @@
                                 <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
                                     @item.region?.ToString()
                                 </MudChip>
-                                @if (AllProviders != null && (AllProviders.Items.All(a => a.id != item.id) || !AllProviders.Items.Any(a => a.id == item.id && a.regions.Contains(item.region ?? AppStateStatic.Region))))
+                                @if (AllProviders != null && (AllProviders.Items.All(a => a.id != item.id) || !AllProviders.Items.Any(a => a.id == item.id && a.regions.Contains(item.region ?? Region))))
                                 {
                                     <MudChip T="string" Color="Color.Error" Style="padding: 0.2rem; position: absolute; bottom: 5px; height: auto; z-index: 1; width: 90%;">
                                         <MudIcon Icon="@IconsFA.Solid.Icon("trash").Font"></MudIcon> Deleted
@@ -58,6 +60,8 @@
 
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
 
+    public Region Region { get; set; } = Region.US;
+
     protected override void OnInitialized()
     {
         MyProvidersApi.DataChanged += model =>
@@ -87,6 +91,8 @@
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
         AllProviders ??= await AllProvidersApi.GetAll(null);
 
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
+
         foreach (var item in MyProviders?.Items ?? [])
         {
             var provider = AllProviders?.Items.Find(f => f.id == item.id);
@@ -109,7 +115,7 @@
 
                         if (provider != null)
                         {
-                            item.region = provider.regions.Any(a => a == AppStateStatic.Region) ? AppStateStatic.Region : provider.regions[0];
+                            item.region = provider.regions.Contains(Region) ? Region : provider.regions[0];
                         }
                     }
                 }

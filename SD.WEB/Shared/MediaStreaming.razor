@@ -4,18 +4,20 @@
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Resources
 @using SD.WEB.Modules.Platform.Core
+@using SD.WEB.Modules.Subscription.Core
 @inherits ComponentCore<MediaStreaming>
 
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbApi TmdbApi
-@inject IJSRuntime Js
+@inject IpInfoApi IpInfoApi
+@inject IJSRuntime JsRuntime
 
 <RenderControl Core="Core" Model="Providers" ExpressionEmpty="@((MediaProviders? obj) => obj == null)">
     @{
         var hasProvider = false;
 
         <MudGrid Spacing="4">
-            @if (Providers?.GetFreeListProviders(AppStateStatic.Region).Any() ?? false)
+            @if (Providers?.GetFreeListProviders(Region).Any() ?? false)
             {
                 hasProvider = true;
 
@@ -26,7 +28,7 @@
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
                         <MudToolBar WrapContent="true" Gutters="false">
-                            @foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
+                            @foreach (var item in Providers.GetFreeListProviders(Region))
                             {
                                 @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                                 {
@@ -53,7 +55,7 @@
                 </MudItem>
             }
 
-            @if (Providers?.GetAdsListProviders(AppStateStatic.Region).Any() ?? false)
+            @if (Providers?.GetAdsListProviders(Region).Any() ?? false)
             {
                 hasProvider = true;
                 <MudItem xs="12" md="6" lg="4">
@@ -63,7 +65,7 @@
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
                         <MudToolBar WrapContent="true" Gutters="false">
-                            @foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
+                            @foreach (var item in Providers.GetAdsListProviders(Region))
                             {
                                 @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                                 {
@@ -90,7 +92,7 @@
                 </MudItem>
             }
 
-            @if (Providers?.GetFlatRateListProviders(AppStateStatic.Region).Any() ?? false)
+            @if (Providers?.GetFlatRateListProviders(Region).Any() ?? false)
             {
                 hasProvider = true;
                 <MudItem xs="12" md="6" lg="4">
@@ -100,7 +102,7 @@
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
                         <MudToolBar WrapContent="true" Gutters="false">
-                            @foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
+                            @foreach (var item in Providers.GetFlatRateListProviders(Region))
                             {
                                 @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                                 {
@@ -127,7 +129,7 @@
                 </MudItem>
             }
 
-            @if (Providers?.GetFlatRateBuyListProviders(AppStateStatic.Region).Any() ?? false)
+            @if (Providers?.GetFlatRateBuyListProviders(Region).Any() ?? false)
             {
                 hasProvider = true;
                 <MudItem xs="12" md="6" lg="4">
@@ -137,7 +139,7 @@
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
                         <MudToolBar WrapContent="true" Gutters="false">
-                            @foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
+                            @foreach (var item in Providers.GetFlatRateBuyListProviders(Region))
                             {
                                 @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                                 {
@@ -164,7 +166,7 @@
                 </MudItem>
             }
 
-            @if (Providers?.GetRentListProviders(AppStateStatic.Region).Any() ?? false)
+            @if (Providers?.GetRentListProviders(Region).Any() ?? false)
             {
                 hasProvider = true;
                 <MudItem xs="12" md="6" lg="4">
@@ -174,7 +176,7 @@
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
                         <MudToolBar WrapContent="true" Gutters="false">
-                            @foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
+                            @foreach (var item in Providers.GetRentListProviders(Region))
                             {
                                 @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                                 {
@@ -201,7 +203,7 @@
                 </MudItem>
             }
 
-            @if (Providers?.GetBuyListProviders(AppStateStatic.Region).Any() ?? false)
+            @if (Providers?.GetBuyListProviders(Region).Any() ?? false)
             {
                 hasProvider = true;
                 <MudItem xs="12" md="6" lg="4">
@@ -211,7 +213,7 @@
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
                         <MudToolBar WrapContent="true" Gutters="false">
-                            @foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
+                            @foreach (var item in Providers.GetBuyListProviders(Region))
                             {
                                 @if (AllProviders?.Items.Any(a => a.id == item.provider_id.ToString()) ?? false) //sometimes a link from an excluded provider appears
                                 {
@@ -249,11 +251,11 @@
                     else
                     {
                         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mb-2">
-                            @(string.Format(Translations.TitleNotAvailable, AppStateStatic.Region.GetName()))
+                            @(string.Format(Translations.TitleNotAvailable, Region.GetName()))
                         </MudAlert>
                     }
 
-                    @if (AppStateStatic.Region.GetName().Empty())
+                    @if (Region.GetName().Empty())
                     {
                         <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true" Class="mb-2">
                             <MudText Typo="Typo.h6">There was an error detecting your region</MudText>
@@ -283,6 +285,8 @@
     private MediaProviders? Providers { get; set; }
     private AllProviders? AllProviders { get; set; }
 
+    public Region Region { get; set; } = Region.US;
+
     protected override async Task LoadEssentialDataAsync()
     {
         AllProviders = await AllProvidersApi.GetAll(null);
@@ -292,11 +296,16 @@
         Core?.LoadingFinished?.Invoke(Providers);
     }
 
+    protected override async Task LoadNonEssentialDataAsync()
+    {
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
+    }
+
     private async Task Atualizar()
     {
         if (Providers == null) return;
 
-        foreach (var item in Providers.GetFreeListProviders(AppStateStatic.Region))
+        foreach (var item in Providers.GetFreeListProviders(Region))
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
@@ -310,7 +319,7 @@
             }
         }
 
-        foreach (var item in Providers.GetAdsListProviders(AppStateStatic.Region))
+        foreach (var item in Providers.GetAdsListProviders(Region))
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
@@ -324,7 +333,7 @@
             }
         }
 
-        foreach (var item in Providers.GetFlatRateListProviders(AppStateStatic.Region))
+        foreach (var item in Providers.GetFlatRateListProviders(Region))
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
@@ -338,7 +347,7 @@
             }
         }
 
-        foreach (var item in Providers.GetBuyListProviders(AppStateStatic.Region))
+        foreach (var item in Providers.GetBuyListProviders(Region))
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
@@ -352,7 +361,7 @@
             }
         }
 
-        foreach (var item in Providers.GetRentListProviders(AppStateStatic.Region))
+        foreach (var item in Providers.GetRentListProviders(Region))
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
@@ -366,7 +375,7 @@
             }
         }
 
-        foreach (var item in Providers.GetFlatRateBuyListProviders(AppStateStatic.Region))
+        foreach (var item in Providers.GetFlatRateBuyListProviders(Region))
         {
             var provider = AllProviders?.Items.SingleOrDefault(s => s.id == item.provider_id.ToString());
 
@@ -382,7 +391,7 @@
 
         if (AllProviders != null)
         {
-            await Js.InvokeVoidAsync("window.localStorage.setItem", "AllProviders", JsonSerializer.Serialize(AllProviders));
+            await JsRuntime.InvokeVoidAsync("window.localStorage.setItem", "AllProviders", JsonSerializer.Serialize(AllProviders));
         }
     }
 

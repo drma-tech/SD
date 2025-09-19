@@ -1,10 +1,12 @@
 ﻿@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Resources
 @using Button = SD.WEB.Resources.Button
+@using SD.WEB.Modules.Subscription.Core
 @inherits ComponentCore<HeadPage>
 
 @inject MyProvidersApi MyProvidersApi
-@inject IJSRuntime Js
+@inject IpInfoApi IpInfoApi
+@inject IJSRuntime JsRuntime
 
 <MudPaper Class="@(IncludeMB ? "mb-2" : "")" Outlined="true">
     <MudStack StretchItems="StretchItems.Middle" Row="true" Spacing="2">
@@ -140,7 +142,9 @@
 
             MyProviders ??= new MyProviders();
 
-            var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = AppStateStatic.Region };
+            var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
+
+            var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = region };
             var client = await PrincipalApi.Get(true);
             MyProviders = await MyProvidersApi.Add(MyProviders, item, client?.AuthPaddle);
 
@@ -172,11 +176,6 @@
         {
             ex.ProcessException(Snackbar, Logger);
         }
-    }
-
-    private async Task Share(string? link)
-    {
-        await Js.InvokeVoidAsync("share", link);
     }
 
 }
