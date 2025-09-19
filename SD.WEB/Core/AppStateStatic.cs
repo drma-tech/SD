@@ -321,7 +321,7 @@ public static class AppStateStatic
             else
             {
                 _country = api != null ? (await api.GetCountry())?.Trim() : "US";
-                if (js != null) await js.InvokeVoidAsync("SetLocalStorage", "country", _country);
+                if (js != null) await js.InvokeVoidAsync("SetLocalStorage", "country", _country?.ToLower());
             }
 
             _country ??= "US";
