@@ -10,19 +10,16 @@ window.initGoogleAnalytics = function (code, version) {
 
         getUserInfo()
             .then(user => {
-                gtag('set', {
+                const config = {
                     'app_version': version,
                     'platform': PLATFORM
-                });
+                };
 
                 if (user) {
-                    gtag("config", code, {
-                        'user_id': user?.userId
-                    });
+                    config['user_id'] = user.userId;
                 }
-                else {
-                    gtag("config", code);
-                }
+
+                gtag("config", code, config);
             })
             .catch(error => {
                 showError(error.message);
