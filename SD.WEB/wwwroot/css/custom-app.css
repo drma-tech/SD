@@ -308,7 +308,8 @@ body .pwa-updater[b-pwa-updater] {
 }
 
 .adsbygoogle.custom-ad-mobile {
-    height: 100px;
+    height: 150px !important;
+    align-content: center;
     display: block;
     min-width: 300px;
     margin-bottom: 12px;

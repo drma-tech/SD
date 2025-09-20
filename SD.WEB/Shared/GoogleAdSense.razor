@@ -6,7 +6,6 @@
 
 @if (IsLocalhost)
 {
-    <span>IsMobile: @IsMobile</span>
     <div style="text-align: center;">
         <ins class="@($"adsbygoogle custom-ad mb-3 {(IsMobile ? " mobile " : "")}")" data-ad-status="unfilled"
              style="@($"display: block; min-width: 300px; min-height: {(IsMobile || Format == "horizontal" ? "100" : "280")}px; text-align: center; border-width: 1px; border-radius: 4px; border-color: var(--mud-palette-lines-inputs); background-color: white;")">
@@ -16,7 +15,6 @@
 }
 else if (!IsPaidUser)
 {
-    <span>IsMobile: @IsMobile</span>
     <div id="@_containerId" @key="@_containerId" style="text-align: center;"></div>
 }
 
