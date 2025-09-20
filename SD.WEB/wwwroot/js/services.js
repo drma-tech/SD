@@ -96,11 +96,13 @@ window.createAd = function (adClient, adSlot, adFormat, containerId) {
 
     container.innerHTML = ""; // remove old ad
 
+    const isMobile = window.innerWidth <= 600 || window.innerHeight <= 600;
+
     const ins = document.createElement('ins');
-    ins.className = 'adsbygoogle ' + (adFormat ? 'custom-ad' : 'custom-ad-mobile');
+    ins.className = 'adsbygoogle ' + (isMobile ? 'custom-ad-mobile' : 'custom-ad');
     ins.setAttribute('data-ad-client', adClient);
     ins.setAttribute('data-ad-slot', adSlot);
-    if (adFormat) ins.setAttribute('data-ad-format', adFormat);
+    if (!isMobile) ins.setAttribute('data-ad-format', adFormat);
     container.appendChild(ins);
 
     (adsbygoogle = window.adsbygoogle || []).push({});
