@@ -97,7 +97,7 @@ window.createAd = function (adClient, adSlot, adFormat, containerId) {
     container.innerHTML = ""; // remove old ad
 
     const ins = document.createElement('ins');
-    ins.className = 'adsbygoogle custom-ad' + (adFormat ? '' : ' mobile ');
+    ins.className = 'adsbygoogle ' + (adFormat ? 'custom-ad' : 'custom-ad-mobile');
     ins.setAttribute('data-ad-client', adClient);
     ins.setAttribute('data-ad-slot', adSlot);
     if (adFormat) ins.setAttribute('data-ad-format', adFormat);
