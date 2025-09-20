@@ -32,6 +32,8 @@ window.addEventListener("load", function () {
     }
 });
 
+//setTimeout(() => { throw new Error('error test call'); }, 100);
+
 window.addEventListener("error", function (event) {
     if (event.filename?.includes("blazor.webassembly.js")) {
         showBrowserWarning();
@@ -45,6 +47,7 @@ window.addEventListener("error", function (event) {
             errorMessage: event.error.message,
             errorStack: event.error.stack,
             env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+            app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
             userAgent: navigator.userAgent,
             url: window.location.href
         };
@@ -52,6 +55,8 @@ window.addEventListener("error", function (event) {
         sendLog(`error: ${JSON.stringify(errorInfo)}`);
     }
 });
+
+//Promise.reject(new Error('unhandledrejection test call'));
 
 window.addEventListener("unhandledrejection", function (event) {
     const reasonMessage = event.reason?.message || 'Unknown error';
@@ -73,6 +78,7 @@ window.addEventListener("unhandledrejection", function (event) {
         reasonMessage: reasonMessage,
         reasonStack: reasonStack,
         env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+        app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
         userAgent: navigator.userAgent,
         url: window.location.href
     };
@@ -87,6 +93,7 @@ window.addEventListener("securitypolicyviolation", (event) => {
         sourceFile: event.sourceFile,
         lineNumber: event.lineNumber,
         env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
+        app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
         url: window.location.href
     };
 

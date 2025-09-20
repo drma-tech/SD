@@ -1,13 +1,12 @@
 // Google Analytics
 window.initGoogleAnalytics = function (code, version) {
+    SetLocalStorage("app-version", version);
+    const PLATFORM = GetLocalStorage("platform");
+
     if (!window.location.host.includes("localhost")) {
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag("js", new Date());
-
-        SetLocalStorage("app-version", version);
-
-        const PLATFORM = GetLocalStorage("platform");
 
         getUserInfo()
             .then(user => {
