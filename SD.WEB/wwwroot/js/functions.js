@@ -10,18 +10,6 @@ function sendLog(msg) {
     }).catch(() => { /* do nothing */ });
 }
 
-function share(url) {
-    if (!("share" in navigator) || window.isSecureContext === false) {
-        showError("Web Share API not supported.");
-        return;
-    }
-
-    navigator
-        .share({ url: url })
-        .then(() => console.log("Successful share"))
-        .catch(error => showError(error.message));
-}
-
 function jsSaveAsFile(filename, contentType, content) {
     // Create the URL
     const file = new File([content], filename, { type: contentType });

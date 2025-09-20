@@ -97,10 +97,10 @@ window.createAd = function (adClient, adSlot, adFormat, containerId) {
     container.innerHTML = ""; // remove old ad
 
     const ins = document.createElement('ins');
-    ins.className = 'adsbygoogle custom-ad';
+    ins.className = 'adsbygoogle custom-ad' + (adFormat ? '' : ' mobile ');
     ins.setAttribute('data-ad-client', adClient);
     ins.setAttribute('data-ad-slot', adSlot);
-    ins.setAttribute('data-ad-format', adFormat);
+    if (adFormat) ins.setAttribute('data-ad-format', adFormat);
     container.appendChild(ins);
 
     (adsbygoogle = window.adsbygoogle || []).push({});

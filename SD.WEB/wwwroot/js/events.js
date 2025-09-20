@@ -100,20 +100,17 @@ window.addEventListener("securitypolicyviolation", (event) => {
     sendLog(`securitypolicyviolation: ${JSON.stringify(obj)}`);
 });
 
-//const originalConsoleError = console.error;
-//console.error = function (...args) {
-//    // ERROS CORRIGÍVEIS: console.error() intencionais no código
-//    sendLog("console_error: " + args.join(" "));
-//    return originalConsoleError.apply(console, args);
-//};
-
+let resizeTimeout;
 window.addEventListener("resize", function () {
-    const divs = document.querySelectorAll('[id^="swiper-trailer-"]');
-    divs.forEach(function (el) {
-        if (window.initGrid) {
-            window.initGrid(el.id);
-        }
-    });
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function () {
+        const divs = document.querySelectorAll('[id^="swiper-trailer-"]');
+        divs.forEach(function (el) {
+            if (window.initGrid) {
+                window.initGrid(el.id);
+            }
+        });
+    }, 250);
 });
 
 window.addEventListener('offline', () => {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using MudBlazor.Services;
 using SD.WEB.Modules.Auth.Core;
 using System.Security.Claims;
 
@@ -14,6 +15,7 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
     [Inject] protected PrincipalApi PrincipalApi { get; set; } = null!;
 
     protected static Breakpoint Breakpoint => AppStateStatic.Breakpoint;
+    protected static BrowserWindowSize? BrowserWindowSize => AppStateStatic.BrowserWindowSize;
 
     /// <summary>
     /// Mandatory data to fill out the page/component without delay (essential for bots, SEO, etc.)
@@ -35,11 +37,10 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
         return Task.CompletedTask;
     }
 
-    private Action<Breakpoint> BreakpointChanged => client => StateHasChanged();
-
     protected override async Task OnInitializedAsync()
     {
-        AppStateStatic.BreakpointChanged += BreakpointChanged;
+        AppStateStatic.BreakpointChanged += client => StateHasChanged();
+        AppStateStatic.BrowserWindowSizeChanged += client => StateHasChanged();
         await LoadEssentialDataAsync();
     }
 
@@ -93,6 +94,9 @@ public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, 
     {
         AppStateStatic.Breakpoint = browserViewportEventArgs.Breakpoint;
         AppStateStatic.BreakpointChanged?.Invoke(browserViewportEventArgs.Breakpoint);
+
+        AppStateStatic.BrowserWindowSize = browserViewportEventArgs.BrowserWindowSize;
+        AppStateStatic.BrowserWindowSizeChanged?.Invoke(browserViewportEventArgs.BrowserWindowSize);
 
         return InvokeAsync(StateHasChanged);
     }

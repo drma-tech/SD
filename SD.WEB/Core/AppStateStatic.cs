@@ -1,5 +1,6 @@
 ﻿using Microsoft.JSInterop;
 using MudBlazor;
+using MudBlazor.Services;
 using SD.Shared.Models.Auth;
 using SD.WEB.Modules.Subscription.Core;
 using System.Globalization;
@@ -15,6 +16,9 @@ public static class AppStateStatic
 
     public static Breakpoint Breakpoint { get; set; }
     public static Action<Breakpoint>? BreakpointChanged { get; set; }
+
+    public static BrowserWindowSize? BrowserWindowSize { get; set; }
+    public static Action<BrowserWindowSize>? BrowserWindowSizeChanged { get; set; }
 
     public static string? Version { get; set; }
 

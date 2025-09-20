@@ -91,9 +91,4 @@
         return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, MediaType, tmdbId, IsAuthenticated);
     }
 
-    private async Task Share(string? link)
-    {
-        await JsRuntime.InvokeVoidAsync("share", link);
-    }
-
 }
