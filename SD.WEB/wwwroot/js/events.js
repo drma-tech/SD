@@ -69,8 +69,8 @@ window.addEventListener("unhandledrejection", function (event) {
 
     showError(reasonMessage);
 
-    if (reasonMessage.includes('Rejected') || reasonMessage.includes('Failed to register a ServiceWorker')) {
-        //just ignore, probably a bot
+    if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex/i.test(window.navigator.userAgent) && window.navigator.serviceWorker?.register) {
+        //just ignore, just a bot
         return;
     }
 
