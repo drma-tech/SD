@@ -78,6 +78,7 @@
 
                 if (principal == null)
                 {
+                    IsLoading = false; StateHasChanged();
                     Navigation.NavigateTo("/login-success");
                     return;
                 }
