@@ -29,7 +29,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4PREF5QX1F"></script>
 
-    <script src="js/functions.min.js?vs=20250924"></script>
+    <script src="js/functions.min.js?vs=20250927"></script>
     <script src="js/events.min.js?vs=20250925"></script>
     <script src="js/services.min.js?vs=20250925"></script>
 
@@ -74,23 +74,7 @@
                 });
         }
 
-        // check is browser is compatible with blazor
-        detectBrowserFeatures()
-            .then((ok) => {
-                if (!ok) {
-                    showBrowserWarning();
-
-                    const errorInfo = {
-                        env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
-                        app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
-                        userAgent: navigator.userAgent,
-                        url: window.location.href
-                    };
-
-                    sendLog(`browser not supported: ${JSON.stringify(errorInfo)}`);
-                }
-            });
-
+        window.checkBrowserFeatures();
         window.initUserBack();
     </script>
 
