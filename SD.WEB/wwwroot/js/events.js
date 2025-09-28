@@ -44,8 +44,8 @@ window.addEventListener("error", function (event) {
         const errorInfo = {
             message: event.message,
             filename: event.filename,
-            errorMessage: event.error.message,
-            errorStack: event.error.stack,
+            errorMessage: event.error?.message,
+            errorStack: event.error?.stack,
             env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
             app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
             userAgent: navigator.userAgent,

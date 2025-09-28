@@ -7,7 +7,7 @@
 @inject LoginApi LoginApi
 @inject IJSRuntime JsRuntime
 
-<SeoHeader Title="login-success" Description="login-success" Url="/best-awards-year" Index="false" Keywords="@([])"></SeoHeader>
+<SeoHeader Title="Login" Description="Login" Url="/login-success" Index="false" Keywords="@([])"></SeoHeader>
 
 @if (IsAuthenticated)
 {
@@ -49,13 +49,14 @@
     private bool _terms1 { get; set; } = false;
     private bool _terms2 { get; set; } = false;
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task LoadEssentialDataAsync()
     {
         try
         {
             if (IsAuthenticated)
             {
                 Principal = await PrincipalApi.Get(IsAuthenticated);
+                StateHasChanged();
 
                 if (Principal == null) //first access
                 {

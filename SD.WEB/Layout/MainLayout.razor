@@ -11,6 +11,7 @@
 
 @inject PrincipalApi PrincipalApi
 @inject NavigationManager Navigation
+@inject IpInfoApi IpInfoApi
 
 <MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@_darkMode" />
 <MudPopoverProvider />
@@ -113,6 +114,22 @@
             }
 
             AppStateStatic.ChangeDarkMode(darkMode ?? false);
+
+            //check if user consent to privacy and terms on first access (China only)
+            if (!AppStateStatic.IsAuthenticated)
+            {
+                var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
+
+                if (country.ToUpper() == "CN")
+                {
+                    var consent = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "consent");
+
+                    if (consent != "true")
+                    {
+                        Navigation.NavigateTo("/ask-consent");
+                    }
+                }
+            }
         }
     }
 
@@ -127,7 +144,7 @@
     {
         AppStateStatic.ShowError?.Invoke(error);
     }
-    
+
     [JSInvokable]
     public static string GetAppVersion()
     {
