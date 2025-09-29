@@ -116,7 +116,7 @@
             AppStateStatic.ChangeDarkMode(darkMode ?? false);
 
             //check if user consent to privacy and terms on first access (China only)
-            if (!AppStateStatic.IsAuthenticated)
+            if (!AppStateStatic.IsAuthenticated && !Navigation.Uri.Contains("/support/"))
             {
                 var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
 
