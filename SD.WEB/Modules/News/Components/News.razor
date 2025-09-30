@@ -18,8 +18,11 @@
                 @foreach (var item in NewsList?.Data?.Items ?? [])
                 {
                     <MudCard Outlined="true">
-                        <MudCardContent Style="padding: 0; text-align: justify; line-height: normal;">
+                        <MudCardContent Style="padding: 0; text-align: justify; line-height: normal; position: relative;">
                             <MudImage Src="@item.url_img" Alt="@item.title" FallbackSrc="images/no-image.png" Style="width: 100%;" ObjectFit="ObjectFit.Contain"></MudImage>
+                            <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.9;">
+                                @item.date.Humanize()
+                            </MudChip>
                             <h2 class="pa-2" style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
                                 @if (!string.IsNullOrEmpty(item.title))
                                 {

@@ -63,7 +63,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
 
                         foreach (var item in obj.Items.Take(10))
                         {
-                            compactModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link));
+                            compactModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link, item.date));
                         }
 
                         doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, "lastnews_compact"), cancellationToken);
@@ -74,7 +74,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
 
                         foreach (var item in obj.Items)
                         {
-                            fullModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link));
+                            fullModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link, item.date));
                         }
 
                         doc = await cacheRepo.UpsertItemAsync(new NewsCache(fullModels, "lastnews_full"), cancellationToken);
@@ -133,7 +133,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
                         foreach (var item in obj?.contents?.Take(12).Select(s => s.video) ?? [])
                         {
                             if (item == null) continue;
-                            compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url));
+                            compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url, item.publishedTimeText));
                         }
 
                         doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, "lasttrailers_compact"), cancellationToken);
@@ -145,7 +145,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
                         foreach (var item in obj?.contents?.Select(s => s.video) ?? [])
                         {
                             if (item == null) continue;
-                            fullModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[2].url));
+                            fullModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[2].url, item.publishedTimeText));
                         }
 
                         doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(fullModels, "lasttrailers_full"), cancellationToken);

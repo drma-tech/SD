@@ -18,6 +18,9 @@
                         <div class="swiper-slide" style="height: auto !important;">
                             <MudLink Href="@item.link" Target="_blank" rel="noindex, nofollow">
                                 <MudImage Src="@item.url_img" Alt="@item.title" FallbackSrc="images/no-image.png" Class="d-block" Style="width: 100%;" ObjectFit="ObjectFit.Contain"></MudImage>
+                                <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.9;">
+                                    @item.date.Humanize()
+                                </MudChip>
                                 <MudText Typo="Typo.caption" Class="carousel-caption d-none d-md-block p-1">
                                     @if (item.title != null)
                                     {

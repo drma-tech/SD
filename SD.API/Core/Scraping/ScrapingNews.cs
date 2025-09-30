@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using SD.Shared.Models.News;
+using System.Globalization;
 
 namespace SD.API.Core.Scraping;
 
@@ -22,16 +23,20 @@ public static class ScrapingNews
         var div = doc.DocumentNode.SelectNodes("//div[starts-with(@class,'panel-body')]/div")?.FirstOrDefault();
 
         if (div == null) return data;
-        
+
         var index = 0;
         foreach (var row in div.ChildNodes.Where(w => w.Name == "div"))
         {
             foreach (var col in row.ChildNodes.Where(w => w.Name == "div"))
             {
+                var raw = col.SelectNodes("a/div[2]/div/p[2]")?.FirstOrDefault()?.InnerText;
+                DateTime? date = raw != null ? DateTime.ParseExact(raw, "MMMM dd, yyyy", CultureInfo.InvariantCulture) : null;
+
                 var item = new Item
                 {
                     id = (++index).ToString(),
                     title = col.SelectNodes("a/div[2]/div/p[1]")?.FirstOrDefault()?.InnerHtml,
+                    date = date,
                     url_img = col.SelectNodes("a/div[1]/img")?.FirstOrDefault()?.GetAttributeValue("src", "url error"),
                     link = col.SelectNodes("a")?.FirstOrDefault()?.GetAttributeValue("href", "url error")
                 };
