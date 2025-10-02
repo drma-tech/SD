@@ -30,7 +30,7 @@ public static class ScrapingNews
             foreach (var col in row.ChildNodes.Where(w => w.Name == "div"))
             {
                 var raw = col.SelectNodes("a/div[2]/div/p[2]")?.FirstOrDefault()?.InnerText;
-                DateTime? date = raw != null ? DateTime.ParseExact(raw, "MMMM dd, yyyy", CultureInfo.InvariantCulture) : null;
+                DateTime? date = raw != null ? DateTime.ParseExact(raw, "MMMM d, yyyy", CultureInfo.InvariantCulture) : null;
 
                 var item = new Item
                 {

@@ -19,16 +19,13 @@ public class TmdbPopularApi(IHttpClientFactory factory) : ApiExternal(factory), 
 
         if (type == null)
         {
-            var movies =
-                await GetAsync<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter));
+            var movies = await GetAsync<MoviePopular>(TmdbOptions.BaseUri + "movie/popular".ConfigureParameters(parameter));
             var shows = await GetAsync<TVPopular>(TmdbOptions.BaseUri + "tv/popular".ConfigureParameters(parameter));
 
             var listOrder = new List<Order>();
 
-            listOrder.AddRange(movies?.results.Select(s => new Order
-                { Id = s.id, Type = MediaType.movie, Popularity = s.popularity }) ?? []);
-            listOrder.AddRange(shows?.results.Select(s => new Order
-                { Id = s.id, Type = MediaType.tv, Popularity = s.popularity }) ?? []);
+            listOrder.AddRange(movies?.results.Select(s => new Order { Id = s.id, Type = MediaType.movie, Popularity = s.popularity }) ?? []);
+            listOrder.AddRange(shows?.results.Select(s => new Order { Id = s.id, Type = MediaType.tv, Popularity = s.popularity }) ?? []);
 
             foreach (var ordem in listOrder.OrderByDescending(o => o.Popularity))
                 if (ordem.Type == MediaType.movie)

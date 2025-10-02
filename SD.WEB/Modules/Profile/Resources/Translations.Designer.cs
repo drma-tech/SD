@@ -124,33 +124,6 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create Free Account.
-        /// </summary>
-        public static string HeroButton {
-            get {
-                return ResourceManager.GetString("HeroButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start managing your streaming life today — it&apos;s free!.
-        /// </summary>
-        public static string HeroCall {
-            get {
-                return ResourceManager.GetString("HeroCall", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Note: This is not a platform to stream or watch content..
-        /// </summary>
-        public static string HeroNote {
-            get {
-                return ResourceManager.GetString("HeroNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Identification.
         /// </summary>
         public static string Identification {
@@ -291,51 +264,6 @@ namespace SD.WEB.Modules.Profile.Resources {
         public static string Subscription {
             get {
                 return ResourceManager.GetString("Subscription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Top Features.
-        /// </summary>
-        public static string TopFeatures {
-            get {
-                return ResourceManager.GetString("TopFeatures", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Discover What&apos;s Trending.
-        /// </summary>
-        public static string TopFeaturesTitle1 {
-            get {
-                return ResourceManager.GetString("TopFeaturesTitle1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Find New Streaming Platforms.
-        /// </summary>
-        public static string TopFeaturesTitle2 {
-            get {
-                return ResourceManager.GetString("TopFeaturesTitle2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Manage Your Platforms and Wishlists.
-        /// </summary>
-        public static string TopFeaturesTitle3 {
-            get {
-                return ResourceManager.GetString("TopFeaturesTitle3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Explore Curated Collections.
-        /// </summary>
-        public static string TopFeaturesTitle4 {
-            get {
-                return ResourceManager.GetString("TopFeaturesTitle4", resourceCulture);
             }
         }
         

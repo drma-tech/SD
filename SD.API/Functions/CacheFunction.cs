@@ -81,10 +81,10 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
                     }
                 }
 
-                await SaveCache(doc, cacheKey, TtlCache.HalfDay);
+                await SaveCache(doc, cacheKey, TtlCache.SixHours);
             }
 
-            return await req.CreateResponse(doc, TtlCache.HalfDay, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -353,7 +353,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
             }
             else
             {
-                if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get ratings for new releases (one week)
+                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (one week)
 
                 doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
 
@@ -416,7 +416,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
             }
             else
             {
-                if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get ratings for new releases (one week)
+                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (one week)
 
                 doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
 
@@ -620,7 +620,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
 
     private static TtlCache CalculateTtl(DateTime releaseDate)
     {
-        if (releaseDate > DateTime.Now.AddDays(-14)) // 1 week launch or future releases
+        if (releaseDate > DateTime.Now.AddDays(-7)) // 1 week launch or future releases
         {
             return TtlCache.OneWeek;
         }

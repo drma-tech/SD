@@ -14,6 +14,7 @@
 @inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
+@inject TmdbRecommendationsApi TmdbRecommendationsApi
 
 @inject IJSRuntime JS
 
@@ -34,7 +35,9 @@
                     <MediaStreaming TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaStreaming>
                 </BodyFragment>
             </SectionComponent>
+
             <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media2" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+
             <SectionComponent Title="Videos" Color="Color.Secondary" Visible="@(Media != null && Media.Videos.Any())">
                 <BodyFragment>
                     @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])
@@ -65,7 +68,9 @@
                     </CreditsComponent>
                 </BodyFragment>
             </SectionComponent>
+
             <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media3" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+
             <SectionComponent Title="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
                 <BodyFragment>
                     <div class="grid-relative-container-md">
@@ -116,6 +121,25 @@
                     </div>
                 </BodyFragment>
             </SectionComponent>
+            <SectionComponent Title="Recommendations" Color="Color.Secondary">
+                <BodyFragment>
+                    <div id="@_swiperId" class="swiper">
+                        <div class="swiper-wrapper">
+                            @foreach (var item in Recommendations)
+                            {
+                                <div class="swiper-slide" style="height: auto !important;">
+                                    <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                                     Date="@item.release_date" RankUpDown="@item.RankUpDown" Rating="@item.rating"
+                                                     WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments">
+                                    </PosterComponent>
+                                </div>
+                            }
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </BodyFragment>
+            </SectionComponent>
             <SectionComponent Title="Reviews" Color="Color.Secondary">
                 <BodyFragment>
                     @if (ImdbId.NotEmpty())
@@ -159,6 +183,23 @@
     private RenderControlCore<CacheDocument<Ratings>?> CoreRatings { get; set; } = new();
     private CacheDocument<Ratings>? _ratingsCache;
 
+    private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
+    public HashSet<MediaDetail> Recommendations { get; set; } = [];
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            await JS.InvokeVoidAsync("initSwiper", _swiperId);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
     protected override async Task LoadEssentialDataAsync()
     {
         Core?.LoadingStarted?.Invoke();
@@ -190,11 +231,25 @@
         {
             _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), CoreRatings);
         }
+
+        Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId);
     }
 
     protected override async Task LoadNonEssentialDataAsync()
     {
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
+    }
+
+    private async Task OpenPopupMedia(MediaDetail? media)
+    {
+        try
+        {
+            await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, media?.tmdb_id, IsAuthenticated);
+        }
+        catch (Exception ex)
+        {
+            Core?.ShowError(ex.Message);
+        }
     }
 
 }
