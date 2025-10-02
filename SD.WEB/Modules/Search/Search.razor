@@ -10,12 +10,12 @@
 
 <SeoHeader Title="Search" Description="@SeoTranslations.AppDescription" Url="/search/{SearchContent}" Index="false" Keywords="@([])"></SeoHeader>
 
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Search" IsAuthenticated="IsAuthenticated" Format="horizontal"></GoogleAdSense>
+
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@SearchContent" Immediate="true" OnKeyDown="@KeyPress"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="Adornment.End" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
-              OnAdornmentClick="@(() => Navigation.NavigateTo($"/search/{SearchContent}", true))" Class="mb-4">
+              OnAdornmentClick="@(() => Navigation.NavigateTo($"/search/{SearchContent}", true))" Class="my-6">
 </MudTextField>
-
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Search" IsAuthenticated="IsAuthenticated" Format="horizontal"></GoogleAdSense>
 
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())" CustomMessageWarning="@GlobalTranslations.SearchReturnedNothing">
     <MediaListFull MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false" FullPage="true"

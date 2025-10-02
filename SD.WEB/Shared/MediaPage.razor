@@ -38,39 +38,6 @@
 
             <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media2" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
-            <SectionComponent Title="Videos" Color="Color.Secondary" Visible="@(Media != null && Media.Videos.Any())">
-                <BodyFragment>
-                    @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])
-                    {
-                        <MudPaper Outlined="true" Class="pa-2 mb-2">
-                            <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                                @group
-                            </MudText>
-                            <MudDivider Class="mb-2"></MudDivider>
-                            <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap">
-                                @foreach (var item in Media?.Videos.Where(w => w.type == group) ?? [])
-                                {
-                                    <div>
-                                        <MudIcon Icon="@IconsFA.Brands.Icon("youtube").Font" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
-                                        <MudLink Href="@($"https://www.youtube.com/watch?v={item.key}")" Target="_blank" Color="Color.Secondary">
-                                            @item.name
-                                        </MudLink>
-                                    </div>
-                                }
-                            </MudStack>
-                        </MudPaper>
-                    }
-                </BodyFragment>
-            </SectionComponent>
-            <SectionComponent Title="@Translations.TabCredits" Color="Color.Secondary">
-                <BodyFragment>
-                    <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" IsAuthenticated="IsAuthenticated">
-                    </CreditsComponent>
-                </BodyFragment>
-            </SectionComponent>
-
-            <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media3" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
-
             <SectionComponent Title="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
                 <BodyFragment>
                     <div class="grid-relative-container-md">
@@ -138,6 +105,39 @@
                         <div class="swiper-button-next"></div>
                         <div class="swiper-button-prev"></div>
                     </div>
+                </BodyFragment>
+            </SectionComponent>
+            <SectionComponent Title="Videos" Color="Color.Secondary" Visible="@(Media != null && Media.Videos.Any())">
+                <BodyFragment>
+                    @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])
+                    {
+                        <MudPaper Outlined="true" Class="pa-2 mb-2">
+                            <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                                @group
+                            </MudText>
+                            <MudDivider Class="mb-2"></MudDivider>
+                            <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap">
+                                @foreach (var item in Media?.Videos.Where(w => w.type == group) ?? [])
+                                {
+                                    <div>
+                                        <MudIcon Icon="@IconsFA.Brands.Icon("youtube").Font" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
+                                        <MudLink Href="@($"https://www.youtube.com/watch?v={item.key}")" Target="_blank" Color="Color.Secondary">
+                                            @item.name
+                                        </MudLink>
+                                    </div>
+                                }
+                            </MudStack>
+                        </MudPaper>
+                    }
+                </BodyFragment>
+            </SectionComponent>
+
+            <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media3" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+
+            <SectionComponent Title="@Translations.TabCredits" Color="Color.Secondary">
+                <BodyFragment>
+                    <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" IsAuthenticated="IsAuthenticated">
+                    </CreditsComponent>
                 </BodyFragment>
             </SectionComponent>
             <SectionComponent Title="Reviews" Color="Color.Secondary">
