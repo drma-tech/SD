@@ -15,7 +15,7 @@
 @inject IJSRuntime JS
 
 <SeoHeader Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")"
-           Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Keywords="@([Provider?.name])" TitleShort="true">
+           Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Keywords="@([Provider?.name])">
 </SeoHeader>
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
