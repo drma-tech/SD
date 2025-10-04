@@ -41,7 +41,7 @@ public static class AppStateStatic
 
             if (cache.Empty() && js != null) //shouldn't happen (because it's called in index.html)
             {
-                await js.InvokeVoidAsync("TryDetectPlatform");
+                await js.InvokeVoidAsync("LoadAppVariables");
                 cache = await js.InvokeAsync<string>("GetLocalStorage", "platform");
             }
 
