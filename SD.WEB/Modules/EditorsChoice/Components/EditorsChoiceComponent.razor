@@ -4,16 +4,16 @@
 
 @inject TmdbListApi TmdbListApi
 
-<SectionComponent Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" IconName="@IconsFA.Solid.Icon("award").Font">
+<PageSection Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font">
     <ActionFragment>
         <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary" Class="me-2"
-                        CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0">
+                        CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0" Size="Size.Small">
             <MudToggleItem Value="@MediaType.movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
                 <MudHidden Breakpoint="Breakpoint.SmAndUp">
                     <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()"></MudIcon>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                    <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@MediaType.movie.GetName()</MudText>
+                    <MudText Inline="true">@MediaType.movie.GetName()</MudText>
                 </MudHidden>
             </MudToggleItem>
             <MudToggleItem Value="@MediaType.tv" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
@@ -21,27 +21,27 @@
                     <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@MediaType.movie.GetName()"></MudIcon>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                    <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@MediaType.tv.GetName()</MudText>
+                    <MudText Inline="true">@MediaType.tv.GetName()</MudText>
                 </MudHidden>
             </MudToggleItem>
         </MudToggleGroup>
-        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@($"/editors-choice/{TypeSelected}")" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@($"/editors-choice/{TypeSelected}")" Size="Size.Small" />
     </ActionFragment>
     <BodyFragment>
         @if (TypeSelected == MediaType.movie)
         {
             <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish"
-                       IsAuthenticated="IsAuthenticated" ShowHead="false" FullPage="true">
+                       IsAuthenticated="IsAuthenticated" ShowHead="false">
             </MediaList>
         }
         else if (TypeSelected == MediaType.tv)
         {
             <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish"
-                       IsAuthenticated="IsAuthenticated" ShowHead="false" FullPage="true">
+                       IsAuthenticated="IsAuthenticated" ShowHead="false">
             </MediaList>
         }
     </BodyFragment>
-</SectionComponent>
+</PageSection>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }

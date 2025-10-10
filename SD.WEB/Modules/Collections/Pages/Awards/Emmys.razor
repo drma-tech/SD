@@ -11,9 +11,9 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<PageHeader Title="Emmy Awards" Image="logo/emmy-awards.png" Description="@SD.WEB.Resources.Credit.EmmyAwards" Link="https://www.emmys.com/"></PageHeader>
 
-<HeadPage Title="Emmy Awards" ImageSource="logo/emmy-awards.png" Text="@SD.WEB.Resources.Credit.EmmyAwards" Link="https://www.emmys.com/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.EmmysOutstandingDramaSeries" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            IsAuthenticated="IsAuthenticated" OrderByComments="true">

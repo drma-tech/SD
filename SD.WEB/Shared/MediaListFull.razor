@@ -8,29 +8,30 @@
 @inject TmdbCreditApi TmdbCreditApi
 @inject IJSRuntime JS
 
-<SectionComponent Title="@GetTitle" IconImage="@IconImage" IconName="@IconName" ShowHead="ShowHead" FullPage="FullPage" Description="@Description">
-    <BodyFragment>
-        <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
-            <div class="grid-relative-container-md">
-                @foreach (var item in Items)
-                {
-                    <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" OnlyYear="OnlyYear" FullPage="FullPage"
-                                     Comments="@item.comments" CommentsSeparator="@CommentsSeparator" TmdbId="@item.tmdb_id" MediaType="@item.MediaType"
-                                     Clicked="@(() => OpenPopupMedia(item))" WatchedList="Watched" WishList="Wish" CommentsIsImage="CommentsIsImage">
-                    </PosterComponent>
-                }
-            </div>
-        </RenderControl>
-        @if (MediaListApi != null)
+@if (ShowHead)
+{
+    <PageHeader Title="@GetTitle" Subtitle="@SubtitleHead" Icon="@Icon" Description="@Description"></PageHeader>
+}
+
+<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+    <div class="grid-relative-container-poster">
+        @foreach (var item in Items)
         {
-            <div style="text-align: center;" class="pt-3">
-                <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Primary" OnClick="@LoadMore" Disabled="@DisableLoadMore" Variant="Variant.Outlined">
-                    @Button.LoadMore
-                </MudButton>
-            </div>
+            <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" OnlyYear="OnlyYear" FullPage="FullPage"
+                             Comments="@item.comments" CommentsSeparator="@CommentsSeparator" TmdbId="@item.tmdb_id" MediaType="@item.MediaType"
+                             Clicked="@(() => OpenPopupMedia(item))" WatchedList="Watched" WishList="Wish" CommentsIsImage="CommentsIsImage">
+            </PosterComponent>
         }
-    </BodyFragment>
-</SectionComponent>
+    </div>
+</RenderControl>
+@if (MediaListApi != null)
+{
+    <div style="text-align: center;" class="pt-3">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Primary" OnClick="@LoadMore" Disabled="@DisableLoadMore" Variant="Variant.Outlined">
+            @Button.LoadMore
+        </MudButton>
+    </div>
+}
 
 @if (!Popup)
 {
@@ -47,9 +48,9 @@
 
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
+    [Parameter] public string? SubtitleHead { get; set; }
     [Parameter] public string? Description { get; set; }
-    [Parameter] public string? IconImage { get; set; }
-    [Parameter] public string? IconName { get; set; }
+    [Parameter] public string? Icon { get; set; }
     [Parameter] public bool FullPage { get; set; } = false;
     [Parameter] public bool Popup { get; set; } = false;
     [Parameter] public bool OnlyYear { get; set; }
@@ -137,6 +138,12 @@
         else
         {
             tmdbId = media?.tmdb_id;
+        }
+
+        if (tmdbId.Empty())
+        {
+            Snackbar.Add("Unable to display this content. Please try again later.", Severity.Error);
+            return;
         }
 
         if (media?.MediaType == MediaType.person)

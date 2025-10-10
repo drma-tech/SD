@@ -16,8 +16,7 @@
            Keywords="@(["platforms", "streaming", "Netflix", "Disney", "Apple", "Amazon Prime"])"></SeoHeader>
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
-<SectionComponent Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription"
-                  FullPage="true" MainPage="true">
+<PageHeader Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
     <ActionFragment>
         <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Placeholder="Filter">
             @foreach (var item in DeliveryModels)
@@ -26,57 +25,56 @@
             }
         </MudSelect>
     </ActionFragment>
-    <BodyFragment>
-        <RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null || obj.Items.Empty())">
-            <div class="grid-relative-container-sm">
-                @foreach (var item in GetFilteredProviders())
-                {
-                    var favorite = MyProviders?.Items.Any(a => a.id == item.id) ?? false;
+</PageHeader>
 
-                    <div>
-                        <MudLink Href="@($"/platforms/{item.id}")" Style="position: relative;">
-                            <MudCard Outlined="true">
-                                <MudCardContent Style="padding: 0;">
-                                    <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" FallbackSrc="images/no-image.png"
-                                              Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
-                                    @if (favorite)
-                                    {
-                                        <MudChip T="string" Icon="@IconsFA.Solid.Icon("star").Font" Color="Color.Success" Size="Size.Medium" Label="true" Class="chip-no-text"
-                                                 Style="padding: 0.2rem; position: absolute; top: 0; right: 0; white-space: inherit; height: auto; width: 26.4px; z-index: 1;">
-                                        </MudChip>
-                                    }
-                                </MudCardContent>
-                                <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
-                                    <MudText Typo="Typo.h3" Class="custom-h3-list">@item.name</MudText>
-                                </MudCardContent>
-                            </MudCard>
-                        </MudLink>
-                        <AuthorizeView Roles="administrator">
-                            <Authorized>
-                                @*  @if (string.IsNullOrEmpty(item.link))
+<RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null || obj.Items.Empty())">
+    <div class="grid-relative-container-platform">
+        @foreach (var item in GetFilteredProviders())
+        {
+            var favorite = MyProviders?.Items.Any(a => a.id == item.id) ?? false;
+
+            <div>
+                <MudLink Href="@($"/platforms/{item.id}")" Style="position: relative;">
+                    <MudCard Outlined="true">
+                        <MudCardContent Style="padding: 0;">
+                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" FallbackSrc="images/no-image.png"
+                                      Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
+                            @if (favorite)
+                            {
+                                <MudChip T="string" Icon="@IconsFA.Solid.Icon("star").Font" Color="Color.Success" Size="Size.Medium" Label="true" Class="chip-no-text"
+                                         Style="padding: 0.2rem; position: absolute; top: 0; right: 0; white-space: inherit; height: auto; width: 26.4px; z-index: 1;">
+                                </MudChip>
+                            }
+                        </MudCardContent>
+                        <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
+                            <MudText Typo="Typo.h2" Class="custom-title-list">@item.name</MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </MudLink>
+                <AuthorizeView Roles="administrator">
+                    <Authorized>
+                        @*  @if (string.IsNullOrEmpty(item.link))
                         {
                             <p class="m-0" style="color: red">link</p>
                         } *@
-                                @*  @if (string.IsNullOrEmpty(item.description))
+                        @*  @if (string.IsNullOrEmpty(item.description))
                         {
                             <p class="m-0" style="color: red">description</p>
                         } *@
-                                @if (item.models.Empty())
-                                {
-                                    <p class="m-0" style="color: red">model</p>
-                                }
-                                @*  @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && item.plans.Empty())
+                        @if (item.models.Empty())
+                        {
+                            <p class="m-0" style="color: red">model</p>
+                        }
+                        @*  @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && item.plans.Empty())
                         {
                             <p class="m-0" style="color: red">plan</p>
                         } *@
-                            </Authorized>
-                        </AuthorizeView>
-                    </div>
-                }
+                    </Authorized>
+                </AuthorizeView>
             </div>
-        </RenderControl>
-    </BodyFragment>
-</SectionComponent>
+        }
+    </div>
+</RenderControl>
 
 @code {
     public RenderControlCore<AllProviders?>? Core { get; set; } = new();
@@ -103,7 +101,7 @@
     {
         base.OnInitialized();
 
-        AppStateStatic.RegionChanged += region => StateHasChanged();
+        AppStateStatic.RegionChanged += region => { Region = region; StateHasChanged(); };
     }
 
     protected override async Task LoadEssentialDataAsync()

@@ -11,9 +11,9 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<PageHeader Title="Oscar" Image="logo/oscar.png" Description="@SD.WEB.Resources.Credit.Oscar" Link="https://www.oscars.org/"></PageHeader>
 
-<HeadPage Title="Oscar" ImageSource="logo/oscar.png" Text="@SD.WEB.Resources.Credit.Oscar" Link="https://www.oscars.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.OscarBestMotionPicture" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            IsAuthenticated="IsAuthenticated">

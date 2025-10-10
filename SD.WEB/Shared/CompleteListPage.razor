@@ -25,19 +25,17 @@
 
 <SeoHeader Title="@($"{Title}")" Description="@SeoTranslations.AppDescription" Keywords="@(new[] { Title })" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")"></SeoHeader>
 
-<SectionComponent Title="@($"{Title}")" FullPage="true">
-    <BodyFragment>
-        @if (MediaListApi != null)
-        {
-            <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) => { Items = list; StateHasChanged(); })"
-                           IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" DetectRegions="DetectRegions"
-                           StringParameters="StringParameters" List="List" TitleHead="@Title" ShowHead="false" FullPage="true"
-                           Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated"
-                           CommentsIsImage="CommentsIsImage" OrderByComments="OrderByComments" OnlyYear="OnlyYear">
-            </MediaListFull>
-        }
-    </BodyFragment>
-</SectionComponent>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+
+@if (MediaListApi != null)
+{
+    <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) => { Items = list; StateHasChanged(); })"
+                   IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" DetectRegions="DetectRegions"
+                   StringParameters="StringParameters" List="List" TitleHead="@Title" ShowHead="false" FullPage="true"
+                   Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated"
+                   CommentsIsImage="CommentsIsImage" OrderByComments="OrderByComments" OnlyYear="OnlyYear">
+    </MediaListFull>
+}
 
 @code {
     [Parameter] public string? id { get; set; }

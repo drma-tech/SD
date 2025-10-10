@@ -4,62 +4,60 @@
 
 @inject ImdbPopularApi ImdbPopularApi
 
-<SectionComponent Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" IconName="@IconsFA.Solid.Icon("fire").Font">
+<PageSection Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font">
     <ActionFragment>
-        <MudBadge Content="@("New")" Color="Color.Secondary" Overlap="true" Bordered="true">
-            <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary"
-                            CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0">
-                <MudToggleItem Value="@PopularType.Movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
-                    <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                        <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@PopularType.Movie.GetName()"></MudIcon>
-                    </MudHidden>
-                    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                        <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@PopularType.Movie.GetName()</MudText>
-                    </MudHidden>
-                </MudToggleItem>
-                <MudToggleItem Value="@PopularType.Show" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
-                    <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                        <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@PopularType.Show.GetName()"></MudIcon>
-                    </MudHidden>
-                    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                        <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@PopularType.Show.GetName()</MudText>
-                    </MudHidden>
-                </MudToggleItem>
-                <MudToggleItem Value="@PopularType.Star" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
-                    <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                        <MudIcon Icon="@IconsFA.Solid.Icon("star").Font" Title="@PopularType.Star.GetName()"></MudIcon>
-                    </MudHidden>
-                    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                        <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@PopularType.Star.GetName()</MudText>
-                    </MudHidden>
-                </MudToggleItem>
-            </MudToggleGroup>
-        </MudBadge>
+        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary"
+                        CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0" Size="Size.Small">
+            <MudToggleItem Value="@PopularType.Movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
+                <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@PopularType.Movie.GetName()"></MudIcon>
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                    <MudText Inline="true">@PopularType.Movie.GetName()</MudText>
+                </MudHidden>
+            </MudToggleItem>
+            <MudToggleItem Value="@PopularType.Show" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
+                <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@PopularType.Show.GetName()"></MudIcon>
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                    <MudText Inline="true">@PopularType.Show.GetName()</MudText>
+                </MudHidden>
+            </MudToggleItem>
+            <MudToggleItem Value="@PopularType.Star" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
+                <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("star").Font" Title="@PopularType.Star.GetName()"></MudIcon>
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                    <MudText Inline="true">@PopularType.Star.GetName()</MudText>
+                </MudHidden>
+            </MudToggleItem>
+        </MudToggleGroup>
     </ActionFragment>
     <BodyFragment>
         @if (TypeSelected == PopularType.Movie)
         {
-            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" FullPage="true"
+            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false"
                        StringParameters="Params" TypeSelected="MediaType.movie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                        OnlyYear="true" IsAuthenticated="IsAuthenticated">
             </MediaList>
         }
         else if (TypeSelected == PopularType.Show)
         {
-            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" FullPage="true"
+            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false"
                        StringParameters="Params" TypeSelected="MediaType.tv" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                        OnlyYear="true" IsAuthenticated="IsAuthenticated">
             </MediaList>
         }
         else if (TypeSelected == PopularType.Star)
         {
-            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" FullPage="true" Popup="true"
+            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" Popup="true"
                        StringParameters="Params" TypeSelected="MediaType.person" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                        OnlyYear="true" IsAuthenticated="IsAuthenticated">
             </MediaList>
         }
     </BodyFragment>
-</SectionComponent>
+</PageSection>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }

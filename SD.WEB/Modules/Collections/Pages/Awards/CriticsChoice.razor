@@ -10,11 +10,10 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<PageHeader Title="Critics Choice" Image="logo/critics.png" Description="@SD.WEB.Resources.Credit.CriticsChoiceAwards" Link="https://www.criticschoice.com/">
+</PageHeader>
 
-<HeadPage Title="Critics Choice" ImageSource="logo/critics.png" Text="@SD.WEB.Resources.Credit.CriticsChoiceAwards"
-          Link="https://www.criticschoice.com/" IsAuthenticated="IsAuthenticated">
-</HeadPage>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CriticsChoiceBestPicture" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            IsAuthenticated="IsAuthenticated">

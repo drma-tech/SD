@@ -13,7 +13,7 @@
 <MudDialog Style="width: 100%">
     <DialogContent>
         <RenderControl Core="Core" Model="Collection" ExpressionEmpty="@((TmdbCollection? obj) => obj == null || obj.parts.Empty())">
-            <div class="grid-relative-container-md mb-2">
+            <div class="grid-relative-container-poster mb-2">
                 @foreach (var item in Collection?.parts.OrderBy(o => o.release_date.GetDate() ?? DateTime.MaxValue) ?? Enumerable.Empty<Part>())
                 {
                     var logo = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path;

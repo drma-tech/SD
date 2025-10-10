@@ -11,11 +11,10 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<PageHeader Title="Metacritic" Image="logo/metacritic.png" Description="@SD.WEB.Resources.Credit.Metacritic" Link="https://www.metacritic.com/">
+</PageHeader>
 
-<HeadPage Title="Metacritic" ImageSource="logo/metacritic.png" Text="@SD.WEB.Resources.Credit.Metacritic"
-          Link="https://www.metacritic.com/" IsAuthenticated="IsAuthenticated">
-</HeadPage>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            IsAuthenticated="IsAuthenticated">

@@ -10,11 +10,10 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<PageHeader Title="Festival de Cannes" Image="logo/festival-cannes.png" Description="@SD.WEB.Resources.Credit.FestivalCannes" Link="https://www.festival-cannes.com/en/">
+</PageHeader>
 
-<HeadPage Title="Festival de Cannes" ImageSource="logo/festival-cannes.png" Text="@SD.WEB.Resources.Credit.FestivalCannes"
-          Link="https://www.festival-cannes.com/en/" IsAuthenticated="IsAuthenticated">
-</HeadPage>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.FestivalCannesPalme" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            IsAuthenticated="IsAuthenticated">

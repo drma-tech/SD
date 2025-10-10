@@ -15,9 +15,9 @@
 @inject IpInfoApi IpInfoApi
 @inject IJSRuntime JsRuntime
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<PageHeader Title="TMDB" Image="logo/tmdb.png" Description="@SD.WEB.Resources.Credit.TMDB" Link="https://www.themoviedb.org/"></PageHeader>
 
-<HeadPage Title="TMDB" ImageSource="logo/tmdb.png" Text="@SD.WEB.Resources.Credit.TMDB" Link="https://www.themoviedb.org/" IsAuthenticated="IsAuthenticated"></HeadPage>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbPopularApi" CustomExpand="@("/collections/tmdb/popular/{0}")" ShowFilter="true"
            Watched="WatchedList" Watching="WatchingList" Wish="WishList" IsAuthenticated="IsAuthenticated">

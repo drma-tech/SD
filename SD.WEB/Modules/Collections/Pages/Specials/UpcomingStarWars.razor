@@ -9,9 +9,9 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<PageHeader Title="Upcoming Star Wars Movies & TV Shows" Image="logo/star-wars.png" Description="@SD.WEB.Resources.Credit.UpcomingStarWarsMoviesTVShows"></PageHeader>
 
-<HeadPage Title="Upcoming Star Wars Movies & TV Shows" ImageSource="logo/star-wars.png" Text="@SD.WEB.Resources.Credit.UpcomingStarWarsMoviesTVShows" IsAuthenticated="IsAuthenticated"></HeadPage>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingStarWarsMoviesTvShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                IsAuthenticated="IsAuthenticated" FullPage="true" ShowHead="false">

@@ -3,80 +3,23 @@
 
 <SeoHeader Title="About Us" Description="@SeoTranslations.AppDescription" Url=@($"/support/about-us") Keywords="@(["about us"])"></SeoHeader>
 
-<style>
-    .terms-container {
-        max-width: 900px;
-        margin: 32px auto;
-        padding: 40px 24px 32px 24px;
-        background: var(--mud-palette-background, #fff);
-        border-radius: 12px;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.09);
-    }
-
-    .terms-title {
-        text-align: center;
-        font-size: 2.2rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        color: var(--mud-palette-text-primary, #222);
-    }
-
-    .terms-subtitle {
-        text-align: center;
-        color: var(--mud-palette-text-secondary, #555);
-        font-size: 1.1rem;
-        margin-bottom: 2.2rem;
-    }
-
-    .terms-section {
-        margin-bottom: 2.2rem;
-    }
-
-        .terms-section h2 {
-            margin-bottom: 0.7rem;
-            color: var(--mud-palette-primary, #1976d2);
-            font-size: 1.18rem;
-            font-weight: 500;
-        }
-
-        .terms-section p {
-            text-align: justify;
-            margin-bottom: 0.5rem;
-            color: var(--mud-palette-text-primary, #333);
-            line-height: 1.7;
-        }
-
-        .terms-section ul {
-            text-align: justify;
-            margin-bottom: 0.5rem;
-            color: var(--mud-palette-text-primary, #333);
-            line-height: 1.7;
-            padding-left: 1.4rem;
-            list-style-type: disc;
-        }
-
-            .terms-section ul li {
-                padding-left: 0.1rem;
-            }
-</style>
-
-<div class="terms-container">
+<div class="support-container">
     @if (Language == AppLanguage.pt)
     {
-        <div class="terms-title">Sobre a DRMA Tech</div>
-        <div class="terms-subtitle">
+        <div class="support-title">Sobre a DRMA Tech</div>
+        <div class="support-subtitle">
             Bem-vindo à <b>DRMA Tech</b> (<a href="https://www.drma-tech.com" target="_blank">www.drma-tech.com</a>)!<br />
             Criamos ferramentas inteligentes que conectam pessoas ao que realmente combina com elas — tornando decisões mais fáceis, alinhadas e construídas ao redor de quem realmente são.
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>1. Nossa Missão</h2>
             <p>Na DRMA Tech, focamos em construir ferramentas que simplifiquem a tomada de decisões, conectando usuários ao que realmente se encaixa em suas necessidades e valores. Queremos que a tecnologia seja intuitiva, útil e alinhada com a forma como as pessoas vivem.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>2. Quem Somos</h2>
             <p>Somos uma equipe pequena, mas apaixonada, registrada na Estônia, combinando desenvolvimento de software, análise de dados e design. Gostamos de criar coisas que realmente ajudam as pessoas e nos importamos profundamente com privacidade, transparência e confiança.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>3. Nossos Produtos</h2>
             <ul>
                 <li><b>Streaming Discovery:</b> Gerencie todo o seu conteúdo de streaming em um só lugar, acompanhe o que assistiu, organize plataformas e explore listas selecionadas de filmes premiados, favoritos da crítica e joias escondidas.</li>
@@ -84,15 +27,15 @@
             </ul>
             <p>Estamos constantemente trabalhando em novos projetos e melhorias, e estamos empolgados com o que vem por aí — mas, por enquanto, estes são nossos produtos principais.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>4. Privacidade & Dados</h2>
             <p>Você pode usar nossas ferramentas de forma anônima. Quando cria uma conta, coletamos apenas dados mínimos como e-mail, horários de login, endereço de IP e informações do dispositivo — apenas para manter tudo seguro, personalizado e funcionando corretamente. Respeitamos a privacidade e seguimos leis internacionais como GDPR e LGPD.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>5. Legal & Conformidade</h2>
             <p>Respeitamos propriedade intelectual e direitos autorais. Não hospedamos nem fornecemos streaming de conteúdo de terceiros. Nossa plataforma opera sob a lei estoniana, e os usuários são responsáveis por seguir as regulamentações locais.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>6. Contato</h2>
             <p>Se você tiver dúvidas, feedback ou quiser apenas dizer oi, pode visitar nossa <a href="/support">página de suporte</a> ou usar as ferramentas de contato na plataforma.</p>
         </div>
@@ -102,20 +45,20 @@
     }
     else if (Language == AppLanguage.es)
     {
-        <div class="terms-title">Sobre DRMA Tech</div>
-        <div class="terms-subtitle">
+        <div class="support-title">Sobre DRMA Tech</div>
+        <div class="support-subtitle">
             ¡Bienvenido a <b>DRMA Tech</b> (<a href="https://www.drma-tech.com" target="_blank">www.drma-tech.com</a>)!<br />
             Creamos herramientas inteligentes que conectan a las personas con lo que realmente les encaja — haciendo que las decisiones sean más fáciles, alineadas y construidas alrededor de quienes realmente son.
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>1. Nuestra Misión</h2>
             <p>En DRMA Tech, nos enfocamos en construir herramientas que simplifiquen la toma de decisiones, conectando a los usuarios con lo que realmente se ajusta a sus necesidades y valores. Queremos que la tecnología sea intuitiva, útil y alineada con la forma en que las personas viven.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>2. Quiénes Somos</h2>
             <p>Somos un equipo pequeño pero apasionado, registrado en Estonia, combinando desarrollo de software, análisis de datos y diseño. Nos encanta crear cosas que realmente ayudan a las personas y nos importa profundamente la privacidad, la transparencia y la confianza.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>3. Nuestros Productos</h2>
             <ul>
                 <li><b>Streaming Discovery:</b> Administra todo tu contenido de streaming en un solo lugar, sigue lo que has visto, organiza plataformas y explora listas seleccionadas de películas premiadas, favoritas de la crítica y joyas escondidas.</li>
@@ -123,15 +66,15 @@
             </ul>
             <p>Estamos constantemente trabajando en nuevos proyectos y mejoras, y estamos entusiasmados con lo que viene — pero por ahora, estos son nuestros productos principales.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>4. Privacidad y Datos</h2>
             <p>Puedes usar nuestras herramientas de forma anónima. Cuando creas una cuenta, solo recopilamos datos mínimos como correo electrónico, horarios de inicio de sesión, dirección IP e información del dispositivo — únicamente para mantener todo seguro, personalizado y funcionando correctamente. Respetamos la privacidad y cumplimos con leyes internacionales como GDPR y LGPD.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>5. Legal y Cumplimiento</h2>
             <p>Respetamos la propiedad intelectual y los derechos de autor. No alojamos ni proporcionamos streaming de contenido de terceros. Nuestra plataforma opera bajo la ley estonia, y los usuarios son responsables de cumplir con las regulaciones locales.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>6. Contacto</h2>
             <p>Si tienes preguntas, comentarios o solo quieres saludar, puedes visitar nuestra <a href="/support">página de soporte</a> o usar las herramientas de contacto de la plataforma.</p>
         </div>
@@ -141,20 +84,20 @@
     }
     else
     {
-        <div class="terms-title">About DRMA Tech</div>
-        <div class="terms-subtitle">
+        <div class="support-title">About DRMA Tech</div>
+        <div class="support-subtitle">
             Welcome to <b>DRMA Tech</b> (<a href="https://www.drma-tech.com" target="_blank">www.drma-tech.com</a>)!<br />
             We create smart tools that connect people with what fits them best — making decisions easier, more aligned, and built around who they truly are.
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>1. Our Mission</h2>
             <p>At DRMA Tech, we focus on building tools that simplify decision-making by connecting users with what truly fits their needs and values. We want technology to feel intuitive, helpful, and aligned with the way people actually live.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>2. Who We Are</h2>
             <p>We’re a small but passionate team, registered in Estonia, combining software development, data analysis, and design. We love making things that actually help people, and we care deeply about privacy, transparency, and trust.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>3. Our Products</h2>
             <ul>
                 <li><b>Streaming Discovery:</b> Manage all your streaming content in one place, track what you’ve watched, organize platforms, and explore curated lists of award-winning films, critic favorites, and hidden gems.</li>
@@ -162,15 +105,15 @@
             </ul>
             <p>We are constantly working on new projects and improvements, and we’re excited about what’s ahead — but for now, these are our core offerings.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>4. Privacy & Data</h2>
             <p>You can use our tools anonymously. When you create accounts, we collect minimal data like email, login timestamps, IP address, and device information — only to keep things secure, personalized, and running smoothly. We respect privacy and comply with international laws like GDPR and LGPD.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>5. Legal & Compliance</h2>
             <p>We respect intellectual property and copyright laws. We don’t host or provide streaming of third-party content. Our platform operates under Estonian law, and users are responsible for following local regulations.</p>
         </div>
-        <div class="terms-section">
+        <div class="support-section">
             <h2>6. Contact</h2>
             <p>If you have questions, feedback, or just want to say hi, you can visit our <a href="/support">support page</a> or use the contact tools on the platform.</p>
         </div>

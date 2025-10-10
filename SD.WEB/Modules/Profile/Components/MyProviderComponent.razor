@@ -10,11 +10,11 @@
 @inject IpInfoApi IpInfoApi
 @inject IJSRuntime JsRuntime
 
-<SectionComponent IconName="@IconsFA.Solid.Icon("clapperboard").Font" Title="@Translations.MyPlatforms">
+<PageSection Icon="@IconsFA.Solid.Icon("clapperboard").Font" Title="@Translations.MyPlatforms">
     <ActionFragment>
         @if (ProvidersChanged)
         {
-            <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" />
+            <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" Size="Size.Small" />
         }
     </ActionFragment>
     <BodyFragment>
@@ -45,7 +45,7 @@
             </div>
         </RenderControl>
     </BodyFragment>
-</SectionComponent>
+</PageSection>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }

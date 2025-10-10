@@ -5,9 +5,9 @@
 @inject CacheFlixsterApi CacheFlixsterApi
 @inject IJSRuntime JsRuntime
 
-<SectionComponent Title="@($"{Translations.NewsTitle}")" Description="@Translations.NewsDescriptionShort" IconName="@IconsFA.Solid.Icon("newspaper").Font">
+<PageSection Title="@($"{Translations.NewsTitle}")" Description="@Translations.NewsDescriptionShort" Icon="@IconsFA.Solid.Icon("newspaper").Font">
     <ActionFragment>
-        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@("/news")" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@("/news")" Size="Size.Small" />
     </ActionFragment>
     <BodyFragment>
         <RenderControl Core="Core" Model="News" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
@@ -43,7 +43,7 @@
             </div>
         </RenderControl>
     </BodyFragment>
-</SectionComponent>
+</PageSection>
 
 @code {
     public RenderControlCore<CacheDocument<NewsModel>?> Core { get; set; } = new();

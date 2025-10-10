@@ -8,39 +8,33 @@
 @inject IJSRuntime JS
 
 <SeoHeader Title="@Translations.NewsTitle" Description="@Translations.NewsDescription" Keywords="@(new[] { "News" })" Url="/news"></SeoHeader>
+<PageHeader Title="@Translations.NewsTitle" Description="@Translations.NewsDescription" Icon="@IconsFA.Solid.Icon("newspaper").Font"></PageHeader>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
-<SectionComponent Title="@Translations.NewsTitle" Description="@Translations.NewsDescription" IconName="@IconsFA.Solid.Icon("newspaper").Font" FullPage="true">
-    <BodyFragment>
-        <RenderControl Core="Core" Model="NewsList" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-            <div class="grid-relative-container-x-lg">
-                @foreach (var item in NewsList?.Data?.Items ?? [])
-                {
-                    <MudCard Outlined="true">
-                        <MudCardContent Style="padding: 0; text-align: justify; line-height: normal; position: relative;">
-                            <MudImage Src="@item.url_img" Alt="@item.title" FallbackSrc="images/no-image.png" Style="width: 100%;" ObjectFit="ObjectFit.Contain"></MudImage>
-                            <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.9;">
-                                @item.date.Humanize()
-                            </MudChip>
-                            <h2 class="pa-2" style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
-                                @if (!string.IsNullOrEmpty(item.title))
-                                {
-                                    @((MarkupString)item.title)
-                                }
-                            </h2>
-                        </MudCardContent>
-                        <MudCardActions style="align-self: center; padding: 0;">
-                            <MudButton Color="Color.Primary" Variant="Variant.Text" Href="@item.link" Target="_blank" Rel="noindex, nofollow">
-                                @Button.ReadMore
-                            </MudButton>
-                        </MudCardActions>
-                    </MudCard>
-                }
-            </div>
-        </RenderControl>
-    </BodyFragment>
-</SectionComponent>
+<RenderControl Core="Core" Model="NewsList" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+    <div class="grid-relative-container-news">
+        @foreach (var item in NewsList?.Data?.Items ?? [])
+        {
+            <MudCard Style="position: relative;">
+                <MudCardMedia Image="@item.url_img" Height="350" />
+                <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 8px; left: 8px; position: absolute; opacity: 0.9;">
+                    @item.date.Humanize()
+                </MudChip>
+                <MudButton Color="Color.Primary" Href="@item.link" Target="_blank" Rel="noindex, nofollow" Size="Size.Small"
+                           Style="top: 8px; right: 8px; position: absolute;" Variant="Variant.Filled">
+                    @Button.ReadMore
+                </MudButton>
+                <MudCardContent Style="text-align: justify;" Class="pa-2">
+                    <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Align="Align.Center" Style="line-height: 1.5">@((MarkupString)item.title!)</MudText>
+                    @* <div class="mt-2">
+                        <MudText Typo="Typo.caption">@item.text</MudText>
+                    </div> *@
+                </MudCardContent>
+            </MudCard>
+        }
+    </div>
+</RenderControl>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
     <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />

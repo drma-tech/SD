@@ -5,6 +5,7 @@
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Platform.Resources
+@using SD.WEB.Modules.Subscription.Core
 @inherits PageCore<PlataformDetail>
 
 @inject AllProvidersApi AllProvidersApi
@@ -12,37 +13,64 @@
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
-@inject IJSRuntime JS
+@inject MyProvidersApi MyProvidersApi
+@inject IpInfoApi IpInfoApi
+@inject IJSRuntime JsRuntime
 
 <SeoHeader Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")"
            Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Keywords="@([Provider?.name])">
 </SeoHeader>
+
+@if (Provider != null)
+{
+    <PageHeader Image="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Subtitle="@GetSubtitle()" Description="@Provider.description">
+        <ActionFragment>
+            @if (Provider.link.NotEmpty())
+            {
+                <MudTooltip Text="Official Website">
+                    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Link" Href="@Provider.link" Target="_blank" Size="Size.Small" Class="me-2" />
+                </MudTooltip>
+            }
+            @if (Provider != null)
+            {
+                @if (MyProviders?.Items.Any(a => a.id == Provider?.id) ?? false)
+                {
+                    <MudTooltip Text="@Button.Remove">
+                        <MudFab StartIcon="@IconsFA.Solid.Icon("minus").Font" Color="Color.Error" OnClick="@Remove" Size="Size.Small">
+                        </MudFab>
+                    </MudTooltip>
+                }
+                else
+                {
+                    <MudTooltip Text="@Button.Add">
+                        <MudFab StartIcon="@IconsFA.Solid.Icon("plus").Font" Color="Color.Primary" OnClick="@Add" Size="Size.Small">
+                        </MudFab>
+                    </MudTooltip>
+                }
+            }
+        </ActionFragment>
+    </PageHeader>
+}
+
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null)">
-    @if (Provider != null)
-    {
-        <HeadPage ImageSource="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Text="@Provider.description" Link="@Provider.link"
-                  Provider="Provider" IsAuthenticated="IsAuthenticated">
-        </HeadPage>
-    }
-
     <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")" ShowFilter="Provider?.types.Count == 2"
-               StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h4"
+               StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3"
                IsAuthenticated="IsAuthenticated" TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
     </MediaList>
     <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/new/{{0}}")" ShowFilter="Provider?.types.Count == 2"
-               StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h4"
+               StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3"
                IsAuthenticated="IsAuthenticated" TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
     </MediaList>
     <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/top/{{0}}")" ShowFilter="Provider?.types.Count == 2"
-               StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h4"
+               StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3"
                IsAuthenticated="IsAuthenticated" TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
     </MediaList>
 </RenderControl>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
-    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JsRuntime.InvokeVoidAsync("history.back"))" />
 </div>
 
 @code {
@@ -59,6 +87,8 @@
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
+
+    public MyProviders? MyProviders { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -87,6 +117,7 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
+        MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
         WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
         WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
         WishList = await WishListApi.Get(IsAuthenticated, null);
@@ -97,6 +128,61 @@
         if (providerId == null) throw new ArgumentNullException(nameof(providerId));
 
         return new Dictionary<string, string> { { "with_watch_providers", providerId }, { "sort_by", sortBy } };
+    }
+
+    private string? GetSubtitle()
+    {
+        if (Provider == null) return null;
+        var models = string.Join(", ", Provider.models.Select(s => s.GetName()));
+        return $"{@Modules.Platform.Resources.Translations.DeliveryModel}: {models} | Countries: {Provider.regions.Count}";
+    }
+
+    private async Task Add()
+    {
+        try
+        {
+            if (!AppStateStatic.IsAuthenticated)
+            {
+                Snackbar.Add(GlobalTranslations.YouMustLogged, Severity.Warning);
+                return;
+            }
+
+            MyProviders ??= new MyProviders();
+
+            var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
+
+            var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = region };
+            var client = await PrincipalApi.Get(true);
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, client?.AuthPaddle);
+
+            Snackbar.Add(Translations.PlatformAdded, Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    private async Task Remove()
+    {
+        try
+        {
+            if (!AppStateStatic.IsAuthenticated)
+            {
+                Snackbar.Add(GlobalTranslations.YouMustLogged, Severity.Warning);
+                return;
+            }
+
+            MyProviders ??= new MyProviders();
+
+            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == Provider?.id));
+
+            Snackbar.Add(Translations.PlatformRemoved, Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
     }
 
 }

@@ -7,18 +7,18 @@
 @using SD.WEB.Modules.Collections.Interface
 @inject IJSRuntime JsRuntime
 
-<SectionComponent Title="@Title" IconImage="@IconImage" ShowHead="ShowHead" FullPage="FullPage">
+<PageSection Title="@Title" Icon="@Icon" Image="@Image" ShowHead="ShowHead">
     <ActionFragment>
         @if (ShowFilter)
         {
             <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Value="TypeSelected" CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0"
-                            ValueChanged="@(async (MediaType type) => await TypeSelectedChangedHandle(type))" Color="Color.Primary" Class="me-2">
+                            ValueChanged="@(async (MediaType type) => await TypeSelectedChangedHandle(type))" Color="Color.Primary" Class="me-2" Size="Size.Small">
                 <MudToggleItem Value="@MediaType.movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
                     <MudHidden Breakpoint="Breakpoint.SmAndUp">
                         <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()"></MudIcon>
                     </MudHidden>
                     <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                        <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@MediaType.movie.GetName()</MudText>
+                        <MudText Inline="true">@MediaType.movie.GetName()</MudText>
                     </MudHidden>
                 </MudToggleItem>
                 <MudToggleItem Value="@MediaType.tv" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
@@ -26,12 +26,12 @@
                         <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@MediaType.movie.GetName()"></MudIcon>
                     </MudHidden>
                     <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                        <MudText Typo="Typo.h3" Class="custom-h3" Inline="true">@MediaType.tv.GetName()</MudText>
+                        <MudText Inline="true">@MediaType.tv.GetName()</MudText>
                     </MudHidden>
                 </MudToggleItem>
             </MudToggleGroup>
         }
-        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary"
+        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
                        OnClick="@(()=>Navigation.NavigateTo(GetCustomExpandUrl()))" Disabled="@(List == null && CustomExpand.Empty())" />
     </ActionFragment>
     <BodyFragment>
@@ -42,10 +42,8 @@
                     {
                         <div class="swiper-slide" style="height: auto !important;">
                             <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                             Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
-                                             RankUpDown="@item.RankUpDown" Rating="@item.rating"
-                                             WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id"
-                                             Comments="@item.comments" CommentsIsImage="CommentsIsImage">
+                                             Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle" RankUpDown="@item.RankUpDown"
+                                             Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
                             </PosterComponent>
                         </div>
                     }
@@ -55,7 +53,7 @@
             </div>
         </RenderControl>
     </BodyFragment>
-</SectionComponent>
+</PageSection>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
@@ -65,12 +63,12 @@
 
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
-    [Parameter] public string? IconImage { get; set; }
+    [Parameter] public string? Icon { get; set; }
+    [Parameter] public string? Image { get; set; }
     [Parameter] public bool ShowFilter { get; set; }
     [Parameter] public bool OnlyYear { get; set; }
     [Parameter] public bool OrderByComments { get; set; }
     [Parameter] public bool CommentsIsImage { get; set; }
-    [Parameter] public bool FullPage { get; set; } = false;
     [Parameter] public bool Popup { get; set; } = false;
     [Parameter] public string? CustomExpand { get; set; }
     [Parameter] public Typo? ForceTypoTitle { get; set; }
@@ -201,6 +199,12 @@
             else
             {
                 tmdbId = media?.tmdb_id;
+            }
+
+            if (tmdbId.Empty())
+            {
+                Snackbar.Add("Unable to display this content. Please try again later.", Severity.Error);
+                return;
             }
 
             if (media?.MediaType == MediaType.person)

@@ -10,11 +10,10 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<PageHeader Title="Crunchyroll Anime Awards" Image="logo/crunchyroll.png" Description="@SD.WEB.Resources.Credit.CrunchyrollAnimeAwards" Link="https://www.crunchyroll.com/animeawards/">
+</PageHeader>
 
-<HeadPage Title="Crunchyroll Anime Awards" ImageSource="logo/crunchyroll.png" Text="@SD.WEB.Resources.Credit.CrunchyrollAnimeAwards"
-          Link="https://www.crunchyroll.com/animeawards/" IsAuthenticated="IsAuthenticated">
-</HeadPage>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CrunchyrollAnimeOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            IsAuthenticated="IsAuthenticated" OrderByComments="true">

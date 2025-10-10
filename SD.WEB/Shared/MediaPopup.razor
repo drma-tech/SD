@@ -168,7 +168,7 @@
                 <MudTabPanel Tag="@("Collections")" Text="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)"
                              Visible="@(Media?.Collection.Any() ?? false)">
 
-                    <div class="grid-relative-container-md">
+                    <div class="grid-relative-container-poster">
                         @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
                         {
                             <div>

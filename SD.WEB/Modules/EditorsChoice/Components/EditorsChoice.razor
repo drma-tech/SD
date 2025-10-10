@@ -11,20 +11,21 @@
 @inherits PageCore<EditorsChoice>
 
 <SeoHeader Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Keywords="@(new[] { "Editor’s Choice" })" Url="@($"/editors-choice/{Type}")"></SeoHeader>
+<PageHeader Title="@Translations.EditorsChoiceTitle" Subtitle="Top-rated titles for all audiences" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font"></PageHeader>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 @if (MediaType == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   IsAuthenticated="IsAuthenticated" IconName="@IconsFA.Solid.Icon("award").Font" FullPage="true"
+                   IsAuthenticated="IsAuthenticated" Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false"
                    Description="@GlobalTranslations.CertifiedDescription">
     </MediaListFull>
 }
 else
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   IsAuthenticated="IsAuthenticated" IconName="@IconsFA.Solid.Icon("award").Font" FullPage="true"
+                   IsAuthenticated="IsAuthenticated" Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false"
                    Description="@GlobalTranslations.CertifiedDescription">
     </MediaListFull>
 }

@@ -223,29 +223,11 @@ namespace SD.WEB.Modules.Collections.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Platform added successfully!.
-        /// </summary>
-        public static string PlatformAdded {
-            get {
-                return ResourceManager.GetString("PlatformAdded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to This platform is not for watching movies or series..
         /// </summary>
         public static string PlatformForManaging {
             get {
                 return ResourceManager.GetString("PlatformForManaging", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Platform removed successfully!.
-        /// </summary>
-        public static string PlatformRemoved {
-            get {
-                return ResourceManager.GetString("PlatformRemoved", resourceCulture);
             }
         }
         

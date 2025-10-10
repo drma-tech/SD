@@ -97,11 +97,20 @@ namespace SD.WEB.Modules.Platform.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Plans.
+        ///   Looks up a localized string similar to Platform added successfully!.
         /// </summary>
-        public static string Plans {
+        public static string PlatformAdded {
             get {
-                return ResourceManager.GetString("Plans", resourceCulture);
+                return ResourceManager.GetString("PlatformAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Platform removed successfully!.
+        /// </summary>
+        public static string PlatformRemoved {
+            get {
+                return ResourceManager.GetString("PlatformRemoved", resourceCulture);
             }
         }
         

@@ -10,11 +10,10 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<PageHeader Title="Rolling Stone" Image="logo/rolling-stone.png" Description="@SD.WEB.Resources.Credit.RollingStone" Link="https://www.rollingstone.com/tv-movies/">
+</PageHeader>
 
-<HeadPage Title="Rolling Stone" ImageSource="logo/rolling-stone.png" Text="@SD.WEB.Resources.Credit.RollingStone"
-          Link="https://www.rollingstone.com/tv-movies/" IsAuthenticated="IsAuthenticated">
-</HeadPage>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.RollingStoneBestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            IsAuthenticated="IsAuthenticated">

@@ -10,11 +10,10 @@
 @inject WishListApi WishListApi
 @inject IJSRuntime JS
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<PageHeader Title="Filmaffinity" Image="logo/film-affinity.png" Description="@SD.WEB.Resources.Credit.Filmaffinity" Link="https://www.filmaffinity.com/">
+</PageHeader>
 
-<HeadPage Title="Filmaffinity" ImageSource="logo/film-affinity.png" Text="@SD.WEB.Resources.Credit.Filmaffinity"
-          Link="https://www.filmaffinity.com/" IsAuthenticated="IsAuthenticated">
-</HeadPage>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MediaList MediaListApi="TmdbListApi" List="@EnumLists.FilmaffinityBestMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
            IsAuthenticated="IsAuthenticated">

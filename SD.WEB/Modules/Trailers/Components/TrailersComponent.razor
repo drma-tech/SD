@@ -5,9 +5,9 @@
 @inject CacheYoutubeApi CacheYoutubeApi
 @inject IJSRuntime JsRuntime
 
-<SectionComponent Title="@($"{Translations.TrailersTitle}")" Description="@Translations.TrailersDescriptionShort" IconName="@IconsFA.Brands.Icon("youtube").Font">
+<PageSection Title="@($"{Translations.TrailersTitle}")" Description="@Translations.TrailersDescriptionShort" Icon="@IconsFA.Brands.Icon("youtube").Font">
     <ActionFragment>
-        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@("/trailers")" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@("/trailers")" Size="Size.Small" />
     </ActionFragment>
     <BodyFragment>
         <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
@@ -21,7 +21,7 @@
                                     <MudCardContent Style="padding: 0;">
                                         <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%; max-height: 94px;" ObjectFit="ObjectFit.Contain"></MudImage>
                                         <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.9;">
-                                            @item.published
+                                            @item?.published
                                         </MudChip>
                                     </MudCardContent>
                                     <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
@@ -38,7 +38,7 @@
             </div>
         </RenderControl>
     </BodyFragment>
-</SectionComponent>
+</PageSection>
 
 @code {
     public RenderControlCore<CacheDocument<TrailerModel>?> Core { get; set; } = new();

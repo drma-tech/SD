@@ -9,9 +9,9 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<PageHeader Title="Upcoming Marvel Movies & TV Shows" Image="logo/marvel.png" Description="@SD.WEB.Resources.Credit.UpcomingMarvelMoviesTVShows"></PageHeader>
 
-<HeadPage Title="Upcoming Marvel Movies & TV Shows" ImageSource="logo/marvel.png" Text="@SD.WEB.Resources.Credit.UpcomingMarvelMoviesTVShows" IsAuthenticated="IsAuthenticated"></HeadPage>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingMarvelMoviesTvShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                IsAuthenticated="IsAuthenticated" FullPage="true" ShowHead="false">

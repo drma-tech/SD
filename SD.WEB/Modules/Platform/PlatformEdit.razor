@@ -170,7 +170,6 @@
                     //own data (manual update)
                     description = detail?.description,
                     link = detail?.link,
-                    plans = detail?.plans ?? new(),
                     models = detail?.models ?? new(),
                     //api by regions
                     regions = new List<Region> { region },
@@ -179,13 +178,13 @@
             }
             else
             {
-                if (!new_item.regions.Any(a => a == region))
+                if (!new_item.regions.Contains(region))
                 {
                     new_item.regions.Add(region);
                 }
                 new_item.regions = new_item.regions.OrderBy(o => o).ToList();
 
-                if (!new_item.types.Any(a => a == type))
+                if (!new_item.types.Contains(type))
                 {
                     new_item.types.Add(type);
                 }

@@ -4,9 +4,6 @@
 
 @inject IJSRuntime JsRuntime
 
-@inject PaddleConfigurationApi ConfigurationApi
-@inject IpInfoApi IpInfoApi
-
 @if (_processing)
 {
     <MudProgressLinear Color="Color.Secondary" Indeterminate="true" Style="position: fixed; z-index: 1400;" />
@@ -29,12 +26,6 @@
         <MudIconButton Icon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Style="padding: 8px;" />
         <MudIconButton Icon="@IconsFA.Solid.Icon("headset").Font" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")" Style="padding: 8px;" />
         <MudSpacer />
-        @if (SubscriptionAllowed)
-        {
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Warning" StartIcon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Class="me-2" OnClick="@OpenSubscription">
-                @Translations.Subscription
-            </MudButton>
-        }
         <AuthorizeView>
             <Authorized>
                 <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
@@ -57,52 +48,18 @@
     else //desktop view
     {
         <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="px-3">
-            @if (Focused("/"))
-            {
-                <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Home</MudText>
-            }
-            else
-            {
-                @Menu.Home
-            }
+            @Menu.Home
         </MudButton>
         <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="px-3" Target="_self" Rel="noindex, nofollow">
-            @if (Focused("/profile"))
-            {
-                <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Profile</MudText>
-            }
-            else
-            {
-                @Menu.Profile
-            }
+            @Menu.Profile
         </MudButton>
         <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="px-3">
-            @if (Focused("/platforms"))
-            {
-                <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Platforms</MudText>
-            }
-            else
-            {
-                @Menu.Platforms
-            }
+            @Menu.Platforms
         </MudButton>
         <MudButton StartIcon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Class="px-3">
-            @if (Focused("/collections"))
-            {
-                <MudText Typo="Typo.h1" Class="custom-h1-menu">@Menu.Collections</MudText>
-            }
-            else
-            {
-                @Menu.Collections
-            }
+            @Menu.Collections
         </MudButton>
         <MudSpacer />
-        @if (SubscriptionAllowed)
-        {
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Warning" StartIcon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Class="me-2" OnClick="@OpenSubscription">
-                @Translations.Subscription
-            </MudButton>
-        }
         <AuthorizeView>
             <Authorized>
                 <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
@@ -131,12 +88,6 @@
             <MudText Typo="Typo.h6">@SeoTranslations.AppName</MudText>
         </MudDrawerHeader>
         <MudNavMenu>
-            @if (SubscriptionAllowed)
-            {
-                <MudNavLink Icon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" IconColor="Color.Warning" OnClick="@OpenSubscription">
-                    @Translations.Subscription
-                </MudNavLink>
-            }
             <AuthorizeView>
                 <Authorized>
                     <MudNavLink Icon="@IconsFA.Solid.Icon("circle-user").Font" OnClick="@MyAccount">@Menu.Profile</MudNavLink>
@@ -160,19 +111,12 @@
 }
 
 @code {
-    [SupplyParameterFromQuery][Parameter] public string? _ptxn { get; set; }
     [Parameter] public bool IsAuthenticated { get; set; }
 
     private bool _open = false;
-    private bool SubscriptionAllowed { get; set; } = true;
 
     private int _processingCount = 0;
     private bool _processing => _processingCount > 0;
-
-    private readonly Dictionary<string, string> _iosAllowedCountries = new()
-    {
-        { "US", "United States" }
-    };
 
     protected override void OnInitialized()
     {
@@ -197,18 +141,6 @@
         };
     }
 
-    protected override async Task LoadNonEssentialDataAsync()
-    {
-        var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
-        var platform = await AppStateStatic.GetPlatform(JsRuntime);
-
-        if (country.NotEmpty() && platform == Platform.ios)
-        {
-            //https://developer.apple.com/app-store/review/guidelines/#link-to-other-purchase-methods
-            SubscriptionAllowed = _iosAllowedCountries.ContainsKey(country);
-        }
-    }
-
     private void Login()
     {
         Navigation.NavigateTo("/.auth/login/aad?post_login_redirect_uri=" + Navigation.BaseUri + "login-success", true);
@@ -227,19 +159,6 @@
     private async Task MyAccount()
     {
         await DialogService.OpenAccountPopup(IsAuthenticated);
-    }
-
-    private async Task OpenSubscription()
-    {
-        if (!string.IsNullOrEmpty(_ptxn))
-        {
-            var config = await ConfigurationApi.GetConfigurations();
-            if (config == null) throw new NotificationException("server communication error");
-
-            await JsRuntime.InvokeVoidAsync("startPaddle", config.Token);
-        }
-
-        await DialogService.SubscriptionPopup(IsAuthenticated);
     }
 
     private Color GetColor(string endpoint)

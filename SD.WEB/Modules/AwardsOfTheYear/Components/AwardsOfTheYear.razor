@@ -11,10 +11,13 @@
 
 <SeoHeader Title="@EnumLists.AwardsOfTheYear.GetName()" Description="@GlobalTranslations.AwardsYearDescription" Keywords="@(new[] { "Best awards of the year" })" Url="/best-awards-year"></SeoHeader>
 
+<PageHeader Title="@EnumLists.AwardsOfTheYear.GetName()" Subtitle="Main categories of the most popular awards" Description="@GlobalTranslations.AwardsYearDescription"
+            Icon="@IconsFA.Solid.Icon("trophy").Font"></PageHeader>
+
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-               IsAuthenticated="IsAuthenticated" CommentsIsImage="true" IconName="@IconsFA.Solid.Icon("trophy").Font" FullPage="true"
+               IsAuthenticated="IsAuthenticated" CommentsIsImage="true" Icon="@IconsFA.Solid.Icon("trophy").Font" FullPage="true" ShowHead="false"
                Description="@GlobalTranslations.AwardsYearDescription">
 </MediaListFull>
 

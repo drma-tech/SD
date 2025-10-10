@@ -6,9 +6,11 @@
 @inject IJSRuntime JsRuntime
 
 <SeoHeader Title="@SeoTranslations.CollectionsTitle" Description="@SeoTranslations.CollectionsDescription" Url="/collections" Keywords="@(["collections"])"></SeoHeader>
+<PageHeader Title="@SeoTranslations.CollectionsTitle" Description="@SeoTranslations.CollectionsDescription" Icon="@IconsFA.Solid.Icon("layer-group").Font"></PageHeader>
+
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
-<SectionComponent Title="@Translations.AwardsTitle" Description="@Translations.AwardsDescription" IconName="@IconsFA.Solid.Icon("trophy").Font">
+<PageSection Title="@Translations.AwardsTitle" Description="@Translations.AwardsDescription" Icon="@IconsFA.Solid.Icon("trophy").Font">
     <BodyFragment>
         <div id="@_swiperAwards" class="swiper">
             <div class="swiper-wrapper">
@@ -21,7 +23,7 @@
                                     <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
                                 </MudCardContent>
                                 <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
-                                    <MudText Typo="Typo.h3" Class="custom-h3-list">@item.Name</MudText>
+                                    <MudText Typo="Typo.h3" Class="custom-title-list">@item.Name</MudText>
                                 </MudCardContent>
                             </MudCard>
                         </MudLink>
@@ -32,9 +34,9 @@
             <div class="swiper-button-prev"></div>
         </div>
     </BodyFragment>
-</SectionComponent>
+</PageSection>
 
-<SectionComponent Title="@Translations.SpecializedSitesTitle" Description="@Translations.SpecializedSitesDescription" IconName="@IconsFA.Solid.Icon("award").Font">
+<PageSection Title="@Translations.SpecializedSitesTitle" Description="@Translations.SpecializedSitesDescription" Icon="@IconsFA.Solid.Icon("award").Font">
     <BodyFragment>
         <div id="@_swiperSites" class="swiper">
             <div class="swiper-wrapper">
@@ -47,7 +49,7 @@
                                     <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
                                 </MudCardContent>
                                 <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
-                                    <MudText Typo="Typo.h3" Class="custom-h3-list">@item.Name</MudText>
+                                    <MudText Typo="Typo.h3" Class="custom-title-list">@item.Name</MudText>
                                 </MudCardContent>
                             </MudCard>
                         </MudLink>
@@ -58,9 +60,9 @@
             <div class="swiper-button-prev"></div>
         </div>
     </BodyFragment>
-</SectionComponent>
+</PageSection>
 
-<SectionComponent Title="@Translations.SpecialsTitle" Description="@Translations.SpecialsDescription" IconName="@IconsFA.Solid.Icon("star").Font">
+<PageSection Title="@Translations.SpecialsTitle" Description="@Translations.SpecialsDescription" Icon="@IconsFA.Solid.Icon("star").Font">
     <BodyFragment>
         <div id="@_swiperSpecials" class="swiper">
             <div class="swiper-wrapper">
@@ -73,7 +75,7 @@
                                     <MudImage Src="@item.LogoPath" Alt="@item.Name" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
                                 </MudCardContent>
                                 <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
-                                    <MudText Typo="Typo.h3" Class="custom-h3-list">@item.Name</MudText>
+                                    <MudText Typo="Typo.h3" Class="custom-title-list">@item.Name</MudText>
                                 </MudCardContent>
                             </MudCard>
                         </MudLink>
@@ -84,7 +86,7 @@
             <div class="swiper-button-prev"></div>
         </div>
     </BodyFragment>
-</SectionComponent>
+</PageSection>
 
 @code {
     private List<Item> Awards { get; } = [];

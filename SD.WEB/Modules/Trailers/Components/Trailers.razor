@@ -7,33 +7,31 @@
 @inject IJSRuntime JS
 
 <SeoHeader Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Keywords="@(new[] { "Trailers" })" Url="/trailers"></SeoHeader>
+<PageHeader Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Icon="@IconsFA.Brands.Icon("youtube").Font">
+</PageHeader>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
-<SectionComponent Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" IconName="@IconsFA.Brands.Icon("youtube").Font" FullPage="true">
-    <BodyFragment>
-        <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-            <div class="grid-relative-container-x-lg">
-                @foreach (var item in TrailerModel?.Data?.Items ?? [])
-                {
-                    <MudLink Href="@($"https://www.youtube.com/watch?v={item.id}")" Target="_blank" rel="noindex, nofollow">
-                        <MudCard Outlined="true">
-                            <MudCardContent Style="padding: 0; position: relative;">
-                                <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%;"></MudImage>
-                                <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.9;">
-                                    @item?.published
-                                </MudChip>
-                            </MudCardContent>
-                            <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
-                                <MudText Typo="Typo.h2" Class="custom-h3-list">@item.title</MudText>
-                            </MudCardContent>
-                        </MudCard>
-                    </MudLink>
-                }
-            </div>
-        </RenderControl>
-    </BodyFragment>
-</SectionComponent>
+<RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+    <div class="grid-relative-container-trailer">
+        @foreach (var item in TrailerModel?.Data?.Items ?? [])
+        {
+            <MudLink Href="@($"https://www.youtube.com/watch?v={item.id}")" Target="_blank" rel="noindex, nofollow">
+                <MudCard Outlined="true">
+                    <MudCardContent Style="padding: 0; position: relative;">
+                        <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%;"></MudImage>
+                        <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.9;">
+                            @item?.published
+                        </MudChip>
+                    </MudCardContent>
+                    <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
+                        <MudText Typo="Typo.h2" Class="custom-title-list">@item.title</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudLink>
+        }
+    </div>
+</RenderControl>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
     <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />

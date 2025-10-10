@@ -2,8 +2,7 @@
 
 <div>
     <div @onclick="@Clicked" style="@($"{(Clicked.HasDelegate ? "cursor: pointer;" : "")} position: relative;")">
-        <MudImage Src="@(Poster ?? "images/no-image.png")" Alt="@Title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"
-                  Style="vertical-align: bottom;" />
+        <MudImage Src="@(Poster ?? "images/no-image.png")" Alt="@Title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;" />
 
         @if (TopLeft != null)
         {
@@ -66,7 +65,7 @@
         }
     </div>
     <div style="text-align: center; line-height: normal; font-size: 0.73rem;" class="mt-1">
-        <MudText Typo="@(ForceTypoTitle ?? (FullPage ? Typo.h2 : Typo.h3))" Class="custom-h3-list">@Title</MudText>
+        <MudText Typo="@(ForceTypoTitle ?? (FullPage ? Typo.h2 : Typo.h3))" Class="custom-title-list">@Title</MudText>
     </div>
 </div>
 

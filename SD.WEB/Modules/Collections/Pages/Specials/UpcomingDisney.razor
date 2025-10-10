@@ -9,9 +9,9 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<PageHeader Title="Upcoming Walt Disney Pictures" Image="logo/disney.png" Description="@SD.WEB.Resources.Credit.UpcomingWaltDisneyPictures"></PageHeader>
 
-<HeadPage Title="Upcoming Walt Disney Pictures" ImageSource="logo/disney.png" Text="@SD.WEB.Resources.Credit.UpcomingWaltDisneyPictures" IsAuthenticated="IsAuthenticated"></HeadPage>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
 @*https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films*@
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingWaltDisneyPictures" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
