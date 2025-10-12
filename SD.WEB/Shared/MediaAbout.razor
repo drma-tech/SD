@@ -13,13 +13,13 @@
     <div Style="position: relative; min-width: 300px;">
         @if (Media?.release_date < DateTime.Now.AddMonths(-3))
         {
-            <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
+            <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;" Size="AppStateStatic.Size">
                 @Media?.release_date?.Year
             </MudChip>
         }
         else
         {
-            <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
+            <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;" Size="AppStateStatic.Size">
                 @Media?.release_date?.ToShortDateString()
             </MudChip>
         }
@@ -28,13 +28,13 @@
     <div>
         @if (Media?.runtime != null && Media.runtime > 0)
         {
-            <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined">
+            <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                 @Media.runtime.FormatRuntime()
             </MudChip>
         }
         @foreach (var item in Media?.Genres ?? [])
         {
-            <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined">
+            <MudChip T="string" Color="Color.Info" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                 @item
             </MudChip>
         }
@@ -44,7 +44,7 @@
                 {
                     <MudTooltip Text="IMDb">
                         <MudLink Href="@RatingsCache.Data?.imdbLink" Target="_blank" rel="noindex, nofollow">
-                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.imdb)" title="" Variant="Variant.Outlined">
+                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.imdb)" title="" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                                 <MudImage Src="logo/imdb.png" Alt="imdb" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.imdb
                             </MudChip>
                         </MudLink>
@@ -54,7 +54,7 @@
                 {
                     <MudTooltip Text="TMDB">
                         <MudLink Href="@RatingsCache.Data?.tmdbLink" Target="_blank" rel="noindex, nofollow">
-                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.tmdb)" Variant="Variant.Outlined">
+                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.tmdb)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                                 <MudImage Src="logo/tmdb.png" Alt="tmdb" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.tmdb
                             </MudChip>
                         </MudLink>
@@ -64,7 +64,7 @@
                 {
                     <MudTooltip Text="Metacritic">
                         <MudLink Href="@RatingsCache.Data?.metacriticLink" Target="_blank" rel="noindex, nofollow">
-                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.metacritic)" Variant="Variant.Outlined">
+                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.metacritic)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                                 <MudImage Src="logo/metacritic.png" Alt="metacritic" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.metacritic
                             </MudChip>
                         </MudLink>
@@ -74,7 +74,7 @@
                 {
                     <MudTooltip Text="Trakt">
                         <MudLink Href="@RatingsCache.Data?.traktLink" Target="_blank" rel="noindex, nofollow">
-                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.trakt)" Variant="Variant.Outlined">
+                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.trakt)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                                 <MudImage Src="logo/trakt.png" Alt="trakt" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.trakt
                             </MudChip>
                         </MudLink>
@@ -84,7 +84,7 @@
                 {
                     <MudTooltip Text="Rotten Tomatoes">
                         <MudLink Href="@RatingsCache.Data?.rottenTomatoesLink" Target="_blank" rel="noindex, nofollow">
-                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.rottenTomatoes)" Variant="Variant.Outlined">
+                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.rottenTomatoes)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                                 <MudImage Src="logo/rotten-tomatoes.png" Alt="rotten tomatoes" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.rottenTomatoes
                             </MudChip>
                         </MudLink>
@@ -94,7 +94,7 @@
                 {
                     <MudTooltip Text="Film Affinity">
                         <MudLink Href="@RatingsCache.Data?.filmAffinityLink" Target="_blank" rel="noindex, nofollow">
-                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.filmAffinity)" Variant="Variant.Outlined">
+                            <MudChip T="string" Color="GetColorByRating(RatingsCache.Data?.filmAffinity)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                                 <MudImage Src="logo/film-affinity.png" Alt="film affinity" Class="me-1" Style="height: 20px;"></MudImage>@RatingsCache.Data?.filmAffinity
                             </MudChip>
                         </MudLink>
@@ -123,27 +123,27 @@
         </MudAlert>
         @if (Wish?.Movies.Any(a => a.id == TmdbId) ?? false)
         {
-            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@Remove" Class="me-2 mb-2">@Translations.RemoveWishlist</MudButton>
+            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@Remove" Class="me-2 mb-2" Size="AppStateStatic.Size">@Translations.RemoveWishlist</MudButton>
         }
         else if (Wish?.Shows.Any(a => a.id == TmdbId) ?? false)
         {
-            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@Remove" Class="me-2 mb-2">@Translations.RemoveWishlist</MudButton>
+            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@Remove" Class="me-2 mb-2" Size="AppStateStatic.Size">@Translations.RemoveWishlist</MudButton>
         }
         else
         {
-            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@Add" Class="me-2 mb-2">@Translations.AddWishlist</MudButton>
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@Add" Class="me-2 mb-2" Size="AppStateStatic.Size">@Translations.AddWishlist</MudButton>
         }
         @if (Watched?.Movies.Contains(TmdbId ?? "") ?? false)
         {
-            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@IsNotWatched" Class="me-2 mb-2">@Translations.ButtonNotWatched</MudButton>
+            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@IsNotWatched" Class="me-2 mb-2" Size="AppStateStatic.Size">@Translations.ButtonNotWatched</MudButton>
         }
         else if (Watched?.Shows.Contains(TmdbId ?? "") ?? false)
         {
-            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@IsNotWatched" Class="me-2 mb-2">@Translations.ButtonNotWatched</MudButton>
+            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@IsNotWatched" Class="me-2 mb-2" Size="AppStateStatic.Size">@Translations.ButtonNotWatched</MudButton>
         }
         else
         {
-            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@IsWatched" Class="me-2 mb-2">@Translations.ButtonWatched</MudButton>
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@IsWatched" Class="me-2 mb-2" Size="AppStateStatic.Size">@Translations.ButtonWatched</MudButton>
         }
     </div>
 </MudStack>

@@ -7,7 +7,7 @@
 <PageSection Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font">
     <ActionFragment>
         <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary" Class="me-2"
-                        CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0" Size="Size.Small">
+                        CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0" Size="AppStateStatic.Size">
             <MudToggleItem Value="@MediaType.movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
                 <MudHidden Breakpoint="Breakpoint.SmAndUp">
                     <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()"></MudIcon>
@@ -25,7 +25,7 @@
                 </MudHidden>
             </MudToggleItem>
         </MudToggleGroup>
-        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@($"/editors-choice/{TypeSelected}")" Size="Size.Small" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@($"/editors-choice/{TypeSelected}")" Size="AppStateStatic.Size" />
     </ActionFragment>
     <BodyFragment>
         @if (TypeSelected == MediaType.movie)

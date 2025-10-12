@@ -14,7 +14,7 @@
     <ActionFragment>
         @if (ProvidersChanged)
         {
-            <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" Size="Size.Small" />
+            <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" Size="AppStateStatic.Size" />
         }
     </ActionFragment>
     <BodyFragment>
@@ -26,12 +26,12 @@
                     {
                         <div class="swiper-slide" style="height: auto !important;">
                             <div style="position: relative; cursor: pointer;" @onclick="@(() => ShowProviderPopup(item))">
-                                <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;">
+                                <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;" Size="AppStateStatic.Size">
                                     @item.region?.ToString()
                                 </MudChip>
                                 @if (AllProviders != null && (AllProviders.Items.All(a => a.id != item.id) || !AllProviders.Items.Any(a => a.id == item.id && a.regions.Contains(item.region ?? Region))))
                                 {
-                                    <MudChip T="string" Color="Color.Error" Style="padding: 0.2rem; position: absolute; bottom: 5px; height: auto; z-index: 1; width: 90%;">
+                                    <MudChip T="string" Color="Color.Error" Style="padding: 0.2rem; position: absolute; bottom: 5px; height: auto; z-index: 1; width: 90%;" Size="AppStateStatic.Size">
                                         <MudIcon Icon="@IconsFA.Solid.Icon("trash").Font"></MudIcon> Deleted
                                     </MudChip>
                                 }

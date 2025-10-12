@@ -28,7 +28,7 @@
             @if (Provider.link.NotEmpty())
             {
                 <MudTooltip Text="Official Website">
-                    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Link" Href="@Provider.link" Target="_blank" Size="Size.Small" Class="me-2" />
+                    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Link" Href="@Provider.link" Target="_blank" Size="AppStateStatic.Size" Class="me-2" />
                 </MudTooltip>
             }
             @if (Provider != null)
@@ -36,14 +36,14 @@
                 @if (MyProviders?.Items.Any(a => a.id == Provider?.id) ?? false)
                 {
                     <MudTooltip Text="@Button.Remove">
-                        <MudFab StartIcon="@IconsFA.Solid.Icon("minus").Font" Color="Color.Error" OnClick="@Remove" Size="Size.Small">
+                        <MudFab StartIcon="@IconsFA.Solid.Icon("minus").Font" Color="Color.Error" OnClick="@Remove" Size="AppStateStatic.Size">
                         </MudFab>
                     </MudTooltip>
                 }
                 else
                 {
                     <MudTooltip Text="@Button.Add">
-                        <MudFab StartIcon="@IconsFA.Solid.Icon("plus").Font" Color="Color.Primary" OnClick="@Add" Size="Size.Small">
+                        <MudFab StartIcon="@IconsFA.Solid.Icon("plus").Font" Color="Color.Primary" OnClick="@Add" Size="AppStateStatic.Size">
                         </MudFab>
                     </MudTooltip>
                 }
@@ -70,7 +70,7 @@
 </RenderControl>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
-    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JsRuntime.InvokeVoidAsync("history.back"))" />
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JsRuntime.InvokeVoidAsync("history.back"))" />
 </div>
 
 @code {

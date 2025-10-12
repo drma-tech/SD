@@ -15,13 +15,13 @@
         @if ((Watching?.CanSync(MediaType) ?? false) && (Watching?.Items(MediaType).Any() ?? false))
         {
             <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
-                       OnClick="() => ImportFromWatched()" Disabled="@Updating">
+                       OnClick="() => ImportFromWatched()" Disabled="@Updating" Size="AppStateStatic.Size">
                 @Button.Update
             </MudButton>
         }
         <MudTooltip Text="@GlobalTranslations.SeeAllItems">
             <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
-                           OnClick="@(async () => await OpenCompleteList())" Size="Size.Small" />
+                           OnClick="@(async () => await OpenCompleteList())" Size="AppStateStatic.Size" />
         </MudTooltip>
     </ActionFragment>
     <BodyFragment>

@@ -13,13 +13,13 @@
         }
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@SelectAll" Color="Color.Primary">
+        <MudButton OnClick="@SelectAll" Color="Color.Primary" Size="AppStateStatic.Size">
             All
         </MudButton>
-        <MudButton OnClick="@Confirm" Color="Color.Primary" Disabled="SelectedItems.Empty()">
+        <MudButton OnClick="@Confirm" Color="Color.Primary" Size="AppStateStatic.Size" Disabled="SelectedItems.Empty()">
             @Button.Ok
         </MudButton>
-        <MudButton OnClick="@HideModal" Color="Color.Error">
+        <MudButton OnClick="@HideModal" Color="Color.Error" Size="AppStateStatic.Size">
             @Button.Cancel
         </MudButton>
     </DialogActions>

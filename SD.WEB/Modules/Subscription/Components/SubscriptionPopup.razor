@@ -33,7 +33,7 @@
                 </MudAlert>
                 <MudGrid Class="mb-3">
                     <MudItem xs="12" sm="8">
-                        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary">
+                        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary" Size="AppStateStatic.Size">
                             <MudToggleItem Value="@AccountCycle.Monthly">
                                 @AccountCycle.Monthly.GetName()
                             </MudToggleItem>
@@ -116,7 +116,7 @@
                             </MudGrid>
                         </MudCardContent>
                         <MudCardActions>
-                            <MudButton Variant="Variant.Filled" Color="Color.Success" FullWidth="true" Disabled="true">
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" FullWidth="true" Disabled="true" Size="AppStateStatic.Size">
                                 @Resources.Translations.YourCurrentPlan
                             </MudButton>
                         </MudCardActions>
@@ -175,7 +175,7 @@
                             </MudGrid>
                         </MudCardContent>
                         <MudCardActions>
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Size="AppStateStatic.Size"
                                        OnClick="@(() => OpenCheckout(GetSubscription(AccountProduct.Standard)?.PriceId))">
                                 @Translations.Select
                             </MudButton>
@@ -235,7 +235,7 @@
                             </MudGrid>
                         </MudCardContent>
                         <MudCardActions>
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Size="AppStateStatic.Size"
                                        OnClick="@(() => OpenCheckout(GetSubscription(AccountProduct.Premium)?.PriceId))">
                                 @Translations.Select
                             </MudButton>
@@ -293,7 +293,7 @@
                                             }
                                             else
                                             {
-                                                <MudChip T="string" Color="Color.Warning">@Translations.InactiveBilling</MudChip>
+                                                <MudChip T="string" Color="Color.Warning" Size="AppStateStatic.Size">@Translations.InactiveBilling</MudChip>
                                             }
                                         </CellTemplate>
                                     </TemplateColumn>
@@ -303,24 +303,24 @@
                         </MudCardContent>
                     </MudCard>
                     <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("list-check").Font" Variant="Variant.Filled" Class="me-3 mb-2"
-                               Href="@CustomerPortalUrl" Target="_blank" Rel="noindex, nofollow">
+                               Href="@CustomerPortalUrl" Target="_blank" Rel="noindex, nofollow" Size="AppStateStatic.Size">
                         Customer portal
                     </MudButton>
                     @if (Subscription?.data?.IsCanceled ?? true)
                     {
                         <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("gem").Font" Variant="Variant.Filled" Class="me-2 mb-2"
-                                   OnClick="@CreateNewSubscription">
+                                   OnClick="@CreateNewSubscription" Size="AppStateStatic.Size">
                             @Translations.CreateNewSubscription
                         </MudButton>
                     }
                     else
                     {
                         <MudButton Color="Color.Secondary" StartIcon="@IconsFA.Solid.Icon("credit-card").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
-                                   Href="@Subscription?.data?.management_urls?.update_payment_method" Target="_blank" Rel="noindex, nofollow">
+                                   Href="@Subscription?.data?.management_urls?.update_payment_method" Target="_blank" Rel="noindex, nofollow" Size="AppStateStatic.Size">
                             @Translations.UpdatePaymentDetails
                         </MudButton>
                         <MudButton Color="Color.Error" StartIcon="@IconsFA.Solid.Icon("ban").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
-                                   Href="@Subscription?.data?.management_urls?.cancel" Target="_blank" Rel="noindex, nofollow">
+                                   Href="@Subscription?.data?.management_urls?.cancel" Target="_blank" Rel="noindex, nofollow" Size="AppStateStatic.Size">
                             @Translations.CancelSubscription
                         </MudButton>
                     }
@@ -331,7 +331,7 @@
     <DialogActions>
         <span class="ma-2">Platform: @Platform</span>
         <MudSpacer></MudSpacer>
-        <MudButton OnClick="@(() => { MudDialog?.Close(); })">@Button.Close</MudButton>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">@Button.Close</MudButton>
     </DialogActions>
 </MudDialog>
 

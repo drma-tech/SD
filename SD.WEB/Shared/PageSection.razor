@@ -8,13 +8,13 @@
             <MudToolBar WrapContent="true" Dense="true" Gutters="false" Style="min-height: auto;">
                 @if (!string.IsNullOrEmpty(Icon))
                 {
-                    <MudIcon Icon="@Icon" Class="me-2" Color="Color"></MudIcon>
+                    <MudIcon Icon="@Icon" Class="me-2" Color="Color" Style="@($"font-size: {imageSize} !important;")"></MudIcon>
                 }
                 else if (!string.IsNullOrEmpty(Image))
                 {
-                    <MudImage Src="@Image" Class="me-2" Style="height: 36px; vertical-align: sub;" Alt="@Image"></MudImage>
+                    <MudImage Src="@Image" Class="me-2" Style="@GetImageStyle()" Alt="@Image"></MudImage>
                 }
-                <MudText Typo="Typo.h2" Color="Color" Style="font-size: 23px; line-height: 1.2;">
+                <MudText Typo="Typo.h2" Color="Color" Style="@($"font-size: {titleFontSize}; line-height: 1.2;")">
                     @Title
                 </MudText>
                 @if (ButtonAction || IsDesktop)
@@ -31,7 +31,7 @@
             @if (Description.NotEmpty())
             {
                 <div style="text-align: justify;" class="mt-2">
-                    <MudText Typo="Typo.body1" Align="Align.Justify" Style="line-height: 1.2">
+                    <MudText Typo="@(AppStateStatic.Size == Size.Small ? Typo.caption : Typo.body1)" Align="Align.Justify" Style="line-height: 1.2">
                         @Description
                     </MudText>
                 </div>
@@ -50,6 +50,7 @@
     [Parameter] public Color Color { get; set; } = MudBlazor.Color.Primary;
     [Parameter] public string? Icon { get; set; }
     [Parameter] public string? Image { get; set; }
+    [Parameter] public string? ImageStyle { get; set; }
    
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public bool Visible { get; set; } = true;
@@ -61,4 +62,12 @@
 
     [Parameter] public bool ButtonAction { get; set; } = true;
     private bool IsDesktop => Breakpoint > Breakpoint.Xs;
+
+    private string imageSize => AppStateStatic.Size == Size.Small ? "20px" : "24px";
+    private string titleFontSize => AppStateStatic.Size == Size.Small ? "20px" : "24px";
+
+    private string GetImageStyle()
+    {
+        return ImageStyle ?? $"max-height: {imageSize}; max-width: {imageSize}; width: 100%; vertical-align: top;";
+    }
 }

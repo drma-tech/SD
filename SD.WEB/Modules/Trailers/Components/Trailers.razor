@@ -20,12 +20,14 @@
                 <MudCard Outlined="true">
                     <MudCardContent Style="padding: 0; position: relative;">
                         <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%;"></MudImage>
-                        <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.9;">
+                        <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
                             @item?.published
                         </MudChip>
                     </MudCardContent>
-                    <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.8rem;">
-                        <MudText Typo="Typo.h2" Class="custom-title-list">@item.title</MudText>
+                    <MudCardContent Style="text-align: center; padding: 4px;">
+                        <MudText Typo="Typo.h2" Class="custom-title-list">
+                            @item.title
+                        </MudText>
                     </MudCardContent>
                 </MudCard>
             </MudLink>
@@ -34,7 +36,7 @@
 </RenderControl>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
-    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="Size.Medium" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
 </div>
 
 @code {

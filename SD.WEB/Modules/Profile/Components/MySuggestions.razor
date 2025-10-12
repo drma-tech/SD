@@ -18,19 +18,19 @@
             @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (MyProviders?.Items.Any() ?? false))
             {
                 <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
-                           OnClick="() => ImportFromProviders(MediaType.movie)" Disabled="@MovieUpdating" Size="Size.Small">
+                           OnClick="() => ImportFromProviders(MediaType.movie)" Disabled="@MovieUpdating" Size="AppStateStatic.Size">
                     @Button.Update
                 </MudButton>
             }
             @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync) && (MyProviders?.Items.Any() ?? false))
             {
                 <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Variant="Variant.Filled" Color="Color.Warning" Class="me-2"
-                           OnClick="() => ImportFromProviders(MediaType.tv)" Disabled="@ShowUpdating" Size="Size.Small">
+                           OnClick="() => ImportFromProviders(MediaType.tv)" Disabled="@ShowUpdating" Size="AppStateStatic.Size">
                     @Button.Update
                 </MudButton>
             }
             <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Value="SearchType" ValueChanged="(MediaType type) => CheckedValueChanged(type)"
-                            Color="Color.Primary" Class="me-2" CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0" Size="Size.Small">
+                            Color="Color.Primary" Class="me-2" CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0" Size="AppStateStatic.Size">
                 <MudToggleItem Value="@MediaType.movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
                     <MudHidden Breakpoint="Breakpoint.SmAndUp">
                         <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()"></MudIcon>
@@ -49,7 +49,7 @@
                 </MudToggleItem>
             </MudToggleGroup>
             <MudIconButton Icon="@IconsFA.Solid.Icon("filter").Font" Variant="Variant.Filled" Color="@(GenresChanged? Color.Secondary: Color.Primary)"
-                           OnClick="@(async () => await OpenConfigurations())" Disabled="@(MyProviders == null || MyProviders.Items.Empty())" Size="Size.Small" />
+                           OnClick="@(async () => await OpenConfigurations())" Disabled="@(MyProviders == null || MyProviders.Items.Empty())" Size="AppStateStatic.Size" />
         }
     </ActionFragment>
     <BodyFragment>

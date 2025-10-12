@@ -34,13 +34,13 @@
     <DialogActions>
         @if (MyProviders?.Items.Any(a => a.id == ProviderId) ?? false)
         {
-            <MudButton Color="Color.Error" StartIcon="@IconsFA.Solid.Icon("minus").Font" OnClick="@Remove" Disabled="@(!IsAuthenticated)">@Button.Remove</MudButton>
+            <MudButton Color="Color.Error" StartIcon="@IconsFA.Solid.Icon("minus").Font" OnClick="@Remove" Disabled="@(!IsAuthenticated)" Size="AppStateStatic.Size">@Button.Remove</MudButton>
         }
         else
         {
-            <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("plus").Font" OnClick="@Add" Disabled="@(!IsAuthenticated)">@Button.Add</MudButton>
+            <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("plus").Font" OnClick="@Add" Disabled="@(!IsAuthenticated)" Size="AppStateStatic.Size">@Button.Add</MudButton>
         }
-        <MudButton OnClick="@(() => { MudDialog?.Close(); })">@Button.Close</MudButton>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">@Button.Close</MudButton>
     </DialogActions>
 </MudDialog>
 

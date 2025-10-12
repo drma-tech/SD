@@ -22,7 +22,7 @@
         @if (SubscriptionAllowed)
         {
             <MudTooltip Text="@Modules.Profile.Resources.Translations.Subscription">
-                <MudFab Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" IconColor="Color.Warning" Size="Size.Small" OnClick="@OpenSubscription" />
+                <MudFab Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" IconColor="Color.Warning" Size="AppStateStatic.Size" OnClick="@OpenSubscription" />
             </MudTooltip>
         }
     </ActionFragment>

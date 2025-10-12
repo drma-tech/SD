@@ -12,7 +12,7 @@
         @if (ShowFilter)
         {
             <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Value="TypeSelected" CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0"
-                            ValueChanged="@(async (MediaType type) => await TypeSelectedChangedHandle(type))" Color="Color.Primary" Class="me-2" Size="Size.Small">
+                            ValueChanged="@(async (MediaType type) => await TypeSelectedChangedHandle(type))" Color="Color.Primary" Class="me-2" Size="AppStateStatic.Size">
                 <MudToggleItem Value="@MediaType.movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
                     <MudHidden Breakpoint="Breakpoint.SmAndUp">
                         <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()"></MudIcon>
@@ -31,7 +31,7 @@
                 </MudToggleItem>
             </MudToggleGroup>
         }
-        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
+        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Size="AppStateStatic.Size"
                        OnClick="@(()=>Navigation.NavigateTo(GetCustomExpandUrl()))" Disabled="@(List == null && CustomExpand.Empty())" />
     </ActionFragment>
     <BodyFragment>

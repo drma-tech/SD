@@ -14,10 +14,10 @@
 
 <SeoHeader Title="platforms-edit" Description="platforms-edit" Url="/platforms-edit" Index="false" Keywords="@([])"></SeoHeader>
 
-<MudButton OnClick="@SyncProvidersOnClick" Color="Color.Primary" Variant="Variant.Filled">
+<MudButton OnClick="@SyncProvidersOnClick" Color="Color.Primary" Variant="Variant.Filled" Size="AppStateStatic.Size">
     Sync Providers
 </MudButton>
-<MudButton OnClick="@SaveSession" Color="Color.Primary" Variant="Variant.Filled">
+<MudButton OnClick="@SaveSession" Color="Color.Primary" Variant="Variant.Filled" Size="AppStateStatic.Size">
     Save Session
 </MudButton>
 
@@ -28,34 +28,34 @@
     <Columns>
         <TemplateColumn>
             @*  <ClearFilterCommandTemplate>
-                <Button Color="Color.Secondary" Clicked="@context.Clicked" Size="Size.Small">
+                <Button Color="Color.Secondary" Clicked="@context.Clicked" Size="AppStateStatic.Size">
                     <Blazorise.Icon Name="FontAwesomeIcons.Filter"></Blazorise.Icon>
                 </Button>
             </ClearFilterCommandTemplate> *@
             @*   <NewCommandTemplate>
-                <Button Color="Color.Success" Clicked="@context.Clicked" Size="Size.Small">
+                <Button Color="Color.Success" Clicked="@context.Clicked" Size="AppStateStatic.Size">
                     <Blazorise.Icon Name="FontAwesomeIcons.Plus"></Blazorise.Icon>
                 </Button>
             </NewCommandTemplate> *@
             @*  <EditCommandTemplate>
-                <Button Color="Color.Primary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromEnd">
+                <Button Color="Color.Primary" Clicked="@context.Clicked" Size="AppStateStatic.Size" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.Edit"></Blazorise.Icon>
                 </Button>
             </EditCommandTemplate> *@
             <CellTemplate>
                 <div style="width: 60px;">
-                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
-                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Link" Disabled="context.Item.link.NotEmpty()" Target="_blank"
+                    <MudIconButton Size="AppStateStatic.Size" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
+                    <MudIconButton Size="AppStateStatic.Size" Icon="@Icons.Material.Outlined.Link" Disabled="context.Item.link.NotEmpty()" Target="_blank"
                                    Href="@($"https://www.google.com/search?q=streaming+{context.Item.name}")" />
                 </div>
             </CellTemplate>
             @*  <SaveCommandTemplate>
-                <Button Color="Color.Primary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromEnd">
+                <Button Color="Color.Primary" Clicked="@context.Clicked" Size="AppStateStatic.Size" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.Save"></Blazorise.Icon>
                 </Button>
             </SaveCommandTemplate> *@
             @*   <CancelCommandTemplate>
-                <Button Color="Color.Secondary" Clicked="@context.Clicked" Size="Size.Small" Margin="Margin.Is1.FromEnd">
+                <Button Color="Color.Secondary" Clicked="@context.Clicked" Size="AppStateStatic.Size" Margin="Margin.Is1.FromEnd">
                     <Blazorise.Icon Name="FontAwesomeIcons.Ban"></Blazorise.Icon>
                 </Button>
             </CancelCommandTemplate> *@
@@ -69,7 +69,7 @@
         <PropertyColumn Property="x => x.description" Title="Description">
             <EditTemplate>
                 <MudTextField @bind-Value="context.Item.description" Lines="3" />
-                <MudButton Variant="Variant.Filled" Color="Color.Success" Class="mt-2" StartIcon="@Icons.Material.Filled.Sync" Size="Size.Small" Disabled="context.Item.link.Empty()"
+                <MudButton Variant="Variant.Filled" Color="Color.Success" Class="mt-2" StartIcon="@Icons.Material.Filled.Sync" Size="AppStateStatic.Size" Disabled="context.Item.link.Empty()"
                            OnClick="@(async () => { context.Item.description = "searching..."; context.Item.description = await GetDescriptionOnClick(context.Item.link); })">
                 </MudButton>
             </EditTemplate>

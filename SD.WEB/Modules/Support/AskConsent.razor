@@ -7,13 +7,13 @@
 <SeoHeader Title="Ask Consent" Description="Ask Consent" Url="/ask-consent" Index="false" Keywords="@([])"></SeoHeader>
 
 <MudPaper Elevation="0" Outlined="true" Class="pa-3">
-    <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="mb-2">
+    <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="mb-2" Size="AppStateStatic.Size">
         <MudText Inline="true">
             @((MarkupString)string.Format(Translations.Terms1, $"<a href='support/terms' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Modules.Support.Resources.Translations.TermsUse}</a>", $"<a href='support/privacy' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Modules.Support.Resources.Translations.PrivacyPolicy}</a>"))
         </MudText>
     </MudCheckBox>
 
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Consent" Disabled="(!_terms1)" Class="mt-4 me-2">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Consent" Disabled="(!_terms1)" Class="mt-4 me-2" Size="AppStateStatic.Size">
         @Button.Confirm
     </MudButton>
 </MudPaper>

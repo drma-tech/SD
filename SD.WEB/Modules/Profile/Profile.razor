@@ -27,7 +27,7 @@
                     @Translations.Platforms
                 </MudText>
             </div>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
                 @(MyProviders?.Items.Count ?? 0)
             </MudChip>
         </MudPaper>
@@ -40,10 +40,10 @@
                     @Translations.Wishlist
                 </MudText>
             </div>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
                 @(Wish?.Movies.Count ?? 0) @PopularType.MovieName
             </MudChip>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
                 @(Wish?.Shows.Count ?? 0) @PopularType.ShowName
             </MudChip>
         </MudPaper>
@@ -56,10 +56,10 @@
                     @Translations.Watching
                 </MudText>
             </div>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
                 @(Watching?.Movies.Count ?? 0) @PopularType.MovieName
             </MudChip>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
                 @(Watching?.Shows.Count ?? 0) @PopularType.ShowName
             </MudChip>
         </MudPaper>
@@ -72,10 +72,10 @@
                     @Translations.Watched
                 </MudText>
             </div>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
                 @(Watched?.Movies.Count ?? 0) @PopularType.MovieName
             </MudChip>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;">
+            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
                 @(Watched?.Shows.Count ?? 0) @PopularType.ShowName
             </MudChip>
         </MudPaper>

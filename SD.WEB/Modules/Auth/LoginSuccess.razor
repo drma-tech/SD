@@ -27,10 +27,10 @@
                 <MudText Inline="true">@Translations.Terms2</MudText>
             </MudCheckBox>
 
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="mt-4 me-2">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="mt-4 me-2" Size="AppStateStatic.Size">
                 @Button.Confirm
             </MudButton>
-            <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Logout" Class="mt-4">
+            <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Logout" Class="mt-4" Size="AppStateStatic.Size">
                 @Button.Cancel
             </MudButton>
         </MudPaper>

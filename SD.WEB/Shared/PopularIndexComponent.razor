@@ -7,7 +7,7 @@
 <PageSection Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font">
     <ActionFragment>
         <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary"
-                        CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0" Size="Size.Small">
+                        CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0" Size="AppStateStatic.Size">
             <MudToggleItem Value="@PopularType.Movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
                 <MudHidden Breakpoint="Breakpoint.SmAndUp">
                     <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@PopularType.Movie.GetName()"></MudIcon>

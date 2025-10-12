@@ -30,12 +30,12 @@
                         <MudTextField T="@string" Label="@Translations.Email" Text="@Principal?.Email" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                     <MudItem xs="12" sm="6">
-                        <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DownloadData" Disabled="Principal == null">
+                        <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DownloadData" Disabled="Principal == null" Size="AppStateStatic.Size">
                             Download Data
                         </MudButton>
                     </MudItem>
                     <MudItem xs="12" sm="6">
-                        <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DeleteAccount" Color="Color.Error">
+                        <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DeleteAccount" Color="Color.Error" Size="AppStateStatic.Size">
                             @Translations.DeleteAccount
                         </MudButton>
                     </MudItem>
@@ -44,7 +44,7 @@
         </MudCard>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@(() => { MudDialog?.Close(); })">
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">
             @Button.Close
         </MudButton>
     </DialogActions>
