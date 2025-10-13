@@ -8,7 +8,7 @@
             <MudToolBar WrapContent="true" Dense="true" Gutters="false" Style="min-height: auto;">
                 @if (!string.IsNullOrEmpty(Icon))
                 {
-                    <MudIcon Icon="@Icon" Class="me-2" Color="Color" Style="@($"font-size: {imageSize} !important;")"></MudIcon>
+                    <MudIcon Icon="@Icon" Class="me-2" Color="Color" Style="@($"font-size: {imageSize} !important; width: auto;")"></MudIcon>
                 }
                 else if (!string.IsNullOrEmpty(Image))
                 {
