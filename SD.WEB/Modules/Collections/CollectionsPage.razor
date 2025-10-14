@@ -148,9 +148,11 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperAwards, 100);
-            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperSites, 100);
-            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperSpecials, 100);
+            var desktop = Breakpoint > Breakpoint.Xs;
+
+            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperAwards, desktop ? 100 : 73);
+            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperSites, desktop ? 100 : 73);
+            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperSpecials, desktop ? 100 : 73);
         }
         catch (Exception ex)
         {

@@ -17,7 +17,7 @@
         @foreach (var item in NewsList?.Data?.Items ?? [])
         {
             <MudCard Style="position: relative;">
-                <MudCardMedia Image="@item.url_img" Height="350" />
+                <MudCardMedia Image="@item.url_img" Height="300" />
                 <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 8px; left: 8px; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
                     @item.date.Humanize()
                 </MudChip>
