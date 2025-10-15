@@ -18,8 +18,7 @@
 
 <PageHeader Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
     <ActionFragment>
-        <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="Filter"
-                   Margin="@(IsDesktop? Margin.None: Margin.Dense)" Dense="true">
+        <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="Filter" Dense="true">
             @foreach (var item in DeliveryModels)
             {
                 <MudSelectItem T="DeliveryModel?" Value="@item.Value">@item.Name</MudSelectItem>
@@ -86,7 +85,6 @@
     [Custom(Name = "Model")] public DeliveryModel? DeliveryModel { get; set; }
 
     public Region Region { get; set; } = Region.US;
-    private bool IsDesktop => Breakpoint > Breakpoint.Xs;
 
     public List<ProviderModel> GetFilteredProviders()
     {

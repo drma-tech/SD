@@ -14,7 +14,7 @@
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@SearchContent" Immediate="true" OnKeyDown="@KeyPress"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(SearchContent.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary"
-              Variant="Variant.Outlined" OnAdornmentClick="@(() => Navigation.NavigateTo($"/search/{SearchContent}", true))" Class="my-6" Margin="@(IsDesktop? Margin.None: Margin.Dense)">
+              Variant="Variant.Outlined" OnAdornmentClick="@(() => Navigation.NavigateTo($"/search/{SearchContent}", true))" Class="my-6">
 </MudTextField>
 
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())" CustomMessageWarning="@GlobalTranslations.SearchReturnedNothing">
@@ -33,7 +33,6 @@
     private HashSet<MediaDetail> Items { get; set; } = [];
     private RenderControlCore<HashSet<MediaDetail>> Core { get; } = new();
     private Dictionary<string, string> StringParameters => new() { { "query", SearchContent ?? "" } };
-    private bool IsDesktop => Breakpoint > Breakpoint.Xs;
 
     protected override void OnInitialized()
     {

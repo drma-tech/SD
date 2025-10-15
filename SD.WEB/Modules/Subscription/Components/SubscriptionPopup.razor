@@ -34,7 +34,7 @@
                 <MudGrid Class="mb-3">
                     <MudItem xs="12" sm="8">
                         <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary" Size="AppStateStatic.Size">
-                            <MudToggleItem Value="@AccountCycle.Monthly">
+                            <MudToggleItem Value="@AccountCycle.Monthly" Size="AppStateStatic.Size">
                                 @AccountCycle.Monthly.GetName()
                             </MudToggleItem>
                             <MudToggleItem Value="@AccountCycle.Yearly">
@@ -46,7 +46,7 @@
                         </MudToggleGroup>
                     </MudItem>
                     <MudItem xs="12" sm="4">
-                        <MudSelect @bind-Value="@Provider" Label="@Resources.Translations.PaymentProvider" Dense="true" Margin="@(IsDesktop? Margin.None: Margin.Dense)">
+                        <MudSelect @bind-Value="@Provider" Label="@Resources.Translations.PaymentProvider" Dense="true">
                             @foreach (var item in Providers)
                             {
                                 <MudSelectItem T="PaymentProvider?" Value="@item" Disabled="@(item != PaymentProvider.Paddle)">
@@ -259,20 +259,16 @@
                         <MudCardContent Class="pa-3">
                             <MudGrid Class="mb-6">
                                 <MudItem xs="12" sm="6">
-                                    <MudTextField T="string" Label="@Translations.SubscriptionId" Text="@Subscription?.data?.id" ReadOnly="true"
-                                                  Margin="@(IsDesktop ? Margin.None : Margin.Dense)"></MudTextField>
+                                    <MudTextField T="string" Label="@Translations.SubscriptionId" Text="@Subscription?.data?.id" ReadOnly="true"></MudTextField>
                                 </MudItem>
                                 <MudItem xs="12" sm="6">
-                                    <MudTextField T="string" Label="@Translations.Status" Text="@Subscription?.data?.status" ReadOnly="true"
-                                                  Margin="@(IsDesktop ? Margin.None : Margin.Dense)"></MudTextField>
+                                    <MudTextField T="string" Label="@Translations.Status" Text="@Subscription?.data?.status" ReadOnly="true"></MudTextField>
                                 </MudItem>
                                 <MudItem xs="12" sm="6">
-                                    <MudTextField T="string" Label="@Translations.NextBilled" Text="@Subscription?.data?.next_billed_at?.ToShortDateString()" ReadOnly="true"
-                                                  Margin="@(IsDesktop ? Margin.None : Margin.Dense)"></MudTextField>
+                                    <MudTextField T="string" Label="@Translations.NextBilled" Text="@Subscription?.data?.next_billed_at?.ToShortDateString()" ReadOnly="true"></MudTextField>
                                 </MudItem>
                                 <MudItem xs="12" sm="6">
-                                    <MudTextField T="string" Label="@Translations.Canceled" Text="@Subscription?.data?.canceled_at?.ToShortDateString()" ReadOnly="true"
-                                                  Margin="@(IsDesktop ? Margin.None : Margin.Dense)" ShrinkLabel="true"></MudTextField>
+                                    <MudTextField T="string" Label="@Translations.Canceled" Text="@Subscription?.data?.canceled_at?.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
                                 </MudItem>
                             </MudGrid>
                         </MudCardContent>
@@ -359,7 +355,6 @@
     private bool BlockedCountry { get; set; }
     private string? CustomerPortalUrl { get; set; }
     private SD.Shared.Enums.Platform Platform { get; set; }
-    private bool IsDesktop => Breakpoint > Breakpoint.Xs;
 
     private readonly Dictionary<string, string> _BlockedCountries = new()
     {

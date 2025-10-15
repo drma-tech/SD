@@ -18,20 +18,16 @@
             <MudCardContent>
                 <MudGrid>
                     <MudItem xs="12">
-                        <MudTextField T="@string" Label="@Translations.IdentityProvider" Text="@Principal?.IdentityProvider" Variant="Variant.Filled" ReadOnly="true"
-                                      Margin="@(IsDesktop? Margin.None: Margin.Dense)"></MudTextField>
+                        <MudTextField T="@string" Label="@Translations.IdentityProvider" Text="@Principal?.IdentityProvider" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField T="@string" Label="@Translations.Identification" Text="@Principal?.UserId" Variant="Variant.Filled" ReadOnly="true"
-                                      Margin="@(IsDesktop? Margin.None: Margin.Dense)"></MudTextField>
+                        <MudTextField T="@string" Label="@Translations.Identification" Text="@Principal?.UserId" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField T="@string" Label="Display Name" Text="@Principal?.DisplayName" Variant="Variant.Filled" ReadOnly="true"
-                                      Margin="@(IsDesktop? Margin.None: Margin.Dense)"></MudTextField>
+                        <MudTextField T="@string" Label="Display Name" Text="@Principal?.DisplayName" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField T="@string" Label="@Translations.Email" Text="@Principal?.Email" Variant="Variant.Filled" ReadOnly="true"
-                                      Margin="@(IsDesktop? Margin.None: Margin.Dense)"></MudTextField>
+                        <MudTextField T="@string" Label="@Translations.Email" Text="@Principal?.Email" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                     <MudItem xs="12" sm="6">
                         <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DownloadData" Disabled="Principal == null" Size="AppStateStatic.Size">
@@ -59,7 +55,6 @@
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
     private AuthPrincipal? Principal { get; set; }
-    private bool IsDesktop => Breakpoint > Breakpoint.Xs;
 
     protected override async Task LoadNonEssentialDataAsync()
     {

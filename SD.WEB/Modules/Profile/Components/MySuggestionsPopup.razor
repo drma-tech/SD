@@ -6,8 +6,7 @@
         <MudGrid Class="mb-6">
             <MudItem xs="12">
                 <MudSelect T="MovieGenre" Adornment="Adornment.Start" AdornmentIcon="@IconsFA.Solid.Icon("film").Font" Label="Movie Genres" Clearable="true"
-                           Placeholder="Select your favorite movie genres" MultiSelection="true" FullWidth="true" @bind-SelectedValues="@MySuggestions!.MovieGenres"
-                           Margin="@(IsDesktop? Margin.None: Margin.Dense)">
+                           Placeholder="Select your favorite movie genres" MultiSelection="true" FullWidth="true" @bind-SelectedValues="@MySuggestions!.MovieGenres">
                     @foreach (var genre in MovieGenres)
                     {
                         <MudSelectItem Value="@genre">@genre.GetName()</MudSelectItem>
@@ -16,8 +15,7 @@
             </MudItem>
             <MudItem xs="12">
                 <MudSelect T="TvGenre" Adornment="Adornment.Start" AdornmentIcon="@IconsFA.Solid.Icon("tv").Font" Label="TV Genres" Clearable="true"
-                           Placeholder="Select your favorite tv genres" MultiSelection="true" FullWidth="true" @bind-SelectedValues="@MySuggestions!.TvGenres"
-                           Margin="@(IsDesktop? Margin.None: Margin.Dense)">
+                           Placeholder="Select your favorite tv genres" MultiSelection="true" FullWidth="true" @bind-SelectedValues="@MySuggestions!.TvGenres">
                     @foreach (var genre in TvGenres)
                     {
                         <MudSelectItem Value="@genre">@genre.GetName()</MudSelectItem>
@@ -41,7 +39,6 @@
 
     public IEnumerable<MovieGenre> MovieGenres { get; set; } = [];
     public IEnumerable<TvGenre> TvGenres { get; set; } = [];
-    private bool IsDesktop => Breakpoint > Breakpoint.Xs;
 
     protected override void OnInitialized()
     {

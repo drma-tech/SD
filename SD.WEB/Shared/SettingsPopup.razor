@@ -9,7 +9,7 @@
         <MudGrid Class="mb-6">
             <MudItem xs="12">
                 <MudSelect Value="@Region" ValueChanged="@((Region vl) => RegionValueChanged(vl))" Label="@GlobalTranslations.Region"
-                           HelperText="@GlobalTranslations.RegionDesc" FullWidth="true" Margin="@(IsDesktop? Margin.None: Margin.Dense)">
+                           HelperText="@GlobalTranslations.RegionDesc" FullWidth="true">
                     @foreach (var item in regions.OrderBy(p => p.GetName()))
                     {
                         <MudSelectItem Value="@item">@item.GetName()</MudSelectItem>
@@ -18,7 +18,7 @@
             </MudItem>
             <MudItem xs="12">
                 <MudSelect Value="@Language" ValueChanged="@((AppLanguage vl) => AppLanguageValueChanged(vl))" Label="@GlobalTranslations.AppLanguage"
-                           HelperText="@GlobalTranslations.AppLanguageDesc" FullWidth="true" Margin="@(IsDesktop? Margin.None: Margin.Dense)">
+                           HelperText="@GlobalTranslations.AppLanguageDesc" FullWidth="true">
                     @foreach (var item in appLanguages.OrderBy(p => p.GetName()))
                     {
                         <MudSelectItem Value="@item">@item.GetName()</MudSelectItem>
@@ -27,7 +27,7 @@
             </MudItem>
             <MudItem xs="12">
                 <MudSelect Value="@ContentLanguage" ValueChanged="@((ContentLanguage vl) => ContentLanguageValueChanged(vl))" Label="@GlobalTranslations.ContentLanguage"
-                           HelperText="@GlobalTranslations.ContentLanguageDesc" FullWidth="true" Margin="@(IsDesktop? Margin.None: Margin.Dense)">
+                           HelperText="@GlobalTranslations.ContentLanguageDesc" FullWidth="true">
                     @foreach (var item in contentLanguages.OrderBy(p => p.GetName()))
                     {
                         <MudSelectItem Value="@item">@item.GetName()</MudSelectItem>
@@ -66,7 +66,6 @@
     public Region Region { get; set; } = Region.US;
     public ContentLanguage ContentLanguage { get; set; } = ContentLanguage.enUS;
     public bool DarkMode { get; set; } = false;
-    private bool IsDesktop => Breakpoint > Breakpoint.Xs;
 
     protected override async Task LoadEssentialDataAsync()
     {

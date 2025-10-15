@@ -28,7 +28,7 @@
     </ActionFragment>
 </PageHeader>
 
-<MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-4" Margin="@(IsDesktop ? Margin.None : Margin.Dense)"
+<MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-4"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
               OnAdornmentClick="@(() =>{ if (Search.NotEmpty()) Navigation.NavigateTo($"/search/{Search}", true); })">
 </MudTextField>
@@ -66,7 +66,6 @@
 
     public string? Search { get; set; }
     private bool SubscriptionAllowed { get; set; } = true;
-    private bool IsDesktop => Breakpoint > Breakpoint.Xs;
 
     private readonly Dictionary<string, string> _iosAllowedCountries = new()
     {
