@@ -24,7 +24,7 @@ if (builder.RootComponents.Empty())
     builder.RootComponents.Add<HeadOutlet>("head::after");
 }
 
-ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress, builder.HostEnvironment.IsDevelopment(), builder.Configuration);
+ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress, builder.HostEnvironment.BaseAddress.Contains("localhost", StringComparison.OrdinalIgnoreCase), builder.Configuration);
 
 var app = builder.Build();
 
