@@ -24,7 +24,7 @@ if (builder.RootComponents.Empty())
     builder.RootComponents.Add<HeadOutlet>("head::after");
 }
 
-ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress, builder.Configuration);
+ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress, builder.HostEnvironment.IsDevelopment(), builder.Configuration);
 
 var app = builder.Build();
 
@@ -37,7 +37,7 @@ await js.InvokeVoidAsync("initGoogleAnalytics", "G-4PREF5QX1F", version);
 
 await app.RunAsync();
 
-static void ConfigureServices(IServiceCollection collection, string baseAddress, IConfiguration configuration)
+static void ConfigureServices(IServiceCollection collection, string baseAddress, bool dev, IConfiguration configuration)
 {
     collection.AddMudServices();
 
@@ -48,14 +48,14 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddHttpClient("Anonymous",
        (service, options) =>
        {
-           options.BaseAddress = new Uri(configuration["DownstreamApi:BaseUrl"] ?? throw new UnhandledException("DownstreamApi:BaseUrl null"));
+           options.BaseAddress = dev ? new Uri(configuration["DownstreamApi:BaseUrl"] ?? throw new UnhandledException("DownstreamApi:BaseUrl null")) : new Uri(baseAddress);
        })
        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddHttpClient("Authenticated",
         (service, options) =>
         {
-            options.BaseAddress = new Uri(configuration["DownstreamApi:BaseUrl"] ?? throw new UnhandledException("DownstreamApi:BaseUrl null"));
+            options.BaseAddress = dev ? new Uri(configuration["DownstreamApi:BaseUrl"] ?? throw new UnhandledException("DownstreamApi:BaseUrl null")) : new Uri(baseAddress);
         })
         .AddHttpMessageHandler(service =>
         {
