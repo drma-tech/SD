@@ -72,18 +72,21 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddOptions();
     collection.AddAuthorizationCore();
 
-    collection.AddMsalAuthentication(options =>
+    if (OperatingSystem.IsBrowser())
     {
-        options.ProviderOptions.LoginMode = "redirect";
-        configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
-        options.ProviderOptions.Cache = new MsalCacheOptions { CacheLocation = "localStorage" };
+        collection.AddMsalAuthentication(options =>
+        {
+            options.ProviderOptions.LoginMode = "redirect";
+            configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
+            options.ProviderOptions.Cache = new MsalCacheOptions { CacheLocation = "localStorage" };
 
-        options.ProviderOptions.Authentication.PostLogoutRedirectUri = "/";
+            options.ProviderOptions.Authentication.PostLogoutRedirectUri = "/";
 
-        options.ProviderOptions.DefaultAccessTokenScopes.Add("email"); //give access to the email scope
-    });
+            options.ProviderOptions.DefaultAccessTokenScopes.Add("email"); //give access to the email scope
+        });
 
-    collection.AddScoped<AccountClaimsPrincipalFactory<RemoteUserAccount>, CustomUserFactory>(); //for some reason roles are not being recognized
+        collection.AddScoped<AccountClaimsPrincipalFactory<RemoteUserAccount>, CustomUserFactory>(); //for some reason roles are not being recognized
+    }
 
     collection.AddScoped<PrincipalApi>();
     collection.AddScoped<LoginApi>();
