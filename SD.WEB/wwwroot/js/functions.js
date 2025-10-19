@@ -68,6 +68,7 @@ function LoadAppVariables() {
 async function getUserInfo() {
     try {
         let keys = JSON.parse(GetLocalStorage("msal.account.keys"));
+        if (!keys) return null;
         let session = JSON.parse(GetLocalStorage(keys[0]));
 
         return {
