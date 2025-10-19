@@ -1,7 +1,8 @@
-using AzureStaticWebApps.Blazor.Authentication;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Authentication.WebAssembly.Msal.Models;
 using Microsoft.JSInterop;
 using MudBlazor.Services;
 using Polly;
@@ -42,18 +43,47 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
 
     collection.AddPWAUpdater();
 
-    collection.AddHttpClient("LocalHttpClient", c => { c.BaseAddress = new Uri(baseAddress); });
+    collection.AddHttpClient("Local", c => { c.BaseAddress = new Uri(baseAddress); });
 
-    collection.AddHttpClient("ApiHttpClient", c => { c.BaseAddress = new Uri(configuration.GetValue<string>("ApiBaseAddress") ?? $"{baseAddress}api/"); })
+    collection.AddHttpClient("Anonymous",
+       (service, options) =>
+       {
+           options.BaseAddress = new Uri(configuration["DownstreamApi:BaseUrl"] ?? throw new UnhandledException("DownstreamApi:BaseUrl null"));
+       })
+       .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
+
+    collection.AddHttpClient("Authenticated",
+        (service, options) =>
+        {
+            options.BaseAddress = new Uri(configuration["DownstreamApi:BaseUrl"] ?? throw new UnhandledException("DownstreamApi:BaseUrl null"));
+        })
+        .AddHttpMessageHandler(service =>
+        {
+            return service.GetRequiredService<AuthorizationMessageHandler>().ConfigureHandler(
+                [configuration["DownstreamApi:BaseUrl"] ?? throw new UnhandledException("DownstreamApi:BaseUrl null")],
+                [configuration["DownstreamApi:Scopes"] ?? throw new UnhandledException("DownstreamApi:Scopes null")]);
+        })
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
-    collection.AddHttpClient("ExternalHttpClient")
+    collection.AddHttpClient("External")
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
-    collection.AddStaticWebAppsAuthentication();
     collection.AddCascadingAuthenticationState();
     collection.AddOptions();
     collection.AddAuthorizationCore();
+
+    collection.AddMsalAuthentication(options =>
+    {
+        options.ProviderOptions.LoginMode = "redirect";
+        configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
+        options.ProviderOptions.Cache = new MsalCacheOptions { CacheLocation = "localStorage" };
+
+        options.ProviderOptions.Authentication.PostLogoutRedirectUri = "/";
+
+        options.ProviderOptions.DefaultAccessTokenScopes.Add("email"); //give access to the email scope
+    });
+
+    collection.AddScoped<AccountClaimsPrincipalFactory<RemoteUserAccount>, CustomUserFactory>(); //for some reason roles are not being recognized
 
     collection.AddScoped<PrincipalApi>();
     collection.AddScoped<LoginApi>();

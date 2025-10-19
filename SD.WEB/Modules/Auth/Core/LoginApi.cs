@@ -2,7 +2,7 @@
 
 namespace SD.WEB.Modules.Auth.Core;
 
-public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, null)
+public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Authenticated, null)
 {
     public async Task<AuthLogin?> Get(bool isUserAuthenticated)
     {

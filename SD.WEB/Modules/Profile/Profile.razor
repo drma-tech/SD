@@ -141,11 +141,6 @@
         Reviewed = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "reviewed");
     }
 
-    private void Login()
-    {
-        Navigation.NavigateTo("/.auth/login/aad?post_login_redirect_uri=" + Navigation.BaseUri + "login-success", true);
-    }
-
     // private async Task SetReviewed()
     // {
     //     await JsRuntime.InvokeAsync<string>("SetLocalStorage", "reviewed", "true");

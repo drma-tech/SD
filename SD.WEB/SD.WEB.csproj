@@ -29,11 +29,6 @@
 		<ProjectReference Include="..\SD.Shared\SD.Shared.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<Reference Include="StaticWebAppsAuthenticationExtensions">
-			<HintPath>ReferenceDll\StaticWebAppsAuthenticationExtensions.dll</HintPath>
-		</Reference>
-	</ItemGroup>
-	<ItemGroup>
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
 	</ItemGroup>
 	<ItemGroup>

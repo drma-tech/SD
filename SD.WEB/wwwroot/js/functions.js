@@ -67,18 +67,14 @@ function LoadAppVariables() {
 
 async function getUserInfo() {
     try {
-        if (window.location.host.includes("localhost")) {
-            const response = await fetch("/dev-env/me.json");
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const userInfo = await response.json();
-            return userInfo?.clientPrincipal;
-        }
-        else {
-            const response = await fetch("/.auth/me");
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const userInfo = await response.json();
-            return userInfo?.clientPrincipal;
-        }
+        let keys = JSON.parse(GetLocalStorage("msal.account.keys"));
+        let session = JSON.parse(GetLocalStorage(keys[0]));
+
+        return {
+            userId: session.localAccountId,
+            name: session.name,
+            email: session.idTokenClaims["email"]
+        };
     } catch (error) {
         showError(error.message);
         return null;

@@ -7,7 +7,7 @@ public class MyProvidersFunction(CosmosRepository repo)
 {
     [Function("MyProviders")]
     public async Task<HttpResponseData?> MyProviders(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "my-providers")]
+        [HttpTrigger(AuthorizationLevel.User, Method.Get, Route = "my-providers")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try
@@ -27,7 +27,7 @@ public class MyProvidersFunction(CosmosRepository repo)
 
     [Function("MyProvidersAdd")]
     public async Task<MyProviders?> MyProvidersAdd(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-providers/add")]
+        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "my-providers/add")]
         HttpRequestData req,
         CancellationToken cancellationToken)
     {
@@ -59,7 +59,7 @@ public class MyProvidersFunction(CosmosRepository repo)
 
     [Function("MyProvidersUpdate")]
     public async Task<MyProviders?> MyProvidersUpdate(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-providers/update")]
+        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "my-providers/update")]
         HttpRequestData req,
         CancellationToken cancellationToken)
     {
@@ -85,7 +85,7 @@ public class MyProvidersFunction(CosmosRepository repo)
 
     [Function("MyProvidersRemove")]
     public async Task<MyProviders?> MyProvidersRemove(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-providers/remove")]
+        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "my-providers/remove")]
         HttpRequestData req,
         CancellationToken cancellationToken)
     {

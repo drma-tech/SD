@@ -2,7 +2,7 @@
 
 namespace SD.WEB.Modules.Profile.Core;
 
-public class MySuggestionsApi(IHttpClientFactory factory) : ApiCosmos<MySuggestions>(factory, "my-suggestions")
+public class MySuggestionsApi(IHttpClientFactory factory) : ApiCosmos<MySuggestions>(factory, ApiType.Authenticated, "my-suggestions")
 {
     public async Task<MySuggestions?> Get(AccountProduct? product, bool isUserAuthenticated, RenderControlCore<MySuggestions?>? core)
     {

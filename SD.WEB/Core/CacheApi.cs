@@ -42,7 +42,7 @@ public struct Endpoint
     }
 }
 
-public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<NewsModel>>(http, null)
+public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<NewsModel>>(http, ApiType.Anonymous, null)
 {
     public async Task<CacheDocument<NewsModel>?> GetNews(string mode,
         RenderControlCore<CacheDocument<NewsModel>?>? core)
@@ -51,7 +51,7 @@ public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<CacheDocument
     }
 }
 
-public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<TrailerModel>>(http, null)
+public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<TrailerModel>>(http, ApiType.Anonymous, null)
 {
     public async Task<CacheDocument<TrailerModel>?> GetTrailers(string mode,
         RenderControlCore<CacheDocument<TrailerModel>?>? core)
@@ -60,7 +60,7 @@ public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<
     }
 }
 
-public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<Ratings>>(http, null)
+public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<Ratings>>(http, ApiType.Anonymous, null)
 {
     public async Task<CacheDocument<Ratings>?> GetMovieRatings(string? id, string? tmdbId, string? title,
         DateTime? releaseDate, string? tmdbRating, RenderControlCore<CacheDocument<Ratings>?>? core)
@@ -75,7 +75,7 @@ public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<
     }
 }
 
-public class CacheMetaCriticApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<ReviewModel>>(http, null)
+public class CacheMetaCriticApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<ReviewModel>>(http, ApiType.Anonymous, null)
 {
     public async Task<CacheDocument<ReviewModel>?> GetMovieReviews(string? id, string? title, DateTime? releaseDate,
         RenderControlCore<CacheDocument<ReviewModel>?>? core)

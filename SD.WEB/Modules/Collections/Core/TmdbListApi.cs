@@ -3,7 +3,7 @@ using SD.WEB.Modules.Collections.Interface;
 
 namespace SD.WEB.Modules.Collections.Core;
 
-public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(factory, null), IMediaListApi
+public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(factory, ApiType.Anonymous, null), IMediaListApi
 {
     public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList,
         MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)

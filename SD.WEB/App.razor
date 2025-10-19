@@ -1,4 +1,4 @@
-﻿@using SD.WEB.Layout
+@using SD.WEB.Layout
 @using SD.WEB.Modules.Auth.Resources
 @using Toolbelt.Blazor.PWA.Updater.Service
 
@@ -17,8 +17,7 @@
                             </MudAlert>
                         </NotAuthorized>
                         <Authorizing>
-                            <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true"
-                                      Icon="@IconsFA.Solid.Icon("spinner").WithAnimation(IconAnimation.Spin).Font">
+                            <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true" Icon="@IconsFA.Solid.Icon("spinner").WithAnimation(IconAnimation.Spin).Font">
                                 @Translations.AuthenticationInProgress
                             </MudAlert>
                         </Authorizing>

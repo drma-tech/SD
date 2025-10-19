@@ -1,5 +1,6 @@
 ﻿@page "/login-success"
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Auth.Resources
 @inherits PageCore<LoginSuccess>
@@ -87,9 +88,9 @@
 
             Principal = new AuthPrincipal
             {
-                IdentityProvider = User.FindFirst("http://schemas.microsoft.com/identity/claims/identityprovider")?.Value,
+                IdentityProvider = User.FindFirst("idp")?.Value,
                 DisplayName = User.FindFirst("name")?.Value,
-                Email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value
+                Email = User.FindFirst("email")?.Value
             };
 
             if (_terms1)
@@ -120,7 +121,7 @@
 
     private void Logout()
     {
-        Navigation.NavigateTo("/.auth/logout?post_logout_redirect_uri=" + Navigation.BaseUri, true);
+        Navigation.NavigateToLogout("/authentication/logout");
     }
 
 }

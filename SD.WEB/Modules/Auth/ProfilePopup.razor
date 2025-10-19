@@ -1,4 +1,5 @@
-﻿@using SD.WEB.Modules.Auth.Core
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
 
@@ -103,10 +104,10 @@
                 MudDialog?.Close();
 
                 //remove authentication data from azure (todo: its not working)
-                Navigation.NavigateTo("/.auth/purge/aad");
+                // Navigation.NavigateTo("/.auth/purge/aad");
 
                 //close current login session
-                Navigation.NavigateTo("/.auth/logout", true);
+                Navigation.NavigateToLogout("/authentication/logout");
             }
             else
             {

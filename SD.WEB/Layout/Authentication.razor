@@ -1,0 +1,23 @@
+﻿@page "/authentication/{action}"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager Navigation
+
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="HandleLoginSuccess" OnLogOutSucceeded="HandleLogoutSucceeded" />
+
+@code {
+    [Parameter] public string? Action { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "redirectUri")]
+    public string? RedirectUri { get; set; }
+
+    private void HandleLoginSuccess()
+    {
+        Navigation.NavigateTo("/login-success", true);
+    }
+
+    private void HandleLogoutSucceeded()
+    {
+        Navigation.NavigateTo("/", true);
+    }
+}

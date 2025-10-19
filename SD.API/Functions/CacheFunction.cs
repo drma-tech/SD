@@ -14,14 +14,11 @@ using Item = SD.Shared.Models.News.Item;
 
 namespace SD.API.Functions;
 
-public class CacheFunction(CosmosCacheRepository cacheRepo,
-    IDistributedCache distributedCache,
-    IHttpClientFactory factory)
+public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache distributedCache, IHttpClientFactory factory)
 {
     [Function("Settings")]
     public static async Task<HttpResponseData> Configurations(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/settings")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/settings")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -36,15 +33,14 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
 
     [Function("CacheNew")]
     public async Task<HttpResponseData?> CacheNew(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
             var mode = req.GetQueryParameters()["mode"];
             var cacheKey = $"lastnews_{mode}";
             CacheDocument<NewsModel>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
             if (cachedBytes is { Length: > 0 })
             {
                 doc = JsonSerializer.Deserialize<CacheDocument<NewsModel>>(cachedBytes);
@@ -103,8 +99,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
 
     [Function("CacheTrailers")]
     public async Task<HttpResponseData?> CacheTrailers(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/trailers")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/trailers")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -112,7 +107,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
             var cacheKey = $"lasttrailers_{mode}";
             CacheDocument<TrailerModel>? doc;
 
-            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
             if (cachedBytes is { Length: > 0 })
             {
                 doc = JsonSerializer.Deserialize<CacheDocument<TrailerModel>>(cachedBytes);
@@ -174,15 +169,14 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
 
     [Function("ImdbPopularMovies")]
     public async Task<HttpResponseData?> ImdbPopularMovies(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-movies")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
             var mode = req.GetQueryParameters()["mode"];
             var cacheKey = $"popularmovies_{mode}";
             CacheDocument<MostPopularData>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
             if (cachedBytes is { Length: > 0 })
             {
                 doc = JsonSerializer.Deserialize<CacheDocument<MostPopularData>>(cachedBytes);
@@ -241,14 +235,13 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
 
     [Function("ImdbPopularTVs")]
     public async Task<HttpResponseData?> ImdbPopularTVs(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-tvs")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-tvs")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
             var cacheKey = "populartvs";
             CacheDocument<MostPopularData>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
             if (cachedBytes is { Length: > 0 })
             {
                 doc = JsonSerializer.Deserialize<CacheDocument<MostPopularData>>(cachedBytes);
@@ -286,14 +279,13 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
 
     [Function("ImdbPopularStar")]
     public async Task<HttpResponseData?> ImdbPopularStar(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-star")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-star")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
             var cacheKey = "popularstar";
             CacheDocument<MostPopularData>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
             if (cachedBytes is { Length: > 0 })
             {
                 doc = JsonSerializer.Deserialize<CacheDocument<MostPopularData>>(cachedBytes);
@@ -331,8 +323,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
 
     [Function("CacheMovieRatings")]
     public async Task<HttpResponseData?> CacheMovieRatings(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/ratings/movie")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/ratings/movie")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -344,7 +335,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
             DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
             var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
             CacheDocument<Ratings>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
             var ttl = TtlCache.OneDay;
 
             if (cachedBytes is { Length: > 0 })
@@ -394,8 +385,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
 
     [Function("CacheShowRatings")]
     public async Task<HttpResponseData?> CacheShowRatings(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/ratings/show")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/ratings/show")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -407,7 +397,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
             DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
             var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
             CacheDocument<Ratings>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
             var ttl = TtlCache.OneDay;
 
             if (cachedBytes is { Length: > 0 })
@@ -457,8 +447,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
 
     [Function("CacheMovieReviews")]
     public async Task<HttpResponseData?> CacheMovieReviews(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/movies")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -466,7 +455,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
             DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
             var cacheKey = $"review_{id}";
             CacheDocument<ReviewModel>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
             var ttl = TtlCache.OneDay;
 
             if (cachedBytes is { Length: > 0 })
@@ -520,8 +509,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
 
     [Function("CacheShowReviews")]
     public async Task<HttpResponseData?> CacheShowReviews(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/shows")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/shows")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -530,7 +518,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo,
             DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
             var cacheKey = $"review_{id}";
             CacheDocument<ReviewModel>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey);
+            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
             var ttl = TtlCache.OneDay;
 
             if (cachedBytes is { Length: > 0 })

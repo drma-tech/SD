@@ -7,8 +7,7 @@ public class WatchingListFunction(CosmosRepository repo)
 {
     [Function("WatchingListGet")]
     public async Task<HttpResponseData?> WatchingListGet(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/watchinglist/get")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/watchinglist/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -38,8 +37,7 @@ public class WatchingListFunction(CosmosRepository repo)
 
     [Function("WatchingListAdd")]
     public async Task<WatchingList?> WatchingListAdd(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchinglist/add/{MediaType}")]
-        HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "watchinglist/add/{MediaType}")] HttpRequestData req,
         string mediaType, CancellationToken cancellationToken)
     {
         try
@@ -70,9 +68,7 @@ public class WatchingListFunction(CosmosRepository repo)
 
     [Function("WatchingListRemove")]
     public async Task<WatchingList?> WatchingListRemove(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post,
-            Route = "watchinglist/remove/{MediaType}/{CollectionId}/{TmdbId}")]
-        HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "watchinglist/remove/{MediaType}/{CollectionId}/{TmdbId}")] HttpRequestData req,
         string mediaType, string collectionId, string tmdbId, CancellationToken cancellationToken)
     {
         try
@@ -102,8 +98,7 @@ public class WatchingListFunction(CosmosRepository repo)
 
     [Function("WatchingListSync")]
     public async Task<WatchingList?> WatchingListSync(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchinglist/sync/{MediaType}")]
-        HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "watchinglist/sync/{MediaType}")] HttpRequestData req,
         string mediaType, CancellationToken cancellationToken)
     {
         try

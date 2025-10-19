@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.Functions.Worker.Http;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using System.Text.Json;
 
 namespace SD.API.Core;
@@ -15,19 +15,9 @@ public class ClientPrincipal
 
 public static class StaticWebAppsAuth
 {
-    private static readonly string[] Roles = ["anonymous"];
-    private static readonly JsonSerializerOptions Options = new() { PropertyNameCaseInsensitive = true };
-
     public static string? GetUserId(this HttpRequestData req, bool required = true)
     {
-        if (req.Url.Host.Contains("localhost"))
-        {
-            const string localId = "8ed6f45c90ac43248353b90a846a8519";
-
-            return localId;
-        }
-
-        var principal = req.Parse();
+        var principal = req.ParseJwt();
 
         if (required)
             return principal?.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value ?? throw new UnhandledException("user id not available");
@@ -53,28 +43,47 @@ public static class StaticWebAppsAuth
         return null;
     }
 
-    private static ClaimsPrincipal? Parse(this HttpRequestData req)
+    private static ClaimsPrincipal? ParseJwt(this HttpRequestData req)
     {
-        var principal = new ClientPrincipal();
+        if (!req.Headers.TryGetValues("Authorization", out var header))
+            return null;
 
-        if (req.Headers.TryGetValues("x-ms-client-principal", out var header))
+        var authHeader = header.FirstOrDefault();
+        if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+            return null;
+
+        var token = authHeader.Substring("Bearer ".Length);
+
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+
+        var idp = jwtToken.Payload.TryGetValue("idp", out var idpValue) ? idpValue?.ToString() : null;
+        var identity = new ClaimsIdentity(idp);
+
+        foreach (var kv in jwtToken.Payload)
         {
-            var data = header.First();
-            var decoded = Convert.FromBase64String(data);
-            var json = Encoding.ASCII.GetString(decoded);
-            principal = JsonSerializer.Deserialize<ClientPrincipal>(json, Options);
+            if (kv.Value is JsonElement je && je.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var item in je.EnumerateArray())
+                    identity.AddClaim(new Claim(kv.Key, item.ToString() ?? ""));
+            }
+            else
+            {
+                identity.AddClaim(new Claim(kv.Key, kv.Value?.ToString() ?? ""));
+            }
         }
 
-        if (principal == null) return null;
-        principal.UserRoles = principal.UserRoles.Except(Roles, StringComparer.CurrentCultureIgnoreCase);
+        //add claims not recognized by default
+        var oid = jwtToken.Payload.TryGetValue("oid", out var oidValue) ? oidValue?.ToString() : null;
+        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, oid ?? throw new UnhandledException("invalid oid")));
 
-        var principalUserRoles = principal.UserRoles.ToList();
-        if (!principalUserRoles.Any()) return new ClaimsPrincipal();
+        identity.AddClaim(new Claim(ClaimTypes.Name, jwtToken.Payload.TryGetValue("name", out var name) ? name?.ToString() ?? "" : ""));
 
-        var identity = new ClaimsIdentity(principal.IdentityProvider);
-        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, principal.UserId ?? ""));
-        identity.AddClaim(new Claim(ClaimTypes.Name, principal.UserDetails ?? ""));
-        identity.AddClaims(principalUserRoles.Select(r => new Claim(ClaimTypes.Role, r)));
+        if (jwtToken.Payload.TryGetValue("roles", out var rolesObj) && rolesObj is JsonElement rolesElement && rolesElement.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var role in rolesElement.EnumerateArray())
+                identity.AddClaim(new Claim(ClaimTypes.Role, role.GetString() ?? ""));
+        }
 
         return new ClaimsPrincipal(identity);
     }

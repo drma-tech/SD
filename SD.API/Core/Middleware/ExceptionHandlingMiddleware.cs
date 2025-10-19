@@ -16,6 +16,7 @@ internal sealed class ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddl
     {
         try
         {
+            //todo: validate platform version
             //var req = await context.GetHttpRequestDataAsync();
             //if (req != null)
             //{

@@ -39,9 +39,16 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
 
     protected override async Task OnInitializedAsync()
     {
-        AppStateStatic.BreakpointChanged += client => StateHasChanged();
-        AppStateStatic.BrowserWindowSizeChanged += client => StateHasChanged();
-        await LoadEssentialDataAsync();
+        try
+        {
+            AppStateStatic.BreakpointChanged += client => StateHasChanged();
+            AppStateStatic.BrowserWindowSizeChanged += client => StateHasChanged();
+            await LoadEssentialDataAsync();
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

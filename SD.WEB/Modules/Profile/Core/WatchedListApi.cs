@@ -3,7 +3,7 @@ using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core;
 
-public class WatchedListApi(IHttpClientFactory factory) : ApiCosmos<WatchedList>(factory, "watchedlist")
+public class WatchedListApi(IHttpClientFactory factory) : ApiCosmos<WatchedList>(factory, ApiType.Authenticated, "watchedlist")
 {
     public async Task<WatchedList?> Get(bool isUserAuthenticated, RenderControlCore<WatchedList?>? core,
         string? id = null)

@@ -3,7 +3,7 @@ using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core;
 
-public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>(factory, "my-providers")
+public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>(factory, ApiType.Authenticated, "my-providers")
 {
     public async Task<MyProviders?> Get(bool isUserAuthenticated, RenderControlCore<MyProviders?>? core)
     {

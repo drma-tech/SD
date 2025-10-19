@@ -2,7 +2,7 @@
 
 namespace SD.WEB.Modules.Subscription.Core;
 
-public class PaddleSubscriptionApi(IHttpClientFactory factory) : ApiCosmos<RootSubscription>(factory, null)
+public class PaddleSubscriptionApi(IHttpClientFactory factory) : ApiCosmos<RootSubscription>(factory, ApiType.Anonymous, null)
 {
     public async Task<RootSubscription?> GetSubscription(string? id)
     {

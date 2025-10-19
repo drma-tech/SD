@@ -3,7 +3,7 @@ using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core;
 
-public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(factory, "wishlist")
+public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(factory, ApiType.Authenticated, "wishlist")
 {
     public async Task<WishList?> Get(bool isUserAuthenticated, RenderControlCore<WishList?>? core, string? id = null)
     {

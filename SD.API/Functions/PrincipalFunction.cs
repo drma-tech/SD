@@ -12,7 +12,7 @@ public class PrincipalFunction(CosmosRepository repo,
 {
     [Function("PrincipalGet")]
     public async Task<HttpResponseData?> PrincipalGet(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "principal/get")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.User, Method.Get, Route = "principal/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -30,28 +30,9 @@ public class PrincipalFunction(CosmosRepository repo,
         }
     }
 
-    [Function("PrincipalGetEmail")]
-    public async Task<string?> PrincipalGetEmail(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/principal/get-email")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var token = req.GetQueryParameters()["token"];
-
-            var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, token, cancellationToken);
-
-            return principal?.Email;
-        }
-        catch (Exception ex)
-        {
-            req.ProcessException(ex);
-            throw;
-        }
-    }
-
     [Function("PrincipalAdd")]
     public async Task<AuthPrincipal?> PrincipalAdd(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/add")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "principal/add")] HttpRequestData req, CancellationToken cancellationToken)
     {
         //note: its called once per user (first access)
 
@@ -102,7 +83,7 @@ public class PrincipalFunction(CosmosRepository repo,
 
     [Function("PrincipalEvent")]
     public async Task<AuthPrincipal> PrincipalEvent(
-       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/event")] HttpRequestData req, CancellationToken cancellationToken)
+       [HttpTrigger(AuthorizationLevel.User, Method.Put, Route = "principal/event")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -124,7 +105,7 @@ public class PrincipalFunction(CosmosRepository repo,
 
     [Function("PrincipalPaddle")]
     public async Task<AuthPrincipal> PrincipalPaddle(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/paddle")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.User, Method.Put, Route = "principal/paddle")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -149,7 +130,7 @@ public class PrincipalFunction(CosmosRepository repo,
 
     [Function("PrincipalRemove")]
     public async Task PrincipalRemove(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Delete, Route = "principal/remove")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.User, Method.Delete, Route = "principal/remove")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {

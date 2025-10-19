@@ -7,8 +7,7 @@ public class WatchedListFunction(CosmosRepository repo)
 {
     [Function("WatchedListGet")]
     public async Task<HttpResponseData?> WatchedListGet(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/watchedlist/get")]
-        HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/watchedlist/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -38,8 +37,7 @@ public class WatchedListFunction(CosmosRepository repo)
 
     [Function("WatchedListAdd")]
     public async Task<WatchedList?> WatchedListAdd(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchedlist/add/{MediaType}/{TmdbId}")]
-        HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "watchedlist/add/{MediaType}/{TmdbId}")] HttpRequestData req,
         string mediaType, string tmdbId, CancellationToken cancellationToken)
     {
         try
@@ -57,7 +55,7 @@ public class WatchedListFunction(CosmosRepository repo)
             }
 
             var ids = tmdbId.Split(',');
-            obj.AddItem(Enum.Parse<MediaType>(mediaType), [..ids]);
+            obj.AddItem(Enum.Parse<MediaType>(mediaType), [.. ids]);
 
             return await repo.UpsertItemAsync(obj, cancellationToken);
         }
@@ -70,8 +68,7 @@ public class WatchedListFunction(CosmosRepository repo)
 
     [Function("WatchedListRemove")]
     public async Task<WatchedList?> WatchedListRemove(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchedlist/remove/{MediaType}/{TmdbId}")]
-        HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "watchedlist/remove/{MediaType}/{TmdbId}")] HttpRequestData req,
         string mediaType, string tmdbId, CancellationToken cancellationToken)
     {
         try

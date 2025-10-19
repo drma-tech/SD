@@ -76,11 +76,9 @@ window.initUserBack = function () {
         getUserInfo()
             .then(user => {
                 if (user) {
-                    const name = user?.claims?.find(c => c.typ === "name")?.val;
-                    const email = user?.claims?.find(c => c.typ === "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.val;
-                    Userback.identify(user?.userId, {
-                        name: name,
-                        email: email
+                    Userback.identify(user.userId, {
+                        name: user.name,
+                        email: user.email
                     });
                 }
             })
