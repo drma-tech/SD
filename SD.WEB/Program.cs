@@ -45,22 +45,16 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
 
     collection.AddHttpClient("Local", c => { c.BaseAddress = new Uri(baseAddress); });
 
-    collection.AddHttpClient("Anonymous",
-       (service, options) =>
-       {
-           options.BaseAddress = dev ? new Uri(configuration["DownstreamApi:BaseUrl"] ?? throw new UnhandledException("DownstreamApi:BaseUrl null")) : new Uri(baseAddress);
-       })
+    var apiOrigin = dev ? configuration["DownstreamApi:BaseUrl"] ?? throw new UnhandledException("DownstreamApi:BaseUrl null") : baseAddress;
+
+    collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = new Uri(apiOrigin); })
        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
-    collection.AddHttpClient("Authenticated",
-        (service, options) =>
-        {
-            options.BaseAddress = dev ? new Uri(configuration["DownstreamApi:BaseUrl"] ?? throw new UnhandledException("DownstreamApi:BaseUrl null")) : new Uri(baseAddress);
-        })
+    collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = new Uri(apiOrigin); })
         .AddHttpMessageHandler(service =>
         {
             return service.GetRequiredService<AuthorizationMessageHandler>().ConfigureHandler(
-                [configuration["DownstreamApi:BaseUrl"] ?? throw new UnhandledException("DownstreamApi:BaseUrl null")],
+                [apiOrigin],
                 [configuration["DownstreamApi:Scopes"] ?? throw new UnhandledException("DownstreamApi:Scopes null")]);
         })
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
