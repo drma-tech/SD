@@ -46,7 +46,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddHttpClient("Local", c => { c.BaseAddress = new Uri(baseAddress); });
 
     var dev = baseAddress.Contains("localhost", StringComparison.OrdinalIgnoreCase);
-    var apiOrigin = dev ? configuration["DownstreamApi:BaseUrl"] ?? throw new UnhandledException("DownstreamApi:BaseUrl null") : baseAddress;
+    var apiOrigin = dev ? configuration["DownstreamApi:BaseUrl"] ?? throw new UnhandledException("DownstreamApi:BaseUrl null") : $"{baseAddress}api/";
 
     collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = new Uri(apiOrigin); })
        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
