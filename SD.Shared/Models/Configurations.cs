@@ -2,6 +2,7 @@
 
 public class Configurations
 {
+    public AzureAd? AzureAd { get; set; }
     public CosmosDB? CosmosDB { get; set; }
     public Paddle? Paddle { get; set; }
     public Sendgrid? Sendgrid { get; set; }
@@ -9,6 +10,13 @@ public class Configurations
     public TMDB? TMDB { get; set; }
     public RapidAPI? RapidAPI { get; set; }
     public Settings? Settings { get; set; }
+}
+
+public class AzureAd
+{
+    public string? Authority { get; set; }
+    public string? ClientId { get; set; }
+    public string? Issuer { get; set; }
 }
 
 public class CosmosDB

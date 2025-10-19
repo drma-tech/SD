@@ -7,11 +7,11 @@ public class MySuggestionsFunction(CosmosRepository repo)
 {
     [Function("MySuggestionsGet")]
     public async Task<HttpResponseData?> MySuggestionsGet(
-        [HttpTrigger(AuthorizationLevel.User, Method.Get, Route = "my-suggestions/get")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "my-suggestions/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
 
             var doc = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
 
@@ -26,11 +26,11 @@ public class MySuggestionsFunction(CosmosRepository repo)
 
     [Function("MySuggestionsSync")]
     public async Task<MySuggestions?> MySuggestionsSync(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "my-suggestions/sync/{MediaType}")] HttpRequestData req, string mediaType, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-suggestions/sync/{MediaType}")] HttpRequestData req, string mediaType, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
@@ -65,7 +65,7 @@ public class MySuggestionsFunction(CosmosRepository repo)
 
     [Function("MySuggestionsAdd")]
     public async Task<MySuggestions?> MySuggestionsAdd(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "my-suggestions/add")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-suggestions/add")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {

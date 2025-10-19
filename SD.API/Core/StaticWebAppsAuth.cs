@@ -1,7 +1,8 @@
 ﻿using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace SD.API.Core;
 
@@ -15,14 +16,16 @@ public class ClientPrincipal
 
 public static class StaticWebAppsAuth
 {
-    public static string? GetUserId(this HttpRequestData req, bool required = true)
+    public static async Task<string?> GetUserIdAsync(this HttpRequestData req, bool required = true)
     {
-        var principal = req.ParseJwt();
+        var principal = await req.ParseAndValidateJwtAsync();
+
+        var id = principal?.Claims.FirstOrDefault(w => w.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
 
         if (required)
-            return principal?.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value ?? throw new UnhandledException("user id not available");
+            return id ?? throw new UnhandledException("user id not available");
         else
-            return principal?.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
+            return id;
     }
 
     public static string? GetUserIP(this HttpRequestData req, bool includePort = true)
@@ -43,48 +46,52 @@ public static class StaticWebAppsAuth
         return null;
     }
 
-    private static ClaimsPrincipal? ParseJwt(this HttpRequestData req)
+    private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this HttpRequestData req)
     {
-        if (!req.Headers.TryGetValues("Authorization", out var header))
-            return null;
+        if (req.Headers.TryGetValues("Authorization", out var header))
+        {
+            var authHeader = header.FirstOrDefault();
+            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
+            {
+                var token = authHeader.Substring("Bearer ".Length);
 
-        var authHeader = header.FirstOrDefault();
-        if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
-            return null;
+                // get config from env
+                var issuer = ApiStartup.Configurations.AzureAd?.Issuer ?? throw new UnhandledException("issuer is null");
+                var clientId = ApiStartup.Configurations.AzureAd?.ClientId ?? throw new UnhandledException("clientId is null");
 
-        var token = authHeader.Substring("Bearer ".Length);
+                try
+                {
+                    return await ValidateTokenAsync(token, issuer, clientId);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private static async Task<ClaimsPrincipal> ValidateTokenAsync(string token, string issuer, string audience)
+    {
+        System.Collections.Concurrent.ConcurrentDictionary<string, Microsoft.IdentityModel.Protocols.ConfigurationManager<OpenIdConnectConfiguration>> _configManagers = new();
+        var mgr = _configManagers.GetOrAdd(issuer, key => new Microsoft.IdentityModel.Protocols.ConfigurationManager<OpenIdConnectConfiguration>($"{key}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever()));
+
+        var oidc = await mgr.GetConfigurationAsync(CancellationToken.None);
+
+        var validationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = issuer.TrimEnd('/'),
+            ValidAudience = audience,
+            IssuerSigningKeys = oidc.SigningKeys,
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true
+        };
 
         var handler = new JwtSecurityTokenHandler();
-        var jwtToken = handler.ReadJwtToken(token);
-
-        var idp = jwtToken.Payload.TryGetValue("idp", out var idpValue) ? idpValue?.ToString() : null;
-        var identity = new ClaimsIdentity(idp);
-
-        foreach (var kv in jwtToken.Payload)
-        {
-            if (kv.Value is JsonElement je && je.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var item in je.EnumerateArray())
-                    identity.AddClaim(new Claim(kv.Key, item.ToString() ?? ""));
-            }
-            else
-            {
-                identity.AddClaim(new Claim(kv.Key, kv.Value?.ToString() ?? ""));
-            }
-        }
-
-        //add claims not recognized by default
-        var oid = jwtToken.Payload.TryGetValue("oid", out var oidValue) ? oidValue?.ToString() : null;
-        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, oid ?? throw new UnhandledException("invalid oid")));
-
-        identity.AddClaim(new Claim(ClaimTypes.Name, jwtToken.Payload.TryGetValue("name", out var name) ? name?.ToString() ?? "" : ""));
-
-        if (jwtToken.Payload.TryGetValue("roles", out var rolesObj) && rolesObj is JsonElement rolesElement && rolesElement.ValueKind == JsonValueKind.Array)
-        {
-            foreach (var role in rolesElement.EnumerateArray())
-                identity.AddClaim(new Claim(ClaimTypes.Role, role.GetString() ?? ""));
-        }
-
-        return new ClaimsPrincipal(identity);
+        return handler.ValidateToken(token, validationParameters, out var _);
     }
 }

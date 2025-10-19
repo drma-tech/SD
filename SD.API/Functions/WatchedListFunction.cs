@@ -16,7 +16,7 @@ public class WatchedListFunction(CosmosRepository repo)
 
             if (string.IsNullOrEmpty(id))
             {
-                var userId = req.GetUserId();
+                var userId = await req.GetUserIdAsync();
                 if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
                 doc = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
@@ -37,12 +37,12 @@ public class WatchedListFunction(CosmosRepository repo)
 
     [Function("WatchedListAdd")]
     public async Task<WatchedList?> WatchedListAdd(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "watchedlist/add/{MediaType}/{TmdbId}")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchedlist/add/{MediaType}/{TmdbId}")] HttpRequestData req,
         string mediaType, string tmdbId, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
@@ -68,12 +68,12 @@ public class WatchedListFunction(CosmosRepository repo)
 
     [Function("WatchedListRemove")]
     public async Task<WatchedList?> WatchedListRemove(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "watchedlist/remove/{MediaType}/{TmdbId}")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchedlist/remove/{MediaType}/{TmdbId}")] HttpRequestData req,
         string mediaType, string tmdbId, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);

@@ -9,11 +9,11 @@ public class LoginFunction(CosmosRepository repo)
 {
     [Function("LoginGet")]
     public async Task<AuthLogin?> LoginGet(
-        [HttpTrigger(AuthorizationLevel.User, Method.Get, Route = "login/get")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "login/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
 
             return await repo.Get<AuthLogin>(DocumentType.Login, userId, cancellationToken);
@@ -42,13 +42,13 @@ public class LoginFunction(CosmosRepository repo)
 
     [Function("LoginAdd")]
     public async Task LoginAdd(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "login/add")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "login/add")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
             var platform = req.GetQueryParameters()["platform"] ?? "webapp";
             var ip = req.GetUserIP();
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
             var login = await repo.Get<AuthLogin>(DocumentType.Login, userId, cancellationToken);
 

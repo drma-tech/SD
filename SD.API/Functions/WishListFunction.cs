@@ -16,7 +16,7 @@ public class WishListFunction(CosmosRepository repo)
 
             if (string.IsNullOrEmpty(id))
             {
-                var userId = req.GetUserId();
+                var userId = await req.GetUserIdAsync();
                 if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
                 doc = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
@@ -37,11 +37,11 @@ public class WishListFunction(CosmosRepository repo)
 
     [Function("WishListAdd")]
     public async Task<WishList?> WishListAdd(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "wishlist/add/{type}")] HttpRequestData req, string type, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "wishlist/add/{type}")] HttpRequestData req, string type, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
@@ -67,11 +67,11 @@ public class WishListFunction(CosmosRepository repo)
 
     [Function("WishListRemove")]
     public async Task<WishList?> WishListRemove(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "wishlist/remove/{type}/{id}")] HttpRequestData req, string type, string id, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "wishlist/remove/{type}/{id}")] HttpRequestData req, string type, string id, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);

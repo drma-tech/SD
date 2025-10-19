@@ -16,7 +16,7 @@ public class WatchingListFunction(CosmosRepository repo)
 
             if (string.IsNullOrEmpty(id))
             {
-                var userId = req.GetUserId();
+                var userId = await req.GetUserIdAsync();
                 if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
                 doc = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
@@ -37,12 +37,12 @@ public class WatchingListFunction(CosmosRepository repo)
 
     [Function("WatchingListAdd")]
     public async Task<WatchingList?> WatchingListAdd(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "watchinglist/add/{MediaType}")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchinglist/add/{MediaType}")] HttpRequestData req,
         string mediaType, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
@@ -68,12 +68,12 @@ public class WatchingListFunction(CosmosRepository repo)
 
     [Function("WatchingListRemove")]
     public async Task<WatchingList?> WatchingListRemove(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "watchinglist/remove/{MediaType}/{CollectionId}/{TmdbId}")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchinglist/remove/{MediaType}/{CollectionId}/{TmdbId}")] HttpRequestData req,
         string mediaType, string collectionId, string tmdbId, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
@@ -98,12 +98,12 @@ public class WatchingListFunction(CosmosRepository repo)
 
     [Function("WatchingListSync")]
     public async Task<WatchingList?> WatchingListSync(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "watchinglist/sync/{MediaType}")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchinglist/sync/{MediaType}")] HttpRequestData req,
         string mediaType, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);

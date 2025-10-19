@@ -17,7 +17,7 @@ public static class IsolatedFunctionHelper
 
         model ??= new T();
 
-        var userId = req.GetUserId();
+        var userId = await req.GetUserIdAsync();
 
         if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
 
@@ -78,7 +78,7 @@ public static class IsolatedFunctionHelper
 
         const string messageTemplate = "ProcessException. UserId: {UserId}, IP: {IP}, State: {State}, Params: {Params}";
 
-        logger.LogError(ex, messageTemplate, req.GetUserId(false), req.GetUserIP(), req.BuildState(), req.BuildParams());
+        logger.LogError(ex, messageTemplate, null, req.GetUserIP(), req.BuildState(), req.BuildParams());
     }
 
     public static void LogWarning(this HttpRequestData req, string? message)

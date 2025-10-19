@@ -7,12 +7,12 @@ public class MyProvidersFunction(CosmosRepository repo)
 {
     [Function("MyProviders")]
     public async Task<HttpResponseData?> MyProviders(
-        [HttpTrigger(AuthorizationLevel.User, Method.Get, Route = "my-providers")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "my-providers")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
 
             var doc = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
 
@@ -27,13 +27,13 @@ public class MyProvidersFunction(CosmosRepository repo)
 
     [Function("MyProvidersAdd")]
     public async Task<MyProviders?> MyProvidersAdd(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "my-providers/add")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-providers/add")]
         HttpRequestData req,
         CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
@@ -59,13 +59,13 @@ public class MyProvidersFunction(CosmosRepository repo)
 
     [Function("MyProvidersUpdate")]
     public async Task<MyProviders?> MyProvidersUpdate(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "my-providers/update")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-providers/update")]
         HttpRequestData req,
         CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
@@ -85,13 +85,13 @@ public class MyProvidersFunction(CosmosRepository repo)
 
     [Function("MyProvidersRemove")]
     public async Task<MyProviders?> MyProvidersRemove(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "my-providers/remove")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "my-providers/remove")]
         HttpRequestData req,
         CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);

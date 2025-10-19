@@ -12,11 +12,11 @@ public class PrincipalFunction(CosmosRepository repo,
 {
     [Function("PrincipalGet")]
     public async Task<HttpResponseData?> PrincipalGet(
-        [HttpTrigger(AuthorizationLevel.User, Method.Get, Route = "principal/get")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "principal/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
@@ -32,13 +32,13 @@ public class PrincipalFunction(CosmosRepository repo,
 
     [Function("PrincipalAdd")]
     public async Task<AuthPrincipal?> PrincipalAdd(
-        [HttpTrigger(AuthorizationLevel.User, Method.Post, Route = "principal/add")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/add")] HttpRequestData req, CancellationToken cancellationToken)
     {
         //note: its called once per user (first access)
 
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
             var body = await req.GetBody<AuthPrincipal>(cancellationToken);
 
             if (userId.Empty()) throw new InvalidOperationException("unauthenticated user");
@@ -83,11 +83,11 @@ public class PrincipalFunction(CosmosRepository repo,
 
     [Function("PrincipalEvent")]
     public async Task<AuthPrincipal> PrincipalEvent(
-       [HttpTrigger(AuthorizationLevel.User, Method.Put, Route = "principal/event")] HttpRequestData req, CancellationToken cancellationToken)
+       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/event")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
 
             var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
             var msg = req.GetQueryParameters()["msg"];
@@ -105,11 +105,11 @@ public class PrincipalFunction(CosmosRepository repo,
 
     [Function("PrincipalPaddle")]
     public async Task<AuthPrincipal> PrincipalPaddle(
-        [HttpTrigger(AuthorizationLevel.User, Method.Put, Route = "principal/paddle")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/paddle")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
 
             var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
             var body = await req.GetBody<AuthPrincipal>(cancellationToken);
@@ -130,11 +130,11 @@ public class PrincipalFunction(CosmosRepository repo,
 
     [Function("PrincipalRemove")]
     public async Task PrincipalRemove(
-        [HttpTrigger(AuthorizationLevel.User, Method.Delete, Route = "principal/remove")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Delete, Route = "principal/remove")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = req.GetUserId();
+            var userId = await req.GetUserIdAsync();
 
             var myPrincipal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
             if (myPrincipal != null) await repo.Delete(myPrincipal, cancellationToken);

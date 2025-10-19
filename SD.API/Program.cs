@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using SD.API.Core.Middleware;
 using System.Net;
 
@@ -37,19 +35,6 @@ return;
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
-    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
-        {
-            options.Authority = context.Configuration["AzureAd:Authority"];
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidAudience = context.Configuration["AzureAd:ClientId"],
-                ValidateLifetime = true
-            };
-        });
-
     services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(90); })
       .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
     services.AddHttpClient("paddle");
