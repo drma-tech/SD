@@ -84,8 +84,6 @@ public static class StaticWebAppsAuth
         };
 
         var handler = new JwtSecurityTokenHandler();
-        handler.InboundClaimTypeMap.Clear(); // Clear the claim type map for better compatibility
-
         return handler.ValidateToken(token, validationParameters, out var _);
     }
 }
