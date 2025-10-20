@@ -51,6 +51,8 @@ public static class StaticWebAppsAuth
 
     private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, bool required, CancellationToken cancellationToken)
     {
+        req.LogWarning("HEADERS => " + string.Join(" | ", req.Headers.Select(h => $"{h.Key}: {string.Join(",", h.Value)}")));
+
         if (req.Headers.TryGetValues("Authorization", out var header))
         {
             req.LogWarning("header count: " + header.Count());
