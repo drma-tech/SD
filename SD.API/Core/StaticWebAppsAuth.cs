@@ -1,6 +1,7 @@
-﻿using Microsoft.Azure.Functions.Worker.Http;
+﻿using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Concurrent;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -16,7 +17,7 @@ public class ClientPrincipal
 
 public static class StaticWebAppsAuth
 {
-    public static async Task<string?> GetUserIdAsync(this HttpRequestData req, CancellationToken cancellationToken, bool required = true)
+    public static async Task<string?> GetUserIdAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, CancellationToken cancellationToken, bool required = true)
     {
         var principal = await req.ParseAndValidateJwtAsync(required, cancellationToken);
 
@@ -30,7 +31,7 @@ public static class StaticWebAppsAuth
             return id;
     }
 
-    public static string? GetUserIP(this HttpRequestData req, bool includePort = true)
+    public static string? GetUserIP(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, bool includePort = true)
     {
         if (req.Headers.TryGetValues("X-Forwarded-For", out var values))
         {
@@ -48,7 +49,7 @@ public static class StaticWebAppsAuth
         return null;
     }
 
-    private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this HttpRequestData req, bool required, CancellationToken cancellationToken)
+    private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, bool required, CancellationToken cancellationToken)
     {
         if (req.Headers.TryGetValues("Authorization", out var header))
         {
@@ -73,12 +74,16 @@ public static class StaticWebAppsAuth
         return null;
     }
 
+    private static readonly ConcurrentDictionary<string, ConfigurationManager<OpenIdConnectConfiguration>> _configManagers = new();
+
     private static async Task<ClaimsPrincipal> ValidateTokenAsync(string token, string issuer, string audience, CancellationToken cancellationToken)
     {
-        System.Collections.Concurrent.ConcurrentDictionary<string, Microsoft.IdentityModel.Protocols.ConfigurationManager<OpenIdConnectConfiguration>> _configManagers = new();
-        var mgr = _configManagers.GetOrAdd(issuer, key => new Microsoft.IdentityModel.Protocols.ConfigurationManager<OpenIdConnectConfiguration>($"{key}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever()));
+        var mgr = _configManagers.GetOrAdd(issuer, key => new ConfigurationManager<OpenIdConnectConfiguration>($"{key.TrimEnd('/')}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever()));
 
         var oidc = await mgr.GetConfigurationAsync(cancellationToken);
+
+        if (oidc.SigningKeys == null || oidc.SigningKeys.Count == 0)
+            throw new UnhandledException($"No signing keys found for issuer {issuer}");
 
         var validationParameters = new TokenValidationParameters
         {
