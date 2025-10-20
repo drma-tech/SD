@@ -62,7 +62,7 @@ public static class StaticWebAppsAuth
                 var issuer = ApiStartup.Configurations.AzureAd?.Issuer ?? throw new UnhandledException("issuer is null");
                 var clientId = ApiStartup.Configurations.AzureAd?.ClientId ?? throw new UnhandledException("clientId is null");
 
-                return await ValidateTokenAsync(token, issuer, clientId, cancellationToken);
+                return await req.ValidateTokenAsync(token, issuer, clientId, cancellationToken);
             }
         }
         else
@@ -76,14 +76,32 @@ public static class StaticWebAppsAuth
 
     private static readonly ConcurrentDictionary<string, ConfigurationManager<OpenIdConnectConfiguration>> _configManagers = new();
 
-    private static async Task<ClaimsPrincipal> ValidateTokenAsync(string token, string issuer, string audience, CancellationToken cancellationToken)
+    private static async Task<ClaimsPrincipal> ValidateTokenAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, string token, string issuer, string audience, CancellationToken cancellationToken)
     {
         var mgr = _configManagers.GetOrAdd(issuer, key => new ConfigurationManager<OpenIdConnectConfiguration>($"{key.TrimEnd('/')}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever()));
 
         var oidc = await mgr.GetConfigurationAsync(cancellationToken);
 
         if (oidc.SigningKeys == null || oidc.SigningKeys.Count == 0)
-            throw new UnhandledException($"No signing keys found for issuer {issuer}");
+        {
+            mgr.RequestRefresh();
+            oidc = await mgr.GetConfigurationAsync(cancellationToken);
+
+            if (oidc.SigningKeys == null || oidc.SigningKeys.Count == 0)
+            {
+                try
+                {
+                    var keysJson = await new HttpClient().GetStringAsync($"{issuer.TrimEnd('/')}/discovery/v2.0/keys", cancellationToken);
+                    req.LogWarning($"JWKS download OK: {keysJson.Length} bytes");
+                }
+                catch (Exception ex)
+                {
+                    req.LogWarning($"JWKS fetch failed: {ex.Message}");
+                }
+
+                throw new UnhandledException($"No signing keys found for issuer {issuer}");
+            }
+        }
 
         var validationParameters = new TokenValidationParameters
         {
