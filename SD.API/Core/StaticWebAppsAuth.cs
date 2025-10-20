@@ -53,7 +53,8 @@ public static class StaticWebAppsAuth
     {
         if (req.Headers.TryGetValues("Authorization", out var header))
         {
-            var authHeader = header.FirstOrDefault();
+            req.LogWarning("header count: " + header.Count());
+            var authHeader = header.LastOrDefault();
             if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
             {
                 var token = authHeader.Substring("Bearer ".Length);
