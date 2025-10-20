@@ -52,12 +52,13 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = new Uri(apiOrigin); })
-        .AddHttpMessageHandler(service =>
-        {
-            return service.GetRequiredService<AuthorizationMessageHandler>().ConfigureHandler(
-                [apiOrigin],
-                [configuration["DownstreamApi:Scopes"] ?? throw new UnhandledException("DownstreamApi:Scopes null")]);
-        })
+        //.AddHttpMessageHandler(service =>
+        //{
+        //    return service.GetRequiredService<AuthorizationMessageHandler>().ConfigureHandler(
+        //        [apiOrigin],
+        //        [configuration["DownstreamApi:Scopes"] ?? throw new UnhandledException("DownstreamApi:Scopes null")]);
+        //})
+        .AddHttpMessageHandler<CustomAuthorizationHandler>()
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddHttpClient("External")

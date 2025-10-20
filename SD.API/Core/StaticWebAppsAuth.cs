@@ -53,7 +53,7 @@ public static class StaticWebAppsAuth
     {
         req.LogWarning("HEADERS => " + string.Join(" | ", req.Headers.Select(h => $"{h.Key}: {string.Join(",", h.Value)}")));
 
-        if (req.Headers.TryGetValues("Authorization", out var header))
+        if (req.Headers.TryGetValues("X-Auth-Token", out var header))
         {
             req.LogWarning("header count: " + header.Count());
             var authHeader = header.LastOrDefault();
