@@ -6,9 +6,7 @@ using SD.Shared.Models.Blocked;
 
 namespace SD.API.Functions;
 
-public class PrincipalFunction(CosmosRepository repo,
-    CosmosCacheRepository repoCache,
-    ILogger<PrincipalFunction> logger)
+public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repoCache, ILogger<PrincipalFunction> logger)
 {
     [Function("PrincipalGet")]
     public async Task<HttpResponseData?> PrincipalGet(
