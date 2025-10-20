@@ -85,6 +85,7 @@ public static class StaticWebAppsAuth
             if (jwtHandler.CanReadToken(token))
             {
                 var jwtToken = jwtHandler.ReadJwtToken(token);
+                req.LogWarning(token);
                 req.LogWarning($"Token Header: {System.Text.Json.JsonSerializer.Serialize(jwtToken.Header)}");
                 req.LogWarning($"Token has kid: {jwtToken.Header.ContainsKey("kid")}");
             }
