@@ -72,7 +72,9 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
 
             options.ProviderOptions.Authentication.PostLogoutRedirectUri = "/";
 
+            options.ProviderOptions.DefaultAccessTokenScopes.Add("openid"); // Need to provide the scopes that are "by default" should be included with the underlying API call
             options.ProviderOptions.DefaultAccessTokenScopes.Add("email"); //give access to the email scope
+            options.ProviderOptions.DefaultAccessTokenScopes.Add(configuration["DownstreamApi:Scopes"] ?? throw new UnhandledException("Scopes null"));
         });
 
         collection.AddScoped<AccountClaimsPrincipalFactory<RemoteUserAccount>, CustomUserFactory>(); //for some reason roles are not being recognized
