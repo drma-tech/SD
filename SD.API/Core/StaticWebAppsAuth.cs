@@ -22,6 +22,8 @@ public static class StaticWebAppsAuth
 
         var id = principal?.Claims.FirstOrDefault(w => w.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier" || w.Type == "oid")?.Value;
 
+        req.LogWarning(string.Join(";", principal?.Claims ?? []));
+
         if (required)
             return id ?? throw new UnhandledException("user id not available");
         else

@@ -14,7 +14,6 @@ public class Configurations
 
 public class AzureAd
 {
-    public string? Authority { get; set; }
     public string? ClientId { get; set; }
     public string? Issuer { get; set; }
 }
