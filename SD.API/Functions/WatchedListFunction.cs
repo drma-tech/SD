@@ -16,7 +16,7 @@ public class WatchedListFunction(CosmosRepository repo)
 
             if (string.IsNullOrEmpty(id))
             {
-                var userId = await req.GetUserIdAsync();
+                var userId = await req.GetUserIdAsync(cancellationToken);
                 if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
                 doc = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
@@ -42,7 +42,7 @@ public class WatchedListFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync();
+            var userId = await req.GetUserIdAsync(cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
@@ -73,7 +73,7 @@ public class WatchedListFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync();
+            var userId = await req.GetUserIdAsync(cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);

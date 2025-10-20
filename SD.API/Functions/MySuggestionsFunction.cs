@@ -11,7 +11,7 @@ public class MySuggestionsFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync();
+            var userId = await req.GetUserIdAsync(cancellationToken);
 
             var doc = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
 
@@ -30,7 +30,7 @@ public class MySuggestionsFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync();
+            var userId = await req.GetUserIdAsync(cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);

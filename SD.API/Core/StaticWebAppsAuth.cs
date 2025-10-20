@@ -16,13 +16,13 @@ public class ClientPrincipal
 
 public static class StaticWebAppsAuth
 {
-    public static async Task<string?> GetUserIdAsync(this HttpRequestData req, bool required = true)
+    public static async Task<string?> GetUserIdAsync(this HttpRequestData req, CancellationToken cancellationToken, bool required = true)
     {
-        var principal = await req.ParseAndValidateJwtAsync();
+        var principal = await req.ParseAndValidateJwtAsync(cancellationToken);
 
         var id = principal?.Claims.FirstOrDefault(w => w.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier" || w.Type == "oid")?.Value;
 
-        req.LogWarning(string.Join(";", principal?.Claims ?? []));
+        req.LogWarning("Claims: " + string.Join(";", principal?.Claims ?? []));
 
         if (required)
             return id ?? throw new UnhandledException("user id not available");
@@ -48,7 +48,7 @@ public static class StaticWebAppsAuth
         return null;
     }
 
-    private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this HttpRequestData req)
+    private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this HttpRequestData req, CancellationToken cancellationToken)
     {
         if (req.Headers.TryGetValues("Authorization", out var header))
         {
@@ -63,7 +63,7 @@ public static class StaticWebAppsAuth
 
                 try
                 {
-                    return await ValidateTokenAsync(token, issuer, clientId);
+                    return await ValidateTokenAsync(token, issuer, clientId, cancellationToken);
                 }
                 catch (Exception)
                 {
@@ -75,12 +75,12 @@ public static class StaticWebAppsAuth
         return null;
     }
 
-    private static async Task<ClaimsPrincipal> ValidateTokenAsync(string token, string issuer, string audience)
+    private static async Task<ClaimsPrincipal> ValidateTokenAsync(string token, string issuer, string audience, CancellationToken cancellationToken)
     {
         System.Collections.Concurrent.ConcurrentDictionary<string, Microsoft.IdentityModel.Protocols.ConfigurationManager<OpenIdConnectConfiguration>> _configManagers = new();
         var mgr = _configManagers.GetOrAdd(issuer, key => new Microsoft.IdentityModel.Protocols.ConfigurationManager<OpenIdConnectConfiguration>($"{key}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever()));
 
-        var oidc = await mgr.GetConfigurationAsync(CancellationToken.None);
+        var oidc = await mgr.GetConfigurationAsync(cancellationToken);
 
         var validationParameters = new TokenValidationParameters
         {

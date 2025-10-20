@@ -1,22 +1,4 @@
 {
-  "routes": [
-    {
-      "route": "/api/public/*",
-      "allowedRoles": [ "anonymous" ]
-    },
-    {
-      "route": "/api/principal/remove",
-      "allowedRoles": [ "anonymous" ]
-    },
-    {
-      "route": "/api/adm/*",
-      "allowedRoles": [ "administrator" ]
-    },
-    {
-      "route": "/api/*",
-      "allowedRoles": [ "authenticated" ]
-    }
-  ],
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [
@@ -26,17 +8,5 @@
   "globalHeaders": {
     "content-security-policy": "default-src 'self'; frame-src 'self' *.google.com *.adtrafficquality.google *.paddle.com *.doubleclick.net *.ideas.userback.io *.googlesyndication.com *.grow.me; frame-ancestors 'self' google.com *.google.com *.doubleclick.net; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.paddle.com *.profitwell.com *.googletagmanager.com cdn.jsdelivr.net unpkg.com *.clarity.ms *.googlesyndication.com *.adtrafficquality.google *.google.com *.userback.io *.ampproject.org *.grow.me; connect-src *; style-src * 'unsafe-inline'; img-src * data: blob:; font-src * data:; media-src 'self' *.gstatic.com blob: data:;",
     "Access-Control-Allow-Origin": "https://www.web-standards.com"
-  },
-  "auth": {
-    "rolesSource": "/api/login/roles",
-    "identityProviders": {
-      "azureActiveDirectory": {
-        "registration": {
-          "openIdIssuer": "https://drmatech.ciamlogin.com/983095b4-b0a8-49a6-ac17-0a96b7126888/v2.0",
-          "clientIdSettingName": "AZURE_CLIENT_ID",
-          "clientSecretSettingName": "AZURE_CLIENT_SECRET_APP_SETTING_NAME"
-        }
-      }
-    }
   }
 }

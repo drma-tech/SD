@@ -17,7 +17,7 @@ public static class IsolatedFunctionHelper
 
         model ??= new T();
 
-        var userId = await req.GetUserIdAsync();
+        var userId = await req.GetUserIdAsync(cancellationToken);
 
         if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
 

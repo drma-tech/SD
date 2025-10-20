@@ -16,7 +16,7 @@ public class WishListFunction(CosmosRepository repo)
 
             if (string.IsNullOrEmpty(id))
             {
-                var userId = await req.GetUserIdAsync();
+                var userId = await req.GetUserIdAsync(cancellationToken);
                 if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
                 doc = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
@@ -41,7 +41,7 @@ public class WishListFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync();
+            var userId = await req.GetUserIdAsync(cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
@@ -71,7 +71,7 @@ public class WishListFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync();
+            var userId = await req.GetUserIdAsync(cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
