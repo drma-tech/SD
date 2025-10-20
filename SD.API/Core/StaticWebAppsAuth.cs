@@ -18,7 +18,7 @@ public static class StaticWebAppsAuth
 {
     public static async Task<string?> GetUserIdAsync(this HttpRequestData req, CancellationToken cancellationToken, bool required = true)
     {
-        var principal = await req.ParseAndValidateJwtAsync(cancellationToken);
+        var principal = await req.ParseAndValidateJwtAsync(required, cancellationToken);
 
         var id = principal?.Claims.FirstOrDefault(w => w.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier" || w.Type == "oid")?.Value;
 
@@ -48,7 +48,7 @@ public static class StaticWebAppsAuth
         return null;
     }
 
-    private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this HttpRequestData req, CancellationToken cancellationToken)
+    private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this HttpRequestData req, bool required, CancellationToken cancellationToken)
     {
         if (req.Headers.TryGetValues("Authorization", out var header))
         {
@@ -61,15 +61,13 @@ public static class StaticWebAppsAuth
                 var issuer = ApiStartup.Configurations.AzureAd?.Issuer ?? throw new UnhandledException("issuer is null");
                 var clientId = ApiStartup.Configurations.AzureAd?.ClientId ?? throw new UnhandledException("clientId is null");
 
-                try
-                {
-                    return await ValidateTokenAsync(token, issuer, clientId, cancellationToken);
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
+                return await ValidateTokenAsync(token, issuer, clientId, cancellationToken);
             }
+        }
+        else
+        {
+            if (required)
+                throw new UnhandledException("Authorization header not found");
         }
 
         return null;
