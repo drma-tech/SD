@@ -20,7 +20,7 @@ public static class StaticWebAppsAuth
     {
         var principal = await req.ParseAndValidateJwtAsync();
 
-        var id = principal?.Claims.FirstOrDefault(w => w.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+        var id = principal?.Claims.FirstOrDefault(w => w.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier" || w.Type == "oid")?.Value;
 
         if (required)
             return id ?? throw new UnhandledException("user id not available");
