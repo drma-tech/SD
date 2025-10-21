@@ -2,7 +2,7 @@
 using Microsoft.Azure.Functions.Worker.Http;
 using System.Net;
 
-namespace SD.API.Core.Middleware;
+namespace SD.API.Core;
 
 public static class FunctionContextExtensions
 {

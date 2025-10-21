@@ -1,4 +1,3 @@
-using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,9 +8,10 @@ using System.Net;
 var app = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults(worker =>
     {
-        worker.UseMiddleware<ExceptionHandlingMiddleware>();
+        worker.UseMiddleware<TimingMiddleware>();
+        worker.UseMiddleware<ExceptionMiddleware>();
     })
-    .ConfigureAppConfiguration((hostContext, config) =>
+    .ConfigureAppConfiguration((hostContext, config) => //736
     {
         if (hostContext.HostingEnvironment.IsDevelopment())
         {
@@ -23,13 +23,13 @@ var app = new HostBuilder()
         config.Build().Bind(cfg);
         ApiStartup.Configurations = cfg;
 
-        ApiStartup.Startup(ApiStartup.Configurations.CosmosDB?.ConnectionString);
+        ApiStartup.Startup(ApiStartup.Configurations.CosmosDB?.ConnectionString); //650
     })
-    .ConfigureLogging(ConfigureLogging)
-    .ConfigureServices(ConfigureServices)
+    .ConfigureLogging(ConfigureLogging) //12
+    .ConfigureServices(ConfigureServices) //125
     .Build();
 
-await app.RunAsync();
+await app.RunAsync(); //1442
 
 return;
 
@@ -44,8 +44,6 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
 
     services.AddSingleton<CosmosRepository>();
     services.AddSingleton<CosmosCacheRepository>();
-    services.AddApplicationInsightsTelemetryWorkerService();
-    services.ConfigureFunctionsApplicationInsights();
     services.AddDistributedMemoryCache();
 }
 

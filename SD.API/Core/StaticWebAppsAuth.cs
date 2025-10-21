@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -52,7 +53,7 @@ public static class StaticWebAppsAuth
                 var issuer = ApiStartup.Configurations.AzureAd?.Issuer ?? throw new UnhandledException("issuer is null");
                 var clientId = ApiStartup.Configurations.AzureAd?.ClientId ?? throw new UnhandledException("clientId is null");
 
-                return await ValidateTokenAsync(token, issuer, clientId, cancellationToken);
+                return await ValidateTokenAsync(req, token, issuer, clientId, cancellationToken);
             }
         }
         else
@@ -66,11 +67,15 @@ public static class StaticWebAppsAuth
 
     private static readonly ConcurrentDictionary<string, ConfigurationManager<OpenIdConnectConfiguration>> _configManagers = new();
 
-    private static async Task<ClaimsPrincipal> ValidateTokenAsync(string token, string issuer, string audience, CancellationToken cancellationToken)
+    private static async Task<ClaimsPrincipal> ValidateTokenAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, string token, string issuer, string audience, CancellationToken cancellationToken)
     {
+        var sw1 = Stopwatch.StartNew();
         var mgr = _configManagers.GetOrAdd(issuer, key => new ConfigurationManager<OpenIdConnectConfiguration>($"{key.TrimEnd('/')}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever()));
+        sw1.Stop(); req.LogWarning($"GetOrAdd: {sw1.Elapsed}");
 
+        var sw2 = Stopwatch.StartNew();
         var oidc = await mgr.GetConfigurationAsync(cancellationToken);
+        sw2.Stop(); req.LogWarning($"GetConfigurationAsync: {sw2.Elapsed}");
 
         var validationParameters = new TokenValidationParameters
         {
@@ -83,7 +88,11 @@ public static class StaticWebAppsAuth
             ValidateLifetime = true
         };
 
+        var sw3 = Stopwatch.StartNew();
         var handler = new JwtSecurityTokenHandler();
-        return handler.ValidateToken(token, validationParameters, out var _);
+        var principal = handler.ValidateToken(token, validationParameters, out var _);
+        sw3.Stop(); req.LogWarning($"ValidateToken: {sw3.Elapsed}");
+
+        return principal;
     }
 }

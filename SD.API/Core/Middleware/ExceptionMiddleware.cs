@@ -2,15 +2,14 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;
-using System.Globalization;
 using System.Net;
 
 namespace SD.API.Core.Middleware;
 
-internal sealed class ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger)
+internal sealed class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger)
     : IFunctionsWorkerMiddleware
 {
-    private readonly ILogger<ExceptionHandlingMiddleware> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly ILogger<ExceptionMiddleware> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
     {
