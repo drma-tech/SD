@@ -70,8 +70,8 @@ public static class StaticWebAppsAuth
     private static async Task<ClaimsPrincipal> ValidateTokenAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, string token, string issuer, string audience, CancellationToken cancellationToken)
     {
         var sw2 = Stopwatch.StartNew();
-        var oidc = await LoadConfigurationAsync(issuer, cancellationToken); //sometimes takes long time here (20 seconds or more)
-        sw2.Stop(); if (sw2.ElapsedMilliseconds > 1000) req.LogWarning($"GetConfigurationAsync: {sw2.Elapsed}");
+        var oidc = await LoadConfigurationAsync(req, issuer, cancellationToken); //sometimes takes long time here (20 seconds or more)
+        sw2.Stop(); if (sw2.ElapsedMilliseconds > 500) req.LogWarning($"GetConfigurationAsync: {sw2.Elapsed}");
 
         var validationParameters = new TokenValidationParameters
         {
@@ -87,12 +87,12 @@ public static class StaticWebAppsAuth
         var sw3 = Stopwatch.StartNew();
         var handler = new JwtSecurityTokenHandler();
         var principal = handler.ValidateToken(token, validationParameters, out var _);
-        sw3.Stop(); if (sw3.ElapsedMilliseconds > 1000) req.LogWarning($"ValidateToken: {sw3.Elapsed}");
+        sw3.Stop(); if (sw3.ElapsedMilliseconds > 500) req.LogWarning($"ValidateToken: {sw3.Elapsed}");
 
         return principal;
     }
 
-    private static async Task<OpenIdConnectConfiguration> LoadConfigurationAsync(string issuer, CancellationToken cancellationToken)
+    private static async Task<OpenIdConnectConfiguration> LoadConfigurationAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, string issuer, CancellationToken cancellationToken)
     {
         var mgr = _configManagers.GetOrAdd(issuer, key => new ConfigurationManager<OpenIdConnectConfiguration>($"{key.TrimEnd('/')}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever()));
 
@@ -103,8 +103,9 @@ public static class StaticWebAppsAuth
         {
             return await mgr.GetConfigurationAsync(linkedCts.Token);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            req.LogWarning($"LoadConfigurationAsync: {ex.Message}");
             return await mgr.GetConfigurationAsync(cancellationToken);
         }
         finally

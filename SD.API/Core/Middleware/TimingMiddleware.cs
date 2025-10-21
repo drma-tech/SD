@@ -22,7 +22,7 @@ internal sealed class TimingMiddleware(ILogger<TimingMiddleware> logger) : IFunc
         finally
         {
             sw.Stop();
-            if (sw.ElapsedMilliseconds > 3000)
+            if (sw.ElapsedMilliseconds > 2000)
             {
                 _logger?.LogWarning("Function {FunctionName} executed in {ElapsedMilliseconds} ms", functionName, sw.Elapsed);
             }
