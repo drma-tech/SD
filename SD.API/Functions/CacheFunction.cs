@@ -610,7 +610,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
     {
         if (releaseDate > DateTime.Now.AddDays(-7)) // 1 week launch or future releases
         {
-            return TtlCache.OneWeek;
+            return TtlCache.HalfWeek;
         }
 
         if (releaseDate > DateTime.Now.AddDays(-30)) // less than 1 month launch

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using MudBlazor;
 using MudBlazor.Services;
 using SD.WEB.Modules.Auth.Core;
@@ -45,6 +46,10 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
             AppStateStatic.BrowserWindowSizeChanged += client => StateHasChanged();
             await LoadEssentialDataAsync();
         }
+        catch (AccessTokenNotAvailableException)
+        {
+            Navigation.NavigateToLogout("/authentication/logout");
+        }
         catch (Exception ex)
         {
             ex.ProcessException(Snackbar, Logger);
@@ -60,6 +65,10 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
                 await LoadNonEssentialDataAsync();
                 StateHasChanged();
             }
+        }
+        catch (AccessTokenNotAvailableException)
+        {
+            Navigation.NavigateToLogout("/authentication/logout");
         }
         catch (Exception ex)
         {
@@ -86,6 +95,10 @@ public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, 
             }
 
             await base.OnAfterRenderAsync(firstRender);
+        }
+        catch (AccessTokenNotAvailableException)
+        {
+            Navigation.NavigateToLogout("/authentication/logout");
         }
         catch (Exception ex)
         {
