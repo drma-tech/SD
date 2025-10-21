@@ -6,8 +6,7 @@ using System.Net;
 
 namespace SD.API.Core.Middleware;
 
-internal sealed class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger)
-    : IFunctionsWorkerMiddleware
+internal sealed class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger) : IFunctionsWorkerMiddleware
 {
     private readonly ILogger<ExceptionMiddleware> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
