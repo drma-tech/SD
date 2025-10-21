@@ -71,11 +71,11 @@ public static class StaticWebAppsAuth
     {
         var sw1 = Stopwatch.StartNew();
         var mgr = _configManagers.GetOrAdd(issuer, key => new ConfigurationManager<OpenIdConnectConfiguration>($"{key.TrimEnd('/')}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever()));
-        sw1.Stop(); req.LogWarning($"GetOrAdd: {sw1.Elapsed}");
+        sw1.Stop(); if (sw1.ElapsedMilliseconds > 1000) req.LogWarning($"GetOrAdd: {sw1.Elapsed}");
 
         var sw2 = Stopwatch.StartNew();
-        var oidc = await mgr.GetConfigurationAsync(cancellationToken);
-        sw2.Stop(); req.LogWarning($"GetConfigurationAsync: {sw2.Elapsed}");
+        var oidc = await mgr.GetConfigurationAsync(cancellationToken); //sometimes takes long time here (20 seconds or more)
+        sw2.Stop(); if (sw2.ElapsedMilliseconds > 1000) req.LogWarning($"GetConfigurationAsync: {sw2.Elapsed}");
 
         var validationParameters = new TokenValidationParameters
         {
@@ -91,7 +91,7 @@ public static class StaticWebAppsAuth
         var sw3 = Stopwatch.StartNew();
         var handler = new JwtSecurityTokenHandler();
         var principal = handler.ValidateToken(token, validationParameters, out var _);
-        sw3.Stop(); req.LogWarning($"ValidateToken: {sw3.Elapsed}");
+        sw3.Stop(); if (sw3.ElapsedMilliseconds > 1000) req.LogWarning($"ValidateToken: {sw3.Elapsed}");
 
         return principal;
     }
