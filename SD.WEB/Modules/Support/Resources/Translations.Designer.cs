@@ -88,6 +88,78 @@ namespace SD.WEB.Modules.Support.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Explore hundreds of thousands of movies and series from over 800 streaming platforms in 140 countries — your entire streaming life in one place..
+        /// </summary>
+        public static string Step1Subtitle {
+            get {
+                return ResourceManager.GetString("Step1Subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discover a world of entertainment..
+        /// </summary>
+        public static string Step1Title {
+            get {
+                return ResourceManager.GetString("Step1Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search, follow, and keep up with your favorite platforms, movies, series, and artists — all in real time..
+        /// </summary>
+        public static string Step2Subtitle {
+            get {
+                return ResourceManager.GetString("Step2Subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stay in the know..
+        /// </summary>
+        public static string Step2Title {
+            get {
+                return ResourceManager.GetString("Step2Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create personal lists to track what you’re watching and what’s next on your list..
+        /// </summary>
+        public static string Step3Subtitle {
+            get {
+                return ResourceManager.GetString("Step3Subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep your universe organized..
+        /// </summary>
+        public static string Step3Title {
+            get {
+                return ResourceManager.GetString("Step3Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create your account and unlock your personalized streaming experience..
+        /// </summary>
+        public static string Step4Subtitle {
+            get {
+                return ResourceManager.GetString("Step4Subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Join for free..
+        /// </summary>
+        public static string Step4Title {
+            get {
+                return ResourceManager.GetString("Step4Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Terms of Use.
         /// </summary>
         public static string TermsUse {

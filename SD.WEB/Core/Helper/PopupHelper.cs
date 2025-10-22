@@ -83,7 +83,7 @@ public static class PopupHelper
             { x => x.MySuggestionsChanged, mySuggestionsChanged },
         };
 
-        await service.ShowAsync<MySuggestionsPopup>("Suggestion Filters", parameters, Options(MaxWidth.Small));
+        await service.ShowAsync<MySuggestionsPopup>(GlobalTranslations.SuggestionFilters, parameters, Options(MaxWidth.Small));
     }
 
     public static async Task MyWatchingListPopup(this IDialogService service, RenderControlCore<WatchingList?>? core, MediaType type,
@@ -172,7 +172,7 @@ public static class PopupHelper
             { x => x.SelectedItemsChanged, itemsChanged }
         };
 
-        await service.ShowAsync<SelectItemsCollection>("What items have you already watched?", parameters, Options(MaxWidth.ExtraSmall));
+        await service.ShowAsync<SelectItemsCollection>(GlobalTranslations.WhatHaveYouWatched, parameters, Options(MaxWidth.ExtraSmall));
     }
 
     public static async Task SettingsPopup(this IDialogService service)
@@ -192,7 +192,7 @@ public static class PopupHelper
 
     public static async Task OnboardingPopup(this IDialogService service)
     {
-        await service.ShowAsync<Onboarding>($"Welcome to {SeoTranslations.AppName}", Options(MaxWidth.Medium));
+        await service.ShowAsync<Onboarding>(string.Format(GlobalTranslations.WelcomeTo, SeoTranslations.AppName), Options(MaxWidth.Medium));
     }
 
     public static DialogOptions Options(MaxWidth width)

@@ -286,6 +286,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Suggestion Filters.
+        /// </summary>
+        public static string SuggestionFilters {
+            get {
+                return ResourceManager.GetString("SuggestionFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete your account? This action cannot be undone..
         /// </summary>
         public static string SureDeleteAccount {
@@ -300,6 +309,24 @@ namespace SD.WEB.Resources {
         public static string TypeSomething {
             get {
                 return ResourceManager.GetString("TypeSomething", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to {0}.
+        /// </summary>
+        public static string WelcomeTo {
+            get {
+                return ResourceManager.GetString("WelcomeTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to What items have you already watched?.
+        /// </summary>
+        public static string WhatHaveYouWatched {
+            get {
+                return ResourceManager.GetString("WhatHaveYouWatched", resourceCulture);
             }
         }
         

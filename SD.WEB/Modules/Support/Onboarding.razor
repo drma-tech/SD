@@ -9,10 +9,10 @@
                 <div class="pa-4" style="text-align: center; height: 100%;">
                     <MudImage Src="images/onboarding-step-1.png" Style="height: 200px;"></MudImage>
                     <MudText Typo="Typo.h6" Color="Color.Secondary">
-                        Discover a world of entertainment.
+                        @Resources.Translations.Step1Title
                     </MudText>
                     <MudText Typo="Typo.h6">
-                        Explore hundreds of thousands of movies and series from over 800 streaming platforms in 140 countries — your entire streaming life in one place.
+                        @Resources.Translations.Step1Subtitle
                     </MudText>
                 </div>
             </MudCarouselItem>
@@ -20,10 +20,10 @@
                 <div class="pa-4" style="text-align: center; height: 100%;">
                     <MudImage Src="images/onboarding-step-2.png" Style="height: 200px;"></MudImage>
                     <MudText Typo="Typo.h6" Color="Color.Secondary">
-                        Stay in the know.
+                        @Resources.Translations.Step2Title
                     </MudText>
                     <MudText Typo="Typo.h6">
-                        Search, follow, and keep up with your favorite platforms, movies, series, and artists — all in real time.
+                        @Resources.Translations.Step2Subtitle
                     </MudText>
                 </div>
             </MudCarouselItem>
@@ -31,10 +31,10 @@
                 <div class="pa-4" style="text-align: center; height: 100%;">
                     <MudImage Src="images/onboarding-step-3.png" Style="height: 200px;"></MudImage>
                     <MudText Typo="Typo.h6" Color="Color.Secondary">
-                        Keep your universe organized.
+                        @Resources.Translations.Step3Title
                     </MudText>
                     <MudText Typo="Typo.h6">
-                        Create personal lists to track what you’re watching and what’s next on your list.
+                        @Resources.Translations.Step3Subtitle
                     </MudText>
                 </div>
             </MudCarouselItem>
@@ -42,10 +42,10 @@
                 <div class="pa-4" style="text-align: center; height: 100%;">
                     <MudImage Src="icon/icon-300.png" Style="height: 200px;"></MudImage>
                     <MudText Typo="Typo.h6" Color="Color.Secondary">
-                        Join for free.
+                        @Resources.Translations.Step4Title
                     </MudText>
                     <MudText Typo="Typo.h6">
-                        Create your account and unlock your personalized streaming experience.
+                        @Resources.Translations.Step4Subtitle
                     </MudText>
                 </div>
             </MudCarouselItem>
@@ -59,9 +59,9 @@
             }
             else
             {
-                <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="() => MudDialog?.Close()">Skip</MudButton>
-                <MudChip T="string" Text="@($"{mudCarousel?.SelectedIndex + 1} of {mudCarousel?.Items.Count}")" Class="mx-3"></MudChip>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => { mudCarousel?.Next(); StateHasChanged(); })">Continue</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="() => MudDialog?.Close()">@WEB.Resources.Button.Close</MudButton>
+                <MudChip T="string" Text="@($"{mudCarousel?.SelectedIndex + 1} - {mudCarousel?.Items.Count}")" Class="mx-3"></MudChip>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => { mudCarousel?.Next(); StateHasChanged(); })">@WEB.Resources.Button.Next</MudButton>
             }
         </div>
     </DialogContent>

@@ -96,7 +96,7 @@ public static class StaticWebAppsAuth
         mgr ??= new ConfigurationManager<OpenIdConnectConfiguration>($"{issuer.TrimEnd('/')}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever());
 
         var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-        var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutCts.Token);
+        var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutCts.Token);
 
         try
         {
