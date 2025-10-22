@@ -68,7 +68,7 @@ public static class StaticWebAppsAuth
     {
         var sw1 = Stopwatch.StartNew();
         var oidc = await LoadConfigurationAsync(req, issuer, cancellationToken); //sometimes takes long time here (20 seconds or more)
-        sw1.Stop(); if (sw1.ElapsedMilliseconds > 100) req.LogWarning($"GetConfigurationAsync: {sw1.Elapsed}");
+        sw1.Stop(); if (sw1.ElapsedMilliseconds > 1000) req.LogWarning($"GetConfigurationAsync: {sw1.Elapsed}");
 
         var validationParameters = new TokenValidationParameters
         {
@@ -84,7 +84,7 @@ public static class StaticWebAppsAuth
         var sw2 = Stopwatch.StartNew();
         var handler = new JwtSecurityTokenHandler();
         var principal = handler.ValidateToken(token, validationParameters, out var _);
-        sw2.Stop(); if (sw2.ElapsedMilliseconds > 100) req.LogWarning($"ValidateToken: {sw2.Elapsed}");
+        sw2.Stop(); if (sw2.ElapsedMilliseconds > 1000) req.LogWarning($"ValidateToken: {sw2.Elapsed}");
 
         return principal;
     }

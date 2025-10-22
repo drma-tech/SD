@@ -133,6 +133,22 @@
         };
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (AppStateStatic.IsAuthenticated)
+        {
+            var subscription = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "subscription-popup");
+
+            if (subscription.Empty())
+            {
+                await DialogService.SubscriptionPopup(AppStateStatic.IsAuthenticated);
+                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "subscription-popup", true.ToString().ToLower());
+            }
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
     protected override async Task LoadNonEssentialDataAsync()
     {
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));

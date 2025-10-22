@@ -8,6 +8,7 @@
 
 @inject IJSRuntime JsRuntime
 @inject ISnackbar Snackbar
+@inject IDialogService DialogService
 @inject ILogger<MainLayout> Logger
 
 @inject PrincipalApi PrincipalApi
@@ -132,6 +133,17 @@
                     {
                         Navigation.NavigateTo("/ask-consent");
                     }
+                }
+            }
+
+            if (!AppStateStatic.IsAuthenticated)
+            {
+                //open onboarding dialog for new users
+                var onboarding = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "onboarding-popup");
+                if (onboarding.Empty())
+                {
+                    await DialogService.OnboardingPopup();
+                    await JsRuntime.InvokeAsync<string>("SetLocalStorage", "onboarding-popup", true.ToString().ToLower());
                 }
             }
         }

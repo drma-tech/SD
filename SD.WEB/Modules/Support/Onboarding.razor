@@ -1,0 +1,79 @@
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inherits ComponentCore<Onboarding>
+
+<MudDialog Style="width: 100%; height: 100%; max-width: 600px; max-height: 600px;">
+    <DialogContent>
+        <MudCarousel @ref="mudCarousel" Class="mud-width-full" Style="height: calc(100% - 56px);" ShowArrows="false" ShowBullets="false" BulletsPosition="Position.Top"
+                     AutoCycle="false" TData="object" SelectedIndexChanged="StateHasChanged">
+            <MudCarouselItem>
+                <div class="pa-4" style="text-align: center; height: 100%;">
+                    <MudImage Src="images/onboarding-step-1.png" Style="height: 200px;"></MudImage>
+                    <MudText Typo="Typo.h6" Color="Color.Secondary">
+                        Discover a world of entertainment.
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                        Explore hundreds of thousands of movies and series from over 800 streaming platforms in 140 countries — your entire streaming life in one place.
+                    </MudText>
+                </div>
+            </MudCarouselItem>
+            <MudCarouselItem>
+                <div class="pa-4" style="text-align: center; height: 100%;">
+                    <MudImage Src="images/onboarding-step-2.png" Style="height: 200px;"></MudImage>
+                    <MudText Typo="Typo.h6" Color="Color.Secondary">
+                        Stay in the know.
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                        Search, follow, and keep up with your favorite platforms, movies, series, and artists — all in real time.
+                    </MudText>
+                </div>
+            </MudCarouselItem>
+            <MudCarouselItem>
+                <div class="pa-4" style="text-align: center; height: 100%;">
+                    <MudImage Src="images/onboarding-step-3.png" Style="height: 200px;"></MudImage>
+                    <MudText Typo="Typo.h6" Color="Color.Secondary">
+                        Keep your universe organized.
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                        Create personal lists to track what you’re watching and what’s next on your list.
+                    </MudText>
+                </div>
+            </MudCarouselItem>
+            <MudCarouselItem>
+                <div class="pa-4" style="text-align: center; height: 100%;">
+                    <MudImage Src="icon/icon-300.png" Style="height: 200px;"></MudImage>
+                    <MudText Typo="Typo.h6" Color="Color.Secondary">
+                        Join for free.
+                    </MudText>
+                    <MudText Typo="Typo.h6">
+                        Create your account and unlock your personalized streaming experience.
+                    </MudText>
+                </div>
+            </MudCarouselItem>
+        </MudCarousel>
+        <div class="py-2 px-4 d-flex" style="text-align: center; width: 100%; justify-content: space-between;">
+            @if (mudCarousel?.SelectedIndex == mudCarousel?.Items.Count - 1)
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" OnClick="Login" FullWidth="true" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
+                    @Button.Login
+                </MudButton>
+            }
+            else
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="() => MudDialog?.Close()">Skip</MudButton>
+                <MudChip T="string" Text="@($"{mudCarousel?.SelectedIndex + 1} of {mudCarousel?.Items.Count}")" Class="mx-3"></MudChip>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => { mudCarousel?.Next(); StateHasChanged(); })">Continue</MudButton>
+            }
+        </div>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
+
+    private MudCarousel<object>? mudCarousel;
+
+    private void Login()
+    {
+        Navigation.NavigateToLogin("/authentication/login");
+    }
+}

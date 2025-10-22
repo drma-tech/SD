@@ -6,6 +6,7 @@ using SD.WEB.Modules.Platform.Components;
 using SD.WEB.Modules.Profile.Components;
 using SD.WEB.Modules.Profile.Resources;
 using SD.WEB.Modules.Subscription.Components;
+using SD.WEB.Modules.Support;
 using SD.WEB.Shared;
 
 namespace SD.WEB.Core.Helper;
@@ -187,6 +188,11 @@ public static class PopupHelper
         };
 
         await service.ShowAsync<SubscriptionPopup>(Modules.Subscription.Resources.Translations.MySubscription, parameters, Options(MaxWidth.Medium));
+    }
+
+    public static async Task OnboardingPopup(this IDialogService service)
+    {
+        await service.ShowAsync<Onboarding>($"Welcome to {SeoTranslations.AppName}", Options(MaxWidth.Medium));
     }
 
     public static DialogOptions Options(MaxWidth width)
