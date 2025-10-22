@@ -1,6 +1,7 @@
 ﻿@page "/"
 @page "/index"
 
+@using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.EditorsChoice.Components
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.AwardsOfTheYear.Components
@@ -14,6 +15,7 @@
 @inject WishListApi WishApi
 @inject PaddleConfigurationApi ConfigurationApi
 @inject IpInfoApi IpInfoApi
+@inject TmdbListApi TmdbListApi
 @inject IJSRuntime JsRuntime
 
 <SeoHeader Title="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription" Url="/" Keywords="@(["streaming"])"></SeoHeader>
@@ -41,11 +43,24 @@
 
 <AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated"></AwardsOfTheYearComponent>
 
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index2" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+
 <MudGrid Spacing="3">
-    <MudItem xs="12" sm="6" md="7">
+    <MudItem xs="12" sm="6">
+        <MediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2025" Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated">
+        </MediaList>
+    </MudItem>
+    <MudItem xs="12" sm="6">
+        <MediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated">
+        </MediaList>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="3">
+    <MudItem xs="12" sm="6">
         <TrailersComponent></TrailersComponent>
     </MudItem>
-    <MudItem xs="12" sm="6" md="5">
+    <MudItem xs="12" sm="6">
         <NewsComponent></NewsComponent>
     </MudItem>
 </MudGrid>
