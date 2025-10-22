@@ -7,24 +7,14 @@ public class WishListFunction(CosmosRepository repo)
 {
     [Function("WishListGet")]
     public async Task<HttpResponseData?> WishListGet(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/wishlist/get")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "wishlist/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
-            var id = req.GetQueryParameters()["id"];
-            WishList? doc;
+            var userId = await req.GetUserIdAsync(cancellationToken);
+            if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
-            if (string.IsNullOrEmpty(id))
-            {
-                var userId = await req.GetUserIdAsync(cancellationToken);
-                if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
-
-                doc = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
-            }
-            else
-            {
-                doc = await repo.Get<WishList>(DocumentType.WishList, id, cancellationToken);
-            }
+            var doc = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
 
             return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }

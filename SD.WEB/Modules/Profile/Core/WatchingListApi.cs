@@ -5,11 +5,8 @@ namespace SD.WEB.Modules.Profile.Core;
 
 public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingList>(factory, ApiType.Authenticated, "watchinglist")
 {
-    public async Task<WatchingList?> Get(bool isUserAuthenticated, RenderControlCore<WatchingList?>? core,
-        string? id = null)
+    public async Task<WatchingList?> Get(bool isUserAuthenticated, RenderControlCore<WatchingList?>? core)
     {
-        if (!string.IsNullOrEmpty(id)) return await GetAsync($"{Endpoint.Get}?id={id}", core);
-
         if (isUserAuthenticated) return await GetAsync(Endpoint.Get, core);
 
         return new WatchingList();
@@ -44,7 +41,7 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
 
     private struct Endpoint
     {
-        public const string Get = "public/watchinglist/get";
+        public const string Get = "watchinglist/get";
 
         public static string Add(MediaType? type)
         {

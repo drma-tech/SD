@@ -64,6 +64,7 @@
 
             AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
             AppStateStatic.ShowError = msg => { Snackbar.Add(msg, Severity.Error); };
+            AppStateStatic.Version = GetAppVersion();
 
             if (AppStateStatic.User == null)
             {
@@ -85,8 +86,6 @@
                     return;
                 }
             }
-
-            AppStateStatic.Version = GetAppVersion();
 
             IsLoading = false; StateHasChanged();
         }

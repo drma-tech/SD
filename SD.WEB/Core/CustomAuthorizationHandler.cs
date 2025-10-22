@@ -3,32 +3,23 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace SD.WEB.Core
 {
-    public class CustomAuthorizationHandler(IAccessTokenProvider tokenProvider, NavigationManager navigation, IConfiguration configuration) : DelegatingHandler
+    public class CustomAuthorizationHandler(CachedTokenProvider cachedTokenProvider, NavigationManager navigation) : DelegatingHandler
     {
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var result = await tokenProvider.RequestAccessToken();
+            var token = await cachedTokenProvider.GetTokenAsync();
 
-            if (!result.TryGetToken(out var token))
+            if (token == null)
             {
-                result = await tokenProvider.RequestAccessToken(new AccessTokenRequestOptions
+                navigation.NavigateToLogin("/authentication/login");
+                return new HttpResponseMessage(System.Net.HttpStatusCode.Unauthorized)
                 {
-                    Scopes = ["openid", "email", configuration["DownstreamApi:Scopes"] ?? throw new UnhandledException("Scopes null")],
-                    ReturnUrl = "/"
-                });
-
-                if (!result.TryGetToken(out token))
-                {
-                    navigation.NavigateToLogin("/authentication/login");
-                    return new HttpResponseMessage(System.Net.HttpStatusCode.Unauthorized)
-                    {
-                        ReasonPhrase = "Invalid or expired token"
-                    };
-                }
+                    ReasonPhrase = "Invalid or expired token"
+                };
             }
 
             request.Headers.Remove("X-Auth-Token");
-            request.Headers.Add("X-Auth-Token", $"Bearer {token!.Value}");
+            request.Headers.Add("X-Auth-Token", $"Bearer {token.Value}");
 
             return await base.SendAsync(request, cancellationToken);
         }

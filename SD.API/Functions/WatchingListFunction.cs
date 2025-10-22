@@ -7,24 +7,14 @@ public class WatchingListFunction(CosmosRepository repo)
 {
     [Function("WatchingListGet")]
     public async Task<HttpResponseData?> WatchingListGet(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/watchinglist/get")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "watchinglist/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
-            var id = req.GetQueryParameters()["id"];
-            WatchingList? doc;
+            var userId = await req.GetUserIdAsync(cancellationToken);
+            if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
-            if (string.IsNullOrEmpty(id))
-            {
-                var userId = await req.GetUserIdAsync(cancellationToken);
-                if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
-
-                doc = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
-            }
-            else
-            {
-                doc = await repo.Get<WatchingList>(DocumentType.WatchingList, id, cancellationToken);
-            }
+            var doc = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
 
             return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
