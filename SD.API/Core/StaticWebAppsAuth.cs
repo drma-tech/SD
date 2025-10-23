@@ -1,16 +1,14 @@
-﻿using Microsoft.IdentityModel.Protocols;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+﻿using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 using System.Security.Claims;
 
 namespace SD.API.Core;
 
 public static class StaticWebAppsAuth
 {
-    public static async Task<string?> GetUserIdAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, CancellationToken cancellationToken, bool required = true)
+    public static async Task<string?> GetUserIdAsync(this HttpRequestData req, CancellationToken cancellationToken, bool required = true)
     {
         var principal = await req.ParseAndValidateJwtAsync(required, cancellationToken);
 
@@ -22,7 +20,7 @@ public static class StaticWebAppsAuth
             return id;
     }
 
-    public static string? GetUserIP(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, bool includePort = true)
+    public static string? GetUserIP(this HttpRequestData req, bool includePort = true)
     {
         if (req.Headers.TryGetValues("X-Forwarded-For", out var values))
         {
@@ -40,7 +38,7 @@ public static class StaticWebAppsAuth
         return null;
     }
 
-    private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, bool required, CancellationToken cancellationToken)
+    private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this HttpRequestData req, bool required, CancellationToken cancellationToken)
     {
         if (req.Headers.TryGetValues("X-Auth-Token", out var header))
         {
@@ -53,7 +51,15 @@ public static class StaticWebAppsAuth
                 var issuer = ApiStartup.Configurations.AzureAd?.Issuer ?? throw new UnhandledException("issuer is null");
                 var clientId = ApiStartup.Configurations.AzureAd?.ClientId ?? throw new UnhandledException("clientId is null");
 
-                return await ValidateTokenAsync(req, token, issuer, clientId, cancellationToken);
+                try
+                {
+                    return await ValidateTokenAsync(req, token, issuer, clientId, cancellationToken);
+                }
+                catch (SecurityTokenSignatureKeyNotFoundException)
+                {
+                    JwksCache.Invalidate();
+                    return await ValidateTokenAsync(req, token, issuer, clientId, cancellationToken);
+                }
             }
         }
         else
@@ -65,18 +71,18 @@ public static class StaticWebAppsAuth
         return null;
     }
 
-    private static async Task<ClaimsPrincipal> ValidateTokenAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, string token, string issuer, string audience, CancellationToken cancellationToken)
+    private static async Task<ClaimsPrincipal> ValidateTokenAsync(this HttpRequestData req, string token, string issuer, string audience, CancellationToken cancellationToken)
     {
         var sw1 = Stopwatch.StartNew();
-        var json = await new HttpClient().GetStringAsync(issuer.TrimEnd('/').Replace("v2.0", "discovery/v2.0/keys"), cancellationToken);
-        var SigningKeys = new JsonWebKeySet(json).GetSigningKeys();
-        sw1.Stop(); if (sw1.ElapsedMilliseconds > 2000) req.LogWarning($"GetConfigurationAsync: {sw1.Elapsed}");
+        var jwksUri = issuer.TrimEnd('/').Replace("v2.0", "discovery/v2.0/keys");
+        var keys = await JwksCache.GetKeysAsync(jwksUri, cancellationToken);
+        sw1.Stop(); if (sw1.ElapsedMilliseconds > 1000) req.LogWarning($"GetKeysAsync: {sw1.Elapsed}");
 
         var validationParameters = new TokenValidationParameters
         {
             ValidIssuer = issuer.TrimEnd('/'),
             ValidAudience = audience,
-            IssuerSigningKeys = SigningKeys,
+            IssuerSigningKeys = keys,
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateIssuerSigningKey = true,
@@ -86,31 +92,8 @@ public static class StaticWebAppsAuth
         var sw2 = Stopwatch.StartNew();
         var handler = new JwtSecurityTokenHandler();
         var principal = handler.ValidateToken(token, validationParameters, out var _);
-        sw2.Stop(); if (sw2.ElapsedMilliseconds > 2000) req.LogWarning($"ValidateToken: {sw2.Elapsed}");
+        sw2.Stop(); if (sw2.ElapsedMilliseconds > 1000) req.LogWarning($"ValidateToken: {sw2.Elapsed}");
 
         return principal;
-    }
-
-    private static async Task<OpenIdConnectConfiguration> LoadConfigurationAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, string issuer, CancellationToken cancellationToken)
-    {
-        var mgr = new ConfigurationManager<OpenIdConnectConfiguration>($"{issuer.TrimEnd('/')}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever());
-
-        var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-        var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, cancellationToken);
-
-        try
-        {
-            return await mgr.GetConfigurationAsync(linkedCts.Token);
-        }
-        catch (Exception ex)
-        {
-            req.LogWarning($"LoadConfigurationAsync: {ex.Message}");
-            return await mgr.GetConfigurationAsync(cancellationToken);
-        }
-        finally
-        {
-            cts.Dispose();
-            linkedCts.Dispose();
-        }
     }
 }
