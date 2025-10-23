@@ -125,20 +125,20 @@
             {
                 var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
 
-                if (country.ToUpper() == "CN")
+                if (country.ToUpper() == "CN") //china
                 {
-                    var consent = await JsRuntime.GetLocalStorage("consent");
+                    var consent = await JsRuntime.GetLocalStorage<bool>("consent");
 
-                    if (consent != "true")
+                    if (!consent)
                     {
                         Navigation.NavigateTo("/ask-consent");
                     }
                 }
             }
 
+            //open onboarding dialog for new users
             if (!AppStateStatic.IsAuthenticated)
             {
-                //open onboarding dialog for new users
                 var onboarding = await JsRuntime.GetLocalStorage("onboarding-popup");
                 if (onboarding.Empty())
                 {
@@ -146,6 +146,22 @@
                     await JsRuntime.SetLocalStorage("onboarding-popup", true.ToString().ToLower());
                 }
             }
+
+            //request an app rating on the second day of access
+            var accesses = await JsRuntime.GetLocalStorage<HashSet<DateTime>>("accesses") ?? new HashSet<DateTime>();
+
+            if (accesses.Count == 1 && accesses.Single() < DateTime.UtcNow.Date)
+            {
+                //todo: ask to rate the app
+            }
+
+            if (accesses.Count > 5) //clear, to try again
+            {
+                accesses.Clear();
+            }
+
+            accesses.Add(DateTime.UtcNow.Date);
+            await JsRuntime.SetLocalStorage("accesses", accesses);
         }
     }
 

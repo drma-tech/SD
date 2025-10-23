@@ -1,4 +1,5 @@
 ﻿using Microsoft.JSInterop;
+using System.Text.Json;
 
 namespace SD.WEB.Core.Helper
 {
@@ -9,7 +10,13 @@ namespace SD.WEB.Core.Helper
             return await js.JavascriptAsync<string?>("GetLocalStorage", key);
         }
 
-        public static async Task<TValue?> JavascriptAsync<TValue>(this IJSRuntime js, string method, params string?[]? args)
+        public static async Task<TValue?> GetLocalStorage<TValue>(this IJSRuntime js, string key)
+        {
+            var value = await js.JavascriptAsync<string?>("GetLocalStorage", key);
+            return value != null ? JsonSerializer.Deserialize<TValue>(value) : default;
+        }
+
+        public static async Task<TValue?> JavascriptAsync<TValue>(this IJSRuntime js, string method, params object?[]? args)
         {
             try
             {
@@ -17,13 +24,18 @@ namespace SD.WEB.Core.Helper
             }
             catch (Exception)
             {
-                return (TValue?)(object?)null;
+                return default;
             }
         }
 
         public static async Task SetLocalStorage(this IJSRuntime js, string key, string value)
         {
             await js.JavascriptVoidAsync("SetLocalStorage", key, value);
+        }
+
+        public static async Task SetLocalStorage(this IJSRuntime js, string key, object value)
+        {
+            await js.JavascriptVoidAsync("SetLocalStorage", key, JsonSerializer.Serialize(value));
         }
 
         public static async Task JavascriptVoidAsync(this IJSRuntime js, string method, params object?[]? args)

@@ -85,12 +85,17 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
         return await JsRuntime.GetLocalStorage(key);
     }
 
-    protected async Task<TValue?> JavascriptAsync<TValue>(string method, params string?[]? args)
+    protected async Task<TValue?> JavascriptAsync<TValue>(string method, params object?[]? args)
     {
         return await JsRuntime.JavascriptAsync<TValue>(method, args);
     }
 
     protected async Task SetLocalStorage(string key, string value)
+    {
+        await JsRuntime.SetLocalStorage(key, value);
+    }
+
+    protected async Task SetLocalStorage(string key, object value)
     {
         await JsRuntime.SetLocalStorage(key, value);
     }
