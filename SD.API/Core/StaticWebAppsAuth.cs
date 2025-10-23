@@ -89,14 +89,12 @@ public static class StaticWebAppsAuth
         return principal;
     }
 
-    private static ConfigurationManager<OpenIdConnectConfiguration>? mgr;
-
     private static async Task<OpenIdConnectConfiguration> LoadConfigurationAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, string issuer, CancellationToken cancellationToken)
     {
-        mgr ??= new ConfigurationManager<OpenIdConnectConfiguration>($"{issuer.TrimEnd('/')}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever());
+        var mgr = new ConfigurationManager<OpenIdConnectConfiguration>($"{issuer.TrimEnd('/')}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever()) {  };
 
-        var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-        var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutCts.Token);
+        var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, cancellationToken);
 
         try
         {
@@ -109,8 +107,8 @@ public static class StaticWebAppsAuth
         }
         finally
         {
+            cts.Dispose();
             linkedCts.Dispose();
-            timeoutCts.Dispose();
         }
     }
 }
