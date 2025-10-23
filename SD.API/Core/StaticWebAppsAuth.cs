@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Security.Claims;
 
 namespace SD.API.Core;
@@ -67,14 +68,15 @@ public static class StaticWebAppsAuth
     private static async Task<ClaimsPrincipal> ValidateTokenAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, string token, string issuer, string audience, CancellationToken cancellationToken)
     {
         var sw1 = Stopwatch.StartNew();
-        var oidc = await LoadConfigurationAsync(req, issuer, cancellationToken); //sometimes takes long time here (20 seconds or more)
+        var json = await new HttpClient().GetStringAsync(issuer.TrimEnd('/').Replace("v2.0", "discovery/v2.0/keys"), cancellationToken);
+        var SigningKeys = new JsonWebKeySet(json).GetSigningKeys();
         sw1.Stop(); if (sw1.ElapsedMilliseconds > 2000) req.LogWarning($"GetConfigurationAsync: {sw1.Elapsed}");
 
         var validationParameters = new TokenValidationParameters
         {
             ValidIssuer = issuer.TrimEnd('/'),
             ValidAudience = audience,
-            IssuerSigningKeys = oidc.SigningKeys,
+            IssuerSigningKeys = SigningKeys,
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateIssuerSigningKey = true,
@@ -91,7 +93,7 @@ public static class StaticWebAppsAuth
 
     private static async Task<OpenIdConnectConfiguration> LoadConfigurationAsync(this Microsoft.Azure.Functions.Worker.Http.HttpRequestData req, string issuer, CancellationToken cancellationToken)
     {
-        var mgr = new ConfigurationManager<OpenIdConnectConfiguration>($"{issuer.TrimEnd('/')}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever()) {  };
+        var mgr = new ConfigurationManager<OpenIdConnectConfiguration>($"{issuer.TrimEnd('/')}/.well-known/openid-configuration", new OpenIdConnectConfigurationRetriever());
 
         var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
         var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, cancellationToken);
