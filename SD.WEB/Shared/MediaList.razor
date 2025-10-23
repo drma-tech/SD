@@ -5,7 +5,6 @@
 @using SD.Shared.Models.List.Tmdb
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Interface
-@inject IJSRuntime JsRuntime
 
 <PageSection Title="@Title" Icon="@Icon" Image="@Image" ShowHead="ShowHead">
     <ActionFragment>
@@ -90,18 +89,20 @@
 
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         try
         {
             if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
             if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
 
-            if (DetectRegions) AppStateStatic.RegionChanged += region => LoadGenericVoid();
+            if (DetectRegions) AppStateStatic.RegionChanged += async region => await LoadEssentialDataAsync();
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -111,22 +112,15 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperId);
+            await JavascriptVoidAsync("initSwiper", _swiperId);
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
     protected override async Task LoadEssentialDataAsync()
-    {
-        Core?.ShowLoading();
-        await LoadItems();
-        Core?.HideLoading(Items);
-    }
-
-    protected async void LoadGenericVoid()
     {
         Core?.ShowLoading();
         await LoadItems();
@@ -203,7 +197,7 @@
 
             if (tmdbId.Empty())
             {
-                Snackbar.Add("Unable to display this content. Please try again later.", Severity.Error);
+                await ShowError("Unable to display this content. Please try again later.");
                 return;
             }
 

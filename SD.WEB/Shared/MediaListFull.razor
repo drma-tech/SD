@@ -6,7 +6,6 @@
 
 @inject ExternalIdApi ExternalIdApi
 @inject TmdbCreditApi TmdbCreditApi
-@inject IJSRuntime JS
 
 @if (ShowHead)
 {
@@ -36,7 +35,7 @@
 @if (!Popup)
 {
     <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
-        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JavascriptVoidAsync("history.back"))" />
     </div>
 }
 
@@ -142,7 +141,7 @@
 
         if (tmdbId.Empty())
         {
-            Snackbar.Add("Unable to display this content. Please try again later.", Severity.Error);
+            await ShowError("Unable to display this content. Please try again later.");
             return;
         }
 

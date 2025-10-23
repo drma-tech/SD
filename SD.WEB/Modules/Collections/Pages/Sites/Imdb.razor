@@ -10,7 +10,6 @@
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
-@inject IJSRuntime JS
 
 <PageHeader Title="IMDB" Image="logo/imdb.png" Description="@SD.WEB.Resources.Credit.IMDb" Link="https://www.imdb.com/"></PageHeader>
 
@@ -25,7 +24,7 @@
 </MediaList>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
-    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JavascriptVoidAsync("history.back"))" />
 </div>
 
 @code {

@@ -1,8 +1,6 @@
 ﻿@using SD.WEB.Modules.Profile.Resources
 @inherits ComponentCore<WishlistComponent>
 
-@inject IJSRuntime JsRuntime
-
 <PageSection Icon="@IconsFA.Solid.Icon("bookmark").Font" Title="@Title" ShowHead="ShowHeader">
     <ActionFragment>
         <MudTooltip Text="@GlobalTranslations.SeeAllItems">
@@ -73,11 +71,11 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperId);
+            await JavascriptVoidAsync("initSwiper", _swiperId);
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 

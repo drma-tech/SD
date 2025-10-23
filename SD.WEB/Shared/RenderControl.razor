@@ -119,7 +119,7 @@ else //ShowContent
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -159,7 +159,7 @@ else //ShowContent
     /// <summary>
     /// </summary>
     /// <param name="msg">Default: no data</param>
-    private void ShowWarning(string? msg)
+    private new void ShowWarning(string? msg)
     {
         if (Status is LoadingStatus.Error or LoadingStatus.Locked or LoadingStatus.Premium) return;
 
@@ -172,7 +172,7 @@ else //ShowContent
     /// <summary>
     /// </summary>
     /// <param name="msg">Default: invalid operation</param>
-    private void ShowError(string? msg)
+    private new void ShowError(string? msg)
     {
         Status = LoadingStatus.Error;
         MessageError = CustomMessageError ?? msg;

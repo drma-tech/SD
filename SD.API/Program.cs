@@ -2,14 +2,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using SD.API.Core.Middleware;
 using System.Net;
 
 var app = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults(worker =>
     {
-        worker.UseMiddleware<TimingMiddleware>();
-        worker.UseMiddleware<ExceptionMiddleware>();
+        worker.UseMiddleware<ApiMiddleware>();
     })
     .ConfigureAppConfiguration((hostContext, config) => //736
     {
@@ -35,7 +33,7 @@ return;
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
-    services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(90); })
+    services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(180); })
       .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
     services.AddHttpClient("paddle");
     services.AddHttpClient("rapidapi");

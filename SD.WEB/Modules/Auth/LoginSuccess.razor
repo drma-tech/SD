@@ -6,7 +6,6 @@
 @inherits PageCore<LoginSuccess>
 
 @inject LoginApi LoginApi
-@inject IJSRuntime JsRuntime
 
 <SeoHeader Title="Login" Description="Login" Url="/login-success" Index="false" Keywords="@([])"></SeoHeader>
 
@@ -75,7 +74,7 @@
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -106,7 +105,7 @@
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 

@@ -3,7 +3,6 @@
 @inherits ComponentCore<NewsComponent>
 
 @inject CacheFlixsterApi CacheFlixsterApi
-@inject IJSRuntime JsRuntime
 
 <PageSection Title="@($"{Translations.NewsTitle}")" Description="@Translations.NewsDescriptionShort" Icon="@IconsFA.Solid.Icon("newspaper").Font">
     <ActionFragment>
@@ -54,11 +53,11 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.InvokeVoidAsync("initCalendar", _gallerySwiperId);
+            await JavascriptVoidAsync("initCalendar", _gallerySwiperId);
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 

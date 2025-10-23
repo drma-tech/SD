@@ -21,7 +21,6 @@
 @inject AllProvidersApi AllProvidersApi
 @inject IHttpClientFactory factory
 @inject IpInfoApi IpInfoApi
-@inject IJSRuntime JsRuntime
 
 <SeoHeader Title="@($"{Title}")" Description="@SeoTranslations.AppDescription" Keywords="@(new[] { Title })" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")"></SeoHeader>
 

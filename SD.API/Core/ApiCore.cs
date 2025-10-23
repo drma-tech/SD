@@ -13,7 +13,6 @@ public static class ApiCore
         using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
 
         request.Headers.Add("Accept", "application/json");
-        request.Headers.TryAddWithoutValidation("content-type", "application/json");
         request.Headers.Add("Authorization", $"Bearer {token}");
 
         var response = await http.SendAsync(request, cancellationToken);
@@ -28,7 +27,6 @@ public static class ApiCore
         using var request = new HttpRequestMessage(HttpMethod.Post, $"https://api.tmdb.org/4/list/{listId}/items");
 
         request.Headers.Add("Accept", "application/json");
-        request.Headers.TryAddWithoutValidation("content-type", "application/json");
         request.Headers.Add("Authorization", $"Bearer {token}");
         var obj = new { items = new[] { new { media_type = type == MediaType.movie ? "movie" : "tv", media_id = tmdbId } } };
         request.Content = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");

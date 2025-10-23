@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Services;
 using SD.WEB.Modules.Auth.Core;
@@ -9,9 +10,10 @@ namespace SD.WEB.Core;
 
 public abstract class ComponentCore<T> : ComponentBase where T : class
 {
-    [Inject] protected ILogger<T> Logger { get; set; } = null!;
-    [Inject] protected ISnackbar Snackbar { get; set; } = null!;
+    [Inject] private ILogger<T> Logger { get; set; } = null!;
+    [Inject] private ISnackbar Snackbar { get; set; } = null!;
     [Inject] protected IDialogService DialogService { get; set; } = null!;
+    [Inject] protected IJSRuntime JsRuntime { get; set; } = null!;
     [Inject] protected NavigationManager Navigation { get; set; } = null!;
     [Inject] protected PrincipalApi PrincipalApi { get; set; } = null!;
 
@@ -75,6 +77,80 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
             ex.ProcessException(Snackbar, Logger);
         }
     }
+
+    #region javascript functions
+
+    protected async Task<string?> GetLocalStorage(string key)
+    {
+        return await JsRuntime.GetLocalStorage(key);
+    }
+
+    protected async Task<TValue?> JavascriptAsync<TValue>(string method, params string?[]? args)
+    {
+        return await JsRuntime.JavascriptAsync<TValue>(method, args);
+    }
+
+    protected async Task SetLocalStorage(string key, string value)
+    {
+        await JsRuntime.SetLocalStorage(key, value);
+    }
+
+    protected async Task JavascriptVoidAsync(string method, params object?[]? args)
+    {
+        await JsRuntime.JavascriptVoidAsync(method, args);
+    }
+
+    #endregion javascript functions
+
+    #region notifications functions
+
+    protected async Task ShowInfo(string message)
+    {
+        Snackbar.Add(message, Severity.Info);
+
+        await JavascriptVoidAsync("alertEffects.playBeep", 600, 120, "sine");
+        await JavascriptVoidAsync("alertEffects.vibrate", [50]);
+    }
+
+    protected async Task ShowSuccess(string message)
+    {
+        Snackbar.Add(message, Severity.Success);
+
+        await JavascriptVoidAsync("alertEffects.playBeep", 880, 100, "sine");
+        await JavascriptVoidAsync("alertEffects.vibrate", [40]);
+    }
+
+    protected async Task ShowWarning(string message)
+    {
+        Snackbar.Add(message, Severity.Warning);
+
+        await JavascriptVoidAsync("alertEffects.playBeep", 440, 200, "triangle");
+        await JavascriptVoidAsync("alertEffects.vibrate", [100, 80, 100]);
+    }
+
+    protected async Task ShowError(string message)
+    {
+        Snackbar.Add(message, Severity.Error);
+
+        await JavascriptVoidAsync("alertEffects.playBeep", 220, 400, "square");
+        await JavascriptVoidAsync("alertEffects.vibrate", [200, 100, 200]);
+    }
+
+    protected async Task ProcessException(Exception ex)
+    {
+        if (ex is NotificationException exc)
+        {
+            Logger.LogWarning(exc.Message);
+            await ShowWarning(exc.Message);
+        }
+        else
+        {
+            Logger.LogError(ex, ex.Message);
+            await ShowError(ex.Message);
+        }
+    }
+
+    #endregion notifications functions
 }
 
 public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, IAsyncDisposable where T : class
@@ -102,7 +178,7 @@ public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, 
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 

@@ -3,7 +3,6 @@
 @inherits ComponentCore<TrailersComponent>
 
 @inject CacheYoutubeApi CacheYoutubeApi
-@inject IJSRuntime JsRuntime
 
 <PageSection Title="@($"{Translations.TrailersTitle}")" Description="@Translations.TrailersDescriptionShort" Icon="@IconsFA.Brands.Icon("youtube").Font">
     <ActionFragment>
@@ -50,13 +49,13 @@
     {
         try
         {
-            await JsRuntime.InvokeVoidAsync("initGrid", _gallerySwiperId);
+            await JavascriptVoidAsync("initGrid", _gallerySwiperId);
 
             await base.OnAfterRenderAsync(firstRender);
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 

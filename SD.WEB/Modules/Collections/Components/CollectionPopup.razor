@@ -92,7 +92,7 @@
             var parameters = new Dictionary<string, string>
             {
                 { "api_key", TmdbOptions.ApiKey },
-                { "language", (await AppStateStatic.GetContentLanguage()).GetName(false) ?? "en-US" }
+                { "language", (await AppStateStatic.GetContentLanguage(JsRuntime)).GetName(false) ?? "en-US" }
             };
 
             Collection = await TmdbApi.GetCollection(CollectionId, parameters);

@@ -9,7 +9,6 @@
 @inject MySuggestionsApi MySuggestionsApi
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject TmdbApi TmdbApi
-@inject IJSRuntime JsRuntime
 
 <PageSection Icon="@IconsFA.Solid.Icon("thumbs-up").Font" Title="@Translations.MySuggestions">
     <ActionFragment>
@@ -118,11 +117,11 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperId);
+            await JavascriptVoidAsync("initSwiper", _swiperId);
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -303,7 +302,7 @@
             MovieUpdating = false;
             ShowUpdating = false;
             Core?.ShowError(ex.Message);
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -337,7 +336,7 @@
 
         StateHasChanged();
 
-        Snackbar.Add(Translations.UpdateMySuggestions, Severity.Warning);
+        await ShowInfo(Translations.UpdateMySuggestions);
     }
 
     private void CheckedValueChanged(MediaType type)

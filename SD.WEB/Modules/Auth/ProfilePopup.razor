@@ -4,7 +4,6 @@
 @using SD.WEB.Modules.Profile.Resources
 
 @inherits ComponentCore<ProfilePopup>
-@inject IJSRuntime JsRuntime
 
 @inject LoginApi LoginApi
 @inject MyProvidersApi MyProvidersApi
@@ -77,11 +76,11 @@
             data.WishList = await WishListApi.Get(IsAuthenticated, null);
 
             var fileName = $"{SeoTranslations.AppName.ToSlug()}_{Principal!.IdentityProvider}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
-            await JsRuntime.InvokeVoidAsync("jsSaveAsFile", fileName, "application/json", data.ConvertFromObjectToBytes());
+            await JavascriptVoidAsync("jsSaveAsFile", fileName, "application/json", data.ConvertFromObjectToBytes());
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -111,12 +110,12 @@
             }
             else
             {
-                Snackbar.Add(GlobalTranslations.OperationCanceled, Severity.Warning);
+                await ShowInfo(GlobalTranslations.OperationCanceled);
             }
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 

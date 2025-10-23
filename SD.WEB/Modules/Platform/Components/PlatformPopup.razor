@@ -107,11 +107,11 @@
             var client = await PrincipalApi.Get(true);
             MyProviders = await MyProvidersApi.Add(MyProviders, item, client?.AuthPaddle);
 
-            Snackbar.Add(GlobalTranslations.OperationCompleted, Severity.Success);
+            await ShowSuccess(GlobalTranslations.OperationCompleted);
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -123,11 +123,11 @@
 
             MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == ProviderId));
 
-            Snackbar.Add(GlobalTranslations.OperationCompleted, Severity.Success);
+            await ShowSuccess(GlobalTranslations.OperationCompleted);
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 

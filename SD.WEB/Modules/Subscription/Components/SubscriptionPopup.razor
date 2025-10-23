@@ -10,7 +10,6 @@
 @inject IpInfoApi IpInfoApi
 @inject PaddleConfigurationApi ConfigurationApi
 @inject PaddleSubscriptionApi SubscriptionApi
-@inject IJSRuntime JsRuntime
 
 <MudDialog Style="width: 100%">
     <DialogContent>
@@ -371,19 +370,9 @@
         { "VE", "Venezuela" }
     };
 
-    private class Plan
-    {
-        public AccountProduct Product { get; set; }
-        public AccountCycle Cycle { get; set; }
-        public string? Price { get; set; }
+    private List<PlanModel> Plans { get; set; } = [];
 
-        public string? ProductId { get; set; }
-        public string? PriceId { get; set; }
-    }
-
-    private List<Plan> Plans { get; set; } = [];
-
-    private Plan? GetSubscription(AccountProduct product)
+    private PlanModel? GetSubscription(AccountProduct product)
     {
         return Plans.FirstOrDefault(f => f.Product == product && f.Cycle == Cycle);
     }
@@ -409,7 +398,7 @@
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -454,16 +443,17 @@
         Provider = Providers[0];
 
         Config = await ConfigurationApi.GetConfigurations();
-        if (Config == null) throw new NotificationException("server communication error");
+        if (Config == null) throw new NotificationException("api server communication error");
 
         if (Client?.AuthPaddle == null && string.IsNullOrEmpty(Client?.AuthPaddle?.SubscriptionId))
         {
-            await JsRuntime.InvokeVoidAsync("startPaddle", Config.Token);
-            Plans = await JsRuntime.InvokeAsync<List<Plan>>("getPlans", Config.PriceStandardMonth, Config.PriceStandardYear, Config.PricePremiumMonth, Config.PricePremiumYear);
+            await JavascriptVoidAsync("startPaddle", Config.Token);
+            Plans = await JavascriptAsync<List<PlanModel>>("getPlans", Config.PriceStandardMonth, Config.PriceStandardYear, Config.PricePremiumMonth, Config.PricePremiumYear)
+                ?? throw new NotificationException("error getting plans");
         }
         else if (string.IsNullOrEmpty(Client?.AuthPaddle?.SubscriptionId))
         {
-            Snackbar.Add(Translations.UnableReadSubscription, Severity.Error);
+            await ShowError(Translations.UnableReadSubscription);
         }
         else
         {
@@ -481,16 +471,16 @@
             {
                 var lang = await AppStateStatic.GetAppLanguage(JsRuntime);
 
-                await JsRuntime.InvokeVoidAsync("openCheckout", priceId, Client?.Email, lang.ToString(), Client?.AuthPaddle?.CustomerId, Client?.AuthPaddle?.AddressId);
+                await JavascriptVoidAsync("openCheckout", priceId, Client?.Email, lang.ToString(), Client?.AuthPaddle?.CustomerId, Client?.AuthPaddle?.AddressId);
             }
             else
             {
-                Snackbar.Add(GlobalTranslations.YouMustLoggedSubscribe, Severity.Warning);
+                await ShowWarning(GlobalTranslations.YouMustLoggedSubscribe);
             }
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -509,8 +499,9 @@
                     if (Config == null) throw new NotificationException("server communication error");
                 }
 
-                await JsRuntime.InvokeVoidAsync("startPaddle", Config.Token);
-                Plans = await JsRuntime.InvokeAsync<List<Plan>>("getPlans", Config.PriceStandardMonth, Config.PriceStandardYear, Config.PricePremiumMonth, Config.PricePremiumYear);
+                await JavascriptVoidAsync("startPaddle", Config.Token);
+                Plans = await JavascriptAsync<List<PlanModel>>("getPlans", Config.PriceStandardMonth, Config.PriceStandardYear, Config.PricePremiumMonth, Config.PricePremiumYear)
+                    ?? throw new NotificationException("error getting plans");
             }
 
             var product = Plans.Single(w => w.ProductId == client.ProductId && w.Cycle == Cycle).Product;
@@ -525,7 +516,7 @@
 
             StateHasChanged();
 
-            Snackbar.Add(Translations.RegistrationSuccessful, Severity.Success);
+            await ShowSuccess(Translations.RegistrationSuccessful);
 
             for (var i = 0; i < 60; i++)
             {
@@ -541,7 +532,7 @@
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -556,7 +547,7 @@
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -570,7 +561,7 @@
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 

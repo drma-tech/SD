@@ -6,10 +6,10 @@
 @using Toolbelt.Blazor.PWA.Updater
 @inherits LayoutComponentBase
 
-@inject IJSRuntime JsRuntime
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 @inject ILogger<MainLayout> Logger
+@inject IJSRuntime JsRuntime
 
 @inject PrincipalApi PrincipalApi
 @inject NavigationManager Navigation
@@ -115,7 +115,7 @@
                 var system = await _mudThemeProvider.GetSystemDarkModeAsync();
                 darkMode = system;
 
-                await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", darkMode.ToString()?.ToLower());
+                await JsRuntime.SetLocalStorage("dark-mode", darkMode.ToString()!.ToLower());
             }
 
             AppStateStatic.ChangeDarkMode(darkMode ?? false);
@@ -127,7 +127,7 @@
 
                 if (country.ToUpper() == "CN")
                 {
-                    var consent = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "consent");
+                    var consent = await JsRuntime.GetLocalStorage("consent");
 
                     if (consent != "true")
                     {
@@ -139,11 +139,11 @@
             if (!AppStateStatic.IsAuthenticated)
             {
                 //open onboarding dialog for new users
-                var onboarding = await JsRuntime.InvokeAsync<string>("GetLocalStorage", "onboarding-popup");
+                var onboarding = await JsRuntime.GetLocalStorage("onboarding-popup");
                 if (onboarding.Empty())
                 {
                     await DialogService.OnboardingPopup();
-                    await JsRuntime.InvokeAsync<string>("SetLocalStorage", "onboarding-popup", true.ToString().ToLower());
+                    await JsRuntime.SetLocalStorage("onboarding-popup", true.ToString().ToLower());
                 }
             }
         }

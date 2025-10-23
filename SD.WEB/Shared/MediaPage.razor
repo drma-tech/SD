@@ -16,8 +16,6 @@
 @inject WishListApi WishApi
 @inject TmdbRecommendationsApi TmdbRecommendationsApi
 
-@inject IJSRuntime JS
-
 <SeoHeader Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")" Keywords="new[] { Media?.title }" Index="false"></SeoHeader>
 <PageHeader Title="@Media?.title"></PageHeader>
 
@@ -154,7 +152,7 @@
 </RenderControl>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
-    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JavascriptVoidAsync("history.back"))" />
 </div>
 
 @code {
@@ -190,11 +188,11 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JS.InvokeVoidAsync("initSwiper", _swiperId);
+            await JavascriptVoidAsync("initSwiper", _swiperId);
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 

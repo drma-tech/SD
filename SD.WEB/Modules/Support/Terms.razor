@@ -334,7 +334,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Language = await AppStateStatic.GetAppLanguage(null);
+        Language = await AppStateStatic.GetAppLanguage(JsRuntime);
     }
 
     // País/Região Exigência de Tradução   Base Legal Principal

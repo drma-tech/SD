@@ -10,7 +10,6 @@
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbApi TmdbApi
 @inject IpInfoApi IpInfoApi
-@inject IJSRuntime JsRuntime
 
 <RenderControl Core="Core" Model="Providers" ExpressionEmpty="@((MediaProviders? obj) => obj == null)">
     @{
@@ -391,7 +390,7 @@
 
         if (AllProviders != null)
         {
-            await JsRuntime.InvokeVoidAsync("window.localStorage.setItem", "AllProviders", JsonSerializer.Serialize(AllProviders));
+            await SetLocalStorage("AllProviders", JsonSerializer.Serialize(AllProviders));
         }
     }
 

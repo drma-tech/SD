@@ -2,16 +2,19 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using System.Net;
 
-namespace SD.API.Core.Middleware;
+namespace SD.API.Core;
 
-internal sealed class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger) : IFunctionsWorkerMiddleware
+internal sealed class ApiMiddleware(ILogger<ApiMiddleware> logger) : IFunctionsWorkerMiddleware
 {
-    private readonly ILogger<ExceptionMiddleware> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly ILogger<ApiMiddleware> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
     {
+        var sw = Stopwatch.StartNew();
+
         try
         {
             //todo: validate platform version
@@ -71,6 +74,15 @@ internal sealed class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger) :
         {
             _logger.LogError(ex, "Exception");
             await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "Invocation failed!");
+        }
+        finally
+        {
+            sw.Stop();
+            if (sw.ElapsedMilliseconds > 5000)
+            {
+                var functionName = context.FunctionDefinition?.Name ?? "(unknown)";
+                _logger?.LogWarning("Function {FunctionName} executed in {ElapsedMilliseconds} ms", functionName, sw.Elapsed);
+            }
         }
     }
 }

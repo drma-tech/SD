@@ -2,7 +2,6 @@
 @using SD.WEB.Modules.Auth.Resources
 
 @inherits PageCore<AskConsent>
-@inject IJSRuntime JsRuntime
 
 <SeoHeader Title="Ask Consent" Description="Ask Consent" Url="/ask-consent" Index="false" Keywords="@([])"></SeoHeader>
 
@@ -25,12 +24,12 @@
     {
         try
         {
-            await JsRuntime.InvokeAsync<string>("SetLocalStorage", "consent", "true");
+            await SetLocalStorage("consent", "true");
             Navigation.NavigateTo("/");
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 }

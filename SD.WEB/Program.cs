@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Authentication.WebAssembly.Msal.Models;
 using Microsoft.JSInterop;
+using MudBlazor;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
@@ -39,7 +40,11 @@ await app.RunAsync();
 
 static void ConfigureServices(IServiceCollection collection, string baseAddress, IConfiguration configuration)
 {
-    collection.AddMudServices();
+    collection.AddMudServices(config =>
+    {
+        config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
+        config.SnackbarConfiguration.PreventDuplicates = false;
+    });
 
     collection.AddPWAUpdater();
 
@@ -47,16 +52,16 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
 
     var apiOrigin = configuration["DownstreamApi:BaseUrl"] ?? $"{baseAddress}api/";
 
-    collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = new Uri(apiOrigin); })
+    collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(180); })
        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddScoped<CachedTokenProvider>();
     collection.AddScoped<CustomAuthorizationHandler>();
-    collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = new Uri(apiOrigin); })
+    collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(180); })
         .AddHttpMessageHandler<CustomAuthorizationHandler>()
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
-    collection.AddHttpClient("External")
+    collection.AddHttpClient("External", (service, options) => { options.Timeout = TimeSpan.FromSeconds(180); })
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddCascadingAuthenticationState();

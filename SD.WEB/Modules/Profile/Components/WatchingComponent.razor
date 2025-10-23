@@ -8,8 +8,6 @@
 @inject WatchingListApi WatchingApi
 @inject WatchedListApi WatchedApi
 
-@inject IJSRuntime JsRuntime
-
 <PageSection Icon="@IconsFA.Solid.Icon("eye").Font" Title="@Title" ShowHead="ShowHeader">
     <ActionFragment>
         @if ((Watching?.CanSync(MediaType) ?? false) && (Watching?.Items(MediaType).Any() ?? false))
@@ -92,11 +90,11 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperId);
+            await JavascriptVoidAsync("initSwiper", _swiperId);
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -233,7 +231,7 @@
         {
             Updating = false;
             Core?.ShowError(ex.Message);
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 

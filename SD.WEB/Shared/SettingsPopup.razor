@@ -2,7 +2,6 @@
 @inherits ComponentCore<SettingsPopup>
 
 @inject IpInfoApi IpInfoApi
-@inject IJSRuntime JsRuntime
 
 <MudDialog Style="width: 100%">
     <DialogContent>
@@ -79,7 +78,7 @@
     {
         Language = value;
 
-        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "app-language", value.ToString()?.ToLower());
+        await SetLocalStorage("app-language", value.ToString()!.ToLower());
 
         Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("app-language", value.ToString()?.ToLower()), true);
     }
@@ -88,7 +87,7 @@
     {
         Region = value;
 
-        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "region", value.GetName(false)?.ToLower());
+        await SetLocalStorage("region", value.GetName(false)!.ToLower());
 
         AppStateStatic.ChangeRegion(value);
     }
@@ -97,7 +96,7 @@
     {
         ContentLanguage = value;
 
-        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "content-language", value.ToString()?.ToLower());
+        await SetLocalStorage("content-language", value.ToString()!.ToLower());
 
         AppStateStatic.ChangeContentLanguage(value);
     }
@@ -106,7 +105,7 @@
     {
         DarkMode = value;
 
-        await JsRuntime.InvokeAsync<string>("SetLocalStorage", "dark-mode", value.ToString()?.ToLower());
+        await SetLocalStorage("dark-mode", value.ToString()!.ToLower());
 
         AppStateStatic.ChangeDarkMode(value);
     }

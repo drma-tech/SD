@@ -3,8 +3,6 @@
 @using SD.WEB.Modules.Collections.Resources
 @inherits PageCore<CollectionsPage>
 
-@inject IJSRuntime JsRuntime
-
 <SeoHeader Title="@SeoTranslations.CollectionsTitle" Description="@SeoTranslations.CollectionsDescription" Url="/collections" Keywords="@(["collections"])"></SeoHeader>
 <PageHeader Title="@SeoTranslations.CollectionsTitle" Description="@SeoTranslations.CollectionsDescription" Icon="@IconsFA.Solid.Icon("layer-group").Font"></PageHeader>
 
@@ -150,13 +148,13 @@
 
             var desktop = Breakpoint > Breakpoint.Xs;
 
-            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperAwards, desktop ? 100 : 73);
-            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperSites, desktop ? 100 : 73);
-            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperSpecials, desktop ? 100 : 73);
+            await JavascriptVoidAsync("initSwiper", _swiperAwards, desktop ? 100 : 73);
+            await JavascriptVoidAsync("initSwiper", _swiperSites, desktop ? 100 : 73);
+            await JavascriptVoidAsync("initSwiper", _swiperSpecials, desktop ? 100 : 73);
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 

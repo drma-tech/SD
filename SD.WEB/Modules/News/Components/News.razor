@@ -5,7 +5,6 @@
 @inherits PageCore<News>
 
 @inject CacheFlixsterApi CacheFlixsterApi
-@inject IJSRuntime JS
 
 <SeoHeader Title="@Translations.NewsTitle" Description="@Translations.NewsDescription" Keywords="@(new[] { "News" })" Url="/news"></SeoHeader>
 <PageHeader Title="@Translations.NewsTitle" Description="@Translations.NewsDescription" Icon="@IconsFA.Solid.Icon("newspaper").Font"></PageHeader>
@@ -37,7 +36,7 @@
 </RenderControl>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
-    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JS.InvokeVoidAsync("history.back"))" />
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JavascriptVoidAsync("history.back"))" />
 </div>
 
 @code {

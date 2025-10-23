@@ -8,7 +8,6 @@
 @inject MyProvidersApi MyProvidersApi
 @inject AllProvidersApi AllProvidersApi
 @inject IpInfoApi IpInfoApi
-@inject IJSRuntime JsRuntime
 
 <PageSection Icon="@IconsFA.Solid.Icon("clapperboard").Font" Title="@Translations.MyPlatforms">
     <ActionFragment>
@@ -78,11 +77,11 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.InvokeVoidAsync("initSwiper", _swiperId, 100);
+            await JavascriptVoidAsync("initSwiper", _swiperId, 100);
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -121,7 +120,7 @@
                 }
 
                 var client = await PrincipalApi.Get(IsAuthenticated);
-                Snackbar.Add(Translations.RegionsApplied, Severity.Warning);
+                await ShowInfo(Translations.RegionsApplied);
                 await MyProvidersApi.Update(MyProviders, client?.AuthPaddle);
 
                 StateHasChanged();

@@ -62,7 +62,7 @@
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -82,7 +82,7 @@
             }
             else
             {
-                await JS.InvokeVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
+                await JavascriptVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
             }
         }
     }
@@ -92,7 +92,7 @@
         var config = await ConfigurationApi.GetConfigurations();
         if (config == null) throw new NotificationException("server communication error");
 
-        await JS.InvokeVoidAsync("startPaddle", config.Token);
+        await JavascriptVoidAsync("startPaddle", config.Token);
 
         await DialogService.SubscriptionPopup(IsAuthenticated);
     }
