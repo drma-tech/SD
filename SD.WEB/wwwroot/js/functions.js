@@ -62,6 +62,12 @@ function LoadAppVariables() {
             SetLocalStorage("platform", "xiaomi");
         else
             SetLocalStorage("platform", "webapp");
+
+        if (/webtonative/i.test(navigator.userAgent)) {
+            WTN.deviceInfo().then(function (value) {
+                SetLocalStorage("app-language", value.language);
+            });
+        }
     }
 }
 
