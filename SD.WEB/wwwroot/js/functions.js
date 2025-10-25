@@ -252,3 +252,11 @@ window.alertEffects = {
 window.clearLocalStorage = () => {
     localStorage.clear();
 };
+
+window.showCache = () => {
+    showToast("userAgent: " + navigator.userAgent +
+        ", app-language: " + GetLocalStorage("app-language") +
+        ", app-version: " + GetLocalStorage("app-version") +
+        ", country: " + GetLocalStorage("country") +
+        ", platform: " + GetLocalStorage("platform"));
+};
