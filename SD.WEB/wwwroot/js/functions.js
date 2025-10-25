@@ -62,8 +62,13 @@ function LoadAppVariables() {
             SetLocalStorage("platform", "xiaomi");
         else
             SetLocalStorage("platform", "webapp");
+    }
 
+    //language for apps from webtonative
+    if (!GetLocalStorage("app-language")) {
+        console.warn("app-language cleaned");
         if (/webtonative/i.test(navigator.userAgent)) {
+            console.warn("webtonative entered");
             WTN.deviceInfo().then(function (value) {
                 SetLocalStorage("app-language", value.language);
                 location.reload();
@@ -258,5 +263,6 @@ window.showCache = () => {
         ", app-language: " + GetLocalStorage("app-language") +
         ", app-version: " + GetLocalStorage("app-version") +
         ", country: " + GetLocalStorage("country") +
-        ", platform: " + GetLocalStorage("platform"));
+        ", platform: " + GetLocalStorage("platform") +
+        ", webtonative: " + /webtonative/i.test(navigator.userAgent));
 };
