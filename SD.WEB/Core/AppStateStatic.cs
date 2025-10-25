@@ -88,7 +88,7 @@ public static class AppStateStatic
                 return _appLanguage.Value;
             }
 
-            var cache = js != null ? await js.GetLocalStorage("app-language") : null;
+            var cache = await js.GetLocalStorage("app-language");
 
             if (cache.NotEmpty())
             {
@@ -97,16 +97,16 @@ public static class AppStateStatic
                 if (_appLanguage == null)
                 {
                     _appLanguage = AppLanguage.en;
-                    if (js != null) await js.SetLocalStorage("app-language", _appLanguage.ToString()!);
+                    await js.SetLocalStorage("app-language", _appLanguage.ToString()!);
                 }
             }
             else
             {
-                var culture = CultureInfo.CurrentUICulture ?? CultureInfo.CurrentCulture;
-                var code = culture.TwoLetterISOLanguageName?.ToLowerInvariant();
+                var code = await js.InvokeAsync<string>("eval", "navigator.language || navigator.userLanguage");
+                code = code[..2].ToLowerInvariant();
 
                 _appLanguage = ConvertAppLanguage(code) ?? AppLanguage.en;
-                if (js != null) await js.SetLocalStorage("app-language", _appLanguage.ToString()!);
+                await js.SetLocalStorage("app-language", _appLanguage.ToString()!);
             }
 
             return _appLanguage.Value;
