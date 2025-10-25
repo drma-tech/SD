@@ -266,5 +266,6 @@ window.showCache = () => {
         ", country: " + GetLocalStorage("country") +
         ", platform: " + GetLocalStorage("platform") +
         ", webtonative: " + /webtonative/i.test(navigator.userAgent) +
-        ", WTN.deviceInfo: " + GetLocalStorage("WTN.deviceInfo"));
+        ", WTN.deviceInfo: " + GetLocalStorage("WTN.deviceInfo") + 
+        ", navigator.language: " + navigator.language);
 };
