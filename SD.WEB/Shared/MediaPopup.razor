@@ -50,7 +50,7 @@
                                 </MudChip>
                             }
                             <div>
-                                <RenderControl PartialComponent="true" Core="CoreRatings" Model="_ratingsCache" ExpressionEmpty="@((CacheDocument<Ratings>? obj) => obj?.Data == null)">
+                                <RenderControl PartialComponent="true" Core="CoreRatings" Model="_ratingsCache" ExpressionEmpty="@((CacheDocument<Ratings>? obj) => obj?.Data == null)" Context="ctx">
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.imdb))
                                     {
                                         <MudTooltip Text="IMDb">

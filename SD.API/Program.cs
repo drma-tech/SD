@@ -31,6 +31,11 @@ await app.RunAsync(); //1442
 
 return;
 
+static void ConfigureLogging(ILoggingBuilder builder)
+{
+    builder.AddProvider(new CosmosLoggerProvider(new CosmosLogRepository()));
+}
+
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
     services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(180); })
@@ -43,9 +48,4 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
     services.AddSingleton<CosmosRepository>();
     services.AddSingleton<CosmosCacheRepository>();
     services.AddDistributedMemoryCache();
-}
-
-static void ConfigureLogging(ILoggingBuilder builder)
-{
-    builder.AddProvider(new CosmosLoggerProvider(new CosmosLogRepository()));
 }

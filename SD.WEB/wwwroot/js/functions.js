@@ -136,7 +136,7 @@ window.checkBrowserFeatures = async function () {
 
     // temporary: remove in the first quarter of 2026
     if (!Promise.withResolvers) {
-        showError("Your browser is out of date. We recommend updating it (or your operating system) as soon as possible.");
+        showError("Your system’s web engine is outdated and may not support all features. Please update your device or browser to ensure the best experience.");
         Promise.withResolvers = function () {
             let resolve, reject;
             const promise = new Promise((res, rej) => {
@@ -240,4 +240,8 @@ window.alertEffects = {
     vibrate: (pattern) => {
         if (navigator.vibrate) navigator.vibrate(pattern);
     }
+};
+
+window.clearLocalStorage = () => {
+    localStorage.clear();
 };

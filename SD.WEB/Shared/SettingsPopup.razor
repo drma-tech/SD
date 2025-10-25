@@ -49,6 +49,8 @@
         </MudGrid>
     </DialogContent>
     <DialogActions>
+        <MudButton OnClick="@(async () => { await JavascriptVoidAsync("clearLocalStorage"); Navigation.NavigateTo("/", true); })" Size="AppStateStatic.Size">@Button.Clear</MudButton>
+        <MudSpacer></MudSpacer>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">@Button.Close</MudButton>
     </DialogActions>
 </MudDialog>

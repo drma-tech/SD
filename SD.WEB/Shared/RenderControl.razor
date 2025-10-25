@@ -44,15 +44,18 @@ else if (Status == LoadingStatus.Warning && !PartialComponent)
 }
 else //ShowContent
 {
-    @ChildContent
+    @if (Model != null)
+    {
+        @ChildContent(Model)
+    }
 }
 
 @code {
     [CascadingParameter] protected Task<AuthenticationState>? AuthenticationState { get; set; }
 
-    [Parameter][EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+    [Parameter][EditorRequired] public RenderFragment<TModel> ChildContent { get; set; } = null!;
     [Parameter][EditorRequired] public RenderControlCore<TModel> Core { get; set; } = null!;
-    [Parameter][EditorRequired] public TModel Model { get; set; } = null!;
+    [Parameter][EditorRequired] public TModel Model { get; set; }
     [Parameter][EditorRequired] public Func<TModel, bool> ExpressionEmpty { get; set; } = null!;
 
     [Parameter] public bool PrivateContent { get; set; }

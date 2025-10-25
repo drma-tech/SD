@@ -16,9 +16,16 @@ public class LogModel
     [JsonInclude] public int Ttl { get; init; }
 }
 
-public class CosmosLogRepository()
+public class CosmosLogRepository
 {
-    public Container Container { get; } = ApiStartup.CosmosClient.GetContainer(ApiStartup.Configurations.CosmosDB?.DatabaseId, "logs");
+    public Container Container { get; }
+
+    public CosmosLogRepository()
+    {
+        var databaseId = ApiStartup.Configurations.CosmosDB?.DatabaseId;
+
+        Container = ApiStartup.CosmosClient.GetContainer(databaseId, "logs");
+    }
 
     public async Task Add(LogModel log)
     {

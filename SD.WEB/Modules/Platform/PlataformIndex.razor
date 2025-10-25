@@ -50,7 +50,7 @@
                         </MudCardContent>
                     </MudCard>
                 </MudLink>
-                <AuthorizeView Roles="administrator">
+                <AuthorizeView Roles="administrator" Context="ctx">
                     <Authorized>
                         @*  @if (string.IsNullOrEmpty(item.link))
                         {

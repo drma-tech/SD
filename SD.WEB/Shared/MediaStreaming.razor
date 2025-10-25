@@ -37,7 +37,7 @@
                                         <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
                                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
                                                       Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
-                                            <AuthorizeView Roles="administrator">
+                                            <AuthorizeView Roles="administrator" Context="ctx">
                                                 <Authorized>
                                                     @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.FREE))
                                                     {
@@ -74,7 +74,7 @@
                                         <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
                                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
                                                       Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
-                                            <AuthorizeView Roles="administrator">
+                                            <AuthorizeView Roles="administrator" Context="ctx">
                                                 <Authorized>
                                                     @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.AVOD))
                                                     {
@@ -111,7 +111,7 @@
                                         <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
                                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
                                                       Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
-                                            <AuthorizeView Roles="administrator">
+                                            <AuthorizeView Roles="administrator" Context="ctx">
                                                 <Authorized>
                                                     @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.SVOD))
                                                     {
@@ -148,7 +148,7 @@
                                         <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
                                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
                                                       Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
-                                            <AuthorizeView Roles="administrator">
+                                            <AuthorizeView Roles="administrator" Context="ctx">
                                                 <Authorized>
                                                     @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.PVOD))
                                                     {
@@ -185,7 +185,7 @@
                                         <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
                                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
                                                       Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
-                                            <AuthorizeView Roles="administrator">
+                                            <AuthorizeView Roles="administrator" Context="ctx">
                                                 <Authorized>
                                                     @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.TVOD))
                                                     {
@@ -222,7 +222,7 @@
                                         <MudLink Href="@provider.link" Target="_blank" rel="noindex, nofollow" Class="me-2">
                                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.provider_name" FallbackSrc="images/no-image.png"
                                                       Class="mb-2" Style="width: 64px; vertical-align: middle;"></MudImage>
-                                            <AuthorizeView Roles="administrator">
+                                            <AuthorizeView Roles="administrator" Context="ctx">
                                                 <Authorized>
                                                     @if (AllProviders.Items.Single(s => s.id == item.provider_id.ToString()).models.All(a => a != DeliveryModel.TVOD))
                                                     {
