@@ -117,6 +117,14 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
         await JavascriptVoidAsync("alertEffects.vibrate", [50]);
     }
 
+    protected async Task ShowInfo(RenderFragment message)
+    {
+        Snackbar.Add(message, Severity.Info);
+
+        await JavascriptVoidAsync("alertEffects.playBeep", 600, 120, "sine");
+        await JavascriptVoidAsync("alertEffects.vibrate", [50]);
+    }
+
     protected async Task ShowSuccess(string message)
     {
         Snackbar.Add(message, Severity.Success);

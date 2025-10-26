@@ -66,9 +66,7 @@ function LoadAppVariables() {
 
     //language for apps from webtonative
     if (!GetLocalStorage("app-language")) {
-        console.warn("app-language cleaned");
         if (/webtonative/i.test(navigator.userAgent)) {
-            console.warn("webtonative entered");
             WTN.deviceInfo().then(function (value) {
                 SetLocalStorage("WTN.deviceInfo", value);
                 SetLocalStorage("app-language", value.language);
@@ -265,7 +263,5 @@ window.showCache = () => {
         ", app-version: " + GetLocalStorage("app-version") +
         ", country: " + GetLocalStorage("country") +
         ", platform: " + GetLocalStorage("platform") +
-        ", webtonative: " + /webtonative/i.test(navigator.userAgent) +
-        ", WTN.deviceInfo: " + GetLocalStorage("WTN.deviceInfo") + 
-        ", navigator.language: " + navigator.language);
+        ", WTN.deviceInfo: " + GetLocalStorage("WTN.deviceInfo"));
 };

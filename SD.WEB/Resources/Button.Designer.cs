@@ -90,9 +90,9 @@ namespace SD.WEB.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Clear cache.
         /// </summary>
-        public static string Clear {
+        public static string ClearCache {
             get {
-                return ResourceManager.GetString("Clear", resourceCulture);
+                return ResourceManager.GetString("ClearCache", resourceCulture);
             }
         }
         
@@ -228,6 +228,15 @@ namespace SD.WEB.Resources {
         public static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Cache.
+        /// </summary>
+        public static string ShowCache {
+            get {
+                return ResourceManager.GetString("ShowCache", resourceCulture);
             }
         }
         
