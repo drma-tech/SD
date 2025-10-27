@@ -72,8 +72,9 @@ function LoadAppVariables() {
             SetLocalStorage("step3", "true");
             WTN.deviceInfo().then(function (value) {
                 SetLocalStorage("step4", "true");
-                SetLocalStorage("WTN.deviceInfo", value ?? "no value saved");
+                SetLocalStorage("WTN.deviceInfo", value != null ? JSON.stringify(value) : "no value saved");
                 SetLocalStorage("app-language", value.language);
+                SetLocalStorage("step5", "true");
                 location.reload();
             });
         }
@@ -267,10 +268,11 @@ window.showCache = () => {
         ", app-version: " + GetLocalStorage("app-version") +
         ", country: " + GetLocalStorage("country") +
         ", platform: " + GetLocalStorage("platform") +
-        ", WTN.deviceInfo: " + GetLocalStorage("WTN.deviceInfo") + 
+        ", WTN.deviceInfo: " + GetLocalStorage("WTN.deviceInfo") +
         ", step1: " + GetLocalStorage("step1") +
         ", step2: " + GetLocalStorage("step2") +
         ", step3: " + GetLocalStorage("step3") +
-        ", step4: " + GetLocalStorage("step4")
+        ", step4: " + GetLocalStorage("step4") +
+        ", step5: " + GetLocalStorage("step5")
     );
 };
