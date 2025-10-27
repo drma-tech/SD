@@ -72,7 +72,7 @@ function LoadAppVariables() {
             SetLocalStorage("step3", "true");
             WTN.deviceInfo().then(function (value) {
                 SetLocalStorage("step4", "true");
-                SetLocalStorage("WTN.deviceInfo", value != null ? JSON.stringify(value) : "no value saved");
+                SetLocalStorage("WTN.deviceInfo", JSON.stringify(value));
                 SetLocalStorage("app-language", value.language);
                 SetLocalStorage("step5", "true");
                 location.reload();
