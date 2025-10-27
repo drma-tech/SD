@@ -65,16 +65,11 @@ function LoadAppVariables() {
     }
 
     //language for apps from webtonative
-    SetLocalStorage("step1", "true");
     if (!GetLocalStorage("app-language")) {
-        SetLocalStorage("step2", "true");
         if (/webtonative/i.test(navigator.userAgent)) {
-            SetLocalStorage("step3", "true");
             WTN.deviceInfo().then(function (value) {
-                SetLocalStorage("step4", "true");
-                SetLocalStorage("WTN.deviceInfo", JSON.stringify(value));
+                SetLocalStorage("WTN.language", JSON.stringify(value.language));
                 SetLocalStorage("app-language", value.language);
-                SetLocalStorage("step5", "true");
                 location.reload();
             });
         }
@@ -268,11 +263,6 @@ window.showCache = () => {
         ", app-version: " + GetLocalStorage("app-version") +
         ", country: " + GetLocalStorage("country") +
         ", platform: " + GetLocalStorage("platform") +
-        ", WTN.deviceInfo: " + GetLocalStorage("WTN.deviceInfo") +
-        ", step1: " + GetLocalStorage("step1") +
-        ", step2: " + GetLocalStorage("step2") +
-        ", step3: " + GetLocalStorage("step3") +
-        ", step4: " + GetLocalStorage("step4") +
-        ", step5: " + GetLocalStorage("step5")
+        ", WTN.language: " + GetLocalStorage("WTN.language")
     );
 };
