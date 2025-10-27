@@ -68,7 +68,7 @@ function LoadAppVariables() {
     if (!GetLocalStorage("app-language")) {
         if (/webtonative/i.test(navigator.userAgent)) {
             WTN.deviceInfo().then(function (value) {
-                SetLocalStorage("WTN.deviceInfo", value);
+                SetLocalStorage("WTN.deviceInfo", value ?? "no value saved");
                 SetLocalStorage("app-language", value.language);
                 location.reload();
             });
