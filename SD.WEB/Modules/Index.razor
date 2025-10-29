@@ -15,6 +15,7 @@
 @inject WishListApi WishApi
 @inject PaddleConfigurationApi ConfigurationApi
 @inject IpInfoApi IpInfoApi
+@inject IpInfoServerApi IpInfoServerApi
 @inject TmdbListApi TmdbListApi
 
 <SeoHeader Title="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription" Url="/" Keywords="@(["streaming"])"></SeoHeader>
@@ -112,7 +113,7 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
+        var country = await AppStateStatic.GetCountry(IpInfoApi, IpInfoServerApi, JsRuntime);
         var platform = await AppStateStatic.GetPlatform(JsRuntime);
 
         if (country.NotEmpty() && platform == SD.Shared.Enums.Platform.ios)

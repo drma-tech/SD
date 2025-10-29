@@ -21,6 +21,7 @@
 @inject AllProvidersApi AllProvidersApi
 @inject IHttpClientFactory factory
 @inject IpInfoApi IpInfoApi
+@inject IpInfoServerApi IpInfoServerApi
 
 <SeoHeader Title="@($"{Title}")" Description="@SeoTranslations.AppDescription" Keywords="@(new[] { Title })" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")"></SeoHeader>
 
@@ -69,7 +70,7 @@
         WatchingListApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishListApi.DataChanged += model => { Wish = model; StateHasChanged(); };
 
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
 
         ProcessList();
         await ProcessNonList();

@@ -14,4 +14,19 @@
             }
         }
     }
+
+    public class IpInfoServerApi(IHttpClientFactory factory) : ApiCore(factory, null, ApiType.Anonymous)
+    {
+        public async Task<string?> GetCountry()
+        {
+            try
+            {
+                return await GetValueAsync("public/country");
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+    }
 }

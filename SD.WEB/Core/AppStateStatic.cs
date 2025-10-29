@@ -198,7 +198,7 @@ public static class AppStateStatic
 
     public static Action<Region>? RegionChanged { get; set; }
 
-    public static async Task<Region> GetRegion(IpInfoApi? api = null, IJSRuntime? js = null)
+    public static async Task<Region> GetRegion(IpInfoApi? api = null, IpInfoServerApi? serverApi = null, IJSRuntime? js = null)
     {
         await _regionSemaphore.WaitAsync();
         try
@@ -222,7 +222,7 @@ public static class AppStateStatic
             }
             else
             {
-                var code = await GetCountry(api, js);
+                var code = api != null && serverApi != null && js != null ? await GetCountry(api, serverApi, js) : null;
 
                 _region = ConvertRegion(code) ?? Region.US;
                 if (js != null) await js.SetLocalStorage("region", _region.ToString()!.ToLower());
@@ -307,7 +307,7 @@ public static class AppStateStatic
     private static string? _country;
     private static readonly SemaphoreSlim _countrySemaphore = new(1, 1);
 
-    public static async Task<string> GetCountry(IpInfoApi? api, IJSRuntime? js)
+    public static async Task<string> GetCountry(IpInfoApi api, IpInfoServerApi serverApi, IJSRuntime js)
     {
         await _countrySemaphore.WaitAsync();
         try
@@ -317,7 +317,7 @@ public static class AppStateStatic
                 return _country;
             }
 
-            var cache = js != null ? await js.GetLocalStorage("country") : null;
+            var cache = await js.GetLocalStorage("country");
 
             if (cache.NotEmpty())
             {
@@ -325,13 +325,31 @@ public static class AppStateStatic
             }
             else
             {
-                _country = api != null ? (await api.GetCountry())?.Trim() : "US";
-                if (js != null) await js.SetLocalStorage("country", _country!.ToLower());
+                _country = (await api.GetCountry())?.Trim();
+                if (_country.NotEmpty()) await js.SetLocalStorage("country", _country.ToLower());
             }
 
             _country ??= "US";
 
             return _country;
+        }
+        catch
+        {
+            try
+            {
+                //if user country blocks external requests, try server side
+                _country = (await serverApi.GetCountry())?.Trim();
+                if (_country.NotEmpty()) await js.SetLocalStorage("country", _country.ToLower());
+
+                _country ??= "US";
+
+                return _country;
+            }
+            catch
+            {
+                _country = "US";
+                return _country;
+            }
         }
         finally
         {

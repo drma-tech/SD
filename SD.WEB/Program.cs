@@ -118,6 +118,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddScoped<PaddleConfigurationApi>();
     collection.AddScoped<PaddleSubscriptionApi>();
     collection.AddScoped<IpInfoApi>();
+    collection.AddScoped<IpInfoServerApi>();
 }
 
 static async Task ConfigureCulture(WebAssemblyHost? app, IJSRuntime js)
@@ -162,5 +163,5 @@ static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
 {
     return HttpPolicyExtensions
         .HandleTransientHttpError() // 408,5xx
-        .WaitAndRetryAsync([TimeSpan.FromSeconds(2)]);
+        .WaitAndRetryAsync([TimeSpan.FromSeconds(1)]);
 }

@@ -42,6 +42,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
       .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
     services.AddHttpClient("paddle");
     services.AddHttpClient("rapidapi");
+    services.AddHttpClient("ipinfo");
     services.AddHttpClient("rapidapi-gzip")
         .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
 

@@ -3,6 +3,7 @@
 
 @inject PaddleConfigurationApi ConfigurationApi
 @inject IpInfoApi IpInfoApi
+@inject IpInfoServerApi IpInfoServerApi
 @inject IJSRuntime JSRuntime
 
 @if (!Printscreen)
@@ -68,23 +69,30 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && !IsLocalhost && !IsPaidUser)
+        try
         {
-            var country = await AppStateStatic.GetCountry(IpInfoApi, JSRuntime);
+            if (firstRender && !IsLocalhost && !IsPaidUser)
+            {
+                var country = await AppStateStatic.GetCountry(IpInfoApi, IpInfoServerApi, JSRuntime);
 
-            if (country == "CN")
-            {
-                //todo: implement https://www.baiduadvertising.com/
-            }
-            else if (_BlockedCountries.ContainsKey(country))
-            {
-                //do not show ads
-            }
-            else
-            {
-                await JavascriptVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
+                if (country == "CN")
+                {
+                    //todo: implement https://www.baiduadvertising.com/
+                }
+                else if (_BlockedCountries.ContainsKey(country))
+                {
+                    //do not show ads
+                }
+                else
+                {
+                    await JavascriptVoidAsync("createAd", $"ca-pub-{AdClientId}", ((long)Section).ToString(), AdFormat, _containerId);
+                }
             }
         }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }       
     }
 
     private async Task OpenSubscription()

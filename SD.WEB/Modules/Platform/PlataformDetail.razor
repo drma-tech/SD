@@ -15,6 +15,7 @@
 @inject WishListApi WishListApi
 @inject MyProvidersApi MyProvidersApi
 @inject IpInfoApi IpInfoApi
+@inject IpInfoServerApi IpInfoServerApi
 
 <SeoHeader Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")"
            Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Keywords="@([Provider?.name])">
@@ -148,7 +149,7 @@
 
             MyProviders ??= new MyProviders();
 
-            var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
+            var region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
 
             var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = region };
             var client = await PrincipalApi.Get(true);

@@ -2,6 +2,7 @@
 @inherits ComponentCore<SettingsPopup>
 
 @inject IpInfoApi IpInfoApi
+@inject IpInfoServerApi IpInfoServerApi
 
 <MudDialog Style="width: 100%">
     <DialogContent>
@@ -72,7 +73,7 @@
     protected override async Task LoadEssentialDataAsync()
     {
         Language = await AppStateStatic.GetAppLanguage(JsRuntime);
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
         ContentLanguage = await AppStateStatic.GetContentLanguage(JsRuntime);
         DarkMode = await AppStateStatic.GetDarkMode(JsRuntime) ?? false;
     }

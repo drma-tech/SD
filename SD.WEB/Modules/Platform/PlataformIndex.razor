@@ -10,6 +10,7 @@
 @inject AllProvidersApi AllProvidersApi
 @inject MyProvidersApi MyProvidersApi
 @inject IpInfoApi IpInfoApi
+@inject IpInfoServerApi IpInfoServerApi
 
 <SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/platforms"
            Keywords="@(["platforms", "streaming", "Netflix", "Disney", "Apple", "Amazon Prime"])"></SeoHeader>
@@ -114,7 +115,7 @@
     {
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
 
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
     }
 
 }

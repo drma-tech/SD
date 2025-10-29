@@ -8,6 +8,7 @@
 @inject MyProvidersApi MyProvidersApi
 @inject AllProvidersApi AllProvidersApi
 @inject IpInfoApi IpInfoApi
+@inject IpInfoServerApi IpInfoServerApi
 
 <PageSection Icon="@IconsFA.Solid.Icon("clapperboard").Font" Title="@Translations.MyPlatforms">
     <ActionFragment>
@@ -90,7 +91,7 @@
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
         AllProviders ??= await AllProvidersApi.GetAll(null);
 
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
 
         foreach (var item in MyProviders?.Items ?? [])
         {

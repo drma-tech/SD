@@ -14,6 +14,7 @@
 @inject PrincipalApi PrincipalApi
 @inject NavigationManager Navigation
 @inject IpInfoApi IpInfoApi
+@inject IpInfoServerApi IpInfoServerApi
 
 <MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@_darkMode" />
 <MudPopoverProvider />
@@ -123,7 +124,7 @@
             //check if user consent to privacy and terms on first access (China only)
             if (!AppStateStatic.IsAuthenticated && !Navigation.Uri.Contains("/support/"))
             {
-                var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
+                var country = await AppStateStatic.GetCountry(IpInfoApi, IpInfoServerApi, JsRuntime);
 
                 if (country.ToUpper() == "CN") //china
                 {
