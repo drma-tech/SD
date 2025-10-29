@@ -4,7 +4,6 @@
 @inject PaddleConfigurationApi ConfigurationApi
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
-@inject IJSRuntime JSRuntime
 
 @if (!Printscreen)
 {
@@ -73,7 +72,7 @@
         {
             if (firstRender && !IsLocalhost && !IsPaidUser)
             {
-                var country = await AppStateStatic.GetCountry(IpInfoApi, IpInfoServerApi, JSRuntime);
+                var country = await AppStateStatic.GetCountry(IpInfoApi, IpInfoServerApi, JsRuntime);
 
                 if (country == "CN")
                 {
