@@ -65,15 +65,14 @@ function LoadAppVariables() {
     }
 
     //language for apps from webtonative
-    if (!GetLocalStorage("app-language")) {
-        if (/webtonative/i.test(navigator.userAgent)) {
-            WTN.deviceInfo().then(function (value) {
-                SetLocalStorage("WTN.language", JSON.stringify(value.language));
-                SetLocalStorage("app-language", value.language);
-                location.reload();
-            });
-        }
-    }
+    //if (!GetLocalStorage("app-language")) {
+    //    if (/webtonative/i.test(navigator.userAgent)) {
+    //        WTN.deviceInfo().then(function (value) {
+    //            SetLocalStorage("app-language", value.language);
+    //            location.reload();
+    //        });
+    //    }
+    //}
 }
 
 async function getUserInfo() {
@@ -262,7 +261,6 @@ window.showCache = () => {
         ", app-language: " + GetLocalStorage("app-language") +
         ", app-version: " + GetLocalStorage("app-version") +
         ", country: " + GetLocalStorage("country") +
-        ", platform: " + GetLocalStorage("platform") +
-        ", WTN.language: " + GetLocalStorage("WTN.language")
+        ", platform: " + GetLocalStorage("platform")
     );
 };
