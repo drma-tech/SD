@@ -86,6 +86,12 @@ window.initUserBack = function () {
                 showError(error.message);
             });
     };
+    Userback.on_survey_submit = (obj) => {
+        if (obj.key == "mjj9Ta") {
+            let rating = obj.data[0].question_answer;
+            SetLocalStorage("survey-rating", rating);
+        }
+    };
 }
 
 // adsense

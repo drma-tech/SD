@@ -148,21 +148,47 @@
                 }
             }
 
-            //request an app rating on the second day of access
+            //Customer Satisfaction (CSAT) - only on the second day of usage
             var accesses = await JsRuntime.GetLocalStorage<HashSet<DateTime>>("accesses") ?? new HashSet<DateTime>();
 
             if (accesses.Count == 1 && accesses.Single() < DateTime.UtcNow.Date)
             {
-                //todo: ask to rate the app
+                var survey = await JsRuntime.GetLocalStorage("survey-popup");
+                if (survey.Empty())
+                {
+                    _ = Task.Run(async () =>
+                    {
+                        await Task.Delay(5000); //Userback starts after 5 seconds
+                        await JsRuntime.InvokeVoidAsync("Userback.openSurvey", "mjj9Ta");
+                        await JsRuntime.SetLocalStorage("survey-popup", true.ToString().ToLower());
+                    });
+                }
             }
 
-            if (accesses.Count > 5) //clear, to try again
+            if (accesses.Count > 5) //reset to try again
             {
                 accesses.Clear();
             }
 
             accesses.Add(DateTime.UtcNow.Date);
             await JsRuntime.SetLocalStorage("accesses", accesses);
+
+            //ask for app store review if ratings are 4 or 5 stars - only on the third day of usage
+            if (accesses.Count == 3)
+            {
+                var review = await JsRuntime.GetLocalStorage("review-popup");
+                var rating = await JsRuntime.GetLocalStorage<int?>("survey-rating");
+
+                if (review.Empty() && rating > 3)
+                {
+                    _ = Task.Run(async () =>
+                    {
+                        await Task.Delay(5000); //delay of 5 seconds
+                        await DialogService.AskReviewPopup();
+                        await JsRuntime.SetLocalStorage("review-popup", true.ToString().ToLower());
+                    });
+                }
+            }
         }
     }
 

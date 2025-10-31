@@ -195,6 +195,11 @@ public static class PopupHelper
         await service.ShowAsync<Onboarding>(string.Format(GlobalTranslations.WelcomeTo, SeoTranslations.AppName), Options(MaxWidth.Medium));
     }
 
+    public static async Task AskReviewPopup(this IDialogService service)
+    {
+        await service.ShowAsync<AskReview>(string.Format("Want to help {0} grow?", SeoTranslations.AppName), Options(MaxWidth.Small));
+    }
+
     public static DialogOptions Options(MaxWidth width)
     {
         return new DialogOptions
