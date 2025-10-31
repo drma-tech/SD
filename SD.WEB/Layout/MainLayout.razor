@@ -116,7 +116,7 @@
                 var system = await _mudThemeProvider.GetSystemDarkModeAsync();
                 darkMode = system;
 
-                await JsRuntime.SetLocalStorage("dark-mode", darkMode.ToString()!.ToLower());
+                await JsRuntime.SetLocalStorage("dark-mode", darkMode.ToString()?.ToLower() ?? "false");
             }
 
             AppStateStatic.ChangeDarkMode(darkMode ?? false);
@@ -133,6 +133,7 @@
                     if (!consent)
                     {
                         Navigation.NavigateTo("/ask-consent");
+                        return;
                     }
                 }
             }
@@ -151,7 +152,7 @@
             //Customer Satisfaction (CSAT) - only on the second day of usage
             var accesses = await JsRuntime.GetLocalStorage<HashSet<DateTime>>("accesses") ?? new HashSet<DateTime>();
 
-            if (accesses.Count == 1 && accesses.Single() < DateTime.UtcNow.Date)
+            if (accesses.Count == 1 && accesses.Single() < DateTime.UtcNow.Date) //second day
             {
                 var survey = await JsRuntime.GetLocalStorage("survey-popup");
                 if (survey.Empty())
@@ -165,21 +166,22 @@
                 }
             }
 
+            accesses.Add(DateTime.UtcNow.Date);
+
             if (accesses.Count > 5) //reset to try again
             {
                 accesses.Clear();
             }
 
-            accesses.Add(DateTime.UtcNow.Date);
             await JsRuntime.SetLocalStorage("accesses", accesses);
 
-            //ask for app store review if ratings are 4 or 5 stars - only on the third day of usage
-            if (accesses.Count == 3)
+            //ask for app store review if ratings are 4 or 5 stars
+            if (accesses.Count == 3) //third day
             {
                 var review = await JsRuntime.GetLocalStorage("review-popup");
                 var rating = await JsRuntime.GetLocalStorage<int?>("survey-rating");
 
-                if (review.Empty() && rating > 3)
+                if (review.Empty() && rating != null && rating > 3)
                 {
                     _ = Task.Run(async () =>
                     {
