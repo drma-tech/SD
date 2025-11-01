@@ -1,7 +1,7 @@
 ﻿"use strict";
 
 function openAppleCheckout(productId) {
-    if (!window.WT) showError("WTN plugin not found");
+    if (!window.WTN) showError("WTN plugin not found");
     window.WTN.inAppPurchase({
         productId: productId,
         callback: function (data) {
@@ -28,7 +28,7 @@ function openAppleCheckout(productId) {
 }
 
 function getReceiptData() {
-    if (!window.WT) showError("WTN plugin not found");
+    if (!window.WTN) showError("WTN plugin not found");
     window.WTN.getReceiptData({
         callback: function (data) {
             var receiptData = data.receiptData;
@@ -41,7 +41,7 @@ function getReceiptData() {
 }
 
 function checkATTConsent() {
-    if (!window.WT) showError("WTN plugin not found");
+    if (!window.WTN) showError("WTN plugin not found");
 
     const { ATTConsent } = window.WTN
 

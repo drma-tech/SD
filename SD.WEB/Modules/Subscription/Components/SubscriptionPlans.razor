@@ -214,6 +214,7 @@
                 {
                     // var lang = await AppStateStatic.GetAppLanguage(JsRuntime);
                     // await JavascriptVoidAsync("openCheckout", priceId, Client?.Email, lang.ToString(), Client?.AuthPaddle?.CustomerId, Client?.AuthPaddle?.AddressId);
+                    await ShowWarning($"Provider not implemented: {Provider.GetName()}");
                 }
                 else if (Provider == PaymentProvider.Apple)
                 {
