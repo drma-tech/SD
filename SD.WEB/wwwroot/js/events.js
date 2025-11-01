@@ -39,7 +39,7 @@ window.addEventListener("error", function (event) {
         showBrowserWarning();
     }
     else {
-        showError(event.message);
+        showError(`error: ${event.message}`);
 
         const errorInfo = {
             message: event.message,
@@ -67,7 +67,7 @@ window.addEventListener("unhandledrejection", function (event) {
         return;
     }
 
-    showError(reasonMessage);
+    showError(`unhandledrejection: ${JSON.stringify(reasonMessage)}`);
 
     if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex|toutiao|bytespider|applebot/i.test(window.navigator.userAgent) && window.navigator.serviceWorker?.register) {
         //just ignore, just a bot
