@@ -187,7 +187,7 @@ public static class PopupHelper
             { x => x.IsAuthenticated, isAuthenticated }
         };
 
-        await service.ShowAsync<SubscriptionPopup>(Modules.Subscription.Resources.Translations.MySubscription, parameters, Options(MaxWidth.Medium));
+        await service.ShowAsync<NewSubscriptionPopup>(Modules.Subscription.Resources.Translations.MySubscription, parameters, Options(MaxWidth.Medium));
     }
 
     public static async Task OnboardingPopup(this IDialogService service)

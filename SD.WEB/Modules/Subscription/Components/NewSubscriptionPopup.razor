@@ -1,0 +1,152 @@
+﻿@inherits ComponentCore<NewSubscriptionPopup>
+
+@using SD.WEB.Modules.Subscription.Core
+@using SD.WEB.Modules.Subscription.Resources
+
+@inject IpInfoApi IpInfoApi
+
+<MudDialog Style="width: 100%">
+    <DialogContent>
+        @if (IsAuthenticated && (Client == null))
+        {
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="100px" Animation="Animation.Wave" />
+        }
+        else
+        {
+            if (Client?.AuthPaddle == null)
+            {
+                <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("gift").Font" Class="mb-3" Dense="true">
+                    @Translations.FreePeriod
+                </MudAlert>
+                <MudGrid Class="mb-3">
+                    <MudItem xs="12" sm="8">
+                        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary" Size="AppStateStatic.Size">
+                            <MudToggleItem Value="@AccountCycle.Monthly">
+                                @AccountCycle.Monthly.GetName()
+                            </MudToggleItem>
+                            <MudToggleItem Value="@AccountCycle.Yearly">
+                                @AccountCycle.Yearly.GetName()
+                                <MudChip Size="Size.Small" Color="Color.Success" Style="padding: 0.2rem;">
+                                    @(string.Format(Translations.YearSave, GetDiscount()))
+                                </MudChip>
+                            </MudToggleItem>
+                        </MudToggleGroup>
+                    </MudItem>
+                    <MudItem xs="12" sm="4">
+                        <MudSelect @bind-Value="@Provider" Label="@Resources.Translations.PaymentProvider" Dense="true">
+                            @foreach (var item in Providers)
+                            {
+                                <MudSelectItem T="PaymentProvider" Value="@item">
+                                    @item.GetName()
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                </MudGrid>
+                @if (Provider == PaymentProvider.Microsoft)
+                {
+                    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
+                        The Microsoft subscription option isn’t available yet. Stay tuned for updates!
+                    </MudAlert>
+                }
+                else if (Provider == PaymentProvider.Apple)
+                {
+                    <SubscriptionPlans IsAuthenticated="IsAuthenticated" Provider="Provider" Cycle="Cycle"></SubscriptionPlans>
+                }
+                else if (Provider == PaymentProvider.Google)
+                {
+                    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
+                        The Google subscription option isn’t available yet. Stay tuned for updates!
+                    </MudAlert>
+                }
+                else
+                {
+                    <SubscriptionPlans IsAuthenticated="IsAuthenticated" Provider="Provider" Cycle="Cycle"></SubscriptionPlans>
+                }
+            }
+            else
+            {
+                <div>subscriber</div>
+            }
+        }
+    </DialogContent>
+    <DialogActions>
+        <span class="ma-2">Platform: @Platform</span>
+        <MudSpacer></MudSpacer>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">@Button.Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
+
+    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
+
+    private AuthPrincipal? Client { get; set; }
+    private List<PaymentProvider> Providers { get; set; } = [];
+
+    private AccountCycle Cycle { get; set; } = AccountCycle.Yearly;
+    private SD.Shared.Enums.Platform? Platform { get; set; }
+    private PaymentProvider Provider { get; set; } = PaymentProvider.Paddle;
+    private string? CurrentCountry { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                //client cannot be on load data render
+                Client = await PrincipalApi.Get(IsAuthenticated);
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    protected override async Task LoadNonEssentialDataAsync()
+    {
+        CurrentCountry = await IpInfoApi.GetCountry();
+
+        Providers.Clear();
+
+        Platform = await AppStateStatic.GetPlatform(JsRuntime);
+
+        if (Platform == SD.Shared.Enums.Platform.ios)
+        {
+            if (CurrentCountry == "US")
+            {
+                Providers.Add(PaymentProvider.Paddle);
+                Providers.Add(PaymentProvider.Apple);
+            }
+            else
+            {
+                Providers.Add(PaymentProvider.Apple);
+            }
+        }
+        else if (Platform == SD.Shared.Enums.Platform.windows)
+        {
+            Providers.Add(PaymentProvider.Paddle);
+            Providers.Add(PaymentProvider.Microsoft);
+        }
+        else
+        {
+            Providers.Add(PaymentProvider.Paddle);
+        }
+
+        Provider = Providers[0]; //todo: when implemented, select native provider by default
+    }
+
+    private int GetDiscount()
+    {
+        var priceMonth = 0.99;
+        var priceYear = 9.99;
+
+        var discount = 100 - ((priceYear / (priceMonth * 12)) * 100);
+        return (int)Math.Round(discount);
+    }
+}

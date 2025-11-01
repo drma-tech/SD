@@ -259,7 +259,7 @@ namespace SD.WEB.Modules.Subscription.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to save 33%.
+        ///   Looks up a localized string similar to save {0}%.
         /// </summary>
         public static string YearSave {
             get {
