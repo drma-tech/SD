@@ -120,7 +120,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             client.Subscription.SubscriptionId = body.data.id;
             client.Subscription.IsPaidUser = body.data.status is "active" or "trialing";
 
-            var product = body.data.custom_data?.features?.product;
+            var product = body.data.items[0].price?.custom_data?.product;
             client.Subscription.Product = Enum.Parse<AccountProduct>(product ?? throw new NotificationException("custom_data not available"));
 
             client.Events = client.Events.Union([new Event { Description = $"subscription = {body.data.status}" }]).ToArray();
