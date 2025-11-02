@@ -1,7 +1,7 @@
 ﻿@using SD.WEB.Modules.Subscription.Core
 @inherits ComponentCore<GoogleAdSense>
 
-@inject PaddleConfigurationApi ConfigurationApi
+@inject PaymentConfigurationApi ConfigurationApi
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
@@ -38,7 +38,7 @@
     private bool IsMobile => AppStateStatic.BrowserWindowSize?.Width <= 600 || AppStateStatic.BrowserWindowSize?.Height <= 600;
     private string? AdFormat => Format ?? (IsMobile ? "horizontal" : "auto");
     private bool IsLocalhost => Navigation.BaseUri.Contains("localhost");
-    private bool IsPaidUser => Principal?.AuthPaddle is { IsPaidUser: true };
+    private bool IsPaidUser => Principal?.Subscription is { IsPaidUser: true };
 
     private AuthPrincipal? Principal { get; set; }
 
@@ -96,11 +96,6 @@
 
     private async Task OpenSubscription()
     {
-        var config = await ConfigurationApi.GetConfigurations();
-        if (config == null) throw new NotificationException("server communication error");
-
-        await JavascriptVoidAsync("startPaddle", config.Token);
-
         await DialogService.SubscriptionPopup(IsAuthenticated);
     }
 

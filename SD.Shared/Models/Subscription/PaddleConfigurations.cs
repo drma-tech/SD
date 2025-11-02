@@ -1,22 +1,23 @@
 ﻿namespace SD.Shared.Models.Subscription;
 
-public class PaddleConfigurations
+public class PaymentConfigurations
 {
     public string? CustomerPortalEndpoint { get; set; }
     public string? Token { get; set; }
-    public string? ProductStandard { get; set; }
-    public string? ProductPremium { get; set; }
     public string? PriceStandardMonth { get; set; }
     public string? PriceStandardYear { get; set; }
     public string? PricePremiumMonth { get; set; }
     public string? PricePremiumYear { get; set; }
 
-    public AccountProduct GetAccountProduct(string? productId)
+    public string? GetPriceId(AccountProduct product, AccountCycle cycle)
     {
-        if (productId == ProductStandard)
-            return AccountProduct.Standard;
-        if (productId == ProductPremium)
-            return AccountProduct.Premium;
-        return AccountProduct.Basic;
+        return (product, cycle) switch
+        {
+            (AccountProduct.Standard, AccountCycle.Monthly) => PriceStandardMonth,
+            (AccountProduct.Standard, AccountCycle.Yearly) => PriceStandardYear,
+            (AccountProduct.Premium, AccountCycle.Monthly) => PricePremiumMonth,
+            (AccountProduct.Premium, AccountCycle.Yearly) => PricePremiumYear,
+            _ => null,
+        };
     }
 }

@@ -8,8 +8,8 @@
 
 @implements IDisposable
 @inject IpInfoApi IpInfoApi
-@inject PaddleConfigurationApi ConfigurationApi
-@inject PaddleSubscriptionApi SubscriptionApi
+@inject PaymentConfigurationApi ConfigurationApi
+@inject PaymentSubscriptionApi SubscriptionApi
 
 <MudDialog Style="width: 100%">
     <DialogContent>
@@ -25,7 +25,7 @@
         }
         else
         {
-            if (Client?.AuthPaddle == null)
+            if (Client?.Subscription == null || !Client.Subscription.IsPaidUser)
             {
                 <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("gift").Font" Class="mb-3" Dense="true">
                     @Translations.FreePeriod
@@ -278,7 +278,7 @@
                                 <Columns>
                                     <TemplateColumn Title="@Translations.Product">
                                         <CellTemplate>
-                                            @Config?.GetAccountProduct(context.Item.price?.product_id).GetCustomAttribute()?.Name
+                                            @* @Config?.GetAccountProduct(context.Item.price?.product_id).GetCustomAttribute()?.Name *@
                                         </CellTemplate>
                                     </TemplateColumn>
                                     <TemplateColumn Title="@Translations.PreviouslyBilled">
@@ -343,7 +343,7 @@
     private AuthPrincipal? Client { get; set; }
 
     public RootSubscription? Subscription { get; set; }
-    public PaddleConfigurations? Config { get; set; }
+    public PaymentConfigurations? Config { get; set; }
 
     private AccountCycle Cycle { get; set; } = AccountCycle.Monthly;
 
@@ -442,7 +442,7 @@
 
         Provider = Providers[0];
 
-        Config = await ConfigurationApi.GetConfigurations();
+        Config = await ConfigurationApi.GetConfigurations(Provider.Value);
         if (Config == null) throw new NotificationException("api server communication error");
 
         if (Client?.AuthPaddle == null && string.IsNullOrEmpty(Client?.AuthPaddle?.SubscriptionId))
@@ -495,7 +495,7 @@
             {
                 if (Config == null)
                 {
-                    Config = await ConfigurationApi.GetConfigurations();
+                    Config = await ConfigurationApi.GetConfigurations(Provider.Value);
                     if (Config == null) throw new NotificationException("server communication error");
                 }
 

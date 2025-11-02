@@ -254,6 +254,10 @@ window.alertEffects = {
 
 window.clearLocalStorage = () => {
     localStorage.clear();
+
+    if (WTN) {
+        WTN.clearAppCache(true);
+    }
 };
 
 window.showCache = () => {

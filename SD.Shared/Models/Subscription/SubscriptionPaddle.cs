@@ -150,7 +150,8 @@ public class Discount
 
 public class Features
 {
-    public int @enum { get; set; }
+    public string? cycle { get; set; }
+    public string? product { get; set; }
 }
 
 public class Item

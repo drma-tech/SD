@@ -69,8 +69,8 @@
 
             data.Login = await LoginApi.Get(IsAuthenticated);
             data.Providers = await MyProvidersApi.Get(IsAuthenticated, null);
-            if (Principal!.AuthPaddle?.ActiveProduct is null or AccountProduct.Basic) data.Suggestions = null;
-            else data.Suggestions = await MySuggestionsApi.Get(Principal!.AuthPaddle?.ActiveProduct, IsAuthenticated, null);
+            if (Principal!.Subscription?.ActiveProduct is null or AccountProduct.Basic) data.Suggestions = null;
+            else data.Suggestions = await MySuggestionsApi.Get(Principal!.Subscription?.ActiveProduct, IsAuthenticated, null);
             data.WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
             data.WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
             data.WishList = await WishListApi.Get(IsAuthenticated, null);
@@ -88,7 +88,7 @@
     {
         try
         {
-            if (Principal?.AuthPaddle is { IsPaidUser: true })
+            if (Principal?.Subscription is { IsPaidUser: true })
             {
                 await DialogService.ShowMessageBox("You still have an active subscription", "Please cancel your subscription before deleting your profile.");
                 return;

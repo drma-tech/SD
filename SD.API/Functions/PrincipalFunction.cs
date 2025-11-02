@@ -101,31 +101,6 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
         }
     }
 
-    [Function("PrincipalPaddle")]
-    public async Task<AuthPrincipal> PrincipalPaddle(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/paddle")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var userId = await req.GetUserIdAsync(cancellationToken);
-
-            var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
-            var body = await req.GetBody<AuthPrincipal>(cancellationToken);
-
-            model.AuthPaddle ??= new AuthPaddle();
-            model.AuthPaddle.CustomerId = body.AuthPaddle!.CustomerId;
-            model.AuthPaddle.AddressId = body.AuthPaddle.AddressId;
-            model.AuthPaddle.Items = body.AuthPaddle.Items;
-
-            return await repo.UpsertItemAsync(model, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            req.ProcessException(ex);
-            throw;
-        }
-    }
-
     [Function("PrincipalRemove")]
     public async Task PrincipalRemove(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Delete, Route = "principal/remove")] HttpRequestData req, CancellationToken cancellationToken)

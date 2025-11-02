@@ -12,11 +12,11 @@ public class WatchedListApi(IHttpClientFactory factory) : ApiCosmos<WatchedList>
         return new WatchedList();
     }
 
-    public async Task<WatchedList?> Add(MediaType? mediaType, WatchedList? obj, string? tmdbId, AuthPaddle? paddle)
+    public async Task<WatchedList?> Add(MediaType? mediaType, WatchedList? obj, string? tmdbId, AuthSubscription? subs)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(tmdbId);
-        SubscriptionHelper.ValidateWatched(paddle?.ActiveProduct, (obj?.Items(mediaType).Count ?? 0) + 1);
+        SubscriptionHelper.ValidateWatched(subs?.ActiveProduct, (obj?.Items(mediaType).Count ?? 0) + 1);
 
         return await PostAsync<WatchedList>(Endpoint.Add(mediaType, tmdbId), null, null);
     }

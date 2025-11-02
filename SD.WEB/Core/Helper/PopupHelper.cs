@@ -182,7 +182,7 @@ public static class PopupHelper
 
     public static async Task SubscriptionPopup(this IDialogService service, bool isAuthenticated)
     {
-        var parameters = new DialogParameters<SubscriptionPopup>
+        var parameters = new DialogParameters<NewSubscriptionPopup>
         {
             { x => x.IsAuthenticated, isAuthenticated }
         };

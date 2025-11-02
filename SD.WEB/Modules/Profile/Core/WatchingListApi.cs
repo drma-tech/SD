@@ -12,12 +12,11 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
         return new WatchingList();
     }
 
-    public async Task<WatchingList?> Add(MediaType? mediaType, WatchingList? obj, WatchingListItem? item,
-        AuthPaddle? paddle)
+    public async Task<WatchingList?> Add(MediaType? mediaType, WatchingList? obj, WatchingListItem? item, AuthSubscription? subs)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(item);
-        SubscriptionHelper.ValidateWatching(paddle?.ActiveProduct, (obj?.Items(mediaType).Count ?? 0) + 1);
+        SubscriptionHelper.ValidateWatching(subs?.ActiveProduct, (obj?.Items(mediaType).Count ?? 0) + 1);
 
         return await PostAsync(Endpoint.Add(mediaType), null, item);
     }

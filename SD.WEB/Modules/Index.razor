@@ -13,7 +13,7 @@
 @inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
-@inject PaddleConfigurationApi ConfigurationApi
+@inject PaymentConfigurationApi ConfigurationApi
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 @inject TmdbListApi TmdbListApi
@@ -119,11 +119,6 @@
 
     private async Task OpenSubscription()
     {
-        var config = await ConfigurationApi.GetConfigurations();
-        if (config == null) throw new NotificationException("server communication error");
-
-        await JavascriptVoidAsync("startPaddle", config.Token);
-
         await DialogService.SubscriptionPopup(IsAuthenticated);
     }
 

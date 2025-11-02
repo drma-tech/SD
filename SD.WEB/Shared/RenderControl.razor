@@ -111,7 +111,7 @@ else //ShowContent
                 if (PremiumFeature)
                 {
                     var client = await PrincipalApi.Get(isAuthenticated);
-                    if (client?.AuthPaddle == null || client.AuthPaddle?.ActiveProduct == AccountProduct.Basic)
+                    if (client?.Subscription == null || client.Subscription?.ActiveProduct == AccountProduct.Basic)
                     {
                         Status = LoadingStatus.Premium;
                     }

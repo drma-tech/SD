@@ -25,13 +25,6 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
         await PutAsync<AuthPrincipal>(Endpoint.Event(msg), null, null);
     }
 
-    public async Task<AuthPrincipal?> Paddle(AuthPrincipal? obj)
-    {
-        ArgumentNullException.ThrowIfNull(obj);
-
-        return await PutAsync(Endpoint.Paddle, null, obj);
-    }
-
     public async Task Remove()
     {
         await DeleteAsync(Endpoint.Remove, null);
@@ -41,7 +34,6 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
     {
         public const string Get = "principal/get";
         public const string Add = "principal/add";
-        public const string Paddle = "principal/paddle";
         public const string Remove = "principal/remove";
 
         public static string Event(string msg) => $"principal/event?msg={msg}";

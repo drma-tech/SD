@@ -6,6 +6,9 @@
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Content Remove="Modules\Subscription\Components\SubscriptionPopup.razor" />
+	</ItemGroup>
+	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
 	</ItemGroup>
 	<ItemGroup>

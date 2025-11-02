@@ -122,7 +122,7 @@
 
                 var client = await PrincipalApi.Get(IsAuthenticated);
                 await ShowInfo(Translations.RegionsApplied);
-                await MyProvidersApi.Update(MyProviders, client?.AuthPaddle);
+                await MyProvidersApi.Update(MyProviders, client?.Subscription);
 
                 StateHasChanged();
             }

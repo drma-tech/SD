@@ -5,6 +5,7 @@ public class Configurations
     public AzureAd? AzureAd { get; set; }
     public CosmosDB? CosmosDB { get; set; }
     public Paddle? Paddle { get; set; }
+    public Apple? Apple { get; set; }
     public Sendgrid? Sendgrid { get; set; }
     public Google? Google { get; set; }
     public TMDB? TMDB { get; set; }
@@ -29,15 +30,21 @@ public class Paddle
     public string? CustomerPortalEndpoint { get; set; } = string.Empty;
     public string? Endpoint { get; set; } = string.Empty;
     public string? Token { get; set; } = string.Empty;
-    public string? Key { get; set; } = string.Empty;
-    public string? Signature { get; set; } = string.Empty;
-    public PaddleProductSettings? Standard { get; set; } = new();
-    public PaddleProductSettings? Premium { get; set; } = new();
+    public string? Key { get; set; } = string.Empty; //do not share with users
+    public string? Signature { get; set; } = string.Empty; //do not share with users
+    public ProductSettings? Standard { get; set; } = new();
+    public ProductSettings? Premium { get; set; } = new();
 }
 
-public class PaddleProductSettings
+public class Apple
 {
-    public string? Product { get; set; }
+    public string? Endpoint { get; set; } = string.Empty;
+    public ProductSettings? Standard { get; set; } = new();
+    public ProductSettings? Premium { get; set; } = new();
+}
+
+public class ProductSettings
+{
     public string? PriceMonth { get; set; }
     public string? PriceYear { get; set; }
 }

@@ -1,5 +1,6 @@
 ﻿@using System.Security.Claims
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using SD.Shared.Models.Subscription
 @using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Properties
@@ -195,9 +196,9 @@
     }
 
     [JSInvokable]
-    public static void RegistrationSuccessful(TempAuthPaddle client)
+    public static void RegistrationSuccessful()
     {
-        AppStateStatic.RegistrationSuccessful?.Invoke(client);
+        AppStateStatic.RegistrationSuccessful?.Invoke();
     }
 
     [JSInvokable]

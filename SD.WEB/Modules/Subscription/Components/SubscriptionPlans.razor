@@ -1,8 +1,13 @@
 ﻿@inherits ComponentCore<SubscriptionPlans>
 
+@using SD.Shared.Models.Subscription
+@using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Modules.Subscription.Resources
 
-<MudStack Row="true" Class="mb-3" Breakpoint="Breakpoint.Xs" Spacing="2">
+@inject PaymentConfigurationApi ConfigurationApi
+@inject PaymentAuthApi PaymentAuthApi
+
+<MudStack Row="true" Breakpoint="Breakpoint.Xs" Spacing="2">
     <MudCard Outlined="true" Elevation="4">
         <MudCardContent Class="pa-3">
             <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Basic.GetName()</MudText>
@@ -65,7 +70,7 @@
     <MudCard Outlined="true" Elevation="4">
         <MudCardContent Class="pa-3">
             <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Standard.GetName()</MudText>
-            <MudText Typo="Typo.h6" Align="Align.Center">@GetPrice(AccountProduct.Standard) / @Cycle?.GetDescription()</MudText>
+            <MudText Typo="Typo.h6" Align="Align.Center">@GetPrice(AccountProduct.Standard, Cycle) / @Cycle.GetDescription()</MudText>
             <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
                 <MudItem xs="9">
                     <MudText>@Translations.NoAds</MudText>
@@ -124,7 +129,7 @@
     <MudCard Outlined="true" Elevation="4">
         <MudCardContent Class="pa-3">
             <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Premium.GetName()</MudText>
-            <MudText Typo="Typo.h6" Align="Align.Center">@GetPrice(AccountProduct.Premium) / @Cycle?.GetDescription()</MudText>
+            <MudText Typo="Typo.h6" Align="Align.Center">@GetPrice(AccountProduct.Premium, Cycle) / @Cycle.GetDescription()</MudText>
             <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
                 <MudItem xs="9">
                     <MudText>@Translations.NoAds</MudText>
@@ -181,27 +186,32 @@
         </MudCardActions>
     </MudCard>
 </MudStack>
+<MudText Typo="Typo.caption">
+    * Prices are displayed in US dollars. Your payment provider may convert and/or adjust the amount based on your location and local taxes.
+</MudText>
 
 @code {
     [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter][EditorRequired] public PaymentProvider Provider { get; set; }
-    [Parameter][EditorRequired] public AccountCycle? Cycle { get; set; }
+    [Parameter][EditorRequired] public AccountCycle Cycle { get; set; }
+    [Parameter][EditorRequired] public AuthPrincipal? Client { get; set; }
 
-    private string GetPrice(AccountProduct product)
+    protected override void OnInitialized()
     {
-        if (product == AccountProduct.Standard)
+        AppStateStatic.RegistrationSuccessful += async () => await RegistrationSuccessful();
+    }
+
+    public string? GetPrice(AccountProduct product, AccountCycle cycle)
+    {
+        return (product, cycle) switch
         {
-            return Cycle == AccountCycle.Monthly ? "$0.99" : "$9.99";
-        }
-        else if (product == AccountProduct.Premium)
-        {
-            return Cycle == AccountCycle.Monthly ? "$1.99" : "$19.99";
-        }
-        else
-        {
-            return "$0.00";
-        }
+            (AccountProduct.Standard, AccountCycle.Monthly) => "$0.99",
+            (AccountProduct.Standard, AccountCycle.Yearly) => "$9.99",
+            (AccountProduct.Premium, AccountCycle.Monthly) => "$1.99",
+            (AccountProduct.Premium, AccountCycle.Yearly) => "$19.99",
+            _ => "$0.00",
+        };
     }
 
     protected async Task OpenCheckout(AccountProduct product)
@@ -210,15 +220,24 @@
         {
             if (IsAuthenticated)
             {
+                var Config = await ConfigurationApi.GetConfigurations(Provider);
+                var priceId = Config?.GetPriceId(product, Cycle);
+
                 if (Provider == PaymentProvider.Paddle)
                 {
-                    // var lang = await AppStateStatic.GetAppLanguage(JsRuntime);
-                    // await JavascriptVoidAsync("openCheckout", priceId, Client?.Email, lang.ToString(), Client?.AuthPaddle?.CustomerId, Client?.AuthPaddle?.AddressId);
-                    await ShowWarning($"Provider not implemented: {Provider.GetName()}");
+                    var lang = await AppStateStatic.GetAppLanguage(JsRuntime);
+
+                    await JavascriptVoidAsync("openCheckout", priceId, Client?.Email, lang.ToString(), Client?.Subscription?.CustomerId);
+
+                    //register user for webhook listening
+                    if (Client?.Subscription == null)
+                    {
+                        await PaymentAuthApi.CreateCustomer();
+                    }
                 }
                 else if (Provider == PaymentProvider.Apple)
                 {
-                    await JavascriptVoidAsync("openAppleCheckout", "sd_standard_monthly");
+                    await JavascriptVoidAsync("openAppleCheckout", priceId);
                 }
                 else
                 {
@@ -228,6 +247,31 @@
             else
             {
                 await ShowWarning(GlobalTranslations.YouMustLoggedSubscribe);
+            }
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    private async Task RegistrationSuccessful()
+    {
+        try
+        {
+            var freshClient = await PrincipalApi.Get(true, true);
+            if (freshClient == null) throw new NotificationException("Client null");
+
+            if (freshClient.Subscription?.IsPaidUser == true && freshClient.Subscription?.Product != null)
+            {
+                Client = freshClient;
+                StateHasChanged();
+
+                await ShowSuccess(Translations.RegistrationSuccessful);
+            }
+            else
+            {
+                throw new NotificationException("Something went wrong with your subscription. Please contact support.");
             }
         }
         catch (Exception ex)

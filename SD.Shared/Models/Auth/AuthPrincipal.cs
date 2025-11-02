@@ -9,7 +9,7 @@ public class AuthPrincipal() : PrivateMainDocument(DocumentType.Principal)
     public string? DisplayName { get; set; }
     [DataType(DataType.EmailAddress)] public string? Email { get; set; }
 
-    public AuthPaddle? AuthPaddle { get; set; }
+    public AuthSubscription? Subscription { get; set; }
     public Event[] Events { get; set; } = [];
 
     public override void Initialize(string userId)

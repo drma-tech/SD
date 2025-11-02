@@ -12,11 +12,11 @@ public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(facto
         return new WishList();
     }
 
-    public async Task<WishList?> Add(MediaType? mediaType, WishList? obj, WishListItem item, AuthPaddle? paddle)
+    public async Task<WishList?> Add(MediaType? mediaType, WishList? obj, WishListItem item, AuthSubscription? subs)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(item);
-        SubscriptionHelper.ValidateWishList(paddle?.ActiveProduct, (obj?.Items(mediaType).Count ?? 0) + 1);
+        SubscriptionHelper.ValidateWishList(subs?.ActiveProduct, (obj?.Items(mediaType).Count ?? 0) + 1);
 
         return await PostAsync(Endpoint.Add(mediaType), null, item);
     }

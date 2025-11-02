@@ -13,7 +13,7 @@
         }
         else
         {
-            if (Client?.AuthPaddle == null)
+            if (Client?.Subscription == null || !Client.Subscription.IsPaidUser)
             {
                 <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("gift").Font" Class="mb-3" Dense="true">
                     @Translations.FreePeriod
@@ -51,7 +51,7 @@
                 }
                 else if (Provider == PaymentProvider.Apple)
                 {
-                    <SubscriptionPlans IsAuthenticated="IsAuthenticated" Provider="Provider" Cycle="Cycle"></SubscriptionPlans>
+                    <SubscriptionPlans IsAuthenticated="IsAuthenticated" Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans>
                 }
                 else if (Provider == PaymentProvider.Google)
                 {
@@ -61,7 +61,7 @@
                 }
                 else
                 {
-                    <SubscriptionPlans IsAuthenticated="IsAuthenticated" Provider="Provider" Cycle="Cycle"></SubscriptionPlans>
+                    <SubscriptionPlans IsAuthenticated="IsAuthenticated" Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans>
                 }
             }
             else
