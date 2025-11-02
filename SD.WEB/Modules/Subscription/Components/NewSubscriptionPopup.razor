@@ -59,7 +59,7 @@
                         The Google subscription option isn’t available yet. Stay tuned for updates!
                     </MudAlert>
                 }
-                else
+                else if (Provider == PaymentProvider.Paddle)
                 {
                     <SubscriptionPlans IsAuthenticated="IsAuthenticated" Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans>
                 }

@@ -197,9 +197,18 @@
     [Parameter][EditorRequired] public AccountCycle Cycle { get; set; }
     [Parameter][EditorRequired] public AuthPrincipal? Client { get; set; }
 
+    private PaymentConfigurations? Config { get; set; }
+
     protected override void OnInitialized()
     {
         AppStateStatic.RegistrationSuccessful += async () => await RegistrationSuccessful();
+    }
+
+    protected override async Task LoadNonEssentialDataAsync()
+    {
+        Config = await ConfigurationApi.GetConfigurations(Provider);
+
+        await JavascriptVoidAsync("startPaddle", Config?.Token);
     }
 
     public string? GetPrice(AccountProduct product, AccountCycle cycle)
@@ -220,7 +229,6 @@
         {
             if (IsAuthenticated)
             {
-                var Config = await ConfigurationApi.GetConfigurations(Provider);
                 var priceId = Config?.GetPriceId(product, Cycle);
 
                 if (Provider == PaymentProvider.Paddle)
