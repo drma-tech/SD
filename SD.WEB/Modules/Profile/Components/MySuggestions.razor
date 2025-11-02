@@ -12,7 +12,7 @@
 
 <PageSection Icon="@IconsFA.Solid.Icon("thumbs-up").Font" Title="@Translations.MySuggestions">
     <ActionFragment>
-        @if (Client?.Subscription?.IsPaidUser ?? false)
+        @if (Client?.Subscription?.Active ?? false)
         {
             @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (MyProviders?.Items.Any() ?? false))
             {

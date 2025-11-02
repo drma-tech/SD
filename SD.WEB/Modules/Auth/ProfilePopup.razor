@@ -88,7 +88,7 @@
     {
         try
         {
-            if (Principal?.Subscription is { IsPaidUser: true })
+            if (Principal?.Subscription is { Active: true })
             {
                 await DialogService.ShowMessageBox("You still have an active subscription", "Please cancel your subscription before deleting your profile.");
                 return;

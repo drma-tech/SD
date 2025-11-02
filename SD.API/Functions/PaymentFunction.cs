@@ -118,12 +118,12 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             if (client.Subscription == null) throw new UnhandledException("client.Subscription null");
 
             client.Subscription.SubscriptionId = body.data.id;
-            client.Subscription.IsPaidUser = body.data.status is "active" or "trialing";
+            client.Subscription.Active = body.data.status is "active" or "trialing";
 
             var product = body.data.items[0].price?.custom_data?.product;
             client.Subscription.Product = Enum.Parse<AccountProduct>(product ?? throw new NotificationException("custom_data not available"));
 
-            client.Events = client.Events.Union([new Event { Description = $"subscription = {body.data.status}" }]).ToArray();
+            client.Events = client.Events.Union([new Event { Description = $"subscription = {body.data.id}, status = {body.data.status}" }]).ToArray();
 
             await repo.UpsertItemAsync(client, cancellationToken);
         }

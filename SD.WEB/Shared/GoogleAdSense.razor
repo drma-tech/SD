@@ -19,7 +19,7 @@
             </ins>
         </div>
     }
-    else if (!IsPaidUser)
+    else if (!ActiveSubscription)
     {
         <div style="text-align: center;">
             <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">Remove Advertising</MudLink>
@@ -38,7 +38,7 @@
     private bool IsMobile => AppStateStatic.BrowserWindowSize?.Width <= 600 || AppStateStatic.BrowserWindowSize?.Height <= 600;
     private string? AdFormat => Format ?? (IsMobile ? "horizontal" : "auto");
     private bool IsLocalhost => Navigation.BaseUri.Contains("localhost");
-    private bool IsPaidUser => Principal?.Subscription is { IsPaidUser: true };
+    private bool ActiveSubscription => Principal?.Subscription is { Active: true };
 
     private AuthPrincipal? Principal { get; set; }
 
@@ -70,7 +70,7 @@
     {
         try
         {
-            if (firstRender && !IsLocalhost && !IsPaidUser)
+            if (firstRender && !IsLocalhost && !ActiveSubscription)
             {
                 var country = await AppStateStatic.GetCountry(IpInfoApi, IpInfoServerApi, JsRuntime);
 
