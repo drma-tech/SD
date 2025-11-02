@@ -90,6 +90,11 @@
     private PaymentProvider Provider { get; set; } = PaymentProvider.Paddle;
     private string? CurrentCountry { get; set; }
 
+    protected override void OnInitialized()
+    {
+        AppStateStatic.RegistrationSuccessful += async () => await RegistrationSuccessful();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         try
@@ -139,6 +144,31 @@
         }
 
         Provider = Providers[0]; //todo: when implemented, select native provider by default
+    }
+
+    private async Task RegistrationSuccessful()
+    {
+        try
+        {
+            var freshClient = await PrincipalApi.Get(true, true);
+            if (freshClient == null) throw new NotificationException("Client null");
+
+            if (freshClient.Subscription?.IsPaidUser == true && freshClient.Subscription?.Product != null)
+            {
+                Client = freshClient;
+                StateHasChanged();
+
+                await ShowSuccess(Translations.RegistrationSuccessful);
+            }
+            else
+            {
+                throw new NotificationException("Something went wrong with your subscription. Please contact support.");
+            }
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
     }
 
     private int GetDiscount()

@@ -1,4 +1,7 @@
-﻿namespace SD.Shared.Models.Auth
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SD.Shared.Models.Auth
 {
     public class AuthSubscription
     {
@@ -7,6 +10,9 @@
         public bool IsPaidUser { get; set; } = false;
 
         public AccountProduct? Product { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
         public AccountProduct ActiveProduct => IsPaidUser ? Product ?? AccountProduct.Basic : AccountProduct.Basic;
     }
 }

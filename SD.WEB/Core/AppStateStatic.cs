@@ -1,8 +1,6 @@
 ﻿using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Services;
-using SD.Shared.Models.Auth;
-using SD.Shared.Models.Subscription;
 using SD.WEB.Modules.Subscription.Core;
 using System.Globalization;
 using System.Security.Claims;

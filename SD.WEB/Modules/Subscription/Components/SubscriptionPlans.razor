@@ -199,11 +199,6 @@
 
     private PaymentConfigurations? Config { get; set; }
 
-    protected override void OnInitialized()
-    {
-        AppStateStatic.RegistrationSuccessful += async () => await RegistrationSuccessful();
-    }
-
     protected override async Task LoadNonEssentialDataAsync()
     {
         Config = await ConfigurationApi.GetConfigurations(Provider);
@@ -255,31 +250,6 @@
             else
             {
                 await ShowWarning(GlobalTranslations.YouMustLoggedSubscribe);
-            }
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
-    }
-
-    private async Task RegistrationSuccessful()
-    {
-        try
-        {
-            var freshClient = await PrincipalApi.Get(true, true);
-            if (freshClient == null) throw new NotificationException("Client null");
-
-            if (freshClient.Subscription?.IsPaidUser == true && freshClient.Subscription?.Product != null)
-            {
-                Client = freshClient;
-                StateHasChanged();
-
-                await ShowSuccess(Translations.RegistrationSuccessful);
-            }
-            else
-            {
-                throw new NotificationException("Something went wrong with your subscription. Please contact support.");
             }
         }
         catch (Exception ex)
