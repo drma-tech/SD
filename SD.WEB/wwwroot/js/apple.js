@@ -3,7 +3,7 @@
 function openAppleCheckout(productId) {
     try {
         if (!window.WTN) showError("WTN plugin not found");
-        showToast("calling inAppPurchase");
+        alert("calling inAppPurchase");
         window.WTN.inAppPurchase({
             productId: productId,
             callback: function (data) {
@@ -28,7 +28,7 @@ function openAppleCheckout(productId) {
             }
         })
     } catch (e) {
-        showError(`error: ${JSON.stringify(e) }`);
+        alert(`error: ${JSON.stringify(e) }`);
     }
 }
 
