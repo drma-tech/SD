@@ -245,6 +245,10 @@
                 {
                     await JavascriptVoidAsync("openAppleCheckout", priceId);
                 }
+                else if (Provider == PaymentProvider.Google)
+                {
+                    await JavascriptVoidAsync("openGoogleCheckout", priceId);
+                }
                 else
                 {
                     await ShowWarning($"Provider not implemented: {Provider.GetName()}");

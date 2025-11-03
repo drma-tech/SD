@@ -3,9 +3,9 @@
 function openGoogleCheckout(productId, type) {
     try {
         alert("before test");
-        if (!window.WTN) alert("WTN plugin not found");
+        if (!WTN) alert("WTN plugin not found");
         alert("calling inAppPurchase");
-        window.WTN.inAppPurchase({
+        WTN.inAppPurchase({
             productId: productId,
             productType: type,
             isConsumable: true,
