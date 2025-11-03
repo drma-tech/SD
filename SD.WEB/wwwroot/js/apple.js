@@ -2,14 +2,15 @@
 
 function openAppleCheckout(productId) {
     try {
-        if (!window.WTN) showError("WTN plugin not found");
+        alert("before test");
+        if (!window.WTN) alert("WTN plugin not found");
         alert("calling inAppPurchase");
         window.WTN.inAppPurchase({
             productId: productId,
             callback: function (data) {
                 var receiptData = data.receiptData; //save on cosmos (Client.AuthPayment)
-                showToast(receiptData);
-                showToast(data);
+                showToast(JSON.stringify(receiptData));
+                showToast(JSON.stringify(data));
                 if (data.isSuccess) {
                     // use this receipt data to verify transaction from app store
                     // refer : https://developer.apple.com/documentation/appstorereceipts/verifyreceipt
@@ -28,7 +29,7 @@ function openAppleCheckout(productId) {
             }
         })
     } catch (e) {
-        alert(`error: ${JSON.stringify(e) }`);
+        alert(`error: ${JSON.stringify(e)}`);
     }
 }
 
