@@ -7,7 +7,13 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        @if (IsAuthenticated && (Client == null))
+        @if (BlockedCountry)
+        {
+            <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
+                @($"Unfortunately, due to legal and policy restrictions, we are unable to offer our services in {_XoloBlockedCountries[CurrentCountry!.ToUpper()]}.")
+            </MudAlert>
+        }
+        else if (IsAuthenticated && (Client == null))
         {
             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="100px" Animation="Animation.Wave" />
         }
@@ -66,7 +72,22 @@
             }
             else
             {
-                <div>subscriber</div>
+                @if (Provider == PaymentProvider.Microsoft)
+                {
+                    <FeatureUnavailable></FeatureUnavailable>
+                }
+                else if (Provider == PaymentProvider.Apple)
+                {
+                    <FeatureUnavailable></FeatureUnavailable>
+                }
+                else if (Provider == PaymentProvider.Google)
+                {
+                    <FeatureUnavailable></FeatureUnavailable>
+                }
+                else if (Provider == PaymentProvider.Paddle)
+                {
+                    <PaddleSubscriptionManager Provider="Provider" Cycle="Cycle" Client="Client"></PaddleSubscriptionManager>
+                }
             }
         }
     </DialogContent>
@@ -89,33 +110,41 @@
     private SD.Shared.Enums.Platform? Platform { get; set; }
     private PaymentProvider Provider { get; set; } = PaymentProvider.Paddle;
     private string? CurrentCountry { get; set; }
+    private bool BlockedCountry { get; set; }
+
+    //https://www.xolo.io/zz-en/faq/xolo-leap/category/get-started/article/do-you-accept-customers-from-all-countries
+    private readonly Dictionary<string, string> _XoloBlockedCountries = new()
+    {
+        { "AF", "Afghanistan" },
+        { "BY", "Belarus" },
+        { "CE", "Crimea" },
+        { "CU", "Cuba" },
+        { "IR", "Iran" },
+        { "IQ", "Iraq" },
+        { "MM", "Myanmar" },
+        { "KP", "North Korea" },
+        { "RU", "Russia" },
+        { "SY", "Syria" },
+        { "VE", "Venezuela" }
+    };
 
     protected override void OnInitialized()
     {
         AppStateStatic.RegistrationSuccessful += async () => await RegistrationSuccessful();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        try
-        {
-            if (firstRender)
-            {
-                //client cannot be on load data render
-                Client = await PrincipalApi.Get(IsAuthenticated);
-            }
-
-            await base.OnAfterRenderAsync(firstRender);
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
-    }
-
     protected override async Task LoadNonEssentialDataAsync()
     {
+        Client = await PrincipalApi.Get(IsAuthenticated, true);
+
         CurrentCountry = await IpInfoApi.GetCountry();
+
+        if (CurrentCountry.NotEmpty())
+        {
+            BlockedCountry = _XoloBlockedCountries.ContainsKey(CurrentCountry.ToUpper());
+
+            if (BlockedCountry) return;
+        }
 
         Providers.Clear();
 

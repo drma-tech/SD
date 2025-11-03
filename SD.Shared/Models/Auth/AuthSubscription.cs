@@ -10,6 +10,7 @@ namespace SD.Shared.Models.Auth
         public bool Active { get; set; } = false;
 
         public AccountProduct? Product { get; set; }
+        public AccountCycle? Cycle { get; set; }
 
         [JsonIgnore]
         [NotMapped]

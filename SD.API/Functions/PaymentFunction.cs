@@ -10,7 +10,7 @@ namespace SD.API.Functions;
 public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 {
     [Function("GetSubscription")]
-    public async Task<RootSubscription?> GetSubscription(
+    public async Task<PaddleRootSubscription?> GetSubscription(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/paddle/subscription")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
@@ -30,7 +30,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
 
-            return await response.Content.ReadFromJsonAsync<RootSubscription>(cancellationToken);
+            return await response.Content.ReadFromJsonAsync<PaddleRootSubscription>(cancellationToken);
         }
         catch (Exception ex)
         {
@@ -120,8 +120,8 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             client.Subscription.SubscriptionId = body.data.id;
             client.Subscription.Active = body.data.status is "active" or "trialing";
 
-            var product = body.data.items[0].price?.custom_data?.product;
-            client.Subscription.Product = Enum.Parse<AccountProduct>(product ?? throw new NotificationException("custom_data not available"));
+            client.Subscription.Product = body.data.items[0].price?.custom_data ?.ProductEnum;
+            client.Subscription.Cycle = body.data.items[0].price?.custom_data?.CycleEnum;
 
             client.Events = client.Events.Union([new Event { Description = $"subscription = {body.data.id}, status = {body.data.status}" }]).ToArray();
 

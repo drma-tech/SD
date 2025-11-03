@@ -203,7 +203,10 @@
     {
         Config = await ConfigurationApi.GetConfigurations(Provider);
 
-        await JavascriptVoidAsync("startPaddle", Config?.Token);
+        if (Provider == PaymentProvider.Paddle)
+        {
+            await JavascriptVoidAsync("startPaddle", Config?.Token);
+        }
     }
 
     public string? GetPrice(AccountProduct product, AccountCycle cycle)

@@ -2,6 +2,7 @@
 
 function openAppleCheckout(productId) {
     if (!window.WTN) showError("WTN plugin not found");
+    showToast("calling inAppPurchase");
     window.WTN.inAppPurchase({
         productId: productId,
         callback: function (data) {

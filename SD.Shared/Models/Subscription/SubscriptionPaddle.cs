@@ -1,4 +1,6 @@
-﻿namespace SD.Shared.Models.Subscription;
+﻿using SD.Shared.Core;
+
+namespace SD.Shared.Models.Subscription;
 
 public class Address
 {
@@ -146,6 +148,9 @@ public class CustomData
 {
     public string? cycle { get; set; }
     public string? product { get; set; }
+
+    public AccountCycle CycleEnum => Enum.Parse<AccountCycle>(cycle ?? throw new NotificationException("custom_data not available"));
+    public AccountProduct ProductEnum => Enum.Parse<AccountProduct>(product ?? throw new NotificationException("custom_data not available"));
 }
 
 public class Item
@@ -268,7 +273,7 @@ public class RootEvent
     public DateTime? occurred_at { get; set; }
 }
 
-public class RootSubscription
+public class PaddleRootSubscription
 {
     public Data? data { get; set; }
     public Meta? meta { get; set; }
