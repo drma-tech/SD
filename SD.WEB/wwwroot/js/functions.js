@@ -267,4 +267,10 @@ window.showCache = () => {
         ", country: " + GetLocalStorage("country") +
         ", platform: " + GetLocalStorage("platform")
     );
+
+    if (WTN) {
+        WTN.deviceInfo().then(function (value) {
+            showToast(JSON.stringify(value))
+        });
+    }
 };
