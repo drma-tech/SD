@@ -1,31 +1,35 @@
 ﻿"use strict";
 
 function openAppleCheckout(productId) {
-    if (!window.WTN) showError("WTN plugin not found");
-    showToast("calling inAppPurchase");
-    window.WTN.inAppPurchase({
-        productId: productId,
-        callback: function (data) {
-            var receiptData = data.receiptData; //save on cosmos (Client.AuthPayment)
-            showToast(receiptData);
-            showToast(data);
-            if (data.isSuccess) {
-                // use this receipt data to verify transaction from app store
-                // refer : https://developer.apple.com/documentation/appstorereceipts/verifyreceipt
+    try {
+        if (!window.WTN) showError("WTN plugin not found");
+        showToast("calling inAppPurchase");
+        window.WTN.inAppPurchase({
+            productId: productId,
+            callback: function (data) {
+                var receiptData = data.receiptData; //save on cosmos (Client.AuthPayment)
+                showToast(receiptData);
+                showToast(data);
+                if (data.isSuccess) {
+                    // use this receipt data to verify transaction from app store
+                    // refer : https://developer.apple.com/documentation/appstorereceipts/verifyreceipt
 
-                //{
-                //    "receipt-data": "xxxxxxxxxxxxxxx",
-                //        "password": "shared secret from iTunes connect",
-                //            "exclude-old-transactions": true
-                //}
+                    //{
+                    //    "receipt-data": "xxxxxxxxxxxxxxx",
+                    //        "password": "shared secret from iTunes connect",
+                    //            "exclude-old-transactions": true
+                    //}
 
-                // https://developer.apple.com/documentation/appstorereceipts/status
+                    // https://developer.apple.com/documentation/appstorereceipts/status
 
-                // https://sandbox.itunes.apple.com/verifyReceipt
-                // https://buy.itunes.apple.com/verifyReceipt
+                    // https://sandbox.itunes.apple.com/verifyReceipt
+                    // https://buy.itunes.apple.com/verifyReceipt
+                }
             }
-        }
-    })
+        })
+    } catch (e) {
+        showError(`error: ${JSON.stringify(e) }`);
+    }
 }
 
 function getReceiptData() {
@@ -34,7 +38,7 @@ function getReceiptData() {
         callback: function (data) {
             var receiptData = data.receiptData;
             if (data.isSuccess) {
-                // use this receipt data to verify transaction from app store 
+                // use this receipt data to verify transaction from app store
                 // refer : https://developer.apple.com/documentation/appstorereceipts/verifyreceipt
             }
         }
