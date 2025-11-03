@@ -3,9 +3,9 @@
 function openAppleCheckout(productId) {
     try {
         alert("before test");
-        if (!window.WTN) alert("WTN plugin not found");
+        if (!WTN) alert("WTN plugin not found");
         alert("calling inAppPurchase");
-        window.WTN.inAppPurchase({
+        WTN.inAppPurchase({
             productId: productId,
             callback: function (data) {
                 var receiptData = data.receiptData; //save on cosmos (Client.AuthPayment)
