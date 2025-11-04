@@ -3,7 +3,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 
 namespace SD.API.Functions;
 
-public class WatchingListFunction(CosmosRepository repo)
+public class WatchingListFunction(CosmosRepository repo, IHttpClientFactory factory)
 {
     [Function("WatchingListGet")]
     public async Task<HttpResponseData?> WatchingListGet(
@@ -11,7 +11,7 @@ public class WatchingListFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
             var doc = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
@@ -32,7 +32,7 @@ public class WatchingListFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
@@ -63,7 +63,7 @@ public class WatchingListFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
@@ -93,7 +93,7 @@ public class WatchingListFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);

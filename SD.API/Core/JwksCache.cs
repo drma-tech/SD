@@ -12,7 +12,7 @@ namespace SD.API.Core
         public static TimeSpan MinRefreshInterval { get; set; } = TimeSpan.FromMinutes(1);
         public static TimeSpan MaxCacheDuration { get; set; } = TimeSpan.FromHours(6);
 
-        public static async Task<IReadOnlyList<SecurityKey>> GetKeysAsync(string jwksUri, CancellationToken cancellationToken)
+        public static async Task<IReadOnlyList<SecurityKey>> GetKeysAsync(IHttpClientFactory factory, string jwksUri, CancellationToken cancellationToken)
         {
             var now = DateTime.UtcNow;
 
@@ -38,8 +38,8 @@ namespace SD.API.Core
                 }
 
                 // Fetch the new keys
-                using var http = new HttpClient();
-                var json = await http.GetStringAsync(jwksUri, cancellationToken);
+                using var client = factory.CreateClient("auth");
+                var json = await client.GetStringAsync(jwksUri, cancellationToken);
                 var keys = new JsonWebKeySet(json).GetSigningKeys().ToList();
 
                 _cachedKeys = keys;

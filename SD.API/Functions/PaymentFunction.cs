@@ -45,7 +45,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("principal null");
 
             var endpoint = ApiStartup.Configurations.Paddle?.Endpoint;

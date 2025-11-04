@@ -3,7 +3,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 
 namespace SD.API.Functions;
 
-public class MyProvidersFunction(CosmosRepository repo)
+public class MyProvidersFunction(CosmosRepository repo, IHttpClientFactory factory)
 {
     [Function("MyProviders")]
     public async Task<HttpResponseData?> MyProviders(
@@ -11,7 +11,7 @@ public class MyProvidersFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
 
             var doc = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
 
@@ -30,7 +30,7 @@ public class MyProvidersFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
@@ -60,7 +60,7 @@ public class MyProvidersFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
@@ -84,7 +84,7 @@ public class MyProvidersFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);

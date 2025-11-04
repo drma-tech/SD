@@ -3,7 +3,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 
 namespace SD.API.Functions;
 
-public class WishListFunction(CosmosRepository repo)
+public class WishListFunction(CosmosRepository repo, IHttpClientFactory factory)
 {
     [Function("WishListGet")]
     public async Task<HttpResponseData?> WishListGet(
@@ -11,7 +11,7 @@ public class WishListFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
             var doc = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
@@ -31,7 +31,7 @@ public class WishListFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
@@ -61,7 +61,7 @@ public class WishListFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);

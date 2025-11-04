@@ -10,14 +10,14 @@ namespace SD.API.Core;
 
 public static class IsolatedFunctionHelper
 {
-    public static async Task<T> GetBody<T>(this HttpRequestData req, CancellationToken cancellationToken)
+    public static async Task<T> GetBody<T>(this HttpRequestData req, IHttpClientFactory factory, CancellationToken cancellationToken)
         where T : CosmosDocument, new()
     {
         var model = await JsonSerializer.DeserializeAsync<T>(req.Body, cancellationToken: cancellationToken);
 
         model ??= new T();
 
-        var userId = await req.GetUserIdAsync(cancellationToken);
+        var userId = await req.GetUserIdAsync(factory, cancellationToken);
 
         if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
 

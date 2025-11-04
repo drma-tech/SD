@@ -3,7 +3,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 
 namespace SD.API.Functions;
 
-public class MySuggestionsFunction(CosmosRepository repo)
+public class MySuggestionsFunction(CosmosRepository repo, IHttpClientFactory factory)
 {
     [Function("MySuggestionsGet")]
     public async Task<HttpResponseData?> MySuggestionsGet(
@@ -11,7 +11,7 @@ public class MySuggestionsFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
 
             var doc = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
 
@@ -30,7 +30,7 @@ public class MySuggestionsFunction(CosmosRepository repo)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
@@ -69,7 +69,7 @@ public class MySuggestionsFunction(CosmosRepository repo)
     {
         try
         {
-            var body = await req.GetBody<MySuggestions>(cancellationToken);
+            var body = await req.GetBody<MySuggestions>(factory, cancellationToken);
 
             return await repo.UpsertItemAsync(body, cancellationToken);
         }

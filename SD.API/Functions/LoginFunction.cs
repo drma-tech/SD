@@ -13,7 +13,7 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
 
             return await repo.Get<AuthLogin>(DocumentType.Login, userId, cancellationToken);
@@ -33,7 +33,7 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
         {
             var platform = req.GetQueryParameters()["platform"] ?? "webapp";
             var ip = req.GetUserIP();
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
             var login = await repo.Get<AuthLogin>(DocumentType.Login, userId, cancellationToken);
 

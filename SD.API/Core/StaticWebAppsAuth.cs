@@ -8,9 +8,9 @@ namespace SD.API.Core;
 
 public static class StaticWebAppsAuth
 {
-    public static async Task<string?> GetUserIdAsync(this HttpRequestData req, CancellationToken cancellationToken, bool required = true)
+    public static async Task<string?> GetUserIdAsync(this HttpRequestData req, IHttpClientFactory factory, CancellationToken cancellationToken, bool required = true)
     {
-        var principal = await req.ParseAndValidateJwtAsync(required, cancellationToken);
+        var principal = await req.ParseAndValidateJwtAsync(factory, required, cancellationToken);
 
         var id = principal?.Claims.FirstOrDefault(w => w.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier" || w.Type == "oid")?.Value;
 
@@ -38,7 +38,7 @@ public static class StaticWebAppsAuth
         return null;
     }
 
-    private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this HttpRequestData req, bool required, CancellationToken cancellationToken)
+    private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this HttpRequestData req, IHttpClientFactory factory, bool required, CancellationToken cancellationToken)
     {
         if (req.Headers.TryGetValues("X-Auth-Token", out var header))
         {
@@ -53,12 +53,12 @@ public static class StaticWebAppsAuth
 
                 try
                 {
-                    return await ValidateTokenAsync(req, token, issuer, clientId, cancellationToken);
+                    return await ValidateTokenAsync(req, factory, token, issuer, clientId, cancellationToken);
                 }
                 catch (SecurityTokenSignatureKeyNotFoundException)
                 {
                     JwksCache.Invalidate();
-                    return await ValidateTokenAsync(req, token, issuer, clientId, cancellationToken);
+                    return await ValidateTokenAsync(req, factory, token, issuer, clientId, cancellationToken);
                 }
             }
         }
@@ -71,11 +71,11 @@ public static class StaticWebAppsAuth
         return null;
     }
 
-    private static async Task<ClaimsPrincipal> ValidateTokenAsync(this HttpRequestData req, string token, string issuer, string audience, CancellationToken cancellationToken)
+    private static async Task<ClaimsPrincipal> ValidateTokenAsync(this HttpRequestData req, IHttpClientFactory factory, string token, string issuer, string audience, CancellationToken cancellationToken)
     {
         var sw1 = Stopwatch.StartNew();
         var jwksUri = issuer.TrimEnd('/').Replace("v2.0", "discovery/v2.0/keys");
-        var keys = await JwksCache.GetKeysAsync(jwksUri, cancellationToken);
+        var keys = await JwksCache.GetKeysAsync(factory, jwksUri, cancellationToken);
         sw1.Stop(); if (sw1.ElapsedMilliseconds > 1000) req.LogWarning($"GetKeysAsync: {sw1.Elapsed}");
 
         var validationParameters = new TokenValidationParameters
