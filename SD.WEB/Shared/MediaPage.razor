@@ -17,139 +17,151 @@
 @inject TmdbRecommendationsApi TmdbRecommendationsApi
 
 <SeoHeader Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")" Keywords="new[] { Media?.title }" Index="false"></SeoHeader>
-<PageHeader Title="@Media?.title"></PageHeader>
+@if (Media?.title.NotEmpty() ?? false)
+{
+    <PageHeader Title="@Media?.title"></PageHeader>
+}
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
-<RenderControl Model="Media" Core="Core" ExpressionEmpty="@((MediaDetail? obj) => obj == null)">
-    <PageSection Title="@Translations.TabAbout" Color="Color.Secondary">
-        <BodyFragment>
-            <MediaAbout ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watched="Watched" Watching="Watching" Wish="Wish" Type="Type"
-                        CoreRatings="CoreRatings" RatingsCache="_ratingsCache"></MediaAbout>
-        </BodyFragment>
-    </PageSection>
-    <PageSection Title="@Translations.TabPlatforms" Color="Color.Secondary">
-        <BodyFragment>
-            <MediaStreaming TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaStreaming>
-        </BodyFragment>
-    </PageSection>
+@if (AppStateStatic.ConsumedEnergy > AppStateStatic.TotalEnergy)
+{
+    <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Class="mt-8">
+        @GlobalTranslations.EnergyOut
+    </MudAlert>
+}
+else
+{
+    <RenderControl Model="Media" Core="Core" ExpressionEmpty="@((MediaDetail? obj) => obj == null)">
+        <PageSection Title="@Translations.TabAbout" Color="Color.Secondary">
+            <BodyFragment>
+                <MediaAbout ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watched="Watched" Watching="Watching" Wish="Wish" Type="Type"
+                            CoreRatings="CoreRatings" RatingsCache="_ratingsCache"></MediaAbout>
+            </BodyFragment>
+        </PageSection>
+        <PageSection Title="@Translations.TabPlatforms" Color="Color.Secondary">
+            <BodyFragment>
+                <MediaStreaming TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaStreaming>
+            </BodyFragment>
+        </PageSection>
 
-    <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media2" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+        <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media2" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
-    <PageSection Title="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
-        <BodyFragment>
-            <div class="grid-relative-container-poster">
-                @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
-                {
-                    <div>
-                        <div style="position: relative;">
-                            @if (item.release_date.HasValue)
-                            {
-                                if (item.release_date.Value < DateTime.Now.AddMonths(-3))
+        <PageSection Title="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
+            <BodyFragment>
+                <div class="grid-relative-container-poster">
+                    @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
+                    {
+                        <div>
+                            <div style="position: relative;">
+                                @if (item.release_date.HasValue)
                                 {
-                                    <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Label="true"
-                                             Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
-                                        @item.release_date.Value.Year
-                                    </MudChip>
-                                }
-                                else
-                                {
-                                    <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Label="true"
-                                             Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
-                                        @item.release_date.Value.ToShortDateString()
-                                    </MudChip>
-                                }
-                            }
-                            @{
-                                if (Type == MediaType.movie) //you don't put seasons as wishes
-                                {
-                                    var wishedMovie = Wish?.Contains(MediaType.movie, item.id) ?? false;
-                                    if (wishedMovie)
+                                    if (item.release_date.Value < DateTime.Now.AddMonths(-3))
                                     {
-                                        <MudIcon Icon="@IconsFA.Solid.Icon("bookmark").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
+                                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Label="true"
+                                                 Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
+                                            @item.release_date.Value.Year
+                                        </MudChip>
+                                    }
+                                    else
+                                    {
+                                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" Label="true"
+                                                 Style="padding: 0.2rem; position: absolute; top: 0; left: 0; white-space: inherit; height: auto; z-index: 1;">
+                                            @item.release_date.Value.ToShortDateString()
+                                        </MudChip>
                                     }
                                 }
+                                @{
+                                    if (Type == MediaType.movie) //you don't put seasons as wishes
+                                    {
+                                        var wishedMovie = Wish?.Contains(MediaType.movie, item.id) ?? false;
+                                        if (wishedMovie)
+                                        {
+                                            <MudIcon Icon="@IconsFA.Solid.Icon("bookmark").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
+                                        }
+                                    }
 
-                                var movieWatched = Watched?.Contains(MediaType.movie, item.id) ?? false;
-                                var showWatched = Watching?.GetWatchingItems(MediaType.tv, Media?.tmdb_id).Any(a => a == item.id) ?? false;
-                                if (movieWatched || showWatched)
-                                {
-                                    <MudIcon Icon="@IconsFA.Solid.Icon("eye").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
+                                    var movieWatched = Watched?.Contains(MediaType.movie, item.id) ?? false;
+                                    var showWatched = Watching?.GetWatchingItems(MediaType.tv, Media?.tmdb_id).Any(a => a == item.id) ?? false;
+                                    if (movieWatched || showWatched)
+                                    {
+                                        <MudIcon Icon="@IconsFA.Solid.Icon("eye").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
+                                    }
+
+                                    <MudImage Src="@(item.poster_small ?? "images/no-image.png")" Alt="@item.title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                                 }
-
-                                <MudImage Src="@(item.poster_small ?? "images/no-image.png")" Alt="@item.title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
-                            }
-                        </div>
-                        <MudText Align="Align.Center">@item.title</MudText>
-                    </div>
-                }
-            </div>
-        </BodyFragment>
-    </PageSection>
-    <PageSection Title="Recommendations" Color="Color.Secondary">
-        <BodyFragment>
-            <div id="@_swiperId" class="swiper">
-                <div class="swiper-wrapper">
-                    @foreach (var item in Recommendations)
-                    {
-                        <div class="swiper-slide" style="height: auto !important;">
-                            <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                             Date="@item.release_date" RankUpDown="@item.RankUpDown" Rating="@item.rating"
-                                             WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments">
-                            </PosterComponent>
+                            </div>
+                            <MudText Align="Align.Center">@item.title</MudText>
                         </div>
                     }
                 </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </div>
-        </BodyFragment>
-    </PageSection>
-    <PageSection Title="Videos" Color="Color.Secondary" Visible="@(Media != null && Media.Videos.Any())">
-        <BodyFragment>
-            @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])
-            {
-                <MudPaper Outlined="true" Class="pa-2 mb-2">
-                    <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                        @group
-                    </MudText>
-                    <MudDivider Class="mb-2"></MudDivider>
-                    <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap">
-                        @foreach (var item in Media?.Videos.Where(w => w.type == group) ?? [])
+            </BodyFragment>
+        </PageSection>
+        <PageSection Title="Recommendations" Color="Color.Secondary">
+            <BodyFragment>
+                <div id="@_swiperId" class="swiper">
+                    <div class="swiper-wrapper">
+                        @foreach (var item in Recommendations)
                         {
-                            <div>
-                                <MudIcon Icon="@IconsFA.Brands.Icon("youtube").Font" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
-                                <MudLink Href="@($"https://www.youtube.com/watch?v={item.key}")" Target="_blank" Color="Color.Secondary"
-                                         Style="@((AppStateStatic.Size == Size.Small ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;"))">
-                                    @item.name
-                                </MudLink>
+                            <div class="swiper-slide" style="height: auto !important;">
+                                <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                                 Date="@item.release_date" RankUpDown="@item.RankUpDown" Rating="@item.rating"
+                                                 WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments">
+                                </PosterComponent>
                             </div>
                         }
-                    </MudStack>
-                </MudPaper>
-            }
-        </BodyFragment>
-    </PageSection>
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </BodyFragment>
+        </PageSection>
+        <PageSection Title="Videos" Color="Color.Secondary" Visible="@(Media != null && Media.Videos.Any())">
+            <BodyFragment>
+                @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])
+                {
+                    <MudPaper Outlined="true" Class="pa-2 mb-2">
+                        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                            @group
+                        </MudText>
+                        <MudDivider Class="mb-2"></MudDivider>
+                        <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap">
+                            @foreach (var item in Media?.Videos.Where(w => w.type == group) ?? [])
+                            {
+                                <div>
+                                    <MudIcon Icon="@IconsFA.Brands.Icon("youtube").Font" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
+                                    <MudLink Href="@($"https://www.youtube.com/watch?v={item.key}")" Target="_blank" Color="Color.Secondary"
+                                             Style="@((AppStateStatic.Size == Size.Small ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;"))">
+                                        @item.name
+                                    </MudLink>
+                                </div>
+                            }
+                        </MudStack>
+                    </MudPaper>
+                }
+            </BodyFragment>
+        </PageSection>
 
-    <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media3" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+        <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media3" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
 
-    <PageSection Title="@Translations.TabCredits" Color="Color.Secondary">
-        <BodyFragment>
-            <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" IsAuthenticated="IsAuthenticated">
-            </CreditsComponent>
-        </BodyFragment>
-    </PageSection>
-    <PageSection Title="Reviews" Color="Color.Secondary">
-        <BodyFragment>
-            @if (ImdbId.NotEmpty())
-            {
-                <ReviewComponent ImdbId="@ImdbId" EnglishTitle="@EnglishTitle?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").ToLower()"
-                                 Type="@Type" ReleaseDate="@Media?.release_date">
-                </ReviewComponent>
-            }
-        </BodyFragment>
-    </PageSection>
-</RenderControl>
+        <PageSection Title="@Translations.TabCredits" Color="Color.Secondary">
+            <BodyFragment>
+                <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" IsAuthenticated="IsAuthenticated">
+                </CreditsComponent>
+            </BodyFragment>
+        </PageSection>
+        <PageSection Title="Reviews" Color="Color.Secondary">
+            <BodyFragment>
+                @if (ImdbId.NotEmpty())
+                {
+                    <ReviewComponent ImdbId="@ImdbId" EnglishTitle="@EnglishTitle?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").ToLower()"
+                                     Type="@Type" ReleaseDate="@Media?.release_date">
+                    </ReviewComponent>
+                }
+            </BodyFragment>
+        </PageSection>
+    </RenderControl>
+}
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
     <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JavascriptVoidAsync("history.back"))" />
@@ -198,6 +210,11 @@
 
     protected override async Task LoadEssentialDataAsync()
     {
+        if (AppStateStatic.ConsumedEnergy > AppStateStatic.TotalEnergy)
+        {
+            return;
+        }
+
         Core?.LoadingStarted?.Invoke();
         Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
         Media.Videos.Reverse();
@@ -229,6 +246,8 @@
         }
 
         Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId);
+
+        AppStateStatic.EnergyConsumed?.Invoke();
     }
 
     protected override async Task LoadNonEssentialDataAsync()

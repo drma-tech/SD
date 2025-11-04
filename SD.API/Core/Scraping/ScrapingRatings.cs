@@ -11,13 +11,19 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
     private const string ImdbUrl = "https://www.imdb.com/title/{0}";
     private const string MetacriticMovieUrl = "https://www.metacritic.com/movie/{0}";
     private const string MetacriticTvUrl = "https://www.metacritic.com/tv/{0}";
-    private const string TraktMovieUrl = "https://trakt.tv/movies/{0}-{1}";
-    private const string TraktShowUrl = "https://trakt.tv/shows/{0}";
+    //private const string TraktMovieUrl = "https://trakt.tv/movies/{0}-{1}";
+    //private const string TraktShowUrl = "https://trakt.tv/shows/{0}";
 
     public Ratings GetMovieData(string? imdbId, string? tmdbRating, string? title, string? year)
     {
         var titleMeta = title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
-        var titleTrakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-").Replace("--", "-").Replace("--", "-").ToLower();
+        //var titleTrakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-").Replace("--", "-").Replace("--", "-").ToLower();
+
+        var rottenTomatoesRating = ratingApiRoot?.result?.ratings?.RottenTomatoes?.audience?.rating;
+        if (rottenTomatoesRating.HasValue) rottenTomatoesRating /= 10;
+
+        var letterboxdRating = ratingApiRoot?.result?.ratings?.Letterboxd?.audience?.rating;
+        if (letterboxdRating.HasValue) letterboxdRating *= 2;
 
         var data = new Ratings
         {
@@ -29,15 +35,19 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
             metacriticLink = ratingApiRoot?.result?.links?.Metacritic,
             imdb = ratingApiRoot?.result?.ratings?.IMDb?.audience?.rating.ToString(CultureInfo.InvariantCulture),
             imdbLink = ratingApiRoot?.result?.links?.IMDb,
-            rottenTomatoes = ratingApiRoot?.result?.ratings?.RottenTomatoes?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            trakt = null,
+            traktLink = ratingApiRoot?.result?.links?.Trakt,
+            rottenTomatoes = rottenTomatoesRating?.ToString(CultureInfo.InvariantCulture),
             rottenTomatoesLink = ratingApiRoot?.result?.links?.RottenTomatoes,
             filmAffinity = ratingApiRoot?.result?.ratings?.FilmAffinity?.audience?.rating.ToString(CultureInfo.InvariantCulture),
-            filmAffinityLink = ratingApiRoot?.result?.links?.FilmAffinity
+            filmAffinityLink = ratingApiRoot?.result?.links?.FilmAffinity,
+            letterboxd = letterboxdRating?.ToString(CultureInfo.InvariantCulture),
+            letterboxdLink = ratingApiRoot?.result?.links?.Letterboxd
         };
 
         if (imdbId.NotEmpty() && data.imdb.Empty()) ProcessMovieImdb(data, string.Format(ImdbRatingUrl, imdbId));
-        if (data.metacritic.Empty() && titleMeta.NotEmpty()) ProcessMovieMetacritic(data, string.Format(MetacriticMovieUrl, titleMeta), year);
-        if (data.trakt.Empty() && titleTrakt.NotEmpty()) ProcessTrack(data, string.Format(TraktMovieUrl, titleTrakt, year), year);
+        if (data.metacritic.Empty()) ProcessMovieMetacritic(data, ratingApiRoot?.result?.links?.Metacritic ?? string.Format(MetacriticMovieUrl, titleMeta), year);
+        //if (data.trakt.Empty()) ProcessTrack(data, ratingApiRoot?.result?.links?.Trakt ?? string.Format(TraktMovieUrl, titleTrakt, year), year);
 
         return data;
     }
@@ -45,7 +55,13 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
     public Ratings GetShowData(string? imdbId, string? tmdbRating, string? title, string? year)
     {
         var titleMeta = title?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").Replace("--", "-").ToLower();
-        var titleTrakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-").Replace("--", "-").Replace("--", "-").ToLower();
+        //var titleTrakt = title?.RemoveSpecialCharacters(null, '-').RemoveDiacritics().Replace(" ", "-").Replace("--", "-").Replace("--", "-").ToLower();
+
+        var rottenTomatoesRating = ratingApiRoot?.result?.ratings?.RottenTomatoes?.audience?.rating;
+        if (rottenTomatoesRating.HasValue) rottenTomatoesRating /= 10;
+
+        var letterboxdRating = ratingApiRoot?.result?.ratings?.Letterboxd?.audience?.rating;
+        if (letterboxdRating.HasValue) letterboxdRating *= 2;
 
         var data = new Ratings
         {
@@ -57,15 +73,19 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
             metacriticLink = ratingApiRoot?.result?.links?.Metacritic,
             imdb = ratingApiRoot?.result?.ratings?.IMDb?.audience?.rating.ToString(CultureInfo.InvariantCulture),
             imdbLink = ratingApiRoot?.result?.links?.IMDb,
-            rottenTomatoes = ratingApiRoot?.result?.ratings?.RottenTomatoes?.audience?.rating.ToString(CultureInfo.InvariantCulture),
+            trakt = null,
+            traktLink = ratingApiRoot?.result?.links?.Trakt,
+            rottenTomatoes = rottenTomatoesRating?.ToString(CultureInfo.InvariantCulture),
             rottenTomatoesLink = ratingApiRoot?.result?.links?.RottenTomatoes,
             filmAffinity = ratingApiRoot?.result?.ratings?.FilmAffinity?.audience?.rating.ToString(CultureInfo.InvariantCulture),
-            filmAffinityLink = ratingApiRoot?.result?.links?.FilmAffinity
+            filmAffinityLink = ratingApiRoot?.result?.links?.FilmAffinity,
+            letterboxd = letterboxdRating?.ToString(CultureInfo.InvariantCulture),
+            letterboxdLink = ratingApiRoot?.result?.links?.Letterboxd
         };
 
         if (imdbId.NotEmpty() && data.imdb.Empty()) ProcessShowImdb(data, string.Format(ImdbUrl, imdbId));
         if (data.metacritic.Empty()) ProcessShowMetacritic(data, string.Format(MetacriticTvUrl, titleMeta), year);
-        if (data.trakt.Empty()) ProcessTrack(data, string.Format(TraktShowUrl, titleTrakt), year);
+        //if (data.trakt.Empty()) ProcessTrack(data, string.Format(TraktShowUrl, titleTrakt), year);
 
         return data;
     }
@@ -79,6 +99,8 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
     {
         try
         {
+            if (metacriticPath.Empty()) return;
+
             var web = new HtmlWeb();
             var doc = web.Load(metacriticPath);
 
@@ -125,6 +147,8 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
     {
         try
         {
+            if (metacriticPath.Empty()) return;
+
             var web = new HtmlWeb();
             var doc = web.Load(metacriticPath);
 
@@ -165,6 +189,8 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
     {
         try
         {
+            if (imdbPath.Empty()) return;
+
             var web = new HtmlWeb();
             var doc = web.Load(imdbPath);
 
@@ -180,6 +206,8 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
     {
         try
         {
+            if (imdbPath.Empty()) return;
+
             var web = new HtmlWeb();
             var doc = web.Load(imdbPath);
 
@@ -191,35 +219,37 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
         }
     }
 
-    private void ProcessTrack(Ratings data, string traktUrl, string? year)
-    {
-        traktUrl = traktUrl.Replace("--", "-");
+    //private void ProcessTrack(Ratings data, string traktUrl, string? year)
+    //{
+    //    if (traktUrl.Empty()) return;
 
-        try
-        {
-            var web = new HtmlWeb();
-            var doc = web.Load(traktUrl);
+    //    traktUrl = traktUrl.Replace("--", "-");
 
-            if (doc.DocumentNode.InnerText.Contains("Page Not Found (404) - Trakt")) return;
+    //    try
+    //    {
+    //        var web = new HtmlWeb();
+    //        var doc = web.Load(traktUrl);
 
-            var pageYear = GetNodeInnerText(doc, "html/body/div[2]/section[1]/div[4]/div/div/div[2]/h1/span");
+    //        if (doc.DocumentNode.InnerText.Contains("Page Not Found (404) - Trakt")) return;
 
-            if (year != null && pageYear != null && year != pageYear)
-            {
-                //probably wrong title, then try to search by other url
-                doc = web.Load($"{traktUrl}-{year}");
-                data.trakt = GetNodeInnerText(doc, "//*[@id=\"summary-ratings-wrapper\"]/div/div/div/ul[1]/li[1]/a/div[2]/div[1]")?.Replace("%", "");
-                data.traktLink = traktUrl;
-            }
-            else
-            {
-                data.trakt = GetNodeInnerText(doc, "//*[@id=\"summary-ratings-wrapper\"]/div/div/div/ul[1]/li[1]/a/div[2]/div[1]")?.Replace("%", "");
-                data.traktLink = traktUrl;
-            }
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "TraktUrl {TraktUrl}, Year {Year}", traktUrl, year);
-        }
-    }
+    //        var pageYear = GetNodeInnerText(doc, "html/body/div[1]/div[3]/div/div/trakt-render-for[1]/div[1]/div[2]/div/div[2]/div/div[2]/div[2]/div/p");
+
+    //        if (year != null && pageYear != null && year != pageYear)
+    //        {
+    //            //probably wrong title, then try to search by other url
+    //            doc = web.Load($"{traktUrl}-{year}");
+    //            data.trakt = GetNodeInnerText(doc, "html/body/div[1]/div[3]/div/div/trakt-render-for[1]/div[1]/div[2]/div/div[2]/div/div[1]/rating[1]/a/div/div/div/div/p")?.Replace("%", "");
+    //            data.traktLink = traktUrl;
+    //        }
+    //        else
+    //        {
+    //            data.trakt = GetNodeInnerText(doc, "html/body/div[1]/div[3]/div/div/trakt-render-for[1]/div[1]/div[2]/div/div[2]/div/div[1]/rating[1]/a/div/div/div/div/p")?.Replace("%", "");
+    //            data.traktLink = traktUrl;
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        logger.LogError(ex, "TraktUrl {TraktUrl}, Year {Year}", traktUrl, year);
+    //    }
+    //}
 }

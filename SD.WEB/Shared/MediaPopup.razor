@@ -111,6 +111,16 @@
                                             </MudLink>
                                         </MudTooltip>
                                     }
+                                    @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.letterboxd))
+                                    {
+                                        <MudTooltip Text="Letterboxd">
+                                            <MudLink Href="@_ratingsCache.Data?.letterboxdLink" Target="_blank" rel="noindex, nofollow">
+                                                <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.letterboxd)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
+                                                    <MudImage Src="logo/letterboxd.png" Alt="Letterboxd" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.letterboxd
+                                                </MudChip>
+                                            </MudLink>
+                                        </MudTooltip>
+                                    }
                                 </RenderControl>
                             </div>
                             <MudText Typo="Typo.body1" Align="Align.Justify" Class="my-3">
@@ -342,8 +352,6 @@
         if (string.IsNullOrEmpty(rating)) return Color.Secondary;
 
         float.TryParse(rating.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var val);
-
-        if (val > 10) val = val / 10;
 
         if (val >= 8)
         {

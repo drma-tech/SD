@@ -2,6 +2,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using SD.API.Core.Scraping;
+using SD.Shared.Models.Energy;
 using SD.Shared.Models.List;
 using SD.Shared.Models.List.Imdb;
 using SD.Shared.Models.News;
@@ -28,6 +29,81 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         {
             req.ProcessException(ex);
             throw;
+        }
+    }
+
+    [Function("Energy")]
+    public async Task<HttpResponseData?> Energy(
+       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/energy")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var ip = req.GetUserIP();
+            var cacheKey = $"energy_{ip}";
+            CacheDocument<EnergyModel>? doc;
+            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
+            if (cachedBytes is { Length: > 0 })
+            {
+                doc = JsonSerializer.Deserialize<CacheDocument<EnergyModel>>(cachedBytes);
+            }
+            else
+            {
+                doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
+
+                if (doc == null)
+                {
+                    var model = new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
+
+                    doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);
+                }
+
+                await SaveCache(doc, cacheKey, TtlCache.OneDay);
+            }
+
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
+        }
+        catch (TaskCanceledException ex)
+        {
+            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+                ? new NotificationException("Cancellation Requested")
+                : new NotificationException("Timeout occurred"));
+
+            return req.CreateResponse(HttpStatusCode.RequestTimeout);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            return await req.CreateResponse<CacheDocument<EnergyModel>>(null, TtlCache.OneDay, cancellationToken);
+        }
+    }
+
+    [Function("EnergyAdd")]
+    public async Task EnergyAdd(
+       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/cache/energy/add")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var ip = req.GetUserIP();
+            var cacheKey = $"energy_{ip}";
+            var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
+
+            if (doc == null)
+            {
+                var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 10 };
+
+                doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);
+            }
+            else
+            {
+                doc.Data!.ConsumedEnergy += 1;
+            }
+
+            await cacheRepo.UpsertItemAsync(doc!, cancellationToken);
+            await SaveCache(doc, cacheKey, TtlCache.OneDay);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
         }
     }
 
@@ -344,7 +420,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             }
             else
             {
-                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (one week)
+                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
 
                 doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
 
@@ -406,7 +482,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             }
             else
             {
-                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (one week)
+                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
 
                 doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
 
@@ -464,7 +540,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             }
             else
             {
-                if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (one week)
+                if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first week of launch)
 
                 doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
 
@@ -527,7 +603,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             }
             else
             {
-                if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (one week)
+                if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first week of launch)
 
                 doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
 
@@ -576,26 +652,22 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         {
             var rating = doc.Data;
 
-            var imdbOk = float.TryParse(rating.imdb?.Replace(",", "."), NumberStyles.Any,
-                CultureInfo.InvariantCulture, out var imdb);
-            var tmdbOk = float.TryParse(rating.tmdb?.Replace(",", "."), NumberStyles.Any,
-                CultureInfo.InvariantCulture, out var tmdb);
-            var metaOk = float.TryParse(rating.metacritic?.Replace(",", "."), NumberStyles.Any,
-                CultureInfo.InvariantCulture, out var meta);
-            var tracOk = float.TryParse(rating.trakt?.Replace(",", "."), NumberStyles.Any,
-                CultureInfo.InvariantCulture, out var trac);
-            var rotoOk = float.TryParse(rating.rottenTomatoes?.Replace(",", "."), NumberStyles.Any,
-                CultureInfo.InvariantCulture, out var roto);
-            var fiafOk = float.TryParse(rating.filmAffinity?.Replace(",", "."), NumberStyles.Any,
-                CultureInfo.InvariantCulture, out var fiaf);
+            var imdbOk = float.TryParse(rating.imdb?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var imdb);
+            var tmdbOk = float.TryParse(rating.tmdb?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var tmdb);
+            var metaOk = float.TryParse(rating.metacritic?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var meta);
+            var tracOk = float.TryParse(rating.trakt?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var trac);
+            var rotoOk = float.TryParse(rating.rottenTomatoes?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var roto);
+            var fiafOk = float.TryParse(rating.filmAffinity?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var fiaf);
+            var lettOk = float.TryParse(rating.letterboxd?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var lett);
 
             var count = 0;
             if (imdbOk && imdb >= 8) count++;
             if (tmdbOk && tmdb >= 8) count++;
             if (metaOk && meta >= 8) count++;
-            if (tracOk && trac >= 80) count++;
-            if (rotoOk && roto >= 80) count++;
+            if (tracOk && trac >= 8 && trac <= 10) count++; //new scale 0-10
+            if (rotoOk && roto >= 8 && roto <= 10) count++; //new scale 0-10
             if (fiafOk && fiaf >= 8) count++;
+            if (lettOk && lett >= 8) count++; //scale changed to 0-10
 
             if (count >= 5) //if there is at least 5 green ratings
             {

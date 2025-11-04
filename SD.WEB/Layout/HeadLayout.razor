@@ -1,7 +1,10 @@
+@inherits ComponentCore<HeadLayout>
+
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Subscription.Core
-@inherits ComponentCore<HeadLayout>
+
+@inject EnergyApi EnergyApi
 
 @if (_processing)
 {
@@ -10,21 +13,51 @@
 <MudAppBar Fixed="true" Elevation="1" Color="Color.Dark">
     @if (Breakpoint <= Breakpoint.Xs) //mobile view
     {
-        <MudIconButton Icon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Style="padding: 8px;" />
-        <MudIconButton Icon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Style="padding: 8px;" Target="_self" Rel="noindex, nofollow" />
-        <MudIconButton Icon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Style="padding: 8px;" />
-        <MudIconButton Icon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Style="padding: 8px;" />
+        <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="icon-text-button">
+            @Menu.Home
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="icon-text-button" Target="_self" Rel="noindex, nofollow">
+            @Menu.Profile
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="icon-text-button">
+            @Menu.Platforms
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Class="icon-text-button">
+            @Menu.Collections
+        </MudButton>
         <MudSpacer />
+        <MudTooltip Text="@GlobalTranslations.EnergyTooltip">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2" Style="padding: 6px; min-width: 48px;">
+                <MudIcon Icon="@_energyIcon" Color="GetEnergyColor()"></MudIcon>
+                <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
+            </MudButton>
+        </MudTooltip>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { _open = true; })" />
     }
     else if (Breakpoint == Breakpoint.Sm) //tablet view
     {
-        <MudIconButton Icon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Style="padding: 8px;" />
-        <MudIconButton Icon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Style="padding: 8px;" Target="_self" Rel="noindex, nofollow" />
-        <MudIconButton Icon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Style="padding: 8px;" />
-        <MudIconButton Icon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Style="padding: 8px;" />
-        <MudIconButton Icon="@IconsFA.Solid.Icon("headset").Font" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")" Style="padding: 8px;" />
+        <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="icon-text-button">
+            @Menu.Home
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="icon-text-button" Target="_self" Rel="noindex, nofollow">
+            @Menu.Profile
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="icon-text-button">
+            @Menu.Platforms
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Class="icon-text-button">
+            @Menu.Collections
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("headset").Font" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")" Class="icon-text-button">
+            @Menu.Support
+        </MudButton>
         <MudSpacer />
+        <MudTooltip Text="@GlobalTranslations.EnergyTooltip">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2" Style="padding: 6px; min-width: 48px;">
+                <MudIcon Icon="@_energyIcon" Color="GetEnergyColor()"></MudIcon>
+                <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
+            </MudButton>
+        </MudTooltip>
         <AuthorizeView>
             <Authorized>
                 <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
@@ -59,6 +92,12 @@
             @Menu.Collections
         </MudButton>
         <MudSpacer />
+        <MudTooltip Text="@GlobalTranslations.EnergyTooltip">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2" Style="padding: 6px; min-width: 48px;">
+                <MudIcon Icon="@_energyIcon" Color="GetEnergyColor()"></MudIcon>
+                <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
+            </MudButton>
+        </MudTooltip>
         <AuthorizeView>
             <Authorized>
                 <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
@@ -117,9 +156,27 @@
     private int _processingCount = 0;
     private bool _processing => _processingCount > 0;
 
+    private string _energyIcon = IconsFA.Solid.Icon("bolt").Font;
+
     protected override void OnInitialized()
     {
         Navigation.LocationChanged += delegate { StateHasChanged(); };
+        AppStateStatic.EnergyConsumed += () =>
+        {
+            AppStateStatic.ConsumedEnergy++;
+            
+            _energyIcon = IconsFA.Solid.Icon("bolt").WithAnimation(IconAnimation.Bounce).Font;
+
+            Task.Delay(1000).ContinueWith(_ =>
+            {
+                _energyIcon = IconsFA.Solid.Icon("bolt").Font;
+                InvokeAsync(StateHasChanged);
+            });
+
+            StateHasChanged();
+
+            InvokeAsync(EnergyApi.AddEnergy);
+        };
 
         AppStateStatic.ProcessingStarted += () =>
         {
@@ -175,6 +232,18 @@
         var uri = new Uri(Navigation.Uri);
 
         return string.Equals(uri.AbsolutePath, endpoint, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private Color GetEnergyColor()
+    {
+        double ratio = (double)(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy) / AppStateStatic.TotalEnergy;
+
+        if (ratio <= 0.3)
+            return Color.Error;
+        else if (ratio <= 0.6)
+            return Color.Warning;
+        else
+            return Color.Success;
     }
 
 }

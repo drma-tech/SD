@@ -16,6 +16,7 @@
 @inject NavigationManager Navigation
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
+@inject EnergyApi EnergyApi
 
 <MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@_darkMode" />
 <MudPopoverProvider />
@@ -192,6 +193,13 @@
                     });
                 }
             }
+
+            //energy
+            var energy = await EnergyApi.GetEnergy();
+
+            AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
+            AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
+            StateHasChanged();
         }
     }
 

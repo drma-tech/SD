@@ -120,6 +120,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddScoped<PaymentAuthApi>();
     collection.AddScoped<IpInfoApi>();
     collection.AddScoped<IpInfoServerApi>();
+    collection.AddScoped<EnergyApi>();
 }
 
 static async Task ConfigureCulture(WebAssemblyHost? app, IJSRuntime js)

@@ -52,6 +52,7 @@ public static class SubscriptionHelper
 
 public abstract class Restrictions
 {
+    public abstract int Energy { get; }
     public abstract int FavoriteProviders { get; }
     public abstract int MySuggestions { get; }
     public abstract int Watched { get; } //30x
@@ -61,6 +62,7 @@ public abstract class Restrictions
 
 public class BasicRestrictions : Restrictions
 {
+    public override int Energy => 10;
     public override int FavoriteProviders => 2;
     public override int MySuggestions => 0;
     public override int Watched => 14;
@@ -70,6 +72,7 @@ public class BasicRestrictions : Restrictions
 
 public class StandardRestrictions : Restrictions
 {
+    public override int Energy => 50;
     public override int FavoriteProviders => 10;
     public override int MySuggestions => 14;
     public override int Watched => 420;
@@ -79,6 +82,7 @@ public class StandardRestrictions : Restrictions
 
 public class PremiumRestrictions : Restrictions
 {
+    public override int Energy => 100;
     public override int FavoriteProviders => 20;
     public override int MySuggestions => 20;
     public override int Watched => 600;

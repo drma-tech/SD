@@ -20,6 +20,14 @@
                     <MudChip T="string" Icon="@IconsFA.Solid.Icon("xmark").Font" Color="Color.Error" Size="Size.Small" Label="true" Class="chip-no-text" />
                 </MudItem>
                 <MudItem xs="9">
+                    <MudText>Energy</MudText>
+                </MudItem>
+                <MudItem>
+                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                        <MudText>@AccountProduct.Basic.GetRestrictions().Energy.ToString()</MudText>
+                    </MudChip>
+                </MudItem>
+                <MudItem xs="9">
                     <MudText>@Profile.Resources.Translations.MyPlatforms</MudText>
                 </MudItem>
                 <MudItem>
@@ -79,6 +87,14 @@
                     <MudChip T="string" Icon="@IconsFA.Solid.Icon("check").Font" Color="Color.Success" Size="Size.Small" Label="true" Class="chip-no-text" />
                 </MudItem>
                 <MudItem xs="9">
+                    <MudText>Energy</MudText>
+                </MudItem>
+                <MudItem>
+                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                        <MudText>@AccountProduct.Standard.GetRestrictions().Energy.ToString()</MudText>
+                    </MudChip>
+                </MudItem>
+                <MudItem xs="9">
                     <MudText>@Profile.Resources.Translations.MyPlatforms</MudText>
                 </MudItem>
                 <MudItem>
@@ -136,6 +152,14 @@
                 </MudItem>
                 <MudItem>
                     <MudChip T="string" Icon="@IconsFA.Solid.Icon("check").Font" Color="Color.Success" Size="Size.Small" Label="true" Class="chip-no-text" />
+                </MudItem>
+                <MudItem xs="9">
+                    <MudText>Energy</MudText>
+                </MudItem>
+                <MudItem>
+                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
+                        <MudText>@AccountProduct.Premium.GetRestrictions().Energy.ToString()</MudText>
+                    </MudChip>
                 </MudItem>
                 <MudItem xs="9">
                     <MudText>@Profile.Resources.Translations.MyPlatforms</MudText>
@@ -247,7 +271,7 @@
                 }
                 else if (Provider == PaymentProvider.Google)
                 {
-                    await JavascriptVoidAsync("openGoogleCheckout", priceId);
+                    await JavascriptVoidAsync("openGoogleCheckout", priceId, "type");
                 }
                 else
                 {

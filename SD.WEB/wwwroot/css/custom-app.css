@@ -343,6 +343,26 @@ body .pwa-updater[b-pwa-updater] {
     color: var(--mud-palette-primary);
 }
 
+.icon-text-button {
+    min-width: 48px !important;
+    padding: 6px !important;
+    text-transform: none !important;
+}
+
+    .icon-text-button .mud-button-label {
+        flex-direction: column;
+    }
+
+    .icon-text-button .mud-icon-root {
+        margin-bottom: 2px;
+    }
+
+    .icon-text-button span {
+        font-size: 0.60rem;
+        line-height: 1;
+        margin-inline: inherit !important
+    }
+
 /* FONT AWESOME */
 
 .fa-sm {

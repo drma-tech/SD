@@ -16,4 +16,6 @@ public class Ratings
     public string? rottenTomatoesLink { get; set; }
     public string? filmAffinity { get; set; }
     public string? filmAffinityLink { get; set; }
+    public string? letterboxd { get; set; }
+    public string? letterboxdLink { get; set; }
 }

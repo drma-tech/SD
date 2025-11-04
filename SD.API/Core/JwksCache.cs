@@ -9,7 +9,7 @@ namespace SD.API.Core
         private static DateTime _lastFetch = DateTime.MinValue;
         private static bool _forceRefresh = false;
 
-        public static TimeSpan MinRefreshInterval { get; set; } = TimeSpan.FromMinutes(5);
+        public static TimeSpan MinRefreshInterval { get; set; } = TimeSpan.FromMinutes(1);
         public static TimeSpan MaxCacheDuration { get; set; } = TimeSpan.FromHours(6);
 
         public static async Task<IReadOnlyList<SecurityKey>> GetKeysAsync(string jwksUri, CancellationToken cancellationToken)
