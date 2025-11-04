@@ -72,51 +72,54 @@
             AppStateStatic.ShowError = msg => { Snackbar.Add(msg, Severity.Error); };
             AppStateStatic.Version = GetAppVersion();
 
-            if (AppStateStatic.User == null)
+            if (OperatingSystem.IsBrowser())
             {
-                var authState = await AuthenticationState;
-
-                AppStateStatic.User = authState.User;
-                AppStateStatic.IsAuthenticated = AppStateStatic.User?.Identity is not null && AppStateStatic.User.Identity.IsAuthenticated;
-                AppStateStatic.UserId = AppStateStatic.User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            }
-
-            if (AppStateStatic.IsAuthenticated)
-            {
-                //new users
-                var principal = await PrincipalApi.Get(true);
-
-                if (principal == null)
+                if (AppStateStatic.User == null)
                 {
-                    IsLoading = false; StateHasChanged();
-                    Navigation.NavigateTo("/login-success");
-                    return;
+                    var authState = await AuthenticationState;
+
+                    AppStateStatic.User = authState.User;
+                    AppStateStatic.IsAuthenticated = AppStateStatic.User?.Identity is not null && AppStateStatic.User.Identity.IsAuthenticated;
+                    AppStateStatic.UserId = AppStateStatic.User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
                 }
-            }
-            else
-            {
-                //open onboarding dialog for new users
-                var onboarding = await JsRuntime.GetLocalStorage("onboarding-popup");
-                if (onboarding.Empty())
+
+                if (AppStateStatic.IsAuthenticated)
                 {
-                    await DialogService.OnboardingPopup();
-                    await JsRuntime.SetLocalStorage("onboarding-popup", true.ToString().ToLower());
+                    //new users
+                    var principal = await PrincipalApi.Get(true);
+
+                    if (principal == null)
+                    {
+                        IsLoading = false; StateHasChanged();
+                        Navigation.NavigateTo("/login-success");
+                        return;
+                    }
                 }
-            }
+                else
+                {
+                    //open onboarding dialog for new users
+                    var onboarding = await JsRuntime.GetLocalStorage("onboarding-popup");
+                    if (onboarding.Empty())
+                    {
+                        await DialogService.OnboardingPopup();
+                        await JsRuntime.SetLocalStorage("onboarding-popup", true.ToString().ToLower());
+                    }
+                }
 
-            //energy
-            CacheDocument<EnergyModel>? energy;
-            if (AppStateStatic.IsAuthenticated)
-            {
-                energy = await EnergyAuthApi.GetEnergy();
-            }
-            else
-            {
-                energy = await EnergyApi.GetEnergy();
-            }
+                //energy
+                CacheDocument<EnergyModel>? energy;
+                if (AppStateStatic.IsAuthenticated)
+                {
+                    energy = await EnergyAuthApi.GetEnergy();
+                }
+                else
+                {
+                    energy = await EnergyApi.GetEnergy();
+                }
 
-            AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
-            AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
+                AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
+                AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
+            }
 
             IsLoading = false; StateHasChanged();
         }
@@ -140,7 +143,7 @@
     {
         await base.OnAfterRenderAsync(firstRender);
 
-        if (firstRender)
+        if (firstRender && OperatingSystem.IsBrowser())
         {
             //DARK MODE
             var darkMode = await AppStateStatic.GetDarkMode(JsRuntime);
