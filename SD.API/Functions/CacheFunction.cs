@@ -83,7 +83,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
     {
         try
         {
-            var ip = req.GetUserIP();
+            var ip = req.GetUserIP(false);
             var cacheKey = $"energy_{ip}";
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
 
