@@ -57,11 +57,15 @@
                 }
                 else if (Provider == PaymentProvider.Apple)
                 {
+                    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Class="mb-3">
+                        Apple's subscription option is still in the testing phase. Please do not use it.
+                    </MudAlert>
+
                     <SubscriptionPlans IsAuthenticated="IsAuthenticated" Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans>
                 }
                 else if (Provider == PaymentProvider.Google)
                 {
-                     <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
+                    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
                         The Google subscription option isn’t available yet. Stay tuned for updates!
                     </MudAlert>
                 }
@@ -152,15 +156,8 @@
 
         if (Platform == SD.Shared.Enums.Platform.ios)
         {
-            if (CurrentCountry == "US")
-            {
-                Providers.Add(PaymentProvider.Paddle);
-                Providers.Add(PaymentProvider.Apple);
-            }
-            else
-            {
-                Providers.Add(PaymentProvider.Apple);
-            }
+            Providers.Add(PaymentProvider.Apple);
+            Providers.Add(PaymentProvider.Paddle);            
         }
         else if (Platform == SD.Shared.Enums.Platform.play)
         {

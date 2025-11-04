@@ -44,14 +44,11 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             var cacheKey = $"energy_{ip}";
 
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
+            var model = doc?.Data;
 
-            if (doc == null)
-            {
-                var model = new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
+            model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
 
-                doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);
-            }
-
+            doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken); //check if upsert is needed
             await SaveCache(doc, cacheKey, TtlCache.OneDay);
 
             return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
@@ -83,21 +80,18 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             var cacheKey = $"energy_auth_{ip}";
 
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
+            var model = doc?.Data;
 
-            if (doc == null)
-            {
-                var model = new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
-
-                doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);
-            }
+            model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
 
             var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
 
             if (principal?.Subscription != null)
             {
-                doc!.Data!.TotalEnergy = principal.Subscription.ActiveProduct.GetRestrictions().Energy;
+                model.TotalEnergy = principal.Subscription.ActiveProduct.GetRestrictions().Energy;
             }
 
+            doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken); //todo: check if upsert is needed
             await SaveCache(doc, cacheKey, TtlCache.OneDay);
 
             return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
