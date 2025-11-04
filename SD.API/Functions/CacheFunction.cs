@@ -1,7 +1,9 @@
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using SD.API.Core.Scraping;
+using SD.Shared.Models.Auth;
 using SD.Shared.Models.Energy;
 using SD.Shared.Models.List;
 using SD.Shared.Models.List.Imdb;
@@ -15,7 +17,7 @@ using Item = SD.Shared.Models.News.Item;
 
 namespace SD.API.Functions;
 
-public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache distributedCache, IHttpClientFactory factory)
+public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository repo, IDistributedCache distributedCache, IHttpClientFactory factory)
 {
     [Function("Settings")]
     public static async Task<HttpResponseData> Configurations(
@@ -40,25 +42,63 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
         {
             var ip = req.GetUserIP(false);
             var cacheKey = $"energy_{ip}";
-            CacheDocument<EnergyModel>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
-            if (cachedBytes is { Length: > 0 })
+
+            var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
+
+            if (doc == null)
             {
-                doc = JsonSerializer.Deserialize<CacheDocument<EnergyModel>>(cachedBytes);
+                var model = new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
+
+                doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);
             }
-            else
+
+            await SaveCache(doc, cacheKey, TtlCache.OneDay);
+
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
+        }
+        catch (TaskCanceledException ex)
+        {
+            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+                ? new NotificationException("Cancellation Requested")
+                : new NotificationException("Timeout occurred"));
+
+            return req.CreateResponse(HttpStatusCode.RequestTimeout);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            return await req.CreateResponse<CacheDocument<EnergyModel>>(null, TtlCache.OneDay, cancellationToken);
+        }
+    }
+
+    [Function("EnergyAuth")]
+    public async Task<HttpResponseData?> EnergyAuth(
+      [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "cache/energy")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var ip = req.GetUserIP(false);
+            var userId = await req.GetUserIdAsync(cancellationToken);
+
+            var cacheKey = $"energy_auth_{ip}";
+
+            var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
+
+            if (doc == null)
             {
-                doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
+                var model = new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
 
-                if (doc == null)
-                {
-                    var model = new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
-
-                    doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);
-                }
-
-                await SaveCache(doc, cacheKey, TtlCache.OneDay);
+                doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);
             }
+
+            var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
+
+            if (principal?.Subscription != null)
+            {
+                doc!.Data!.TotalEnergy = principal.Subscription.ActiveProduct.GetRestrictions().Energy;
+            }
+
+            await SaveCache(doc, cacheKey, TtlCache.OneDay);
 
             return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
@@ -90,6 +130,44 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache di
             if (doc == null)
             {
                 var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 10 };
+
+                doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);
+            }
+            else
+            {
+                doc.Data!.ConsumedEnergy += 1;
+            }
+
+            await cacheRepo.UpsertItemAsync(doc!, cancellationToken);
+            await SaveCache(doc, cacheKey, TtlCache.OneDay);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+        }
+    }
+
+    [Function("EnergyAuthAdd")]
+    public async Task EnergyAuthAdd(
+      [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "cache/energy/add")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var ip = req.GetUserIP(false);
+            var userId = await req.GetUserIdAsync(cancellationToken);
+
+            var cacheKey = $"energy_auth_{ip}";
+            var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
+
+            if (doc == null)
+            {
+                var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 10 };
+                var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
+
+                if (principal?.Subscription != null)
+                {
+                    model!.TotalEnergy = principal.Subscription.ActiveProduct.GetRestrictions().Energy;
+                }
 
                 doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);
             }

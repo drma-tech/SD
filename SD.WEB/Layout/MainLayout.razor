@@ -1,5 +1,6 @@
 ﻿@using System.Security.Claims
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using SD.Shared.Models.Energy
 @using SD.Shared.Models.Subscription
 @using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Subscription.Core
@@ -17,6 +18,7 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 @inject EnergyApi EnergyApi
+@inject EnergyAuthApi EnergyAuthApi
 
 <MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@_darkMode" />
 <MudPopoverProvider />
@@ -81,6 +83,7 @@
 
             if (AppStateStatic.IsAuthenticated)
             {
+                //new users
                 var principal = await PrincipalApi.Get(true);
 
                 if (principal == null)
@@ -90,6 +93,30 @@
                     return;
                 }
             }
+            else
+            {
+                //open onboarding dialog for new users
+                var onboarding = await JsRuntime.GetLocalStorage("onboarding-popup");
+                if (onboarding.Empty())
+                {
+                    await DialogService.OnboardingPopup();
+                    await JsRuntime.SetLocalStorage("onboarding-popup", true.ToString().ToLower());
+                }
+            }
+
+            //energy
+            CacheDocument<EnergyModel>? energy;
+            if (AppStateStatic.IsAuthenticated)
+            {
+                energy = await EnergyAuthApi.GetEnergy();
+            }
+            else
+            {
+                energy = await EnergyApi.GetEnergy();
+            }
+
+            AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
+            AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
 
             IsLoading = false; StateHasChanged();
         }
@@ -104,6 +131,11 @@
         }
     }
 
+    /// <summary>
+    /// do not process anything here with AuthenticationState
+    /// </summary>
+    /// <param name="firstRender"></param>
+    /// <returns></returns>
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
@@ -137,17 +169,6 @@
                         Navigation.NavigateTo("/ask-consent");
                         return;
                     }
-                }
-            }
-
-            //open onboarding dialog for new users
-            if (!AppStateStatic.IsAuthenticated)
-            {
-                var onboarding = await JsRuntime.GetLocalStorage("onboarding-popup");
-                if (onboarding.Empty())
-                {
-                    await DialogService.OnboardingPopup();
-                    await JsRuntime.SetLocalStorage("onboarding-popup", true.ToString().ToLower());
                 }
             }
 
@@ -193,13 +214,6 @@
                     });
                 }
             }
-
-            //energy
-            var energy = await EnergyApi.GetEnergy();
-
-            AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
-            AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
-            StateHasChanged();
         }
     }
 

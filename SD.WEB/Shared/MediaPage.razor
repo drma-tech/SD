@@ -99,21 +99,23 @@ else
         </PageSection>
         <PageSection Title="Recommendations" Color="Color.Secondary">
             <BodyFragment>
-                <div id="@_swiperId" class="swiper">
-                    <div class="swiper-wrapper">
-                        @foreach (var item in Recommendations)
-                        {
-                            <div class="swiper-slide" style="height: auto !important;">
-                                <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                                 Date="@item.release_date" RankUpDown="@item.RankUpDown" Rating="@item.rating"
-                                                 WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments">
-                                </PosterComponent>
-                            </div>
-                        }
+                <RenderControl Core="CoreRecommendations" Model="Recommendations" ExpressionEmpty="@((HashSet<MediaDetail> lst) => lst.Empty())" Context="ctx">
+                    <div id="@_swiperId" class="swiper">
+                        <div class="swiper-wrapper">
+                            @foreach (var item in Recommendations)
+                            {
+                                <div class="swiper-slide" style="height: auto !important;">
+                                    <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                                     Date="@item.release_date" RankUpDown="@item.RankUpDown" Rating="@item.rating"
+                                                     WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments">
+                                    </PosterComponent>
+                                </div>
+                            }
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
                     </div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                </div>
+                </RenderControl>
             </BodyFragment>
         </PageSection>
         <PageSection Title="Videos" Color="Color.Secondary" Visible="@(Media != null && Media.Videos.Any())">
@@ -192,6 +194,7 @@ else
     private CacheDocument<Ratings>? _ratingsCache;
 
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
+    private RenderControlCore<HashSet<MediaDetail>> CoreRecommendations { get; set; } = new();
     public HashSet<MediaDetail> Recommendations { get; set; } = [];
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -245,7 +248,9 @@ else
             _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), CoreRatings);
         }
 
+        CoreRecommendations?.LoadingStarted?.Invoke();
         Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId);
+        CoreRecommendations?.LoadingFinished?.Invoke(Recommendations);
 
         AppStateStatic.EnergyConsumed?.Invoke();
     }

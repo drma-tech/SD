@@ -5,6 +5,7 @@
 @using SD.WEB.Modules.Subscription.Core
 
 @inject EnergyApi EnergyApi
+@inject EnergyAuthApi EnergyAuthApi
 
 @if (_processing)
 {
@@ -164,7 +165,7 @@
         AppStateStatic.EnergyConsumed += () =>
         {
             AppStateStatic.ConsumedEnergy++;
-            
+
             _energyIcon = IconsFA.Solid.Icon("bolt").WithAnimation(IconAnimation.Bounce).Font;
 
             Task.Delay(1000).ContinueWith(_ =>
@@ -175,7 +176,10 @@
 
             StateHasChanged();
 
-            InvokeAsync(EnergyApi.AddEnergy);
+            if (AppStateStatic.IsAuthenticated)
+                InvokeAsync(EnergyAuthApi.AddEnergy);
+            else
+                InvokeAsync(EnergyApi.AddEnergy);
         };
 
         AppStateStatic.ProcessingStarted += () =>
