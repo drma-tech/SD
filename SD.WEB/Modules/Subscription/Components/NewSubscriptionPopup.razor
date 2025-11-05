@@ -3,6 +3,7 @@
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Modules.Subscription.Resources
 
+@inject PaymentAuthApi PaymentAuthApi
 @inject IpInfoApi IpInfoApi
 
 <MudDialog Style="width: 100%">
@@ -135,6 +136,7 @@
     protected override void OnInitialized()
     {
         AppStateStatic.RegistrationSuccessful += async () => await RegistrationSuccessful();
+        AppStateStatic.AppleVerify += async (string receipt) => await AppleVerify(receipt);
     }
 
     protected override async Task LoadNonEssentialDataAsync()
@@ -185,6 +187,33 @@
             if (freshClient == null) throw new NotificationException("Client null");
 
             if (freshClient.Subscription?.Active == true && freshClient.Subscription?.Product != null)
+            {
+                Client = freshClient;
+                StateHasChanged();
+
+                await ShowSuccess(Translations.RegistrationSuccessful);
+            }
+            else
+            {
+                throw new NotificationException("Something went wrong with your subscription. Please contact support.");
+            }
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    private async Task AppleVerify(string receipt)
+    {
+        try
+        {
+            await PaymentAuthApi.AppleVerify(receipt);
+            
+            var freshClient = await PrincipalApi.Get(true, true);
+            if (freshClient == null) throw new NotificationException("Client null");
+
+            if (freshClient.Subscription?.IsActive() == true && freshClient.Subscription?.Product != null)
             {
                 Client = freshClient;
                 StateHasChanged();

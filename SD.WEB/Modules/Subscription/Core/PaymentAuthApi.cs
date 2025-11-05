@@ -9,9 +9,15 @@ namespace SD.WEB.Modules.Subscription.Core
             await PostAsync(Endpoint.CreateCustomer, null, null);
         }
 
+        public async Task AppleVerify(string receipt)
+        {
+            await PostAsync(Endpoint.AppleVerify, null, receipt);
+        }
+
         private struct Endpoint
         {
             public const string CreateCustomer = "paddle/customer";
+            public const string AppleVerify = "apple/verify";
         }
     }
 }

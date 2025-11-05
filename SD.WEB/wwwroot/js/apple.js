@@ -1,36 +1,23 @@
 ﻿"use strict";
 
 function openAppleCheckout(productId) {
-    try {
-        alert("before test");
-        if (!WTN) alert("WTN plugin not found");
-        alert("calling inAppPurchase");
-        WTN.inAppPurchase({
-            productId: productId,
-            callback: function (data) {
-                var receiptData = data.receiptData; //save on cosmos (Client.AuthPayment)
-                showToast(JSON.stringify(receiptData));
-                showToast(JSON.stringify(data));
-                if (data.isSuccess) {
-                    // use this receipt data to verify transaction from app store
-                    // refer : https://developer.apple.com/documentation/appstorereceipts/verifyreceipt
+    //DotNet.invokeMethodAsync('SD.WEB', 'AppleVerify', null);
+    if (!WTN) alert("WTN plugin not found");
+    WTN.inAppPurchase({
+        productId: productId,
+        callback: function (data) {
+            showToast(JSON.stringify(receiptData));
+            if (data.isSuccess) {
+                if (!data) { showToast("No data returned from purchase"); return; }
+                if (!data.isSuccess) { showToast("Purchase failed or canceled"); return; }
 
-                    //{
-                    //    "receipt-data": "xxxxxxxxxxxxxxx",
-                    //        "password": "shared secret from iTunes connect",
-                    //            "exclude-old-transactions": true
-                    //}
+                const receiptData = data.receiptData;
+                if (!receiptData) { showToast("Receipt not found"); return; }
 
-                    // https://developer.apple.com/documentation/appstorereceipts/status
-
-                    // https://sandbox.itunes.apple.com/verifyReceipt
-                    // https://buy.itunes.apple.com/verifyReceipt
-                }
+                DotNet.invokeMethodAsync('SD.WEB', 'AppleVerify', receiptData);
             }
-        })
-    } catch (e) {
-        alert(`error: ${JSON.stringify(e)}`);
-    }
+        }
+    })
 }
 
 function getReceiptData() {

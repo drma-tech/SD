@@ -39,6 +39,8 @@ public class Paddle
 public class Apple
 {
     public string? Endpoint { get; set; } = string.Empty;
+    public string? SharedSecret { get; set; } = string.Empty; //do not share with users
+    public string? BundleId { get; set; }
     public ProductSettings? Standard { get; set; } = new();
     public ProductSettings? Premium { get; set; } = new();
 }

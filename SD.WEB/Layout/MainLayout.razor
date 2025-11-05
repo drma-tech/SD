@@ -227,6 +227,12 @@
     }
 
     [JSInvokable]
+    public static void AppleVerify(string receipt)
+    {
+        AppStateStatic.AppleVerify?.Invoke(receipt);
+    }
+
+    [JSInvokable]
     public static void ShowError(string error)
     {
         AppStateStatic.ShowError?.Invoke(error);

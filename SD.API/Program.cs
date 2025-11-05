@@ -41,6 +41,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
     services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(10); })
       .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
     services.AddHttpClient("paddle");
+    services.AddHttpClient("apple");
     services.AddHttpClient("auth", client => { client.Timeout = TimeSpan.FromSeconds(10); });
     services.AddHttpClient("rapidapi");
     services.AddHttpClient("ipinfo");
