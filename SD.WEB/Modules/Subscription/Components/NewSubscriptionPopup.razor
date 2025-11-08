@@ -209,7 +209,7 @@
         try
         {
             await PaymentAuthApi.AppleVerify(receipt);
-            
+
             var freshClient = await PrincipalApi.Get(true, true);
             if (freshClient == null) throw new NotificationException("Client null");
 

@@ -15,8 +15,7 @@ public static partial class StringHelper
         return RemoveSpecialCharacters(str.AsSpan(), customExceptions, replace).ToString();
     }
 
-    public static ReadOnlySpan<char> RemoveSpecialCharacters(this ReadOnlySpan<char> str,
-        char[]? customExceptions = null, char? replace = null)
+    public static ReadOnlySpan<char> RemoveSpecialCharacters(this ReadOnlySpan<char> str, char[]? customExceptions = null, char? replace = null)
     {
         Span<char> buffer = new char[str.Length];
         var idx = 0;

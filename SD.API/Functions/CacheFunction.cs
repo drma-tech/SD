@@ -36,7 +36,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
     [Function("Energy")]
     public async Task<HttpResponseData?> Energy(
-       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/energy")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/energy")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -70,7 +70,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
     [Function("EnergyAuth")]
     public async Task<HttpResponseData?> EnergyAuth(
-      [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "cache/energy")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "cache/energy")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -113,7 +113,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
     [Function("EnergyAdd")]
     public async Task EnergyAdd(
-       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/cache/energy/add")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/cache/energy/add")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -143,7 +143,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
     [Function("EnergyAuthAdd")]
     public async Task EnergyAuthAdd(
-      [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "cache/energy/add")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "cache/energy/add")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -180,8 +180,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
     }
 
     [Function("CacheNew")]
-    public async Task<HttpResponseData?> CacheNew(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")] HttpRequestData req, CancellationToken cancellationToken)
+    public async Task<HttpResponseData?> CacheNew([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")]
+        HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {

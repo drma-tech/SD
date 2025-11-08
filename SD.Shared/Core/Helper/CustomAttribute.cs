@@ -50,8 +50,7 @@ public static class CustomAttributeHelper
             if (!string.IsNullOrEmpty(attr.Name))
                 attr.Name = rm.GetString(attr.Name) ?? attr.Name + " (incomplete translation)";
             if (!string.IsNullOrEmpty(attr.Placeholder))
-                attr.Placeholder = rm.GetString(attr.Placeholder)?.Replace(@"\n", Environment.NewLine) ??
-                                   attr.Placeholder.Replace(@"\n", Environment.NewLine) + " (incomplete translation)";
+                attr.Placeholder = rm.GetString(attr.Placeholder)?.Replace(@"\n", Environment.NewLine) ?? attr.Placeholder.Replace(@"\n", Environment.NewLine) + " (incomplete translation)";
             if (!string.IsNullOrEmpty(attr.Description))
                 attr.Description = rm.GetString(attr.Description) ?? attr.Description + " (incomplete translation)";
         }
@@ -62,6 +61,11 @@ public static class CustomAttributeHelper
     public static string? GetName(this Enum value, bool translate = true)
     {
         return value.GetCustomAttribute(translate)?.Name;
+    }
+
+    public static string? GetPlaceholder(this Enum value, bool translate = true)
+    {
+        return value.GetCustomAttribute(translate)?.Placeholder;
     }
 
     public static string GetDescription(this Enum value, bool translate = true)
