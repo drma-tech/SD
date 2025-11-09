@@ -42,6 +42,9 @@ window.firebaseAuth = {
             await auth.signInWithPopup(provider);
         }
         else {
+            provider.setCustomParameters({
+                redirect_uri: window.location.origin + '/__/auth/handler'
+            });
             await auth.signInWithRedirect(provider);
         }
     },
