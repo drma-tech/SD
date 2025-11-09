@@ -88,5 +88,56 @@
     <script defer src="js/paddle.min.js"></script>
     <script defer src="js/apple.min.js"></script>
     <script defer src="js/google.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.css" />
+    <script type="module" src="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.js"></script>
+
+    <script type="module">
+        //https://github.com/firebase/firebase-js-sdk/releases
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+        import { GoogleAuthProvider, getAuth, getRedirectResult, onAuthStateChanged, signInWithPopup, signInWithRedirect } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDj5LpsT7-bra4hvuvb5E_BPSlD7Wr29nQ",
+            authDomain: "streaming-discovery-4c483.firebaseapp.com",
+            projectId: "streaming-discovery-4c483",
+            storageBucket: "streaming-discovery-4c483.firebasestorage.app",
+            messagingSenderId: "394152837411",
+            appId: "1:394152837411:web:06b7216d2859bdc1224c96",
+            measurementId: "G-JKXTVXM0EX"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        window.firebaseAuth = {
+            signIn: async () => {
+                if (window.location.hostname === "localhost") {
+                    await signInWithPopup(auth, provider);
+                }
+                else {
+                    await signInWithRedirect(auth, provider);
+                }
+            },
+            signOut: async () => {
+                await auth.signOut();
+            },
+            onAuthChanged: (dotnetHelper) => {
+                onAuthStateChanged(auth, async (user) => {
+                    let token = user ? await user.getIdToken() : null;
+
+                    if (token == null) {
+                        const result = await getRedirectResult(auth);
+                        if (result && result.user) {
+                            token = await result.user.getIdToken();
+                        }
+                    }
+
+                    dotnetHelper.invokeMethodAsync('OnFirebaseAuthChanged', token);
+                });
+            }
+        };
+    </script>
 </body>
 </html>
