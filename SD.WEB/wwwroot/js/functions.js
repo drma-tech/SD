@@ -108,7 +108,12 @@ function showError(message) {
 
 function showToast(message) {
     const container = document.getElementById("error-container");
-    if (!container) return;
+
+    if (!container) {
+        setTimeout(() => {
+            showToast(message);
+        }, 1000);
+    }
 
     container.textContent = message;
     container.style.display = "block";

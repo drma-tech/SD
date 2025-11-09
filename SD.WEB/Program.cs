@@ -68,23 +68,20 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddOptions();
     collection.AddAuthorizationCore();
 
-    if (OperatingSystem.IsBrowser())
+    collection.AddMsalAuthentication(options =>
     {
-        collection.AddMsalAuthentication(options =>
-        {
-            options.ProviderOptions.LoginMode = "redirect";
-            configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
-            options.ProviderOptions.Cache = new MsalCacheOptions { CacheLocation = "localStorage" };
+        options.ProviderOptions.LoginMode = "redirect";
+        configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
+        options.ProviderOptions.Cache = new MsalCacheOptions { CacheLocation = "localStorage" };
 
-            options.ProviderOptions.Authentication.PostLogoutRedirectUri = "/";
+        options.ProviderOptions.Authentication.PostLogoutRedirectUri = "/";
 
-            options.ProviderOptions.DefaultAccessTokenScopes.Add("openid"); // Need to provide the scopes that are "by default" should be included with the underlying API call
-            options.ProviderOptions.DefaultAccessTokenScopes.Add("email"); //give access to the email scope
-            options.ProviderOptions.DefaultAccessTokenScopes.Add(configuration["DownstreamApi:Scopes"] ?? throw new UnhandledException("Scopes null"));
-        });
+        options.ProviderOptions.DefaultAccessTokenScopes.Add("openid"); // Need to provide the scopes that are "by default" should be included with the underlying API call
+        options.ProviderOptions.DefaultAccessTokenScopes.Add("email"); //give access to the email scope
+        options.ProviderOptions.DefaultAccessTokenScopes.Add(configuration["DownstreamApi:Scopes"] ?? throw new UnhandledException("Scopes null"));
+    });
 
-        collection.AddScoped<AccountClaimsPrincipalFactory<RemoteUserAccount>, CustomUserFactory>(); //for some reason roles are not being recognized
-    }
+    collection.AddScoped<AccountClaimsPrincipalFactory<RemoteUserAccount>, CustomUserFactory>(); //for some reason roles are not being recognized
 
     collection.AddScoped<PrincipalApi>();
     collection.AddScoped<LoginApi>();
