@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 
-namespace SD.WEB.Core.Service
+namespace SD.WEB.Core.Auth
 {
     public class FirebaseAuthStateProvider : AuthenticationStateProvider
     {

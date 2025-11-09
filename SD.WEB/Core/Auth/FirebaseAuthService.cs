@@ -1,7 +1,7 @@
 ﻿using Microsoft.JSInterop;
 using SD.WEB.Layout;
 
-namespace SD.WEB.Core.Service
+namespace SD.WEB.Core.Auth
 {
     public class FirebaseAuthService(IJSRuntime js)
     {

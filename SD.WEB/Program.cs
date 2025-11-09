@@ -10,7 +10,7 @@ using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
 using SD.WEB;
-using SD.WEB.Core.Service;
+using SD.WEB.Core.Auth;
 using SD.WEB.Modules.Auth.Core;
 using SD.WEB.Modules.Collections.Core;
 using SD.WEB.Modules.Platform.Core;
