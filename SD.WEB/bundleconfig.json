@@ -52,5 +52,11 @@
     "inputFiles": [
       "wwwroot/js/google.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/auth.min.js",
+    "inputFiles": [
+      "wwwroot/js/auth.js"
+    ]
   }
 ]
