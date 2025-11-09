@@ -27,9 +27,11 @@ auth.getRedirectResult()
 
 auth.onAuthStateChanged(async (user) => {
     const token = user ? await user.getIdToken() : null;
-    DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
-    showToast('onAuthStateChanged');
-    showToast(`token:${token}`);
+    if (token) {
+        DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
+        showToast('onAuthStateChanged');
+        showToast(`token:${token}`);
+    }
 });
 
 window.firebaseAuth = {
