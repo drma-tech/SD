@@ -60,7 +60,6 @@
     private bool IsLoading = true;
     private MudThemeProvider? _mudThemeProvider;
     private bool _darkMode = false;
-    private DotNetObjectReference<MainLayout>? _dotNetRef;
 
     protected override async Task OnInitializedAsync()
     {
@@ -75,6 +74,12 @@
             AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
             AppStateStatic.ShowError = msg => { Snackbar.Add(msg, Severity.Error); };
             AppStateStatic.Version = GetAppVersion();
+
+            AppStateStatic.AuthChanged += (string? token) =>
+            {
+                var provider = (FirebaseAuthStateProvider)AuthStateProvider;
+                provider.SetToken(token);
+            };
 
             if (AppStateStatic.User == null)
             {
@@ -218,9 +223,6 @@
                     });
                 }
             }
-
-            _dotNetRef = DotNetObjectReference.Create(this);
-            await Auth.SubscribeToAuthChanges(_dotNetRef);
         }
     }
 
@@ -243,10 +245,9 @@
     }
 
     [JSInvokable]
-    public void OnFirebaseAuthChanged(string? token)
+    public static void AuthChanged(string? token)
     {
-        var provider = (FirebaseAuthStateProvider)AuthStateProvider;
-        provider.SetToken(token);
+        AppStateStatic.AuthChanged?.Invoke(token);
     }
 
     [JSInvokable]
