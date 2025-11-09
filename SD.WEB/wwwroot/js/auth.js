@@ -14,20 +14,26 @@ firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 
-setTimeout(async () => {
-    const result = await auth.getRedirectResult();
+auth.getRedirectResult()
+    .then((result) => {
+        if (result.credential) {
+            let credential = result.credential;
+            let token = credential.accessToken;
 
-    if (result?.user) {
-        const token = await result.user.getIdToken();
-        DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
-        return;
-    }
+            DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
+            showToast('getRedirectResult');
+            showToast(`token:${token}`);
+        }
 
-    auth.onAuthStateChanged(async (user) => {
-        const token = user ? await user.getIdToken() : null;
-        DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
+        let user = result.user;
     });
-}, 500);
+
+auth.onAuthStateChanged(async (user) => {
+    const token = user ? await user.getIdToken() : null;
+    DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
+    showToast('onAuthStateChanged');
+    showToast(`token:${token}`);
+});
 
 window.firebaseAuth = {
     signIn: async () => {
