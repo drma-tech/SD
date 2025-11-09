@@ -1,13 +1,11 @@
 @inherits ComponentCore<HeadLayout>
 
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using SD.WEB.Core.Service
 @using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Subscription.Core
 
 @inject EnergyApi EnergyApi
 @inject EnergyAuthApi EnergyAuthApi
-@inject FirebaseAuthService Auth
 
 @if (_processing)
 {
@@ -203,14 +201,14 @@
         };
     }
 
-    private async Task Login()
+    private void Login()
     {
-        await Auth.SignInAsync();
+        Navigation.NavigateToLogin("/authentication/login");
     }
 
-    private async Task Logout()
+    private void Logout()
     {
-        await Auth.SignOutAsync();
+        Navigation.NavigateToLogout("/authentication/logout");
     }
 
     private async Task OpenConfigurations()
