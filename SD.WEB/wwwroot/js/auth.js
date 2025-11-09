@@ -13,10 +13,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
-const provider = new firebase.auth.GoogleAuthProvider();
 
-(async function processRedirect() {
+setTimeout(async () => {
     const result = await auth.getRedirectResult();
+
     if (result?.user) {
         const token = await result.user.getIdToken();
         DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
@@ -27,10 +27,12 @@ const provider = new firebase.auth.GoogleAuthProvider();
         const token = user ? await user.getIdToken() : null;
         DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
     });
-})();
+}, 500);
 
 window.firebaseAuth = {
     signIn: async () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+
         if (window.location.hostname === "localhost") {
             await auth.signInWithPopup(provider);
         }
