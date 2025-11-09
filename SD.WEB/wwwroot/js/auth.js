@@ -10,19 +10,49 @@ const firebaseConfig = {
     measurementId: "G-JKXTVXM0EX"
 };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 
 const auth = firebase.auth();
 
 auth.getRedirectResult()
     .then((result) => {
-        if (result.credential) {
-            let credential = result.credential;
-            let token = credential.accessToken;
+        console.log('=== REDIRECT RESULT DEBUG ===');
+        console.log('User:', result.user);
+        console.log('Credential:', result.credential);
+        console.log('OperationType:', result.operationType);
+        console.log('AdditionalUserInfo:', result.additionalUserInfo);
+        console.log('=== END DEBUG ===');
 
-            DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
-            showToast('getRedirectResult');
-            showToast(`token:${token}`);
+        if (result.user) {
+            // ✅ Login via redirect BEM-SUCEDIDO
+            return result.user.getIdToken().then(token => {
+                DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
+                showToast('Login successful via redirect!');
+            });
+        } else {
+            // ❌ Nenhum usuário no redirect result
+            console.log('No user in redirect result');
+            // Verifica se já tem um usuário logado (caso normal)
+            if (auth.currentUser) {
+                return auth.currentUser.getIdToken().then(token => {
+                    DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
+                });
+            } else {
+                DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", null);
+            }
+        }
+    })
+    .catch((error) => {
+        console.error('Redirect result error:', error);
+        // Em caso de erro, verifica se já tem usuário logado
+        if (auth.currentUser) {
+            auth.currentUser.getIdToken().then(token => {
+                DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
+            });
+        } else {
+            DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", null);
         }
     });
 
