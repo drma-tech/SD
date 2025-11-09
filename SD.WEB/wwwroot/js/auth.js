@@ -15,21 +15,19 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const provider = new firebase.auth.GoogleAuthProvider();
 
-window.onload = async () => {
+(async function processRedirect() {
     const result = await auth.getRedirectResult();
     if (result?.user) {
         const token = await result.user.getIdToken();
         DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
-    } else if (auth.currentUser) {
-        const token = await auth.currentUser.getIdToken();
-        DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
+        return;
     }
 
     auth.onAuthStateChanged(async (user) => {
         const token = user ? await user.getIdToken() : null;
         DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
     });
-};
+})();
 
 window.firebaseAuth = {
     signIn: async () => {
