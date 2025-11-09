@@ -24,8 +24,6 @@ auth.getRedirectResult()
             showToast('getRedirectResult');
             showToast(`token:${token}`);
         }
-
-        let user = result.user;
     });
 
 auth.onAuthStateChanged(async (user) => {
