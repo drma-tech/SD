@@ -20,6 +20,9 @@ window.onload = async () => {
     if (result?.user) {
         const token = await result.user.getIdToken();
         DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
+    } else if (auth.currentUser) {
+        const token = await auth.currentUser.getIdToken();
+        DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
     }
 
     auth.onAuthStateChanged(async (user) => {
