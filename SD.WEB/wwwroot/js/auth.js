@@ -14,23 +14,10 @@ firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 
-auth.getRedirectResult()
-    .then((result) => {
-        if (result.user) {
-            return result.user.getIdToken().then(token => {
-                DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
-                showToast('getRedirectResult');
-                showToast(`token:${token}`);
-            });
-        }
-    });
-
 auth.onAuthStateChanged(async (user) => {
     const token = user ? await user.getIdToken() : null;
     if (token) {
         DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
-        showToast('onAuthStateChanged');
-        showToast(`token:${token}`);
     }
 });
 
@@ -38,12 +25,7 @@ window.firebaseAuth = {
     signIn: async () => {
         const provider = new firebase.auth.GoogleAuthProvider();
 
-        if (window.location.hostname === "localhost") {
-            await auth.signInWithPopup(provider);
-        }
-        else {
-            await auth.signInWithRedirect(provider);
-        }
+        await auth.signInWithPopup(provider);
     },
     signOut: async () => {
         await auth.signOut();
