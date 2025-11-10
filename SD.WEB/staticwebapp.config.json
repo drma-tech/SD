@@ -3,6 +3,10 @@
     {
       "route": "/__/auth/handler",
       "rewrite": "https://streaming-discovery-4c483.firebaseapp.com/__/auth/handler"
+    },
+    {
+      "route": "/__/auth/**",
+      "rewrite": "https://streaming-discovery-4c483.firebaseapp.com/__/auth/**"
     }
   ],
   "navigationFallback": {
