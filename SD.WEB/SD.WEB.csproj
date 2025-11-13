@@ -6,15 +6,6 @@
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Core\CachedTokenProvider.cs" />
-	  <Compile Remove="Core\CustomAuthorizationHandler.cs" />
-	  <Compile Remove="Core\CustomUserFactory.cs" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Content Remove="Layout\Authentication.razor" />
-	  <Content Remove="Modules\Subscription\Components\SubscriptionPopup.razor" />
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
 	</ItemGroup>
 	<ItemGroup>

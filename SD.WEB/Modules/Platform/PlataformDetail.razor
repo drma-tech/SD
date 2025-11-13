@@ -115,7 +115,7 @@
         Provider = AllProviders?.Items.SingleOrDefault(s => s.id == Id);
     }
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task LoadAuthDataAsync()
     {
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
         WatchedList = await WatchedListApi.Get(IsAuthenticated, null);

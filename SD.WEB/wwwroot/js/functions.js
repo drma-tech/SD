@@ -273,3 +273,18 @@ window.showCache = () => {
         ", platform: " + GetLocalStorage("platform")
     );
 };
+
+async function invokeDotNetWhenReady(assembly, method, token, retries = 10, delay = 500) {
+    for (let i = 0; i < retries; i++) {
+        if (window.DotNet && DotNet.invokeMethodAsync) {
+            try {
+                await DotNet.invokeMethodAsync(assembly, method, token);
+                return;
+            } catch (err) {
+                console.warn("DotNet invocation failed, retrying...", err);
+            }
+        }
+        await new Promise(resolve => setTimeout(resolve, delay));
+    }
+    console.error("DotNet not ready after multiple retries");
+}

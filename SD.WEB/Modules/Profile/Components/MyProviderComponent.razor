@@ -88,10 +88,14 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
         AllProviders ??= await AllProvidersApi.GetAll(null);
 
         Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
+    }
+
+    protected override async Task LoadAuthDataAsync()
+    {
+        MyProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
 
         foreach (var item in MyProviders?.Items ?? [])
         {
@@ -103,29 +107,26 @@
             }
         }
 
-        if (MyProviders != null)
+        if (MyProviders != null && MyProviders.Items.Any(a => !a.region.HasValue)) //update region (legacy)
         {
-            if (MyProviders.Items.Any(a => !a.region.HasValue)) //update region (legacy)
+            foreach (var item in MyProviders.Items)
             {
-                foreach (var item in MyProviders.Items)
+                if (!item.region.HasValue)
                 {
-                    if (!item.region.HasValue)
-                    {
-                        var provider = AllProviders?.Items.FirstOrDefault(f => f.id == item.id);
+                    var provider = AllProviders?.Items.FirstOrDefault(f => f.id == item.id);
 
-                        if (provider != null)
-                        {
-                            item.region = provider.regions.Contains(Region) ? Region : provider.regions[0];
-                        }
+                    if (provider != null)
+                    {
+                        item.region = provider.regions.Contains(Region) ? Region : provider.regions[0];
                     }
                 }
-
-                var client = await PrincipalApi.Get(IsAuthenticated);
-                await ShowInfo(Translations.RegionsApplied);
-                await MyProvidersApi.Update(MyProviders, client?.Subscription);
-
-                StateHasChanged();
             }
+
+            var client = await PrincipalApi.Get(IsAuthenticated);
+            await ShowInfo(Translations.RegionsApplied);
+            await MyProvidersApi.Update(MyProviders, client?.Subscription);
+
+            StateHasChanged();
         }
     }
 

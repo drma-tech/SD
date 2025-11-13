@@ -1,11 +1,13 @@
 ﻿@page "/login-success"
-@using System.Security.Claims
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using SD.WEB.Modules.Auth.Core
-@using SD.WEB.Modules.Auth.Resources
 @inherits PageCore<LoginSuccess>
 
+@using System.Security.Claims
+@using SD.WEB.Core.Auth
+@using SD.WEB.Modules.Auth.Core
+@using SD.WEB.Modules.Auth.Resources
+
 @inject LoginApi LoginApi
+@inject FirebaseAuthService Auth
 
 <SeoHeader Title="Login" Description="Login" Url="/login-success" Index="false" Keywords="@([])"></SeoHeader>
 
@@ -118,9 +120,9 @@
         Navigation.NavigateTo("/profile");
     }
 
-    private void Logout()
+    private async Task Logout()
     {
-        Navigation.NavigateToLogout("/authentication/logout");
+        await Auth.SignOutAsync();
     }
 
 }

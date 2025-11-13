@@ -78,6 +78,13 @@
         MediaListApi ??= new TmdbListApi(factory);
     }
 
+    protected override async Task LoadAuthDataAsync()
+    {
+        Watched = await WatchedListApi.Get(IsAuthenticated, null);
+        Watching = await WatchingListApi.Get(IsAuthenticated, null);
+        Wish = await WishListApi.Get(IsAuthenticated, null);
+    }
+
     private void ProcessList()
     {
         if (List == null)
@@ -262,13 +269,6 @@
 
             MediaListApi = new TmdbDiscoveryApi(factory);
         }
-    }
-
-    protected override async Task LoadNonEssentialDataAsync()
-    {
-        Watched = await WatchedListApi.Get(IsAuthenticated, null);
-        Watching = await WatchingListApi.Get(IsAuthenticated, null);
-        Wish = await WishListApi.Get(IsAuthenticated, null);
     }
 
     private static Dictionary<string, string> GetExtraParameters(string? providerId, string sortBy)

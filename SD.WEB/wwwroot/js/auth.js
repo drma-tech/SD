@@ -16,14 +16,42 @@ const auth = firebase.auth();
 
 auth.onAuthStateChanged(async (user) => {
     const token = user ? await user.getIdToken() : null;
-    if (token) {
-        DotNet.invokeMethodAsync("SD.WEB", "AuthChanged", token);
-    }
+    await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
 });
 
 window.firebaseAuth = {
-    signIn: async () => {
-        const provider = new firebase.auth.GoogleAuthProvider();
+    signIn: async (providerName, email) => {
+        let provider;
+
+        switch (providerName) {
+            case "google": {
+                provider = new firebase.auth.GoogleAuthProvider();
+                break;
+            }
+            case "apple": {
+                provider = new firebase.auth.OAuthProvider("apple.com");
+                break;
+            }
+            case "facebook": {
+                provider = new firebase.auth.FacebookAuthProvider();
+                break;
+            }
+            case "microsoft":
+                provider = new firebase.auth.OAuthProvider("microsoft.com");
+                break;
+
+            case "yahoo":
+                provider = new firebase.auth.OAuthProvider("yahoo.com");
+                break;
+
+            case "x":
+                provider = new firebase.auth.TwitterAuthProvider();
+                break;
+            default:
+                {
+                    throw new Error(`Unsupported provider: ${providerName}`);
+                }
+        }
 
         await auth.signInWithPopup(provider);
     },

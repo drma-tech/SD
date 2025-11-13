@@ -1,5 +1,6 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using SD.API.Core.Auth;
 using SD.Shared.Models.Auth;
 using System.Net;
 

@@ -150,10 +150,14 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
+        Reviewed = await GetLocalStorage("reviewed");
+    }
+
+    protected override async Task LoadAuthDataAsync()
+    {
+        (Watched, Watching, Wish) = await(WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
 
         MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
-        Reviewed = await GetLocalStorage("reviewed");
     }
 
     // private async Task SetReviewed()

@@ -1,6 +1,8 @@
+using FirebaseAdmin.Auth;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using SD.API.Core.Auth;
 using SD.Shared.Models.Auth;
 using SD.Shared.Models.Blocked;
 
@@ -129,6 +131,33 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
 
             var myWish = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
             if (myWish != null) await repo.Delete(myWish, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            throw;
+        }
+    }
+
+    [Function("PrincipalImport")]
+    public async Task PrincipalImport(
+      [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/import")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var users = await repo.ListAll<AuthPrincipal>(DocumentType.Principal, cancellationToken);
+
+            foreach (var user in users)
+            {
+                var args = new UserRecordArgs()
+                {
+                    Uid = user.Id.Split(":")[1],
+                    Email = user.Email,
+                    DisplayName = user.DisplayName
+                };
+
+                await FirebaseAuth.DefaultInstance.CreateUserAsync(args, cancellationToken);
+            }
         }
         catch (Exception ex)
         {

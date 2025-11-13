@@ -133,6 +133,18 @@
         { "VE", "Venezuela" }
     };
 
+    //stripe management payments blocked countries
+
+    // Ascension Island
+    // China
+    // Cuba
+    // Iran
+    // Kosovo
+    // North Korea
+    // Russia
+    // Syria
+    // Tristan da Cunha
+
     protected override void OnInitialized()
     {
         AppStateStatic.RegistrationSuccessful += async () => await RegistrationSuccessful();
@@ -141,8 +153,6 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        Client = await PrincipalApi.Get(IsAuthenticated, true);
-
         CurrentCountry = await IpInfoApi.GetCountry();
 
         if (CurrentCountry.NotEmpty())
@@ -159,7 +169,7 @@
         if (Platform == SD.Shared.Enums.Platform.ios)
         {
             Providers.Add(PaymentProvider.Apple);
-            Providers.Add(PaymentProvider.Paddle);            
+            Providers.Add(PaymentProvider.Paddle);
         }
         else if (Platform == SD.Shared.Enums.Platform.play)
         {
@@ -177,6 +187,11 @@
         }
 
         Provider = Providers[0]; //todo: when implemented, select native provider by default
+    }
+
+    protected override async Task LoadAuthDataAsync()
+    {
+        Client = await PrincipalApi.Get(IsAuthenticated, true);
     }
 
     private async Task RegistrationSuccessful()

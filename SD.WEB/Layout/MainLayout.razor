@@ -1,5 +1,6 @@
 ﻿@using System.Security.Claims
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.JSInterop
 @using SD.Shared.Models.Energy
 @using SD.Shared.Models.Subscription
 @using SD.WEB.Core.Auth
@@ -61,7 +62,7 @@
     private MudThemeProvider? _mudThemeProvider;
     private bool _darkMode = false;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         try
         {
@@ -72,66 +73,32 @@
             IsLoading = true; StateHasChanged();
 
             AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
-            AppStateStatic.ShowError = msg => { Snackbar.Add(msg, Severity.Error); };
-            AppStateStatic.Version = GetAppVersion();
+            AppStateStatic.ShowError += msg => { Snackbar.Add(msg, Severity.Error); };
+            AppStateStatic.Version += GetAppVersion();
+            AppStateStatic.UserStateChanged += async () => await UserStateChanged();
 
+            // 1 = capture the claims
             AppStateStatic.AuthChanged += (string? token) =>
             {
                 var provider = (FirebaseAuthStateProvider)AuthStateProvider;
-                provider.SetToken(token);
+                provider.NotifyAuthenticationStateChanged(token);
             };
 
-            // if (AppStateStatic.User == null)
-            // {
-            //     var authState = await AuthenticationState;
+            // 2 = transform claims into useful data
+            AuthStateProvider.AuthenticationStateChanged += async (task) =>
+            {
+                var state = await task;
+                var user = state.User;
 
-            //     AppStateStatic.User = authState.User;
-            //     AppStateStatic.IsAuthenticated = AppStateStatic.User?.Identity is not null && AppStateStatic.User.Identity.IsAuthenticated;
-            //     AppStateStatic.UserId = AppStateStatic.User?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            // }
+                AppStateStatic.User = user;
+                AppStateStatic.UserId = user?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                AppStateStatic.IsAuthenticated = user?.Identity is not null && user.Identity.IsAuthenticated;
 
-            // if (AppStateStatic.IsAuthenticated)
-            // {
-            //     //new users
-            //     var principal = await PrincipalApi.Get(true);
-
-            //     if (principal == null)
-            //     {
-            //         IsLoading = false; StateHasChanged();
-            //         Navigation.NavigateTo("/login-success");
-            //         return;
-            //     }
-            // }
-            // else
-            // {
-            //     //open onboarding dialog for new users
-            //     var onboarding = await JsRuntime.GetLocalStorage("onboarding-popup");
-            //     if (onboarding.Empty())
-            //     {
-            //         await DialogService.OnboardingPopup();
-            //         await JsRuntime.SetLocalStorage("onboarding-popup", true.ToString().ToLower());
-            //     }
-            // }
-
-            // //energy
-            // CacheDocument<EnergyModel>? energy;
-            // if (AppStateStatic.IsAuthenticated)
-            // {
-            //     energy = await EnergyAuthApi.GetEnergy();
-            // }
-            // else
-            // {
-            //     energy = await EnergyApi.GetEnergy();
-            // }
-
-            // AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
-            // AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
+                StateHasChanged();
+                AppStateStatic.UserStateChanged?.Invoke();
+            };
 
             IsLoading = false; StateHasChanged();
-        }
-        catch (AccessTokenNotAvailableException)
-        {
-            Navigation.NavigateToLogout("/authentication/logout");
         }
         catch (Exception ex)
         {
@@ -223,6 +190,49 @@
                     });
                 }
             }
+
+            //open onboarding dialog for new users
+            var onboarding = await JsRuntime.GetLocalStorage("onboarding-popup");
+            if (onboarding.Empty())
+            {
+                await DialogService.OnboardingPopup();
+                await JsRuntime.SetLocalStorage("onboarding-popup", true.ToString().ToLower());
+            }
+
+            //energy
+            CacheDocument<EnergyModel>? energy;
+            if (AppStateStatic.IsAuthenticated)
+            {
+                energy = await EnergyAuthApi.GetEnergy();
+            }
+            else
+            {
+                energy = await EnergyApi.GetEnergy();
+            }
+
+            AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
+            AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
+        }
+    }
+
+    private async Task UserStateChanged()
+    {
+        try
+        {
+            //only for new users
+            if (AppStateStatic.IsAuthenticated)
+            {
+                var principal = await PrincipalApi.Get(true);
+
+                if (principal == null)
+                {
+                    Navigation.NavigateTo("/login-success");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
         }
     }
 

@@ -51,8 +51,6 @@ else //ShowContent
 }
 
 @code {
-    [CascadingParameter] protected Task<AuthenticationState>? AuthenticationState { get; set; }
-
     [Parameter][EditorRequired] public RenderFragment<TModel> ChildContent { get; set; } = null!;
     [Parameter][EditorRequired] public RenderControlCore<TModel> Core { get; set; } = null!;
     [Parameter][EditorRequired] public TModel Model { get; set; }
@@ -76,9 +74,6 @@ else //ShowContent
         ArgumentNullException.ThrowIfNull(Core);
         ArgumentNullException.ThrowIfNull(ExpressionEmpty);
 
-        if (!ExpressionEmpty(Model))
-            Status = LoadingStatus.ShowContent;
-
         Core.LoadingStarted += () => ShowLoading();
         Core.ProcessingStarted += () => ShowLoading("Processing...");
 
@@ -89,40 +84,29 @@ else //ShowContent
         Core.ErrorAction += ShowError;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnParametersSet()
     {
-        try
+        if (!ExpressionEmpty(Model))
+            Status = LoadingStatus.ShowContent;
+    }
+
+    protected override async Task LoadAuthDataAsync()
+    {
+        if (PrivateContent)
         {
-            ArgumentNullException.ThrowIfNull(Core);
-
-            await base.OnAfterRenderAsync(firstRender);
-
-            if (firstRender && PrivateContent && AuthenticationState is not null)
+            if (!AppStateStatic.IsAuthenticated)
             {
-                var authState = await AuthenticationState;
-                var user = authState.User;
-                var isAuthenticated = user.Identity is not null && user.Identity.IsAuthenticated;
-
-                if (!isAuthenticated)
-                {
-                    Status = LoadingStatus.Locked;
-                }
-
-                if (PremiumFeature)
-                {
-                    var client = await PrincipalApi.Get(isAuthenticated);
-                    if (client?.Subscription == null || client.Subscription?.ActiveProduct == AccountProduct.Basic)
-                    {
-                        Status = LoadingStatus.Premium;
-                    }
-                }
-
-                StateHasChanged();
+                Status = LoadingStatus.Locked;
             }
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
+
+            if (PremiumFeature)
+            {
+                var client = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
+                if (client?.Subscription == null || client.Subscription?.ActiveProduct == AccountProduct.Basic)
+                {
+                    Status = LoadingStatus.Premium;
+                }
+            }
         }
     }
 

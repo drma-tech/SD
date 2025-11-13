@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+﻿@using SD.WEB.Core.Auth
 @using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
@@ -11,6 +11,7 @@
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
+@inject FirebaseAuthService Auth
 
 <MudDialog Style="width: 100%">
     <DialogContent>
@@ -56,7 +57,7 @@
 
     private AuthPrincipal? Principal { get; set; }
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task LoadAuthDataAsync()
     {
         Principal = await PrincipalApi.Get(IsAuthenticated);
     }
@@ -106,7 +107,7 @@
                 // Navigation.NavigateTo("/.auth/purge/aad");
 
                 //close current login session
-                Navigation.NavigateToLogout("/authentication/logout");
+                await Logout();
             }
             else
             {
@@ -117,6 +118,11 @@
         {
             await ProcessException(ex);
         }
+    }
+
+    private async Task Logout()
+    {
+        await Auth.SignOutAsync();
     }
 
 }

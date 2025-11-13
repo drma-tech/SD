@@ -1,6 +1,7 @@
 ﻿@page "/platforms"
 
 @using System.Globalization
+@using Microsoft.AspNetCore.Components.Authorization
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Platform.Resources
@@ -113,9 +114,12 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
-
         Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
+    }
+
+    protected override async Task LoadAuthDataAsync()
+    {
+        MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
     }
 
 }

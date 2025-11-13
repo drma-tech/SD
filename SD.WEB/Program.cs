@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Authentication.WebAssembly.Msal.Models;
 using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Services;
@@ -57,11 +55,11 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(10); })
        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
-    //collection.AddScoped<CachedTokenProvider>();
-    //collection.AddScoped<CustomAuthorizationHandler>();
-    //collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(10); })
-    //    .AddHttpMessageHandler<CustomAuthorizationHandler>()
-    //    .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
+    collection.AddScoped<AuthenticationStateProvider, FirebaseAuthStateProvider>();
+    collection.AddScoped<CustomAuthorizationHandler>();
+    collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(10); })
+        .AddHttpMessageHandler<CustomAuthorizationHandler>()
+        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddHttpClient("External", (service, options) => { options.Timeout = TimeSpan.FromSeconds(10); })
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
@@ -70,7 +68,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     //collection.AddOptions();
     //collection.AddAuthorizationCore();
 
-    collection.AddScoped<AuthenticationStateProvider, FirebaseAuthStateProvider>();
     collection.AddAuthorizationCore();
 
     //collection.AddMsalAuthentication(options =>

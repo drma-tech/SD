@@ -1,6 +1,6 @@
 @inherits ComponentCore<HeadLayout>
 
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.AspNetCore.Components.Authorization
 @using SD.WEB.Core.Auth
 @using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Subscription.Core
@@ -205,7 +205,7 @@
 
     private async Task Login()
     {
-        await Auth.SignInAsync();
+        await PopupHelper.LoginPopup(DialogService);
     }
 
     private async Task Logout()

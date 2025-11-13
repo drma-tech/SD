@@ -59,8 +59,11 @@
         var result = await TmdbSearch.GetList(Items, null, StringParameters);
         Items = result.list;
         Core?.LoadingFinished?.Invoke(Items);
+    }
 
-        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
+    protected override async Task LoadAuthDataAsync()
+    {
+        (Watched, Watching, Wish) = await(WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
     }
 
     private void KeyPress(KeyboardEventArgs args)
