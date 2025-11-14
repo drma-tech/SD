@@ -14,6 +14,7 @@ using SD.WEB.Modules.Collections.Core;
 using SD.WEB.Modules.Platform.Core;
 using SD.WEB.Modules.Profile.Core;
 using SD.WEB.Modules.Subscription.Core;
+using SD.WEB.Modules.Support.Core;
 using System.Globalization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
@@ -123,6 +124,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddScoped<IpInfoServerApi>();
     collection.AddScoped<EnergyApi>();
     collection.AddScoped<EnergyAuthApi>();
+    collection.AddScoped<FirebaseApi>();
 }
 
 static async Task ConfigureCulture(WebAssemblyHost? app, IJSRuntime js)

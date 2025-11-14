@@ -51,6 +51,14 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@(async () => { await JavascriptVoidAsync("showCache"); })" Size="AppStateStatic.Size">@Button.ShowCache</MudButton>
+        @if (MessagingToken.Empty())
+        {
+            <MudButton Class="btnEnableNotifications" Size="AppStateStatic.Size" OnClick="LoadMessagingToken">Enable Notifications</MudButton>
+        }
+        else
+        {
+            <MudText Color="Color.Success" Typo="Typo.button">Notifications Enabled</MudText>
+        }
         @* <MudButton OnClick="@(async () => { await JavascriptVoidAsync("clearLocalStorage"); Navigation.NavigateTo("/", true); })" Size="AppStateStatic.Size">@Button.ClearCache</MudButton> *@
         <MudSpacer></MudSpacer>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">@Button.Close</MudButton>
@@ -69,6 +77,12 @@
     public Region Region { get; set; } = Region.US;
     public ContentLanguage ContentLanguage { get; set; } = ContentLanguage.enUS;
     public bool DarkMode { get; set; } = false;
+    private string? MessagingToken { get; set; }
+
+    protected override void OnInitialized()
+    {
+        AppStateStatic.NotificationEnabled += async (string token, string platform) => { await LoadMessagingToken(); StateHasChanged(); };
+    }
 
     protected override async Task LoadEssentialDataAsync()
     {
@@ -76,6 +90,16 @@
         Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
         ContentLanguage = await AppStateStatic.GetContentLanguage(JsRuntime);
         DarkMode = await AppStateStatic.GetDarkMode(JsRuntime) ?? false;
+    }
+
+    protected override async Task LoadNonEssentialDataAsync()
+    {
+        await LoadMessagingToken();
+    }
+
+    private async Task LoadMessagingToken()
+    {
+        MessagingToken = await GetLocalStorage("MessagingToken");
     }
 
     protected async Task AppLanguageValueChanged(AppLanguage value)

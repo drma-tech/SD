@@ -1,4 +1,5 @@
 using FirebaseAdmin.Auth;
+using FirebaseAdmin.Messaging;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -141,7 +142,7 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
 
     [Function("PrincipalImport")]
     public async Task PrincipalImport(
-      [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/import")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/import")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -158,6 +159,37 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
 
                 await FirebaseAuth.DefaultInstance.CreateUserAsync(args, cancellationToken);
             }
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            throw;
+        }
+    }
+
+    [Function("SubscribeToTopics")]
+    public static async Task SubscribeToTopics(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "firebase/subscribe")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var token = req.GetQueryParameters()["token"];
+            var platform = req.GetQueryParameters()["platform"];
+
+            await FirebaseMessaging.DefaultInstance.SubscribeToTopicAsync([token], "global");
+            await FirebaseMessaging.DefaultInstance.SubscribeToTopicAsync([token], platform);
+
+            var message = new Message()
+            {
+                Token = token,
+                Data = new Dictionary<string, string>
+                {
+                    { "title", "Streaming Discovery" },
+                    { "body", "Welcome to your personal streaming guide." }
+                }
+            };
+
+            await FirebaseMessaging.DefaultInstance.SendAsync(message, cancellationToken);
         }
         catch (Exception ex)
         {

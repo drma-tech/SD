@@ -274,11 +274,14 @@ window.showCache = () => {
     );
 };
 
-async function invokeDotNetWhenReady(assembly, method, token, retries = 10, delay = 500) {
+async function invokeDotNetWhenReady(assembly, method, args) {
+    const retries = 10;
+    const delay = 500;
+
     for (let i = 0; i < retries; i++) {
         if (window.DotNet && DotNet.invokeMethodAsync) {
             try {
-                await DotNet.invokeMethodAsync(assembly, method, token);
+                await DotNet.invokeMethodAsync(assembly, method, args);
                 return;
             } catch (err) {
                 console.warn("DotNet invocation failed, retrying...", err);

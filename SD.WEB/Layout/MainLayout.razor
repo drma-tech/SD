@@ -6,7 +6,9 @@
 @using SD.WEB.Core.Auth
 @using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Subscription.Core
+@using SD.WEB.Modules.Support.Core
 @using SD.WEB.Properties
+@using System.Text.Json
 @using Toolbelt.Blazor.PWA.Updater
 @inherits LayoutComponentBase
 
@@ -23,6 +25,7 @@
 @inject IpInfoServerApi IpInfoServerApi
 @inject EnergyApi EnergyApi
 @inject EnergyAuthApi EnergyAuthApi
+@inject FirebaseApi FirebaseApi
 
 <MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@_darkMode" />
 <MudPopoverProvider />
@@ -76,6 +79,7 @@
             AppStateStatic.ShowError += msg => { Snackbar.Add(msg, Severity.Error); };
             AppStateStatic.Version += GetAppVersion();
             AppStateStatic.UserStateChanged += async () => await UserStateChanged();
+            AppStateStatic.NotificationEnabled += async (string token, string platform) => { await FirebaseApi.Subscribe(token, platform); };
 
             // 1 = capture the claims
             AppStateStatic.AuthChanged += (string? token) =>
@@ -272,6 +276,15 @@
         {
             return "version-error";
         }
+    }
+
+    [JSInvokable]
+    public static void SubscribeToTopics(JsonElement args)
+    {
+        var token = args.GetProperty("token").GetString() ?? throw new NotificationException("token not available");
+        var platform = args.GetProperty("platform").GetString() ?? throw new NotificationException("platform not available");
+
+        AppStateStatic.NotificationEnabled?.Invoke(token, platform);
     }
 
 }
