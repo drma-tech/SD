@@ -57,8 +57,12 @@ window.firebaseAuth = {
 async function requestMessagingPermission() {
     const platform = GetLocalStorage("platform");
 
-    if (platform === "ios") {
-        return; //sent via native app
+    //Xiaomi: The international model should work. The Chinese model perhaps not (and is likely to stop working completely in the near future).
+    //Huawei: It no longer offers GMS (Google Mobile Services) because it was blocked by Google. Implement: Huawei Push Kit
+    const nativePlatforms = ["ios", "play", "xiaomi"];
+    if (nativePlatforms.includes(platform)) {
+        console.log("Using native push, no web permission needed.");
+        return;
     }
 
     const permission = await Notification.requestPermission();
