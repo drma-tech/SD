@@ -42,7 +42,11 @@ window.firebaseAuth = {
         const provider = providerMap[providerName];
         if (!provider) throw new Error(`Unsupported provider: ${providerName}`);
 
-        await auth.signInWithPopup(provider);
+        try {
+            await auth.signInWithPopup(provider);
+        } catch (error) {
+            throw new Error(error.message);
+        }
     },
 
     signOut: async () => {

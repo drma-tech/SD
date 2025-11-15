@@ -112,7 +112,7 @@
     }
 
     /// <summary>
-    /// do not process anything here with AuthenticationState
+    /// Do not process anything here related to authenticated users. (use UserStateChanged instead)
     /// </summary>
     /// <param name="firstRender"></param>
     /// <returns></returns>
@@ -204,6 +204,21 @@
             }
 
             //energy
+            if (!AppStateStatic.IsAuthenticated)
+            {
+                var energy = await EnergyApi.GetEnergy();
+
+                AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
+                AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
+            }
+        }
+    }
+
+    private async Task UserStateChanged()
+    {
+        try
+        {
+            //energy
             CacheDocument<EnergyModel>? energy;
             if (AppStateStatic.IsAuthenticated)
             {
@@ -216,22 +231,11 @@
 
             AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
             AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
-        }
-    }
 
-    private async Task UserStateChanged()
-    {
-        try
-        {
-            //only for new users
-            if (AppStateStatic.IsAuthenticated)
+            //register new user or new login (need to be last step here)
+            if (AppStateStatic.IsAuthenticated && !Navigation.Uri.Contains("/support/"))
             {
-                var principal = await PrincipalApi.Get(true);
-
-                if (principal == null)
-                {
-                    Navigation.NavigateTo("/login-success");
-                }
+                Navigation.NavigateTo("/login-success");
             }
         }
         catch (Exception ex)

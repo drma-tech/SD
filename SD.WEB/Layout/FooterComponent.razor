@@ -5,65 +5,69 @@
 {
     <MudDivider Class="mb-3 mt-10"></MudDivider>
     <MudGrid Justify="Justify.Center" Style="overflow: auto;" Spacing="4">
-        <MudItem xs="12" sm="12" md="3">
-            <MudList T="string" Color="Color.Surface" Dense="true">
-                <MudListSubheader>
-                    <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                        @SeoTranslations.AppName
-                    </MudText>
-                </MudListSubheader>
-                <MudListItem Style="text-align: justify" Class="py-0">
-                    @SeoTranslations.AppDescriptionShort
-                </MudListItem>
-                <MudListItem Style="text-align: justify" Class="py-0">
-                    @AppStateStatic.Version
-                </MudListItem>
-            </MudList>
-        </MudItem>
-        <MudItem xs="12" sm="3" md="2">
-            <MudList T="string" Dense="true">
-                <MudListSubheader>
-                    <MudText Color="Color.Secondary">Company</MudText>
-                </MudListSubheader>
-                <MudListItem Text="About us" Href="/support/about-us" Class="py-0" />
-                <MudListItem Text="Website" Href="https://www.drma-tech.com/" Target="_blank" Class="py-0" />
-            </MudList>
-        </MudItem>
-        <MudItem xs="12" sm="3" md="2">
-            <MudList T="string" Dense="true">
-                <MudListSubheader>
-                    <MudText Color="Color.Secondary">Product</MudText>
-                </MudListSubheader>
-                <MudListItem Text="Website" Href="https://www.streamingdiscovery.com" Target="_blank" Class="py-0" />
-                <MudListItem Text="Microsoft Store" Href="https://apps.microsoft.com/detail/9pb1pkrdd8l0" Target="_blank" Class="py-0" />
-                <MudListItem Text="Google Play" Href="https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa" Target="_blank" Class="py-0" />
-                <MudListItem Text="App Store" Href="https://apps.apple.com/us/app/streaming-discovery/id6749285238" Target="_blank" Class="py-0" />
-                <MudListItem Text="Huawei AppGallery" Href="https://appgallery.huawei.com/app/C111325113" Target="_blank" Class="py-0" />
-                <MudListItem Text="Xiaomi GetApps" Href="https://global.app.mi.com/details?lo=ID&id=com.streamingdiscovery.www.twa" Target="_blank" Class="py-0" />
-            </MudList>
-        </MudItem>
-        <MudItem xs="12" sm="3" md="2">
-            <MudList T="string" Dense="true">
-                <MudListSubheader>
-                    <MudText Color="Color.Secondary">Support</MudText>
-                </MudListSubheader>
-                <MudListItem Text="Contact" Href="mailto:support@streamingdiscovery.com" Class="py-0" />
-                <MudListItem Text="@WEB.Modules.Support.Resources.Translations.FAQ" Href="/support/faq" Class="py-0" />
-            </MudList>
-        </MudItem>
-        <MudItem xs="12" sm="3" md="2">
-            <MudList T="string" Dense="true">
-                <MudListSubheader>
-                    <MudText Color="Color.Secondary">Legal</MudText>
-                </MudListSubheader>
-                <MudListItem Text="@WEB.Modules.Support.Resources.Translations.TermsUse" Href="/support/terms" Class="py-0" />
-                <MudListItem Text="@WEB.Modules.Support.Resources.Translations.PrivacyPolicy" Href="/support/privacy" Class="py-0" />
-                <MudListItem Text="@WEB.Modules.Support.Resources.Translations.Credits" Href="/support/credits" Class="py-0" />
-            </MudList>
-        </MudItem>
+        @if (!_blockedActions)
+        {
+            <MudItem xs="12" sm="12" md="3">
+                <MudList T="string" Color="Color.Surface" Dense="true">
+                    <MudListSubheader>
+                        <MudText Color="Color.Primary" Typo="Typo.subtitle1">
+                            @SeoTranslations.AppName
+                        </MudText>
+                    </MudListSubheader>
+                    <MudListItem Style="text-align: justify" Class="py-0">
+                        @SeoTranslations.AppDescriptionShort
+                    </MudListItem>
+                    <MudListItem Style="text-align: justify" Class="py-0">
+                        @AppStateStatic.Version
+                    </MudListItem>
+                </MudList>
+            </MudItem>
+            <MudItem xs="12" sm="3" md="2">
+                <MudList T="string" Dense="true">
+                    <MudListSubheader>
+                        <MudText Color="Color.Secondary">Company</MudText>
+                    </MudListSubheader>
+                    <MudListItem Text="About us" Href="/support/about-us" Class="py-0" />
+                    <MudListItem Text="Website" Href="https://www.drma-tech.com/" Target="_blank" Class="py-0" />
+                </MudList>
+            </MudItem>
+            <MudItem xs="12" sm="3" md="2">
+                <MudList T="string" Dense="true">
+                    <MudListSubheader>
+                        <MudText Color="Color.Secondary">Product</MudText>
+                    </MudListSubheader>
+                    <MudListItem Text="Website" Href="https://www.streamingdiscovery.com" Target="_blank" Class="py-0" />
+                    <MudListItem Text="Microsoft Store" Href="https://apps.microsoft.com/detail/9pb1pkrdd8l0" Target="_blank" Class="py-0" />
+                    <MudListItem Text="Google Play" Href="https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa" Target="_blank" Class="py-0" />
+                    <MudListItem Text="App Store" Href="https://apps.apple.com/us/app/streaming-discovery/id6749285238" Target="_blank" Class="py-0" Disabled="true" />
+                    <MudListItem Text="Huawei AppGallery" Href="https://appgallery.huawei.com/app/C111325113" Target="_blank" Class="py-0" />
+                    <MudListItem Text="Xiaomi GetApps" Href="https://global.app.mi.com/details?lo=ID&id=com.streamingdiscovery.www.twa" Target="_blank" Class="py-0" />
+                </MudList>
+            </MudItem>
+            <MudItem xs="12" sm="3" md="2">
+                <MudList T="string" Dense="true">
+                    <MudListSubheader>
+                        <MudText Color="Color.Secondary">Support</MudText>
+                    </MudListSubheader>
+                    <MudListItem Text="Contact" Href="mailto:support@streamingdiscovery.com" Class="py-0" />
+                    <MudListItem Text="@WEB.Modules.Support.Resources.Translations.FAQ" Href="/support/faq" Class="py-0" />
+                </MudList>
+            </MudItem>
+            <MudItem xs="12" sm="3" md="2">
+                <MudList T="string" Dense="true">
+                    <MudListSubheader>
+                        <MudText Color="Color.Secondary">Legal</MudText>
+                    </MudListSubheader>
+                    <MudListItem Text="@WEB.Modules.Support.Resources.Translations.TermsUse" Href="/support/terms" Class="py-0" />
+                    <MudListItem Text="@WEB.Modules.Support.Resources.Translations.PrivacyPolicy" Href="/support/privacy" Class="py-0" />
+                    <MudListItem Text="@WEB.Modules.Support.Resources.Translations.Credits" Href="/support/credits" Class="py-0" />
+                </MudList>
+            </MudItem>
+        }
     </MudGrid>
 }
 
 @code {
     [Parameter] public bool Support { get; set; }
+    private bool _blockedActions => Navigation.Uri.Contains("login-success");
 }

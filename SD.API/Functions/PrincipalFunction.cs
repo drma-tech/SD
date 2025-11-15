@@ -66,7 +66,7 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
 
             var model = new AuthPrincipal
             {
-                IdentityProvider = body.IdentityProvider,
+                AuthProviders = body.AuthProviders,
                 DisplayName = body.DisplayName,
                 Email = body.Email,
                 Events = body.Events
@@ -74,6 +74,30 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
             model.Initialize(userId);
 
             return await repo.CreateItemAsync(model, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            req.ProcessException(ex);
+            throw;
+        }
+    }
+
+    [Function("PrincipalUpdate")]
+    public async Task<AuthPrincipal?> PrincipalUpdate(
+       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Put, Route = "principal/update")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var userId = await req.GetUserIdAsync(factory, cancellationToken);
+            var body = await req.GetBody<AuthPrincipal>(factory, cancellationToken);
+
+            if (userId.Empty()) throw new InvalidOperationException("unauthenticated user");
+
+            var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
+
+            model!.AuthProviders = body.AuthProviders;
+
+            return await repo.UpsertItemAsync(model, cancellationToken);
         }
         catch (Exception ex)
         {

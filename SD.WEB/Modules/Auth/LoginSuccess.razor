@@ -62,7 +62,7 @@
 
                 if (Principal == null) //first access
                 {
-                    //wait the user answer the terms of use
+                    //wait the user answer the terms of use (call CreateAccount)
                 }
                 else //just do login
                 {
@@ -89,7 +89,7 @@
 
             Principal = new AuthPrincipal
             {
-                IdentityProvider = User.FindFirst("idp")?.Value,
+                AuthProviders = [User.FindFirst("idp")!.Value],
                 DisplayName = User.FindFirst("name")?.Value,
                 Email = User.FindFirst("email")?.Value
             };
@@ -113,9 +113,15 @@
 
     private async Task RegisterLogin()
     {
-         var platform = await AppStateStatic.GetPlatform(JsRuntime);
+        var platform = await AppStateStatic.GetPlatform(JsRuntime);
 
         await LoginApi.Add(platform);
+
+        if (Principal!.AuthProviders.Empty() || !Principal!.AuthProviders.Contains(User!.FindFirst("idp")!.Value)) //if its a new auth provider
+        {
+            Principal.AuthProviders = Principal.AuthProviders.Union([User!.FindFirst("idp")!.Value]).ToArray();
+            await PrincipalApi.Update(Principal);
+        }
 
         Navigation.NavigateTo("/profile");
     }

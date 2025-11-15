@@ -77,14 +77,14 @@ function LoadAppVariables() {
 
 async function getUserInfo() {
     try {
-        let keys = JSON.parse(GetLocalStorage("msal.account.keys"));
-        if (!keys) return null;
-        let session = JSON.parse(GetLocalStorage(keys[0]));
+        const user = auth.currentUser;
+
+        if (!user) return null;
 
         return {
-            userId: session.localAccountId,
-            name: session.name,
-            email: session.idTokenClaims["email"]
+            userId: user.uid,
+            name: user.displayName || null,
+            email: user.email || null
         };
     } catch (error) {
         showError(error.message);
