@@ -22,6 +22,7 @@ public static class AppStateStatic
     public static Action<BrowserWindowSize>? BrowserWindowSizeChanged { get; set; }
 
     public static string? Version { get; set; }
+    public static string? Search { get; set; }
 
     #region Platform
 

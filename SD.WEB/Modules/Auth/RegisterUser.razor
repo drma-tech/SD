@@ -1,5 +1,5 @@
-﻿@page "/login-success"
-@inherits PageCore<LoginSuccess>
+﻿@page "/register-user"
+@inherits PageCore<RegisterUser>
 
 @using System.Security.Claims
 @using SD.WEB.Core.Auth
@@ -9,7 +9,7 @@
 @inject LoginApi LoginApi
 @inject FirebaseAuthService Auth
 
-<SeoHeader Title="Login" Description="Login" Url="/login-success" Index="false" Keywords="@([])"></SeoHeader>
+<SeoHeader Title="Register User" Description="Register User" Url="/register-user" Index="false" Keywords="@([])"></SeoHeader>
 
 @if (IsAuthenticated)
 {

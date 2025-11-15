@@ -32,7 +32,7 @@ public class CosmosRepository
             var response = await Container.ReadItemAsync<T>($"{type}:{id}", new PartitionKey($"{type}:{id}"),
                 CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-            if (response.RequestCharge > 1.7)
+            if (response.RequestCharge > 2)
                 _logger.LogWarning("Get - ID {Id}, RequestCharge {Charges}", id, response.RequestCharge);
 
             return response.Resource;

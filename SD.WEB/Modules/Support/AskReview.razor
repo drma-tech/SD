@@ -2,59 +2,78 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="mb-3">
+        <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="mb-3" Style="text-align: center;">
             Your feedback helps us keep improving and makes it easier for new users to discover the platform.
         </MudText>
+
         @if (Platform != null && Platform != "webapp")
         {
-            <ul class="ms-6 mb-3">
-                <li>
-                    @if (Platform == "windows")
-                    {
-                        <MudLink Href="@_windowsReview" Target="_blank" OnClick="() => MudDialog?.Close()" Color="Color.Tertiary">Add a review on Microsoft Store</MudLink>
-                    }
-                    else if (Platform == "play")
-                    {
-                        <MudLink Href="@_googleReview" Target="_blank" OnClick="() => MudDialog?.Close()" Color="Color.Tertiary">Add a review on Google Play</MudLink>
-                    }
-                    else if (Platform == "ios" || Platform == "macos")
-                    {
-                        <MudLink Href="@_appleReview" Target="_blank" OnClick="() => MudDialog?.Close()" Color="Color.Tertiary">Add a review on App Store</MudLink>
-                    }
-                    else if (Platform == "huawei")
-                    {
-                        <MudLink Href="@_huaweiReview" Target="_blank" OnClick="() => MudDialog?.Close()" Color="Color.Tertiary">Add a review on Huawei AppGallery</MudLink>
-                    }
-                    else if (Platform == "xiaomi")
-                    {
-                        <MudLink Href="@_xiaomiReview" Target="_blank" OnClick="() => MudDialog?.Close()" Color="Color.Tertiary">Add a review on Xiaomi GetApps</MudLink>
-                    }
-                </li>
-            </ul>
+            <div style="text-align: center;">
+                @if (Platform == "windows")
+                {
+                    <MudButton Href="@_windowsReview" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled">
+                        <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store
+                    </MudButton>
+                }
+                else if (Platform == "play")
+                {
+                    <MudButton Href="@_googleReview" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled">
+                        <MudImage Src="/logo/google-play.png" Class="me-2" Style="max-width: 20px;"></MudImage> Google Play
+                    </MudButton>
+                }
+                else if (Platform == "ios" || Platform == "macos")
+                {
+                    <MudButton Href="@_appleReview" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled">
+                        <MudImage Src="/logo/app-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> App Store
+                    </MudButton>
+                }
+                else if (Platform == "huawei")
+                {
+                    <MudButton Href="@_huaweiReview" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled">
+                        <MudImage Src="/logo/huawei.png" Class="me-2" Style="max-width: 20px;"></MudImage> Huawei AppGallery
+                    </MudButton>
+                }
+                else if (Platform == "xiaomi")
+                {
+                    <MudButton Href="@_xiaomiReview" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled">
+                        <MudImage Src="/logo/xiaomi.png" Class="me-2" Style="max-width: 20px;"></MudImage> Xiaomi GetApps
+                    </MudButton>
+                }
+            </div>
         }
         else
         {
-            <MudText Typo="Typo.subtitle2" Color="Color.Secondary" Class="mb-3">
+            <MudText Typo="Typo.subtitle2" Color="Color.Secondary" Class="mb-3" Style="text-align: center;">
                 Choose your preferred platform to leave a review:
             </MudText>
 
-            <ul class="ms-6 mb-3">
-                <li>
-                    <MudLink Href="@_windowsStore" Target="_blank" OnClick="() => MudDialog?.Close()" Color="Color.Tertiary">Add a review on Microsoft Store</MudLink>
-                </li>
-                <li>
-                    <MudLink Href="@_googleStore" Target="_blank" OnClick="() => MudDialog?.Close()" Color="Color.Tertiary">Add a review on Google Play</MudLink>
-                </li>
-                <li>
-                    <MudLink Href="@_appleStore" Target="_blank" OnClick="() => MudDialog?.Close()" Color="Color.Tertiary">Add a review on App Store</MudLink>
-                </li>
-                <li>
-                    <MudLink Href="@_huaweiStore" Target="_blank" OnClick="() => MudDialog?.Close()" Color="Color.Tertiary">Add a review on Huawei AppGallery</MudLink>
-                </li>
-                <li>
-                    <MudLink Href="@_xiaomiStore" Target="_blank" OnClick="() => MudDialog?.Close()" Color="Color.Tertiary">Add a review on Xiaomi GetApps</MudLink>
-                </li>
-            </ul>
+            <MudGrid Spacing="2">
+                <MudItem xs="12" md="6">
+                    <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true">
+                        <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store
+                    </MudButton>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudButton Href="@_googleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true">
+                        <MudImage Src="/logo/google-play.png" Class="me-2" Style="max-width: 20px;"></MudImage> Google Play
+                    </MudButton>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudButton Href="@_appleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true">
+                        <MudImage Src="/logo/app-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> App Store
+                    </MudButton>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudButton Href="@_huaweiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true">
+                        <MudImage Src="/logo/huawei.png" Class="me-2" Style="max-width: 20px;"></MudImage> Huawei AppGallery
+                    </MudButton>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudButton Href="@_xiaomiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true">
+                        <MudImage Src="/logo/xiaomi.png" Class="me-2" Style="max-width: 20px;"></MudImage> Xiaomi GetApps
+                    </MudButton>
+                </MudItem>
+            </MudGrid>
         }
 
     </DialogContent>
@@ -82,5 +101,11 @@
         await base.OnInitializedAsync();
 
         Platform = await GetLocalStorage("platform");
+    }
+
+    private async Task Reviewed()
+    {
+        await JsRuntime.SetLocalStorage("store-reviewed", true.ToString().ToLower());
+        MudDialog?.Close();
     }
 }

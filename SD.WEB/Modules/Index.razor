@@ -19,7 +19,7 @@
 @inject TmdbListApi TmdbListApi
 
 <SeoHeader Title="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription" Url="/" Keywords="@(["streaming"])"></SeoHeader>
-<PageHeader Image="icon/icon-71.png" Title="@SeoTranslations.AppName" Subtitle="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription">
+<PageHeader Image="icon/icon-71.png" Title="@SeoTranslations.AppName" Subtitle="@SeoTranslations.AppSubtitle">
     <ActionFragment>
         <MudTooltip Text="@Modules.Profile.Resources.Translations.Subscription">
             <MudFab Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" IconColor="Color.Warning" Size="AppStateStatic.Size" OnClick="@OpenSubscription" />
@@ -27,9 +27,10 @@
     </ActionFragment>
 </PageHeader>
 
-<MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-4"
-              AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
-              OnAdornmentClick="@(() =>{ if (Search.NotEmpty()) Navigation.NavigateTo($"/search/{Search}", true); })">
+<MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-4"
+              AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
+              OnAdornmentClick="@(() =>{ if (AppStateStatic.Search.NotEmpty()) Navigation.NavigateTo($"/search"); })" Clearable="true"
+              HelperText="Example: superman, dune, dexter, andor, Henry Cavill, Leonardo DiCaprio">
 </MudTextField>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
@@ -76,8 +77,6 @@
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
-    public string? Search { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -104,16 +103,16 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        (Watched, Watching, Wish) = await(WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
+        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
     }
 
     private void KeyPress(KeyboardEventArgs args)
     {
-        if (Search.Empty()) return;
+        if (AppStateStatic.Search.Empty()) return;
 
         if (args.Key == "Enter")
         {
-            Navigation.NavigateTo($"/search/{Search}", true);
+            Navigation.NavigateTo("/search");
         }
     }
 

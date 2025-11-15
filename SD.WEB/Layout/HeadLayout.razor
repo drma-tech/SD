@@ -14,114 +14,111 @@
     <MudProgressLinear Color="Color.Secondary" Indeterminate="true" Style="position: fixed; z-index: 1400;" />
 }
 <MudAppBar Fixed="true" Elevation="1" Color="Color.Dark">
-    @if (!_blockedActions)
+    @if (Breakpoint <= Breakpoint.Xs) //mobile view
     {
-        @if (Breakpoint <= Breakpoint.Xs) //mobile view
-        {
-            <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="icon-text-button">
-                @Menu.Home
+        <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="icon-text-button" Disabled="_blockedActions">
+            @Menu.Home
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="icon-text-button" Disabled="_blockedActions" Target="_self" Rel="noindex, nofollow">
+            @Menu.Profile
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="icon-text-button" Disabled="_blockedActions">
+            @Menu.Platforms
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Class="icon-text-button" Disabled="_blockedActions">
+            @Menu.Collections
+        </MudButton>
+        <MudSpacer />
+        <MudTooltip Text="@GlobalTranslations.EnergyTooltip">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-3" Style="padding: 6px; min-width: auto;" Size="AppStateStatic.Size">
+                <MudIcon Icon="@_energyIcon" Color="GetEnergyColor()"></MudIcon>
+                <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
             </MudButton>
-            <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="icon-text-button" Target="_self" Rel="noindex, nofollow">
-                @Menu.Profile
+        </MudTooltip>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { _open = true; })" />
+    }
+    else if (Breakpoint == Breakpoint.Sm) //tablet view
+    {
+        <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="icon-text-button" Disabled="_blockedActions">
+            @Menu.Home
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="icon-text-button" Disabled="_blockedActions" Target="_self" Rel="noindex, nofollow">
+            @Menu.Profile
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="icon-text-button" Disabled="_blockedActions">
+            @Menu.Platforms
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Class="icon-text-button" Disabled="_blockedActions">
+            @Menu.Collections
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("headset").Font" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")" Class="icon-text-button" Disabled="_blockedActions">
+            @Menu.Support
+        </MudButton>
+        <MudSpacer />
+        <MudTooltip Text="@GlobalTranslations.EnergyTooltip">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2" Style="padding: 6px; min-width: auto;" Size="AppStateStatic.Size">
+                <MudIcon Icon="@_energyIcon" Color="GetEnergyColor()"></MudIcon>
+                <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
             </MudButton>
-            <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="icon-text-button">
-                @Menu.Platforms
-            </MudButton>
-            <MudButton StartIcon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Class="icon-text-button">
-                @Menu.Collections
-            </MudButton>
-            <MudSpacer />
-            <MudTooltip Text="@GlobalTranslations.EnergyTooltip">
-                <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-3" Style="padding: 6px; min-width: auto;" Size="AppStateStatic.Size">
-                    <MudIcon Icon="@_energyIcon" Color="GetEnergyColor()"></MudIcon>
-                    <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
+        </MudTooltip>
+        <AuthorizeView>
+            <Authorized>
+                <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
+            </Authorized>
+        </AuthorizeView>
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
+        <AuthorizeView>
+            <Authorized>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Error" OnClick="@Logout" StartIcon="@IconsFA.Solid.Icon("right-from-bracket").Font" Disabled="_blockedActions">
+                    @Button.Logout
                 </MudButton>
-            </MudTooltip>
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { _open = true; })" />
-        }
-        else if (Breakpoint == Breakpoint.Sm) //tablet view
-        {
-            <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="icon-text-button">
-                @Menu.Home
-            </MudButton>
-            <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="icon-text-button" Target="_self" Rel="noindex, nofollow">
-                @Menu.Profile
-            </MudButton>
-            <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="icon-text-button">
-                @Menu.Platforms
-            </MudButton>
-            <MudButton StartIcon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Class="icon-text-button">
-                @Menu.Collections
-            </MudButton>
-            <MudButton StartIcon="@IconsFA.Solid.Icon("headset").Font" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")" Class="icon-text-button">
-                @Menu.Support
-            </MudButton>
-            <MudSpacer />
-            <MudTooltip Text="@GlobalTranslations.EnergyTooltip">
-                <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2" Style="padding: 6px; min-width: auto;" Size="AppStateStatic.Size">
-                    <MudIcon Icon="@_energyIcon" Color="GetEnergyColor()"></MudIcon>
-                    <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
+            </Authorized>
+            <NotAuthorized>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" OnClick="Login" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font" Disabled="_blockedActions">
+                    @Button.Login
                 </MudButton>
-            </MudTooltip>
-            <AuthorizeView>
-                <Authorized>
-                    <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
-                </Authorized>
-            </AuthorizeView>
-            <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
-            <AuthorizeView>
-                <Authorized>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Error" OnClick="@Logout" StartIcon="@IconsFA.Solid.Icon("right-from-bracket").Font">
-                        @Button.Logout
-                    </MudButton>
-                </Authorized>
-                <NotAuthorized>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" OnClick="Login" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
-                        @Button.Login
-                    </MudButton>
-                </NotAuthorized>
-            </AuthorizeView>
-        }
-        else //desktop view
-        {
-            <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="px-3">
-                @Menu.Home
+            </NotAuthorized>
+        </AuthorizeView>
+    }
+    else //desktop view
+    {
+        <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="px-3" Disabled="_blockedActions">
+            @Menu.Home
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="px-3" Disabled="_blockedActions" Target="_self" Rel="noindex, nofollow">
+            @Menu.Profile
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="px-3" Disabled="_blockedActions">
+            @Menu.Platforms
+        </MudButton>
+        <MudButton StartIcon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Class="px-3" Disabled="_blockedActions">
+            @Menu.Collections
+        </MudButton>
+        <MudSpacer />
+        <MudTooltip Text="@GlobalTranslations.EnergyTooltip">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2" Style="padding: 6px; min-width: auto;" Size="AppStateStatic.Size">
+                <MudIcon Icon="@_energyIcon" Color="GetEnergyColor()"></MudIcon>
+                <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
             </MudButton>
-            <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="px-3" Target="_self" Rel="noindex, nofollow">
-                @Menu.Profile
-            </MudButton>
-            <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="px-3">
-                @Menu.Platforms
-            </MudButton>
-            <MudButton StartIcon="@IconsFA.Solid.Icon("layer-group").Font" Color="@GetColor("/collections")" Href="/collections" Variant="@GetVariant("/collections")" Class="px-3">
-                @Menu.Collections
-            </MudButton>
-            <MudSpacer />
-            <MudTooltip Text="@GlobalTranslations.EnergyTooltip">
-                <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2" Style="padding: 6px; min-width: auto;" Size="AppStateStatic.Size">
-                    <MudIcon Icon="@_energyIcon" Color="GetEnergyColor()"></MudIcon>
-                    <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
+        </MudTooltip>
+        <AuthorizeView>
+            <Authorized>
+                <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
+            </Authorized>
+        </AuthorizeView>
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
+        <AuthorizeView>
+            <Authorized>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Error" OnClick="@Logout" StartIcon="@IconsFA.Solid.Icon("right-from-bracket").Font" Disabled="_blockedActions">
+                    @Button.Logout
                 </MudButton>
-            </MudTooltip>
-            <AuthorizeView>
-                <Authorized>
-                    <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
-                </Authorized>
-            </AuthorizeView>
-            <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
-            <AuthorizeView>
-                <Authorized>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Error" OnClick="@Logout" StartIcon="@IconsFA.Solid.Icon("right-from-bracket").Font">
-                        @Button.Logout
-                    </MudButton>
-                </Authorized>
-                <NotAuthorized>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" OnClick="Login" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
-                        @Button.Login
-                    </MudButton>
-                </NotAuthorized>
-            </AuthorizeView>
-        }
+            </Authorized>
+            <NotAuthorized>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" OnClick="Login" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font" Disabled="_blockedActions">
+                    @Button.Login
+                </MudButton>
+            </NotAuthorized>
+        </AuthorizeView>
     }
 </MudAppBar>
 
@@ -142,10 +139,10 @@
             <MudDivider></MudDivider>
             <AuthorizeView>
                 <Authorized>
-                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-from-bracket").Font" OnClick="@Logout" IconColor="Color.Error">@Button.Logout</MudNavLink>
+                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-from-bracket").Font" OnClick="@Logout" Disabled="_blockedActions" IconColor="Color.Error">@Button.Logout</MudNavLink>
                 </Authorized>
                 <NotAuthorized>
-                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-to-bracket").Font" OnClick="Login">
+                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-to-bracket").Font" OnClick="Login" Disabled="_blockedActions">
                         @Button.Login
                     </MudNavLink>
                 </NotAuthorized>
@@ -164,7 +161,7 @@
 
     private string _energyIcon = IconsFA.Solid.Icon("bolt").Font;
 
-    private bool _blockedActions => Navigation.Uri.Contains("login-success");
+    private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
 
     protected override void OnInitialized()
     {

@@ -53,7 +53,7 @@ else
                     @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
                     {
                         <div>
-                            <div style="position: relative;">
+                            <div @onclick="@(async () => await CollectionClicked(item))" style="@($"{(Type == MediaType.movie ? "cursor: pointer;" : "")} position: relative;")">
                                 @if (item.release_date.HasValue)
                                 {
                                     if (item.release_date.Value < DateTime.Now.AddMonths(-3))
@@ -91,7 +91,9 @@ else
                                     <MudImage Src="@(item.poster_small ?? "images/no-image.png")" Alt="@item.title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                                 }
                             </div>
-                            <MudText Align="Align.Center">@item.title</MudText>
+                            <MudText Align="Align.Center" Typo="Typo.h2" Class="custom-title-list">
+                                @item.title
+                            </MudText>
                         </div>
                     }
                 </div>
@@ -260,16 +262,29 @@ else
         (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
     }
 
-    private async Task OpenPopupMedia(MediaDetail? media)
+    private async Task CollectionClicked(Collection? item)
+    {
+        if (Type == MediaType.movie)
+        {
+            await OpenPopupMedia(item, Type);
+        }
+    }
+
+    private void OpenPopupMedia(MediaDetail? media)
     {
         try
         {
-            await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, media?.tmdb_id, IsAuthenticated);
+            Navigation.NavigateTo($"/media/{media?.MediaType.ToString().ToLower()}/{media?.tmdb_id}", true);
         }
         catch (Exception ex)
         {
             Core?.ShowError(ex.Message);
         }
+    }
+
+    private async Task OpenPopupMedia(Collection? collection, MediaType? mediaType)
+    {
+        await DialogService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id, IsAuthenticated);
     }
 
 }

@@ -28,7 +28,7 @@ public class CosmosCacheRepository
             var response = await Container.ReadItemAsync<CacheDocument<TData>?>(id, new PartitionKey(id),
                 CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
-            if (response.RequestCharge > 1.7)
+            if (response.RequestCharge > 2)
                 _logger.LogWarning("Get - Id {Id}, RequestCharge {RequestCharge}", id, response.RequestCharge);
 
             return response.Resource;

@@ -1,4 +1,4 @@
-﻿@page "/search/{SearchContent}"
+﻿@page "/search"
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @inherits PageCore<Search>
@@ -8,13 +8,14 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
-<SeoHeader Title="Search" Description="@SeoTranslations.AppDescription" Url="/search/{SearchContent}" Index="false" Keywords="@([])"></SeoHeader>
+<SeoHeader Title="Search" Description="@SeoTranslations.AppDescription" Url="/search" Index="false" Keywords="@([])"></SeoHeader>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Search" IsAuthenticated="IsAuthenticated" Format="horizontal"></GoogleAdSense>
 
-<MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@SearchContent" Immediate="true" OnKeyDown="@KeyPress"
-              AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(SearchContent.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary"
-              Variant="Variant.Outlined" OnAdornmentClick="@(() => Navigation.NavigateTo($"/search/{SearchContent}", true))" Class="my-6">
+<MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress"
+              AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary"
+              Variant="Variant.Outlined" OnAdornmentClick="@LoadNonEssentialDataAsync" Class="my-6" Clearable="true" 
+              HelperText="Example: superman, dune, dexter, andor, Henry Cavill, Leonardo DiCaprio">
 </MudTextField>
 
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())" CustomMessageWarning="@GlobalTranslations.SearchReturnedNothing">
@@ -28,11 +29,9 @@
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
-    [Parameter] public string? SearchContent { get; set; }
-
     private HashSet<MediaDetail> Items { get; set; } = [];
     private RenderControlCore<HashSet<MediaDetail>> Core { get; } = new();
-    private Dictionary<string, string> StringParameters => new() { { "query", SearchContent ?? "" } };
+    private Dictionary<string, string> StringParameters => new() { { "query", AppStateStatic.Search ?? "" } };
 
     protected override void OnInitialized()
     {
@@ -56,6 +55,7 @@
     protected override async Task LoadNonEssentialDataAsync()
     {
         Core?.LoadingStarted?.Invoke();
+        Items.Clear();
         var result = await TmdbSearch.GetList(Items, null, StringParameters);
         Items = result.list;
         Core?.LoadingFinished?.Invoke(Items);
@@ -63,14 +63,16 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        (Watched, Watching, Wish) = await(WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
+        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
     }
 
-    private void KeyPress(KeyboardEventArgs args)
+    private async Task KeyPress(KeyboardEventArgs args)
     {
+        if (AppStateStatic.Search.Empty()) return;
+
         if (args.Key == "Enter")
         {
-            Navigation.NavigateTo($"/search/{SearchContent}", true);
+            await LoadNonEssentialDataAsync();
         }
     }
 

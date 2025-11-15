@@ -42,13 +42,15 @@
             SelectedItems.Remove(id);
     }
 
-    private void SelectAll()
+    private async Task SelectAll()
     {
         foreach (var item in ItemsCollection)
         {
             if (!string.IsNullOrEmpty(item?.id))
                 SelectedItems.Add(item.id);
         }
+
+        await Confirm();
     }
 
     private async Task Confirm()

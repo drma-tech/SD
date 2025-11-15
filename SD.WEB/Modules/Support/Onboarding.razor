@@ -73,6 +73,7 @@
 
     private async Task Login()
     {
+        MudDialog?.Close();
         await PopupHelper.LoginPopup(DialogService);
     }
 }
