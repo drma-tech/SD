@@ -54,10 +54,10 @@ static void ConfigureLogging(ILoggingBuilder builder)
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
-    services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(10); }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
+    services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(20); }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
     services.AddHttpClient("paddle");
     services.AddHttpClient("apple");
-    services.AddHttpClient("auth", client => { client.Timeout = TimeSpan.FromSeconds(10); });
+    services.AddHttpClient("auth", client => { client.Timeout = TimeSpan.FromSeconds(20); });
     services.AddHttpClient("rapidapi");
     services.AddHttpClient("ipinfo");
     services.AddHttpClient("rapidapi-gzip").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
