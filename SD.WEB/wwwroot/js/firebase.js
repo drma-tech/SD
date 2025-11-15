@@ -50,7 +50,11 @@ window.firebaseAuth = {
     },
 
     signOut: async () => {
-        await auth.signOut();
+        try {
+            await auth.signOut();
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
 };
 
