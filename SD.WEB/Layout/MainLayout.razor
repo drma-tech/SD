@@ -198,13 +198,13 @@
     {
         var accesses = await JsRuntime.GetLocalStorage<HashSet<DateTime>>("session-accesses") ?? new HashSet<DateTime>();
         var hasPreviousAccess = accesses.Count > 0;
-        var firstAccess = hasPreviousAccess ? accesses.Min() : (DateTime?)null;
+        var lastAccess = hasPreviousAccess ? accesses.Max() : (DateTime?)null;
         bool isTooSoon = false;
 
-        if (firstAccess != null)
+        if (lastAccess != null)
         {
-            var minutesSinceFirst = (DateTime.UtcNow - firstAccess.Value).TotalMinutes;
-            isTooSoon = minutesSinceFirst < 5;
+            var minutesSinceLast = (DateTime.UtcNow - lastAccess.Value).TotalMinutes;
+            isTooSoon = minutesSinceLast < 5;
         }
 
         if (hasPreviousAccess && !isTooSoon) //starting with the second access (avoid the first 5 minutes)

@@ -8,8 +8,11 @@ async function startPaddle(token) {
         token: token,
         eventCallback: function (data) {
             if (data.name == "checkout.completed") {
-                Paddle.Checkout.close();
-                DotNet.invokeMethodAsync('SD.WEB', 'RegistrationSuccessful');
+                //Wait for my API to be called and update the subscription.
+                setTimeout(() => {
+                    Paddle.Checkout.close();
+                    DotNet.invokeMethodAsync('SD.WEB', 'RegistrationSuccessful');
+                }, 1000);
             }
         }
     });
