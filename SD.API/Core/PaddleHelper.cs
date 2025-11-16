@@ -1,13 +1,12 @@
-﻿using System.Security.Cryptography;
+﻿using Microsoft.Azure.Functions.Worker.Http;
+using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Azure.Functions.Worker.Http;
 
 namespace SD.API.Core;
 
 public static class PaddleHelper
 {
-    public static async Task<bool> ValidPaddleSignature(this HttpRequestData req, string? paddleSignature,
-        CancellationToken cancellationToken)
+    public static async Task<bool> ValidPaddleSignature(this HttpRequestData req, string? paddleSignature, CancellationToken cancellationToken)
     {
         var paddleHeader = req.Headers.GetValues("Paddle-Signature").First();
         var ts = paddleHeader.Split(";")[0];

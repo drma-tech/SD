@@ -20,7 +20,7 @@
         }
         else
         {
-            if (Client?.Subscription == null || !Client.Subscription.Active)
+            if (Client?.Subscription == null || !Client.Subscription.IsActive())
             {
                 <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("gift").Font" Class="mb-3" Dense="true">
                     @Translations.FreePeriod
@@ -201,7 +201,7 @@
             var freshClient = await PrincipalApi.Get(true, true);
             if (freshClient == null) throw new NotificationException("Client null");
 
-            if (freshClient.Subscription?.Active == true && freshClient.Subscription?.Product != null)
+            if (freshClient.Subscription?.IsActive() == true && freshClient.Subscription?.Product != null)
             {
                 Client = freshClient;
                 StateHasChanged();

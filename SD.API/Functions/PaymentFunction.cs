@@ -4,6 +4,7 @@ using SD.API.Core.Auth;
 using SD.API.Core.Models;
 using SD.Shared.Models.Auth;
 using SD.Shared.Models.Subscription;
+using System.Globalization;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -141,7 +142,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
     [Function("PostAppleVerify")]
     public async Task PostAppleVerify(
-      [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "apple/verify")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "apple/verify")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
@@ -162,13 +163,13 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             if (result.status != 0) throw new UnhandledException($"invalid status: {result.status}");
             if (result.receipt!.bundle_id != bundleId) throw new UnhandledException("invalid receipt");
 
-            var purchase = result.latest_receipt_info!.Single();
+            var purchase = result.latest_receipt_info[result.latest_receipt_info.Count - 1];
 
             client.Subscription ??= new AuthSubscription();
 
             client.Subscription.SubscriptionId = purchase.original_transaction_id;
             client.Subscription.LatestReceipt = receipt;
-            client.Subscription.ExpiresDate = purchase.expires_date?.ParseAppleDate();
+            client.Subscription.ExpiresDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(purchase.expires_date_ms ?? "0", CultureInfo.InvariantCulture));
 
             client.Subscription.Provider = PaymentProvider.Apple;
             client.Subscription.Product = purchase.product_id!.Contains("premium") ? AccountProduct.Premium : AccountProduct.Standard;
@@ -188,30 +189,39 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
     [Function("PostAppleSubscription")]
     public async Task PostAppleSubscription(
-       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/apple/subscription")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/apple/subscription")] HttpRequestData req, CancellationToken cancellationToken)
     {
         try
         {
-            //var validSignature = await req.ValidPaddleSignature(ApiStartup.Configurations.Paddle?.Signature, cancellationToken);
+            var body = await req.ReadFromJsonAsync<Dictionary<string, string>>(cancellationToken) ?? throw new UnhandledException("body null");
 
-            //if (!validSignature) throw new UnhandledException("wrong paddle signature");
+            if (!body.TryGetValue("signedPayload", out var signedPayload)) throw new UnhandledException("signedPayload null");
 
-            //var body = await req.GetPublicBody<RootEvent>(cancellationToken) ?? throw new UnhandledException("body null");
-            //if (body.data == null) throw new UnhandledException("body.data null");
+            var notification = AppleJwtDecoder.DecodeServerNotification(signedPayload, ApiStartup.Configurations.Apple!);
 
-            //await Task.Delay(1000, cancellationToken); //wait for user be updated in cosmos
+            var info = notification.Data;
 
-            //var result = await repo.Query<AuthPrincipal>(x => x.AuthPaddle != null && x.AuthPaddle.CustomerId == body.data.customer_id, DocumentType.Principal, cancellationToken) ??
-            //    throw new UnhandledException("AuthPrincipal null");
-            //var client = result.LastOrDefault() ?? throw new UnhandledException($"client null - customer_id:{body.data.customer_id}");
-            //if (client.AuthPaddle == null) throw new UnhandledException("client.AuthPaddle null");
+            var transaction = AppleJwtDecoder.DecodeTransaction(info.SignedTransactionInfo);
 
-            //client.AuthPaddle.SubscriptionId = body.data.id;
-            //client.AuthPaddle.IsPaidUser = body.data.status is "active" or "trialing";
+            var originalTransactionId = transaction.OriginalTransactionId;
 
-            //client.Events = client.Events.Union([new Event { Description = $"subscription = {body.data.status}" }]).ToArray();
+            var results = await repo.Query<AuthPrincipal>(x => x.Subscription != null && x.Subscription.SubscriptionId == originalTransactionId, DocumentType.Principal, cancellationToken);
 
-            //await repo.UpsertItemAsync(client, cancellationToken);
+            var client = results.LastOrDefault() ?? throw new UnhandledException($"client null - originalTransactionId:{originalTransactionId}");
+
+            if (client.Subscription == null) throw new UnhandledException("client.Subscription null");
+
+            var newExpires = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(transaction.ExpiresDate));
+            if (client.Subscription.ExpiresDate == null || newExpires > client.Subscription.ExpiresDate)
+            {
+                client.Subscription.ExpiresDate = newExpires;
+            }
+            client.Subscription.Product = transaction.ProductId!.Contains("premium") ? AccountProduct.Premium : AccountProduct.Standard;
+            client.Subscription.Cycle = transaction.ProductId!.Contains("yearly") ? AccountCycle.Yearly : AccountCycle.Monthly;
+
+            client.Events = client.Events.Union([new Event { Description = $"subscription = {originalTransactionId}, expiresDate = {transaction.ExpiresDate}" }]).ToArray();
+
+            await repo.UpsertItemAsync(client, cancellationToken);
         }
         catch (Exception ex)
         {

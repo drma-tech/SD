@@ -38,7 +38,7 @@
     private bool IsMobile => AppStateStatic.BrowserWindowSize?.Width <= 600 || AppStateStatic.BrowserWindowSize?.Height <= 600;
     private string? AdFormat => Format ?? (IsMobile ? "horizontal" : "auto");
     private bool IsLocalhost => Navigation.BaseUri.Contains("localhost");
-    private bool ActiveSubscription => Principal?.Subscription is { Active: true };
+    private bool ActiveSubscription => Principal?.Subscription?.IsActive() ?? false;
 
     private AuthPrincipal? Principal { get; set; }
 
@@ -96,7 +96,7 @@
         catch (Exception ex)
         {
             await ProcessException(ex);
-        }       
+        }
     }
 
     private async Task OpenSubscription()
