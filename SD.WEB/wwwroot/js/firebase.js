@@ -27,6 +27,7 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
 auth.onAuthStateChanged(async (user) => {
     const token = user ? await user.getIdToken() : null;
+    showToast(token);
     await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
 });
 
@@ -45,7 +46,7 @@ window.firebaseAuth = {
         if (!provider) throw new Error(`Unsupported provider: ${providerName}`);
 
         try {
-            await auth.signInWithPopup(provider);
+            await auth.signInWithRedirect(provider);
         } catch (error) {
             throw new Error(error.message);
         }
@@ -59,6 +60,16 @@ window.firebaseAuth = {
         }
     }
 };
+
+auth.getRedirectResult()
+    .then((result) => {
+        if (result.credential) {
+            let credential = result.credential;
+            let token = credential.accessToken;
+            showToast(token);
+            await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
+        }
+    });
 
 // =========================
 //  MESSAGING HANDLERS
