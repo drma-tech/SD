@@ -32,12 +32,24 @@ function GetLocalStorage(key) {
     return window.localStorage.getItem(key);
 }
 
+function GetSessionStorage(key) {
+    return window.sessionStorage.getItem(key);
+}
+
 function SetLocalStorage(key, value) {
     if (typeof key !== "string" || typeof value !== "string") {
         showError("Key/value must be strings");
         return null;
     }
     return window.localStorage.setItem(key, value);
+}
+
+function SetSessionStorage(key, value) {
+    if (typeof key !== "string" || typeof value !== "string") {
+        showError("Key/value must be strings");
+        return null;
+    }
+    return window.sessionStorage.setItem(key, value);
 }
 
 function LoadAppVariables() {

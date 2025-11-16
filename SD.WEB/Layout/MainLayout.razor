@@ -150,8 +150,11 @@
             AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
 
             //register new user or new login (need to be last step here)
-            if (AppStateStatic.IsAuthenticated && !Navigation.Uri.Contains("/support/"))
+            var registered = await JsRuntime.GetSessionStorage<bool?>("registered");
+
+            if (AppStateStatic.IsAuthenticated && !Navigation.Uri.Contains("/support/") && registered != true)
             {
+                await JsRuntime.SetSessionStorage("registered", true.ToString().ToLower());
                 Navigation.NavigateTo("/register-user");
             }
         }
@@ -204,7 +207,7 @@
         if (lastAccess != null)
         {
             var minutesSinceLast = (DateTime.UtcNow - lastAccess.Value).TotalMinutes;
-            isTooSoon = minutesSinceLast < 5;
+            isTooSoon = minutesSinceLast < 30;
         }
 
         if (hasPreviousAccess && !isTooSoon) //starting with the second access (avoid the first 5 minutes)
