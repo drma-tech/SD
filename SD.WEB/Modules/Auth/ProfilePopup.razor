@@ -59,7 +59,7 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        Principal = await PrincipalApi.Get(IsAuthenticated);
+        Principal = await PrincipalApi.Get(IsAuthenticated, true);
     }
 
     private async Task DownloadData()
