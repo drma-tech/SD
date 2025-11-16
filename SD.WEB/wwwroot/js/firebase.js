@@ -19,6 +19,8 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const messaging = firebase.messaging();
 
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
 // =========================
 //  AUTH HANDLERS
 // =========================
