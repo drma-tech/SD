@@ -25,11 +25,11 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 //  AUTH HANDLERS
 // =========================
 
-//auth.onAuthStateChanged(async (user) => {
-//    const token = user ? await user.getIdToken() : null;
-//    showToast(token);
-//    await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
-//});
+auth.onAuthStateChanged(async (user) => {
+    const token = user ? await user.getIdToken() : null;
+    showToast(token);
+    await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
+});
 
 window.firebaseAuth = {
     signIn: async (providerName, email) => {
