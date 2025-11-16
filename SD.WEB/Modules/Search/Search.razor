@@ -15,7 +15,7 @@
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary"
               Variant="Variant.Outlined" OnAdornmentClick="@LoadNonEssentialDataAsync" Class="my-6" Clearable="true" 
-              HelperText="Example: superman, dune, dexter, andor, Henry Cavill, Leonardo DiCaprio">
+              HelperText="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio">
 </MudTextField>
 
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())" CustomMessageWarning="@GlobalTranslations.SearchReturnedNothing">

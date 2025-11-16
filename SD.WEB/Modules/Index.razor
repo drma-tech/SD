@@ -30,7 +30,7 @@
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-4"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
               OnAdornmentClick="@(() =>{ if (AppStateStatic.Search.NotEmpty()) Navigation.NavigateTo($"/search"); })" Clearable="true"
-              HelperText="Example: superman, dune, dexter, andor, Henry Cavill, Leonardo DiCaprio">
+              HelperText="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio">
 </MudTextField>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index" IsAuthenticated="IsAuthenticated"></GoogleAdSense>

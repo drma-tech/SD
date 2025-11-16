@@ -122,90 +122,12 @@
 
         if (firstRender)
         {
-            //DARK MODE
-            var darkMode = await AppStateStatic.GetDarkMode(JsRuntime);
-
-            if (darkMode == null && _mudThemeProvider != null)
-            {
-                var system = await _mudThemeProvider.GetSystemDarkModeAsync();
-                darkMode = system;
-
-                await JsRuntime.SetLocalStorage("dark-mode", darkMode.ToString()?.ToLower() ?? "false");
-            }
-
-            AppStateStatic.ChangeDarkMode(darkMode ?? false);
-
-            //check if user consent to privacy and terms on first access (China only)
-            if (!AppStateStatic.IsAuthenticated && !Navigation.Uri.Contains("/support/"))
-            {
-                var country = await AppStateStatic.GetCountry(IpInfoApi, IpInfoServerApi, JsRuntime);
-
-                if (country.ToUpper() == "CN") //china
-                {
-                    var consent = await JsRuntime.GetLocalStorage<bool>("consent");
-
-                    if (!consent)
-                    {
-                        Navigation.NavigateTo("/ask-consent");
-                        return;
-                    }
-                }
-            }
-
-            //Customer Satisfaction (CSAT) - only on the second day of usage
-            var accesses = await JsRuntime.GetLocalStorage<HashSet<DateTime>>("accesses") ?? new HashSet<DateTime>();
-
-            if (accesses.Count > 0) //second access onwards
-            {
-                var rating1 = await JsRuntime.GetLocalStorage<int?>("survey-rating");
-                if (rating1 == null)
-                {
-                    _ = Task.Run(async () =>
-                    {
-                        await Task.Delay(5000); //survey starts after 5 seconds
-                        await JsRuntime.InvokeVoidAsync("Userback.openSurvey", "mjj9Ta");
-                    });
-                }
-            }
-
-            accesses.Add(DateTime.UtcNow.Date);
-
-            if (accesses.Count > 5) //reset to try again
-            {
-                accesses.Clear();
-            }
-
-            await JsRuntime.SetLocalStorage("accesses", accesses);
-
-            //ask for app store review if ratings are 4 or 5 stars
-            var rating = await JsRuntime.GetLocalStorage<int?>("survey-rating");
-            var reviewed = await JsRuntime.GetLocalStorage("store-reviewed");
-
-            if (rating != null && rating > 3 && reviewed.Empty())
-            {
-                _ = Task.Run(async () =>
-                {
-                    await Task.Delay(5000); //delay of 5 seconds
-                    await DialogService.AskReviewPopup();
-                });
-            }
-
-            //open onboarding dialog for new users
-            var onboarding = await JsRuntime.GetLocalStorage("onboarding-popup");
-            if (onboarding.Empty())
-            {
-                await DialogService.OnboardingPopup();
-                await JsRuntime.SetLocalStorage("onboarding-popup", true.ToString().ToLower());
-            }
-
-            //energy
-            if (!AppStateStatic.IsAuthenticated)
-            {
-                var energy = await EnergyApi.GetEnergy();
-
-                AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
-                AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
-            }
+            await ApplyDarkMode();
+            await RedirectToRequestConsentForChina();
+            await ShowCustomerSatisfactionPopup();
+            await AskUSerForReview();
+            await ShowOnBoardingPopup();
+            await LoadEnergyForAnonymous();
         }
     }
 
@@ -236,6 +158,114 @@
         catch (Exception ex)
         {
             ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    private async Task ApplyDarkMode()
+    {
+        var darkMode = await AppStateStatic.GetDarkMode(JsRuntime);
+
+        if (darkMode == null && _mudThemeProvider != null)
+        {
+            var system = await _mudThemeProvider.GetSystemDarkModeAsync();
+            darkMode = system;
+
+            await JsRuntime.SetLocalStorage("dark-mode", darkMode.ToString()?.ToLower() ?? "false");
+        }
+
+        AppStateStatic.ChangeDarkMode(darkMode ?? false);
+    }
+
+    private async Task RedirectToRequestConsentForChina()
+    {
+        if (!AppStateStatic.IsAuthenticated && !Navigation.Uri.Contains("/support/"))
+        {
+            var country = await AppStateStatic.GetCountry(IpInfoApi, IpInfoServerApi, JsRuntime);
+
+            if (country.ToUpper() == "CN")
+            {
+                var consent = await JsRuntime.GetLocalStorage<bool>("consent");
+
+                if (!consent)
+                {
+                    Navigation.NavigateTo("/ask-consent");
+                }
+            }
+        }
+    }
+
+    private async Task ShowCustomerSatisfactionPopup()
+    {
+        var accesses = await JsRuntime.GetLocalStorage<HashSet<DateTime>>("session-accesses") ?? new HashSet<DateTime>();
+        var hasPreviousAccess = accesses.Count > 0;
+        var firstAccess = hasPreviousAccess ? accesses.Min() : (DateTime?)null;
+        bool isTooSoon = false;
+
+        if (firstAccess != null)
+        {
+            var minutesSinceFirst = (DateTime.UtcNow - firstAccess.Value).TotalMinutes;
+            isTooSoon = minutesSinceFirst < 5;
+        }
+
+        if (hasPreviousAccess && !isTooSoon) //starting with the second access (avoid the first 5 minutes)
+        {
+            var rating1 = await JsRuntime.GetLocalStorage<int?>("survey-rating");
+            if (rating1 == null)
+            {
+                _ = Task.Run(async () =>
+                {
+                    await Task.Delay(5000); //survey starts after 5 seconds
+                    await JsRuntime.InvokeVoidAsync("Userback.openSurvey", "mjj9Ta");
+                });
+            }
+        }
+
+        accesses.Add(DateTime.UtcNow);
+
+        if (accesses.Count > 10) //keep only the last 10 records
+        {
+            accesses = accesses.OrderByDescending(x => x).Take(10).ToHashSet();
+        }
+
+        await JsRuntime.SetLocalStorage("session-accesses", accesses);
+    }
+
+    private async Task AskUSerForReview()
+    {
+        var rating = await JsRuntime.GetLocalStorage<int?>("survey-rating");
+        var reviewed = await JsRuntime.GetLocalStorage("store-reviewed");
+
+        //ask for app store review if ratings are 4 or 5 stars
+        if (rating != null && rating > 3 && reviewed.Empty())
+        {
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(5000); //delay of 5 seconds
+                await DialogService.AskReviewPopup();
+            });
+        }
+    }
+
+    private async Task ShowOnBoardingPopup()
+    {
+        var onboarding = await JsRuntime.GetLocalStorage("onboarding-popup");
+
+        //show only once
+        if (onboarding.Empty())
+        {
+            await DialogService.OnboardingPopup();
+            await JsRuntime.SetLocalStorage("onboarding-popup", true.ToString().ToLower());
+        }
+    }
+
+    private async Task LoadEnergyForAnonymous()
+    {
+        if (!AppStateStatic.IsAuthenticated)
+        {
+            var energy = await EnergyApi.GetEnergy();
+
+            AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
+            AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
         }
     }
 
