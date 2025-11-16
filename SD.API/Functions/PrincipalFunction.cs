@@ -181,7 +181,14 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
                     DisplayName = user.DisplayName
                 };
 
-                await FirebaseAuth.DefaultInstance.CreateUserAsync(args, cancellationToken);
+                try
+                {
+                    await FirebaseAuth.DefaultInstance.CreateUserAsync(args, CancellationToken.None);
+                }
+                catch (Exception ex)
+                {
+                    req.ProcessException(ex); //It logs the error, but doesn't stop the import.
+                }
             }
         }
         catch (Exception ex)
