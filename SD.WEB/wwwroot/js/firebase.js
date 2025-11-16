@@ -62,7 +62,7 @@ window.firebaseAuth = {
 };
 
 auth.getRedirectResult()
-    .then(async (result) => {
+    .then((result) => {
         if (result.credential) {
             let credential = result.credential;
             let token = credential.accessToken;
