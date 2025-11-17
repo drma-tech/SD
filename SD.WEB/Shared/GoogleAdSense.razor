@@ -37,7 +37,7 @@
 
     private bool IsMobile => AppStateStatic.BrowserWindowSize?.Width <= 600 || AppStateStatic.BrowserWindowSize?.Height <= 600;
     private string? AdFormat => Format ?? (IsMobile ? "horizontal" : "auto");
-    private bool IsLocalhost => Navigation.BaseUri.Contains("localhost");
+    private bool IsLocalhost => Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev");
     private bool ActiveSubscription => Principal?.Subscription?.IsActive() ?? false;
 
     private AuthPrincipal? Principal { get; set; }
