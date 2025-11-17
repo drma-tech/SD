@@ -6,7 +6,7 @@
 
 const firebaseConfig = {
     apiKey: "AIzaSyDj5LpsT7-bra4hvuvb5E_BPSlD7Wr29nQ",
-    authDomain: "streaming-discovery-4c483.firebaseapp.com",
+    authDomain: "firebase.streamingdiscovery.com",
     projectId: "streaming-discovery-4c483",
     storageBucket: "streaming-discovery-4c483.firebasestorage.app",
     messagingSenderId: "394152837411",
