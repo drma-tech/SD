@@ -65,16 +65,6 @@ window.firebaseAuth = {
     }
 };
 
-auth.getRedirectResult()
-    .then(async (result) => {
-        if (result.credential) {
-            let credential = result.credential;
-            let token = credential.accessToken;
-            showToast(token);
-            await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
-        }
-    });
-
 // =========================
 //  MESSAGING HANDLERS
 // =========================
