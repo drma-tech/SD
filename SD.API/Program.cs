@@ -6,8 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using SD.API.StartupLogging;
-using System.Diagnostics;
+using System;
 using System.Net;
 
 var app = new HostBuilder()
@@ -23,16 +22,9 @@ var app = new HostBuilder()
             config.AddUserSecrets<Program>();
         }
 
-        var swBind = Stopwatch.StartNew();
-
         var cfg = new Configurations();
         config.Build().Bind(cfg);
         ApiStartup.Configurations = cfg;
-
-        swBind.Stop();
-        StartupLogBuffer.Enqueue($"Configurations in {swBind.Elapsed}");
-
-        var swFirebase = Stopwatch.StartNew();
 
         var firebaseTemplate = File.ReadAllText("firebase.json");
         var firebaseJson = firebaseTemplate
@@ -46,9 +38,6 @@ var app = new HostBuilder()
         {
             Credential = GoogleCredential.FromJson(firebaseJson)
         });
-
-        swFirebase.Stop();
-        StartupLogBuffer.Enqueue($"firebase in {swFirebase.Elapsed}");
     })
     .ConfigureServices(ConfigureServices) //125
     .Build();
@@ -58,7 +47,6 @@ await app.RunAsync(); //1442
 static void ConfigureServices(IServiceCollection services)
 {
     //http clients
-    var swHttp = Stopwatch.StartNew();
 
     services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(30); }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
     services.AddHttpClient("paddle");
@@ -68,11 +56,7 @@ static void ConfigureServices(IServiceCollection services)
     services.AddHttpClient("ipinfo");
     services.AddHttpClient("rapidapi-gzip").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
 
-    swHttp.Stop();
-    StartupLogBuffer.Enqueue($"http clients in {swHttp.Elapsed}");
-
     //repositories
-    var swRepo = Stopwatch.StartNew();
 
     services.AddSingleton(provider =>
     {
@@ -96,11 +80,7 @@ static void ConfigureServices(IServiceCollection services)
         return new CosmosLoggerProvider(repo);
     });
 
-    swRepo.Stop();
-    StartupLogBuffer.Enqueue($"repositories in {swRepo.Elapsed}");
-
     //general services
-    var swGeneral = Stopwatch.StartNew();
 
     services.AddDistributedMemoryCache();
 
@@ -118,9 +98,4 @@ static void ConfigureServices(IServiceCollection services)
                 ValidateLifetime = true
             };
         });
-
-    swGeneral.Stop();
-    StartupLogBuffer.Enqueue($"general services in {swGeneral.Elapsed}");
-
-    services.AddHostedService<StartupLogFlusher>();
 }
