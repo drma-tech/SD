@@ -1,10 +1,12 @@
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Net;
 
 var app = new HostBuilder()
@@ -12,7 +14,7 @@ var app = new HostBuilder()
     {
         worker.UseMiddleware<ApiMiddleware>();
     })
-    .ConfigureAppConfiguration(async (hostContext, config) => //736
+    .ConfigureAppConfiguration((hostContext, config) => //736
     {
         if (hostContext.HostingEnvironment.IsDevelopment())
         {
@@ -24,9 +26,7 @@ var app = new HostBuilder()
         config.Build().Bind(cfg);
         ApiStartup.Configurations = cfg;
 
-        ApiStartup.Startup(ApiStartup.Configurations.CosmosDB?.ConnectionString); //650
-
-        var firebaseTemplate = await File.ReadAllTextAsync("firebase.json");
+        var firebaseTemplate = File.ReadAllText("firebase.json");
         var firebaseJson = firebaseTemplate
             .Replace("@ID", ApiStartup.Configurations.Firebase?.ClientId)
             .Replace("@KEY", ApiStartup.Configurations.Firebase?.PrivateKey)
@@ -39,21 +39,15 @@ var app = new HostBuilder()
             Credential = GoogleCredential.FromJson(firebaseJson)
         });
     })
-    .ConfigureLogging(ConfigureLogging) //12
     .ConfigureServices(ConfigureServices) //125
     .Build();
 
 await app.RunAsync(); //1442
 
-return;
-
-static void ConfigureLogging(ILoggingBuilder builder)
-{
-    builder.AddProvider(new CosmosLoggerProvider(new CosmosLogRepository()));
-}
-
 static void ConfigureServices(IServiceCollection services)
 {
+    //http clients
+
     services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(30); }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
     services.AddHttpClient("paddle");
     services.AddHttpClient("apple");
@@ -62,8 +56,32 @@ static void ConfigureServices(IServiceCollection services)
     services.AddHttpClient("ipinfo");
     services.AddHttpClient("rapidapi-gzip").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
 
+    //repositories
+
+    services.AddSingleton(provider =>
+    {
+        return new CosmosClient(ApiStartup.Configurations.CosmosDB?.ConnectionString, new CosmosClientOptions
+        {
+            ConnectionMode = ConnectionMode.Gateway,
+            SerializerOptions = new CosmosSerializationOptions
+            {
+                PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+            }
+        });
+    });
+
     services.AddSingleton<CosmosRepository>();
     services.AddSingleton<CosmosCacheRepository>();
+    services.AddSingleton<CosmosLogRepository>();
+
+    services.AddSingleton<ILoggerProvider>(provider =>
+    {
+        var repo = provider.GetRequiredService<CosmosLogRepository>();
+        return new CosmosLoggerProvider(repo);
+    });
+
+    //general services
+
     services.AddDistributedMemoryCache();
 
     services

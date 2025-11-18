@@ -206,8 +206,8 @@
 
         if (lastAccess != null)
         {
-            var minutesSinceLast = (DateTime.UtcNow - lastAccess.Value).TotalMinutes;
-            isTooSoon = minutesSinceLast < 30;
+            var minutesSinceLast = (DateTime.UtcNow - lastAccess.Value).TotalHours;
+            isTooSoon = minutesSinceLast < 6;
         }
 
         if (hasPreviousAccess && !isTooSoon) //starting with the second access (avoid the first 5 minutes)

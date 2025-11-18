@@ -11,13 +11,13 @@ public class CosmosRepository
 {
     private readonly ILogger<CosmosRepository> _logger;
 
-    public CosmosRepository(ILogger<CosmosRepository> logger)
+    public CosmosRepository(CosmosClient CosmosClient, ILogger<CosmosRepository> logger)
     {
         _logger = logger;
 
         var databaseId = ApiStartup.Configurations.CosmosDB?.DatabaseId;
 
-        Container = ApiStartup.CosmosClient.GetContainer(databaseId, "main");
+        Container = CosmosClient.GetContainer(databaseId, "main");
     }
 
     public Container Container { get; }

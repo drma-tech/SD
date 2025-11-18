@@ -20,11 +20,11 @@ public class CosmosLogRepository
 {
     public Container Container { get; }
 
-    public CosmosLogRepository()
+    public CosmosLogRepository(CosmosClient CosmosClient)
     {
         var databaseId = ApiStartup.Configurations.CosmosDB?.DatabaseId;
 
-        Container = ApiStartup.CosmosClient.GetContainer(databaseId, "logs");
+        Container = CosmosClient.GetContainer(databaseId, "logs");
     }
 
     public async Task Add(LogModel log)
