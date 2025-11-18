@@ -30,7 +30,7 @@ var app = new HostBuilder()
         ApiStartup.Configurations = cfg;
 
         swBind.Stop();
-        StartupLogBuffer.Enqueue($"Configurations in {swBind.Elapsed}");
+        StartupLogBuffer.Enqueue("Configurations", swBind.Elapsed);
 
         var swFirebase = Stopwatch.StartNew();
 
@@ -48,7 +48,7 @@ var app = new HostBuilder()
         });
 
         swFirebase.Stop();
-        StartupLogBuffer.Enqueue($"firebase in {swFirebase.Elapsed}");
+        StartupLogBuffer.Enqueue("FirebaseApp", swFirebase.Elapsed);
     })
     .ConfigureServices(ConfigureServices) //125
     .Build();
@@ -61,30 +61,21 @@ try
     swHostStart.Stop();
 
     // prefer ILoggerFactory so we can create a logger even if ILogger<Program> isn't registered
-    try
+    var loggerFactory = app.Services.GetService<ILoggerFactory>();
+    if (loggerFactory != null)
     {
-        var loggerFactory = app.Services.GetService<ILoggerFactory>();
-        if (loggerFactory != null)
-        {
-            var logger = loggerFactory.CreateLogger("HostStartup");
-            logger.LogWarning("Host started in {Elapsed}", swHostStart.Elapsed);
-        }
-        else
-        {
-            // fall back to buffered startup log
-            StartupLogBuffer.Enqueue($"Host started in {swHostStart.Elapsed}");
-        }
+        var logger = loggerFactory.CreateLogger("HostStartup");
+        logger.LogWarning("Host started in {Elapsed}", swHostStart.Elapsed);
     }
-    catch
+    else
     {
-        StartupLogBuffer.Enqueue($"Host started in {swHostStart.Elapsed}");
+        // fall back to buffered startup log
+        StartupLogBuffer.Enqueue($"Host started", swHostStart.Elapsed);
     }
 }
 catch (Exception ex)
 {
     swHostStart.Stop();
-    // include exception details
-    StartupLogBuffer.Enqueue($"Host failed to start after {swHostStart.Elapsed}: {ex}");
     throw;
 }
 
@@ -107,7 +98,7 @@ static void ConfigureServices(IServiceCollection services)
     services.AddHttpClient("rapidapi-gzip").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
 
     swHttp.Stop();
-    StartupLogBuffer.Enqueue($"http clients in {swHttp.Elapsed}");
+    StartupLogBuffer.Enqueue($"http clients", swHttp.Elapsed);
 
     //repositories
     var swRepo = Stopwatch.StartNew();
@@ -115,7 +106,7 @@ static void ConfigureServices(IServiceCollection services)
     services.AddSingleton(provider =>
     {
         var swCosmos = Stopwatch.StartNew();
-        
+
         var client = new CosmosClient(ApiStartup.Configurations.CosmosDB?.ConnectionString, new CosmosClientOptions
         {
             ConnectionMode = ConnectionMode.Gateway,
@@ -126,8 +117,8 @@ static void ConfigureServices(IServiceCollection services)
         });
 
         swCosmos.Stop();
-        StartupLogBuffer.Enqueue($"new CosmosClient {swCosmos.Elapsed}");
-        
+        StartupLogBuffer.Enqueue($"new CosmosClient", swCosmos.Elapsed);
+
         return client;
     });
 
@@ -142,7 +133,7 @@ static void ConfigureServices(IServiceCollection services)
     });
 
     swRepo.Stop();
-    StartupLogBuffer.Enqueue($"repositories in {swRepo.Elapsed}");
+    StartupLogBuffer.Enqueue($"repositories", swRepo.Elapsed);
 
     //general services
     var swGeneral = Stopwatch.StartNew();
@@ -165,7 +156,7 @@ static void ConfigureServices(IServiceCollection services)
         });
 
     swGeneral.Stop();
-    StartupLogBuffer.Enqueue($"general services in {swGeneral.Elapsed}");
+    StartupLogBuffer.Enqueue($"general services", swGeneral.Elapsed);
 
     services.AddHostedService<StartupLogFlusher>();
 }

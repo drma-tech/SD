@@ -7,14 +7,13 @@ namespace SD.API.StartupLogging
     {
         private static readonly ConcurrentQueue<LogEntry> _queue = new();
 
-        public static void Enqueue(string message, Exception? exception = null)
+        public static void Enqueue(string method, TimeSpan time)
         {
             _queue.Enqueue(new LogEntry
             {
-                Level = LogLevel.Warning,
-                Message = message,
-                Exception = exception,
-                Timestamp = DateTime.UtcNow
+                Method = method,
+                DateTime = DateTime.UtcNow,
+                TimeSpan = time
             });
         }
 
@@ -28,10 +27,9 @@ namespace SD.API.StartupLogging
 
         internal class LogEntry
         {
-            public LogLevel Level { get; set; }
-            public string Message { get; set; } = string.Empty;
-            public Exception? Exception { get; set; }
-            public DateTime Timestamp { get; set; }
+            public string? Method { get; set; }
+            public DateTime DateTime { get; set; }
+            public TimeSpan TimeSpan { get; set; }
         }
     }
 }

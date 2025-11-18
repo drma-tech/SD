@@ -2,9 +2,9 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;
-using SD.API.StartupLogging;
 using System.Diagnostics;
 using System.Net;
+using static Grpc.Core.Metadata;
 
 namespace SD.API.Core;
 
@@ -79,12 +79,11 @@ internal sealed class ApiMiddleware(ILogger<ApiMiddleware> logger) : IFunctionsW
         finally
         {
             sw.Stop();
-            if (sw.ElapsedMilliseconds > 5000)
+            if (sw.Elapsed.Milliseconds > 500)
             {
                 var functionName = context.FunctionDefinition?.Name ?? "(unknown)";
-                _logger?.LogWarning("Function {FunctionName} executed in {ElapsedMilliseconds} ms", functionName, sw.Elapsed);
-                StartupLogBuffer.Enqueue($"Function {functionName} executed in {sw.Elapsed}");
-            }
+                _logger?.LogWarning("Function {FunctionName} executed in {Elapsed}", functionName, sw.Elapsed);
+            }                
         }
     }
 }

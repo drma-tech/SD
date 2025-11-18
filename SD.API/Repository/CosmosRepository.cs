@@ -2,7 +2,6 @@
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Logging;
 using SD.API.Repository.Core;
-using SD.API.StartupLogging;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Net;
@@ -24,7 +23,7 @@ public class CosmosRepository
         Container = CosmosClient.GetContainer(databaseId, "main");
 
         swCosmos.Stop();
-        StartupLogBuffer.Enqueue($"CosmosRepository {swCosmos.Elapsed}");
+        _logger?.LogWarning("CosmosRepository {Elapsed}", swCosmos.Elapsed);
     }
 
     public Container Container { get; }
@@ -116,7 +115,7 @@ public class CosmosRepository
         }
     }
 
-    public async Task<T> CreateItemAsync<T>(T item, CancellationToken cancellationToken) 
+    public async Task<T> CreateItemAsync<T>(T item, CancellationToken cancellationToken)
         where T : CosmosDocument, new()
     {
         try
