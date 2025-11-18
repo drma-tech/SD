@@ -12,7 +12,6 @@ namespace SD.WEB.Core.Auth
 
         public async Task SignOutAsync()
         {
-            ApiCore.ResetCacheVersion();
             await js.InvokeVoidAsync("firebaseAuth.signOut");
         }
     }
