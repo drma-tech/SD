@@ -12,7 +12,7 @@ var app = new HostBuilder()
     {
         worker.UseMiddleware<ApiMiddleware>();
     })
-    .ConfigureAppConfiguration((hostContext, config) => //736
+    .ConfigureAppConfiguration(async (hostContext, config) => //736
     {
         if (hostContext.HostingEnvironment.IsDevelopment())
         {
@@ -24,7 +24,9 @@ var app = new HostBuilder()
         config.Build().Bind(cfg);
         ApiStartup.Configurations = cfg;
 
-        var firebaseTemplate = File.ReadAllText("firebase.json");
+        ApiStartup.Startup(ApiStartup.Configurations.CosmosDB?.ConnectionString); //650
+
+        var firebaseTemplate = await File.ReadAllTextAsync("firebase.json");
         var firebaseJson = firebaseTemplate
             .Replace("@ID", ApiStartup.Configurations.Firebase?.ClientId)
             .Replace("@KEY", ApiStartup.Configurations.Firebase?.PrivateKey)
@@ -36,8 +38,6 @@ var app = new HostBuilder()
         {
             Credential = GoogleCredential.FromJson(firebaseJson)
         });
-
-        ApiStartup.Startup(ApiStartup.Configurations.CosmosDB?.ConnectionString); //650
     })
     .ConfigureLogging(ConfigureLogging) //12
     .ConfigureServices(ConfigureServices) //125
@@ -52,7 +52,7 @@ static void ConfigureLogging(ILoggingBuilder builder)
     builder.AddProvider(new CosmosLoggerProvider(new CosmosLogRepository()));
 }
 
-static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
+static void ConfigureServices(IServiceCollection services)
 {
     services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(30); }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
     services.AddHttpClient("paddle");
