@@ -67,7 +67,7 @@ try
         if (loggerFactory != null)
         {
             var logger = loggerFactory.CreateLogger("HostStartup");
-            logger.LogInformation("Host started in {Elapsed}", swHostStart.Elapsed);
+            logger.LogWarning("Host started in {Elapsed}", swHostStart.Elapsed);
         }
         else
         {
