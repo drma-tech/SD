@@ -60,31 +60,16 @@ try
     await app.StartAsync();
     swHostStart.Stop();
 
-    // prefer ILoggerFactory so we can create a logger even if ILogger<Program> isn't registered
-    try
-    {
-        var loggerFactory = app.Services.GetService<ILoggerFactory>();
-        if (loggerFactory != null)
-        {
-            var logger = loggerFactory.CreateLogger("HostStartup");
-            logger.LogInformation("Host started in {Elapsed}", swHostStart.Elapsed);
-        }
-        else
-        {
-            // fall back to buffered startup log
-            StartupLogBuffer.Enqueue($"Host started in {swHostStart.Elapsed}");
-        }
-    }
-    catch
-    {
+    var logger = app.Services.GetService<ILogger<Program>>();
+    if (logger != null)
+        logger.LogInformation("Host started in {Elapsed}", swHostStart.Elapsed);
+    else
         StartupLogBuffer.Enqueue($"Host started in {swHostStart.Elapsed}");
-    }
 }
 catch (Exception ex)
 {
     swHostStart.Stop();
-    // include exception details
-    StartupLogBuffer.Enqueue($"Host failed to start after {swHostStart.Elapsed}: {ex}");
+    StartupLogBuffer.Enqueue($"Host failed to start after {swHostStart.Elapsed}: {ex.Message}");
     throw;
 }
 
@@ -92,9 +77,6 @@ await app.WaitForShutdownAsync();
 
 static void ConfigureServices(IServiceCollection services)
 {
-    // ensure logging services are available so ILoggerFactory/ILogger<T> will be resolved
-    services.AddLogging();
-
     //http clients
     var swHttp = Stopwatch.StartNew();
 
