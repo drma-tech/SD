@@ -6,7 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SD.API.Core.Auth;
 using System.Net;
+using System.Text.Json;
 
 var app = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults(worker =>
@@ -24,19 +26,6 @@ var app = new HostBuilder()
         var cfg = new Configurations();
         config.Build().Bind(cfg);
         ApiStartup.Configurations = cfg;
-
-        var firebaseTemplate = File.ReadAllText("firebase.json");
-        var firebaseJson = firebaseTemplate
-            .Replace("@ID", ApiStartup.Configurations.Firebase?.ClientId)
-            .Replace("@KEY", ApiStartup.Configurations.Firebase?.PrivateKey)
-            .Replace("@KEY-ID", ApiStartup.Configurations.Firebase?.PrivateKeyId)
-            .Replace("@EMAIL", ApiStartup.Configurations.Firebase?.ClientEmail)
-            .Replace("@CERT", ApiStartup.Configurations.Firebase?.CertUrl);
-
-        FirebaseApp.Create(new AppOptions
-        {
-            Credential = GoogleCredential.FromJson(firebaseJson)
-        });
     })
     .ConfigureServices(ConfigureServices) //125
     .Build();
@@ -61,7 +50,7 @@ static void ConfigureServices(IServiceCollection services)
     {
         return new CosmosClient(ApiStartup.Configurations.CosmosDB?.ConnectionString, new CosmosClientOptions
         {
-            ConnectionMode = ConnectionMode.Direct,
+            ConnectionMode = ConnectionMode.Gateway,
             SerializerOptions = new CosmosSerializationOptions
             {
                 PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
@@ -97,4 +86,24 @@ static void ConfigureServices(IServiceCollection services)
                 ValidateLifetime = true
             };
         });
+}
+
+var firebaseConfig = new FirebaseConfig
+{
+    project_id = "streaming-discovery-4c483",
+    private_key_id = ApiStartup.Configurations.Firebase?.PrivateKeyId,
+    private_key = ApiStartup.Configurations.Firebase?.PrivateKey,
+    client_email = ApiStartup.Configurations.Firebase?.ClientEmail,
+    client_id = ApiStartup.Configurations.Firebase?.ClientId,
+    client_x509_cert_url = ApiStartup.Configurations.Firebase?.CertUrl
+};
+
+var firebaseJson = JsonSerializer.Serialize(firebaseConfig);
+
+if (FirebaseApp.DefaultInstance == null)
+{
+    FirebaseApp.Create(new AppOptions
+    {
+        Credential = GoogleCredential.FromJson(firebaseJson)
+    });
 }
