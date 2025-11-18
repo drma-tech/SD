@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using SD.API.Repository.Core;
+using SD.API.StartupLogging;
 using System.Diagnostics;
 using System.Net;
 
@@ -21,7 +22,7 @@ public class CosmosCacheRepository
         Container = CosmosClient.GetContainer(databaseId, "cache");
 
         swCosmos.Stop();
-        _logger?.LogWarning("CosmosCacheRepository {Elapsed}", swCosmos.Elapsed);
+        StartupLogBuffer.Enqueue($"CosmosCacheRepository {swCosmos.Elapsed}");
     }
 
     public Container Container { get; }

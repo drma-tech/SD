@@ -25,38 +25,18 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
     {
         try
         {
-            var sw = System.Diagnostics.Stopwatch.StartNew();
-
             var ip = req.GetUserIP(false);
             var cacheKey = $"energy_{ip}";
 
-            sw.Stop();
-            req.LogWarning($"Energy Cache Function - Get IP took {sw.Elapsed}");
-
-            var sw2 = System.Diagnostics.Stopwatch.StartNew();
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
             var model = doc?.Data;
-            sw2.Stop();
-            req.LogWarning($"Energy Cache Function - Get Cache took {sw2.Elapsed}");
 
             model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
 
-            var sw3 = System.Diagnostics.Stopwatch.StartNew();
             doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken); //check if upsert is needed
-            sw3.Stop();
-            req.LogWarning($"Energy Cache Function - Upsert Cache took {sw3.Elapsed}");
-
-            var sw4 = System.Diagnostics.Stopwatch.StartNew();
             await SaveCache(doc, cacheKey, TtlCache.OneDay);
-            sw4.Stop();
-            req.LogWarning($"Energy Cache Function - Save Cache took {sw4.Elapsed}");
 
-            var sw5 = System.Diagnostics.Stopwatch.StartNew();
-            var response = await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
-            sw5.Stop();
-            req.LogWarning($"Energy Cache Function - Create Response took {sw5.Elapsed}");
-
-            return response;
+            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {

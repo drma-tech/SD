@@ -9,9 +9,13 @@ namespace SD.API.StartupLogging
         {
             foreach (var entry in StartupLogBuffer.DequeueAll())
             {
-                if (entry.TimeSpan.Milliseconds > 500)
+                if (entry.Exception is null)
                 {
-                    logger?.Log(LogLevel.Information, "Function {Method} executed in {TimeSpan} ({DateTime})", entry.Method, entry.TimeSpan, entry.DateTime);
+                    logger.Log(entry.Level, "{Timestamp:o} {Message}", entry.Timestamp, entry.Message);
+                }
+                else
+                {
+                    logger.Log(entry.Level, entry.Exception, "{Timestamp:o} {Message}", entry.Timestamp, entry.Message);
                 }
             }
 
