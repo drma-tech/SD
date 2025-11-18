@@ -98,10 +98,10 @@ static void ConfigureServices(IServiceCollection services)
     //http clients
     var swHttp = Stopwatch.StartNew();
 
-    services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(30); }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
+    services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(60); }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
     services.AddHttpClient("paddle");
     services.AddHttpClient("apple");
-    services.AddHttpClient("auth", client => { client.Timeout = TimeSpan.FromSeconds(30); });
+    services.AddHttpClient("auth", client => { client.Timeout = TimeSpan.FromSeconds(60); });
     services.AddHttpClient("rapidapi");
     services.AddHttpClient("ipinfo");
     services.AddHttpClient("rapidapi-gzip").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
