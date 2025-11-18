@@ -2,6 +2,8 @@
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Logging;
 using SD.API.Repository.Core;
+using SD.API.StartupLogging;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Net;
 
@@ -13,11 +15,16 @@ public class CosmosRepository
 
     public CosmosRepository(CosmosClient CosmosClient, ILogger<CosmosRepository> logger)
     {
+        var swCosmos = Stopwatch.StartNew();
+
         _logger = logger;
 
         var databaseId = ApiStartup.Configurations.CosmosDB?.DatabaseId;
 
         Container = CosmosClient.GetContainer(databaseId, "main");
+
+        swCosmos.Stop();
+        StartupLogBuffer.Enqueue($"CosmosRepository {swCosmos.Elapsed}");
     }
 
     public Container Container { get; }

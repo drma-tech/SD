@@ -114,7 +114,9 @@ static void ConfigureServices(IServiceCollection services)
 
     services.AddSingleton(provider =>
     {
-        return new CosmosClient(ApiStartup.Configurations.CosmosDB?.ConnectionString, new CosmosClientOptions
+        var swCosmos = Stopwatch.StartNew();
+        
+        var client = new CosmosClient(ApiStartup.Configurations.CosmosDB?.ConnectionString, new CosmosClientOptions
         {
             ConnectionMode = ConnectionMode.Gateway,
             SerializerOptions = new CosmosSerializationOptions
@@ -122,6 +124,11 @@ static void ConfigureServices(IServiceCollection services)
                 PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
             }
         });
+
+        swCosmos.Stop();
+        StartupLogBuffer.Enqueue($"new CosmosClient {swCosmos.Elapsed}");
+        
+        return client;
     });
 
     services.AddSingleton<CosmosRepository>();
