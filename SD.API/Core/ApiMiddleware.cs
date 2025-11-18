@@ -78,10 +78,10 @@ internal sealed class ApiMiddleware(ILogger<ApiMiddleware> logger) : IFunctionsW
         finally
         {
             sw.Stop();
-            if (sw.ElapsedMilliseconds > 5000)
+            if (sw.ElapsedMilliseconds > 2000)
             {
                 var functionName = context.FunctionDefinition?.Name ?? "(unknown)";
-                _logger?.LogWarning("Function {FunctionName} executed in {ElapsedMilliseconds} ms", functionName, sw.Elapsed);
+                _logger?.LogWarning("Function {FunctionName} executed in {Elapsed}", functionName, sw.Elapsed);
             }
         }
     }

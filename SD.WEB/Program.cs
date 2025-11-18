@@ -53,38 +53,19 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
 
     var apiOrigin = configuration["DownstreamApi:BaseUrl"] ?? $"{baseAddress}api/";
 
-    collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(30); })
+    collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(60); })
        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddScoped<AuthenticationStateProvider, FirebaseAuthStateProvider>();
     collection.AddScoped<CustomAuthorizationHandler>();
-    collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(30); })
+    collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(60); })
         .AddHttpMessageHandler<CustomAuthorizationHandler>()
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
-    collection.AddHttpClient("External", (service, options) => { options.Timeout = TimeSpan.FromSeconds(30); })
+    collection.AddHttpClient("External", (service, options) => { options.Timeout = TimeSpan.FromSeconds(60); })
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
-    //collection.AddCascadingAuthenticationState();
-    //collection.AddOptions();
-    //collection.AddAuthorizationCore();
-
     collection.AddAuthorizationCore();
-
-    //collection.AddMsalAuthentication(options =>
-    //{
-    //    options.ProviderOptions.LoginMode = "redirect";
-    //    configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
-    //    options.ProviderOptions.Cache = new MsalCacheOptions { CacheLocation = "localStorage" };
-
-    //    options.ProviderOptions.Authentication.PostLogoutRedirectUri = "/";
-
-    //    options.ProviderOptions.DefaultAccessTokenScopes.Add("openid"); // Need to provide the scopes that are "by default" should be included with the underlying API call
-    //    options.ProviderOptions.DefaultAccessTokenScopes.Add("email"); //give access to the email scope
-    //    options.ProviderOptions.DefaultAccessTokenScopes.Add(configuration["DownstreamApi:Scopes"] ?? throw new UnhandledException("Scopes null"));
-    //});
-
-    //collection.AddScoped<AccountClaimsPrincipalFactory<RemoteUserAccount>, CustomUserFactory>(); //for some reason roles are not being recognized
 
     collection.AddScoped<FirebaseAuthService>();
 
