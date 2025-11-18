@@ -1,8 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using SD.API.Repository.Core;
-using SD.API.StartupLogging;
-using System.Diagnostics;
 using System.Net;
 
 namespace SD.API.Repository;
@@ -13,16 +11,11 @@ public class CosmosCacheRepository
 
     public CosmosCacheRepository(CosmosClient CosmosClient, ILogger<CosmosCacheRepository> logger)
     {
-        var swCosmos = Stopwatch.StartNew();
-
         _logger = logger;
 
         var databaseId = ApiStartup.Configurations.CosmosDB?.DatabaseId;
 
         Container = CosmosClient.GetContainer(databaseId, "cache");
-
-        swCosmos.Stop();
-        StartupLogBuffer.Enqueue($"CosmosCacheRepository {swCosmos.Elapsed}");
     }
 
     public Container Container { get; }
