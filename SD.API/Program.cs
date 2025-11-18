@@ -53,27 +53,7 @@ var app = new HostBuilder()
     .ConfigureServices(ConfigureServices) //125
     .Build();
 
-// measure host start (this is the Azure Functions host initialization you mentioned)
-var swHostStart = Stopwatch.StartNew();
-try
-{
-    await app.StartAsync();
-    swHostStart.Stop();
-
-    var logger = app.Services.GetService<ILogger<Program>>();
-    if (logger != null)
-        logger.LogInformation("Host started in {Elapsed}", swHostStart.Elapsed);
-    else
-        StartupLogBuffer.Enqueue($"Host started in {swHostStart.Elapsed}");
-}
-catch (Exception ex)
-{
-    swHostStart.Stop();
-    StartupLogBuffer.Enqueue($"Host failed to start after {swHostStart.Elapsed}: {ex.Message}");
-    throw;
-}
-
-await app.WaitForShutdownAsync();
+await app.RunAsync(); //1442
 
 static void ConfigureServices(IServiceCollection services)
 {
