@@ -26,6 +26,26 @@ var app = new HostBuilder()
         var cfg = new Configurations();
         config.Build().Bind(cfg);
         ApiStartup.Configurations = cfg;
+
+        var firebaseConfig = new FirebaseConfig
+        {
+            project_id = "streaming-discovery-4c483",
+            private_key_id = ApiStartup.Configurations.Firebase?.PrivateKeyId,
+            private_key = ApiStartup.Configurations.Firebase?.PrivateKey,
+            client_email = ApiStartup.Configurations.Firebase?.ClientEmail,
+            client_id = ApiStartup.Configurations.Firebase?.ClientId,
+            client_x509_cert_url = ApiStartup.Configurations.Firebase?.CertUrl
+        };
+
+        var firebaseJson = JsonSerializer.Serialize(firebaseConfig);
+
+        if (FirebaseApp.DefaultInstance == null)
+        {
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromJson(firebaseJson)
+            });
+        }
     })
     .ConfigureServices(ConfigureServices) //125
     .Build();
@@ -86,24 +106,4 @@ static void ConfigureServices(IServiceCollection services)
                 ValidateLifetime = true
             };
         });
-}
-
-var firebaseConfig = new FirebaseConfig
-{
-    project_id = "streaming-discovery-4c483",
-    private_key_id = ApiStartup.Configurations.Firebase?.PrivateKeyId,
-    private_key = ApiStartup.Configurations.Firebase?.PrivateKey,
-    client_email = ApiStartup.Configurations.Firebase?.ClientEmail,
-    client_id = ApiStartup.Configurations.Firebase?.ClientId,
-    client_x509_cert_url = ApiStartup.Configurations.Firebase?.CertUrl
-};
-
-var firebaseJson = JsonSerializer.Serialize(firebaseConfig);
-
-if (FirebaseApp.DefaultInstance == null)
-{
-    FirebaseApp.Create(new AppOptions
-    {
-        Credential = GoogleCredential.FromJson(firebaseJson)
-    });
 }
