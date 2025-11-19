@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using SD.API.Core.Auth;
 using System.Net;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 var app = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults(worker =>
@@ -29,11 +30,13 @@ var app = new HostBuilder()
             config.Build().Bind(cfg);
             ApiStartup.Configurations = cfg;
 
+            var key = ApiStartup.Configurations.Firebase?.PrivateKey ?? throw new NotificationException("PrivateKey null");
+
             var firebaseConfig = new FirebaseConfig
             {
                 project_id = "streaming-discovery-4c483",
                 private_key_id = ApiStartup.Configurations.Firebase?.PrivateKeyId ?? throw new NotificationException("PrivateKeyId null"),
-                private_key = ApiStartup.Configurations.Firebase?.PrivateKey ?? throw new NotificationException("PrivateKey null"),
+                private_key = Regex.Unescape(key),
                 client_email = ApiStartup.Configurations.Firebase?.ClientEmail ?? throw new NotificationException("ClientEmail null"),
                 client_id = ApiStartup.Configurations.Firebase?.ClientId ?? throw new NotificationException("ClientId null"),
                 client_x509_cert_url = ApiStartup.Configurations.Firebase?.CertUrl ?? throw new NotificationException("Firebase null")
