@@ -48,8 +48,6 @@ var app = new HostBuilder()
                     Credential = GoogleCredential.FromJson(firebaseJson)
                 });
             }
-
-            throw new UnhandledException("Startup completed successfully.");
         }
         catch (Exception ex)
         {
