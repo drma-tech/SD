@@ -30,11 +30,11 @@ var app = new HostBuilder()
         var firebaseConfig = new FirebaseConfig
         {
             project_id = "streaming-discovery-4c483",
-            private_key_id = ApiStartup.Configurations.Firebase?.PrivateKeyId,
-            private_key = ApiStartup.Configurations.Firebase?.PrivateKey,
-            client_email = ApiStartup.Configurations.Firebase?.ClientEmail,
-            client_id = ApiStartup.Configurations.Firebase?.ClientId,
-            client_x509_cert_url = ApiStartup.Configurations.Firebase?.CertUrl
+            private_key_id = ApiStartup.Configurations.Firebase?.PrivateKeyId ?? throw new NotificationException("PrivateKeyId null"),
+            private_key = ApiStartup.Configurations.Firebase?.PrivateKey ?? throw new NotificationException("PrivateKey null"),
+            client_email = ApiStartup.Configurations.Firebase?.ClientEmail ?? throw new NotificationException("ClientEmail null"),
+            client_id = ApiStartup.Configurations.Firebase?.ClientId ?? throw new NotificationException("ClientId null"),
+            client_x509_cert_url = ApiStartup.Configurations.Firebase?.CertUrl ?? throw new NotificationException("Firebase null")
         };
 
         var firebaseJson = JsonSerializer.Serialize(firebaseConfig);
