@@ -1,6 +1,7 @@
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -66,7 +67,6 @@ var app = new HostBuilder()
             var loggerFactory = LoggerFactory.Create(builder => builder.AddProvider(provider));
             var logger = loggerFactory.CreateLogger("ConfigureAppConfiguration");
 
-            logger.LogWarning("PrivateKey: {PrivateKey}", ApiStartup.Configurations.Firebase?.PrivateKey);
             logger.LogError(ex, "ConfigureAppConfiguration");
         }
     })
@@ -131,6 +131,9 @@ static void ConfigureServices(IServiceCollection services)
                     ValidateLifetime = true
                 };
             });
+
+        //https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/configuration/overview?view=aspnetcore-9.0
+        services.AddDataProtection().DisableAutomaticKeyGeneration();
     }
     catch (Exception ex)
     {
