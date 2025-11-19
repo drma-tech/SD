@@ -1,7 +1,6 @@
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -131,9 +130,6 @@ static void ConfigureServices(IServiceCollection services)
                     ValidateLifetime = true
                 };
             });
-
-        //https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/configuration/overview?view=aspnetcore-9.0
-        services.AddDataProtection().DisableAutomaticKeyGeneration();
     }
     catch (Exception ex)
     {
