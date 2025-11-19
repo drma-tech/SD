@@ -63,6 +63,7 @@ var app = new HostBuilder()
             var loggerFactory = LoggerFactory.Create(builder => builder.AddProvider(provider));
             var logger = loggerFactory.CreateLogger("SD.API.ConfigureAppConfiguration");
 
+            logger.LogWarning("PrivateKey: {PrivateKey}", ApiStartup.Configurations.Firebase?.PrivateKey);
             logger.LogError(ex, "ConfigureAppConfiguration");
         }
     })
