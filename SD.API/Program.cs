@@ -64,7 +64,7 @@ var app = new HostBuilder()
             var tempRepo = new CosmosLogRepository(tempClient);
             var provider = new CosmosLoggerProvider(tempRepo);
             var loggerFactory = LoggerFactory.Create(builder => builder.AddProvider(provider));
-            var logger = loggerFactory.CreateLogger("SD.API.ConfigureAppConfiguration");
+            var logger = loggerFactory.CreateLogger("ConfigureAppConfiguration");
 
             logger.LogWarning("PrivateKey: {PrivateKey}", ApiStartup.Configurations.Firebase?.PrivateKey);
             logger.LogError(ex, "ConfigureAppConfiguration");
@@ -77,56 +77,76 @@ await app.RunAsync(); //1442
 
 static void ConfigureServices(IServiceCollection services)
 {
-    //http clients
-
-    services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(60); }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
-    services.AddHttpClient("paddle");
-    services.AddHttpClient("apple");
-    services.AddHttpClient("auth", client => { client.Timeout = TimeSpan.FromSeconds(60); });
-    services.AddHttpClient("rapidapi");
-    services.AddHttpClient("ipinfo");
-    services.AddHttpClient("rapidapi-gzip").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
-
-    //repositories
-
-    services.AddSingleton(provider =>
+    try
     {
-        return new CosmosClient(ApiStartup.Configurations.CosmosDB?.ConnectionString, new CosmosClientOptions
+        //http clients
+
+        services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(60); }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 });
+        services.AddHttpClient("paddle");
+        services.AddHttpClient("apple");
+        services.AddHttpClient("auth", client => { client.Timeout = TimeSpan.FromSeconds(60); });
+        services.AddHttpClient("rapidapi");
+        services.AddHttpClient("ipinfo");
+        services.AddHttpClient("rapidapi-gzip").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
+
+        //repositories
+
+        services.AddSingleton(provider =>
         {
-            ConnectionMode = ConnectionMode.Gateway,
+            return new CosmosClient(ApiStartup.Configurations.CosmosDB?.ConnectionString, new CosmosClientOptions
+            {
+                ConnectionMode = ConnectionMode.Gateway,
+                SerializerOptions = new CosmosSerializationOptions
+                {
+                    PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+                }
+            });
+        });
+
+        services.AddSingleton<CosmosRepository>();
+        services.AddSingleton<CosmosCacheRepository>();
+        services.AddSingleton<CosmosLogRepository>();
+
+        services.AddSingleton<ILoggerProvider>(provider =>
+        {
+            var repo = provider.GetRequiredService<CosmosLogRepository>();
+            return new CosmosLoggerProvider(repo);
+        });
+
+        //general services
+
+        services.AddDistributedMemoryCache();
+
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.Authority = "https://securetoken.google.com/streaming-discovery-4c483";
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = "https://securetoken.google.com/streaming-discovery-4c483",
+                    ValidateAudience = true,
+                    ValidAudience = "streaming-discovery-4c483",
+                    ValidateLifetime = true
+                };
+            });
+    }
+    catch (Exception ex)
+    {
+        var tempClient = new CosmosClient(ApiStartup.Configurations.CosmosDB?.ConnectionString, new CosmosClientOptions()
+        {
             SerializerOptions = new CosmosSerializationOptions
             {
                 PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
             }
         });
-    });
+        var tempRepo = new CosmosLogRepository(tempClient);
+        var provider = new CosmosLoggerProvider(tempRepo);
+        var loggerFactory = LoggerFactory.Create(builder => builder.AddProvider(provider));
+        var logger = loggerFactory.CreateLogger("ConfigureServices");
 
-    services.AddSingleton<CosmosRepository>();
-    services.AddSingleton<CosmosCacheRepository>();
-    services.AddSingleton<CosmosLogRepository>();
-
-    services.AddSingleton<ILoggerProvider>(provider =>
-    {
-        var repo = provider.GetRequiredService<CosmosLogRepository>();
-        return new CosmosLoggerProvider(repo);
-    });
-
-    //general services
-
-    services.AddDistributedMemoryCache();
-
-    services
-        .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
-        {
-            options.Authority = "https://securetoken.google.com/streaming-discovery-4c483";
-            options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidIssuer = "https://securetoken.google.com/streaming-discovery-4c483",
-                ValidateAudience = true,
-                ValidAudience = "streaming-discovery-4c483",
-                ValidateLifetime = true
-            };
-        });
+        logger.LogWarning("PrivateKey: {PrivateKey}", ApiStartup.Configurations.Firebase?.PrivateKey);
+        logger.LogError(ex, "ConfigureServices");
+    }
 }
