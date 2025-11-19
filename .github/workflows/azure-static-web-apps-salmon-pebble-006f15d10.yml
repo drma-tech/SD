@@ -30,6 +30,7 @@ jobs:
           app_location: "SD.WEB" # App source code path
           api_location: "SD.API" # Api source code path - optional
           output_location: "wwwroot" # Built app content directory - optional
+          build_timeout_in_minutes: "20"
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
