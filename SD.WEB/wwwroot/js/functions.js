@@ -89,7 +89,7 @@ function LoadAppVariables() {
 
 async function getUserInfo() {
     try {
-        const user = auth.currentUser;
+        const user = firebaseAuth.getUser();
 
         if (!user) return null;
 
