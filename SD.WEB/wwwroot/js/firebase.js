@@ -15,8 +15,8 @@ const firebaseConfig = {
 };
 
 window.initFirebase = () => {
-    if (typeof firebase === 'undefined') {
-        setTimeout(() => window.initFirebase(), 200);
+    if (!window.firebase || !firebase.auth || !firebase.messaging) {
+        setTimeout(window.initFirebase, 100);
         return;
     }
     firebase.initializeApp(firebaseConfig);

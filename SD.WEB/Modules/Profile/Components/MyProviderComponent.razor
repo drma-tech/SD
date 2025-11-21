@@ -19,7 +19,7 @@
     </ActionFragment>
     <BodyFragment>
         <RenderControl Core="Core" Model="MyProviders" ExpressionEmpty="(MyProviders? obj) => obj == null || obj.Items.Empty()" PrivateContent="true"
-                       CustomMessageWarning="@Resources.Translations.MarkPlatforms">
+                       CustomMessageWarning="@Modules.Profile.Resources.Translations.MarkPlatforms">
             <div id="@_swiperId" class="swiper">
                 <div class="swiper-wrapper">
                     @foreach (var item in MyProviders?.Items.Take(AccountProduct.Premium.GetRestrictions().MySuggestions) ?? new List<MyProvidersItem>())

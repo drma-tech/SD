@@ -16,7 +16,7 @@ var app = new HostBuilder()
     {
         worker.UseMiddleware<ApiMiddleware>();
     })
-    .ConfigureAppConfiguration((hostContext, config) => //736
+    .ConfigureAppConfiguration((hostContext, config) =>
     {
         try
         {
@@ -69,10 +69,10 @@ var app = new HostBuilder()
             logger.LogError(ex, "ConfigureAppConfiguration");
         }
     })
-    .ConfigureServices(ConfigureServices) //125
+    .ConfigureServices(ConfigureServices)
     .Build();
 
-await app.RunAsync(); //1442
+await app.RunAsync();
 
 static void ConfigureServices(IServiceCollection services)
 {

@@ -40,7 +40,7 @@
                         </MudToggleGroup>
                     </MudItem>
                     <MudItem xs="12" sm="4">
-                        <MudSelect @bind-Value="@Provider" Label="@Resources.Translations.PaymentProvider" Dense="true">
+                        <MudSelect @bind-Value="@Provider" Label="@Modules.Subscription.Resources.Translations.PaymentProvider" Dense="true">
                             @foreach (var item in Providers)
                             {
                                 <MudSelectItem T="PaymentProvider" Value="@item">

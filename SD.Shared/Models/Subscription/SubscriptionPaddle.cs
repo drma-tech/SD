@@ -1,4 +1,4 @@
-﻿using SD.Shared.Core;
+using SD.Shared.Core;
 
 namespace SD.Shared.Models.Subscription;
 

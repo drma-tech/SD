@@ -58,25 +58,58 @@ window.addEventListener("error", function (event) {
 
 //Promise.reject(new Error('unhandledrejection test call'));
 
-window.addEventListener("unhandledrejection", function (event) {
-    const reasonMessage = event.reason?.message || event.reason || 'Unknown error';
-    const reasonStack = event.reason?.stack || 'No stack trace';
+function normalizeReason(reason) {
+    if (reason instanceof Error) {
+        const props = ['message', 'stack', 'code', 'constraint', 'constraintName', 'target'];
+        const extra = props
+            .filter(p => reason[p] && p !== 'message')
+            .map(p => `${p}: ${typeof reason[p] === 'object' ? JSON.stringify(reason[p]) : reason[p]}`)
+            .join(', ');
 
-    if (reasonMessage.includes('Failed to fetch')) {
+        return {
+            message: reason.message || reason.name + (extra ? ` (${extra})` : ''),
+            stack: reason.stack || 'No stack trace'
+        };
+    }
+
+    if (typeof reason === "string") {
+        return {
+            message: reason,
+            stack: reason.stack || 'No stack trace'
+        };
+    }
+
+    let serialized;
+    try {
+        serialized = JSON.stringify(reason);
+    } catch {
+        serialized = '[Unserializable reason]';
+    }
+
+    return {
+        message: serialized || 'Unknown error',
+        stack: reason.stack || 'No stack trace'
+    };
+}
+
+window.addEventListener("unhandledrejection", function (event) {
+    const { message, stack } = normalizeReason(event.reason);
+
+    if (typeof message === "string" && message.includes('Failed to fetch')) {
         showError("Connection problem detected. Check your internet connection and try reloading.");
         return;
     }
 
-    showError(`unhandledrejection: ${JSON.stringify(reasonMessage)}`);
+    showError(`unhandledrejection: ${message}`);
 
+    //ignore bots
     if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex|toutiao|bytespider|applebot/i.test(window.navigator.userAgent) && window.navigator.serviceWorker?.register) {
-        //just ignore, just a bot
         return;
     }
 
     const obj = {
-        reasonMessage: reasonMessage,
-        reasonStack: reasonStack,
+        reasonMessage: message,
+        reasonStack: stack,
         env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
         app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
         userAgent: navigator.userAgent,
