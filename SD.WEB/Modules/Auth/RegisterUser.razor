@@ -129,6 +129,8 @@
     private async Task Logout()
     {
         await Auth.SignOutAsync();
+
+        Navigation.NavigateTo("/");
     }
 
 }
