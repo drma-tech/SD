@@ -88,7 +88,7 @@ namespace SD.WEB.Modules.Support.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Explore hundreds of thousands of movies and series from over 800 streaming platforms in 140 countries — your entire streaming life in one place..
+        ///   Looks up a localized string similar to Explore hundreds of thousands of movies and series from over 800 streaming platforms in 140 countries, your entire streaming life in one place..
         /// </summary>
         public static string Step1Subtitle {
             get {
@@ -106,7 +106,7 @@ namespace SD.WEB.Modules.Support.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search, follow, and keep up with your favorite platforms, movies, series, and artists — all in real time..
+        ///   Looks up a localized string similar to Search, follow, and keep up with your favorite platforms, movies, series, and artists, all in real time..
         /// </summary>
         public static string Step2Subtitle {
             get {
