@@ -33,10 +33,6 @@ window.initFirebase = () => {
     auth.onAuthStateChanged(async (user) => {
         const token = user ? await user.getIdToken() : null;
 
-        if (window.location.host.includes("localhost") || window.location.host.includes("dev")) {
-            showToast(`token: ${token}`);
-        }
-
         await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
     });
 
