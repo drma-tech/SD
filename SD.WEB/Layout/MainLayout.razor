@@ -235,11 +235,22 @@
 
     private async Task AskUSerForReview()
     {
+        var accesses = await JsRuntime.GetLocalStorage<HashSet<DateTime>>("session-accesses") ?? new HashSet<DateTime>();
+        var hasPreviousAccess = accesses.Count > 0;
+        var lastAccess = hasPreviousAccess ? accesses.Max() : (DateTime?)null;
+        bool isTooSoon = false;
+
+        if (lastAccess != null)
+        {
+            var hoursSinceLast = (DateTime.UtcNow - lastAccess.Value).TotalHours;
+            isTooSoon = hoursSinceLast < 6;
+        }
+
         var rating = await JsRuntime.GetLocalStorage<int?>("survey-rating");
         var reviewed = await JsRuntime.GetLocalStorage("store-reviewed");
 
         //ask for app store review if ratings are 4 or 5 stars
-        if (rating != null && rating > 3 && reviewed.Empty())
+        if (rating != null && rating > 3 && reviewed.Empty() && !isTooSoon)
         {
             _ = Task.Run(async () =>
             {
