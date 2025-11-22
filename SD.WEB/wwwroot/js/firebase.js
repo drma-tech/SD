@@ -53,9 +53,10 @@ window.initFirebase = () => {
 
             const provider = providerMap[providerName];
             if (!provider) throw new Error(`Unsupported provider: ${providerName}`);
+            const platform = GetLocalStorage("platform");
 
             try {
-                if (window.location.hostname === "localhost") {
+                if (window.location.hostname === "localhost" || platform == "ios") {
                     await auth.signInWithPopup(provider);
                 }
                 else {
