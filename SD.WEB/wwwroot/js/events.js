@@ -155,14 +155,3 @@ document.addEventListener("click", async (event) => {
         requestMessagingPermission();
     }
 });
-
-function AuthStateChanged(user) {
-    const token = user ? await user.getIdToken() : null;
-    await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
-
-    if (user) { // signed in
-        let objUser = getUser();
-
-        //do something with objUser if needed
-    }
-}
