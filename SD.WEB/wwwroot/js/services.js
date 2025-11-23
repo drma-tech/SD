@@ -8,22 +8,18 @@ window.initGoogleAnalytics = function (code, version) {
         function gtag() { dataLayer.push(arguments); }
         gtag("js", new Date());
 
-        getUserInfo()
-            .then(user => {
-                const config = {
-                    'app_version': version,
-                    'platform': PLATFORM
-                };
+        var user = getUserInfo();
 
-                if (user) {
-                    config['user_id'] = user.userId;
-                }
+        const config = {
+            'app_version': version,
+            'platform': PLATFORM
+        };
 
-                gtag("config", code, config);
-            })
-            .catch(error => {
-                showError(error.message);
-            });
+        if (user) {
+            config['user_id'] = user.userId;
+        }
+
+        gtag("config", code, config);
     }
 }
 
@@ -63,18 +59,14 @@ window.initUserBack = function () {
         app_version: GetLocalStorage("app-version")
     };
     Userback.on_load = () => {
-        getUserInfo()
-            .then(user => {
-                if (user) {
-                    Userback.identify(user.userId, {
-                        name: user.name,
-                        email: user.email
-                    });
-                }
-            })
-            .catch(error => {
-                showError(error.message);
+        var user = getUserInfo();
+
+        if (user) {
+            Userback.identify(user.userId, {
+                name: user.name,
+                email: user.email
             });
+        }
     };
     Userback.on_survey_submit = (obj) => {
         if (obj.key == "mjj9Ta") {

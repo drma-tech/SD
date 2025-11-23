@@ -199,6 +199,8 @@
 
     private async Task ShowCustomerSatisfactionPopup()
     {
+        if (Navigation.BaseUri.Contains("localhost")) return;
+
         var accesses = await JsRuntime.GetLocalStorage<HashSet<DateTime>>("session-accesses") ?? new HashSet<DateTime>();
         var hasPreviousAccess = accesses.Count > 0;
         var lastAccess = hasPreviousAccess ? accesses.Max() : (DateTime?)null;
