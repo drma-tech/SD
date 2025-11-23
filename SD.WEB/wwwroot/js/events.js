@@ -156,7 +156,7 @@ document.addEventListener("click", async (event) => {
     }
 });
 
-async function AuthStateChanged(user) {
+function AuthStateChanged(user) {
     const token = user ? await user.getIdToken() : null;
     await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
 
