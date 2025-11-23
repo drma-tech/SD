@@ -46,16 +46,6 @@ window.initClarity = function (code) {
     }
 }
 
-// Disable robots for dev environment
-window.setRobotsMeta = function () {
-    if (window.location.hostname.includes("dev")) {
-        const meta = document.createElement("meta");
-        meta.name = "robots";
-        meta.content = "noindex, nofollow";
-        document.head.appendChild(meta);
-    }
-}
-
 // userback
 window.initUserBack = function () {
     window.Userback = window.Userback || {};
@@ -96,20 +86,25 @@ window.initUserBack = function () {
 
 // adsense
 window.createAd = function (adClient, adSlot, adFormat, containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
+    try {
+        const container = document.getElementById(containerId);
+        if (!container) return;
 
-    container.innerHTML = ""; // remove old ad
+        container.innerHTML = ""; // remove old ad
 
-    const isMobile = window.innerWidth <= 600 || window.innerHeight <= 600;
+        const isMobile = window.innerWidth <= 600 || window.innerHeight <= 600;
 
-    const ins = document.createElement('ins');
-    ins.className = 'adsbygoogle ' + (isMobile ? 'custom-ad-mobile' : 'custom-ad');
-    ins.setAttribute('data-ad-client', adClient);
-    ins.setAttribute('data-ad-slot', adSlot);
-    if (!isMobile) ins.setAttribute('data-ad-format', adFormat); //on mobile, adsense doesnt respect horizontal format
-    //ins.setAttribute('data-full-width-responsive', true); //this forces it to take up half the screen
-    container.appendChild(ins);
+        const ins = document.createElement('ins');
+        ins.className = 'adsbygoogle ' + (isMobile ? 'custom-ad-mobile' : 'custom-ad');
+        ins.setAttribute('data-ad-client', adClient);
+        ins.setAttribute('data-ad-slot', adSlot);
+        if (!isMobile) ins.setAttribute('data-ad-format', adFormat); //on mobile, adsense doesnt respect horizontal format
+        //ins.setAttribute('data-full-width-responsive', true); //this forces it to take up half the screen
+        container.appendChild(ins);
 
-    (adsbygoogle = window.adsbygoogle || []).push({});
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (error) {
+        sendLog(error);
+        showError(error.message);
+    }
 };

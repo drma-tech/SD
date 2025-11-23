@@ -2,9 +2,7 @@
 
 function openGoogleCheckout(productId, type) {
     try {
-        alert("before test");
         if (!WTN) alert("WTN plugin not found");
-        alert("calling inAppPurchase");
         WTN.inAppPurchase({
             productId: productId,
             productType: type,
@@ -19,6 +17,6 @@ function openGoogleCheckout(productId, type) {
             }
         })
     } catch (e) {
-        alert(`error: ${JSON.stringify(e)}`);
+        showError(`error: ${JSON.stringify(e)}`);
     }
 }

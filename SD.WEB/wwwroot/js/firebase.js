@@ -58,6 +58,7 @@ window.initFirebase = () => {
                     await auth.signInWithRedirect(provider);
                 }
             } catch (error) {
+                sendLog(error);
                 throw new Error(error.message);
             }
         },
@@ -66,6 +67,7 @@ window.initFirebase = () => {
             try {
                 await auth.signOut();
             } catch (error) {
+                sendLog(error);
                 throw new Error(error.message);
             }
         },

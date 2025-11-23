@@ -6,7 +6,6 @@ function openAppleCheckout(productId) {
     WTN.inAppPurchase({
         productId: productId,
         callback: function (data) {
-            showToast(JSON.stringify(receiptData));
             if (data.isSuccess) {
                 if (!data) { showToast("No data returned from purchase"); return; }
                 if (!data.isSuccess) { showToast("Purchase failed or canceled"); return; }
