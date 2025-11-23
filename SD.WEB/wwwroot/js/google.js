@@ -12,7 +12,7 @@ function openGoogleCheckout(productId, type) {
                 showToast(JSON.stringify(receiptData));
                 showToast(JSON.stringify(data));
                 if (data.isSuccess) {
-                   
+                    //do something when purchase is successful
                 }
             }
         })
