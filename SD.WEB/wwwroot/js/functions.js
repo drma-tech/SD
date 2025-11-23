@@ -101,7 +101,7 @@ function LoadAppVariables() {
     //}
 }
 
-function getUserInfo() {
+function getUser() {
     try {
         if (!firebaseAuth) return null;
 

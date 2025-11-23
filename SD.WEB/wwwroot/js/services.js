@@ -8,7 +8,7 @@ window.initGoogleAnalytics = function (code, version) {
         function gtag() { dataLayer.push(arguments); }
         gtag("js", new Date());
 
-        let user = getUserInfo();
+        let user = getUser();
 
         const config = {
             'app_version': version,
@@ -59,7 +59,7 @@ window.initUserBack = function () {
         app_version: GetLocalStorage("app-version")
     };
     Userback.on_load = () => {
-        let user = getUserInfo();
+        let user = getUser();
 
         if (user) {
             Userback.identify(user.userId, {
