@@ -8,16 +8,10 @@ window.initGoogleAnalytics = function (code, version) {
         function gtag() { dataLayer.push(arguments); }
         gtag("js", new Date());
 
-        let user = getUser();
-
         const config = {
             'app_version': version,
             'platform': PLATFORM
         };
-
-        if (user) {
-            config['user_id'] = user.userId;
-        }
 
         gtag("config", code, config);
     }
