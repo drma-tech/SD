@@ -31,7 +31,7 @@ window.initFirebase = () => {
     // =========================
 
     auth.onAuthStateChanged(async (user) => {
-        AuthStateChanged(user);
+        await AuthStateChanged(user);
     });
 
     window.firebaseAuth = {
