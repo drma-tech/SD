@@ -41,7 +41,7 @@ window.initUserBack = function () {
     window.Userback = window.Userback || {};
     Userback.access_token = "A-A2J4M5NKCbDp1QyQe7ogemmmq";
     (function (d) {
-        var s = d.createElement('script'); s.async = true; s.src = 'https://static.userback.io/widget/v1.js?vs=202511'; (d.head || d.body).appendChild(s);
+        var s = d.createElement('script'); s.async = true; s.src = 'https://static.userback.io/widget/v1.js'; (d.head || d.body).appendChild(s);
     })(document);
     const browserLang = navigator.language || navigator.userLanguage;
     Userback.widget_settings = {

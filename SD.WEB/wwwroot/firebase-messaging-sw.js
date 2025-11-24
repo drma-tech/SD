@@ -1,6 +1,6 @@
 ﻿importScripts(
-    'https://www.gstatic.com/firebasejs/12.5.0/firebase-app-compat.js',
-    'https://www.gstatic.com/firebasejs/12.5.0/firebase-messaging-compat.js'
+    'https://www.gstatic.com/firebasejs/12.6.0/firebase-app-compat.js',
+    'https://www.gstatic.com/firebasejs/12.6.0/firebase-messaging-compat.js'
 );
 
 const firebaseConfig = {
