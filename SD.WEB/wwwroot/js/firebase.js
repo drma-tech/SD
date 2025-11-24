@@ -15,7 +15,7 @@ const firebaseConfig = {
 };
 
 window.initFirebase = () => {
-    if (typeof firebase === "undefined" || !firebase || !firebase.auth || !firebase.messaging) {
+    if (typeof firebase === "undefined" || !firebase?.auth || !firebase?.messaging) {
         setTimeout(window.initFirebase, 100);
         return;
     }
@@ -123,4 +123,13 @@ window.initFirebase = () => {
 
 if (!isBot) {
     window.initFirebase();
+}
+
+async function FirebaseSignIn(provider) {
+    if (typeof firebaseAuth === "undefined" || !firebaseAuth) {
+        showError("Login is temporarily unavailable. Please make sure you have a stable connection or try again later.");
+        return;
+    }
+
+    await firebaseAuth.signIn(provider);
 }
