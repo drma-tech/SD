@@ -15,7 +15,7 @@ const firebaseConfig = {
 };
 
 window.initFirebase = () => {
-    if (!window.firebase || !firebase.auth || !firebase.messaging) {
+    if (typeof firebase === "undefined" || !firebase || !firebase.auth || !firebase.messaging) {
         setTimeout(window.initFirebase, 100);
         return;
     }
