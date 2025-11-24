@@ -52,16 +52,6 @@ window.initUserBack = function () {
         platform: GetLocalStorage("platform"),
         app_version: GetLocalStorage("app-version")
     };
-    Userback.on_load = () => {
-        let user = getUser();
-
-        if (user) {
-            Userback.identify(user.userId, {
-                name: user.name,
-                email: user.email
-            });
-        }
-    };
     Userback.on_survey_submit = (obj) => {
         if (obj.key == "mjj9Ta") {
             let rating = obj.data[0].question_answer;

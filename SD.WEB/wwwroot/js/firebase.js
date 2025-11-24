@@ -31,8 +31,7 @@ window.initFirebase = () => {
     // =========================
 
     auth.onAuthStateChanged(async (user) => {
-        const token = user ? await user.getIdToken() : null;
-        await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
+        await AuthStateChanged(user);
     });
 
     window.firebaseAuth = {
