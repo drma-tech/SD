@@ -121,4 +121,6 @@ window.initFirebase = () => {
     });
 }
 
-window.initFirebase();
+if (!isBot) {
+    window.initFirebase();
+}
