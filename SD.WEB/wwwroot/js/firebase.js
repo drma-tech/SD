@@ -50,7 +50,7 @@ window.initFirebase = () => {
             const platform = GetLocalStorage("platform");
 
             try {
-                if (window.location.hostname === "localhost" || platform == "ios") {
+                if (isLocalhost || platform == "ios") {
                     await auth.signInWithPopup(provider);
                 }
                 else {

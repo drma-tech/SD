@@ -1,7 +1,7 @@
 ﻿"use strict";
 
 function sendLog(error) {
-    const baseUrl = window.location.hostname === "localhost" ? "http://localhost:7071" : "";
+    const baseUrl = isLocalhost ? "http://localhost:7071" : "";
 
     let msg;
     if (error instanceof Error) {

@@ -2,7 +2,7 @@
 
 async function startPaddle(token) {
     try {
-        if (window.location.hostname == "localhost" || window.location.hostname.includes("dev.")) {
+        if (isLocalhost || isDev) {
             Paddle.Environment.set("sandbox");
         }
         await Paddle.Initialize({

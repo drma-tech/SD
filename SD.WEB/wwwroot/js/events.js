@@ -39,8 +39,6 @@ window.addEventListener("error", function (event) {
         showBrowserWarning();
     }
     else {
-        showError(`error: ${event.message}`);
-
         const errorInfo = {
             message: event.message,
             filename: event.filename,
@@ -53,6 +51,11 @@ window.addEventListener("error", function (event) {
         };
 
         sendLog(`error: ${JSON.stringify(errorInfo)}`);
+
+        //ignore bots
+        if (!isBot) {
+            showError(`error: ${event.message}`);
+        }
     }
 });
 
@@ -93,20 +96,6 @@ function normalizeReason(reason) {
 }
 
 window.addEventListener("unhandledrejection", function (event) {
-    const { message, stack } = normalizeReason(event.reason);
-
-    if (typeof message === "string" && message.includes('Failed to fetch')) {
-        showError("Connection problem detected. Check your internet connection and try reloading.");
-        return;
-    }
-
-    showError(`unhandledrejection: ${message}`);
-
-    //ignore bots
-    if (!/google|baidu|bingbot|duckduckbot|teoma|slurp|yandex|toutiao|bytespider|applebot/i.test(window.navigator.userAgent) && window.navigator.serviceWorker?.register) {
-        return;
-    }
-
     const obj = {
         reasonMessage: message,
         reasonStack: stack,
@@ -117,6 +106,18 @@ window.addEventListener("unhandledrejection", function (event) {
     };
 
     sendLog(`unhandledrejection: ${JSON.stringify(obj)}`);
+
+    //ignore bots
+    if (!isBot) {
+        const { message, stack } = normalizeReason(event.reason);
+
+        if (typeof message === "string" && message.includes('Failed to fetch')) {
+            showError("Connection problem detected. Check your internet connection and try reloading.");
+            return;
+        }
+
+        showError(`unhandledrejection: ${message}`);
+    }
 });
 
 window.addEventListener("securitypolicyviolation", (event) => {
@@ -157,6 +158,8 @@ document.addEventListener("click", async (event) => {
 });
 
 async function AuthStateChanged(user) {
+    if (isBot) return;
+
     const token = user ? await user.getIdToken() : null;
     await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
 
