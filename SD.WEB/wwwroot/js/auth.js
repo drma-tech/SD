@@ -14,6 +14,9 @@ const firebaseConfig = {
     measurementId: "G-JKXTVXM0EX"
 };
 
+window.firebaseAuth = null;
+window.requestMessagingPermission = null;
+
 window.initFirebase = () => {
     firebase.initializeApp(firebaseConfig);
 
@@ -76,7 +79,7 @@ window.initFirebase = () => {
     //  MESSAGING HANDLERS
     // =========================
 
-    async function requestMessagingPermission() {
+    window.requestMessagingPermission = async function () {
         const platform = GetLocalStorage("platform");
 
         //Xiaomi: The international model should work. The Chinese model perhaps not (and is likely to stop working completely in the near future).
@@ -132,16 +135,14 @@ async function FirebaseSignIn(provider) {
             sendLog("firebase is undefined in initFirebase");
         }
         else if (!firebase) {
-            showError("firebase is null in initFirebase");
-            sendLog("firebase is null in initFirebase");
+            showError("The login system is still loading. Please try again.");
         }
         else if (typeof firebaseAuth === "undefined") {
             showError("firebaseAuth is undefined in FirebaseSignIn");
             sendLog("firebaseAuth is undefined in FirebaseSignIn");
         }
         else if (!firebaseAuth) {
-            showError("firebaseAuth is null in FirebaseSignIn");
-            sendLog("firebaseAuth is null in FirebaseSignIn");
+            showError("The login system is still loading. Please try again.");
         }
 
         return;
