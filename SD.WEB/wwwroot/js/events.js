@@ -35,14 +35,16 @@ window.addEventListener("load", function () {
 //setTimeout(() => { throw new Error('error test call'); }, 100);
 
 window.addEventListener("error", function (event) {
-    if (event.filename?.includes("blazor.webassembly.js")) {
+    const { message, filename, lineno, colno, error } = event;
+
+    if (filename?.includes("blazor.webassembly.js")) {
         showBrowserWarning();
     }
     else {
         const log = {
-            Message: `message1:${event.message}|message2:${event.error?.message}`,
-            StackTrace: event.error?.stack,
-            Origin: `event error - filename:${event.filename}|url:${window.location.href}`,
+            Message: `message:${message}|error.message:${error?.message}`,
+            StackTrace: error?.stack,
+            Origin: `event error - filename:${filename}|url:${window.location.href}|lineno:${lineno}|colno:${colno}`,
             OperationSystem: getOperatingSystem(),
             BrowserName: getBrowserName(),
             BrowserVersion: getBrowserVersion(),
