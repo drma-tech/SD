@@ -129,31 +129,14 @@ public partial class ScrapingPopular
         string? rank;
         if (person)
         {
-            rank = node.SelectNodes("div[1]/div/div/div/div[2]/div[1]/div/span")?.FirstOrDefault()?.InnerText;
+            rank = node.SelectNodes("li[1]/div[1]/div/div/div/div[2]/div[1]/div/div")?.FirstOrDefault()?.InnerText;
         }
         else
         {
-            rank = node.SelectNodes("div/div/div/div/div[2]/div[1]/span")?.FirstOrDefault()?.InnerText;
+            rank = node.SelectNodes("li[1]/div/div/div/div/div[2]/div[1]/div")?.FirstOrDefault()?.InnerText;
         }
 
-        if (string.IsNullOrEmpty(rank)) return null;
-
-        string? imageRank;
-        if (person)
-        {
-            imageRank = node.SelectNodes("div[1]/div/div/div/div[2]/div[1]/div/span/svg")?.FirstOrDefault()?.ChildAttributes("class").FirstOrDefault()?.Value;
-        }
-        else
-        {
-            imageRank = node.SelectNodes("div/div/div/div/div[2]/div[1]/span/svg")?.FirstOrDefault()?.ChildAttributes("class").FirstOrDefault()?.Value;
-        }
-
-        if (string.IsNullOrEmpty(imageRank)) return null;
-
-        if (imageRank.Contains("base flat")) return "0";
-        if (imageRank.Contains("base up")) return $"+{rank}";
-        if (imageRank.Contains("base down")) return $"-{rank}";
-        return null;
+        return rank;
     }
 
     [GeneratedRegex("(?<=\\/tt)(\\w*)(?=\\/)")]

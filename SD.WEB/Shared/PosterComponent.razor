@@ -150,28 +150,15 @@
     {
         if (RankUpDown.NotEmpty())
         {
-            if (RankUpDown!.Contains("+"))
+            TopRight = new PosterBadge
             {
-                TopRight = new PosterBadge
-                {
-                    Icon = IconsFA.Solid.Icon("arrow-up").Font,
-                    Text = RankUpDown.Replace("+", ""),
-                    Color = Color.Success
-                };
-            }
-            else
-            {
-                TopRight = new PosterBadge
-                {
-                    Icon = IconsFA.Solid.Icon("arrow-down").Font,
-                    Text = RankUpDown.Replace("-", ""),
-                    Color = Color.Error
-                };
-            }
+                Text = RankUpDown,
+                Color = Color.Info
+            };
         }
         else if (Rating.HasValue)
         {
-            if (Rating >= 7.95)
+            if (Rating >= 7.98)
             {
                 TopRight = new PosterBadge
                 {
@@ -179,7 +166,7 @@
                     Color = Color.Success
                 };
             }
-            else if (Rating >= 5.95)
+            else if (Rating >= 5.98)
             {
                 TopRight = new PosterBadge
                 {
