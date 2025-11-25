@@ -168,8 +168,15 @@
 
         if (Platform == SD.Shared.Enums.Platform.ios)
         {
-            Providers.Add(PaymentProvider.Apple);
-            Providers.Add(PaymentProvider.Paddle);
+            if (CurrentCountry == "US")
+            {
+                Providers.Add(PaymentProvider.Apple);
+                Providers.Add(PaymentProvider.Paddle);
+            }
+            else
+            {
+                Providers.Add(PaymentProvider.Apple);
+            }
         }
         else if (Platform == SD.Shared.Enums.Platform.play)
         {

@@ -1,9 +1,5 @@
 ﻿"use strict";
 
-// =========================
-//  FIREBASE INIT
-// =========================
-
 const firebaseConfig = {
     apiKey: "AIzaSyDj5LpsT7-bra4hvuvb5E_BPSlD7Wr29nQ",
     authDomain: "auth.streamingdiscovery.com",
@@ -14,105 +10,94 @@ const firebaseConfig = {
     measurementId: "G-JKXTVXM0EX"
 };
 
-window.firebaseAuth = null;
-window.requestMessagingPermission = null;
+window.firebaseAuth = {
+    signIn: async (providerName, email) => {
+        try {
+            const providerMap = {
+                google: new firebase.auth.GoogleAuthProvider(),
+                apple: new firebase.auth.OAuthProvider("apple.com"),
+                facebook: new firebase.auth.FacebookAuthProvider(),
+                microsoft: new firebase.auth.OAuthProvider("microsoft.com"),
+                yahoo: new firebase.auth.OAuthProvider("yahoo.com"),
+                x: new firebase.auth.TwitterAuthProvider()
+            };
 
-window.initFirebase = () => {
+            const provider = providerMap[providerName];
+            if (!provider) throw new Error(`Unsupported provider: ${providerName}`);
+            const platform = GetLocalStorage("platform");
+
+            if (isLocalhost || platform == "ios") {
+                await window.auth.signInWithPopup(provider);
+            }
+            else {
+                await window.auth.signInWithRedirect(provider);
+            }
+        } catch (error) {
+            sendLog(error);
+            throw new Error(error.message);
+        }
+    },
+
+    signOut: async () => {
+        try {
+            await window.auth.signOut();
+        } catch (error) {
+            sendLog(error);
+            throw new Error(error.message);
+        }
+    },
+
+    getUser: () => {
+        return window.auth.currentUser;
+    }
+};
+
+window.requestMessagingPermission = async function () {
+    const platform = GetLocalStorage("platform");
+
+    //Xiaomi: The international model should work. The Chinese model perhaps not (and is likely to stop working completely in the near future).
+    //Huawei: It no longer offers GMS (Google Mobile Services) because it was blocked by Google. Implement: Huawei Push Kit
+    const nativePlatforms = ["ios", "play", "xiaomi"];
+    if (nativePlatforms.includes(platform)) {
+        console.log("Using native push, no web permission needed.");
+        return;
+    }
+
+    const permission = await Notification.requestPermission();
+
+    if (permission !== "granted") {
+        console.warn("Notifications not allowed.");
+        return;
+    }
+
+    const token = await window.messaging.getToken({
+        vapidKey: "BJ31lWbRBbX3ZyyUHG_pQB7ZmjFtNeFjhbhuyMwUvotpXsTej5iloeSA7GdCbC7HUo314KtgMxIvXiwygAG8NhQ"
+    });
+
+    if (token) {
+        SetLocalStorage("MessagingToken", token);
+    }
+    else {
+        showError("Failed to register messaging token.");
+        return;
+    }
+
+    await invokeDotNetWhenReady("SD.WEB", "SubscribeToTopics", { token, platform });
+}
+
+if (!isBot) {
     firebase.initializeApp(firebaseConfig);
 
-    const auth = firebase.auth();
-    const messaging = firebase.messaging();
+    window.auth = firebase.auth();
+    window.messaging = firebase.messaging();
 
-    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    window.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
-    // =========================
-    //  AUTH HANDLERS
-    // =========================
-
-    auth.onAuthStateChanged(async (user) => {
+    window.auth.onAuthStateChanged(async (user) => {
         await AuthStateChanged(user);
     });
 
-    window.firebaseAuth = {
-        signIn: async (providerName, email) => {
-            try {
-                const providerMap = {
-                    google: new firebase.auth.GoogleAuthProvider(),
-                    apple: new firebase.auth.OAuthProvider("apple.com"),
-                    facebook: new firebase.auth.FacebookAuthProvider(),
-                    microsoft: new firebase.auth.OAuthProvider("microsoft.com"),
-                    yahoo: new firebase.auth.OAuthProvider("yahoo.com"),
-                    x: new firebase.auth.TwitterAuthProvider()
-                };
-
-                const provider = providerMap[providerName];
-                if (!provider) throw new Error(`Unsupported provider: ${providerName}`);
-                const platform = GetLocalStorage("platform");
-
-                if (isLocalhost || platform == "ios") {
-                    await auth.signInWithPopup(provider);
-                }
-                else {
-                    await auth.signInWithRedirect(provider);
-                }
-            } catch (error) {
-                sendLog(error);
-                throw new Error(error.message);
-            }
-        },
-
-        signOut: async () => {
-            try {
-                await auth.signOut();
-            } catch (error) {
-                sendLog(error);
-                throw new Error(error.message);
-            }
-        },
-
-        getUser: () => {
-            return auth.currentUser;
-        }
-    };
-
-    // =========================
-    //  MESSAGING HANDLERS
-    // =========================
-
-    window.requestMessagingPermission = async function () {
-        const platform = GetLocalStorage("platform");
-
-        //Xiaomi: The international model should work. The Chinese model perhaps not (and is likely to stop working completely in the near future).
-        //Huawei: It no longer offers GMS (Google Mobile Services) because it was blocked by Google. Implement: Huawei Push Kit
-        const nativePlatforms = ["ios", "play", "xiaomi"];
-        if (nativePlatforms.includes(platform)) {
-            console.log("Using native push, no web permission needed.");
-            return;
-        }
-
-        const permission = await Notification.requestPermission();
-
-        if (permission !== "granted") {
-            console.warn("Notifications not allowed.");
-            return;
-        }
-
-        const token = await messaging.getToken({
-            vapidKey: "BJ31lWbRBbX3ZyyUHG_pQB7ZmjFtNeFjhbhuyMwUvotpXsTej5iloeSA7GdCbC7HUo314KtgMxIvXiwygAG8NhQ"
-        });
-
-        if (token) {
-            SetLocalStorage("MessagingToken", token);
-        }
-        else {
-            showError("Failed to register messaging token.");
-            return;
-        }
-
-        await invokeDotNetWhenReady("SD.WEB", "SubscribeToTopics", { token, platform });
-    }
-
-    messaging.onMessage((payload) => {
+    window.messaging.onMessage((payload) => {
         if (Notification.permission === 'granted') {
             const { title, body } = payload.data || {};
             new Notification(title, { body });
@@ -120,22 +105,13 @@ window.initFirebase = () => {
     });
 }
 
-if (!isBot) {
-    window.addEventListener('load', () => {
-        setTimeout(initFirebase, 300);
-    });
-}
-
 async function FirebaseSignIn(provider) {
     if (typeof firebaseAuth === "undefined" || !firebaseAuth) {
         showError("Login is temporarily unavailable. Please make sure you have a stable connection or try again later.");
 
-        if (typeof firebase === "undefined") {
+        if (typeof firebase === "undefined" || !firebase) {
             showError("firebase is undefined in initFirebase");
             sendLog("firebase is undefined in initFirebase");
-        }
-        else if (!firebase) {
-            showError("The login system is still loading. Please try again.");
         }
         else if (typeof firebaseAuth === "undefined") {
             showError("firebaseAuth is undefined in FirebaseSignIn");
