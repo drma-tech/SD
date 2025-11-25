@@ -118,8 +118,8 @@ window.initFirebase = () => {
 }
 
 if (!isBot) {
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(initFirebase, 1000);
+    window.addEventListener('load', () => {
+        setTimeout(initFirebase, 300);
     });
 }
 
