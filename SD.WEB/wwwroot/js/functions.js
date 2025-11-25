@@ -202,19 +202,6 @@ window.checkBrowserFeatures = async function () {
             return;
         }
     }
-
-    // temporary: remove in the first quarter of 2026
-    if (typeof Promise.withResolvers !== "function") {
-        showError("Your system’s web engine is outdated and may not support all features. Please update your device or browser to ensure the best experience.");
-        Promise.withResolvers = function () {
-            let resolve, reject;
-            const promise = new Promise((res, rej) => {
-                resolve = res;
-                reject = rej;
-            });
-            return { promise, resolve, reject };
-        };
-    }
 };
 
 function showBrowserWarning() {
