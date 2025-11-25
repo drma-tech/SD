@@ -10,6 +10,26 @@ const firebaseConfig = {
     measurementId: "G-JKXTVXM0EX"
 };
 
+if (!isBot) {
+    firebase.initializeApp(firebaseConfig);
+
+    window.auth = firebase.auth();
+    window.messaging = firebase.messaging();
+
+    window.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
+    window.auth.onAuthStateChanged(async (user) => {
+        await AuthStateChanged(user);
+    });
+
+    window.messaging.onMessage((payload) => {
+        if (Notification.permission === 'granted') {
+            const { title, body } = payload.data || {};
+            new Notification(title, { body });
+        }
+    });
+}
+
 window.firebaseAuth = {
     signIn: async (providerName, email) => {
         try {
@@ -83,26 +103,6 @@ window.requestMessagingPermission = async function () {
     }
 
     await invokeDotNetWhenReady("SD.WEB", "SubscribeToTopics", { token, platform });
-}
-
-if (!isBot) {
-    firebase.initializeApp(firebaseConfig);
-
-    window.auth = firebase.auth();
-    window.messaging = firebase.messaging();
-
-    window.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-
-    window.auth.onAuthStateChanged(async (user) => {
-        await AuthStateChanged(user);
-    });
-
-    window.messaging.onMessage((payload) => {
-        if (Notification.permission === 'granted') {
-            const { title, body } = payload.data || {};
-            new Notification(title, { body });
-        }
-    });
 }
 
 async function FirebaseSignIn(provider) {
