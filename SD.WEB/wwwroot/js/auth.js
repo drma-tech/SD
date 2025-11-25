@@ -15,10 +15,6 @@ const firebaseConfig = {
 };
 
 window.initFirebase = () => {
-    if (typeof firebase === "undefined" || !firebase?.auth || !firebase?.messaging) {
-        setTimeout(window.initFirebase, 100);
-        return;
-    }
     firebase.initializeApp(firebaseConfig);
 
     const auth = firebase.auth();
@@ -122,17 +118,29 @@ window.initFirebase = () => {
 }
 
 if (!isBot) {
-    window.initFirebase();
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(initFirebase, 1000);
+    });
 }
 
 async function FirebaseSignIn(provider) {
     if (typeof firebaseAuth === "undefined" || !firebaseAuth) {
         showError("Login is temporarily unavailable. Please make sure you have a stable connection or try again later.");
 
-        if (typeof firebaseAuth === "undefined") {
+        if (typeof firebase === "undefined") {
+            showError("firebase is undefined in initFirebase");
+            sendLog("firebase is undefined in initFirebase");
+        }
+        else if (!firebase) {
+            showError("firebase is null in initFirebase");
+            sendLog("firebase is null in initFirebase");
+        }
+        else if (typeof firebaseAuth === "undefined") {
+            showError("firebaseAuth is undefined in FirebaseSignIn");
             sendLog("firebaseAuth is undefined in FirebaseSignIn");
         }
         else if (!firebaseAuth) {
+            showError("firebaseAuth is null in FirebaseSignIn");
             sendLog("firebaseAuth is null in FirebaseSignIn");
         }
 
