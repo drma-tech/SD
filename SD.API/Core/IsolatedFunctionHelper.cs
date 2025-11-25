@@ -11,6 +11,8 @@ namespace SD.API.Core;
 
 public static class IsolatedFunctionHelper
 {
+    private const string messageLog = "{LogModel}";
+
     public static async Task<T> GetBody<T>(this HttpRequestData req, IHttpClientFactory factory, CancellationToken cancellationToken)
         where T : CosmosDocument, new()
     {
@@ -73,37 +75,76 @@ public static class IsolatedFunctionHelper
         return dictionary;
     }
 
-    public static void ProcessException(this HttpRequestData req, Exception ex)
+    public static void LogError(this HttpRequestData req, Exception ex, string? customOrigin = null, LogModel? log = null)
     {
         var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
 
-        const string messageTemplate = "ProcessException. UserId: {UserId}, IP: {IP}, State: {State}, Params: {Params}";
+        var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
 
-        logger.LogError(ex, messageTemplate, null, req.GetUserIP(), req.BuildState(), req.BuildParams());
+        log ??= new LogModel();
+
+        log.Origin = customOrigin ?? log.Origin ?? req.FunctionContext.FunctionDefinition.Name;
+        log.Params = log.Params ?? string.Join("|", valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}"));
+        log.AppVersion = log.AppVersion ?? req.GetQueryParameters()["vs"];
+        log.UserId = log.UserId ?? null;
+        log.Ip = log.Ip ?? req.GetUserIP();
+
+        logger.LogError(ex, messageLog, log);
+    }
+
+    public static void LogError(this ILogger logger, Exception ex, string origin)
+    {
+        var log = new LogModel
+        {
+            Origin = origin,
+        };
+
+        logger.LogError(ex, messageLog, log);
     }
 
     public static void LogWarning(this HttpRequestData req, string? message)
     {
         var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
 
-        const string messageTemplate = "LogWarning. Message: {message}, State: {State}, Params: {Params}";
-
-        logger.LogWarning(messageTemplate, message, req.BuildState(), req.BuildParams());
-    }
-
-    private static string BuildState(this HttpRequestData req)
-    {
         var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
 
-        return string.Join("", valueCollection.AllKeys.Select(key => $"{key?.ToLowerInvariant()}={{{key?.ToLowerInvariant()}}}|"));
+        var log = new LogModel
+        {
+            Message = message,
+            Origin = req.FunctionContext.FunctionDefinition.Name,
+            Params = string.Join("|", valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
+            AppVersion = req.GetQueryParameters()["vs"],
+            UserId = null,
+            Ip = req.GetUserIP(),
+        };
+
+        logger.LogWarning(messageLog, log);
     }
 
-    private static string[] BuildParams(this HttpRequestData req)
+    public static void LogWarning(this ILogger logger, string? message, string origin)
     {
-        var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
+        var log = new LogModel
+        {
+            Message = message,
+            Origin = origin,
+        };
 
-        return valueCollection.AllKeys.Select(key => valueCollection[key] ?? "").ToArray();
+        logger.LogWarning(messageLog, log);
     }
+
+    //private static string BuildState(this HttpRequestData req)
+    //{
+    //    var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
+
+    //    return string.Join("", valueCollection.AllKeys.Select(key => $"{key?.ToLowerInvariant()}={{{key?.ToLowerInvariant()}}}|"));
+    //}
+
+    //private static string[] BuildParams(this HttpRequestData req)
+    //{
+    //    var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
+
+    //    return valueCollection.AllKeys.Select(key => valueCollection[key] ?? "").ToArray();
+    //}
 }
 
 public struct Method

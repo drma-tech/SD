@@ -20,7 +20,7 @@ public class MyProvidersFunction(CosmosRepository repo, IHttpClientFactory facto
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -50,7 +50,7 @@ public class MyProvidersFunction(CosmosRepository repo, IHttpClientFactory facto
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -74,7 +74,7 @@ public class MyProvidersFunction(CosmosRepository repo, IHttpClientFactory facto
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -104,7 +104,7 @@ public class MyProvidersFunction(CosmosRepository repo, IHttpClientFactory facto
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }

@@ -9,7 +9,7 @@ public sealed class CosmosLoggerProvider(CosmosLogRepository repo) : ILoggerProv
 
     public ILogger CreateLogger(string categoryName)
     {
-        return _loggers.GetOrAdd(categoryName, name => new CosmosLogger(name, repo));
+        return _loggers.GetOrAdd(categoryName, name => new CosmosLogger(repo));
     }
 
     public void Dispose()
@@ -18,7 +18,7 @@ public sealed class CosmosLoggerProvider(CosmosLogRepository repo) : ILoggerProv
     }
 }
 
-public class CosmosLogger(string name, CosmosLogRepository repo) : ILogger
+public class CosmosLogger(CosmosLogRepository repo) : ILogger
 {
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull
     {
@@ -36,13 +36,26 @@ public class CosmosLogger(string name, CosmosLogRepository repo) : ILogger
 
         if (exception is NotificationException) return;
 
-        _ = repo.Add(new LogModel
+        var kvs = state as IEnumerable<KeyValuePair<string, object>>;
+        var context = kvs?.FirstOrDefault().Value as LogModel;
+
+        var log = new LogModel
         {
-            Name = name,
-            State = formatter(state, exception),
-            Message = exception?.Message,
-            StackTrace = exception?.StackTrace,
+            Message = context?.Message ?? exception?.Message ??  formatter(state, exception),
+            StackTrace = context?.StackTrace ?? exception?.StackTrace,
+            Origin = context?.Origin,
+            Params = context?.Params,
+            OperationSystem = context?.OperationSystem,
+            BrowserName = context?.BrowserName,
+            BrowserVersion = context?.BrowserVersion,
+            Platform = context?.Platform,
+            AppVersion = context?.AppVersion,
+            UserId = context?.UserId,
+            Ip = context?.Ip,
+            UserAgent = context?.UserAgent,
             Ttl = (int)TtlCache.ThreeMonths
-        });
+        };
+
+        _ = repo.Add(log);
     }
 }

@@ -36,7 +36,7 @@ public class TmdbFunction(IDistributedCache distributedCache, IHttpClientFactory
         }
         catch (TaskCanceledException ex)
         {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+            req.LogError(ex.CancellationToken.IsCancellationRequested
                 ? new NotificationException("Cancellation Requested")
                 : new NotificationException("Timeout occurred"));
 
@@ -44,7 +44,7 @@ public class TmdbFunction(IDistributedCache distributedCache, IHttpClientFactory
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }

@@ -37,7 +37,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -99,7 +99,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -135,7 +135,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -182,7 +182,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -225,7 +225,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -268,7 +268,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }

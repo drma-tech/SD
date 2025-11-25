@@ -40,7 +40,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (TaskCanceledException ex)
         {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+            req.LogError(ex.CancellationToken.IsCancellationRequested
                 ? new NotificationException("Cancellation Requested")
                 : new NotificationException("Timeout occurred"));
 
@@ -48,7 +48,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             return await req.CreateResponse<CacheDocument<EnergyModel>>(null, TtlCache.OneDay, cancellationToken);
         }
     }
@@ -83,7 +83,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (TaskCanceledException ex)
         {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+            req.LogError(ex.CancellationToken.IsCancellationRequested
                 ? new NotificationException("Cancellation Requested")
                 : new NotificationException("Timeout occurred"));
 
@@ -91,7 +91,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             return await req.CreateResponse<CacheDocument<EnergyModel>>(null, TtlCache.OneDay, cancellationToken);
         }
     }
@@ -122,7 +122,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
         }
     }
 
@@ -160,7 +160,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
         }
     }
 
@@ -217,7 +217,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (TaskCanceledException ex)
         {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+            req.LogError(ex.CancellationToken.IsCancellationRequested
                 ? new NotificationException("Cancellation Requested")
                 : new NotificationException("Timeout occurred"));
 
@@ -225,7 +225,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             return await req.CreateResponse<CacheDocument<NewsModel>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
@@ -287,7 +287,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (TaskCanceledException ex)
         {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+            req.LogError(ex.CancellationToken.IsCancellationRequested
                 ? new NotificationException("Cancellation Requested")
                 : new NotificationException("Timeout occurred"));
 
@@ -295,7 +295,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             return await req.CreateResponse<CacheDocument<TrailerModel>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
@@ -353,7 +353,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (TaskCanceledException ex)
         {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+            req.LogError(ex.CancellationToken.IsCancellationRequested
                 ? new NotificationException("Cancellation Requested")
                 : new NotificationException("Timeout occurred"));
 
@@ -361,7 +361,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             return await req.CreateResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
@@ -397,7 +397,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (TaskCanceledException ex)
         {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+            req.LogError(ex.CancellationToken.IsCancellationRequested
                 ? new NotificationException("Cancellation Requested")
                 : new NotificationException("Timeout occurred"));
 
@@ -405,7 +405,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             return await req.CreateResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
@@ -441,7 +441,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (TaskCanceledException ex)
         {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+            req.LogError(ex.CancellationToken.IsCancellationRequested
                 ? new NotificationException("Cancellation Requested")
                 : new NotificationException("Timeout occurred"));
 
@@ -449,7 +449,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             return await req.CreateResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
@@ -503,7 +503,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (TaskCanceledException ex)
         {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+            req.LogError(ex.CancellationToken.IsCancellationRequested
                 ? new NotificationException("Cancellation Requested")
                 : new NotificationException("Timeout occurred"));
 
@@ -511,7 +511,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             return await req.CreateResponse<CacheDocument<Ratings>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
@@ -565,7 +565,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (TaskCanceledException ex)
         {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+            req.LogError(ex.CancellationToken.IsCancellationRequested
                 ? new NotificationException("Cancellation Requested")
                 : new NotificationException("Timeout occurred"));
 
@@ -573,7 +573,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             return await req.CreateResponse<CacheDocument<Ratings>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
@@ -627,7 +627,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (TaskCanceledException ex)
         {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+            req.LogError(ex.CancellationToken.IsCancellationRequested
                 ? new NotificationException("Cancellation Requested")
                 : new NotificationException("Timeout occurred"));
 
@@ -635,7 +635,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             return await req.CreateResponse<CacheDocument<ReviewModel>>(null, TtlCache.SixHours, cancellationToken);
         }
     }
@@ -688,7 +688,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (TaskCanceledException ex)
         {
-            req.ProcessException(ex.CancellationToken.IsCancellationRequested
+            req.LogError(ex.CancellationToken.IsCancellationRequested
                 ? new NotificationException("Cancellation Requested")
                 : new NotificationException("Timeout occurred"));
 
@@ -696,7 +696,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             return await req.CreateResponse<CacheDocument<ReviewModel>>(null, TtlCache.SixHours, cancellationToken);
         }
     }

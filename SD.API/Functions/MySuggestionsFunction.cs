@@ -20,7 +20,7 @@ public class MySuggestionsFunction(CosmosRepository repo, IHttpClientFactory fac
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -59,7 +59,7 @@ public class MySuggestionsFunction(CosmosRepository repo, IHttpClientFactory fac
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -76,7 +76,7 @@ public class MySuggestionsFunction(CosmosRepository repo, IHttpClientFactory fac
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }

@@ -21,7 +21,7 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -59,7 +59,7 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -73,11 +73,11 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
     }
 
     [Function("Logger")]
-    public static async Task Logger([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/logger")] HttpRequestData req)
+    public static async Task Logger([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/logger")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var body = await new StreamReader(req.Body).ReadToEndAsync();
+        var log = await req.GetPublicBody<LogModel>(cancellationToken);
 
-        req.ProcessException(new Exception(body));
+        req.LogError(new Exception(), null, log);
     }
 
     [Function("Country")]

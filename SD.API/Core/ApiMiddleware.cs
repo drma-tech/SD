@@ -1,16 +1,13 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
-using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Net;
 
 namespace SD.API.Core;
 
-internal sealed class ApiMiddleware(ILogger<ApiMiddleware> logger) : IFunctionsWorkerMiddleware
+internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
 {
-    private readonly ILogger<ApiMiddleware> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
     {
         var sw = Stopwatch.StartNew();
@@ -51,12 +48,14 @@ internal sealed class ApiMiddleware(ILogger<ApiMiddleware> logger) : IFunctionsW
         }
         catch (CosmosOperationCanceledException ex)
         {
-            _logger.LogError(ex, "CosmosOperationCanceledException");
+            var req = await context.GetHttpRequestDataAsync();
+            req?.LogError(ex, "ApiMiddleware - CosmosOperationCanceledException");
             await context.SetHttpResponseStatusCode(HttpStatusCode.RequestTimeout, "Cosmos Request Timeout!");
         }
         catch (CosmosException ex)
         {
-            _logger.LogError(ex, "CosmosException");
+            var req = await context.GetHttpRequestDataAsync();
+            req?.LogError(ex, "ApiMiddleware - CosmosException");
             await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "Invocation failed!");
         }
         catch (NotificationException ex)
@@ -72,7 +71,8 @@ internal sealed class ApiMiddleware(ILogger<ApiMiddleware> logger) : IFunctionsW
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Exception");
+            var req = await context.GetHttpRequestDataAsync();
+            req?.LogError(ex, "ApiMiddleware - Exception");
             await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "Invocation failed!");
         }
         finally
@@ -80,8 +80,8 @@ internal sealed class ApiMiddleware(ILogger<ApiMiddleware> logger) : IFunctionsW
             sw.Stop();
             if (sw.ElapsedMilliseconds > 3000)
             {
-                var functionName = context.FunctionDefinition?.Name ?? "(unknown)";
-                _logger?.LogWarning("Function {FunctionName} executed in {Elapsed}", functionName, sw.Elapsed);
+                var req = await context.GetHttpRequestDataAsync();
+                req?.LogWarning($"Executed in {sw.Elapsed}");
             }
         }
     }

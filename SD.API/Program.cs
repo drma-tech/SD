@@ -145,7 +145,7 @@ static void ConfigureServices(IServiceCollection services)
         var loggerFactory = LoggerFactory.Create(builder => builder.AddProvider(provider));
         var logger = loggerFactory.CreateLogger("ConfigureServices");
 
-        logger.LogWarning("PrivateKey: {PrivateKey}", ApiStartup.Configurations.Firebase?.PrivateKey);
+        logger.LogWarning($"PrivateKey: {ApiStartup.Configurations.Firebase?.PrivateKey}", "ConfigureServices");
         logger.LogError(ex, "ConfigureServices");
     }
 }

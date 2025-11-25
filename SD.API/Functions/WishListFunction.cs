@@ -21,7 +21,7 @@ public class WishListFunction(CosmosRepository repo, IHttpClientFactory factory)
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -51,7 +51,7 @@ public class WishListFunction(CosmosRepository repo, IHttpClientFactory factory)
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -80,7 +80,7 @@ public class WishListFunction(CosmosRepository repo, IHttpClientFactory factory)
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }

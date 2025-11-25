@@ -21,7 +21,7 @@ public class WatchingListFunction(CosmosRepository repo, IHttpClientFactory fact
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -52,7 +52,7 @@ public class WatchingListFunction(CosmosRepository repo, IHttpClientFactory fact
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -82,7 +82,7 @@ public class WatchingListFunction(CosmosRepository repo, IHttpClientFactory fact
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }
@@ -124,7 +124,7 @@ public class WatchingListFunction(CosmosRepository repo, IHttpClientFactory fact
         }
         catch (Exception ex)
         {
-            req.ProcessException(ex);
+            req.LogError(ex);
             throw;
         }
     }

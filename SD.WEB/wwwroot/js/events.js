@@ -39,18 +39,19 @@ window.addEventListener("error", function (event) {
         showBrowserWarning();
     }
     else {
-        const errorInfo = {
-            message: event.message,
-            filename: event.filename,
-            errorMessage: event.error?.message,
-            errorStack: event.error?.stack,
-            env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
-            app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
-            userAgent: navigator.userAgent,
-            url: window.location.href
+        const log = {
+            Message: `message1:${event.message}|message2:${event.error?.message}`,
+            StackTrace: event.error?.stack,
+            Origin: `event error - filename:${event.filename}|url:${window.location.href}`,
+            OperationSystem: getOperatingSystem(),
+            BrowserName: getBrowserName(),
+            BrowserVersion: getBrowserVersion(),
+            Platform: GetLocalStorage("platform"),
+            AppVersion: GetLocalStorage("app-version"),
+            UserAgent: navigator.userAgent,
         };
 
-        sendLog(`error: ${JSON.stringify(errorInfo)}`);
+        sendLog(log);
 
         //ignore bots
         if (!isBot) {
@@ -96,21 +97,24 @@ function normalizeReason(reason) {
 }
 
 window.addEventListener("unhandledrejection", function (event) {
-    const obj = {
-        reasonMessage: message,
-        reasonStack: stack,
-        env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
-        app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
-        userAgent: navigator.userAgent,
-        url: window.location.href
+    const { message, stack } = normalizeReason(event.reason);
+
+    const log = {
+        Message: message,
+        StackTrace: stack,
+        Origin: `event unhandledrejection - url:${window.location.href}`,
+        OperationSystem: getOperatingSystem(),
+        BrowserName: getBrowserName(),
+        BrowserVersion: getBrowserVersion(),
+        Platform: GetLocalStorage("platform"),
+        AppVersion: GetLocalStorage("app-version"),
+        UserAgent: navigator.userAgent,
     };
 
-    sendLog(`unhandledrejection: ${JSON.stringify(obj)}`);
+    sendLog(log);
 
     //ignore bots
     if (!isBot) {
-        const { message, stack } = normalizeReason(event.reason);
-
         if (typeof message === "string" && message.includes('Failed to fetch')) {
             showError("Connection problem detected. Check your internet connection and try reloading.");
             return;

@@ -3,25 +3,45 @@
 function sendLog(error) {
     const baseUrl = isLocalhost ? "http://localhost:7071" : "";
 
-    let msg;
+    let log;
     if (error instanceof Error) {
-        msg = {
-            message: error.message,
-            stack: error.stack,
-            name: error.name,
-            env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
-            app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
-            userAgent: navigator.userAgent,
+        log = {
+            Message: error.message,
+            StackTrace: error.stack,
+            Origin: `instanceof Error - name:${error.name || "unknown"}|url:${window.location.href}`,
+            OperationSystem: getOperatingSystem(),
+            BrowserName: getBrowserName(),
+            BrowserVersion: getBrowserVersion(),
+            Platform: GetLocalStorage("platform"),
+            AppVersion: GetLocalStorage("app-version"),
+            UserAgent: navigator.userAgent,
         };
-    } else {
-        msg = error;
+    } else if (typeof error === "object") {
+        log = error;
+    } else if (typeof error === "string") {
+        log = {
+            Message: error,
+            Origin: `string - url:${window.location.href}`,
+            OperationSystem: getOperatingSystem(),
+            BrowserName: getBrowserName(),
+            BrowserVersion: getBrowserVersion(),
+            Platform: GetLocalStorage("platform"),
+            AppVersion: GetLocalStorage("app-version"),
+            UserAgent: navigator.userAgent,
+        };
+    }
+    else {
+        showError("sendLog: invalid error type");
+        return;
     }
 
     fetch(`${baseUrl}/api/public/logger`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(msg)
-    }).catch(() => { /* do nothing */ });
+        body: JSON.stringify(log)
+    }).catch(() => {
+        showError("sendLog: failed to send log");
+    });
 }
 
 function jsSaveAsFile(filename, contentType, content) {
@@ -135,13 +155,18 @@ function showError(message) {
     }
 }
 
-function showToast(message) {
+function showToast(message, attempts = 20) {
     const container = document.getElementById("error-container");
 
     if (!container) {
-        setTimeout(() => {
-            showToast(message);
-        }, 1000);
+        if (attempts > 0) {
+            setTimeout(() => {
+                showToast(message, attempts - 1);
+            }, 1000);
+        } else {
+            console.warn("showToast: error-container not found");
+        }
+        return;
     }
 
     container.textContent = message;
@@ -179,7 +204,7 @@ window.checkBrowserFeatures = async function () {
     }
 
     // temporary: remove in the first quarter of 2026
-    if (!Promise.withResolvers) {
+    if (typeof Promise.withResolvers !== "function") {
         showError("Your system’s web engine is outdated and may not support all features. Please update your device or browser to ensure the best experience.");
         Promise.withResolvers = function () {
             let resolve, reject;

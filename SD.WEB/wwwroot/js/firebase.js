@@ -36,20 +36,20 @@ window.initFirebase = () => {
 
     window.firebaseAuth = {
         signIn: async (providerName, email) => {
-            const providerMap = {
-                google: new firebase.auth.GoogleAuthProvider(),
-                apple: new firebase.auth.OAuthProvider("apple.com"),
-                facebook: new firebase.auth.FacebookAuthProvider(),
-                microsoft: new firebase.auth.OAuthProvider("microsoft.com"),
-                yahoo: new firebase.auth.OAuthProvider("yahoo.com"),
-                x: new firebase.auth.TwitterAuthProvider()
-            };
-
-            const provider = providerMap[providerName];
-            if (!provider) throw new Error(`Unsupported provider: ${providerName}`);
-            const platform = GetLocalStorage("platform");
-
             try {
+                const providerMap = {
+                    google: new firebase.auth.GoogleAuthProvider(),
+                    apple: new firebase.auth.OAuthProvider("apple.com"),
+                    facebook: new firebase.auth.FacebookAuthProvider(),
+                    microsoft: new firebase.auth.OAuthProvider("microsoft.com"),
+                    yahoo: new firebase.auth.OAuthProvider("yahoo.com"),
+                    x: new firebase.auth.TwitterAuthProvider()
+                };
+
+                const provider = providerMap[providerName];
+                if (!provider) throw new Error(`Unsupported provider: ${providerName}`);
+                const platform = GetLocalStorage("platform");
+
                 if (isLocalhost || platform == "ios") {
                     await auth.signInWithPopup(provider);
                 }
@@ -128,6 +128,14 @@ if (!isBot) {
 async function FirebaseSignIn(provider) {
     if (typeof firebaseAuth === "undefined" || !firebaseAuth) {
         showError("Login is temporarily unavailable. Please make sure you have a stable connection or try again later.");
+
+        if (typeof firebaseAuth === "undefined") {
+            sendLog("firebaseAuth is undefined in FirebaseSignIn");
+        }
+        else if (!firebaseAuth) {
+            sendLog("firebaseAuth is null in FirebaseSignIn");
+        }
+
         return;
     }
 
