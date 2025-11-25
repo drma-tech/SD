@@ -26,7 +26,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         try
         {
             var ip = req.GetUserIP(false);
-            var cacheKey = $"energy_{ip}";
+            var cacheKey = $"energy_{DateTime.UtcNow.Day}_{ip}";
 
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
             var model = doc?.Data;
@@ -62,7 +62,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             var ip = req.GetUserIP(false);
             var userId = await req.GetUserIdAsync(factory, cancellationToken);
 
-            var cacheKey = $"energy_auth_{ip}";
+            var cacheKey = $"energy_auth_{DateTime.UtcNow.Day}_{ip}";
 
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
             var model = doc?.Data;
@@ -103,7 +103,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         try
         {
             var ip = req.GetUserIP(false);
-            var cacheKey = $"energy_{ip}";
+            var cacheKey = $"energy_{DateTime.UtcNow.Day}_{ip}";
+
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
 
             if (doc == null)
@@ -135,7 +136,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             var ip = req.GetUserIP(false);
             var userId = await req.GetUserIdAsync(factory, cancellationToken);
 
-            var cacheKey = $"energy_auth_{ip}";
+            var cacheKey = $"energy_auth_{DateTime.UtcNow.Day}_{ip}";
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
 
             if (doc == null)
