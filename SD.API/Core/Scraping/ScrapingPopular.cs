@@ -59,7 +59,6 @@ public partial class ScrapingPopular
             var item = new MostPopularDataDetail
             {
                 Id = $"tt{idRegex.Value}",
-                RankUpDown = GetRankUpDown(node),
                 Title = WebUtility.HtmlDecode(node.SelectNodes("div/div/div/div/div[2]/div[2]/a/h3/text()")?.FirstOrDefault()?.InnerText),
                 Year = yearFix == 0 ? "" : yearFix.ToString(),
                 Image = image,
@@ -107,7 +106,6 @@ public partial class ScrapingPopular
             var item = new MostPopularDataDetail
             {
                 Id = $"nm{idRegex.Value}",
-                RankUpDown = GetRankUpDown(node, true),
                 Title = WebUtility.HtmlDecode(node.SelectNodes("div/div/div/div/div[2]/div[2]/a/h3/text()")?.FirstOrDefault()?.InnerText),
                 //Year = yearFix == 0 ? "" : yearFix.ToString(),
                 Image = image,
@@ -120,23 +118,6 @@ public partial class ScrapingPopular
         }
 
         return data;
-    }
-
-    private static string? GetRankUpDown(HtmlNode? node, bool person = false)
-    {
-        if (node == null) return null;
-
-        string? rank;
-        if (person)
-        {
-            rank = node.SelectNodes("li[1]/div[1]/div/div/div/div[2]/div[1]/div/div")?.FirstOrDefault()?.InnerText;
-        }
-        else
-        {
-            rank = node.SelectNodes("li[1]/div/div/div/div/div[2]/div[1]/div")?.FirstOrDefault()?.InnerText;
-        }
-
-        return rank;
     }
 
     [GeneratedRegex("(?<=\\/tt)(\\w*)(?=\\/)")]

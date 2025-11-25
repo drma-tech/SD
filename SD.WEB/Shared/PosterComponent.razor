@@ -85,7 +85,6 @@
     [Parameter] public int? Runtime { get; set; }
     [Parameter] public int? Percent { get; set; }
     // TOP RIGHT
-    [Parameter] public string? RankUpDown { get; set; }
     [Parameter] public double? Rating { get; set; }
     // CENTER LEFT/RIGHT
     [Parameter] public string? TmdbId { get; set; }
@@ -148,15 +147,7 @@
 
     private void SetTopRight()
     {
-        if (RankUpDown.NotEmpty())
-        {
-            TopRight = new PosterBadge
-            {
-                Text = RankUpDown,
-                Color = Color.Info
-            };
-        }
-        else if (Rating.HasValue)
+        if (Rating.HasValue)
         {
             if (Rating >= 7.98)
             {

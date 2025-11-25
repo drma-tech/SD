@@ -35,8 +35,7 @@ public class ImdbPopularApi(IHttpClientFactory factory)
                     rating = string.IsNullOrEmpty(item.IMDbRating)
                         ? 0
                         : double.Parse(item.IMDbRating, CultureInfo.InvariantCulture),
-                    MediaType = MediaType.movie,
-                    RankUpDown = item.RankUpDown
+                    MediaType = MediaType.movie
                 });
             }
         }
@@ -68,8 +67,7 @@ public class ImdbPopularApi(IHttpClientFactory factory)
                     rating = string.IsNullOrEmpty(item.IMDbRating)
                         ? 0
                         : double.Parse(item.IMDbRating, CultureInfo.InvariantCulture),
-                    MediaType = MediaType.tv,
-                    RankUpDown = item.RankUpDown
+                    MediaType = MediaType.tv
                 });
             }
         }
@@ -87,8 +85,7 @@ public class ImdbPopularApi(IHttpClientFactory factory)
                     //release_date = null,
                     poster_small = item.Image,
                     //rating = 0,
-                    MediaType = MediaType.person,
-                    RankUpDown = item.RankUpDown
+                    MediaType = MediaType.person
                 });
             }
         }
