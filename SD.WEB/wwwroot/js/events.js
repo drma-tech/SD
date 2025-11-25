@@ -101,6 +101,10 @@ function normalizeReason(reason) {
 window.addEventListener("unhandledrejection", function (event) {
     const { message, stack } = normalizeReason(event.reason);
 
+    if (navigator.userAgent === "Mediapartners-Google") { //google adsense bot
+        return;
+    }
+
     const log = {
         Message: message,
         StackTrace: stack,
