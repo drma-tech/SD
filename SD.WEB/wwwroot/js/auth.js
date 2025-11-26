@@ -27,9 +27,10 @@ if (!isBot) {
     });
 
     window.auth.getRedirectResult()
-        .then((result) => {
+        .then(async (result) => {
             if (navigator.userAgent.includes("webtonative") && platform == "ios") {
-                showToast(`getRedirectResult: ${result.credential?.idToken ?? null}`);
+                const token = user ? await result.user.getIdToken() : null;
+                showToast(`getRedirectResult: ${token}`);
             }
         }).catch((error) => {
             showError(error.message);
