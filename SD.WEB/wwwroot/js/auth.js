@@ -29,7 +29,12 @@ if (!isBot) {
     window.auth.getRedirectResult()
         .then(async (result) => {
             if (navigator.userAgent.includes("webtonative") && platform == "ios") {
-                const token = result.user ? await result.user.getIdToken() : null;
+                let token = result.user ? await result.user.getIdToken() : null;
+
+                if (!token && result.user) {
+                    token = await result.user.getIdToken(true);
+                }
+
                 showToast(`getRedirectResult: ${token}`);
             }
         }).catch((error) => {
@@ -66,8 +71,6 @@ window.firebaseAuth = {
 
             let usePopup = false;
             if (isLocalhost) usePopup = true;
-            //if (platform == "ios") usePopup = true;
-            //if (platform == "ios" && providerName == "google") usePopup = true;
 
             if (usePopup) {
                 await window.auth.signInWithPopup(provider);

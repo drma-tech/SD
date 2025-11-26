@@ -170,7 +170,11 @@ document.addEventListener("click", async (event) => {
 async function AuthStateChanged(user) {
     if (isBot) return;
 
-    const token = user ? await user.getIdToken() : null;
+    let token = user ? await user.getIdToken() : null;
+
+    if (!token && user) {
+        token = await user.getIdToken(true);
+    }
 
     await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
 
