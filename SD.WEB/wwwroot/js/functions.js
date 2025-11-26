@@ -156,10 +156,10 @@ function showError(message) {
 }
 
 function showToast(message, attempts = 20) {
-    const container = document.getElementById("error-container");
-    const container2 = document.getElementById("error-container-2");
+    const stack = document.getElementById("toast-stack");
+    if (!stack) return;
 
-    if (!container) {
+    if (!stack) {
         if (attempts > 0) {
             setTimeout(() => {
                 showToast(message, attempts - 1);
@@ -170,23 +170,15 @@ function showToast(message, attempts = 20) {
         return;
     }
 
-    const isVisible = getComputedStyle(container).display !== "none";
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.textContent = message;
 
-    if (!isVisible) {
-        container.textContent = message;
-        container.style.display = "block";
+    stack.appendChild(toast);
 
-        setTimeout(() => {
-            container.style.display = "none";
-        }, 10000);
-    } else {
-        container2.textContent = message;
-        container2.style.display = "block";
-
-        setTimeout(() => {
-            container2.style.display = "none";
-        }, 10000);
-    }
+    setTimeout(() => {
+        toast.remove();
+    }, 10000);
 }
 
 window.checkBrowserFeatures = async function () {
