@@ -53,9 +53,8 @@ window.firebaseAuth = {
 
             const provider = providerMap[providerName];
             if (!provider) throw new Error(`Unsupported provider: ${providerName}`);
-            const platform = GetLocalStorage("platform");
 
-            if (isLocalhost || platform == "ios") {
+            if (isLocalhost) {
                 await window.auth.signInWithPopup(provider);
             }
             else {
