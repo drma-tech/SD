@@ -13,6 +13,7 @@ const firebaseConfig = {
 //Xiaomi: The international model should work. The Chinese model perhaps not (and is likely to stop working completely in the near future).
 //Huawei: It no longer offers GMS (Google Mobile Services) because it was blocked by Google. Implement: Huawei Push Kit
 const nativePlatforms = ["ios", "play", "xiaomi"];
+const platform = GetLocalStorage("platform");
 
 if (!isBot) {
     firebase.initializeApp(firebaseConfig);
@@ -25,7 +26,10 @@ if (!isBot) {
         await AuthStateChanged(user);
     });
 
-    const platform = GetLocalStorage("platform");
+    window.auth.getRedirectResult()
+        .then((result) => {
+            showToast(`getRedirectResult: ${result.credential?.idToken}`);
+        });
 
     if (!nativePlatforms.includes(platform)) {
         window.messaging = firebase.messaging();
@@ -81,8 +85,6 @@ window.firebaseAuth = {
 };
 
 window.requestMessagingPermission = async function () {
-    const platform = GetLocalStorage("platform");
-
     if (nativePlatforms.includes(platform)) {
         console.log("Using native push, no web permission needed.");
         return;
