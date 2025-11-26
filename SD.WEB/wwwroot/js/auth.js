@@ -63,7 +63,7 @@ window.firebaseAuth = {
 
             let usePopup = false;
             if (isLocalhost) usePopup = true;
-            if (platform == "ios") usePopup = true;
+            //if (platform == "ios") usePopup = true;
             if (platform == "ios" && providerName == "google") usePopup = true;
 
             if (usePopup) {
