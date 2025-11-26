@@ -8,26 +8,26 @@
 <MudDialog Style="width: 100%">
     <DialogContent>
         @* Remove in December *@
-        <MudAlert Dense="true" Severity="Severity.Warning" Variant="Variant.Outlined" Class="mb-3">
+        <MudAlert Dense="true" Severity="Severity.Warning" Variant="Variant.Outlined" Class="mb-3" Style="text-align: justify;">
             Our login system has changed! If you have any problems signing in or using your profile, please contact us via feedback or email. We’re happy to help.
         </MudAlert>
         <MudStack Spacing="3">
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Size="AppStateStatic.Size">
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Size="AppStateStatic.Size" Disabled="_disableGoogle">
                 Continue with Google
             </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font" Size="AppStateStatic.Size">
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font" Size="AppStateStatic.Size" Disabled="_disableApple">
                 Continue with Apple
             </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithFacebook" StartIcon="@IconsFA.Brands.Icon("facebook").Font" Size="AppStateStatic.Size">
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithFacebook" StartIcon="@IconsFA.Brands.Icon("facebook").Font" Size="AppStateStatic.Size" Disabled="_disableFacebook">
                 Continue with Facebook
             </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font" Size="AppStateStatic.Size">
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font" Size="AppStateStatic.Size" Disabled="_disableMicrosoft">
                 Continue with Microsoft
             </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithX" StartIcon="@IconsFA.Brands.Icon("x").Font" Size="AppStateStatic.Size">
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithX" StartIcon="@IconsFA.Brands.Icon("x").Font" Size="AppStateStatic.Size" Disabled="_disableX">
                 Continue with X
             </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithYahoo" StartIcon="@IconsFA.Brands.Icon("yahoo").Font" Size="AppStateStatic.Size">
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithYahoo" StartIcon="@IconsFA.Brands.Icon("yahoo").Font" Size="AppStateStatic.Size" Disabled="_disableYahoo">
                 Continue with Yahoo
             </MudButton>
         </MudStack>
@@ -53,6 +53,25 @@
     private async Task LoginWithMicrosoft() => await SignIn("microsoft");
     private async Task LoginWithX() => await SignIn("x");
     private async Task LoginWithYahoo() => await SignIn("yahoo");
+
+    private bool _disableGoogle = false;
+    private bool _disableApple = false;
+    private bool _disableFacebook = false;
+    private bool _disableMicrosoft = false;
+    private bool _disableX = false;
+    private bool _disableYahoo = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var platform = await AppStateStatic.GetPlatform(JsRuntime);
+
+        if (platform == Platform.ios)
+        {
+            _disableGoogle = true;
+        }
+
+        await base.OnInitializedAsync();
+    }
 
     private async Task SignIn(string provider)
     {
