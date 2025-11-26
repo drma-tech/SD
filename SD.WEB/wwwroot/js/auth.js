@@ -29,6 +29,9 @@ if (!isBot) {
     window.auth.getRedirectResult()
         .then((result) => {
             showToast(`getRedirectResult: ${result.credential?.idToken}`);
+        }).catch((error) => {
+            showError(error.message);
+            sendLog(error);
         });
 
     if (!nativePlatforms.includes(platform)) {
