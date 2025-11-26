@@ -157,6 +157,7 @@ function showError(message) {
 
 function showToast(message, attempts = 20) {
     const container = document.getElementById("error-container");
+    const container2 = document.getElementById("error-container-2");
 
     if (!container) {
         if (attempts > 0) {
@@ -169,12 +170,23 @@ function showToast(message, attempts = 20) {
         return;
     }
 
-    container.textContent = message;
-    container.style.display = "block";
+    const isVisible = getComputedStyle(container).display !== "none";
 
-    setTimeout(() => {
-        container.style.display = "none";
-    }, 10000);
+    if (!isVisible) {
+        container.textContent = message;
+        container.style.display = "block";
+
+        setTimeout(() => {
+            container.style.display = "none";
+        }, 10000);
+    } else {
+        container2.textContent = message;
+        container2.style.display = "block";
+
+        setTimeout(() => {
+            container2.style.display = "none";
+        }, 10000);
+    }
 }
 
 window.checkBrowserFeatures = async function () {

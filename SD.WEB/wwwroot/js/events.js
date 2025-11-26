@@ -171,8 +171,9 @@ async function AuthStateChanged(user) {
     if (isBot) return;
 
     const token = user ? await user.getIdToken() : null;
-    showToast(`AuthStateChanged: ${token}`);
+
     await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
+    showToast(`AuthStateChanged: ${token}`);
 
     let objUser = getUser();
 

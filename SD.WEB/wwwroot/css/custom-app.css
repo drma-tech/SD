@@ -235,10 +235,17 @@ body .pwa-updater[b-pwa-updater] {
 
 /*JAVASCRIPT TOAST*/
 
-.error-container {
+#toast-stack {
     position: fixed;
     bottom: 20px;
     right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10000;
+}
+
+.error-container {
     max-width: 300px;
     background-color: rgba(220, 53, 69, 0.9);
     color: white;
@@ -247,7 +254,6 @@ body .pwa-updater[b-pwa-updater] {
     display: none;
     font-family: sans-serif;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    z-index: 10000;
 }
 
 .menu-contrast {
