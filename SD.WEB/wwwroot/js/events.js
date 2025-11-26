@@ -173,7 +173,11 @@ async function AuthStateChanged(user) {
     const token = user ? await user.getIdToken() : null;
 
     await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
-    showToast(`AuthStateChanged: ${token}`);
+
+    const platform = GetLocalStorage("platform");
+    if (navigator.userAgent.includes("webtonative") && platform == "ios") {
+        showToast(`AuthStateChanged: ${token}`);
+    }
 
     let objUser = getUser();
 
