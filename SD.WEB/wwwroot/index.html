@@ -103,7 +103,8 @@
             if (window.navigator.serviceWorker?.register) {
                 navigator.serviceWorker.register('service-worker.js')
                     .catch(err => {
-                        showError("Failed to register the service worker, which may affect platform functionality. This can occur if your browser blocks certain features or if there's a network issue.");
+                        showError(`Failed to register the service worker, which may affect platform functionality. Details: ${err.message}`);
+                        sendLog(err);
                     });
             }
 

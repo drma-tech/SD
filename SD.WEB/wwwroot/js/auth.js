@@ -61,9 +61,9 @@ window.firebaseAuth = {
             const provider = providerMap[providerName];
             if (!provider) throw new Error(`Unsupported provider: ${providerName}`);
 
-            var usePopup = false;
+            let usePopup = false;
             if (isLocalhost) usePopup = true;
-            //if (platform == "ios") usePopup = true;
+            if (platform == "ios") usePopup = true;
             if (platform == "ios" && providerName == "google") usePopup = true;
 
             if (usePopup) {
