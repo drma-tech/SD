@@ -75,16 +75,19 @@ public static class IsolatedFunctionHelper
         return dictionary;
     }
 
-    public static void LogError(this HttpRequestData req, Exception ex, string? customOrigin = null, LogModel? log = null)
+    public static void LogError(this HttpRequestData req, Exception? ex, string? customOrigin = null, LogModel? log = null)
     {
         var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
 
         var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
 
+        req.Body.Position = 0; //in case of a previous read
+
         log ??= new LogModel();
 
         log.Origin = customOrigin ?? log.Origin ?? req.FunctionContext.FunctionDefinition.Name;
         log.Params = log.Params ?? string.Join("|", valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}"));
+        log.Body = log.Body ?? req.ReadAsString();
         log.AppVersion = log.AppVersion ?? req.GetQueryParameters()["vs"];
         log.UserId = log.UserId ?? null;
         log.Ip = log.Ip ?? req.GetUserIP();

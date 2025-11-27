@@ -45,6 +45,7 @@ public class CosmosLogger(CosmosLogRepository repo) : ILogger
             StackTrace = context?.StackTrace ?? exception?.StackTrace,
             Origin = context?.Origin,
             Params = context?.Params,
+            Body = context?.Body,
             OperationSystem = context?.OperationSystem,
             BrowserName = context?.BrowserName,
             BrowserVersion = context?.BrowserVersion,

@@ -75,9 +75,16 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
     [Function("Logger")]
     public static async Task Logger([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/logger")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var log = await req.GetPublicBody<LogModel>(cancellationToken);
+        try
+        {
+            var log = await req.GetPublicBody<LogModel>(cancellationToken);
 
-        req.LogError(new Exception(), null, log);
+            req.LogError(null, null, log);
+        }
+        catch (Exception)
+        {
+            req.LogError(null, null, null);
+        }
     }
 
     [Function("Country")]
