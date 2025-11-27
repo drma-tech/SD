@@ -21,7 +21,7 @@ if (!isBot) {
     window.auth = firebase.auth();
 
     if (platform === "ios") {
-        window.auth.setPersistence(firebase.auth.Auth.Persistence.NONE);
+        window.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
     }
     else {
         window.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
