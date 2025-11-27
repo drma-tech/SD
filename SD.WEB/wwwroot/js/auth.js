@@ -20,7 +20,12 @@ if (!isBot) {
 
     window.auth = firebase.auth();
 
-    window.auth.setPersistence(firebase.auth.Auth.Persistence.NONE);
+    if (platform === "ios") {
+        window.auth.setPersistence(firebase.auth.Auth.Persistence.NONE);
+    }
+    else {
+        window.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    }
 
     window.auth.onAuthStateChanged(async (user) => {
         await AuthStateChanged(user);
