@@ -23,9 +23,25 @@ if (!isBot) {
     window.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
     window.auth.onAuthStateChanged(async (user) => {
-        await AuthStateChanged(user);
+        if (isBot) return;
+
+        let token = user ? await user.getIdToken() : null;
+
+        await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
+
+        let objUser = getUser();
+
+        if (objUser) {
+            if (typeof Userback !== "undefined" && Userback) {
+                Userback.identify(objUser.userId, {
+                    name: objUser.name,
+                    email: objUser.email,
+                });
+            }
+        }
     });
 
+    // Initialize messaging only for non-native platforms
     if (!nativePlatforms.includes(platform)) {
         window.messaging = firebase.messaging();
 
@@ -56,7 +72,7 @@ window.firebaseAuth = {
 
             let usePopup = false;
             if (isLocalhost) usePopup = true;
-            if (platform === "ios") usePopup = true;
+            //if (platform === "ios") usePopup = true;
 
             if (usePopup) {
                 await window.auth.signInWithPopup(provider);

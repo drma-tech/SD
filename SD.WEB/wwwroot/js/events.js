@@ -188,22 +188,3 @@ document.addEventListener("click", async (event) => {
         requestMessagingPermission();
     }
 });
-
-async function AuthStateChanged(user) {
-    if (isBot) return;
-
-    let token = user ? await user.getIdToken() : null;
-
-    await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
-
-    let objUser = getUser();
-
-    if (objUser) {
-        if (typeof Userback !== "undefined" && Userback) {
-            Userback.identify(objUser.userId, {
-                name: objUser.name,
-                email: objUser.email,
-            });
-        }
-    }
-}
