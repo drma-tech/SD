@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 function openAppleCheckout(productId) {
     //DotNet.invokeMethodAsync('SD.WEB', 'AppleVerify', null);
@@ -7,16 +7,25 @@ function openAppleCheckout(productId) {
         productId: productId,
         callback: function (data) {
             if (data.isSuccess) {
-                if (!data) { showToast("No data returned from purchase"); return; }
-                if (!data.isSuccess) { showToast("Purchase failed or canceled"); return; }
+                if (!data) {
+                    showToast("No data returned from purchase");
+                    return;
+                }
+                if (!data.isSuccess) {
+                    showToast("Purchase failed or canceled");
+                    return;
+                }
 
                 const receiptData = data.receiptData;
-                if (!receiptData) { showToast("Receipt not found"); return; }
+                if (!receiptData) {
+                    showToast("Receipt not found");
+                    return;
+                }
 
-                DotNet.invokeMethodAsync('SD.WEB', 'AppleVerify', receiptData);
+                DotNet.invokeMethodAsync("SD.WEB", "AppleVerify", receiptData);
             }
-        }
-    })
+        },
+    });
 }
 
 function getReceiptData() {
@@ -28,14 +37,14 @@ function getReceiptData() {
                 // use this receipt data to verify transaction from app store
                 // refer : https://developer.apple.com/documentation/appstorereceipts/verifyreceipt
             }
-        }
-    })
+        },
+    });
 }
 
 function checkATTConsent() {
     if (!window.WTN) showError("WTN plugin not found");
 
-    const { ATTConsent } = window.WTN
+    const { ATTConsent } = window.WTN;
 
     ATTConsent.status({
         callback: function (result) {
@@ -44,6 +53,6 @@ function checkATTConsent() {
             } else {
                 //Permission Denied / not Determined due to some restrictions / not asked
             }
-        }
-    })
+        },
+    });
 }

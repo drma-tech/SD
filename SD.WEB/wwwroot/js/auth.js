@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDj5LpsT7-bra4hvuvb5E_BPSlD7Wr29nQ",
@@ -7,7 +7,7 @@ const firebaseConfig = {
     storageBucket: "streaming-discovery-4c483.firebasestorage.app",
     messagingSenderId: "394152837411",
     appId: "1:394152837411:web:06b7216d2859bdc1224c96",
-    measurementId: "G-JKXTVXM0EX"
+    measurementId: "G-JKXTVXM0EX",
 };
 
 //Xiaomi: The international model should work. The Chinese model perhaps not (and is likely to stop working completely in the near future).
@@ -26,9 +26,13 @@ if (!isBot) {
         await AuthStateChanged(user);
     });
 
-    window.auth.getRedirectResult()
+    window.auth
+        .getRedirectResult()
         .then(async (result) => {
-            if (navigator.userAgent.includes("webtonative") && platform == "ios") {
+            if (
+                navigator.userAgent.includes("webtonative") &&
+                platform == "ios"
+            ) {
                 let token = result.user ? await result.user.getIdToken() : null;
 
                 if (!token && result.user) {
@@ -37,7 +41,8 @@ if (!isBot) {
 
                 showToast(`getRedirectResult: ${token}`);
             }
-        }).catch((error) => {
+        })
+        .catch((error) => {
             showError(error.message);
             sendLog(error);
         });
@@ -46,7 +51,7 @@ if (!isBot) {
         window.messaging = firebase.messaging();
 
         window.messaging.onMessage((payload) => {
-            if (Notification.permission === 'granted') {
+            if (Notification.permission === "granted") {
                 const { title, body } = payload.data || {};
                 new Notification(title, { body });
             }
@@ -63,19 +68,19 @@ window.firebaseAuth = {
                 facebook: new firebase.auth.FacebookAuthProvider(),
                 microsoft: new firebase.auth.OAuthProvider("microsoft.com"),
                 yahoo: new firebase.auth.OAuthProvider("yahoo.com"),
-                x: new firebase.auth.TwitterAuthProvider()
+                x: new firebase.auth.TwitterAuthProvider(),
             };
 
             const provider = providerMap[providerName];
-            if (!provider) throw new Error(`Unsupported provider: ${providerName}`);
+            if (!provider)
+                throw new Error(`Unsupported provider: ${providerName}`);
 
             let usePopup = false;
             if (isLocalhost) usePopup = true;
 
             if (usePopup) {
                 await window.auth.signInWithPopup(provider);
-            }
-            else {
+            } else {
                 await window.auth.signInWithRedirect(provider);
             }
         } catch (error) {
@@ -95,7 +100,7 @@ window.firebaseAuth = {
 
     getUser: () => {
         return window.auth.currentUser;
-    }
+    },
 };
 
 window.requestMessagingPermission = async function () {
@@ -112,33 +117,36 @@ window.requestMessagingPermission = async function () {
     }
 
     const token = await window.messaging.getToken({
-        vapidKey: "BJ31lWbRBbX3ZyyUHG_pQB7ZmjFtNeFjhbhuyMwUvotpXsTej5iloeSA7GdCbC7HUo314KtgMxIvXiwygAG8NhQ"
+        vapidKey:
+            "BJ31lWbRBbX3ZyyUHG_pQB7ZmjFtNeFjhbhuyMwUvotpXsTej5iloeSA7GdCbC7HUo314KtgMxIvXiwygAG8NhQ",
     });
 
     if (token) {
         SetLocalStorage("MessagingToken", token);
-    }
-    else {
+    } else {
         showError("Failed to register messaging token.");
         return;
     }
 
-    await invokeDotNetWhenReady("SD.WEB", "SubscribeToTopics", { token, platform });
-}
+    await invokeDotNetWhenReady("SD.WEB", "SubscribeToTopics", {
+        token,
+        platform,
+    });
+};
 
 async function FirebaseSignIn(provider) {
     if (typeof firebaseAuth === "undefined" || !firebaseAuth) {
-        showError("Login is temporarily unavailable. Please make sure you have a stable connection or try again later.");
+        showError(
+            "Login is temporarily unavailable. Please make sure you have a stable connection or try again later."
+        );
 
         if (typeof firebase === "undefined" || !firebase) {
             showError("firebase is undefined in initFirebase");
             sendLog("firebase is undefined in initFirebase");
-        }
-        else if (typeof firebaseAuth === "undefined") {
+        } else if (typeof firebaseAuth === "undefined") {
             showError("firebaseAuth is undefined in FirebaseSignIn");
             sendLog("firebaseAuth is undefined in FirebaseSignIn");
-        }
-        else if (!firebaseAuth) {
+        } else if (!firebaseAuth) {
             showError("The login system is still loading. Please try again.");
         }
 

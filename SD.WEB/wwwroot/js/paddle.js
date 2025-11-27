@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 async function startPaddle(token) {
     try {
@@ -12,10 +12,13 @@ async function startPaddle(token) {
                     //Wait for my API to be called and update the subscription.
                     setTimeout(() => {
                         Paddle.Checkout.close();
-                        DotNet.invokeMethodAsync('SD.WEB', 'RegistrationSuccessful');
+                        DotNet.invokeMethodAsync(
+                            "SD.WEB",
+                            "RegistrationSuccessful"
+                        );
                     }, 1000);
                 }
-            }
+            },
         });
     } catch (error) {
         sendLog(error);
@@ -28,13 +31,12 @@ function openCheckout(priceId, email, locale, customerId) {
         let customer;
         if (customerId) {
             customer = {
-                id: customerId
-            }
-        }
-        else if (email) {
+                id: customerId,
+            };
+        } else if (email) {
             customer = {
-                email: email
-            }
+                email: email,
+            };
         }
 
         let isDark = GetLocalStorage("dark-mode") == "true";
@@ -45,15 +47,15 @@ function openCheckout(priceId, email, locale, customerId) {
                 theme: isDark ? "dark" : "light",
                 locale: locale,
                 showAddDiscounts: false,
-                showAddTaxId: false
+                showAddTaxId: false,
             },
             items: [
                 {
                     priceId: priceId,
-                    quantity: 1
-                }
+                    quantity: 1,
+                },
             ],
-            customer: customer
+            customer: customer,
         });
     } catch (error) {
         sendLog(error);

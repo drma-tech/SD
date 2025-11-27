@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 function sendLog(error) {
     const baseUrl = isLocalhost ? "http://localhost:7071" : "";
@@ -29,8 +29,7 @@ function sendLog(error) {
             AppVersion: GetLocalStorage("app-version"),
             UserAgent: navigator.userAgent,
         };
-    }
-    else {
+    } else {
         showError("sendLog: invalid error type");
         return;
     }
@@ -38,7 +37,7 @@ function sendLog(error) {
     fetch(`${baseUrl}/api/public/logger`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(log)
+        body: JSON.stringify(log),
     }).catch(() => {
         showError("sendLog: failed to send log");
     });
@@ -89,36 +88,22 @@ function SetSessionStorage(key, value) {
 function LoadAppVariables() {
     //platform
     if (!GetLocalStorage("platform")) {
-        const isWindows = document.referrer == "app-info://platform/microsoft-store" || /microsoft-store/i.test(navigator.userAgent);
+        const isWindows =
+            document.referrer == "app-info://platform/microsoft-store" ||
+            /microsoft-store/i.test(navigator.userAgent);
         const isAndroid = /(android)/i.test(navigator.userAgent);
         const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
         const isMac = /macintosh|mac os x/i.test(navigator.userAgent);
-        const isHuawei = /huawei|honor/i.test(navigator.userAgent);
-        const isXiaomi = /xiaomi/i.test(navigator.userAgent);
+        const isHuawei = /huawei|honor/i.test(navigator.userAgent); //not working. returns play
+        const isXiaomi = /xiaomi/i.test(navigator.userAgent); //not working. returns play
 
-        if (isWindows)
-            SetLocalStorage("platform", "windows");
-        else if (isAndroid)
-            SetLocalStorage("platform", "play");
-        else if (isIOS || isMac)
-            SetLocalStorage("platform", "ios");
-        else if (isHuawei)
-            SetLocalStorage("platform", "huawei");
-        else if (isXiaomi)
-            SetLocalStorage("platform", "xiaomi");
-        else
-            SetLocalStorage("platform", "webapp");
+        if (isWindows) SetLocalStorage("platform", "windows");
+        else if (isAndroid) SetLocalStorage("platform", "play");
+        else if (isIOS || isMac) SetLocalStorage("platform", "ios");
+        else if (isHuawei) SetLocalStorage("platform", "huawei");
+        else if (isXiaomi) SetLocalStorage("platform", "xiaomi");
+        else SetLocalStorage("platform", "webapp");
     }
-
-    //language for apps from webtonative
-    //if (!GetLocalStorage("app-language")) {
-    //    if (/webtonative/i.test(navigator.userAgent)) {
-    //        WTN.deviceInfo().then(function (value) {
-    //            SetLocalStorage("app-language", value.language);
-    //            location.reload();
-    //        });
-    //    }
-    //}
 }
 
 function getUser() {
@@ -132,7 +117,7 @@ function getUser() {
         return {
             userId: user.uid,
             name: user.displayName || null,
-            email: user.email || null
+            email: user.email || null,
         };
     } catch (error) {
         sendLog(error);
@@ -145,12 +130,10 @@ function showError(message) {
     if (window.DotNet) {
         try {
             DotNet.invokeMethodAsync("SD.WEB", "ShowError", message);
-        }
-        catch {
+        } catch {
             showToast(message);
         }
-    }
-    else {
+    } else {
         showToast(message);
     }
 }
@@ -191,7 +174,7 @@ window.checkBrowserFeatures = async function () {
             app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
             features: `wasm-${wasmSupported} | simd-${simd}`,
             userAgent: navigator.userAgent,
-            url: window.location.href
+            url: window.location.href,
         };
 
         sendLog(`browser with limited resources: ${JSON.stringify(errorInfo)}`);
@@ -202,7 +185,9 @@ window.checkBrowserFeatures = async function () {
         }
 
         if (!simd) {
-            showError("Your browser is out of date or some security mechanism is blocking something essential for the platform to function properly, such as Edge's Enhanced Security Mode.");
+            showError(
+                "Your browser is out of date or some security mechanism is blocking something essential for the platform to function properly, such as Edge's Enhanced Security Mode."
+            );
             return;
         }
     }
@@ -256,13 +241,16 @@ function getBrowserName() {
     if (ua.includes("Chrome/")) return "Chrome";
     if (ua.includes("Safari/")) return "Safari";
     if (ua.includes("OPR/")) return "Opera";
-    if (ua.includes("MSIE") || ua.includes("Trident/")) return "Internet Explorer";
+    if (ua.includes("MSIE") || ua.includes("Trident/"))
+        return "Internet Explorer";
     return "Unknown";
 }
 
 function getBrowserVersion() {
     const ua = navigator.userAgent;
-    const matches = RegExp(/(Firefox|Edg|Chrome|Safari|Version)\/([0-9.]+)/).exec(ua);
+    const matches = RegExp(
+        /(Firefox|Edg|Chrome|Safari|Version)\/([0-9.]+)/
+    ).exec(ua);
     return matches ? matches[2] : "unknown";
 }
 
@@ -272,19 +260,24 @@ function getOperatingSystem() {
     if (ua.includes("Mac")) return "Mac OS";
     if (ua.includes("Linux")) return "Linux";
     if (ua.includes("Android")) return "Android";
-    if (ua.includes("iOS") || ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
+    if (ua.includes("iOS") || ua.includes("iPhone") || ua.includes("iPad"))
+        return "iOS";
     return "Unknown";
 }
 
 window.alertEffects = {
     playBeep: (frequency, duration, type) => {
         try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const audioCtx = new (window.AudioContext ||
+                window.webkitAudioContext)();
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
 
             oscillator.type = type; // "sine", "square", "triangle", "sawtooth"
-            oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+            oscillator.frequency.setValueAtTime(
+                frequency,
+                audioCtx.currentTime
+            );
             gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
 
             oscillator.connect(gainNode);
@@ -299,7 +292,7 @@ window.alertEffects = {
 
     vibrate: (pattern) => {
         if (navigator.vibrate) navigator.vibrate(pattern);
-    }
+    },
 };
 
 window.clearLocalStorage = () => {
@@ -332,7 +325,7 @@ async function invokeDotNetWhenReady(assembly, method, args) {
                 console.warn("DotNet invocation failed, retrying...", err);
             }
         }
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await new Promise((resolve) => setTimeout(resolve, delay));
     }
     console.error("DotNet not ready after multiple retries");
 }

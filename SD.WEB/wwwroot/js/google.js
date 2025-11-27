@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 function openGoogleCheckout(productId, type) {
     try {
@@ -14,8 +14,8 @@ function openGoogleCheckout(productId, type) {
                 if (data.isSuccess) {
                     //do something when purchase is successful
                 }
-            }
-        })
+            },
+        });
     } catch (e) {
         showError(`error: ${JSON.stringify(e)}`);
     }
