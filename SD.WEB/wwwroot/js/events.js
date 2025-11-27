@@ -160,8 +160,6 @@ window.addEventListener("securitypolicyviolation", (event) => {
         blockedURI: event.blockedURI,
         sourceFile: event.sourceFile,
         lineNumber: event.lineNumber,
-        env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
-        app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
         url: window.location.href,
     };
 
@@ -196,16 +194,7 @@ async function AuthStateChanged(user) {
 
     let token = user ? await user.getIdToken() : null;
 
-    if (!token && user) {
-        token = await user.getIdToken(true);
-    }
-
     await invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
-
-    const platform = GetLocalStorage("platform");
-    if (platform == "ios") {
-        showToast(`AuthStateChanged: ${token}`);
-    }
 
     let objUser = getUser();
 

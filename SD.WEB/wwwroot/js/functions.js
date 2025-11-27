@@ -169,16 +169,6 @@ window.checkBrowserFeatures = async function () {
     const simd = await wasmFeatureDetect.simd().catch(() => false);
 
     if (!wasmSupported || !simd) {
-        const errorInfo = {
-            env: `${getOperatingSystem()} | ${getBrowserName()} | ${getBrowserVersion()}`,
-            app: `${GetLocalStorage("platform")} | ${GetLocalStorage("app-version")}`,
-            features: `wasm-${wasmSupported} | simd-${simd}`,
-            userAgent: navigator.userAgent,
-            url: window.location.href,
-        };
-
-        sendLog(`browser with limited resources: ${JSON.stringify(errorInfo)}`);
-
         if (!wasmSupported) {
             showBrowserWarning();
             return;

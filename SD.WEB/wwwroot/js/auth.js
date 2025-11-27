@@ -26,24 +26,6 @@ if (!isBot) {
         await AuthStateChanged(user);
     });
 
-    window.auth
-        .getRedirectResult()
-        .then(async (result) => {
-            if (platform === "ios") {
-                let token = result.user ? await result.user.getIdToken() : null;
-
-                if (!token && result.user) {
-                    token = await result.user.getIdToken(true);
-                }
-
-                showToast(`getRedirectResult: ${token}`);
-            }
-        })
-        .catch((error) => {
-            showError(error.message);
-            sendLog(error);
-        });
-
     if (!nativePlatforms.includes(platform)) {
         window.messaging = firebase.messaging();
 
@@ -74,6 +56,7 @@ window.firebaseAuth = {
 
             let usePopup = false;
             if (isLocalhost) usePopup = true;
+            if (platform === "ios") usePopup = true;
 
             if (usePopup) {
                 await window.auth.signInWithPopup(provider);
