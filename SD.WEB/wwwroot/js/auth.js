@@ -20,7 +20,7 @@ if (!isBot) {
 
     window.auth = firebase.auth();
 
-    window.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    window.auth.setPersistence(firebase.auth.Auth.Persistence.NONE);
 
     window.auth.onAuthStateChanged(async (user) => {
         await AuthStateChanged(user);
@@ -29,10 +29,7 @@ if (!isBot) {
     window.auth
         .getRedirectResult()
         .then(async (result) => {
-            if (
-                navigator.userAgent.includes("webtonative") &&
-                platform == "ios"
-            ) {
+            if (navigator.userAgent.includes("webtonative") && platform === "ios") {
                 let token = result.user ? await result.user.getIdToken() : null;
 
                 if (!token && result.user) {

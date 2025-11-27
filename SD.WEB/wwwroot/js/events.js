@@ -194,8 +194,6 @@ document.addEventListener("click", async (event) => {
 async function AuthStateChanged(user) {
     if (isBot) return;
 
-    await new Promise(r => setTimeout(r, 2000)); // Delay 2s
-
     let token = user ? await user.getIdToken() : null;
 
     if (!token && user) {
