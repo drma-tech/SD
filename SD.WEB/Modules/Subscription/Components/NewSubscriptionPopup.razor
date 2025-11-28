@@ -199,6 +199,12 @@
     protected override async Task LoadAuthDataAsync()
     {
         Client = await PrincipalApi.Get(IsAuthenticated, true);
+
+        if (Client?.Subscription?.Provider != null)
+        {
+            Provider = Client.Subscription.Provider.Value;
+            Cycle = Client.Subscription.Cycle!.Value;
+        }
     }
 
     private async Task RegistrationSuccessful()

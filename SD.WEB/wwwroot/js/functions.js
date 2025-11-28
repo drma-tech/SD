@@ -303,7 +303,7 @@ window.showCache = () => {
 };
 
 async function invokeDotNetWhenReady(assembly, method, args) {
-    const retries = 10;
+    const retries = 20;
     const delay = 500;
 
     for (let i = 0; i < retries; i++) {

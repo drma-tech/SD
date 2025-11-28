@@ -7,6 +7,7 @@ using SD.Shared.Models.Subscription;
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 
 namespace SD.API.Functions;
@@ -145,19 +146,23 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
     public async Task PostAppleVerify(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "apple/verify")] HttpRequestData req, CancellationToken cancellationToken)
     {
+        AuthPrincipal? client = null;
         try
         {
             var userId = await req.GetUserIdAsync(factory, cancellationToken);
-            var client = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("principal null");
+            client = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("principal null");
 
             var raw = await req.ReadAsStringAsync();
             var receipt = JsonSerializer.Deserialize<string>(raw);
             var endpoint = ApiStartup.Configurations.Apple?.Endpoint;
             var bundleId = ApiStartup.Configurations.Apple?.BundleId;
 
+            client.Subscription ??= new AuthSubscription();
+            client.Subscription.LatestReceipt = receipt; //save receipt before cause it may fail
+
             var http = factory.CreateClient("apple");
             using var request = new HttpRequestMessage(HttpMethod.Post, $"{endpoint}verifyReceipt");
-            request.Content = JsonContent.Create(new AppleRequestModel { ReceiptData = receipt, Password = ApiStartup.Configurations.Apple?.SharedSecret, ExcludeOldTransactions = true });
+            request.Content = new StringContent($$"""{"receipt-data":"{{receipt}}","password":"{{ApiStartup.Configurations.Apple?.SharedSecret}}","exclude-old-transactions":true}""", Encoding.UTF8, "application/json");
             var response = await http.SendAsync(request, cancellationToken);
             var result = await response.Content.ReadFromJsonAsync<AppleResponseReceipt>(cancellationToken);
 
@@ -167,10 +172,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             var purchase = result.latest_receipt_info[result.latest_receipt_info.Count - 1];
 
-            client.Subscription ??= new AuthSubscription();
-
             client.Subscription.SubscriptionId = purchase.original_transaction_id;
-            client.Subscription.LatestReceipt = receipt;
             client.Subscription.ExpiresDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(purchase.expires_date_ms ?? "0", CultureInfo.InvariantCulture));
 
             client.Subscription.Provider = PaymentProvider.Apple;
@@ -179,13 +181,15 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             //https://developer.apple.com/documentation/appstorereceipts/status
             client.Events = client.Events.Union([new Event { Description = $"subscription = {receipt}, status = {result.status}" }]).ToArray();
-
-            await repo.UpsertItemAsync(client, cancellationToken);
         }
         catch (Exception ex)
         {
             req.LogError(ex);
             throw;
+        }
+        finally
+        {
+            if (client != null) await repo.UpsertItemAsync(client, cancellationToken);
         }
     }
 

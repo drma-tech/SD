@@ -1,7 +1,6 @@
 "use strict";
 
 function openAppleCheckout(productId) {
-    //DotNet.invokeMethodAsync('SD.WEB', 'AppleVerify', null);
     if (!WTN) alert("WTN plugin not found");
     WTN.inAppPurchase({
         productId: productId,
