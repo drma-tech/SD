@@ -61,17 +61,17 @@
     private bool _disableX = false;
     private bool _disableYahoo = false;
 
-    protected override async Task OnInitializedAsync()
-    {
-        var platform = await AppStateStatic.GetPlatform(JsRuntime);
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     var platform = await AppStateStatic.GetPlatform(JsRuntime);
 
-        if (platform == Platform.ios)
-        {
-            _disableGoogle = true;
-        }
+    //     if (platform == Platform.ios)
+    //     {
+    //         _disableGoogle = true;
+    //     }
 
-        await base.OnInitializedAsync();
-    }
+    //     await base.OnInitializedAsync();
+    // }
 
     private async Task SignIn(string provider)
     {
