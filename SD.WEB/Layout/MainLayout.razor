@@ -208,7 +208,7 @@
         if (lastAccess != null)
         {
             var hoursSinceLast = (DateTime.UtcNow - lastAccess.Value).TotalHours;
-            isTooSoon = hoursSinceLast < 6;
+            isTooSoon = hoursSinceLast < 12;
         }
 
         if (hasPreviousAccess && !isTooSoon) //starting with the second access (avoid the first 5 minutes)
@@ -244,7 +244,7 @@
         if (lastAccess != null)
         {
             var hoursSinceLast = (DateTime.UtcNow - lastAccess.Value).TotalHours;
-            isTooSoon = hoursSinceLast < 6;
+            isTooSoon = hoursSinceLast < 12;
         }
 
         var rating = await JsRuntime.GetLocalStorage<int?>("survey-rating");
