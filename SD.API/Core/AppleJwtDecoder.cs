@@ -1,6 +1,7 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -22,34 +23,36 @@ namespace SD.API.Core
 
         private static string ValidateAndReadJwt(string jwt)
         {
-            var handler = new JwtSecurityTokenHandler();
-            var token = handler.ReadJwtToken(jwt);
+            var token = new JwtSecurityToken(jwt);
 
-            // 1) Montar cadeia de certificados do header x5c
-            var x5c = token.Header["x5c"] as IEnumerable<object> ?? throw new NotificationException("x5c header missing");
+            if (!token.Header.TryGetValue("x5c", out var x5cObj)) throw new NotificationException("x5c missing");
+            var x5cList = (x5cObj as IEnumerable<object>)?.Select(x => x.ToString()).ToList() ?? throw new NotificationException("Invalid x5c");
 
-            //var certificates = x5c.Select(c => new X509Certificate2(Convert.FromBase64String(c.ToString()!))).ToList();
-            var certificates = x5c.Select(c => X509CertificateLoader.LoadCertificate(Convert.FromBase64String(c.ToString()!))).ToList();
+            var cert = X509CertificateLoader.LoadCertificate(Convert.FromBase64String(x5cList[0]!));
+            var ecdsa = cert.GetECDsaPublicKey() ?? throw new NotificationException("Not an ES256 certificate");
 
-            // Primeiro certificado assina o JWT
-            var signingCert = certificates[0];
+            var parts = jwt.Split('.');
+            if (parts.Length != 3) throw new NotificationException("Invalid JWT");
 
-            var validation = new TokenValidationParameters
+            var message = Encoding.UTF8.GetBytes(parts[0] + "." + parts[1]);
+            var signature = Base64UrlDecode(parts[2]);  // ← Base64Url, não normal
+
+            var ok = ecdsa.VerifyData(message, signature, HashAlgorithmName.SHA256);
+            if (!ok) throw new NotificationException("Invalid signature");
+
+            var payload = Base64UrlDecode(parts[1]);
+            return Encoding.UTF8.GetString(payload);
+        }
+
+        private static byte[] Base64UrlDecode(string input)
+        {
+            string s = input.Replace('-', '+').Replace('_', '/');
+            switch (s.Length % 4)
             {
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = false, // Apple frequentemente manda timestamps quase simultâneos
-                RequireSignedTokens = true,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new X509SecurityKey(signingCert)
-            };
-
-            handler.ValidateToken(jwt, validation, out var validated);
-
-            var validatedToken = (JwtSecurityToken)validated;
-
-            // Payload é um JSON normal
-            return validatedToken.Payload.SerializeToJson();
+                case 2: s += "=="; break;
+                case 3: s += "="; break;
+            }
+            return Convert.FromBase64String(s);
         }
     }
 
@@ -94,12 +97,11 @@ namespace SD.API.Core
         [JsonPropertyName("productId")]
         public string ProductId { get; set; } = "";
 
-        // está SEMPRE em milissegundos
         [JsonPropertyName("expiresDate")]
-        public string ExpiresDate { get; set; } = "";
+        public long ExpiresDate { get; set; }
 
         [JsonPropertyName("purchaseDate")]
-        public string PurchaseDate { get; set; } = "";
+        public long PurchaseDate { get; set; } 
 
         [JsonPropertyName("signedDate")]
         public long SignedDate { get; set; }

@@ -153,7 +153,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             client = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("principal null");
 
             var raw = await req.ReadAsStringAsync();
-            var receipt = JsonSerializer.Deserialize<string>(raw);
+            var receipt = JsonSerializer.Deserialize<string>(raw ?? throw new NotificationException("body not present"));
             var endpoint = ApiStartup.Configurations.Apple?.Endpoint;
             var bundleId = ApiStartup.Configurations.Apple?.BundleId;
 
@@ -180,7 +180,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             client.Subscription.Cycle = purchase.product_id!.Contains("yearly") ? AccountCycle.Yearly : AccountCycle.Monthly;
 
             //https://developer.apple.com/documentation/appstorereceipts/status
-            client.Events = client.Events.Union([new Event { Description = $"subscription = {receipt}, status = {result.status}" }]).ToArray();
+            client.Events = client.Events.Union([new Event { Description = $"apple verify || subscription = {purchase.original_transaction_id}, status = {result.status}" }]).ToArray();
         }
         catch (Exception ex)
         {
@@ -217,7 +217,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             if (client.Subscription == null) throw new UnhandledException("client.Subscription null");
 
-            var newExpires = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(transaction.ExpiresDate));
+            var newExpires = DateTimeOffset.FromUnixTimeMilliseconds(transaction.ExpiresDate);
             if (client.Subscription.ExpiresDate == null || newExpires > client.Subscription.ExpiresDate)
             {
                 client.Subscription.ExpiresDate = newExpires;
@@ -225,7 +225,9 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             client.Subscription.Product = transaction.ProductId!.Contains("premium") ? AccountProduct.Premium : AccountProduct.Standard;
             client.Subscription.Cycle = transaction.ProductId!.Contains("yearly") ? AccountCycle.Yearly : AccountCycle.Monthly;
 
-            client.Events = client.Events.Union([new Event { Description = $"subscription = {originalTransactionId}, expiresDate = {transaction.ExpiresDate}" }]).ToArray();
+            client.Events = client.Events.Union([new Event {
+                Description = $"apple subscription || subscription = {originalTransactionId}, product = {client.Subscription.Product}, Cycle = {client.Subscription.Cycle}, Type = {notification.NotificationType}, Subtype = {notification.Subtype}, expiresDate = {newExpires}"
+            }]).ToArray();
 
             await repo.UpsertItemAsync(client, cancellationToken);
         }
