@@ -7,6 +7,7 @@ using SD.Shared.Models.Subscription;
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace SD.API.Functions;
 
@@ -149,7 +150,8 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             var userId = await req.GetUserIdAsync(factory, cancellationToken);
             var client = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("principal null");
 
-            var receipt = await req.ReadAsStringAsync();
+            var raw = await req.ReadAsStringAsync();
+            var receipt = JsonSerializer.Deserialize<string>(raw);
             var endpoint = ApiStartup.Configurations.Apple?.Endpoint;
             var bundleId = ApiStartup.Configurations.Apple?.BundleId;
 
