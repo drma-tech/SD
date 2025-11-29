@@ -311,9 +311,7 @@ async function invokeDotNetWhenReady(assembly, method, args) {
             try {
                 await DotNet.invokeMethodAsync(assembly, method, args);
                 return;
-            } catch (err) {
-                console.warn("DotNet invocation failed, retrying...", err);
-            }
+            } catch { }
         }
         await new Promise((resolve) => setTimeout(resolve, delay));
     }

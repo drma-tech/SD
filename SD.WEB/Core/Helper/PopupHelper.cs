@@ -182,12 +182,12 @@ public static class PopupHelper
 
     public static async Task SubscriptionPopup(this IDialogService service, bool isAuthenticated)
     {
-        var parameters = new DialogParameters<NewSubscriptionPopup>
+        var parameters = new DialogParameters<SubscriptionPopup>
         {
             { x => x.IsAuthenticated, isAuthenticated }
         };
 
-        await service.ShowAsync<NewSubscriptionPopup>(Modules.Subscription.Resources.Translations.MySubscription, parameters, Options(MaxWidth.Medium));
+        await service.ShowAsync<SubscriptionPopup>(Modules.Subscription.Resources.Translations.MySubscription, parameters, Options(MaxWidth.Medium));
     }
 
     public static async Task OnboardingPopup(this IDialogService service)

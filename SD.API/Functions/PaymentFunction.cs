@@ -154,19 +154,19 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             var raw = await req.ReadAsStringAsync();
             var receipt = JsonSerializer.Deserialize<string>(raw ?? throw new NotificationException("body not present"));
-            var endpoint = ApiStartup.Configurations.Apple?.Endpoint;
+
             var bundleId = ApiStartup.Configurations.Apple?.BundleId;
 
             client.Subscription ??= new AuthSubscription();
             client.Subscription.LatestReceipt = receipt; //save receipt before cause it may fail
 
-            var http = factory.CreateClient("apple");
-            using var request = new HttpRequestMessage(HttpMethod.Post, $"{endpoint}verifyReceipt");
-            request.Content = new StringContent($$"""{"receipt-data":"{{receipt}}","password":"{{ApiStartup.Configurations.Apple?.SharedSecret}}","exclude-old-transactions":true}""", Encoding.UTF8, "application/json");
-            var response = await http.SendAsync(request, cancellationToken);
-            var result = await response.Content.ReadFromJsonAsync<AppleResponseReceipt>(cancellationToken);
+            var result = await VerifyReceipt(ApiStartup.Configurations.Apple?.Endpoint, receipt, cancellationToken) ?? throw new UnhandledException("AppleResponseReceipt null");
+            if (result.status == 21007)
+            {
+                //when tested with TestFlight
+                result = await VerifyReceipt("https://sandbox.itunes.apple.com/", receipt, cancellationToken) ?? throw new UnhandledException("AppleResponseReceipt null");
+            }
 
-            if (result == null) throw new UnhandledException("AppleResponseReceipt null");
             if (result.status != 0) throw new UnhandledException($"invalid status: {result.status}");
             if (result.receipt!.bundle_id != bundleId) throw new UnhandledException("invalid receipt");
 
@@ -191,6 +191,15 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         {
             if (client != null) await repo.UpsertItemAsync(client, cancellationToken);
         }
+    }
+
+    private async Task<AppleResponseReceipt?> VerifyReceipt(string? endpoint, string? receipt, CancellationToken cancellationToken)
+    {
+        var http = factory.CreateClient("apple");
+        using var request = new HttpRequestMessage(HttpMethod.Post, $"{endpoint}verifyReceipt");
+        request.Content = new StringContent($$"""{"receipt-data":"{{receipt}}","password":"{{ApiStartup.Configurations.Apple?.SharedSecret}}","exclude-old-transactions":true}""", Encoding.UTF8, "application/json");
+        var response = await http.SendAsync(request, cancellationToken);
+        return await response.Content.ReadFromJsonAsync<AppleResponseReceipt>(cancellationToken);
     }
 
     [Function("PostAppleSubscription")]

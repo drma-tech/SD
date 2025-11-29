@@ -1,4 +1,6 @@
-"use strict";
+﻿"use strict";
+
+/*APPLE*/
 
 function openAppleCheckout(productId) {
     if (!WTN) alert("WTN plugin not found");
@@ -54,4 +56,27 @@ function checkATTConsent() {
             }
         },
     });
+}
+
+/*GOOGLE*/
+
+function openGoogleCheckout(productId, type) {
+    try {
+        if (!WTN) alert("WTN plugin not found");
+        WTN.inAppPurchase({
+            productId: productId,
+            productType: type,
+            isConsumable: true,
+            callback: function (data) {
+                var receiptData = data.receiptData; //save on cosmos (Client.AuthPayment)
+                showToast(JSON.stringify(receiptData));
+                showToast(JSON.stringify(data));
+                if (data.isSuccess) {
+                    //do something when purchase is successful
+                }
+            },
+        });
+    } catch (e) {
+        showError(`error: ${JSON.stringify(e)}`);
+    }
 }

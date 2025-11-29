@@ -1,4 +1,4 @@
-﻿@inherits ComponentCore<NewSubscriptionPopup>
+﻿@inherits ComponentCore<SubscriptionPopup>
 
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Modules.Subscription.Resources
@@ -83,7 +83,7 @@
                 }
                 else if (Provider == PaymentProvider.Apple)
                 {
-                    <FeatureUnavailable></FeatureUnavailable>
+                    <AppleSubscriptionManager Provider="Provider" Cycle="Cycle" Client="Client"></AppleSubscriptionManager>
                 }
                 else if (Provider == PaymentProvider.Google)
                 {
