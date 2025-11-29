@@ -14,7 +14,7 @@
                 @($"Unfortunately, due to legal and policy restrictions, we are unable to offer our services in {_XoloBlockedCountries[CurrentCountry!.ToUpper()]}.")
             </MudAlert>
         }
-        else if (IsAuthenticated && (Client == null))
+        else if (AppStateStatic.IsAuthenticated && (Client == null))
         {
             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="100px" Animation="Animation.Wave" />
         }
@@ -62,7 +62,7 @@
                         Apple subscription is still in testing. If you run into any issues, please reach out via feedback or email. We’re happy to help.
                     </MudAlert>
 
-                    <SubscriptionPlans IsAuthenticated="IsAuthenticated" Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans>
+                    <SubscriptionPlans Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans>
                 }
                 else if (Provider == PaymentProvider.Google)
                 {
@@ -72,7 +72,7 @@
                 }
                 else if (Provider == PaymentProvider.Paddle)
                 {
-                    <SubscriptionPlans IsAuthenticated="IsAuthenticated" Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans>
+                    <SubscriptionPlans Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans>
                 }
             }
             else
@@ -105,8 +105,6 @@
 
 @code {
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
-
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     private AuthPrincipal? Client { get; set; }
     private List<PaymentProvider> Providers { get; set; } = [];
@@ -198,7 +196,7 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        Client = await PrincipalApi.Get(IsAuthenticated, true);
+        Client = await PrincipalApi.Get(AppStateStatic.IsAuthenticated, true);
 
         if (Client?.Subscription?.Provider != null)
         {

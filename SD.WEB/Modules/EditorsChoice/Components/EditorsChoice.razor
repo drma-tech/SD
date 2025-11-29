@@ -13,20 +13,18 @@
 <SeoHeader Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Keywords="@(new[] { "Editor’s Choice" })" Url="@($"/editors-choice/{Type}")"></SeoHeader>
 <PageHeader Title="@Translations.EditorsChoiceTitle" Subtitle="Top-rated titles for all audiences" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font"></PageHeader>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
 @if (MediaType == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   IsAuthenticated="IsAuthenticated" Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false"
-                   Description="@GlobalTranslations.CertifiedDescription">
+                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false" Description="@GlobalTranslations.CertifiedDescription">
     </MediaListFull>
 }
 else
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                   IsAuthenticated="IsAuthenticated" Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false"
-                   Description="@GlobalTranslations.CertifiedDescription">
+                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false" Description="@GlobalTranslations.CertifiedDescription">
     </MediaListFull>
 }
 
@@ -62,9 +60,9 @@ else
 
     protected override async Task LoadAuthDataAsync()
     {
-        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
-        WishList = await WishListApi.Get(IsAuthenticated, null);
+        WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, null);
+        WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
     }
 
 }

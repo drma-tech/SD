@@ -58,7 +58,6 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public bool ShowHead { get; set; } = true;
     [Parameter] public string? TitleHead { get; set; }
@@ -243,13 +242,13 @@
                     });
                 }
 
-                await DialogService.CompleteListPopup($"{media.title}", Watched, Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet(), IsAuthenticated);
+                await DialogService.CompleteListPopup($"{media.title}", Watched, Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet());
             }
             else
             {
                 if (Popup)
                 {
-                    await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId, IsAuthenticated);
+                    await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId);
                 }
                 else
                 {

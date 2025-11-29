@@ -51,7 +51,6 @@
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     public RenderControlCore<MyProviders?> Core { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
@@ -95,7 +94,7 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(IsAuthenticated, Core);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, Core);
 
         foreach (var item in MyProviders?.Items ?? [])
         {
@@ -122,7 +121,7 @@
                 }
             }
 
-            var client = await PrincipalApi.Get(IsAuthenticated);
+            var client = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
             await ShowInfo(Translations.RegionsApplied);
             await MyProvidersApi.Update(MyProviders, client?.Subscription);
 
@@ -135,7 +134,7 @@
         AllProviders ??= await AllProvidersApi.GetAll(null);
 
         await DialogService.PlatformPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList,
-            item.region?.ToString(), item.id, IsAuthenticated);
+            item.region?.ToString(), item.id);
     }
 
     private async Task UpdateProviders()

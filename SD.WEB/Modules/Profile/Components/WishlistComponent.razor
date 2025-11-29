@@ -54,8 +54,6 @@
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public Func<WishList?, bool> ExpressionEmpty { get; set; } = null!;
-    [Parameter][EditorRequired] public string? UserId { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
     [Parameter] public string? CustomTitle { get; set; }
 
     private HashSet<WishListItem> Items => MediaType == MediaType.movie ? Wish?.Movies ?? [] : Wish?.Shows ?? [];
@@ -81,12 +79,12 @@
 
     private async Task OpenCompleteList()
     {
-        await DialogService.MyWishListPopup(Core, Watched, Watching, Wish, MediaType, IsAuthenticated, UserId);
+        await DialogService.MyWishListPopup(Core, Watched, Watching, Wish, MediaType);
     }
 
     public Task ShowMediaPopup(string? tmdbId, string? name)
     {
-        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, MediaType, tmdbId, IsAuthenticated);
+        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, MediaType, tmdbId);
     }
 
 }

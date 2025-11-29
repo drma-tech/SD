@@ -13,13 +13,13 @@
         @if (MediaType == MediaType.movie)
         {
             <WishlistComponent MediaType="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
-                               Core="Core" ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()" IsAuthenticated="IsAuthenticated" UserId="@UserId">
+                               Core="Core" ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()">
             </WishlistComponent>
         }
         else
         {
             <WishlistComponent MediaType="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
-                               Core="Core" ExpressionEmpty="(WishList? list) => list == null || list.Shows.Empty()" IsAuthenticated="IsAuthenticated" UserId="@UserId">
+                               Core="Core" ExpressionEmpty="(WishList? list) => list == null || list.Shows.Empty()">
             </WishlistComponent>
         }
     </DialogContent>
@@ -37,8 +37,6 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
-    [Parameter][EditorRequired] public string? UserId { get; set; }
 
     [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }

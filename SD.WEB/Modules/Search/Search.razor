@@ -10,17 +10,17 @@
 
 <SeoHeader Title="Search" Description="@SeoTranslations.AppDescription" Url="/search" Index="false" Keywords="@([])"></SeoHeader>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Search" IsAuthenticated="IsAuthenticated" Format="horizontal"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Search" Format="horizontal"></GoogleAdSense>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary"
-              Variant="Variant.Outlined" OnAdornmentClick="@LoadNonEssentialDataAsync" Class="my-6" Clearable="true" 
+              Variant="Variant.Outlined" OnAdornmentClick="@LoadNonEssentialDataAsync" Class="my-6" Clearable="true"
               HelperText="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio">
 </MudTextField>
 
 <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())" CustomMessageWarning="@GlobalTranslations.SearchReturnedNothing">
     <MediaListFull MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false" FullPage="true"
-                   Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated">
+                   Watched="Watched" Watching="Watching" Wish="Wish">
     </MediaListFull>
 </RenderControl>
 
@@ -63,7 +63,7 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
+        (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated, null), WatchingApi.Get(AppStateStatic.IsAuthenticated, null), WishApi.Get(AppStateStatic.IsAuthenticated, null));
     }
 
     private async Task KeyPress(KeyboardEventArgs args)

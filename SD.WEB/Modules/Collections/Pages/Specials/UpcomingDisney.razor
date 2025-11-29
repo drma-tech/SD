@@ -11,11 +11,11 @@
 
 <PageHeader Title="Upcoming Walt Disney Pictures" Image="logo/disney.png" Description="@SD.WEB.Resources.Credit.UpcomingWaltDisneyPictures"></PageHeader>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 @*https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films*@
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingWaltDisneyPictures" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-               IsAuthenticated="IsAuthenticated" FullPage="true" ShowHead="false">
+               FullPage="true" ShowHead="false">
 </MediaListFull>
 
 @code {
@@ -46,9 +46,9 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
-        WishList = await WishListApi.Get(IsAuthenticated, null);
+        WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, null);
+        WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
     }
 
 }

@@ -15,7 +15,7 @@
 
 <SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/platforms"
            Keywords="@(["platforms", "streaming", "Netflix", "Disney", "Apple", "Amazon Prime"])"></SeoHeader>
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
 <PageHeader Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
     <ActionFragment>
@@ -119,7 +119,7 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, null);
     }
 
 }

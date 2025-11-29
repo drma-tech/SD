@@ -94,7 +94,6 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     public AuthPrincipal? Client { get; set; }
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
@@ -129,7 +128,7 @@
     {
         Core?.ShowLoading();
 
-        MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, null);
 
         if (MyProviders == null || MyProviders.Items.Empty())
         {
@@ -139,8 +138,8 @@
         {
             if (Client != null && _render != null) _render.Status = LoadingStatus.Loading; //force reset Premium status
 
-            Client ??= await PrincipalApi.Get(IsAuthenticated);
-            mySuggestions = await MySuggestionsApi.Get(Client?.Subscription?.ActiveProduct, IsAuthenticated, Core);
+            Client ??= await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
+            mySuggestions = await MySuggestionsApi.Get(Client?.Subscription?.ActiveProduct, AppStateStatic.IsAuthenticated, Core);
 
             if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
             {
@@ -153,7 +152,7 @@
 
     public Task ShowMediaPopup(string? tmdbId, string? name, MediaType type)
     {
-        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, type, tmdbId, IsAuthenticated);
+        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, type, tmdbId);
     }
 
     private Dictionary<string, string> GetExtraParameters(string? providerId, string? region, string sortBy)

@@ -52,14 +52,13 @@
 </MudDialog>
 
 @code {
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
     private AuthPrincipal? Principal { get; set; }
 
     protected override async Task LoadAuthDataAsync()
     {
-        Principal = await PrincipalApi.Get(IsAuthenticated, true);
+        Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated, true);
     }
 
     private async Task DownloadData()
@@ -68,13 +67,13 @@
         {
             var data = new SuperData() { Principal = Principal };
 
-            data.Login = await LoginApi.Get(IsAuthenticated);
-            data.Providers = await MyProvidersApi.Get(IsAuthenticated, null);
+            data.Login = await LoginApi.Get(AppStateStatic.IsAuthenticated);
+            data.Providers = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, null);
             if (Principal!.Subscription?.ActiveProduct is null or AccountProduct.Basic) data.Suggestions = null;
-            else data.Suggestions = await MySuggestionsApi.Get(Principal!.Subscription?.ActiveProduct, IsAuthenticated, null);
-            data.WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
-            data.WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
-            data.WishList = await WishListApi.Get(IsAuthenticated, null);
+            else data.Suggestions = await MySuggestionsApi.Get(Principal!.Subscription?.ActiveProduct, AppStateStatic.IsAuthenticated, null);
+            data.WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, null);
+            data.WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, null);
+            data.WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
 
             var fileName = $"{SeoTranslations.AppName.ToSlug()}_{Principal!.AuthProviders[0]}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
             await JavascriptVoidAsync("jsSaveAsFile", fileName, "application/json", data.ConvertFromObjectToBytes());

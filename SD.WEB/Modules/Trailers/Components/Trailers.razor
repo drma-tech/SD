@@ -9,7 +9,7 @@
 <PageHeader Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Icon="@IconsFA.Brands.Icon("youtube").Font">
 </PageHeader>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
 <RenderControl Core="Core" Model="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
     <div class="grid-relative-container-trailer">

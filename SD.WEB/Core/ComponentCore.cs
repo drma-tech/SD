@@ -3,7 +3,6 @@ using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Services;
 using SD.WEB.Modules.Auth.Core;
-using System.Security.Claims;
 
 namespace SD.WEB.Core;
 
@@ -41,7 +40,7 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
 
     /// <summary>
     /// Exclusive for data associated with authenticated users (will be called every time the state changes)
-    /// 
+    ///
     /// NOTE: All APIs should check if the user is logged in or not.
     /// </summary>
     /// <returns></returns>
@@ -174,10 +173,6 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
 
 public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, IAsyncDisposable where T : class
 {
-    protected static bool IsAuthenticated => AppStateStatic.IsAuthenticated;
-    protected static ClaimsPrincipal? User => AppStateStatic.User;
-    protected static string? UserId => AppStateStatic.UserId;
-
     [Inject] private IBrowserViewportService BrowserViewportService { get; set; } = null!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

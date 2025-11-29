@@ -15,8 +15,7 @@ public static class PopupHelper
 {
     public static readonly EventCallbackFactory Factory = new();
 
-    public static async Task CollectionPopup(this IDialogService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type,
-        string? collectionId, bool isAuthenticated)
+    public static async Task CollectionPopup(this IDialogService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? collectionId)
     {
         var parameters = new DialogParameters<CollectionPopup>
         {
@@ -28,14 +27,12 @@ public static class PopupHelper
             { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? lst) => { watched = lst; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
-            { x => x.IsAuthenticated, isAuthenticated },
         };
 
         await service.ShowAsync<CollectionPopup>(null, parameters, Options(MaxWidth.Medium));
     }
 
-    public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchedList? watched, WatchingList? watching, WishList? wish,
-        HashSet<MediaDetail> items, bool isAuthenticated)
+    public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchedList? watched, WatchingList? watching, WishList? wish, HashSet<MediaDetail> items)
     {
         var parameters = new DialogParameters<CompleteListPopup>
         {
@@ -48,15 +45,12 @@ public static class PopupHelper
             { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? lst) => { watched = lst; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
-
-            { x => x.IsAuthenticated, isAuthenticated },
         };
 
         await service.ShowAsync<CompleteListPopup>(titleHead, parameters, Options(MaxWidth.Large));
     }
 
-    public static async Task MediaPopup(this IDialogService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? tmdbId,
-        bool isAuthenticated)
+    public static async Task MediaPopup(this IDialogService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? tmdbId)
     {
         var parameters = new DialogParameters<MediaPopup>
         {
@@ -68,7 +62,6 @@ public static class PopupHelper
             { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? lst) => { watched = lst; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
-            { x => x.IsAuthenticated, isAuthenticated },
         };
 
         await service.ShowAsync<MediaPopup>(null, parameters, Options(MaxWidth.Large));
@@ -87,7 +80,7 @@ public static class PopupHelper
     }
 
     public static async Task MyWatchingListPopup(this IDialogService service, RenderControlCore<WatchingList?>? core, MediaType type,
-        WatchedList? watched, WatchingList? watching, WishList? wish, bool isAuthenticated, string? userId)
+        WatchedList? watched, WatchingList? watching, WishList? wish)
     {
         var parameters = new DialogParameters<MyWatchingListPopup>
         {
@@ -99,8 +92,6 @@ public static class PopupHelper
             { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }) },
-            { x => x.IsAuthenticated, isAuthenticated },
-            { x => x.UserId, userId }
         };
 
         var Title = type == MediaType.movie ? Translations.MyMovieWatching : Translations.MyShowWatching;
@@ -110,7 +101,7 @@ public static class PopupHelper
     }
 
     public static async Task MyWishListPopup(this IDialogService service, RenderControlCore<WishList?>? core, WatchedList? watched, WatchingList? watching, WishList? wish,
-        MediaType type, bool isAuthenticated, string? userId)
+        MediaType type)
     {
         var parameters = new DialogParameters<MyWishListPopup>
         {
@@ -122,8 +113,6 @@ public static class PopupHelper
             { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }) },
-            { x => x.IsAuthenticated, isAuthenticated },
-            { x => x.UserId, userId }
         };
 
         var Title = type == MediaType.movie ? Translations.MyMovieWishlist : Translations.MyShowWishlist;
@@ -132,18 +121,15 @@ public static class PopupHelper
         await service.ShowAsync<MyWishListPopup>(Title.Format(Quantity), parameters, Options(MaxWidth.Large));
     }
 
-    public static async Task OpenAccountPopup(this IDialogService service, bool isAuthenticated)
+    public static async Task OpenAccountPopup(this IDialogService service)
     {
-        var parameters = new DialogParameters<ProfilePopup>
-        {
-            { x => x.IsAuthenticated, isAuthenticated }
-        };
+        var parameters = new DialogParameters<ProfilePopup> { };
 
         await service.ShowAsync<ProfilePopup>(Translations.MyProfile, parameters, Options(MaxWidth.ExtraSmall));
     }
 
     public static async Task PlatformPopup(this IDialogService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish,
-        string? watchRegion, string? providerId, bool isAuthenticated)
+        string? watchRegion, string? providerId)
     {
         var parameters = new DialogParameters<PlatformPopup>
         {
@@ -156,7 +142,6 @@ public static class PopupHelper
             { x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }) },
             { x => x.WatchRegion, watchRegion },
             { x => x.ProviderId, providerId },
-            { x => x.IsAuthenticated, isAuthenticated }
         };
 
         await service.ShowAsync<PlatformPopup>(provider?.name, parameters, Options(MaxWidth.Large));
@@ -180,12 +165,9 @@ public static class PopupHelper
         await service.ShowAsync<SettingsPopup>(GlobalTranslations.Settings, Options(MaxWidth.Small));
     }
 
-    public static async Task SubscriptionPopup(this IDialogService service, bool isAuthenticated)
+    public static async Task SubscriptionPopup(this IDialogService service)
     {
-        var parameters = new DialogParameters<SubscriptionPopup>
-        {
-            { x => x.IsAuthenticated, isAuthenticated }
-        };
+        var parameters = new DialogParameters<SubscriptionPopup> { };
 
         await service.ShowAsync<SubscriptionPopup>(Modules.Subscription.Resources.Translations.MySubscription, parameters, Options(MaxWidth.Medium));
     }

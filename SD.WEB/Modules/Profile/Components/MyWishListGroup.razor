@@ -1,11 +1,11 @@
 ﻿@using SD.WEB.Modules.Profile.Components
 
 <WishlistComponent MediaType="MediaType.movie" ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish"
-                   Core="CoreWishlist" ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()" IsAuthenticated="IsAuthenticated" UserId="@UserId">
+                   Core="CoreWishlist" ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()">
 </WishlistComponent>
 
 <WishlistComponent MediaType="MediaType.tv" ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish"
-                   Core="CoreWishlist" ExpressionEmpty="(WishList? list) => list == null || list.Shows.Empty()" IsAuthenticated="IsAuthenticated" UserId="@UserId">
+                   Core="CoreWishlist" ExpressionEmpty="(WishList? list) => list == null || list.Shows.Empty()">
 </WishlistComponent>
 
 @code {
@@ -13,6 +13,4 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
-    [Parameter][EditorRequired] public string? UserId { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SD.Shared.Core;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -45,7 +46,7 @@ public class AuthSubscription
             PaymentProvider.Microsoft => false,
             PaymentProvider.Google => false,
             PaymentProvider.Apple => ExpiresDate.HasValue && ExpiresDate.Value > DateTimeOffset.UtcNow,
-            _ => false,
+            _ => throw new NotificationException("invalid provider"),
         };
     }
 }

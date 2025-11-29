@@ -17,16 +17,16 @@
 
 <PageHeader Title="TMDB" Image="logo/tmdb.png" Description="@SD.WEB.Resources.Credit.TMDB" Link="https://www.themoviedb.org/"></PageHeader>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbPopularApi" CustomExpand="@("/collections/tmdb/popular/{0}")" ShowFilter="true"
-           Watched="WatchedList" Watching="WatchingList" Wish="WishList" IsAuthenticated="IsAuthenticated">
+           Watched="WatchedList" Watching="WatchingList" Wish="WishList">
 </MediaList>
 <MediaList TitleHead="@($"{Translations.TopRated} ({Region})")" MediaListApi="TmdbTopRatedApi" CustomExpand="@("/collections/tmdb/top/{0}")" ShowFilter="true"
-           DetectRegions="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" IsAuthenticated="IsAuthenticated">
+           DetectRegions="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList">
 </MediaList>
 <MediaList TitleHead="@($"{Translations.ComingSoon} ({Region})")" MediaListApi="TmdbUpcomingApi" CustomExpand="@("/collections/tmdb/upcoming")"
-           DetectRegions="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList" IsAuthenticated="IsAuthenticated">
+           DetectRegions="true" Watched="WatchedList" Watching="WatchingList" Wish="WishList">
 </MediaList>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
@@ -70,9 +70,9 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
-        WishList = await WishListApi.Get(IsAuthenticated, null);
+        WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, null);
+        WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
     }
 
 }

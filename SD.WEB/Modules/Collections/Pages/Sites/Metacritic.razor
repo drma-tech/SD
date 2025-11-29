@@ -13,13 +13,11 @@
 <PageHeader Title="Metacritic" Image="logo/metacritic.png" Description="@SD.WEB.Resources.Credit.Metacritic" Link="https://www.metacritic.com/">
 </PageHeader>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           IsAuthenticated="IsAuthenticated">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestMoviesOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList">
 </MediaList>
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestTvShowsOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-           IsAuthenticated="IsAuthenticated">
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.MetacriticBestTvShowsOfAllTime" Watched="WatchedList" Watching="WatchingList" Wish="WishList">
 </MediaList>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
@@ -54,9 +52,9 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
-        WishList = await WishListApi.Get(IsAuthenticated, null);
+        WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, null);
+        WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
     }
 
 }

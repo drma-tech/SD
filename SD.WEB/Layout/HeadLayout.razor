@@ -152,8 +152,6 @@
 }
 
 @code {
-    [Parameter] public bool IsAuthenticated { get; set; }
-
     private bool _open = false;
 
     private int _processingCount = 0;
@@ -222,7 +220,7 @@
 
     private async Task MyAccount()
     {
-        await DialogService.OpenAccountPopup(IsAuthenticated);
+        await DialogService.OpenAccountPopup();
     }
 
     private Color GetColor(string endpoint)

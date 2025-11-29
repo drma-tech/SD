@@ -21,24 +21,24 @@
         else
         {
             <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
-                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" Popup="true">
+                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
             </MediaList>
             <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
-                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" Popup="true">
+                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
             </MediaList>
             <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
-                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated" Popup="true">
+                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
             </MediaList>
         }
     </DialogContent>
     <DialogActions>
         @if (MyProviders?.Items.Any(a => a.id == ProviderId) ?? false)
         {
-            <MudButton Color="Color.Error" StartIcon="@IconsFA.Solid.Icon("minus").Font" OnClick="@Remove" Disabled="@(!IsAuthenticated)" Size="AppStateStatic.Size">@Button.Remove</MudButton>
+            <MudButton Color="Color.Error" StartIcon="@IconsFA.Solid.Icon("minus").Font" OnClick="@Remove" Disabled="@(!AppStateStatic.IsAuthenticated)" Size="AppStateStatic.Size">@Button.Remove</MudButton>
         }
         else
         {
-            <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("plus").Font" OnClick="@Add" Disabled="@(!IsAuthenticated)" Size="AppStateStatic.Size">@Button.Add</MudButton>
+            <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("plus").Font" OnClick="@Add" Disabled="@(!AppStateStatic.IsAuthenticated)" Size="AppStateStatic.Size">@Button.Add</MudButton>
         }
         <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">@Button.Close</MudButton>
     </DialogActions>
@@ -46,8 +46,6 @@
 
 @code {
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
-
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public ProviderModel? Provider { get; set; }
     [Parameter] public WatchedList? Watched { get; set; }
@@ -85,7 +83,7 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, null);
     }
 
     private static Dictionary<string, string> GetExtraParameters(string? providerId, string? sortBy, string? watchRegion)

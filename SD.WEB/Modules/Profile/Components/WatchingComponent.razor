@@ -72,8 +72,6 @@
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public Func<WatchingList?, bool> ExpressionEmpty { get; set; } = null!;
-    [Parameter][EditorRequired] public string? UserId { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
     [Parameter] public string? CustomTitle { get; set; }
 
     private HashSet<WatchingListItem> Items => MediaType == MediaType.movie ? Watching?.Movies ?? [] : Watching?.Shows ?? [];
@@ -100,25 +98,25 @@
 
     private async Task OpenCompleteList()
     {
-        await DialogService.MyWatchingListPopup(Core, MediaType, Watched, Watching, Wish, IsAuthenticated, UserId);
+        await DialogService.MyWatchingListPopup(Core, MediaType, Watched, Watching, Wish);
     }
 
     public Task ShowMediaPopup(string? tmdbId, string? name)
     {
-        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, MediaType, tmdbId, IsAuthenticated);
+        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, MediaType, tmdbId);
     }
 
     public Task ShowCollectionPopup(string? collectionId, string? name)
     {
-        return string.IsNullOrEmpty(collectionId) ? null! : DialogService.CollectionPopup(Watched, Watching, Wish, MediaType, collectionId, IsAuthenticated);
+        return string.IsNullOrEmpty(collectionId) ? null! : DialogService.CollectionPopup(Watched, Watching, Wish, MediaType, collectionId);
     }
 
     private async Task ImportFromWatched()
     {
         try
         {
-            var watching = await WatchingApi.Get(IsAuthenticated, Core); //get a new one (memory may be compromised/corrupted)
-            var client = await PrincipalApi.Get(IsAuthenticated);
+            var watching = await WatchingApi.Get(AppStateStatic.IsAuthenticated, Core); //get a new one (memory may be compromised/corrupted)
+            var client = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
 
             if (MediaType == MediaType.movie)
             {

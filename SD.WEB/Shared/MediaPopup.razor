@@ -171,8 +171,7 @@
                     }
                 </MudTabPanel>
                 <MudTabPanel Tag="@Translations.TabCredits" Text="@Translations.TabCredits">
-                    <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish"
-                                      IsAuthenticated="IsAuthenticated">
+                    <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish">
                     </CreditsComponent>
                 </MudTabPanel>
                 <MudTabPanel Tag="@("Collections")" Text="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)"
@@ -234,7 +233,7 @@
         </RenderControl>
     </DialogContent>
     <DialogActions>
-        @if (IsAuthenticated)
+        @if (AppStateStatic.IsAuthenticated)
         {
             @if (Wish?.Movies.Any(a => a.id == TmdbId) ?? false)
             {
@@ -246,7 +245,7 @@
             }
             else
             {
-                <MudButton Color="Color.Primary" OnClick="@Add" Size="AppStateStatic.Size" Disabled="!IsAuthenticated">@Translations.AddWishlist</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@Add" Size="AppStateStatic.Size" Disabled="!AppStateStatic.IsAuthenticated">@Translations.AddWishlist</MudButton>
             }
 
             @if (Watched?.Movies.Contains(TmdbId ?? "") ?? false)
@@ -259,7 +258,7 @@
             }
             else
             {
-                <MudButton Color="Color.Primary" OnClick="@IsWatched" Size="AppStateStatic.Size" Disabled="!IsAuthenticated">@Translations.ButtonWatched</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@IsWatched" Size="AppStateStatic.Size" Disabled="!AppStateStatic.IsAuthenticated">@Translations.ButtonWatched</MudButton>
             }
         }
         <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">@Button.Close</MudButton>
@@ -268,7 +267,6 @@
 
 @code {
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     [Parameter] public WatchedList? Watched { get; set; }
     [Parameter] public WatchingList? Watching { get; set; }

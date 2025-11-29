@@ -33,23 +33,23 @@
               HelperText="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio">
 </MudTextField>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
-<PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" IsAuthenticated="IsAuthenticated"></PopularIndexComponent>
+<PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish"></PopularIndexComponent>
 
-<EditorsChoiceComponent Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated"></EditorsChoiceComponent>
+<EditorsChoiceComponent Watched="Watched" Watching="Watching" Wish="Wish"></EditorsChoiceComponent>
 
-<AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated"></AwardsOfTheYearComponent>
+<AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish"></AwardsOfTheYearComponent>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index2" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index2"></GoogleAdSense>
 
 <MudGrid Spacing="3">
     <MudItem xs="12" sm="6">
-        <MediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2025" Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated">
+        <MediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2025" Watched="Watched" Watching="Watching" Wish="Wish">
         </MediaList>
     </MudItem>
     <MudItem xs="12" sm="6">
-        <MediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" Watched="Watched" Watching="Watching" Wish="Wish" IsAuthenticated="IsAuthenticated">
+        <MediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" Watched="Watched" Watching="Watching" Wish="Wish">
         </MediaList>
     </MudItem>
 </MudGrid>
@@ -103,7 +103,7 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, CoreWatched), WatchingApi.Get(IsAuthenticated, CoreWatching), WishApi.Get(IsAuthenticated, CoreWish));
+        (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated, CoreWatched), WatchingApi.Get(AppStateStatic.IsAuthenticated, CoreWatching), WishApi.Get(AppStateStatic.IsAuthenticated, CoreWish));
     }
 
     private void KeyPress(KeyboardEventArgs args)
@@ -118,7 +118,7 @@
 
     private async Task OpenSubscription()
     {
-        await DialogService.SubscriptionPopup(IsAuthenticated);
+        await DialogService.SubscriptionPopup();
     }
 
 }

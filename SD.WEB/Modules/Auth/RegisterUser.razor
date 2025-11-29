@@ -11,7 +11,7 @@
 
 <SeoHeader Title="Register User" Description="Register User" Url="/register-user" Index="false" Keywords="@([])"></SeoHeader>
 
-@if (IsAuthenticated)
+@if (AppStateStatic.IsAuthenticated)
 {
     if (Principal == null)
     {
@@ -55,9 +55,9 @@
     {
         try
         {
-            if (IsAuthenticated)
+            if (AppStateStatic.IsAuthenticated)
             {
-                Principal = await PrincipalApi.Get(IsAuthenticated);
+                Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
                 StateHasChanged();
 
                 if (Principal == null) //first access
@@ -85,13 +85,13 @@
         try
         {
             if (Principal != null) throw new InvalidOperationException("Principal is already set.");
-            if (User == null) throw new InvalidOperationException("User is null.");
+            if (AppStateStatic.User == null) throw new InvalidOperationException("User is null.");
 
             Principal = new AuthPrincipal
             {
-                AuthProviders = [User.FindFirst("idp")!.Value],
-                DisplayName = User.FindFirst("name")?.Value,
-                Email = User.FindFirst("email")?.Value
+                AuthProviders = [AppStateStatic.User.FindFirst("idp")!.Value],
+                DisplayName = AppStateStatic.User.FindFirst("name")?.Value,
+                Email = AppStateStatic.User.FindFirst("email")?.Value
             };
 
             if (_terms1)
@@ -117,9 +117,9 @@
 
         await LoginApi.Add(platform);
 
-        if (Principal!.AuthProviders.Empty() || !Principal!.AuthProviders.Contains(User!.FindFirst("idp")!.Value)) //if its a new auth provider
+        if (Principal!.AuthProviders.Empty() || !Principal!.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
         {
-            Principal.AuthProviders = Principal.AuthProviders.Union([User!.FindFirst("idp")!.Value]).ToArray();
+            Principal.AuthProviders = Principal.AuthProviders.Union([AppStateStatic.User!.FindFirst("idp")!.Value]).ToArray();
             await PrincipalApi.Update(Principal);
         }
 

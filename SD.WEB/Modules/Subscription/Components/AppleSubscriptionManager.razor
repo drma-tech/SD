@@ -23,10 +23,10 @@
                 <MudTextField T="string" Label="@Translations.Cycle" Text="@Client?.Subscription?.Cycle?.GetName()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Label="@Translations.Cycle" Text="@Client?.Subscription?.ExpiresDate.ToString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+                <MudTextField T="string" Label="Expires Date" Text="@Client?.Subscription?.ExpiresDate?.DateTime.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="bool" Label="@Translations.IsActive" Text="@Client?.Subscription?.IsActive().ToString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+                <MudTextField T="string" Label="@Translations.IsActive" Text="@Client?.Subscription?.IsActive().ToString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
             </MudItem>
         </MudGrid>
     </MudCardContent>

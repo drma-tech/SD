@@ -22,7 +22,7 @@
     <PageHeader Title="@Media?.title"></PageHeader>
 }
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Media" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Media"></GoogleAdSense>
 
 @if (AppStateStatic.ConsumedEnergy > AppStateStatic.TotalEnergy)
 {
@@ -45,7 +45,7 @@ else
             </BodyFragment>
         </PageSection>
 
-        <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media2" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+        <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media2"></GoogleAdSense>
 
         <PageSection Title="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
             <BodyFragment>
@@ -146,11 +146,11 @@ else
             </BodyFragment>
         </PageSection>
 
-        <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media3" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+        <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media3"></GoogleAdSense>
 
         <PageSection Title="@Translations.TabCredits" Color="Color.Secondary">
             <BodyFragment>
-                <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" IsAuthenticated="IsAuthenticated">
+                <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish">
                 </CreditsComponent>
             </BodyFragment>
         </PageSection>
@@ -259,7 +259,7 @@ else
 
     protected override async Task LoadAuthDataAsync()
     {
-        (Watched, Watching, Wish) = await (WatchedApi.Get(IsAuthenticated, null), WatchingApi.Get(IsAuthenticated, null), WishApi.Get(IsAuthenticated, null));
+        (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated, null), WatchingApi.Get(AppStateStatic.IsAuthenticated, null), WishApi.Get(AppStateStatic.IsAuthenticated, null));
     }
 
     private async Task CollectionClicked(Collection? item)
@@ -284,7 +284,7 @@ else
 
     private async Task OpenPopupMedia(Collection? collection, MediaType? mediaType)
     {
-        await DialogService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id, IsAuthenticated);
+        await DialogService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id);
     }
 
 }

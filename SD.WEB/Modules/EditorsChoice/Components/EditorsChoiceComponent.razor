@@ -30,14 +30,12 @@
     <BodyFragment>
         @if (TypeSelected == MediaType.movie)
         {
-            <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish"
-                       IsAuthenticated="IsAuthenticated" ShowHead="false">
+            <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish" ShowHead="false">
             </MediaList>
         }
         else if (TypeSelected == MediaType.tv)
         {
-            <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish"
-                       IsAuthenticated="IsAuthenticated" ShowHead="false">
+            <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish" ShowHead="false">
             </MediaList>
         }
     </BodyFragment>
@@ -47,7 +45,6 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public bool IsAuthenticated { get; set; }
 
     public MediaType TypeSelected { get; set; } = MediaType.movie;
 

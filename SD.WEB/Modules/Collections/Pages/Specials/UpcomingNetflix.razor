@@ -11,10 +11,10 @@
 
 <PageHeader Title="Upcoming Netflix Movies" Image="logo/netflix-logo.png" Description="@SD.WEB.Resources.Credit.UpcomingNetflixMovies"></PageHeader>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Collections"></GoogleAdSense>
 
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.UpcomingNetflixMovies" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-               IsAuthenticated="IsAuthenticated" FullPage="true" ShowHead="false">
+               FullPage="true" ShowHead="false">
 </MediaListFull>
 
 @code {
@@ -45,9 +45,9 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
-        WishList = await WishListApi.Get(IsAuthenticated, null);
+        WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, null);
+        WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
     }
 
 }

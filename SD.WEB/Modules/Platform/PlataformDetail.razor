@@ -52,20 +52,20 @@
     </PageHeader>
 }
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms" IsAuthenticated="IsAuthenticated"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
 <RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null)">
     <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")" ShowFilter="Provider?.types.Count == 2"
                StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3"
-               IsAuthenticated="IsAuthenticated" TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
+               TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
     </MediaList>
     <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/new/{{0}}")" ShowFilter="Provider?.types.Count == 2"
                StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3"
-               IsAuthenticated="IsAuthenticated" TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
+               TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
     </MediaList>
     <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/top/{{0}}")" ShowFilter="Provider?.types.Count == 2"
                StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3"
-               IsAuthenticated="IsAuthenticated" TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
+               TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
     </MediaList>
 </RenderControl>
 
@@ -117,10 +117,10 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(IsAuthenticated, null);
-        WatchedList = await WatchedListApi.Get(IsAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(IsAuthenticated, null);
-        WishList = await WishListApi.Get(IsAuthenticated, null);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, null);
+        WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, null);
+        WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, null);
+        WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
     }
 
     private static Dictionary<string, string> GetExtraParameters(string? providerId, string sortBy)
