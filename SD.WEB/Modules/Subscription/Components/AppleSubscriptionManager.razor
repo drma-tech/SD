@@ -7,39 +7,30 @@
 @inject PaymentConfigurationApi ConfigurationApi
 @inject PaymentSubscriptionApi SubscriptionApi
 
-@if (Client == null)
-{
-    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
-        @Translations.SubscriptionProcessed
-    </MudAlert>
-}
-else
-{
-    <MudCard Outlined="true" Elevation="4" Class="mb-3">
-        <MudCardContent Class="pa-3">
-            <MudGrid Class="mb-6">
-                <MudItem xs="12" sm="6">
-                    <MudTextField T="string" Label="@Translations.SubscriptionId" Text="@Client?.Subscription?.SubscriptionId" ReadOnly="true"></MudTextField>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudTextField T="string" Label="@Translations.PaymentProvider" Text="@Client?.Subscription?.Provider?.GetName()" ReadOnly="true"></MudTextField>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudTextField T="string" Label="@Translations.Product" Text="@Client?.Subscription?.Product?.GetName()" ReadOnly="true"></MudTextField>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudTextField T="string" Label="@Translations.Cycle" Text="@Client?.Subscription?.Cycle?.GetName()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudTextField T="bool" Label="@Translations.IsActive" Text="@Client?.Subscription?.IsActive().ToString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
-                </MudItem>
-            </MudGrid>
-        </MudCardContent>
-    </MudCard>
-    <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2 mb-2" Size="AppStateStatic.Size">
-        Open Checkout
-    </MudButton>
-}
+<MudCard Outlined="true" Elevation="4" Class="mb-3">
+    <MudCardContent Class="pa-3">
+        <MudGrid Class="mb-6">
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.SubscriptionId" Text="@Client?.Subscription?.SubscriptionId" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.PaymentProvider" Text="@Client?.Subscription?.Provider?.GetName()" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.Product" Text="@Client?.Subscription?.Product?.GetName()" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.Cycle" Text="@Client?.Subscription?.Cycle?.GetName()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="bool" Label="@Translations.IsActive" Text="@Client?.Subscription?.IsActive().ToString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
+<MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2 mb-2" Size="AppStateStatic.Size" OnClick="OpenCheckout">
+    Open Checkout
+</MudButton>
 
 @code {
     [Parameter][EditorRequired] public PaymentProvider Provider { get; set; }
@@ -58,11 +49,11 @@ else
         }
     }
 
-    protected async Task OpenCheckout(AccountProduct product)
+    protected async Task OpenCheckout()
     {
         try
         {
-            var priceId = Config?.GetPriceId(product, Cycle);
+            var priceId = Config?.GetPriceId(Client!.Subscription!.Product!.Value, Cycle);
 
             await JavascriptVoidAsync("openAppleCheckout", priceId);
         }
