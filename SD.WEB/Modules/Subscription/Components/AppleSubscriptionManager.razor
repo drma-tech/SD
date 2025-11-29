@@ -28,9 +28,9 @@
         </MudGrid>
     </MudCardContent>
 </MudCard>
-<MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2 mb-2" Size="AppStateStatic.Size" OnClick="OpenCheckout">
+@* <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2 mb-2" Size="AppStateStatic.Size" OnClick="OpenCheckout">
     Open Checkout
-</MudButton>
+</MudButton> *@
 
 @code {
     [Parameter][EditorRequired] public PaymentProvider Provider { get; set; }
@@ -49,17 +49,17 @@
         }
     }
 
-    protected async Task OpenCheckout()
-    {
-        try
-        {
-            var priceId = Config?.GetPriceId(Client!.Subscription!.Product!.Value, Cycle);
+    // protected async Task OpenCheckout()
+    // {
+    //     try
+    //     {
+    //         var priceId = Config?.GetPriceId(Client!.Subscription!.Product!.Value, Cycle);
 
-            await JavascriptVoidAsync("openAppleCheckout", priceId);
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
-    }
+    //         await JavascriptVoidAsync("openAppleCheckout", priceId);
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         await ProcessException(ex);
+    //     }
+    // }
 }
