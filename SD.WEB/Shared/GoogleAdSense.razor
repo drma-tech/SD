@@ -21,6 +21,7 @@
     }
     else
     {
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
         <div style="text-align: center;">
             <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">Remove Advertising</MudLink>
         </div>
@@ -52,17 +53,9 @@
         { "CN", "China (Mainland)" }
     };
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task LoadEssentialDataAsync()
     {
-        try
-        {
-            await base.OnInitializedAsync();
-            Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
+        Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
     }
 
     protected override async Task LoadAuthDataAsync()
