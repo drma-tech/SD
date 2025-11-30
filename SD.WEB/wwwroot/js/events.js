@@ -47,26 +47,24 @@ window.addEventListener("error", function (event) {
 
     if (filename?.includes("blazor.webassembly.js")) {
         showBrowserWarning();
-    } else {
-        const log = {
-            Message: `message:${message}|error.message:${error?.message}`,
-            StackTrace: error?.stack,
-            Origin: `event error - filename:${filename}|url:${window.location.href}|lineno:${lineno}|colno:${colno}`,
-            OperationSystem: getOperatingSystem(),
-            BrowserName: getBrowserName(),
-            BrowserVersion: getBrowserVersion(),
-            Platform: GetLocalStorage("platform"),
-            AppVersion: GetLocalStorage("app-version"),
-            UserAgent: navigator.userAgent,
-        };
-
-        sendLog(log);
-
-        //ignore bots
-        if (!isBot) {
-            showError(`error: ${event.message}`);
-        }
+        return;
     }
+
+    const log = {
+        Message: `message:${message}|error.message:${error?.message}`,
+        StackTrace: error?.stack,
+        Origin: `event error - filename:${filename}|url:${window.location.href}|lineno:${lineno}|colno:${colno}`,
+        OperationSystem: getOperatingSystem(),
+        BrowserName: getBrowserName(),
+        BrowserVersion: getBrowserVersion(),
+        Platform: GetLocalStorage("platform"),
+        AppVersion: GetLocalStorage("app-version"),
+        UserAgent: navigator.userAgent,
+    };
+
+    sendLog(log);
+
+    showError(`error: ${message}`);
 });
 
 //Promise.reject(new Error('unhandledrejection test call'));
@@ -119,8 +117,8 @@ function normalizeReason(reason) {
 window.addEventListener("unhandledrejection", function (event) {
     const { message, stack } = normalizeReason(event.reason);
 
-    if (navigator.userAgent.includes("Mediapartners-Google")) {
-        //google adsense bot
+    if (typeof message === "string" && message.includes("Failed to fetch")) {
+        showError("Connection problem detected. Check your internet connection and try reloading.");
         return;
     }
 
@@ -138,20 +136,7 @@ window.addEventListener("unhandledrejection", function (event) {
 
     sendLog(log);
 
-    //ignore bots
-    if (!isBot) {
-        if (
-            typeof message === "string" &&
-            message.includes("Failed to fetch")
-        ) {
-            showError(
-                "Connection problem detected. Check your internet connection and try reloading."
-            );
-            return;
-        }
-
-        showError(`unhandledrejection: ${message}`);
-    }
+    showError(`unhandledrejection: ${message}`);
 });
 
 window.addEventListener("securitypolicyviolation", (event) => {

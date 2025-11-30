@@ -39,7 +39,7 @@ function sendLog(error) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(log),
     }).catch(() => {
-        showError("sendLog: failed to send log");
+        showError("sendLog: failed to send log.");
     });
 }
 
