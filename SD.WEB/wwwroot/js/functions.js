@@ -151,6 +151,9 @@ function showToast(message, attempts = 20) {
         return;
     }
 
+    const exists = Array.from(stack.children).some(el => el.textContent === message);
+    if (exists) return;
+
     const toast = document.createElement("div");
     toast.className = "toast";
     toast.textContent = message;
