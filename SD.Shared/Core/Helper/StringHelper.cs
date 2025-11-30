@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SD.Shared.Core.Helper;
@@ -59,5 +60,15 @@ public static partial class StringHelper
         str = str.Trim('-'); // Trim leading and trailing hyphens
 
         return str;
+    }
+
+    public static string? ToHash(this string? text)
+    {
+        if (text.Empty()) return null;
+
+        var bytes = Encoding.UTF8.GetBytes(text);
+        var hash = MD5.HashData(bytes);
+
+        return Convert.ToHexString(hash, 0, 8);
     }
 }

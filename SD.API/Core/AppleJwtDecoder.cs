@@ -101,7 +101,7 @@ namespace SD.API.Core
         public long ExpiresDate { get; set; }
 
         [JsonPropertyName("purchaseDate")]
-        public long PurchaseDate { get; set; } 
+        public long PurchaseDate { get; set; }
 
         [JsonPropertyName("signedDate")]
         public long SignedDate { get; set; }

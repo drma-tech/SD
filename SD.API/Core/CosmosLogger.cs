@@ -41,7 +41,7 @@ public class CosmosLogger(CosmosLogRepository repo) : ILogger
 
         var log = new LogModel
         {
-            Message = context?.Message ?? exception?.Message ??  formatter(state, exception),
+            Message = context?.Message ?? exception?.Message ?? formatter(state, exception),
             StackTrace = context?.StackTrace ?? exception?.StackTrace,
             Origin = context?.Origin,
             Params = context?.Params,
