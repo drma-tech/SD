@@ -45,7 +45,7 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
             if (userId.Empty()) throw new InvalidOperationException("unauthenticated user");
 
             //check if user ip is blocked for insert
-            var ip = req.GetUserIP(false) ?? throw new NotificationException("Failed to retrieve IP");
+            var ip = req.GetUserIP(false) ?? throw new UnhandledException("Failed to retrieve IP");
             var blockedIp = await repoCache.Get<DataBlocked>($"block-{ip}", cancellationToken);
             if (blockedIp?.Data != null)
             {

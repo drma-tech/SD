@@ -149,8 +149,8 @@ public class CustomData
     public string? cycle { get; set; }
     public string? product { get; set; }
 
-    public AccountCycle CycleEnum => Enum.Parse<AccountCycle>(cycle ?? throw new NotificationException("custom_data not available"));
-    public AccountProduct ProductEnum => Enum.Parse<AccountProduct>(product ?? throw new NotificationException("custom_data not available"));
+    public AccountCycle CycleEnum => Enum.Parse<AccountCycle>(cycle ?? throw new UnhandledException("custom_data not available"));
+    public AccountProduct ProductEnum => Enum.Parse<AccountProduct>(product ?? throw new UnhandledException("custom_data not available"));
 }
 
 public class Item

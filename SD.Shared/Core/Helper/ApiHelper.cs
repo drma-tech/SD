@@ -19,7 +19,7 @@ public static class ApiHelper
 
         var content = await response.Content.ReadAsStringAsync(cancellationToken);
         if (content.Empty()) content = response.ReasonPhrase ?? "Unknown error";
-        throw new NotificationException(content);
+        throw new UnhandledException(content);
     }
 
     public static async Task<T?> GetJsonFromApi<T>(this HttpClient httpClient, string uri, CancellationToken cancellationToken)
@@ -47,7 +47,7 @@ public static class ApiHelper
         {
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
             if (content.Empty()) content = response.ReasonPhrase ?? "Unknown error";
-            throw new NotificationException(content);
+            throw new UnhandledException(content);
         }
     }
 }

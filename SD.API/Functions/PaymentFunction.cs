@@ -153,7 +153,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             client = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("principal null");
 
             var raw = await req.ReadAsStringAsync();
-            var receipt = JsonSerializer.Deserialize<string>(raw ?? throw new NotificationException("body not present"));
+            var receipt = JsonSerializer.Deserialize<string>(raw ?? throw new UnhandledException("body not present"));
 
             var bundleId = ApiStartup.Configurations.Apple?.BundleId;
 

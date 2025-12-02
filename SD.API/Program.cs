@@ -30,16 +30,16 @@ var app = new HostBuilder()
             config.Build().Bind(cfg);
             ApiStartup.Configurations = cfg;
 
-            var key = ApiStartup.Configurations.Firebase?.PrivateKey ?? throw new NotificationException("PrivateKey null");
+            var key = ApiStartup.Configurations.Firebase?.PrivateKey ?? throw new UnhandledException("PrivateKey null");
 
             var firebaseConfig = new FirebaseConfig
             {
                 project_id = "streaming-discovery-4c483",
-                private_key_id = ApiStartup.Configurations.Firebase?.PrivateKeyId ?? throw new NotificationException("PrivateKeyId null"),
+                private_key_id = ApiStartup.Configurations.Firebase?.PrivateKeyId ?? throw new UnhandledException("PrivateKeyId null"),
                 private_key = Regex.Unescape(key),
-                client_email = ApiStartup.Configurations.Firebase?.ClientEmail ?? throw new NotificationException("ClientEmail null"),
-                client_id = ApiStartup.Configurations.Firebase?.ClientId ?? throw new NotificationException("ClientId null"),
-                client_x509_cert_url = ApiStartup.Configurations.Firebase?.CertUrl ?? throw new NotificationException("Firebase null")
+                client_email = ApiStartup.Configurations.Firebase?.ClientEmail ?? throw new UnhandledException("ClientEmail null"),
+                client_id = ApiStartup.Configurations.Firebase?.ClientId ?? throw new UnhandledException("ClientId null"),
+                client_x509_cert_url = ApiStartup.Configurations.Firebase?.CertUrl ?? throw new UnhandledException("Firebase null")
             };
 
             var firebaseJson = JsonSerializer.Serialize(firebaseConfig);
@@ -145,7 +145,6 @@ static void ConfigureServices(IServiceCollection services)
         var loggerFactory = LoggerFactory.Create(builder => builder.AddProvider(provider));
         var logger = loggerFactory.CreateLogger("ConfigureServices");
 
-        logger.LogWarning($"PrivateKey: {ApiStartup.Configurations.Firebase?.PrivateKey}", "ConfigureServices");
         logger.LogError(ex, "ConfigureServices");
     }
 }

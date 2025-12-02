@@ -12,33 +12,33 @@ namespace SD.API.Core
         public static AppleNotification DecodeServerNotification(string signedPayload, Apple config)
         {
             var payloadJson = ValidateAndReadJwt(signedPayload);
-            return JsonSerializer.Deserialize<AppleNotification>(payloadJson) ?? throw new NotificationException("Invalid AppleNotification JSON");
+            return JsonSerializer.Deserialize<AppleNotification>(payloadJson) ?? throw new UnhandledException("Invalid AppleNotification JSON");
         }
 
         public static AppleTransactionInfo DecodeTransaction(string signedTransactionInfo)
         {
             var payloadJson = ValidateAndReadJwt(signedTransactionInfo);
-            return JsonSerializer.Deserialize<AppleTransactionInfo>(payloadJson) ?? throw new NotificationException("Invalid AppleTransactionInfo JSON");
+            return JsonSerializer.Deserialize<AppleTransactionInfo>(payloadJson) ?? throw new UnhandledException("Invalid AppleTransactionInfo JSON");
         }
 
         private static string ValidateAndReadJwt(string jwt)
         {
             var token = new JwtSecurityToken(jwt);
 
-            if (!token.Header.TryGetValue("x5c", out var x5cObj)) throw new NotificationException("x5c missing");
-            var x5cList = (x5cObj as IEnumerable<object>)?.Select(x => x.ToString()).ToList() ?? throw new NotificationException("Invalid x5c");
+            if (!token.Header.TryGetValue("x5c", out var x5cObj)) throw new UnhandledException("x5c missing");
+            var x5cList = (x5cObj as IEnumerable<object>)?.Select(x => x.ToString()).ToList() ?? throw new UnhandledException("Invalid x5c");
 
             var cert = X509CertificateLoader.LoadCertificate(Convert.FromBase64String(x5cList[0]!));
-            var ecdsa = cert.GetECDsaPublicKey() ?? throw new NotificationException("Not an ES256 certificate");
+            var ecdsa = cert.GetECDsaPublicKey() ?? throw new UnhandledException("Not an ES256 certificate");
 
             var parts = jwt.Split('.');
-            if (parts.Length != 3) throw new NotificationException("Invalid JWT");
+            if (parts.Length != 3) throw new UnhandledException("Invalid JWT");
 
             var message = Encoding.UTF8.GetBytes(parts[0] + "." + parts[1]);
             var signature = Base64UrlDecode(parts[2]);  // ← Base64Url, não normal
 
             var ok = ecdsa.VerifyData(message, signature, HashAlgorithmName.SHA256);
-            if (!ok) throw new NotificationException("Invalid signature");
+            if (!ok) throw new UnhandledException("Invalid signature");
 
             var payload = Base64UrlDecode(parts[1]);
             return Encoding.UTF8.GetString(payload);

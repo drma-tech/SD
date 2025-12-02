@@ -46,7 +46,7 @@ public class AuthSubscription
             PaymentProvider.Microsoft => false,
             PaymentProvider.Google => false,
             PaymentProvider.Apple => ExpiresDate.HasValue && ExpiresDate.Value > DateTimeOffset.UtcNow,
-            _ => throw new NotificationException("invalid provider"),
+            _ => throw new UnhandledException("invalid provider"),
         };
     }
 }

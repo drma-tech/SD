@@ -17,7 +17,7 @@ public class TmdbFunction(IDistributedCache distributedCache, IHttpClientFactory
         {
             CustomListNew? result;
 
-            var cacheKey = req.GetQueryParameters()["url"]?.ConvertFromBase64ToString() ?? throw new NotificationException("url null");
+            var cacheKey = req.GetQueryParameters()["url"]?.ConvertFromBase64ToString() ?? throw new UnhandledException("url null");
             var cachedBytes = await distributedCache.GetAsync(cacheKey);
             if (cachedBytes is { Length: > 0 })
             {
