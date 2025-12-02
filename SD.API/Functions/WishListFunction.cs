@@ -4,7 +4,7 @@ using SD.API.Core.Auth;
 
 namespace SD.API.Functions;
 
-public class WishListFunction(CosmosRepository repo, IHttpClientFactory factory)
+public class WishListFunction(CosmosRepository repo)
 {
     [Function("WishListGet")]
     public async Task<HttpResponseData?> WishListGet(
@@ -12,7 +12,7 @@ public class WishListFunction(CosmosRepository repo, IHttpClientFactory factory)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(factory, cancellationToken);
+            var userId = await req.GetUserIdAsync(cancellationToken);
             if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
             var doc = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
@@ -32,7 +32,7 @@ public class WishListFunction(CosmosRepository repo, IHttpClientFactory factory)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(factory, cancellationToken);
+            var userId = await req.GetUserIdAsync(cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
@@ -62,7 +62,7 @@ public class WishListFunction(CosmosRepository repo, IHttpClientFactory factory)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(factory, cancellationToken);
+            var userId = await req.GetUserIdAsync(cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);

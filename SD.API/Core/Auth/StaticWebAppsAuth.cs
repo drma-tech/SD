@@ -6,7 +6,7 @@ namespace SD.API.Core.Auth;
 
 public static class StaticWebAppsAuth
 {
-    public static async Task<string?> GetUserIdAsync(this HttpRequestData req, IHttpClientFactory factory, CancellationToken cancellationToken, bool required = true)
+    public static async Task<string?> GetUserIdAsync(this HttpRequestData req, CancellationToken cancellationToken, bool required = true)
     {
         var principal = await req.ParseAndValidateJwtAsync(required, cancellationToken);
 

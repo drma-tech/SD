@@ -127,7 +127,7 @@ function getUser() {
 function showError(message) {
     if (window.DotNet) {
         try {
-            DotNet.invokeMethodAsync("SD.WEB", "ShowError", message);
+            invokeDotNetWhenReady("SD.WEB", "ShowError", message);
         } catch {
             showToast(message);
         }
@@ -304,10 +304,12 @@ window.showCache = () => {
 };
 
 async function invokeDotNetWhenReady(assembly, method, args) {
-    const retries = 20;
-    const delay = 500;
+    const maxRetries = 25;
+    let delay = 300;
+    const delayStep = 300;
+    const maxDelay = 5000;
 
-    for (let i = 0; i < retries; i++) {
+    for (let i = 0; i < maxRetries; i++) {
         if (window.DotNet && DotNet.invokeMethodAsync) {
             try {
                 await DotNet.invokeMethodAsync(assembly, method, args);
@@ -315,6 +317,7 @@ async function invokeDotNetWhenReady(assembly, method, args) {
             } catch { }
         }
         await new Promise((resolve) => setTimeout(resolve, delay));
+        delay = Math.min(delay + delayStep, maxDelay);
     }
-    console.error("DotNet not ready after multiple retries");
+    console.error(`DotNet not ready after multiple retries. method: ${method}`);
 }

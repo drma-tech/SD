@@ -13,14 +13,14 @@ public static class IsolatedFunctionHelper
 {
     private const string messageLog = "{LogModel}";
 
-    public static async Task<T> GetBody<T>(this HttpRequestData req, IHttpClientFactory factory, CancellationToken cancellationToken)
+    public static async Task<T> GetBody<T>(this HttpRequestData req, CancellationToken cancellationToken)
         where T : CosmosDocument, new()
     {
         var model = await JsonSerializer.DeserializeAsync<T>(req.Body, cancellationToken: cancellationToken);
 
         model ??= new T();
 
-        var userId = await req.GetUserIdAsync(factory, cancellationToken);
+        var userId = await req.GetUserIdAsync(cancellationToken);
 
         if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
 

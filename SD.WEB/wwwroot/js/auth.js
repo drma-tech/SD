@@ -56,32 +56,55 @@ if (!isBot) {
 
 window.firebaseAuth = {
     signIn: async (providerName, email) => {
-        try {
-            const providerMap = {
-                google: new firebase.auth.GoogleAuthProvider(),
-                apple: new firebase.auth.OAuthProvider("apple.com"),
-                facebook: new firebase.auth.FacebookAuthProvider(),
-                microsoft: new firebase.auth.OAuthProvider("microsoft.com"),
-                yahoo: new firebase.auth.OAuthProvider("yahoo.com"),
-                x: new firebase.auth.TwitterAuthProvider(),
-            };
+        let usePopup = false;
+        if (isLocalhost) usePopup = true;
+        if (platform === "ios") usePopup = true;
 
-            const provider = providerMap[providerName];
-            if (!provider)
-                throw new Error(`Unsupported provider: ${providerName}`);
+        const providerMap = {
+            google: new firebase.auth.GoogleAuthProvider(),
+            apple: new firebase.auth.OAuthProvider("apple.com"),
+            facebook: new firebase.auth.FacebookAuthProvider(),
+            microsoft: new firebase.auth.OAuthProvider("microsoft.com"),
+            yahoo: new firebase.auth.OAuthProvider("yahoo.com"),
+            x: new firebase.auth.TwitterAuthProvider(),
+        };
 
-            let usePopup = false;
-            if (isLocalhost) usePopup = true;
-            if (platform === "ios") usePopup = true;
+        const provider = providerMap[providerName];
+        if (!provider) {
+            throw new Error(`Unsupported provider: ${providerName}`);
+        }
 
+        async function doSignIn() {
             if (usePopup) {
-                await window.auth.signInWithPopup(provider);
+                return window.auth.signInWithPopup(provider);
             } else {
-                await window.auth.signInWithRedirect(provider);
+                return window.auth.signInWithRedirect(provider);
             }
+        }
+
+        try {
+            return await doSignIn();
         } catch (error) {
-            sendLog(error);
-            throw new Error(error.message);
+            const isNetworkError = error.message.includes("auth/network-request-failed");
+
+            if (isNetworkError) {
+                sendLog("Network error detected. Retrying sign in...");
+                showError("Network error detected. Retrying sign in...");
+
+                await new Promise(r => setTimeout(r, 1000));
+
+                try {
+                    return await doSignIn();
+
+                } catch (retryError) {
+                    sendLog(retryError);
+                    throw new Error(retryError.message);
+                }
+            }
+            else {
+                sendLog(error);
+                throw new Error(error.message);
+            }
         }
     },
 

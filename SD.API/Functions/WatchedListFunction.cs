@@ -4,7 +4,7 @@ using SD.API.Core.Auth;
 
 namespace SD.API.Functions;
 
-public class WatchedListFunction(CosmosRepository repo, IHttpClientFactory factory)
+public class WatchedListFunction(CosmosRepository repo)
 {
     [Function("WatchedListGet")]
     public async Task<HttpResponseData?> WatchedListGet(
@@ -12,7 +12,7 @@ public class WatchedListFunction(CosmosRepository repo, IHttpClientFactory facto
     {
         try
         {
-            var userId = await req.GetUserIdAsync(factory, cancellationToken);
+            var userId = await req.GetUserIdAsync(cancellationToken);
             if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
             var doc = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
@@ -33,7 +33,7 @@ public class WatchedListFunction(CosmosRepository repo, IHttpClientFactory facto
     {
         try
         {
-            var userId = await req.GetUserIdAsync(factory, cancellationToken);
+            var userId = await req.GetUserIdAsync(cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
@@ -64,7 +64,7 @@ public class WatchedListFunction(CosmosRepository repo, IHttpClientFactory facto
     {
         try
         {
-            var userId = await req.GetUserIdAsync(factory, cancellationToken);
+            var userId = await req.GetUserIdAsync(cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);

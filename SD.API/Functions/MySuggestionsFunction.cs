@@ -4,7 +4,7 @@ using SD.API.Core.Auth;
 
 namespace SD.API.Functions;
 
-public class MySuggestionsFunction(CosmosRepository repo, IHttpClientFactory factory)
+public class MySuggestionsFunction(CosmosRepository repo)
 {
     [Function("MySuggestionsGet")]
     public async Task<HttpResponseData?> MySuggestionsGet(
@@ -12,7 +12,7 @@ public class MySuggestionsFunction(CosmosRepository repo, IHttpClientFactory fac
     {
         try
         {
-            var userId = await req.GetUserIdAsync(factory, cancellationToken);
+            var userId = await req.GetUserIdAsync(cancellationToken);
 
             var doc = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
 
@@ -31,7 +31,7 @@ public class MySuggestionsFunction(CosmosRepository repo, IHttpClientFactory fac
     {
         try
         {
-            var userId = await req.GetUserIdAsync(factory, cancellationToken);
+            var userId = await req.GetUserIdAsync(cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
 
             var obj = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
@@ -70,7 +70,7 @@ public class MySuggestionsFunction(CosmosRepository repo, IHttpClientFactory fac
     {
         try
         {
-            var body = await req.GetBody<MySuggestions>(factory, cancellationToken);
+            var body = await req.GetBody<MySuggestions>(cancellationToken);
 
             return await repo.UpsertItemAsync(body, cancellationToken);
         }

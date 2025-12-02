@@ -12,10 +12,7 @@ async function startPaddle(token) {
                     //Wait for my API to be called and update the subscription.
                     setTimeout(() => {
                         Paddle.Checkout.close();
-                        DotNet.invokeMethodAsync(
-                            "SD.WEB",
-                            "RegistrationSuccessful"
-                        );
+                        invokeDotNetWhenReady("SD.WEB", "RegistrationSuccessful");
                     }, 1000);
                 }
             },

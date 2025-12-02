@@ -23,7 +23,7 @@ function openAppleCheckout(productId) {
                     return;
                 }
 
-                DotNet.invokeMethodAsync("SD.WEB", "AppleVerify", receiptData);
+                invokeDotNetWhenReady("SD.WEB", "AppleVerify", receiptData);
             }
         },
     });
