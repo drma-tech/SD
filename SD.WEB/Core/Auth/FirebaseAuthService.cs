@@ -7,12 +7,12 @@ namespace SD.WEB.Core.Auth
         public async Task SignInAsync(string provider)
         {
             ApiCore.ResetCacheVersion();
-            await js.InvokeVoidAsync("FirebaseSignIn", provider);
+            await js.InvokeVoidAsync("window.firebaseAuth.signIn", provider);
         }
 
         public async Task SignOutAsync()
         {
-            await js.InvokeVoidAsync("firebaseAuth.signOut");
+            await js.InvokeVoidAsync("window.firebaseAuth.signOut");
         }
     }
 }
