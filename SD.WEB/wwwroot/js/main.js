@@ -19,6 +19,7 @@ export const firebaseConfig = {
     projectId: "streaming-discovery-4c483",
     storageBucket: "streaming-discovery-4c483.firebasestorage.app",
     messagingSenderId: "394152837411",
+    messagingKey: "BJ31lWbRBbX3ZyyUHG_pQB7ZmjFtNeFjhbhuyMwUvotpXsTej5iloeSA7GdCbC7HUo314KtgMxIvXiwygAG8NhQ",
     appId: "1:394152837411:web:06b7216d2859bdc1224c96",
     measurementId: "G-JKXTVXM0EX",
 };

@@ -45,7 +45,7 @@ export const swiper = {
         const progressCircle = document.querySelector(".autoplay-progress svg");
         const progressContent = document.querySelector(".autoplay-progress span");
 
-        var temp = new Swiper(el, {
+        const temp = new Swiper(el, {
             centeredSlides: true,
             lazy: true,
             autoplay: {
@@ -83,7 +83,7 @@ export const swiper = {
             el.swiper.destroy(true, true);
         }
 
-        var temp = new Swiper(el, {
+        const temp = new Swiper(el, {
             slidesPerView: "auto",
             spaceBetween: 4,
             breakpointsBase: "container",

@@ -87,7 +87,7 @@ export const authentication = {
 
         async function doSignIn() {
             if (usePopup) {
-                return signInWithPopup(window.auth, provider)
+                return signInWithPopup(window.auth, provider);
             } else {
                 return signInWithRedirect(window.auth, provider);
             }
@@ -164,8 +164,7 @@ export const messaging = {
         }
 
         const token = await getToken(window.messaging, {
-            vapidKey:
-                "BJ31lWbRBbX3ZyyUHG_pQB7ZmjFtNeFjhbhuyMwUvotpXsTej5iloeSA7GdCbC7HUo314KtgMxIvXiwygAG8NhQ",
+            vapidKey: firebaseConfig.messagingKey,
         });
 
         if (token) {

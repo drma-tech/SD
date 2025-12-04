@@ -198,10 +198,10 @@
     {
         Client = await PrincipalApi.Get(AppStateStatic.IsAuthenticated, true);
 
-        if (Client?.Subscription?.Provider != null)
+        if (Client?.Subscription?.Provider != null && Client.Subscription.Cycle != null)
         {
             Provider = Client.Subscription.Provider.Value;
-            Cycle = Client.Subscription.Cycle!.Value;
+            Cycle = Client.Subscription.Cycle.Value;
         }
     }
 
