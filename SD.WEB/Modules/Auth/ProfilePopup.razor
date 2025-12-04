@@ -11,7 +11,6 @@
 @inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
-@inject FirebaseAuthService Auth
 
 <MudDialog Style="width: 100%">
     <DialogContent>
@@ -76,7 +75,7 @@
             data.WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
 
             var fileName = $"{SeoTranslations.AppName.ToSlug()}_{Principal!.AuthProviders[0]}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
-            await JavascriptVoidAsync("jsSaveAsFile", fileName, "application/json", data.ConvertFromObjectToBytes());
+            await JsRuntime.Utils().DownloadFile(fileName, "application/json", data.ConvertFromObjectToBytes());
         }
         catch (Exception ex)
         {
@@ -121,7 +120,7 @@
 
     private async Task Logout()
     {
-        await Auth.SignOutAsync();
+        await JsRuntime.Firebase().SignOutAsync();
     }
 
 }

@@ -148,9 +148,9 @@
 
             var desktop = Breakpoint > Breakpoint.Xs;
 
-            await JavascriptVoidAsync("initSwiper", _swiperAwards, desktop ? 100 : 73);
-            await JavascriptVoidAsync("initSwiper", _swiperSites, desktop ? 100 : 73);
-            await JavascriptVoidAsync("initSwiper", _swiperSpecials, desktop ? 100 : 73);
+            await JsRuntime.Swiper().InitLists(_swiperAwards, desktop ? 100 : 73);
+            await JsRuntime.Swiper().InitLists(_swiperSites, desktop ? 100 : 73);
+            await JsRuntime.Swiper().InitLists(_swiperSpecials, desktop ? 100 : 73);
         }
         catch (Exception ex)
         {

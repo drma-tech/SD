@@ -128,8 +128,8 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             client.Subscription.Active = body.data.status is "active" or "trialing";
 
             client.Subscription.Provider = PaymentProvider.Paddle;
-            client.Subscription.Product = body.data.items[0].price?.custom_data?.ProductEnum;
-            client.Subscription.Cycle = body.data.items[0].price?.custom_data?.CycleEnum;
+            if (body.data.items[0].price?.custom_data?.ProductEnum != null) client.Subscription.Product = body.data.items[0].price!.custom_data!.ProductEnum;
+            if (body.data.items[0].price?.custom_data?.CycleEnum != null) client.Subscription.Cycle = body.data.items[0].price!.custom_data!.CycleEnum;
 
             client.Events = client.Events.Union([new Event { Description = $"subscription = {body.data.id}, status = {body.data.status}" }]).ToArray();
 

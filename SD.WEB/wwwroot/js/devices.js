@@ -1,82 +1,17 @@
 ﻿"use strict";
 
-/*APPLE*/
+const { ATTConsent } = window.WTN;
 
-function openAppleCheckout(productId) {
-    if (!WTN) alert("WTN plugin not found");
-    WTN.inAppPurchase({
-        productId: productId,
-        callback: function (data) {
-            if (data.isSuccess) {
-                if (!data) {
-                    showToast("No data returned from purchase");
-                    return;
-                }
-                if (!data.isSuccess) {
-                    showToast("Purchase failed or canceled");
-                    return;
-                }
-
-                const receiptData = data.receiptData;
-                if (!receiptData) {
-                    showToast("Receipt not found");
-                    return;
-                }
-
-                invokeDotNetWhenReady("SD.WEB", "AppleVerify", receiptData);
-            }
-        },
-    });
-}
-
-function getReceiptData() {
-    if (!window.WTN) showError("WTN plugin not found");
-    window.WTN.getReceiptData({
-        callback: function (data) {
-            var receiptData = data.receiptData;
-            if (data.isSuccess) {
-                // use this receipt data to verify transaction from app store
-                // refer : https://developer.apple.com/documentation/appstorereceipts/verifyreceipt
-            }
-        },
-    });
-}
-
-function checkATTConsent() {
-    if (!window.WTN) showError("WTN plugin not found");
-
-    const { ATTConsent } = window.WTN;
-
-    ATTConsent.status({
-        callback: function (result) {
-            if (result.granted) {
-                //Permission Granted or ios version 14.4 or lower
-            } else {
-                //Permission Denied / not Determined due to some restrictions / not asked
-            }
-        },
-    });
-}
-
-/*GOOGLE*/
-
-function openGoogleCheckout(productId, type) {
-    try {
-        if (!WTN) alert("WTN plugin not found");
-        WTN.inAppPurchase({
-            productId: productId,
-            productType: type,
-            isConsumable: true,
-            callback: function (data) {
-                var receiptData = data.receiptData; //save on cosmos (Client.AuthPayment)
-                showToast(JSON.stringify(receiptData));
-                showToast(JSON.stringify(data));
-                if (data.isSuccess) {
-                    //do something when purchase is successful
+export const ios = {
+    checkATTConsent() {
+        ATTConsent.status({
+            callback: function (result) {
+                if (result.granted) {
+                    //Permission Granted or ios version 14.4 or lower
+                } else {
+                    //Permission Denied / not Determined due to some restrictions / not asked
                 }
             },
         });
-    } catch (e) {
-        showError(`error: ${JSON.stringify(e)}`);
-    }
-}
+    },
+};

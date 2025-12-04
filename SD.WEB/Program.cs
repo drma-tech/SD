@@ -35,7 +35,9 @@ var js = app.Services.GetRequiredService<IJSRuntime>();
 await ConfigureCulture(app, js);
 
 var version = SD.WEB.Layout.MainLayout.GetAppVersion();
-await js.InvokeVoidAsync("initGoogleAnalytics", "G-4PREF5QX1F", version);
+await js.Utils().SetLocalStorage("app-version", version);
+await js.Services().InitGoogleAnalytics(version);
+await js.Services().InitUserBack(version);
 
 await app.RunAsync();
 
@@ -67,8 +69,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddAuthorizationCore();
-
-    collection.AddScoped<FirebaseAuthService>();
 
     collection.AddScoped<PrincipalApi>();
     collection.AddScoped<LoginApi>();
@@ -151,5 +151,5 @@ static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
 {
     return HttpPolicyExtensions
         .HandleTransientHttpError() // 408,5xx
-        .WaitAndRetryAsync([TimeSpan.FromSeconds(1)]);
+        .WaitAndRetryAsync([TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(4)]);
 }

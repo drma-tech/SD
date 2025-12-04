@@ -105,7 +105,7 @@
     {
         if (AllProviders != null)
         {
-            await SetLocalStorage("AllProviders", JsonSerializer.Serialize(AllProviders, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }));
+            await JsRuntime.Utils().SetLocalStorage("AllProviders", JsonSerializer.Serialize(AllProviders, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }));
         }
     }
 

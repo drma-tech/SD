@@ -74,7 +74,7 @@
 
     protected override async Task LoadEssentialDataAsync()
     {
-        var platform = await JsRuntime.GetLocalStorage("platform");
+        var platform = await JsRuntime.Utils().GetLocalStorage("platform");
         Platform = Enum.Parse<Platform>(platform ?? "webapp");
     }
 

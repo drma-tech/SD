@@ -69,7 +69,7 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JavascriptVoidAsync("initSwiper", _swiperId);
+            await JsRuntime.Swiper().InitLists(_swiperId);
         }
         catch (Exception ex)
         {

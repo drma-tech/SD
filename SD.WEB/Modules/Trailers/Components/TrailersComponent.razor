@@ -49,7 +49,7 @@
     {
         try
         {
-            await JavascriptVoidAsync("initGrid", _gallerySwiperId);
+            await JsRuntime.Swiper().InitTrailers(_gallerySwiperId);
 
             await base.OnAfterRenderAsync(firstRender);
         }

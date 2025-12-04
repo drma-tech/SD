@@ -227,7 +227,7 @@
 
         if (Provider == PaymentProvider.Paddle)
         {
-            await JavascriptVoidAsync("startPaddle", Config?.Token);
+            await JsRuntime.Payments().PaddleStart(Config?.Token);
         }
     }
 
@@ -255,7 +255,7 @@
                 {
                     var lang = await AppStateStatic.GetAppLanguage(JsRuntime);
 
-                    await JavascriptVoidAsync("openCheckout", priceId, Client?.Email, lang.ToString(), Client?.Subscription?.CustomerId);
+                    await JsRuntime.Payments().PaddleOpenCheckout(priceId, Client?.Email, lang, Client?.Subscription?.CustomerId);
 
                     //register user for webhook listening
                     if (Client?.Subscription == null)
@@ -265,11 +265,11 @@
                 }
                 else if (Provider == PaymentProvider.Apple)
                 {
-                    await JavascriptVoidAsync("openAppleCheckout", priceId);
+                    await JsRuntime.Payments().AppleOpenCheckout(priceId);
                 }
                 else if (Provider == PaymentProvider.Google)
                 {
-                    await JavascriptVoidAsync("openGoogleCheckout", priceId, "type");
+                    await JsRuntime.Payments().GoogleOpenCheckout(priceId, "type");
                 }
                 else
                 {

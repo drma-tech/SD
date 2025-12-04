@@ -3,8 +3,6 @@
 @using SD.WEB.Modules.Subscription.Core
 @inherits ComponentCore<LoginPopup>
 
-@inject FirebaseAuthService Auth
-
 <MudDialog Style="width: 100%">
     <DialogContent>
         @* Remove in December *@
@@ -59,7 +57,7 @@
         try
         {
             CloseDialog();
-            await Auth.SignInAsync(provider);
+            await JsRuntime.Firebase().SignInAsync(provider);
         }
         catch (Exception ex)
         {

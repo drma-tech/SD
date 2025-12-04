@@ -134,12 +134,12 @@
     {
         if (AppStateStatic.IsAuthenticated)
         {
-            var subscription = await GetLocalStorage("subscription-popup");
+            var subscription = await JsRuntime.Utils().GetLocalStorage("subscription-popup");
 
             if (subscription.Empty())
             {
                 await DialogService.SubscriptionPopup();
-                await SetLocalStorage("subscription-popup", true.ToString().ToLower());
+                await JsRuntime.Utils().SetLocalStorage("subscription-popup", true.ToString().ToLower());
             }
         }
 
@@ -148,7 +148,7 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        Reviewed = await GetLocalStorage("reviewed");
+        Reviewed = await JsRuntime.Utils().GetLocalStorage("reviewed");
     }
 
     protected override async Task LoadAuthDataAsync()

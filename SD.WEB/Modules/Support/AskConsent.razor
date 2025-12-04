@@ -24,7 +24,7 @@
     {
         try
         {
-            await SetLocalStorage("consent", true);
+            await JsRuntime.Utils().SetLocalStorage("consent", true);
             Navigation.NavigateTo("/", true);
         }
         catch (Exception ex)

@@ -1,5 +1,8 @@
 "use strict";
 
+import { storage, notification, environment } from "./utils.js";
+import { messaging } from "./firebase.js";
+
 window.addEventListener("load", function () {
     const startTime = performance.now();
     const app = document.getElementById("app");
@@ -8,7 +11,7 @@ window.addEventListener("load", function () {
     if (app) {
         const checkConnection = setInterval(() => {
             const elapsed = (performance.now() - startTime) / 1000;
-            const progress = parseFloat(
+            const progress = Number.parseFloat(
                 getComputedStyle(document.documentElement).getPropertyValue(
                     "--blazor-load-percentage"
                 ) || "0"
@@ -46,25 +49,25 @@ window.addEventListener("error", function (event) {
     const { message, filename, lineno, colno, error } = event;
 
     if (filename?.includes("blazor.webassembly.js")) {
-        showBrowserWarning();
+        notification.showBrowserWarning();
         return;
     }
 
     const log = {
         Message: `message:${message}|error.message:${error?.message}`,
         StackTrace: error?.stack,
-        Origin: `event error - filename:${filename}|url:${window.location.href}|lineno:${lineno}|colno:${colno}`,
-        OperationSystem: getOperatingSystem(),
-        BrowserName: getBrowserName(),
-        BrowserVersion: getBrowserVersion(),
-        Platform: GetLocalStorage("platform"),
-        AppVersion: GetLocalStorage("app-version"),
+        Origin: `event error - filename:${filename}|url:${location.href}|lineno:${lineno}|colno:${colno}`,
+        OperationSystem: environment.getOperatingSystem(),
+        BrowserName: environment.getBrowserName(),
+        BrowserVersion: environment.getBrowserVersion(),
+        Platform: storage.getLocalStorage("platform"),
+        AppVersion: storage.getLocalStorage("app-version"),
         UserAgent: navigator.userAgent,
     };
 
-    sendLog(log);
+    notification.sendLog(log);
 
-    showError(`error: ${message}`);
+    notification.showError(`error: ${message}`);
 });
 
 //Promise.reject(new Error('unhandledrejection test call'));
@@ -118,25 +121,27 @@ window.addEventListener("unhandledrejection", function (event) {
     const { message, stack } = normalizeReason(event.reason);
 
     if (typeof message === "string" && message.includes("Failed to fetch")) {
-        showError("Connection problem detected. Check your internet connection and try reloading.");
+        notification.showError(
+            "Connection problem detected. Check your internet connection and try reloading."
+        );
         return;
     }
 
     const log = {
         Message: message,
         StackTrace: stack,
-        Origin: `event unhandledrejection - url:${window.location.href}`,
-        OperationSystem: getOperatingSystem(),
-        BrowserName: getBrowserName(),
-        BrowserVersion: getBrowserVersion(),
-        Platform: GetLocalStorage("platform"),
-        AppVersion: GetLocalStorage("app-version"),
+        Origin: `event unhandledrejection - url:${location.href}`,
+        OperationSystem: environment.getOperatingSystem(),
+        BrowserName: environment.getBrowserName(),
+        BrowserVersion: environment.getBrowserVersion(),
+        Platform: storage.getLocalStorage("platform"),
+        AppVersion: storage.getLocalStorage("app-version"),
         UserAgent: navigator.userAgent,
     };
 
-    sendLog(log);
+    notification.sendLog(log);
 
-    showError(`unhandledrejection: ${message}`);
+    notification.showError(`unhandledrejection: ${message}`);
 });
 
 window.addEventListener("securitypolicyviolation", (event) => {
@@ -145,10 +150,10 @@ window.addEventListener("securitypolicyviolation", (event) => {
         blockedURI: event.blockedURI,
         sourceFile: event.sourceFile,
         lineNumber: event.lineNumber,
-        url: window.location.href,
+        url: location.href,
     };
 
-    sendLog(`securitypolicyviolation: ${JSON.stringify(obj)}`);
+    notification.sendLog(`securitypolicyviolation: ${JSON.stringify(obj)}`);
 });
 
 let resizeTimeout;
@@ -165,11 +170,13 @@ window.addEventListener("resize", function () {
 });
 
 window.addEventListener("offline", () => {
-    showError("It looks like you're offline. Please check your connection.");
+    notification.showError(
+        "It looks like you're offline. Please check your connection."
+    );
 });
 
 document.addEventListener("click", async (event) => {
     if (event.target?.closest(".btnEnableNotifications")) {
-        requestMessagingPermission();
+        await messaging.requestMessagingPermission();
     }
 });

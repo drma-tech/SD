@@ -7,7 +7,6 @@
 @using SD.WEB.Modules.Auth.Resources
 
 @inject LoginApi LoginApi
-@inject FirebaseAuthService Auth
 
 <SeoHeader Title="Register User" Description="Register User" Url="/register-user" Index="false" Keywords="@([])"></SeoHeader>
 
@@ -128,7 +127,7 @@
 
     private async Task Logout()
     {
-        await Auth.SignOutAsync();
+        await JsRuntime.Firebase().SignOutAsync();
 
         Navigation.NavigateTo("/");
     }

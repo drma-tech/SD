@@ -31,9 +31,6 @@
         </MudGrid>
     </MudCardContent>
 </MudCard>
-@* <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2 mb-2" Size="AppStateStatic.Size" OnClick="OpenCheckout">
-    Open Checkout
-</MudButton> *@
 
 @code {
     [Parameter][EditorRequired] public PaymentProvider Provider { get; set; }
@@ -41,28 +38,4 @@
     [Parameter][EditorRequired] public AuthPrincipal? Client { get; set; }
 
     private PaymentConfigurations? Config { get; set; }
-
-    protected override async Task LoadNonEssentialDataAsync()
-    {
-        Config = await ConfigurationApi.GetConfigurations(Provider);
-
-        if (Provider == PaymentProvider.Paddle)
-        {
-            await JavascriptVoidAsync("startPaddle", Config?.Token);
-        }
-    }
-
-    // protected async Task OpenCheckout()
-    // {
-    //     try
-    //     {
-    //         var priceId = Config?.GetPriceId(Client!.Subscription!.Product!.Value, Cycle);
-
-    //         await JavascriptVoidAsync("openAppleCheckout", priceId);
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         await ProcessException(ex);
-    //     }
-    // }
 }

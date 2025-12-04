@@ -168,7 +168,7 @@ else
 }
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
-    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JavascriptVoidAsync("history.back"))" />
+    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JsRuntime.Window().HistoryBack())" />
 </div>
 
 @code {
@@ -205,7 +205,7 @@ else
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JavascriptVoidAsync("initSwiper", _swiperId);
+            await JsRuntime.Swiper().InitLists(_swiperId);
         }
         catch (Exception ex)
         {
