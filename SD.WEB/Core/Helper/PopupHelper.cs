@@ -4,7 +4,6 @@ using SD.WEB.Modules.Auth;
 using SD.WEB.Modules.Collections.Components;
 using SD.WEB.Modules.Platform.Components;
 using SD.WEB.Modules.Profile.Components;
-using SD.WEB.Modules.Profile.Resources;
 using SD.WEB.Modules.Subscription.Components;
 using SD.WEB.Modules.Support;
 using SD.WEB.Shared;
@@ -94,7 +93,7 @@ public static class PopupHelper
             { x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }) },
         };
 
-        var Title = type == MediaType.movie ? Translations.MyMovieWatching : Translations.MyShowWatching;
+        var Title = type == MediaType.movie ? Modules.Profile.Resources.Translations.MyMovieWatching : Modules.Profile.Resources.Translations.MyShowWatching;
         var Quantity = type == MediaType.movie ? watching?.Movies.Count ?? 0 : watching?.Shows.Count ?? 0;
 
         await service.ShowAsync<MyWatchingListPopup>(Title.Format(Quantity), parameters, Options(MaxWidth.Large));
@@ -115,17 +114,17 @@ public static class PopupHelper
             { x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }) },
         };
 
-        var Title = type == MediaType.movie ? Translations.MyMovieWishlist : Translations.MyShowWishlist;
+        var Title = type == MediaType.movie ? Modules.Profile.Resources.Translations.MyMovieWishlist : Modules.Profile.Resources.Translations.MyShowWishlist;
         var Quantity = type == MediaType.movie ? wish?.Movies.Count ?? 0 : wish?.Shows.Count ?? 0;
 
         await service.ShowAsync<MyWishListPopup>(Title.Format(Quantity), parameters, Options(MaxWidth.Large));
     }
 
-    public static async Task OpenAccountPopup(this IDialogService service)
+    public static async Task AccountPopup(this IDialogService service)
     {
-        var parameters = new DialogParameters<ProfilePopup> { };
+        var parameters = new DialogParameters<AccountPopup> { };
 
-        await service.ShowAsync<ProfilePopup>(Translations.MyProfile, parameters, Options(MaxWidth.ExtraSmall));
+        await service.ShowAsync<AccountPopup>(Modules.Auth.Resources.Translations.MyAccount, parameters, Options(MaxWidth.Small));
     }
 
     public static async Task PlatformPopup(this IDialogService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish,

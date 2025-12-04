@@ -130,7 +130,7 @@
         <MudNavMenu>
             <AuthorizeView>
                 <Authorized>
-                    <MudNavLink Icon="@IconsFA.Solid.Icon("circle-user").Font" OnClick="@MyAccount">@Menu.Profile</MudNavLink>
+                    <MudNavLink Icon="@IconsFA.Solid.Icon("circle-user").Font" OnClick="@MyAccount">@Modules.Auth.Resources.Translations.MyAccount</MudNavLink>
                 </Authorized>
             </AuthorizeView>
             <MudNavLink Icon="@IconsFA.Solid.Icon("cog").Font" OnClick="@OpenConfigurations">Settings</MudNavLink>
@@ -219,7 +219,7 @@
 
     private async Task MyAccount()
     {
-        await DialogService.OpenAccountPopup();
+        await DialogService.AccountPopup();
     }
 
     private Color GetColor(string endpoint)

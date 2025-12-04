@@ -3,7 +3,7 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
 
-@inherits ComponentCore<ProfilePopup>
+@inherits ComponentCore<AccountPopup>
 
 @inject LoginApi LoginApi
 @inject MyProvidersApi MyProvidersApi
@@ -12,11 +12,11 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<MudDialog Style="width: 100%">
+<MudDialog Style="width: 100%; max-height: 70%;">
     <DialogContent>
-        <MudCard Outlined="true">
-            <MudCardContent>
-                <MudGrid>
+        <MudTabs Border="true" Outlined="true" PanelClass="pt-2" MinimumTabWidth="100px">
+            <MudTabPanel Text="Auth">
+                <MudGrid Spacing="2">
                     <MudItem xs="12">
                         <MudTextField T="@string" Label="@Translations.AuthProviders" Text="@(string.Join(", ", Principal?.AuthProviders ?? []))" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
@@ -29,21 +29,36 @@
                     <MudItem xs="12">
                         <MudTextField T="@string" Label="@Translations.Email" Text="@Principal?.Email" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
-                    <MudItem xs="12" sm="6">
-                        <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DownloadData" Disabled="Principal == null" Size="AppStateStatic.Size">
-                            Download Data
-                        </MudButton>
-                    </MudItem>
-                    <MudItem xs="12" sm="6">
-                        <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DeleteAccount" Color="Color.Error" Size="AppStateStatic.Size">
-                            @Translations.DeleteAccount
-                        </MudButton>
-                    </MudItem>
                 </MudGrid>
-            </MudCardContent>
-        </MudCard>
+            </MudTabPanel>
+            <MudTabPanel Text="Events">
+                <MudGrid Spacing="2">
+                    @foreach (var item in Principal?.Events ?? [])
+                    {
+                        <MudItem xs="12" Style="text-align: justify;">
+                            <MudPaper Outlined="true" Class="pa-2">
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <MudText Typo="Typo.subtitle1" Color="Color.Primary">@item?.Date.DateTime.ToLocalTime()</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1" Align="Align.Justify" Inline="true"
+                                         Style="@($"line-height: normal; {(AppStateStatic.Size == Size.Small ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;")}")">
+                                    @item?.Description
+                                </MudText>
+                            </MudPaper>
+                        </MudItem>
+                    }
+                </MudGrid>
+            </MudTabPanel>
+        </MudTabs>
     </DialogContent>
     <DialogActions>
+        <MudButton OnClick="@DownloadData" Disabled="Principal == null" Size="AppStateStatic.Size">
+            Download Data
+        </MudButton>
+        <MudButton OnClick="@DeleteAccount" Color="Color.Error" Size="AppStateStatic.Size">
+            @Translations.DeleteAccount
+        </MudButton>
+        <MudSpacer></MudSpacer>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">
             @Button.Close
         </MudButton>
