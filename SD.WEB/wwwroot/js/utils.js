@@ -32,12 +32,12 @@ export const storage = {
         return sessionStorage.setItem(key, value);
     },
     showCache() {
-        notification.ShowToast(
+        notification.showToast(
             `userAgent: ${navigator.userAgent},
-            app-language: ${this.GetLocalStorage("app-language")},
-            app-version: ${this.GetLocalStorage("app-version")},
-            country: ${this.GetLocalStorage("country")},
-            platform: ${this.GetLocalStorage("platform")}`
+            app-language: ${this.getLocalStorage("app-language")},
+            app-version: ${this.getLocalStorage("app-version")},
+            country: ${this.getLocalStorage("country")},
+            platform: ${this.getLocalStorage("platform")}`
         );
     },
 };
@@ -48,10 +48,10 @@ export const notification = {
             try {
                 window.DotNet.invokeMethodAsync("SD.WEB", "ShowError", message);
             } catch {
-                this.ShowToast(message);
+                this.showToast(message);
             }
         } else {
-            this.ShowToast(message);
+            this.showToast(message);
         }
     },
     showToast(message, attempts = 20) {
@@ -61,7 +61,7 @@ export const notification = {
         if (!stack) {
             if (attempts > 0) {
                 setTimeout(() => {
-                    this.ShowToast(message, attempts - 1);
+                    this.showToast(message, attempts - 1);
                 }, 1000);
             } else {
                 console.warn("showToast: error-container not found");
@@ -94,8 +94,8 @@ export const notification = {
                 OperationSystem: environment.getOperatingSystem(),
                 BrowserName: environment.getBrowserName(),
                 BrowserVersion: environment.getBrowserVersion(),
-                Platform: storage.GetLocalStorage("platform"),
-                AppVersion: storage.GetLocalStorage("app-version"),
+                Platform: storage.getLocalStorage("platform"),
+                AppVersion: storage.getLocalStorage("app-version"),
                 UserAgent: navigator.userAgent,
             };
         } else if (typeof error === "object") {
@@ -107,7 +107,7 @@ export const notification = {
                 OperationSystem: environment.getOperatingSystem(),
                 BrowserName: environment.getBrowserName(),
                 BrowserVersion: environment.getBrowserVersion(),
-                Platform: storage.GetLocalStorage("platform"),
+                Platform: storage.getLocalStorage("platform"),
                 AppVersion: storage.GetLocalStorage("app-version"),
                 UserAgent: navigator.userAgent,
             };
