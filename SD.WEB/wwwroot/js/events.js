@@ -121,7 +121,7 @@ function normalizeReason(reason) {
 window.addEventListener("unhandledrejection", function (event) {
     const { message, stack } = normalizeReason(event.reason);
 
-    if (typeof message === "string" && message.includes("Failed to fetch")) {
+    if (message.includes("Failed to fetch")) {
         if (isDev) {
             notification.showError(`unhandledrejection: ${message}`);
         } else {
@@ -131,6 +131,8 @@ window.addEventListener("unhandledrejection", function (event) {
             return;
         }
     }
+
+    notification.showError(`unhandledrejection: ${message}`);
 
     const log = {
         Message: message,
@@ -145,8 +147,6 @@ window.addEventListener("unhandledrejection", function (event) {
     };
 
     notification.sendLog(log);
-
-    notification.showError(`unhandledrejection: ${message}`);
 });
 
 window.addEventListener("securitypolicyviolation", (event) => {
