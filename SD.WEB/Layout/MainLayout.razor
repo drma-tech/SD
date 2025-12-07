@@ -262,6 +262,11 @@
 
     private async Task ShowOnBoardingPopup()
     {
+        if (Navigation.Uri.Contains("printscreen"))
+        {
+            return;
+        }
+
         var onboarding = await JsRuntime.Utils().GetLocalStorage("onboarding-popup");
 
         //show only once

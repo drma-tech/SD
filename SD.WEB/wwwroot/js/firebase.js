@@ -19,7 +19,7 @@ import {
     getToken,
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-messaging.js";
 
-import { isBot, isLocalhost, firebaseConfig } from "./main.js";
+import { isBot, isLocalhost, isPrintScreen, firebaseConfig } from "./main.js";
 import { storage, notification, interop } from "./utils.js";
 
 //Xiaomi: The international model should work. The Chinese model perhaps not (and is likely to stop working completely in the near future).
@@ -27,7 +27,7 @@ import { storage, notification, interop } from "./utils.js";
 const nativePlatforms = new Set(["ios", "play", "xiaomi"]);
 const platform = storage.getLocalStorage("platform");
 
-if (!isBot) {
+if (!isBot && !isPrintScreen) {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     await setPersistence(auth, browserLocalPersistence);
