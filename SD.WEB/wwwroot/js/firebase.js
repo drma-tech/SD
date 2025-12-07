@@ -96,11 +96,7 @@ export const authentication = {
         try {
             return await doSignIn();
         } catch (error) {
-            const isNetworkError = error.message.includes(
-                "auth/network-request-failed"
-            );
-
-            if (isNetworkError) {
+            if (error.message.includes("auth/network-request-failed")) {
                 notification.sendLog(
                     "Network error detected. Retrying sign in..."
                 );
@@ -116,6 +112,10 @@ export const authentication = {
                     notification.sendLog(retryError);
                     throw new Error(retryError.message);
                 }
+            } else if (error.message.includes("auth/popup-closed-by-user")) {
+                notification.showError(
+                    "Sign-in popup was closed before completion."
+                );
             } else {
                 notification.sendLog(error);
                 throw new Error(error.message);

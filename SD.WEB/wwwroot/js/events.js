@@ -1,5 +1,6 @@
 "use strict";
 
+import { isDev } from "./main.js";
 import { storage, notification, environment } from "./utils.js";
 import { messaging } from "./firebase.js";
 
@@ -121,10 +122,14 @@ window.addEventListener("unhandledrejection", function (event) {
     const { message, stack } = normalizeReason(event.reason);
 
     if (typeof message === "string" && message.includes("Failed to fetch")) {
-        notification.showError(
-            "Connection problem detected. Check your internet connection and try reloading."
-        );
-        return;
+        if (isDev) {
+            notification.showError(`unhandledrejection: ${message}`);
+        } else {
+            notification.showError(
+                "Connection problem detected. Check your internet connection and try reloading."
+            );
+            return;
+        }
     }
 
     const log = {
