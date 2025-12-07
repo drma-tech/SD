@@ -54,8 +54,10 @@ window.addEventListener("error", function (event) {
         return;
     }
 
+    notification.showError(`error: ${message}`);
+
     const log = {
-        Message: `message:${message}|error.message:${error?.message}`,
+        Message: `event.message:${message}|error.message:${error?.message}`,
         StackTrace: error?.stack,
         Origin: `event error - filename:${filename}|url:${location.href}|lineno:${lineno}|colno:${colno}`,
         OperationSystem: environment.getOperatingSystem(),
@@ -67,8 +69,6 @@ window.addEventListener("error", function (event) {
     };
 
     notification.sendLog(log);
-
-    notification.showError(`error: ${message}`);
 });
 
 //Promise.reject(new Error('unhandledrejection test call'));
@@ -93,7 +93,7 @@ function normalizeReason(reason) {
 
         return {
             message:
-                reason.message || reason.name + (extra ? ` (${extra})` : ""),
+                reason?.message || reason?.name + (extra ? ` (${extra})` : ""),
             stack: reason.stack || "No stack trace",
         };
     }
@@ -101,7 +101,7 @@ function normalizeReason(reason) {
     if (typeof reason === "string") {
         return {
             message: reason,
-            stack: reason.stack || "No stack trace",
+            stack: "No stack trace",
         };
     }
 
@@ -122,9 +122,7 @@ window.addEventListener("unhandledrejection", function (event) {
     const { message, stack } = normalizeReason(event.reason);
 
     if (message.includes("Failed to fetch")) {
-        if (isDev) {
-            notification.showError(`unhandledrejection: ${message}`);
-        } else {
+        if (!isDev) {
             notification.showError(
                 "Connection problem detected. Check your internet connection and try reloading."
             );
