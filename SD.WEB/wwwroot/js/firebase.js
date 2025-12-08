@@ -96,7 +96,9 @@ export const authentication = {
         try {
             return await doSignIn();
         } catch (error) {
-            if (error.message.includes("auth/network-request-failed")) {
+            const code = error.code || "";
+
+            if (code === "auth/network-request-failed") {
                 notification.sendLog(
                     "Network error detected. Retrying sign in..."
                 );
@@ -112,9 +114,17 @@ export const authentication = {
                     notification.sendLog(retryError);
                     throw new Error(retryError.message);
                 }
-            } else if (error.message.includes("auth/popup-closed-by-user")) {
+            } else if (code === "auth/popup-closed-by-user") {
                 notification.showError(
                     "Sign-in popup was closed before completion."
+                );
+            } else if (code === "auth/popup-blocked") {
+                notification.showError(
+                    "Your browser blocked the sign in popup."
+                );
+            } else if (code === "auth/cancelled-popup-request") {
+                notification.showError(
+                    "Another sign in request is already open."
                 );
             } else {
                 notification.sendLog(error);
