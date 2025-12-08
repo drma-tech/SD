@@ -29,6 +29,11 @@ public static class AppStateStatic
     private static Platform? _platform;
     private static readonly SemaphoreSlim _platformSemaphore = new(1, 1);
 
+    public static Platform? GetSavedPlatform()
+    {
+        return _platform;
+    }
+
     public static async Task<Platform> GetPlatform(IJSRuntime js)
     {
         await _platformSemaphore.WaitAsync();
@@ -50,7 +55,7 @@ public static class AppStateStatic
                 else
                 {
                     _platform = Platform.webapp;
-                    if (js != null) await js.Utils().SetLocalStorage("platform", _platform!.ToString()!);
+                    await js.Utils().SetLocalStorage("platform", _platform!.ToString()!);
                 }
             }
             else

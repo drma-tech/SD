@@ -28,6 +28,8 @@ if (builder.RootComponents.Empty())
 
 ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress, builder.Configuration);
 
+builder.Services.AddSingleton<ILoggerProvider, CosmosLoggerProvider>();
+
 var app = builder.Build();
 
 var js = app.Services.GetRequiredService<IJSRuntime>();
@@ -104,6 +106,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddScoped<PaymentAuthApi>();
     collection.AddScoped<IpInfoApi>();
     collection.AddScoped<IpInfoServerApi>();
+    collection.AddScoped<LoggerApi>();
     collection.AddScoped<EnergyApi>();
     collection.AddScoped<EnergyAuthApi>();
     collection.AddScoped<FirebaseApi>();
