@@ -275,6 +275,10 @@ public static class AppStateStatic
 
             return _darkMode;
         }
+        catch
+        {
+            return null;
+        }
         finally
         {
             _darkModeSemaphore.Release();
