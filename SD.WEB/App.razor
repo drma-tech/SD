@@ -2,10 +2,12 @@
 @using Microsoft.AspNetCore.Components.Routing
 @using SD.WEB.Layout
 @using SD.WEB.Modules.Auth.Resources
+@using Microsoft.JSInterop
 @using Toolbelt.Blazor.PWA.Updater.Service
 
 @inject NavigationManager Navigation
 @inject IPWAUpdaterService PWAUpdaterService
+@inject IJSRuntime JsRuntime
 
 <ErrorBoundary @ref="_boundary">
     <ChildContent>
@@ -56,9 +58,18 @@
                 <button style="padding:8px 16px; background:#007bff; border:none; border-radius:4px; color:#fff; cursor:pointer;" @onclick="ReloadPage">
                     🔄 Refresh
                 </button>
-                <button style="padding:8px 16px; background:#6c757d; border:none; border-radius:4px; color:#fff; cursor:pointer;" @onclick="UpdateNowAsync">
-                    ⬆️ Force Update
-                </button>
+                @if (_isUpdateAvailable)
+                {
+                    <button style="padding:8px 16px; background:#007bff; border:none; border-radius:4px; color:#fff; cursor:pointer;" @onclick="UpdateNowAsync">
+                        ⬆️ Force Update
+                    </button>
+                }
+                else
+                {
+                    <button style="padding:8px 16px; background:#6c757d; border:none; border-radius:4px; color:#fff; cursor:unset">
+                        New version not yet available.
+                    </button>
+                }
             </div>
         </div>
     </ErrorContent>
@@ -66,19 +77,50 @@
 
 @code {
     ErrorBoundary? _boundary;
+    bool _isUpdateAvailable = false;
+    System.Threading.Timer? _updateCheckTimer;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isUpdateAvailable = await JsRuntime.InvokeAsync<bool>("checkUpdateReady");
+
+            _updateCheckTimer = new System.Threading.Timer(async _ =>
+            {
+                try
+                {
+                    var available = await JsRuntime.InvokeAsync<bool>("checkUpdateReady");
+                    if (available && !_isUpdateAvailable)
+                    {
+                        _isUpdateAvailable = true;
+                        await InvokeAsync(StateHasChanged);
+
+                        await _updateCheckTimer!.DisposeAsync();
+                    }
+                }
+                catch
+                {
+                    // Ignore errors
+                }
+            }, null, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2));
+        }
+    }
 
     protected override void OnParametersSet()
     {
         _boundary?.Recover();
     }
 
-    private void ReloadPage()
+    private async Task ReloadPage()
     {
+        await JsRuntime.Utils().ClearLocalStorage();
         Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
     }
 
     private async Task UpdateNowAsync()
     {
+        await JsRuntime.Utils().ClearLocalStorage();
         await this.PWAUpdaterService.SkipWaitingAsync();
     }
 

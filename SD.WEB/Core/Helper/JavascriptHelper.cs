@@ -53,6 +53,8 @@ namespace SD.WEB.Core.Helper
     public class WindowJs(IJSRuntime js)
     {
         public async Task HistoryBack() => await js.InvokeVoidAsync("history.back");
+
+        public async Task InvokeVoidAsync(string identifier, params object?[]? args) => await js.InvokeVoidAsync(identifier, args);
     }
 
     public class UtilsJs(IJSRuntime js) : JsModuleBase(js, "./js/utils.js")
@@ -84,6 +86,8 @@ namespace SD.WEB.Core.Helper
         public Task SetSessionStorage(string key, object value) => InvokeVoid("storage.setSessionStorage", key, JsonSerializer.Serialize(value));
 
         public Task ShowCache() => InvokeVoid("storage.showCache");
+
+        public Task ClearLocalStorage() => InvokeVoid("storage.clearLocalStorage");
 
         #endregion STORAGE
 
