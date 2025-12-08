@@ -306,3 +306,9 @@ if (!isBot) {
     environment.detectPlatform();
     environment.checkBrowserFeatures();
 }
+
+window.checkUpdateReady = async function () {
+    if (!navigator.serviceWorker) return false;
+    const reg = await navigator.serviceWorker.ready;
+    return !!reg.waiting;
+};
