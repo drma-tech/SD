@@ -1,4 +1,4 @@
-import { Swiper } from "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.mjs";
+import { Swiper } from "../package/swiper/swiper-bundle.min.mjs";
 
 export const swiper = {
     initLists(id, size) {

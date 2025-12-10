@@ -50,18 +50,26 @@
         </MudGrid>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@(async () => { await JsRuntime.Utils().ShowCache(); })" Size="AppStateStatic.Size">@Button.ShowCache</MudButton>
+        <MudButton OnClick="@(async () => { await JsRuntime.Utils().ShowCache(); })" Size="AppStateStatic.Size">
+            @Button.ShowCache
+        </MudButton>
         @if (MessagingToken.Empty())
         {
-            <MudButton Class="btnEnableNotifications" Size="AppStateStatic.Size" OnClick="LoadMessagingToken">Enable Notifications</MudButton>
+            <MudButton Class="btnEnableNotifications" Size="AppStateStatic.Size" OnClick="LoadMessagingToken">
+                Enable Notifications
+            </MudButton>
         }
         else
         {
-            <MudText Color="Color.Success" Typo="Typo.button">Notifications Enabled</MudText>
+            <MudText Color="Color.Success" Typo="Typo.button">
+                Notifications Enabled
+            </MudText>
         }
         @* <MudButton OnClick="@(async () => { await JavascriptVoidAsync("clearLocalStorage"); Navigation.NavigateTo("/", true); })" Size="AppStateStatic.Size">@Button.ClearCache</MudButton> *@
         <MudSpacer></MudSpacer>
-        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">@Button.Close</MudButton>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">
+            @Button.Close
+        </MudButton>
     </DialogActions>
 </MudDialog>
 
