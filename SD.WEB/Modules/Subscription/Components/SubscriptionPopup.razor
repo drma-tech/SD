@@ -5,6 +5,7 @@
 
 @inject PaymentAuthApi PaymentAuthApi
 @inject IpInfoApi IpInfoApi
+@inject ILogger Logger
 
 <MudDialog Style="width: 100%">
     <DialogContent>
@@ -221,6 +222,7 @@
             }
             else
             {
+                Logger.LogError("RegistrationSuccessful called but subscription is not active.");
                 throw new NotificationException("Something went wrong with your subscription. Please contact support.");
             }
         }

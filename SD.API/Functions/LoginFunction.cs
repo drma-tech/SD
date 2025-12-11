@@ -90,12 +90,20 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
     [Function("Country")]
     public async Task<string?> Country([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/country")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var ip = req.GetUserIP();
-        if (ip == "127.0.0.1") ip = "8.8.8.8";
-        var client = factory.CreateClient("ipinfo");
+        try
+        {
+            var ip = req.GetUserIP();
+            if (ip == "127.0.0.1") ip = "8.8.8.8";
+            var client = factory.CreateClient("ipinfo");
 
-        var result = await client.GetValueAsync($"https://ipinfo.io/{ip}/country", cancellationToken);
+            var result = await client.GetValueAsync($"https://ipinfo.io/{ip}/country", cancellationToken);
 
-        return result;
+            return result;
+        }
+        catch (Exception ex)
+        {
+            req.LogError(ex);
+            throw;
+        }
     }
 }
