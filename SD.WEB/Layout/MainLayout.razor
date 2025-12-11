@@ -106,11 +106,18 @@
 
         if (firstRender)
         {
-            await ApplyDarkMode();
-            await RedirectToRequestConsentForChina();
-            await ShowCustomerSatisfactionPopup();
-            await AskUSerForReview();
-            await ShowOnBoardingPopup();
+            try
+            {
+                await ApplyDarkMode();
+                await RedirectToRequestConsentForChina();
+                await ShowCustomerSatisfactionPopup();
+                await AskUSerForReview();
+                await ShowOnBoardingPopup();
+            }
+            catch (Exception ex)
+            {
+                ex.ProcessException(Snackbar, Logger);
+            }
         }
     }
 
