@@ -92,7 +92,7 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
     {
         try
         {
-            var ip = req.GetUserIP();
+            var ip = req.GetUserIP(false);
             if (ip == "127.0.0.1") ip = "8.8.8.8";
             var client = factory.CreateClient("ipinfo");
 
@@ -103,7 +103,7 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
         catch (Exception ex)
         {
             req.LogError(ex);
-            throw;
+            return null;
         }
     }
 }
