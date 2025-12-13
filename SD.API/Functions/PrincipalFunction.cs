@@ -64,6 +64,11 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
                 _ = repoCache.CreateItemAsync(new DataBlockedCache(new DataBlocked(), $"block-{ip}", TtlCache.OneWeek), cancellationToken);
             }
 
+            foreach (var item in body.Events.Where(w => w.Ip.Empty()))
+            {
+                item.Ip = ip;
+            }
+
             var model = new AuthPrincipal
             {
                 AuthProviders = body.AuthProviders,
@@ -113,13 +118,14 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
         try
         {
             var userId = await req.GetUserIdAsync(cancellationToken);
+            var ip = req.GetUserIP(true);
 
             var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
 
             var app = req.GetQueryParameters()["app"];
             var msg = req.GetQueryParameters()["msg"];
 
-            model.Events = model.Events.Union([new Event(app, msg)]).ToArray();
+            model.Events = model.Events.Union([new Event(app, msg, ip)]).ToArray();
 
             return await repo.UpsertItemAsync(model, cancellationToken);
         }
