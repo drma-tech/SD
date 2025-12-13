@@ -227,7 +227,7 @@
 
         if (Provider == PaymentProvider.Paddle)
         {
-            await JsRuntime.Payments().PaddleStart(Config?.Token, Client?.Subscription?.CustomerId);
+            await JsRuntime.Payments().PaddleStart(Config?.Token);
         }
     }
 
