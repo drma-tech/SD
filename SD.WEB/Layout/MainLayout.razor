@@ -138,6 +138,9 @@
             AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
             AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
 
+            if (!AppStateStatic.IsAuthenticated) return;
+            if (Navigation.Uri.Contains("/support/")) return;
+
             //register new user or new login (need to be last step here)
             var registered = await JsRuntime.Utils().GetSessionStorage<bool?>("registered");
 
@@ -145,13 +148,13 @@
             {
                 var principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
 
-                if (principal == null) //In some scenarios, the principal is null.
+                if (principal == null)
                 {
                     registered = false;
                 }
             }
 
-            if (AppStateStatic.IsAuthenticated && !Navigation.Uri.Contains("/support/") && registered != true)
+            if (registered != true)
             {
                 await JsRuntime.Utils().SetSessionStorage("registered", true.ToString().ToLower());
                 Navigation.NavigateTo("/register-user");
