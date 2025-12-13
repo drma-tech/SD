@@ -6,6 +6,7 @@ import { simd } from "./wasm-feature-detect.js";
 export const storage = {
     clearLocalStorage() {
         localStorage.clear();
+        sessionStorage.clear();
 
         if (window.WTN?.clearAppCache) {
             window.WTN.clearAppCache(true);
