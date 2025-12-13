@@ -4,13 +4,18 @@ import { isLocalhost, isDev } from "./main.js";
 import { storage, notification, interop } from "./utils.js";
 
 export const paddle = {
-    async start(token) {
+    async start(token, customerId) {
         try {
             if (isLocalhost || isDev) {
                 window.Paddle.Environment.set("sandbox");
             }
+            var customer = null;
+            if (customerId) {
+                customer = { id: customerId, };
+            }
             await window.Paddle.Initialize({
                 token: token,
+                pwCustomer: customer,
                 eventCallback: function (data) {
                     if (data.name === "checkout.completed") {
                         //Wait for my API to be called and update the subscription.

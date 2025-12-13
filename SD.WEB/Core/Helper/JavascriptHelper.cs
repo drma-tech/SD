@@ -137,7 +137,7 @@ namespace SD.WEB.Core.Helper
 
     public class PaymentsJs(IJSRuntime js) : JsModuleBase(js, "./js/payments.js")
     {
-        public Task PaddleStart(string? token) => InvokeVoid("paddle.start", token);
+        public Task PaddleStart(string? token, string? customerId) => InvokeVoid("paddle.start", token, customerId);
 
         public Task PaddleOpenCheckout(string? priceId, string? email, AppLanguage locale, string? customerId) => InvokeVoid("paddle.openCheckout", priceId, email, locale.ToString(), customerId);
 

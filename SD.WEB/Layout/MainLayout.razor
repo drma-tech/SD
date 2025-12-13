@@ -24,6 +24,7 @@
 @inject EnergyApi EnergyApi
 @inject EnergyAuthApi EnergyAuthApi
 @inject FirebaseApi FirebaseApi
+@inject PaymentConfigurationApi ConfigurationApi
 
 <MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@_darkMode" />
 <MudPopoverProvider />
@@ -142,23 +143,18 @@
             if (Navigation.Uri.Contains("/support/")) return;
 
             //register new user or new login (need to be last step here)
-            var registered = await JsRuntime.Utils().GetSessionStorage<bool?>("registered");
 
-            if (registered == true)
-            {
-                var principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
+            var principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
 
-                if (principal == null)
-                {
-                    registered = false;
-                }
-            }
-
-            if (registered != true)
+            if (principal == null)
             {
                 await JsRuntime.Utils().SetSessionStorage("registered", true.ToString().ToLower());
                 Navigation.NavigateTo("/register-user");
             }
+
+            //Paddle Retain
+            var config = await ConfigurationApi.GetConfigurations(PaymentProvider.Paddle);
+            await JsRuntime.Payments().PaddleStart(config?.Token, principal?.Subscription?.CustomerId);
         }
         catch (Exception ex)
         {
