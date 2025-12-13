@@ -51,8 +51,9 @@ public class AuthSubscription
     }
 }
 
-public class Event
+public class Event(string? origin, string? description)
 {
+    public string? Origin { get; set; } = origin;
     public DateTimeOffset Date { get; set; } = DateTimeOffset.UtcNow;
-    public string? Description { get; set; }
+    public string? Description { get; set; } = description;
 }

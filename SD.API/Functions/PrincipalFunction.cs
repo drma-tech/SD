@@ -115,9 +115,11 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
             var userId = await req.GetUserIdAsync(cancellationToken);
 
             var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
+
+            var app = req.GetQueryParameters()["app"];
             var msg = req.GetQueryParameters()["msg"];
 
-            model.Events = model.Events.Union([new Event { Description = msg }]).ToArray();
+            model.Events = model.Events.Union([new Event(app, msg)]).ToArray();
 
             return await repo.UpsertItemAsync(model, cancellationToken);
         }

@@ -38,7 +38,7 @@
                         <MudItem xs="12" Style="text-align: justify;">
                             <MudPaper Outlined="true" Class="pa-2">
                                 <div style="display: flex; gap: 8px; align-items: center;">
-                                    <MudText Typo="Typo.subtitle1" Color="Color.Primary">@item?.Date.DateTime.ToLocalTime()</MudText>
+                                    <MudText Typo="Typo.subtitle1" Color="Color.Primary">@($"{item?.Origin} | {item?.Date.DateTime.ToLocalTime()}")</MudText>
                                 </div>
                                 <MudText Typo="Typo.body1" Align="Align.Justify" Inline="true"
                                          Style="@($"line-height: normal; {(AppStateStatic.Size == Size.Small ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;")}")">

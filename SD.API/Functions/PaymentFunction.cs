@@ -75,6 +75,8 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
                     CustomerId = result?.data?.id
                 };
 
+                principal.Events = principal.Events.Union([new Event("Paddle", $"User registration with id {result?.data?.id}")]).ToArray();
+
                 await repo.UpsertItemAsync(principal, cancellationToken);
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
@@ -91,6 +93,8 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
                     Provider = PaymentProvider.Paddle,
                     CustomerId = result?.data.Single().id
                 };
+
+                principal.Events = principal.Events.Union([new Event("Paddle", $"User registration with id {result?.data.Single().id}")]).ToArray();
 
                 await repo.UpsertItemAsync(principal, cancellationToken);
             }
@@ -131,7 +135,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             if (body.data.items[0].price?.custom_data?.ProductEnum != null) client.Subscription.Product = body.data.items[0].price!.custom_data!.ProductEnum;
             if (body.data.items[0].price?.custom_data?.CycleEnum != null) client.Subscription.Cycle = body.data.items[0].price!.custom_data!.CycleEnum;
 
-            client.Events = client.Events.Union([new Event { Description = $"subscription = {body.data.id}, status = {body.data.status}" }]).ToArray();
+            client.Events = client.Events.Union([new Event("Paddle (Webhooks)", $"New status ({body.data.status}) for subscription id ({body.data.id})")]).ToArray();
 
             await repo.UpsertItemAsync(client, cancellationToken);
         }
@@ -180,7 +184,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             client.Subscription.Cycle = purchase.product_id!.Contains("yearly") ? AccountCycle.Yearly : AccountCycle.Monthly;
 
             //https://developer.apple.com/documentation/appstorereceipts/status
-            client.Events = client.Events.Union([new Event { Description = $"apple verify || subscription = {purchase.original_transaction_id}, status = {result.status}" }]).ToArray();
+            client.Events = client.Events.Union([new Event("Apple", $"New status ({result.status}) for subscription id ({purchase.original_transaction_id})")]).ToArray();
         }
         catch (Exception ex)
         {
@@ -240,9 +244,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             client.Subscription.Product = transaction.ProductId!.Contains("premium") ? AccountProduct.Premium : AccountProduct.Standard;
             client.Subscription.Cycle = transaction.ProductId!.Contains("yearly") ? AccountCycle.Yearly : AccountCycle.Monthly;
 
-            client.Events = client.Events.Union([new Event {
-                Description = $"apple subscription || subscription = {originalTransactionId}, product = {client.Subscription.Product}, Cycle = {client.Subscription.Cycle}, Type = {notification.NotificationType}, Subtype = {notification.Subtype}, expiresDate = {newExpires}"
-            }]).ToArray();
+            client.Events = client.Events.Union([new Event("Apple (Webhooks)", $"SubscriptionId = {originalTransactionId}, Product = {client.Subscription.Product}, Cycle = {client.Subscription.Cycle}, Type = {notification.NotificationType}, Subtype = {notification.Subtype}, expiresDate = {newExpires}")]).ToArray();
 
             await repo.UpsertItemAsync(client, cancellationToken);
         }
