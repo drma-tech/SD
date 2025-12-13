@@ -87,6 +87,15 @@
 
     <div id="toast-stack"></div>
 
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script src="_content/Toolbelt.Blazor.PWA.Updater.Service/script.min.js"></script>
+
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+    <script type="module" src="js/payments.js"></script>
+
+    <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+
     <script type="module">
         import { isBot } from "./js/main.js";
         import { notification } from "./js/utils.js";
@@ -101,14 +110,5 @@
             }
         }
     </script>
-
-    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-    <script src="_content/Toolbelt.Blazor.PWA.Updater.Service/script.min.js"></script>
-
-    <script rel="preload" src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
-    <script rel="preload" src="_framework/blazor.webassembly.js"></script>
-
-    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
-    <script type="module" src="js/payments.js"></script>
 </body>
 </html>

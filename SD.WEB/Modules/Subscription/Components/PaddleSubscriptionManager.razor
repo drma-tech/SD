@@ -42,12 +42,12 @@ else
                 <Columns>
                     <TemplateColumn Title="@Translations.Product">
                         <CellTemplate>
-                            @context.Item.price?.custom_data?.ProductEnum.GetName()
+                            @context.Item.price?.custom_data?.ProductEnum?.GetName()
                         </CellTemplate>
                     </TemplateColumn>
                     <TemplateColumn Title="Cycle">
                         <CellTemplate>
-                            @context.Item.price?.custom_data?.CycleEnum.GetName()
+                            @context.Item.price?.custom_data?.CycleEnum?.GetName()
                         </CellTemplate>
                     </TemplateColumn>
                     <TemplateColumn Title="@Translations.PreviouslyBilled">
