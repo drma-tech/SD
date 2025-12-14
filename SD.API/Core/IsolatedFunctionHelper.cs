@@ -134,6 +134,16 @@ public static class IsolatedFunctionHelper
 
         logger.LogWarning(messageLog, log);
     }
+
+    public static void ValidateWebVersion(this HttpRequestData req)
+    {
+        var vs = req.GetQueryParameters()["vs"];
+
+        if (vs.Empty())
+        {
+            throw new NotificationException("An outdated version has been detected. Please update the platform.");
+        }
+    }
 }
 
 public struct Method

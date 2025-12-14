@@ -171,6 +171,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
     {
         try
         {
+            req.ValidateWebVersion();
+
             var mode = req.GetQueryParameters()["mode"];
             var cacheKey = $"lastnews_{mode}";
             CacheDocument<NewsModel>? doc;
@@ -227,7 +229,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         catch (Exception ex)
         {
             req.LogError(ex);
-            return await req.CreateResponse<CacheDocument<NewsModel>>(null, TtlCache.SixHours, cancellationToken);
+            throw;
         }
     }
 
@@ -237,6 +239,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
     {
         try
         {
+            req.ValidateWebVersion();
+
             var mode = req.GetQueryParameters()["mode"];
             var cacheKey = $"lasttrailers_{mode}";
             CacheDocument<TrailerModel>? doc;
@@ -297,7 +301,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         catch (Exception ex)
         {
             req.LogError(ex);
-            return await req.CreateResponse<CacheDocument<TrailerModel>>(null, TtlCache.SixHours, cancellationToken);
+            throw;
         }
     }
 
@@ -307,6 +311,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
     {
         try
         {
+            req.ValidateWebVersion();
+
             var mode = req.GetQueryParameters()["mode"];
             var cacheKey = $"popularmovies_{mode}";
             CacheDocument<MostPopularData>? doc;
@@ -363,7 +369,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         catch (Exception ex)
         {
             req.LogError(ex);
-            return await req.CreateResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours, cancellationToken);
+            throw;
         }
     }
 
@@ -373,6 +379,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
     {
         try
         {
+            req.ValidateWebVersion();
+
             var cacheKey = "populartvs";
             CacheDocument<MostPopularData>? doc;
             var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
@@ -407,7 +415,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         catch (Exception ex)
         {
             req.LogError(ex);
-            return await req.CreateResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours, cancellationToken);
+            throw;
         }
     }
 
@@ -417,6 +425,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
     {
         try
         {
+            req.ValidateWebVersion();
+
             var cacheKey = "popularstar";
             CacheDocument<MostPopularData>? doc;
             var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
@@ -451,7 +461,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         catch (Exception ex)
         {
             req.LogError(ex);
-            return await req.CreateResponse<CacheDocument<MostPopularData>>(null, TtlCache.SixHours, cancellationToken);
+            throw;
         }
     }
 
@@ -461,6 +471,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
     {
         try
         {
+            req.ValidateWebVersion();
+
             var id = req.GetQueryParameters()["id"];
             var tmdbId = req.GetQueryParameters()["tmdb_id"];
             var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
@@ -513,7 +525,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         catch (Exception ex)
         {
             req.LogError(ex);
-            return await req.CreateResponse<CacheDocument<Ratings>>(null, TtlCache.SixHours, cancellationToken);
+            throw;
         }
     }
 
@@ -523,6 +535,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
     {
         try
         {
+            req.ValidateWebVersion();
+
             var id = req.GetQueryParameters()["id"];
             var tmdbId = req.GetQueryParameters()["tmdb_id"];
             var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
@@ -575,7 +589,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         catch (Exception ex)
         {
             req.LogError(ex);
-            return await req.CreateResponse<CacheDocument<Ratings>>(null, TtlCache.SixHours, cancellationToken);
+            throw;
         }
     }
 
@@ -585,6 +599,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
     {
         try
         {
+            req.ValidateWebVersion();
+
             var id = req.GetQueryParameters()["id"];
             DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
             var cacheKey = $"review_{id}";
@@ -637,7 +653,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         catch (Exception ex)
         {
             req.LogError(ex);
-            return await req.CreateResponse<CacheDocument<ReviewModel>>(null, TtlCache.SixHours, cancellationToken);
+            throw;
         }
     }
 
@@ -647,6 +663,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
     {
         try
         {
+            req.ValidateWebVersion();
+
             var id = req.GetQueryParameters()["id"];
             var title = req.GetQueryParameters()["title"];
             DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
@@ -698,7 +716,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         catch (Exception ex)
         {
             req.LogError(ex);
-            return await req.CreateResponse<CacheDocument<ReviewModel>>(null, TtlCache.SixHours, cancellationToken);
+            throw;
         }
     }
 

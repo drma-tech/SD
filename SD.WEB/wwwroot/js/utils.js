@@ -98,6 +98,7 @@ export const notification = {
                 Platform: storage.getLocalStorage("platform"),
                 AppVersion: storage.getLocalStorage("app-version"),
                 UserAgent: navigator.userAgent,
+                IsBot: navigator.webdriver === true,
             };
         } else if (typeof error === "object") {
             log = error;
@@ -111,6 +112,7 @@ export const notification = {
                 Platform: storage.getLocalStorage("platform"),
                 AppVersion: storage.getLocalStorage("app-version"),
                 UserAgent: navigator.userAgent,
+                IsBot: navigator.webdriver === true,
             };
         } else {
             notification.showError("sendLog: invalid error type");
