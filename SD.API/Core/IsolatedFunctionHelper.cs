@@ -141,7 +141,7 @@ public static class IsolatedFunctionHelper
 
         if (vs.Empty())
         {
-            throw new NotificationException("An outdated version has been detected. Please update the platform.");
+            throw new NotificationException("An outdated version has been detected. Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it.");
         }
     }
 }
