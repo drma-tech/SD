@@ -38,6 +38,7 @@ await ConfigureCulture(app, js);
 
 var version = SD.WEB.Layout.MainLayout.GetAppVersion();
 await js.Utils().SetLocalStorage("app-version", version);
+await AppStateStatic.GetPlatform(js);
 await js.Services().InitGoogleAnalytics(version);
 await js.Services().InitUserBack(version);
 

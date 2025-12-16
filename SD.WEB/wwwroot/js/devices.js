@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-const { ATTConsent } = window.WTN;
+const { ATTConsent } = window.WTN || {};
 
 export const ios = {
     checkATTConsent() {

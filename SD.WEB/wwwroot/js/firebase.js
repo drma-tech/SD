@@ -33,6 +33,7 @@ if (!isBot && !isPrintScreen) {
     await setPersistence(auth, browserLocalPersistence);
 
     window.auth = auth;
+    let refreshTokenInterval = null;
 
     onAuthStateChanged(auth, async (user) => {
         let token = user ? await user.getIdToken() : null;
@@ -42,12 +43,26 @@ if (!isBot && !isPrintScreen) {
         let objUser = authentication.getUser();
 
         if (objUser) {
+            // services
+
             window.Userback = window.Userback || {};
 
             window.Userback.identify(objUser.userId, {
                 name: objUser.name,
                 email: objUser.email,
             });
+
+            // refresh token
+
+            if (!refreshTokenInterval) {
+                refreshTokenInterval = setInterval(
+                    async () => {
+                        const refreshedToken = await auth.currentUser.getIdToken(true);
+                        await interop.invokeDotNetWhenReady("SD.WEB", "AuthChanged", refreshedToken);
+                    },
+                    10 * 60 * 1000
+                );
+            }
         }
     });
 

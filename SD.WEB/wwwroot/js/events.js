@@ -66,6 +66,7 @@ window.addEventListener("error", function (event) {
         Platform: storage.getLocalStorage("platform"),
         AppVersion: storage.getLocalStorage("app-version"),
         UserAgent: navigator.userAgent,
+        IsBot: navigator.webdriver === true,
     };
 
     notification.sendLog(log);
@@ -142,6 +143,7 @@ window.addEventListener("unhandledrejection", function (event) {
         Platform: storage.getLocalStorage("platform"),
         AppVersion: storage.getLocalStorage("app-version"),
         UserAgent: navigator.userAgent,
+        IsBot: navigator.webdriver === true,
     };
 
     notification.sendLog(log);
