@@ -73,7 +73,10 @@
                 }
                 else if (Provider == PaymentProvider.Paddle)
                 {
-                    <SubscriptionPlans Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans>
+                    @* <SubscriptionPlans Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans> *@
+                    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
+                        We are in the process of switching to another payment provider. Stay tuned for updates!
+                    </MudAlert>
                 }
             }
             else

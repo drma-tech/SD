@@ -134,7 +134,7 @@
             {
                 energy = await EnergyApi.GetEnergy();
             }
-            
+
             AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
             AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
 
