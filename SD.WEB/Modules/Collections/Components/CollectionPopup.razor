@@ -148,7 +148,7 @@
 
         if (type == MediaType.movie)
         {
-            Watched = await WatchedListApi.Add(type, Watched, string.Join(',', items), client?.Subscription);
+            Watched = await WatchedListApi.Add(type, Watched, string.Join(',', items), client?.GetActiveSubscription());
         }
 
         //watching list
@@ -166,7 +166,7 @@
             item = new WatchingListItem(tmdbId, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
         }
 
-        Watching = await WatchingListApi.Add(type, Watching, item, client?.Subscription);
+        Watching = await WatchingListApi.Add(type, Watching, item, client?.GetActiveSubscription());
 
         // HideModal(); //error on mudblazor
     }

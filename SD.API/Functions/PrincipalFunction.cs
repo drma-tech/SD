@@ -125,7 +125,7 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
             var app = req.GetQueryParameters()["app"];
             var msg = req.GetQueryParameters()["msg"];
 
-            model.Events = model.Events.Union([new Event(app, msg, ip)]).ToArray();
+            model.Events.Add(new Event(app, msg, ip));
 
             return await repo.UpsertItemAsync(model, cancellationToken);
         }

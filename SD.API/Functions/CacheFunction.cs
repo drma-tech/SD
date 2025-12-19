@@ -71,9 +71,9 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
             var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
 
-            if (principal?.Subscription != null)
+            if (principal?.GetActiveSubscription() != null)
             {
-                model.TotalEnergy = principal.Subscription.ActiveProduct.GetRestrictions().Energy;
+                model.TotalEnergy = principal.GetActiveSubscription()!.ActiveProduct.GetRestrictions().Energy;
             }
 
             doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken); //todo: check if upsert is needed
@@ -144,9 +144,9 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                 var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 10 };
                 var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
 
-                if (principal?.Subscription != null)
+                if (principal?.GetActiveSubscription() != null)
                 {
-                    model!.TotalEnergy = principal.Subscription.ActiveProduct.GetRestrictions().Energy;
+                    model!.TotalEnergy = principal.GetActiveSubscription()!.ActiveProduct.GetRestrictions().Energy;
                 }
 
                 doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);

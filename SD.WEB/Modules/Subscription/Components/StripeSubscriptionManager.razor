@@ -1,0 +1,95 @@
+﻿@inherits ComponentCore<StripeSubscriptionManager>
+
+@using SD.Shared.Models.Subscription
+@using SD.WEB.Modules.Subscription.Core
+@using SD.WEB.Modules.Subscription.Resources
+
+@inject PaymentConfigurationApi ConfigurationApi
+
+@* <MudCard Outlined="true" Elevation="4" Class="mb-3">
+    <MudCardContent Class="pa-3">
+        <MudGrid Class="mb-6">
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.SubscriptionId" Text="@Subscription?.data?.id" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="Customer Id" Text="@Subscription?.data?.customer_id" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.Status" Text="@Subscription?.data?.status" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.NextBilled" Text="@Subscription?.data?.next_billed_at?.ToShortDateString()" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField T="string" Label="@Translations.Canceled" Text="@Subscription?.data?.canceled_at?.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
+<MudCard Outlined="true" Elevation="4" Class="mb-3">
+    <MudCardContent Class="pa-3">
+        <MudDataGrid Items="@(Subscription.data?.items ?? [])" Dense="true">
+            <Columns>
+                <TemplateColumn Title="@Translations.Product">
+                    <CellTemplate>
+                        @context.Item.price?.custom_data?.ProductEnum?.GetName()
+                    </CellTemplate>
+                </TemplateColumn>
+                <TemplateColumn Title="Cycle">
+                    <CellTemplate>
+                        @context.Item.price?.custom_data?.CycleEnum?.GetName()
+                    </CellTemplate>
+                </TemplateColumn>
+                <TemplateColumn Title="@Translations.PreviouslyBilled">
+                    <CellTemplate>
+                        @context.Item.previously_billed_at?.ToShortDateString()
+                    </CellTemplate>
+                </TemplateColumn>
+                <TemplateColumn Title="@Translations.NextBilled">
+                    <CellTemplate>
+                        @if (context.Item.next_billed_at.HasValue)
+                        {
+                            context.Item.next_billed_at?.ToShortDateString();
+                        }
+                        else
+                        {
+                            <MudChip T="string" Color="Color.Warning" Size="AppStateStatic.Size">@Translations.InactiveBilling</MudChip>
+                        }
+                    </CellTemplate>
+                </TemplateColumn>
+                <PropertyColumn Title="@Translations.Status" Property="x => x.status" />
+            </Columns>
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>
+<MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("list-check").Font" Variant="Variant.Filled" Class="me-3 mb-2"
+            Href="@CustomerPortalUrl" Target="_blank" Rel="noindex, nofollow" Size="AppStateStatic.Size">
+    Customer portal
+</MudButton>
+<MudButton Color="Color.Secondary" StartIcon="@IconsFA.Solid.Icon("credit-card").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
+            Href="@Subscription?.data?.management_urls?.update_payment_method" Target="_blank" Rel="noindex, nofollow" Size="AppStateStatic.Size">
+    @Translations.UpdatePaymentDetails
+</MudButton>
+<MudButton Color="Color.Error" StartIcon="@IconsFA.Solid.Icon("ban").Font" Variant="Variant.Outlined" Class="me-2 mb-2"
+            Href="@Subscription?.data?.management_urls?.cancel" Target="_blank" Rel="noindex, nofollow" Size="AppStateStatic.Size">
+    @Translations.CancelSubscription
+</MudButton> *@
+
+@code {
+    [Parameter][EditorRequired] public AccountCycle Cycle { get; set; }
+    [Parameter][EditorRequired] public AuthPrincipal? Client { get; set; }
+
+    // private PaddleRootSubscription? Subscription { get; set; }
+    private PaymentConfigurations? Config { get; set; }
+    private string? CustomerPortalUrl { get; set; }
+
+    protected override async Task LoadNonEssentialDataAsync()
+    {
+        Config = await ConfigurationApi.GetConfigurations(PaymentProvider.Stripe);
+
+        // Subscription = await SubscriptionApi.GetSubscription(Client?.Subscription?.SubscriptionId);
+
+        // CustomerPortalUrl = $"{Config!.CustomerPortalEndpoint}?token={Subscription?.data?.management_urls?.update_payment_method?.GetParameter("token")}";
+    }
+}

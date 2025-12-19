@@ -4,8 +4,8 @@ public class Configurations
 {
     public CosmosDB? CosmosDB { get; set; }
     public Firebase? Firebase { get; set; }
-    public Paddle? Paddle { get; set; }
     public Apple? Apple { get; set; }
+    public Stripe? Stripe { get; set; }
     public TMDB? TMDB { get; set; }
     public RapidAPI? RapidAPI { get; set; }
 }
@@ -25,22 +25,32 @@ public class Firebase
     public string? CertUrl { get; set; }
 }
 
-public class Paddle
+public class Apple
 {
-    public string? CustomerPortalEndpoint { get; set; } = string.Empty;
     public string? Endpoint { get; set; } = string.Empty;
-    public string? Token { get; set; } = string.Empty;
-    public string? Key { get; set; } = string.Empty; //do not share with users
-    public string? Signature { get; set; } = string.Empty; //do not share with users
+
+    /// <summary>
+    /// do not share with users
+    /// </summary>
+    public string? SharedSecret { get; set; } = string.Empty;
+
+    public string? BundleId { get; set; }
     public ProductSettings? Standard { get; set; } = new();
     public ProductSettings? Premium { get; set; } = new();
 }
 
-public class Apple
+public class Stripe
 {
-    public string? Endpoint { get; set; } = string.Empty;
-    public string? SharedSecret { get; set; } = string.Empty; //do not share with users
-    public string? BundleId { get; set; }
+    /// <summary>
+    /// do not share with users
+    /// </summary>
+    public string? ApiKey { get; set; } = string.Empty;
+
+    /// <summary>
+    /// do not share with users
+    /// </summary>
+    public string? SigningSecret { get; set; }
+
     public ProductSettings? Standard { get; set; } = new();
     public ProductSettings? Premium { get; set; } = new();
 }

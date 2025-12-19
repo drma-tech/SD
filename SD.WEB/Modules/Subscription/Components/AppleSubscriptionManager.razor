@@ -10,29 +10,28 @@
     <MudCardContent Class="pa-3">
         <MudGrid Class="mb-6">
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Label="@Translations.SubscriptionId" Text="@Client?.Subscription?.SubscriptionId" ReadOnly="true"></MudTextField>
+                <MudTextField T="string" Label="@Translations.SubscriptionId" Text="@Client?.GetActiveSubscription()?.SubscriptionId" ReadOnly="true"></MudTextField>
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Label="@Translations.PaymentProvider" Text="@Client?.Subscription?.Provider?.GetName()" ReadOnly="true"></MudTextField>
+                <MudTextField T="string" Label="@Translations.PaymentProvider" Text="@Client?.GetActiveSubscription()?.Provider?.GetName()" ReadOnly="true"></MudTextField>
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Label="@Translations.Product" Text="@Client?.Subscription?.Product?.GetName()" ReadOnly="true"></MudTextField>
+                <MudTextField T="string" Label="@Translations.Product" Text="@Client?.GetActiveSubscription()?.Product?.GetName()" ReadOnly="true"></MudTextField>
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Label="@Translations.Cycle" Text="@Client?.Subscription?.Cycle?.GetName()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+                <MudTextField T="string" Label="@Translations.Cycle" Text="@Client?.GetActiveSubscription()?.Cycle?.GetName()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Label="Expires Date" Text="@Client?.Subscription?.ExpiresDate?.DateTime.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+                <MudTextField T="string" Label="Expires Date" Text="@Client?.GetActiveSubscription()?.ExpiresDate?.DateTime.ToShortDateString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Label="@Translations.IsActive" Text="@Client?.Subscription?.IsActive().ToString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
+                <MudTextField T="string" Label="@Translations.IsActive" Text="@Client?.GetActiveSubscription()?.IsActive().ToString()" ReadOnly="true" ShrinkLabel="true"></MudTextField>
             </MudItem>
         </MudGrid>
     </MudCardContent>
 </MudCard>
 
 @code {
-    [Parameter][EditorRequired] public PaymentProvider Provider { get; set; }
     [Parameter][EditorRequired] public AccountCycle Cycle { get; set; }
     [Parameter][EditorRequired] public AuthPrincipal? Client { get; set; }
 

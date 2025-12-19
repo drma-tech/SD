@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SD.API.Core.Auth;
+using Stripe;
 using System.Net;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -51,6 +52,9 @@ var app = new HostBuilder()
                     Credential = GoogleCredential.FromJson(firebaseJson)
                 });
             }
+
+            StripeConfiguration.ApiKey = ApiStartup.Configurations.Stripe?.ApiKey;
+            StripeConfiguration.AddBetaVersion("managed_payments_preview", "v1");
         }
         catch (Exception ex)
         {

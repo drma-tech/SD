@@ -104,7 +104,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddScoped<ImdbTopRatedApi>();
 
     collection.AddScoped<PaymentConfigurationApi>();
-    collection.AddScoped<PaymentSubscriptionApi>();
     collection.AddScoped<PaymentAuthApi>();
     collection.AddScoped<IpInfoApi>();
     collection.AddScoped<IpInfoServerApi>();

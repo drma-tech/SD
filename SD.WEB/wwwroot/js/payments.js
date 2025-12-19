@@ -1,71 +1,7 @@
 ﻿"use strict";
 
-import { isLocalhost, isDev } from "./main.js";
-import { storage, notification, interop } from "./utils.js";
-
-export const paddle = {
-    async start(token) {
-        try {
-            if (isLocalhost || isDev) {
-                window.Paddle.Environment.set("sandbox");
-            }
-            await window.Paddle.Initialize({
-                token: token,
-                eventCallback: function (data) {
-                    if (data.name === "checkout.completed") {
-                        //Wait for my API to be called and update the subscription.
-                        setTimeout(() => {
-                            window.Paddle.Checkout.close();
-                            interop.invokeDotNetWhenReady(
-                                "SD.WEB",
-                                "RegistrationSuccessful"
-                            );
-                        }, 1000);
-                    }
-                },
-            });
-        } catch (error) {
-            notification.sendLog(error);
-            notification.showError(error.message);
-        }
-    },
-    openCheckout(priceId, email, locale, customerId) {
-        try {
-            let customer;
-            if (customerId) {
-                customer = {
-                    id: customerId,
-                };
-            } else if (email) {
-                customer = {
-                    email: email,
-                };
-            }
-
-            let isDark = storage.getLocalStorage("dark-mode") === "true";
-
-            window.Paddle.Checkout.open({
-                settings: {
-                    displayMode: "overlay",
-                    theme: isDark ? "dark" : "light",
-                    locale: locale,
-                    showAddDiscounts: false,
-                    showAddTaxId: false,
-                },
-                items: [
-                    {
-                        priceId: priceId,
-                        quantity: 1,
-                    },
-                ],
-                customer: customer,
-            });
-        } catch (error) {
-            notification.sendLog(error);
-            notification.showError(error.message);
-        }
-    },
-};
+import { baseApiUrl } from "./main.js";
+import { notification, interop } from "./utils.js";
 
 export const apple = {
     openCheckout(productId) {
@@ -127,6 +63,29 @@ export const google = {
                     }
                 },
             });
+        } catch (e) {
+            notification.showError(`error: ${JSON.stringify(e)}`);
+        }
+    },
+};
+
+export const stripe = {
+    async openCheckout(priceId) {
+        try {
+            const token = await window.auth.currentUser.getIdToken();
+
+            const response = await fetch(
+                `${baseApiUrl}/api/stripe/create-checkout-session/${priceId}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "X-Auth-Token": `Bearer ${token}`,
+                    },
+                }
+            );
+            const checkoutUrl = await response.text();
+
+            window.location.href = checkoutUrl;
         } catch (e) {
             notification.showError(`error: ${JSON.stringify(e)}`);
         }

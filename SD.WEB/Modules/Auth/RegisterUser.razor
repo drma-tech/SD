@@ -95,7 +95,7 @@
 
             if (_terms1)
             {
-                Principal.Events = new Event[] { new Event(SeoTranslations.AppName, "Terms of use accepted.", null) };
+                Principal.Events.Add(new Event(SeoTranslations.AppName, "Terms of use accepted.", null));
             }
 
             Principal = await PrincipalApi.Add(Principal);

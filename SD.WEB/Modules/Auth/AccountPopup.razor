@@ -81,10 +81,12 @@
         {
             var data = new SuperData() { Principal = Principal };
 
+            var sub = Principal!.GetActiveSubscription();
+
             data.Login = await LoginApi.Get(AppStateStatic.IsAuthenticated);
             data.Providers = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, null);
-            if (Principal!.Subscription?.ActiveProduct is null or AccountProduct.Basic) data.Suggestions = null;
-            else data.Suggestions = await MySuggestionsApi.Get(Principal!.Subscription?.ActiveProduct, AppStateStatic.IsAuthenticated, null);
+            if (sub?.ActiveProduct is null or AccountProduct.Basic) data.Suggestions = null;
+            else data.Suggestions = await MySuggestionsApi.Get(sub?.ActiveProduct, AppStateStatic.IsAuthenticated, null);
             data.WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, null);
             data.WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, null);
             data.WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
@@ -102,7 +104,7 @@
     {
         try
         {
-            if (Principal?.Subscription?.IsActive() ?? false)
+            if (Principal!.GetActiveSubscription() != null)
             {
                 await DialogService.ShowMessageBox("You still have an active subscription", "Please cancel your subscription before deleting your profile.");
                 return;

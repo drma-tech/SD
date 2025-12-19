@@ -375,7 +375,7 @@
             var item = new WishListItem(Media.tmdb_id, Media.title, Media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), Media.runtime);
             var client = await PrincipalApi.Get(true);
 
-            Wish = await WishListApi.Add(Media.MediaType, Wish, item, client?.Subscription);
+            Wish = await WishListApi.Add(Media.MediaType, Wish, item, client?.GetActiveSubscription());
         }
         catch (Exception ex)
         {
@@ -418,7 +418,7 @@
             else
             {
                 var client = await PrincipalApi.Get(true);
-                Watched = await WatchedListApi.Add(Media.MediaType, Watched, Media.tmdb_id, client?.Subscription);
+                Watched = await WatchedListApi.Add(Media.MediaType, Watched, Media.tmdb_id, client?.GetActiveSubscription());
             }
         }
         catch (Exception ex)
@@ -435,11 +435,11 @@
 
         if (media.MediaType == MediaType.movie)
         {
-            Watched = await WatchedListApi.Add(MediaType.movie, Watched, string.Join(',', items), client?.Subscription);
+            Watched = await WatchedListApi.Add(MediaType.movie, Watched, string.Join(',', items), client?.GetActiveSubscription());
         }
         else
         {
-            Watched = await WatchedListApi.Add(MediaType.tv, Watched, media.tmdb_id, client?.Subscription);
+            Watched = await WatchedListApi.Add(MediaType.tv, Watched, media.tmdb_id, client?.GetActiveSubscription());
         }
 
         //watching list
@@ -455,7 +455,7 @@
             item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
         }
 
-        Watching = await WatchingListApi.Add(Type, Watching, item, client?.Subscription);
+        Watching = await WatchingListApi.Add(Type, Watching, item, client?.GetActiveSubscription());
     }
 
     private async Task IsNotWatched()

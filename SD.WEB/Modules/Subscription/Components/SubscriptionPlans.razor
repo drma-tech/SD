@@ -224,11 +224,6 @@
     protected override async Task LoadNonEssentialDataAsync()
     {
         Config = await ConfigurationApi.GetConfigurations(Provider);
-
-        if (Provider == PaymentProvider.Paddle)
-        {
-            await JsRuntime.Payments().PaddleStart(Config?.Token);
-        }
     }
 
     public string? GetPrice(AccountProduct product, AccountCycle cycle)
@@ -253,15 +248,7 @@
 
                 if (Provider == PaymentProvider.Paddle)
                 {
-                    var lang = await AppStateStatic.GetAppLanguage(JsRuntime);
-
-                    await JsRuntime.Payments().PaddleOpenCheckout(priceId, Client?.Email, lang, Client?.Subscription?.CustomerId);
-
-                    //register user for webhook listening
-                    if (Client?.Subscription == null)
-                    {
-                        await PaymentAuthApi.CreateCustomer();
-                    }
+                    await ShowWarning($"Provider not available: {Provider.GetName()}");
                 }
                 else if (Provider == PaymentProvider.Apple)
                 {
@@ -270,6 +257,10 @@
                 else if (Provider == PaymentProvider.Google)
                 {
                     await JsRuntime.Payments().GoogleOpenCheckout(priceId, "type");
+                }
+                else if (Provider == PaymentProvider.Stripe)
+                {
+                    await JsRuntime.Payments().StripeOpenCheckout(priceId);
                 }
                 else
                 {

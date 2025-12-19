@@ -21,7 +21,7 @@
         }
         else
         {
-            if (Client?.Subscription == null || !Client.Subscription.IsActive())
+            if (Client?.GetActiveSubscription() == null)
             {
                 <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("gift").Font" Class="mb-3" Dense="true">
                     @Translations.FreePeriod
@@ -53,33 +53,70 @@
                 </MudGrid>
                 @if (Provider == PaymentProvider.Microsoft)
                 {
-                    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
-                        The Microsoft subscription option isn’t available yet. Stay tuned for updates!
-                    </MudAlert>
+                    if (Platform == SD.Shared.Enums.Platform.windows)
+                    {
+                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
+                            The Microsoft subscription option isn’t available yet. Stay tuned for updates!
+                        </MudAlert>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
+                            The Microsoft subscription option is only available in the Windows application.
+                        </MudAlert>
+                    }
                 }
                 else if (Provider == PaymentProvider.Apple)
                 {
-                    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Class="mb-3">
-                        Apple subscription is still in testing. If you run into any issues, please reach out via feedback or email. We’re happy to help.
-                    </MudAlert>
+                    if (Platform == SD.Shared.Enums.Platform.ios)
+                    {
+                        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Class="mb-3">
+                            Apple subscription is still in testing. If you run into any issues, please reach out via feedback or email. We’re happy to help.
+                        </MudAlert>
 
-                    <SubscriptionPlans Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans>
+                        <SubscriptionPlans Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
+                            The Apple subscription option is only available on iOS devices.
+                        </MudAlert>
+                    }
                 }
                 else if (Provider == PaymentProvider.Google)
                 {
-                    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
-                        The Google subscription option isn’t available yet. Stay tuned for updates!
-                    </MudAlert>
+                    if (Platform == SD.Shared.Enums.Platform.play)
+                    {
+                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
+                            The Google subscription option isn’t available yet. Stay tuned for updates!
+                        </MudAlert>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
+                            The Google subscription option is only available on Android devices.
+                        </MudAlert>
+                    }
                 }
                 else if (Provider == PaymentProvider.Paddle)
                 {
-                    @* <SubscriptionPlans Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans> *@
-                    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
-                        We are in the process of switching to another payment provider. Stay tuned for updates!
-                    </MudAlert>
+                    <FeatureUnavailable></FeatureUnavailable>
+                }
+                else if (Provider == PaymentProvider.Stripe)
+                {
+                    @if (CurrentCountry.NotEmpty() && _StripeBlockedCountries.ContainsKey(CurrentCountry.ToUpper()))
+                    {
+                        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
+                            @($"Unfortunately, due to legal and policy restrictions, Stripe cannot offer payment services in {_StripeBlockedCountries[CurrentCountry!.ToUpper()]}.")
+                        </MudAlert>
+                    }
+                    else
+                    {
+                        <SubscriptionPlans Provider="Provider" Cycle="Cycle" Client="Client"></SubscriptionPlans>
+                    }
                 }
             }
-            else
+            else //subscription active
             {
                 @if (Provider == PaymentProvider.Microsoft)
                 {
@@ -87,7 +124,7 @@
                 }
                 else if (Provider == PaymentProvider.Apple)
                 {
-                    <AppleSubscriptionManager Provider="Provider" Cycle="Cycle" Client="Client"></AppleSubscriptionManager>
+                    <AppleSubscriptionManager Cycle="Cycle" Client="Client"></AppleSubscriptionManager>
                 }
                 else if (Provider == PaymentProvider.Google)
                 {
@@ -95,7 +132,11 @@
                 }
                 else if (Provider == PaymentProvider.Paddle)
                 {
-                    <PaddleSubscriptionManager Provider="Provider" Cycle="Cycle" Client="Client"></PaddleSubscriptionManager>
+                    <FeatureUnavailable></FeatureUnavailable>
+                }
+                else if (Provider == PaymentProvider.Stripe)
+                {
+                    <StripeSubscriptionManager Cycle="Cycle" Client="Client"></StripeSubscriptionManager>
                 }
             }
         }
@@ -115,7 +156,7 @@
 
     private AccountCycle Cycle { get; set; } = AccountCycle.Yearly;
     private SD.Shared.Enums.Platform? Platform { get; set; }
-    private PaymentProvider Provider { get; set; } = PaymentProvider.Paddle;
+    private PaymentProvider Provider { get; set; } = PaymentProvider.Stripe;
     private string? CurrentCountry { get; set; }
     private bool BlockedCountry { get; set; }
 
@@ -135,17 +176,18 @@
         { "VE", "Venezuela" }
     };
 
-    //stripe management payments blocked countries
-
-    // Ascension Island
-    // China
-    // Cuba
-    // Iran
-    // Kosovo
-    // North Korea
-    // Russia
-    // Syria
-    // Tristan da Cunha
+    //https://docs.stripe.com/payments/managed-payments/how-it-works#restricted-countries
+    private readonly Dictionary<string, string> _StripeBlockedCountries = new()
+    {
+        { "SH", "Saint Helena, Ascension and Tristan da Cunha" },
+        { "CN", "China" },
+        { "CU", "Cuba" },
+        { "IR", "Iran" },
+        { "XK", "Kosovo" },
+        { "KP", "North Korea" },
+        { "RU", "Russia" },
+        { "SY", "Syria" },
+    };
 
     protected override void OnInitialized()
     {
@@ -173,7 +215,7 @@
             if (CurrentCountry == "US")
             {
                 Providers.Add(PaymentProvider.Apple);
-                Providers.Add(PaymentProvider.Paddle);
+                Providers.Add(PaymentProvider.Stripe);
             }
             else
             {
@@ -182,17 +224,20 @@
         }
         else if (Platform == SD.Shared.Enums.Platform.play)
         {
-            Providers.Add(PaymentProvider.Paddle);
+            Providers.Add(PaymentProvider.Stripe);
             Providers.Add(PaymentProvider.Google);
         }
         else if (Platform == SD.Shared.Enums.Platform.windows)
         {
-            Providers.Add(PaymentProvider.Paddle);
+            Providers.Add(PaymentProvider.Stripe);
             Providers.Add(PaymentProvider.Microsoft);
         }
         else
         {
-            Providers.Add(PaymentProvider.Paddle);
+            Providers.Add(PaymentProvider.Stripe);
+            Providers.Add(PaymentProvider.Microsoft);
+            Providers.Add(PaymentProvider.Google);
+            Providers.Add(PaymentProvider.Apple);
         }
 
         Provider = Providers[0]; //todo: when implemented, select native provider by default
@@ -202,10 +247,12 @@
     {
         Client = await PrincipalApi.Get(AppStateStatic.IsAuthenticated, true);
 
-        if (Client?.Subscription?.Provider != null && Client.Subscription.Cycle != null)
+        var sub = Client?.GetActiveSubscription();
+
+        if (sub?.Provider != null && sub.Cycle != null)
         {
-            Provider = Client.Subscription.Provider.Value;
-            Cycle = Client.Subscription.Cycle.Value;
+            Provider = sub.Provider.Value;
+            Cycle = sub.Cycle.Value;
         }
     }
 
@@ -216,7 +263,9 @@
             var freshClient = await PrincipalApi.Get(true, true);
             if (freshClient == null) throw new NotificationException("Client null");
 
-            if (freshClient.Subscription?.IsActive() == true && freshClient.Subscription?.Product != null)
+            var sub = freshClient?.GetActiveSubscription();
+
+            if (sub != null && sub?.Product != null)
             {
                 Client = freshClient;
                 StateHasChanged();
@@ -244,7 +293,9 @@
             var freshClient = await PrincipalApi.Get(true, true);
             if (freshClient == null) throw new NotificationException("Client null");
 
-            if (freshClient.Subscription?.IsActive() == true && freshClient.Subscription?.Product != null)
+            var sub = freshClient?.GetActiveSubscription();
+
+            if (sub != null && sub?.Product != null)
             {
                 Client = freshClient;
                 StateHasChanged();

@@ -102,7 +102,7 @@ else //ShowContent
             if (PremiumFeature)
             {
                 var client = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
-                if (client?.Subscription == null || client.Subscription?.ActiveProduct == AccountProduct.Basic)
+                if (client?.GetActiveSubscription() == null || client.GetActiveSubscription()?.ActiveProduct == AccountProduct.Basic)
                 {
                     Status = LoadingStatus.Premium;
                 }
