@@ -187,7 +187,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
     {
         try
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
+            var userId = await req.GetUserIdAsync(cancellationToken) ?? throw new NotificationException("user not available");
             var ip = req.GetUserIP(true);
             var url = req.GetQueryParameters()["url"];
 
@@ -198,6 +198,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
                 Customer = principal.Subscriptions.LastOrDefault()?.CustomerId,
                 CustomerEmail = principal.Email,
                 ClientReferenceId = userId,
+                Metadata = new Dictionary<string, string> { { "userId", userId } },
 
                 LineItems = [new() { Price = priceId, Quantity = 1, },],
                 Mode = "subscription",
@@ -228,7 +229,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             principal.AddSubscription(sub);
 
-            principal.Events.Add(new Event("Stripe", $"User registration with CustomerId {session.CustomerId} and SessionId {session.Id}", ip));
+            principal.Events.Add(new Event("Stripe", $"Session created with cycle={cycle} and SessionId={session.Id}", ip));
 
             await repo.UpsertItemAsync(principal, cancellationToken);
 
@@ -278,9 +279,9 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             {
                 if (stripeEvent.Data.Object is not Stripe.Subscription subscription || subscription.Id.Empty()) throw new UnhandledException("stripe subscription not available");
 
-                var result = await repo.Query<AuthPrincipal>(x => x.Subscriptions.Any(p => p.CustomerId == subscription.CustomerId), DocumentType.Principal, cancellationToken) ??
-                        throw new UnhandledException("AuthPrincipal null");
-                var principal = result.LastOrDefault() ?? throw new UnhandledException($"client null - subscription_id:{subscription.Id}");
+                var userId = subscription.Metadata["userId"];
+                var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId ?? throw new UnhandledException("Metadata userId null"), cancellationToken) ??
+                      throw new UnhandledException("AuthPrincipal null");
 
                 var sub = principal.GetSubscription(subscription.Id, PaymentProvider.Stripe);
 
