@@ -170,7 +170,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             client.UpdateSubscription(sub);
 
-            client.Events.Add(new Event("Apple (Webhooks)", $"SubscriptionId = {originalTransactionId}, Product = {sub.Product}, Cycle = {sub.Cycle}, Type = {notification.NotificationType}, Subtype = {notification.Subtype}, expiresDate = {sub.ExpiresDate}", ip));
+            client.Events.Add(new Event("Apple (Webhooks)", $"SubscriptionId = {originalTransactionId}, Cycle = {sub.Cycle}, Type = {notification.NotificationType}, Subtype = {notification.Subtype}, expiresDate = {sub.ExpiresDate}", ip));
 
             await repo.UpsertItemAsync(client, cancellationToken);
         }
@@ -193,24 +193,36 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("principal null");
 
-            var options2 = new SessionCreateOptions
+            var options = new SessionCreateOptions
             {
+                Customer = principal.Subscriptions.LastOrDefault()?.CustomerId,
                 CustomerEmail = principal.Email,
                 ClientReferenceId = userId,
+
                 LineItems = [new() { Price = priceId, Quantity = 1, },],
                 Mode = "subscription",
                 SuccessUrl = url + "?stripe_session_id={CHECKOUT_SESSION_ID}",
             };
 
-            options2.AddExtraParam("managed_payments[enabled]", true);
+            options.AddExtraParam("managed_payments[enabled]", true);
 
             var service = new SessionService();
-            Session session = await service.CreateAsync(options2, cancellationToken: cancellationToken);
+            Session session = await service.CreateAsync(options, cancellationToken: cancellationToken);
+
+            AccountCycle? cycle = null;
+
+            if (priceId == ApiStartup.Configurations.Stripe!.Premium!.PriceWeek)
+                cycle = AccountCycle.Weekly;
+            else if (priceId == ApiStartup.Configurations.Stripe.Premium.PriceMonth)
+                cycle = AccountCycle.Monthly;
+            else if (priceId == ApiStartup.Configurations.Stripe.Premium.PriceYear)
+                cycle = AccountCycle.Yearly;
 
             var sub = new AuthSubscription()
             {
                 Provider = PaymentProvider.Stripe,
-                CustomerId = session.CustomerId,
+                Product = AccountProduct.Premium,
+                Cycle = cycle,
                 SessionId = session.Id
             };
 
@@ -252,15 +264,12 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
                     var sub = principal.GetSubscription(session.SubscriptionId, PaymentProvider.Stripe);
 
-                    sub.Provider = PaymentProvider.Stripe;
-
-                    sub.Product = AccountProduct.Premium;
-                    sub.Cycle = Enum.Parse<AccountCycle>(session.LineItems.Data[0].Price.Metadata["cycle"]);
+                    sub.CustomerId = session.CustomerId;
 
                     principal.UpdateSubscription(sub);
 
                     var ip = req.GetUserIP(true);
-                    principal.Events.Add(new Event("Stripe (Webhooks) - Checkout", $"New status ({session.Status}) for SubscriptionId ({session.SubscriptionId})", ip));
+                    principal.Events.Add(new Event("Stripe (Webhooks) - Checkout", $"Status ({session.Status}), PaymentStatus ({session.PaymentStatus}) for SubscriptionId ({session.SubscriptionId})", ip));
 
                     await repo.UpsertItemAsync(principal, cancellationToken);
                 }
@@ -277,13 +286,12 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
                 sub.Active = subscription.Status is "active" or "trialing";
 
-                sub.Product = AccountProduct.Premium;
-                sub.Cycle = Enum.Parse<AccountCycle>(subscription.Items.First().Price.Metadata["cycle"]);
+                sub.Cycle = Enum.Parse<AccountCycle>(subscription.Items.First().Price.Metadata["cycle"]); //if cycle changes, update it
 
                 principal.UpdateSubscription(sub);
 
                 var ip = req.GetUserIP(true);
-                principal.Events.Add(new Event("Stripe (Webhooks) - Subscription", $"New status ({subscription.Status}) for SubscriptionId ({subscription.Id})", ip));
+                principal.Events.Add(new Event("Stripe (Webhooks) - Subscription", $"Status ({subscription.Status}), Cycle ({sub.Cycle}) for SubscriptionId ({subscription.Id})", ip));
 
                 await repo.UpsertItemAsync(principal, cancellationToken);
             }
