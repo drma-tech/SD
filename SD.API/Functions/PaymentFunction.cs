@@ -70,12 +70,6 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             var bundleId = ApiStartup.Configurations.Apple?.BundleId;
 
-            var sub = new AuthSubscription
-            {
-                Provider = PaymentProvider.Apple,
-                SessionId = receipt //save receipt before cause it may fail
-            };
-
             var result = await VerifyReceipt(ApiStartup.Configurations.Apple?.Endpoint, receipt, cancellationToken) ?? throw new UnhandledException("AppleResponseReceipt null");
             if (result.status == 21007)
             {
@@ -88,16 +82,21 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             var purchase = result.latest_receipt_info[result.latest_receipt_info.Count - 1];
 
+            var sub = new AuthSubscription
+            {
+                Provider = PaymentProvider.Apple,
+                Product = AccountProduct.Premium,
+                Cycle = purchase.product_id!.Contains("yearly") ? AccountCycle.Yearly : AccountCycle.Monthly,
+                SessionId = receipt //save receipt before cause it may fail
+            };
+
             sub.SubscriptionId = purchase.original_transaction_id;
             sub.ExpiresDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(purchase.expires_date_ms ?? "0", CultureInfo.InvariantCulture));
-
-            sub.Product = AccountProduct.Premium;
-            sub.Cycle = purchase.product_id!.Contains("yearly") ? AccountCycle.Yearly : AccountCycle.Monthly;
 
             client.AddSubscription(sub);
 
             //https://developer.apple.com/documentation/appstorereceipts/status
-            client.Events.Add(new Event("Apple", $"New status ({result.status}) for SubscriptionId ({purchase.original_transaction_id})", ip));
+            client.Events.Add(new Event("Apple", $"Subscription created with status = {result.status} and id = {purchase.original_transaction_id}", ip));
         }
         catch (Exception ex)
         {
@@ -165,7 +164,6 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             }
 
             var product = transaction.ProductId ?? throw new UnhandledException("product not available");
-            sub.Product = AccountProduct.Premium;
             sub.Cycle = product.Contains("yearly") ? AccountCycle.Yearly : AccountCycle.Monthly;
 
             client.UpdateSubscription(sub);
@@ -257,7 +255,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             principal.AddSubscription(sub);
 
-            principal.Events.Add(new Event("Stripe", $"Session created with cycle={cycle} and SessionId={session.Id}", ip));
+            principal.Events.Add(new Event("Stripe", $"Session created with cycle = {cycle} and SessionId = {session.Id}", ip));
 
             await repo.UpsertItemAsync(principal, cancellationToken);
 
@@ -304,7 +302,8 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
                 principal.UpdateSubscription(sub);
 
                 var ip = req.GetUserIP(true);
-                principal.Events.Add(new Event("Stripe (Webhooks) - Subscription", $"Status ({subscription.Status}), Cycle ({sub.Cycle}) for SubscriptionId ({subscription.Id})", ip));
+                var type = stripeEvent.Type.Split(".")[2];
+                principal.Events.Add(new Event("Stripe (Webhooks)", $"Type = {type}, Status = {subscription.Status}, Cycle = {sub.Cycle} for SubscriptionId ({subscription.Id})", ip));
 
                 await repo.UpsertItemAsync(principal, cancellationToken);
             }
