@@ -253,7 +253,25 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             if (string.IsNullOrEmpty(Signature?.First())) throw new UnhandledException("Stripe signature missing");
             var stripeEvent = Stripe.EventUtility.ConstructEvent(json, Signature?.First(), ApiStartup.Configurations.Stripe?.SigningSecret ?? throw new UnhandledException("Stripe SigningSecret not configured"), throwOnApiVersionMismatch: false);
 
-            if (stripeEvent.Type == Stripe.EventTypes.CheckoutSessionCompleted) //checkout.session.completed
+            if (stripeEvent.Type == Stripe.EventTypes.CustomerCreated)
+            {
+                if (stripeEvent.Data.Object is not Stripe.Customer customer || customer.Id.Empty()) throw new UnhandledException("stripe customer not available");
+
+                var results = await repo.Query<AuthPrincipal>(p => p.Email == customer.Email, DocumentType.Principal, cancellationToken) ?? throw new UnhandledException("AuthPrincipal null");
+                var principal = results.Single();
+
+                var sub = principal.GetSubscription(null, PaymentProvider.Stripe);
+
+                sub.CustomerId = customer.Id;
+
+                principal.UpdateSubscription(sub);
+
+                var ip = req.GetUserIP(true);
+                principal.Events.Add(new Event("Stripe (Webhooks) - Customer", $"User registered id:{customer.Id}", ip));
+
+                await repo.UpsertItemAsync(principal, cancellationToken);
+            }
+            else if (stripeEvent.Type == Stripe.EventTypes.CheckoutSessionCompleted) //checkout.session.completed
             {
                 if (stripeEvent.Data.Object is not Session session || session.Id.Empty()) throw new UnhandledException("stripe session not available");
 
@@ -261,12 +279,6 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
                 {
                     var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, session.ClientReferenceId ?? throw new UnhandledException("ClientReferenceId null"), cancellationToken) ??
                         throw new UnhandledException("AuthPrincipal null");
-
-                    var sub = principal.GetSubscription(session.SubscriptionId, PaymentProvider.Stripe);
-
-                    sub.CustomerId = session.CustomerId;
-
-                    principal.UpdateSubscription(sub);
 
                     var ip = req.GetUserIP(true);
                     principal.Events.Add(new Event("Stripe (Webhooks) - Checkout", $"Status ({session.Status}), PaymentStatus ({session.PaymentStatus}) for SubscriptionId ({session.SubscriptionId})", ip));
@@ -278,9 +290,8 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             {
                 if (stripeEvent.Data.Object is not Stripe.Subscription subscription || subscription.Id.Empty()) throw new UnhandledException("stripe subscription not available");
 
-                var userId = subscription.Metadata["userId"];
-                var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId ?? throw new UnhandledException("Metadata userId null"), cancellationToken) ??
-                      throw new UnhandledException("AuthPrincipal null");
+                var results = await repo.Query<AuthPrincipal>(p => p.Subscriptions.Any(p => p.CustomerId == subscription.CustomerId), DocumentType.Principal, cancellationToken) ?? throw new UnhandledException("AuthPrincipal null");
+                var principal = results.Single();
 
                 var sub = principal.GetSubscription(subscription.Id, PaymentProvider.Stripe);
 
