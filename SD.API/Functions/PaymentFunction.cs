@@ -181,6 +181,35 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         }
     }
 
+    [Function("StripeCreateCustomer")]
+    public async Task<AuthPrincipal> StripeCreateCustomer(
+   [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "stripe/customer")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var userId = await req.GetUserIdAsync(cancellationToken);
+            var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("principal null");
+
+            var customer = await new Stripe.CustomerService().CreateAsync(new Stripe.CustomerCreateOptions
+            {
+                Name = principal.DisplayName,
+                Email = principal.Email,
+            }, cancellationToken: cancellationToken);
+
+            principal.StripeCustomerId = customer.Id;
+
+            var ip = req.GetUserIP(true);
+            principal.Events.Add(new Event("Stripe", $"User registered with id:{customer.Id}", ip));
+
+            return await repo.UpsertItemAsync(principal, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            req.LogError(ex);
+            throw;
+        }
+    }
+
     [Function("CreateCheckoutSession")]
     public async Task<string> CreateCheckoutSession(
       [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "stripe/create-checkout-session/{priceId}")] HttpRequestData req, string priceId, CancellationToken cancellationToken)
@@ -193,11 +222,11 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("principal null");
 
+            if (principal.StripeCustomerId.Empty()) throw new NotificationException("Stripe customer not available");
+
             var options = new SessionCreateOptions
             {
-                CustomerEmail = principal.Email,
-                ClientReferenceId = userId,
-                Metadata = new Dictionary<string, string> { { "userId", userId } },
+                Customer = principal.StripeCustomerId,
 
                 LineItems = [new() { Price = priceId, Quantity = 1, },],
                 Mode = "subscription",
@@ -253,45 +282,18 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             if (string.IsNullOrEmpty(Signature?.First())) throw new UnhandledException("Stripe signature missing");
             var stripeEvent = Stripe.EventUtility.ConstructEvent(json, Signature?.First(), ApiStartup.Configurations.Stripe?.SigningSecret ?? throw new UnhandledException("Stripe SigningSecret not configured"), throwOnApiVersionMismatch: false);
 
-            if (stripeEvent.Type == Stripe.EventTypes.CustomerCreated)
-            {
-                if (stripeEvent.Data.Object is not Stripe.Customer customer || customer.Id.Empty()) throw new UnhandledException("stripe customer not available");
-
-                var results = await repo.Query<AuthPrincipal>(p => p.Email == customer.Email, DocumentType.Principal, cancellationToken) ?? throw new UnhandledException("AuthPrincipal null");
-                var principal = results.Single();
-
-                var sub = principal.GetSubscription(null, PaymentProvider.Stripe);
-
-                sub.CustomerId = customer.Id;
-
-                principal.UpdateSubscription(sub, false);
-
-                var ip = req.GetUserIP(true);
-                principal.Events.Add(new Event("Stripe (Webhooks) - Customer", $"User registered id:{customer.Id}", ip));
-
-                await repo.UpsertItemAsync(principal, cancellationToken);
-            }
-            else if (stripeEvent.Type == Stripe.EventTypes.CheckoutSessionCompleted) //checkout.session.completed
-            {
-                if (stripeEvent.Data.Object is not Session session || session.Id.Empty()) throw new UnhandledException("stripe session not available");
-
-                if (session.PaymentStatus == "paid" || session.PaymentStatus == "no_payment_required")
-                {
-                    var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, session.ClientReferenceId ?? throw new UnhandledException("ClientReferenceId null"), cancellationToken) ??
-                        throw new UnhandledException("AuthPrincipal null");
-
-                    var ip = req.GetUserIP(true);
-                    principal.Events.Add(new Event("Stripe (Webhooks) - Checkout", $"Status ({session.Status}), PaymentStatus ({session.PaymentStatus}) for SubscriptionId ({session.SubscriptionId})", ip));
-
-                    await repo.UpsertItemAsync(principal, cancellationToken);
-                }
-            }
-            else if (stripeEvent.Type.StartsWith("customer.subscription")) //created, updated, deleted, paused, resumed, trial_will_end, pending_update_applied, pending_update_expired
+            if (stripeEvent.Type.StartsWith("customer.subscription")) //created, updated, deleted, paused, resumed, trial_will_end, pending_update_applied, pending_update_expired
             {
                 if (stripeEvent.Data.Object is not Stripe.Subscription subscription || subscription.Id.Empty()) throw new UnhandledException("stripe subscription not available");
 
-                var results = await repo.Query<AuthPrincipal>(p => p.Subscriptions.Any(p => p.CustomerId == subscription.CustomerId), DocumentType.Principal, cancellationToken) ?? throw new UnhandledException("AuthPrincipal null");
-                var principal = results.Single();
+                var results = await repo.Query<AuthPrincipal>(p => p.StripeCustomerId == subscription.CustomerId, DocumentType.Principal, cancellationToken) ?? throw new UnhandledException("AuthPrincipal null");
+                var principal = results.SingleOrDefault();
+
+                if (principal == null)
+                {
+                    req.LogError(new UnhandledException($"principal null - subscriptionId:{subscription.Id}"));
+                    return;
+                }
 
                 var sub = principal.GetSubscription(subscription.Id, PaymentProvider.Stripe);
 

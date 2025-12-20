@@ -8,10 +8,11 @@ namespace SD.Shared.Models.Auth;
 public class AuthPrincipal() : PrivateMainDocument(DocumentType.Principal)
 {
     public string? UserId { get; set; }
-    public string[] AuthProviders { get; set; } = [];
     public string? DisplayName { get; set; }
     [DataType(DataType.EmailAddress)] public string? Email { get; set; }
+    public string? StripeCustomerId { get; set; }
 
+    public string[] AuthProviders { get; set; } = [];
     public HashSet<AuthSubscription> Subscriptions { get; set; } = [];
     public List<Event> Events { get; set; } = [];
 
@@ -64,7 +65,6 @@ public class AuthPrincipal() : PrivateMainDocument(DocumentType.Principal)
         }
         else
         {
-            sub.CustomerId = subscription.CustomerId;
             sub.SessionId = subscription.SessionId;
             sub.ExpiresDate = subscription.ExpiresDate;
             sub.Active = subscription.Active;
@@ -78,7 +78,6 @@ public class AuthPrincipal() : PrivateMainDocument(DocumentType.Principal)
 public class AuthSubscription
 {
     public string? SubscriptionId { get; set; }
-    public string? CustomerId { get; set; }
     public string? SessionId { get; set; }
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
     public DateTimeOffset? ExpiresDate { get; set; }

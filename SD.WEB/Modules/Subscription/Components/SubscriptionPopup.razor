@@ -251,6 +251,11 @@
             Provider = sub.Provider.Value;
             Cycle = sub.Cycle.Value;
         }
+
+        if (Client != null && Client.StripeCustomerId.Empty())
+        {
+            Client = await PaymentAuthApi.StripeCustomer();
+        }
     }
 
     private async Task RegistrationSuccessful()
