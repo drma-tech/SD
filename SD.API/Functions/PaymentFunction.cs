@@ -195,7 +195,6 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             var options = new SessionCreateOptions
             {
-                Customer = principal.Subscriptions.LastOrDefault()?.CustomerId,
                 CustomerEmail = principal.Email,
                 ClientReferenceId = userId,
                 Metadata = new Dictionary<string, string> { { "userId", userId } },
