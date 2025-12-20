@@ -210,7 +210,10 @@
     {
         if (firstRender)
         {
-            await DialogService.SubscriptionPopup();
+            if (stripe_session_id.NotEmpty())
+            {
+                await DialogService.SubscriptionPopup();
+            }
         }
 
         await base.OnAfterRenderAsync(firstRender);
