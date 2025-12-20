@@ -75,7 +75,7 @@ export const stripe = {
             const token = await window.auth.currentUser.getIdToken();
 
             const response = await fetch(
-                `${baseApiUrl}/api/stripe/create-checkout-session/${priceId}`,
+                `${baseApiUrl}/api/stripe/create-checkout-session/${priceId}?url=${window.location.href}`,
                 {
                     method: "POST",
                     headers: {

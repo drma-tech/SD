@@ -189,10 +189,9 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         {
             var userId = await req.GetUserIdAsync(cancellationToken);
             var ip = req.GetUserIP(true);
+            var url = req.GetQueryParameters()["url"];
 
             var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("principal null");
-
-            var domain = "https://localhost:7272";
 
             var options2 = new SessionCreateOptions
             {
@@ -200,7 +199,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
                 ClientReferenceId = userId,
                 LineItems = [new() { Price = priceId, Quantity = 1, },],
                 Mode = "subscription",
-                SuccessUrl = domain + "/?session_id={CHECKOUT_SESSION_ID}",
+                SuccessUrl = url + "?stripe_session_id={CHECKOUT_SESSION_ID}",
             };
 
             options2.AddExtraParam("managed_payments[enabled]", true);

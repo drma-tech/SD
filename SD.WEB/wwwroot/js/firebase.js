@@ -89,7 +89,6 @@ export const authentication = {
         const providerMap = {
             google: new GoogleAuthProvider(),
             apple: new OAuthProvider("apple.com"),
-            facebook: new FacebookAuthProvider(),
             microsoft: new OAuthProvider("microsoft.com"),
             yahoo: new OAuthProvider("yahoo.com"),
             x: new TwitterAuthProvider(),

@@ -12,9 +12,6 @@
             <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font" Size="AppStateStatic.Size">
                 Continue with Apple
             </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithFacebook" StartIcon="@IconsFA.Brands.Icon("facebook").Font" Size="AppStateStatic.Size">
-                Continue with Facebook
-            </MudButton>
             <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font" Size="AppStateStatic.Size">
                 Continue with Microsoft
             </MudButton>
@@ -43,7 +40,6 @@
 
     private async Task LoginWithGoogle() => await SignIn("google");
     private async Task LoginWithApple() => await SignIn("apple");
-    private async Task LoginWithFacebook() => await SignIn("facebook");
     private async Task LoginWithMicrosoft() => await SignIn("microsoft");
     private async Task LoginWithX() => await SignIn("x");
     private async Task LoginWithYahoo() => await SignIn("yahoo");

@@ -151,6 +151,10 @@
 }
 
 @code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "stripe_session_id")]
+    public string? stripe_session_id { get; set; }
+
     private bool _open = false;
 
     private int _processingCount = 0;
@@ -200,6 +204,16 @@
                 await InvokeAsync(StateHasChanged);
             }
         };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await DialogService.SubscriptionPopup();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task Login()
