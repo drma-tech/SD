@@ -31,7 +31,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
             var model = doc?.Data;
 
-            model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
+            model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 5 };
 
             doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken); //check if upsert is needed
             await SaveCache(doc, cacheKey, TtlCache.OneDay);
@@ -67,7 +67,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
             var model = doc?.Data;
 
-            model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
+            model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 5 };
 
             var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
 
@@ -109,7 +109,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
             if (doc == null)
             {
-                var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 10 };
+                var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 5 };
 
                 doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);
             }

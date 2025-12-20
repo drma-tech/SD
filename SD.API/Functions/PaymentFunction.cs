@@ -27,8 +27,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             {
                 return new PaymentConfigurations
                 {
-                    PriceStandardMonth = ApiStartup.Configurations.Apple?.Standard?.PriceMonth,
-                    PriceStandardYear = ApiStartup.Configurations.Apple?.Standard?.PriceYear,
+                    PricePremiumWeek = ApiStartup.Configurations.Apple?.Premium?.PriceWeek,
                     PricePremiumMonth = ApiStartup.Configurations.Apple?.Premium?.PriceMonth,
                     PricePremiumYear = ApiStartup.Configurations.Apple?.Premium?.PriceYear
                 };
@@ -37,8 +36,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             {
                 return new PaymentConfigurations
                 {
-                    PriceStandardMonth = ApiStartup.Configurations.Stripe?.Standard?.PriceMonth,
-                    PriceStandardYear = ApiStartup.Configurations.Stripe?.Standard?.PriceYear,
+                    PricePremiumWeek = ApiStartup.Configurations.Stripe?.Premium?.PriceWeek,
                     PricePremiumMonth = ApiStartup.Configurations.Stripe?.Premium?.PriceMonth,
                     PricePremiumYear = ApiStartup.Configurations.Stripe?.Premium?.PriceYear
                 };
@@ -93,7 +91,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             sub.SubscriptionId = purchase.original_transaction_id;
             sub.ExpiresDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(purchase.expires_date_ms ?? "0", CultureInfo.InvariantCulture));
 
-            sub.Product = purchase.product_id!.Contains("premium") ? AccountProduct.Premium : AccountProduct.Standard;
+            sub.Product = AccountProduct.Premium;
             sub.Cycle = purchase.product_id!.Contains("yearly") ? AccountCycle.Yearly : AccountCycle.Monthly;
 
             client.AddSubscription(sub);
@@ -167,7 +165,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             }
 
             var product = transaction.ProductId ?? throw new UnhandledException("product not available");
-            sub.Product = product.Contains("premium") ? AccountProduct.Premium : AccountProduct.Standard;
+            sub.Product = AccountProduct.Premium;
             sub.Cycle = product.Contains("yearly") ? AccountCycle.Yearly : AccountCycle.Monthly;
 
             client.UpdateSubscription(sub);
@@ -257,7 +255,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
                     sub.Provider = PaymentProvider.Stripe;
 
-                    sub.Product = Enum.Parse<AccountProduct>(session.LineItems.Data[0].Price.Metadata["product"]);
+                    sub.Product = AccountProduct.Premium;
                     sub.Cycle = Enum.Parse<AccountCycle>(session.LineItems.Data[0].Price.Metadata["cycle"]);
 
                     principal.UpdateSubscription(sub);
@@ -280,7 +278,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
                 sub.Active = subscription.Status is "active" or "trialing";
 
-                sub.Product = Enum.Parse<AccountProduct>(subscription.Items.First().Price.Metadata["product"]);
+                sub.Product = AccountProduct.Premium;
                 sub.Cycle = Enum.Parse<AccountCycle>(subscription.Items.First().Price.Metadata["cycle"]);
 
                 principal.UpdateSubscription(sub);

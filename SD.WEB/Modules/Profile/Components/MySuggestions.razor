@@ -182,7 +182,6 @@
 
             var qtd = Client?.GetActiveSubscription()?.ActiveProduct switch
             {
-                AccountProduct.Standard => AccountProduct.Standard.GetRestrictions().MySuggestions,
                 AccountProduct.Premium => AccountProduct.Premium.GetRestrictions().MySuggestions,
                 _ => 0
             };

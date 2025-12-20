@@ -35,7 +35,6 @@ public class Apple
     public string? SharedSecret { get; set; } = string.Empty;
 
     public string? BundleId { get; set; }
-    public ProductSettings? Standard { get; set; } = new();
     public ProductSettings? Premium { get; set; } = new();
 }
 
@@ -51,12 +50,12 @@ public class Stripe
     /// </summary>
     public string? SigningSecret { get; set; }
 
-    public ProductSettings? Standard { get; set; } = new();
     public ProductSettings? Premium { get; set; } = new();
 }
 
 public class ProductSettings
 {
+    public string? PriceWeek { get; set; }
     public string? PriceMonth { get; set; }
     public string? PriceYear { get; set; }
 }

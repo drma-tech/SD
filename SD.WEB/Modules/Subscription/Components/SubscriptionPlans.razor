@@ -77,73 +77,6 @@
     </MudCard>
     <MudCard Outlined="true" Elevation="4">
         <MudCardContent Class="pa-3">
-            <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Standard.GetName()</MudText>
-            <MudText Typo="Typo.h6" Align="Align.Center">@GetPrice(AccountProduct.Standard, Cycle) / @Cycle.GetDescription()</MudText>
-            <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
-                <MudItem xs="9">
-                    <MudText>@Translations.NoAds</MudText>
-                </MudItem>
-                <MudItem>
-                    <MudChip T="string" Icon="@IconsFA.Solid.Icon("check").Font" Color="Color.Success" Size="Size.Small" Label="true" Class="chip-no-text" />
-                </MudItem>
-                <MudItem xs="9">
-                    <MudText>Energy</MudText>
-                </MudItem>
-                <MudItem>
-                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
-                        <MudText>@AccountProduct.Standard.GetRestrictions().Energy.ToString()</MudText>
-                    </MudChip>
-                </MudItem>
-                <MudItem xs="9">
-                    <MudText>@Profile.Resources.Translations.MyPlatforms</MudText>
-                </MudItem>
-                <MudItem>
-                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
-                        <MudText>@AccountProduct.Standard.GetRestrictions().FavoriteProviders.ToString()</MudText>
-                    </MudChip>
-                </MudItem>
-                <MudItem xs="9">
-                    <MudText>@Profile.Resources.Translations.MySuggestions</MudText>
-                </MudItem>
-                <MudItem>
-                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
-                        <MudText>@AccountProduct.Standard.GetRestrictions().MySuggestions.ToString()</MudText>
-                    </MudChip>
-                </MudItem>
-                <MudItem xs="8">
-                    <MudText>@Profile.Resources.Translations.Watched</MudText>
-                </MudItem>
-                <MudItem>
-                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
-                        <MudText>@AccountProduct.Standard.GetRestrictions().Watched.ToString()</MudText>
-                    </MudChip>
-                </MudItem>
-                <MudItem xs="9">
-                    <MudText>@Profile.Resources.Translations.Watching</MudText>
-                </MudItem>
-                <MudItem>
-                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
-                        <MudText>@AccountProduct.Standard.GetRestrictions().Watching.ToString()</MudText>
-                    </MudChip>
-                </MudItem>
-                <MudItem xs="9">
-                    <MudText>@Profile.Resources.Translations.Wishlist</MudText>
-                </MudItem>
-                <MudItem>
-                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Label="true">
-                        <MudText>@AccountProduct.Standard.GetRestrictions().Wishlist.ToString()</MudText>
-                    </MudChip>
-                </MudItem>
-            </MudGrid>
-        </MudCardContent>
-        <MudCardActions>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Size="AppStateStatic.Size" OnClick="@(() => OpenCheckout(AccountProduct.Standard))">
-                @Translations.Select
-            </MudButton>
-        </MudCardActions>
-    </MudCard>
-    <MudCard Outlined="true" Elevation="4">
-        <MudCardContent Class="pa-3">
             <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Premium.GetName()</MudText>
             <MudText Typo="Typo.h6" Align="Align.Center">@GetPrice(AccountProduct.Premium, Cycle) / @Cycle.GetDescription()</MudText>
             <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
@@ -230,8 +163,7 @@
     {
         return (product, cycle) switch
         {
-            (AccountProduct.Standard, AccountCycle.Monthly) => "$0.99",
-            (AccountProduct.Standard, AccountCycle.Yearly) => "$9.99",
+            (AccountProduct.Premium, AccountCycle.Weekly) => "$0.99",
             (AccountProduct.Premium, AccountCycle.Monthly) => "$1.99",
             (AccountProduct.Premium, AccountCycle.Yearly) => "$19.99",
             _ => "$0.00",
