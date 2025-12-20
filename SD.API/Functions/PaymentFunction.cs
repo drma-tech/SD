@@ -264,7 +264,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
                 sub.CustomerId = customer.Id;
 
-                principal.UpdateSubscription(sub);
+                principal.UpdateSubscription(sub, false);
 
                 var ip = req.GetUserIP(true);
                 principal.Events.Add(new Event("Stripe (Webhooks) - Customer", $"User registered id:{customer.Id}", ip));

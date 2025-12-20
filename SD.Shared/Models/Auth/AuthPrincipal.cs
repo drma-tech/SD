@@ -48,9 +48,9 @@ public class AuthPrincipal() : PrivateMainDocument(DocumentType.Principal)
         }
     }
 
-    public void UpdateSubscription(AuthSubscription subscription)
+    public void UpdateSubscription(AuthSubscription subscription, bool validateId = true)
     {
-        if (subscription.SubscriptionId.Empty()) throw new UnhandledException("subscription id is null");
+        if (validateId && subscription.SubscriptionId.Empty()) throw new UnhandledException("subscription id is null");
 
         var sub = Subscriptions.SingleOrDefault(sub => sub.SubscriptionId == subscription.SubscriptionId);
 
