@@ -73,7 +73,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             var sub = new AuthSubscription
             {
                 Provider = PaymentProvider.Apple,
-                LatestReceipt = receipt //save receipt before cause it may fail
+                SessionId = receipt //save receipt before cause it may fail
             };
 
             var result = await VerifyReceipt(ApiStartup.Configurations.Apple?.Endpoint, receipt, cancellationToken) ?? throw new UnhandledException("AppleResponseReceipt null");
@@ -211,7 +211,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             {
                 Provider = PaymentProvider.Stripe,
                 CustomerId = session.CustomerId,
-                LatestReceipt = session.Id
+                SessionId = session.Id
             };
 
             principal.AddSubscription(sub);

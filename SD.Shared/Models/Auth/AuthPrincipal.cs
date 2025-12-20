@@ -65,7 +65,7 @@ public class AuthPrincipal() : PrivateMainDocument(DocumentType.Principal)
         else
         {
             sub.CustomerId = subscription.CustomerId;
-            sub.LatestReceipt = subscription.LatestReceipt;
+            sub.SessionId = subscription.SessionId;
             sub.ExpiresDate = subscription.ExpiresDate;
             sub.Active = subscription.Active;
             sub.Provider = subscription.Provider;
@@ -79,7 +79,7 @@ public class AuthSubscription
 {
     public string? SubscriptionId { get; set; }
     public string? CustomerId { get; set; }
-    public string? LatestReceipt { get; set; }
+    public string? SessionId { get; set; }
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
     public DateTimeOffset? ExpiresDate { get; set; }
     public bool Active { get; set; } = false;
@@ -107,13 +107,15 @@ public class AuthSubscription
 
     public override bool Equals(object? obj)
     {
+        if (ReferenceEquals(this, obj)) return true;
         if (obj is not AuthSubscription other) return false;
-        return SubscriptionId == other.SubscriptionId;
+
+        return string.Equals(SubscriptionId, other.SubscriptionId, StringComparison.Ordinal) && string.Equals(SessionId, other.SessionId, StringComparison.Ordinal);
     }
 
     public override int GetHashCode()
     {
-        return SubscriptionId?.GetHashCode() ?? 0;
+        return HashCode.Combine(SubscriptionId, SessionId);
     }
 }
 
