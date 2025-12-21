@@ -98,7 +98,7 @@ export const notification = {
                 Platform: storage.getLocalStorage("platform"),
                 AppVersion: storage.getLocalStorage("app-version"),
                 UserAgent: navigator.userAgent,
-                IsBot: navigator.webdriver === true,
+                IsBot: isBot || isOldBrowser,
             };
         } else if (typeof error === "string") {
             log = {
@@ -110,7 +110,7 @@ export const notification = {
                 Platform: storage.getLocalStorage("platform"),
                 AppVersion: storage.getLocalStorage("app-version"),
                 UserAgent: navigator.userAgent,
-                IsBot: navigator.webdriver === true,
+                IsBot: isBot || isOldBrowser,
             };
         } else {
             log = error;

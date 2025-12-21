@@ -1,6 +1,7 @@
 ﻿window.browser = window.bowser.getParser(window.navigator.userAgent);
 
 export const isBot =
+    navigator.webdriver === true ||
     /google|baidu|bingbot|duckduckbot|teoma|slurp|yandex|toutiao|bytespider|applebot/i.test(
         navigator.userAgent
     );

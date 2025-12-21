@@ -8,7 +8,6 @@ import {
     browserLocalPersistence,
     GoogleAuthProvider,
     OAuthProvider,
-    FacebookAuthProvider,
     TwitterAuthProvider,
     signInWithPopup,
     signInWithRedirect,
@@ -63,6 +62,8 @@ if (!isBot && !isPrintScreen) {
                     10 * 60 * 1000
                 );
             }
+        } else {
+            refreshTokenInterval = null;
         }
     });
 

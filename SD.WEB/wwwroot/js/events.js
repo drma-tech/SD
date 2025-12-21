@@ -1,6 +1,6 @@
 "use strict";
 
-import { isDev } from "./main.js";
+import { isDev, isBot, isOldBrowser } from "./main.js";
 import { storage, notification, environment } from "./utils.js";
 import { messaging } from "./firebase.js";
 
@@ -66,7 +66,7 @@ window.addEventListener("error", function (event) {
         Platform: storage.getLocalStorage("platform"),
         AppVersion: storage.getLocalStorage("app-version"),
         UserAgent: navigator.userAgent,
-        IsBot: navigator.webdriver === true,
+        IsBot: isBot || isOldBrowser,
     };
 
     notification.sendLog(log);
@@ -143,7 +143,7 @@ window.addEventListener("unhandledrejection", function (event) {
         Platform: storage.getLocalStorage("platform"),
         AppVersion: storage.getLocalStorage("app-version"),
         UserAgent: navigator.userAgent,
-        IsBot: navigator.webdriver === true,
+        IsBot: isBot || isOldBrowser,
     };
 
     notification.sendLog(log);
