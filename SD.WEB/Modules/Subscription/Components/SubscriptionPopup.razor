@@ -121,7 +121,7 @@
                 }
                 else if (Provider == PaymentProvider.Apple)
                 {
-                    <AppleSubscriptionManager Cycle="Cycle" Client="Client"></AppleSubscriptionManager>
+                    <AppleSubscriptionManager Client="@Client"></AppleSubscriptionManager>
                 }
                 else if (Provider == PaymentProvider.Google)
                 {
@@ -133,7 +133,7 @@
                 }
                 else if (Provider == PaymentProvider.Stripe)
                 {
-                    <StripeSubscriptionManager Cycle="Cycle" Client="Client"></StripeSubscriptionManager>
+                    <StripeSubscriptionManager Client="@Client"></StripeSubscriptionManager>
                 }
             }
         }

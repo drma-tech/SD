@@ -299,11 +299,16 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
                 sub.Cycle = Enum.Parse<AccountCycle>(subscription.Items.First().Price.Metadata["cycle"]); //if cycle changes, update it
 
+                if (subscription.CancelAt.HasValue)
+                {
+                    sub.ExpiresDate = subscription.CancelAt.Value;
+                }
+
                 principal.UpdateSubscription(sub);
 
                 var ip = req.GetUserIP(true);
                 var type = stripeEvent.Type.Split(".")[2];
-                principal.Events.Add(new Event("Stripe (Webhooks)", $"Type = {type}, Status = {subscription.Status}, Cycle = {sub.Cycle} for SubscriptionId ({subscription.Id})", ip));
+                principal.Events.Add(new Event("Stripe (Webhooks)", $"Type = {type}, Status = {subscription.Status}, Cycle = {sub.Cycle} for SubscriptionId = {subscription.Id}", ip));
 
                 await repo.UpsertItemAsync(principal, cancellationToken);
             }
