@@ -40,8 +40,8 @@
                                 <div style="display: flex; gap: 8px; align-items: center;">
                                     <MudText Typo="Typo.subtitle1" Color="Color.Primary">@($"{item?.Origin} | {item?.Date.DateTime.ToLocalTime()}")</MudText>
                                 </div>
-                                <MudText Typo="Typo.body1" Align="Align.Justify" Inline="true"
-                                         Style="@($"line-height: normal; {(AppStateStatic.Size == Size.Small ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;")}")">
+                                <MudText Typo="Typo.body1" Inline="true"
+                                         Style="@($"line-height: normal; line-break: anywhere; {(AppStateStatic.Size == Size.Small ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;")}")">
                                     @item?.Description
                                 </MudText>
                             </MudPaper>

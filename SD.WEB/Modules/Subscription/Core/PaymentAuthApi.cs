@@ -14,10 +14,16 @@ namespace SD.WEB.Modules.Subscription.Core
             return await GetAsync<AuthPrincipal>(Endpoint.StripeCustomer);
         }
 
+        public async Task<string?> StripePortalLink()
+        {
+            return await GetValueAsync(Endpoint.StripePortalLink);
+        }
+
         private struct Endpoint
         {
             public const string AppleVerify = "apple/verify";
             public const string StripeCustomer = "stripe/customer";
+            public const string StripePortalLink = "stripe/portal-link";
         }
     }
 }

@@ -60,6 +60,14 @@
                 <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
             </MudButton>
         </MudTooltip>
+        @if (AppStateStatic.IsAuthenticated)
+        {
+            <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("gem").Font" Class="me-2" OnClick="@OpenSubscription" />
+        }
+        else
+        {
+            <MudIconButton Variant="Variant.Filled" Color="Color.Warning" Icon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Class="me-2" OnClick="@OpenSubscription" />
+        }
         <AuthorizeView>
             <Authorized>
                 <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
@@ -68,12 +76,12 @@
         <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
         <AuthorizeView>
             <Authorized>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Error" OnClick="@Logout" StartIcon="@IconsFA.Solid.Icon("right-from-bracket").Font" Disabled="_blockedActions">
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" IconColor="Color.Error" OnClick="@Logout" Disabled="_blockedActions">
                     @Button.Logout
                 </MudButton>
             </Authorized>
             <NotAuthorized>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" OnClick="Login" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font" Disabled="_blockedActions">
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" IconColor="Color.Secondary" OnClick="Login" " Disabled="_blockedActions">
                     @Button.Login
                 </MudButton>
             </NotAuthorized>
@@ -100,6 +108,14 @@
                 <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
             </MudButton>
         </MudTooltip>
+        @if (AppStateStatic.IsAuthenticated)
+        {
+            <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("gem").Font" Class="me-2" OnClick="@OpenSubscription" />
+        }
+        else
+        {
+            <MudIconButton Variant="Variant.Filled" Color="Color.Warning" Icon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Class="me-2" OnClick="@OpenSubscription" />
+        }
         <AuthorizeView>
             <Authorized>
                 <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("circle-user").Font" Class="me-2" OnClick="@MyAccount" />
@@ -108,12 +124,12 @@
         <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
         <AuthorizeView>
             <Authorized>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Error" OnClick="@Logout" StartIcon="@IconsFA.Solid.Icon("right-from-bracket").Font" Disabled="_blockedActions">
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" IconColor="Color.Error" OnClick="@Logout" Disabled="_blockedActions">
                     @Button.Logout
                 </MudButton>
             </Authorized>
             <NotAuthorized>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" OnClick="Login" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font" Disabled="_blockedActions">
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" IconColor="Color.Secondary" OnClick="Login" Disabled="_blockedActions">
                     @Button.Login
                 </MudButton>
             </NotAuthorized>
@@ -128,17 +144,37 @@
             <MudText Typo="Typo.h6">@SeoTranslations.AppName</MudText>
         </MudDrawerHeader>
         <MudNavMenu>
+            @if (AppStateStatic.IsAuthenticated)
+            {
+                <MudNavLink IconColor="Color.Primary" Icon="@IconsFA.Solid.Icon("gem").Font" OnClick="@OpenSubscription">
+                    Subscription
+                </MudNavLink>
+            }
+            else
+            {
+                <MudNavLink IconColor="Color.Warning" Icon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" OnClick="@OpenSubscription">
+                    Subscription
+                </MudNavLink>
+            }
             <AuthorizeView>
                 <Authorized>
-                    <MudNavLink Icon="@IconsFA.Solid.Icon("circle-user").Font" OnClick="@MyAccount">@Modules.Auth.Resources.Translations.MyAccount</MudNavLink>
+                    <MudNavLink Icon="@IconsFA.Solid.Icon("circle-user").Font" OnClick="@MyAccount">
+                        @Modules.Auth.Resources.Translations.MyAccount
+                    </MudNavLink>
                 </Authorized>
             </AuthorizeView>
-            <MudNavLink Icon="@IconsFA.Solid.Icon("cog").Font" OnClick="@OpenConfigurations">Settings</MudNavLink>
-            <MudNavLink Icon="@IconsFA.Solid.Icon("headset").Font" Href="/support">Support</MudNavLink>
+            <MudNavLink Icon="@IconsFA.Solid.Icon("cog").Font" OnClick="@OpenConfigurations">
+                Settings
+            </MudNavLink>
+            <MudNavLink Icon="@IconsFA.Solid.Icon("headset").Font" Href="/support">
+                Support
+            </MudNavLink>
             <MudDivider></MudDivider>
             <AuthorizeView>
                 <Authorized>
-                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-from-bracket").Font" OnClick="@Logout" Disabled="_blockedActions" IconColor="Color.Error">@Button.Logout</MudNavLink>
+                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-from-bracket").Font" OnClick="@Logout" Disabled="_blockedActions" IconColor="Color.Secondary">
+                        @Button.Logout
+                    </MudNavLink>
                 </Authorized>
                 <NotAuthorized>
                     <MudNavLink Icon="@IconsFA.Solid.Icon("right-to-bracket").Font" OnClick="Login" Disabled="_blockedActions">
@@ -266,6 +302,11 @@
             return Color.Warning;
         else
             return Color.Success;
+    }
+
+    private async Task OpenSubscription()
+    {
+        await DialogService.SubscriptionPopup();
     }
 
 }

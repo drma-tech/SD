@@ -53,7 +53,7 @@ else
                     @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
                     {
                         <div>
-                            <div @onclick="@(async () => await CollectionClicked(item))" style="@($"{(Type == MediaType.movie ? "cursor: pointer;" : "")} position: relative;")">
+                            <div @onclick="@(() => CollectionClicked(item))" style="@($"{(Type == MediaType.movie ? "cursor: pointer;" : "")} position: relative;")">
                                 @if (item.release_date.HasValue)
                                 {
                                     if (item.release_date.Value < DateTime.Now.AddMonths(-3))
@@ -107,7 +107,7 @@ else
                             @foreach (var item in Recommendations)
                             {
                                 <div class="swiper-slide" style="height: auto !important;">
-                                    <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                    <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item.MediaType, item.tmdb_id))" MediaType="@item.MediaType"
                                                      Date="@item.release_date" Rating="@item.rating"
                                                      WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments">
                                     </PosterComponent>
@@ -262,29 +262,24 @@ else
         (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated, null), WatchingApi.Get(AppStateStatic.IsAuthenticated, null), WishApi.Get(AppStateStatic.IsAuthenticated, null));
     }
 
-    private async Task CollectionClicked(Collection? item)
+    private void CollectionClicked(Collection? item)
     {
         if (Type == MediaType.movie)
         {
-            await OpenPopupMedia(item, Type);
+            OpenPopupMedia(Type, item?.id);
         }
     }
 
-    private void OpenPopupMedia(MediaDetail? media)
+    private void OpenPopupMedia(MediaType? type, string? tmdb_id)
     {
         try
         {
-            Navigation.NavigateTo($"/media/{media?.MediaType.ToString().ToLower()}/{media?.tmdb_id}", true);
+            Navigation.NavigateTo($"/media/{type.ToString()!.ToLower()}/{tmdb_id}", true);
         }
         catch (Exception ex)
         {
             Core?.ShowError(ex.Message);
         }
-    }
-
-    private async Task OpenPopupMedia(Collection? collection, MediaType? mediaType)
-    {
-        await DialogService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id);
     }
 
 }

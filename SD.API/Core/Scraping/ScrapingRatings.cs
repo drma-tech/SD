@@ -45,9 +45,13 @@ public class ScrapingRatings(ILogger logger, RatingApiRoot? ratingApiRoot)
             letterboxdLink = ratingApiRoot?.result?.links?.Letterboxd
         };
 
-        if (imdbId.NotEmpty() && data.imdb.Empty()) ProcessMovieImdb(data, string.Format(ImdbRatingUrl, imdbId));
+        //tmdb is not necessary
         if (data.metacritic.Empty()) ProcessMovieMetacritic(data, ratingApiRoot?.result?.links?.Metacritic ?? string.Format(MetacriticMovieUrl, titleMeta), year);
-        //if (data.trakt.Empty()) ProcessTrack(data, ratingApiRoot?.result?.links?.Trakt ?? string.Format(TraktMovieUrl, titleTrakt, year), year);
+        if (imdbId.NotEmpty() && data.imdb.Empty()) ProcessMovieImdb(data, string.Format(ImdbRatingUrl, imdbId));
+        //if (data.trakt.Empty()) ProcessTrack(data, ratingApiRoot?.result?.links?.Trakt ?? string.Format(TraktMovieUrl, titleTrakt, year), year); //its difficult to scrape (cloudflare)
+        //rotten tomatoes -- its difficult to scrape
+        //film affinity -- its difficult to scrape (cloudflare)
+        //letterboxd -- always present if there is url
 
         return data;
     }

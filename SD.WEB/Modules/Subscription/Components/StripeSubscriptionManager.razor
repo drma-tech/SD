@@ -5,6 +5,7 @@
 @using SD.WEB.Modules.Subscription.Resources
 
 @inject PaymentConfigurationApi ConfigurationApi
+@inject PaymentAuthApi PaymentAuthApi
 
 <MudCard Outlined="true" Elevation="4" Class="mb-3">
     <MudCardContent Class="pa-3">
@@ -30,12 +31,18 @@
         </MudGrid>
     </MudCardContent>
 </MudCard>
-<MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-3 mb-2" Href="@CustomerPortalUrl" Target="_blank" Rel="noindex, nofollow" Size="AppStateStatic.Size">
-    Stripe customer portal
+<MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-3 mb-2" Href="@CustomerPortalUrl" Target="_blank" Rel="noindex, nofollow" Size="AppStateStatic.Size"
+           Disabled="CustomerPortalUrl.Empty()">
+    Change/Cancel my subscription
 </MudButton>
 
 @code {
     [Parameter][EditorRequired] public AuthPrincipal? Client { get; set; }
 
-    private string? CustomerPortalUrl { get; set; } = "https://billing.stripe.com/p/login/test_3cI28t5COgCPdhX1HGaR200";
+    private string? CustomerPortalUrl { get; set; }
+
+    protected override async Task LoadAuthDataAsync()
+    {
+        CustomerPortalUrl = await PaymentAuthApi.StripePortalLink();
+    }
 }

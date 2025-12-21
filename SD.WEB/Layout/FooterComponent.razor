@@ -9,14 +9,17 @@
             <MudList T="string" Color="Color.Surface" Dense="true">
                 <MudListSubheader>
                     <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                        @SeoTranslations.AppName
+                        DRMA Tech
+                    </MudText>
+                    <MudText Color="Color.Secondary" Typo="Typo.subtitle2">
+                        @GlobalTranslations.DiscoverProducts
                     </MudText>
                 </MudListSubheader>
-                <MudListItem Style="text-align: justify" Class="py-0">
-                    @SeoTranslations.AppDescriptionShort
-                </MudListItem>
-                <MudListItem Style="text-align: justify" Class="py-0">
-                    @AppStateStatic.Version
+                <MudListItem Href="https://www.modern-matchmaker.com/" Target="_blank" Class="py-0">
+                    <ChildContent>
+                        <MudImage Src="https://www.modern-matchmaker.com/icon/icon-71.png" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                        Modern Matchmaker
+                    </ChildContent>
                 </MudListItem>
             </MudList>
         </MudItem>
@@ -36,11 +39,36 @@
                     <MudListSubheader>
                         <MudText Color="Color.Secondary">Stores</MudText>
                     </MudListSubheader>
-                    <MudListItem Text="Microsoft Store" Href="https://apps.microsoft.com/detail/9pb1pkrdd8l0" Target="_blank" Class="py-0" />
-                    <MudListItem Text="Google Play" Href="https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa" Target="_blank" Class="py-0" />
-                    <MudListItem Text="App Store" Href="https://apps.apple.com/us/app/streaming-discovery/id6749285238" Target="_blank" Class="py-0" />
-                    <MudListItem Text="Huawei AppGallery" Href="" Target="_blank" Class="py-0" Disabled="true" />
-                    <MudListItem Text="Xiaomi GetApps" Href="" Target="_blank" Class="py-0" Disabled="true" />
+                    <MudListItem Href="https://apps.microsoft.com/detail/9pb1pkrdd8l0" Target="_blank" Class="py-0">
+                        <ChildContent>
+                            <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                            Microsoft Store
+                        </ChildContent>
+                    </MudListItem>
+                    <MudListItem Href="https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa" Target="_blank" Class="py-0">
+                        <ChildContent>
+                            <MudImage Src="/logo/google-play.png" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                            Google Play
+                        </ChildContent>
+                    </MudListItem>
+                    <MudListItem Text="" Href="https://apps.apple.com/us/app/streaming-discovery/id6749285238" Target="_blank" Class="py-0">
+                        <ChildContent>
+                            <MudImage Src="/logo/app-store.png" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                            App Store
+                        </ChildContent>
+                    </MudListItem>
+                    <MudListItem Text="" Href="https://appgallery.huawei.com/app/C111325113" Target="_blank" Class="py-0" >
+                        <ChildContent>
+                            <MudImage Src="/logo/huawei.png" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                            Huawei AppGallery
+                        </ChildContent>
+                    </MudListItem>
+                    <MudListItem Text="" Href="https://global.app.mi.com/details?lo=ID&id=com.streamingdiscovery.www.twa" Target="_blank" Class="py-0" >
+                        <ChildContent>
+                            <MudImage Src="/logo/xiaomi.png" Class="me-2" Style="width: 20px; vertical-align: top;" />
+                            Xiaomi GetApps
+                        </ChildContent>
+                    </MudListItem>
                 </MudList>
             </MudItem>
         }

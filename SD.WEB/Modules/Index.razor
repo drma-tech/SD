@@ -20,11 +20,6 @@
 
 <SeoHeader Title="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription" Url="/" Keywords="@(["streaming"])"></SeoHeader>
 <PageHeader Image="icon/icon-71.png" Title="@SeoTranslations.AppName" Subtitle="@SeoTranslations.AppSubtitle">
-    <ActionFragment>
-        <MudTooltip Text="@Modules.Profile.Resources.Translations.Subscription">
-            <MudFab Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" IconColor="Color.Warning" Size="AppStateStatic.Size" OnClick="@OpenSubscription" />
-        </MudTooltip>
-    </ActionFragment>
 </PageHeader>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-4"
@@ -114,11 +109,6 @@
         {
             Navigation.NavigateTo("/search");
         }
-    }
-
-    private async Task OpenSubscription()
-    {
-        await DialogService.SubscriptionPopup();
     }
 
 }

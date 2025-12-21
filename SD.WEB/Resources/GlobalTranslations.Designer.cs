@@ -151,6 +151,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discover our other products.
+        /// </summary>
+        public static string DiscoverProducts {
+            get {
+                return ResourceManager.GetString("DiscoverProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You’ve used all your energy for today. It’ll refill in 24 hours, or you can subscribe for extra energy to explore more titles..
         /// </summary>
         public static string EnergyOut {

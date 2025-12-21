@@ -319,4 +319,31 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             throw;
         }
     }
+
+    [Function("StripeGePortalLink")]
+    public async Task<string> StripeGePortalLink(
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "stripe/portal-link")] HttpRequestData req, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var url = req.GetQueryParameters()["url"];
+            var userId = await req.GetUserIdAsync(cancellationToken);
+            var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("principal null");
+
+            var options = new Stripe.BillingPortal.SessionCreateOptions
+            {
+                Customer = principal.StripeCustomerId,
+                ReturnUrl = url
+            };
+            var service = new Stripe.BillingPortal.SessionService();
+            var session = await service.CreateAsync(options, cancellationToken: cancellationToken);
+
+            return session.Url;
+        }
+        catch (Exception ex)
+        {
+            req.LogError(ex);
+            throw;
+        }
+    }
 }
