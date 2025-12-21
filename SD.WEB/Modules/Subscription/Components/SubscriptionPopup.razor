@@ -219,16 +219,6 @@
                 Providers.Add(PaymentProvider.Apple);
             }
         }
-        else if (Platform == SD.Shared.Enums.Platform.play)
-        {
-            Providers.Add(PaymentProvider.Stripe);
-            Providers.Add(PaymentProvider.Google);
-        }
-        else if (Platform == SD.Shared.Enums.Platform.windows)
-        {
-            Providers.Add(PaymentProvider.Stripe);
-            Providers.Add(PaymentProvider.Microsoft);
-        }
         else
         {
             Providers.Add(PaymentProvider.Stripe);
