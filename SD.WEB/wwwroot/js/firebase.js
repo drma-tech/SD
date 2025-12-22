@@ -56,7 +56,7 @@ if (!isBot && !isPrintScreen) {
             if (!refreshTokenInterval) {
                 refreshTokenInterval = setInterval(
                     async () => {
-                        const refreshedToken = await auth.currentUser.getIdToken(true);
+                        const refreshedToken = await window.auth.currentUser.getIdToken(true);
                         await interop.invokeDotNetWhenReady("SD.WEB", "AuthChanged", refreshedToken);
                     },
                     10 * 60 * 1000

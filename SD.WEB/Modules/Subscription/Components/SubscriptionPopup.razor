@@ -304,13 +304,4 @@
             await ProcessException(ex);
         }
     }
-
-    private int GetDiscount()
-    {
-        var priceMonth = 0.99;
-        var priceYear = 9.99;
-
-        var discount = 100 - ((priceYear / (priceMonth * 12)) * 100);
-        return (int)Math.Round(discount);
-    }
 }

@@ -64,7 +64,7 @@
             AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
             AppStateStatic.ShowError += msg => { Snackbar.Add(msg, Severity.Error); };
             AppStateStatic.Version += GetAppVersion();
-            AppStateStatic.UserStateChanged += async () => await UserStateChanged();
+            AppStateStatic.UserStateChanged += () => UserStateChanged();
             AppStateStatic.NotificationEnabled += async (string token, string platform) => { await FirebaseApi.Subscribe(token, platform); };
 
             // 1 = capture the claims
@@ -120,7 +120,7 @@
         }
     }
 
-    private async Task UserStateChanged()
+    private void UserStateChanged()
     {
         try
         {
@@ -142,12 +142,7 @@
             if (!AppStateStatic.IsAuthenticated) return;
             if (Navigation.Uri.Contains("/support/")) return;
 
-            var principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
-
-            if (principal == null)
-            {
-                Navigation.NavigateTo("/register-user");
-            }
+            Navigation.NavigateTo("/register-user");
         }
         catch (Exception ex)
         {
