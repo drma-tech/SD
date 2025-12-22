@@ -64,7 +64,7 @@
             AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
             AppStateStatic.ShowError += msg => { Snackbar.Add(msg, Severity.Error); };
             AppStateStatic.Version += GetAppVersion();
-            AppStateStatic.UserStateChanged += () => UserStateChanged();
+            AppStateStatic.UserStateChanged += async () => await UserStateChanged();
             AppStateStatic.NotificationEnabled += async (string token, string platform) => { await FirebaseApi.Subscribe(token, platform); };
 
             // 1 = capture the claims
@@ -120,7 +120,7 @@
         }
     }
 
-    private void UserStateChanged()
+    private async Task UserStateChanged()
     {
         try
         {
