@@ -1,6 +1,6 @@
 "use strict";
 
-import { isBot, isOldBrowser, baseApiUrl } from "./main.js";
+import { isBot, isOldBrowser, appVersion, baseApiUrl } from "./main.js";
 import { simd } from "./wasm-feature-detect.js";
 
 export const storage = {
@@ -96,7 +96,7 @@ export const notification = {
                 BrowserName: environment.getBrowserName(),
                 BrowserVersion: environment.getBrowserVersion(),
                 Platform: storage.getLocalStorage("platform"),
-                AppVersion: storage.getLocalStorage("app-version"),
+                AppVersion: appVersion,
                 UserAgent: navigator.userAgent,
                 IsBot: isBot || isOldBrowser,
             };
@@ -108,7 +108,7 @@ export const notification = {
                 BrowserName: environment.getBrowserName(),
                 BrowserVersion: environment.getBrowserVersion(),
                 Platform: storage.getLocalStorage("platform"),
-                AppVersion: storage.getLocalStorage("app-version"),
+                AppVersion: appVersion,
                 UserAgent: navigator.userAgent,
                 IsBot: isBot || isOldBrowser,
             };

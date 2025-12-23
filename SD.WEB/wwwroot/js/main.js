@@ -14,6 +14,7 @@ export const isLocalhost = location.host.includes("localhost");
 export const isDev = location.hostname.includes("dev.");
 export const isWebview = /webtonative/i.test(navigator.userAgent);
 export const isPrintScreen = location.href.includes("printscreen");
+export const appVersion = (await fetch("/build-date.txt").then(r => r.text())).trim();
 
 export const servicesConfig = {
     AnalyticsCode: "G-4PREF5QX1F",

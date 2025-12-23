@@ -141,7 +141,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
             if (doc == null)
             {
-                var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 10 };
+                var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 5 };
                 var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
 
                 if (principal?.GetActiveSubscription() != null)
