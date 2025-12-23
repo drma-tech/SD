@@ -1,4 +1,5 @@
-import { Swiper } from "../package/swiper/swiper-bundle.min.mjs";
+/* global Swiper:readonly */
+/* eslint-disable no-unused-vars */
 
 export const swiper = {
     initLists(id, size) {
