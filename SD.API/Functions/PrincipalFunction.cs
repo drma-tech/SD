@@ -172,40 +172,6 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
         }
     }
 
-    [Function("PrincipalImport")]
-    public async Task PrincipalImport(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/import")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var users = await repo.ListAll<AuthPrincipal>(DocumentType.Principal, cancellationToken);
-
-            foreach (var user in users)
-            {
-                var args = new UserRecordArgs()
-                {
-                    Uid = user.Id.Split(":")[1],
-                    Email = user.Email,
-                    DisplayName = user.DisplayName
-                };
-
-                try
-                {
-                    await FirebaseAuth.DefaultInstance.CreateUserAsync(args, CancellationToken.None);
-                }
-                catch (Exception ex)
-                {
-                    req.LogError(ex); //It logs the error, but doesn't stop the import.
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
-    }
-
     [Function("SubscribeToTopics")]
     public static async Task SubscribeToTopics(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "firebase/subscribe")] HttpRequestData req, CancellationToken cancellationToken)
