@@ -214,15 +214,25 @@
         var accesses = await JsRuntime.Utils().GetLocalStorage<HashSet<DateTime>>("session-accesses") ?? new HashSet<DateTime>();
         var hasPreviousAccess = accesses.Count > 0;
         var lastAccess = hasPreviousAccess ? accesses.Max() : (DateTime?)null;
+        bool isTooSoon = false;
 
-        accesses.Add(DateTime.UtcNow);
-
-        if (accesses.Count > 10) //keep only the last 10 records
+        if (lastAccess != null)
         {
-            accesses = accesses.OrderByDescending(x => x).Take(10).ToHashSet();
+            var hoursSinceLast = (DateTime.UtcNow - lastAccess.Value).TotalHours;
+            isTooSoon = hoursSinceLast < 2;
         }
 
-        await JsRuntime.Utils().SetLocalStorage("session-accesses", accesses);
+        if (!isTooSoon)
+        {
+            accesses.Add(DateTime.UtcNow);
+
+            if (accesses.Count > 10) //keep only the last 10 records
+            {
+                accesses = accesses.OrderByDescending(x => x).Take(10).ToHashSet();
+            }
+
+            await JsRuntime.Utils().SetLocalStorage("session-accesses", accesses);
+        }
     }
 
     private async Task ShowOnBoardingPopup()
