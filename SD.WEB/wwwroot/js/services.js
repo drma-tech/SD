@@ -58,12 +58,6 @@ export const services = {
             platform: storage.getLocalStorage("platform"),
             app_version: version,
         };
-        window.Userback.on_survey_submit = (obj) => {
-            if (obj.key === servicesConfig.UserBackSurveyKey) {
-                let rating = obj.data[0].question_answer;
-                storage.setLocalStorage("survey-rating", rating);
-            }
-        };
 
         (function (d) {
             let s = d.createElement('script'); s.async = true;

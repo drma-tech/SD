@@ -43,8 +43,8 @@ export const swiper = {
         const el = document.getElementById(id);
         if (!el) return;
 
-        const progressCircle = document.querySelector(".autoplay-progress svg");
-        const progressContent = document.querySelector(".autoplay-progress span");
+        const progCircle = document.querySelector(".autoplay-progress svg");
+        const progContent = document.querySelector(".autoplay-progress span");
 
         const temp = new Swiper(el, {
             centeredSlides: true,
@@ -63,11 +63,8 @@ export const swiper = {
             },
             on: {
                 autoplayTimeLeft(s, time, progress) {
-                    progressCircle.style.setProperty(
-                        "--progress",
-                        1 - progress
-                    );
-                    progressContent.textContent = `${Math.ceil(time / 1000)}s`;
+                    progCircle.style.setProperty("--progress", 1 - progress);
+                    progContent.textContent = `${Math.ceil(time / 1000)}s`;
                 },
             },
         });
