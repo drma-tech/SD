@@ -92,4 +92,38 @@ public static class ApiCore
 
         return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
     }
+
+    public static async Task<T?> GetMoviesRatings2<T>(this HttpClient http, string? imdbId, CancellationToken cancellationToken) where T : class
+    {
+        if (string.IsNullOrEmpty(imdbId)) return null;
+
+        using var request = new HttpRequestMessage();
+        request.Method = HttpMethod.Get;
+        request.RequestUri = new Uri($"https://movies-ratings2.p.rapidapi.com/ratings?id={imdbId}");
+        request.Headers.Add("x-rapidapi-key", ApiStartup.Configurations.RapidAPI?.Key);
+        request.Headers.Add("x-rapidapi-host", "movies-ratings2.p.rapidapi.com");
+
+        var response = await http.SendAsync(request, cancellationToken);
+
+        if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
+
+        return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
+    }
+
+    public static async Task<T?> GetUnifiedMovie<T>(this HttpClient http, string? tmdbId, CancellationToken cancellationToken) where T : class
+    {
+        if (string.IsNullOrEmpty(tmdbId)) return null;
+
+        using var request = new HttpRequestMessage();
+        request.Method = HttpMethod.Get;
+        request.RequestUri = new Uri($"https://unified-movie-api.p.rapidapi.com/v1/movies/{tmdbId}?region=US");
+        request.Headers.Add("x-rapidapi-key", ApiStartup.Configurations.RapidAPI?.Key);
+        request.Headers.Add("x-rapidapi-host", "unified-movie-api.p.rapidapi.com");
+
+        var response = await http.SendAsync(request, cancellationToken);
+
+        if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
+
+        return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
+    }
 }

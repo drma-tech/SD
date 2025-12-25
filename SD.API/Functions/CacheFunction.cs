@@ -189,28 +189,14 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                 {
                     var obj = ScrapingNews.GetNews();
 
-                    if (mode == "compact")
+                    var compactModels = new NewsModel();
+
+                    foreach (var item in obj.Items.Take(mode == "compact" ? 10 : 100))
                     {
-                        var compactModels = new NewsModel();
-
-                        foreach (var item in obj.Items.Take(10))
-                        {
-                            compactModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link, item.date));
-                        }
-
-                        doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, "lastnews_compact"), cancellationToken);
+                        compactModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link, item.date));
                     }
-                    else
-                    {
-                        var fullModels = new NewsModel();
 
-                        foreach (var item in obj.Items)
-                        {
-                            fullModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link, item.date));
-                        }
-
-                        doc = await cacheRepo.UpsertItemAsync(new NewsCache(fullModels, "lastnews_full"), cancellationToken);
-                    }
+                    doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, $"lastnews_{mode}"), cancellationToken);
                 }
 
                 await SaveCache(doc, cacheKey, TtlCache.SixHours);
@@ -259,30 +245,15 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                     var client = factory.CreateClient("rapidapi");
                     var obj = await client.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
 
-                    if (mode == "compact")
+                    var compactModels = new TrailerModel();
+
+                    foreach (var item in obj?.contents?.Take(mode == "compact" ? 12 : 100).Select(s => s.video) ?? [])
                     {
-                        var compactModels = new TrailerModel();
-
-                        foreach (var item in obj?.contents?.Take(12).Select(s => s.video) ?? [])
-                        {
-                            if (item == null) continue;
-                            compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url, item.publishedTimeText));
-                        }
-
-                        doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, "lasttrailers_compact"), cancellationToken);
+                        if (item == null) continue;
+                        compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url, item.publishedTimeText));
                     }
-                    else
-                    {
-                        var fullModels = new TrailerModel();
 
-                        foreach (var item in obj?.contents?.Select(s => s.video) ?? [])
-                        {
-                            if (item == null) continue;
-                            fullModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[2].url, item.publishedTimeText));
-                        }
-
-                        doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(fullModels, "lasttrailers_full"), cancellationToken);
-                    }
+                    doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, $"lasttrailers_{mode}"), cancellationToken);
                 }
 
                 await SaveCache(doc, cacheKey, TtlCache.SixHours);
@@ -329,28 +300,14 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                 {
                     var obj = ScrapingPopular.GetMovieData();
 
-                    if (mode == "compact")
+                    var compactModels = new MostPopularData { ErrorMessage = obj.ErrorMessage };
+
+                    foreach (var item in obj.Items.Take(mode == "compact" ? 20 : 100))
                     {
-                        var compactModels = new MostPopularData { ErrorMessage = obj.ErrorMessage };
-
-                        foreach (var item in obj.Items.Take(20))
-                        {
-                            compactModels.Items.Add(item);
-                        }
-
-                        doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, "popularmovies_compact"), cancellationToken);
+                        compactModels.Items.Add(item);
                     }
-                    else
-                    {
-                        var fullModels = new MostPopularData { ErrorMessage = obj.ErrorMessage };
 
-                        foreach (var item in obj.Items)
-                        {
-                            fullModels.Items.Add(item);
-                        }
-
-                        doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(fullModels, "popularmovies_full"), cancellationToken);
-                    }
+                    doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, $"popularmovies_{mode}"), cancellationToken);
                 }
 
                 await SaveCache(doc, cacheKey, TtlCache.OneDay);
@@ -476,7 +433,6 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             var id = req.GetQueryParameters()["id"];
             var tmdbId = req.GetQueryParameters()["tmdb_id"];
             var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
-            var title = req.GetQueryParameters()["title"];
 
             DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
             var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
@@ -496,15 +452,25 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
                 if (doc == null)
                 {
-                    var client = factory.CreateClient("rapidapi-gzip");
-                    var objRatings = await client.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
+                    var ratings = new Ratings()
+                    {
+                        imdbId = id,
+                        tmdbId = tmdbId,
+                        type = MediaType.movie,
+                        tmdb = tmdbRating,
+                    };
 
-                    var scraping = new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name), objRatings);
-                    var obj = scraping.GetMovieData(id, tmdbRating, title, releaseDate.Year.ToString());
+                    await req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken);
+
+                    await req.ProcessApiUnifiedMovie(factory, ratings, cancellationToken);
+
+                    //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
+
+                    await req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken);
 
                     ttl = CalculateTtl(releaseDate);
 
-                    doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, obj, ttl), cancellationToken);
+                    doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl), cancellationToken);
                 }
 
                 await SaveCache(doc, cacheKey, ttl);
@@ -540,7 +506,6 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             var id = req.GetQueryParameters()["id"];
             var tmdbId = req.GetQueryParameters()["tmdb_id"];
             var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
-            var title = req.GetQueryParameters()["title"];
 
             DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
             var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
@@ -560,15 +525,25 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
                 if (doc == null)
                 {
-                    var client = factory.CreateClient("rapidapi-gzip");
-                    var objRatings = await client.GetFilmShowRatings<RatingApiRoot>(id, cancellationToken);
+                    var ratings = new Ratings()
+                    {
+                        imdbId = id,
+                        tmdbId = tmdbId,
+                        type = MediaType.tv,
+                        tmdb = tmdbRating,
+                    };
 
-                    var scraping = new ScrapingRatings(req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name), objRatings);
-                    var obj = scraping.GetShowData(id, tmdbRating, title, releaseDate.Year.ToString());
+                    await req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken);
+
+                    await req.ProcessApiUnifiedMovie(factory, ratings, cancellationToken);
+
+                    //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
+
+                    await req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken);
 
                     ttl = CalculateTtl(releaseDate);
 
-                    doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, obj, ttl), cancellationToken);
+                    doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl), cancellationToken);
                 }
 
                 await SaveCache(doc, cacheKey, ttl);
@@ -762,6 +737,11 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         }
 
         if (releaseDate > DateTime.Now.AddDays(-30)) // less than 1 month launch
+        {
+            return TtlCache.TwoWeeks;
+        }
+
+        if (releaseDate > DateTime.Now.AddDays(-60)) // less than 2 months launch
         {
             return TtlCache.OneMonth;
         }

@@ -2,25 +2,9 @@
 
 namespace SD.Shared.Models.List;
 
-public class AlternativeTitle
-{
-    public string? title { get; set; }
-
-    [JsonPropertyName("alpha-2")] public string? alpha2 { get; set; }
-
-    [JsonPropertyName("alpha-3")] public string? alpha3 { get; set; }
-}
-
 public class Audience
 {
     public double rating { get; set; }
-    public int count { get; set; }
-    public int bestValue { get; set; }
-}
-
-public class Critics
-{
-    public int rating { get; set; }
     public int count { get; set; }
     public int bestValue { get; set; }
 }
@@ -140,16 +124,6 @@ public class Links
 public class Metacritic
 {
     public Audience? audience { get; set; }
-    public Critics? critics { get; set; }
-}
-
-public class Origin
-{
-    public string? name { get; set; }
-
-    [JsonPropertyName("alpha-2")] public string? alpha2 { get; set; }
-
-    [JsonPropertyName("alpha-3")] public string? alpha3 { get; set; }
 }
 
 public class RatingsApi
@@ -159,7 +133,7 @@ public class RatingsApi
     public Letterboxd? Letterboxd { get; set; }
     public Metacritic? Metacritic { get; set; }
 
-    [JsonPropertyName("Rotten Tomatoes")] 
+    [JsonPropertyName("Rotten Tomatoes")]
     public RottenTomatoes? RottenTomatoes { get; set; }
 
     public TMDB? TMDB { get; set; }
@@ -167,17 +141,6 @@ public class RatingsApi
 
 public class Result
 {
-    public string? title { get; set; }
-    public string? type { get; set; }
-    public string? year { get; set; }
-    public string? date { get; set; }
-    public string? overview { get; set; }
-    public object? crew { get; set; }
-    public List<AlternativeTitle> alternative_titles { get; set; } = [];
-    public List<Origin> origins { get; set; } = [];
-    public List<string> languages { get; set; } = [];
-    public List<string> genres { get; set; } = [];
-
     [JsonPropertyName("Ratings")] public RatingsApi? ratings { get; set; }
 
     public Ids? ids { get; set; }
@@ -194,7 +157,6 @@ public class RatingApiRoot
 public class RottenTomatoes
 {
     public Audience? audience { get; set; }
-    public Critics? critics { get; set; }
 }
 
 public class TMDB

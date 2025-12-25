@@ -3,6 +3,7 @@
 public class Ratings
 {
     public string? imdbId { get; set; }
+    public string? tmdbId { get; set; }
     public MediaType type { get; set; }
     public string? imdb { get; set; }
     public string? imdbLink { get; set; }
