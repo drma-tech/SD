@@ -8,9 +8,9 @@ export const isBot =
 
 /// avoid bots with fake browsers
 export const isOldBrowser = window.browser.satisfies({
-    chrome: "<131", //nov 2024
-    edge: "<131", //nov 2024
-    safari: "<18", //sep 2024
+    chrome: "<132", //jan 2025
+    edge: "<132", //jan 2025
+    safari: "<18.3", //jan 2025
 });
 export const isLocalhost = location.host.includes("localhost");
 export const isDev = location.hostname.includes("dev.");

@@ -24,6 +24,7 @@
 @inject EnergyApi EnergyApi
 @inject EnergyAuthApi EnergyAuthApi
 @inject FirebaseApi FirebaseApi
+@inject LoginApi LoginApi
 
 <MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@_darkMode" />
 <MudPopoverProvider />
@@ -52,6 +53,7 @@
 
     private MudThemeProvider? _mudThemeProvider;
     private bool _darkMode = false;
+    private AuthPrincipal? Principal { get; set; }
 
     protected override void OnInitialized()
     {
@@ -142,11 +144,33 @@
             if (!AppStateStatic.IsAuthenticated) return;
             if (Navigation.Uri.Contains("/support/")) return;
 
-            Navigation.NavigateTo("/register-user");
+            Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
+
+            if (Principal == null)
+            {
+                Navigation.NavigateTo("/register-user");
+            }
+            else
+            {
+                await RegisterLogin();
+            }
         }
         catch (Exception ex)
         {
             ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    private async Task RegisterLogin()
+    {
+        var platform = await AppStateStatic.GetPlatform(JsRuntime);
+
+        await LoginApi.Add(platform);
+
+        if (Principal!.AuthProviders.Empty() || !Principal!.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
+        {
+            Principal.AuthProviders = Principal.AuthProviders.Union([AppStateStatic.User!.FindFirst("idp")!.Value]).ToArray();
+            await PrincipalApi.Update(Principal);
         }
     }
 
