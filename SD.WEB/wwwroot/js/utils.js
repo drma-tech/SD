@@ -212,6 +212,7 @@ export const environment = {
     async checkBrowserFeatures() {
         const wasmSupported = typeof WebAssembly === "object";
 
+        //isOldBrowser - its probably a bot with fake user agent
         if (!wasmSupported || isOldBrowser) {
             notification.showBrowserWarning();
             return;
