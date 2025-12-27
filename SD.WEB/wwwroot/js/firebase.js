@@ -44,12 +44,12 @@ if (!isBot && !isPrintScreen) {
         if (objUser) {
             // services
 
-            window.Userback = window.Userback || {};
-
-            window.Userback.identify(objUser.userId, {
-                name: objUser.name,
-                email: objUser.email,
-            });
+            if (window.Userback) {
+                window.Userback.identify(objUser.userId, {
+                    name: objUser.name,
+                    email: objUser.email,
+                });
+            }
 
             // refresh token
 
