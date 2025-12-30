@@ -28,6 +28,17 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
     }
 
     /// <summary>
+    /// Data that depends on parameters (query string, route, etc.) to load
+    ///
+    /// NOTE: This method is useful when this parameter can be changed while the page/component is being displayed.
+    /// </summary>
+    /// <returns></returns>
+    protected virtual Task LoadParameterizedDataAsync()
+    {
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
     /// Non-critical data that may be delayed (popups, javascript handling, etc.)
     ///
     /// NOTE: This method cannot depend on previously loaded variables, as events can be executed in parallel.
@@ -58,6 +69,18 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
             AppStateStatic.UserStateChanged += async () => { await LoadAuthDataAsync(); StateHasChanged(); };
 
             await LoadEssentialDataAsync();
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            await LoadParameterizedDataAsync();
         }
         catch (Exception ex)
         {

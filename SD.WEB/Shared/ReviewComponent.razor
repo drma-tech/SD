@@ -39,7 +39,7 @@
     public RenderControlCore<CacheDocument<ReviewModel>?> Core { get; set; } = new();
     public CacheDocument<ReviewModel>? Model { get; set; }
 
-    protected override async Task LoadEssentialDataAsync()
+    protected override async Task LoadParameterizedDataAsync()
     {
         if (!string.IsNullOrEmpty(ImdbId))
         {

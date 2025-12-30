@@ -48,7 +48,7 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
         finally
         {
             sw.Stop();
-            if (sw.ElapsedMilliseconds > 5000)
+            if (sw.ElapsedMilliseconds > 8000)
             {
                 var req = await context.GetHttpRequestDataAsync();
                 req?.LogWarning($"Executed in {sw.Elapsed}");

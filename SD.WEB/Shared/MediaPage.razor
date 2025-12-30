@@ -213,7 +213,7 @@ else
         }
     }
 
-    protected override async Task LoadEssentialDataAsync()
+    protected override async Task LoadParameterizedDataAsync()
     {
         if (AppStateStatic.ConsumedEnergy > AppStateStatic.TotalEnergy)
         {
@@ -254,7 +254,22 @@ else
         Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId);
         CoreRecommendations?.LoadingFinished?.Invoke(Recommendations);
 
-        AppStateStatic.EnergyConsumed?.Invoke();
+        await RegisterEnergy(TmdbId);
+    }
+
+    private async Task RegisterEnergy(string? tmdbId)
+    {
+        if (tmdbId.Empty()) return;
+
+        var accesses = await JsRuntime.Utils().GetSessionStorage<HashSet<string>>("media-accesses") ?? new HashSet<string>();
+
+        if (!accesses.Contains(tmdbId))
+        {
+            AppStateStatic.EnergyConsumed?.Invoke();
+        }
+
+        accesses.Add(tmdbId);
+        await JsRuntime.Utils().SetSessionStorage("media-accesses", accesses);
     }
 
     protected override async Task LoadAuthDataAsync()
@@ -274,7 +289,7 @@ else
     {
         try
         {
-            Navigation.NavigateTo($"/media/{type.ToString()!.ToLower()}/{tmdb_id}", true);
+            Navigation.NavigateTo($"/media/{type.ToString()!.ToLower()}/{tmdb_id}");
         }
         catch (Exception ex)
         {

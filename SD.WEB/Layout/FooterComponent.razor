@@ -94,13 +94,4 @@
 @code {
     [Parameter] public bool Support { get; set; }
     private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
-
-    private Platform? Platform { get; set; }
-
-    protected override async Task LoadEssentialDataAsync()
-    {
-        var platform = await JsRuntime.Utils().GetLocalStorage("platform");
-        Platform = Enum.Parse<Platform>(platform ?? "webapp");
-    }
-
 }

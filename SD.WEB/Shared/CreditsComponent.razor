@@ -100,7 +100,7 @@
     public RenderControlCore<Credits?>? Core { get; set; } = new();
     private Credits? Credits { get; set; }
 
-    protected override async Task LoadEssentialDataAsync()
+    protected override async Task LoadParameterizedDataAsync()
     {
         Core?.LoadingStarted?.Invoke();
         Credits = await TmdbCreditApi.GetList(Type, TmdbId);

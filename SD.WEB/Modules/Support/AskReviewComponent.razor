@@ -1,0 +1,156 @@
+﻿@inherits ComponentCore<AskReviewComponent>
+
+@if (CustomHeader != null)
+{
+    @CustomHeader
+}
+else
+{
+    <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="mb-3" Style="text-align: center;">
+        @GlobalTranslations.WriteReviewSubtitle
+    </MudText>
+}
+
+@if (Platform != SD.Shared.Enums.Platform.webapp)
+{
+    <div style="width: 100%;">
+        <MudGrid Spacing="2" Class="mb-3" Justify="Justify.Center" Style="max-width: 700px; justify-self: center;">
+            @if (Platform == SD.Shared.Enums.Platform.windows)
+            {
+                <MudItem xs="12" sm="6">
+                    <MudButton Href="@_windowsReview" OnClick="Reviewed" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">
+                        <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store (Store)
+                    </MudButton>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true">
+                        <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store (Site)
+                    </MudButton>
+                </MudItem>
+            }
+            else if (Platform == SD.Shared.Enums.Platform.play)
+            {
+                <MudItem xs="12" sm="6">
+                    <MudButton Href="@_googleReview" OnClick="Reviewed" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">
+                        <MudImage Src="/logo/google-play.png" Class="me-2" Style="max-width: 20px;"></MudImage> Google Play (Store)
+                    </MudButton>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudButton Href="@_googleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true">
+                        <MudImage Src="/logo/google-play.png" Class="me-2" Style="max-width: 20px;"></MudImage> Google Play (Site)
+                    </MudButton>
+                </MudItem>
+            }
+            else if (Platform == SD.Shared.Enums.Platform.ios)
+            {
+
+                <MudItem xs="12" sm="6">
+                    <MudButton Href="@_appleReview" OnClick="Reviewed" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">
+                        <MudImage Src="/logo/app-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> App Store (Store)
+                    </MudButton>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudButton Href="@_appleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true">
+                        <MudImage Src="/logo/app-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> App Store (Site)
+                    </MudButton>
+                </MudItem>
+            }
+            else if (Platform == SD.Shared.Enums.Platform.huawei)
+            {
+
+                <MudItem xs="12" sm="6">
+                    <MudButton Href="@_huaweiReview" OnClick="Reviewed" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">
+                        <MudImage Src="/logo/huawei.png" Class="me-2" Style="max-width: 20px;"></MudImage> Huawei AppGallery (Store)
+                    </MudButton>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudButton Href="@_huaweiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true">
+                        <MudImage Src="/logo/huawei.png" Class="me-2" Style="max-width: 20px;"></MudImage> Huawei AppGallery (Site)
+                    </MudButton>
+                </MudItem>
+            }
+            else if (Platform == SD.Shared.Enums.Platform.xiaomi)
+            {
+
+                <MudItem xs="12" sm="6">
+                    <MudButton Href="@_xiaomiReview" OnClick="Reviewed" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">
+                        <MudImage Src="/logo/xiaomi.png" Class="me-2" Style="max-width: 20px;"></MudImage> Xiaomi GetApps (Store)
+                    </MudButton>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudButton Href="@_xiaomiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true">
+                        <MudImage Src="/logo/xiaomi.png" Class="me-2" Style="max-width: 20px;"></MudImage> Xiaomi GetApps (Site)
+                    </MudButton>
+                </MudItem>
+            }
+        </MudGrid>
+    </div>
+
+    <MudText Typo="Typo.subtitle2" Color="Color.Secondary" Class="my-3" Style="text-align: center;">
+        @GlobalTranslations.WriteReviewSubtitleStore
+    </MudText>
+}
+else //webapp
+{
+    <MudText Typo="Typo.subtitle2" Color="Color.Secondary" Class="mb-3" Style="text-align: center;">
+        @GlobalTranslations.WriteReviewSubtitleWebapp
+    </MudText>
+
+    <div class="store-grid mb-3">
+        <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true">
+            <MudImage Src="/logo/microsoft-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> Microsoft Store
+        </MudButton>
+        <MudButton Href="@_googleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true">
+            <MudImage Src="/logo/google-play.png" Class="me-2" Style="max-width: 20px;"></MudImage> Google Play
+        </MudButton>
+        <MudButton Href="@_appleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true">
+            <MudImage Src="/logo/app-store.png" Class="me-2" Style="max-width: 20px;"></MudImage> App Store
+        </MudButton>
+        <MudButton Href="@_huaweiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true">
+            <MudImage Src="/logo/huawei.png" Class="me-2" Style="max-width: 20px;"></MudImage> Huawei AppGallery
+        </MudButton>
+        <MudButton Href="@_xiaomiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true">
+            <MudImage Src="/logo/xiaomi.png" Class="me-2" Style="max-width: 20px;"></MudImage> Xiaomi GetApps
+        </MudButton>
+    </div>
+}
+
+<style>
+    .store-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 8px;
+    }
+</style>
+
+@code {
+    [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
+
+    [Parameter] public RenderFragment? CustomHeader { get; set; }
+
+    public SD.Shared.Enums.Platform Platform { get; set; }
+
+    private readonly string _windowsReview = "ms-windows-store://review/?ProductId=9pb1pkrdd8l0"; //its working
+    private readonly string _googleReview = "market://details?id=com.streamingdiscovery.www.twa"; //its old. better to use In-App Review API.
+    private readonly string _appleReview = "itms-apps://itunes.apple.com/app/id6749285238?action=write-review"; //its working
+    private readonly string _huaweiReview = "appmarket://details?id=C111325113"; //It may work or it may not.
+    private readonly string _xiaomiReview = "mimarket://details?id=com.streamingdiscovery.www.twa"; //It may work or it may not.
+
+    private readonly string _windowsStore = "https://apps.microsoft.com/detail/9pb1pkrdd8l0";
+    private readonly string _googleStore = "https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa";
+    private readonly string _appleStore = "https://apps.apple.com/us/app/streaming-discovery/id6749285238";
+    private readonly string _huaweiStore = "https://appgallery.huawei.com/app/C111325113";
+    private readonly string _xiaomiStore = "https://global.app.mi.com/details?id=com.streamingdiscovery.www.twa";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        Platform = await AppStateStatic.GetPlatform(JsRuntime);
+    }
+
+    private async Task Reviewed()
+    {
+        await JsRuntime.Utils().SetLocalStorage("store-reviewed", true.ToString().ToLower());
+    }
+}
