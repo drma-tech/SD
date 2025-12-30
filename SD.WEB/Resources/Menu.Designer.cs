@@ -70,15 +70,6 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Collections.
-        /// </summary>
-        public static string Collections {
-            get {
-                return ResourceManager.GetString("Collections", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string Home {

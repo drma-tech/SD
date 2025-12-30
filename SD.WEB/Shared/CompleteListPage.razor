@@ -72,7 +72,6 @@
 
         Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
 
-        ProcessList();
         await ProcessNonList();
 
         MediaListApi ??= new TmdbListApi(factory);
@@ -83,139 +82,7 @@
         Watched = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, null);
         Watching = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, null);
         Wish = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
-    }
-
-    private void ProcessList()
-    {
-        if (List == null)
-        {
-            return;
-        }
-
-        switch (List)
-        {
-            case EnumLists.OscarBestMotionPicture:
-                break;
-            case EnumLists.OscarBestAnimatedFeatureFilm:
-                break;
-            case EnumLists.OscarInternationalFeatureFilm:
-                break;
-            case EnumLists.OscarDocumentaryFeature:
-                break;
-            case EnumLists.GoldenGlobesBestMotionPictureDrama:
-                break;
-            case EnumLists.GoldenGlobesBestMotionPictureMusicalComedy:
-                break;
-            case EnumLists.GoldenGlobesBestMotionPictureAnimated:
-                break;
-            case EnumLists.EmmysOutstandingDramaSeries:
-                OrderByComments = true;
-                break;
-            case EnumLists.EmmysOutstandingComedySeries:
-                OrderByComments = true;
-                break;
-            case EnumLists.EmmysOutstandingLimitedSeries:
-                OrderByComments = true;
-                break;
-            case EnumLists.HollywoodReporterTop100TvShows:
-                break;
-            case EnumLists.HollywoodReporterTop100Movies:
-                break;
-            case EnumLists.ImdbTop250Movies:
-                TypeSelected = MediaType.movie;
-                OnlyYear = true;
-                MediaListApi = new ImdbTopRatedApi(factory, new TmdbListApi(factory));
-                break;
-            case EnumLists.ImdbTop250Shows:
-                TypeSelected = MediaType.tv;
-                OnlyYear = true;
-                MediaListApi = new ImdbTopRatedApi(factory, new TmdbListApi(factory));
-                break;
-            case EnumLists.BaftaBestFilm:
-                break;
-            case EnumLists.BaftaBestAnimatedFeatureFilm:
-                break;
-            case EnumLists.BaftaBestDocumentary:
-                break;
-            case EnumLists.CriticsChoiceBestPicture:
-                break;
-            case EnumLists.CriticsChoiceBestLimitedSeries:
-                break;
-            case EnumLists.FestivalCannesPalme:
-                break;
-            case EnumLists.FestivalCannesGrandPrix:
-                break;
-            case EnumLists.RottenTomatoesMoviesTomatoMeter:
-                break;
-            case EnumLists.RottenTomatoesMoviesAudienceScore:
-                break;
-            case EnumLists.MetacriticBestMoviesOfAllTime:
-                break;
-            case EnumLists.MetacriticBestTvShowsOfAllTime:
-                break;
-            case EnumLists.EmpireThe100BestMoviesOfAllTime:
-                break;
-            case EnumLists.EmpireThe100BestTvShowsOfAllTime:
-                break;
-            case EnumLists.RollingStoneBestMoviesOfAllTime:
-                break;
-            case EnumLists.RollingStoneBestTvShowsOfAllTime:
-                break;
-            case EnumLists.ExpectedMovieOf2025:
-                break;
-            case EnumLists.FilmaffinityBestMovies:
-                break;
-            case EnumLists.FilmaffinityBestSeriesAndTv:
-                break;
-            case EnumLists.FilmaffinityBestAnimation:
-                break;
-            case EnumLists.UpcomingMarvelMoviesTvShows:
-                break;
-            case EnumLists.UpcomingDcMoviesTvShows:
-                break;
-            case EnumLists.UpcomingStarWarsMoviesTvShows:
-                break;
-            case EnumLists.UpcomingNetflixMovies:
-                break;
-            case EnumLists.UpcomingWaltDisneyPictures:
-                break;
-            case EnumLists.TraktRecommendedMovies:
-                break;
-            case EnumLists.TraktRecommendedTvShows:
-                break;
-            case EnumLists.GrossingMovies:
-                break;
-            case EnumLists.CrunchyrollAnimeOfTheYear:
-                OrderByComments = true;
-                break;
-            case EnumLists.CrunchyrollBestContinuingSeries:
-                OrderByComments = true;
-                break;
-            case EnumLists.CrunchyrollBestFilm:
-                OrderByComments = true;
-                break;
-            case EnumLists.AwardsOfTheYear:
-                break;
-            case EnumLists.CertifiedStreamingDiscoveryMovies:
-                break;
-            case EnumLists.CertifiedStreamingDiscoveryShows:
-                break;
-            case EnumLists.PeoplesChoiceTheMovie:
-                break;
-            case EnumLists.PeoplesChoiceTheActionMovie:
-                break;
-            case EnumLists.PeoplesChoiceTheComedyMovie:
-                break;
-            case EnumLists.PeoplesChoiceTheDramaMovie:
-                break;
-            case EnumLists.AnnieAwardsBestAnimatedFeature:
-                break;
-            case EnumLists.AnnieAwardsBestAnimatedIndependentFeature:
-                break;
-            default:
-                break;
-        }
-    }
+    }   
 
     private async Task ProcessNonList()
     {
@@ -226,23 +93,6 @@
             OnlyYear = true;
             TitleHead = $"IMDB - {Modules.Platform.Resources.Translations.Popular} - {TypeSelected!.GetName()}";
             MediaListApi = new ImdbPopularApi(factory);
-        }
-        else if (Navigation.Uri.Contains("tmdb/popular"))
-        {
-            TitleHead = $"TMDB - {Modules.Platform.Resources.Translations.Popular} - {TypeSelected!.GetName()}";
-            MediaListApi = new TmdbPopularApi(factory);
-        }
-        else if (Navigation.Uri.Contains("tmdb/top"))
-        {
-            TitleHead = $"TMDB - {Modules.Platform.Resources.Translations.TopRated} ({Region}) - {TypeSelected!.GetName()}";
-            DetectRegions = true;
-            MediaListApi = new TmdbTopRatedApi(factory);
-        }
-        else if (Navigation.Uri.Contains("tmdb/upcoming"))
-        {
-            TitleHead = $"TMDB - {Modules.Platform.Resources.Translations.ComingSoon} ({Region}) - {TypeSelected!.GetName()}";
-            DetectRegions = true;
-            MediaListApi = new TmdbUpcomingApi(factory);
         }
         else if (Navigation.Uri.Contains("platforms"))
         {

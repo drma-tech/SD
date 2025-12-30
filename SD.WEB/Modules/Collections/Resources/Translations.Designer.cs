@@ -70,24 +70,6 @@ namespace SD.WEB.Modules.Collections.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Major film and TV awards honoring excellence in acting, directing, animation, and overall production across global entertainment industries..
-        /// </summary>
-        public static string AwardsDescription {
-            get {
-                return ResourceManager.GetString("AwardsDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Awards.
-        /// </summary>
-        public static string AwardsTitle {
-            get {
-                return ResourceManager.GetString("AwardsTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Mark as unwatched.
         /// </summary>
         public static string ButtonNotWatched {
@@ -237,42 +219,6 @@ namespace SD.WEB.Modules.Collections.Resources {
         public static string RemoveWishlist {
             get {
                 return ResourceManager.GetString("RemoveWishlist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trusted platforms providing reviews, ratings, industry news, and entertainment data for movies, shows, and streaming content..
-        /// </summary>
-        public static string SpecializedSitesDescription {
-            get {
-                return ResourceManager.GetString("SpecializedSitesDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Specialized Sites.
-        /// </summary>
-        public static string SpecializedSitesTitle {
-            get {
-                return ResourceManager.GetString("SpecializedSitesTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Curated collections focused on franchises, studios, platforms, and popular themes to help you discover standout content..
-        /// </summary>
-        public static string SpecialsDescription {
-            get {
-                return ResourceManager.GetString("SpecialsDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Specials.
-        /// </summary>
-        public static string SpecialsTitle {
-            get {
-                return ResourceManager.GetString("SpecialsTitle", resourceCulture);
             }
         }
         

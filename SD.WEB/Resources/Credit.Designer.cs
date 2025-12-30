@@ -61,128 +61,11 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Annie Awards honor excellence in animation across film, television, and other media industries worldwide..
-        /// </summary>
-        public static string AnnieAwards {
-            get {
-                return ResourceManager.GetString("AnnieAwards", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to BAFTA (British Academy of Film and Television Arts) celebrates outstanding achievements in film, television, and games.
-        /// </summary>
-        public static string Bafta {
-            get {
-                return ResourceManager.GetString("Bafta", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The Critics Choice Awards recognize excellence in film and television, as judged by a group of professional critics..
-        /// </summary>
-        public static string CriticsChoiceAwards {
-            get {
-                return ResourceManager.GetString("CriticsChoiceAwards", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The Crunchyroll Anime Awards celebrate outstanding achievements and creativity in the global anime industry..
-        /// </summary>
-        public static string CrunchyrollAnimeAwards {
-            get {
-                return ResourceManager.GetString("CrunchyrollAnimeAwards", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The Emmy Awards honor excellence in the television industry, recognizing outstanding achievements in programming and production..
-        /// </summary>
-        public static string EmmyAwards {
-            get {
-                return ResourceManager.GetString("EmmyAwards", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Empire is a popular British film magazine featuring movie news, reviews, interviews, and industry insights..
-        /// </summary>
-        public static string Empire {
-            get {
-                return ResourceManager.GetString("Empire", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The Cannes Film Festival is an annual event celebrating excellence and innovation in international cinema..
-        /// </summary>
-        public static string FestivalCannes {
-            get {
-                return ResourceManager.GetString("FestivalCannes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filmaffinity is a movie recommendation and review platform where users can rate films and discover personalized suggestions..
-        /// </summary>
-        public static string Filmaffinity {
-            get {
-                return ResourceManager.GetString("Filmaffinity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The Golden Globe Awards recognize outstanding achievements in film and television, presented by the Hollywood Foreign Press Association..
-        /// </summary>
-        public static string GoldenGlobeAwards {
-            get {
-                return ResourceManager.GetString("GoldenGlobeAwards", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A collection of movies ranked by their worldwide box office earnings, showcasing the highest-grossing films of all time..
-        /// </summary>
-        public static string HighestGrossingMovies {
-            get {
-                return ResourceManager.GetString("HighestGrossingMovies", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The Hollywood Reporter is an entertainment industry magazine covering film, television, and Hollywood news and analysis..
-        /// </summary>
-        public static string HollywoodReporter {
-            get {
-                return ResourceManager.GetString("HollywoodReporter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to IMDb is an online database of information related to films, television programs, actors, and entertainment industry professionals..
-        /// </summary>
-        public static string IMDb {
-            get {
-                return ResourceManager.GetString("IMDb", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to JustWatch is a streaming guide that helps users find where movies and TV shows are available online..
         /// </summary>
         public static string JustWatch {
             get {
                 return ResourceManager.GetString("JustWatch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Metacritic aggregates reviews from critics and assigns a weighted score to movies, TV shows, games, and music..
-        /// </summary>
-        public static string Metacritic {
-            get {
-                return ResourceManager.GetString("Metacritic", resourceCulture);
             }
         }
         
@@ -214,101 +97,11 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Oscars, or Academy Awards, honor exceptional achievements in the film industry, including acting, directing, and production..
-        /// </summary>
-        public static string Oscar {
-            get {
-                return ResourceManager.GetString("Oscar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The People’s Choice Awards celebrate popular culture, honoring favorites in movies, TV, music, and digital entertainment as voted by the public..
-        /// </summary>
-        public static string PeoplesChoiceAwards {
-            get {
-                return ResourceManager.GetString("PeoplesChoiceAwards", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rolling Stone is a magazine covering music, pop culture, politics, and entertainment news with in-depth reporting and reviews..
-        /// </summary>
-        public static string RollingStone {
-            get {
-                return ResourceManager.GetString("RollingStone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rotten Tomatoes aggregates movie and TV reviews to provide audience and critic ratings reflecting overall reception..
-        /// </summary>
-        public static string RottenTomatoes {
-            get {
-                return ResourceManager.GetString("RottenTomatoes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to TMDB (The Movie Database) is a community-built database for movies, TV shows, and related metadata and images..
         /// </summary>
         public static string TMDB {
             get {
                 return ResourceManager.GetString("TMDB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trakt is a platform that helps users track, rate, and discover movies and TV shows across multiple devices..
-        /// </summary>
-        public static string Trakt {
-            get {
-                return ResourceManager.GetString("Trakt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A collection of upcoming DC movies and TV shows, featuring heroes, villains, and stories from the DC Universe..
-        /// </summary>
-        public static string UpcomingDCMoviesTVShows {
-            get {
-                return ResourceManager.GetString("UpcomingDCMoviesTVShows", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A collection of upcoming Marvel movies and TV shows, continuing the stories of iconic superheroes from the Marvel Universe..
-        /// </summary>
-        public static string UpcomingMarvelMoviesTVShows {
-            get {
-                return ResourceManager.GetString("UpcomingMarvelMoviesTVShows", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A collection of upcoming Netflix original movies, spanning various genres and featuring global talent and exclusive releases..
-        /// </summary>
-        public static string UpcomingNetflixMovies {
-            get {
-                return ResourceManager.GetString("UpcomingNetflixMovies", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A collection of upcoming Star Wars movies and TV shows, expanding the saga with new stories from a galaxy far, far away..
-        /// </summary>
-        public static string UpcomingStarWarsMoviesTVShows {
-            get {
-                return ResourceManager.GetString("UpcomingStarWarsMoviesTVShows", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A collection of upcoming films from Walt Disney Pictures, featuring new animated and live-action releases for all audiences..
-        /// </summary>
-        public static string UpcomingWaltDisneyPictures {
-            get {
-                return ResourceManager.GetString("UpcomingWaltDisneyPictures", resourceCulture);
             }
         }
     }

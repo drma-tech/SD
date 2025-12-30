@@ -93,15 +93,11 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
 
     collection.AddScoped<TmdbListApi>();
     collection.AddScoped<TmdbDiscoveryApi>();
-    collection.AddScoped<TmdbPopularApi>();
-    collection.AddScoped<TmdbTopRatedApi>();
-    collection.AddScoped<TmdbUpcomingApi>();
     collection.AddScoped<TmdbCreditApi>();
     collection.AddScoped<TmdbSearchApi>();
     collection.AddScoped<TmdbRecommendationsApi>();
 
     collection.AddScoped<ImdbPopularApi>();
-    collection.AddScoped<ImdbTopRatedApi>();
 
     collection.AddScoped<PaymentConfigurationApi>();
     collection.AddScoped<PaymentAuthApi>();

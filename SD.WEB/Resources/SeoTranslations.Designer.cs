@@ -97,24 +97,6 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to See suggestions for movies and series from different awards (Oscar, Golden Globes, Emmys, etc.) or specialized websites (IMDB, TMDB, Rotten Tomatoes, etc.)..
-        /// </summary>
-        public static string CollectionsDescription {
-            get {
-                return ResourceManager.GetString("CollectionsDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Collections.
-        /// </summary>
-        public static string CollectionsTitle {
-            get {
-                return ResourceManager.GetString("CollectionsTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to See your favorite streaming providers, wishlists (movies, series and documentaries), what you&apos;re currently watching and much more..
         /// </summary>
         public static string ProfileDescription {

@@ -38,16 +38,7 @@
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index2"></GoogleAdSense>
 
-<MudGrid Spacing="3">
-    <MudItem xs="12" sm="6">
-        <MediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2025" Watched="Watched" Watching="Watching" Wish="Wish">
-        </MediaList>
-    </MudItem>
-    <MudItem xs="12" sm="6">
-        <MediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" Watched="Watched" Watching="Watching" Wish="Wish">
-        </MediaList>
-    </MudItem>
-</MudGrid>
+<MediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" Watched="Watched" Watching="Watching" Wish="Wish" />
 
 <MudGrid Spacing="3">
     <MudItem xs="12" sm="6">
