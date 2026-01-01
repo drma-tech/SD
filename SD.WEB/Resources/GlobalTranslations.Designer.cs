@@ -79,7 +79,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Films and series that won the main awards of the year (for more details, check the Collections/Awards section).
+        ///   Looks up a localized string similar to Films and series that won the main awards of the year.
         /// </summary>
         public static string AwardsYearDescription {
             get {

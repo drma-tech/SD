@@ -44,11 +44,13 @@ if (!isBot && !isPrintScreen) {
         if (objUser) {
             // services
 
-            if (window.Userback) {
+            try {
                 window.Userback.identify(objUser.userId, {
                     name: objUser.name,
                     email: objUser.email,
                 });
+            } catch {
+                //ignores
             }
 
             // refresh token

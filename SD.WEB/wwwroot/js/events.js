@@ -131,6 +131,12 @@ window.addEventListener("unhandledrejection", function (event) {
         }
     }
 
+    if (message.includes("Assert failed: .NET runtime")) {
+        notification.showError("A fatal error occurred. Reloading the app...");
+        setTimeout(() => location.reload(), 3000);
+        return;
+    }
+
     notification.showError(`unhandledrejection: ${message}`);
 
     const log = {
