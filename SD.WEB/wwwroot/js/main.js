@@ -41,3 +41,11 @@ export const firebaseConfig = {
 };
 
 export const baseApiUrl = isLocalhost ? "http://localhost:7071" : "";
+
+// Disable robots for dev environment
+if (isDev) {
+    const meta = document.createElement("meta");
+    meta.name = "robots";
+    meta.content = "noindex, nofollow";
+    document.head.appendChild(meta);
+}

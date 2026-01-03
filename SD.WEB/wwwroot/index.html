@@ -35,32 +35,6 @@
     <script type="module" src="js/services.js"></script>
     <script type="module" src="js/devices.js"></script>
     <script type="module" src="js/swiper.js"></script>
-
-    <script type="module">
-        import { isDev } from "./js/main.js";
-        import { notification } from "./js/utils.js";
-
-        // Disable robots for dev environment
-        if (isDev) {
-            const meta = document.createElement("meta");
-            meta.name = "robots";
-            meta.content = "noindex, nofollow";
-            document.head.appendChild(meta);
-        }
-
-        // temporary: remove in the first quarter of 2026
-        if (typeof Promise.withResolvers !== "function") {
-            notification.showError("Your system’s web engine is outdated and may not support all features. Please update your device or browser to ensure the best experience.");
-            Promise.withResolvers = function () {
-                let resolve, reject;
-                const promise = new Promise((res, rej) => {
-                    resolve = res;
-                    reject = rej;
-                });
-                return { promise, resolve, reject };
-            };
-        }
-    </script>
 </head>
 
 <body>
