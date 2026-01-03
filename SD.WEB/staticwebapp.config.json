@@ -6,7 +6,9 @@
     ]
   },
   "globalHeaders": {
-    "content-security-policy": "default-src 'self'; connect-src 'self' *.googleapis.com *.google.com *.gstatic.com *.google *.googlesyndication.com *.doubleclick.net *.userback.io ipinfo.io *.stripe.com; frame-src 'self' *.google.com *.adtrafficquality.google *.doubleclick.net *.userback.io *.googlesyndication.com *.firebaseapp.com *.streamingdiscovery.com *.stripe.com; frame-ancestors 'self' https://google.com https://*.google.com https://*.doubleclick.net; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' *.googletagmanager.com *.clarity.ms *.googlesyndication.com *.adtrafficquality.google *.google.com *.userback.io *.ampproject.org *.gstatic.com *.stripe.com; style-src 'self' *.userback.io 'unsafe-inline'; font-src 'self' *.userback.io; img-src * data: blob:; media-src 'self' *.gstatic.com blob: data:; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests;",
+    //'wasm-unsafe-eval' is the correct one to use. 'unsafe-eval' is being required by AdSense. An alternative way is to use AOT, but it's not highly recommended.
+    //style-src 'unsafe-inline' is required by mudblazor.
+    "content-security-policy": "default-src 'self'; connect-src 'self' *.googleapis.com *.google.com *.gstatic.com *.google *.googlesyndication.com *.doubleclick.net *.userback.io ipinfo.io *.stripe.com; frame-src 'self' *.google.com *.adtrafficquality.google *.doubleclick.net *.userback.io *.googlesyndication.com *.firebaseapp.com *.streamingdiscovery.com *.stripe.com; frame-ancestors 'self' https://google.com https://*.google.com https://*.doubleclick.net; script-src 'self' 'unsafe-eval' *.googletagmanager.com *.clarity.ms *.googlesyndication.com *.adtrafficquality.google *.google.com *.userback.io *.ampproject.org *.gstatic.com *.stripe.com; style-src 'self' *.userback.io 'unsafe-inline'; font-src 'self' *.userback.io; img-src * data: blob:; media-src 'self' *.gstatic.com blob: data:; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests;",
     "Access-Control-Allow-Origin": "https://www.web-standards.com"
   }
 }
