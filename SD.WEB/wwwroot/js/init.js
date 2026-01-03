@@ -1,5 +1,5 @@
-﻿import { isBot, isOldBrowser } from "./js/main.js";
-import { notification } from "./js/utils.js";
+﻿import { isBot, isOldBrowser } from "./main.js";
+import { notification } from "./utils.js";
 
 //avoid google (and others) search console execute this
 if (!isBot && !isOldBrowser) {
