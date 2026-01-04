@@ -235,6 +235,9 @@ export const environment = {
     getOperatingSystem() {
         return window.browser.getOSName();
     },
+    getAppVersion() {
+        return appVersion;
+    },
 };
 
 export const interop = {

@@ -78,11 +78,6 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Translations.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Properties\Resources.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Resources.resx</DependentUpon>
-		</Compile>
 		<Compile Update="Resources\Button.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -150,10 +145,6 @@
 		<EmbeddedResource Update="Modules\Trailers\Resources\Translations.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Properties\Resources.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Button.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>

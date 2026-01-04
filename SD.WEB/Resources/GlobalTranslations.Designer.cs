@@ -97,6 +97,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Or check out our other apps:.
+        /// </summary>
+        public static string CheckOurApps {
+            get {
+                return ResourceManager.GetString("CheckOurApps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Content Language.
         /// </summary>
         public static string ContentLanguage {
