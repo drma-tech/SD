@@ -97,9 +97,11 @@ public static class PopupHelper
         var Quantity = type == MediaType.movie ? watching?.Movies.Count ?? 0 : watching?.Shows.Count ?? 0;
 
         await service.ShowAsync<MyWatchingListPopup>(Title.Format(Quantity), parameters, Options(MaxWidth.Large));
+
+        actions.FinishLoading?.Invoke(watching);
     }
 
-    public static async Task MyWishListPopup(this IDialogService service, ComponentActions<WishList?>? actions, WatchedList? watched, WatchingList? watching, WishList? wish,
+    public static async Task MyWishListPopup(this IDialogService service, ComponentActions<WishList?> actions, WatchedList? watched, WatchingList? watching, WishList? wish,
         MediaType type)
     {
         var parameters = new DialogParameters<MyWishListPopup>
@@ -118,6 +120,8 @@ public static class PopupHelper
         var Quantity = type == MediaType.movie ? wish?.Movies.Count ?? 0 : wish?.Shows.Count ?? 0;
 
         await service.ShowAsync<MyWishListPopup>(Title.Format(Quantity), parameters, Options(MaxWidth.Large));
+
+        actions.FinishLoading?.Invoke(wish);
     }
 
     public static async Task AccountPopup(this IDialogService service)
