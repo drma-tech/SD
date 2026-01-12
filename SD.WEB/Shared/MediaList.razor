@@ -34,7 +34,7 @@
                        OnClick="@(()=>Navigation.NavigateTo(GetCustomExpandUrl()))" Disabled="@(List == null && CustomExpand.Empty())" />
     </ActionFragment>
     <BodyFragment>
-        <RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+        <NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
             <div id="@_swiperId" class="swiper">
                 <div class="swiper-wrapper">
                     @foreach (var item in Items)
@@ -50,7 +50,7 @@
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
-        </RenderControl>
+        </NewRenderControl>
     </BodyFragment>
 </PageSection>
 
@@ -83,7 +83,7 @@
 
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
 
-    public RenderControlCore<HashSet<MediaDetail>>? Core { get; set; } = new();
+    public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new();
     public HashSet<MediaDetail> Items { get; set; } = [];
 
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
@@ -121,18 +121,18 @@
 
     protected override async Task LoadEssentialDataAsync()
     {
-        Core?.ShowLoading();
+        Actions?.StartLoading?.Invoke(null);
         await LoadItems();
-        Core?.HideLoading(Items);
+        Actions?.FinishLoading?.Invoke(Items);
     }
 
     private async Task TypeSelectedChangedHandle(MediaType type)
     {
-        Core?.ShowLoading();
+        Actions.StartLoading?.Invoke(null);
         TypeSelected = type;
         await TypeSelectedChanged.InvokeAsync(type);
         await LoadItems();
-        Core?.HideLoading(Items);
+        Actions.FinishLoading?.Invoke(Items);
     }
 
     private async Task LoadItems()
@@ -158,7 +158,7 @@
         }
         catch (Exception ex)
         {
-            Core?.ShowError(ex.Message);
+            Actions.ShowError?.Invoke(ex.Message);
         }
     }
 
@@ -258,7 +258,7 @@
         }
         catch (Exception ex)
         {
-            Core?.ShowError(ex.Message);
+            Actions.ShowError?.Invoke(ex.Message);
         }
     }
 

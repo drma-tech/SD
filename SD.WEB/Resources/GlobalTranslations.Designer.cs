@@ -88,7 +88,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exclusive selection from Streaming Discovery (Only films and series with 5 or more green ratings are included in this list).
+        ///   Looks up a localized string similar to Exclusive selection from Streaming Discovery (Only films and series with 4 or more green ratings are included in this list).
         /// </summary>
         public static string CertifiedDescription {
             get {

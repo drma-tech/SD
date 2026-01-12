@@ -15,7 +15,7 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <RenderControl Model="Media" Core="Core" ExpressionEmpty="@((MediaDetail? obj) => obj == null)">
+        <NewRenderControl Actions="Actions" Instance="Media" ExpressionEmpty="@((MediaDetail? obj) => obj == null)">
             <MudTabs Border="true" Outlined="true" PanelClass="pt-2" MinimumTabWidth="100px">
                 <MudTabPanel Tag="@Translations.TabAbout" Text="@Translations.TabAbout">
                     <MudGrid Spacing="4">
@@ -50,7 +50,7 @@
                                 </MudChip>
                             }
                             <div>
-                                <RenderControl PartialComponent="true" Core="CoreRatings" Model="_ratingsCache" ExpressionEmpty="@((CacheDocument<Ratings>? obj) => obj?.Data == null)" Context="ctx">
+                                <NewRenderControl Actions="RatingsActions" Instance="_ratingsCache" ExpressionEmpty="@((CacheDocument<Ratings>? obj) => obj?.Data == null)" Context="ctx" LoadingHeight="40px">
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.imdb))
                                     {
                                         <MudTooltip Text="IMDb">
@@ -121,7 +121,7 @@
                                             </MudLink>
                                         </MudTooltip>
                                     }
-                                </RenderControl>
+                                </NewRenderControl>
                             </div>
                             <MudText Typo="Typo.body1" Align="Align.Justify" Class="my-3">
                                 @Media?.plot
@@ -130,11 +130,11 @@
                             {
                                 <MudPaper Outlined="true" Class="pa-2 mb-3">
                                     <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                                        @Translations.OfficialSite
+                                        @Translations.Homepage
                                     </MudText>
                                     <MudDivider Class="mb-2"></MudDivider>
                                     <MudLink Href="@Media.homepage" Target="_blank" Color="Color.Secondary">
-                                        @(new Uri(Media.homepage).Host)
+                                        @Media.homepage
                                     </MudLink>
                                 </MudPaper>
                             }
@@ -230,7 +230,7 @@
                     </ReviewComponent>
                 </MudTabPanel>
             </MudTabs>
-        </RenderControl>
+        </NewRenderControl>
     </DialogContent>
     <DialogActions>
         @if (AppStateStatic.IsAuthenticated)
@@ -278,14 +278,14 @@
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
 
-    public RenderControlCore<MediaDetail?>? Core { get; set; } = new();
+    public ComponentActions<MediaDetail?> Actions { get; set; } = new();
     private MediaDetail? Media { get; set; }
     public string? ImdbId { get; set; }
     public string? EnglishTitle { get; set; }
 
     private const string _selectedTab = "About";
 
-    public RenderControlCore<CacheDocument<Ratings>?> CoreRatings { get; set; } = new();
+    public ComponentActions<CacheDocument<Ratings>?> RatingsActions { get; set; } = new();
     private CacheDocument<Ratings>? _ratingsCache;
 
     protected override void OnInitialized()
@@ -315,11 +315,12 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        Core?.LoadingStarted?.Invoke();
+        Actions.StartLoading?.Invoke(null);
         Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
-        Media.Videos.Reverse();
+        Media.Videos.Reverse();        
+        Actions.FinishLoading?.Invoke(Media);
+
         ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId);
-        Core?.LoadingFinished?.Invoke(Media);
 
         EnglishTitle = Media?.original_title;
         await MudDialog!.SetTitleAsync(Media?.title);
@@ -335,14 +336,16 @@
 
         StateHasChanged();
 
+        RatingsActions.StartLoading?.Invoke(null);
         if (Media?.MediaType == MediaType.movie)
         {
-            _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), CoreRatings);
+            _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"));
         }
         else
         {
-            _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), CoreRatings);
+            _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"));
         }
+        RatingsActions.FinishLoading?.Invoke(_ratingsCache);
     }
 
     private Color GetColorByRating(string? rating)

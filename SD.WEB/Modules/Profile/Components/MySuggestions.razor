@@ -52,9 +52,9 @@
         }
     </ActionFragment>
     <BodyFragment>
-        <RenderControl @ref="_render" Core="Core" Model="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())"
-                       PrivateContent="true" PremiumFeature="true" PremiumDescription="@Translations.OurSuggestions2">
-
+        <NewRenderControl Actions="Actions" Instance="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())"
+                          PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated" 
+                          PremiumFeature="true" IsPremium="AppStateStatic.IsPremiumUser" PremiumDescription="@Translations.OurSuggestions2">
             <div id="@_swiperId" class="swiper mb-2">
                 <div class="swiper-wrapper">
                     @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)) ?? new List<SuggestionListItem>())
@@ -77,7 +77,7 @@
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
-        </RenderControl>
+        </NewRenderControl>
     </BodyFragment>
 </PageSection>
 
@@ -88,13 +88,12 @@
 
     public bool MovieUpdating { get; set; }
     public bool ShowUpdating { get; set; }
-    private RenderControl<SD.Shared.Models.MySuggestions>? _render;
 
-    public RenderControlCore<SD.Shared.Models.MySuggestions?>? Core { get; set; } = new();
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
+    private ComponentActions<SD.Shared.Models.MySuggestions?> Actions { get; set; } = new();
     public AuthPrincipal? Client { get; set; }
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
 
@@ -105,7 +104,7 @@
         PrincipalApi.DataChanged += async model =>
         {
             Client = model;
-            await LoadNonEssentialDataAsync();
+            await LoadAuthDataAsync();
             StateHasChanged();
         };
     }
@@ -126,28 +125,26 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        Core?.ShowLoading();
+        Actions.StartLoading?.Invoke(null);
 
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, null);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
 
         if (MyProviders == null || MyProviders.Items.Empty())
         {
-            Core?.ShowWarning(Translations.OurSuggestions1);
+            Actions.ShowWarning?.Invoke(Translations.OurSuggestions1);
         }
         else
         {
-            if (Client != null && _render != null) _render.Status = LoadingStatus.Loading; //force reset Premium status
-
             Client ??= await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
-            mySuggestions = await MySuggestionsApi.Get(Client?.GetActiveSubscription()?.ActiveProduct, AppStateStatic.IsAuthenticated, Core);
+            mySuggestions = await MySuggestionsApi.Get(Client?.GetActiveSubscription()?.ActiveProduct, AppStateStatic.IsAuthenticated);
 
             if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
             {
-                Core?.ShowWarning(Translations.OurSuggestions2);
+                Actions.ShowWarning?.Invoke(Translations.OurSuggestions2);
             }
         }
 
-        Core?.HideLoading(mySuggestions);
+        Actions.FinishLoading?.Invoke(mySuggestions);
     }
 
     public Task ShowMediaPopup(string? tmdbId, string? name, MediaType type)
@@ -192,7 +189,7 @@
             {
                 mySuggestions.Movies.Clear();
                 MovieUpdating = true;
-                Core?.ShowProcessing();
+                Actions.StartProcessing?.Invoke(null);
 
                 //search best titles by provider (TMDB)
                 var titles = new HashSet<MediaDetail>();
@@ -235,16 +232,16 @@
                     }
                 }
 
-                if (mySuggestions.Items(MediaType.movie).Empty()) Core?.ShowWarning(null);
+                if (mySuggestions.Items(MediaType.movie).Empty()) Actions.ShowWarning?.Invoke(null);
 
-                mySuggestions = await MySuggestionsApi.Sync(MediaType.movie, mySuggestions, Core);
+                mySuggestions = await MySuggestionsApi.Sync(MediaType.movie, mySuggestions);
                 MovieUpdating = false;
             }
             else
             {
                 mySuggestions.Shows.Clear();
                 ShowUpdating = true;
-                Core?.ShowProcessing();
+                Actions.StartProcessing?.Invoke(null);
 
                 //search best titles by provider (TMDB)
                 var titles = new HashSet<MediaDetail>();
@@ -287,19 +284,19 @@
                     }
                 }
 
-                if (mySuggestions.Items(MediaType.tv).Empty()) Core?.ShowWarning(null);
+                if (mySuggestions.Items(MediaType.tv).Empty()) Actions.ShowWarning?.Invoke(null);
 
-                mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions, Core);
+                mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions);
                 ShowUpdating = false;
             }
 
-            Core?.HideProcessing(mySuggestions);
+            Actions.FinishProcessing?.Invoke(mySuggestions);
         }
         catch (Exception ex)
         {
             MovieUpdating = false;
             ShowUpdating = false;
-            Core?.ShowError(ex.Message);
+            Actions.ShowError?.Invoke(ex.Message);
             await ProcessException(ex);
         }
     }
@@ -340,7 +337,7 @@
     private void CheckedValueChanged(MediaType type)
     {
         SearchType = type;
-        Core?.LoadingFinished?.Invoke(mySuggestions);
+        Actions?.FinishLoading?.Invoke(mySuggestions);
     }
 
 }

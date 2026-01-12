@@ -1,139 +1,53 @@
-﻿using SD.WEB.Shared;
-
-namespace SD.WEB.Core.Api;
+﻿namespace SD.WEB.Core.Api;
 
 public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, string? key) : ApiCore(factory, key, type) where T : class
 {
     public Action<T?>? DataChanged { get; set; }
 
-    protected async Task<string?> GetValueAsync(string endpoint, RenderControlCore<string?>? core)
+    protected async Task<string?> GetValueAsync(string endpoint)
     {
-        core?.LoadingStarted?.Invoke();
-
-        string? result = null;
-
-        try
-        {
-            result = await GetValueAsync(endpoint);
-            return result;
-        }
-        catch (Exception ex)
-        {
-            core?.ShowError(ex.Message);
-            return null;
-        }
-        finally
-        {
-            core?.LoadingFinished?.Invoke(result);
-        }
+        return await base.GetValueAsync(endpoint);
     }
 
-    protected async Task<T?> GetAsync(string endpoint, RenderControlCore<T?>? core, bool setNewVersion = false)
+    protected async Task<T?> GetAsync(string endpoint, bool setNewVersion = false)
     {
-        core?.LoadingStarted?.Invoke();
-
-        T? obj = null;
-
-        try
-        {
-            obj = await GetAsync<T>(endpoint, setNewVersion);
-            return obj;
-        }
-        catch (Exception ex)
-        {
-            core?.ShowError(ex.Message);
-            return null;
-        }
-        finally
-        {
-            core?.LoadingFinished?.Invoke(obj);
-        }
+        return await base.GetAsync<T>(endpoint, setNewVersion);
     }
 
-    protected async Task<HashSet<T>> GetListAsync(string endpoint, RenderControlCore<HashSet<T>>? core)
+    protected async Task<HashSet<T>> GetListAsync(string endpoint)
     {
-        core?.LoadingStarted?.Invoke();
-
-        HashSet<T> list = [];
-
-        try
-        {
-            list = await GetListAsync<T>(endpoint);
-            return list;
-        }
-        catch (Exception ex)
-        {
-            core?.ShowError(ex.Message);
-            return [];
-        }
-        finally
-        {
-            core?.LoadingFinished?.Invoke(list);
-        }
+        return await base.GetListAsync<T>(endpoint);
     }
 
-    protected async Task<T?> PostAsync(string endpoint, RenderControlCore<T?>? core, T? obj)
+    protected async Task<T?> PostAsync(string endpoint, T? obj)
     {
-        return await PostAsync<T>(endpoint, core, obj);
+        return await PostAsync<T>(endpoint, obj);
     }
 
-    protected async Task<T?> PostAsync<I>(string endpoint, RenderControlCore<T?>? core, I? obj) where I : class
+    protected async Task<T?> PostAsync<I>(string endpoint, I? obj) where I : class
     {
-        T? result = null;
+        var result = await base.PostAsync<I, T>(endpoint, obj);
 
-        try
-        {
-            core?.ProcessingStarted?.Invoke();
+        DataChanged?.Invoke(result);
 
-            result = await PostAsync<I, T>(endpoint, obj);
-
-            DataChanged?.Invoke(result);
-
-            return result;
-        }
-        finally
-        {
-            core?.ProcessingFinished?.Invoke(result);
-        }
+        return result;
     }
 
-    protected async Task<T?> PutAsync<I>(string endpoint, RenderControlCore<T?>? core, I? obj) where I : class
+    protected async Task<T?> PutAsync<I>(string endpoint, I? obj) where I : class
     {
-        T? result = null;
+        var result = await base.PutAsync<I, T>(endpoint, obj);
 
-        try
-        {
-            core?.ProcessingStarted?.Invoke();
+        DataChanged?.Invoke(result);
 
-            result = await PutAsync<I, T>(endpoint, obj);
-
-            DataChanged?.Invoke(result);
-
-            return result;
-        }
-        finally
-        {
-            core?.ProcessingFinished?.Invoke(result);
-        }
+        return result;
     }
 
-    protected async Task<T?> DeleteAsync(string endpoint, RenderControlCore<T?>? core)
+    protected async Task<T?> DeleteAsync(string endpoint)
     {
-        T? result = null;
+        var result = await base.DeleteAsync<T>(endpoint);
 
-        try
-        {
-            core?.ProcessingStarted?.Invoke();
+        DataChanged?.Invoke(result);
 
-            result = await DeleteAsync<T>(endpoint);
-
-            DataChanged?.Invoke(result);
-
-            return result;
-        }
-        finally
-        {
-            core?.ProcessingFinished?.Invoke(result);
-        }
+        return result;
     }
 }

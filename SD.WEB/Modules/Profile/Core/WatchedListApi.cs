@@ -1,13 +1,12 @@
 ﻿using SD.Shared.Models.Auth;
-using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core;
 
 public class WatchedListApi(IHttpClientFactory factory) : ApiCosmos<WatchedList>(factory, ApiType.Authenticated, "watchedlist")
 {
-    public async Task<WatchedList?> Get(bool isUserAuthenticated, RenderControlCore<WatchedList?>? core)
+    public async Task<WatchedList?> Get(bool isUserAuthenticated)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, core);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.Get);
 
         return new WatchedList();
     }
@@ -18,7 +17,7 @@ public class WatchedListApi(IHttpClientFactory factory) : ApiCosmos<WatchedList>
         ArgumentNullException.ThrowIfNull(tmdbId);
         SubscriptionHelper.ValidateWatched(subs?.ActiveProduct, (obj?.Items(mediaType).Count ?? 0) + 1);
 
-        return await PostAsync<WatchedList>(Endpoint.Add(mediaType, tmdbId), null, null);
+        return await PostAsync<WatchedList>(Endpoint.Add(mediaType, tmdbId), null);
     }
 
     public async Task<WatchedList?> Remove(MediaType? mediaType, string? tmdbId)
@@ -26,7 +25,7 @@ public class WatchedListApi(IHttpClientFactory factory) : ApiCosmos<WatchedList>
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(tmdbId);
 
-        return await PostAsync<WatchedList>(Endpoint.Remove(mediaType, tmdbId), null, null);
+        return await PostAsync<WatchedList>(Endpoint.Remove(mediaType, tmdbId), null);
     }
 
     private struct Endpoint

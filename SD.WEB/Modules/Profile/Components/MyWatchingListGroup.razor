@@ -1,15 +1,15 @@
 ﻿@using SD.WEB.Modules.Profile.Components
 
 <WatchingComponent MediaType="MediaType.movie" ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish"
-                   Core="CoreWatching" ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()">
+                   Actions="Actions" ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()">
 </WatchingComponent>
 
 <WatchingComponent MediaType="MediaType.tv" ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish"
-                   Core="CoreWatching" ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()">
+                   Actions="Actions" ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()">
 </WatchingComponent>
 
 @code {
-    [Parameter][EditorRequired] public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
+    [Parameter][EditorRequired] public ComponentActions<WatchingList?> Actions { get; set; } = new();
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }

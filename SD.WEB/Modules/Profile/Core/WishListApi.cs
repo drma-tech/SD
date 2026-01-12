@@ -1,13 +1,12 @@
 ﻿using SD.Shared.Models.Auth;
-using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core;
 
 public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(factory, ApiType.Authenticated, "wishlist")
 {
-    public async Task<WishList?> Get(bool isUserAuthenticated, RenderControlCore<WishList?>? core)
+    public async Task<WishList?> Get(bool isUserAuthenticated)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, core);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.Get);
 
         return new WishList();
     }
@@ -18,7 +17,7 @@ public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(facto
         ArgumentNullException.ThrowIfNull(item);
         SubscriptionHelper.ValidateWishList(subs?.ActiveProduct, (obj?.Items(mediaType).Count ?? 0) + 1);
 
-        return await PostAsync(Endpoint.Add(mediaType), null, item);
+        return await PostAsync(Endpoint.Add(mediaType), item);
     }
 
     public async Task<WishList?> Remove(MediaType? mediaType, string? id)
@@ -26,7 +25,7 @@ public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(facto
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(id);
 
-        return await PostAsync(Endpoint.Remove(mediaType, id), null, null);
+        return await PostAsync(Endpoint.Remove(mediaType, id), null);
     }
 
     private struct Endpoint

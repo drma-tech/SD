@@ -18,8 +18,9 @@
         }
     </ActionFragment>
     <BodyFragment>
-        <RenderControl Core="Core" Model="MyProviders" ExpressionEmpty="(MyProviders? obj) => obj == null || obj.Items.Empty()" PrivateContent="true"
-                       CustomMessageWarning="@Modules.Profile.Resources.Translations.MarkPlatforms">
+        <NewRenderControl Actions="Actions" Instance="MyProviders" ExpressionEmpty="(MyProviders? obj) => obj == null || obj.Items.Empty()"
+                          PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
+                          CustomMessageWarning="@Modules.Profile.Resources.Translations.MarkPlatforms">
             <div id="@_swiperId" class="swiper">
                 <div class="swiper-wrapper">
                     @foreach (var item in MyProviders?.Items.Take(AccountProduct.Premium.GetRestrictions().MySuggestions) ?? new List<MyProvidersItem>())
@@ -43,7 +44,7 @@
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
-        </RenderControl>
+        </NewRenderControl>
     </BodyFragment>
 </PageSection>
 
@@ -52,7 +53,7 @@
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
-    public RenderControlCore<MyProviders?> Core { get; set; } = new();
+    private ComponentActions<MyProviders?> Actions { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
     private MyProviders? MyProviders { get; set; }
     private bool ProvidersChanged { get; set; }
@@ -66,7 +67,7 @@
         MyProvidersApi.DataChanged += model =>
         {
             MyProviders = model;
-            Core.LoadingFinished?.Invoke(model);
+            Actions.FinishLoading?.Invoke(model);
             StateHasChanged();
         };
     }
@@ -87,14 +88,16 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        AllProviders ??= await AllProvidersApi.GetAll(null);
+        AllProviders ??= await AllProvidersApi.GetAll();
 
         Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
     }
 
     protected override async Task LoadAuthDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, Core);
+        Actions.StartLoading?.Invoke(null);
+
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
 
         foreach (var item in MyProviders?.Items ?? [])
         {
@@ -105,6 +108,8 @@
                 ProvidersChanged = true;
             }
         }
+
+        Actions.FinishLoading?.Invoke(MyProviders);
 
         if (MyProviders != null && MyProviders.Items.Any(a => !a.region.HasValue)) //update region (legacy)
         {
@@ -131,7 +136,7 @@
 
     public async Task ShowProviderPopup(MyProvidersItem item)
     {
-        AllProviders ??= await AllProvidersApi.GetAll(null);
+        AllProviders ??= await AllProvidersApi.GetAll();
 
         await DialogService.PlatformPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList,
             item.region?.ToString(), item.id);

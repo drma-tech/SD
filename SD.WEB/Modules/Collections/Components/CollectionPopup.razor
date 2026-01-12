@@ -12,7 +12,7 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <RenderControl Core="Core" Model="Collection" ExpressionEmpty="@((TmdbCollection? obj) => obj == null || obj.parts.Empty())">
+        <NewRenderControl Actions="Actions" Instance="Collection" ExpressionEmpty="@((TmdbCollection? obj) => obj == null || obj.parts.Empty())">
             <div class="grid-relative-container-poster mb-2">
                 @foreach (var item in Collection?.parts.OrderBy(o => o.release_date.GetDate() ?? DateTime.MaxValue) ?? Enumerable.Empty<Part>())
                 {
@@ -23,7 +23,7 @@
                     </PosterComponent>
                 }
             </div>
-        </RenderControl>
+        </NewRenderControl>
     </DialogContent>
     <DialogActions>
         @if (AppStateStatic.IsAuthenticated)
@@ -54,7 +54,7 @@
     [Parameter] public string? CollectionId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
 
-    private RenderControlCore<TmdbCollection?>? Core { get; } = new();
+    private ComponentActions<TmdbCollection?> Actions { get; } = new();
     private TmdbCollection? Collection { get; set; }
 
     protected override void OnInitialized()
@@ -84,7 +84,7 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        Core?.LoadingStarted?.Invoke();
+        Actions.StartLoading?.Invoke(null);
 
         if (Type == MediaType.movie)
         {
@@ -120,7 +120,7 @@
         }
 
         await MudDialog!.SetTitleAsync(Collection?.name);
-        Core?.LoadingFinished?.Invoke(Collection);
+        Actions.FinishLoading?.Invoke(Collection);
     }
 
     public void HideModal()

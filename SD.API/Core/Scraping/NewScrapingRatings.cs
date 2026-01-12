@@ -31,47 +31,29 @@ namespace SD.API.Core.Scraping
                 var client = factory.CreateClient("rapidapi-gzip");
                 var result = await client.GetFilmShowRatings<RatingApiRoot>(ratings.imdbId, cancellationToken);
 
-                if (ratings.tmdb.Empty())
-                {
-                    ratings.tmdb = result?.result?.ratings?.TMDB?.audience?.rating.ToString(CultureInfo.InvariantCulture);
-                    ratings.tmdbLink ??= result?.result?.links?.TMDB;
-                }
+                ratings.tmdb ??= result?.result?.ratings?.TMDB?.audience?.rating.ToString(CultureInfo.InvariantCulture);
+                ratings.tmdbLink ??= result?.result?.links?.TMDB;
 
-                if (ratings.imdb.Empty())
-                {
-                    ratings.imdb = result?.result?.ratings?.IMDb?.audience?.rating.ToString(CultureInfo.InvariantCulture);
-                    ratings.imdbLink ??= result?.result?.links?.IMDb;
-                }
+                ratings.imdb ??= result?.result?.ratings?.IMDb?.audience?.rating.ToString(CultureInfo.InvariantCulture);
+                ratings.imdbLink ??= result?.result?.links?.IMDb;
 
-                if (ratings.metacritic.Empty())
-                {
-                    ratings.metacritic = result?.result?.ratings?.Metacritic?.audience?.rating.ToString(CultureInfo.InvariantCulture);
-                    ratings.metacriticLink ??= result?.result?.links?.Metacritic;
-                }
+                ratings.metacritic ??= result?.result?.ratings?.Metacritic?.audience?.rating.ToString(CultureInfo.InvariantCulture);
+                ratings.metacriticLink ??= result?.result?.links?.Metacritic;
 
-                if (ratings.rottenTomatoes.Empty())
-                {
-                    var rottenTomatoesRating = result?.result?.ratings?.RottenTomatoes?.audience?.rating;
-                    if (rottenTomatoesRating.HasValue) rottenTomatoesRating /= 10;
+                var rottenTomatoesRating = result?.result?.ratings?.RottenTomatoes?.audience?.rating;
+                if (rottenTomatoesRating.HasValue) rottenTomatoesRating /= 10;
 
-                    ratings.rottenTomatoes = rottenTomatoesRating?.ToString(CultureInfo.InvariantCulture);
-                    ratings.rottenTomatoesLink ??= result?.result?.links?.RottenTomatoes;
-                }
+                ratings.rottenTomatoes ??= rottenTomatoesRating?.ToString(CultureInfo.InvariantCulture);
+                ratings.rottenTomatoesLink ??= result?.result?.links?.RottenTomatoes;
 
-                if (ratings.filmAffinity.Empty())
-                {
-                    ratings.filmAffinity = result?.result?.ratings?.FilmAffinity?.audience?.rating.ToString(CultureInfo.InvariantCulture);
-                    ratings.filmAffinityLink ??= result?.result?.links?.FilmAffinity;
-                }
+                ratings.filmAffinity ??= result?.result?.ratings?.FilmAffinity?.audience?.rating.ToString(CultureInfo.InvariantCulture);
+                ratings.filmAffinityLink ??= result?.result?.links?.FilmAffinity;
 
-                if (ratings.letterboxd.Empty())
-                {
-                    var letterboxdRating = result?.result?.ratings?.Letterboxd?.audience?.rating;
-                    if (letterboxdRating.HasValue) letterboxdRating *= 2;
+                var letterboxdRating = result?.result?.ratings?.Letterboxd?.audience?.rating;
+                if (letterboxdRating.HasValue) letterboxdRating *= 2;
 
-                    ratings.letterboxd = letterboxdRating?.ToString(CultureInfo.InvariantCulture);
-                    ratings.letterboxdLink ??= result?.result?.links?.Letterboxd;
-                }
+                ratings.letterboxd ??= letterboxdRating?.ToString(CultureInfo.InvariantCulture);
+                ratings.letterboxdLink ??= result?.result?.links?.Letterboxd;
             }
             catch (Exception ex)
             {
@@ -102,33 +84,21 @@ namespace SD.API.Core.Scraping
                 var client = factory.CreateClient("rapidapi");
                 var result = await client.GetUnifiedMovie<Shared.Models.List.UnifiedMovie.Root>(ratings.tmdbId, cancellationToken);
 
-                if (ratings.tmdb.Empty())
-                {
-                    var rating = result?.data?.ratings?.ratings?.FirstOrDefault(p => p.source == "tmdb")?.score;
-                    if (rating.HasValue) rating /= 10;
-                    ratings.tmdb = rating?.ToString(CultureInfo.InvariantCulture);
-                }
+                var rating1 = result?.data?.ratings?.ratings?.FirstOrDefault(p => p.source == "tmdb")?.score;
+                if (rating1.HasValue) rating1 /= 10;
+                ratings.tmdb ??= rating1?.ToString(CultureInfo.InvariantCulture);
 
-                if (ratings.imdb.Empty())
-                {
-                    var rating = result?.data?.ratings?.ratings?.FirstOrDefault(p => p.source == "imdb")?.score;
-                    if (rating.HasValue) rating /= 10;
-                    ratings.imdb = rating?.ToString(CultureInfo.InvariantCulture);
-                }
+                var rating2 = result?.data?.ratings?.ratings?.FirstOrDefault(p => p.source == "imdb")?.score;
+                if (rating2.HasValue) rating2 /= 10;
+                ratings.imdb ??= rating2?.ToString(CultureInfo.InvariantCulture);
 
-                if (ratings.metacritic.Empty())
-                {
-                    var rating = result?.data?.ratings?.ratings?.FirstOrDefault(p => p.source == "metacritic")?.score;
-                    if (rating.HasValue) rating /= 10;
-                    ratings.metacritic = rating?.ToString(CultureInfo.InvariantCulture);
-                }
+                var rating3 = result?.data?.ratings?.ratings?.FirstOrDefault(p => p.source == "metacritic")?.score;
+                if (rating3.HasValue) rating3 /= 10;
+                ratings.metacritic ??= rating3?.ToString(CultureInfo.InvariantCulture);
 
-                if (ratings.rottenTomatoes.Empty())
-                {
-                    var rating = result?.data?.ratings?.ratings?.FirstOrDefault(p => p.source == "rottenTomatoes")?.score;
-                    if (rating.HasValue) rating /= 10;
-                    ratings.rottenTomatoes = rating?.ToString(CultureInfo.InvariantCulture);
-                }
+                var rating4 = result?.data?.ratings?.ratings?.FirstOrDefault(p => p.source == "rottenTomatoes")?.score;
+                if (rating4.HasValue) rating4 /= 10;
+                ratings.rottenTomatoes ??= rating4?.ToString(CultureInfo.InvariantCulture);
             }
             catch (Exception ex)
             {
@@ -159,35 +129,23 @@ namespace SD.API.Core.Scraping
                 var client = factory.CreateClient("rapidapi");
                 var result = await client.GetMoviesRatings2<Shared.Models.List.MoviesRatings2.Root>(ratings.imdbId, cancellationToken);
 
-                if (ratings.imdb.Empty())
-                {
-                    ratings.imdb = result?.ratings?.imdb?.score?.ToString(CultureInfo.InvariantCulture);
-                    ratings.imdbLink ??= result?.ratings?.imdb?.url;
-                }
+                ratings.imdb ??= result?.ratings?.imdb?.score?.ToString(CultureInfo.InvariantCulture);
+                ratings.imdbLink ??= result?.ratings?.imdb?.url;
 
-                if (ratings.metacritic.Empty())
-                {
-                    ratings.imdb = result?.ratings?.metacritic?.userScore?.ToString(CultureInfo.InvariantCulture);
-                    ratings.imdbLink ??= result?.ratings?.metacritic?.url;
-                }
+                ratings.imdb ??= result?.ratings?.metacritic?.userScore?.ToString(CultureInfo.InvariantCulture);
+                ratings.imdbLink ??= result?.ratings?.metacritic?.url;
 
-                if (ratings.rottenTomatoes.Empty())
-                {
-                    var rottenTomatoesRating = result?.ratings?.rotten_tomatoes?.audienceScore;
-                    if (rottenTomatoesRating.HasValue) rottenTomatoesRating /= 10;
+                var rottenTomatoesRating = result?.ratings?.rotten_tomatoes?.audienceScore;
+                if (rottenTomatoesRating.HasValue) rottenTomatoesRating /= 10;
 
-                    ratings.rottenTomatoes = rottenTomatoesRating?.ToString(CultureInfo.InvariantCulture);
-                    ratings.rottenTomatoesLink ??= result?.ratings?.rotten_tomatoes?.url;
-                }
+                ratings.rottenTomatoes ??= rottenTomatoesRating?.ToString(CultureInfo.InvariantCulture);
+                ratings.rottenTomatoesLink ??= result?.ratings?.rotten_tomatoes?.url;
 
-                if (ratings.letterboxd.Empty())
-                {
-                    var letterboxdRating = result?.ratings?.letterboxd?.score;
-                    if (letterboxdRating.HasValue) letterboxdRating *= 2;
+                var letterboxdRating = result?.ratings?.letterboxd?.score;
+                if (letterboxdRating.HasValue) letterboxdRating *= 2;
 
-                    ratings.letterboxd = letterboxdRating?.ToString(CultureInfo.InvariantCulture);
-                    ratings.letterboxdLink ??= result?.ratings?.letterboxd?.url;
-                }
+                ratings.letterboxd ??= letterboxdRating?.ToString(CultureInfo.InvariantCulture);
+                ratings.letterboxdLink ??= result?.ratings?.letterboxd?.url;
             }
             catch (Exception ex)
             {

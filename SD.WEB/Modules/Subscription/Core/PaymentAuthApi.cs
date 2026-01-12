@@ -6,7 +6,7 @@ namespace SD.WEB.Modules.Subscription.Core
     {
         public async Task AppleVerify(string receipt)
         {
-            await PostAsync(Endpoint.AppleVerify, null, receipt);
+            await PostAsync(Endpoint.AppleVerify, receipt);
         }
 
         public async Task<AuthPrincipal?> StripeCustomer()

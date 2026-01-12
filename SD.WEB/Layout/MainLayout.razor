@@ -48,8 +48,6 @@
 </MudLayout>
 
 @code {
-    [CascadingParameter] protected Task<AuthenticationState> AuthenticationState { get; set; } = null!;
-
     private MudThemeProvider? _mudThemeProvider;
     private bool _darkMode = false;
     private AuthPrincipal? Principal { get; set; }
@@ -64,7 +62,6 @@
 
             AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
             AppStateStatic.ShowError += msg => { Snackbar.Add(msg, Severity.Error); };
-            AppStateStatic.UserStateChanged += async () => await UserStateChanged();
             AppStateStatic.NotificationEnabled += async (string token, string platform) => { await FirebaseApi.Subscribe(token, platform); };
 
             // 1 = capture the claims
@@ -83,6 +80,8 @@
                 AppStateStatic.User = user;
                 AppStateStatic.UserId = user?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
                 AppStateStatic.IsAuthenticated = user?.Identity is not null && user.Identity.IsAuthenticated;
+                if (!AppStateStatic.IsAuthenticated) AppStateStatic.IsPremiumUser = false;
+                await ProcessUserAccess();
 
                 StateHasChanged();
                 AppStateStatic.UserStateChanged?.Invoke();
@@ -120,7 +119,7 @@
         }
     }
 
-    private async Task UserStateChanged()
+    private async Task ProcessUserAccess()
     {
         try
         {
@@ -143,6 +142,9 @@
             if (Navigation.Uri.Contains("/support/")) return;
 
             Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
+
+            var sub = Principal?.GetActiveSubscription();
+            AppStateStatic.IsPremiumUser = sub?.IsActive() ?? false;
 
             if (Principal == null)
             {

@@ -12,7 +12,7 @@
     <PageHeader Title="@GetTitle" Subtitle="@SubtitleHead" Icon="@Icon" Description="@Description"></PageHeader>
 }
 
-<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+<NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
     <div class="grid-relative-container-poster">
         @foreach (var item in Items)
         {
@@ -22,11 +22,11 @@
             </PosterComponent>
         }
     </div>
-</RenderControl>
+</NewRenderControl>
 @if (MediaListApi != null)
 {
     <div style="text-align: center;" class="pt-3">
-        <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Primary" OnClick="@LoadMore" Disabled="@DisableLoadMore" Variant="Variant.Outlined" Size="AppStateStatic.Size">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Primary" OnClick="@LoadMore" Disabled="@DisableLoadMore" Variant="Variant.Filled" Size="AppStateStatic.Size">
             @Button.LoadMore
         </MudButton>
     </div>
@@ -53,7 +53,7 @@
     [Parameter] public bool Popup { get; set; } = false;
     [Parameter] public bool OnlyYear { get; set; }
 
-    [Parameter] public RenderControlCore<HashSet<MediaDetail>>? Core { get; set; } = new();
+    [Parameter] public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new();
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = [];
     [Parameter] public EventCallback<HashSet<MediaDetail>> ItemsChanged { get; set; }
 
@@ -81,21 +81,14 @@
         // AppState.WishListChanged += StateHasChanged;
         // AppState.WatchedListChanged += StateHasChanged;
 
-        if (DetectRegions) AppStateStatic.RegionChanged += Region => LoadGenericVoid();
+        if (DetectRegions) AppStateStatic.RegionChanged += async (Region) => await LoadEssentialDataAsync();
     }
 
     protected override async Task LoadEssentialDataAsync()
     {
-        Core?.ShowLoading();
+        Actions.StartLoading?.Invoke(null);
         await LoadItems();
-        Core?.HideLoading(Items);
-    }
-
-    protected async void LoadGenericVoid()
-    {
-        Core?.ShowLoading();
-        await LoadItems();
-        Core?.HideLoading(Items);
+        Actions.FinishLoading?.Invoke(Items);
     }
 
     private async Task LoadItems()

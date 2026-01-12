@@ -6,7 +6,7 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
 {
     public async Task<AuthPrincipal?> Get(bool isUserAuthenticated, bool setNewVersion = false)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, null, setNewVersion);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, setNewVersion);
 
         return null;
     }
@@ -15,26 +15,26 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
     {
         ArgumentNullException.ThrowIfNull(obj);
 
-        return await PostAsync(Endpoint.Add, null, obj);
+        return await PostAsync(Endpoint.Add, obj);
     }
 
     public async Task<AuthPrincipal?> Update(AuthPrincipal? obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
 
-        return await PutAsync(Endpoint.Update, null, obj);
+        return await PutAsync(Endpoint.Update, obj);
     }
 
     public async Task Event(string app, string msg)
     {
         ArgumentNullException.ThrowIfNull(msg);
 
-        await PutAsync<AuthPrincipal>(Endpoint.Event(app, msg), null, null);
+        await PutAsync<AuthPrincipal>(Endpoint.Event(app, msg), null);
     }
 
     public async Task Remove()
     {
-        await DeleteAsync(Endpoint.Remove, null);
+        await DeleteAsync(Endpoint.Remove);
     }
 
     private struct Endpoint

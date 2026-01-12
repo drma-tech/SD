@@ -23,8 +23,9 @@
         </MudTooltip>
     </ActionFragment>
     <BodyFragment>
-        <RenderControl Core="Core" PrivateContent="true" Model="Watching" ExpressionEmpty="ExpressionEmpty"
-                       CustomMessageWarning="@Modules.Profile.Resources.Translations.MarkTitlesWatched">
+        <NewRenderControl Actions="Actions" Instance="Watching" ExpressionEmpty="ExpressionEmpty"
+                          PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
+                          CustomMessageWarning="@Modules.Profile.Resources.Translations.MarkTitlesWatched">
             @if (FullScreen)
             {
                 <div class="grid-relative-container-poster">
@@ -59,12 +60,12 @@
                     <div class="swiper-button-prev"></div>
                 </div>
             }
-        </RenderControl>
+        </NewRenderControl>
     </BodyFragment>
 </PageSection>
 
 @code {
-    [Parameter][EditorRequired] public RenderControlCore<WatchingList?> Core { get; set; } = new();
+    [Parameter][EditorRequired] public ComponentActions<WatchingList?> Actions { get; set; } = new();
     [Parameter][EditorRequired] public MediaType MediaType { get; set; }
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }
@@ -98,7 +99,7 @@
 
     private async Task OpenCompleteList()
     {
-        await DialogService.MyWatchingListPopup(Core, MediaType, Watched, Watching, Wish);
+        await DialogService.MyWatchingListPopup(Actions, MediaType, Watched, Watching, Wish);
     }
 
     public Task ShowMediaPopup(string? tmdbId, string? name)
@@ -115,7 +116,7 @@
     {
         try
         {
-            var watching = await WatchingApi.Get(AppStateStatic.IsAuthenticated, Core); //get a new one (memory may be compromised/corrupted)
+            var watching = await WatchingApi.Get(AppStateStatic.IsAuthenticated); //get a new one (memory may be compromised/corrupted)
             var client = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
 
             if (MediaType == MediaType.movie)
@@ -123,7 +124,7 @@
                 watching?.Movies.Clear();
                 Updating = true;
                 StateHasChanged();
-                Core?.ShowProcessing();
+                Actions.StartProcessing?.Invoke(null);
 
                 foreach (var tmdbId in Watched?.GetItems(MediaType.movie) ?? [])
                 {
@@ -164,18 +165,18 @@
                     }
                 }
 
-                watching = await WatchingApi.Sync(MediaType.movie, watching, Core);
+                watching = await WatchingApi.Sync(MediaType.movie, watching);
 
                 Updating = false;
                 StateHasChanged();
-                Core?.HideProcessing(watching);
+                Actions.FinishProcessing?.Invoke(watching);
             }
             else
             {
                 watching?.Shows.Clear();
                 Updating = true;
                 StateHasChanged();
-                Core?.ShowProcessing();
+                Actions.StartProcessing?.Invoke(null);
 
                 foreach (var tmdbId in Watched?.GetItems(MediaType.tv) ?? [])
                 {
@@ -216,11 +217,11 @@
                     }
                 }
 
-                watching = await WatchingApi.Sync(MediaType.tv, watching, Core);
+                watching = await WatchingApi.Sync(MediaType.tv, watching);
 
                 Updating = false;
                 StateHasChanged();
-                Core?.HideProcessing(watching);
+                Actions.FinishProcessing?.Invoke(watching);
             }
 
             StateHasChanged();
@@ -228,7 +229,7 @@
         catch (Exception ex)
         {
             Updating = false;
-            Core?.ShowError(ex.Message);
+            Actions.ShowError?.Invoke(ex.Message);
             await ProcessException(ex);
         }
     }

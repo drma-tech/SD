@@ -9,8 +9,9 @@
         </MudTooltip>
     </ActionFragment>
     <BodyFragment>
-        <RenderControl Core="Core" PrivateContent="true" Model="Wish" ExpressionEmpty="ExpressionEmpty"
-                       CustomMessageWarning="@Modules.Profile.Resources.Translations.AddTitlesWishlist">
+        <NewRenderControl Actions="Actions" Instance="Wish" ExpressionEmpty="ExpressionEmpty"
+                          PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
+                          CustomMessageWarning="@Modules.Profile.Resources.Translations.AddTitlesWishlist">
             @if (FullScreen)
             {
                 <div class="grid-relative-container-poster">
@@ -41,12 +42,12 @@
                     <div class="swiper-button-prev"></div>
                 </div>
             }
-        </RenderControl>
+        </NewRenderControl>
     </BodyFragment>
 </PageSection>
 
 @code {
-    [Parameter][EditorRequired] public RenderControlCore<WishList?> Core { get; set; } = new();
+    [Parameter][EditorRequired] public ComponentActions<WishList?> Actions { get; set; } = new();
     [Parameter][EditorRequired] public MediaType MediaType { get; set; }
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }
@@ -79,7 +80,7 @@
 
     private async Task OpenCompleteList()
     {
-        await DialogService.MyWishListPopup(Core, Watched, Watching, Wish, MediaType);
+        await DialogService.MyWishListPopup(Actions, Watched, Watching, Wish, MediaType);
     }
 
     public Task ShowMediaPopup(string? tmdbId, string? name)

@@ -3,7 +3,7 @@
 
 @inject CacheMetaCriticApi CacheMetaCriticApi
 
-<RenderControl Core="Core" Model="Model" ExpressionEmpty="@((CacheDocument<ReviewModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+<NewRenderControl Actions="Actions" Instance="Model?.Data" ExpressionEmpty="@((ReviewModel? obj) => obj == null || obj.Items.Empty())">
     <MudGrid Spacing="2">
         @foreach (var item in Model?.Data?.Items ?? [])
         {
@@ -28,7 +28,7 @@
             </MudItem>
         }
     </MudGrid>
-</RenderControl>
+</NewRenderControl>
 
 @code {
     [Parameter] public string? ImdbId { get; set; }
@@ -36,26 +36,26 @@
     [Parameter] public DateTime? ReleaseDate { get; set; }
     [Parameter] public MediaType? Type { get; set; }
 
-    public RenderControlCore<CacheDocument<ReviewModel>?> Core { get; set; } = new();
     public CacheDocument<ReviewModel>? Model { get; set; }
+    private ComponentActions<ReviewModel?> Actions { get; set; } = new();
 
-    protected override async Task LoadParameterizedDataAsync()
+    protected override async Task LoadNonEssentialDataAsync()
     {
+        Actions.StartLoading?.Invoke(null);
+
         if (!string.IsNullOrEmpty(ImdbId))
         {
             if (Type == MediaType.movie)
             {
-                Model = await CacheMetaCriticApi.GetMovieReviews(ImdbId, EnglishTitle, ReleaseDate, Core);
+                Model = await CacheMetaCriticApi.GetMovieReviews(ImdbId, EnglishTitle, ReleaseDate);
             }
             else
             {
-                Model = await CacheMetaCriticApi.GetShowReviews(ImdbId, EnglishTitle, ReleaseDate, Core);
+                Model = await CacheMetaCriticApi.GetShowReviews(ImdbId, EnglishTitle, ReleaseDate);
             }
         }
-        else
-        {
-            Core.LoadingFinished?.Invoke(null);
-        }
+
+        Actions.FinishLoading?.Invoke(Model?.Data);
     }
 
     private static Color GetColorByRating(int? val)

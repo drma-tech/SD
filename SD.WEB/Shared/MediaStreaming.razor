@@ -13,7 +13,7 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<RenderControl Core="Core" Model="Providers" ExpressionEmpty="@((MediaProviders? obj) => obj == null)">
+<NewRenderControl Actions="Actions" Instance="Providers" ExpressionEmpty="@((MediaProviders? obj) => obj == null)">
     @{
         var hasProvider = false;
 
@@ -271,35 +271,34 @@
 
         // <AuthorizeView Roles="administrator">
         //     <Authorized>
-        //         <Button Color="Color.Secondary" Clicked="@Atualizar" Disabled="false" Margin="Margin.Is2.FromTop">Atualizar</Button>
+        //         <Button Color="Color.Secondary" Clicked="@Update" Disabled="false" Margin="Margin.Is2.FromTop">Update</Button>
         //     </Authorized>
         // </AuthorizeView>
     }
-</RenderControl>
+</NewRenderControl>
 
 @code {
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
     [Parameter] public DateTime? ReleaseDate { get; set; }
 
-    public RenderControlCore<MediaProviders?>? Core { get; set; } = new();
+    public ComponentActions<MediaProviders?> Actions { get; set; } = new();
     private MediaProviders? Providers { get; set; }
     private AllProviders? AllProviders { get; set; }
 
     public Region Region { get; set; } = Region.US;
 
-    protected override async Task LoadParameterizedDataAsync()
+    protected override async Task LoadEssentialDataAsync()
     {
-        AllProviders = await AllProvidersApi.GetAll(null);
-
-        Core?.LoadingStarted?.Invoke();
-        Providers = await TmdbApi.GetWatchProvidersList(TmdbId, Type);
-        Core?.LoadingFinished?.Invoke(Providers);
+        AllProviders = await AllProvidersApi.GetAll();
     }
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
+        Actions.StartLoading?.Invoke(null);
+        Providers = await TmdbApi.GetWatchProvidersList(TmdbId, Type);
+        Actions.FinishLoading?.Invoke(Providers);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);        
     }
 
     private async Task Update()

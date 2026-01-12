@@ -28,7 +28,7 @@
     </ActionFragment>
 </PageHeader>
 
-<RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null || obj.Items.Empty())">
+<NewRenderControl Actions="Actions" Instance="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null || obj.Items.Empty())">
     <div class="grid-relative-container-platform">
         @foreach (var item in GetFilteredProviders())
         {
@@ -75,10 +75,10 @@
             </div>
         }
     </div>
-</RenderControl>
+</NewRenderControl>
 
 @code {
-    public RenderControlCore<AllProviders?>? Core { get; set; } = new();
+    public ComponentActions<AllProviders?> Actions { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
 
     private MyProviders? MyProviders { get; set; }
@@ -109,7 +109,9 @@
     {
         DeliveryModels = EnumHelper.GetList<DeliveryModel>();
 
-        AllProviders = await AllProvidersApi.GetAll(Core);
+        Actions.StartLoading?.Invoke(null);
+        AllProviders = await AllProvidersApi.GetAll();
+        Actions.FinishLoading?.Invoke(AllProviders);
     }
 
     protected override async Task LoadNonEssentialDataAsync()
@@ -119,7 +121,7 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, null);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
     }
 
 }

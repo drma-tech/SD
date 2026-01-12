@@ -18,7 +18,7 @@ public static class SubscriptionHelper
         var restriction = product.Value.GetRestrictions();
 
         if (qtd > restriction.FavoriteProviders)
-            throw new NotificationException("Your current plan does not support this operation");
+            throw new NotificationException("Your current plan does not support this operation. Consider upgrading to premium for more benefits.");
     }
 
     public static void ValidateWatched(AccountProduct? product, int qtd)
@@ -27,7 +27,7 @@ public static class SubscriptionHelper
         var restriction = product.Value.GetRestrictions();
 
         if (qtd > restriction.Watched)
-            throw new NotificationException("Your current plan does not support this operation");
+            throw new NotificationException("Your current plan does not support this operation. Consider upgrading to premium for more benefits.");
     }
 
     public static void ValidateWatching(AccountProduct? product, int qtd)
@@ -36,7 +36,7 @@ public static class SubscriptionHelper
         var restriction = product.Value.GetRestrictions();
 
         if (qtd > restriction.Watching)
-            throw new NotificationException("Your current plan does not support this operation");
+            throw new NotificationException("Your current plan does not support this operation. Consider upgrading to premium for more benefits.");
     }
 
     public static void ValidateWishList(AccountProduct? product, int qtd)
@@ -45,7 +45,7 @@ public static class SubscriptionHelper
         var restriction = product.Value.GetRestrictions();
 
         if (qtd > restriction.Wishlist)
-            throw new NotificationException("Your current plan does not support this operation");
+            throw new NotificationException("Your current plan does not support this operation. Consider upgrading to premium for more benefits.");
     }
 }
 
@@ -61,7 +61,7 @@ public abstract class Restrictions
 
 public class BasicRestrictions : Restrictions
 {
-    public override int Energy => 5;
+    public override int Energy => 10;
     public override int FavoriteProviders => 2;
     public override int MySuggestions => 0;
     public override int Watched => 14;

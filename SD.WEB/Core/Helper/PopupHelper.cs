@@ -78,12 +78,12 @@ public static class PopupHelper
         await service.ShowAsync<MySuggestionsPopup>(GlobalTranslations.SuggestionFilters, parameters, Options(MaxWidth.Small));
     }
 
-    public static async Task MyWatchingListPopup(this IDialogService service, RenderControlCore<WatchingList?>? core, MediaType type,
+    public static async Task MyWatchingListPopup(this IDialogService service, ComponentActions<WatchingList?> actions, MediaType type,
         WatchedList? watched, WatchingList? watching, WishList? wish)
     {
         var parameters = new DialogParameters<MyWatchingListPopup>
         {
-            { x => x.Core, core },
+            { x => x.Actions, actions },
             { x => x.MediaType, type },
             { x => x.Watched, watched },
             { x => x.Watching, watching },
@@ -99,12 +99,12 @@ public static class PopupHelper
         await service.ShowAsync<MyWatchingListPopup>(Title.Format(Quantity), parameters, Options(MaxWidth.Large));
     }
 
-    public static async Task MyWishListPopup(this IDialogService service, RenderControlCore<WishList?>? core, WatchedList? watched, WatchingList? watching, WishList? wish,
+    public static async Task MyWishListPopup(this IDialogService service, ComponentActions<WishList?>? actions, WatchedList? watched, WatchingList? watching, WishList? wish,
         MediaType type)
     {
         var parameters = new DialogParameters<MyWishListPopup>
         {
-            { x => x.Core, core },
+            { x => x.Actions, actions },
             { x => x.MediaType, type },
             { x => x.Watched, watched },
             { x => x.Watching, watching },

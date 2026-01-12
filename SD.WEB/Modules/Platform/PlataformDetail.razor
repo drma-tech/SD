@@ -54,7 +54,7 @@
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
-<RenderControl Core="Core" Model="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null)">
+<NewRenderControl Actions="Actions" Instance="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null)">
     <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")" ShowFilter="Provider?.types.Count == 2"
                StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3"
                TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
@@ -67,7 +67,7 @@
                StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3"
                TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
     </MediaList>
-</RenderControl>
+</NewRenderControl>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
     <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JsRuntime.Window().HistoryBack())" />
@@ -76,13 +76,9 @@
 @code {
     [Parameter] public string? Id { get; set; }
 
-    public RenderControlCore<AllProviders?>? Core { get; set; } = new();
+    public ComponentActions<AllProviders?> Actions { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
     public ProviderModel? Provider { get; set; }
-
-    public RenderControlCore<WatchedList?> CoreWatchedList { get; set; } = new();
-    public RenderControlCore<WatchingList?> CoreWatchingList { get; set; } = new();
-    public RenderControlCore<WishList?> CoreWishlist { get; set; } = new();
 
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
@@ -110,17 +106,19 @@
             StateHasChanged();
         };
 
-        AllProviders = await AllProvidersApi.GetAll(Core);
+        Actions.StartLoading?.Invoke(null);
+        AllProviders = await AllProvidersApi.GetAll();
+        Actions.FinishLoading?.Invoke(AllProviders);
 
         Provider = AllProviders?.Items.SingleOrDefault(s => s.id == Id);
     }
 
     protected override async Task LoadAuthDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, null);
-        WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, null);
-        WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
+        WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated);
+        WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated);
+        WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated);
     }
 
     private static Dictionary<string, string> GetExtraParameters(string? providerId, string sortBy)

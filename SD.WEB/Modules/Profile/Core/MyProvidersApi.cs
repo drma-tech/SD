@@ -1,13 +1,12 @@
 ﻿using SD.Shared.Models.Auth;
-using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core;
 
 public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>(factory, ApiType.Authenticated, "my-providers")
 {
-    public async Task<MyProviders?> Get(bool isUserAuthenticated, RenderControlCore<MyProviders?>? core)
+    public async Task<MyProviders?> Get(bool isUserAuthenticated)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.MyProviders, core);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.MyProviders);
 
         return new MyProviders();
     }
@@ -17,7 +16,7 @@ public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>
         ArgumentNullException.ThrowIfNull(item);
         SubscriptionHelper.ValidateFavoriteProviders(paddle?.ActiveProduct, (obj?.Items.Count ?? 0) + 1);
 
-        return await PostAsync(Endpoint.MyProvidersAdd, null, item);
+        return await PostAsync(Endpoint.MyProvidersAdd, item);
     }
 
     public async Task<MyProviders?> Update(MyProviders? obj, AuthSubscription? paddle, bool validatePlan = true)
@@ -25,14 +24,14 @@ public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>
         ArgumentNullException.ThrowIfNull(obj);
         if (validatePlan) SubscriptionHelper.ValidateFavoriteProviders(paddle?.ActiveProduct, obj.Items.Count + 1);
 
-        return await PostAsync(Endpoint.MyProvidersUpdate, null, obj);
+        return await PostAsync(Endpoint.MyProvidersUpdate, obj);
     }
 
     public async Task<MyProviders?> Remove(MyProvidersItem? item)
     {
         ArgumentNullException.ThrowIfNull(item);
 
-        return await PostAsync(Endpoint.MyProvidersRemove, null, item);
+        return await PostAsync(Endpoint.MyProvidersRemove, item);
     }
 
     private struct Endpoint

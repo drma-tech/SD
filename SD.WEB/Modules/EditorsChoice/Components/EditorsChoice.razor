@@ -60,9 +60,9 @@ else
 
     protected override async Task LoadAuthDataAsync()
     {
-        WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, null);
-        WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, null);
-        WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
+        WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated);
+        WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated);
+        WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated);
     }
 
 }

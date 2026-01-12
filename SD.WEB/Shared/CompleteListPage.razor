@@ -79,9 +79,9 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        Watched = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, null);
-        Watching = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, null);
-        Wish = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
+        Watched = await WatchedListApi.Get(AppStateStatic.IsAuthenticated);
+        Watching = await WatchingListApi.Get(AppStateStatic.IsAuthenticated);
+        Wish = await WishListApi.Get(AppStateStatic.IsAuthenticated);
     }   
 
     private async Task ProcessNonList()
@@ -96,7 +96,7 @@
         }
         else if (Navigation.Uri.Contains("platforms"))
         {
-            var providers = await AllProvidersApi.GetAll(null);
+            var providers = await AllProvidersApi.GetAll();
             var provider = providers?.Items.SingleOrDefault(s => s.id == id);
 
             if (Navigation.Uri.Contains("popular"))

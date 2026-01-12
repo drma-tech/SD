@@ -9,7 +9,7 @@ namespace SD.WEB.Modules.Support.Core
             ArgumentNullException.ThrowIfNull(token);
             ArgumentNullException.ThrowIfNull(platform);
 
-            await PostAsync<AuthPrincipal>(Endpoint.Subscribe(token, platform), null, null);
+            await PostAsync<AuthPrincipal>(Endpoint.Subscribe(token, platform), null);
         }
 
         private struct Endpoint

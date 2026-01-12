@@ -31,12 +31,12 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
             var model = doc?.Data;
 
-            model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 5 };
+            model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
 
             doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken); //check if upsert is needed
-            await SaveCache(doc, cacheKey, TtlCache.OneDay);
+            await SaveCache(doc, cacheKey, TtlCache.OneWeek);
 
-            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.OneWeek, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -49,7 +49,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         catch (Exception ex)
         {
             req.LogError(ex);
-            return await req.CreateResponse<CacheDocument<EnergyModel>>(null, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse<CacheDocument<EnergyModel>>(null, TtlCache.OneWeek, cancellationToken);
         }
     }
 
@@ -67,7 +67,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
             var model = doc?.Data;
 
-            model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 5 };
+            model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
 
             var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
 
@@ -77,9 +77,9 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             }
 
             doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken); //todo: check if upsert is needed
-            await SaveCache(doc, cacheKey, TtlCache.OneDay);
+            await SaveCache(doc, cacheKey, TtlCache.OneWeek);
 
-            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.OneWeek, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -92,7 +92,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         catch (Exception ex)
         {
             req.LogError(ex);
-            return await req.CreateResponse<CacheDocument<EnergyModel>>(null, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse<CacheDocument<EnergyModel>>(null, TtlCache.OneWeek, cancellationToken);
         }
     }
 
@@ -109,7 +109,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
             if (doc == null)
             {
-                var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 5 };
+                var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 10 };
 
                 doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);
             }
@@ -119,7 +119,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             }
 
             await cacheRepo.UpsertItemAsync(doc!, cancellationToken);
-            await SaveCache(doc, cacheKey, TtlCache.OneDay);
+            await SaveCache(doc, cacheKey, TtlCache.OneWeek);
         }
         catch (Exception ex)
         {
@@ -141,7 +141,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
             if (doc == null)
             {
-                var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 5 };
+                var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 10 };
                 var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
 
                 if (principal?.GetActiveSubscription() != null)
@@ -157,7 +157,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             }
 
             await cacheRepo.UpsertItemAsync(doc!, cancellationToken);
-            await SaveCache(doc, cacheKey, TtlCache.OneDay);
+            await SaveCache(doc, cacheKey, TtlCache.OneWeek);
         }
         catch (Exception ex)
         {
@@ -720,7 +720,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             if (fiafOk && fiaf >= 8) count++;
             if (lettOk && lett >= 8) count++; //scale changed to 0-10
 
-            if (count >= 5) //if there is at least 5 green ratings
+            if (count >= 4) //if there is at least 4 green ratings
             {
                 var tmdbWriteToken = ApiStartup.Configurations.TMDB?.WriteToken;
                 var client = factory.CreateClient("tmdb");

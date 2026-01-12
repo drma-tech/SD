@@ -18,11 +18,11 @@
               HelperText="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio">
 </MudTextField>
 
-<RenderControl Core="Core" Model="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())" CustomMessageWarning="@GlobalTranslations.SearchReturnedNothing">
+<NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())" CustomMessageWarning="@GlobalTranslations.SearchReturnedNothing">
     <MediaListFull MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false" FullPage="true"
                    Watched="Watched" Watching="Watching" Wish="Wish">
     </MediaListFull>
-</RenderControl>
+</NewRenderControl>
 
 @code {
     public WatchedList? Watched { get; set; }
@@ -30,7 +30,7 @@
     public WishList? Wish { get; set; }
 
     private HashSet<MediaDetail> Items { get; set; } = [];
-    private RenderControlCore<HashSet<MediaDetail>> Core { get; } = new();
+    private ComponentActions<HashSet<MediaDetail>> Actions { get; } = new();
     private Dictionary<string, string> StringParameters => new() { { "query", AppStateStatic.Search ?? "" } };
 
     protected override void OnInitialized()
@@ -54,16 +54,16 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        Core?.LoadingStarted?.Invoke();
+        Actions.StartLoading?.Invoke(null);
         Items.Clear();
         var result = await TmdbSearch.GetList(Items, null, StringParameters);
         Items = result.list;
-        Core?.LoadingFinished?.Invoke(Items);
+        Actions.FinishLoading?.Invoke(Items);
     }
 
     protected override async Task LoadAuthDataAsync()
     {
-        (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated, null), WatchingApi.Get(AppStateStatic.IsAuthenticated, null), WishApi.Get(AppStateStatic.IsAuthenticated, null));
+        (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated), WatchingApi.Get(AppStateStatic.IsAuthenticated), WishApi.Get(AppStateStatic.IsAuthenticated));
     }
 
     private async Task KeyPress(KeyboardEventArgs args)

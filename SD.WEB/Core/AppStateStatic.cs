@@ -1,7 +1,6 @@
 ﻿using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Services;
-using SD.WEB.Core.Helper;
 using SD.WEB.Modules.Subscription.Core;
 using System.Globalization;
 using System.Security.Claims;
@@ -12,6 +11,7 @@ public static class AppStateStatic
 {
     public static string? Token { get; set; }
     public static bool IsAuthenticated { get; set; }
+    public static bool IsPremiumUser { get; set; }
     public static ClaimsPrincipal? User { get; set; }
     public static string? UserId { get; set; }
 
@@ -378,7 +378,7 @@ public static class AppStateStatic
     public static Action? ProcessingStarted { get; set; }
     public static Action? ProcessingFinished { get; set; }
 
-    public static int TotalEnergy { get; set; } = 5;
+    public static int TotalEnergy { get; set; } = 10;
     public static int ConsumedEnergy { get; set; } = 0;
     public static Action? EnergyConsumed { get; set; }
 }

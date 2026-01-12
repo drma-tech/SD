@@ -6,14 +6,14 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory
 {
     public async Task<AuthLogin?> Get(bool isUserAuthenticated)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, null);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.Get);
 
         return null;
     }
 
     public async Task Add(SD.Shared.Enums.Platform platform)
     {
-        await PostAsync<AuthLogin>(Endpoint.Add(platform.ToString()), null, null);
+        await PostAsync<AuthLogin>(Endpoint.Add(platform.ToString()), null);
     }
 
     private struct Endpoint

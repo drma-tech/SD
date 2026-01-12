@@ -13,13 +13,13 @@
         @if (MediaType == MediaType.movie)
         {
             <WatchingComponent MediaType="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
-                               Core="Core" ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()">
+                               Actions="Actions" ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()">
             </WatchingComponent>
         }
         else
         {
             <WatchingComponent MediaType="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
-                               Core="Core" ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()">
+                               Actions="Actions" ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()">
             </WatchingComponent>
         }
     </DialogContent>
@@ -33,7 +33,7 @@
 @code {
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-    [Parameter][EditorRequired] public RenderControlCore<WatchingList?>? Core { get; set; }
+    [Parameter][EditorRequired] public ComponentActions<WatchingList?> Actions { get; set; }
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
@@ -58,7 +58,7 @@
         {
             Watching = model;
             WatchingChanged.InvokeAsync(model);
-            Core?.LoadingFinished?.Invoke(model);
+            Actions?.FinishLoading?.Invoke(model);
             StateHasChanged();
         };
         WishApi.DataChanged += model =>

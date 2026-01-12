@@ -5,7 +5,7 @@
 
 @inject TmdbCreditApi TmdbCreditApi
 
-<RenderControl Core="Core" Model="Credits" ExpressionEmpty="@((Credits? obj) => obj == null)">
+<NewRenderControl Actions="Actions" Instance="Credits" ExpressionEmpty="@((Credits? obj) => obj == null)">
     @if (Type == MediaType.movie)
     {
         var directors = Credits?.crew.Where(w => w.job == "Director").ToList() ?? [];
@@ -87,7 +87,7 @@
             }
         </MudGrid>
     </MudPaper>
-</RenderControl>
+</NewRenderControl>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
@@ -97,14 +97,14 @@
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
 
-    public RenderControlCore<Credits?>? Core { get; set; } = new();
+    public ComponentActions<Credits?> Actions { get; set; } = new();
     private Credits? Credits { get; set; }
 
-    protected override async Task LoadParameterizedDataAsync()
+    protected override async Task LoadNonEssentialDataAsync()
     {
-        Core?.LoadingStarted?.Invoke();
+        Actions.StartLoading?.Invoke(null);
         Credits = await TmdbCreditApi.GetList(Type, TmdbId);
-        Core?.LoadingFinished?.Invoke(Credits);
+        Actions.FinishLoading?.Invoke(Credits);
     }
 
     private async Task OpenCompleteList(Crew crew)

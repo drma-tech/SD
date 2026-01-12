@@ -169,6 +169,15 @@ namespace SD.WEB.Modules.Collections.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Homepage.
+        /// </summary>
+        public static string Homepage {
+            get {
+                return ResourceManager.GetString("Homepage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to More information or Contributions.
         /// </summary>
         public static string MoreInformation {
@@ -192,15 +201,6 @@ namespace SD.WEB.Modules.Collections.Resources {
         public static string Offering {
             get {
                 return ResourceManager.GetString("Offering", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Official Site.
-        /// </summary>
-        public static string OfficialSite {
-            get {
-                return ResourceManager.GetString("OfficialSite", resourceCulture);
             }
         }
         

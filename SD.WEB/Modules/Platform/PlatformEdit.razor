@@ -98,7 +98,7 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        AllProviders = await AllProvidersApi.GetAll(null);
+        AllProviders = await AllProvidersApi.GetAll();
     }
 
     protected async Task SaveSession()

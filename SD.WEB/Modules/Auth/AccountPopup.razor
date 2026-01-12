@@ -84,12 +84,12 @@
             var sub = Principal!.GetActiveSubscription();
 
             data.Login = await LoginApi.Get(AppStateStatic.IsAuthenticated);
-            data.Providers = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, null);
+            data.Providers = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
             if (sub?.ActiveProduct is null or AccountProduct.Basic) data.Suggestions = null;
-            else data.Suggestions = await MySuggestionsApi.Get(sub?.ActiveProduct, AppStateStatic.IsAuthenticated, null);
-            data.WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, null);
-            data.WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, null);
-            data.WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, null);
+            else data.Suggestions = await MySuggestionsApi.Get(sub?.ActiveProduct, AppStateStatic.IsAuthenticated);
+            data.WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated);
+            data.WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated);
+            data.WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated);
 
             var fileName = $"{SeoTranslations.AppName.ToSlug()}_{Principal!.AuthProviders[0]}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
             await JsRuntime.Utils().DownloadFile(fileName, "application/json", data.ConvertFromObjectToBytes());

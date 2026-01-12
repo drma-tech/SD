@@ -1,13 +1,12 @@
 ﻿using SD.Shared.Models.Auth;
-using SD.WEB.Shared;
 
 namespace SD.WEB.Modules.Profile.Core;
 
 public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingList>(factory, ApiType.Authenticated, "watchinglist")
 {
-    public async Task<WatchingList?> Get(bool isUserAuthenticated, RenderControlCore<WatchingList?>? core)
+    public async Task<WatchingList?> Get(bool isUserAuthenticated)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, core);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.Get);
 
         return new WatchingList();
     }
@@ -18,7 +17,7 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
         ArgumentNullException.ThrowIfNull(item);
         SubscriptionHelper.ValidateWatching(subs?.ActiveProduct, (obj?.Items(mediaType).Count ?? 0) + 1);
 
-        return await PostAsync(Endpoint.Add(mediaType), null, item);
+        return await PostAsync(Endpoint.Add(mediaType), item);
     }
 
     public async Task<WatchingList?> Remove(MediaType? mediaType, string? collectionId, string? tmdbId = "null")
@@ -26,16 +25,15 @@ public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingLis
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(collectionId);
 
-        return await PostAsync<WatchingList>(Endpoint.Remove(mediaType, collectionId, tmdbId ?? "null"), null, null);
+        return await PostAsync<WatchingList>(Endpoint.Remove(mediaType, collectionId, tmdbId ?? "null"), null);
     }
 
-    public async Task<WatchingList?> Sync(MediaType? mediaType, WatchingList? obj,
-        RenderControlCore<WatchingList?>? core)
+    public async Task<WatchingList?> Sync(MediaType? mediaType, WatchingList? obj)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(obj);
 
-        return await PostAsync<WatchingList>(Endpoint.Sync(mediaType), core, obj);
+        return await PostAsync<WatchingList>(Endpoint.Sync(mediaType), obj);
     }
 
     private struct Endpoint

@@ -87,17 +87,16 @@
 
 <MudGrid Spacing="2" Class="mb-2">
     <MudItem xs="12" md="6">
-        <MyWishListGroup Watched="Watched" Watching="Watching" Wish="Wish" CoreWishlist="CoreWish"></MyWishListGroup>
+        <MyWishListGroup Watched="Watched" Watching="Watching" Wish="Wish" Actions="WishActions"></MyWishListGroup>
     </MudItem>
     <MudItem xs="12" md="6">
-        <MyWatchingListGroup Watched="Watched" Watching="Watching" Wish="Wish" CoreWatching="CoreWatching"></MyWatchingListGroup>
+        <MyWatchingListGroup Watched="Watched" Watching="Watching" Wish="Wish" Actions="WatchingActions"></MyWatchingListGroup>
     </MudItem>
 </MudGrid>
 
 @code {
-    public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
-    public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
-    public RenderControlCore<WishList?> CoreWish { get; set; } = new();
+    public ComponentActions<WatchingList?> WatchingActions { get; set; } = new();
+    public ComponentActions<WishList?> WishActions { get; set; } = new();
 
     private MyProviders? MyProviders { get; set; }
     public WatchedList? Watched { get; set; }
@@ -113,19 +112,19 @@
         WatchedApi.DataChanged += model =>
         {
             Watched = model;
-            CoreWatched?.LoadingFinished?.Invoke(model);
+            // CoreWatched?.LoadingFinished?.Invoke(model);
             StateHasChanged();
         };
         WatchingApi.DataChanged += model =>
         {
             Watching = model;
-            CoreWatching?.LoadingFinished?.Invoke(model);
+            WatchingActions?.FinishLoading?.Invoke(model);
             StateHasChanged();
         };
         WishApi.DataChanged += model =>
         {
             Wish = model;
-            CoreWish?.LoadingFinished?.Invoke(model);
+            WishActions?.FinishLoading?.Invoke(model);
             StateHasChanged();
         };
     }
@@ -153,9 +152,13 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated, CoreWatched), WatchingApi.Get(AppStateStatic.IsAuthenticated, CoreWatching), WishApi.Get(AppStateStatic.IsAuthenticated, CoreWish));
+        WatchingActions?.StartLoading?.Invoke(null);
+        WishActions?.StartLoading?.Invoke(null);
+        (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated), WatchingApi.Get(AppStateStatic.IsAuthenticated), WishApi.Get(AppStateStatic.IsAuthenticated));
+        WishActions?.FinishLoading?.Invoke(Wish);
+        WatchingActions?.FinishLoading?.Invoke(Watching);
 
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, null);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
     }
 
     // private async Task SetReviewed()

@@ -14,7 +14,7 @@ public class ImdbPopularApi(IHttpClientFactory factory)
 
         if (type == MediaType.movie)
         {
-            var result = await GetAsync("public/cache/imdb-popular-movies".ConfigureParameters(stringParameters), null);
+            var result = await GetAsync("public/cache/imdb-popular-movies".ConfigureParameters(stringParameters));
 
             //if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(GlobalTranslations.UnavailableService);
 
@@ -41,7 +41,7 @@ public class ImdbPopularApi(IHttpClientFactory factory)
         }
         else if (type == MediaType.tv)
         {
-            var result = await GetAsync("public/cache/imdb-popular-tvs".ConfigureParameters(stringParameters), null);
+            var result = await GetAsync("public/cache/imdb-popular-tvs".ConfigureParameters(stringParameters));
 
             //if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(GlobalTranslations.UnavailableService);
 
@@ -73,7 +73,7 @@ public class ImdbPopularApi(IHttpClientFactory factory)
         }
         else if (type == MediaType.person)
         {
-            var result = await GetAsync("public/cache/imdb-popular-star".ConfigureParameters(stringParameters), null);
+            var result = await GetAsync("public/cache/imdb-popular-star".ConfigureParameters(stringParameters));
 
             foreach (var item in result?.Data?.Items ?? [])
             {

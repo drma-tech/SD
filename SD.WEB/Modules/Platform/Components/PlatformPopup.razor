@@ -83,7 +83,7 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, null);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
     }
 
     private static Dictionary<string, string> GetExtraParameters(string? providerId, string? sortBy, string? watchRegion)

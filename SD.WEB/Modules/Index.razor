@@ -55,10 +55,6 @@
     [SupplyParameterFromQuery(Name = "language")]
     public string? Language { get; set; }
 
-    public RenderControlCore<WatchedList?> CoreWatched { get; set; } = new();
-    public RenderControlCore<WatchingList?> CoreWatching { get; set; } = new();
-    public RenderControlCore<WishList?> CoreWish { get; set; } = new();
-
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
@@ -70,26 +66,23 @@
         WatchedApi.DataChanged += model =>
         {
             Watched = model;
-            CoreWatched.LoadingFinished?.Invoke(model);
             StateHasChanged();
         };
         WatchingApi.DataChanged += model =>
         {
             Watching = model;
-            CoreWatching.LoadingFinished?.Invoke(model);
             StateHasChanged();
         };
         WishApi.DataChanged += model =>
         {
             Wish = model;
-            CoreWish.LoadingFinished?.Invoke(model);
             StateHasChanged();
         };
     }
 
     protected override async Task LoadAuthDataAsync()
     {
-        (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated, CoreWatched), WatchingApi.Get(AppStateStatic.IsAuthenticated, CoreWatching), WishApi.Get(AppStateStatic.IsAuthenticated, CoreWish));
+        (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated), WatchingApi.Get(AppStateStatic.IsAuthenticated), WishApi.Get(AppStateStatic.IsAuthenticated));
     }
 
     private void KeyPress(KeyboardEventArgs args)
