@@ -1,6 +1,8 @@
 "use strict";
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+//https://firebase.google.com/support/release-notes/js
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
 import {
     getAuth,
     onAuthStateChanged,
@@ -11,12 +13,12 @@ import {
     TwitterAuthProvider,
     signInWithPopup,
     signInWithRedirect,
-} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 import {
     getMessaging,
     onMessage,
     getToken,
-} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-messaging.js";
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-messaging.js";
 
 import { isBot, isLocalhost, isPrintScreen, firebaseConfig } from "./main.js";
 import { storage, notification, interop } from "./utils.js";

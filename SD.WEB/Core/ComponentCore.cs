@@ -16,6 +16,7 @@ public class ComponentActions<T>
 
     public Action<string?>? ShowWarning { get; set; }
     public Action<string?>? ShowError { get; set; }
+    public Action? ShowCustomContent { get; set; }
 }
 
 public abstract class ComponentCore<T> : ComponentBase where T : class

@@ -19,7 +19,7 @@ namespace SD.WEB.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class GlobalTranslations {
@@ -169,7 +169,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You’ve used all your energy for today. It’ll refill in 24 hours, or you can subscribe for extra energy to explore more titles..
+        ///   Looks up a localized string similar to You&apos;ve already used all your available energy. It&apos;s automatically recharged once a week. Upgrade to Premium to get extra energy and keep exploring..
         /// </summary>
         public static string EnergyOut {
             get {
