@@ -149,6 +149,14 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
         //tv
         return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"tv/{tmdbId}/watch/providers".ConfigureParameters(parameter));
     }
+
+    public async Task<TmdbSeason?> GetSeason(string? tmdbId, int? seasonNumber, Dictionary<string, string> parameters)
+    {
+        if (tmdbId == null) return null;
+        if (seasonNumber == null) return null;
+
+        return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri + $"tv/{tmdbId}/season/{seasonNumber}".ConfigureParameters(parameters));
+    }
 }
 
 internal sealed class Order

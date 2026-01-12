@@ -1,0 +1,70 @@
+﻿﻿@using SD.Shared.Models.List.Tmdb
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Collections.Resources
+@using Button = SD.WEB.Resources.Button
+@inherits ComponentCore<SeasonPopup>
+@inject TmdbApi TmdbApi
+
+<MudDialog Style="width: 100%">
+    <DialogContent>
+        <NewRenderControl Actions="Actions" Instance="Season" ExpressionEmpty="@((TmdbSeason? obj) => obj == null || obj.episodes.Empty())">
+            <MudList T="string">
+                @foreach (var item in Season?.episodes ?? [])
+                {
+                    <MudListItem Class="px-2 py-1">
+                        <div style="display: flex; gap: 8px;">
+                            <MudImage Src="@(TmdbOptions.SmallPosterPath + item.still_path)" Alt="@item.name" FallbackSrc="images/no-image.png"
+                                      style="max-width: 185px; max-height: 110px;"></MudImage>
+                            <div>
+                                <MudText Typo="Typo.subtitle1" Color="Color.Secondary">
+                                    @(item.episode_number + " - " + item.name)
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Justify" Style="line-height: normal;">
+                                    @(item.overview.Empty() ? GlobalTranslations.CustomVisibilityNoData : item.overview)
+                                </MudText>
+                            </div>
+                        </div>
+                    </MudListItem>
+                }
+            </MudList>
+        </NewRenderControl>
+    </DialogContent>
+    <DialogActions>
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Text" Dense="true" Icon="@IconsFA.Solid.Icon("circle-exclamation").WithAnimation(IconAnimation.Beat).Font">
+            @Translations.PlatformForManaging
+        </MudAlert>
+        <MudSpacer></MudSpacer>
+        <MudButton OnClick="@HideModal">
+            @Button.Close
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
+
+    [Parameter] public string? TmdbId { get; set; }
+    [Parameter] public int? SeasonNumber { get; set; }
+
+    public ComponentActions<TmdbSeason?> Actions { get; set; } = new();
+    public TmdbSeason? Season { get; set; }
+
+    protected override async Task LoadNonEssentialDataAsync()
+    {
+        var parameters = new Dictionary<string, string>
+        {
+            { "api_key", TmdbOptions.ApiKey },
+            { "language", (await AppStateStatic.GetContentLanguage(JsRuntime)).GetName(false) ?? "en-US" }
+        };
+
+        Actions.StartLoading?.Invoke(null);
+        Season = await TmdbApi.GetSeason(TmdbId, SeasonNumber, parameters);
+        Actions.FinishLoading?.Invoke(Season);
+    }
+
+    public void HideModal()
+    {
+        MudDialog?.Close();
+    }
+
+}

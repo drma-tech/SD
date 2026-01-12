@@ -58,7 +58,7 @@
                     @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
                     {
                         <div>
-                            <div @onclick="@(() => CollectionClicked(item))" style="@($"{(Type == MediaType.movie ? "cursor: pointer;" : "")} position: relative;")">
+                            <div @onclick="@(() => CollectionClicked(item))" style="cursor: pointer; position: relative;">
                                 @if (item.release_date.HasValue)
                                 {
                                     if (item.release_date.Value < DateTime.Now.AddMonths(-3))
@@ -298,17 +298,26 @@
         (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated), WatchingApi.Get(AppStateStatic.IsAuthenticated), WishApi.Get(AppStateStatic.IsAuthenticated));
     }
 
-    private void CollectionClicked(Collection? item)
+    private async Task CollectionClicked(Collection? item)
     {
         if (Type == MediaType.movie)
         {
             OpenPopupMedia(Type, item?.id);
+        }
+        else
+        {
+            await OpenPopupSeason(item);
         }
     }
 
     private void OpenPopupMedia(MediaType? type, string? tmdb_id)
     {
         Navigation.NavigateTo($"/media/{type.ToString()!.ToLower()}/{tmdb_id}");
+    }
+
+    private async Task OpenPopupSeason(Collection? collection)
+    {
+        await DialogService.SeasonPopup(Media?.title, collection?.title, TmdbId, collection?.SeasonNumber);
     }
 
     private async Task OpenSubscription()

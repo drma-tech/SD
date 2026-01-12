@@ -159,6 +159,17 @@ public static class PopupHelper
         await service.ShowAsync<SelectItemsCollection>(GlobalTranslations.WhatHaveYouWatched, parameters, Options(MaxWidth.ExtraSmall));
     }
 
+    public static async Task SeasonPopup(this IDialogService service, string? showTitle, string? showSeasonName, string? tmdbId, int? seasonNumber)
+    {
+        var parameters = new DialogParameters<SeasonPopup>
+        {
+            { x => x.TmdbId, tmdbId },
+            { x => x.SeasonNumber, seasonNumber },
+        };
+
+        await service.ShowAsync<SeasonPopup>($"{showTitle} ({showSeasonName})", parameters, Options(MaxWidth.Medium));
+    }
+
     public static async Task SettingsPopup(this IDialogService service)
     {
         await service.ShowAsync<SettingsPopup>(GlobalTranslations.Settings, Options(MaxWidth.Small));

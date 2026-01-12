@@ -181,7 +181,7 @@
                         @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
                         {
                             <div>
-                                <div style="position: relative;">
+                                <div @onclick="@(async () => await CollectionClicked(item))" style="cursor: pointer; position: relative;">
                                     @if (item.release_date.HasValue)
                                     {
                                         if (item.release_date.Value < DateTime.Now.AddMonths(-3))
@@ -489,6 +489,24 @@
         {
             await ProcessException(ex);
         }
+    }
+
+    private async Task CollectionClicked(Collection? item)
+    {
+        if (Type == MediaType.movie)
+            await OpenPopupMedia(item, Type);
+        else
+            await OpenPopupSeason(item);
+    }
+
+    private async Task OpenPopupMedia(Collection? collection, MediaType? mediaType)
+    {
+        await DialogService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id);
+    }
+
+    private async Task OpenPopupSeason(Collection? collection)
+    {
+        await DialogService.SeasonPopup(Media?.title, collection?.title, TmdbId, collection?.SeasonNumber);
     }
 
 }
