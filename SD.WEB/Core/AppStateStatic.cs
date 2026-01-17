@@ -59,23 +59,16 @@ public static class AppStateStatic
                 return _platform.Value;
             }
 
-            var cache = await js.Utils().GetLocalStorage("platform");
+            var cache = await js.Utils().GetStorage<Platform?>("platform");
 
-            if (cache.NotEmpty())
+            if (cache.HasValue)
             {
-                if (System.Enum.TryParse<Platform>(cache, true, out var platform) && System.Enum.IsDefined(platform))
-                {
-                    _platform = platform;
-                }
-                else
-                {
-                    _platform = Platform.webapp;
-                    await js.Utils().SetLocalStorage("platform", _platform!.ToString()!);
-                }
+                _platform = cache.Value;
             }
             else
             {
                 _platform = Platform.webapp;
+                await js.Utils().SetStorage("platform", _platform);
             }
 
             return _platform.Value;
@@ -103,17 +96,11 @@ public static class AppStateStatic
                 return _appLanguage.Value;
             }
 
-            var cache = await js.Utils().GetLocalStorage("app-language");
+            var cache = await js.Utils().GetStorage<AppLanguage?>("app-language");
 
-            if (cache.NotEmpty())
+            if (cache.HasValue)
             {
-                _appLanguage = ConvertAppLanguage(cache);
-
-                if (_appLanguage == null)
-                {
-                    _appLanguage = AppLanguage.en;
-                    await js.Utils().SetLocalStorage("app-language", _appLanguage.ToString()!);
-                }
+                _appLanguage = cache.Value;
             }
             else
             {
@@ -121,7 +108,7 @@ public static class AppStateStatic
                 code = code[..2].ToLowerInvariant();
 
                 _appLanguage = ConvertAppLanguage(code) ?? AppLanguage.en;
-                await js.Utils().SetLocalStorage("app-language", _appLanguage.ToString()!);
+                await js.Utils().SetStorage("app-language", _appLanguage);
             }
 
             return _appLanguage.Value;
@@ -140,7 +127,7 @@ public static class AppStateStatic
     {
         if (code.Empty()) return null;
 
-        if (System.Enum.TryParse<AppLanguage>(code, true, out var language) && System.Enum.IsDefined(language))
+        if (Enum.TryParse<AppLanguage>(code, true, out var language) && Enum.IsDefined(language))
             return language;
         else
             return null;
@@ -148,67 +135,109 @@ public static class AppStateStatic
 
     #endregion AppLanguage
 
-    #region ContentLanguage
+    #region DarkMode
 
-    private static ContentLanguage? _contentLanguage;
-    private static readonly SemaphoreSlim _contentLanguageSemaphore = new(1, 1);
+    public static Action<bool>? DarkModeChanged { get; set; }
 
-    public static async Task<ContentLanguage> GetContentLanguage(IJSRuntime? js = null)
+    private static bool? _darkMode;
+    private static readonly SemaphoreSlim _darkModeSemaphore = new(1, 1);
+
+    public static async Task<bool?> GetDarkMode(IJSRuntime js)
     {
-        await _contentLanguageSemaphore.WaitAsync();
+        await _darkModeSemaphore.WaitAsync();
         try
         {
-            if (_contentLanguage.HasValue)
+            if (_darkMode.HasValue)
             {
-                return _contentLanguage.Value;
+                return _darkMode.Value;
             }
 
-            var cache = js != null ? await js.Utils().GetLocalStorage("content-language") : null;
+            _darkMode = await js.Utils().GetStorage<bool?>("dark-mode");
 
-            if (cache.NotEmpty())
-            {
-                _contentLanguage = ConvertContentLanguage(cache);
-
-                if (_contentLanguage == null)
-                {
-                    _contentLanguage = ContentLanguage.enUS;
-                    if (js != null) await js.Utils().SetLocalStorage("content-language", _contentLanguage.ToString()!);
-                }
-            }
-            else
-            {
-                var culture = CultureInfo.CurrentUICulture ?? CultureInfo.CurrentCulture;
-                var parts = culture.Name.Split('-');
-                var code = string.Join("", parts);
-
-                _contentLanguage = ConvertContentLanguage(code) ?? ContentLanguage.enUS;
-                if (js != null) await js.Utils().SetLocalStorage("content-language", _contentLanguage.ToString()!);
-            }
-
-            return _contentLanguage.Value;
+            return _darkMode;
+        }
+        catch
+        {
+            return null;
         }
         finally
         {
-            _contentLanguageSemaphore.Release();
+            _darkModeSemaphore.Release();
         }
     }
 
-    private static ContentLanguage? ConvertContentLanguage(string? code)
+    public static void ChangeDarkMode(bool darkMode)
     {
-        if (code.Empty()) return null;
+        _darkMode = darkMode;
+        DarkModeChanged?.Invoke(darkMode);
+    }
 
-        if (Enum.TryParse<ContentLanguage>(code, true, out var language) && Enum.IsDefined(language))
-            return language;
-        else
+    #endregion DarkMode
+
+    #region Region Country
+
+    private static string? _country;
+    private static readonly SemaphoreSlim _countrySemaphore = new(1, 1);
+
+    public static string? GetSavedCountry()
+    {
+        return _country;
+    }
+
+    public static async Task<string?> GetCountry(IpInfoApi api, IpInfoServerApi serverApi, IJSRuntime js)
+    {
+        await _countrySemaphore.WaitAsync();
+        try
+        {
+            if (_country.NotEmpty())
+            {
+                return _country;
+            }
+
+            var cache = await js.Utils().GetStorage<string>("country");
+
+            if (cache.NotEmpty())
+            {
+                _country = cache.Trim();
+            }
+            else
+            {
+                _country = (await api.GetCountry())?.Trim();
+
+                if (_country.NotEmpty())
+                    await js.Utils().SetStorage("country", _country);
+                else
+                    _country = await GetCountryFromApiServer(serverApi, js);
+            }
+
+            return _country;
+        }
+        catch
+        {
+            return await GetCountryFromApiServer(serverApi, js);
+        }
+        finally
+        {
+            _countrySemaphore.Release();
+        }
+    }
+
+    private static async Task<string?> GetCountryFromApiServer(IpInfoServerApi serverApi, IJSRuntime js)
+    {
+        try
+        {
+            var country = (await serverApi.GetCountry())?.Trim();
+            if (country.NotEmpty()) await js.Utils().SetStorage("country", country);
+
+            return country;
+        }
+        catch
+        {
             return null;
+        }
     }
 
-    public static void ChangeContentLanguage(ContentLanguage value)
-    {
-        _contentLanguage = value;
-    }
-
-    #endregion ContentLanguage
+    #endregion Region Country
 
     #region Region
 
@@ -227,7 +256,7 @@ public static class AppStateStatic
                 return _region.Value;
             }
 
-            var cache = js != null ? await js.Utils().GetLocalStorage("region") : null;
+            var cache = js != null ? await js.Utils().GetStorage<string>("region") : null;
 
             if (cache.NotEmpty())
             {
@@ -236,7 +265,7 @@ public static class AppStateStatic
                 if (_region == null)
                 {
                     _region = Region.US;
-                    if (js != null) await js.Utils().SetLocalStorage("region", _region.ToString()!.ToLower());
+                    if (js != null) await js.Utils().SetStorage("region", _region);
                 }
             }
             else
@@ -244,7 +273,7 @@ public static class AppStateStatic
                 var code = api != null && serverApi != null && js != null ? await GetCountry(api, serverApi, js) : null;
 
                 _region = ConvertRegion(code) ?? Region.US;
-                if (js != null) await js.Utils().SetLocalStorage("region", _region.ToString()!.ToLower());
+                if (js != null) await js.Utils().SetStorage("region", _region);
             }
 
             return _region.Value;
@@ -273,101 +302,61 @@ public static class AppStateStatic
 
     #endregion Region
 
-    #region DarkMode
+    #region ContentLanguage
 
-    public static Action<bool>? DarkModeChanged { get; set; }
+    private static ContentLanguage? _contentLanguage;
+    private static readonly SemaphoreSlim _contentLanguageSemaphore = new(1, 1);
 
-    private static bool? _darkMode;
-    private static readonly SemaphoreSlim _darkModeSemaphore = new(1, 1);
-
-    public static async Task<bool?> GetDarkMode(IJSRuntime js)
+    public static async Task<ContentLanguage> GetContentLanguage(IJSRuntime? js = null)
     {
-        await _darkModeSemaphore.WaitAsync();
+        await _contentLanguageSemaphore.WaitAsync();
         try
         {
-            if (_darkMode.HasValue)
+            if (_contentLanguage.HasValue)
             {
-                return _darkMode.Value;
+                return _contentLanguage.Value;
             }
 
-            _darkMode = await js.Utils().GetLocalStorage<bool?>("dark-mode");
+            var cache = js != null ? await js.Utils().GetStorage<ContentLanguage?>("content-language") : null;
 
-            return _darkMode;
-        }
-        catch
-        {
-            return null;
-        }
-        finally
-        {
-            _darkModeSemaphore.Release();
-        }
-    }
-
-    public static void ChangeDarkMode(bool darkMode)
-    {
-        _darkMode = darkMode;
-        DarkModeChanged?.Invoke(darkMode);
-    }
-
-    #endregion DarkMode
-
-    #region Region Country
-
-    private static string? _country;
-    private static readonly SemaphoreSlim _countrySemaphore = new(1, 1);
-
-    public static async Task<string> GetCountry(IpInfoApi api, IpInfoServerApi serverApi, IJSRuntime js)
-    {
-        await _countrySemaphore.WaitAsync();
-        try
-        {
-            if (_country.NotEmpty())
+            if (cache.HasValue)
             {
-                return _country;
-            }
-
-            var cache = await js.Utils().GetLocalStorage("country");
-
-            if (cache.NotEmpty())
-            {
-                _country = cache.Trim();
+                _contentLanguage = cache;
             }
             else
             {
-                _country = (await api.GetCountry())?.Trim();
-                if (_country.NotEmpty()) await js.Utils().SetLocalStorage("country", _country.ToLower());
+                var culture = CultureInfo.CurrentUICulture ?? CultureInfo.CurrentCulture;
+                var parts = culture.Name.Split('-');
+                var code = string.Join("", parts);
+
+                _contentLanguage = ConvertContentLanguage(code) ?? ContentLanguage.enUS;
+                if (js != null) await js.Utils().SetStorage("content-language", _contentLanguage);
             }
 
-            _country ??= "US";
-
-            return _country;
-        }
-        catch
-        {
-            try
-            {
-                //if user country blocks external requests, try server side
-                _country = (await serverApi.GetCountry())?.Trim();
-                if (_country.NotEmpty()) await js.Utils().SetLocalStorage("country", _country.ToLower());
-
-                _country ??= "US";
-
-                return _country;
-            }
-            catch
-            {
-                _country = "US";
-                return _country;
-            }
+            return _contentLanguage.Value;
         }
         finally
         {
-            _countrySemaphore.Release();
+            _contentLanguageSemaphore.Release();
         }
     }
 
-    #endregion Region Country
+    private static ContentLanguage? ConvertContentLanguage(string? code)
+    {
+        if (code.Empty()) return null;
+
+        if (Enum.TryParse<ContentLanguage>(code, true, out var language) && Enum.IsDefined(language))
+            return language;
+        else
+            return null;
+    }
+
+    public static void ChangeContentLanguage(ContentLanguage value)
+    {
+        _contentLanguage = value;
+    }
+
+    #endregion ContentLanguage
 
     public static Action<string?>? AuthChanged { get; set; }
     public static Action<string, string>? NotificationEnabled { get; set; }

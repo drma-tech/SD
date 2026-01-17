@@ -65,6 +65,7 @@ window.addEventListener("error", function (event) {
         BrowserVersion: environment.getBrowserVersion(),
         Platform: storage.getLocalStorage("platform"),
         AppVersion: appVersion,
+        Country: storage.getLocalStorage("country"),
         UserAgent: navigator.userAgent,
         IsBot: isBot || isOldBrowser,
     };
@@ -148,6 +149,7 @@ window.addEventListener("unhandledrejection", function (event) {
         BrowserVersion: environment.getBrowserVersion(),
         Platform: storage.getLocalStorage("platform"),
         AppVersion: appVersion,
+        Country: storage.getLocalStorage("country"),
         UserAgent: navigator.userAgent,
         IsBot: isBot || isOldBrowser,
     };

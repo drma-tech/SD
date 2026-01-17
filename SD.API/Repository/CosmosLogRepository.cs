@@ -14,6 +14,7 @@ public class LogDbModel
     public string? Platform { get; set; }
     public string? AppVersion { get; set; }
     public string? UserId { get; set; }
+    public string? Country { get; set; }
     public string? UserAgent { get; set; }
     public bool? IsBot { get; set; }
     public List<LogDbEvent> Events { get; set; } = [];
@@ -71,6 +72,7 @@ public class CosmosLogRepository
                     Platform = log.Platform,
                     AppVersion = log.AppVersion,
                     UserId = log.UserId,
+                    Country = log.Country,
                     UserAgent = log.UserAgent,
                     IsBot = log.IsBot,
                 };

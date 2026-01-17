@@ -282,7 +282,7 @@
     {
         if (tmdbId.Empty()) return;
 
-        var accesses = await JsRuntime.Utils().GetSessionStorage<HashSet<string>>("media-accesses") ?? new HashSet<string>();
+        var accesses = await JsRuntime.Utils().GetStorage<HashSet<string>>("media-accesses", UtilsJs.BrowserStorageType.Session) ?? new HashSet<string>();
 
         if (!accesses.Contains(tmdbId))
         {
@@ -290,7 +290,7 @@
         }
 
         accesses.Add(tmdbId);
-        await JsRuntime.Utils().SetSessionStorage("media-accesses", accesses);
+        await JsRuntime.Utils().SetStorage("media-accesses", accesses, UtilsJs.BrowserStorageType.Session);
     }
 
     protected override async Task LoadAuthDataAsync()

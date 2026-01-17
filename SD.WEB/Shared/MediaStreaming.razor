@@ -391,7 +391,7 @@
 
         if (AllProviders != null)
         {
-            await JsRuntime.Utils().SetLocalStorage("AllProviders", JsonSerializer.Serialize(AllProviders));
+            await JsRuntime.Utils().SetStorage("AllProviders", AllProviders);
         }
     }
 

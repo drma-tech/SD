@@ -89,7 +89,7 @@
     {
       "id": "3",
       "name": "Google Play Movies",
-      "priority": 1,
+      "priority": 3,
       "description": "Google Play Movies lets you buy or rent movies and TV shows to watch on phones, tablets, or smart TVs. Your library stays connected to your Google account across devices.",
       "link": "https://play.google.com/store/movies/",
       "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
@@ -194,7 +194,7 @@
     {
       "id": "8",
       "name": "Netflix",
-      "priority": 4,
+      "priority": 0,
       "description": "Netflix offers a vast catalog of movies, series, documentaries, and exclusive originals, available to stream instantly on smart TVs, computers, consoles, and mobile devices.",
       "link": "https://www.netflix.com",
       "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
@@ -367,7 +367,7 @@
       "priority": 6,
       "description": "Amazon Video provides access to Prime Video through Amazon.com, where users can explore and purchase movies, series, and subscriptions directly from the platform.",
       "link": "https://www.amazon.com/Prime-Video/b?node=2676882011",
-      "logo_path": "/seGSXajazLMCKGB5hnRCidtjay1.jpg",
+      "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
       "regions": [
         32,
         36,
@@ -407,7 +407,7 @@
     {
       "id": "11",
       "name": "MUBI",
-      "priority": 60,
+      "priority": 31,
       "description": "MUBI is a curated streaming service showcasing acclaimed films, festival favorites, and hidden gems. A new handpicked movie is added daily, with ad-free streaming and the option to download for offline viewing.",
       "link": "https://mubi.com/",
       "logo_path": "/x570VpH2C9EKDf1riP83rYc5dnL.jpg",
@@ -694,7 +694,7 @@
     {
       "id": "30",
       "name": "WOW",
-      "priority": 9,
+      "priority": 12,
       "description": "WOW bietet Filme, Serien und Live-Sport zum sofortigen Streamen. Entdecke dein neues Entertainment-Zuhause mit einer großen Auswahl an beliebten Inhalten auf verschiedenen Geräten.",
       "link": "https://www.wowtv.de/",
       "logo_path": "/9r5zFWuYnwjzO1JrNjSbLQwUc3P.jpg",
@@ -1327,7 +1327,7 @@
     {
       "id": "100",
       "name": "GuideDoc",
-      "priority": 58,
+      "priority": 6,
       "description": "GuideDoc lets you stream top documentary films online. Explore a curated collection of inspiring and informative documentaries, all available on computers, mobile devices, and smart TVs.",
       "link": "https://guidedoc.tv/",
       "logo_path": "/eKVmLFHW5PeNhuR7Nedd8OIxW2M.jpg",
@@ -1431,8 +1431,7 @@
         380
       ],
       "types": [
-        1,
-        2
+        1
       ],
       "models": [
         2,
@@ -1522,7 +1521,7 @@
     {
       "id": "119",
       "name": "Amazon Prime Video",
-      "priority": 2,
+      "priority": 1,
       "description": "Stream award-winning Amazon Originals, blockbuster movies, and popular TV shows. Watch anywhere, ad-free with offline download. Included with Prime membership.",
       "link": "https://www.primevideo.com/",
       "logo_path": "/pvske1MyAoymrs5bguRfVqYiM9a.jpg",
@@ -1532,6 +1531,7 @@
         20,
         24,
         28,
+        31,
         32,
         36,
         44,
@@ -1664,11 +1664,11 @@
     },
     {
       "id": "122",
-      "name": "Hotstar",
+      "name": "Disney+",
       "priority": 0,
       "description": "Premier Indian streaming service for live cricket, Hindi and regional movies, and exclusive Hotstar Specials series. Over 100,000 hours of content in 8 languages.",
       "link": "https://www.hotstar.com",
-      "logo_path": "/5B0WB5ohGxRtON8qCuCkGgGCO18.jpg",
+      "logo_path": "/tHtNW975SmVydaBULhEaOqPTmo8.jpg",
       "regions": [
         360,
         458,
@@ -1984,7 +1984,7 @@
       "priority": 59,
       "description": "The largest collection of British TV available for streaming. Binge classic and contemporary mysteries, dramas, comedies, and exclusive BritBox Originals.",
       "link": "https://www.britbox.com/",
-      "logo_path": "/ykV2tyni0cD3XV6BEQnE6NXTq6F.jpg",
+      "logo_path": "/8oA7IcDNNUtBa9JYB5kQ8hrDz5o.jpg",
       "regions": [
         36,
         124,
@@ -2151,7 +2151,7 @@
     {
       "id": "175",
       "name": "Netflix Kids",
-      "priority": 61,
+      "priority": 7,
       "description": "A safe, curated streaming experience for children. Features educational shows, animated series, and family-friendly movies from Netflix's extensive library.",
       "link": "https://www.netflix.com/br-en/browse/genre/783",
       "logo_path": "/kwVegvKCinXTPuzZmYT1J3i1HJz.jpg",
@@ -2228,7 +2228,7 @@
     {
       "id": "187",
       "name": "Paramount Pictures",
-      "priority": 134,
+      "priority": 133,
       "description": "Discover Paramount's iconic film library. Rent or purchase the latest blockbusters, classic movies, and beloved franchises directly from the studio.",
       "link": "https://www.paramountpictures.com/",
       "logo_path": "/f8zvpzThrDhegtxjQwy74D0jLYr.jpg",
@@ -2304,7 +2304,7 @@
     {
       "id": "190",
       "name": "Curiosity Stream",
-      "priority": 48,
+      "priority": 10,
       "description": "Stream thousands of high-quality documentaries on science, history, technology, and nature. Affordable subscription service for the endlessly curious.",
       "link": "https://curiositystream.com/",
       "logo_path": "/oR1aNm1Qu9jQBkW4VrGPWhqbC3P.jpg",
@@ -2493,7 +2493,6 @@
         124,
         484,
         528,
-        724,
         826,
         840
       ],
@@ -2511,7 +2510,7 @@
       "priority": 88,
       "description": "Stream the best of British television through Amazon Prime. Classic and contemporary shows from BBC, ITV, and Channel 4.",
       "link": "https://www.amazon.com/gp/video/storefront/ref=atv_hm_hom_c_RF1gK1_HS25f505_15_9?contentType=subscription&contentId=britbox",
-      "logo_path": "/tLBLABfFYYETf9Zk8gKEWnjhMai.jpg",
+      "logo_path": "/49qepIM2KqtRwENEmfskTGShD7G.jpg",
       "regions": [
         36,
         124,
@@ -3122,10 +3121,8 @@
       "link": "https://www.amazon.com/gp/video/storefront/",
       "logo_path": "/uXFEctwGkorVz163dVSZeZkBEQU.jpg",
       "regions": [
-        40,
         76,
         250,
-        276,
         380,
         484,
         528,
@@ -3673,7 +3670,7 @@
     {
       "id": "304",
       "name": "Joyn",
-      "priority": 12,
+      "priority": 11,
       "description": "Deutscher Streaming-Dienst mit Live-TV, Serien, Filmen und Sport. Kostenlose Inhalte und Premium-Angebote von ProSieben, Sat.1 und anderen Sendern.",
       "link": "https://www.joyn.de/",
       "logo_path": "/3tKojIkk9QpkDUeU8HgpHQ9Jb2v.jpg",
@@ -3710,7 +3707,7 @@
     {
       "id": "309",
       "name": "Sun Nxt",
-      "priority": 44,
+      "priority": 9,
       "description": "Streaming service for South Indian content. Watch Tamil, Telugu, and Malayalam movies, TV serials, and live channels from the Sun Network.",
       "link": "https://www.sunnxt.com/",
       "logo_path": "/6KEQzITx2RrCAQt5Nw9WrL1OI8z.jpg",
@@ -4042,6 +4039,7 @@
         840
       ],
       "types": [
+        1,
         2
       ],
       "models": [
@@ -5190,7 +5188,7 @@
     {
       "id": "415",
       "name": "Animation Digital Network",
-      "priority": 116,
+      "priority": 115,
       "description": null,
       "link": null,
       "logo_path": "/w86FOwg0bbgUSHWWnjOTuEjsUvq.jpg",
@@ -5453,7 +5451,7 @@
     {
       "id": "437",
       "name": "Hungama Play",
-      "priority": 15,
+      "priority": 14,
       "description": "Latest Bollywood New FREE Songs (2023) Online: New Punjabi Music free MP3 Songs Download and listen online New MP3 Hindi songs (2023) for free, new dj songs, hindi songs, free music online* at Hungama. Watch new hindi songs for free and latest popular Hindi songs online, English and regional movies, TV shows, FREE listening music, videos (2023) and online songs. Bollywood MP3 Free Hungama online Music & Hungama Play app to get access to unlimited free Bollywood songs, mp3 free music, free movies, latest music videos, online radio, new TV shows and much more at Hungama. Listen to free music and earn Hungama Coins, redeem Hungama coins for free subscription on Hungama Music & Hungama Play App and many more free gifts.",
       "link": "https://www.hungama.com/",
       "logo_path": "/pMTVKAUyjMb0xdMnHqfNj73MGH6.jpg",
@@ -5535,8 +5533,7 @@
         124
       ],
       "types": [
-        1,
-        2
+        1
       ],
       "models": [
         0,
@@ -5954,7 +5951,7 @@
     {
       "id": "466",
       "name": "Bioskop Online",
-      "priority": 12,
+      "priority": 11,
       "description": null,
       "link": null,
       "logo_path": "/rvHcdDDyfuFRD2C4mLkTUtKk2CS.jpg",
@@ -5994,7 +5991,7 @@
     {
       "id": "468",
       "name": "genflix",
-      "priority": 13,
+      "priority": 12,
       "description": null,
       "link": null,
       "logo_path": "/o506FcbahVPxvVcsSA5dFLj9drV.jpg",
@@ -6225,8 +6222,7 @@
         276
       ],
       "types": [
-        1,
-        2
+        1
       ],
       "models": [
         2
@@ -6288,7 +6284,7 @@
     {
       "id": "483",
       "name": "MAX Stream",
-      "priority": 16,
+      "priority": 15,
       "description": null,
       "link": null,
       "logo_path": "/zDSJn28xTG4f6h2yxZ6UmCPvZ8j.jpg",
@@ -6379,7 +6375,7 @@
     {
       "id": "489",
       "name": "Vidio",
-      "priority": 15,
+      "priority": 14,
       "description": null,
       "link": null,
       "logo_path": "/l2ZNwMC37iK0fquVuYWfcgIJJdF.jpg",
@@ -7317,7 +7313,7 @@
     {
       "id": "542",
       "name": "filmfriend",
-      "priority": 26,
+      "priority": 9,
       "description": "Stream with your library card | Feature films from around the world | Doc films | kids movies | ad-free | On smart TVs, smartphones, tablets",
       "link": "https://www.filmfriend.de/en/pages/home",
       "logo_path": "/78IXtvIZfol9aJhFoNAUYDxIB25.jpg",
@@ -7913,7 +7909,7 @@
     {
       "id": "561",
       "name": "Lionsgate Play",
-      "priority": 28,
+      "priority": 27,
       "description": "LIONSGATEPLAY brings you Hollywood movies, original TV shows and children's programs on our online entertainment subscription service – anytime, anywhere!",
       "link": "https://www.lionsgateplay.com/",
       "logo_path": "/e2hCUg2Z3sJ6yWF9NLU24SIKeWa.jpg",
@@ -8236,7 +8232,7 @@
     {
       "id": "576",
       "name": "KlikFilm",
-      "priority": 25,
+      "priority": 24,
       "description": null,
       "link": null,
       "logo_path": "/f1V0OhsOKnOQVyNb8h8BbioorQ4.jpg",
@@ -8654,7 +8650,7 @@
     {
       "id": "599",
       "name": "Pokémon Amazon Channel",
-      "priority": 89,
+      "priority": 91,
       "description": null,
       "link": null,
       "logo_path": "/l4h4b2esfTb7evLRiLrMjk6rsHj.jpg",
@@ -8927,7 +8923,6 @@
       "regions": [
         40,
         276,
-        756,
         826,
         840
       ],
@@ -9361,8 +9356,7 @@
         834,
         840,
         887,
-        894,
-        88888
+        894
       ],
       "types": [
         1
@@ -9696,8 +9690,7 @@
         276
       ],
       "types": [
-        1,
-        2
+        1
       ],
       "models": [
         2
@@ -9706,7 +9699,7 @@
     {
       "id": "687",
       "name": "Arthouse CNMA Amazon Channel",
-      "priority": 118,
+      "priority": 45,
       "description": null,
       "link": null,
       "logo_path": "/tnQ5PGryncrVxE9bK6nxif82wtd.jpg",
@@ -10208,7 +10201,7 @@
     {
       "id": "706",
       "name": "Moviedome Plus Amazon Channel",
-      "priority": 98,
+      "priority": 97,
       "description": null,
       "link": null,
       "logo_path": "/9NYihXY9biyXFJSZQq5HIGu1n8B.jpg",
@@ -10227,7 +10220,7 @@
     {
       "id": "707",
       "name": "Aniverse Amazon Channel",
-      "priority": 99,
+      "priority": 98,
       "description": null,
       "link": null,
       "logo_path": "/a2wCZ9ultzAbjAaG6JMiCFJoy9s.jpg",
@@ -10320,7 +10313,7 @@
     {
       "id": "1710",
       "name": "HistoryPlay Amazon Channel",
-      "priority": 49,
+      "priority": 34,
       "description": null,
       "link": null,
       "logo_path": "/vd53k28L5ntW0FsarBsDGoMTCzH.jpg",
@@ -10971,7 +10964,7 @@
     {
       "id": "1756",
       "name": "filmingo",
-      "priority": 90,
+      "priority": 89,
       "description": "filmingo offers a carefully curated selection of arthouse films in HD quality for streaming by subscription or individual rental.\t\t\t\t\t\t\t\t\t\t\t\t",
       "link": "https://www.filmingo.de/en/",
       "logo_path": "/704tOH9qi7y7DDl1CmzDCAI0dcQ.jpg",
@@ -11006,23 +10999,6 @@
       ],
       "models": [
         2
-      ]
-    },
-    {
-      "id": "1764",
-      "name": "Yorck on Demand",
-      "priority": 80,
-      "description": null,
-      "link": null,
-      "logo_path": "/zHjoZOQ2DOlu2HCZH18bzQYGc3t.jpg",
-      "regions": [
-        276
-      ],
-      "types": [
-        1
-      ],
-      "models": [
-        3
       ]
     },
     {
@@ -11211,7 +11187,7 @@
     {
       "id": "1788",
       "name": "Love and Passion Amazon Channel",
-      "priority": 82,
+      "priority": 81,
       "description": null,
       "link": null,
       "logo_path": "/rYszOzWFzq7xPffwJ7XN5rJRI7u.jpg",
@@ -11225,21 +11201,6 @@
       "models": [
         2
       ]
-    },
-    {
-      "id": "1791",
-      "name": "Exxen",
-      "priority": 22,
-      "description": null,
-      "link": null,
-      "logo_path": "/sDihpCEJyBtH1pwVniZz2U3gcBz.jpg",
-      "regions": [
-        792
-      ],
-      "types": [
-        2
-      ],
-      "models": []
     },
     {
       "id": "1793",
@@ -11309,7 +11270,7 @@
     {
       "id": "1805",
       "name": "Studiocanal Presents MOVIECULT Amazon Channel",
-      "priority": 85,
+      "priority": 84,
       "description": null,
       "link": null,
       "logo_path": "/3VYyCBiG2WTCZ2tGzTkWvoXTeqi.jpg",
@@ -11327,7 +11288,7 @@
     {
       "id": "1806",
       "name": "Studiocanal Presents ALLSTARS Amazon Channel",
-      "priority": 86,
+      "priority": 85,
       "description": null,
       "link": null,
       "logo_path": "/tHX1KI8VdAzKWMxSgPKqKfHcxFA.jpg",
@@ -11368,7 +11329,10 @@
       "link": "https://www.amazon.com/gp/video/offers?benefitId=hbomaxus",
       "logo_path": "/5AkEgpCNaBP3Fbwd2m1GdQIk0vv.jpg",
       "regions": [
+        40,
         76,
+        276,
+        380,
         484,
         840
       ],
@@ -11401,7 +11365,7 @@
     {
       "id": "1829",
       "name": "Behind the Tree",
-      "priority": 89,
+      "priority": 88,
       "description": null,
       "link": null,
       "logo_path": "/fxYgfnsrUWa7e9aNr3j3RERpm66.jpg",
@@ -11438,7 +11402,7 @@
       "priority": 21,
       "description": "Created by BBC, BritBox allows you to stream the biggest collection of British TV, all in one place. \n \nChoose from a world-class library featuring an impressi…",
       "link": "https://apps.apple.com/us/app/britbox-the-best-british-tv/id1206838907",
-      "logo_path": "/xp12VXTZfunk568CAPs2Xqknimq.jpg",
+      "logo_path": "/bzEv2wssRqVgl12IVBfYhCIvvG.jpg",
       "regions": [
         36,
         124,
@@ -11675,23 +11639,6 @@
       ]
     },
     {
-      "id": "1881",
-      "name": "Coupang Play",
-      "priority": 31,
-      "description": null,
-      "link": null,
-      "logo_path": "/vpBRsCSyuwxwGDB2JeqyBVECUYF.jpg",
-      "regions": [
-        410
-      ],
-      "types": [
-        2
-      ],
-      "models": [
-        2
-      ]
-    },
-    {
       "id": "1883",
       "name": "TVING",
       "priority": 29,
@@ -11777,7 +11724,7 @@
     {
       "id": "1891",
       "name": "alleskino Amazon Channel",
-      "priority": 94,
+      "priority": 93,
       "description": null,
       "link": null,
       "logo_path": "/s7ZjSKXOtjKBb7hAzBm3b0iY0SG.jpg",
@@ -11795,7 +11742,7 @@
     {
       "id": "1892",
       "name": "RTL Crime Amazon Channel",
-      "priority": 95,
+      "priority": 94,
       "description": null,
       "link": null,
       "logo_path": "/5Qe65kN95Z0CytOaG3I8bytdW7A.jpg",
@@ -11918,7 +11865,7 @@
     {
       "id": "1899",
       "name": "HBO Max",
-      "priority": 27,
+      "priority": 226,
       "description": "Conoce Max, la plataforma de streaming que combina todo lo que más te gusta de HBO con tus películas y series favoritas además de Max Originals.",
       "link": "https://www.max.com/cr/es",
       "logo_path": "/jbe4gVSfRlbPTdESXhEKpornsfu.jpg",
@@ -11927,6 +11874,7 @@
         28,
         32,
         36,
+        40,
         44,
         52,
         56,
@@ -11946,12 +11894,14 @@
         222,
         246,
         250,
+        276,
         320,
         328,
         340,
         344,
         348,
         360,
+        380,
         388,
         458,
         484,
@@ -11996,7 +11946,7 @@
     {
       "id": "1902",
       "name": "ARD Plus",
-      "priority": 96,
+      "priority": 95,
       "description": null,
       "link": null,
       "logo_path": "/qTybjmHLNcXZExZLBnm4muVCDzP.jpg",
@@ -12173,7 +12123,7 @@
     {
       "id": "1954",
       "name": "ServusTV On",
-      "priority": 101,
+      "priority": 100,
       "description": null,
       "link": null,
       "logo_path": "/kVUNXh1Rt9JnwCDotghBKEwLGdH.jpg",
@@ -12182,7 +12132,8 @@
         276
       ],
       "types": [
-        1
+        1,
+        2
       ],
       "models": [
         1
@@ -12537,7 +12488,7 @@
     {
       "id": "1989",
       "name": "ZDF Select Amazon Channel ",
-      "priority": 105,
+      "priority": 104,
       "description": null,
       "link": null,
       "logo_path": "/mmDWKHiDLmHDo2OWnduQuI1T4bh.jpg",
@@ -12572,7 +12523,7 @@
     {
       "id": "1993",
       "name": "Videoload",
-      "priority": 106,
+      "priority": 105,
       "description": null,
       "link": null,
       "logo_path": "/dKh2TJ9lTWV0UIcDQGMnMyQ8AIN.jpg",
@@ -12590,7 +12541,7 @@
     {
       "id": "1994",
       "name": "TELE 5",
-      "priority": 107,
+      "priority": 106,
       "description": null,
       "link": null,
       "logo_path": "/a1zZJiOid4gG27xJtkcDaSVrQdb.jpg",
@@ -12668,7 +12619,6 @@
       "regions": [
         36,
         124,
-        724,
         826,
         840
       ],
@@ -12683,7 +12633,7 @@
     {
       "id": "2035",
       "name": "Crime+Investigation Play Apple TV Channel",
-      "priority": 108,
+      "priority": 107,
       "description": null,
       "link": null,
       "logo_path": "/u8kLI2iiZVJfcQp9EqbaSU9OXFh.jpg",
@@ -12718,7 +12668,7 @@
     {
       "id": "2037",
       "name": "ARD Plus Apple TV channel",
-      "priority": 109,
+      "priority": 108,
       "description": null,
       "link": null,
       "logo_path": "/9jxvmD363A04nuMw9jgyLzeDB3J.jpg",
@@ -12736,7 +12686,7 @@
     {
       "id": "2038",
       "name": "Arthaus+ Apple TV channel",
-      "priority": 110,
+      "priority": 109,
       "description": null,
       "link": null,
       "logo_path": "/as1NArQkfAnptYQP3VS03GOJPdm.jpg",
@@ -12972,23 +12922,6 @@
       ]
     },
     {
-      "id": "2054",
-      "name": "Lifetime Play Apple TV Channel",
-      "priority": 35,
-      "description": null,
-      "link": null,
-      "logo_path": "/hwX55ugBE1qtM62egayb1CHvNEh.jpg",
-      "regions": [
-        360
-      ],
-      "types": [
-        1
-      ],
-      "models": [
-        2
-      ]
-    },
-    {
       "id": "2055",
       "name": "Lifetime Movie Club Apple TV Channel",
       "priority": 192,
@@ -13160,7 +13093,7 @@
     {
       "id": "2065",
       "name": "ARD Plus Amazon channel ",
-      "priority": 177,
+      "priority": 176,
       "description": null,
       "link": null,
       "logo_path": "/aiRdDAPESgu9ztDFcLtrSqFa0W2.jpg",
@@ -13281,26 +13214,9 @@
       ]
     },
     {
-      "id": "2075",
-      "name": "Lifetime Play Amazon Channel",
-      "priority": 36,
-      "description": null,
-      "link": null,
-      "logo_path": "/zNYEUs0Z5t7jJqnLTtla8v6AoS4.jpg",
-      "regions": [
-        360
-      ],
-      "types": [
-        1
-      ],
-      "models": [
-        2
-      ]
-    },
-    {
       "id": "2076",
       "name": "Wedo TV",
-      "priority": 111,
+      "priority": 110,
       "description": null,
       "link": null,
       "logo_path": "/ptSF973yIl90KwhEmNWDvN1nhan.jpg",
@@ -13365,7 +13281,7 @@
     {
       "id": "2081",
       "name": "KiKA",
-      "priority": 113,
+      "priority": 112,
       "description": null,
       "link": null,
       "logo_path": "/5JkLub6H7HsWyLHbitnuXTzXmlJ.jpg",
@@ -13483,7 +13399,7 @@
     {
       "id": "2103",
       "name": "Funk",
-      "priority": 115,
+      "priority": 114,
       "description": null,
       "link": null,
       "logo_path": "/1rGIwO6vLlABDzMEUYKGGxfftTK.jpg",
@@ -13596,7 +13512,7 @@
     {
       "id": "2134",
       "name": "AXN Black Amazon Channel",
-      "priority": 120,
+      "priority": 119,
       "description": null,
       "link": null,
       "logo_path": "/bh0e83QEvjzttsj8FJcQaYxPR43.jpg",
@@ -13632,7 +13548,7 @@
     {
       "id": "2137",
       "name": "Arthaus+",
-      "priority": 123,
+      "priority": 122,
       "description": null,
       "link": null,
       "logo_path": "/inTlUMvnQrtCee5fnO4J45SuIwH.jpg",
@@ -14078,7 +13994,7 @@
     {
       "id": "2173",
       "name": "Anime Digital Network Amazon Channel",
-      "priority": 79,
+      "priority": 124,
       "description": null,
       "link": null,
       "logo_path": "/h5QpXIpSnvrPFnOLRXV83CtVHQH.jpg",
@@ -14114,7 +14030,7 @@
     {
       "id": "2176",
       "name": "Hoichoi Amazon Channel",
-      "priority": 50,
+      "priority": 158,
       "description": "The full list of movies on Hoichoi Amazon Channel. Find out what to watch on Hoichoi Amazon Channel with JustWatch!",
       "link": "https://www.justwatch.com/in/provider/hoichoi-amazon-channel",
       "logo_path": "/8ipK9EjNHvcPM22SgqKdA8wZjal.jpg",
@@ -14295,7 +14211,7 @@
     {
       "id": "2190",
       "name": "Plaion Pictures",
-      "priority": 126,
+      "priority": 125,
       "description": null,
       "link": null,
       "logo_path": "/sElRjek77o2yGbiFizqPbjLdyra.jpg",
@@ -14312,7 +14228,7 @@
     {
       "id": "2201",
       "name": "Toggo",
-      "priority": 127,
+      "priority": 126,
       "description": null,
       "link": null,
       "logo_path": "/745WQrNUjgJfUXxM2OJAoFkPhsw.jpg",
@@ -14330,7 +14246,7 @@
     {
       "id": "2206",
       "name": "Kixi",
-      "priority": 128,
+      "priority": 127,
       "description": null,
       "link": null,
       "logo_path": "/jASACep2h6gPgTEfilfsn0mFteF.jpg",
@@ -14349,7 +14265,7 @@
     {
       "id": "2207",
       "name": "Verleihshop",
-      "priority": 129,
+      "priority": 128,
       "description": null,
       "link": null,
       "logo_path": "/4JfSo3RoLuGtvY3jyjaVtxcwp2A.jpg",
@@ -14366,7 +14282,7 @@
     {
       "id": "2209",
       "name": "Freenet meinVOD",
-      "priority": 130,
+      "priority": 129,
       "description": "Movie Coins, die virtuelle Währung von freenet Video. Mit Ihren Movie Coins können Sie sich sämtliche Filme ausleihen und ansehen. Ein Movie Coin = ein Film.",
       "link": "https://www.freenet-video.de/",
       "logo_path": "/xo4zowa5gbKT4z65ZathH6H4Cdg.jpg",
@@ -14384,7 +14300,7 @@
     {
       "id": "2211",
       "name": "3sat",
-      "priority": 131,
+      "priority": 130,
       "description": null,
       "link": null,
       "logo_path": "/mvI5xXSRCBkPlcq83CI21rEMuGk.jpg",
@@ -14420,7 +14336,7 @@
     {
       "id": "2220",
       "name": "Akibapass",
-      "priority": 132,
+      "priority": 131,
       "description": "Erlebe brandneue Serien im Simulcast und beliebte Klassiker der Animewelt!",
       "link": "https://www.akibapass.tv/",
       "logo_path": "/eeu878U02fXr6ef3OfeiVVUS8yv.jpg",
@@ -14455,7 +14371,7 @@
     {
       "id": "2229",
       "name": "Disaster X Amazon Channel",
-      "priority": 133,
+      "priority": 132,
       "description": null,
       "link": null,
       "logo_path": "/a688PNhEgWvLPzxr7AgAD8pDfE9.jpg",
@@ -14474,7 +14390,7 @@
     {
       "id": "2231",
       "name": "Galactic Stream Amazon Channel",
-      "priority": 135,
+      "priority": 134,
       "description": null,
       "link": null,
       "logo_path": "/yRtZJF9vKrSSwwsgUS6XycBdAl0.jpg",
@@ -14493,7 +14409,7 @@
     {
       "id": "2233",
       "name": "BATTLEZONE Amazon Channel",
-      "priority": 136,
+      "priority": 135,
       "description": null,
       "link": null,
       "logo_path": "/59jxqvvHok2RxWZ4gsdNs33be5r.jpg",
@@ -14520,8 +14436,7 @@
         792
       ],
       "types": [
-        1,
-        2
+        1
       ],
       "models": [
         2
@@ -14618,7 +14533,7 @@
     {
       "id": "2244",
       "name": "ASIATIC Amazon Channel",
-      "priority": 174,
+      "priority": 173,
       "description": null,
       "link": null,
       "logo_path": "/kZkxB1p2hAo5TDYBxiPB087VcDq.jpg",
@@ -14636,7 +14551,7 @@
     {
       "id": "2245",
       "name": "Auto Motor und Sport Amazon Channel",
-      "priority": 137,
+      "priority": 136,
       "description": null,
       "link": null,
       "logo_path": "/kdK7YNtuILiP8eczeXV9nv6w6rd.jpg",
@@ -14655,7 +14570,7 @@
     {
       "id": "2246",
       "name": " AXN White Amazon Channel ",
-      "priority": 138,
+      "priority": 137,
       "description": null,
       "link": null,
       "logo_path": "/fA2DzD3tCoGt3LLCfH2N4K9klQi.jpg",
@@ -14675,7 +14590,7 @@
     {
       "id": "2247",
       "name": "Cirkus Amazon Channel ",
-      "priority": 139,
+      "priority": 138,
       "description": null,
       "link": null,
       "logo_path": "/ehDgFpzIDeWQARSAGi8gGvrNIxT.jpg",
@@ -14693,7 +14608,7 @@
     {
       "id": "2248",
       "name": "E! Entertainment Amazon Channel ",
-      "priority": 140,
+      "priority": 139,
       "description": null,
       "link": null,
       "logo_path": "/4crDlxVeDcvFYJriUmy9RgOdPGR.jpg",
@@ -14711,7 +14626,7 @@
     {
       "id": "2249",
       "name": "Fix And Foxi Amazon Channel",
-      "priority": 141,
+      "priority": 140,
       "description": null,
       "link": null,
       "logo_path": "/hj3dCuFVj4iBRQsYHRVtVGZ8ezb.jpg",
@@ -14730,7 +14645,7 @@
     {
       "id": "2250",
       "name": "FlimmerkisteTV Amazon Channel",
-      "priority": 142,
+      "priority": 141,
       "description": null,
       "link": null,
       "logo_path": "/kuDPlNYeBXdJdBS1VhbwWEKXf8t.jpg",
@@ -14750,7 +14665,7 @@
     {
       "id": "2252",
       "name": "Franatic Amazon Channel",
-      "priority": 144,
+      "priority": 143,
       "description": null,
       "link": null,
       "logo_path": "/cvh6xn93xim49GzNEwxx43CHRiS.jpg",
@@ -14769,7 +14684,7 @@
     {
       "id": "2253",
       "name": "GEO Television Amazon Channel",
-      "priority": 145,
+      "priority": 144,
       "description": null,
       "link": null,
       "logo_path": "/xc1sNY9m26IWTDLVch4l5RITE5n.jpg",
@@ -14788,7 +14703,7 @@
     {
       "id": "2254",
       "name": "GEO Wild Amazon Channel",
-      "priority": 146,
+      "priority": 145,
       "description": null,
       "link": null,
       "logo_path": "/15d0DEceQYOTdUhbTV4h90MCwzw.jpg",
@@ -14807,7 +14722,7 @@
     {
       "id": "2255",
       "name": "Good Movies Amazon Channel",
-      "priority": 147,
+      "priority": 146,
       "description": null,
       "link": null,
       "logo_path": "/qPnVZlOKd5UnoE7cZzjM9Bnmry5.jpg",
@@ -14825,7 +14740,7 @@
     {
       "id": "2256",
       "name": "Gute Laune TV Amazon Channel",
-      "priority": 148,
+      "priority": 147,
       "description": null,
       "link": null,
       "logo_path": "/4fvNDhHvuFLhd0kYDneFw11exxO.jpg",
@@ -14844,7 +14759,7 @@
     {
       "id": "2257",
       "name": "Historama Amazon Channel",
-      "priority": 149,
+      "priority": 148,
       "description": null,
       "link": null,
       "logo_path": "/j0EdO7R89IKdVkOE7jG4UnlJWJx.jpg",
@@ -14863,7 +14778,7 @@
     {
       "id": "2258",
       "name": "Kabel Eins Classics Amazon Channel",
-      "priority": 150,
+      "priority": 149,
       "description": null,
       "link": null,
       "logo_path": "/4H9Cr9iKiKwJkjBqJn4TgHu3ufL.jpg",
@@ -14882,7 +14797,7 @@
     {
       "id": "2259",
       "name": "Kinderwelt Amazon Channel",
-      "priority": 151,
+      "priority": 150,
       "description": null,
       "link": null,
       "logo_path": "/6rUYLv7HEvx5DK1D6MQXy3MkLQc.jpg",
@@ -14902,7 +14817,7 @@
     {
       "id": "2260",
       "name": "Kixi Select Amazon Channel",
-      "priority": 152,
+      "priority": 151,
       "description": null,
       "link": null,
       "logo_path": "/2ixS9fp8UgxGifDn9aNxyeMyShc.jpg",
@@ -14922,7 +14837,7 @@
     {
       "id": "2261",
       "name": "Moconomy Amazon Channel",
-      "priority": 28,
+      "priority": 11,
       "description": null,
       "link": null,
       "logo_path": "/AeebTPbgU6JeJ2OkptaFjeCsmvQ.jpg",
@@ -14966,7 +14881,7 @@
     {
       "id": "2263",
       "name": "Netzkino Select Amazon Channel",
-      "priority": 155,
+      "priority": 154,
       "description": null,
       "link": null,
       "logo_path": "/ge0PnSsdq9tCFY7UVpPwVKddaER.jpg",
@@ -14984,7 +14899,7 @@
     {
       "id": "2264",
       "name": "Okidoki Amazon Channel",
-      "priority": 157,
+      "priority": 156,
       "description": null,
       "link": null,
       "logo_path": "/fNrfISilqgSKJPPrYFmVBwzQm0x.jpg",
@@ -15001,7 +14916,7 @@
     {
       "id": "2265",
       "name": "ProSieben Fun Amazon Channel",
-      "priority": 158,
+      "priority": 157,
       "description": null,
       "link": null,
       "logo_path": "/uP1H33OCslvhtlFzYTicmHivq9O.jpg",
@@ -15046,7 +14961,7 @@
     {
       "id": "2267",
       "name": "Queer Cinemab Amazon Channel",
-      "priority": 160,
+      "priority": 159,
       "description": null,
       "link": null,
       "logo_path": "/kMfIUfVymOKnLwQGBAAUl6V8Q6H.jpg",
@@ -15066,7 +14981,7 @@
     {
       "id": "2268",
       "name": "RTL Living Amazon Channel",
-      "priority": 161,
+      "priority": 160,
       "description": null,
       "link": null,
       "logo_path": "/mv5q5cRD3SwijtJQ13lktAo1Zow.jpg",
@@ -15085,7 +15000,7 @@
     {
       "id": "2269",
       "name": "Sat.1 emotions Amazon Channel",
-      "priority": 162,
+      "priority": 161,
       "description": null,
       "link": null,
       "logo_path": "/eOHPreGr7UvOGMEpVqXWZdcJAiT.jpg",
@@ -15104,7 +15019,7 @@
     {
       "id": "2270",
       "name": "Sony Amazon Channel",
-      "priority": 163,
+      "priority": 162,
       "description": null,
       "link": null,
       "logo_path": "/e4XxAzUddiLEGm4Okh8mSWxgh5U.jpg",
@@ -15122,7 +15037,7 @@
     {
       "id": "2271",
       "name": "Spiegel Geschichte Amazon Channel",
-      "priority": 164,
+      "priority": 163,
       "description": null,
       "link": null,
       "logo_path": "/f3RXdwfzEfl5tf68T4Z1e78RT5Y.jpg",
@@ -15141,7 +15056,7 @@
     {
       "id": "2272",
       "name": "Sportdigital Amazon Channel",
-      "priority": 165,
+      "priority": 164,
       "description": null,
       "link": null,
       "logo_path": "/jZbW29NXgiM8jWH9GQ1yqGdeUTA.jpg",
@@ -15221,7 +15136,7 @@
     {
       "id": "2277",
       "name": "Terra X Amazon Channel",
-      "priority": 169,
+      "priority": 168,
       "description": null,
       "link": null,
       "logo_path": "/orskeNGDTbM3Ja0XdJL6GsBsJux.jpg",
@@ -15240,7 +15155,7 @@
     {
       "id": "2279",
       "name": "Waidwerk Amazon Channel",
-      "priority": 171,
+      "priority": 170,
       "description": null,
       "link": null,
       "logo_path": "/3iD98wKWhYod5mon6doUoSuHaZP.jpg",
@@ -15258,7 +15173,7 @@
     {
       "id": "2280",
       "name": "Watch4+ Amazon Channel",
-      "priority": 172,
+      "priority": 171,
       "description": null,
       "link": null,
       "logo_path": "/oIzyclVVk4xllr5KNqr28NdXMmh.jpg",
@@ -15276,7 +15191,7 @@
     {
       "id": "2281",
       "name": "Wild West Amzon Channel",
-      "priority": 173,
+      "priority": 172,
       "description": null,
       "link": null,
       "logo_path": "/wjIZsNyJ3BtYURWZoBzMSUQYjvg.jpg",
@@ -15331,11 +15246,11 @@
     },
     {
       "id": "2285",
-      "name": "JustWatchTV",
+      "name": "JustWatch TV",
       "priority": 28,
       "description": "The full list of movies and TV shows on JustWatchTV. Find out what to watch on JustWatchTV with JustWatch!",
       "link": "https://www.justwatch.com/us/provider/justwatchtv",
-      "logo_path": "/uCMLyl8jGIbInVyDeCeV6kpciFm.jpg",
+      "logo_path": "/g2IaWyo6jCY0rIFjb4qgZ0bSmm3.jpg",
       "regions": [
         8,
         12,
@@ -15505,7 +15420,7 @@
     {
       "id": "2287",
       "name": "Adrenalin Amazon channel",
-      "priority": 175,
+      "priority": 174,
       "description": "Thrilling action, epic Sci-Fi, terrifying horror",
       "link": "https://www.amazon.de/-/en/gp/video/offers?benefitId=adrenalinde",
       "logo_path": "/35u6ZIq0zht35nkeo5W1X9AmbIK.jpg",
@@ -15523,7 +15438,7 @@
     {
       "id": "2288",
       "name": "Allstars Amazon Channel",
-      "priority": 176,
+      "priority": 175,
       "description": null,
       "link": null,
       "logo_path": "/8fE593wjaked3UDNEb0Aw9WsSNW.jpg",
@@ -15542,7 +15457,7 @@
     {
       "id": "2289",
       "name": "Fernsehen mit Herz Amazon Channel",
-      "priority": 32,
+      "priority": 15,
       "description": null,
       "link": null,
       "logo_path": "/4zKrTkGhbh1KjFksg3gVPsZiPt2.jpg",
@@ -15564,7 +15479,7 @@
     {
       "id": "2290",
       "name": "H & C TV Amazon Channel",
-      "priority": 183,
+      "priority": 182,
       "description": null,
       "link": null,
       "logo_path": "/wezYuFAT4j8UV9Lk3oY2gptoNJ.jpg",
@@ -15583,7 +15498,7 @@
     {
       "id": "2291",
       "name": "Moviecult Amazon Channel",
-      "priority": 185,
+      "priority": 184,
       "description": null,
       "link": null,
       "logo_path": "/1egNE9hIti4LGeVJPGHbgXuXXO9.jpg",
@@ -15602,7 +15517,7 @@
     {
       "id": "2292",
       "name": "Redlight Cinema Amazon Channel",
-      "priority": 186,
+      "priority": 185,
       "description": null,
       "link": null,
       "logo_path": "/3ImESY1OFx7UC7fBwakvjSEmra5.jpg",
@@ -15620,7 +15535,7 @@
     {
       "id": "2293",
       "name": "Seven Entertainment Amazon Channel",
-      "priority": 187,
+      "priority": 186,
       "description": null,
       "link": null,
       "logo_path": "/91mdl623RUIlQGr3ZlbB6uxKM9W.jpg",
@@ -15639,7 +15554,7 @@
     {
       "id": "2294",
       "name": "Stingray All good vibes Amazon Channel",
-      "priority": 188,
+      "priority": 187,
       "description": "Thousands of concerts, karaoke songs, and more",
       "link": "https://www.amazon.de/-/en/gp/video/offers?benefitId=allgoodvibesde",
       "logo_path": "/4xHQUeeZAptdMlzTRuZAFyE61DV.jpg",
@@ -15657,7 +15572,7 @@
     {
       "id": "2295",
       "name": "Thrillbox Amazon Channel",
-      "priority": 189,
+      "priority": 188,
       "description": null,
       "link": null,
       "logo_path": "/Qq3ZiMvLl288BvhVoBv8lFot8I.jpg",
@@ -15699,7 +15614,7 @@
     {
       "id": "2297",
       "name": "ZDF Krimi Amazon Channel",
-      "priority": 191,
+      "priority": 190,
       "description": null,
       "link": null,
       "logo_path": "/r3Ure9Slzgn6hcjMQKVIgf0ORBV.jpg",
@@ -15718,7 +15633,7 @@
     {
       "id": "2298",
       "name": "ZDFtivi Amazon channel",
-      "priority": 192,
+      "priority": 191,
       "description": null,
       "link": null,
       "logo_path": "/8w42AXYRf7BiaRMsFTUCsTSuz63.jpg",
@@ -15737,7 +15652,7 @@
     {
       "id": "2299",
       "name": "Bergblick Amazon Channel",
-      "priority": 178,
+      "priority": 177,
       "description": null,
       "link": null,
       "logo_path": "/txD7jP7uZCsfoYkkCrJ20RgW2R0.jpg",
@@ -16298,7 +16213,6 @@
         862,
         887,
         894,
-        88888,
         99999
       ],
       "types": [
@@ -16350,7 +16264,7 @@
     {
       "id": "2357",
       "name": "Filmpalast Amazon Channel",
-      "priority": 193,
+      "priority": 192,
       "description": null,
       "link": null,
       "logo_path": "/3MhtSwlhI03YD52q98pljG5oxZD.jpg",
@@ -16400,7 +16314,7 @@
     {
       "id": "2359",
       "name": "GEO Television + Wild Amazon Channel",
-      "priority": 195,
+      "priority": 194,
       "description": null,
       "link": null,
       "logo_path": "/xc1sNY9m26IWTDLVch4l5RITE5n.jpg",
@@ -16927,7 +16841,7 @@
     {
       "id": "2412",
       "name": "Magenta TV+",
-      "priority": 198,
+      "priority": 197,
       "description": null,
       "link": null,
       "logo_path": "/qqTyjCCJuuARytrY7rNRAKka1VF.jpg",
@@ -17841,7 +17755,7 @@
     {
       "id": "2481",
       "name": "CineMix+ Amazon Channel",
-      "priority": 201,
+      "priority": 200,
       "description": null,
       "link": null,
       "logo_path": "/4M5eg8esiDLHff90xFg18GfIzw4.jpg",
@@ -17969,7 +17883,7 @@
     {
       "id": "2491",
       "name": "Channel K Amazon Channel",
-      "priority": 43,
+      "priority": 72,
       "description": null,
       "link": null,
       "logo_path": "/pQvLERAjzSc9XfrRppJQLoMKMPH.jpg",
@@ -18439,7 +18353,7 @@
     {
       "id": "2526",
       "name": "Made in Europe Amazon Channel",
-      "priority": 203,
+      "priority": 202,
       "description": null,
       "link": null,
       "logo_path": "/eNXagpujAN1bIpcGsukWqU26bZW.jpg",
@@ -18501,7 +18415,7 @@
     {
       "id": "2532",
       "name": "Mosaik Amazon Channel",
-      "priority": 204,
+      "priority": 203,
       "description": null,
       "link": null,
       "logo_path": "/58u9L4Q81lGX2iBs1CT1RQAiWYQ.jpg",
@@ -18535,7 +18449,7 @@
     {
       "id": "2534",
       "name": "Djangowestern Amazon Channel",
-      "priority": 205,
+      "priority": 204,
       "description": null,
       "link": null,
       "logo_path": "/iJCVnFtpnfdg7XndKsE1YZeHeEu.jpg",
@@ -18769,7 +18683,6 @@
         862,
         887,
         894,
-        88888,
         99999
       ],
       "types": [
@@ -19040,7 +18953,7 @@
     {
       "id": "2566",
       "name": "Queens club Amazon Channel",
-      "priority": 216,
+      "priority": 215,
       "description": null,
       "link": null,
       "logo_path": "/l3DgPufa8VE2UftLY32PRZqyfi2.jpg",
@@ -19055,7 +18968,7 @@
     {
       "id": "2578",
       "name": "RTL+ Max Amazon Channel",
-      "priority": 221,
+      "priority": 220,
       "description": null,
       "link": null,
       "logo_path": "/8o737RzF49I8kOHe9ua3tLORIEf.jpg",
@@ -19071,7 +18984,7 @@
     {
       "id": "2599",
       "name": "ZDF Schatzkiste Amazon channel",
-      "priority": 224,
+      "priority": 223,
       "description": null,
       "link": null,
       "logo_path": "/yLcLdxpuz20lffCWptifnFv3rsb.jpg",
@@ -19079,7 +18992,8 @@
         276
       ],
       "types": [
-        1
+        1,
+        2
       ],
       "models": []
     },
@@ -19288,7 +19202,7 @@
     {
       "id": "2606",
       "name": "Novecento Amazon Channel",
-      "priority": 94,
+      "priority": 96,
       "description": null,
       "link": null,
       "logo_path": "/2zkNz0wUCAIO0oCWWkGfssLrL72.jpg",
@@ -19353,7 +19267,7 @@
     {
       "id": "2610",
       "name": "CINE BMovie Amazon Channel",
-      "priority": 95,
+      "priority": 97,
       "description": null,
       "link": null,
       "logo_path": "/fpaEaJDN5ISBfEXNMZwpMrWxe6M.jpg",
@@ -19463,7 +19377,7 @@
     {
       "id": "2620",
       "name": "CaixaForum+",
-      "priority": 368,
+      "priority": 372,
       "description": null,
       "link": null,
       "logo_path": "/9pRY14ZWkDCRzQBuASRnYJ1KZwQ.jpg",
@@ -19615,12 +19529,270 @@
     {
       "id": "2621",
       "name": "KQED",
-      "priority": 369,
+      "priority": 368,
       "description": null,
       "link": null,
       "logo_path": "/trKuSZLIe3KX01ihS40qJIpDryQ.jpg",
       "regions": [
         840
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2622",
+      "name": "Thirteen",
+      "priority": 369,
+      "description": null,
+      "link": null,
+      "logo_path": "/jpQn5rQZmwo7VdKe5lAcgbQYMYw.jpg",
+      "regions": [
+        840
+      ],
+      "types": [
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2623",
+      "name": "Artflix",
+      "priority": 370,
+      "description": null,
+      "link": null,
+      "logo_path": "/5MsbQCp7FpYr3INLpeKDLJrlDh8.jpg",
+      "regions": [
+        12,
+        20,
+        28,
+        31,
+        32,
+        36,
+        40,
+        44,
+        48,
+        52,
+        56,
+        60,
+        68,
+        70,
+        76,
+        84,
+        100,
+        112,
+        120,
+        124,
+        132,
+        148,
+        152,
+        170,
+        188,
+        196,
+        203,
+        208,
+        214,
+        218,
+        222,
+        226,
+        233,
+        242,
+        246,
+        250,
+        254,
+        258,
+        275,
+        276,
+        288,
+        292,
+        300,
+        320,
+        344,
+        348,
+        352,
+        356,
+        360,
+        368,
+        372,
+        376,
+        380,
+        384,
+        388,
+        392,
+        400,
+        404,
+        410,
+        414,
+        422,
+        428,
+        434,
+        438,
+        440,
+        442,
+        466,
+        470,
+        480,
+        484,
+        492,
+        498,
+        499,
+        504,
+        508,
+        512,
+        528,
+        554,
+        558,
+        562,
+        578,
+        591,
+        604,
+        616,
+        620,
+        634,
+        642,
+        643,
+        662,
+        674,
+        682,
+        686,
+        688,
+        690,
+        702,
+        703,
+        705,
+        710,
+        716,
+        724,
+        752,
+        756,
+        764,
+        780,
+        784,
+        788,
+        792,
+        796,
+        800,
+        804,
+        807,
+        826,
+        834,
+        840,
+        858,
+        862,
+        887,
+        894
+      ],
+      "types": [
+        1
+      ],
+      "models": []
+    },
+    {
+      "id": "2624",
+      "name": "TV2 Skyshowtime",
+      "priority": 53,
+      "description": null,
+      "link": null,
+      "logo_path": "/s38BRDYN1fP3Ll9bptNaE5JXFkL.jpg",
+      "regions": [
+        208
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2657",
+      "name": "WETA+",
+      "priority": 371,
+      "description": null,
+      "link": null,
+      "logo_path": "/yAX7g4FBEqr7Qk3Rgq9BZgbCxwJ.jpg",
+      "regions": [
+        840
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2658",
+      "name": "TVP",
+      "priority": 65,
+      "description": null,
+      "link": null,
+      "logo_path": "/mhsYsVY18PVcVh76y2XFrodqbBD.jpg",
+      "regions": [
+        616
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2659",
+      "name": "Ondamedia",
+      "priority": 68,
+      "description": null,
+      "link": null,
+      "logo_path": "/k2w8qboucuJmdh06hqzekZSGl1q.jpg",
+      "regions": [
+        152
+      ],
+      "types": [
+        1
+      ],
+      "models": []
+    },
+    {
+      "id": "2660",
+      "name": "Wow Fiction Amazon Channel",
+      "priority": 225,
+      "description": null,
+      "link": null,
+      "logo_path": "/35XbldCPO3ztCREajGbfhf7827w.jpg",
+      "regions": [
+        276
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2663",
+      "name": "S4C Clic",
+      "priority": 172,
+      "description": null,
+      "link": null,
+      "logo_path": "/pYw5fuT6UGP4vDA9wMMvUBgD076.jpg",
+      "regions": [
+        826
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2665",
+      "name": "TV5 Unis",
+      "priority": 147,
+      "description": null,
+      "link": null,
+      "logo_path": "/jJchUvznSKLtQbdgNk7HwsSt8mL.jpg",
+      "regions": [
+        124
       ],
       "types": [
         1,

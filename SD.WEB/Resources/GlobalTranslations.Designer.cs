@@ -19,7 +19,7 @@ namespace SD.WEB.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class GlobalTranslations {
@@ -97,7 +97,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Or check out our other apps:.
+        ///   Looks up a localized string similar to Explore our other amazing apps:.
         /// </summary>
         public static string CheckOurApps {
             get {
@@ -367,7 +367,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Leave a review and help us reach more users:.
+        ///   Looks up a localized string similar to Rate the app and share it with your friends!.
         /// </summary>
         public static string WriteReviewSubtitle {
             get {
@@ -385,7 +385,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Want to help {0} grow?.
+        ///   Looks up a localized string similar to Help {0} grow!.
         /// </summary>
         public static string WriteReviewTitle {
             get {

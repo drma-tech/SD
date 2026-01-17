@@ -103,7 +103,7 @@
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
-    public string? Reviewed { get; set; }
+    public bool Reviewed { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -147,7 +147,7 @@
 
     protected override async Task LoadNonEssentialDataAsync()
     {
-        Reviewed = await JsRuntime.Utils().GetLocalStorage("reviewed");
+        Reviewed = await JsRuntime.Utils().GetStorage<bool>("reviewed");
     }
 
     protected override async Task LoadAuthDataAsync()

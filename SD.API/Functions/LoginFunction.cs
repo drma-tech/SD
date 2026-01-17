@@ -93,7 +93,9 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
         try
         {
             var ip = req.GetUserIP(false);
-            if (ip == "127.0.0.1") ip = "8.8.8.8";
+            if (ip.Empty()) return null;
+            if (ip == "127.0.0.1") return null;
+
             var client = factory.CreateClient("ipinfo");
 
             var result = await client.GetValueAsync($"https://ipinfo.io/{ip}/country", cancellationToken);

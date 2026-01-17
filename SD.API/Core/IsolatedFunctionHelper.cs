@@ -92,6 +92,7 @@ public static class IsolatedFunctionHelper
         log.AppVersion = log.AppVersion ?? req.GetQueryParameters()["vs"];
         log.UserId = log.UserId ?? null;
         log.Ip = log.Ip ?? req.GetUserIP(false);
+        log.Country = log.Country ?? null;
 
         logger.LogError(ex, messageLog, log);
     }

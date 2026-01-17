@@ -38,7 +38,7 @@ await ConfigureCulture(app, js);
 
 AppStateStatic.Version = await AppStateStatic.GetAppVersion(js);
 
-await js.Utils().SetLocalStorage("app-version", AppStateStatic.Version);
+await js.Utils().SetStorage("app-version", AppStateStatic.Version);
 await AppStateStatic.GetPlatform(js);
 await js.Services().InitGoogleAnalytics(AppStateStatic.Version);
 await js.Services().InitUserBack(AppStateStatic.Version);

@@ -127,7 +127,7 @@
 
     private async Task Logout()
     {
-        await JsRuntime.Utils().ClearLocalStorage();
+        await JsRuntime.Utils().ClearAllStorage();
 
         await JsRuntime.Firebase().SignOutAsync();
 
