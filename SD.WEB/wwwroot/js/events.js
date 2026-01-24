@@ -2,7 +2,6 @@
 
 import { isDev, isBot, isOldBrowser, appVersion } from "./main.js";
 import { storage, notification, environment } from "./utils.js";
-import { messaging } from "./firebase.js";
 
 window.addEventListener("load", function () {
     const startTime = performance.now();
@@ -186,10 +185,4 @@ window.addEventListener("offline", () => {
     notification.showError(
         "It looks like you're offline. Please check your connection."
     );
-});
-
-document.addEventListener("click", async (event) => {
-    if (event.target?.closest(".btnEnableNotifications")) {
-        await messaging.requestMessagingPermission();
-    }
 });

@@ -171,35 +171,4 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
             throw;
         }
     }
-
-    [Function("SubscribeToTopics")]
-    public static async Task SubscribeToTopics(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "firebase/subscribe")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var token = req.GetQueryParameters()["token"];
-            var platform = req.GetQueryParameters()["platform"];
-
-            await FirebaseMessaging.DefaultInstance.SubscribeToTopicAsync([token], "global");
-            await FirebaseMessaging.DefaultInstance.SubscribeToTopicAsync([token], platform);
-
-            var message = new Message()
-            {
-                Token = token,
-                Data = new Dictionary<string, string>
-                {
-                    { "title", "Streaming Discovery" },
-                    { "body", "Welcome to your personal streaming guide." }
-                }
-            };
-
-            await FirebaseMessaging.DefaultInstance.SendAsync(message, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
-    }
 }

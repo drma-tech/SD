@@ -115,11 +115,10 @@
                 //remove data from cosmos db
                 await PrincipalApi.Remove();
 
+                //TODO: remove data from firebase auth
+
                 //close popup
                 MudDialog?.Close();
-
-                //remove authentication data from azure (todo: its not working)
-                // Navigation.NavigateTo("/.auth/purge/aad");
 
                 //close current login session
                 await Logout();

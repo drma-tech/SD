@@ -37,13 +37,14 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
             var userId = await req.GetUserIdAsync(cancellationToken);
             if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
             var login = await repo.Get<AuthLogin>(DocumentType.Login, userId, cancellationToken);
+            var now = DateTimeOffset.UtcNow;
 
             if (login == null)
             {
                 var newLogin = new AuthLogin
                 {
                     UserId = userId,
-                    Accesses = [new Access { Date = DateTimeOffset.UtcNow, Platform = platform, Ip = ip }]
+                    Accesses = [new Access { Date = now, Platform = platform, Ip = ip }]
                 };
                 newLogin.Initialize(userId);
 
@@ -51,8 +52,19 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
             }
             else
             {
+                var minInterval = TimeSpan.FromHours(1);
+                var lastAccess = login.Accesses.OrderByDescending(a => a.Date).FirstOrDefault();
+
+                if (lastAccess != null && now - lastAccess.Date < minInterval)
+                {
+                    return;
+                }
+
+                var cutoff = DateTimeOffset.UtcNow.AddMonths(-6); //Keep access history for the last 6 months only.
+
                 login.Accesses = login.Accesses
-                    .Union([new Access { Date = DateTimeOffset.UtcNow, Platform = platform, Ip = ip }]).ToArray();
+                    .Where(a => a.Date >= cutoff)
+                    .Union([new Access { Date = now, Platform = platform, Ip = ip }]).ToArray();
 
                 await repo.UpsertItemAsync(login, cancellationToken);
             }

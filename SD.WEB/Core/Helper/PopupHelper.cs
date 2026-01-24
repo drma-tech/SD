@@ -33,6 +33,8 @@ public static class PopupHelper
 
     public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchedList? watched, WatchingList? watching, WishList? wish, HashSet<MediaDetail> items)
     {
+        ComponentActions<HashSet<MediaDetail>> actions = new();
+
         var parameters = new DialogParameters<CompleteListPopup>
         {
             { x => x.TitleHead, titleHead },
@@ -40,6 +42,7 @@ public static class PopupHelper
             { x => x.Watching, watching },
             { x => x.Wish, wish },
             { x => x.Items, items },
+            { x => x.Actions, actions },
             { x => x.ItemsChanged, Factory.Create(new object(), (HashSet<MediaDetail> lst) => { items = lst; }) },
             { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? lst) => { watched = lst; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
@@ -47,6 +50,8 @@ public static class PopupHelper
         };
 
         await service.ShowAsync<CompleteListPopup>(titleHead, parameters, Options(MaxWidth.Large));
+
+        actions.FinishLoading?.Invoke(items);
     }
 
     public static async Task MediaPopup(this IDialogService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? tmdbId)

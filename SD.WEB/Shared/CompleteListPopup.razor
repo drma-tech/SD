@@ -11,7 +11,7 @@
 <MudDialog Style="width: 100%">
     <DialogContent>
         <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) => { Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged(); })"
-                       IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected"
+                       IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" Actions="Actions"
                        StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false" FullPage="true" Popup="true"
                        Watched="Watched" Watching="Watching" Wish="Wish" CommentsIsImage="CommentsIsImage">
         </MediaListFull>
@@ -36,6 +36,7 @@
 
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = [];
     [Parameter] public EventCallback<HashSet<MediaDetail>> ItemsChanged { get; set; }
+    [Parameter] public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new();
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; }

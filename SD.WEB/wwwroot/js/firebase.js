@@ -14,18 +14,10 @@ import {
     signInWithPopup,
     signInWithRedirect,
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-import {
-    getMessaging,
-    onMessage,
-    getToken,
-} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-messaging.js";
 
 import { isBot, isLocalhost, isPrintScreen, firebaseConfig } from "./main.js";
 import { storage, notification, interop } from "./utils.js";
 
-//Xiaomi: The international model should work. The Chinese model perhaps not (and is likely to stop working completely in the near future).
-//Huawei: It no longer offers GMS (Google Mobile Services) because it was blocked by Google. Implement: Huawei Push Kit
-const nativePlatforms = new Set(["ios", "play", "xiaomi"]);
 const platform = storage.getLocalStorage("platform");
 
 if (!isBot && !isPrintScreen) {
@@ -76,19 +68,6 @@ if (!isBot && !isPrintScreen) {
             refreshTokenInterval = null;
         }
     });
-
-    // Initialize messaging only for non-native platforms
-    if (!nativePlatforms.has(platform)) {
-        const messaging = getMessaging(app);
-        window.messaging = messaging;
-
-        onMessage(messaging, (payload) => {
-            if (Notification.permission === "granted") {
-                const { title, body } = payload.data || {};
-                new Notification(title, { body });
-            }
-        });
-    }
 }
 
 export const authentication = {
@@ -181,37 +160,5 @@ export const authentication = {
             notification.showError(error.message);
             return null;
         }
-    },
-};
-
-export const messaging = {
-    async requestMessagingPermission() {
-        if (nativePlatforms.has(platform)) {
-            console.log("Using native push, no web permission needed.");
-            return;
-        }
-
-        const permission = await Notification.requestPermission();
-
-        if (permission !== "granted") {
-            console.warn("Notifications not allowed.");
-            return;
-        }
-
-        const token = await getToken(window.messaging, {
-            vapidKey: firebaseConfig.messagingKey,
-        });
-
-        if (token) {
-            storage.setLocalStorage("MessagingToken", token);
-        } else {
-            notification.showError("Failed to register messaging token.");
-            return;
-        }
-
-        await interop.invokeDotNetWhenReady("SD.WEB", "SubscribeToTopics", {
-            token,
-            platform,
-        });
     },
 };
