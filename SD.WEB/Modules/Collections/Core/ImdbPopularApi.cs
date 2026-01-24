@@ -71,24 +71,6 @@ public class ImdbPopularApi(IHttpClientFactory factory)
                 });
             }
         }
-        else if (type == MediaType.person)
-        {
-            var result = await GetAsync("public/cache/imdb-popular-star".ConfigureParameters(stringParameters));
-
-            foreach (var item in result?.Data?.Items ?? [])
-            {
-                listMedia.Add(new MediaDetail
-                {
-                    tmdb_id = item.Id,
-                    title = item.Title,
-                    //plot = string.IsNullOrEmpty(item.overview) ? "No plot found" : item.overview,
-                    //release_date = null,
-                    poster_small = item.Image,
-                    //rating = 0,
-                    MediaType = MediaType.person
-                });
-            }
-        }
 
         return (listMedia, true);
     }

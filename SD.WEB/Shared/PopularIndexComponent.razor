@@ -24,14 +24,6 @@
                     <MudText Inline="true">@PopularType.Show.GetName()</MudText>
                 </MudHidden>
             </MudToggleItem>
-            <MudToggleItem Value="@PopularType.Star" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
-                <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("star").Font" Title="@PopularType.Star.GetName()"></MudIcon>
-                </MudHidden>
-                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                    <MudText Inline="true">@PopularType.Star.GetName()</MudText>
-                </MudHidden>
-            </MudToggleItem>
         </MudToggleGroup>
     </ActionFragment>
     <BodyFragment>
@@ -46,13 +38,6 @@
         {
             <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false"
                        StringParameters="Params" TypeSelected="MediaType.tv" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                       OnlyYear="true">
-            </MediaList>
-        }
-        else if (TypeSelected == PopularType.Star)
-        {
-            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false" Popup="true"
-                       StringParameters="Params" TypeSelected="MediaType.person" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
                        OnlyYear="true">
             </MediaList>
         }

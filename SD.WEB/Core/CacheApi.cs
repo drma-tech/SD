@@ -23,17 +23,14 @@ public struct Endpoint
         return $"public/cache/trailers?mode={mode}";
     }
 
-    public static string GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? date,
-        string? tmdbRating)
+    public static string GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? date, string? tmdbRating)
     {
-        return
-            $"public/cache/ratings/movie?id={id}&tmdb_id={tmdbId}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdbRating}";
+        return $"public/cache/ratings/movie?id={id}&tmdb_id={tmdbId}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdbRating}";
     }
 
     public static string GetShowRatings(string? id, string? tmdbId, string? title, DateTime? date, string? tmdbRating)
     {
-        return
-            $"public/cache/ratings/show?id={id}&tmdb_id={tmdbId}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdbRating}";
+        return $"public/cache/ratings/show?id={id}&tmdb_id={tmdbId}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}&tmdb_rating={tmdbRating}";
     }
 
     public static string GetMovieReviews(string? id, string? title, DateTime? date)

@@ -8,6 +8,7 @@ using SD.Shared.Models.Energy;
 using SD.Shared.Models.List;
 using SD.Shared.Models.List.Imdb;
 using SD.Shared.Models.News;
+using SD.Shared.Models.Popular;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
 using System.Globalization;
@@ -298,13 +299,22 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
                 if (doc == null)
                 {
-                    var obj = ScrapingPopular.GetMovieData();
+                    var client = factory.CreateClient("rapidapi");
+                    var obj = await client.GetMostPopular<List<PopularScraping>>("most-popular-movies", cancellationToken);
 
-                    var compactModels = new MostPopularData { ErrorMessage = obj.ErrorMessage };
+                    var compactModels = new MostPopularData();
 
-                    foreach (var item in obj.Items.Take(mode == "compact" ? 20 : 100))
+                    foreach (var item in obj?.Take(mode == "compact" ? 20 : 100) ?? [])
                     {
-                        compactModels.Items.Add(item);
+                        if (item == null) continue;
+                        compactModels.Items.Add(new MostPopularDataDetail
+                        {
+                            Id = item.id,
+                            Title = item.primaryTitle,
+                            Image = item.thumbnails?[1]?.url,
+                            Year = item.startYear?.ToString(),
+                            IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture)
+                        });
                     }
 
                     doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, $"popularmovies_{mode}"), cancellationToken);
@@ -351,55 +361,25 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
                 if (doc == null)
                 {
-                    var obj = ScrapingPopular.GetTvData();
+                    var client = factory.CreateClient("rapidapi");
+                    var obj = await client.GetMostPopular<List<PopularScraping>>("most-popular-tv", cancellationToken);
 
-                    doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(obj, "populartvs"), cancellationToken);
-                }
+                    var compactModels = new MostPopularData();
 
-                await SaveCache(doc, cacheKey, TtlCache.OneDay);
-            }
+                    foreach (var item in obj?.Take(20) ?? [])
+                    {
+                        if (item == null) continue;
+                        compactModels.Items.Add(new MostPopularDataDetail
+                        {
+                            Id = item.id,
+                            Title = item.primaryTitle,
+                            Image = item.thumbnails?[1]?.url,
+                            Year = item.startYear?.ToString(),
+                            IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture)
+                        });
+                    }
 
-            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
-        }
-        catch (TaskCanceledException ex)
-        {
-            req.LogError(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
-
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
-    }
-
-    [Function("ImdbPopularStar")]
-    public async Task<HttpResponseData?> ImdbPopularStar(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-star")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            req.ValidateWebVersion();
-
-            var cacheKey = "popularstar";
-            CacheDocument<MostPopularData>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
-            if (cachedBytes is { Length: > 0 })
-            {
-                doc = JsonSerializer.Deserialize<CacheDocument<MostPopularData>>(cachedBytes);
-            }
-            else
-            {
-                doc = await cacheRepo.Get<MostPopularData>(cacheKey, cancellationToken);
-
-                if (doc == null)
-                {
-                    var obj = ScrapingPopular.GetStarData();
-
-                    doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(obj, "popularstar"), cancellationToken);
+                    doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, $"populartvs"), cancellationToken);
                 }
 
                 await SaveCache(doc, cacheKey, TtlCache.OneDay);

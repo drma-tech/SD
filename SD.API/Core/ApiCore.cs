@@ -126,4 +126,20 @@ public static class ApiCore
 
         return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
     }
+
+    public static async Task<T?> GetMostPopular<T>(this HttpClient http, string route, CancellationToken cancellationToken) where T : class
+    {
+        if (string.IsNullOrEmpty(route)) return null;
+
+        using var request = new HttpRequestMessage(HttpMethod.Get, $"https://imdb236.p.rapidapi.com/api/imdb/{route}");
+
+        request.Headers.TryAddWithoutValidation("X-RapidAPI-Key", ApiStartup.Configurations.RapidAPI?.Key);
+        request.Headers.TryAddWithoutValidation("X-RapidAPI-Host", "imdb236.p.rapidapi.com");
+
+        var response = await http.SendAsync(request, cancellationToken);
+
+        if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
+
+        return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
+    }
 }
