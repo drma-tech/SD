@@ -76,6 +76,20 @@ public static class ApiCore
         return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
     }
 
+    public static async Task<T?> GetNewsByImdb8<T>(this HttpClient http, CancellationToken cancellationToken) where T : class
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, $"https://imdb8.p.rapidapi.com/news/v2/get-by-category?category=MOVIE&first=30&language=en-US");
+
+        request.Headers.TryAddWithoutValidation("X-RapidAPI-Key", ApiStartup.Configurations.RapidAPI?.Key);
+        request.Headers.TryAddWithoutValidation("X-RapidAPI-Host", "imdb8.p.rapidapi.com");
+
+        var response = await http.SendAsync(request, cancellationToken);
+
+        if (!response.IsSuccessStatusCode) throw new UnhandledException(response.ReasonPhrase);
+
+        return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
+    }
+
     public static async Task<T?> GetFilmShowRatings<T>(this HttpClient http, string? imdbId, CancellationToken cancellationToken) where T : class
     {
         if (string.IsNullOrEmpty(imdbId)) return null;

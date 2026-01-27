@@ -188,22 +188,26 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
                 if (doc == null)
                 {
-                    var obj = ScrapingNews.GetNews();
+                    var client = factory.CreateClient("rapidapi");
+                    var obj = await client.GetNewsByImdb8<NewsJson>(cancellationToken);
 
                     var compactModels = new NewsModel();
 
-                    foreach (var item in obj.Items.Take(mode == "compact" ? 10 : 100))
+                    var nodes = obj?.data?.news?.edges?.Select(s => s.node) ?? [];
+
+                    foreach (var item in nodes.Take(mode == "compact" ? 10 : 30) ?? [])
                     {
-                        compactModels.Items.Add(new Item(item.id, item.title, item.url_img, item.link, item.date));
+                        if (item == null) continue;
+                        compactModels.Items.Add(new Item(item.id, item.articleTitle?.plainText, item.image?.url, item.externalUrl, item.date));
                     }
 
                     doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, $"lastnews_{mode}"), cancellationToken);
                 }
 
-                await SaveCache(doc, cacheKey, TtlCache.SixHours);
+                await SaveCache(doc, cacheKey, TtlCache.HalfDay);
             }
 
-            return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.HalfDay, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
