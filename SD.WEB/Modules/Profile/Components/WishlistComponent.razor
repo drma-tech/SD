@@ -1,25 +1,19 @@
 ﻿@using SD.WEB.Modules.Profile.Resources
 @inherits ComponentCore<WishlistComponent>
 
-<PageSection Icon="@IconsFA.Solid.Icon("bookmark").Font" Title="@Title" ShowHead="ShowHeader">
-    <ActionFragment>
-        <MudTooltip Text="@GlobalTranslations.SeeAllItems">
-            <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Class="me-2" Disabled="Items.Empty()"
-                           OnClick="@(async () => await OpenCompleteList())" Size="AppStateStatic.Size" />
-        </MudTooltip>
-    </ActionFragment>
+<NewPageSection Icon="@IconsFA.Solid.Icon("bookmark").Font" Title="WishList" ShowHeader="ShowHeader">
     <BodyFragment>
-        <NewRenderControl Actions="Actions" Instance="Wish" ExpressionEmpty="ExpressionEmpty"
-                          PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
-                          CustomMessageWarning="@Modules.Profile.Resources.Translations.AddTitlesWishlist">
+        @if (TypeParam.HasValue)
+        {
             @if (FullScreen)
             {
                 <div class="grid-relative-container-poster">
-                    @foreach (var item in Items.Take(GetTotalItems))
+                    @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems) ?? [])
                     {
                         var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-                        <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType"
-                                         Clicked="@(async () => await ShowMediaPopup(item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+
+                        <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
+                                         Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
                         </PosterComponent>
                     }
                 </div>
@@ -28,12 +22,12 @@
             {
                 <div id="@_swiperId" class="swiper">
                     <div class="swiper-wrapper">
-                        @foreach (var item in Items.Take(GetTotalItems))
+                        @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems) ?? [])
                         {
                             var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                             <div class="swiper-slide" style="height: auto !important;">
-                                <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType"
-                                                 Clicked="@(async () => await ShowMediaPopup(item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
+                                                 Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
                                 </PosterComponent>
                             </div>
                         }
@@ -42,27 +36,118 @@
                     <div class="swiper-button-prev"></div>
                 </div>
             }
-        </NewRenderControl>
+        }
+        else
+        {
+            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")"
+                     ActivePanelIndexChanged="@((int index) => { if (index == 0) _type = MediaType.movie; else _type = MediaType.tv; })">
+                <Header>
+                    <MudTooltip Text="Expand">
+                        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Disabled="false" OnClick="@(async () => await OpenCompleteList(_type))" />
+                    </MudTooltip>
+                </Header>
+                <ChildContent>
+                    <MudTabPanel Text="@MediaType.movie.GetName()">
+                        <NewRenderControl Actions="Actions" Instance="Wish" ExpressionEmpty="ExpressionEmpty"
+                                          PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
+                                          CustomMessageWarning="@Modules.Profile.Resources.Translations.AddTitlesWishlist">
+                            @if (FullScreen)
+                            {
+                                <div class="grid-relative-container-poster">
+                                    @foreach (var item in Wish?.Movies.Take(GetTotalItems) ?? [])
+                                    {
+                                        var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                                        <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.movie"
+                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.movie, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                        </PosterComponent>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="@_swiperId" class="swiper">
+                                    <div class="swiper-wrapper">
+                                        @foreach (var item in Wish?.Movies.Take(GetTotalItems) ?? [])
+                                        {
+                                            var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                                            <div class="swiper-slide" style="height: auto !important;">
+                                                <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.movie"
+                                                                 Clicked="@(async () => await ShowMediaPopup(MediaType.movie, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                                </PosterComponent>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="swiper-button-next"></div>
+                                    <div class="swiper-button-prev"></div>
+                                </div>
+                            }
+                        </NewRenderControl>
+                    </MudTabPanel>
+                    <MudTabPanel Text="@MediaType.tv.GetName()">
+                        <NewRenderControl Actions="Actions" Instance="Wish" ExpressionEmpty="ExpressionEmpty"
+                                          PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
+                                          CustomMessageWarning="@Modules.Profile.Resources.Translations.AddTitlesWishlist">
+                            @if (FullScreen)
+                            {
+                                <div class="grid-relative-container-poster">
+                                    @foreach (var item in Wish?.Shows.Take(GetTotalItems) ?? [])
+                                    {
+                                        var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                                        <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.tv"
+                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.tv, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                        </PosterComponent>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="@_swiperId2" class="swiper">
+                                    <div class="swiper-wrapper">
+                                        @foreach (var item in Wish?.Shows.Take(GetTotalItems) ?? [])
+                                        {
+                                            var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                                            <div class="swiper-slide" style="height: auto !important;">
+                                                <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.tv"
+                                                                 Clicked="@(async () => await ShowMediaPopup(MediaType.tv, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                                </PosterComponent>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="swiper-button-next"></div>
+                                    <div class="swiper-button-prev"></div>
+                                </div>
+                            }
+                        </NewRenderControl>
+                    </MudTabPanel>
+                </ChildContent>
+            </MudTabs>
+        }
     </BodyFragment>
-</PageSection>
+</NewPageSection>
 
 @code {
     [Parameter][EditorRequired] public ComponentActions<WishList?> Actions { get; set; } = new();
-    [Parameter][EditorRequired] public MediaType MediaType { get; set; }
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public Func<WishList?, bool> ExpressionEmpty { get; set; } = null!;
+
+    [Parameter] public MediaType? TypeParam { get; set; }
     [Parameter] public string? CustomTitle { get; set; }
 
-    private HashSet<WishListItem> Items => MediaType == MediaType.movie ? Wish?.Movies ?? [] : Wish?.Shows ?? [];
+    private MediaType _type { get; set; } = MediaType.movie;
+
+    private HashSet<WishListItem> Items(MediaType type) => type == MediaType.movie ? Wish?.Movies ?? [] : Wish?.Shows ?? [];
 
     private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Wishlist : AccountProduct.Basic.GetRestrictions().Wishlist;
-    private string? Title => CustomTitle ?? (MediaType == MediaType.movie ? Translations.MyMovieWishlist : Translations.MyShowWishlist);
 
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
+    private readonly string _swiperId2 = $"swiper-{Guid.NewGuid()}";
+
+    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
+    private string margin => IsMobile ? "2" : "3";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -71,6 +156,7 @@
             await base.OnAfterRenderAsync(firstRender);
 
             await JsRuntime.Swiper().InitLists(_swiperId);
+            await JsRuntime.Swiper().InitLists(_swiperId2);
         }
         catch (Exception ex)
         {
@@ -78,14 +164,14 @@
         }
     }
 
-    private async Task OpenCompleteList()
+    private async Task OpenCompleteList(MediaType type)
     {
-        await DialogService.MyWishListPopup(Actions, Watched, Watching, Wish, MediaType);
+        await DialogService.MyWishListPopup(Actions, Watched, Watching, Wish, type);
     }
 
-    public Task ShowMediaPopup(string? tmdbId, string? name)
+    public Task ShowMediaPopup(MediaType type, string? tmdbId, string? name)
     {
-        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, MediaType, tmdbId);
+        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, type, tmdbId);
     }
 
 }

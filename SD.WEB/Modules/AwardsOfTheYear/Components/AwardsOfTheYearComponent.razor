@@ -7,21 +7,31 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<PageSection Title="@EnumLists.AwardsOfTheYear.GetName()" Description="@GlobalTranslations.AwardsYearDescription" Icon="@IconsFA.Solid.Icon("trophy").Font">
-    <ActionFragment>
-        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@("/best-awards-year")" Size="AppStateStatic.Size" />
-    </ActionFragment>
+<NewPageSection Title="@EnumLists.AwardsOfTheYear.GetName()" Description="@GlobalTranslations.AwardsYearDescription" Icon="@IconsFA.Solid.Icon("trophy").Font">
     <BodyFragment>
-        <MediaList MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="Watched" Watching="Watching" Wish="Wish"
-                   CommentsIsImage="true" ShowHead="false">
-        </MediaList>
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")">
+            <Header>
+                <MudTooltip Text="Expand">
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@("/best-awards-year")" />
+                </MudTooltip>
+            </Header>
+            <ChildContent>
+                <MudTabPanel Text="All">
+                    <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="Watched" Watching="Watching" Wish="Wish" CommentsIsImage="true">
+                    </NewMediaList>
+                </MudTabPanel>
+            </ChildContent>
+        </MudTabs>
     </BodyFragment>
-</PageSection>
+</NewPageSection>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+
+    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
+    private string margin => IsMobile ? "2" : "3";
 
     protected override void OnInitialized()
     {

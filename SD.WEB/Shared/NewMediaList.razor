@@ -1,4 +1,4 @@
-﻿@inherits ComponentCore<MediaList>
+﻿@inherits ComponentCore<NewMediaList>
 
 @inject ExternalIdApi ExternalIdApi
 @inject TmdbCreditApi TmdbCreditApi
@@ -6,60 +6,89 @@
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Interface
 
-<PageSection Title="@Title" Icon="@Icon" Image="@Image" ShowHead="ShowHead">
-    <ActionFragment>
-        @if (ShowFilter)
-        {
-            <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" Value="TypeSelected" CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0"
-                            ValueChanged="@(async (MediaType type) => await TypeSelectedChangedHandle(type))" Color="Color.Primary" Class="me-2" Size="AppStateStatic.Size">
-                <MudToggleItem Value="@MediaType.movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
-                    <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                        <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()"></MudIcon>
-                    </MudHidden>
-                    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                        <MudText Inline="true">@MediaType.movie.GetName()</MudText>
-                    </MudHidden>
-                </MudToggleItem>
-                <MudToggleItem Value="@MediaType.tv" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
-                    <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                        <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@MediaType.movie.GetName()"></MudIcon>
-                    </MudHidden>
-                    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                        <MudText Inline="true">@MediaType.tv.GetName()</MudText>
-                    </MudHidden>
-                </MudToggleItem>
-            </MudToggleGroup>
-        }
-        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Size="AppStateStatic.Size"
-                       OnClick="@(()=>Navigation.NavigateTo(GetCustomExpandUrl()))" Disabled="@(List == null && CustomExpand.Empty())" />
-    </ActionFragment>
-    <BodyFragment>
-        <NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
-            <div id="@_swiperId" class="swiper">
-                <div class="swiper-wrapper">
-                    @foreach (var item in Items)
-                    {
-                        <div class="swiper-slide" style="height: auto !important;">
-                            <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                             Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle" 
-                                             Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
-                            </PosterComponent>
-                        </div>
-                    }
-                </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+@if (ContainsHeader)
+{
+    <NewPageSection Title="@Title" Icon="@Icon" Image="@Image">
+        <BodyFragment>
+            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")"
+                     ActivePanelIndex="@(TypeSelected == MediaType.movie ? 0 : 1)"
+                     ActivePanelIndexChanged="@(async (int index) => { var type = index == 0 ? MediaType.movie : MediaType.tv; await TypeSelectedChangedHandle(type); })">
+                <Header>
+                    <MudTooltip Text="Expand">
+                        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" OnClick="@(() => Navigation.NavigateTo(GetCustomExpandUrl()))" Disabled="@(List == null && CustomExpand.Empty())" />
+                    </MudTooltip>
+                </Header>
+                <ChildContent>
+                    <MudTabPanel Text="@MediaType.movie.GetName()">
+                        <NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+                            <div id="@_swiperId" class="swiper">
+                                <div class="swiper-wrapper">
+                                    @foreach (var item in Items)
+                                    {
+                                        <div class="swiper-slide" style="height: auto !important;">
+                                            <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                                             Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
+                                                             Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
+                                            </PosterComponent>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                        </NewRenderControl>
+                    </MudTabPanel>
+                    <MudTabPanel Text="@MediaType.tv.GetName()">
+                        <NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+                            <div id="@_swiperId2" class="swiper">
+                                <div class="swiper-wrapper">
+                                    @foreach (var item in Items)
+                                    {
+                                        <div class="swiper-slide" style="height: auto !important;">
+                                            <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                                             Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
+                                                             Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
+                                            </PosterComponent>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                        </NewRenderControl>
+                    </MudTabPanel>
+                </ChildContent>
+            </MudTabs>
+        </BodyFragment>
+    </NewPageSection>
+}
+else
+{
+    <NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+        <div id="@_swiperId" class="swiper">
+            <div class="swiper-wrapper">
+                @foreach (var item in Items)
+                {
+                    <div class="swiper-slide" style="height: auto !important;">
+                        <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                         Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
+                                         Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
+                        </PosterComponent>
+                    </div>
+                }
             </div>
-        </NewRenderControl>
-    </BodyFragment>
-</PageSection>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </NewRenderControl>
+}
 
 @code {
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
-    [Parameter] public bool ShowHead { get; set; } = true;
+    [Parameter] public bool ContainsHeader { get; set; } = false;
     [Parameter] public string? TitleHead { get; set; }
     [Parameter] public string? Icon { get; set; }
     [Parameter] public string? Image { get; set; }
@@ -82,11 +111,14 @@
     [Parameter] public EventCallback<MediaType> TypeSelectedChanged { get; set; }
 
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
+    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
+    private string margin => IsMobile ? "2" : "3";
 
     public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new();
     public HashSet<MediaDetail> Items { get; set; } = [];
 
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
+    private readonly string _swiperId2 = $"swiper-{Guid.NewGuid()}";
 
     protected override async Task OnInitializedAsync()
     {
@@ -95,7 +127,7 @@
         try
         {
             if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
-            if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
+            // if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
 
             if (DetectRegions) AppStateStatic.RegionChanged += async region => await LoadEssentialDataAsync();
         }
@@ -112,6 +144,7 @@
             await base.OnAfterRenderAsync(firstRender);
 
             await JsRuntime.Swiper().InitLists(_swiperId);
+            await JsRuntime.Swiper().InitLists(_swiperId2);
         }
         catch (Exception ex)
         {

@@ -4,46 +4,56 @@
 
 @inject CacheYoutubeApi CacheYoutubeApi
 
-<PageSection Title="@($"{Translations.TrailersTitle}")" Description="@Translations.TrailersDescriptionShort" Icon="@IconsFA.Brands.Icon("youtube").Font">
-    <ActionFragment>
-        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@("/trailers")" Size="AppStateStatic.Size" />
-    </ActionFragment>
+<NewPageSection Title="@($"{Translations.TrailersTitle}")" Description="@Translations.TrailersDescriptionShort" Icon="@IconsFA.Brands.Icon("youtube").Font">
     <BodyFragment>
-        <NewRenderControl Actions="Actions" Instance="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-            <div id="@_gallerySwiperId" class="swiper">
-                <div class="swiper-wrapper">
-                    @foreach (var item in TrailerModel?.Data?.Items ?? [])
-                    {
-                        <div class="swiper-slide swiper-slide-grid">
-                            <MudLink Href="@($"https://www.youtube.com/watch?v={item?.id}")" Target="_blank" rel="noindex, nofollow">
-                                <MudCard Outlined="true" Style="height: 100%;">
-                                    <MudCardContent Style="padding: 0;">
-                                        <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%;" ObjectFit="ObjectFit.Contain"></MudImage>
-                                        <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
-                                            @item?.published
-                                        </MudChip>
-                                    </MudCardContent>
-                                    <MudCardContent Style="text-align: center; padding: 4px;" Class="custom-title-list">
-                                        @item?.title.GetResume(75)
-                                    </MudCardContent>
-                                </MudCard>
-                            </MudLink>
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")">
+            <Header>
+                <MudTooltip Text="Expand">
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="/trailers" />
+                </MudTooltip>
+            </Header>
+            <ChildContent>
+                <MudTabPanel Text="All">
+                    <NewRenderControl Actions="Actions" Instance="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+                        <div id="@_gallerySwiperId" class="swiper">
+                            <div class="swiper-wrapper">
+                                @foreach (var item in TrailerModel?.Data?.Items ?? [])
+                                {
+                                    <div class="swiper-slide swiper-slide-grid">
+                                        <MudLink Href="@($"https://www.youtube.com/watch?v={item?.id}")" Target="_blank" rel="noindex, nofollow">
+                                            <MudCard Outlined="true" Style="height: 100%;">
+                                                <MudCardContent Style="padding: 0;">
+                                                    <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%;" ObjectFit="ObjectFit.Contain"></MudImage>
+                                                    <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
+                                                        @item?.published
+                                                    </MudChip>
+                                                </MudCardContent>
+                                                <MudCardContent Style="text-align: center; padding: 4px;" Class="custom-title-list">
+                                                    @item?.title.GetResume(55)
+                                                </MudCardContent>
+                                            </MudCard>
+                                        </MudLink>
+                                    </div>
+                                }
+                            </div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                            @* <div class="swiper-pagination"></div> *@
                         </div>
-                    }
-                </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-                @* <div class="swiper-pagination"></div> *@
-            </div>
-        </NewRenderControl>
+                    </NewRenderControl>
+                </MudTabPanel>
+            </ChildContent>
+        </MudTabs>
     </BodyFragment>
-</PageSection>
+</NewPageSection>
 
 @code {
     public ComponentActions<CacheDocument<TrailerModel>?> Actions { get; set; } = new();
     private CacheDocument<TrailerModel>? TrailerModel { get; set; }
 
     private readonly string _gallerySwiperId = $"swiper-trailer-{Guid.NewGuid()}";
+    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
+    private string margin => IsMobile ? "2" : "3";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

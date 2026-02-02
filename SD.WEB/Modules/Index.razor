@@ -19,8 +19,8 @@
 @inject TmdbListApi TmdbListApi
 
 <SeoHeader Title="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription" Url="/" Keywords="@(["streaming"])"></SeoHeader>
-<PageHeader Image="icon/icon-71.png" Title="@SeoTranslations.AppName" Subtitle="@SeoTranslations.AppSubtitle">
-</PageHeader>
+<NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@SeoTranslations.AppName" Subtitle="@SeoTranslations.AppSubtitle">
+</NewPageSection>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-8"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
@@ -38,7 +38,22 @@
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index2"></GoogleAdSense>
 
-<MediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" Watched="Watched" Watching="Watching" Wish="Wish" />
+<NewPageSection Title="@EnumLists.ExpectedMovieOf2026.GetName()">
+    <BodyFragment>
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")">
+            <Header>
+                <MudTooltip Text="Expand">
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" OnClick="@(() => Navigation.NavigateTo($"/list/{(int)EnumLists.ExpectedMovieOf2026}"))" />
+                </MudTooltip>
+            </Header>
+            <ChildContent>
+                <MudTabPanel Text="All">
+                    <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" Watched="Watched" Watching="Watching" Wish="Wish" />
+                </MudTabPanel>
+            </ChildContent>
+        </MudTabs>
+    </BodyFragment>
+</NewPageSection>
 
 <MudGrid Spacing="3">
     <MudItem xs="12" sm="6">
@@ -50,14 +65,14 @@
 </MudGrid>
 
 @code {
-
-    [Parameter]
-    [SupplyParameterFromQuery(Name = "language")]
-    public string? Language { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "language")] public string? Language { get; set; }
 
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
+
+    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
+    private string margin => IsMobile ? "2" : "3";
 
     protected override async Task OnInitializedAsync()
     {

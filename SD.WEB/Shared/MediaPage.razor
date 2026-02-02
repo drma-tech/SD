@@ -23,7 +23,46 @@
 <SeoHeader Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")" Keywords="new[] { Media?.title }" Index="false"></SeoHeader>
 @if (Media?.title.NotEmpty() ?? false)
 {
-    <PageHeader Title="@Media?.title"></PageHeader>
+    <NewPageSection Title="@Media?.title">
+        <ActionsFragment>
+            @if (Wish?.Movies.Any(a => a.id == TmdbId) ?? false)
+            {
+                <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@Remove" Class="me-2">
+                    @Translations.RemoveWishlist
+                </MudButton>
+            }
+            else if (Wish?.Shows.Any(a => a.id == TmdbId) ?? false)
+            {
+                <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@Remove" Class="me-2">
+                    @Translations.RemoveWishlist
+                </MudButton>
+            }
+            else
+            {
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@Add" Class="me-2">
+                    @Translations.AddWishlist
+                </MudButton>
+            }
+            @if (Watched?.Movies.Contains(TmdbId ?? "") ?? false)
+            {
+                <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@IsNotWatched" Class="me-2">
+                    @Translations.ButtonNotWatched
+                </MudButton>
+            }
+            else if (Watched?.Shows.Contains(TmdbId ?? "") ?? false)
+            {
+                <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@IsNotWatched" Class="me-2">
+                    @Translations.ButtonNotWatched
+                </MudButton>
+            }
+            else
+            {
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@IsWatched" Class="me-2">
+                    @Translations.ButtonWatched
+                </MudButton>
+            }
+        </ActionsFragment>
+    </NewPageSection>
 }
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media"></GoogleAdSense>
@@ -38,21 +77,21 @@
         </MudButton>
     </CustomContent>
     <ChildContent>
-        <PageSection Title="@Translations.TabAbout" Color="Color.Secondary">
+        <NewPageSection Title="@Translations.TabAbout" Color="Color.Secondary">
             <BodyFragment>
                 <MediaAbout ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watched="Watched" Watching="Watching" Wish="Wish" Type="Type"
                             Actions="RatingsActions" RatingsCache="_ratingsCache"></MediaAbout>
             </BodyFragment>
-        </PageSection>
-        <PageSection Title="@Translations.TabPlatforms" Color="Color.Secondary">
+        </NewPageSection>
+        <NewPageSection Title="@Translations.TabPlatforms" Color="Color.Secondary">
             <BodyFragment>
                 <MediaStreaming TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaStreaming>
             </BodyFragment>
-        </PageSection>
+        </NewPageSection>
 
         <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media2"></GoogleAdSense>
 
-        <PageSection Title="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
+        <NewPageSection Title="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
             <BodyFragment>
                 <div class="grid-relative-container-poster">
                     @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
@@ -103,8 +142,8 @@
                     }
                 </div>
             </BodyFragment>
-        </PageSection>
-        <PageSection Title="Recommendations" Color="Color.Secondary">
+        </NewPageSection>
+        <NewPageSection Title="Recommendations" Color="Color.Secondary">
             <BodyFragment>
                 <NewRenderControl Actions="RecommendationsActions" Instance="Recommendations" ExpressionEmpty="@((HashSet<MediaDetail> lst) => lst.Empty())" Context="ctx">
                     <div id="@_swiperId" class="swiper">
@@ -124,8 +163,8 @@
                     </div>
                 </NewRenderControl>
             </BodyFragment>
-        </PageSection>
-        <PageSection Title="Videos" Color="Color.Secondary" Visible="@(Media != null && Media.Videos.Any())">
+        </NewPageSection>
+        <NewPageSection Title="Videos" Color="Color.Secondary" Visible="@(Media != null && Media.Videos.Any())">
             <BodyFragment>
                 @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])
                 {
@@ -149,17 +188,17 @@
                     </MudPaper>
                 }
             </BodyFragment>
-        </PageSection>
+        </NewPageSection>
 
         <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media3"></GoogleAdSense>
 
-        <PageSection Title="@Translations.TabCredits" Color="Color.Secondary">
+        <NewPageSection Title="@Translations.TabCredits" Color="Color.Secondary">
             <BodyFragment>
                 <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish">
                 </CreditsComponent>
             </BodyFragment>
-        </PageSection>
-        <PageSection Title="Reviews" Color="Color.Secondary">
+        </NewPageSection>
+        <NewPageSection Title="Reviews" Color="Color.Secondary">
             <BodyFragment>
                 @if (ImdbId.NotEmpty())
                 {
@@ -168,7 +207,7 @@
                     </ReviewComponent>
                 }
             </BodyFragment>
-        </PageSection>
+        </NewPageSection>
     </ChildContent>
 </NewRenderControl>
 
@@ -323,6 +362,149 @@
     private async Task OpenSubscription()
     {
         await DialogService.SubscriptionPopup();
+    }
+
+    private async Task Add()
+    {
+        if (Media == null) throw new ArgumentNullException(nameof(Media));
+
+        try
+        {
+            if (!AppStateStatic.IsAuthenticated)
+            {
+                await ShowWarning(GlobalTranslations.YouMustLogged);
+                return;
+            }
+
+            Wish ??= new WishList();
+
+            var item = new WishListItem(Media.tmdb_id, Media.title, Media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), Media.runtime);
+            var client = await PrincipalApi.Get(true);
+
+            Wish = await WishApi.Add(Media.MediaType, Wish, item, client?.GetActiveSubscription());
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    private async Task Remove()
+    {
+        ArgumentNullException.ThrowIfNull(Media);
+
+        try
+        {
+            Wish = await WishApi.Remove(Media.MediaType, Media?.tmdb_id);
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    private async Task IsWatched()
+    {
+        if (Media == null) throw new ArgumentNullException(nameof(Media));
+
+        try
+        {
+            if (!AppStateStatic.IsAuthenticated)
+            {
+                await ShowWarning(GlobalTranslations.YouMustLogged);
+                return;
+            }
+
+            var hasCollection = Media.Collection.Any() && Media.Collection.Count > 1;
+
+            if (hasCollection)
+            {
+                var watching = Watching ?? new WatchingList();
+                var collectionId = Media.MediaType == MediaType.movie ? Media.collectionId?.ToString() : Media.tmdb_id;
+
+                await DialogService.SelectItemsCollection(
+                    Media.Collection,
+                    watching.GetWatchingItems(Media.MediaType, collectionId),
+                    new EventCallbackFactory().Create(this, async (HashSet<string> list) => await SelectedItemsChanged(Media, list, Media.Collection.Count)));
+            }
+            else
+            {
+                var client = await PrincipalApi.Get(true);
+                Watched = await WatchedApi.Add(Media.MediaType, Watched, Media.tmdb_id, client?.GetActiveSubscription());
+            }
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    private async Task IsNotWatched()
+    {
+        if (Media == null) throw new ArgumentNullException(nameof(Media));
+
+        try
+        {
+            //watched
+
+            Watched = await WatchedApi.Remove(Media.MediaType, Media.tmdb_id);
+
+            //watching
+
+            var hasCollection = Media.Collection.Any() && Media.Collection.Count > 1;
+
+            if (hasCollection)
+            {
+                Watching = Media.MediaType switch
+                {
+                    MediaType.movie => await WatchingApi.Remove(Media.MediaType, Media.collectionId?.ToString(), Media.tmdb_id),
+                    MediaType.tv => await WatchingApi.Remove(Media.MediaType, Media.tmdb_id, null),
+                    _ => Watching
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    private async Task SelectedItemsChanged(MediaDetail media, HashSet<string> items, int collectionItemsCount)
+    {
+        try
+        {
+            var client = await PrincipalApi.Get(true);
+
+            //watched list
+
+            if (media.MediaType == MediaType.movie)
+            {
+                Watched = await WatchedApi.Add(MediaType.movie, Watched, string.Join(',', items), client?.GetActiveSubscription());
+            }
+            else
+            {
+                Watched = await WatchedApi.Add(MediaType.tv, Watched, media.tmdb_id, client?.GetActiveSubscription());
+            }
+
+            //watching list
+
+            WatchingListItem item;
+
+            if (media.MediaType == MediaType.movie)
+            {
+                item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
+            }
+            else
+            {
+                item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
+            }
+
+            Watching = await WatchingApi.Add(Type, Watching, item, client?.GetActiveSubscription());
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
     }
 
     void IDisposable.Dispose()

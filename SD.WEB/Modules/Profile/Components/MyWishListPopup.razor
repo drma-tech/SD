@@ -12,13 +12,13 @@
     <DialogContent>
         @if (MediaType == MediaType.movie)
         {
-            <WishlistComponent MediaType="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+            <WishlistComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
                                Actions="Actions" ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()">
             </WishlistComponent>
         }
         else
         {
-            <WishlistComponent MediaType="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+            <WishlistComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
                                Actions="Actions" ExpressionEmpty="(WishList? list) => list == null || list.Shows.Empty()">
             </WishlistComponent>
         }

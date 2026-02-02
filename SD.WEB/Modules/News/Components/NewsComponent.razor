@@ -4,48 +4,64 @@
 
 @inject CacheFlixsterApi CacheFlixsterApi
 
-<PageSection Title="@($"{Translations.NewsTitle}")" Description="@Translations.NewsDescriptionShort" Icon="@IconsFA.Solid.Icon("newspaper").Font">
-    <ActionFragment>
-        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@("/news")" Size="AppStateStatic.Size" />
-    </ActionFragment>
+<NewPageSection Title="@($"{Translations.NewsTitle}")" Description="@Translations.NewsDescriptionShort" Icon="@IconsFA.Solid.Icon("newspaper").Font">
     <BodyFragment>
-        <NewRenderControl Actions="Actions" Instance="News" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-            <div id="@_gallerySwiperId" class="swiper">
-                <div class="swiper-wrapper">
-                    @foreach (var item in News?.Data?.Items ?? [])
-                    {
-                        <div class="swiper-slide" style="height: auto !important;">
-                            <MudLink Href="@item.link" Target="_blank" rel="noindex, nofollow">
-                                <MudImage Src="@item.url_img" Alt="@item.title" FallbackSrc="images/no-image.png" Class="d-block" Style="width: 100%; max-height: 350px;" ObjectFit="ObjectFit.Cover"></MudImage>
-                                <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
-                                    @item.date.Humanize()
-                                </MudChip>
-                                <MudText Typo="Typo.caption" Class="carousel-caption p-1">
-                                    <p>@((MarkupString)item.title!)</p>
-                                </MudText>
-                            </MudLink>
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")">
+            <Header>
+                <MudTooltip Text="Expand">
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="/news" />
+                </MudTooltip>
+            </Header>
+            <ChildContent>
+                <MudTabPanel Text="@MediaType.movie.GetName()">
+                    <NewRenderControl Actions="Actions" Instance="News" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+                        <div id="@_gallerySwiperId" class="swiper">
+                            <div class="swiper-wrapper">
+                                @foreach (var item in News?.Data?.Items ?? [])
+                                {
+                                    <div class="swiper-slide" style="height: auto !important;">
+                                        <MudLink Href="@item.link" Target="_blank" rel="noindex, nofollow">
+                                            <MudImage Src="@item.url_img" Alt="@item.title" FallbackSrc="images/no-image.png" Class="d-block" Style="width: 100%; max-height: 350px;" ObjectFit="ObjectFit.Cover"></MudImage>
+                                            <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
+                                                @item.date.Humanize()
+                                            </MudChip>
+                                            <MudText Typo="Typo.caption" Class="carousel-caption p-1">
+                                                <p>@((MarkupString)item.title!)</p>
+                                            </MudText>
+                                        </MudLink>
+                                    </div>
+                                }
+                            </div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                            @* <div class="swiper-pagination"></div> *@
+                            <div class="autoplay-progress">
+                                <svg viewBox="0 0 48 48">
+                                    <circle cx="24" cy="24" r="20"></circle>
+                                </svg>
+                                <span></span>
+                            </div>
                         </div>
-                    }
-                </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-                @* <div class="swiper-pagination"></div> *@
-                <div class="autoplay-progress">
-                    <svg viewBox="0 0 48 48">
-                        <circle cx="24" cy="24" r="20"></circle>
-                    </svg>
-                    <span></span>
-                </div>
-            </div>
-        </NewRenderControl>
+                    </NewRenderControl>
+                </MudTabPanel>
+                <MudTabPanel Text="@MediaType.tv.GetName()" Disabled="true">
+
+                </MudTabPanel>
+                <MudTabPanel Text="@MediaType.person.GetName()" Disabled="true">
+
+                </MudTabPanel>
+            </ChildContent>
+        </MudTabs>
     </BodyFragment>
-</PageSection>
+</NewPageSection>
 
 @code {
     public ComponentActions<CacheDocument<NewsModel>?> Actions { get; set; } = new();
     private CacheDocument<NewsModel>? News { get; set; }
 
     private readonly string _gallerySwiperId = $"swiper-{Guid.NewGuid()}";
+    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
+    private string margin => IsMobile ? "2" : "3";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

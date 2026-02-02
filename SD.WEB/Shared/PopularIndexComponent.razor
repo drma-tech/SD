@@ -4,45 +4,27 @@
 
 @inject ImdbPopularApi ImdbPopularApi
 
-<PageSection Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font">
-    <ActionFragment>
-        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary"
-                        CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0" Size="AppStateStatic.Size">
-            <MudToggleItem Value="@PopularType.Movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
-                <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@PopularType.Movie.GetName()"></MudIcon>
-                </MudHidden>
-                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                    <MudText Inline="true">@PopularType.Movie.GetName()</MudText>
-                </MudHidden>
-            </MudToggleItem>
-            <MudToggleItem Value="@PopularType.Show" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
-                <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@PopularType.Show.GetName()"></MudIcon>
-                </MudHidden>
-                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                    <MudText Inline="true">@PopularType.Show.GetName()</MudText>
-                </MudHidden>
-            </MudToggleItem>
-        </MudToggleGroup>
-    </ActionFragment>
+<NewPageSection Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font">
     <BodyFragment>
-        @if (TypeSelected == PopularType.Movie)
-        {
-            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false"
-                       StringParameters="Params" TypeSelected="MediaType.movie" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                       OnlyYear="true">
-            </MediaList>
-        }
-        else if (TypeSelected == PopularType.Show)
-        {
-            <MediaList TitleHead="@Translations.Popular" MediaListApi="ImdbPopularApi" IsImdb="true" ShowHead="false"
-                       StringParameters="Params" TypeSelected="MediaType.tv" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
-                       OnlyYear="true">
-            </MediaList>
-        }
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")">
+            <Header>
+                <MudTooltip Text="Expand">
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/popular/{TypeSelected}")" Disabled="true" />
+                </MudTooltip>
+            </Header>
+            <ChildContent>
+                <MudTabPanel Text="@PopularType.Movie.GetName()">
+                    <NewMediaList MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.movie" Watched="WatchedList" Watching="WatchingList" Wish="WishList">
+                    </NewMediaList>
+                </MudTabPanel>
+                <MudTabPanel Text="@PopularType.Show.GetName()">
+                    <NewMediaList MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.tv" Watched="WatchedList" Watching="WatchingList" Wish="WishList">
+                    </NewMediaList>
+                </MudTabPanel>
+            </ChildContent>
+        </MudTabs>
     </BodyFragment>
-</PageSection>
+</NewPageSection>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
@@ -50,6 +32,9 @@
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
     public PopularType TypeSelected { get; set; } = PopularType.Movie;
+
+    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
+    private string margin => IsMobile ? "2" : "3";
 
     public Dictionary<string, string> Params { get; set; } = new() { { "mode", "compact" } };
 }

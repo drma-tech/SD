@@ -2,7 +2,7 @@
 
 //https://firebase.google.com/support/release-notes/js
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
 import {
     getAuth,
     onAuthStateChanged,
@@ -13,7 +13,7 @@ import {
     TwitterAuthProvider,
     signInWithPopup,
     signInWithRedirect,
-} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
 
 import { isBot, isLocalhost, isPrintScreen, firebaseConfig } from "./main.js";
 import { storage, notification, interop } from "./utils.js";

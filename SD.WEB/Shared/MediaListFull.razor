@@ -9,7 +9,7 @@
 
 @if (ShowHead)
 {
-    <PageHeader Title="@GetTitle" Subtitle="@SubtitleHead" Icon="@Icon" Description="@Description"></PageHeader>
+    <NewPageSection Title="@GetTitle" Subtitle="@SubtitleHead" Icon="@Icon" Description="@Description"></NewPageSection>
 }
 
 <NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">

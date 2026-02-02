@@ -10,13 +10,10 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<PageSection Icon="@IconsFA.Solid.Icon("clapperboard").Font" Title="@Translations.MyPlatforms">
-    <ActionFragment>
-        @if (ProvidersChanged)
-        {
-            <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" Size="AppStateStatic.Size" />
-        }
-    </ActionFragment>
+<NewPageSection Icon="@IconsFA.Solid.Icon("clapperboard").Font" Title="@Translations.MyPlatforms" ShowActions="ProvidersChanged">
+    <ActionsFragment>
+        <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" Size="AppStateStatic.Size" />
+    </ActionsFragment>
     <BodyFragment>
         <NewRenderControl Actions="Actions" Instance="MyProviders" ExpressionEmpty="(MyProviders? obj) => obj == null || obj.Items.Empty()"
                           PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
@@ -46,7 +43,7 @@
             </div>
         </NewRenderControl>
     </BodyFragment>
-</PageSection>
+</NewPageSection>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }

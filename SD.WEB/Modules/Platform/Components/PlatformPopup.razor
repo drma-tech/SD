@@ -20,15 +20,15 @@
         }
         else
         {
-            <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
+            <NewMediaList ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
                        ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
-            </MediaList>
-            <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
+            </NewMediaList>
+            <NewMediaList ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
                        ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
-            </MediaList>
-            <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
+            </NewMediaList>
+            <NewMediaList ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
                        ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
-            </MediaList>
+            </NewMediaList>
         }
     </DialogContent>
     <DialogActions>

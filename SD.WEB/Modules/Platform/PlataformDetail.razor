@@ -23,50 +23,45 @@
 
 @if (Provider != null)
 {
-    <PageHeader Image="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Subtitle="@GetSubtitle()" Description="@Provider.description">
-        <ActionFragment>
+    <NewPageSection IsPageHeader="true" Image="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Subtitle="@GetSubtitle()" Description="@Provider.description">
+        <ActionsFragment>
             @if (Provider.link.NotEmpty())
             {
-                <MudTooltip Text="Official Website">
-                    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Link" Href="@Provider.link" Target="_blank" Size="AppStateStatic.Size" Class="me-2" />
-                </MudTooltip>
+                <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Link" Href="@Provider.link" Target="_blank" Class="me-2" Variant="Variant.Filled">
+                    Official Website
+                </MudButton>
             }
             @if (Provider != null)
             {
                 @if (MyProviders?.Items.Any(a => a.id == Provider?.id) ?? false)
                 {
-                    <MudTooltip Text="@Button.Remove">
-                        <MudFab StartIcon="@IconsFA.Solid.Icon("minus").Font" Color="Color.Error" OnClick="@Remove" Size="AppStateStatic.Size">
-                        </MudFab>
-                    </MudTooltip>
+                    <MudButton StartIcon="@IconsFA.Solid.Icon("minus").Font" Color="Color.Error" OnClick="@Remove" Variant="Variant.Filled">
+                        @Button.Remove
+                    </MudButton>
                 }
                 else
                 {
-                    <MudTooltip Text="@Button.Add">
-                        <MudFab StartIcon="@IconsFA.Solid.Icon("plus").Font" Color="Color.Primary" OnClick="@Add" Size="AppStateStatic.Size">
-                        </MudFab>
-                    </MudTooltip>
+                    <MudButton StartIcon="@IconsFA.Solid.Icon("plus").Font" Color="Color.Primary" OnClick="@Add" Variant="Variant.Filled">
+                        @Button.Add
+                    </MudButton>
                 }
             }
-        </ActionFragment>
-    </PageHeader>
+        </ActionsFragment>
+    </NewPageSection>
 }
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
 <NewRenderControl Actions="Actions" Instance="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null)">
-    <MediaList TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")" ShowFilter="Provider?.types.Count == 2"
-               StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3"
-               TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
-    </MediaList>
-    <MediaList TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/new/{{0}}")" ShowFilter="Provider?.types.Count == 2"
-               StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3"
-               TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
-    </MediaList>
-    <MediaList TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/top/{{0}}")" ShowFilter="Provider?.types.Count == 2"
-               StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3"
-               TypeSelected="@(Provider?.types.Count == 1 && Provider?.types[0] == MediaType.tv ? MediaType.tv : MediaType.movie)">
-    </MediaList>
+    <NewMediaList ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")" ShowFilter="Provider?.types.Count == 2"
+                  StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3">
+    </NewMediaList>
+    <NewMediaList ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/new/{{0}}")" ShowFilter="Provider?.types.Count == 2"
+               StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3">
+    </NewMediaList>
+    <NewMediaList ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/top/{{0}}")" ShowFilter="Provider?.types.Count == 2"
+               StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="WatchedList" Watching="WatchingList" Wish="WishList" ForceTypoTitle="Typo.h3">
+    </NewMediaList>
 </NewRenderControl>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">

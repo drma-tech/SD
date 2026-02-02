@@ -17,16 +17,16 @@
            Keywords="@(["platforms", "streaming", "Netflix", "Disney", "Apple", "Amazon Prime"])"></SeoHeader>
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
-<PageHeader Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
-    <ActionFragment>
-        <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="Filter" Dense="true">
+<NewPageSection IsPageHeader="true" Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
+    <ActionsFragment>
+        <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="Delivery Model" Dense="true">
             @foreach (var item in DeliveryModels)
             {
                 <MudSelectItem T="DeliveryModel?" Value="@item.Value">@item.Name</MudSelectItem>
             }
         </MudSelect>
-    </ActionFragment>
-</PageHeader>
+    </ActionsFragment>
+</NewPageSection>
 
 <NewRenderControl Actions="Actions" Instance="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null || obj.Items.Empty())">
     <div class="grid-relative-container-platform">

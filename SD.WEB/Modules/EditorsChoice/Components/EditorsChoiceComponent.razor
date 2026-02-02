@@ -4,42 +4,27 @@
 
 @inject TmdbListApi TmdbListApi
 
-<PageSection Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font">
-    <ActionFragment>
-        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" Vertical="false" @bind-Value="TypeSelected" Color="Color.Primary" Class="me-2"
-                        CheckMark="@(Breakpoint >= Breakpoint.Sm)" CheckMarkClass="mx-0" Size="AppStateStatic.Size">
-            <MudToggleItem Value="@MediaType.movie" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
-                <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("film").Font" Title="@MediaType.movie.GetName()"></MudIcon>
-                </MudHidden>
-                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                    <MudText Inline="true">@MediaType.movie.GetName()</MudText>
-                </MudHidden>
-            </MudToggleItem>
-            <MudToggleItem Value="@MediaType.tv" SelectedIcon="@IconsFA.Solid.Icon("check").Font">
-                <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("tv").Font" Title="@MediaType.movie.GetName()"></MudIcon>
-                </MudHidden>
-                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                    <MudText Inline="true">@MediaType.tv.GetName()</MudText>
-                </MudHidden>
-            </MudToggleItem>
-        </MudToggleGroup>
-        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Variant="Variant.Filled" Color="Color.Primary" Href="@($"/editors-choice/{TypeSelected}")" Size="AppStateStatic.Size" />
-    </ActionFragment>
+<NewPageSection Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font">
     <BodyFragment>
-        @if (TypeSelected == MediaType.movie)
-        {
-            <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish" ShowHead="false">
-            </MediaList>
-        }
-        else if (TypeSelected == MediaType.tv)
-        {
-            <MediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish" ShowHead="false">
-            </MediaList>
-        }
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")">
+            <Header>
+                <MudTooltip Text="Expand">
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/editors-choice/{TypeSelected}")" />
+                </MudTooltip>
+            </Header>
+            <ChildContent>
+                <MudTabPanel Text="@MediaType.movie.GetName()">
+                    <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish">
+                    </NewMediaList>
+                </MudTabPanel>
+                <MudTabPanel Text="@MediaType.tv.GetName()">
+                    <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish">
+                    </NewMediaList>
+                </MudTabPanel>
+            </ChildContent>
+        </MudTabs>
     </BodyFragment>
-</PageSection>
+</NewPageSection>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
@@ -47,6 +32,9 @@
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
     public MediaType TypeSelected { get; set; } = MediaType.movie;
+
+    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
+    private string margin => IsMobile ? "2" : "3";
 
     public Dictionary<string, string> Params { get; set; } = new() { { "mode", "compact" } };
 }
