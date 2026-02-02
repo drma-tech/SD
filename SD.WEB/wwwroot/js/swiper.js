@@ -43,14 +43,14 @@ export const swiper = {
         const el = document.getElementById(id);
         if (!el) return;
 
-        const progCircle = document.querySelector(".autoplay-progress svg");
-        const progContent = document.querySelector(".autoplay-progress span");
+        const progCircle = el.querySelector(".autoplay-progress svg");
+        const progContent = el.querySelector(".autoplay-progress span");
 
         const temp = new Swiper(el, {
             centeredSlides: true,
             lazy: true,
             autoplay: {
-                delay: 2500,
+                delay: 5000,
                 disableOnInteraction: false,
             },
             navigation: {
