@@ -6,20 +6,20 @@
         @foreach (var item in ItemsCollection.OrderBy(o => o.release_date ?? DateTime.MaxValue))
         {
             <MudCheckBox Value="@SelectedItems.Any(a => a == item.id)" ValueChanged="(bool value) => CheckedChanged(item.id, value)"
-                         Color="Color.Primary" UncheckedColor="Color.Dark" 
+                         Color="Color.Primary" UncheckedColor="Color.Dark"
                          CheckedIcon="@IconsFA.Solid.Icon("eye").Font" UncheckedIcon="@IconsFA.Solid.Icon("eye").Font">
                 @item.title (@item.release_date?.Year)
             </MudCheckBox>
         }
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@SelectAll" Color="Color.Primary" Size="AppStateStatic.Size">
+        <MudButton OnClick="@SelectAll" Color="Color.Primary">
             All
         </MudButton>
-        <MudButton OnClick="@Confirm" Color="Color.Primary" Size="AppStateStatic.Size" Disabled="SelectedItems.Empty()">
+        <MudButton OnClick="@Confirm" Color="Color.Primary" Disabled="SelectedItems.Empty()">
             @Button.Ok
         </MudButton>
-        <MudButton OnClick="@HideModal" Color="Color.Error" Size="AppStateStatic.Size">
+        <MudButton OnClick="@HideModal" Color="Color.Error">
             @Button.Cancel
         </MudButton>
     </DialogActions>

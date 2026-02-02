@@ -28,14 +28,14 @@
     <DialogActions>
         @if (AppStateStatic.IsAuthenticated)
         {
-            <MudButton Color="Color.Primary" OnClick="@IsWatched" Size="AppStateStatic.Size">
+            <MudButton Color="Color.Primary" OnClick="@IsWatched">
                 @Translations.ButtonWatched
             </MudButton>
-            <MudButton Color="Color.Error" OnClick="@RemoveCollection" Size="AppStateStatic.Size">
+            <MudButton Color="Color.Error" OnClick="@RemoveCollection">
                 @GlobalTranslations.RemoveCollection
             </MudButton>
         }
-        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })">
             @Button.Close
         </MudButton>
     </DialogActions>

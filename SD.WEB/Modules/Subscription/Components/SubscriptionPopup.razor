@@ -25,7 +25,7 @@
             {
                 <MudGrid Class="mb-3">
                     <MudItem xs="12" sm="8">
-                        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary" Size="AppStateStatic.Size">
+                        <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary">
                             <MudToggleItem Value="@AccountCycle.Weekly">
                                 @AccountCycle.Weekly.GetName()
                             </MudToggleItem>
@@ -141,7 +141,9 @@
     <DialogActions>
         <span class="ma-2">Platform: @Platform</span>
         <MudSpacer></MudSpacer>
-        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">@Button.Close</MudButton>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })">
+            @Button.Close
+        </MudButton>
     </DialogActions>
 </MudDialog>
 

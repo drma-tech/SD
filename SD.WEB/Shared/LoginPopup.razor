@@ -6,19 +6,19 @@
 <MudDialog Style="width: 100%">
     <DialogContent>
         <MudStack Spacing="3">
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Size="AppStateStatic.Size">
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font">
                 Continue with Google
             </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font" Size="AppStateStatic.Size">
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font">
                 Continue with Apple
             </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font" Size="AppStateStatic.Size">
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font">
                 Continue with Microsoft
             </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithX" StartIcon="@IconsFA.Brands.Icon("x").Font" Size="AppStateStatic.Size">
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithX" StartIcon="@IconsFA.Brands.Icon("x").Font">
                 Continue with X
             </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithYahoo" StartIcon="@IconsFA.Brands.Icon("yahoo").Font" Size="AppStateStatic.Size">
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithYahoo" StartIcon="@IconsFA.Brands.Icon("yahoo").Font">
                 Continue with Yahoo
             </MudButton>
         </MudStack>
@@ -29,7 +29,9 @@
         </div>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">@Button.Close</MudButton>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })">
+            @Button.Close
+        </MudButton>
     </DialogActions>
 </MudDialog>
 

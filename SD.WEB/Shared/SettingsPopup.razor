@@ -37,7 +37,7 @@
             <MudItem xs="12">
                 <MudText Class="mb-1" Style="font-size: 14px;">App Theme</MudText>
                 <MudToggleGroup Value="DarkMode" ValueChanged="(bool vl) => DarkModeChanged(vl)" SelectionMode="SelectionMode.SingleSelection"
-                                Vertical="false" Color="Color.Primary" Size="AppStateStatic.Size">
+                                Vertical="false" Color="Color.Primary">
                     <MudToggleItem Value="false">
                         <MudIcon Icon="@IconsFA.Solid.Icon("sun").Font" Title="@GlobalTranslations.LightMode" Class="me-1"></MudIcon>
                         @GlobalTranslations.LightMode
@@ -51,12 +51,12 @@
         </MudGrid>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@(async () => { await JsRuntime.Utils().ShowCache(); })" Size="AppStateStatic.Size">
+        <MudButton OnClick="@(async () => { await JsRuntime.Utils().ShowCache(); })">
             @Button.ShowCache
         </MudButton>
-        @* <MudButton OnClick="@(async () => { await JavascriptVoidAsync("clearLocalStorage"); Navigation.NavigateTo("/", true); })" Size="AppStateStatic.Size">@Button.ClearCache</MudButton> *@
+        @* <MudButton OnClick="@(async () => { await JavascriptVoidAsync("clearLocalStorage"); Navigation.NavigateTo("/", true); })">@Button.ClearCache</MudButton> *@
         <MudSpacer></MudSpacer>
-        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })">
             @Button.Close
         </MudButton>
     </DialogActions>

@@ -237,31 +237,45 @@
         {
             @if (Wish?.Movies.Any(a => a.id == TmdbId) ?? false)
             {
-                <MudButton Color="Color.Error" OnClick="@Remove" Size="AppStateStatic.Size">@Translations.RemoveWishlist</MudButton>
+                <MudButton Color="Color.Error" OnClick="@Remove">
+                    @Translations.RemoveWishlist
+                </MudButton>
             }
             else if (Wish?.Shows.Any(a => a.id == TmdbId) ?? false)
             {
-                <MudButton Color="Color.Error" OnClick="@Remove" Size="AppStateStatic.Size">@Translations.RemoveWishlist</MudButton>
+                <MudButton Color="Color.Error" OnClick="@Remove">
+                    @Translations.RemoveWishlist
+                </MudButton>
             }
             else
             {
-                <MudButton Color="Color.Primary" OnClick="@Add" Size="AppStateStatic.Size" Disabled="!AppStateStatic.IsAuthenticated">@Translations.AddWishlist</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@Add" Disabled="!AppStateStatic.IsAuthenticated">
+                    @Translations.AddWishlist
+                </MudButton>
             }
 
             @if (Watched?.Movies.Contains(TmdbId ?? "") ?? false)
             {
-                <MudButton Color="Color.Error" OnClick="@IsNotWatched" Size="AppStateStatic.Size">@Translations.ButtonNotWatched</MudButton>
+                <MudButton Color="Color.Error" OnClick="@IsNotWatched">
+                    @Translations.ButtonNotWatched
+                </MudButton>
             }
             else if (Watched?.Shows.Contains(TmdbId ?? "") ?? false)
             {
-                <MudButton Color="Color.Error" OnClick="@IsNotWatched" Size="AppStateStatic.Size">@Translations.ButtonNotWatched</MudButton>
+                <MudButton Color="Color.Error" OnClick="@IsNotWatched">
+                    @Translations.ButtonNotWatched
+                </MudButton>
             }
             else
             {
-                <MudButton Color="Color.Primary" OnClick="@IsWatched" Size="AppStateStatic.Size" Disabled="!AppStateStatic.IsAuthenticated">@Translations.ButtonWatched</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@IsWatched" Disabled="!AppStateStatic.IsAuthenticated">
+                    @Translations.ButtonWatched
+                </MudButton>
             }
         }
-        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">@Button.Close</MudButton>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })">
+            @Button.Close
+        </MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -317,7 +331,7 @@
     {
         Actions.StartLoading?.Invoke(null);
         Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
-        Media.Videos.Reverse();        
+        Media.Videos.Reverse();
         Actions.FinishLoading?.Invoke(Media);
 
         ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId);

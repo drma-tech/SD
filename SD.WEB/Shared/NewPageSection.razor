@@ -30,7 +30,7 @@
                     {
                         <MudSpacer />
                         <MudTooltip Text="Official Website">
-                            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Link" Href="@Link" Target="_blank" Size="AppStateStatic.Size" />
+                            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Link" Href="@Link" Target="_blank" />
                         </MudTooltip>
                     }
                 </MudToolBar>
@@ -47,7 +47,9 @@
             @if (ShowActions && HasActions)
             {
                 <MudPaper Class="@($"pa-{margin}")" Style="@($"background-color: transparent; {(HasActions ? "border-radius: 0px 0px 4px 4px;" : "")}")" Outlined="true" Elevation="0">
-                    @ActionsFragment
+                    <MudToolBar WrapContent="true" Dense="true" Gutters="false" Style="min-height: auto;">
+                        @ActionsFragment
+                    </MudToolBar>
                 </MudPaper>
             }
         }
@@ -91,7 +93,9 @@
             @if (ShowActions && HasActions)
             {
                 <MudPaper Class="@($"pa-{margin}")" Style="@($"background-color: transparent; {(HasActions ? "border-radius: 4px 4px 0px 0px;" : "")}")" Outlined="true" Elevation="0">
-                    @ActionsFragment
+                    <MudToolBar WrapContent="true" Dense="true" Gutters="false" Style="min-height: auto;">
+                        @ActionsFragment
+                    </MudToolBar>
                 </MudPaper>
             }
             @if (HasBody)

@@ -12,7 +12,7 @@
 
 <NewPageSection Icon="@IconsFA.Solid.Icon("clapperboard").Font" Title="@Translations.MyPlatforms" ShowActions="ProvidersChanged">
     <ActionsFragment>
-        <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" Size="AppStateStatic.Size" />
+        <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" />
     </ActionsFragment>
     <BodyFragment>
         <NewRenderControl Actions="Actions" Instance="MyProviders" ExpressionEmpty="(MyProviders? obj) => obj == null || obj.Items.Empty()"

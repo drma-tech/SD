@@ -70,7 +70,7 @@
             </MudGrid>
         </MudCardContent>
         <MudCardActions>
-            <MudButton Variant="Variant.Filled" Color="Color.Success" FullWidth="true" Disabled="true" Size="AppStateStatic.Size">
+            <MudButton Variant="Variant.Filled" Color="Color.Success" FullWidth="true" Disabled="true">
                 @Modules.Subscription.Resources.Translations.YourCurrentPlan
             </MudButton>
         </MudCardActions>
@@ -137,7 +137,7 @@
             </MudGrid>
         </MudCardContent>
         <MudCardActions>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Size="AppStateStatic.Size" OnClick="@(() => OpenCheckout(AccountProduct.Premium))"
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="@(() => OpenCheckout(AccountProduct.Premium))"
                        Disabled="@(Provider == PaymentProvider.Stripe && Client != null && Client.StripeCustomerId.Empty())">
                 @Translations.Select
             </MudButton>

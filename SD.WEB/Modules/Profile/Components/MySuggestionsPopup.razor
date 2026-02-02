@@ -25,7 +25,7 @@
         </MudGrid>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@(() => { MudDialog?.Close(); MySuggestionsChanged?.InvokeAsync(MySuggestions); })" Color="Color.Primary" Size="AppStateStatic.Size">
+        <MudButton OnClick="@(() => { MudDialog?.Close(); MySuggestionsChanged?.InvokeAsync(MySuggestions); })" Color="Color.Primary">
             @Button.Ok
         </MudButton>
     </DialogActions>

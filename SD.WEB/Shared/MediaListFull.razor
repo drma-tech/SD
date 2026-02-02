@@ -26,7 +26,7 @@
 @if (MediaListApi != null)
 {
     <div style="text-align: center;" class="pt-3">
-        <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Primary" OnClick="@LoadMore" Disabled="@DisableLoadMore" Variant="Variant.Filled" Size="AppStateStatic.Size">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Primary" OnClick="@LoadMore" Disabled="@DisableLoadMore" Variant="Variant.Filled">
             @Button.LoadMore
         </MudButton>
     </div>
@@ -35,7 +35,7 @@
 @if (!Popup)
 {
     <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
-        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Size="AppStateStatic.Size" OnClick="@(() => JsRuntime.Window().HistoryBack())" />
+        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => JsRuntime.Window().HistoryBack())" />
     </div>
 }
 

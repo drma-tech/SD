@@ -21,26 +21,32 @@
         else
         {
             <NewMediaList ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
-                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
+                          ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
             </NewMediaList>
             <NewMediaList ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
-                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
+                          ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
             </NewMediaList>
             <NewMediaList ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
-                       ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
+                          ShowFilter="true" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
             </NewMediaList>
         }
     </DialogContent>
     <DialogActions>
         @if (MyProviders?.Items.Any(a => a.id == ProviderId) ?? false)
         {
-            <MudButton Color="Color.Error" StartIcon="@IconsFA.Solid.Icon("minus").Font" OnClick="@Remove" Disabled="@(!AppStateStatic.IsAuthenticated)" Size="AppStateStatic.Size">@Button.Remove</MudButton>
+            <MudButton Color="Color.Error" StartIcon="@IconsFA.Solid.Icon("minus").Font" OnClick="@Remove" Disabled="@(!AppStateStatic.IsAuthenticated)">
+                @Button.Remove
+            </MudButton>
         }
         else
         {
-            <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("plus").Font" OnClick="@Add" Disabled="@(!AppStateStatic.IsAuthenticated)" Size="AppStateStatic.Size">@Button.Add</MudButton>
+            <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("plus").Font" OnClick="@Add" Disabled="@(!AppStateStatic.IsAuthenticated)">
+                @Button.Add
+            </MudButton>
         }
-        <MudButton OnClick="@(() => { MudDialog?.Close(); })" Size="AppStateStatic.Size">@Button.Close</MudButton>
+        <MudButton OnClick="@(() => { MudDialog?.Close(); })">
+            @Button.Close
+        </MudButton>
     </DialogActions>
 </MudDialog>
 
