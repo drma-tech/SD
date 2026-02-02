@@ -175,7 +175,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             req.ValidateWebVersion();
 
             var mode = req.GetQueryParameters()["mode"];
-            var cacheKey = $"lastnews_{mode}";
+            var category = req.GetQueryParameters()["category"];
+            var cacheKey = $"lastnews_{mode}_{category}";
             CacheDocument<NewsModel>? doc;
             var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
             if (cachedBytes is { Length: > 0 })
@@ -189,7 +190,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                 if (doc == null)
                 {
                     var client = factory.CreateClient("rapidapi");
-                    var obj = await client.GetNewsByImdb8<NewsJson>(cancellationToken);
+                    var obj = await client.GetNewsByImdb8<NewsJson>(category, cancellationToken);
 
                     var compactModels = new NewsModel();
 
@@ -201,7 +202,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                         compactModels.Items.Add(new Item(item.id, item.articleTitle?.plainText, item.image?.url, item.externalUrl, item.date));
                     }
 
-                    doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, $"lastnews_{mode}"), cancellationToken);
+                    doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, $"lastnews_{mode}_{category}"), cancellationToken);
                 }
 
                 await SaveCache(doc, cacheKey, TtlCache.HalfDay);

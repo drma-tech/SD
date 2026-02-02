@@ -1,4 +1,4 @@
-﻿@page "/news"
+﻿@page "/news/{category}"
 @using SD.Shared.Models.News
 @using SD.WEB.Modules.News.Resources
 @using Button = SD.WEB.Resources.Button
@@ -40,6 +40,8 @@
 </div>
 
 @code {
+    [Parameter] public required string category { get; set; }
+
     public ComponentActions<CacheDocument<NewsModel>?> Actions { get; set; } = new();
     private CacheDocument<NewsModel>? NewsList { get; set; }
     public string? SelectedSlide { get; set; }
@@ -47,7 +49,7 @@
     protected override async Task LoadEssentialDataAsync()
     {
         Actions.StartLoading?.Invoke(null);
-        NewsList = await CacheFlixsterApi.GetNews("full");
+        NewsList = await CacheFlixsterApi.GetNews("full", category);
         Actions.FinishLoading?.Invoke(NewsList);
     }
 
