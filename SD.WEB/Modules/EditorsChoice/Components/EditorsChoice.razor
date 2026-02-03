@@ -11,7 +11,7 @@
 @inherits PageCore<EditorsChoice>
 
 <SeoHeader Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Keywords="@(new[] { "Editor’s Choice" })" Url="@($"/editors-choice/{Type}")"></SeoHeader>
-<NewPageSection Title="@Translations.EditorsChoiceTitle" Subtitle="Top-rated titles for all audiences" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font"></NewPageSection>
+<NewPageSection IsPageHeader="true" Title="@Translations.EditorsChoiceTitle" Subtitle="Top-rated titles for all audiences" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
