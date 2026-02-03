@@ -58,9 +58,13 @@
             }
             else
             {
-                <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="() => MudDialog?.Close()">@WEB.Resources.Button.Close</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="() => MudDialog?.Close()">
+                    @WEB.Resources.Button.Close
+                </MudButton>
                 <MudChip T="string" Text="@($"{mudCarousel?.SelectedIndex + 1} - {mudCarousel?.Items.Count}")" Class="mx-3"></MudChip>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => { mudCarousel?.Next(); StateHasChanged(); })">@WEB.Resources.Button.Next</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => { mudCarousel?.Next(); StateHasChanged(); })">
+                    @WEB.Resources.Button.Next
+                </MudButton>
             }
         </div>
     </DialogContent>
