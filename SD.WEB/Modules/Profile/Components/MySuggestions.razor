@@ -15,20 +15,23 @@
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")"
                  ActivePanelIndexChanged="@((int index) => { var type = index == 0 ? MediaType.movie : MediaType.tv; CheckedValueChanged(type); })">
             <Header>
-                <MudTooltip Text="@Button.Update">
-                    @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (MyProviders?.Items.Any() ?? false))
-                    {
-                        <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" OnClick="() => ImportFromProviders(MediaType.movie)" Disabled="@MovieUpdating">
+                @if (Client?.GetActiveSubscription() != null)
+                {
+                    <MudTooltip Text="@Button.Update">
+                        @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (MyProviders?.Items.Any() ?? false))
+                        {
+                            <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" OnClick="() => ImportFromProviders(MediaType.movie)" Disabled="@MovieUpdating">
 
-                        </MudIconButton>
-                    }
-                    @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync) && (MyProviders?.Items.Any() ?? false))
-                    {
-                        <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" OnClick="() => ImportFromProviders(MediaType.tv)" Disabled="@ShowUpdating">
+                            </MudIconButton>
+                        }
+                        @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync) && (MyProviders?.Items.Any() ?? false))
+                        {
+                            <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" OnClick="() => ImportFromProviders(MediaType.tv)" Disabled="@ShowUpdating">
 
-                        </MudIconButton>
-                    }
-                </MudTooltip>
+                            </MudIconButton>
+                        }
+                    </MudTooltip>
+                }
                 <MudTooltip Text="Filter">
                     <MudIconButton Icon="@IconsFA.Solid.Icon("filter").Font" Color="@(GenresChanged? Color.Secondary: Color.Primary)"
                                    OnClick="@(async () => await OpenConfigurations())" Disabled="@(MyProviders == null || MyProviders.Items.Empty())" />
