@@ -2,7 +2,7 @@
   "id": "streamingdiscovery",
   "name": "Streaming Discovery: Manage, Track, Discover",
   "short_name": "Streaming Discovery",
-  "description": "Manage your streaming platforms, track your watch progress, and discover what to watch next with ease. Browse expert-curated lists like award winners and critic picks - all in one place.",
+  "description": "Manage your streaming platforms, track your progress, and easily find what to watch next. Browse expert-curated lists, including award winners and critic picks, all in one place.",
   "background_color": "#ffffff",
   "theme_color": "#03173d",
   "start_url": "/",
@@ -68,31 +68,24 @@
   "screenshots": [
     {
       "src": "screenshots/index_desktop.png",
-      "type": "image/jpg",
-      "sizes": "1440x900",
+      "type": "image/png",
+      "sizes": "1920x1080",
       "form_factor": "wide",
       "label": "Index"
     },
     {
       "src": "screenshots/profile_desktop.png",
-      "type": "image/jpg",
-      "sizes": "1440x900",
+      "type": "image/png",
+      "sizes": "1920x1080",
       "form_factor": "wide",
       "label": "Profile"
     },
     {
       "src": "screenshots/platforms_desktop.png",
-      "type": "image/jpg",
-      "sizes": "1440x900",
+      "type": "image/png",
+      "sizes": "1920x1080",
       "form_factor": "wide",
       "label": "Platforms"
-    },
-    {
-      "src": "screenshots/collections_desktop.png",
-      "type": "image/jpg",
-      "sizes": "1440x900",
-      "form_factor": "wide",
-      "label": "Collections"
     }
   ],
   "launch_handler": {
