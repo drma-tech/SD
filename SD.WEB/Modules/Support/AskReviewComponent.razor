@@ -16,7 +16,7 @@ else
 @if (Platform != SD.Shared.Enums.Platform.webapp)
 {
     <div style="width: 100%;">
-        <MudGrid Spacing="2" Class="mb-2" Justify="Justify.Center" Style="max-width: 700px; justify-self: center;">
+        <MudGrid Spacing="@AppStateStatic.Spacing" Class="mb-2" Justify="Justify.Center" Style="max-width: 700px; justify-self: center;">
             @if (Platform == SD.Shared.Enums.Platform.windows)
             {
                 <MudItem xs="12" sm="6">

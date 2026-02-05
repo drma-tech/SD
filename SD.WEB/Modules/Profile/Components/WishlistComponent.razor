@@ -39,7 +39,7 @@
         }
         else
         {
-            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")"
+            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@AppStateStatic.SpacingClass("pt")"
                      ActivePanelIndexChanged="@((int index) => { if (index == 0) _type = MediaType.movie; else _type = MediaType.tv; })">
                 <Header>
                     <MudTooltip Text="Expand">
@@ -145,9 +145,6 @@
 
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
     private readonly string _swiperId2 = $"swiper-{Guid.NewGuid()}";
-
-    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
-    private string margin => IsMobile ? "2" : "3";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

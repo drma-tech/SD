@@ -9,7 +9,7 @@
 
 <NewPageSection Title="@EnumLists.AwardsOfTheYear.GetName()" Description="@GlobalTranslations.AwardsYearDescription" Icon="@IconsFA.Solid.Icon("trophy").Font">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")">
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@AppStateStatic.SpacingClass("pt")">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@("/best-awards-year")" />
@@ -29,9 +29,6 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-
-    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
-    private string margin => IsMobile ? "2" : "3";
 
     protected override void OnInitialized()
     {

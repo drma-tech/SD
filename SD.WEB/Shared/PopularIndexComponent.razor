@@ -6,7 +6,7 @@
 
 <NewPageSection Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")">
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@AppStateStatic.SpacingClass("pt")">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/popular/{TypeSelected}")" Disabled="true" />
@@ -32,9 +32,6 @@
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
     public PopularType TypeSelected { get; set; } = PopularType.Movie;
-
-    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
-    private string margin => IsMobile ? "2" : "3";
 
     public Dictionary<string, string> Params { get; set; } = new() { { "mode", "compact" } };
 }

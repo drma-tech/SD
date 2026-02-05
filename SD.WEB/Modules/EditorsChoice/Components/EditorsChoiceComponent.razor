@@ -6,7 +6,7 @@
 
 <NewPageSection Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")">
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@AppStateStatic.SpacingClass("pt")">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/editors-choice/{TypeSelected}")" />
@@ -32,9 +32,6 @@
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
     public MediaType TypeSelected { get; set; } = MediaType.movie;
-
-    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
-    private string margin => IsMobile ? "2" : "3";
 
     public Dictionary<string, string> Params { get; set; } = new() { { "mode", "compact" } };
 }

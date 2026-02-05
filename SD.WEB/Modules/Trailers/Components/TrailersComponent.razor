@@ -6,7 +6,7 @@
 
 <NewPageSection Title="@($"{Translations.TrailersTitle}")" Description="@Translations.TrailersDescriptionShort" Icon="@IconsFA.Brands.Icon("youtube").Font">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")">
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@AppStateStatic.SpacingClass("pt")">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="/trailers" />
@@ -52,8 +52,6 @@
     private CacheDocument<TrailerModel>? TrailerModel { get; set; }
 
     private readonly string _gallerySwiperId = $"swiper-trailer-{Guid.NewGuid()}";
-    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
-    private string margin => IsMobile ? "2" : "3";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

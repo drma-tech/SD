@@ -6,7 +6,7 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <MudGrid Class="mb-6">
+        <MudGrid Spacing="@AppStateStatic.Spacing" Class="mb-6">
             <MudItem xs="12">
                 <MudSelect Value="@Region" ValueChanged="@((Region vl) => RegionValueChanged(vl))" Label="@GlobalTranslations.Region"
                            HelperText="@GlobalTranslations.RegionDesc" FullWidth="true">

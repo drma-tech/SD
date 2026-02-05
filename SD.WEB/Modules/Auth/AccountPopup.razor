@@ -16,7 +16,7 @@
     <DialogContent>
         <MudTabs Border="true" Outlined="true" PanelClass="pt-2" MinimumTabWidth="100px">
             <MudTabPanel Text="Auth">
-                <MudGrid Spacing="2">
+                <MudGrid Spacing="@AppStateStatic.Spacing">
                     <MudItem xs="12">
                         <MudTextField T="@string" Label="@Translations.AuthProviders" Text="@(string.Join(", ", Principal?.AuthProviders ?? []))" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
@@ -32,7 +32,7 @@
                 </MudGrid>
             </MudTabPanel>
             <MudTabPanel Text="Events">
-                <MudGrid Spacing="2">
+                <MudGrid Spacing="@AppStateStatic.Spacing">
                     @foreach (var item in Principal?.Events ?? [])
                     {
                         <MudItem xs="12" Style="text-align: justify;">

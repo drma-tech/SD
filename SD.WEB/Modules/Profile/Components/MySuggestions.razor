@@ -12,7 +12,7 @@
 
 <NewPageSection Icon="@IconsFA.Solid.Icon("thumbs-up").Font" Title="@Translations.MySuggestions" ShowActions="Client?.GetActiveSubscription() != null">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")"
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@AppStateStatic.SpacingClass("pt")"
                  ActivePanelIndexChanged="@((int index) => { var type = index == 0 ? MediaType.movie : MediaType.tv; CheckedValueChanged(type); })">
             <Header>
                 @if (Client?.GetActiveSubscription() != null)
@@ -50,7 +50,7 @@
                                         <div style="cursor: pointer;" @onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))">
                                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                                         </div>
-                                        <MudGrid Spacing="2" Justify="Justify.FlexStart">
+                                        <MudGrid Spacing="AppStateStatic.Spacing" Justify="Justify.FlexStart">
                                             @foreach (var provider in item.Providers)
                                             {
                                                 <MudItem xs="4">
@@ -78,7 +78,7 @@
                                         <div style="cursor: pointer;" @onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))">
                                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                                         </div>
-                                        <MudGrid Spacing="2" Justify="Justify.FlexStart">
+                                        <MudGrid Spacing="AppStateStatic.Spacing" Justify="Justify.FlexStart">
                                             @foreach (var provider in item.Providers)
                                             {
                                                 <MudItem xs="4">
@@ -116,9 +116,6 @@
     public AuthPrincipal? Client { get; set; }
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
     private readonly string _swiperId2 = $"swiper-{Guid.NewGuid()}";
-
-    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
-    private string margin => IsMobile ? "2" : "3";
 
     private bool GenresChanged => (mySuggestions?.MovieGenres.Any() ?? false) || (mySuggestions?.TvGenres.Any() ?? false);
 

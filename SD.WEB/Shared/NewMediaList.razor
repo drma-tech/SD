@@ -10,7 +10,7 @@
 {
     <NewPageSection Title="@Title" Icon="@Icon" Image="@Image">
         <BodyFragment>
-            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@($"pt-{margin}")"
+            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@AppStateStatic.SpacingClass("pt")"
                      ActivePanelIndex="@(TypeSelected == MediaType.movie ? 0 : 1)"
                      ActivePanelIndexChanged="@(async (int index) => { var type = index == 0 ? MediaType.movie : MediaType.tv; await TypeSelectedChangedHandle(type); })">
                 <Header>
@@ -111,8 +111,6 @@ else
     [Parameter] public EventCallback<MediaType> TypeSelectedChanged { get; set; }
 
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
-    private bool IsMobile => Breakpoint <= Breakpoint.Xs;
-    private string margin => IsMobile ? "2" : "3";
 
     public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new();
     public HashSet<MediaDetail> Items { get; set; } = [];

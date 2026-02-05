@@ -16,7 +16,7 @@
                     @Translations.Directing
                 </MudText>
                 <MudDivider Class="mb-2"></MudDivider>
-                <MudGrid Spacing="2" Class="mb-2">
+                <MudGrid Spacing="AppStateStatic.Spacing" Class="mb-2">
                     @foreach (var item in directors)
                     {
                         <MudItem xs="6" sm="4" md="3" lg="2">
@@ -44,7 +44,7 @@
                     @Translations.Writing
                 </MudText>
                 <MudDivider Class="mb-2"></MudDivider>
-                <MudGrid Spacing="2" Class="mb-2">
+                <MudGrid Spacing="AppStateStatic.Spacing" Class="mb-2">
                     @foreach (var item in writers)
                     {
                         <MudItem xs="6" sm="4" md="3" lg="2">
@@ -69,7 +69,7 @@
             @Translations.Cast
         </MudText>
         <MudDivider Class="mb-2"></MudDivider>
-        <MudGrid Spacing="2" Class="mb-2">
+        <MudGrid Spacing="AppStateStatic.Spacing" Class="mb-2">
             @foreach (var item in Credits?.cast.OrderBy(o => o.order).Take(24) ?? new List<Cast>())
             {
                 <MudItem xs="6" sm="4" md="3" lg="2">

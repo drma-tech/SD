@@ -17,7 +17,7 @@
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Profile" Format="horizontal"></GoogleAdSense>
 
-<MudGrid Spacing="2" Class="mb-8">
+<MudGrid Spacing="AppStateStatic.Spacing" Class="mb-8">
     <MudItem xs="6" md="3">
         <MudPaper Outlined="true" Class="pa-1">
             <div class="d-flex" style="align-self: center;">
@@ -85,7 +85,7 @@
 
 <MySuggestions Watched="Watched" Watching="Watching" Wish="Wish"></MySuggestions>
 
-<MudGrid Spacing="2" Class="mb-2">
+<MudGrid Spacing="AppStateStatic.Spacing" Class="mb-2">
     <MudItem xs="12" md="6">
         <WishlistComponent ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish"
                            Actions="WishActions" ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()">
