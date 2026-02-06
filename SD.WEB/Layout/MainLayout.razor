@@ -33,12 +33,12 @@
 <MudLayout>
     <HeadLayout></HeadLayout>
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="@AppStateStatic.SpacingDoubleClass("my")" Style="min-height: calc(100vh - 64px - 32px);">
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="@Css.Build().Medium("my")" Style="min-height: calc(100vh - 64px - 32px);">
             @Body
         </MudContainer>
         <FooterComponent></FooterComponent>
-        <MudDivider Class="@($"{AppStateStatic.SpacingClass("my")} {AppStateStatic.SpacingTripleClass("mt")}")"></MudDivider>
-        <MudText Align="Align.Center" Class="@AppStateStatic.SpacingClass("mb")">
+        <MudDivider Class="@Css.Build().Small("my").Large("mt")"></MudDivider>
+        <MudText Align="Align.Center" Class="@Css.Build().Small("mb")">
             © 2021-@DateTime.Now.Year - DRMA Tech.
         </MudText>
     </MudMainContent>

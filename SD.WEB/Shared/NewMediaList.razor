@@ -10,7 +10,7 @@
 {
     <NewPageSection Title="@Title" Icon="@Icon" Image="@Image">
         <BodyFragment>
-            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@AppStateStatic.SpacingClass("pt")"
+            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@Css.Build().Small("pt")"
                      ActivePanelIndex="@(TypeSelected == MediaType.movie ? 0 : 1)"
                      ActivePanelIndexChanged="@(async (int index) => { var type = index == 0 ? MediaType.movie : MediaType.tv; await TypeSelectedChangedHandle(type); })">
                 <Header>

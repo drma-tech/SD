@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
-using MudBlazor.Services;
 using SD.WEB.Modules.Auth.Core;
 
 namespace SD.WEB.Core;

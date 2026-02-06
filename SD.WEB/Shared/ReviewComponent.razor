@@ -4,7 +4,7 @@
 @inject CacheMetaCriticApi CacheMetaCriticApi
 
 <NewRenderControl Actions="Actions" Instance="Model?.Data" ExpressionEmpty="@((ReviewModel? obj) => obj == null || obj.Items.Empty())">
-    <MudGrid Spacing="AppStateStatic.Spacing">
+    <MudGrid Spacing="@Css.SpaceSmall">
         @foreach (var item in Model?.Data?.Items ?? [])
         {
             <MudItem xs="12" md="6" Style="text-align: justify;">

@@ -23,7 +23,7 @@
         {
             if (Client?.GetActiveSubscription() == null)
             {
-                <MudGrid Spacing="@AppStateStatic.Spacing" Class="mb-3">
+                <MudGrid Spacing="@Css.SpaceSmall" Class="@Css.Build().Small("mb")">
                     <MudItem xs="12" sm="8">
                         <MudToggleGroup SelectionMode="SelectionMode.SingleSelection" @bind-Value="Cycle" Color="Color.Primary">
                             <MudToggleItem Value="@AccountCycle.Weekly">
@@ -67,7 +67,7 @@
                 {
                     if (Platform == SD.Shared.Enums.Platform.ios)
                     {
-                        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Class="mb-3">
+                        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Class="@Css.Build().Small("mb")">
                             Apple subscription is still in testing. If you run into any issues, please reach out via feedback or email. We’re happy to help.
                         </MudAlert>
 

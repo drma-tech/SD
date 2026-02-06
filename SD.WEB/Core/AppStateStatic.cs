@@ -19,14 +19,6 @@ public static class AppStateStatic
     public static Action<Breakpoint>? BreakpointChanged { get; set; }
     public static Size Size { get; set; } = Size.Small;
 
-    public static int Spacing => Breakpoint <= Breakpoint.Xs ? 2 : 3;
-    public static int SpacingDouble => Breakpoint <= Breakpoint.Xs ? 4 : 6;
-    public static int SpacingTriple => Breakpoint <= Breakpoint.Xs ? 6 : 9;
-
-    public static string SpacingClass(string vl) => $"{vl}-{Spacing}";
-    public static string SpacingDoubleClass(string vl) => $"{vl}-{SpacingDouble}";
-    public static string SpacingTripleClass(string vl) => $"{vl}-{SpacingTriple}";
-
     public static BrowserWindowSize? BrowserWindowSize { get; set; }
     public static Action<BrowserWindowSize>? BrowserWindowSizeChanged { get; set; }
 

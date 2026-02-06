@@ -6,9 +6,9 @@
 
 @inject PaymentConfigurationApi ConfigurationApi
 
-<MudCard Outlined="true" Elevation="4" Class="mb-3">
+<MudCard Outlined="true" Elevation="4">
     <MudCardContent Class="pa-3">
-        <MudGrid Spacing="AppStateStatic.Spacing">
+        <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6">
                 <MudTextField T="string" Label="@Translations.Product" Text="@Client?.GetActiveSubscription()?.Product?.GetName()" ReadOnly="true"></MudTextField>
             </MudItem>

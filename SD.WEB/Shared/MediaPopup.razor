@@ -18,7 +18,7 @@
         <NewRenderControl Actions="Actions" Instance="Media" ExpressionEmpty="@((MediaDetail? obj) => obj == null)">
             <MudTabs Border="true" Outlined="true" PanelClass="pt-2" MinimumTabWidth="100px">
                 <MudTabPanel Tag="@Translations.TabAbout" Text="@Translations.TabAbout">
-                    <MudGrid Spacing="AppStateStatic.Spacing">
+                    <MudGrid Spacing="@Css.SpaceSmall">
                         <MudItem xs="12" md="4">
                             <div Style="position: relative;">
                                 @if (Media?.release_date < DateTime.Now.AddMonths(-3))
@@ -156,7 +156,7 @@
                                 @group
                             </MudText>
                             <MudDivider Class="mb-2"></MudDivider>
-                            <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap">
+                            <MudStack Row="true" Spacing="@Css.SpaceSmall" Wrap="Wrap.Wrap">
                                 @foreach (var item in Media?.Videos.Where(w => w.type == group) ?? [])
                                 {
                                     <div>

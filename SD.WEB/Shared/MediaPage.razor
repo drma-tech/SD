@@ -69,10 +69,10 @@
 
 <NewRenderControl Actions="Actions" Instance="Media" ExpressionEmpty="@((MediaDetail? obj) => obj == null)" LoadingHeight="400px">
     <CustomContent>
-        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("circle-exclamation").Font" Class="mb-3" Style="text-align: justify;">
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("circle-exclamation").Font" Class="@Css.Build().Small("mb")" Style="text-align: justify;">
             @GlobalTranslations.EnergyOut
         </MudAlert>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("bolt").Font" Class="me-2" OnClick="@OpenSubscription">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("bolt").Font" OnClick="@OpenSubscription">
             Get more energy
         </MudButton>
     </CustomContent>
@@ -173,7 +173,7 @@
                             @group
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
-                        <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap">
+                        <MudStack Row="true" Spacing="@Css.SpaceSmall" Wrap="Wrap.Wrap">
                             @foreach (var item in Media?.Videos.Where(w => w.type == group) ?? [])
                             {
                                 <div>

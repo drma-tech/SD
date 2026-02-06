@@ -22,7 +22,7 @@
 <NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@SeoTranslations.AppName" Subtitle="@SeoTranslations.AppSubtitle">
 </NewPageSection>
 
-<MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress" Class="mb-8"
+<MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress" Class="@Css.Build().Large("mb")"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
               OnAdornmentClick="@(() =>{ if (AppStateStatic.Search.NotEmpty()) Navigation.NavigateTo($"/search"); })" Clearable="true"
               HelperText="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio">
@@ -40,7 +40,7 @@
 
 <NewPageSection Title="@EnumLists.ExpectedMovieOf2026.GetName()">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@AppStateStatic.SpacingClass("pt")">
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@Css.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" OnClick="@(() => Navigation.NavigateTo($"/list/{(int)EnumLists.ExpectedMovieOf2026}"))" />
@@ -55,7 +55,7 @@
     </BodyFragment>
 </NewPageSection>
 
-<MudGrid Spacing="AppStateStatic.Spacing">
+<MudGrid Spacing="@Css.SpaceSmall">
     <MudItem xs="12" sm="6">
         <TrailersComponent></TrailersComponent>
     </MudItem>

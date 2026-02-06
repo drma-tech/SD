@@ -5,7 +5,7 @@
     <div class="@BodyClass">
         @if (IsPageHeader)
         {
-            <MudPaper Class="@AppStateStatic.SpacingClass("pa")" Style="@($"background-color: transparent; {(HasActions ? "border-radius: 4px 4px 0px 0px;" : "")}")" Outlined="true" Elevation="0">
+            <MudPaper Class="@Css.Build().Small("pa")" Style="@($"background-color: transparent; {(HasActions ? "border-radius: 4px 4px 0px 0px;" : "")}")" Outlined="true" Elevation="0">
                 <MudToolBar WrapContent="true" Gutters="false" Style="min-height: auto;">
                     @if (!string.IsNullOrEmpty(Icon))
                     {
@@ -36,7 +36,7 @@
                 </MudToolBar>
                 @if (Description.NotEmpty())
                 {
-                    <div style="text-align: justify;" class="@AppStateStatic.SpacingClass("mt")">
+                    <div style="text-align: justify;" class="@Css.Build().Small("mt")">
                         <MudText Typo="@(AppStateStatic.Size == Size.Small ? Typo.caption : Typo.body1)" Align="Align.Justify"
                                  Style="@($"line-height: {(IsMobile ?  "1.0" : "1.2" )}; letter-spacing: {(IsMobile ? "normal" : "inherit")};")">
                             @Description
@@ -46,7 +46,7 @@
             </MudPaper>
             @if (ShowActions && HasActions)
             {
-                <MudPaper Class="@AppStateStatic.SpacingClass("pa")" Style="@($"background-color: transparent; {(HasActions ? "border-radius: 0px 0px 4px 4px;" : "")}")" Outlined="true" Elevation="0">
+                <MudPaper Class="@Css.Build().Small("pa")" Style="@($"background-color: transparent; {(HasActions ? "border-radius: 0px 0px 4px 4px;" : "")}")" Outlined="true" Elevation="0">
                     <MudToolBar WrapContent="true" Dense="true" Gutters="false" Style="min-height: auto;">
                         @ActionsFragment
                     </MudToolBar>
@@ -57,7 +57,7 @@
         {
             @if (ShowHeader)
             {
-                <div class="@AppStateStatic.SpacingClass("mb")">
+                <div class="@Css.Build().Small("mb")">
                     <MudToolBar WrapContent="true" Dense="true" Gutters="false" Style="min-height: auto;">
                         @if (!string.IsNullOrEmpty(Icon))
                         {
@@ -88,7 +88,7 @@
                     </MudToolBar>
                     @if (Description.NotEmpty())
                     {
-                        <div style="text-align: justify;" class="@AppStateStatic.SpacingClass("mt")">
+                        <div style="text-align: justify;" class="@Css.Build().Small("mt")">
                             <MudText Typo="@(AppStateStatic.Size == Size.Small ? Typo.caption : Typo.body1)" Align="Align.Justify"
                                      Style="@($"line-height: {(IsMobile ? "1.0" : "1.2")}; letter-spacing: {(IsMobile ? "normal" : "inherit")};")">
                                 @Description
@@ -99,7 +99,7 @@
             }
             @if (ShowActions && HasActions)
             {
-                <MudPaper Class="@AppStateStatic.SpacingClass("pa")" Style="@($"background-color: transparent; {(HasActions ? "border-radius: 4px 4px 0px 0px;" : "")}")" Outlined="true" Elevation="0">
+                <MudPaper Class="@Css.Build().Small("pa")" Style="@($"background-color: transparent; {(HasActions ? "border-radius: 4px 4px 0px 0px;" : "")}")" Outlined="true" Elevation="0">
                     <MudToolBar WrapContent="true" Dense="true" Gutters="false" Style="min-height: auto;">
                         @ActionsFragment
                     </MudToolBar>
@@ -107,7 +107,7 @@
             }
             @if (HasBody)
             {
-                <MudPaper Class="@AppStateStatic.SpacingClass("pa")" Style="@($"background-color: transparent; {(HasActions ? "border-radius: 0px 0px 4px 4px;" : "")}")" Outlined="true" Elevation="0">
+                <MudPaper Class="@Css.Build().Small("pa")" Style="@($"background-color: transparent; {(HasActions ? "border-radius: 0px 0px 4px 4px;" : "")}")" Outlined="true" Elevation="0">
                     @BodyFragment
                 </MudPaper>
             }
@@ -154,8 +154,8 @@
     {
         if (CustomBodyClass.Empty())
         {
-            BodyClass = AppStateStatic.SpacingTripleClass("mb");
-            AppStateStatic.BreakpointChanged += client => BodyClass = AppStateStatic.SpacingTripleClass("mb");
+            BodyClass = Css.Build().Large("mb");
+            AppStateStatic.BreakpointChanged += client => BodyClass = Css.Build().Large("mb");
         }
         else
         {

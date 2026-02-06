@@ -5,7 +5,7 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <MudStack Spacing="3">
+        <MudStack Spacing="@Css.SpaceSmall">
             <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font">
                 Continue with Google
             </MudButton>
@@ -23,7 +23,7 @@
             </MudButton>
         </MudStack>
         <div style="text-align: center;">
-            <MudText Class="mt-4 mx-4">
+            <MudText Class="@Css.Build().Medium("mt").Small("mx")">
                 @((MarkupString)string.Format(Translations.Terms1, $"<a href='support/terms' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Support.Resources.Translations.TermsUse}</a>", $"<a href='support/privacy' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Support.Resources.Translations.PrivacyPolicy}</a>"))
             </MudText>
         </div>

@@ -17,7 +17,7 @@
     @{
         var hasProvider = false;
 
-        <MudGrid Spacing="AppStateStatic.Spacing">
+        <MudGrid Spacing="@Css.SpaceSmall">
             @if (Providers?.GetFreeListProviders(Region).Any() ?? false)
             {
                 hasProvider = true;

@@ -112,7 +112,7 @@
                 }
             </NewRenderControl>
         </div>
-        <MudText Typo="Typo.body1" Align="Align.Justify" Class="my-3">
+        <MudText Typo="Typo.body1" Align="Align.Justify" Class="@Css.Build().Small("my")">
             @Media?.plot
         </MudText>
         @if (!string.IsNullOrEmpty(Media?.homepage))
@@ -127,8 +127,7 @@
                 </MudLink>
             </MudPaper>
         }
-        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mb-8"
-                  Icon="@IconsFA.Solid.Icon("circle-exclamation").WithAnimation(IconAnimation.Beat).Font">
+        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@IconsFA.Solid.Icon("circle-exclamation").WithAnimation(IconAnimation.Beat).Font">
             @Translations.PlatformForManaging
         </MudAlert>
     </div>
