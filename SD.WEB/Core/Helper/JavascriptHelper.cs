@@ -43,6 +43,8 @@ namespace SD.WEB.Core.Helper
 
         public static FirebaseJs Firebase(this IJSRuntime js) => new(js);
 
+        public static SupabaseJs Supabase(this IJSRuntime js) => new(js);
+
         public static ServicesJs Services(this IJSRuntime js) => new(js);
 
         public static SwiperJs Swiper(this IJSRuntime js) => new(js);
@@ -166,6 +168,27 @@ namespace SD.WEB.Core.Helper
         {
             ApiCore.ResetCacheVersion();
             await InvokeVoid("authentication.signIn", providerName);
+        }
+
+        public Task SignOutAsync() => InvokeVoid("authentication.signOut");
+    }
+
+    public class SupabaseJs(IJSRuntime js) : JsModuleBase(js, "./js/supabase.js")
+    {
+        public Task CreateUserAsync(string id, string email, string name) => InvokeVoid("authentication.createUser", id, email, name);
+
+        public async Task SignInAsync(string providerName)
+        {
+            ApiCore.ResetCacheVersion();
+            await InvokeVoid("authentication.signIn", providerName);
+        }
+
+        public Task SendEmailAsync(string email) => InvokeVoid("authentication.sendEmail", email);
+
+        public async Task ConfirmCode(string email, string code)
+        {
+            ApiCore.ResetCacheVersion();
+            await InvokeVoid("authentication.confirmCode", email, code);
         }
 
         public Task SignOutAsync() => InvokeVoid("authentication.signOut");

@@ -367,6 +367,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Where to watch.
+        /// </summary>
+        public static string WhereToWatch {
+            get {
+                return ResourceManager.GetString("WhereToWatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rate the app and share it with your friends!.
         /// </summary>
         public static string WriteReviewSubtitle {

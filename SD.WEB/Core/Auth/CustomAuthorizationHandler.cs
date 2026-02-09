@@ -4,13 +4,22 @@
     {
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (AppStateStatic.Token.Empty())
+            if (AppStateStatic.FirebaseToken.Empty() && AppStateStatic.SupabaseToken.Empty())
             {
                 throw new InvalidOperationException("empty token");
             }
 
-            request.Headers.Remove("X-Auth-Token");
-            request.Headers.Add("X-Auth-Token", $"Bearer {AppStateStatic.Token}");
+            request.Headers.Remove("X-Firebase-Token");
+            request.Headers.Remove("X-Supabase-Token");
+
+            if (AppStateStatic.FirebaseToken.NotEmpty())
+            {
+                request.Headers.Add("X-Firebase-Token", $"Bearer {AppStateStatic.FirebaseToken}");
+            }
+            else
+            {
+                request.Headers.Add("X-Supabase-Token", $"Bearer {AppStateStatic.SupabaseToken}");
+            }
 
             return await base.SendAsync(request, cancellationToken);
         }

@@ -2,10 +2,14 @@
 
 //https://firebase.google.com/support/release-notes/js
 
+const MAX_RETRIES = 2;
+const RETRY_TIMEOUT = 1000;
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
 import {
     getAuth,
     onAuthStateChanged,
+    onIdTokenChanged,
     setPersistence,
     browserLocalPersistence,
     GoogleAuthProvider,
@@ -20,52 +24,64 @@ import { storage, notification, interop } from "./utils.js";
 
 const platform = storage.getLocalStorage("platform");
 
-if (!isBot && !isPrintScreen) {
+let authReadyResolve;
+const authReadyPromise = new Promise((resolve) => {
+    authReadyResolve = resolve;
+});
+
+async function ensureAuthReady() {
+    await authReadyPromise;
+
+    if (!window.firebase) {
+        throw new Error("Auth initialization failed");
+    }
+
+    return window.firebase;
+}
+
+async function initFirebaseAuth() {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     await setPersistence(auth, browserLocalPersistence);
+    window.firebase = auth;
+    setupAuthListener(auth);
+    authReadyResolve(); // any call to ensureAuthReady will now proceed
+}
 
-    window.auth = auth;
-    let refreshTokenInterval = null;
+if (!isBot && !isPrintScreen) {
+    await initFirebaseAuth();
+} else {
+    authReadyResolve();
+}
 
+function setupAuthListener(auth) {
+    //sign-in or sign-out
     onAuthStateChanged(auth, async (user) => {
-        let token = user ? await user.getIdToken() : null;
-
-        await interop.invokeDotNetWhenReady("SD.WEB", "AuthChanged", token);
-
-        let objUser = authentication.getUser();
-
-        if (objUser) {
-            // services
+        if (user && window.Userback?.identify) {
+            const authProvider = storage.getLocalStorage("auth");
+            if (authProvider !== "firebase") return;
 
             try {
-                window.Userback.identify(objUser.userId, {
-                    name: objUser.name,
-                    email: objUser.email,
+                window.Userback.identify(user.uid, {
+                    name: user.displayName,
+                    email: user.email,
                 });
             } catch {
                 //ignores
             }
+        }
+    });
 
-            // refresh token
+    //sign-in, sign-out, and token refresh events
+    onIdTokenChanged(auth, async (user) => {
+        try {
+            const authProvider = storage.getLocalStorage("auth");
+            if (authProvider !== "firebase") return;
 
-            if (!refreshTokenInterval) {
-                refreshTokenInterval = setInterval(
-                    async () => {
-                        const user = window.auth.currentUser;
-                        if (user) {
-                            const refreshedToken = await user.getIdToken(true);
-                            await interop.invokeDotNetWhenReady("SD.WEB", "AuthChanged", refreshedToken);
-                        } else {
-                            await interop.invokeDotNetWhenReady("SD.WEB", "AuthChanged", null);
-                            refreshTokenInterval = null;
-                        }
-                    },
-                    30 * 60 * 1000 //30 min
-                );
-            }
-        } else {
-            refreshTokenInterval = null;
+            const token = user ? await user.getIdToken() : null;
+            await interop.invokeDotNetWhenReady("SD.WEB", "FirebaseAuthChanged", token);
+        } catch (err) {
+            notification.sendLog(err);
         }
     });
 }
@@ -90,35 +106,46 @@ export const authentication = {
         }
 
         async function doSignIn() {
+            const auth = await ensureAuthReady();
+
             if (usePopup) {
-                return signInWithPopup(window.auth, provider);
+                return signInWithPopup(auth, provider);
             } else {
-                return signInWithRedirect(window.auth, provider);
+                await signInWithRedirect(auth, provider);
+                return null;
+            }
+        }
+
+        async function doSignInWithRetry(retryCount = 0) {
+            try {
+                return await doSignIn();
+            } catch (error) {
+                if (
+                    error.code === "auth/network-request-failed" &&
+                    retryCount < MAX_RETRIES
+                ) {
+                    notification.sendLog(
+                        "Network error detected. Retrying sign in..."
+                    );
+                    notification.showError(
+                        "Network error detected. Retrying sign in..."
+                    );
+
+                    await new Promise((r) =>
+                        setTimeout(r, RETRY_TIMEOUT * Math.pow(2, retryCount))
+                    );
+                    return doSignInWithRetry(retryCount + 1);
+                }
+                throw error;
             }
         }
 
         try {
-            return await doSignIn();
+            return await doSignInWithRetry();
         } catch (error) {
             const code = error.code || "";
 
-            if (code === "auth/network-request-failed") {
-                notification.sendLog(
-                    "Network error detected. Retrying sign in..."
-                );
-                notification.showError(
-                    "Network error detected. Retrying sign in..."
-                );
-
-                await new Promise((r) => setTimeout(r, 1000));
-
-                try {
-                    return await doSignIn();
-                } catch (retryError) {
-                    notification.sendLog(retryError);
-                    throw new Error(retryError.message);
-                }
-            } else if (code === "auth/popup-closed-by-user") {
+            if (code === "auth/popup-closed-by-user") {
                 notification.showError(
                     "Sign-in popup was closed before completion."
                 );
@@ -138,7 +165,7 @@ export const authentication = {
     },
     async signOut() {
         try {
-            await window.auth.signOut();
+            await window.firebase.signOut();
         } catch (error) {
             notification.sendLog(error);
             throw new Error(error.message);
@@ -146,7 +173,7 @@ export const authentication = {
     },
     getUser() {
         try {
-            const user = window.auth.currentUser;
+            const user = window.firebase.currentUser;
 
             if (!user) return null;
 

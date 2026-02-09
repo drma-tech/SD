@@ -145,7 +145,7 @@
                         </MudItem>
                     </MudGrid>
                 </MudTabPanel>
-                <MudTabPanel Tag="@Translations.TabPlatforms" Text="@Translations.TabPlatforms">
+                <MudTabPanel Tag="@Translations.TabPlatforms" Text="@GlobalTranslations.WhereToWatch">
                     <MediaStreaming TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaStreaming>
                 </MudTabPanel>
                 <MudTabPanel Tag="@("Trailers")" Text="Videos" Visible="@(Media != null && Media.Videos.Any())">

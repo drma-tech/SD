@@ -30,7 +30,7 @@
                 </MudText>
             </MudCheckBox>
 
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class=@Css.Build().Small("mt").Raw("me-2")">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="@Css.Build().Small("mt").Raw("me-2")">
                 @Button.Confirm
             </MudButton>
             <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Logout" Class="@Css.Build().Small("mt")">
@@ -129,9 +129,14 @@
 
     private async Task Logout()
     {
+        var auth = await JsRuntime.Utils().GetStorage<AuthProvider>("auth");
+
         await JsRuntime.Utils().ClearAllStorage();
 
-        await JsRuntime.Firebase().SignOutAsync();
+        if (auth == AuthProvider.Firebase)
+            await JsRuntime.Firebase().SignOutAsync();
+        else
+            await JsRuntime.Supabase().SignOutAsync();
 
         Navigation.NavigateTo("/");
     }

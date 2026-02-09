@@ -10,6 +10,9 @@ namespace SD.WEB.Core.Auth
 
         public void NotifyAuthenticationStateChanged(string? token)
         {
+            AppStateStatic.FirebaseToken = null;
+            AppStateStatic.SupabaseToken = null;
+
             if (token == null)
             {
                 _currentUser = new(new ClaimsIdentity());
@@ -31,7 +34,7 @@ namespace SD.WEB.Core.Auth
                 _currentUser = new(new ClaimsIdentity(claims, "firebase"));
             }
 
-            AppStateStatic.Token = token;
+            AppStateStatic.FirebaseToken = token;
 
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }

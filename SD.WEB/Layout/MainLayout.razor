@@ -63,9 +63,15 @@
             AppStateStatic.BrowserWindowSizeChanged += size => StateHasChanged();
 
             // 1 = capture the claims
-            AppStateStatic.AuthChanged += (string? token) =>
+            AppStateStatic.FirebaseAuthChanged += (string? token) =>
             {
                 var provider = (FirebaseAuthStateProvider)AuthStateProvider;
+                provider.NotifyAuthenticationStateChanged(token);
+            };
+
+            AppStateStatic.SupabaseAuthChanged += (string? token) =>
+            {
+                var provider = (SupabaseAuthStateProvider)AuthStateProvider;
                 provider.NotifyAuthenticationStateChanged(token);
             };
 
@@ -135,7 +141,7 @@
             AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
             AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
 
-            //register new user or new login (need to be last step here)
+            //register new user or new login (need to be last step on this method)
             if (!AppStateStatic.IsAuthenticated) return;
             if (Navigation.Uri.Contains("/support/")) return;
 
@@ -161,9 +167,19 @@
 
     private async Task RegisterLogin()
     {
+        var minInterval = TimeSpan.FromHours(1);
+        var now = DateTimeOffset.UtcNow;
+
+        if (AppStateStatic.LastAccess != null && now - AppStateStatic.LastAccess < minInterval)
+        {
+            return;
+        }
+
         var platform = await AppStateStatic.GetPlatform(JsRuntime);
 
         await LoginApi.Add(platform);
+
+        AppStateStatic.LastAccess = now;
 
         if (Principal!.AuthProviders.Empty() || !Principal!.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
         {
@@ -294,9 +310,15 @@
     }
 
     [JSInvokable]
-    public static void AuthChanged(string? token)
+    public static void FirebaseAuthChanged(string? token)
     {
-        AppStateStatic.AuthChanged?.Invoke(token);
+        AppStateStatic.FirebaseAuthChanged!.Invoke(token);
+    }
+
+    [JSInvokable]
+    public static void SupabaseAuthChanged(string? token)
+    {
+        AppStateStatic.SupabaseAuthChanged!.Invoke(token);
     }
 
 }

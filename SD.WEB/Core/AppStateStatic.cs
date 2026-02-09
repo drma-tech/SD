@@ -2,18 +2,19 @@
 using MudBlazor;
 using MudBlazor.Services;
 using SD.WEB.Modules.Subscription.Core;
-using System.Globalization;
 using System.Security.Claims;
 
 namespace SD.WEB.Core;
 
 public static class AppStateStatic
 {
-    public static string? Token { get; set; }
+    public static string? FirebaseToken { get; set; }
+    public static string? SupabaseToken { get; set; }
     public static bool IsAuthenticated { get; set; }
     public static bool IsPremiumUser { get; set; }
     public static ClaimsPrincipal? User { get; set; }
     public static string? UserId { get; set; }
+    public static DateTimeOffset? LastAccess { get; set; } //control login, so we don't call api too often
 
     public static Breakpoint Breakpoint { get; set; } = Breakpoint.Xs;
     public static Action<Breakpoint>? BreakpointChanged { get; set; }
@@ -104,7 +105,7 @@ public static class AppStateStatic
             }
             else
             {
-                var code = await js.Window().InvokeAsync<string>("eval", "navigator.language || navigator.userLanguage");
+                var code = await js.Window().InvokeAsync<string>("eval", "navigator.language");
                 code = code[..2].ToLowerInvariant();
 
                 _appLanguage = ConvertAppLanguage(code) ?? AppLanguage.en;
@@ -128,7 +129,9 @@ public static class AppStateStatic
         if (code.Empty()) return null;
 
         if (Enum.TryParse<AppLanguage>(code, true, out var language) && Enum.IsDefined(language))
+        {
             return language;
+        }
         else
             return null;
     }
@@ -325,15 +328,18 @@ public static class AppStateStatic
             }
             else
             {
-                var culture = CultureInfo.CurrentUICulture ?? CultureInfo.CurrentCulture;
-                var parts = culture.Name.Split('-');
-                var code = string.Join("", parts);
+                var code = js != null ? await js.Window().InvokeAsync<string>("eval", "navigator.language") : "en-US";
+                code = code.Replace("-", "");
 
                 _contentLanguage = ConvertContentLanguage(code) ?? ContentLanguage.enUS;
                 if (js != null) await js.Utils().SetStorage("content-language", _contentLanguage);
             }
 
             return _contentLanguage.Value;
+        }
+        catch
+        {
+            return ContentLanguage.enUS;
         }
         finally
         {
@@ -347,6 +353,16 @@ public static class AppStateStatic
 
         if (Enum.TryParse<ContentLanguage>(code, true, out var language) && Enum.IsDefined(language))
             return language;
+        else if (code.Length == 2) //few languages have only 2 letter code
+        {
+            var languages = Enum.GetValues<ContentLanguage>();
+            foreach (var lang in languages)
+            {
+                if (lang.ToString().StartsWith(code, StringComparison.InvariantCultureIgnoreCase))
+                    return lang;
+            }
+            return null;
+        }
         else
             return null;
     }
@@ -358,7 +374,8 @@ public static class AppStateStatic
 
     #endregion ContentLanguage
 
-    public static Action<string?>? AuthChanged { get; set; }
+    public static Action<string?>? FirebaseAuthChanged { get; set; }
+    public static Action<string?>? SupabaseAuthChanged { get; set; }
     public static Action? UserStateChanged { get; set; }
     public static Action? RegistrationSuccessful { get; set; }
     public static Action<string>? AppleVerify { get; set; }

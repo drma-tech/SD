@@ -39,6 +39,11 @@ export const firebaseConfig = {
     measurementId: "G-JKXTVXM0EX",
 };
 
+export const supabaseConfig = {
+    projectUrl: "https://mlsztbywzbbqqbwgplky.supabase.co",
+    supabaseKey: "sb_publishable_kwSh9KlLSaccPHPd7ZsqGw_VGpAs73w",
+};
+
 export const baseApiUrl = isLocalhost ? "http://localhost:7071" : "";
 
 // Disable robots for dev environment

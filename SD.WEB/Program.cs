@@ -63,6 +63,8 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddScoped<AuthenticationStateProvider, FirebaseAuthStateProvider>();
+    collection.AddScoped<AuthenticationStateProvider, SupabaseAuthStateProvider>();
+    
     collection.AddScoped<CustomAuthorizationHandler>();
     collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(60); })
         .AddHttpMessageHandler<CustomAuthorizationHandler>()

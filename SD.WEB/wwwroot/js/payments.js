@@ -1,7 +1,7 @@
 ﻿"use strict";
 
 import { baseApiUrl } from "./main.js";
-import { notification, interop } from "./utils.js";
+import { storage, notification, interop } from "./utils.js";
 
 export const apple = {
     openCheckout(productId) {
@@ -72,17 +72,35 @@ export const google = {
 export const stripe = {
     async openCheckout(priceId) {
         try {
-            const token = await window.auth.currentUser.getIdToken();
+            const auth = storage.getLocalStorage("auth");
+            let response;
 
-            const response = await fetch(
-                `${baseApiUrl}/api/stripe/create-checkout-session/${priceId}?url=${window.location.href}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "X-Auth-Token": `Bearer ${token}`,
-                    },
-                }
-            );
+            if (auth === "firebase") {
+                const token = await window.firebase.currentUser.getIdToken();
+
+                response = await fetch(
+                    `${baseApiUrl}/api/stripe/create-checkout-session/${priceId}?url=${window.location.href}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "X-Firebase-Token": `Bearer ${token}`,
+                        },
+                    }
+                );
+            } else if (auth === "supabase") {
+                const { data } = await window.supabase.auth.getSession();
+
+                response = await fetch(
+                    `${baseApiUrl}/api/stripe/create-checkout-session/${priceId}?url=${window.location.href}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "X-Supabase-Token": `Bearer ${data.session.access_token}`,
+                        },
+                    }
+                );
+            }
+
             const checkoutUrl = await response.text();
 
             window.location.href = checkoutUrl;
