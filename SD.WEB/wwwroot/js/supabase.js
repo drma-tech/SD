@@ -103,6 +103,7 @@ export const authentication = {
     async signIn(providerName) {
         try {
             const redirectTo = window.location.origin;
+            const platform = storage.getLocalStorage("platform");
 
             const baseOptions = {
                 redirectTo,
@@ -112,6 +113,12 @@ export const authentication = {
             const providerOverrides = {
                 google: {
                     scopes: "openid email profile",
+                    queryParams: {
+                        prompt: "consent",
+                        ...(platform === "ios"
+                            ? {}
+                            : { access_type: "offline" }),
+                    },
                 },
                 apple: {
                     scopes: "email name",
