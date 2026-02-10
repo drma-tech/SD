@@ -39,7 +39,7 @@ async function ensureAuthReady() {
     return window.firebase;
 }
 
-async function initFirebaseAuth() {
+async function initAuth() {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     await setPersistence(auth, browserLocalPersistence);
@@ -49,7 +49,7 @@ async function initFirebaseAuth() {
 }
 
 if (!isBot && !isPrintScreen) {
-    await initFirebaseAuth();
+    await initAuth();
 } else {
     authReadyResolve();
 }

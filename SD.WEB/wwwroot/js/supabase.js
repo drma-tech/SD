@@ -2,45 +2,54 @@
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-import { supabaseConfig } from "./main.js";
+import { isBot, isPrintScreen, supabaseConfig } from "./main.js";
 import { storage, notification, interop } from "./utils.js";
 
-let serviceRoleKey = null;
+async function initAuth() {
+    let serviceRoleKey = null;
 
-const supabase = createClient(
-    supabaseConfig.projectUrl,
-    serviceRoleKey ?? supabaseConfig.supabaseKey,
-    {
-        auth: {
-            persistSession: true,
-            autoRefreshToken: true,
-            detectSessionInUrl: true,
-        },
-    }
-);
-
-window.supabase = supabase;
-
-supabase.auth.onAuthStateChange((event, session) => {
-    const authProvider = storage.getLocalStorage("auth");
-    if (authProvider !== "supabase") return;
-
-    const token = session?.access_token ?? null;
-    let user = session?.user;
-
-    if (user && window.Userback?.identify) {
-        try {
-            window.Userback.identify(user.id, {
-                name: user.user_metadata.full_name,
-                email: user.email,
-            });
-        } catch {
-            //ignores
+    const supabase = createClient(
+        supabaseConfig.projectUrl,
+        serviceRoleKey ?? supabaseConfig.supabaseKey,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true,
+            },
         }
-    }
+    );
 
-    interop.invokeDotNetWhenReady("SD.WEB", "SupabaseAuthChanged", token);
-});
+    window.supabase = supabase;
+    setupAuthListener();
+}
+
+if (!isBot && !isPrintScreen) {
+    await initAuth();
+}
+
+function setupAuthListener() {
+    window.supabase.auth.onAuthStateChange((event, session) => {
+        const authProvider = storage.getLocalStorage("auth");
+        if (authProvider !== "supabase") return;
+
+        const token = session?.access_token ?? null;
+        let user = session?.user;
+
+        if (user && window.Userback?.identify) {
+            try {
+                window.Userback.identify(user.id, {
+                    name: user.user_metadata.full_name,
+                    email: user.email,
+                });
+            } catch {
+                //ignores
+            }
+        }
+
+        interop.invokeDotNetWhenReady("SD.WEB", "SupabaseAuthChanged", token);
+    });
+}
 
 export const authentication = {
     async createUser(id, email, name) {
@@ -88,13 +97,13 @@ export const authentication = {
             ...providerOverrides[providerName],
         };
 
-        supabase.auth.signInWithOAuth({
+        window.supabase.auth.signInWithOAuth({
             provider: providerName,
             options: providerOptions,
         });
     },
     async sendEmail(email) {
-        const { error } = await supabase.auth.signInWithOtp({
+        const { error } = await window.supabase.auth.signInWithOtp({
             email: email,
         });
 
@@ -104,7 +113,7 @@ export const authentication = {
         }
     },
     async confirmCode(email, code) {
-        const { error } = await supabase.auth.verifyOtp({
+        const { error } = await window.supabase.auth.verifyOtp({
             email: email,
             token: code,
             type: "email",
@@ -117,7 +126,7 @@ export const authentication = {
     },
     async signOut() {
         try {
-            await supabase.auth.signOut();
+            await window.supabase.auth.signOut();
         } catch (error) {
             notification.sendLog(error);
             throw new Error(error.message);
@@ -125,7 +134,7 @@ export const authentication = {
     },
     async getUser() {
         try {
-            const { data, error } = await supabase.auth.getSession();
+            const { data, error } = await window.supabase.auth.getSession();
             let user = data?.session?.user;
 
             if (!user) return null;
