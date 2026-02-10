@@ -29,7 +29,7 @@
                 </MudTabPanel>
                 <MudTabPanel Text="supabase (beta)">
                     <MudStack Spacing="@Css.SpaceSmall">
-                        <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font">
+                        <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Disabled="@(Platform == SD.Shared.Enums.Platform.ios)">
                             Continue with Google
                         </MudButton>
                         <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font">
@@ -82,6 +82,13 @@
     private async Task LoginWithX() => await SignIn("x");
     private async Task LoginWithYahoo() => await SignIn("yahoo");
     private async Task LoginWithEmail(string? email) => await SignIn("email", email);
+
+    private SD.Shared.Enums.Platform? Platform { get; set; }
+
+    protected override async Task LoadNonEssentialDataAsync()
+    {
+        Platform = await AppStateStatic.GetPlatform(JsRuntime);
+    }
 
     private async Task SignIn(string? provider = null, string? email = null)
     {
