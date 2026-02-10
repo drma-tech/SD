@@ -5,7 +5,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 import { isBot, isPrintScreen, supabaseConfig } from "./main.js";
 import { storage, notification, interop } from "./utils.js";
 
-async function initAuth() {
+function initAuth() {
     let serviceRoleKey = null;
 
     const supabase = createClient(
@@ -25,7 +25,7 @@ async function initAuth() {
 }
 
 if (!isBot && !isPrintScreen) {
-    await initAuth();
+    initAuth();
 }
 
 function setupAuthListener() {
