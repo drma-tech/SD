@@ -40,6 +40,11 @@ namespace SD.WEB.Core.Auth
                     {
                         claims.Add(new Claim("idp", "email"));
                     }
+
+                    if (doc.RootElement.TryGetProperty("full_name", out var name))
+                    {
+                        claims.Add(new Claim("name", name.GetString() ?? ""));
+                    }
                 }
 
                 var userId = claims.Single(c => c.Type == "sub").Value;

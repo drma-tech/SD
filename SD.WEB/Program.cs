@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
-using MudBlazor;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
@@ -62,9 +61,10 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(60); })
        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
-    collection.AddScoped<AuthenticationStateProvider, FirebaseAuthStateProvider>();
-    collection.AddScoped<AuthenticationStateProvider, SupabaseAuthStateProvider>();
-    
+    collection.AddScoped<AuthenticationStateProvider, CompositeAuthStateProvider>();
+    collection.AddScoped<FirebaseAuthStateProvider>();
+    collection.AddScoped<SupabaseAuthStateProvider>();
+
     collection.AddScoped<CustomAuthorizationHandler>();
     collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(60); })
         .AddHttpMessageHandler<CustomAuthorizationHandler>()

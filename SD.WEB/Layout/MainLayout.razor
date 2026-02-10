@@ -65,14 +65,14 @@
             // 1 = capture the claims
             AppStateStatic.FirebaseAuthChanged += (string? token) =>
             {
-                var provider = (FirebaseAuthStateProvider)AuthStateProvider;
-                provider.NotifyAuthenticationStateChanged(token);
+                var provider = (CompositeAuthStateProvider)AuthStateProvider;
+                provider.OnFirebaseAuthChanged(token);
             };
 
             AppStateStatic.SupabaseAuthChanged += (string? token) =>
             {
-                var provider = (SupabaseAuthStateProvider)AuthStateProvider;
-                provider.NotifyAuthenticationStateChanged(token);
+                var provider = (CompositeAuthStateProvider)AuthStateProvider;
+                provider.OnSupabaseAuthChanged(token);
             };
 
             // 2 = transform claims into useful data
