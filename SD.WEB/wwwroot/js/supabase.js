@@ -5,6 +5,21 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 import { isBot, isPrintScreen, supabaseConfig } from "./main.js";
 import { storage, notification, interop } from "./utils.js";
 
+let authReadyResolve;
+const authReadyPromise = new Promise((resolve) => {
+    authReadyResolve = resolve;
+});
+
+async function ensureAuthReady() {
+    await authReadyPromise;
+
+    if (!window.supabase) {
+        throw new Error("Auth initialization failed");
+    }
+
+    return window.supabase;
+}
+
 function initAuth() {
     let serviceRoleKey = null;
 
@@ -21,15 +36,18 @@ function initAuth() {
     );
 
     window.supabase = supabase;
-    setupAuthListener();
+    setupAuthListener(supabase);
+    authReadyResolve(); // any call to ensureAuthReady will now proceed
 }
 
 if (!isBot && !isPrintScreen) {
     initAuth();
+} else {
+    authReadyResolve();
 }
 
-function setupAuthListener() {
-    window.supabase.auth.onAuthStateChange((event, session) => {
+function setupAuthListener(supabase) {
+    supabase.auth.onAuthStateChange((event, session) => {
         const authProvider = storage.getLocalStorage("auth");
         if (authProvider !== "supabase") return;
 
@@ -98,7 +116,9 @@ export const authentication = {
                 ...providerOverrides[providerName],
             };
 
-            window.supabase.auth.signInWithOAuth({
+            const supabase = await ensureAuthReady();
+
+            supabase.auth.signInWithOAuth({
                 provider: providerName,
                 options: providerOptions,
             });
