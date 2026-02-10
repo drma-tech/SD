@@ -69,38 +69,43 @@ export const authentication = {
         }
     },
     async signIn(providerName) {
-        const redirectTo = window.location.origin;
+        try {
+            const redirectTo = window.location.origin;
 
-        const baseOptions = {
-            redirectTo,
-            scopes: "openid email",
-        };
+            const baseOptions = {
+                redirectTo,
+                scopes: "openid email",
+            };
 
-        const providerOverrides = {
-            google: {
-                scopes: "openid email profile",
-                queryParams: {
-                    access_type: "offline",
-                    prompt: "consent",
+            const providerOverrides = {
+                google: {
+                    scopes: "openid email profile",
+                    queryParams: {
+                        access_type: "offline",
+                        prompt: "consent",
+                    },
                 },
-            },
-            apple: {
-                scopes: "email name",
-            },
-            azure: {
-                scopes: "openid email offline_access",
-            },
-        };
+                apple: {
+                    scopes: "email name",
+                },
+                azure: {
+                    scopes: "openid email offline_access",
+                },
+            };
 
-        const providerOptions = {
-            ...baseOptions,
-            ...providerOverrides[providerName],
-        };
+            const providerOptions = {
+                ...baseOptions,
+                ...providerOverrides[providerName],
+            };
 
-        window.supabase.auth.signInWithOAuth({
-            provider: providerName,
-            options: providerOptions,
-        });
+            window.supabase.auth.signInWithOAuth({
+                provider: providerName,
+                options: providerOptions,
+            });
+        } catch (error) {
+            notification.sendLog(error);
+            throw new Error(error.message);
+        }
     },
     async sendEmail(email) {
         const { error } = await window.supabase.auth.signInWithOtp({
