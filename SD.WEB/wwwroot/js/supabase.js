@@ -42,7 +42,18 @@ function initAuth() {
 }
 
 if (!isBot && !isPrintScreen) {
-    initAuth();
+    setTimeout(() => {
+        try {
+            initAuth();
+        } catch (err) {
+            try {
+                notification.sendLog(err);
+            } catch {
+                // ignore
+            }
+            authReadyResolve();
+        }
+    }, 0);
 } else {
     authReadyResolve();
 }
