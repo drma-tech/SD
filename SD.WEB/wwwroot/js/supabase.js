@@ -60,7 +60,10 @@ export const authentication = {
         }
     },
     async signIn(providerName) {
+        const redirectTo = window.location.origin;
+
         const baseOptions = {
+            redirectTo,
             scopes: "openid email",
         };
 
@@ -80,9 +83,14 @@ export const authentication = {
             },
         };
 
+        const providerOptions = {
+            ...baseOptions,
+            ...providerOverrides[providerName],
+        };
+
         supabase.auth.signInWithOAuth({
             provider: providerName,
-            options: providerOverrides[providerName] ?? baseOptions,
+            options: providerOptions,
         });
     },
     async sendEmail(email) {
