@@ -37,7 +37,10 @@ function initAuth() {
 
     window.supabase = supabase;
     setupAuthListener(supabase);
-    authReadyResolve(); // any call to ensureAuthReady will now proceed
+
+    setTimeout(() => {
+        authReadyResolve(); // any call to ensureAuthReady will now proceed
+    }, 0);
 }
 
 if (!isBot && !isPrintScreen) {
@@ -65,13 +68,17 @@ function setupAuthListener(supabase) {
             }
         }
 
-        interop.invokeDotNetWhenReady("SD.WEB", "SupabaseAuthChanged", token);
+        setTimeout(() => {
+            interop.invokeDotNetWhenReady("SD.WEB", "SupabaseAuthChanged", token);
+        }, 0);
     });
 }
 
 export const authentication = {
     async createUser(id, email, name) {
-        const { data, error } = await supabase.auth.admin.createUser({
+        const supabase = await ensureAuthReady();
+
+        const { error } = await supabase.auth.admin.createUser({
             id: id,
             email: email,
             //password: password,
