@@ -38,9 +38,7 @@ function initAuth() {
     window.supabase = supabase;
     setupAuthListener(supabase);
 
-    setTimeout(() => {
-        authReadyResolve(); // any call to ensureAuthReady will now proceed
-    }, 0);
+    authReadyResolve(); // any call to ensureAuthReady will now proceed
 }
 
 if (!isBot && !isPrintScreen) {
@@ -50,11 +48,10 @@ if (!isBot && !isPrintScreen) {
 }
 
 function setupAuthListener(supabase) {
-    supabase.auth.onAuthStateChange((event, session) => {
+    supabase.auth.onAuthStateChange(async (event, session) => {
         const authProvider = storage.getLocalStorage("auth");
         if (authProvider !== "supabase") return;
 
-        const token = session?.access_token ?? null;
         let user = session?.user;
 
         if (user && window.Userback?.identify) {
@@ -68,9 +65,8 @@ function setupAuthListener(supabase) {
             }
         }
 
-        setTimeout(() => {
-            interop.invokeDotNetWhenReady("SD.WEB", "SupabaseAuthChanged", token);
-        }, 0);
+        const token = session?.access_token ?? null;
+        await interop.invokeDotNetWhenReady("SD.WEB", "SupabaseAuthChanged", token);
     });
 }
 

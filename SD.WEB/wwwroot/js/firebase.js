@@ -57,10 +57,10 @@ if (!isBot && !isPrintScreen) {
 function setupAuthListener(auth) {
     //sign-in or sign-out
     onAuthStateChanged(auth, async (user) => {
-        if (user && window.Userback?.identify) {
-            const authProvider = storage.getLocalStorage("auth");
-            if (authProvider !== "firebase") return;
+        const authProvider = storage.getLocalStorage("auth");
+        if (authProvider !== "firebase") return;
 
+        if (user && window.Userback?.identify) {
             try {
                 window.Userback.identify(user.uid, {
                     name: user.displayName,
