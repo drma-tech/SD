@@ -49,7 +49,7 @@ async function initAuth() {
 }
 
 if (!isBot && !isPrintScreen) {
-    initAuth();
+    await initAuth();
 } else {
     authReadyResolve();
 }

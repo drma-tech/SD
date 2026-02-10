@@ -15,7 +15,15 @@ export const isLocalhost = location.host.includes("localhost");
 export const isDev = location.hostname.includes("dev.");
 export const isWebview = /webtonative/i.test(navigator.userAgent);
 export const isPrintScreen = location.href.includes("printscreen");
-export const appVersion = "2026.02.10";
+export let appVersion = "loading";
+
+fetch("/build-date.txt")
+    .then((r) => r.text())
+    .then((text) => {
+        appVersion = text.trim();
+    }).catch(() => {
+        appVersion = "version-error";
+    });
 
 export const servicesConfig = {
     AnalyticsCode: "G-4PREF5QX1F",
