@@ -29,6 +29,9 @@
                 </MudTabPanel>
                 <MudTabPanel Text="supabase (beta)">
                     <MudStack Spacing="@Css.SpaceSmall">
+                        <MudAlert Variant="Variant.Outlined" Severity="Severity.Warning" Dense="true">
+                            Currently in the testing phase, please do not use.
+                        </MudAlert>
                         <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Disabled="@(Platform == SD.Shared.Enums.Platform.ios)">
                             Continue with Google
                         </MudButton>
