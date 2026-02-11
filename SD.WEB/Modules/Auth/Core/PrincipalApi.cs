@@ -47,3 +47,23 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
         public static string Event(string app, string msg) => $"principal/event?app={app}&msg={msg}";
     }
 }
+
+public class PrincipalImportApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>(factory, ApiType.Anonymous, "principal_import")
+{
+    public async Task<HashSet<AuthPrincipal>> GetAll()
+    {
+        return await GetListAsync(Endpoint.GetAll);
+    }
+
+    public async Task Migrate(string? oldId, string? newId)
+    {
+        await PutAsync<AuthPrincipal>(Endpoint.Migrate(oldId, newId), null);
+    }
+
+    private struct Endpoint
+    {
+        public const string GetAll = "principal/get-all";
+
+        public static string Migrate(string? oldId, string? newId) => $"principal/migrate/{oldId}/{newId}";
+    }
+}

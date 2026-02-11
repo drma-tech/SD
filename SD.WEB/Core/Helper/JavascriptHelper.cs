@@ -175,7 +175,7 @@ namespace SD.WEB.Core.Helper
 
     public class SupabaseJs(IJSRuntime js) : JsModuleBase(js, "./js/supabase.js")
     {
-        public Task CreateUserAsync(string id, string email, string name) => InvokeVoid("authentication.createUser", id, email, name);
+        public Task<string> CreateUserAsync(string? id, string? email, string? name) => Invoke<string>("authentication.createUser", id, email, name);
 
         public async Task SignInAsync(string providerName)
         {

@@ -85,7 +85,7 @@ export const authentication = {
     async createUser(id, email, name) {
         const supabase = await ensureAuthReady();
 
-        const { error } = await supabase.auth.admin.createUser({
+        const { data, error } = await supabase.auth.admin.createUser({
             id: id,
             email: email,
             //password: password,
@@ -96,8 +96,9 @@ export const authentication = {
         });
 
         if (error) {
-            notification.sendLog(error);
-            notification.showError(error.message);
+             throw new Error(error.message);
+        } else {
+            return data.user.id;
         }
     },
     async signIn(providerName) {

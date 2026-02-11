@@ -1,0 +1,45 @@
+﻿@page "/admin"
+
+@using SD.WEB.Modules.Auth.Core
+
+@inherits PageCore<AdminPage>
+@inject PrincipalImportApi PrincipalImportApi
+
+<h3>AdminPage</h3>
+
+<MudButton OnClick="ImportHandle">Import Users</MudButton>
+
+@code {
+    private async Task ImportHandle()
+    {
+        try
+        {
+            var list = await PrincipalImportApi.GetAll();
+
+            foreach (var item in list)
+            {
+                try
+                {
+                    await JsRuntime.Supabase().CreateUserAsync(item.UserId, item.Email, item.DisplayName);
+                }
+                catch (Exception ex)
+                {
+                    if (ex.Message.Contains("uuid v4 format"))
+                    {
+                        var newid = await JsRuntime.Supabase().CreateUserAsync(null, item.Email, item.DisplayName);
+
+                        await PrincipalImportApi.Migrate(item.UserId, newid);
+                    }
+                    else
+                    {
+                        await ProcessException(ex);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+}

@@ -76,6 +76,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddAuthorizationCore();
 
     collection.AddScoped<PrincipalApi>();
+    collection.AddScoped<PrincipalImportApi>();
     collection.AddScoped<LoginApi>();
     collection.AddScoped<WatchedListApi>();
     collection.AddScoped<WishListApi>();
