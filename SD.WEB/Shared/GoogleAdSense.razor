@@ -17,10 +17,8 @@
     [Parameter][SupplyParameterFromQuery(Name = "printscreen")] public bool Printscreen { get; set; } = false;
 
     [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Index;
-    [Parameter] public string? Format { get; set; }
 
     private bool IsMobile => AppStateStatic.BrowserWindowSize?.Width <= 600 || AppStateStatic.BrowserWindowSize?.Height <= 600;
-    private string? AdFormat => Format ?? (IsMobile ? "horizontal" : "auto");
     private bool IsLocalhost => Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("dev");
     private bool ActiveSubscription => Principal?.GetActiveSubscription() != null;
 
@@ -59,7 +57,7 @@
                 {
                     //todo: implement https://www.baiduadvertising.com/
                 }
-                else if (_BlockedCountries.ContainsKey(country))
+                else if (country.Empty() || _BlockedCountries.ContainsKey(country))
                 {
                     //do not show ads
                 }

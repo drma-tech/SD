@@ -10,7 +10,7 @@
 
 <SeoHeader Title="Search" Description="@SeoTranslations.AppDescription" Url="/search" Index="false" Keywords="@([])"></SeoHeader>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Search" Format="horizontal"></GoogleAdSense>
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Search"></GoogleAdSense>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary"
