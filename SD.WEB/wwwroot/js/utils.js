@@ -91,13 +91,14 @@ export const notification = {
             toast.remove();
         }, 10000);
     },
-    sendLog(error) {
+    sendLog(error, method) {
         let log;
+        if (!method) method = "no method";
         if (error instanceof Error) {
             log = {
                 Message: error.message,
                 StackTrace: error.stack,
-                Origin: `instanceof Error - name:${error.name || "unknown"}|url:${location.href}`,
+                Origin: `instanceof Error - name:${error.name || "unknown"}|url:${location.href}|method:${method}`,
                 OperationSystem: environment.getOperatingSystem(),
                 BrowserName: environment.getBrowserName(),
                 BrowserVersion: environment.getBrowserVersion(),
@@ -110,7 +111,7 @@ export const notification = {
         } else if (typeof error === "string") {
             log = {
                 Message: error,
-                Origin: `string - url:${location.href}`,
+                Origin: `string - url:${location.href}|method:${method}`,
                 OperationSystem: environment.getOperatingSystem(),
                 BrowserName: environment.getBrowserName(),
                 BrowserVersion: environment.getBrowserVersion(),

@@ -87,12 +87,12 @@ export const services = {
             ins.setAttribute("data-ad-client", adClient);
             ins.setAttribute("data-ad-slot", adSlot);
             ins.setAttribute("data-ad-format", "auto");
-            //ins.setAttribute('data-full-width-responsive', true); //this forces it to take up half the screen
+            //ins.setAttribute('data-full-width-responsive', true); //this forces it to take up half the screen on mobile
             container.appendChild(ins);
 
             (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (error) {
-            notification.sendLog(error);
+            notification.sendLog(error, "initAdSense");
             notification.showError(error.message);
         }
     },

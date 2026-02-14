@@ -47,7 +47,7 @@ if (!isBot && !isPrintScreen) {
             initAuth();
         } catch (err) {
             try {
-                notification.sendLog(err);
+                notification.sendLog(err, "supabase initAuth");
             } catch {
                 // ignore
             }
@@ -138,7 +138,7 @@ export const authentication = {
                 options: providerOptions,
             });
         } catch (error) {
-            notification.sendLog(error);
+            notification.sendLog(error, "supabase signIn");
             throw new Error(error.message);
         }
     },
@@ -148,7 +148,7 @@ export const authentication = {
         });
 
         if (error) {
-            notification.sendLog(error);
+            notification.sendLog(error, "supabase sendEmail");
             notification.showError(error.message);
         }
     },
@@ -160,7 +160,7 @@ export const authentication = {
         });
 
         if (error) {
-            notification.sendLog(error);
+            notification.sendLog(error, "supabase confirmCode");
             notification.showError(error.message);
         }
     },
@@ -168,7 +168,7 @@ export const authentication = {
         try {
             await window.supabase.auth.signOut();
         } catch (error) {
-            notification.sendLog(error);
+            notification.sendLog(error, "supabase signOut");
             throw new Error(error.message);
         }
     },
@@ -180,7 +180,7 @@ export const authentication = {
             if (!user) return null;
 
             if (error) {
-                notification.sendLog(error);
+                notification.sendLog(error, "supabase getUser");
                 notification.showError(error.message);
                 return null;
             } else {
@@ -191,7 +191,7 @@ export const authentication = {
                 };
             }
         } catch (error) {
-            notification.sendLog(error);
+            notification.sendLog(error, "supabase getUser");
             notification.showError(error.message);
             return null;
         }

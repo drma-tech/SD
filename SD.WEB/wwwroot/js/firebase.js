@@ -81,7 +81,7 @@ function setupAuthListener(auth) {
             const token = user ? await user.getIdToken() : null;
             await interop.invokeDotNetWhenReady("SD.WEB", "FirebaseAuthChanged", token);
         } catch (err) {
-            notification.sendLog(err);
+            notification.sendLog(err, "firebase onIdTokenChanged");
         }
     });
 }
@@ -125,10 +125,12 @@ export const authentication = {
                     retryCount < MAX_RETRIES
                 ) {
                     notification.sendLog(
-                        "Network error detected. Retrying sign in..."
+                        "Network error detected. Retrying sign in...",
+                        "firebase doSignInWithRetry"
                     );
                     notification.showError(
-                        "Network error detected. Retrying sign in..."
+                        "Network error detected. Retrying sign in...",
+                        "firebase doSignInWithRetry"
                     );
 
                     await new Promise((r) =>
@@ -158,7 +160,7 @@ export const authentication = {
                     "Another sign in request is already open."
                 );
             } else {
-                notification.sendLog(error);
+                notification.sendLog(error, "firebase doSignInWithRetry");
                 throw new Error(error.message);
             }
         }
@@ -167,7 +169,7 @@ export const authentication = {
         try {
             await window.firebase.signOut();
         } catch (error) {
-            notification.sendLog(error);
+            notification.sendLog(error, "firebase signOut");
             throw new Error(error.message);
         }
     },
@@ -183,7 +185,7 @@ export const authentication = {
                 email: user.email || null,
             };
         } catch (error) {
-            notification.sendLog(error);
+            notification.sendLog(error, "firebase getUser");
             notification.showError(error.message);
             return null;
         }
