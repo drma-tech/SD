@@ -68,7 +68,7 @@ export const services = {
             (d.head || d.body).appendChild(s);
         })(document);
     },
-    initAdSense(adClient, adSlot, adFormat, containerId) {
+    initAdSense(adClient, adSlot, containerId) {
         if (isBot) return;
         if (isOldBrowser) return;
         if (isLocalhost) return;
@@ -86,7 +86,7 @@ export const services = {
             ins.className = "adsbygoogle " + (isMobile ? "custom-ad-mobile" : "custom-ad");
             ins.setAttribute("data-ad-client", adClient);
             ins.setAttribute("data-ad-slot", adSlot);
-            if (!isMobile) ins.setAttribute("data-ad-format", adFormat); //on mobile, adsense doesnt respect horizontal format
+            //if (!isMobile) ins.setAttribute("data-ad-format", adFormat); //on mobile, adsense doesnt respect horizontal format
             //ins.setAttribute('data-full-width-responsive', true); //this forces it to take up half the screen
             container.appendChild(ins);
 
