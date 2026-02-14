@@ -90,9 +90,7 @@ export const services = {
             //ins.setAttribute('data-full-width-responsive', true); //this forces it to take up half the screen
             container.appendChild(ins);
 
-            setTimeout(() => {
-                (window.adsbygoogle = window.adsbygoogle || []).push({});
-            }, 100);
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (error) {
             notification.sendLog(error);
             notification.showError(error.message);
