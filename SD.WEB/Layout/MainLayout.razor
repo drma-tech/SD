@@ -18,8 +18,6 @@
 @inject NavigationManager Navigation
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
-@inject EnergyApi EnergyApi
-@inject EnergyAuthApi EnergyAuthApi
 @inject LoginApi LoginApi
 
 <MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@_darkMode" />
@@ -127,20 +125,6 @@
     {
         try
         {
-            //energy
-            CacheDocument<EnergyModel>? energy;
-            if (AppStateStatic.IsAuthenticated)
-            {
-                energy = await EnergyAuthApi.GetEnergy();
-            }
-            else
-            {
-                energy = await EnergyApi.GetEnergy();
-            }
-
-            AppStateStatic.ConsumedEnergy = energy?.Data?.ConsumedEnergy ?? 0;
-            AppStateStatic.TotalEnergy = energy?.Data?.TotalEnergy ?? 0;
-
             //register new user or new login (need to be last step on this method)
             if (!AppStateStatic.IsAuthenticated) return;
             if (Navigation.Uri.Contains("/support/")) return;

@@ -169,24 +169,6 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You&apos;ve already used all your available energy. It&apos;s automatically recharged once a week. Upgrade to Premium to get extra energy and keep exploring..
-        /// </summary>
-        public static string EnergyOut {
-            get {
-                return ResourceManager.GetString("EnergyOut", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Accessing a movie or series consumes energy. Subscribers have a higher energy limit to explore more..
-        /// </summary>
-        public static string EnergyTooltip {
-            get {
-                return ResourceManager.GetString("EnergyTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Wait for news....
         /// </summary>
         public static string FeatureUnavailableDescription {

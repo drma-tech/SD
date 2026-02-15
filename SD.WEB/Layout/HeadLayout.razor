@@ -5,9 +5,6 @@
 @inject IDialogService DialogService
 @inject IJSRuntime JsRuntime
 
-@inject EnergyApi EnergyApi
-@inject EnergyAuthApi EnergyAuthApi
-
 @if (_processing)
 {
     <MudProgressLinear Color="Color.Secondary" Indeterminate="true" Style="position: fixed; z-index: 1400;" />
@@ -25,12 +22,6 @@
             @Menu.Platforms
         </MudButton>
         <MudSpacer />
-        <MudTooltip Text="@GlobalTranslations.EnergyTooltip">
-            <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2" Style="padding: 6px; min-width: auto;">
-                <MudIcon Icon="@_energyIcon" Color="GetEnergyColor()"></MudIcon>
-                <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
-            </MudButton>
-        </MudTooltip>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { _open = true; })" />
     }
     else if (AppStateStatic.Breakpoint == Breakpoint.Sm) //tablet view
@@ -48,12 +39,6 @@
             @Menu.Support
         </MudButton>
         <MudSpacer />
-        <MudTooltip Text="@GlobalTranslations.EnergyTooltip">
-            <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2" Style="padding: 6px; min-width: auto;">
-                <MudIcon Icon="@_energyIcon" Color="GetEnergyColor()"></MudIcon>
-                <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
-            </MudButton>
-        </MudTooltip>
         @if (AppStateStatic.IsAuthenticated)
         {
             <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("gem").Font" Class="me-2" OnClick="@OpenSubscription" />
@@ -93,12 +78,6 @@
             @Menu.Platforms
         </MudButton>
         <MudSpacer />
-        <MudTooltip Text="@GlobalTranslations.EnergyTooltip">
-            <MudButton Color="Color.Primary" Variant="Variant.Filled" Class="me-2" Style="padding: 6px; min-width: auto;">
-                <MudIcon Icon="@_energyIcon" Color="GetEnergyColor()"></MudIcon>
-                <MudText>@(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy)</MudText>
-            </MudButton>
-        </MudTooltip>
         @if (AppStateStatic.IsAuthenticated)
         {
             <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("gem").Font" Class="me-2" OnClick="@OpenSubscription" />
@@ -187,8 +166,6 @@
     private int _processingCount = 0;
     private bool _processing => _processingCount > 0;
 
-    private string _energyIcon = IconsFA.Solid.Icon("bolt").Font;
-
     private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
 
     protected override void OnInitialized()
@@ -196,26 +173,6 @@
         Navigation.LocationChanged += delegate { StateHasChanged(); };
         AppStateStatic.BreakpointChanged += breakpoint => StateHasChanged();
         AppStateStatic.BrowserWindowSizeChanged += size => StateHasChanged();
-
-        AppStateStatic.EnergyConsumed += () =>
-        {
-            AppStateStatic.ConsumedEnergy++;
-
-            _energyIcon = IconsFA.Solid.Icon("bolt").WithAnimation(IconAnimation.Bounce).Font;
-
-            Task.Delay(1000).ContinueWith(_ =>
-            {
-                _energyIcon = IconsFA.Solid.Icon("bolt").Font;
-                InvokeAsync(StateHasChanged);
-            });
-
-            StateHasChanged();
-
-            if (AppStateStatic.IsAuthenticated)
-                InvokeAsync(EnergyAuthApi.AddEnergy);
-            else
-                InvokeAsync(EnergyApi.AddEnergy);
-        };
 
         AppStateStatic.ProcessingStarted += () =>
         {
@@ -289,18 +246,6 @@
         var uri = new Uri(Navigation.Uri);
 
         return string.Equals(uri.AbsolutePath, endpoint, StringComparison.OrdinalIgnoreCase);
-    }
-
-    private Color GetEnergyColor()
-    {
-        double ratio = (double)(AppStateStatic.TotalEnergy - AppStateStatic.ConsumedEnergy) / AppStateStatic.TotalEnergy;
-
-        if (ratio <= 0.3)
-            return Color.Error;
-        else if (ratio <= 0.6)
-            return Color.Warning;
-        else
-            return Color.Success;
     }
 
     private async Task OpenSubscription()

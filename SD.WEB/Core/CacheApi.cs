@@ -8,11 +8,6 @@ namespace SD.WEB.Core;
 
 public struct Endpoint
 {
-    public const string Energy = "public/cache/energy";
-    public const string EnergyAuth = "cache/energy";
-    public const string EnergyAdd = "public/cache/energy/add";
-    public const string EnergyAuthAdd = "cache/energy/add";
-
     public static string News(string mode, string category)
     {
         return $"public/cache/news?mode={mode}&category={category}";
@@ -41,32 +36,6 @@ public struct Endpoint
     public static string GetShowReviews(string? id, string? title, DateTime? date)
     {
         return $"public/cache/reviews/shows?id={id}&title={title}&release_date={date?.ToString("yyyy-MM-dd")}";
-    }
-}
-
-public class EnergyApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<EnergyModel>>(http, ApiType.Anonymous, "energy")
-{
-    public async Task<CacheDocument<EnergyModel>?> GetEnergy()
-    {
-        return await GetAsync(Endpoint.Energy, true);
-    }
-
-    public async Task AddEnergy()
-    {
-        await PostAsync(Endpoint.EnergyAdd, null);
-    }
-}
-
-public class EnergyAuthApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<EnergyModel>>(http, ApiType.Authenticated, "energy-auth")
-{
-    public async Task<CacheDocument<EnergyModel>?> GetEnergy()
-    {
-        return await GetAsync(Endpoint.EnergyAuth, true);
-    }
-
-    public async Task AddEnergy()
-    {
-        await PostAsync(Endpoint.EnergyAuthAdd, null);
     }
 }
 

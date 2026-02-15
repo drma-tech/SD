@@ -68,14 +68,6 @@
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media"></GoogleAdSense>
 
 <NewRenderControl Actions="Actions" Instance="Media" ExpressionEmpty="@((MediaDetail? obj) => obj == null)" LoadingHeight="400px">
-    <CustomContent>
-        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("circle-exclamation").Font" Class="@Css.Build().Small("mb")" Style="text-align: justify;">
-            @GlobalTranslations.EnergyOut
-        </MudAlert>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("bolt").Font" OnClick="@OpenSubscription">
-            Get more energy
-        </MudButton>
-    </CustomContent>
     <ChildContent>
         <NewPageSection Title="@Translations.TabAbout" Color="Color.Secondary">
             <BodyFragment>
@@ -276,12 +268,6 @@
         Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
         Media.Videos.Reverse();
 
-        if (AppStateStatic.ConsumedEnergy > AppStateStatic.TotalEnergy)
-        {
-            Actions.ShowCustomContent?.Invoke();
-            return;
-        }
-
         Actions.FinishLoading?.Invoke(Media);
 
         EnglishTitle = Media?.original_title;
@@ -313,23 +299,6 @@
         RecommendationsActions.StartProcessing?.Invoke(null);
         Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId);
         RecommendationsActions.FinishLoading?.Invoke(Recommendations);
-
-        await RegisterEnergy(TmdbId);
-    }
-
-    private async Task RegisterEnergy(string? tmdbId)
-    {
-        if (tmdbId.Empty()) return;
-
-        var accesses = await JsRuntime.Utils().GetStorage<HashSet<string>>("media-accesses", UtilsJs.BrowserStorageType.Session) ?? new HashSet<string>();
-
-        if (!accesses.Contains(tmdbId))
-        {
-            AppStateStatic.EnergyConsumed?.Invoke();
-        }
-
-        accesses.Add(tmdbId);
-        await JsRuntime.Utils().SetStorage("media-accesses", accesses, UtilsJs.BrowserStorageType.Session);
     }
 
     protected override async Task LoadAuthDataAsync()
@@ -357,11 +326,6 @@
     private async Task OpenPopupSeason(Collection? collection)
     {
         await DialogService.SeasonPopup(Media?.title, collection?.title, TmdbId, collection?.SeasonNumber);
-    }
-
-    private async Task OpenSubscription()
-    {
-        await DialogService.SubscriptionPopup();
     }
 
     private async Task Add()

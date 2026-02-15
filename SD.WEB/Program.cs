@@ -106,8 +106,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddScoped<IpInfoApi>();
     collection.AddScoped<IpInfoServerApi>();
     collection.AddScoped<LoggerApi>();
-    collection.AddScoped<EnergyApi>();
-    collection.AddScoped<EnergyAuthApi>();
 }
 
 static async Task ConfigureCulture(WebAssemblyHost? app, IJSRuntime js)

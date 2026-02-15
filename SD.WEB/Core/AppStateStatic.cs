@@ -382,8 +382,4 @@ public static class AppStateStatic
     public static Action<string>? ShowError { get; set; }
     public static Action? ProcessingStarted { get; set; }
     public static Action? ProcessingFinished { get; set; }
-
-    public static int TotalEnergy { get; set; } = 10;
-    public static int ConsumedEnergy { get; set; } = 0;
-    public static Action? EnergyConsumed { get; set; }
 }

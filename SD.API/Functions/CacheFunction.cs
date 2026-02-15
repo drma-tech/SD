@@ -20,6 +20,8 @@ namespace SD.API.Functions;
 
 public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository repo, IDistributedCache distributedCache, IHttpClientFactory factory)
 {
+    //todo: remove energy on 03-15
+
     [Function("Energy")]
     public async Task<HttpResponseData?> Energy(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/energy")] HttpRequestData req, CancellationToken cancellationToken)
