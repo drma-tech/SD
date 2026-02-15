@@ -134,17 +134,17 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
         await JsRuntime.Utils().Vibrate([200, 100, 200]);
     }
 
-    protected async Task ProcessException(Exception ex)
+    protected async Task ProcessException(Exception ex, bool showMessage = true)
     {
         if (ex is NotificationException exc)
         {
             Logger.LogWarning(exc.Message);
-            await ShowWarning(exc.Message);
+            if (showMessage) await ShowWarning(exc.Message);
         }
         else
         {
             Logger.LogError(ex, ex.Message);
-            await ShowError(ex.Message);
+            if (showMessage) await ShowError(ex.Message);
         }
     }
 
