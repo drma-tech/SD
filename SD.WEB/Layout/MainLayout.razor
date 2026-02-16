@@ -61,6 +61,7 @@
             AppStateStatic.ShowError += msg => { Snackbar.Add(msg, Severity.Error); };
             AppStateStatic.BreakpointChanged += breakpoint => StateHasChanged();
             AppStateStatic.BrowserWindowSizeChanged += size => StateHasChanged();
+            PrincipalApi.DataChanged += principal => { Principal = principal; StateHasChanged(); };
 
             // 1 = capture the claims
             AppStateStatic.FirebaseAuthChanged = (string? token) =>

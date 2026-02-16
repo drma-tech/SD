@@ -131,14 +131,14 @@
     {
         var auth = await JsRuntime.Utils().GetStorage<AuthProvider>("auth");
 
-        await JsRuntime.Utils().ClearAllStorage();
-
         if (auth == AuthProvider.Firebase)
             await JsRuntime.Firebase().SignOutAsync();
         else
             await JsRuntime.Supabase().SignOutAsync();
 
         Navigation.NavigateTo("/");
+
+        await JsRuntime.Utils().ClearAllStorage();
     }
 
 }
