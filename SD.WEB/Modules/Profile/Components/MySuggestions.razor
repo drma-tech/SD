@@ -101,6 +101,8 @@
 </NewPageSection>
 
 @code {
+    [CascadingParameter] public AuthPrincipal? Client { get; set; }
+
     private MyProviders? MyProviders { get; set; }
     private SD.Shared.Models.MySuggestions? mySuggestions { get; set; }
     public MediaType SearchType { get; set; } = MediaType.movie;
@@ -113,21 +115,11 @@
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
     private ComponentActions<SD.Shared.Models.MySuggestions?> Actions { get; set; } = new();
-    public AuthPrincipal? Client { get; set; }
+
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
     private readonly string _swiperId2 = $"swiper-{Guid.NewGuid()}";
 
     private bool GenresChanged => (mySuggestions?.MovieGenres.Any() ?? false) || (mySuggestions?.TvGenres.Any() ?? false);
-
-    protected override void OnInitialized()
-    {
-        PrincipalApi.DataChanged += async model =>
-        {
-            Client = model;
-            await LoadAuthDataAsync();
-            StateHasChanged();
-        };
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -156,8 +148,7 @@
         }
         else
         {
-            Client ??= await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
-            mySuggestions = await MySuggestionsApi.Get(Client?.GetActiveSubscription()?.ActiveProduct, AppStateStatic.IsAuthenticated);
+            mySuggestions = await MySuggestionsApi.Get(AppStateStatic.ActiveProduct, AppStateStatic.IsAuthenticated);
 
             if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
             {

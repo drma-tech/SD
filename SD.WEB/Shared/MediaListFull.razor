@@ -81,10 +81,10 @@
         // AppState.WishListChanged += StateHasChanged;
         // AppState.WatchedListChanged += StateHasChanged;
 
-        if (DetectRegions) AppStateStatic.RegionChanged += async (Region) => await LoadEssentialDataAsync();
+        if (DetectRegions) AppStateStatic.RegionChanged += async (Region) => await ProcessInitialData();
     }
 
-    protected override async Task LoadEssentialDataAsync()
+    protected override async Task ProcessInitialData()
     {
         Actions.StartLoading?.Invoke(null);
         await LoadItems();
@@ -189,7 +189,7 @@
             }
             else
             {
-                Navigation.NavigateTo($"/media/{media?.MediaType.ToString().ToLower()}/{tmdbId}");
+                Navigation.NavigateTo($"/media/{media?.MediaType.ToString().ToLower()}/{tmdbId}", true);
             }
         }
     }

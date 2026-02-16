@@ -1,6 +1,4 @@
-﻿using SD.Shared.Models.Auth;
-
-namespace SD.WEB.Modules.Profile.Core;
+﻿namespace SD.WEB.Modules.Profile.Core;
 
 public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(factory, ApiType.Authenticated, "wishlist")
 {
@@ -11,11 +9,11 @@ public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(facto
         return new WishList();
     }
 
-    public async Task<WishList?> Add(MediaType? mediaType, WishList? obj, WishListItem item, AuthSubscription? subs)
+    public async Task<WishList?> Add(MediaType? mediaType, WishList? obj, WishListItem item, AccountProduct? product)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(item);
-        SubscriptionHelper.ValidateWishList(subs?.ActiveProduct, (obj?.Items(mediaType).Count ?? 0) + 1);
+        SubscriptionHelper.ValidateWishList(product, (obj?.Items(mediaType).Count ?? 0) + 1);
 
         return await PostAsync(Endpoint.Add(mediaType), item);
     }

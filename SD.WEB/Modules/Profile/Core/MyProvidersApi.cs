@@ -1,6 +1,4 @@
-﻿using SD.Shared.Models.Auth;
-
-namespace SD.WEB.Modules.Profile.Core;
+﻿namespace SD.WEB.Modules.Profile.Core;
 
 public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>(factory, ApiType.Authenticated, "my-providers")
 {
@@ -11,18 +9,18 @@ public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>
         return new MyProviders();
     }
 
-    public async Task<MyProviders?> Add(MyProviders? obj, MyProvidersItem? item, AuthSubscription? paddle)
+    public async Task<MyProviders?> Add(MyProviders? obj, MyProvidersItem? item, AccountProduct? product)
     {
         ArgumentNullException.ThrowIfNull(item);
-        SubscriptionHelper.ValidateFavoriteProviders(paddle?.ActiveProduct, (obj?.Items.Count ?? 0) + 1);
+        SubscriptionHelper.ValidateFavoriteProviders(product, (obj?.Items.Count ?? 0) + 1);
 
         return await PostAsync(Endpoint.MyProvidersAdd, item);
     }
 
-    public async Task<MyProviders?> Update(MyProviders? obj, AuthSubscription? paddle, bool validatePlan = true)
+    public async Task<MyProviders?> Update(MyProviders? obj, AccountProduct? product, bool validatePlan = true)
     {
         ArgumentNullException.ThrowIfNull(obj);
-        if (validatePlan) SubscriptionHelper.ValidateFavoriteProviders(paddle?.ActiveProduct, obj.Items.Count + 1);
+        if (validatePlan) SubscriptionHelper.ValidateFavoriteProviders(product, obj.Items.Count + 1);
 
         return await PostAsync(Endpoint.MyProvidersUpdate, obj);
     }

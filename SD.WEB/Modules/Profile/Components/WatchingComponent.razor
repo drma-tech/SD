@@ -207,7 +207,6 @@
         try
         {
             var watching = await WatchingApi.Get(AppStateStatic.IsAuthenticated); //get a new one (memory may be compromised/corrupted)
-            var client = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
 
             if (type == MediaType.movie)
             {

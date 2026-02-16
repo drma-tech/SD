@@ -39,7 +39,7 @@
     public CacheDocument<ReviewModel>? Model { get; set; }
     private ComponentActions<ReviewModel?> Actions { get; set; } = new();
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task ProcessComponentData()
     {
         Actions.StartLoading?.Invoke(null);
 

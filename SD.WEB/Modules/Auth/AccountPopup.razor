@@ -5,6 +5,7 @@
 
 @inherits ComponentCore<AccountPopup>
 
+@inject PrincipalApi PrincipalApi
 @inject LoginApi LoginApi
 @inject MyProvidersApi MyProvidersApi
 @inject MySuggestionsApi MySuggestionsApi
@@ -70,7 +71,7 @@
 
     private AuthPrincipal? Principal { get; set; }
 
-    protected override async Task LoadAuthDataAsync()
+    protected override async Task ProcessPopupData()
     {
         Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated, true);
     }

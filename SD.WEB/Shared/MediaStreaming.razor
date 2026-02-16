@@ -288,12 +288,12 @@
 
     public Region Region { get; set; } = Region.US;
 
-    protected override async Task LoadEssentialDataAsync()
+    protected override async Task ProcessInitialData()
     {
         AllProviders = await AllProvidersApi.GetAll();
     }
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task ProcessComponentData()
     {
         Actions.StartLoading?.Invoke(null);
         Providers = await TmdbApi.GetWatchProvidersList(TmdbId, Type);

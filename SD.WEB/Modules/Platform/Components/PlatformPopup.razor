@@ -87,7 +87,7 @@
         };
     }
 
-    protected override async Task LoadAuthDataAsync()
+    protected override async Task ProcessPopupData()
     {
         MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
     }
@@ -108,8 +108,7 @@
             MyProviders ??= new MyProviders();
 
             var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = await AppStateStatic.GetRegion() };
-            var client = await PrincipalApi.Get(true);
-            MyProviders = await MyProvidersApi.Add(MyProviders, item, client?.GetActiveSubscription());
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct);
 
             await ShowSuccess(GlobalTranslations.OperationCompleted);
         }

@@ -100,7 +100,7 @@
     public ComponentActions<Credits?> Actions { get; set; } = new();
     private Credits? Credits { get; set; }
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task ProcessComponentData()
     {
         Actions.StartLoading?.Invoke(null);
         Credits = await TmdbCreditApi.GetList(Type, TmdbId);

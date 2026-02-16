@@ -88,7 +88,7 @@
 
     private SD.Shared.Enums.Platform? Platform { get; set; }
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task ProcessPopupData()
     {
         Platform = await AppStateStatic.GetPlatform(JsRuntime);
     }

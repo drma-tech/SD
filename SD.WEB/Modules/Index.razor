@@ -67,34 +67,33 @@
 @code {
     [Parameter][SupplyParameterFromQuery(Name = "language")] public string? Language { get; set; }
 
-    public WatchedList? Watched { get; set; }
-    public WatchingList? Watching { get; set; }
-    public WishList? Wish { get; set; }
+    private WatchedList? Watched { get; set; }
+    private WatchingList? Watching { get; set; }
+    private WishList? Wish { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-        WatchedApi.DataChanged += model =>
-        {
-            Watched = model;
-            StateHasChanged();
-        };
-        WatchingApi.DataChanged += model =>
-        {
-            Watching = model;
-            StateHasChanged();
-        };
-        WishApi.DataChanged += model =>
-        {
-            Wish = model;
-            StateHasChanged();
-        };
+        WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
+        WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
+        WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
     }
 
     protected override async Task LoadAuthDataAsync()
     {
-        (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated), WatchingApi.Get(AppStateStatic.IsAuthenticated), WishApi.Get(AppStateStatic.IsAuthenticated));
+        if (AppStateStatic.IsAuthenticated)
+        {
+            Watched ??= await WatchedApi.Get(true);
+            Watching ??= await WatchingApi.Get(true);
+            Wish ??= await WishApi.Get(true);
+        }
+        else
+        {
+            Watched = null;
+            Watching = null;
+            Wish = null;
+        }
     }
 
     private void KeyPress(KeyboardEventArgs args)

@@ -14,7 +14,7 @@
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary"
-              Variant="Variant.Outlined" OnAdornmentClick="@LoadNonEssentialDataAsync" Class="@Css.Build().Large("mb")" Clearable="true"
+              Variant="Variant.Outlined" OnAdornmentClick="@ProcessPageData" Class="@Css.Build().Large("mb")" Clearable="true"
               HelperText="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio">
 </MudTextField>
 
@@ -35,24 +35,12 @@
 
     protected override void OnInitialized()
     {
-        WatchedApi.DataChanged += model =>
-        {
-            Watched = model;
-            StateHasChanged();
-        };
-        WatchingApi.DataChanged += model =>
-        {
-            Watching = model;
-            StateHasChanged();
-        };
-        WishApi.DataChanged += model =>
-        {
-            Wish = model;
-            StateHasChanged();
-        };
+        WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
+        WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
+        WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
     }
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task ProcessPageData()
     {
         Actions.StartLoading?.Invoke(null);
         Items.Clear();
@@ -63,7 +51,18 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated), WatchingApi.Get(AppStateStatic.IsAuthenticated), WishApi.Get(AppStateStatic.IsAuthenticated));
+        if (AppStateStatic.IsAuthenticated)
+        {
+            Watched ??= await WatchedApi.Get(true);
+            Watching ??= await WatchingApi.Get(true);
+            Wish ??= await WishApi.Get(true);
+        }
+        else
+        {
+            Watched = null;
+            Watching = null;
+            Wish = null;
+        }
     }
 
     private async Task KeyPress(KeyboardEventArgs args)
@@ -72,7 +71,7 @@
 
         if (args.Key == "Enter")
         {
-            await LoadNonEssentialDataAsync();
+            await ProcessPageData();
         }
     }
 

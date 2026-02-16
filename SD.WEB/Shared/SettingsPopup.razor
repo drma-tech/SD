@@ -75,7 +75,7 @@
     public ContentLanguage ContentLanguage { get; set; } = ContentLanguage.enUS;
     public bool DarkMode { get; set; } = false;
 
-    protected override async Task LoadEssentialDataAsync()
+    protected override async Task ProcessInitialData()
     {
         Language = await AppStateStatic.GetAppLanguage(JsRuntime);
         Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);

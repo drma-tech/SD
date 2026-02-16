@@ -113,24 +113,9 @@
     {
         await base.OnInitializedAsync();
 
-        WatchedApi.DataChanged += model =>
-        {
-            Watched = model;
-            // CoreWatched?.LoadingFinished?.Invoke(model);
-            StateHasChanged();
-        };
-        WatchingApi.DataChanged += model =>
-        {
-            Watching = model;
-            WatchingActions?.FinishLoading?.Invoke(model);
-            StateHasChanged();
-        };
-        WishApi.DataChanged += model =>
-        {
-            Wish = model;
-            WishActions?.FinishLoading?.Invoke(model);
-            StateHasChanged();
-        };
+        WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
+        WatchingApi.DataChanged += model => { Watching = model; WatchingActions?.FinishLoading?.Invoke(model); StateHasChanged(); };
+        WishApi.DataChanged += model => { Wish = model; WishActions?.FinishLoading?.Invoke(model); StateHasChanged(); };
     }
 
     // protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -149,7 +134,7 @@
     //     await base.OnAfterRenderAsync(firstRender);
     // }
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task ProcessPageData()
     {
         Reviewed = await JsRuntime.Utils().GetStorage<bool>("reviewed");
     }
@@ -158,7 +143,20 @@
     {
         WatchingActions?.StartLoading?.Invoke(null);
         WishActions?.StartLoading?.Invoke(null);
-        (Watched, Watching, Wish) = await (WatchedApi.Get(AppStateStatic.IsAuthenticated), WatchingApi.Get(AppStateStatic.IsAuthenticated), WishApi.Get(AppStateStatic.IsAuthenticated));
+
+        if (AppStateStatic.IsAuthenticated)
+        {
+            Watched ??= await WatchedApi.Get(true);
+            Watching ??= await WatchingApi.Get(true);
+            Wish ??= await WishApi.Get(true);
+        }
+        else
+        {
+            Watched = null;
+            Watching = null;
+            Wish = null;
+        }
+
         WishActions?.FinishLoading?.Invoke(Wish);
         WatchingActions?.FinishLoading?.Invoke(Watching);
 

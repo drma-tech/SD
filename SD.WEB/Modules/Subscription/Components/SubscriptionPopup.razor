@@ -1,9 +1,11 @@
 ﻿@inherits ComponentCore<SubscriptionPopup>
 
+@using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Modules.Subscription.Resources
 
 @inject PaymentAuthApi PaymentAuthApi
+@inject PrincipalApi PrincipalApi
 @inject IpInfoApi IpInfoApi
 @inject ILogger<SubscriptionPopup> Logger
 
@@ -194,7 +196,7 @@
         AppStateStatic.AppleVerify += async (string receipt) => await AppleVerify(receipt);
     }
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task ProcessPopupData()
     {
         CurrentCountry = await IpInfoApi.GetCountry();
 

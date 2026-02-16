@@ -1,6 +1,4 @@
-﻿using SD.Shared.Models.Auth;
-
-namespace SD.WEB.Modules.Profile.Core;
+﻿namespace SD.WEB.Modules.Profile.Core;
 
 public class WatchedListApi(IHttpClientFactory factory) : ApiCosmos<WatchedList>(factory, ApiType.Authenticated, "watchedlist")
 {
@@ -11,11 +9,11 @@ public class WatchedListApi(IHttpClientFactory factory) : ApiCosmos<WatchedList>
         return new WatchedList();
     }
 
-    public async Task<WatchedList?> Add(MediaType? mediaType, WatchedList? obj, string? tmdbId, AuthSubscription? subs)
+    public async Task<WatchedList?> Add(MediaType? mediaType, WatchedList? obj, string? tmdbId, AccountProduct? product)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(tmdbId);
-        SubscriptionHelper.ValidateWatched(subs?.ActiveProduct, (obj?.Items(mediaType).Count ?? 0) + 1);
+        SubscriptionHelper.ValidateWatched(product, (obj?.Items(mediaType).Count ?? 0) + 1);
 
         return await PostAsync<WatchedList>(Endpoint.Add(mediaType, tmdbId), null);
     }

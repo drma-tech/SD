@@ -127,7 +127,7 @@ else
             if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
             // if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
 
-            if (DetectRegions) AppStateStatic.RegionChanged += async region => await LoadEssentialDataAsync();
+            if (DetectRegions) AppStateStatic.RegionChanged += async region => await ProcessInitialData();
         }
         catch (Exception ex)
         {
@@ -150,7 +150,7 @@ else
         }
     }
 
-    protected override async Task LoadEssentialDataAsync()
+    protected override async Task ProcessInitialData()
     {
         Actions?.StartLoading?.Invoke(null);
         await LoadItems();
@@ -283,7 +283,7 @@ else
                 }
                 else
                 {
-                    Navigation.NavigateTo($"/media/{media?.MediaType.ToString().ToLower()}/{tmdbId}");
+                    Navigation.NavigateTo($"/media/{media?.MediaType.ToString().ToLower()}/{tmdbId}", true);
                 }
             }
         }

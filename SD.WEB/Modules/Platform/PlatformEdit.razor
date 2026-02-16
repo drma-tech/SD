@@ -96,7 +96,7 @@
         Languages = EnumHelper.GetList<ContentLanguage>();
     }
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task ProcessPageData()
     {
         AllProviders = await AllProvidersApi.GetAll();
     }

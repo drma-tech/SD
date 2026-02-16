@@ -28,19 +28,21 @@
 
 <PWAUpdater Text="@GlobalTranslations.PWAUpdaterText" ButtonCaption="@GlobalTranslations.PWAUpdaterButton" />
 
-<MudLayout>
-    <HeadLayout></HeadLayout>
-    <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="@Css.Build().Medium("my")" Style="min-height: calc(100vh - 64px - 32px);">
-            @Body
-        </MudContainer>
-        <FooterComponent></FooterComponent>
-        <MudDivider Class="@Css.Build().Small("my").Large("mt")"></MudDivider>
-        <MudText Align="Align.Center" Class="@Css.Build().Small("mb")">
-            © 2021-@DateTime.Now.Year - DRMA Tech.
-        </MudText>
-    </MudMainContent>
-</MudLayout>
+<CascadingValue Value="Principal">
+    <MudLayout>
+        <HeadLayout></HeadLayout>
+        <MudMainContent>
+            <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="@Css.Build().Medium("my")" Style="min-height: calc(100vh - 64px - 32px);">
+                @Body
+            </MudContainer>
+            <FooterComponent></FooterComponent>
+            <MudDivider Class="@Css.Build().Small("my").Large("mt")"></MudDivider>
+            <MudText Align="Align.Center" Class="@Css.Build().Small("mb")">
+                © 2021-@DateTime.Now.Year - DRMA Tech.
+            </MudText>
+        </MudMainContent>
+    </MudLayout>
+</CascadingValue>
 
 @code {
     private MudThemeProvider? _mudThemeProvider;
@@ -61,13 +63,13 @@
             AppStateStatic.BrowserWindowSizeChanged += size => StateHasChanged();
 
             // 1 = capture the claims
-            AppStateStatic.FirebaseAuthChanged += (string? token) =>
+            AppStateStatic.FirebaseAuthChanged = (string? token) =>
             {
                 var provider = (CompositeAuthStateProvider)AuthStateProvider;
                 provider.OnFirebaseAuthChanged(token);
             };
 
-            AppStateStatic.SupabaseAuthChanged += (string? token) =>
+            AppStateStatic.SupabaseAuthChanged = (string? token) =>
             {
                 var provider = (CompositeAuthStateProvider)AuthStateProvider;
                 provider.OnSupabaseAuthChanged(token);
@@ -81,8 +83,22 @@
 
                 AppStateStatic.User = user;
                 AppStateStatic.UserId = user?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-                AppStateStatic.IsAuthenticated = user?.Identity is not null && user.Identity.IsAuthenticated;
+                var authenticated = user?.Identity is not null && user.Identity.IsAuthenticated;
+
+                if (authenticated == AppStateStatic.IsAuthenticated) return; //no need to process if the authentication state didn't change
+
+                AppStateStatic.IsAuthenticated = authenticated;
                 if (!AppStateStatic.IsAuthenticated) AppStateStatic.IsPremiumUser = false;
+
+                //principal to be used for all the app
+                if (AppStateStatic.IsAuthenticated)
+                    Principal ??= await PrincipalApi.Get(true);
+                else
+                    Principal = null;
+                var sub = Principal?.GetActiveSubscription();
+                AppStateStatic.IsPremiumUser = sub?.IsActive() ?? false;
+                AppStateStatic.ActiveProduct = sub?.Product ?? AccountProduct.Basic;
+
                 await ProcessUserAccess();
 
                 StateHasChanged();
@@ -128,11 +144,6 @@
             //register new user or new login (need to be last step on this method)
             if (!AppStateStatic.IsAuthenticated) return;
             if (Navigation.Uri.Contains("/support/")) return;
-
-            Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
-
-            var sub = Principal?.GetActiveSubscription();
-            AppStateStatic.IsPremiumUser = sub?.IsActive() ?? false;
 
             if (Principal == null)
             {

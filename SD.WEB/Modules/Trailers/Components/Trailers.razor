@@ -42,7 +42,7 @@
     public ComponentActions<CacheDocument<TrailerModel>?> Actions { get; set; } = new();
     private CacheDocument<TrailerModel>? TrailerModel { get; set; }
 
-    protected override async Task LoadEssentialDataAsync()
+    protected override async Task ProcessInitialData()
     {
         Actions.StartLoading?.Invoke(null);
         TrailerModel = await CacheYoutubeApi.GetTrailers("full");

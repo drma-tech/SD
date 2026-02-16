@@ -15,9 +15,9 @@
 @using SD.WEB.Modules.Subscription.Core
 @inherits PageCore<CompleteListPage>
 
-@inject WatchedListApi WatchedListApi
-@inject WatchingListApi WatchingListApi
-@inject WishListApi WishListApi
+@inject WatchedListApi WatchedApi
+@inject WatchingListApi WatchingApi
+@inject WishListApi WishApi
 @inject AllProvidersApi AllProvidersApi
 @inject IHttpClientFactory factory
 @inject IpInfoApi IpInfoApi
@@ -67,9 +67,9 @@
         if (id.NotEmpty() && Navigation.Uri.Contains("list")) List = Enum.Parse<EnumLists>(id!);
         if (Type.NotEmpty()) TypeSelected = Enum.Parse<MediaType>(Type!, true);
 
-        WatchedListApi.DataChanged += model => { Watched = model; StateHasChanged(); };
-        WatchingListApi.DataChanged += model => { Watching = model; StateHasChanged(); };
-        WishListApi.DataChanged += model => { Wish = model; StateHasChanged(); };
+        WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
+        WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
+        WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
 
         Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
 
@@ -80,9 +80,18 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        Watched = await WatchedListApi.Get(AppStateStatic.IsAuthenticated);
-        Watching = await WatchingListApi.Get(AppStateStatic.IsAuthenticated);
-        Wish = await WishListApi.Get(AppStateStatic.IsAuthenticated);
+        if (AppStateStatic.IsAuthenticated)
+        {
+            Watched ??= await WatchedApi.Get(true);
+            Watching ??= await WatchingApi.Get(true);
+            Wish ??= await WishApi.Get(true);
+        }
+        else
+        {
+            Watched = null;
+            Watching = null;
+            Wish = null;
+        }
     }   
 
     private async Task ProcessNonList()

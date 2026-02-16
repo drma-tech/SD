@@ -40,7 +40,7 @@
 
     private string? CustomerPortalUrl { get; set; }
 
-    protected override async Task LoadAuthDataAsync()
+    protected override async Task ProcessPopupData()
     {
         CustomerPortalUrl = await PaymentAuthApi.StripePortalLink();
     }

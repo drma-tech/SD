@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
-using SD.WEB.Modules.Auth.Core;
 
 namespace SD.WEB.Core;
 
@@ -25,24 +24,14 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
     [Inject] protected IDialogService DialogService { get; set; } = null!;
     [Inject] protected IJSRuntime JsRuntime { get; set; } = null!;
     [Inject] protected NavigationManager Navigation { get; set; } = null!;
-    [Inject] protected PrincipalApi PrincipalApi { get; set; } = null!;
+
+    private readonly TaskHelper _taskHelper = new();
 
     /// <summary>
     /// Mandatory data to fill out the page/component without delay (essential for bots, SEO, etc.)
     /// </summary>
     /// <returns></returns>
-    protected virtual Task LoadEssentialDataAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    /// <summary>
-    /// Non-critical data that may be delayed (popups, javascript handling, etc.)
-    ///
-    /// NOTE: This method cannot depend on previously loaded variables, as events can be executed in parallel.
-    /// </summary>
-    /// <returns></returns>
-    protected virtual Task LoadNonEssentialDataAsync()
+    protected virtual Task ProcessInitialData()
     {
         return Task.CompletedTask;
     }
@@ -58,15 +47,25 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
         return Task.CompletedTask;
     }
 
+    protected virtual Task ProcessComponentData()
+    {
+        return Task.CompletedTask;
+    }
+
+    protected virtual Task ProcessPopupData()
+    {
+        return Task.CompletedTask;
+    }
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
             AppStateStatic.BreakpointChanged += breakpoint => StateHasChanged();
             AppStateStatic.BrowserWindowSizeChanged += size => StateHasChanged();
-            AppStateStatic.UserStateChanged += async () => { await LoadAuthDataAsync(); StateHasChanged(); };
+            AppStateStatic.UserStateChanged += async () => { await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync); StateHasChanged(); };
 
-            await LoadEssentialDataAsync();
+            await ProcessInitialData();
         }
         catch (Exception ex)
         {
@@ -80,15 +79,18 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
         {
             if (firstRender)
             {
-                await LoadNonEssentialDataAsync();
-                await LoadAuthDataAsync();
+                await ProcessComponentData();
+                await ProcessPopupData();
+                await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync);
 
                 StateHasChanged();
             }
+
+            await base.OnAfterRenderAsync(firstRender);
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            await ProcessException(ex);
         }
     }
 
@@ -155,6 +157,15 @@ public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, 
 {
     [Inject] private IBrowserViewportService BrowserViewportService { get; set; } = null!;
 
+    /// <summary>
+    /// NOTE: This method cannot depend on previously loaded variables, as events can be executed in parallel.
+    /// </summary>
+    /// <returns></returns>
+    protected virtual Task ProcessPageData()
+    {
+        return Task.CompletedTask;
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         try
@@ -162,6 +173,10 @@ public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, 
             if (firstRender)
             {
                 await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
+
+                await ProcessPageData();
+
+                StateHasChanged();
             }
 
             await base.OnAfterRenderAsync(firstRender);

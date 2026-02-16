@@ -1,9 +1,9 @@
 ﻿@page "/best-awards-year"
 
 @inject TmdbListApi TmdbListApi
-@inject WatchedListApi WatchedListApi
-@inject WatchingListApi WatchingListApi
-@inject WishListApi WishListApi
+@inject WatchedListApi WatchedApi
+@inject WatchingListApi WatchingApi
+@inject WishListApi WishApi
 
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
@@ -16,41 +16,38 @@
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
-<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="WatchedList" Watching="WatchingList" Wish="WishList"
+<MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="Watched" Watching="Watching" Wish="Wish"
                CommentsIsImage="true" Icon="@IconsFA.Solid.Icon("trophy").Font" FullPage="true" ShowHead="false" Description="@GlobalTranslations.AwardsYearDescription">
 </MediaListFull>
 
 @code {
-    public WatchedList? WatchedList { get; set; }
-    public WatchingList? WatchingList { get; set; }
-    public WishList? WishList { get; set; }
+    public WatchedList? Watched { get; set; }
+    public WatchingList? Watching { get; set; }
+    public WishList? Wish { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-        WatchedListApi.DataChanged += model =>
-        {
-            WatchedList = model;
-            StateHasChanged();
-        };
-        WatchingListApi.DataChanged += model =>
-        {
-            WatchingList = model;
-            StateHasChanged();
-        };
-        WishListApi.DataChanged += model =>
-        {
-            WishList = model;
-            StateHasChanged();
-        };
+        WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
+        WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
+        WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
     }
 
     protected override async Task LoadAuthDataAsync()
     {
-        WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated);
-        WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated);
-        WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated);
+        if (AppStateStatic.IsAuthenticated)
+        {
+            Watched ??= await WatchedApi.Get(true);
+            Watching ??= await WatchingApi.Get(true);
+            Wish ??= await WishApi.Get(true);
+        }
+        else
+        {
+            Watched = null;
+            Watching = null;
+            Wish = null;
+        }
     }
 
 }

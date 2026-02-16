@@ -327,7 +327,7 @@
         };
     }
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task ProcessPopupData()
     {
         Actions.StartLoading?.Invoke(null);
         Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
@@ -390,9 +390,8 @@
             Wish ??= new WishList();
 
             var item = new WishListItem(Media.tmdb_id, Media.title, Media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), Media.runtime);
-            var client = await PrincipalApi.Get(true);
 
-            Wish = await WishListApi.Add(Media.MediaType, Wish, item, client?.GetActiveSubscription());
+            Wish = await WishListApi.Add(Media.MediaType, Wish, item, AppStateStatic.ActiveProduct);
         }
         catch (Exception ex)
         {
@@ -434,8 +433,7 @@
             }
             else
             {
-                var client = await PrincipalApi.Get(true);
-                Watched = await WatchedListApi.Add(Media.MediaType, Watched, Media.tmdb_id, client?.GetActiveSubscription());
+                Watched = await WatchedListApi.Add(Media.MediaType, Watched, Media.tmdb_id, AppStateStatic.ActiveProduct);
             }
         }
         catch (Exception ex)
@@ -446,17 +444,15 @@
 
     private async Task SelectedItemsChanged(MediaDetail media, HashSet<string> items, int collectionItemsCount)
     {
-        var client = await PrincipalApi.Get(true);
-
         //watched list
 
         if (media.MediaType == MediaType.movie)
         {
-            Watched = await WatchedListApi.Add(MediaType.movie, Watched, string.Join(',', items), client?.GetActiveSubscription());
+            Watched = await WatchedListApi.Add(MediaType.movie, Watched, string.Join(',', items), AppStateStatic.ActiveProduct);
         }
         else
         {
-            Watched = await WatchedListApi.Add(MediaType.tv, Watched, media.tmdb_id, client?.GetActiveSubscription());
+            Watched = await WatchedListApi.Add(MediaType.tv, Watched, media.tmdb_id, AppStateStatic.ActiveProduct);
         }
 
         //watching list
@@ -472,7 +468,7 @@
             item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
         }
 
-        Watching = await WatchingListApi.Add(Type, Watching, item, client?.GetActiveSubscription());
+        Watching = await WatchingListApi.Add(Type, Watching, item, AppStateStatic.ActiveProduct);
     }
 
     private async Task IsNotWatched()

@@ -7,6 +7,7 @@
 @using SD.WEB.Modules.Auth.Resources
 
 @inject LoginApi LoginApi
+@inject PrincipalApi PrincipalApi
 
 <SeoHeader Title="Register User" Description="Register User" Url="/register-user" Index="false" Keywords="@([])"></SeoHeader>
 
@@ -47,18 +48,17 @@
 }
 
 @code {
-    private AuthPrincipal? Principal { get; set; }
+    [CascadingParameter] private AuthPrincipal? Principal { get; set; }
 
     private bool _terms1 { get; set; } = false;
     private bool _terms2 { get; set; } = false;
 
-    protected override async Task LoadEssentialDataAsync()
+    protected override async Task ProcessInitialData()
     {
         try
         {
             if (AppStateStatic.IsAuthenticated)
             {
-                Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated);
                 StateHasChanged();
 
                 if (Principal == null) //first access

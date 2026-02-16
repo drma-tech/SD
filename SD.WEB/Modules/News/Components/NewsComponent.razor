@@ -7,7 +7,7 @@
 <NewPageSection Title="@($"{Translations.NewsTitle}")" Description="@Translations.NewsDescriptionShort" Icon="@IconsFA.Solid.Icon("newspaper").Font">
     <BodyFragment>
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@Css.Build().Small("pt")"
-                 ActivePanelIndexChanged="@(async (int vl) => { index = vl; await LoadEssentialDataAsync(); })">
+                 ActivePanelIndexChanged="@(async (int vl) => { index = vl; await ProcessInitialData(); })">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/news/{(index == 0 ? "MOVIE" : "TV")}")" />
@@ -106,7 +106,7 @@
         }
     }
 
-    protected override async Task LoadEssentialDataAsync()
+    protected override async Task ProcessInitialData()
     {
         Actions.StartLoading?.Invoke(null);
         News = await CacheFlixsterApi.GetNews("compact", index == 0 ? "MOVIE" : "TV");

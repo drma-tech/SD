@@ -105,7 +105,7 @@
         AppStateStatic.RegionChanged += region => { Region = region; StateHasChanged(); };
     }
 
-    protected override async Task LoadEssentialDataAsync()
+    protected override async Task ProcessInitialData()
     {
         DeliveryModels = EnumHelper.GetList<DeliveryModel>();
 
@@ -114,7 +114,7 @@
         Actions.FinishLoading?.Invoke(AllProviders);
     }
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task ProcessPageData()
     {
         Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
     }

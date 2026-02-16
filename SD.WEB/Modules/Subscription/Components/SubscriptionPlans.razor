@@ -155,7 +155,7 @@
 
     private PaymentConfigurations? Config { get; set; }
 
-    protected override async Task LoadNonEssentialDataAsync()
+    protected override async Task ProcessComponentData()
     {
         Config = await ConfigurationApi.GetConfigurations(Provider);
     }

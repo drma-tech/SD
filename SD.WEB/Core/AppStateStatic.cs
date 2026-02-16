@@ -12,6 +12,7 @@ public static class AppStateStatic
     public static string? SupabaseToken { get; set; }
     public static bool IsAuthenticated { get; set; }
     public static bool IsPremiumUser { get; set; }
+    public static AccountProduct ActiveProduct { get; set; }
     public static ClaimsPrincipal? User { get; set; }
     public static string? UserId { get; set; }
     public static DateTimeOffset? LastAccess { get; set; } //control login, so we don't call api too often
