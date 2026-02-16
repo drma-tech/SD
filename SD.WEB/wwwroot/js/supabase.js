@@ -158,7 +158,7 @@ export const authentication = {
 
         if (error) {
             notification.sendLog(error, "supabase sendEmail");
-            notification.showError(error.message);
+            throw new Error(error.message);
         }
     },
     async confirmCode(email, code) {
@@ -170,7 +170,7 @@ export const authentication = {
 
         if (error) {
             notification.sendLog(error, "supabase confirmCode");
-            notification.showError(error.message);
+            throw new Error(error.message);
         }
     },
     async signOut() {

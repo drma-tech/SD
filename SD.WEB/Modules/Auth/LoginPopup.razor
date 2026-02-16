@@ -129,6 +129,12 @@
     {
         try
         {
+            if (code.Empty())
+            {
+                await ShowError("Please enter the code you received by email.");
+                return;
+            }
+
             CloseDialog();
             await JsRuntime.Supabase().ConfirmCode(email!, code!);
         }
