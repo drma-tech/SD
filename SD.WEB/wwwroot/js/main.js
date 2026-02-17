@@ -19,7 +19,7 @@ export const isLocalhost = location.host.includes("localhost");
 export const isDev = location.hostname.includes("dev.");
 export const isWebview = /webtonative/i.test(navigator.userAgent);
 export const isPrintScreen = location.href.includes("printscreen");
-export let appVersion = "loading";
+export let appVersion = "loading-2026.02.16";
 
 fetch("/build-date.txt")
     .then((r) => r.text())

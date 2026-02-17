@@ -1,7 +1,7 @@
 "use strict";
 
 import { isBot, isOldBrowser, isLocalhost, isDev, servicesConfig } from "./main.js";
-import { storage, notification } from "./utils.js";
+import { storage, notification, environment } from "./utils.js";
 
 export const services = {
     initGoogleAnalytics(version) {
@@ -75,6 +75,9 @@ export const services = {
         if (isDev) return;
 
         try {
+            const scraping = environment.isScraping();
+            if (scraping) return;
+
             const container = document.getElementById(containerId);
             if (!container) return;
 
