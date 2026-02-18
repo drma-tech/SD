@@ -331,7 +331,7 @@
 
     private void OpenPopupMedia(MediaType? type, string? tmdb_id)
     {
-        Navigation.NavigateTo($"/media/{type.ToString()!.ToLower()}/{tmdb_id}", true);
+        Navigation.NavigateTo($"/media/{type.ToString()!.ToLower()}/{tmdb_id}");
     }
 
     private async Task OpenPopupSeason(Collection? collection)
