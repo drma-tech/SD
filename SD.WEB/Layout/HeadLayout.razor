@@ -1,5 +1,8 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.JSInterop
+@using SD.WEB.Modules.Profile.Core
+
+@inject WatchingListApi WatchingApi
 
 @inject NavigationManager Navigation
 @inject IDialogService DialogService
@@ -71,9 +74,11 @@
         <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="px-3" Disabled="_blockedActions">
             @Menu.Home
         </MudButton>
-        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="px-3" Disabled="_blockedActions" Target="_self" Rel="noindex, nofollow">
-            @Menu.Profile
-        </MudButton>
+        <MudBadge Dot="true" Color="Color.Warning" Visible="@(MovieSync || ShowSync)">
+            <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="px-3" Disabled="_blockedActions" Target="_self" Rel="noindex, nofollow">
+                @Menu.Profile
+            </MudButton>
+        </MudBadge>
         <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="px-3" Disabled="_blockedActions">
             @Menu.Platforms
         </MudButton>
@@ -156,6 +161,7 @@
     </MudDrawer>
 }
 
+
 @code {
     [Parameter]
     [SupplyParameterFromQuery(Name = "stripe_session_id")]
@@ -168,11 +174,19 @@
 
     private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
 
+    private WatchingList? Watching { get; set; }
+    private bool MovieSync => (Watching?.CanSync(MediaType.movie) ?? false) && (Watching?.Items(MediaType.movie).Any() ?? false);
+    private bool ShowSync => (Watching?.CanSync(MediaType.tv) ?? false) && (Watching?.Items(MediaType.tv).Any() ?? false);
+    private readonly TaskHelper _taskHelper = new();
+
     protected override void OnInitialized()
     {
         Navigation.LocationChanged += delegate { StateHasChanged(); };
         AppStateStatic.BreakpointChanged += breakpoint => StateHasChanged();
         AppStateStatic.BrowserWindowSizeChanged += size => StateHasChanged();
+
+        AppStateStatic.UserStateChanged += async () => { await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync); StateHasChanged(); };
+        WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
 
         AppStateStatic.ProcessingStarted += () =>
         {
@@ -201,9 +215,16 @@
             {
                 await DialogService.SubscriptionPopup();
             }
+
+            await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync);
         }
 
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected async Task LoadAuthDataAsync()
+    {
+        Watching = await WatchingApi.Get(AppStateStatic.IsAuthenticated);
     }
 
     private async Task Login()
