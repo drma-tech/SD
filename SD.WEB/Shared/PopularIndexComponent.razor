@@ -6,7 +6,8 @@
 
 <NewPageSection Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@Css.Build().Small("pt")">
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@Css.Build().Small("pt")"
+                 ActivePanelIndex="@(TypeSelected == PopularType.Movie ? 0 : 1)" ActivePanelIndexChanged="@(async (int index) => { TypeSelected = index == 0 ? PopularType.Movie : PopularType.Show; })">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/popular/{TypeSelected}")" Disabled="true" />
