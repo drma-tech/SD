@@ -76,6 +76,21 @@ public static class StaticWebAppsAuth
                 return new ClaimsPrincipal(new ClaimsIdentity(claims, "supabase"));
             }
         }
+        else if (req.Headers.TryGetValues("X-Auth-Token", out var header)) //todo: old header name, to be removed in the future
+        {
+            var authHeader = header.LastOrDefault();
+
+            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
+            {
+                var token = authHeader.Substring("Bearer ".Length);
+
+                var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(token, cancellationToken);
+
+                var claims = decodedToken.Claims.Select(kv => new Claim(kv.Key, kv.Value?.ToString() ?? string.Empty)).ToList();
+
+                return new ClaimsPrincipal(new ClaimsIdentity(claims, "firebase"));
+            }
+        }
         else
         {
             if (required)
