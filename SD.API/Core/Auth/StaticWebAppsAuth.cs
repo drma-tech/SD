@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Functions.Worker.Http;
+﻿using FirebaseAdmin.Auth;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -41,7 +42,22 @@ public static class StaticWebAppsAuth
 
     private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this HttpRequestData req, bool required, CancellationToken cancellationToken)
     {
-        if (req.Headers.TryGetValues("X-Supabase-Token", out var header2))
+        if (req.Headers.TryGetValues("X-Firebase-Token", out var header1))
+        {
+            var authHeader = header1.LastOrDefault();
+
+            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
+            {
+                var token = authHeader.Substring("Bearer ".Length);
+
+                var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(token, cancellationToken);
+
+                var claims = decodedToken.Claims.Select(kv => new Claim(kv.Key, kv.Value?.ToString() ?? string.Empty)).ToList();
+
+                return new ClaimsPrincipal(new ClaimsIdentity(claims, "firebase"));
+            }
+        }
+        else if (req.Headers.TryGetValues("X-Supabase-Token", out var header2))
         {
             var authHeader = header2.LastOrDefault();
 

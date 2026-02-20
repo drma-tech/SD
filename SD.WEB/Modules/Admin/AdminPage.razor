@@ -23,6 +23,8 @@
                 try
                 {
                     await JsRuntime.Supabase().CreateUserAsync(item.UserId, item.Email, item.DisplayName);
+
+                    await ShowSuccess("import complete");
                 }
                 catch (Exception ex)
                 {
@@ -38,8 +40,6 @@
                     }
                 }
             }
-
-            await ShowSuccess("import complete");
         }
         catch (Exception ex)
         {

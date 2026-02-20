@@ -9,6 +9,7 @@
 		<UserSecretsId>8e76a79d-32e2-4465-8c7b-c6305b0d5e6f</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="FirebaseAdmin" Version="3.4.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.13" />
 		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.57.0" />
