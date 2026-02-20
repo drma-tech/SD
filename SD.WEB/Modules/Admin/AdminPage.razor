@@ -1,5 +1,7 @@
 ﻿@page "/admin"
+@* @attribute [Authorize(Roles = "administrator")] *@
 
+@using Microsoft.AspNetCore.Authorization
 @using SD.WEB.Modules.Auth.Core
 
 @inherits PageCore<AdminPage>
@@ -21,6 +23,8 @@
                 try
                 {
                     await JsRuntime.Supabase().CreateUserAsync(item.UserId, item.Email, item.DisplayName);
+
+                    await ShowSuccess("import complete");
                 }
                 catch (Exception ex)
                 {

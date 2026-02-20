@@ -20,9 +20,9 @@ async function ensureAuthReady() {
     return window.supabase;
 }
 
-function initAuth() {
-    let serviceRoleKey = null;
+let serviceRoleKey = null;
 
+function initAuth() {
     const supabase = createClient(
         supabaseConfig.projectUrl,
         serviceRoleKey ?? supabaseConfig.supabaseKey,
