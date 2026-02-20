@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace SD.API.Core.Auth;
 
@@ -76,25 +77,23 @@ public static class StaticWebAppsAuth
                 return new ClaimsPrincipal(new ClaimsIdentity(claims, "supabase"));
             }
         }
-        else if (req.Headers.TryGetValues("X-Auth-Token", out var header)) //todo: old header name, to be removed in the future
-        {
-            var authHeader = header.LastOrDefault();
-
-            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
-            {
-                var token = authHeader.Substring("Bearer ".Length);
-
-                var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(token, cancellationToken);
-
-                var claims = decodedToken.Claims.Select(kv => new Claim(kv.Key, kv.Value?.ToString() ?? string.Empty)).ToList();
-
-                return new ClaimsPrincipal(new ClaimsIdentity(claims, "firebase"));
-            }
-        }
         else
         {
             if (required)
+            {
+                var headerPairs = new StringBuilder();
+
+                foreach (var h in req.Headers)
+                {
+                    headerPairs.AppendLine($"{h.Key}={string.Join(',', h.Value)}");
+                }
+
+                var headersString = string.Join("; ", headerPairs);
+
+                req.LogError(new Exception($"Authorization header not found: {headersString}"));
+
                 throw new UnhandledException("Authorization header not found");
+            }
         }
 
         return null;
