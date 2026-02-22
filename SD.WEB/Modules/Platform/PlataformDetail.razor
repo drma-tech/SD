@@ -17,59 +17,68 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<SeoHeader Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")"
-           Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Keywords="@([Provider?.name])">
-</SeoHeader>
-
-@if (Provider != null)
+@if (isNotFound)
 {
-    <NewPageSection IsPageHeader="true" Image="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Subtitle="@GetSubtitle()" Description="@Provider.description">
-        <ActionsFragment>
-            @if (Provider.link.NotEmpty())
-            {
-                <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Link" Href="@Provider.link" Target="_blank" Class="me-2" Variant="Variant.Filled">
-                    Official Website
-                </MudButton>
-            }
-            @if (Provider != null)
-            {
-                @if (MyProviders?.Items.Any(a => a.id == Provider?.id) ?? false)
+    <NotFoundPage></NotFoundPage>
+}
+else
+{
+    <SeoHeader Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")"
+               Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Keywords="@([Provider?.name])">
+    </SeoHeader>
+
+    @if (Provider != null)
+    {
+        <NewPageSection IsPageHeader="true" Image="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Subtitle="@GetSubtitle()" Description="@Provider.description">
+            <ActionsFragment>
+                @if (Provider.link.NotEmpty())
                 {
-                    <MudButton StartIcon="@IconsFA.Solid.Icon("minus").Font" Color="Color.Error" OnClick="@Remove" Variant="Variant.Filled">
-                        @Button.Remove
+                    <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Link" Href="@Provider.link" Target="_blank" Class="me-2" Variant="Variant.Filled">
+                        Official Website
                     </MudButton>
                 }
-                else
+                @if (Provider != null)
                 {
-                    <MudButton StartIcon="@IconsFA.Solid.Icon("plus").Font" Color="Color.Primary" OnClick="@Add" Variant="Variant.Filled">
-                        @Button.Add
-                    </MudButton>
+                    @if (MyProviders?.Items.Any(a => a.id == Provider?.id) ?? false)
+                    {
+                        <MudButton StartIcon="@IconsFA.Solid.Icon("minus").Font" Color="Color.Error" OnClick="@Remove" Variant="Variant.Filled">
+                            @Button.Remove
+                        </MudButton>
+                    }
+                    else
+                    {
+                        <MudButton StartIcon="@IconsFA.Solid.Icon("plus").Font" Color="Color.Primary" OnClick="@Add" Variant="Variant.Filled">
+                            @Button.Add
+                        </MudButton>
+                    }
                 }
-            }
-        </ActionsFragment>
-    </NewPageSection>
+            </ActionsFragment>
+        </NewPageSection>
+    }
+
+    <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
+
+    <NewRenderControl Actions="Actions" Instance="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null)">
+        <NewMediaList ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")" ShowFilter="Provider?.types.Count == 2"
+                      StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
+        </NewMediaList>
+        <NewMediaList ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/new/{{0}}")" ShowFilter="Provider?.types.Count == 2"
+                      StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
+        </NewMediaList>
+        <NewMediaList ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/top/{{0}}")" ShowFilter="Provider?.types.Count == 2"
+                      StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
+        </NewMediaList>
+    </NewRenderControl>
+
+    <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
+        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => JsRuntime.Window().HistoryBack())" Size="Size.Medium" />
+    </div>
 }
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
-
-<NewRenderControl Actions="Actions" Instance="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null)">
-    <NewMediaList ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")" ShowFilter="Provider?.types.Count == 2"
-                  StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
-    </NewMediaList>
-    <NewMediaList ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/new/{{0}}")" ShowFilter="Provider?.types.Count == 2"
-               StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
-    </NewMediaList>
-    <NewMediaList ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/top/{{0}}")" ShowFilter="Provider?.types.Count == 2"
-               StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
-    </NewMediaList>
-</NewRenderControl>
-
-<div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
-    <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => JsRuntime.Window().HistoryBack())" Size="Size.Medium" />
-</div>
 
 @code {
     [Parameter] public string? Id { get; set; }
+    private bool isNotFound;
 
     public ComponentActions<AllProviders?> Actions { get; set; } = new();
     private AllProviders? AllProviders { get; set; }
@@ -94,12 +103,17 @@
         Actions.FinishLoading?.Invoke(AllProviders);
 
         Provider = AllProviders?.Items.SingleOrDefault(s => s.id == Id);
+
+        if (Provider == null)
+        {
+            isNotFound = true;
+        }
     }
 
     protected override async Task LoadAuthDataAsync()
     {
         MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
-       
+
         if (AppStateStatic.IsAuthenticated)
         {
             Watched ??= await WatchedApi.Get(true);
