@@ -12,7 +12,7 @@
 
 <NewPageSection Icon="@IconsFA.Solid.Icon("thumbs-up").Font" Title="@Translations.MySuggestions" ShowActions="Client?.GetActiveSubscription() != null">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@Css.Build().Small("pt")"
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndexChanged="@((int index) => { var type = index == 0 ? MediaType.movie : MediaType.tv; CheckedValueChanged(type); })">
             <Header>
                 @if (Client?.GetActiveSubscription() != null)

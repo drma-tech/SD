@@ -6,7 +6,7 @@
 
 <NewPageSection Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@Css.Build().Small("pt")"
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="@(TypeSelected == MediaType.movie ? 0 : 1)" ActivePanelIndexChanged="@(async (int index) => { TypeSelected = index == 0 ? MediaType.movie : MediaType.tv; })">
             <Header>
                 <MudTooltip Text="Expand">

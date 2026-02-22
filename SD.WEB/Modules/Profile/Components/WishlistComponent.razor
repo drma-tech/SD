@@ -39,7 +39,7 @@
         }
         else
         {
-            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@Css.Build().Small("pt")"
+            <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                      ActivePanelIndexChanged="@((int index) => { if (index == 0) _type = MediaType.movie; else _type = MediaType.tv; })">
                 <Header>
                     <MudTooltip Text="Expand">

@@ -15,7 +15,7 @@
 
 <MudDialog Style="width: 100%; max-height: 70%;">
     <DialogContent>
-        <MudTabs Border="true" Outlined="true" PanelClass="pt-2" MinimumTabWidth="100px">
+        <MudTabs Border="true" Outlined="true" TabPanelsClass="pt-2" MinimumTabWidth="100px">
             <MudTabPanel Text="Auth">
                 <MudGrid Spacing="@Css.SpaceSmall">
                     <MudItem xs="12">
@@ -107,11 +107,11 @@
         {
             if (Principal!.GetActiveSubscription() != null)
             {
-                await DialogService.ShowMessageBox("You still have an active subscription", "Please cancel your subscription before deleting your profile.");
+                await DialogService.ShowMessageBoxAsync("You still have an active subscription", "Please cancel your subscription before deleting your profile.");
                 return;
             }
 
-            if (await DialogService.ShowMessageBox(SeoTranslations.AppName, GlobalTranslations.SureDeleteAccount, Button.Ok, Button.Cancel) ?? false)
+            if (await DialogService.ShowMessageBoxAsync(SeoTranslations.AppName, GlobalTranslations.SureDeleteAccount, Button.Ok, Button.Cancel) ?? false)
             {
                 //remove data from cosmos db
                 await PrincipalApi.Remove();

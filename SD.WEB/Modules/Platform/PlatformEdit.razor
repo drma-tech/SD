@@ -193,11 +193,13 @@
         }
     }
 
-    protected void RowUpdated(ProviderModel model)
+    protected Task<DataGridEditFormAction> RowUpdated(ProviderModel model)
     {
         var item = AllProviders?.Items.FirstOrDefault(f => f.id == model.id);
 
         item = model;
+
+        return Task.FromResult(DataGridEditFormAction.Close);
     }
 
     protected async Task<string> GetDescriptionOnClick(string? url)

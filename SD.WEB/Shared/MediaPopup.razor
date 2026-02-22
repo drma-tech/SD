@@ -16,11 +16,11 @@
 <MudDialog Style="width: 100%">
     <DialogContent>
         <NewRenderControl Actions="Actions" Instance="Media" ExpressionEmpty="@((MediaDetail? obj) => obj == null)">
-            <MudTabs Border="true" Outlined="true" PanelClass="pt-2" MinimumTabWidth="100px">
+            <MudTabs Border="true" Outlined="true" TabPanelsClass="pt-2" MinimumTabWidth="100px">
                 <MudTabPanel Tag="@Translations.TabAbout" Text="@Translations.TabAbout">
                     <MudGrid Spacing="@Css.SpaceSmall">
                         <MudItem xs="12" md="4">
-                            <div Style="position: relative;">
+                            <div style="position: relative;">
                                 @if (Media?.release_date < DateTime.Now.AddMonths(-3))
                                 {
                                     <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;" Size="AppStateStatic.Size">

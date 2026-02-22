@@ -40,7 +40,7 @@
 
 <NewPageSection Title="@EnumLists.ExpectedMovieOf2026.GetName()">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" PanelClass="@Css.Build().Small("pt")">
+        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" OnClick="@(() => Navigation.NavigateTo($"/list/{(int)EnumLists.ExpectedMovieOf2026}"))" />

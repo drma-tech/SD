@@ -12,10 +12,10 @@ public class MySuggestions() : PrivateMainDocument(DocumentType.MySuggestions)
     public HashSet<SuggestionListItem> Shows { get; init; } = [];
 
     [Custom(Name = "Movie Genres")]
-    public IEnumerable<MovieGenre> MovieGenres { get; set; } = [];
+    public IReadOnlyCollection<MovieGenre> MovieGenres { get; set; } = [];
 
     [Custom(Name = "TV Genres")]
-    public IEnumerable<TvGenre> TvGenres { get; set; } = [];
+    public IReadOnlyCollection<TvGenre> TvGenres { get; set; } = [];
 
     [JsonIgnore]
     [NotMapped]
