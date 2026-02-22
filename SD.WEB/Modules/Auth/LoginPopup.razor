@@ -75,6 +75,12 @@
 
             if (provider == "email")
             {
+                if (email.Empty())
+                {
+                    await ShowError("Please enter your email.");
+                    return;
+                }
+
                 await JsRuntime.Supabase().SendEmailAsync(email!);
                 emailSent = true;
             }
