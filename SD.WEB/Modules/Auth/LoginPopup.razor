@@ -10,7 +10,7 @@
                 <span style="font-weight: bold; display: block;" class="mb-1">Login system recently updated</span>
                 If you experience any issues, please contact support
             </MudAlert>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Disabled="@(Platform == MM.Shared.Enums.Platform.ios || _processing)">
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Disabled="@(Platform == SD.Shared.Enums.Platform.ios || _processing)">
                 @if (_processing)
                 {
                     <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
