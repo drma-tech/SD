@@ -10,19 +10,43 @@
                 <span style="font-weight: bold; display: block;" class="mb-1">Login system recently updated</span>
                 If you experience any issues, please contact support
             </MudAlert>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Disabled="@(Platform == SD.Shared.Enums.Platform.ios)">
-                Continue with Google
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Disabled="@(Platform == MM.Shared.Enums.Platform.ios || _processing)">
+                @if (_processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                    <MudText Class="ms-2">Processing</MudText>
+                }
+                else
+                {
+                    <MudText>Continue with Google</MudText>
+                }
             </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font">
-                Continue with Apple
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font" Disabled="@_processing">
+                @if (_processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                    <MudText Class="ms-2">Processing</MudText>
+                }
+                else
+                {
+                    <MudText>Continue with Apple</MudText>
+                }
             </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font">
-                Continue with Microsoft
+            <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font" Disabled="@_processing">
+                @if (_processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                    <MudText Class="ms-2">Processing</MudText>
+                }
+                else
+                {
+                    <MudText>Continue with Microsoft</MudText>
+                }
             </MudButton>
             <MudDivider Class="@Css.Build().Small("my")"></MudDivider>
             @if (!emailSent)
             {
-                <MudTextField @bind-Value="@email" Label="Email" Placeholder="Enter your email"
+                <MudTextField @bind-Value="@email" Label="Email" Placeholder="Enter your email" Disabled="_processing"
                               Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="() => LoginWithEmail(email)"></MudTextField>
             }
             else
@@ -61,6 +85,7 @@
     private async Task LoginWithEmail(string? email) => await SignIn("email", email);
 
     private SD.Shared.Enums.Platform? Platform { get; set; }
+    private bool _processing = false;
 
     protected override async Task ProcessPopupData()
     {
@@ -71,6 +96,8 @@
     {
         try
         {
+            _processing = true;
+
             await JsRuntime.Utils().SetStorage<AuthProvider>("auth", AuthProvider.Supabase);
 
             if (provider == "email")
@@ -78,6 +105,7 @@
                 if (email.Empty())
                 {
                     await ShowError("Please enter your email.");
+                    _processing = false; StateHasChanged();
                     return;
                 }
 
@@ -93,6 +121,12 @@
         catch (Exception ex)
         {
             await ProcessException(ex);
+            _processing = false; StateHasChanged();
+        }
+        finally
+        {
+            await Task.Delay(3000);
+            _processing = false;
         }
     }
 
@@ -100,9 +134,12 @@
     {
         try
         {
+            _processing = true;
+
             if (code.Empty())
             {
                 await ShowError("Please enter the code you received by email.");
+                _processing = false; StateHasChanged();
                 return;
             }
 
@@ -112,6 +149,12 @@
         catch (Exception ex)
         {
             await ProcessException(ex);
+            _processing = false; StateHasChanged();
+        }
+        finally
+        {
+            await Task.Delay(3000);
+            _processing = false;
         }
     }
 
