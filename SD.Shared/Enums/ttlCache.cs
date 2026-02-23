@@ -6,6 +6,7 @@ public enum TtlCache
     SixHours = 60 * 60 * 6,
     HalfDay = 60 * 60 * 12,
     OneDay = 60 * 60 * 24,
+    TwoDays = 60 * 60 * 24 * 2,
     HalfWeek = 60 * 60 * 24 * 3,
     OneWeek = 60 * 60 * 24 * 7,
     TwoWeeks = 60 * 60 * 24 * 14,

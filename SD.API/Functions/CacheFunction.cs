@@ -327,10 +327,10 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                     doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, $"popularmovies_{mode}"), cancellationToken);
                 }
 
-                await SaveCache(doc, cacheKey, TtlCache.OneDay);
+                await SaveCache(doc, cacheKey, TtlCache.TwoDays);
             }
 
-            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.TwoDays, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
@@ -389,10 +389,10 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                     doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, $"populartvs"), cancellationToken);
                 }
 
-                await SaveCache(doc, cacheKey, TtlCache.OneDay);
+                await SaveCache(doc, cacheKey, TtlCache.TwoDays);
             }
 
-            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
+            return await req.CreateResponse(doc, TtlCache.TwoDays, cancellationToken);
         }
         catch (TaskCanceledException ex)
         {
