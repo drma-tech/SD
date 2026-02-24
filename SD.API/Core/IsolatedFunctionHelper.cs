@@ -2,6 +2,7 @@
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using SD.API.Core.Auth;
+using SD.API.Core.Models;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Net;
@@ -12,8 +13,6 @@ namespace SD.API.Core;
 
 public static class IsolatedFunctionHelper
 {
-    private const string messageLog = "{LogModel}";
-
     public static async Task<T> GetBody<T>(this HttpRequestData req, CancellationToken cancellationToken)
         where T : CosmosDocument, new()
     {
@@ -76,7 +75,7 @@ public static class IsolatedFunctionHelper
         return dictionary;
     }
 
-    public static void LogError(this HttpRequestData req, Exception? ex, string? customOrigin = null, LogModel? log = null)
+    public static void LogError(this HttpRequestData req, Exception? ex, string? customOrigin = null)
     {
         var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
 
@@ -84,17 +83,16 @@ public static class IsolatedFunctionHelper
 
         req.Body.Position = 0; //in case of a previous read
 
-        log ??= new LogModel();
+        var log = new LogModel
+        {
+            Origin = customOrigin ?? req.FunctionContext.FunctionDefinition.Name,
+            Params = string.Join("|", valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
+            Body = req.ReadAsString() ?? "empty",
+            AppVersion = req.GetQueryParameters()["vs"],
+            Ip = req.GetUserIP(false),
+        };
 
-        log.Origin = customOrigin ?? log.Origin ?? req.FunctionContext.FunctionDefinition.Name;
-        log.Params = log.Params ?? string.Join("|", valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}"));
-        log.Body = log.Body ?? req.ReadAsString();
-        log.AppVersion = log.AppVersion ?? req.GetQueryParameters()["vs"];
-        log.UserId = log.UserId ?? null;
-        log.Ip = log.Ip ?? req.GetUserIP(false);
-        log.Country = log.Country ?? null;
-
-        logger.LogError(ex, messageLog, log);
+        logger.LogError(ex, "origin:{Custom_Origin}, params:{Custom_Params}, body:{Custom_Body}, version:{Custom_AppVersion}, ip:{Custom_Ip}", log.Origin, log.Params, log.Body, log.AppVersion, log.Ip);
     }
 
     public static void LogError(this ILogger logger, Exception ex, string origin)
@@ -104,7 +102,7 @@ public static class IsolatedFunctionHelper
             Origin = origin,
         };
 
-        logger.LogError(ex, messageLog, log);
+        logger.LogError(ex, "origin:{Custom_Origin}", log.Origin);
     }
 
     public static void LogWarning(this HttpRequestData req, string? message)
@@ -119,22 +117,10 @@ public static class IsolatedFunctionHelper
             Origin = req.FunctionContext.FunctionDefinition.Name,
             Params = string.Join("|", valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
             AppVersion = req.GetQueryParameters()["vs"],
-            UserId = null,
             Ip = req.GetUserIP(false),
         };
 
-        logger.LogWarning(messageLog, log);
-    }
-
-    public static void LogWarning(this ILogger logger, string? message, string origin)
-    {
-        var log = new LogModel
-        {
-            Message = message,
-            Origin = origin,
-        };
-
-        logger.LogWarning(messageLog, log);
+        logger.LogWarning("message:{Custom_Message}, origin:{Custom_Origin}, params:{Custom_Params}, version:{Custom_AppVersion}, ip:{Custom_Ip}", log.Message, log.Origin, log.Params, log.AppVersion, log.Ip);
     }
 
     public static void ValidateWebVersion(this HttpRequestData req)

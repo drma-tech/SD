@@ -6,7 +6,6 @@ using Microsoft.JSInterop;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
-using SD.WEB;
 using SD.WEB.Core.Auth;
 using SD.WEB.Modules.Auth.Core;
 using SD.WEB.Modules.Collections.Core;
@@ -18,15 +17,34 @@ using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
+builder.UseSentry(options =>
+{
+    options.Dsn = "https://94ae67eb3fb0bc82327607ddd9d6aebb@o4510938040041472.ingest.us.sentry.io/4510938043711488";
+    options.Debug = true;
+    options.DiagnosticLevel = SentryLevel.Warning;
+
+    options.SetBeforeSend(evt =>
+    {
+        evt.SetTag("custom.version", AppStateStatic.Version ?? "error");
+        evt.SetTag("custom.platform", AppStateStatic.GetSavedPlatform()?.ToString() ?? "error");
+
+        evt.SetExtra("browser_name", AppStateStatic.BrowserName);
+        evt.SetExtra("browser_version", AppStateStatic.BrowserVersion);
+        evt.SetExtra("operation_system", AppStateStatic.OperatingSystem);
+
+        return evt;
+    });
+});
+
+builder.Logging.SetMinimumLevel(LogLevel.Warning);
+
 if (builder.RootComponents.Empty())
 {
-    builder.RootComponents.Add<App>("#app");
+    builder.RootComponents.Add<SD.WEB.App>("#app");
     builder.RootComponents.Add<HeadOutlet>("head::after");
 }
 
 ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress, builder.Configuration);
-
-builder.Services.AddSingleton<ILoggerProvider, CosmosLoggerProvider>();
 
 var app = builder.Build();
 
@@ -109,7 +127,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddScoped<PaymentAuthApi>();
     collection.AddScoped<IpInfoApi>();
     collection.AddScoped<IpInfoServerApi>();
-    collection.AddScoped<LoggerApi>();
 }
 
 static async Task ConfigureCulture(WebAssemblyHost? app, IJSRuntime js)

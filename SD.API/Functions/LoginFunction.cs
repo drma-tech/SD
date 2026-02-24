@@ -84,21 +84,6 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
         return response;
     }
 
-    [Function("Logger")]
-    public static async Task Logger([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/logger")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var log = await req.GetPublicBody<LogModel>(cancellationToken);
-
-            req.LogError(null, null, log);
-        }
-        catch (Exception)
-        {
-            req.LogError(null, null, null);
-        }
-    }
-
     [Function("Country")]
     public async Task<string?> Country([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/country")] HttpRequestData req, CancellationToken cancellationToken)
     {

@@ -81,7 +81,7 @@ function setupAuthListener(auth) {
             const token = user ? await user.getIdToken() : null;
             await interop.invokeDotNetWhenReady("SD.WEB", "FirebaseAuthChanged", token);
         } catch (err) {
-            notification.sendLog(err, "firebase onIdTokenChanged");
+            Sentry.captureException(err);
         }
     });
 }
@@ -124,10 +124,6 @@ export const authentication = {
                     error.code === "auth/network-request-failed" &&
                     retryCount < MAX_RETRIES
                 ) {
-                    notification.sendLog(
-                        "Network error detected. Retrying sign in...",
-                        "firebase doSignInWithRetry"
-                    );
                     notification.showError(
                         "Network error detected. Retrying sign in...",
                         "firebase doSignInWithRetry"
@@ -160,7 +156,7 @@ export const authentication = {
                     "Another sign in request is already open."
                 );
             } else {
-                notification.sendLog(error, "firebase doSignInWithRetry");
+                Sentry.captureException(error);
                 throw new Error(error.message);
             }
         }
@@ -169,7 +165,7 @@ export const authentication = {
         try {
             await window.firebase.signOut();
         } catch (error) {
-            notification.sendLog(error, "firebase signOut");
+            Sentry.captureException(error);
             throw new Error(error.message);
         }
     },
@@ -185,7 +181,7 @@ export const authentication = {
                 email: user.email || null,
             };
         } catch (error) {
-            notification.sendLog(error, "firebase getUser");
+            Sentry.captureException(error);
             notification.showError(error.message);
             return null;
         }
