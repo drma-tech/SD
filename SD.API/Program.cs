@@ -24,7 +24,7 @@ var app = new HostBuilder()
             options.Dsn = "https://94ae67eb3fb0bc82327607ddd9d6aebb@o4510938040041472.ingest.us.sentry.io/4510938043711488";
             options.DiagnosticLevel = SentryLevel.Warning;
 
-            options.TracePropagationTargets = [];
+            options.TracePropagationTargets = []; //Disable tracing because it breaks communication with external APIs.
         });
     })
     .ConfigureAppConfiguration((hostContext, config) =>
