@@ -20,8 +20,9 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.UseSentry(options =>
 {
     options.Dsn = "https://94ae67eb3fb0bc82327607ddd9d6aebb@o4510938040041472.ingest.us.sentry.io/4510938043711488";
-    options.Debug = true;
     options.DiagnosticLevel = SentryLevel.Warning;
+
+    options.TracePropagationTargets = [];
 
     options.SetBeforeSend(evt =>
     {
