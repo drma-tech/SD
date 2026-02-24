@@ -142,7 +142,7 @@ public static class IsolatedFunctionHelper
             ThrowOutdated();
         }
 
-        var minimumSupportedVersion = new DateOnly(2026, 01, 25);
+        var minimumSupportedVersion = new DateOnly(2026, 02, 24);
 
         if (clientVersion < minimumSupportedVersion)
         {
