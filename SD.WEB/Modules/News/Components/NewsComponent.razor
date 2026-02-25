@@ -10,7 +10,7 @@
                  ActivePanelIndexChanged="@(async (int vl) => { index = vl; await ProcessInitialData(); })">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/news/{(index == 0 ? "MOVIE" : "TV")}")" />
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/news/{(index == 0 ? "movie" : "tv")}")" />
                 </MudTooltip>
             </Header>
             <ChildContent>
@@ -109,7 +109,7 @@
     protected override async Task ProcessInitialData()
     {
         Actions.StartLoading?.Invoke(null);
-        News = await CacheFlixsterApi.GetNews("compact", index == 0 ? "MOVIE" : "TV");
+        News = await CacheFlixsterApi.GetNews("compact", index == 0 ? "movie" : "tv");
         Actions.FinishLoading?.Invoke(News);
     }
 
