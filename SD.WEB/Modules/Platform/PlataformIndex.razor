@@ -19,12 +19,13 @@
 
 <NewPageSection IsPageHeader="true" Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
     <ActionsFragment>
-        <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="Delivery Model" Dense="true">
+        <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="Delivery Model" Dense="true" Class="me-2">
             @foreach (var item in DeliveryModels)
             {
                 <MudSelectItem T="DeliveryModel?" Value="@item.Value">@item.Name</MudSelectItem>
             }
         </MudSelect>
+        <MudTextField T="string" Label="Name" @bind-Value="@name" Clearable="true" Variant="Variant.Text" Immediate="true" Style="max-width: 180px;"></MudTextField>
     </ActionsFragment>
 </NewPageSection>
 
@@ -84,6 +85,7 @@
     private MyProviders? MyProviders { get; set; }
 
     [Custom(Name = "Model")] public DeliveryModel? DeliveryModel { get; set; }
+    private string? name;
 
     public Region Region { get; set; } = Region.US;
 
@@ -92,6 +94,7 @@
         return AllProviders?.Items
                    .Where(p => p.regions.Contains(Region))
                    .Where(p => p.models.Any(a => DeliveryModel == null || a == DeliveryModel))
+                   .Where(p => name == null || p.name!.Contains(name, StringComparison.InvariantCultureIgnoreCase))
                    .OrderBy(o => o.priority).ToList()
                ?? [];
     }

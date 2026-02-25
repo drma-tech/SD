@@ -19,44 +19,50 @@
                     </MudTooltip>
                 </Header>
                 <ChildContent>
-                    <MudTabPanel Text="@MediaType.movie.GetName()">
-                        <NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
-                            <div id="@_swiperId" class="swiper">
-                                <div class="swiper-wrapper">
-                                    @foreach (var item in Items)
-                                    {
-                                        <div class="swiper-slide" style="height: auto !important;">
-                                            <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                                             Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
-                                                             Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
-                                            </PosterComponent>
-                                        </div>
-                                    }
+                    @if (ShowMovieFilter)
+                    {
+                        <MudTabPanel Text="@MediaType.movie.GetName()">
+                            <NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+                                <div id="@_swiperId" class="swiper">
+                                    <div class="swiper-wrapper">
+                                        @foreach (var item in Items)
+                                        {
+                                            <div class="swiper-slide" style="height: auto !important;">
+                                                <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                                                 Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
+                                                                 Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
+                                                </PosterComponent>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="swiper-button-next"></div>
+                                    <div class="swiper-button-prev"></div>
                                 </div>
-                                <div class="swiper-button-next"></div>
-                                <div class="swiper-button-prev"></div>
-                            </div>
-                        </NewRenderControl>
-                    </MudTabPanel>
-                    <MudTabPanel Text="@MediaType.tv.GetName()">
-                        <NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
-                            <div id="@_swiperId2" class="swiper">
-                                <div class="swiper-wrapper">
-                                    @foreach (var item in Items)
-                                    {
-                                        <div class="swiper-slide" style="height: auto !important;">
-                                            <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                                             Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
-                                                             Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
-                                            </PosterComponent>
-                                        </div>
-                                    }
+                            </NewRenderControl>
+                        </MudTabPanel>
+                    }
+                    @if (ShowTvFilter)
+                    {
+                        <MudTabPanel Text="@MediaType.tv.GetName()">
+                            <NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+                                <div id="@_swiperId2" class="swiper">
+                                    <div class="swiper-wrapper">
+                                        @foreach (var item in Items)
+                                        {
+                                            <div class="swiper-slide" style="height: auto !important;">
+                                                <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                                                 Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
+                                                                 Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
+                                                </PosterComponent>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="swiper-button-next"></div>
+                                    <div class="swiper-button-prev"></div>
                                 </div>
-                                <div class="swiper-button-next"></div>
-                                <div class="swiper-button-prev"></div>
-                            </div>
-                        </NewRenderControl>
-                    </MudTabPanel>
+                            </NewRenderControl>
+                        </MudTabPanel>
+                    }
                 </ChildContent>
             </MudTabs>
         </BodyFragment>
@@ -92,7 +98,8 @@ else
     [Parameter] public string? TitleHead { get; set; }
     [Parameter] public string? Icon { get; set; }
     [Parameter] public string? Image { get; set; }
-    [Parameter] public bool ShowFilter { get; set; }
+    [Parameter] public bool ShowMovieFilter { get; set; }
+    [Parameter] public bool ShowTvFilter { get; set; }
     [Parameter] public bool OnlyYear { get; set; }
     [Parameter] public bool OrderByComments { get; set; }
     [Parameter] public bool CommentsIsImage { get; set; }

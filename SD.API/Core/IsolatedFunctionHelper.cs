@@ -75,7 +75,7 @@ public static class IsolatedFunctionHelper
         return dictionary;
     }
 
-    public static void LogError(this HttpRequestData req, Exception? ex, string? customOrigin = null)
+    public static void LogError(this HttpRequestData req, Exception? ex)
     {
         var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
 
@@ -85,24 +85,12 @@ public static class IsolatedFunctionHelper
 
         var log = new LogModel
         {
-            Origin = customOrigin ?? req.FunctionContext.FunctionDefinition.Name,
             Params = string.Join("|", valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
-            Body = req.ReadAsString() ?? "empty",
             AppVersion = req.GetQueryParameters()["vs"],
             Ip = req.GetUserIP(false),
         };
 
-        logger.LogError(ex, "origin:{Custom_Origin}, params:{Custom_Params}, body:{Custom_Body}, version:{Custom_AppVersion}, ip:{Custom_Ip}", log.Origin, log.Params, log.Body, log.AppVersion, log.Ip);
-    }
-
-    public static void LogError(this ILogger logger, Exception ex, string origin)
-    {
-        var log = new LogModel
-        {
-            Origin = origin,
-        };
-
-        logger.LogError(ex, "origin:{Custom_Origin}", log.Origin);
+        logger.LogError(ex, "params:{Custom_Params}, version:{Custom_AppVersion}, ip:{Custom_Ip}", log.Params, log.AppVersion, log.Ip);
     }
 
     public static void LogWarning(this HttpRequestData req, string? message)
@@ -114,13 +102,12 @@ public static class IsolatedFunctionHelper
         var log = new LogModel
         {
             Message = message,
-            Origin = req.FunctionContext.FunctionDefinition.Name,
             Params = string.Join("|", valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
             AppVersion = req.GetQueryParameters()["vs"],
             Ip = req.GetUserIP(false),
         };
 
-        logger.LogWarning("message:{Custom_Message}, origin:{Custom_Origin}, params:{Custom_Params}, version:{Custom_AppVersion}, ip:{Custom_Ip}", log.Message, log.Origin, log.Params, log.AppVersion, log.Ip);
+        logger.LogWarning("message:{Custom_Message}, params:{Custom_Params}, version:{Custom_AppVersion}, ip:{Custom_Ip}", log.Message, log.Params, log.AppVersion, log.Ip);
     }
 
     public static void ValidateWebVersion(this HttpRequestData req)

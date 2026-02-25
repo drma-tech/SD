@@ -19,13 +19,13 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
         catch (CosmosOperationCanceledException ex)
         {
             var req = await context.GetHttpRequestDataAsync();
-            req?.LogError(ex, "ApiMiddleware - CosmosOperationCanceledException");
+            req?.LogError(ex);
             await context.SetHttpResponseStatusCode(HttpStatusCode.RequestTimeout, "Cosmos Request Timeout!");
         }
         catch (CosmosException ex)
         {
             var req = await context.GetHttpRequestDataAsync();
-            req?.LogError(ex, "ApiMiddleware - CosmosException");
+            req?.LogError(ex);
             await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "Invocation failed!");
         }
         catch (NotificationException ex)
@@ -42,7 +42,7 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
         catch (Exception ex)
         {
             var req = await context.GetHttpRequestDataAsync();
-            req?.LogError(ex, "ApiMiddleware - Exception");
+            req?.LogError(ex);
             await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "Invocation failed!");
         }
         finally

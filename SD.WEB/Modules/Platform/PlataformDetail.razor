@@ -59,13 +59,16 @@ else
     <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
     <NewRenderControl Actions="Actions" Instance="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null)">
-        <NewMediaList ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")" ShowFilter="Provider?.types.Count == 2"
+        <NewMediaList ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")"
+                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" TypeSelected="@(ShowMovieFilter ? MediaType.movie : MediaType.tv)"
                       StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </NewMediaList>
-        <NewMediaList ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/new/{{0}}")" ShowFilter="Provider?.types.Count == 2"
+        <NewMediaList ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/new/{{0}}")"
+                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" TypeSelected="@(ShowMovieFilter ? MediaType.movie : MediaType.tv)"
                       StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </NewMediaList>
-        <NewMediaList ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/top/{{0}}")" ShowFilter="Provider?.types.Count == 2"
+        <NewMediaList ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/top/{{0}}")"
+                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" TypeSelected="@(ShowMovieFilter ? MediaType.movie : MediaType.tv)"
                       StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </NewMediaList>
     </NewRenderControl>
@@ -89,6 +92,9 @@ else
     public WishList? Wish { get; set; }
 
     public MyProviders? MyProviders { get; set; }
+
+    private bool ShowMovieFilter => Provider?.types.Contains(MediaType.movie) ?? false;
+    private bool ShowTvFilter => Provider?.types.Contains(MediaType.tv) ?? false;
 
     protected override async Task OnInitializedAsync()
     {
