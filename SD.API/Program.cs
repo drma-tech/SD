@@ -13,7 +13,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 
 var app = new HostBuilder()
-    .ConfigureFunctionsWebApplication(worker =>
+    .ConfigureFunctionsWorkerDefaults(worker =>
     {
         worker.UseMiddleware<ApiMiddleware>();
     })
