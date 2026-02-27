@@ -5,6 +5,7 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Subscription.Core
+@using SD.WEB.Shared.Core
 @inherits PageCore<Profile>
 
 @inject MyProvidersApi MyProvidersApi
@@ -87,20 +88,21 @@
 
 <MudGrid Spacing="@Css.SpaceSmall">
     <MudItem xs="12" md="6">
-        <WishlistComponent ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish"
-                           Actions="WishActions" ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()">
+        <WishlistComponent ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish" ActionsMovie="WishActionsMovie" ActionsTv="WishActionsTv">
         </WishlistComponent>
     </MudItem>
     <MudItem xs="12" md="6">
-        <WatchingComponent ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish"
-                           Actions="WatchingActions" ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()">
+        <WatchingComponent ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish" ActionsMovie="WatchingActionsMovie" ActionsTv="WatchingActionsTv">
         </WatchingComponent>
     </MudItem>
 </MudGrid>
 
 @code {
-    public ComponentActions<WatchingList?> WatchingActions { get; set; } = new();
-    public ComponentActions<WishList?> WishActions { get; set; } = new();
+    public ComponentActions<WishList?> WishActionsMovie { get; set; } = new(list => list == null || list.Movies.Empty());
+    public ComponentActions<WishList?> WishActionsTv { get; set; } = new(list => list == null || list.Shows.Empty());
+
+    public ComponentActions<WatchingList?> WatchingActionsMovie { get; set; } = new(list => list == null || list.Movies.Empty());
+    public ComponentActions<WatchingList?> WatchingActionsTv { get; set; } = new(list => list == null || list.Shows.Empty());
 
     private MyProviders? MyProviders { get; set; }
     public WatchedList? Watched { get; set; }
@@ -114,8 +116,8 @@
         await base.OnInitializedAsync();
 
         WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
-        WatchingApi.DataChanged += model => { Watching = model; WatchingActions?.FinishLoading?.Invoke(model); StateHasChanged(); };
-        WishApi.DataChanged += model => { Wish = model; WishActions?.FinishLoading?.Invoke(model); StateHasChanged(); };
+        WatchingApi.DataChanged += model => { Watching = model; WatchingActionsMovie.FinishLoading.Invoke(model); WatchingActionsTv.FinishLoading.Invoke(model); StateHasChanged(); };
+        WishApi.DataChanged += model => { Wish = model; WishActionsMovie.FinishLoading.Invoke(model); WishActionsTv.FinishLoading.Invoke(model); StateHasChanged(); };
     }
 
     // protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -141,8 +143,10 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        WatchingActions?.StartLoading?.Invoke(null);
-        WishActions?.StartLoading?.Invoke(null);
+        await WatchingActionsMovie.StartLoading.Invoke(null);
+        await WatchingActionsTv.StartLoading.Invoke(null);
+        await WishActionsMovie.StartLoading.Invoke(null);
+        await WishActionsTv.StartLoading.Invoke(null);
 
         if (AppStateStatic.IsAuthenticated)
         {
@@ -157,8 +161,10 @@
             Wish = null;
         }
 
-        WishActions?.FinishLoading?.Invoke(Wish);
-        WatchingActions?.FinishLoading?.Invoke(Watching);
+        await WishActionsMovie.FinishLoading.Invoke(Wish);
+        await WishActionsTv.FinishLoading.Invoke(Wish);
+        await WatchingActionsMovie.FinishLoading.Invoke(Watching);
+        await WatchingActionsTv.FinishLoading.Invoke(Watching);
 
         MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
     }

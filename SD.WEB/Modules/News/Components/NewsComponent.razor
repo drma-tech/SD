@@ -1,82 +1,89 @@
 ﻿@using SD.Shared.Models.News
 @using SD.WEB.Modules.News.Resources
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<NewsComponent>
 
 @inject CacheFlixsterApi CacheFlixsterApi
 
 <NewPageSection Title="@($"{Translations.NewsTitle}")" Description="@Translations.NewsDescriptionShort" Icon="@IconsFA.Solid.Icon("newspaper").Font">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
-                 ActivePanelIndexChanged="@(async (int vl) => { index = vl; await ProcessInitialData(); })">
+        <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
+                 ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/news/{(index == 0 ? "movie" : "tv")}")" />
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/news/{(_activeIndex == 0 ? "movie" : "tv")}")" />
                 </MudTooltip>
             </Header>
             <ChildContent>
                 <MudTabPanel Text="@MediaType.movie.GetName()">
-                    <NewRenderControl Actions="Actions" Instance="News" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-                        <div id="@_gallerySwiperId" class="swiper">
-                            <div class="swiper-wrapper">
-                                @foreach (var item in News?.Data?.Items ?? [])
-                                {
-                                    <div class="swiper-slide" style="height: auto !important;">
-                                        <MudLink Href="@item.link" Target="_blank" rel="noindex, nofollow">
-                                            <MudImage Src="@item.url_img" Alt="@item.title" FallbackSrc="images/no-image.png" Class="d-block"
-                                                      Style="max-height: 400px; width: 100%; height: 100%;" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"></MudImage>
-                                            <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
-                                                @item.date.Humanize()
-                                            </MudChip>
-                                            <MudText Typo="Typo.caption" Class="carousel-caption p-1">
-                                                <p>@((MarkupString)item.title!)</p>
-                                            </MudText>
-                                        </MudLink>
-                                    </div>
-                                }
+                    @if (_loaded[0])
+                    {
+                        <RenderControl Actions="ActionsMovie">
+                            <div id="@_gallerySwiperId" class="swiper">
+                                <div class="swiper-wrapper">
+                                    @foreach (var item in NewsMovie?.Data?.Items ?? [])
+                                    {
+                                        <div class="swiper-slide" style="height: auto !important;">
+                                            <MudLink Href="@item.link" Target="_blank" rel="noindex, nofollow">
+                                                <MudImage Src="@item.url_img" Alt="@item.title" FallbackSrc="images/no-image.png" Class="d-block"
+                                                          Style="max-height: 400px; width: 100%; height: 100%;" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"></MudImage>
+                                                <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
+                                                    @item.date.Humanize()
+                                                </MudChip>
+                                                <MudText Typo="Typo.caption" Class="carousel-caption p-1">
+                                                    <p>@((MarkupString)item.title!)</p>
+                                                </MudText>
+                                            </MudLink>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                                @* <div class="swiper-pagination"></div> *@
+                                <div class="autoplay-progress">
+                                    <svg viewBox="0 0 48 48">
+                                        <circle cx="24" cy="24" r="20"></circle>
+                                    </svg>
+                                    <span></span>
+                                </div>
                             </div>
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                            @* <div class="swiper-pagination"></div> *@
-                            <div class="autoplay-progress">
-                                <svg viewBox="0 0 48 48">
-                                    <circle cx="24" cy="24" r="20"></circle>
-                                </svg>
-                                <span></span>
-                            </div>
-                        </div>
-                    </NewRenderControl>
+                        </RenderControl>
+                    }
                 </MudTabPanel>
                 <MudTabPanel Text="@MediaType.tv.GetName()">
-                    <NewRenderControl Actions="Actions" Instance="News" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
-                        <div id="@_gallerySwiperId2" class="swiper">
-                            <div class="swiper-wrapper">
-                                @foreach (var item in News?.Data?.Items ?? [])
-                                {
-                                    <div class="swiper-slide" style="height: auto !important;">
-                                        <MudLink Href="@item.link" Target="_blank" rel="noindex, nofollow">
-                                            <MudImage Src="@item.url_img" Alt="@item.title" FallbackSrc="images/no-image.png" Class="d-block"
-                                                      Style="max-height: 400px; width: 100%; height: 100%;" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"></MudImage>
-                                            <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
-                                                @item.date.Humanize()
-                                            </MudChip>
-                                            <MudText Typo="Typo.caption" Class="carousel-caption p-1">
-                                                <p>@((MarkupString)item.title!)</p>
-                                            </MudText>
-                                        </MudLink>
-                                    </div>
-                                }
+                    @if (_loaded[1])
+                    {
+                        <RenderControl Actions="ActionsSerie">
+                            <div id="@_gallerySwiperId2" class="swiper">
+                                <div class="swiper-wrapper">
+                                    @foreach (var item in NewsSerie?.Data?.Items ?? [])
+                                    {
+                                        <div class="swiper-slide" style="height: auto !important;">
+                                            <MudLink Href="@item.link" Target="_blank" rel="noindex, nofollow">
+                                                <MudImage Src="@item.url_img" Alt="@item.title" FallbackSrc="images/no-image.png" Class="d-block"
+                                                          Style="max-height: 400px; width: 100%; height: 100%;" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center"></MudImage>
+                                                <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
+                                                    @item.date.Humanize()
+                                                </MudChip>
+                                                <MudText Typo="Typo.caption" Class="carousel-caption p-1">
+                                                    <p>@((MarkupString)item.title!)</p>
+                                                </MudText>
+                                            </MudLink>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                                @* <div class="swiper-pagination"></div> *@
+                                <div class="autoplay-progress">
+                                    <svg viewBox="0 0 48 48">
+                                        <circle cx="24" cy="24" r="20"></circle>
+                                    </svg>
+                                    <span></span>
+                                </div>
                             </div>
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                            @* <div class="swiper-pagination"></div> *@
-                            <div class="autoplay-progress">
-                                <svg viewBox="0 0 48 48">
-                                    <circle cx="24" cy="24" r="20"></circle>
-                                </svg>
-                                <span></span>
-                            </div>
-                        </div>
-                    </NewRenderControl>
+                        </RenderControl>
+                    }
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>
@@ -84,12 +91,31 @@
 </NewPageSection>
 
 @code {
-    public ComponentActions<CacheDocument<NewsModel>?> Actions { get; set; } = new();
-    private CacheDocument<NewsModel>? News { get; set; }
-    private int index;
+    public ComponentActions<CacheDocument<NewsModel>?> ActionsMovie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+    public ComponentActions<CacheDocument<NewsModel>?> ActionsSerie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
+
+    private CacheDocument<NewsModel>? NewsMovie { get; set; }
+    private CacheDocument<NewsModel>? NewsSerie { get; set; }
+
+    private int _activeIndex = 0;
+    private bool[] _loaded = new bool[2] { true, false };
 
     private readonly string _gallerySwiperId = $"swiper-{Guid.NewGuid()}";
     private readonly string _gallerySwiperId2 = $"swiper-{Guid.NewGuid()}";
+
+    protected override void OnInitialized()
+    {
+        OnError = async (msg) => { await ActionsMovie.ShowError.Invoke(msg); await ActionsSerie.ShowError.Invoke(msg); };
+
+        base.OnInitialized();
+    }
+
+    private void OnTabChanged(int index)
+    {
+        _activeIndex = index;
+        _loaded[index] = true;
+        _ = ProcessInitialData();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -108,9 +134,18 @@
 
     protected override async Task ProcessInitialData()
     {
-        Actions.StartLoading?.Invoke(null);
-        News = await CacheFlixsterApi.GetNews("compact", index == 0 ? "movie" : "tv");
-        Actions.FinishLoading?.Invoke(News);
+        if (_activeIndex == 0)
+        {
+            await ActionsMovie.StartLoading.Invoke(null);
+            NewsMovie ??= await CacheFlixsterApi.GetNews("compact", "movie");
+            await ActionsMovie.FinishLoading.Invoke(NewsMovie);
+        }
+        else
+        {
+            await ActionsSerie.StartLoading.Invoke(null);
+            NewsSerie ??= await CacheFlixsterApi.GetNews("compact", "tv");
+            await ActionsSerie.FinishLoading.Invoke(NewsSerie);
+        }
     }
 
 }

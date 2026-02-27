@@ -2,6 +2,7 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
 @using Button = SD.WEB.Resources.Button
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<MyWatchingListPopup>
 
 @inject WatchedListApi WatchedApi
@@ -10,18 +11,9 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        @if (MediaType == MediaType.movie)
-        {
-            <WatchingComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
-                               Actions="Actions" ExpressionEmpty="(WatchingList? list) => list == null || list.Movies.Empty()">
-            </WatchingComponent>
-        }
-        else
-        {
-            <WatchingComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
-                               Actions="Actions" ExpressionEmpty="(WatchingList? list) => list == null || list.Shows.Empty()">
-            </WatchingComponent>
-        }
+        <WatchingComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+                           ActionsMovie="Actions" ActionsTv="Actions">
+        </WatchingComponent>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">

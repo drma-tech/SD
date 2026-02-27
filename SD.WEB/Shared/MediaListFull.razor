@@ -2,6 +2,7 @@
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Interface
 @using Button = SD.WEB.Resources.Button
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<MediaListFull>
 
 @inject ExternalIdApi ExternalIdApi
@@ -12,7 +13,7 @@
     <NewPageSection Title="@GetTitle" Subtitle="@SubtitleHead" Icon="@Icon" Description="@Description"></NewPageSection>
 }
 
-<NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+<RenderControl Actions="Actions">
     <div class="grid-relative-container-poster">
         @foreach (var item in Items)
         {
@@ -22,7 +23,7 @@
             </PosterComponent>
         }
     </div>
-</NewRenderControl>
+</RenderControl>
 @if (MediaListApi != null)
 {
     <div style="text-align: center;" class="pt-3">
@@ -53,7 +54,7 @@
     [Parameter] public bool Popup { get; set; } = false;
     [Parameter] public bool OnlyYear { get; set; }
 
-    [Parameter] public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new();
+    [Parameter] public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new(list => list == null || list.Empty());
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = [];
     [Parameter] public EventCallback<HashSet<MediaDetail>> ItemsChanged { get; set; }
 
@@ -86,9 +87,9 @@
 
     protected override async Task ProcessInitialData()
     {
-        Actions.StartLoading?.Invoke(null);
+        await Actions.StartLoading.Invoke(null);
         await LoadItems();
-        Actions.FinishLoading?.Invoke(Items);
+        await Actions.FinishLoading.Invoke(Items);
     }
 
     private async Task LoadItems()

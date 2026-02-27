@@ -6,6 +6,7 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Subscription.Core
+@using SD.WEB.Shared.Core
 @inherits PageCore<PlataformIndex>
 
 @inject AllProvidersApi AllProvidersApi
@@ -19,7 +20,7 @@
 
 <NewPageSection IsPageHeader="true" Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
     <ActionsFragment>
-        <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="Delivery Model" Dense="true" Class="me-2">
+        <MudSelect T="DeliveryModel ?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="Delivery Model" Dense="true" Class="me-2">
             @foreach (var item in DeliveryModels)
             {
                 <MudSelectItem T="DeliveryModel?" Value="@item.Value">@item.Name</MudSelectItem>
@@ -29,7 +30,7 @@
     </ActionsFragment>
 </NewPageSection>
 
-<NewRenderControl Actions="Actions" Instance="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null || obj.Items.Empty())">
+<RenderControl Actions="Actions">
     <div class="grid-relative-container-platform">
         @foreach (var item in GetFilteredProviders())
         {
@@ -76,10 +77,10 @@
             </div>
         }
     </div>
-</NewRenderControl>
+</RenderControl>
 
 @code {
-    public ComponentActions<AllProviders?> Actions { get; set; } = new();
+    public ComponentActions<AllProviders?> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
     private AllProviders? AllProviders { get; set; }
 
     private MyProviders? MyProviders { get; set; }
@@ -112,9 +113,9 @@
     {
         DeliveryModels = EnumHelper.GetList<DeliveryModel>();
 
-        Actions.StartLoading?.Invoke(null);
+        await Actions.StartLoading.Invoke(null);
         AllProviders = await AllProvidersApi.GetAll();
-        Actions.FinishLoading?.Invoke(AllProviders);
+        await Actions.FinishLoading.Invoke(AllProviders);
     }
 
     protected override async Task ProcessPageData()

@@ -2,6 +2,7 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
 @using Button = SD.WEB.Resources.Button
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<MyWishListPopup>
 
 @inject WatchedListApi WatchedApi
@@ -10,18 +11,9 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        @if (MediaType == MediaType.movie)
-        {
-            <WishlistComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
-                               Actions="Actions" ExpressionEmpty="(WishList? list) => list == null || list.Movies.Empty()">
-            </WishlistComponent>
-        }
-        else
-        {
-            <WishlistComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
-                               Actions="Actions" ExpressionEmpty="(WishList? list) => list == null || list.Shows.Empty()">
-            </WishlistComponent>
-        }
+        <WishlistComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+                           ActionsMovie="Actions" ActionsTv="Actions">
+        </WishlistComponent>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">
@@ -34,6 +26,7 @@
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
     [Parameter][EditorRequired] public ComponentActions<WishList?>? Actions { get; set; }
+
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }

@@ -1,5 +1,6 @@
 ﻿@using SD.Shared.Models.Trailers
 @using SD.WEB.Modules.Trailers.Resources
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<TrailersComponent>
 
 @inject CacheYoutubeApi CacheYoutubeApi
@@ -14,7 +15,7 @@
             </Header>
             <ChildContent>
                 <MudTabPanel Text="All">
-                    <NewRenderControl Actions="Actions" Instance="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+                    <RenderControl Actions="Actions">
                         <div id="@_gallerySwiperId" class="swiper">
                             <div class="swiper-wrapper">
                                 @foreach (var item in TrailerModel?.Data?.Items ?? [])
@@ -40,7 +41,7 @@
                             <div class="swiper-button-prev"></div>
                             @* <div class="swiper-pagination"></div> *@
                         </div>
-                    </NewRenderControl>
+                    </RenderControl>
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>
@@ -48,10 +49,17 @@
 </NewPageSection>
 
 @code {
-    public ComponentActions<CacheDocument<TrailerModel>?> Actions { get; set; } = new();
+    public ComponentActions<CacheDocument<TrailerModel>?> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
     private CacheDocument<TrailerModel>? TrailerModel { get; set; }
 
     private readonly string _gallerySwiperId = $"swiper-trailer-{Guid.NewGuid()}";
+
+    protected override void OnInitialized()
+    {
+        OnError = async (msg) => await Actions.ShowError.Invoke(msg);
+
+        base.OnInitialized();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -69,9 +77,9 @@
 
     protected override async Task ProcessInitialData()
     {
-        Actions.StartLoading?.Invoke(null);
+        await Actions.StartLoading.Invoke(null);
         TrailerModel = await CacheYoutubeApi.GetTrailers("compact");
-        Actions.FinishLoading?.Invoke(TrailerModel);
+        await Actions.FinishLoading.Invoke(TrailerModel);
     }
 
 }

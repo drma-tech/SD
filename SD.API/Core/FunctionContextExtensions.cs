@@ -17,17 +17,17 @@ public static class FunctionContextExtensions
         var invocationResult = context.GetInvocationResult();
 
         var httpOutputBindingFromMultipleOutputBindings = GetHttpOutputBindingFromMultipleOutputBinding(context);
+
         if (httpOutputBindingFromMultipleOutputBindings is not null)
             httpOutputBindingFromMultipleOutputBindings.Value = response;
         else
             invocationResult.Value = response;
     }
 
-    private static OutputBindingData<HttpResponseData>? GetHttpOutputBindingFromMultipleOutputBinding(FunctionContext context)
+    private static OutputBindingData<HttpResponseData>? GetHttpOutputBindingFromMultipleOutputBinding(this FunctionContext context)
     {
         // The output binding entry name will be "$return" only when the function return type is HttpResponseData
-        var httpOutputBinding = context.GetOutputBindings<HttpResponseData>()
-            .FirstOrDefault(b => b.BindingType == "http" && b.Name != "$return");
+        var httpOutputBinding = context.GetOutputBindings<HttpResponseData>().FirstOrDefault(b => b.BindingType == "http" && b.Name != "$return");
 
         return httpOutputBinding;
     }

@@ -1,11 +1,12 @@
 ﻿@using SD.Shared.Models.List.Tmdb
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Resources
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<CreditsComponent>
 
 @inject TmdbCreditApi TmdbCreditApi
 
-<NewRenderControl Actions="Actions" Instance="Credits" ExpressionEmpty="@((Credits? obj) => obj == null)">
+<RenderControl Actions="Actions">
     @if (Type == MediaType.movie)
     {
         var directors = Credits?.crew.Where(w => w.job == "Director").ToList() ?? [];
@@ -87,7 +88,7 @@
             }
         </MudGrid>
     </MudPaper>
-</NewRenderControl>
+</RenderControl>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
@@ -97,14 +98,14 @@
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
 
-    public ComponentActions<Credits?> Actions { get; set; } = new();
+    public ComponentActions<Credits?> Actions { get; set; } = new(obj => obj == null);
     private Credits? Credits { get; set; }
 
     protected override async Task ProcessComponentData()
     {
-        Actions.StartLoading?.Invoke(null);
+        await Actions.StartLoading.Invoke(null);
         Credits = await TmdbCreditApi.GetList(Type, TmdbId);
-        Actions.FinishLoading?.Invoke(Credits);
+        await Actions.FinishLoading.Invoke(Credits);
     }
 
     private async Task OpenCompleteList(Crew crew)

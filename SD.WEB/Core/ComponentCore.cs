@@ -4,19 +4,6 @@ using MudBlazor;
 
 namespace SD.WEB.Core;
 
-public class ComponentActions<T>
-{
-    public Action<string?>? StartLoading { get; set; }
-    public Action<T?>? FinishLoading { get; set; }
-
-    public Action<string?>? StartProcessing { get; set; }
-    public Action<T?>? FinishProcessing { get; set; }
-
-    public Action<string?>? ShowWarning { get; set; }
-    public Action<string?>? ShowError { get; set; }
-    public Action? ShowCustomContent { get; set; }
-}
-
 public abstract class ComponentCore<T> : ComponentBase where T : class
 {
     [Inject] private ILogger<T> Logger { get; set; } = null!;
@@ -26,6 +13,7 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
     [Inject] protected NavigationManager Navigation { get; set; } = null!;
 
     private readonly TaskHelper _taskHelper = new();
+    protected Action<string>? OnError { get; set; }
 
     /// <summary>
     /// Mandatory data to fill out the page/component without delay (essential for bots, SEO, etc.)
@@ -69,7 +57,10 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
         }
         catch (Exception ex)
         {
-            ex.ProcessException(Snackbar, Logger);
+            if (OnError != null)
+                OnError(ex.Message);
+            else
+                await ProcessException(ex);
         }
     }
 
@@ -90,7 +81,10 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
         }
         catch (Exception ex)
         {
-            await ProcessException(ex);
+            if (OnError != null)
+                OnError(ex.Message);
+            else
+                await ProcessException(ex);
         }
     }
 

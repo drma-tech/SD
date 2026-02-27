@@ -1,9 +1,10 @@
 ﻿@using SD.Shared.Models.Reviews
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<ReviewComponent>
 
 @inject CacheMetaCriticApi CacheMetaCriticApi
 
-<NewRenderControl Actions="Actions" Instance="Model?.Data" ExpressionEmpty="@((ReviewModel? obj) => obj == null || obj.Items.Empty())">
+<RenderControl Actions="Actions">
     <MudGrid Spacing="@Css.SpaceSmall">
         @foreach (var item in Model?.Data?.Items ?? [])
         {
@@ -28,7 +29,7 @@
             </MudItem>
         }
     </MudGrid>
-</NewRenderControl>
+</RenderControl>
 
 @code {
     [Parameter] public string? ImdbId { get; set; }
@@ -37,7 +38,12 @@
     [Parameter] public MediaType? Type { get; set; }
 
     public CacheDocument<ReviewModel>? Model { get; set; }
-    private ComponentActions<ReviewModel?> Actions { get; set; } = new();
+    private ComponentActions<ReviewModel?> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
+
+    protected override void OnInitialized()
+    {
+        OnError = async (msg) => { await Actions.ShowError.Invoke(msg); };
+    }
 
     protected override async Task ProcessComponentData()
     {

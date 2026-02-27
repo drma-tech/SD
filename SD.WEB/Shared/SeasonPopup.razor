@@ -2,12 +2,13 @@
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Resources
 @using Button = SD.WEB.Resources.Button
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<SeasonPopup>
 @inject TmdbApi TmdbApi
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <NewRenderControl Actions="Actions" Instance="Season" ExpressionEmpty="@((TmdbSeason? obj) => obj == null || obj.episodes.Empty())">
+        <RenderControl Actions="Actions">
             <MudList T="string">
                 @foreach (var item in Season?.episodes ?? [])
                 {
@@ -27,7 +28,7 @@
                     </MudListItem>
                 }
             </MudList>
-        </NewRenderControl>
+        </RenderControl>
     </DialogContent>
     <DialogActions>
         <MudAlert Severity="Severity.Warning" Variant="Variant.Text" Dense="true" Icon="@IconsFA.Solid.Icon("circle-exclamation").WithAnimation(IconAnimation.Beat).Font">
@@ -46,7 +47,7 @@
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public int? SeasonNumber { get; set; }
 
-    public ComponentActions<TmdbSeason?> Actions { get; set; } = new();
+    public ComponentActions<TmdbSeason?> Actions { get; set; } = new(obj => obj == null || obj.episodes.Empty());
     public TmdbSeason? Season { get; set; }
 
     protected override async Task ProcessPopupData()
@@ -57,9 +58,9 @@
             { "language", (await AppStateStatic.GetContentLanguage(JsRuntime)).GetName(false) ?? "en-US" }
         };
 
-        Actions.StartLoading?.Invoke(null);
+        await Actions.StartLoading.Invoke(null);
         Season = await TmdbApi.GetSeason(TmdbId, SeasonNumber, parameters);
-        Actions.FinishLoading?.Invoke(Season);
+        await Actions.FinishLoading.Invoke(Season);
     }
 
     public void HideModal()

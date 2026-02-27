@@ -1,6 +1,7 @@
 ﻿@page "/search"
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Shared.Core
 @inherits PageCore<Search>
 
 @inject TmdbSearchApi TmdbSearch
@@ -18,11 +19,11 @@
               HelperText="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio">
 </MudTextField>
 
-<NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())" CustomMessageWarning="@GlobalTranslations.SearchReturnedNothing">
+<RenderControl Actions="Actions">
     <MediaListFull MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false" FullPage="true"
                    Watched="Watched" Watching="Watching" Wish="Wish">
     </MediaListFull>
-</NewRenderControl>
+</RenderControl>
 
 @code {
     public WatchedList? Watched { get; set; }
@@ -30,11 +31,13 @@
     public WishList? Wish { get; set; }
 
     private HashSet<MediaDetail> Items { get; set; } = [];
-    private ComponentActions<HashSet<MediaDetail>> Actions { get; } = new();
+    private ComponentActions<HashSet<MediaDetail>> Actions { get; } = new(list => list == null || list.Empty());
     private Dictionary<string, string> StringParameters => new() { { "query", AppStateStatic.Search ?? "" } };
 
     protected override void OnInitialized()
     {
+        Actions.CustomMessageWarning = GlobalTranslations.SearchReturnedNothing;
+
         WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
@@ -42,11 +45,11 @@
 
     protected override async Task ProcessPageData()
     {
-        Actions.StartLoading?.Invoke(null);
+        await Actions.StartLoading.Invoke(null);
         Items.Clear();
         var result = await TmdbSearch.GetList(Items, null, StringParameters);
         Items = result.list;
-        Actions.FinishLoading?.Invoke(Items);
+        await Actions.FinishLoading.Invoke(Items);
     }
 
     protected override async Task LoadAuthDataAsync()

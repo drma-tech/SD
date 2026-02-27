@@ -12,7 +12,6 @@ using SD.Shared.Models.Popular;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
 using System.Globalization;
-using System.Net;
 using System.Text.Json;
 using Item = SD.Shared.Models.News.Item;
 
@@ -41,14 +40,6 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
             return await req.CreateResponse(doc, TtlCache.OneWeek, cancellationToken);
         }
-        catch (TaskCanceledException ex)
-        {
-            req.LogError(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
-
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
         catch (Exception ex)
         {
             req.LogError(ex);
@@ -64,7 +55,6 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         {
             var ip = req.GetUserIP(false);
             var userId = await req.GetUserIdAsync(cancellationToken);
-
             var cacheKey = $"energy_auth_{DateTime.UtcNow.Day}_{ip}";
 
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
@@ -84,14 +74,6 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
             return await req.CreateResponse(doc, TtlCache.OneWeek, cancellationToken);
         }
-        catch (TaskCanceledException ex)
-        {
-            req.LogError(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
-
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
         catch (Exception ex)
         {
             req.LogError(ex);
@@ -107,7 +89,6 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         {
             var ip = req.GetUserIP(false);
             var cacheKey = $"energy_{DateTime.UtcNow.Day}_{ip}";
-
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
 
             if (doc == null)
@@ -138,8 +119,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         {
             var ip = req.GetUserIP(false);
             var userId = await req.GetUserIdAsync(cancellationToken);
-
             var cacheKey = $"energy_auth_{DateTime.UtcNow.Day}_{ip}";
+
             var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
 
             if (doc == null)
@@ -172,514 +153,343 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
     public async Task<HttpResponseData?> CacheNew([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
-        try
+        var mode = req.GetQueryParameters()["mode"];
+        var category = req.GetQueryParameters()["category"];
+        var cacheKey = $"news_{mode}_{category}";
+
+        var doc = await distributedCache.Get<NewsModel>(cacheKey, cancellationToken);
+
+        if (doc == null)
         {
-            req.ValidateWebVersion();
+            doc = await cacheRepo.Get<NewsModel>(cacheKey, cancellationToken);
 
-            var mode = req.GetQueryParameters()["mode"];
-            var category = req.GetQueryParameters()["category"];
-            var cacheKey = $"lastnews_{mode}_{category}";
-            CacheDocument<NewsModel>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
-            if (cachedBytes is { Length: > 0 })
+            if (doc == null)
             {
-                doc = JsonSerializer.Deserialize<CacheDocument<NewsModel>>(cachedBytes);
-            }
-            else
-            {
-                doc = await cacheRepo.Get<NewsModel>(cacheKey, cancellationToken);
+                var client = factory.CreateClient("rapidapi");
+                var obj = await client.GetNewsByImdb8<NewsJson>(category, cancellationToken);
 
-                if (doc == null)
+                var compactModels = new NewsModel();
+
+                var nodes = obj?.data?.news?.edges?.Select(s => s.node) ?? [];
+
+                foreach (var item in nodes.Take(mode == "compact" ? 10 : 30) ?? [])
                 {
-                    var client = factory.CreateClient("rapidapi");
-                    var obj = await client.GetNewsByImdb8<NewsJson>(category, cancellationToken);
-
-                    var compactModels = new NewsModel();
-
-                    var nodes = obj?.data?.news?.edges?.Select(s => s.node) ?? [];
-
-                    foreach (var item in nodes.Take(mode == "compact" ? 10 : 30) ?? [])
-                    {
-                        if (item == null) continue;
-                        compactModels.Items.Add(new Item(item.id, item.articleTitle?.plainText, item.image?.url, item.externalUrl, item.date));
-                    }
-
-                    doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, $"lastnews_{mode}_{category}"), cancellationToken);
+                    if (item == null) continue;
+                    compactModels.Items.Add(new Item(item.id, item.articleTitle?.plainText, item.image?.url, item.externalUrl, item.date));
                 }
 
-                await SaveCache(doc, cacheKey, TtlCache.HalfDay);
+                doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, cacheKey), cancellationToken);
             }
 
-            return await req.CreateResponse(doc, TtlCache.HalfDay, cancellationToken);
+            await SaveCache(doc, cacheKey, TtlCache.HalfDay);
         }
-        catch (TaskCanceledException ex)
-        {
-            req.LogError(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
 
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+        return await req.CreateResponse(doc, TtlCache.HalfDay, cancellationToken);
     }
 
     [Function("CacheTrailers")]
     public async Task<HttpResponseData?> CacheTrailers(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/trailers")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        try
+        var mode = req.GetQueryParameters()["mode"];
+        var cacheKey = $"trailers_{mode}";
+
+        var doc = await distributedCache.Get<TrailerModel>(cacheKey, cancellationToken);
+
+        if (doc == null)
         {
-            req.ValidateWebVersion();
+            doc = await cacheRepo.Get<TrailerModel>(cacheKey, cancellationToken);
 
-            var mode = req.GetQueryParameters()["mode"];
-            var cacheKey = $"lasttrailers_{mode}";
-            CacheDocument<TrailerModel>? doc;
-
-            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
-            if (cachedBytes is { Length: > 0 })
+            if (doc == null)
             {
-                doc = JsonSerializer.Deserialize<CacheDocument<TrailerModel>>(cachedBytes);
-            }
-            else
-            {
-                doc = await cacheRepo.Get<TrailerModel>(cacheKey, cancellationToken);
+                var client = factory.CreateClient("rapidapi");
+                var obj = await client.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
 
-                if (doc == null)
+                var compactModels = new TrailerModel();
+
+                foreach (var item in obj?.contents?.Take(mode == "compact" ? 12 : 100).Select(s => s.video) ?? [])
                 {
-                    var client = factory.CreateClient("rapidapi");
-                    var obj = await client.GetTrailersByYoutubeSearch<Youtube>(cancellationToken);
-
-                    var compactModels = new TrailerModel();
-
-                    foreach (var item in obj?.contents?.Take(mode == "compact" ? 12 : 100).Select(s => s.video) ?? [])
-                    {
-                        if (item == null) continue;
-                        compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url, item.publishedTimeText));
-                    }
-
-                    doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, $"lasttrailers_{mode}"), cancellationToken);
+                    if (item == null) continue;
+                    compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url, item.publishedTimeText));
                 }
 
-                await SaveCache(doc, cacheKey, TtlCache.SixHours);
+                doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, cacheKey), cancellationToken);
             }
 
-            return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
+            await SaveCache(doc, cacheKey, TtlCache.SixHours);
         }
-        catch (TaskCanceledException ex)
-        {
-            req.LogError(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
 
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+        return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
     }
 
     [Function("ImdbPopularMovies")]
     public async Task<HttpResponseData?> ImdbPopularMovies(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        try
+        var mode = req.GetQueryParameters()["mode"];
+        var cacheKey = $"popular-movies-{mode}";
+
+        var doc = await distributedCache.Get<MostPopularData>(cacheKey, cancellationToken);
+
+        if (doc == null)
         {
-            req.ValidateWebVersion();
+            doc = await cacheRepo.Get<MostPopularData>(cacheKey, cancellationToken);
 
-            var mode = req.GetQueryParameters()["mode"];
-            var cacheKey = $"popularmovies_{mode}";
-            CacheDocument<MostPopularData>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
-            if (cachedBytes is { Length: > 0 })
+            if (doc == null)
             {
-                doc = JsonSerializer.Deserialize<CacheDocument<MostPopularData>>(cachedBytes);
-            }
-            else
-            {
-                doc = await cacheRepo.Get<MostPopularData>(cacheKey, cancellationToken);
+                var client = factory.CreateClient("rapidapi");
+                var obj = await client.GetMostPopular<List<PopularScraping>>("most-popular-movies", cancellationToken);
 
-                if (doc == null)
+                var compactModels = new MostPopularData();
+
+                foreach (var item in obj?.Take(mode == "compact" ? 20 : 40) ?? [])
                 {
-                    var client = factory.CreateClient("rapidapi");
-                    var obj = await client.GetMostPopular<List<PopularScraping>>("most-popular-movies", cancellationToken);
-
-                    var compactModels = new MostPopularData();
-
-                    foreach (var item in obj?.Take(mode == "compact" ? 20 : 100) ?? [])
+                    if (item == null) continue;
+                    compactModels.Items.Add(new MostPopularDataDetail
                     {
-                        if (item == null) continue;
-                        compactModels.Items.Add(new MostPopularDataDetail
-                        {
-                            Id = item.id,
-                            Title = item.primaryTitle,
-                            Image = item.thumbnails?[1]?.url,
-                            Year = item.startYear?.ToString(),
-                            IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture)
-                        });
-                    }
-
-                    doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, $"popularmovies_{mode}"), cancellationToken);
+                        Id = item.id,
+                        Title = item.primaryTitle,
+                        Image = item.thumbnails?[1]?.url,
+                        Year = item.startYear?.ToString(),
+                        IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture)
+                    });
                 }
 
-                await SaveCache(doc, cacheKey, TtlCache.TwoDays);
+                doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, cacheKey), cancellationToken);
             }
 
-            return await req.CreateResponse(doc, TtlCache.TwoDays, cancellationToken);
+            await SaveCache(doc, cacheKey, TtlCache.TwoDays);
         }
-        catch (TaskCanceledException ex)
-        {
-            req.LogError(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
 
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+        return await req.CreateResponse(doc, TtlCache.TwoDays, cancellationToken);
     }
 
     [Function("ImdbPopularTVs")]
     public async Task<HttpResponseData?> ImdbPopularTVs(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-tvs")] HttpRequestData req, CancellationToken cancellationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/imdb-popular-tv")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        try
+        var mode = req.GetQueryParameters()["mode"];
+        var cacheKey = $"popular-tv-{mode}";
+
+        var doc = await distributedCache.Get<MostPopularData>(cacheKey, cancellationToken);
+
+        if (doc == null)
         {
-            req.ValidateWebVersion();
+            doc = await cacheRepo.Get<MostPopularData>(cacheKey, cancellationToken);
 
-            var cacheKey = "populartvs";
-            CacheDocument<MostPopularData>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
-            if (cachedBytes is { Length: > 0 })
+            if (doc == null)
             {
-                doc = JsonSerializer.Deserialize<CacheDocument<MostPopularData>>(cachedBytes);
-            }
-            else
-            {
-                doc = await cacheRepo.Get<MostPopularData>(cacheKey, cancellationToken);
+                var client = factory.CreateClient("rapidapi");
+                var obj = await client.GetMostPopular<List<PopularScraping>>("most-popular-tv", cancellationToken);
 
-                if (doc == null)
+                var compactModels = new MostPopularData();
+
+                foreach (var item in obj?.Take(mode == "compact" ? 20 : 40) ?? [])
                 {
-                    var client = factory.CreateClient("rapidapi");
-                    var obj = await client.GetMostPopular<List<PopularScraping>>("most-popular-tv", cancellationToken);
-
-                    var compactModels = new MostPopularData();
-
-                    foreach (var item in obj?.Take(20) ?? [])
+                    if (item == null) continue;
+                    compactModels.Items.Add(new MostPopularDataDetail
                     {
-                        if (item == null) continue;
-                        compactModels.Items.Add(new MostPopularDataDetail
-                        {
-                            Id = item.id,
-                            Title = item.primaryTitle,
-                            Image = item.thumbnails?[1]?.url,
-                            Year = item.startYear?.ToString(),
-                            IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture)
-                        });
-                    }
-
-                    doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, $"populartvs"), cancellationToken);
+                        Id = item.id,
+                        Title = item.primaryTitle,
+                        Image = item.thumbnails?[1]?.url,
+                        Year = item.startYear?.ToString(),
+                        IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture)
+                    });
                 }
 
-                await SaveCache(doc, cacheKey, TtlCache.TwoDays);
+                doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, cacheKey), cancellationToken);
             }
 
-            return await req.CreateResponse(doc, TtlCache.TwoDays, cancellationToken);
+            await SaveCache(doc, cacheKey, TtlCache.TwoDays);
         }
-        catch (TaskCanceledException ex)
-        {
-            req.LogError(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
 
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+        return await req.CreateResponse(doc, TtlCache.TwoDays, cancellationToken);
     }
 
     [Function("CacheMovieRatings")]
     public async Task<HttpResponseData?> CacheMovieRatings(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/ratings/movie")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        try
+        var id = req.GetQueryParameters()["id"];
+        var tmdbId = req.GetQueryParameters()["tmdb_id"];
+        var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
+        var ttl = TtlCache.OneDay;
+
+        DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
+        var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
+
+        var doc = await distributedCache.Get<Ratings>(cacheKey, cancellationToken);
+
+        if (doc == null)
         {
-            req.ValidateWebVersion();
+            if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
 
-            var id = req.GetQueryParameters()["id"];
-            var tmdbId = req.GetQueryParameters()["tmdb_id"];
-            var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
+            doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
 
-            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
-            var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
-            CacheDocument<Ratings>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
-            var ttl = TtlCache.OneDay;
-
-            if (cachedBytes is { Length: > 0 })
+            if (doc == null)
             {
-                doc = JsonSerializer.Deserialize<CacheDocument<Ratings>>(cachedBytes);
-            }
-            else
-            {
-                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
-
-                doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
-
-                if (doc == null)
+                var ratings = new Ratings()
                 {
-                    var ratings = new Ratings()
-                    {
-                        imdbId = id,
-                        tmdbId = tmdbId,
-                        type = MediaType.movie,
-                        tmdb = tmdbRating,
-                    };
+                    imdbId = id,
+                    tmdbId = tmdbId,
+                    type = MediaType.movie,
+                    tmdb = tmdbRating,
+                };
 
-                    await req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken);
+                await req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken);
 
-                    await req.ProcessApiUnifiedMovie(factory, ratings, cancellationToken);
+                await req.ProcessApiUnifiedMovie(factory, ratings, cancellationToken);
 
-                    //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
+                //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
 
-                    await req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken);
+                await req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken);
 
-                    ttl = CalculateTtl(releaseDate);
+                ttl = CalculateTtl(releaseDate);
 
-                    doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl), cancellationToken);
-                }
-
-                await SaveCache(doc, cacheKey, ttl);
+                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl), cancellationToken);
             }
 
-            await TrySaveCertifiedSd(doc, releaseDate, 8498673, tmdbId, MediaType.movie, cancellationToken, factory);
+            await SaveCache(doc, cacheKey, ttl);
+        }
 
-            return await req.CreateResponse(doc, ttl, cancellationToken);
-        }
-        catch (TaskCanceledException ex)
-        {
-            req.LogError(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
+        await TrySaveCertifiedSd(doc, releaseDate, 8498673, tmdbId, MediaType.movie, cancellationToken, factory);
 
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+        return await req.CreateResponse(doc, ttl, cancellationToken);
     }
 
     [Function("CacheShowRatings")]
     public async Task<HttpResponseData?> CacheShowRatings(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/ratings/show")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        try
+        var id = req.GetQueryParameters()["id"];
+        var tmdbId = req.GetQueryParameters()["tmdb_id"];
+        var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
+        var ttl = TtlCache.OneDay;
+
+        DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
+        var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
+
+        var doc = await distributedCache.Get<Ratings>(cacheKey, cancellationToken);
+
+        if (doc == null)
         {
-            req.ValidateWebVersion();
+            if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
 
-            var id = req.GetQueryParameters()["id"];
-            var tmdbId = req.GetQueryParameters()["tmdb_id"];
-            var tmdbRating = req.GetQueryParameters()["tmdb_rating"];
+            doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
 
-            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
-            var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
-            CacheDocument<Ratings>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
-            var ttl = TtlCache.OneDay;
-
-            if (cachedBytes is { Length: > 0 })
+            if (doc == null)
             {
-                doc = JsonSerializer.Deserialize<CacheDocument<Ratings>>(cachedBytes);
-            }
-            else
-            {
-                if (releaseDate > DateTime.Now.AddDays(-7)) return null; //don't get ratings for new releases (first week of launch)
-
-                doc = await cacheRepo.Get<Ratings>(cacheKey, cancellationToken);
-
-                if (doc == null)
+                var ratings = new Ratings()
                 {
-                    var ratings = new Ratings()
-                    {
-                        imdbId = id,
-                        tmdbId = tmdbId,
-                        type = MediaType.tv,
-                        tmdb = tmdbRating,
-                    };
+                    imdbId = id,
+                    tmdbId = tmdbId,
+                    type = MediaType.tv,
+                    tmdb = tmdbRating,
+                };
 
-                    await req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken);
+                await req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken);
 
-                    await req.ProcessApiUnifiedMovie(factory, ratings, cancellationToken);
+                await req.ProcessApiUnifiedMovie(factory, ratings, cancellationToken);
 
-                    //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
+                //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
 
-                    await req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken);
+                await req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken);
 
-                    ttl = CalculateTtl(releaseDate);
+                ttl = CalculateTtl(releaseDate);
 
-                    doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl), cancellationToken);
-                }
-
-                await SaveCache(doc, cacheKey, ttl);
+                doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl), cancellationToken);
             }
 
-            await TrySaveCertifiedSd(doc, releaseDate, 8498675, tmdbId, MediaType.tv, cancellationToken, factory);
+            await SaveCache(doc, cacheKey, ttl);
+        }
 
-            return await req.CreateResponse(doc, ttl, cancellationToken);
-        }
-        catch (TaskCanceledException ex)
-        {
-            req.LogError(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
+        await TrySaveCertifiedSd(doc, releaseDate, 8498675, tmdbId, MediaType.tv, cancellationToken, factory);
 
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+        return await req.CreateResponse(doc, ttl, cancellationToken);
     }
 
     [Function("CacheMovieReviews")]
     public async Task<HttpResponseData?> CacheMovieReviews(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        try
+        var id = req.GetQueryParameters()["id"];
+        var ttl = TtlCache.OneDay;
+
+        DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
+        var cacheKey = $"review_{id}";
+
+        var doc = await distributedCache.Get<ReviewModel>(cacheKey, cancellationToken);
+
+        if (doc == null)
         {
-            req.ValidateWebVersion();
+            if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first week of launch)
 
-            var id = req.GetQueryParameters()["id"];
-            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
-            var cacheKey = $"review_{id}";
-            CacheDocument<ReviewModel>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
-            var ttl = TtlCache.OneDay;
+            doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
 
-            if (cachedBytes is { Length: > 0 })
+            if (doc == null)
             {
-                doc = JsonSerializer.Deserialize<CacheDocument<ReviewModel>>(cachedBytes);
-            }
-            else
-            {
-                if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first week of launch)
+                var client = factory.CreateClient("rapidapi");
+                var obj = await client.GetReviewsByImdb8<RootMetacritic>(id, cancellationToken);
+                if (obj == null) return null;
 
-                doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
+                var newModel = new ReviewModel();
 
-                if (doc == null)
+                foreach (var node in obj.data?.title?.metacritic?.reviews?.edges.Select(s => s.node) ?? [])
                 {
-                    var client = factory.CreateClient("rapidapi");
-                    var obj = await client.GetReviewsByImdb8<RootMetacritic>(id, cancellationToken);
-                    if (obj == null) return null;
-
-                    var newModel = new ReviewModel();
-
-                    foreach (var node in obj.data?.title?.metacritic?.reviews?.edges.Select(s => s.node) ?? [])
-                    {
-                        newModel.Items.Add(new Shared.Models.Reviews.Item(node?.site, node?.url,
-                            node?.reviewer, node?.score, node?.quote?.value));
-                    }
-
-                    ttl = CalculateTtl(releaseDate);
-
-                    doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
+                    newModel.Items.Add(new Shared.Models.Reviews.Item(node?.site, node?.url,
+                        node?.reviewer, node?.score, node?.quote?.value));
                 }
 
-                await SaveCache(doc, cacheKey, ttl);
+                ttl = CalculateTtl(releaseDate);
+
+                doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
             }
 
-            return await req.CreateResponse(doc, ttl, cancellationToken);
+            await SaveCache(doc, cacheKey, ttl);
         }
-        catch (TaskCanceledException ex)
-        {
-            req.LogError(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
 
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+        return await req.CreateResponse(doc, ttl, cancellationToken);
     }
 
     [Function("CacheShowReviews")]
     public async Task<HttpResponseData?> CacheShowReviews(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/reviews/shows")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        try
+        var id = req.GetQueryParameters()["id"];
+        var title = req.GetQueryParameters()["title"];
+        var ttl = TtlCache.OneDay;
+        DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
+        var cacheKey = $"review_{id}";
+
+        var doc = await distributedCache.Get<ReviewModel>(cacheKey, cancellationToken);
+
+        if (doc == null)
         {
-            req.ValidateWebVersion();
+            if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first week of launch)
 
-            var id = req.GetQueryParameters()["id"];
-            var title = req.GetQueryParameters()["title"];
-            DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
-            var cacheKey = $"review_{id}";
-            CacheDocument<ReviewModel>? doc;
-            var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
-            var ttl = TtlCache.OneDay;
+            doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
 
-            if (cachedBytes is { Length: > 0 })
+            if (doc == null)
             {
-                doc = JsonSerializer.Deserialize<CacheDocument<ReviewModel>>(cachedBytes);
-            }
-            else
-            {
-                if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first week of launch)
+                var obj = ScrapingReview.GetTvReviews(title, releaseDate.Year);
+                //if (obj.meta?.title == "undefined critic reviews") return null;
 
-                doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
+                var newModel = new ReviewModel();
 
-                if (doc == null)
+                foreach (var item in obj.items)
                 {
-                    var obj = ScrapingReview.GetTvReviews(title, releaseDate.Year);
-                    //if (obj.meta?.title == "undefined critic reviews") return null;
-
-                    var newModel = new ReviewModel();
-
-                    foreach (var item in obj.items)
-                    {
-                        newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));
-                    }
-
-                    ttl = CalculateTtl(releaseDate);
-
-                    doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
+                    newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));
                 }
 
-                await SaveCache(doc, cacheKey, ttl);
+                ttl = CalculateTtl(releaseDate);
+
+                doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
             }
 
-            return await req.CreateResponse(doc, ttl, cancellationToken);
+            await SaveCache(doc, cacheKey, ttl);
         }
-        catch (TaskCanceledException ex)
-        {
-            req.LogError(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
 
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+        return await req.CreateResponse(doc, ttl, cancellationToken);
     }
 
     private static async Task TrySaveCertifiedSd(CacheDocument<Ratings>? doc, DateTime releaseDate, int listId, string? tmdbId, MediaType type, CancellationToken token, IHttpClientFactory factory)

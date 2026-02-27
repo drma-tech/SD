@@ -4,6 +4,7 @@
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Resources
 @using Button = SD.WEB.Resources.Button
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<MediaPopup>
 
 @inject TmdbApi TmdbApi
@@ -15,7 +16,7 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <NewRenderControl Actions="Actions" Instance="Media" ExpressionEmpty="@((MediaDetail? obj) => obj == null)">
+        <RenderControl Actions="Actions">
             <MudTabs Border="true" Outlined="true" TabPanelsClass="pt-2" MinimumTabWidth="100px">
                 <MudTabPanel Tag="@Translations.TabAbout" Text="@Translations.TabAbout">
                     <MudGrid Spacing="@Css.SpaceSmall">
@@ -50,7 +51,7 @@
                                 </MudChip>
                             }
                             <div>
-                                <NewRenderControl Actions="RatingsActions" Instance="_ratingsCache" ExpressionEmpty="@((CacheDocument<Ratings>? obj) => obj?.Data == null)" Context="ctx" LoadingHeight="40px">
+                                <RenderControl Actions="RatingsActions" Context="ctx" LoadingHeight="40px">
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.imdb))
                                     {
                                         <MudTooltip Text="IMDb">
@@ -121,7 +122,7 @@
                                             </MudLink>
                                         </MudTooltip>
                                     }
-                                </NewRenderControl>
+                                </RenderControl>
                             </div>
                             <MudText Typo="Typo.body1" Align="Align.Justify" Class="my-3">
                                 @Media?.plot
@@ -230,7 +231,7 @@
                     </ReviewComponent>
                 </MudTabPanel>
             </MudTabs>
-        </NewRenderControl>
+        </RenderControl>
     </DialogContent>
     <DialogActions>
         @if (AppStateStatic.IsAuthenticated)
@@ -292,14 +293,14 @@
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
 
-    public ComponentActions<MediaDetail?> Actions { get; set; } = new();
+    public ComponentActions<MediaDetail?> Actions { get; set; } = new(obj => obj == null);
     private MediaDetail? Media { get; set; }
     public string? ImdbId { get; set; }
     public string? EnglishTitle { get; set; }
 
     private const string _selectedTab = "About";
 
-    public ComponentActions<CacheDocument<Ratings>?> RatingsActions { get; set; } = new();
+    public ComponentActions<CacheDocument<Ratings>?> RatingsActions { get; set; } = new(obj => obj?.Data == null);
     private CacheDocument<Ratings>? _ratingsCache;
 
     protected override void OnInitialized()
@@ -329,10 +330,10 @@
 
     protected override async Task ProcessPopupData()
     {
-        Actions.StartLoading?.Invoke(null);
+        await Actions.StartLoading.Invoke(null);
         Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
         Media.Videos.Reverse();
-        Actions.FinishLoading?.Invoke(Media);
+        await Actions.FinishLoading.Invoke(Media);
 
         ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId);
 
@@ -350,7 +351,7 @@
 
         StateHasChanged();
 
-        RatingsActions.StartLoading?.Invoke(null);
+        await RatingsActions.StartLoading.Invoke(null);
         if (Media?.MediaType == MediaType.movie)
         {
             _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"));
@@ -359,7 +360,7 @@
         {
             _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"));
         }
-        RatingsActions.FinishLoading?.Invoke(_ratingsCache);
+        await RatingsActions.FinishLoading.Invoke(_ratingsCache);
     }
 
     private Color GetColorByRating(string? rating)

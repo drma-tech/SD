@@ -1,41 +1,46 @@
 ﻿@using SD.WEB.Modules.Profile.Resources
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<WishlistComponent>
 
 <NewPageSection Icon="@IconsFA.Solid.Icon("bookmark").Font" Title="WishList" ShowHeader="ShowHeader">
     <BodyFragment>
         @if (TypeParam.HasValue)
         {
-            @if (FullScreen)
-            {
-                <div class="grid-relative-container-poster">
-                    @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems) ?? [])
-                    {
-                        var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-
-                        <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
-                                         Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
-                        </PosterComponent>
-                    }
-                </div>
-            }
-            else
-            {
-                <div id="@_swiperId" class="swiper">
-                    <div class="swiper-wrapper">
+            <RenderControl Actions="@(TypeParam == MediaType.movie ? ActionsMovie : ActionsTv)" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
+                @if (FullScreen)
+                {
+                    <span>FullScreen</span>
+                    <div class="grid-relative-container-poster">
                         @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems) ?? [])
                         {
                             var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-                            <div class="swiper-slide" style="height: auto !important;">
-                                <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
-                                                 Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
-                                </PosterComponent>
-                            </div>
+
+                            <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
+                                             Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                            </PosterComponent>
                         }
                     </div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                </div>
-            }
+                }
+                else
+                {
+                    <span>non FullScreen</span>
+                    <div id="@_swiperId" class="swiper">
+                        <div class="swiper-wrapper">
+                            @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems) ?? [])
+                            {
+                                var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                                <div class="swiper-slide" style="height: auto !important;">
+                                    <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
+                                                     Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                    </PosterComponent>
+                                </div>
+                            }
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                }
+            </RenderControl>
         }
         else
         {
@@ -48,9 +53,7 @@
                 </Header>
                 <ChildContent>
                     <MudTabPanel Text="@MediaType.movie.GetName()">
-                        <NewRenderControl Actions="Actions" Instance="Wish" ExpressionEmpty="ExpressionEmpty"
-                                          PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
-                                          CustomMessageWarning="@Modules.Profile.Resources.Translations.AddTitlesWishlist">
+                        <RenderControl Actions="ActionsMovie" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
                             @if (FullScreen)
                             {
                                 <div class="grid-relative-container-poster">
@@ -81,12 +84,10 @@
                                     <div class="swiper-button-prev"></div>
                                 </div>
                             }
-                        </NewRenderControl>
+                        </RenderControl>
                     </MudTabPanel>
                     <MudTabPanel Text="@MediaType.tv.GetName()">
-                        <NewRenderControl Actions="Actions" Instance="Wish" ExpressionEmpty="ExpressionEmpty"
-                                          PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
-                                          CustomMessageWarning="@Modules.Profile.Resources.Translations.AddTitlesWishlist">
+                        <RenderControl Actions="ActionsTv" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
                             @if (FullScreen)
                             {
                                 <div class="grid-relative-container-poster">
@@ -117,7 +118,7 @@
                                     <div class="swiper-button-prev"></div>
                                 </div>
                             }
-                        </NewRenderControl>
+                        </RenderControl>
                     </MudTabPanel>
                 </ChildContent>
             </MudTabs>
@@ -126,13 +127,13 @@
 </NewPageSection>
 
 @code {
-    [Parameter][EditorRequired] public ComponentActions<WishList?> Actions { get; set; } = new();
+    [Parameter][EditorRequired] public ComponentActions<WishList?> ActionsMovie { get; set; }
+    [Parameter][EditorRequired] public ComponentActions<WishList?> ActionsTv { get; set; }
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public Func<WishList?, bool> ExpressionEmpty { get; set; } = null!;
 
     [Parameter] public MediaType? TypeParam { get; set; }
     [Parameter] public string? CustomTitle { get; set; }
@@ -145,6 +146,14 @@
 
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
     private readonly string _swiperId2 = $"swiper-{Guid.NewGuid()}";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        ActionsMovie.CustomMessageWarning = Modules.Profile.Resources.Translations.AddTitlesWishlist;
+        ActionsTv.CustomMessageWarning = Modules.Profile.Resources.Translations.AddTitlesWishlist;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -163,7 +172,7 @@
 
     private async Task OpenCompleteList(MediaType type)
     {
-        await DialogService.MyWishListPopup(Actions, Watched, Watching, Wish, type);
+        await DialogService.MyWishListPopup(type == MediaType.movie ? ActionsMovie : ActionsTv, Watched, Watching, Wish, type);
     }
 
     public Task ShowMediaPopup(MediaType type, string? tmdbId, string? name)

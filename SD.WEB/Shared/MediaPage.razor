@@ -8,6 +8,7 @@
 @using SD.WEB.Modules.Collections.Resources
 @using Button = SD.WEB.Resources.Button
 @using SD.WEB.Modules.Support
+@using SD.WEB.Shared.Core
 
 @inherits PageCore<MediaPopup>
 @implements IDisposable
@@ -67,7 +68,7 @@
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media"></GoogleAdSense>
 
-<NewRenderControl Actions="Actions" Instance="Media" ExpressionEmpty="@((MediaDetail? obj) => obj == null)" LoadingHeight="400px">
+<RenderControl Actions="Actions" LoadingHeight="400px">
     <ChildContent>
         <NewPageSection Title="@Translations.TabAbout" Color="Color.Secondary">
             <BodyFragment>
@@ -137,7 +138,7 @@
         </NewPageSection>
         <NewPageSection Title="Recommendations" Color="Color.Secondary">
             <BodyFragment>
-                <NewRenderControl Actions="RecommendationsActions" Instance="Recommendations" ExpressionEmpty="@((HashSet<MediaDetail> lst) => lst.Empty())" Context="ctx">
+                <RenderControl Actions="RecommendationsActions" Context="ctx">
                     <div id="@_swiperId" class="swiper">
                         <div class="swiper-wrapper">
                             @foreach (var item in Recommendations)
@@ -153,7 +154,7 @@
                         <div class="swiper-button-next"></div>
                         <div class="swiper-button-prev"></div>
                     </div>
-                </NewRenderControl>
+                </RenderControl>
             </BodyFragment>
         </NewPageSection>
         <NewPageSection Title="Videos" Color="Color.Secondary" Visible="@(Media != null && Media.Videos.Any())">
@@ -201,7 +202,7 @@
             </BodyFragment>
         </NewPageSection>
     </ChildContent>
-</NewRenderControl>
+</RenderControl>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
     <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => JsRuntime.Window().HistoryBack())" Size="Size.Medium" />
@@ -227,12 +228,12 @@
     public string? ImdbId { get; set; }
     public string? EnglishTitle { get; set; }
 
-    private ComponentActions<MediaDetail?> Actions { get; set; } = new();
-    private ComponentActions<CacheDocument<Ratings>?> RatingsActions { get; set; } = new();
+    private ComponentActions<MediaDetail?> Actions { get; set; } = new(obj => obj == null);
+    private ComponentActions<CacheDocument<Ratings>?> RatingsActions { get; set; } = new(obj => obj?.Data == null);
     private CacheDocument<Ratings>? _ratingsCache;
 
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
-    private ComponentActions<HashSet<MediaDetail>> RecommendationsActions { get; set; } = new();
+    private ComponentActions<HashSet<MediaDetail>> RecommendationsActions { get; set; } = new(lst => lst == null || lst.Empty());
     public HashSet<MediaDetail> Recommendations { get; set; } = [];
 
     protected override void OnInitialized()
@@ -263,12 +264,19 @@
 
     protected override async Task ProcessPageData()
     {
-        Actions.StartLoading?.Invoke(null);
+        try
+        {
+            await Actions.StartLoading.Invoke(null);
 
-        Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
-        Media.Videos.Reverse();
+            Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
+            Media.Videos.Reverse();
 
-        Actions.FinishLoading?.Invoke(Media);
+            await Actions.FinishLoading.Invoke(Media);
+        }
+        catch (Exception ex)
+        {
+            await Actions.ShowError.Invoke(ex.Message);
+        }
 
         EnglishTitle = Media?.original_title;
 
@@ -285,20 +293,34 @@
 
         ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId);
 
-        RatingsActions.StartLoading?.Invoke(null);
-        if (Media?.MediaType == MediaType.movie)
+        try
         {
-            _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"));
+            await RatingsActions.StartLoading.Invoke(null);
+            if (Media?.MediaType == MediaType.movie)
+            {
+                _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"));
+            }
+            else
+            {
+                _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"));
+            }
+            await RatingsActions.FinishLoading.Invoke(_ratingsCache);
         }
-        else
+        catch (Exception ex)
         {
-            _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"));
+            await RatingsActions.ShowError.Invoke(ex.Message);
         }
-        RatingsActions.FinishLoading?.Invoke(_ratingsCache);
 
-        RecommendationsActions.StartProcessing?.Invoke(null);
-        Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId);
-        RecommendationsActions.FinishLoading?.Invoke(Recommendations);
+        try
+        {
+            await RecommendationsActions.StartProcessing.Invoke(null);
+            Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId);
+            await RecommendationsActions.FinishLoading.Invoke(Recommendations);
+        }
+        catch (Exception ex)
+        {
+            await RecommendationsActions.ShowError.Invoke(ex.Message);
+        }
     }
 
     protected override async Task LoadAuthDataAsync()

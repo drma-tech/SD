@@ -79,31 +79,38 @@
             // 2 = transform claims into useful data
             AuthStateProvider.AuthenticationStateChanged += async (task) =>
             {
-                var state = await task;
-                var user = state.User;
+                try
+                {
+                    var state = await task;
+                    var user = state.User;
 
-                AppStateStatic.User = user;
-                AppStateStatic.UserId = user?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-                var authenticated = user?.Identity is not null && user.Identity.IsAuthenticated;
+                    AppStateStatic.User = user;
+                    AppStateStatic.UserId = user?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                    var authenticated = user?.Identity is not null && user.Identity.IsAuthenticated;
 
-                if (authenticated == AppStateStatic.IsAuthenticated) return; //no need to process if the authentication state didn't change
+                    if (authenticated == AppStateStatic.IsAuthenticated) return; //no need to process if the authentication state didn't change
 
-                AppStateStatic.IsAuthenticated = authenticated;
-                if (!AppStateStatic.IsAuthenticated) AppStateStatic.IsPremiumUser = false;
+                    AppStateStatic.IsAuthenticated = authenticated;
+                    if (!AppStateStatic.IsAuthenticated) AppStateStatic.IsPremiumUser = false;
 
-                //principal to be used for all the app
-                if (AppStateStatic.IsAuthenticated)
-                    Principal ??= await PrincipalApi.Get(true);
-                else
-                    Principal = null;
-                var sub = Principal?.GetActiveSubscription();
-                AppStateStatic.IsPremiumUser = sub?.IsActive() ?? false;
-                AppStateStatic.ActiveProduct = sub?.Product ?? AccountProduct.Basic;
+                    //principal to be used for all the app
+                    if (AppStateStatic.IsAuthenticated)
+                        Principal ??= await PrincipalApi.Get(true);
+                    else
+                        Principal = null;
+                    var sub = Principal?.GetActiveSubscription();
+                    AppStateStatic.IsPremiumUser = sub?.IsActive() ?? false;
+                    AppStateStatic.ActiveProduct = sub?.Product ?? AccountProduct.Basic;
 
-                await ProcessUserAccess();
+                    await ProcessUserAccess();
 
-                StateHasChanged();
-                AppStateStatic.UserStateChanged?.Invoke();
+                    StateHasChanged();
+                    AppStateStatic.UserStateChanged?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    ex.ProcessException(Snackbar, Logger);
+                }
             };
         }
         catch (Exception ex)

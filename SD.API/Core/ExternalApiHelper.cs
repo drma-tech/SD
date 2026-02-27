@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SD.API.Core;
 
-public static class ApiCore
+public static class ExternalApiHelper
 {
     public static async Task<T?> GetdTmdbList<T>(this HttpClient http, string requestUri, string? token, CancellationToken cancellationToken)
         where T : class

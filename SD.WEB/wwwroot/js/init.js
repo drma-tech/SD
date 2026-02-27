@@ -8,7 +8,6 @@ if (!isBot && !isOldBrowser) {
             notification.showError(
                 "Offline mode could not be activated (slow connection?). Try refreshing the page or closing and reopening the app."
             );
-            Sentry.captureException(err);
         });
     }
 }

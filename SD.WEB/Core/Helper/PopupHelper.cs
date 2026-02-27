@@ -7,6 +7,7 @@ using SD.WEB.Modules.Profile.Components;
 using SD.WEB.Modules.Subscription.Components;
 using SD.WEB.Modules.Support;
 using SD.WEB.Shared;
+using SD.WEB.Shared.Core;
 
 namespace SD.WEB.Core.Helper;
 
@@ -33,7 +34,7 @@ public static class PopupHelper
 
     public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchedList? watched, WatchingList? watching, WishList? wish, HashSet<MediaDetail> items)
     {
-        ComponentActions<HashSet<MediaDetail>> actions = new();
+        ComponentActions<HashSet<MediaDetail>> actions = new(list => list == null || list.Empty());
 
         var parameters = new DialogParameters<CompleteListPopup>
         {

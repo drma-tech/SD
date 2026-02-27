@@ -2,6 +2,7 @@
 @using SD.Shared.Models.News
 @using SD.WEB.Modules.News.Resources
 @using Button = SD.WEB.Resources.Button
+@using SD.WEB.Shared.Core
 @inherits PageCore<News>
 
 @inject CacheFlixsterApi CacheFlixsterApi
@@ -11,7 +12,7 @@
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
-<NewRenderControl Actions="Actions" Instance="NewsList" ExpressionEmpty="@((CacheDocument<NewsModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+<RenderControl Actions="Actions">
     <div class="grid-relative-container-news">
         @foreach (var item in NewsList?.Data?.Items ?? [])
         {
@@ -33,7 +34,7 @@
             </MudCard>
         }
     </div>
-</NewRenderControl>
+</RenderControl>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
     <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => JsRuntime.Window().HistoryBack())" Size="Size.Medium" />
@@ -42,15 +43,15 @@
 @code {
     [Parameter] public required string category { get; set; }
 
-    public ComponentActions<CacheDocument<NewsModel>?> Actions { get; set; } = new();
+    public ComponentActions<CacheDocument<NewsModel>?> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
     private CacheDocument<NewsModel>? NewsList { get; set; }
     public string? SelectedSlide { get; set; }
 
     protected override async Task ProcessInitialData()
     {
-        Actions.StartLoading?.Invoke(null);
+        await Actions.StartLoading.Invoke(null);
         NewsList = await CacheFlixsterApi.GetNews("full", category);
-        Actions.FinishLoading?.Invoke(NewsList);
+        await Actions.FinishLoading.Invoke(NewsList);
     }
 
 }

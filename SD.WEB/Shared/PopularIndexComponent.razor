@@ -6,8 +6,8 @@
 
 <NewPageSection Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
-                 ActivePanelIndex="@(TypeSelected == PopularType.Movie ? 0 : 1)" ActivePanelIndexChanged="@(async (int index) => { TypeSelected = index == 0 ? PopularType.Movie : PopularType.Show; })">
+        <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
+                 ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/popular/{TypeSelected}")" Disabled="true" />
@@ -15,12 +15,20 @@
             </Header>
             <ChildContent>
                 <MudTabPanel Text="@PopularType.Movie.GetName()">
-                    <NewMediaList MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.movie" Watched="WatchedList" Watching="WatchingList" Wish="WishList">
-                    </NewMediaList>
+                    @if (_loaded[0])
+                    {
+                        <NewMediaList MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.movie"
+                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList">
+                        </NewMediaList>
+                    }
                 </MudTabPanel>
                 <MudTabPanel Text="@PopularType.Show.GetName()">
-                    <NewMediaList MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.tv" Watched="WatchedList" Watching="WatchingList" Wish="WishList">
-                    </NewMediaList>
+                    @if (_loaded[1])
+                    {
+                        <NewMediaList MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.tv"
+                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList">
+                        </NewMediaList>
+                    }
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>
@@ -32,7 +40,16 @@
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
-    public PopularType TypeSelected { get; set; } = PopularType.Movie;
+    private int _activeIndex = 0;
+    private bool[] _loaded = new bool[2] { true, false };
+
+    private PopularType TypeSelected => _activeIndex == 0 ? PopularType.Movie : PopularType.Show;
+
+    private void OnTabChanged(int index)
+    {
+        _activeIndex = index;
+        _loaded[index] = true;
+    }
 
     public Dictionary<string, string> Params { get; set; } = new() { { "mode", "compact" } };
 }

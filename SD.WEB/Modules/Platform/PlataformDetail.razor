@@ -6,6 +6,7 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Subscription.Core
+@using SD.WEB.Shared.Core
 @inherits PageCore<PlataformDetail>
 
 @inject AllProvidersApi AllProvidersApi
@@ -58,32 +59,31 @@ else
 
     <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
-    <NewRenderControl Actions="Actions" Instance="AllProviders" ExpressionEmpty="@((AllProviders? obj) => obj == null)">
+    <RenderControl Actions="Actions">
         <NewMediaList ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")"
-                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" TypeSelected="@(ShowMovieFilter ? MediaType.movie : MediaType.tv)"
+                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter"
                       StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </NewMediaList>
         <NewMediaList ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/new/{{0}}")"
-                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" TypeSelected="@(ShowMovieFilter ? MediaType.movie : MediaType.tv)"
+                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter"
                       StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </NewMediaList>
         <NewMediaList ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/top/{{0}}")"
-                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" TypeSelected="@(ShowMovieFilter ? MediaType.movie : MediaType.tv)"
+                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter"
                       StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </NewMediaList>
-    </NewRenderControl>
+    </RenderControl>
 
     <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
         <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => JsRuntime.Window().HistoryBack())" Size="Size.Medium" />
     </div>
 }
 
-
 @code {
     [Parameter] public string? Id { get; set; }
     private bool isNotFound;
 
-    public ComponentActions<AllProviders?> Actions { get; set; } = new();
+    public ComponentActions<ProviderModel?> Actions { get; set; } = new(obj => obj == null);
     private AllProviders? AllProviders { get; set; }
     public ProviderModel? Provider { get; set; }
 
@@ -106,9 +106,8 @@ else
 
         Actions.StartLoading?.Invoke(null);
         AllProviders = await AllProvidersApi.GetAll();
-        Actions.FinishLoading?.Invoke(AllProviders);
-
         Provider = AllProviders?.Items.SingleOrDefault(s => s.id == Id);
+        Actions.FinishLoading?.Invoke(Provider);
 
         if (Provider == null)
         {

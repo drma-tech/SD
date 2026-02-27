@@ -11,7 +11,7 @@ using System.Web;
 
 namespace SD.API.Core;
 
-public static class IsolatedFunctionHelper
+public static class HttpRequestDataExtensions
 {
     public static async Task<T> GetBody<T>(this HttpRequestData req, CancellationToken cancellationToken)
         where T : CosmosDocument, new()
@@ -44,13 +44,13 @@ public static class IsolatedFunctionHelper
         return model;
     }
 
-    public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, TtlCache maxAge, CancellationToken cancellationToken)
-        where T : class
+    public static async Task<HttpResponseData> CreateResponse<T>(this HttpRequestData req, T? doc, TtlCache maxAge, CancellationToken cancellationToken) where T : class
     {
         var response = req.CreateResponse();
 
         if (doc != null)
         {
+            response.StatusCode = HttpStatusCode.OK;
             await response.WriteAsJsonAsync(doc, cancellationToken);
         }
         else
@@ -110,38 +110,34 @@ public static class IsolatedFunctionHelper
         logger.LogWarning("message:{Custom_Message}, params:{Custom_Params}, version:{Custom_AppVersion}, ip:{Custom_Ip}", log.Message, log.Params, log.AppVersion, log.Ip);
     }
 
-    public static void ValidateWebVersion(this HttpRequestData req)
+    /// <summary>
+    /// Ideally, wait two weeks before forcing a version (this gives most users time to update naturally).
+    /// </summary>
+    private static readonly DateOnly MinimumSupportedVersion = new(2026, 02, 27);
+
+    public static bool IsOutdated(string? version)
     {
-        var vs = req.GetQueryParameters()["vs"];
-
-        if (vs.Empty())
+        if (version.Empty())
         {
-            ThrowOutdated();
+            return true;
         }
 
-        if (vs == "loading")
+        if (version == "loading")
         {
-            return; //Ignore this, as the version may not have been defined yet.
+            return false; //todo: force load always the version
         }
 
-        if (!DateOnly.TryParseExact(vs, "yyyy.MM.dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var clientVersion))
+        if (!DateOnly.TryParseExact(version, "yyyy.MM.dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var clientVersion))
         {
-            ThrowOutdated();
+            return true;
         }
 
-        var minimumSupportedVersion = new DateOnly(2026, 02, 24);
-
-        if (clientVersion < minimumSupportedVersion)
+        if (clientVersion < MinimumSupportedVersion)
         {
-            ThrowOutdated();
+            return true;
         }
-    }
 
-    private static void ThrowOutdated()
-    {
-        throw new NotificationException(
-            "An outdated version has been detected. Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it."
-        );
+        return false;
     }
 }
 

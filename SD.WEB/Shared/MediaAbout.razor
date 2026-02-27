@@ -2,6 +2,7 @@
 @using System.Globalization
 @using SD.WEB.Modules.Collections.Resources
 @using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Shared.Core
 
 @inherits ComponentCore<MediaAbout>
 
@@ -39,7 +40,7 @@
             </MudChip>
         }
         <div>
-            <NewRenderControl Actions="Actions" Instance="RatingsCache" ExpressionEmpty="@((CacheDocument<Ratings>? obj) => obj?.Data == null)" LoadingHeight="40px">
+            <RenderControl Actions="Actions" LoadingHeight="40px">
                 @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.imdb))
                 {
                     <MudTooltip Text="IMDb">
@@ -110,7 +111,7 @@
                         </MudLink>
                     </MudTooltip>
                 }
-            </NewRenderControl>
+            </RenderControl>
         </div>
         <MudText Typo="Typo.body1" Align="Align.Justify" Class="@Css.Build().Small("my")">
             @Media?.plot

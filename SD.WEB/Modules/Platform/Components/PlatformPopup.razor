@@ -21,16 +21,13 @@
         else
         {
             <NewMediaList ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
-                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" TypeSelected="@(ShowMovieFilter ? MediaType.movie : MediaType.tv)"
-                          Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
+                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
             </NewMediaList>
             <NewMediaList ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
-                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" TypeSelected="@(ShowMovieFilter ? MediaType.movie : MediaType.tv)"
-                          Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
+                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
             </NewMediaList>
             <NewMediaList ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
-                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" TypeSelected="@(ShowMovieFilter ? MediaType.movie : MediaType.tv)"
-                          Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
+                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
             </NewMediaList>
         }
     </DialogContent>

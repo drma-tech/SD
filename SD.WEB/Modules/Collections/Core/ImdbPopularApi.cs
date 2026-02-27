@@ -41,7 +41,7 @@ public class ImdbPopularApi(IHttpClientFactory factory)
         }
         else if (type == MediaType.tv)
         {
-            var result = await GetAsync("public/cache/imdb-popular-tvs".ConfigureParameters(stringParameters));
+            var result = await GetAsync("public/cache/imdb-popular-tv".ConfigureParameters(stringParameters));
 
             //if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(GlobalTranslations.UnavailableService);
 

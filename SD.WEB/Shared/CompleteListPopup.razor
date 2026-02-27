@@ -2,6 +2,7 @@
 @using SD.WEB.Modules.Collections.Interface
 @using SD.WEB.Modules.Profile.Core
 @using Button = SD.WEB.Resources.Button
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<CompleteListPopup>
 
 @inject WatchedListApi WatchedListApi
@@ -36,7 +37,7 @@
 
     [Parameter] public HashSet<MediaDetail> Items { get; set; } = [];
     [Parameter] public EventCallback<HashSet<MediaDetail>> ItemsChanged { get; set; }
-    [Parameter] public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new();
+    [Parameter] public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new(list => list == null || list.Empty());
 
     [Parameter] public IMediaListApi? MediaListApi { get; set; }
     [Parameter] public EnumLists? List { get; set; }

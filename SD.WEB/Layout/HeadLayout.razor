@@ -7,6 +7,8 @@
 @inject NavigationManager Navigation
 @inject IDialogService DialogService
 @inject IJSRuntime JsRuntime
+@inject ISnackbar Snackbar
+@inject ILogger<HeadLayout> Logger
 
 @if (_processing)
 {
@@ -223,7 +225,14 @@
 
     protected async Task LoadAuthDataAsync()
     {
-        Watching = await WatchingApi.Get(AppStateStatic.IsAuthenticated);
+        try
+        {
+            Watching = await WatchingApi.Get(AppStateStatic.IsAuthenticated);
+        }
+        catch (Exception ex)
+        {
+            ex.ProcessException(Snackbar, Logger);
+        }
     }
 
     private async Task Login()

@@ -1,6 +1,7 @@
 ﻿@page "/trailers"
 @using SD.Shared.Models.Trailers
 @using SD.WEB.Modules.Trailers.Resources
+@using SD.WEB.Shared.Core
 @inherits PageCore<Trailers>
 
 @inject CacheYoutubeApi CacheYoutubeApi
@@ -11,7 +12,7 @@
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
-<NewRenderControl Actions="Actions" Instance="TrailerModel" ExpressionEmpty="@((CacheDocument<TrailerModel>? obj) => obj?.Data == null || obj.Data.Items.Empty())">
+<RenderControl Actions="Actions">
     <div class="grid-relative-container-trailer">
         @foreach (var item in TrailerModel?.Data?.Items ?? [])
         {
@@ -32,21 +33,21 @@
             </MudLink>
         }
     </div>
-</NewRenderControl>
+</RenderControl>
 
 <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
     <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => JsRuntime.Window().HistoryBack())" Size="Size.Medium" />
 </div>
 
 @code {
-    public ComponentActions<CacheDocument<TrailerModel>?> Actions { get; set; } = new();
+    public ComponentActions<CacheDocument<TrailerModel>?> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
     private CacheDocument<TrailerModel>? TrailerModel { get; set; }
 
     protected override async Task ProcessInitialData()
     {
-        Actions.StartLoading?.Invoke(null);
+        await Actions.StartLoading.Invoke(null);
         TrailerModel = await CacheYoutubeApi.GetTrailers("full");
-        Actions.FinishLoading?.Invoke(TrailerModel);
+        await Actions.FinishLoading.Invoke(TrailerModel);
     }
 
 }

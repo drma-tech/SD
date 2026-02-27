@@ -3,6 +3,7 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Subscription.Core
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<MyProviderComponent>
 
 @inject MyProvidersApi MyProvidersApi
@@ -15,9 +16,7 @@
         <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" />
     </ActionsFragment>
     <BodyFragment>
-        <NewRenderControl Actions="Actions" Instance="MyProviders" ExpressionEmpty="(MyProviders? obj) => obj == null || obj.Items.Empty()"
-                          PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
-                          CustomMessageWarning="@Modules.Profile.Resources.Translations.MarkPlatforms">
+        <RenderControl Actions="Actions" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
             <div id="@_swiperId" class="swiper">
                 <div class="swiper-wrapper">
                     @foreach (var item in MyProviders?.Items.Take(AccountProduct.Premium.GetRestrictions().MySuggestions) ?? new List<MyProvidersItem>())
@@ -41,7 +40,7 @@
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
-        </NewRenderControl>
+        </RenderControl>
     </BodyFragment>
 </NewPageSection>
 
@@ -50,7 +49,7 @@
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
 
-    private ComponentActions<MyProviders?> Actions { get; set; } = new();
+    private ComponentActions<MyProviders?> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
     private AllProviders? AllProviders { get; set; }
     private MyProviders? MyProviders { get; set; }
     private bool ProvidersChanged { get; set; }
@@ -61,10 +60,13 @@
 
     protected override void OnInitialized()
     {
+        OnError = async (msg) => { await Actions.ShowError.Invoke(msg); };
+        Actions.CustomMessageWarning = Modules.Profile.Resources.Translations.MarkPlatforms;
+
         MyProvidersApi.DataChanged += model =>
         {
             MyProviders = model;
-            Actions.FinishLoading?.Invoke(model);
+            Actions.FinishLoading.Invoke(model);
             StateHasChanged();
         };
     }
@@ -92,7 +94,7 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        Actions.StartLoading?.Invoke(null);
+        await Actions.StartLoading.Invoke(null);
 
         MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
 
@@ -106,7 +108,7 @@
             }
         }
 
-        Actions.FinishLoading?.Invoke(MyProviders);
+        await Actions.FinishLoading.Invoke(MyProviders);
 
         if (MyProviders != null && MyProviders.Items.Any(a => !a.region.HasValue)) //update region (legacy)
         {

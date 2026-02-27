@@ -3,6 +3,7 @@
 @using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Collections.Core
 @using Button = SD.WEB.Resources.Button
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<MySuggestions>
 
 @inject MyProvidersApi MyProvidersApi
@@ -39,9 +40,7 @@
             </Header>
             <ChildContent>
                 <MudTabPanel Text="@MediaType.movie.GetName()">
-                    <NewRenderControl Actions="Actions" Instance="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())"
-                                      PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
-                                      PremiumFeature="true" IsPremium="AppStateStatic.IsPremiumUser" PremiumDescription="@Translations.OurSuggestions2">
+                    <RenderControl Actions="ActionsMovie" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated" PremiumFeature="true" IsPremium="AppStateStatic.IsPremiumUser">
                         <div id="@_swiperId" class="swiper">
                             <div class="swiper-wrapper">
                                 @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)) ?? new List<SuggestionListItem>())
@@ -64,12 +63,10 @@
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
                         </div>
-                    </NewRenderControl>
+                    </RenderControl>
                 </MudTabPanel>
                 <MudTabPanel Text="@MediaType.tv.GetName()">
-                    <NewRenderControl Actions="Actions" Instance="mySuggestions" ExpressionEmpty="@((SD.Shared.Models.MySuggestions? obj) => obj == null || obj.Items(SearchType).Empty())"
-                                      PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
-                                      PremiumFeature="true" IsPremium="AppStateStatic.IsPremiumUser" PremiumDescription="@Translations.OurSuggestions2">
+                    <RenderControl Actions="ActionsSerie" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated" PremiumFeature="true" IsPremium="AppStateStatic.IsPremiumUser">
                         <div id="@_swiperId2" class="swiper">
                             <div class="swiper-wrapper">
                                 @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)) ?? new List<SuggestionListItem>())
@@ -92,7 +89,7 @@
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
                         </div>
-                    </NewRenderControl>
+                    </RenderControl>
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>
@@ -114,18 +111,30 @@
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
-    private ComponentActions<SD.Shared.Models.MySuggestions?> Actions { get; set; } = new();
+    private ComponentActions<SD.Shared.Models.MySuggestions?> ActionsMovie { get; set; } = new(obj => obj == null || obj.Items(MediaType.movie).Empty());
+    private ComponentActions<SD.Shared.Models.MySuggestions?> ActionsSerie { get; set; } = new(obj => obj == null || obj.Items(MediaType.tv).Empty());
+    private ComponentActions<SD.Shared.Models.MySuggestions?> Actions => SearchType == MediaType.movie ? ActionsMovie : ActionsSerie;
 
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
     private readonly string _swiperId2 = $"swiper-{Guid.NewGuid()}";
 
     private bool GenresChanged => (mySuggestions?.MovieGenres.Any() ?? false) || (mySuggestions?.TvGenres.Any() ?? false);
 
+    protected override void OnInitialized()
+    {
+        OnError = async (msg) => { await ActionsMovie.ShowError.Invoke(msg); await ActionsSerie.ShowError.Invoke(msg); };
+
+        base.OnInitialized();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         try
         {
             await base.OnAfterRenderAsync(firstRender);
+
+            ActionsMovie.CustomPremiumDescription = Translations.OurSuggestions2;
+            ActionsSerie.CustomPremiumDescription = Translations.OurSuggestions2;
 
             await JsRuntime.Swiper().InitLists(_swiperId);
             await JsRuntime.Swiper().InitLists(_swiperId2);

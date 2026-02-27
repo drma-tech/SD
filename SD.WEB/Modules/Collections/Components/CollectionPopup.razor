@@ -3,6 +3,7 @@
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Resources
 @using Button = SD.WEB.Resources.Button
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<CollectionPopup>
 
 @inject TmdbApi TmdbApi
@@ -12,7 +13,7 @@
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <NewRenderControl Actions="Actions" Instance="Collection" ExpressionEmpty="@((TmdbCollection? obj) => obj == null || obj.parts.Empty())">
+        <RenderControl Actions="Actions">
             <div class="grid-relative-container-poster mb-2">
                 @foreach (var item in Collection?.parts.OrderBy(o => o.release_date.GetDate() ?? DateTime.MaxValue) ?? Enumerable.Empty<Part>())
                 {
@@ -23,7 +24,7 @@
                     </PosterComponent>
                 }
             </div>
-        </NewRenderControl>
+        </RenderControl>
     </DialogContent>
     <DialogActions>
         @if (AppStateStatic.IsAuthenticated)
@@ -54,7 +55,7 @@
     [Parameter] public string? CollectionId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
 
-    private ComponentActions<TmdbCollection?> Actions { get; } = new();
+    private ComponentActions<TmdbCollection?> Actions { get; } = new(obj => obj == null || obj.parts.Empty());
     private TmdbCollection? Collection { get; set; }
 
     protected override void OnInitialized()
@@ -84,7 +85,7 @@
 
     protected override async Task ProcessPopupData()
     {
-        Actions.StartLoading?.Invoke(null);
+        await Actions.StartLoading.Invoke(null);
 
         if (Type == MediaType.movie)
         {
@@ -120,7 +121,7 @@
         }
 
         await MudDialog!.SetTitleAsync(Collection?.name);
-        Actions.FinishLoading?.Invoke(Collection);
+        await Actions.FinishLoading.Invoke(Collection);
     }
 
     public void HideModal()

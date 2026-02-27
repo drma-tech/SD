@@ -5,6 +5,7 @@
 @using SD.Shared.Models.List.Tmdb
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Interface
+@using SD.WEB.Shared.Core
 
 @if (ContainsHeader)
 {
@@ -12,7 +13,7 @@
         <BodyFragment>
             <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                      ActivePanelIndex="@(TypeSelected == MediaType.movie ? 0 : 1)"
-                     ActivePanelIndexChanged="@(async (int index) => { var type = index == 0 ? MediaType.movie : MediaType.tv; await TypeSelectedChangedHandle(type); })">
+                     ActivePanelIndexChanged="@(async (int index) => { TypeSelected = index == 0 ? MediaType.movie : MediaType.tv; await TypeSelectedChangedHandle(TypeSelected); })">
                 <Header>
                     <MudTooltip Text="Expand">
                         <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" OnClick="@(() => Navigation.NavigateTo(GetCustomExpandUrl()))" Disabled="@(List == null && CustomExpand.Empty())" />
@@ -22,7 +23,7 @@
                     @if (ShowMovieFilter)
                     {
                         <MudTabPanel Text="@MediaType.movie.GetName()">
-                            <NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+                            <RenderControl Actions="Actions">
                                 <div id="@_swiperId" class="swiper">
                                     <div class="swiper-wrapper">
                                         @foreach (var item in Items)
@@ -38,13 +39,13 @@
                                     <div class="swiper-button-next"></div>
                                     <div class="swiper-button-prev"></div>
                                 </div>
-                            </NewRenderControl>
+                            </RenderControl>
                         </MudTabPanel>
                     }
                     @if (ShowTvFilter)
                     {
                         <MudTabPanel Text="@MediaType.tv.GetName()">
-                            <NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+                            <RenderControl Actions="Actions">
                                 <div id="@_swiperId2" class="swiper">
                                     <div class="swiper-wrapper">
                                         @foreach (var item in Items)
@@ -60,7 +61,7 @@
                                     <div class="swiper-button-next"></div>
                                     <div class="swiper-button-prev"></div>
                                 </div>
-                            </NewRenderControl>
+                            </RenderControl>
                         </MudTabPanel>
                     }
                 </ChildContent>
@@ -70,7 +71,7 @@
 }
 else
 {
-    <NewRenderControl Actions="Actions" Instance="Items" ExpressionEmpty="@((HashSet<MediaDetail> list) => list.Empty())">
+    <RenderControl Actions="Actions">
         <div id="@_swiperId" class="swiper">
             <div class="swiper-wrapper">
                 @foreach (var item in Items)
@@ -86,7 +87,7 @@ else
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>
         </div>
-    </NewRenderControl>
+    </RenderControl>
 }
 
 @code {
@@ -114,12 +115,11 @@ else
 
     [Parameter] public bool DetectRegions { get; set; }
 
-    [Parameter] public MediaType TypeSelected { get; set; } = MediaType.movie;
-    [Parameter] public EventCallback<MediaType> TypeSelectedChanged { get; set; }
+    [Parameter] public MediaType TypeSelected { get; set; }
 
     private string Title => TitleHead ?? List?.GetName() ?? "Title Error";
 
-    public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new();
+    public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new(list => list != null && list.Empty());
     public HashSet<MediaDetail> Items { get; set; } = [];
 
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
@@ -127,6 +127,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        if (ContainsHeader)
+        {
+            TypeSelected = ShowMovieFilter ? MediaType.movie : MediaType.tv;
+        }
+
         await base.OnInitializedAsync();
 
         try
@@ -159,32 +164,30 @@ else
 
     protected override async Task ProcessInitialData()
     {
-        Actions?.StartLoading?.Invoke(null);
-        await LoadItems();
-        Actions?.FinishLoading?.Invoke(Items);
+        await Actions.StartLoading.Invoke(null);
+        await LoadItems(TypeSelected);
+        await Actions.FinishLoading.Invoke(Items);
     }
 
     private async Task TypeSelectedChangedHandle(MediaType type)
     {
-        Actions.StartLoading?.Invoke(null);
-        TypeSelected = type;
-        await TypeSelectedChanged.InvokeAsync(type);
-        await LoadItems();
-        Actions.FinishLoading?.Invoke(Items);
+        await Actions.StartLoading.Invoke(null);
+        await LoadItems(type);
+        await Actions.FinishLoading.Invoke(Items);
     }
 
-    private async Task LoadItems()
+    private async Task LoadItems(MediaType type)
     {
         try
         {
             if (MediaListApi != null)
             {
-                var result = await MediaListApi.GetList([], TypeSelected, StringParameters, List);
+                var result = await MediaListApi.GetList([], type, StringParameters, List);
                 Items = result.list;
 
                 if (Items.Count < 10) //force reload, if the filters bring few records
                 {
-                    var result2 = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, 2);
+                    var result2 = await MediaListApi.GetList(Items, type, StringParameters, List, 2);
                     foreach (var item in result2.list)
                     {
                         Items.Add(item);
@@ -196,7 +199,7 @@ else
         }
         catch (Exception ex)
         {
-            Actions.ShowError?.Invoke(ex.Message);
+            await Actions.ShowError.Invoke(ex.Message);
         }
     }
 
@@ -296,7 +299,7 @@ else
         }
         catch (Exception ex)
         {
-            Actions.ShowError?.Invoke(ex.Message);
+            await Actions.ShowError.Invoke(ex.Message);
         }
     }
 

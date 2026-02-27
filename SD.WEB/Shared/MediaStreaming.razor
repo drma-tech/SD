@@ -6,6 +6,7 @@
 @using SD.WEB.Modules.Collections.Resources
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Subscription.Core
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<MediaStreaming>
 
 @inject AllProvidersApi AllProvidersApi
@@ -13,7 +14,7 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<NewRenderControl Actions="Actions" Instance="Providers" ExpressionEmpty="@((MediaProviders? obj) => obj == null)">
+<RenderControl Actions="Actions">
     @{
         var hasProvider = false;
 
@@ -275,14 +276,14 @@
         //     </Authorized>
         // </AuthorizeView>
     }
-</NewRenderControl>
+</RenderControl>
 
 @code {
     [Parameter] public string? TmdbId { get; set; }
     [Parameter] public MediaType? Type { get; set; }
     [Parameter] public DateTime? ReleaseDate { get; set; }
 
-    public ComponentActions<MediaProviders?> Actions { get; set; } = new();
+    public ComponentActions<MediaProviders?> Actions { get; set; } = new(obj => obj == null);
     private MediaProviders? Providers { get; set; }
     private AllProviders? AllProviders { get; set; }
 
@@ -295,10 +296,10 @@
 
     protected override async Task ProcessComponentData()
     {
-        Actions.StartLoading?.Invoke(null);
+        await Actions.StartLoading.Invoke(null);
         Providers = await TmdbApi.GetWatchProvidersList(TmdbId, Type);
-        Actions.FinishLoading?.Invoke(Providers);
-        Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);        
+        await Actions.FinishLoading.Invoke(Providers);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
     }
 
     private async Task Update()

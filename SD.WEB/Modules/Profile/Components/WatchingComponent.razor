@@ -2,6 +2,7 @@
 @using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Collections.Core
 @using Button = SD.WEB.Resources.Button
+@using SD.WEB.Shared.Core
 @inherits ComponentCore<WatchingComponent>
 
 @inject TmdbApi TmdbApi
@@ -12,40 +13,42 @@
     <BodyFragment>
         @if (TypeParam.HasValue)
         {
-            @if (FullScreen)
-            {
-                <div class="grid-relative-container-poster">
-                    @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems))
-                    {
-                        var logo = string.IsNullOrEmpty(item.logo) ? null : TmdbOptions.SmallPosterPath + item.logo;
-                        var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
-
-                        <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
-                                         Clicked="@(async () => await ShowCollectionPopup(TypeParam.Value, item.id, item.name))" WatchedList="Watched" WishList="Wish">
-                        </PosterComponent>
-                    }
-                </div>
-            }
-            else
-            {
-                <div id="@_swiperId" class="swiper">
-                    <div class="swiper-wrapper">
+            <RenderControl Actions="@(TypeParam == MediaType.movie ? ActionsMovie : ActionsTv)" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
+                @if (FullScreen)
+                {
+                    <div class="grid-relative-container-poster">
                         @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems))
                         {
-                            var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.png" : TmdbOptions.SmallPosterPath + item.logo;
+                            var logo = string.IsNullOrEmpty(item.logo) ? null : TmdbOptions.SmallPosterPath + item.logo;
                             var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
 
-                            <div class="swiper-slide" style="height: auto !important;">
-                                <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
-                                                 Clicked="@(async () => await ShowCollectionPopup(TypeParam.Value, item.id, item.name))" WatchedList="Watched" WishList="Wish">
-                                </PosterComponent>
-                            </div>
+                            <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                             Clicked="@(async () => await ShowCollectionPopup(TypeParam.Value, item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                            </PosterComponent>
                         }
                     </div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                </div>
-            }
+                }
+                else
+                {
+                    <div id="@_swiperId" class="swiper">
+                        <div class="swiper-wrapper">
+                            @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems))
+                            {
+                                var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.png" : TmdbOptions.SmallPosterPath + item.logo;
+                                var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+
+                                <div class="swiper-slide" style="height: auto !important;">
+                                    <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                                     Clicked="@(async () => await ShowCollectionPopup(TypeParam.Value, item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                                    </PosterComponent>
+                                </div>
+                            }
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                }
+            </RenderControl>
         }
         else
         {
@@ -65,9 +68,7 @@
                 </Header>
                 <ChildContent>
                     <MudTabPanel Text="@MediaType.movie.GetName()">
-                        <NewRenderControl Actions="Actions" Instance="Watching" ExpressionEmpty="ExpressionEmpty"
-                                          PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
-                                          CustomMessageWarning="@Modules.Profile.Resources.Translations.MarkTitlesWatched">
+                        <RenderControl Actions="ActionsMovie" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
                             @if (FullScreen)
                             {
                                 <div class="grid-relative-container-poster">
@@ -102,12 +103,10 @@
                                     <div class="swiper-button-prev"></div>
                                 </div>
                             }
-                        </NewRenderControl>
+                        </RenderControl>
                     </MudTabPanel>
                     <MudTabPanel Text="@MediaType.tv.GetName()">
-                        <NewRenderControl Actions="Actions" Instance="Watching" ExpressionEmpty="ExpressionEmpty"
-                                          PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated"
-                                          CustomMessageWarning="@Modules.Profile.Resources.Translations.MarkTitlesWatched">
+                        <RenderControl Actions="ActionsTv" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
                             @if (FullScreen)
                             {
                                 <div class="grid-relative-container-poster">
@@ -142,7 +141,7 @@
                                     <div class="swiper-button-prev"></div>
                                 </div>
                             }
-                        </NewRenderControl>
+                        </RenderControl>
                     </MudTabPanel>
                 </ChildContent>
             </MudTabs>
@@ -151,13 +150,14 @@
 </NewPageSection>
 
 @code {
-    [Parameter][EditorRequired] public ComponentActions<WatchingList?> Actions { get; set; } = new();
+    [Parameter][EditorRequired] public ComponentActions<WatchingList?> ActionsMovie { get; set; }
+    [Parameter][EditorRequired] public ComponentActions<WatchingList?> ActionsTv { get; set; }
+
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter][EditorRequired] public Func<WatchingList?, bool> ExpressionEmpty { get; set; } = null!;
 
     [Parameter] public MediaType? TypeParam { get; set; }
     [Parameter] public string? CustomTitle { get; set; }
@@ -171,6 +171,14 @@
     public bool Updating { get; set; }
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
     private readonly string _swiperId2 = $"swiper-{Guid.NewGuid()}";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        ActionsMovie.CustomMessageWarning = Modules.Profile.Resources.Translations.MarkTitlesWatched;
+        ActionsTv.CustomMessageWarning = Modules.Profile.Resources.Translations.MarkTitlesWatched;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -189,7 +197,7 @@
 
     private async Task OpenCompleteList(MediaType type)
     {
-        await DialogService.MyWatchingListPopup(Actions, type, Watched, Watching, Wish);
+        await DialogService.MyWatchingListPopup(type == MediaType.movie ? ActionsMovie : ActionsTv, type, Watched, Watching, Wish);
     }
 
     public Task ShowMediaPopup(MediaType type, string? tmdbId, string? name)
@@ -213,7 +221,7 @@
                 watching?.Movies.Clear();
                 Updating = true;
                 StateHasChanged();
-                Actions.StartProcessing?.Invoke(null);
+                await ActionsMovie.StartProcessing.Invoke(null);
 
                 foreach (var tmdbId in Watched?.GetItems(MediaType.movie) ?? [])
                 {
@@ -258,14 +266,14 @@
 
                 Updating = false;
                 StateHasChanged();
-                Actions.FinishProcessing?.Invoke(watching);
+                await ActionsMovie.FinishProcessing.Invoke(watching);
             }
             else
             {
                 watching?.Shows.Clear();
                 Updating = true;
                 StateHasChanged();
-                Actions.StartProcessing?.Invoke(null);
+                await ActionsTv.StartProcessing.Invoke(null);
 
                 foreach (var tmdbId in Watched?.GetItems(MediaType.tv) ?? [])
                 {
@@ -310,7 +318,7 @@
 
                 Updating = false;
                 StateHasChanged();
-                Actions.FinishProcessing?.Invoke(watching);
+                await ActionsTv.FinishProcessing.Invoke(watching);
             }
 
             StateHasChanged();
@@ -318,7 +326,8 @@
         catch (Exception ex)
         {
             Updating = false;
-            Actions.ShowError?.Invoke(ex.Message);
+            await ActionsMovie.ShowError.Invoke(ex.Message);
+            await ActionsTv.ShowError.Invoke(ex.Message);
             await ProcessException(ex);
         }
     }

@@ -6,8 +6,8 @@
 
 <NewPageSection Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font">
     <BodyFragment>
-        <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
-                 ActivePanelIndex="@(TypeSelected == MediaType.movie ? 0 : 1)" ActivePanelIndexChanged="@(async (int index) => { TypeSelected = index == 0 ? MediaType.movie : MediaType.tv; })">
+        <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
+                 ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/editors-choice/{TypeSelected}")" />
@@ -15,12 +15,18 @@
             </Header>
             <ChildContent>
                 <MudTabPanel Text="@MediaType.movie.GetName()">
-                    <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish">
-                    </NewMediaList>
+                    @if (_loaded[0])
+                    {
+                        <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish">
+                        </NewMediaList>
+                    }
                 </MudTabPanel>
                 <MudTabPanel Text="@MediaType.tv.GetName()">
-                    <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish">
-                    </NewMediaList>
+                    @if (_loaded[1])
+                    {
+                        <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish">
+                        </NewMediaList>
+                    }
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>
@@ -32,7 +38,16 @@
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
 
-    public MediaType TypeSelected { get; set; } = MediaType.movie;
+    private int _activeIndex = 0;
+    private bool[] _loaded = new bool[2] { true, false };
+
+    private MediaType TypeSelected => _activeIndex == 0 ? MediaType.movie : MediaType.tv;
+
+    private void OnTabChanged(int index)
+    {
+        _activeIndex = index;
+        _loaded[index] = true;
+    }
 
     public Dictionary<string, string> Params { get; set; } = new() { { "mode", "compact" } };
 }
