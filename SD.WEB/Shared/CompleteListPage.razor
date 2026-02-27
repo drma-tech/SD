@@ -20,8 +20,6 @@
 @inject WishListApi WishApi
 @inject AllProvidersApi AllProvidersApi
 @inject IHttpClientFactory factory
-@inject IpInfoApi IpInfoApi
-@inject IpInfoServerApi IpInfoServerApi
 
 <SeoHeader Title="@Title" Description="@SeoTranslations.AppDescription" Keywords="@(new[] { Title })" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")"></SeoHeader>
 <NewPageSection Title="@List?.GetName()"></NewPageSection>
@@ -58,8 +56,6 @@
     private EnumLists? List { get; set; }
     private string Title => TitleHead ?? $"{List?.GetCustomAttribute()?.Group} - {List?.GetName()}" ?? "Title Error";
 
-    public Region Region { get; set; } = Region.US;
-
     protected override async Task OnInitializedAsync()
     {
         if (id.NotEmpty() && Navigation.Uri.Contains("list")) List = Enum.Parse<EnumLists>(id!);
@@ -68,8 +64,6 @@
         WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
-
-        Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
 
         await ProcessNonList();
 

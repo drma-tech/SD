@@ -60,7 +60,7 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
             if (OnError != null)
                 OnError(ex.Message);
             else
-                await ProcessException(ex);
+                await ProcessException(ex, false);
         }
     }
 
