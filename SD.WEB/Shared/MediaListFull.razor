@@ -100,7 +100,7 @@
             // await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazy-load css class)
 
             Items = result.list;
-            DisableLoadMore = result.lastPage || Items.Count >= 250;
+            DisableLoadMore = result.lastPage || Items.Count >= 200;
 
             if (Items.Count < 10) //force reload, if the filters bring few records
             {
@@ -110,7 +110,7 @@
                     Items.Add(item);
                 }
 
-                DisableLoadMore = result.lastPage || Items.Count >= 250;
+                DisableLoadMore = result.lastPage || Items.Count >= 200;
             }
 
             if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",").Last() ?? "0")).ToHashSet();

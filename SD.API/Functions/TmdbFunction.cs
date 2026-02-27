@@ -2,7 +2,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using SD.Shared.Models.List.Tmdb;
-using System.Net;
 using System.Text.Json;
 
 namespace SD.API.Functions;
@@ -13,40 +12,24 @@ public class TmdbFunction(IDistributedCache distributedCache, IHttpClientFactory
     public async Task<HttpResponseData> List4(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/tmdb")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        try
+        CustomListNew? result;
+
+        var cacheKey = req.GetQueryParameters()["url"]?.ConvertFromBase64ToString() ?? throw new UnhandledException("url null");
+        var cachedBytes = await distributedCache.GetAsync(cacheKey, cancellationToken);
+        if (cachedBytes is { Length: > 0 })
         {
-            CustomListNew? result;
-
-            var cacheKey = req.GetQueryParameters()["url"]?.ConvertFromBase64ToString() ?? throw new UnhandledException("url null");
-            var cachedBytes = await distributedCache.GetAsync(cacheKey);
-            if (cachedBytes is { Length: > 0 })
-            {
-                result = JsonSerializer.Deserialize<CustomListNew?>(cachedBytes);
-            }
-            else
-            {
-                var tmdbReadToken = ApiStartup.Configurations.TMDB?.ReadToken;
-                var client = factory.CreateClient("tmdb");
-                result = await client.GetdTmdbList<CustomListNew>(cacheKey, tmdbReadToken, cancellationToken);
-            }
-
-            await SaveCache(result, cacheKey, TtlCache.OneDay);
-
-            return await req.CreateResponse(result, TtlCache.OneDay, cancellationToken);
+            result = JsonSerializer.Deserialize<CustomListNew?>(cachedBytes);
         }
-        catch (TaskCanceledException ex)
+        else
         {
-            req.LogError(ex.CancellationToken.IsCancellationRequested
-                ? new NotificationException("Cancellation Requested")
-                : new NotificationException("Timeout occurred"));
+            var tmdbReadToken = ApiStartup.Configurations.TMDB?.ReadToken;
+            var client = factory.CreateClient("tmdb");
+            result = await client.GetdTmdbList<CustomListNew>(cacheKey, tmdbReadToken, cancellationToken);
+        }
 
-            return req.CreateResponse(HttpStatusCode.RequestTimeout);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+        await SaveCache(result, cacheKey, TtlCache.OneDay);
+
+        return await req.CreateResponse(result, TtlCache.OneDay, cancellationToken);
     }
 
     private async Task SaveCache(CustomListNew? result, string cacheKey, TtlCache ttl)

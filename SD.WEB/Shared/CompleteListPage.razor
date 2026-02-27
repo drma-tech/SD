@@ -30,8 +30,7 @@
 
 @if (MediaListApi != null)
 {
-    <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) => { Items = list; StateHasChanged(); })"
-                   IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" DetectRegions="DetectRegions"
+    <MediaListFull IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" DetectRegions="DetectRegions"
                    StringParameters="StringParameters" List="List" TitleHead="@Title" ShowHead="false" FullPage="true"
                    Watched="Watched" Watching="Watching" Wish="Wish"
                    CommentsIsImage="CommentsIsImage" OrderByComments="OrderByComments" OnlyYear="OnlyYear">
@@ -41,7 +40,6 @@
 @code {
     [Parameter] public string? id { get; set; }
 
-    public HashSet<MediaDetail> Items { get; set; } = [];
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
@@ -92,7 +90,7 @@
             Watching = null;
             Wish = null;
         }
-    }   
+    }
 
     private async Task ProcessNonList()
     {
