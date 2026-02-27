@@ -21,16 +21,17 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
                 return;
             }
 
-            var version = req.Headers.TryGetValues("X-App-Version", out var values) ? values.FirstOrDefault() : null;
+            //todo: enable on 9 march
+            //var version = req.Headers.TryGetValues("X-App-Version", out var values) ? values.FirstOrDefault() : null;
 
-            if (HttpRequestDataExtensions.IsOutdated(version))
-            {
-                await context.SetHttpResponseStatusCode(
-                    HttpStatusCode.UpgradeRequired,
-                    "An outdated version has been detected. Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it."
-                );
-                return;
-            }
+            //if (HttpRequestDataExtensions.IsOutdated(version))
+            //{
+            //    await context.SetHttpResponseStatusCode(
+            //        HttpStatusCode.UpgradeRequired,
+            //        "An outdated version has been detected. Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it."
+            //    );
+            //    return;
+            //}
 
             await next(context);
         }
