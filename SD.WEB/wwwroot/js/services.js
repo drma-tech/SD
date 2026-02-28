@@ -63,20 +63,24 @@ export const services = {
             app_version: version,
         };
 
-        let user = authentication.getUser();
-
-        if (user) {
-            window.Userback.identify(user.id, {
-                name: user.name,
-                email: user.email,
-            });
-        }
-
         (function (d) {
             let s = d.createElement('script'); s.async = true;
             s.src = 'https://static.userback.io/widget/v1.js';
             (d.head || d.body).appendChild(s);
         })(document);
+
+        let user = authentication.getUser();
+
+        if (user && window.Userback?.identify) {
+            try {
+                window.Userback.identify(user.id, {
+                    name: user.name,
+                    email: user.email,
+                });
+            } catch {
+                //ignores
+            }
+        }
     },
     initAdSense(adClient, adSlot, containerId) {
         if (isBot) return;
