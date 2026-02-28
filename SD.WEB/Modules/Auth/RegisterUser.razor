@@ -13,7 +13,7 @@
 
 @if (AppStateStatic.IsAuthenticated)
 {
-    <MudContainer MaxWidth="MaxWidth.Small">
+    <MudContainer MaxWidth="MaxWidth.Small" Class="@Css.Build().Raw("mb-20")">
         @if (Principal == null)
         {
             <MudPaper Elevation="0" Outlined="true" Class="pa-3">
