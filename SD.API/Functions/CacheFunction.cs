@@ -17,7 +17,7 @@ using Item = SD.Shared.Models.News.Item;
 
 namespace SD.API.Functions;
 
-public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository repo, IDistributedCache distributedCache, IHttpClientFactory factory)
+public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository repo, IDistributedCache cache, IHttpClientFactory factory)
 {
     //todo: remove energy on 03-15
 
@@ -36,7 +36,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
 
             doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken); //check if upsert is needed
-            await SaveCache(doc, cacheKey, TtlCache.OneWeek);
+            await SaveCache(doc, cacheKey, TtlCache.OneWeek, cancellationToken);
 
             return await req.CreateResponse(doc, TtlCache.OneWeek, cancellationToken);
         }
@@ -70,7 +70,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             }
 
             doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken); //todo: check if upsert is needed
-            await SaveCache(doc, cacheKey, TtlCache.OneWeek);
+            await SaveCache(doc, cacheKey, TtlCache.OneWeek, cancellationToken);
 
             return await req.CreateResponse(doc, TtlCache.OneWeek, cancellationToken);
         }
@@ -103,7 +103,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             }
 
             await cacheRepo.UpsertItemAsync(doc!, cancellationToken);
-            await SaveCache(doc, cacheKey, TtlCache.OneWeek);
+            await SaveCache(doc, cacheKey, TtlCache.OneWeek, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -141,7 +141,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
             }
 
             await cacheRepo.UpsertItemAsync(doc!, cancellationToken);
-            await SaveCache(doc, cacheKey, TtlCache.OneWeek);
+            await SaveCache(doc, cacheKey, TtlCache.OneWeek, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -157,7 +157,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         var category = req.GetQueryParameters()["category"];
         var cacheKey = $"news_{mode}_{category}";
 
-        var doc = await distributedCache.Get<NewsModel>(cacheKey, cancellationToken);
+        var doc = await cache.Get<NewsModel>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
@@ -181,7 +181,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                 doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, cacheKey), cancellationToken);
             }
 
-            await SaveCache(doc, cacheKey, TtlCache.HalfDay);
+            await SaveCache(doc, cacheKey, TtlCache.HalfDay, cancellationToken);
         }
 
         return await req.CreateResponse(doc, TtlCache.HalfDay, cancellationToken);
@@ -194,7 +194,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         var mode = req.GetQueryParameters()["mode"];
         var cacheKey = $"trailers_{mode}";
 
-        var doc = await distributedCache.Get<TrailerModel>(cacheKey, cancellationToken);
+        var doc = await cache.Get<TrailerModel>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
@@ -216,7 +216,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                 doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, cacheKey), cancellationToken);
             }
 
-            await SaveCache(doc, cacheKey, TtlCache.SixHours);
+            await SaveCache(doc, cacheKey, TtlCache.SixHours, cancellationToken);
         }
 
         return await req.CreateResponse(doc, TtlCache.SixHours, cancellationToken);
@@ -229,7 +229,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         var mode = req.GetQueryParameters()["mode"];
         var cacheKey = $"popular-movies-{mode}";
 
-        var doc = await distributedCache.Get<MostPopularData>(cacheKey, cancellationToken);
+        var doc = await cache.Get<MostPopularData>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
@@ -258,7 +258,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                 doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, cacheKey), cancellationToken);
             }
 
-            await SaveCache(doc, cacheKey, TtlCache.TwoDays);
+            await SaveCache(doc, cacheKey, TtlCache.TwoDays, cancellationToken);
         }
 
         return await req.CreateResponse(doc, TtlCache.TwoDays, cancellationToken);
@@ -271,7 +271,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         var mode = req.GetQueryParameters()["mode"];
         var cacheKey = $"popular-tv-{mode}";
 
-        var doc = await distributedCache.Get<MostPopularData>(cacheKey, cancellationToken);
+        var doc = await cache.Get<MostPopularData>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
@@ -300,7 +300,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                 doc = await cacheRepo.UpsertItemAsync(new MostPopularDataCache(compactModels, cacheKey), cancellationToken);
             }
 
-            await SaveCache(doc, cacheKey, TtlCache.TwoDays);
+            await SaveCache(doc, cacheKey, TtlCache.TwoDays, cancellationToken);
         }
 
         return await req.CreateResponse(doc, TtlCache.TwoDays, cancellationToken);
@@ -318,7 +318,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
 
-        var doc = await distributedCache.Get<Ratings>(cacheKey, cancellationToken);
+        var doc = await cache.Get<Ratings>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
@@ -336,20 +336,20 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                     tmdb = tmdbRating,
                 };
 
-                await req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken);
+                await cache.ExecuteWithCooldownAsync("filmshow", () => req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken), cancellationToken);
 
-                await req.ProcessApiUnifiedMovie(factory, ratings, cancellationToken);
+                await cache.ExecuteWithCooldownAsync("unifiedmovie", () => req.ProcessApiUnifiedMovie(factory, ratings, cancellationToken), cancellationToken);
 
                 //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
 
-                await req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken);
+                await cache.ExecuteWithCooldownAsync("moviesratings2", () => req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken), cancellationToken);
 
                 ttl = CalculateTtl(releaseDate);
 
                 doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl), cancellationToken);
             }
 
-            await SaveCache(doc, cacheKey, ttl);
+            await SaveCache(doc, cacheKey, ttl, cancellationToken);
         }
 
         await TrySaveCertifiedSd(doc, releaseDate, 8498673, tmdbId, MediaType.movie, cancellationToken, factory);
@@ -369,7 +369,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"rating_{(id.NotEmpty() ? id : tmdbId)}";
 
-        var doc = await distributedCache.Get<Ratings>(cacheKey, cancellationToken);
+        var doc = await cache.Get<Ratings>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
@@ -387,20 +387,20 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                     tmdb = tmdbRating,
                 };
 
-                await req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken);
+                await cache.ExecuteWithCooldownAsync("filmshow", () => req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken), cancellationToken);
 
-                await req.ProcessApiUnifiedMovie(factory, ratings, cancellationToken);
+                await cache.ExecuteWithCooldownAsync("unifiedmovie", () => req.ProcessApiUnifiedMovie(factory, ratings, cancellationToken), cancellationToken);
 
                 //https://rapidapi.com/jpbermoy/api/movie-database-api1 rotten tomatoes
 
-                await req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken);
+                await cache.ExecuteWithCooldownAsync("moviesratings2", () => req.ProcessApiMoviesRatings2(factory, ratings, cancellationToken), cancellationToken);
 
                 ttl = CalculateTtl(releaseDate);
 
                 doc = await cacheRepo.UpsertItemAsync(new RatingsCache(id.NotEmpty() ? id : tmdbId, ratings, ttl), cancellationToken);
             }
 
-            await SaveCache(doc, cacheKey, ttl);
+            await SaveCache(doc, cacheKey, ttl, cancellationToken);
         }
 
         await TrySaveCertifiedSd(doc, releaseDate, 8498675, tmdbId, MediaType.tv, cancellationToken, factory);
@@ -418,11 +418,11 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"review_{id}";
 
-        var doc = await distributedCache.Get<ReviewModel>(cacheKey, cancellationToken);
+        var doc = await cache.Get<ReviewModel>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
-            if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first week of launch)
+            if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first two weeks of launch)
 
             doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
 
@@ -445,7 +445,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                 doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
             }
 
-            await SaveCache(doc, cacheKey, ttl);
+            await SaveCache(doc, cacheKey, ttl, cancellationToken);
         }
 
         return await req.CreateResponse(doc, ttl, cancellationToken);
@@ -461,11 +461,11 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         DateTime.TryParseExact(req.GetQueryParameters()["release_date"], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var releaseDate);
         var cacheKey = $"review_{id}";
 
-        var doc = await distributedCache.Get<ReviewModel>(cacheKey, cancellationToken);
+        var doc = await cache.Get<ReviewModel>(cacheKey, cancellationToken);
 
         if (doc == null)
         {
-            if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first week of launch)
+            if (releaseDate > DateTime.Now.AddDays(-14)) return null; //don't get reviews for new releases (first two weeks of launch)
 
             doc = await cacheRepo.Get<ReviewModel>(cacheKey, cancellationToken);
 
@@ -486,7 +486,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                 doc = await cacheRepo.UpsertItemAsync(new MetaCriticCache(newModel, $"review_{id}", ttl), cancellationToken);
             }
 
-            await SaveCache(doc, cacheKey, ttl);
+            await SaveCache(doc, cacheKey, ttl, cancellationToken);
         }
 
         return await req.CreateResponse(doc, ttl, cancellationToken);
@@ -546,12 +546,12 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
         return TtlCache.SixMonths; // older then one month
     }
 
-    private async Task SaveCache<TData>(CacheDocument<TData>? doc, string cacheKey, TtlCache ttl) where TData : class, new()
+    private async Task SaveCache<TData>(CacheDocument<TData>? doc, string cacheKey, TtlCache ttl, CancellationToken cancellationToken) where TData : class, new()
     {
         if (doc != null)
         {
             var bytes = JsonSerializer.SerializeToUtf8Bytes(doc);
-            await distributedCache.SetAsync(cacheKey, bytes, new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds((int)ttl) });
+            await cache.SetAsync(cacheKey, bytes, new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds((int)ttl) }, cancellationToken);
         }
     }
 }

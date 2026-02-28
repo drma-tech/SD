@@ -237,7 +237,7 @@
 
     private async Task Login()
     {
-        await PopupHelper.LoginPopup(DialogService);
+        Navigation.NavigateTo("/login");
     }
 
     private async Task Logout()

@@ -1,0 +1,156 @@
+﻿@page "/login"
+
+@using SD.WEB.Core.Auth
+@using SD.WEB.Modules.Auth.Resources
+@using SD.WEB.Modules.Subscription.Core
+
+@inherits PageCore<LoginPage>
+
+<SeoHeader Title="Log in or sign up" Description="Log in or sign up" Url="/login" Index="false" Keywords="@([])"></SeoHeader>
+
+<MudContainer MaxWidth="MaxWidth.ExtraSmall">
+    <MudStack Spacing="@Css.SpaceSmall">
+        <MudAlert Variant="Variant.Outlined" Severity="Severity.Warning" Dense="true" Class="@Css.Build().Small("mb")">
+            <span style="font-weight: bold; display: block;" class="mb-1">Login system recently updated</span>
+            If you experience any issues, please contact support
+        </MudAlert>
+        <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Disabled="@(Platform == SD.Shared.Enums.Platform.ios || _processing)">
+            @if (_processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">Processing</MudText>
+            }
+            else
+            {
+                <MudText>Continue with Google</MudText>
+            }
+        </MudButton>
+        <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font" Disabled="@_processing">
+            @if (_processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">Processing</MudText>
+            }
+            else
+            {
+                <MudText>Continue with Apple</MudText>
+            }
+        </MudButton>
+        <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font" Disabled="@_processing">
+            @if (_processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">Processing</MudText>
+            }
+            else
+            {
+                <MudText>Continue with Microsoft</MudText>
+            }
+        </MudButton>
+        <MudDivider Class="@Css.Build().Small("my")"></MudDivider>
+        @if (!emailSent)
+        {
+            <MudTextField @bind-Value="@email" Label="Email" Placeholder="Enter your email" Disabled="_processing"
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="() => LoginWithEmail(email)"></MudTextField>
+        }
+        else
+        {
+            <MudTextField @bind-Value="@otp" Label="OTP Code" Placeholder="Enter the code you received by email." Disabled="@(!emailSent)"
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Check" OnAdornmentClick="() => ConfirmCode(email, otp)"></MudTextField>
+        }
+    </MudStack>
+    <div style="text-align: center;">
+        <MudText Class="@Css.Build().Medium("mt").Small("mx")">
+            @((MarkupString)string.Format(Translations.Terms1, $"<a href='support/terms' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Support.Resources.Translations.TermsUse}</a>", $"<a href='support/privacy' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Support.Resources.Translations.PrivacyPolicy}</a>"))
+        </MudText>
+    </div>
+</MudContainer>
+
+@code {
+    private string? email;
+    private string? otp;
+    private bool emailSent;
+
+    private async Task LoginWithGoogle() => await SignIn("google");
+    private async Task LoginWithApple() => await SignIn("apple");
+    private async Task LoginWithMicrosoft() => await SignIn("microsoft");
+    private async Task LoginWithX() => await SignIn("x");
+    private async Task LoginWithYahoo() => await SignIn("yahoo");
+    private async Task LoginWithEmail(string? email) => await SignIn("email", email);
+
+    private SD.Shared.Enums.Platform? Platform { get; set; }
+    private bool _processing = false;
+
+    protected override async Task ProcessPopupData()
+    {
+        Platform = await AppStateStatic.GetPlatform(JsRuntime);
+    }
+
+    private async Task SignIn(string? provider = null, string? email = null)
+    {
+        try
+        {
+            _processing = true;
+
+            await JsRuntime.Utils().SetStorage<AuthProvider>("auth", AuthProvider.Supabase);
+
+            if (provider == "email")
+            {
+                if (email.Empty())
+                {
+                    await ShowError("Please enter your email.");
+                    _processing = false; StateHasChanged();
+                    return;
+                }
+
+                await JsRuntime.Supabase().SendEmailAsync(email!);
+                emailSent = true;
+            }
+            else
+            {
+                if (provider == "microsoft") provider = "azure";
+                await JsRuntime.Supabase().SignInAsync(provider!);
+            }
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+            _processing = false; StateHasChanged();
+        }
+        finally
+        {
+            await Task.Delay(5000);
+            _processing = false;
+        }
+    }
+
+    private async Task ConfirmCode(string? email = null, string? code = null)
+    {
+        try
+        {
+            _processing = true;
+
+            if (code.Empty())
+            {
+                await ShowError("Please enter the code you received by email.");
+                _processing = false; StateHasChanged();
+                return;
+            }
+
+            await JsRuntime.Supabase().ConfirmCode(email!, code!);
+
+            Navigation.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+            _processing = false; StateHasChanged();
+        }
+        finally
+        {
+            await Task.Delay(5000);
+            _processing = false;
+        }
+    }
+
+}

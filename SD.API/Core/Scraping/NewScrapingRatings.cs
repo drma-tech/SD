@@ -58,6 +58,11 @@ namespace SD.API.Core.Scraping
             catch (Exception ex)
             {
                 req.LogError(ex);
+
+                if (ex.Message.Contains("Too Many Requests"))
+                {
+                    throw new ApiRateLimitException(ex.Message);
+                }
             }
         }
 
@@ -103,6 +108,11 @@ namespace SD.API.Core.Scraping
             catch (Exception ex)
             {
                 req.LogError(ex);
+
+                if (ex.Message.Contains("Too Many Requests"))
+                {
+                    throw new ApiRateLimitException(ex.Message);
+                }
             }
         }
 
@@ -150,6 +160,11 @@ namespace SD.API.Core.Scraping
             catch (Exception ex)
             {
                 req.LogError(ex);
+
+                if (ex.Message.Contains("Too Many Requests"))
+                {
+                    throw new ApiRateLimitException(ex.Message);
+                }
             }
         }
     }

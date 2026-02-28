@@ -13,38 +13,40 @@
 
 @if (AppStateStatic.IsAuthenticated)
 {
-    if (Principal == null)
-    {
-        <MudPaper Elevation="0" Outlined="true" Class="pa-3">
-            <MudText Typo="Typo.h1" Color="Color.Primary" Class="@Css.Build().Small("mb")" Style="font-size: 23px !important; line-height: 1.6 !important;">
-                @Translations.CreateAccount
-            </MudText>
-
-            <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="mb-2">
-                <MudText Inline="true">
-                    @((MarkupString)string.Format(Translations.Terms1, $"<a href='support/terms' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Support.Resources.Translations.TermsUse}</a>", $"<a href='support/privacy' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Support.Resources.Translations.PrivacyPolicy}</a>"))
+    <MudContainer MaxWidth="MaxWidth.Small">
+        @if (Principal == null)
+        {
+            <MudPaper Elevation="0" Outlined="true" Class="pa-3">
+                <MudText Typo="Typo.h1" Color="Color.Primary" Class="@Css.Build().Small("mb")" Style="font-size: 23px !important; line-height: 1.6 !important;">
+                    @Translations.CreateAccount
                 </MudText>
-            </MudCheckBox>
-            <MudCheckBox @bind-Value="_terms2" Color="Color.Primary">
-                <MudText Inline="true">
-                    @Translations.Terms2
-                </MudText>
-            </MudCheckBox>
 
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="@Css.Build().Small("mt").Raw("me-2")">
-                @Button.Confirm
-            </MudButton>
-            <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Logout" Class="@Css.Build().Small("mt")">
-                @Button.Cancel / @Button.Logout
-            </MudButton>
-        </MudPaper>
-    }
-    else
-    {
-        <MudAlert Variant="Variant.Filled" Severity="Severity.Warning" Dense="true" Icon="@IconsFA.Solid.Icon("spinner").WithAnimation(IconAnimation.Spin).Font">
-            @Translations.AuthenticationInProgress
-        </MudAlert>
-    }
+                <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="@Css.Build().Small("mb")">
+                    <MudText Inline="true">
+                        @((MarkupString)string.Format(Translations.Terms1, $"<a href='support/terms' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Support.Resources.Translations.TermsUse}</a>", $"<a href='support/privacy' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Support.Resources.Translations.PrivacyPolicy}</a>"))
+                    </MudText>
+                </MudCheckBox>
+                <MudCheckBox @bind-Value="_terms2" Color="Color.Primary" Class="@Css.Build().Small("mb")">
+                    <MudText Inline="true">
+                        @Translations.Terms2
+                    </MudText>
+                </MudCheckBox>
+
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="@Css.Build().Medium("mt").Raw("me-2")">
+                    @Button.Confirm
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Logout" Class="@Css.Build().Medium("mt")">
+                    @Button.Cancel / @Button.Logout
+                </MudButton>
+            </MudPaper>
+        }
+        else
+        {
+            <MudAlert Variant="Variant.Filled" Severity="Severity.Warning" Dense="true" Icon="@IconsFA.Solid.Icon("spinner").WithAnimation(IconAnimation.Spin).Font">
+                @Translations.AuthenticationInProgress
+            </MudAlert>
+        }
+    </MudContainer>
 }
 
 @code {
