@@ -83,7 +83,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
 
     collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(60); })
         .AddHttpMessageHandler<AppVersionHandler>()
-        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>())       ;
+        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddScoped<AuthenticationStateProvider, CompositeAuthStateProvider>();
     collection.AddScoped<FirebaseAuthStateProvider>();

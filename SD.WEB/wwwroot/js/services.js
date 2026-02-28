@@ -2,6 +2,7 @@
 
 import { isBot, isOldBrowser, isLocalhost, isDev, servicesConfig } from "./main.js";
 import { storage, notification, environment } from "./utils.js";
+import { authentication } from "./supabase.js";
 
 export const services = {
     initGoogleAnalytics(version) {
@@ -61,6 +62,15 @@ export const services = {
             platform: storage.getLocalStorage("platform"),
             app_version: version,
         };
+
+        let user = authentication.getUser();
+
+        if (user) {
+            window.Userback.identify(user.id, {
+                name: user.name,
+                email: user.email,
+            });
+        }
 
         (function (d) {
             let s = d.createElement('script'); s.async = true;
