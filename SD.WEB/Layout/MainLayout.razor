@@ -314,13 +314,13 @@
     [JSInvokable]
     public static void FirebaseAuthChanged(string? token)
     {
-        AppStateStatic.FirebaseAuthChanged!.Invoke(token);
+        AppStateStatic.FirebaseAuthChanged?.Invoke(token);
     }
 
     [JSInvokable]
     public static void SupabaseAuthChanged(string? token)
     {
-        AppStateStatic.SupabaseAuthChanged!.Invoke(token);
+        AppStateStatic.SupabaseAuthChanged?.Invoke(token);
     }
 
 }

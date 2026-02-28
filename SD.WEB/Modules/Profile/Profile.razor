@@ -120,21 +120,21 @@
         WishApi.DataChanged += model => { Wish = model; WishActionsMovie.FinishLoading.Invoke(model); WishActionsTv.FinishLoading.Invoke(model); StateHasChanged(); };
     }
 
-    // protected override async Task OnAfterRenderAsync(bool firstRender)
-    // {
-    //     if (AppStateStatic.IsAuthenticated)
-    //     {
-    //         var subscription = await JsRuntime.Utils().GetLocalStorage("subscription-popup");
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (AppStateStatic.IsAuthenticated)
+        {
+            var subscriptionPopup = await JsRuntime.Utils().GetStorage<bool>("subscription-popup");
 
-    //         if (subscription.Empty())
-    //         {
-    //             await DialogService.SubscriptionPopup();
-    //             await JsRuntime.Utils().SetLocalStorage("subscription-popup", true.ToString().ToLower());
-    //         }
-    //     }
+            if (!subscriptionPopup)
+            {
+                await DialogService.SubscriptionPopup();
+                await JsRuntime.Utils().SetStorage<bool>("subscription-popup", true);
+            }
+        }
 
-    //     await base.OnAfterRenderAsync(firstRender);
-    // }
+        await base.OnAfterRenderAsync(firstRender);
+    }
 
     protected override async Task ProcessPageData()
     {
