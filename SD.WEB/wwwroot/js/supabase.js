@@ -152,7 +152,8 @@ export const authentication = {
         }
     },
     async sendEmail(email) {
-        const { error } = await window.supabase.auth.signInWithOtp({
+        const supabase = await ensureAuthReady();
+        const { error } = await supabase.auth.signInWithOtp({
             email: email,
         });
 
@@ -162,7 +163,8 @@ export const authentication = {
         }
     },
     async confirmCode(email, code) {
-        const { error } = await window.supabase.auth.verifyOtp({
+        const supabase = await ensureAuthReady();
+        const { error } = await supabase.auth.verifyOtp({
             email: email,
             token: code,
             type: "email",
@@ -175,7 +177,8 @@ export const authentication = {
     },
     async signOut() {
         try {
-            await window.supabase.auth.signOut();
+            const supabase = await ensureAuthReady();
+            await supabase.auth.signOut();
         } catch (error) {
             Sentry.captureException(error);
             throw new Error(error.message);
@@ -183,7 +186,8 @@ export const authentication = {
     },
     async getUser() {
         try {
-            const { data, error } = await window.supabase.auth.getSession();
+            const supabase = await ensureAuthReady();
+            const { data, error } = await supabase.auth.getSession();
             let user = data?.session?.user;
 
             if (!user) return null;
