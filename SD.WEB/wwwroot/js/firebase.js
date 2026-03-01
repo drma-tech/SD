@@ -170,7 +170,7 @@ export const authentication = {
             throw new Error(error.message);
         }
     },
-    getUser() {
+    async getUser() {
         try {
             const firebase = await ensureAuthReady();
             const user = firebase.currentUser;

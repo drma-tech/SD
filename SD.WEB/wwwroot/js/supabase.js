@@ -67,16 +67,18 @@ function setupAuthListener(supabase) {
 
         let user = session?.user;
 
-        if (user && window.Userback?.identify) {
-            try {
-                window.Userback.identify(user.id, {
-                    name: user.user_metadata.full_name,
-                    email: user.email,
-                });
-            } catch {
-                //ignores
+        setTimeout(async () => {
+            if (user && window.Userback?.identify) {
+                try {
+                    window.Userback.identify(user.id, {
+                        name: user.user_metadata.full_name,
+                        email: user.email,
+                    });
+                } catch {
+                    //ignores
+                }
             }
-        }
+        }, 1000);
 
         const token = session?.access_token ?? null;
 
@@ -86,7 +88,9 @@ function setupAuthListener(supabase) {
 
         _lastSupabaseToken = token;
 
-        await interop.invokeDotNetWhenReady("SD.WEB", "SupabaseAuthChanged", token);
+        setTimeout(async () => {
+            await interop.invokeDotNetWhenReady("SD.WEB", "SupabaseAuthChanged", token);
+        }, 500);
     });
 }
 
