@@ -6,19 +6,24 @@
 <NewPageSection IsPageHeader="true" Title="@Title">
 </NewPageSection>
 
-<MudGrid Spacing="@Css.SpaceLarge">
-    <MudItem xs="12" md="2">
-        <GoogleAdSense Section="@GoogleAdSense.AdUnit.Trailer"></GoogleAdSense>
+<MudGrid Spacing="@Css.SpaceSmall">
+    <MudItem xs="12" md="2" Style="text-align: -webkit-center;">
+        <div style="width: 95%;">
+            <GoogleAdSense Section="@GoogleAdSense.AdUnit.Trailer"></GoogleAdSense>
+        </div>
+
     </MudItem>
-    <MudItem xs="12" md="8">
-        <div style="position: relative; width: 100%; aspect-ratio: 16 / 9;">
+    <MudItem xs="12" md="8" Style="text-align: -webkit-center;">
+        <div style="position: relative; width: 95%; aspect-ratio: 16 / 9;">
             <iframe width="560" height="315" src="@($"https://www.youtube.com/embed/{Id}")" title="YouTube video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
     </MudItem>
-    <MudItem xs="12" md="2">
-        <GoogleAdSense Section="@GoogleAdSense.AdUnit.Trailer"></GoogleAdSense>
+    <MudItem xs="12" md="2" Style="text-align: -webkit-center;">
+        <div style="width: 95%;">
+            <GoogleAdSense Section="@GoogleAdSense.AdUnit.Trailer"></GoogleAdSense>
+        </div>
     </MudItem>
 </MudGrid>
 
