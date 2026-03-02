@@ -210,7 +210,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
                 foreach (var item in obj?.contents?.Take(mode == "compact" ? 12 : 100).Select(s => s.video) ?? [])
                 {
                     if (item == null) continue;
-                    compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, item.thumbnails[0].url, item.publishedTimeText));
+                    compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, mode == "compact" ? item.thumbnails[0].url : item.thumbnails[2].url, item.publishedTimeText));
                 }
 
                 doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, cacheKey), cancellationToken);
