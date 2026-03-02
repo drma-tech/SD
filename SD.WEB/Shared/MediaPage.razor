@@ -171,7 +171,7 @@
                             {
                                 <div>
                                     <MudIcon Icon="@IconsFA.Brands.Icon("youtube").Font" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
-                                    <MudLink Href="@($"https://www.youtube.com/watch?v={item.key}")" Target="_blank" Color="Color.Secondary"
+                                    <MudLink Href="@($"/video/{($"{item.key}|{item.name}".SimpleEncrypt())}")" Color="Color.Secondary"
                                              Style="@((AppStateStatic.Size == Size.Small ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;"))">
                                         @item.name
                                     </MudLink>

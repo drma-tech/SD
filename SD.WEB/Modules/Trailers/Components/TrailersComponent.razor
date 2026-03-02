@@ -21,7 +21,7 @@
                                 @foreach (var item in TrailerModel?.Data?.Items ?? [])
                                 {
                                     <div class="swiper-slide swiper-slide-grid">
-                                        <MudLink Href="@($"https://www.youtube.com/watch?v={item?.id}")" Target="_blank" rel="noindex, nofollow">
+                                        <MudLink Href="@($"/video/{($"{item.id}|{item.title}".SimpleEncrypt())}")" rel="noindex, nofollow">
                                             <MudCard Outlined="true" Style="height: 100%;">
                                                 <MudCardContent Style="padding: 0;">
                                                     <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%;" ObjectFit="ObjectFit.Contain"></MudImage>
