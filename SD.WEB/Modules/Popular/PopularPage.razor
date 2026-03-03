@@ -1,0 +1,49 @@
+﻿@page "/popular/{type}"
+
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Platform.Resources
+
+@inject ImdbPopularApi ImdbPopularApi
+@inject WatchedListApi WatchedApi
+@inject WatchingListApi WatchingApi
+@inject WishListApi WishApi
+
+<SeoHeader Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Keywords="@(new[] { "Editor’s Choice" })" Url="@($"/editors-choice/{Type}")"></SeoHeader>
+<NewPageSection IsPageHeader="true" Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font"></NewPageSection>
+
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
+
+@if (PopularType == PopularType.Movie)
+{
+    <MediaListFull MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" Watched="Watched" Watching="Watching" Wish="Wish" StringParameters="Params" TypeSelected="MediaType.movie"
+                   Icon="@IconsFA.Solid.Icon("fire").Font" FullPage="true" ShowHead="false">
+    </MediaListFull>
+}
+else
+{
+    <MediaListFull MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" Watched="Watched" Watching="Watching" Wish="Wish" StringParameters="Params" TypeSelected="MediaType.tv"
+                   Icon="@IconsFA.Solid.Icon("fire").Font" FullPage="true" ShowHead="false">
+    </MediaListFull>
+}
+
+@code {
+    [Parameter] public string? Type { get; set; }
+
+    public PopularType PopularType => Enum.Parse<PopularType>(Type ?? "movie", true);
+
+    public WatchedList? Watched { get; set; }
+    public WatchingList? Watching { get; set; }
+    public WishList? Wish { get; set; }
+
+    public Dictionary<string, string> Params { get; set; } = new() { { "mode", "full" } };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
+        WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
+        WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
+    }
+}

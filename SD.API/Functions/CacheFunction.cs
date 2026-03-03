@@ -242,7 +242,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
                 var compactModels = new MostPopularData();
 
-                foreach (var item in obj?.Take(mode == "compact" ? 20 : 40) ?? [])
+                foreach (var item in obj?.Take(mode == "compact" ? 20 : 50) ?? [])
                 {
                     if (item == null) continue;
                     compactModels.Items.Add(new MostPopularDataDetail
@@ -284,7 +284,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository rep
 
                 var compactModels = new MostPopularData();
 
-                foreach (var item in obj?.Take(mode == "compact" ? 20 : 40) ?? [])
+                foreach (var item in obj?.Take(mode == "compact" ? 20 : 50) ?? [])
                 {
                     if (item == null) continue;
                     compactModels.Items.Add(new MostPopularDataDetail
