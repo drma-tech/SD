@@ -86,7 +86,6 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddScoped<AuthenticationStateProvider, CompositeAuthStateProvider>();
-    collection.AddScoped<FirebaseAuthStateProvider>();
     collection.AddScoped<SupabaseAuthStateProvider>();
 
     collection.AddScoped<CustomAuthorizationHandler>();

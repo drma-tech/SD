@@ -1,10 +1,8 @@
-﻿using FirebaseAdmin.Auth;
-using Microsoft.Azure.Functions.Worker.Http;
+﻿using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace SD.API.Core.Auth;
 
@@ -12,7 +10,7 @@ public static class AuthUsersHelper
 {
     public static async Task<string?> GetUserIdAsync(this HttpRequestData req, CancellationToken cancellationToken, bool required = true)
     {
-        var principal = await req.ParseAndValidateJwtAsync(required, cancellationToken);
+        var principal = await req.ParseAndValidateJwtAsync(cancellationToken);
 
         var id = principal?.Claims.FirstOrDefault(w => w.Type == "user_id")?.Value;
 
@@ -40,24 +38,9 @@ public static class AuthUsersHelper
         return null;
     }
 
-    private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this HttpRequestData req, bool required, CancellationToken cancellationToken)
+    private static async Task<ClaimsPrincipal?> ParseAndValidateJwtAsync(this HttpRequestData req, CancellationToken cancellationToken)
     {
-        if (req.Headers.TryGetValues("X-Firebase-Token", out var header1))
-        {
-            var authHeader = header1.LastOrDefault();
-
-            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
-            {
-                var token = authHeader.Substring("Bearer ".Length);
-
-                var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(token, cancellationToken);
-
-                var claims = decodedToken.Claims.Select(kv => new Claim(kv.Key, kv.Value?.ToString() ?? string.Empty)).ToList();
-
-                return new ClaimsPrincipal(new ClaimsIdentity(claims, "firebase"));
-            }
-        }
-        else if (req.Headers.TryGetValues("X-Supabase-Token", out var header2))
+        if (req.Headers.TryGetValues("X-Supabase-Token", out var header2))
         {
             var authHeader = header2.LastOrDefault();
 
@@ -79,21 +62,7 @@ public static class AuthUsersHelper
         }
         else
         {
-            if (required)
-            {
-                var headerPairs = new StringBuilder();
-
-                foreach (var h in req.Headers)
-                {
-                    headerPairs.AppendLine($"{h.Key}={string.Join(',', h.Value)}");
-                }
-
-                var headersString = string.Join("; ", headerPairs);
-
-                req.LogError(new Exception($"Authorization header not found: {headersString}"));
-
-                throw new UnhandledException("Authorization header not found");
-            }
+            return null;
         }
 
         return null;

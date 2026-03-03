@@ -33,19 +33,7 @@ export const servicesConfig = {
     AnalyticsCode: "G-4PREF5QX1F",
     ClarityKey: "r2iwqdpwtv",
     UserBackToken: "A-A2J4M5NKCbDp1QyQe7ogemmmq",
-    UserBackSurveyKey: "mjj9Ta",
     SentryDsn: "https://94ae67eb3fb0bc82327607ddd9d6aebb@o4510938040041472.ingest.us.sentry.io/4510938043711488",
-};
-
-export const firebaseConfig = {
-    apiKey: "AIzaSyDj5LpsT7-bra4hvuvb5E_BPSlD7Wr29nQ",
-    authDomain: "auth.streamingdiscovery.com",
-    projectId: "streaming-discovery-4c483",
-    storageBucket: "streaming-discovery-4c483.firebasestorage.app",
-    messagingSenderId: "394152837411",
-    messagingKey: "BJ31lWbRBbX3ZyyUHG_pQB7ZmjFtNeFjhbhuyMwUvotpXsTej5iloeSA7GdCbC7HUo314KtgMxIvXiwygAG8NhQ",
-    appId: "1:394152837411:web:06b7216d2859bdc1224c96",
-    measurementId: "G-JKXTVXM0EX",
 };
 
 export const supabaseConfig = {

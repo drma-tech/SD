@@ -17,7 +17,7 @@
         @if (Principal == null)
         {
             <MudPaper Elevation="0" Outlined="true" Class="pa-3">
-                <MudText Typo="Typo.h1" Color="Color.Primary" Class="@Css.Build().Small("mb")" Style="font-size: 23px !important; line-height: 1.6 !important;">
+                <MudText Typo="Typo.h1" Color="Color.Primary" Class="@Css.Build().Large("mb")" Style="font-size: 23px !important; line-height: 1.6 !important;" Align="Align.Center">
                     @Translations.CreateAccount
                 </MudText>
 
@@ -32,10 +32,10 @@
                     </MudText>
                 </MudCheckBox>
 
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="@Css.Build().Medium("mt").Raw("me-2")">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="@Css.Build().Large("mt").Raw("me-2")">
                     @Button.Confirm
                 </MudButton>
-                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Logout" Class="@Css.Build().Medium("mt")">
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Logout" Class="@Css.Build().Large("mt")">
                     @Button.Cancel / @Button.Logout
                 </MudButton>
             </MudPaper>

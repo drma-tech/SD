@@ -2,14 +2,8 @@
 
 namespace SD.WEB.Core.Auth
 {
-    public sealed class CompositeAuthStateProvider(FirebaseAuthStateProvider firebase, SupabaseAuthStateProvider supabase) : AuthenticationStateProvider
+    public sealed class CompositeAuthStateProvider(SupabaseAuthStateProvider supabase) : AuthenticationStateProvider
     {
-        public void OnFirebaseAuthChanged(string? token)
-        {
-            firebase.NotifyAuthenticationStateChanged(token);
-            NotifyAuthenticationStateChanged(firebase.GetAuthenticationStateAsync());
-        }
-
         public void OnSupabaseAuthChanged(string? token)
         {
             supabase.NotifyAuthenticationStateChanged(token);
@@ -18,10 +12,7 @@ namespace SD.WEB.Core.Auth
 
         public override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            if (AppStateStatic.FirebaseToken != null)
-                return firebase.GetAuthenticationStateAsync();
-            else
-                return supabase.GetAuthenticationStateAsync();
+            return supabase.GetAuthenticationStateAsync();
         }
     }
 }

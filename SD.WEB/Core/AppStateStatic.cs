@@ -8,7 +8,6 @@ namespace SD.WEB.Core;
 
 public static class AppStateStatic
 {
-    public static string? FirebaseToken { get; set; }
     public static string? SupabaseToken { get; set; }
     public static bool IsAuthenticated { get; set; }
     public static bool IsPremiumUser { get; set; }
@@ -379,7 +378,6 @@ public static class AppStateStatic
 
     #endregion ContentLanguage
 
-    public static Action<string?>? FirebaseAuthChanged { get; set; }
     public static Action<string?>? SupabaseAuthChanged { get; set; }
     public static Action? UserStateChanged { get; set; }
     public static Action? RegistrationSuccessful { get; set; }

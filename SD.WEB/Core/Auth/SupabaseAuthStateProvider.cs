@@ -10,7 +10,6 @@ namespace SD.WEB.Core.Auth
 
         public void NotifyAuthenticationStateChanged(string? token)
         {
-            AppStateStatic.FirebaseToken = null;
             AppStateStatic.SupabaseToken = null;
 
             if (token == null)

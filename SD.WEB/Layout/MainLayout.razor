@@ -63,12 +63,6 @@
             PrincipalApi.DataChanged += principal => { Principal = principal; StateHasChanged(); };
 
             // 1 = capture the claims
-            AppStateStatic.FirebaseAuthChanged = (string? token) =>
-            {
-                var provider = (CompositeAuthStateProvider)AuthStateProvider;
-                provider.OnFirebaseAuthChanged(token);
-            };
-
             AppStateStatic.SupabaseAuthChanged = (string? token) =>
             {
                 var provider = (CompositeAuthStateProvider)AuthStateProvider;
@@ -309,12 +303,6 @@
     public static void ShowError(string error)
     {
         AppStateStatic.ShowError?.Invoke(error);
-    }
-
-    [JSInvokable]
-    public static void FirebaseAuthChanged(string? token)
-    {
-        AppStateStatic.FirebaseAuthChanged?.Invoke(token);
     }
 
     [JSInvokable]
