@@ -1,10 +1,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Caching.Distributed;
-using SD.API.Core.Auth;
 using SD.API.Core.Scraping;
-using SD.Shared.Models.Auth;
-using SD.Shared.Models.Energy;
 using SD.Shared.Models.List;
 using SD.Shared.Models.List.Imdb;
 using SD.Shared.Models.News;
@@ -19,136 +16,6 @@ namespace SD.API.Functions;
 
 public class CacheFunction(CosmosCacheRepository cacheRepo, CosmosRepository repo, IDistributedCache cache, IHttpClientFactory factory)
 {
-    //todo: remove energy on 03-15
-
-    [Function("Energy")]
-    public async Task<HttpResponseData?> Energy(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/energy")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var ip = req.GetUserIP(false);
-            var cacheKey = $"energy_{DateTime.UtcNow.Day}_{ip}";
-
-            var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
-            var model = doc?.Data;
-
-            model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
-
-            doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken); //check if upsert is needed
-            await SaveCache(doc, cacheKey, TtlCache.OneWeek, cancellationToken);
-
-            return await req.CreateResponse(doc, TtlCache.OneWeek, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            return await req.CreateResponse<CacheDocument<EnergyModel>>(null, TtlCache.OneWeek, cancellationToken);
-        }
-    }
-
-    [Function("EnergyAuth")]
-    public async Task<HttpResponseData?> EnergyAuth(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "cache/energy")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var ip = req.GetUserIP(false);
-            var userId = await req.GetUserIdAsync(cancellationToken);
-            var cacheKey = $"energy_auth_{DateTime.UtcNow.Day}_{ip}";
-
-            var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
-            var model = doc?.Data;
-
-            model ??= new EnergyModel() { ConsumedEnergy = 0, TotalEnergy = 10 };
-
-            var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
-
-            if (principal?.GetActiveSubscription() != null)
-            {
-                model.TotalEnergy = principal.GetActiveSubscription()!.ActiveProduct.GetRestrictions().Energy;
-            }
-
-            doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken); //todo: check if upsert is needed
-            await SaveCache(doc, cacheKey, TtlCache.OneWeek, cancellationToken);
-
-            return await req.CreateResponse(doc, TtlCache.OneWeek, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            return await req.CreateResponse<CacheDocument<EnergyModel>>(null, TtlCache.OneWeek, cancellationToken);
-        }
-    }
-
-    [Function("EnergyAdd")]
-    public async Task EnergyAdd(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/cache/energy/add")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var ip = req.GetUserIP(false);
-            var cacheKey = $"energy_{DateTime.UtcNow.Day}_{ip}";
-            var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
-
-            if (doc == null)
-            {
-                var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 10 };
-
-                doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);
-            }
-            else
-            {
-                doc.Data!.ConsumedEnergy += 1;
-            }
-
-            await cacheRepo.UpsertItemAsync(doc!, cancellationToken);
-            await SaveCache(doc, cacheKey, TtlCache.OneWeek, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-        }
-    }
-
-    [Function("EnergyAuthAdd")]
-    public async Task EnergyAuthAdd(
-        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "cache/energy/add")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var ip = req.GetUserIP(false);
-            var userId = await req.GetUserIdAsync(cancellationToken);
-            var cacheKey = $"energy_auth_{DateTime.UtcNow.Day}_{ip}";
-
-            var doc = await cacheRepo.Get<EnergyModel>(cacheKey, cancellationToken);
-
-            if (doc == null)
-            {
-                var model = new EnergyModel() { ConsumedEnergy = 1, TotalEnergy = 10 };
-                var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
-
-                if (principal?.GetActiveSubscription() != null)
-                {
-                    model!.TotalEnergy = principal.GetActiveSubscription()!.ActiveProduct.GetRestrictions().Energy;
-                }
-
-                doc = await cacheRepo.UpsertItemAsync(new EnergyCache(model, cacheKey), cancellationToken);
-            }
-            else
-            {
-                doc.Data!.ConsumedEnergy += 1;
-            }
-
-            await cacheRepo.UpsertItemAsync(doc!, cancellationToken);
-            await SaveCache(doc, cacheKey, TtlCache.OneWeek, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-        }
-    }
-
     [Function("CacheNew")]
     public async Task<HttpResponseData?> CacheNew([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")]
         HttpRequestData req, CancellationToken cancellationToken)

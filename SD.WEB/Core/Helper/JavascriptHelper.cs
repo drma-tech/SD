@@ -87,8 +87,8 @@ namespace SD.WEB.Core.Helper
             }
             else if (underlyingType.IsEnum)
             {
-                var parsed = Enum.TryParse(underlyingType, value, ignoreCase: true, out var enumValue);
-                var defined = parsed && enumValue != null && Enum.IsDefined(underlyingType, enumValue);
+                var parsed = System.Enum.TryParse(underlyingType, value, ignoreCase: true, out var enumValue);
+                var defined = parsed && enumValue != null && System.Enum.IsDefined(underlyingType, enumValue);
                 return defined ? (T?)enumValue : default;
             }
             else

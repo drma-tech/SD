@@ -2,8 +2,8 @@
 
 <MudDialog Style="width: 100%; height: 100%; max-width: 600px; max-height: 600px;">
     <DialogContent>
-        <MudCarousel @ref="mudCarousel" Class="mud-width-full" Style="height: calc(100% - 56px);" ShowArrows="false" ShowBullets="false" BulletsPosition="Position.Top"
-                     AutoCycle="false" TData="object" SelectedIndexChanged="StateHasChanged">
+        <MudCarousel @ref="mudCarousel" Class="mud-width-full" Style="height: calc(100% - 56px);" ShowArrows="false" ShowBullets="false" AutoCycle="false"
+                     TData="object" SelectedIndexChanged="StateHasChanged">
             <MudCarouselItem>
                 <div class="pa-4" style="text-align: center; height: 100%;">
                     <MudImage Src="images/onboarding-step-1.png" Style="height: 200px;"></MudImage>
@@ -47,18 +47,30 @@
             </MudCarouselItem>
         </MudCarousel>
         <div class="py-2 px-4 d-flex" style="text-align: center; width: 100%; justify-content: space-between;">
-            @if (mudCarousel?.SelectedIndex == mudCarousel?.Items.Count - 1)
+            @if (mudCarousel?.SelectedIndex == mudCarousel?.Items.Count - 1) //last step
             {
+                <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="@(() => { mudCarousel?.Previous(); StateHasChanged(); })" Class="@Css.Build().Small("me")">
+                    @WEB.Resources.Button.Back
+                </MudButton>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" OnClick="Login" FullWidth="true" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
                     @Resources.Translations.Step4Title
                 </MudButton>
             }
             else
             {
-                <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="() => MudDialog?.Close()">
-                    @WEB.Resources.Button.Close
-                </MudButton>
-                <MudChip T="string" Text="@($"{mudCarousel?.SelectedIndex + 1} - {mudCarousel?.Items.Count}")" Class="mx-3"></MudChip>
+                @if (mudCarousel?.SelectedIndex == 0)
+                {
+                    <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="() => MudDialog?.Close()">
+                        @WEB.Resources.Button.Close
+                    </MudButton>
+                }
+                else
+                {
+                    <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="@(() => { mudCarousel?.Previous(); StateHasChanged(); })">
+                        @WEB.Resources.Button.Back
+                    </MudButton>
+                }
+                <MudChip T="string" Text="@($"{mudCarousel?.SelectedIndex + 1} - {mudCarousel?.Items.Count}")" Class="mx-3" Style="height: auto;"></MudChip>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => { mudCarousel?.Next(); StateHasChanged(); })">
                     @WEB.Resources.Button.Next
                 </MudButton>

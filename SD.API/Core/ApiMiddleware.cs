@@ -64,7 +64,7 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
         finally
         {
             sw.Stop();
-            if (sw.ElapsedMilliseconds > 8000)
+            if (sw.ElapsedMilliseconds > 5000)
             {
                 req?.LogWarning($"Executed in {sw.Elapsed}");
             }

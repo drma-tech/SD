@@ -1,5 +1,4 @@
-﻿using SD.Shared.Models.Energy;
-using SD.Shared.Models.List;
+﻿using SD.Shared.Models.List;
 using SD.Shared.Models.News;
 using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
