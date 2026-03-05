@@ -12,7 +12,7 @@
 <CustomErrorBoundary @ref="_boundary" OnErrorCallback="OnAppError">
     <ChildContent>
         <CascadingAuthenticationState>
-            <Router AppAssembly="@typeof(App).Assembly" NotFoundPage="typeof(NotFoundPage)">
+            <Router AppAssembly="@typeof(App).Assembly">
                 <Found Context="routeData">
                     <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                         <NotAuthorized>
@@ -28,6 +28,9 @@
                     </AuthorizeRouteView>
                     <FocusOnNavigate RouteData="@routeData" Selector="h1" />
                 </Found>
+                <NotFound>
+                    <NotFoundPage></NotFoundPage>
+                </NotFound>
             </Router>
         </CascadingAuthenticationState>
     </ChildContent>
