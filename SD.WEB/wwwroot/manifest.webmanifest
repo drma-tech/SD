@@ -65,29 +65,6 @@
       "sizes": "512x512"
     }
   ],
-  "screenshots": [
-    {
-      "src": "screenshots/index_desktop_store.png",
-      "type": "image/png",
-      "sizes": "1920x1080",
-      "form_factor": "wide",
-      "label": "Index"
-    },
-    {
-      "src": "screenshots/profile_desktop_store.png",
-      "type": "image/png",
-      "sizes": "1920x1080",
-      "form_factor": "wide",
-      "label": "Profile"
-    },
-    {
-      "src": "screenshots/platforms_desktop_store.png",
-      "type": "image/png",
-      "sizes": "1920x1080",
-      "form_factor": "wide",
-      "label": "Platforms"
-    }
-  ],
   "launch_handler": {
     "client_mode": [
       "navigate-existing",
