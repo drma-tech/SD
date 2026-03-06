@@ -103,7 +103,13 @@
                 }
                 else if (Provider == PaymentProvider.Stripe)
                 {
-                    @if (CurrentCountry.NotEmpty() && _StripeBlockedCountries.ContainsKey(CurrentCountry.ToUpper()))
+                    @if (Platform == SD.Shared.Enums.Platform.amazon)
+                    {
+                        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
+                            @($"Unfortunately, due to legal and policy restrictions, we are unable to offer our services in Amazon devices.")
+                        </MudAlert>
+                    }
+                    else if (CurrentCountry.NotEmpty() && _StripeBlockedCountries.ContainsKey(CurrentCountry.ToUpper()))
                     {
                         <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
                             @($"Unfortunately, due to legal and policy restrictions, Stripe cannot offer payment services in {_StripeBlockedCountries[CurrentCountry!.ToUpper()]}.")
