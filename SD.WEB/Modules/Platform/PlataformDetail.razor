@@ -108,13 +108,17 @@ else
         Actions.StartLoading?.Invoke(null);
         AllProviders = await AllProvidersApi.GetAll();
         Provider = AllProviders?.Items.SingleOrDefault(s => s.id == Id);
-        Platform = await AppStateStatic.GetPlatform(JsRuntime);
         Actions.FinishLoading?.Invoke(Provider);
 
         if (Provider == null)
         {
             isNotFound = true;
         }
+    }
+
+    protected override async Task ProcessPageData()
+    {
+        Platform = await AppStateStatic.GetPlatform(JsRuntime);
     }
 
     protected override async Task LoadAuthDataAsync()
