@@ -16,8 +16,8 @@ namespace SD.API.Functions;
 
 public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache cache, IHttpClientFactory factory)
 {
-    [Function("CacheNew")]
-    public async Task<HttpResponseData?> CacheNew([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")]
+    [Function("CacheNews")]
+    public async Task<HttpResponseData?> CacheNews([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/cache/news")]
         HttpRequestData req, CancellationToken cancellationToken)
     {
         var mode = req.GetQueryParameters()["mode"];
@@ -42,7 +42,11 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                 foreach (var item in nodes.Take(mode == "compact" ? 10 : 30) ?? [])
                 {
                     if (item == null) continue;
-                    compactModels.Items.Add(new Item(item.id, item.articleTitle?.plainText, item.image?.url, item.externalUrl, item.date));
+                    compactModels.Items.Add(new Item(item.id, 
+                        item.articleTitle?.plainText, 
+                        item.image?.url?.Replace("@._V1_.jpg", "@._V1_UY400_.jpg"), //force height to 400px
+                        item.externalUrl, 
+                        item.date));
                 }
 
                 doc = await cacheRepo.UpsertItemAsync(new NewsCache(compactModels, cacheKey), cancellationToken);
