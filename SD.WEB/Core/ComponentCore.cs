@@ -150,9 +150,6 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
     {
         if (url.Empty()) return;
 
-        var platform = await AppStateStatic.GetPlatform(JsRuntime);
-        if (platform == Platform.huawei) return;
-
         var encodedUrl = System.Net.WebUtility.HtmlEncode(url);
 
         MarkupString message = new($@"

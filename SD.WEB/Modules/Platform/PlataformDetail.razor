@@ -32,9 +32,9 @@ else
     {
         <NewPageSection IsPageHeader="true" Image="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Subtitle="@GetSubtitle()" Description="@Provider.description">
             <ActionsFragment>
-                @if (Provider.link.NotEmpty())
+                @if (Provider.link.NotEmpty() && Platform != SD.Shared.Enums.Platform.huawei)
                 {
-                    <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Link" OnClick="@(()=>OpenExternalWebsite(Provider.link))" Class="me-2" Variant="Variant.Filled">
+                    <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Link" OnClick="@(() => OpenExternalWebsite(Provider.link))" Class="me-2" Variant="Variant.Filled">
                         Official Website
                     </MudButton>
                 }
@@ -92,6 +92,7 @@ else
     public WishList? Wish { get; set; }
 
     public MyProviders? MyProviders { get; set; }
+    public SD.Shared.Enums.Platform? Platform { get; set; }
 
     private bool ShowMovieFilter => Provider?.types.Contains(MediaType.movie) ?? false;
     private bool ShowTvFilter => Provider?.types.Contains(MediaType.tv) ?? false;
@@ -107,6 +108,7 @@ else
         Actions.StartLoading?.Invoke(null);
         AllProviders = await AllProvidersApi.GetAll();
         Provider = AllProviders?.Items.SingleOrDefault(s => s.id == Id);
+        Platform = await AppStateStatic.GetPlatform(JsRuntime);
         Actions.FinishLoading?.Invoke(Provider);
 
         if (Provider == null)
