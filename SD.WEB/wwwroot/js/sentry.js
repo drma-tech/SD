@@ -1,5 +1,6 @@
-﻿import { appVersion, servicesConfig } from "./main.js";
+﻿import { servicesConfig } from "./main.js";
 import { storage, environment } from "./utils.js";
+import { appVersion } from "./app-version.js";
 
 Sentry.init({
     dsn: servicesConfig.SentryDsn,

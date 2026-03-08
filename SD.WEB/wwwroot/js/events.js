@@ -1,7 +1,7 @@
 "use strict";
 
-import { isDev, isBot, isOldBrowser, appVersion } from "./main.js";
-import { storage, notification, environment } from "./utils.js";
+import { isDev } from "./main.js";
+import { notification } from "./utils.js";
 
 window.addEventListener("load", function () {
     const startTime = performance.now();
