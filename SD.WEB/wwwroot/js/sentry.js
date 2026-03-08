@@ -3,6 +3,7 @@ import { storage, environment } from "./utils.js";
 
 Sentry.init({
     dsn: servicesConfig.SentryDsn,
+    release: `sd@${appVersion}`,
     beforeSend(event) {
         event.tags = {
             "custom.version": appVersion,

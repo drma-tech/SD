@@ -50,15 +50,3 @@ if (isDev) {
     meta.content = "noindex, nofollow";
     document.head.appendChild(meta);
 }
-
-// todo: remove in the end of 2026
-if (typeof Promise.withResolvers !== "function") {
-    Promise.withResolvers = function () {
-        let resolve, reject;
-        const promise = new Promise((res, rej) => {
-            resolve = res;
-            reject = rej;
-        });
-        return { promise, resolve, reject };
-    };
-}
