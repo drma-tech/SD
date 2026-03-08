@@ -6,11 +6,9 @@
 }
 else
 {
-    <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined" Class="@Css.Build().Small("mb")" NoIcon="true" ContentAlignment="HorizontalAlignment.Center">
-        <MudText Typo="Typo.subtitle1">
-            @GlobalTranslations.WriteReviewSubtitle
-        </MudText>
-    </MudAlert>
+    <MudText Typo="Typo.h6" Color="Color.Info" Align="Align.Center" Class="@Css.Build().Small("my")">
+        @GlobalTranslations.WriteReviewSubtitle
+    </MudText>
 }
 
 @if (Platform != SD.Shared.Enums.Platform.webapp)
@@ -87,10 +85,6 @@ else
             }
         </MudGrid>
     </div>
-
-    <MudText Typo="Typo.subtitle2" Align="Align.Center">
-        @GlobalTranslations.WriteReviewSubtitleStore
-    </MudText>
 }
 else //webapp
 {
@@ -115,11 +109,9 @@ else //webapp
 
 @if (ShowOtherApps)
 {
-    <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined" Class="@Css.Build().Small("mb").Large("mt")" NoIcon="true" ContentAlignment="HorizontalAlignment.Center">
-        <MudText Typo="Typo.subtitle1">
-            @GlobalTranslations.CheckOurApps
-        </MudText>
-    </MudAlert>
+    <MudText Typo="Typo.h6" Color="Color.Info" Align="Align.Center" Class="@Css.Build().Small("my")">
+        @GlobalTranslations.CheckOurApps
+    </MudText>
 
     <div class="@Css.Build().Raw("store-grid").Small("mb")">
         <MudButton Href="https://www.modern-matchmaker.com" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor">
@@ -131,6 +123,21 @@ else //webapp
             </MudButton>
         </MudBadge>
     </div>
+}
+
+@if (ShowOtherApps)
+{
+    <MudDivider Class="@Css.Build().Medium("my")"></MudDivider>
+    <MudButton Disabled="CloseDisabled" Size="Size.Medium" Variant="Variant.Filled" FullWidth="true" Color="Color.Error" StartIcon="@Icons.Material.Filled.Close"
+               OnClick="@(() => { MudDialog!.Close(); })" Class="@Css.Build().Small("mb")">
+        @Button.Close
+        @if (CloseDisabled)
+        {
+            <MudProgressCircular Value="10 - CloseCountdown" Max="10" Size="Size.Small" Color="Color.Warning" Class="ms-3">
+                @CloseCountdown
+            </MudProgressCircular>
+        }
+    </MudButton>
 }
 
 <style>
@@ -146,9 +153,13 @@ else //webapp
 
     [Parameter] public RenderFragment? CustomHeader { get; set; }
     [Parameter] public bool ShowOtherApps { get; set; } = true;
+    [Parameter] public bool ShowClose { get; set; } = true;
     [Parameter] public Color ActionColor { get; set; } = Color.Primary;
 
     public SD.Shared.Enums.Platform Platform { get; set; }
+
+    private bool CloseDisabled { get; set; } = true;
+    private int CloseCountdown { get; set; } = 10;
 
     private readonly string _windowsReview = "ms-windows-store://review/?ProductId=9pb1pkrdd8l0"; //its working
     private readonly string _googleReview = "market://details?id=com.streamingdiscovery.www.twa"; //its old. better to use In-App Review API.
@@ -167,6 +178,25 @@ else //webapp
         await base.OnInitializedAsync();
 
         Platform = await AppStateStatic.GetPlatform(JsRuntime);
+    }
+
+    protected override async Task ProcessComponentData()
+    {
+        await StartCloseCountdown();
+    }
+
+    private async Task StartCloseCountdown()
+    {
+        while (CloseCountdown > 0)
+        {
+            await Task.Delay(1000);
+
+            CloseCountdown--;
+            StateHasChanged();
+        }
+
+        CloseDisabled = false;
+        StateHasChanged();
     }
 
     private async Task Reviewed()

@@ -154,7 +154,7 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
 
         MarkupString message = new($@"
         <div style='text-align:left; line-height:1.5; font-size:14px;'>
-            
+
             <p style='margin-bottom:12px;'>
                 You are about to open an external website:
             </p>
