@@ -101,7 +101,7 @@
         if (sortBy == null) throw new ArgumentNullException(nameof(sortBy));
         if (watchRegion == null) throw new ArgumentNullException(nameof(watchRegion));
 
-        return new Dictionary<string, string> { { "with_watch_providers", providerId }, { "sort_by", sortBy }, { "watch_region", watchRegion } };
+        return new Dictionary<string, string> { { "with_watch_providers", providerId }, { "sort_by", sortBy }, { "watch_region", watchRegion.ToUpper() } };
     }
 
     private async Task Add()

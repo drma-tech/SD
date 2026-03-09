@@ -189,7 +189,7 @@
             genres = string.Join("|", mySuggestions?.TvGenres.Select(s => (int)s) ?? []);
         }
 
-        return new Dictionary<string, string> { { "with_watch_providers", providerId }, { "sort_by", sortBy }, { "with_genres", genres }, { "watch_region", region } };
+        return new Dictionary<string, string> { { "with_watch_providers", providerId }, { "sort_by", sortBy }, { "with_genres", genres }, { "watch_region", region.ToUpper() } };
     }
 
     private async Task ImportFromProviders(MediaType type)

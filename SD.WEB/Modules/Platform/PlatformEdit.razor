@@ -125,7 +125,7 @@
                         {
                             { "api_key", TmdbOptions.ApiKey },
                             { "language", ContentLanguage.enUS.GetName(false) ?? "en-US" },
-                            { "watch_region", region.ToString() }
+                            { "watch_region", region.ToString().ToUpper() }
                         };
 
                     using (var http = new HttpClient())

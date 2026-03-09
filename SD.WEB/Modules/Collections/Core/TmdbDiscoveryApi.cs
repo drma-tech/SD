@@ -7,8 +7,7 @@ namespace SD.WEB.Modules.Collections.Core;
 public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
 {
     public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList,
-        MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null,
-        int page = 1)
+        MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
     {
         if (stringParameters != null)
         {
@@ -37,7 +36,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
         {
             { "api_key", TmdbOptions.ApiKey },
             { "language", (await AppStateStatic.GetContentLanguage()).GetName(false) ?? "en-US" },
-            { "watch_region", region ?? (await AppStateStatic.GetRegion()).ToString() },
+            { "watch_region", region?.ToUpper() ?? (await AppStateStatic.GetRegion()).ToString().ToUpper() },
             { "include_adult", "false" },
             { "include_video", "false" },
             { "page", page.ToString() }
