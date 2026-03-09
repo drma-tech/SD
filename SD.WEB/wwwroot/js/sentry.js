@@ -17,7 +17,7 @@ const ignoredErrors = [
 
 Sentry.init({
     dsn: servicesConfig.SentryDsn,
-    release: `sd-js@${appVersion}`,
+    release: `sd-web@${appVersion}`,
     environment: env,
     beforeSend(event) {
         const exception = event.exception?.values?.[0];

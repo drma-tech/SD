@@ -26,7 +26,7 @@ builder.UseSentry(options =>
 
     options.SetBeforeSend(evt =>
     {
-        evt.Release = $"sd-wasm@{AppStateStatic.Version}";
+        evt.Release = $"sd-web@{AppStateStatic.Version}";
 
         evt.SetTag("custom.version", AppStateStatic.Version ?? "error");
         evt.SetTag("custom.platform", AppStateStatic.GetSavedPlatform()?.ToString() ?? "error");
