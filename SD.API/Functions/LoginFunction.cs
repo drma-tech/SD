@@ -71,14 +71,22 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
     [Function("Country")]
     public async Task<string?> Country([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/country")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var ip = req.GetUserIP(false);
-        if (ip.Empty()) return null;
-        if (ip == "127.0.0.1") return null;
+        try
+        {
+            var ip = req.GetUserIP(false);
+            if (ip.Empty()) return null;
+            if (ip == "127.0.0.1") return null;
 
-        var client = factory.CreateClient("ipinfo");
+            var client = factory.CreateClient("ipinfo");
 
-        var result = await client.GetValueAsync($"https://ipinfo.io/{ip}/country", cancellationToken);
+            var result = await client.GetValueAsync($"https://ipinfo.io/{ip}/country", cancellationToken);
 
-        return result;
+            return result;
+        }
+        catch (Exception ex)
+        {
+            req.LogError(ex);
+            return null;
+        }
     }
 }

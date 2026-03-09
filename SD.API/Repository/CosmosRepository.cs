@@ -109,7 +109,7 @@ public class CosmosRepository
         }
     }
 
-    public async Task<T> CreateItemAsync<T>(T item, CancellationToken cancellationToken) 
+    public async Task<T> CreateItemAsync<T>(T item, CancellationToken cancellationToken)
         where T : CosmosDocument, new()
     {
         try

@@ -112,11 +112,6 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-		<Content Update="wwwroot\build-date.txt">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
 		<EmbeddedResource Update="Modules\Auth\Resources\Translations.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
