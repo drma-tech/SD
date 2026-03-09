@@ -10,20 +10,12 @@ public class WatchedListFunction(CosmosRepository repo)
     public async Task<HttpResponseData?> WatchedListGet(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "watchedlist/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        try
-        {
-            var userId = await req.GetUserIdAsync(cancellationToken);
-            if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
+        var userId = await req.GetUserIdAsync(cancellationToken);
+        if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
-            var doc = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
+        var doc = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
 
-            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+        return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
     }
 
     [Function("WatchedListAdd")]
@@ -31,30 +23,22 @@ public class WatchedListFunction(CosmosRepository repo)
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchedlist/add/{MediaType}/{TmdbId}")] HttpRequestData req,
         string mediaType, string tmdbId, CancellationToken cancellationToken)
     {
-        try
+        var userId = await req.GetUserIdAsync(cancellationToken);
+        if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+
+        var obj = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
+
+        if (obj == null)
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
-            if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+            obj = new WatchedList();
 
-            var obj = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
-
-            if (obj == null)
-            {
-                obj = new WatchedList();
-
-                obj.Initialize(userId);
-            }
-
-            var ids = tmdbId.Split(',');
-            obj.AddItem(Enum.Parse<MediaType>(mediaType), [.. ids]);
-
-            return await repo.UpsertItemAsync(obj, cancellationToken);
+            obj.Initialize(userId);
         }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+
+        var ids = tmdbId.Split(',');
+        obj.AddItem(Enum.Parse<MediaType>(mediaType), [.. ids]);
+
+        return await repo.UpsertItemAsync(obj, cancellationToken);
     }
 
     [Function("WatchedListRemove")]
@@ -62,28 +46,20 @@ public class WatchedListFunction(CosmosRepository repo)
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "watchedlist/remove/{MediaType}/{TmdbId}")] HttpRequestData req,
         string mediaType, string tmdbId, CancellationToken cancellationToken)
     {
-        try
+        var userId = await req.GetUserIdAsync(cancellationToken);
+        if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+
+        var obj = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
+
+        if (obj == null)
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
-            if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+            obj = new WatchedList();
 
-            var obj = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
-
-            if (obj == null)
-            {
-                obj = new WatchedList();
-
-                obj.Initialize(userId);
-            }
-
-            obj.RemoveItem(Enum.Parse<MediaType>(mediaType), tmdbId);
-
-            return await repo.UpsertItemAsync(obj, cancellationToken);
+            obj.Initialize(userId);
         }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+
+        obj.RemoveItem(Enum.Parse<MediaType>(mediaType), tmdbId);
+
+        return await repo.UpsertItemAsync(obj, cancellationToken);
     }
 }

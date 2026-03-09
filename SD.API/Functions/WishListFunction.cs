@@ -10,78 +10,54 @@ public class WishListFunction(CosmosRepository repo)
     public async Task<HttpResponseData?> WishListGet(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "wishlist/get")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        try
-        {
-            var userId = await req.GetUserIdAsync(cancellationToken);
-            if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
+        var userId = await req.GetUserIdAsync(cancellationToken);
+        if (userId.Empty()) throw new InvalidOperationException("GetUserId null");
 
-            var doc = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
+        var doc = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
 
-            return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+        return await req.CreateResponse(doc, TtlCache.OneDay, cancellationToken);
     }
 
     [Function("WishListAdd")]
     public async Task<WishList?> WishListAdd(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "wishlist/add/{type}")] HttpRequestData req, string type, CancellationToken cancellationToken)
     {
-        try
+        var userId = await req.GetUserIdAsync(cancellationToken);
+        if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+
+        var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
+        var newItem = await req.GetPublicBody<WishListItem>(cancellationToken);
+
+        if (obj == null)
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
-            if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+            obj = new WishList();
 
-            var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
-            var newItem = await req.GetPublicBody<WishListItem>(cancellationToken);
-
-            if (obj == null)
-            {
-                obj = new WishList();
-
-                obj.Initialize(userId);
-            }
-
-            obj.AddItem(Enum.Parse<MediaType>(type), newItem);
-
-            return await repo.UpsertItemAsync(obj, cancellationToken);
+            obj.Initialize(userId);
         }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+
+        obj.AddItem(Enum.Parse<MediaType>(type), newItem);
+
+        return await repo.UpsertItemAsync(obj, cancellationToken);
     }
 
     [Function("WishListRemove")]
     public async Task<WishList?> WishListRemove(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "wishlist/remove/{type}/{id}")] HttpRequestData req, string type, string id, CancellationToken cancellationToken)
     {
-        try
+        var userId = await req.GetUserIdAsync(cancellationToken);
+        if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+
+        var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
+
+        if (obj == null)
         {
-            var userId = await req.GetUserIdAsync(cancellationToken);
-            if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("GetUserId null");
+            obj = new WishList();
 
-            var obj = await repo.Get<WishList>(DocumentType.WishList, userId, cancellationToken);
-
-            if (obj == null)
-            {
-                obj = new WishList();
-
-                obj.Initialize(userId);
-            }
-
-            obj.RemoveItem(Enum.Parse<MediaType>(type), id);
-
-            return await repo.UpsertItemAsync(obj, cancellationToken);
+            obj.Initialize(userId);
         }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            throw;
-        }
+
+        obj.RemoveItem(Enum.Parse<MediaType>(type), id);
+
+        return await repo.UpsertItemAsync(obj, cancellationToken);
     }
 }

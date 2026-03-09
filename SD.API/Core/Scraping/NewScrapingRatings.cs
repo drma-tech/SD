@@ -55,6 +55,10 @@ namespace SD.API.Core.Scraping
                 ratings.letterboxd ??= letterboxdRating?.ToString(CultureInfo.InvariantCulture);
                 ratings.letterboxdLink ??= result?.result?.links?.Letterboxd;
             }
+            catch (TaskCanceledException)
+            {
+                //do nothing
+            }
             catch (Exception ex)
             {
                 req.LogError(ex);
@@ -104,6 +108,10 @@ namespace SD.API.Core.Scraping
                 var rating4 = result?.data?.ratings?.ratings?.FirstOrDefault(p => p.source == "rottenTomatoes")?.score;
                 if (rating4.HasValue) rating4 /= 10;
                 ratings.rottenTomatoes ??= rating4?.ToString(CultureInfo.InvariantCulture);
+            }
+            catch (TaskCanceledException)
+            {
+                //do nothing
             }
             catch (Exception ex)
             {
@@ -156,6 +164,10 @@ namespace SD.API.Core.Scraping
 
                 ratings.letterboxd ??= letterboxdRating?.ToString(CultureInfo.InvariantCulture);
                 ratings.letterboxdLink ??= result?.ratings?.letterboxd?.url;
+            }
+            catch (TaskCanceledException)
+            {
+                //do nothing
             }
             catch (Exception ex)
             {
