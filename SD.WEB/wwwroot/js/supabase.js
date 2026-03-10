@@ -88,9 +88,7 @@ function setupAuthListener(supabase) {
 
         _lastSupabaseToken = token;
 
-        setTimeout(async () => {
-            await interop.invokeDotNetWhenReady("SD.WEB", "SupabaseAuthChanged", token);
-        }, 500);
+        await interop.invokeDotNetWhenReady("SD.WEB", "SupabaseAuthChanged", token);
     });
 }
 

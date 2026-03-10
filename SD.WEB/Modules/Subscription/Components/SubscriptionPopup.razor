@@ -198,8 +198,8 @@
 
     protected override void OnInitialized()
     {
-        AppStateStatic.RegistrationSuccessful += async () => await RegistrationSuccessful();
-        AppStateStatic.AppleVerify += async (string receipt) => await AppleVerify(receipt);
+        JsEventDispatcher.Register(nameof(RegistrationSuccessful), async () => await RegistrationSuccessful());
+        JsEventDispatcher.Register(nameof(AppleVerify), async (string receipt) => await AppleVerify(receipt));
     }
 
     protected override async Task ProcessPopupData()

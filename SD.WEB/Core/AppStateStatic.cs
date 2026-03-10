@@ -378,11 +378,7 @@ public static class AppStateStatic
 
     #endregion ContentLanguage
 
-    public static Action<string?>? SupabaseAuthChanged { get; set; }
     public static Action? UserStateChanged { get; set; }
-    public static Action? RegistrationSuccessful { get; set; }
-    public static Action<string>? AppleVerify { get; set; }
-    public static Action<string>? ShowError { get; set; }
     public static Action? ProcessingStarted { get; set; }
     public static Action? ProcessingFinished { get; set; }
 }
