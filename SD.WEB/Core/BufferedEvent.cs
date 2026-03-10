@@ -3,9 +3,9 @@
 namespace SD.WEB.Core
 {
     /// <summary>
-    /// Buffers JS calls made before .NET handlers are registered and replays them automatically.
+    /// Buffers calls to an event until a subscriber is registered, then replays them automatically.
     /// </summary>
-    public static class JsEventDispatcher
+    public static class BufferedEvent
     {
         private static readonly ConcurrentDictionary<string, Func<object?[], Task>> Handlers = new();
         private static readonly ConcurrentDictionary<string, object?[]> PendingEvents = new();

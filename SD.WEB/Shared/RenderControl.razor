@@ -30,7 +30,7 @@ else if (PrivateFeature && !IsAuthenticated)
 }
 else if (Actions.CurrentStatus == RenderStatus.Warning)
 {
-    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("circle-exclamation").Font" Style="text-align: justify;">
+    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("circle-exclamation").Font" Style="text-align: justify;">
         @(Actions.MessageWarning ?? GlobalTranslations.CustomVisibilityNoData)
     </MudAlert>
 }
@@ -38,9 +38,16 @@ else //Content
 {
     @if (Actions.CurrentInstance == null || Actions.ExpressionEmpty(Actions.CurrentInstance))
     {
-        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("circle-exclamation").Font" Style="text-align: justify;">
-            @GlobalTranslations.CustomVisibilityNoData
-        </MudAlert>
+        if (HideIfEmpty)
+        {
+            <div></div>
+        }
+        else
+        {
+            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("circle-exclamation").Font" Style="text-align: justify;">
+                @GlobalTranslations.CustomVisibilityNoData
+            </MudAlert>
+        }
     }
     else
     {
@@ -59,6 +66,8 @@ else //Content
 
     [Parameter] public bool PremiumFeature { get; set; }
     [Parameter] public bool IsPremium { get; set; }
+
+    [Parameter] public bool HideIfEmpty { get; set; }
 
     protected override void OnInitialized()
     {

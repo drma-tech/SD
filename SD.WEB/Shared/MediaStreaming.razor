@@ -246,20 +246,20 @@
                 {
                     @if (ReleaseDate?.Date > DateTime.Now.Date)
                     {
-                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mb-2">
+                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("circle-exclamation").Font">
                             @Translations.TitleNotReleased
                         </MudAlert>
                     }
                     else
                     {
-                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mb-2">
+                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("circle-exclamation").Font">
                             @(string.Format(Translations.TitleNotAvailable, Region.GetName()))
                         </MudAlert>
                     }
 
                     @if (Region.GetName().Empty())
                     {
-                        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true" Class="mb-2">
+                        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("circle-exclamation").Font">
                             <MudText Typo="Typo.h6">There was an error detecting your region</MudText>
                             <MudText Typo="Typo.body1">Please contact support and provide the following information:</MudText>
                             <MudText Typo="Typo.body1">CurrentRegion: @RegionInfo.CurrentRegion.Name</MudText>

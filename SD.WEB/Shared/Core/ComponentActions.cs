@@ -68,7 +68,7 @@
                 if (frozenStatus) return;
                 MessageError = CustomMessageError ?? msg;
             }
-            else if (status == RenderStatus.Content && (instance == null || ExpressionEmpty(instance)))
+            else if (status == RenderStatus.Content && (instance == null || ExpressionEmpty(instance)) && CustomMessageWarning.NotEmpty())
             {
                 await ChangeStatus(RenderStatus.Warning, GlobalTranslations.CustomVisibilityNoData);
                 return;

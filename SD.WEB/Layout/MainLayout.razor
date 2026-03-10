@@ -57,13 +57,13 @@
             // *************************************
 
             AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
-            JsEventDispatcher.Register(nameof(ShowError), (string msg) => { Snackbar.Add(msg, Severity.Error); return Task.CompletedTask; });
+            BufferedEvent.Register(nameof(ShowError), (string msg) => { Snackbar.Add(msg, Severity.Error); return Task.CompletedTask; });
             AppStateStatic.BreakpointChanged += breakpoint => StateHasChanged();
             AppStateStatic.BrowserWindowSizeChanged += size => StateHasChanged();
             PrincipalApi.DataChanged += principal => { Principal = principal; StateHasChanged(); };
 
             // 1 = capture the claims
-            JsEventDispatcher.Register(nameof(SupabaseAuthChanged), (string? token) =>
+            BufferedEvent.Register(nameof(SupabaseAuthChanged), (string? token) =>
             {
                 var provider = (CompositeAuthStateProvider)AuthStateProvider;
                 provider.OnSupabaseAuthChanged(token);
@@ -291,25 +291,25 @@
     [JSInvokable]
     public static void RegistrationSuccessful()
     {
-        JsEventDispatcher.Invoke(nameof(RegistrationSuccessful));
+        BufferedEvent.Invoke(nameof(RegistrationSuccessful));
     }
 
     [JSInvokable]
     public static void AppleVerify(string receipt)
     {
-        JsEventDispatcher.Invoke(nameof(AppleVerify), receipt);
+        BufferedEvent.Invoke(nameof(AppleVerify), receipt);
     }
 
     [JSInvokable]
     public static void ShowError(string error)
     {
-        JsEventDispatcher.Invoke(nameof(ShowError), error);
+        BufferedEvent.Invoke(nameof(ShowError), error);
     }
 
     [JSInvokable]
     public static void SupabaseAuthChanged(string? token)
     {
-        JsEventDispatcher.Invoke(nameof(SupabaseAuthChanged), token);
+        BufferedEvent.Invoke(nameof(SupabaseAuthChanged), token);
     }
 
 }

@@ -169,6 +169,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to External Website Notice.
+        /// </summary>
+        public static string ExternalWebsiteNotice {
+            get {
+                return ResourceManager.GetString("ExternalWebsiteNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wait for news....
         /// </summary>
         public static string FeatureUnavailableDescription {

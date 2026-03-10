@@ -152,32 +152,39 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
 
         var encodedUrl = System.Net.WebUtility.HtmlEncode(url);
 
-        MarkupString message = new($@"
+        MarkupString ptMessage = new($@"
         <div style='text-align:left; line-height:1.5; font-size:14px;'>
-
-            <p style='margin-bottom:12px;'>
-                You are about to open an external website:
-            </p>
-
-            <div style='background-color:#f5f5f5; padding:10px; border-radius:6px; word-break:break-word; color: black; font-family:monospace; font-size:13px; margin-bottom:16px;'>
+            <p>Você está saindo do {SeoTranslations.AppName} e abrindo um site externo:</p>
+            <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
                 {encodedUrl}
             </div>
-
-            <p style='margin-bottom:10px; text-align: justify;'>
-                This website is operated by a third party and is not owned, controlled, or affiliated with {SeoTranslations.AppName}.
-            </p>
-
-            <p style='margin-bottom:10px; text-align: justify;'>
-                We are not responsible for the content, policies, or practices of this external site.
-            </p>
-
-            <p style='font-weight:500; text-align: justify;'>
-                By continuing, you acknowledge that you are leaving the app environment and accessing an independent website.
-            </p>
-
         </div>");
 
-        bool? result = await DialogService.ShowMessageBoxAsync("External Website Notice", message, yesText: "Continue to Website", cancelText: "Cancel");
+        MarkupString esMessage = new($@"
+        <div style='text-align:left; line-height:1.5; font-size:14px;'>
+            <p>Está saliendo de {SeoTranslations.AppName} y abriendo un sitio web externo:</p>
+            <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
+                {encodedUrl}
+            </div>
+        </div>");
+
+        MarkupString enMessage = new($@"
+        <div style='text-align:left; line-height:1.5; font-size:14px;'>
+            <p>You are leaving {SeoTranslations.AppName} and opening an external website:</p>
+            <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
+                {encodedUrl}
+            </div>
+        </div>");
+
+        var language = await AppStateStatic.GetAppLanguage(JsRuntime);
+        var message = language switch
+        {
+            AppLanguage.pt => ptMessage,
+            AppLanguage.es => esMessage,
+            _ => enMessage
+        };
+
+        bool? result = await DialogService.ShowMessageBoxAsync(GlobalTranslations.ExternalWebsiteNotice, message, yesText: Button.ContinueWebsite, cancelText: Button.Cancel);
 
         if (result == true)
         {

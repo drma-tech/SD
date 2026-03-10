@@ -40,7 +40,7 @@
             </MudChip>
         }
         <div>
-            <RenderControl Actions="Actions" LoadingHeight="40px">
+            <RenderControl Actions="Actions" LoadingHeight="40px" HideIfEmpty="true">
                 @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.imdb))
                 {
                     <MudTooltip Text="IMDb">
