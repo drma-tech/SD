@@ -65,6 +65,7 @@
 
         MyProvidersApi.DataChanged += model =>
         {
+            Actions.StartLoading?.Invoke(null);
             MyProviders = model;
             Actions.FinishLoading.Invoke(model);
             StateHasChanged();

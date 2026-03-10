@@ -63,11 +63,13 @@
             PrincipalApi.DataChanged += principal => { Principal = principal; StateHasChanged(); };
 
             // 1 = capture the claims
-            BufferedEvent.Register(nameof(SupabaseAuthChanged), (string? token) =>
+            BufferedEvent.Register(nameof(SupabaseAuthChanged), async (string? token) =>
             {
                 var provider = (CompositeAuthStateProvider)AuthStateProvider;
                 provider.OnSupabaseAuthChanged(token);
-                return Task.CompletedTask;
+
+                var state = await AuthStateProvider.GetAuthenticationStateAsync();
+                await ProcessAuthClaims(state.User);
             });
 
             // 2 = transform claims into useful data
@@ -76,30 +78,8 @@
                 try
                 {
                     var state = await task;
-                    var user = state.User;
-
-                    AppStateStatic.User = user;
-                    AppStateStatic.UserId = user?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-                    var authenticated = user?.Identity is not null && user.Identity.IsAuthenticated;
-
-                    if (authenticated == AppStateStatic.IsAuthenticated) return; //no need to process if the authentication state didn't change
-
-                    AppStateStatic.IsAuthenticated = authenticated;
-                    if (!AppStateStatic.IsAuthenticated) AppStateStatic.IsPremiumUser = false;
-
-                    //principal to be used for all the app
-                    if (AppStateStatic.IsAuthenticated)
-                        Principal ??= await PrincipalApi.Get(true);
-                    else
-                        Principal = null;
-                    var sub = Principal?.GetActiveSubscription();
-                    AppStateStatic.IsPremiumUser = sub?.IsActive() ?? false;
-                    AppStateStatic.ActiveProduct = sub?.Product ?? AccountProduct.Basic;
-
-                    await ProcessUserAccess();
-
+                    await ProcessAuthClaims(state.User); // idempotente
                     StateHasChanged();
-                    AppStateStatic.UserStateChanged?.Invoke();
                 }
                 catch (Exception ex)
                 {
@@ -137,6 +117,31 @@
                 ex.ProcessException(Snackbar, Logger);
             }
         }
+    }
+
+    private async Task ProcessAuthClaims(ClaimsPrincipal user)
+    {
+        AppStateStatic.User = user;
+        AppStateStatic.UserId = user?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var authenticated = user?.Identity?.IsAuthenticated ?? false;
+
+        if (authenticated == AppStateStatic.IsAuthenticated) return;
+
+        AppStateStatic.IsAuthenticated = authenticated;
+        if (!authenticated) AppStateStatic.IsPremiumUser = false;
+
+        //principal to be used for all the app
+        if (authenticated)
+            Principal ??= await PrincipalApi.Get(true);
+        else
+            Principal = null;
+
+        var sub = Principal?.GetActiveSubscription();
+        AppStateStatic.IsPremiumUser = sub?.IsActive() ?? false;
+        AppStateStatic.ActiveProduct = sub?.Product ?? AccountProduct.Basic;
+
+        await ProcessUserAccess();
+        AppStateStatic.UserStateChanged?.Invoke();
     }
 
     private async Task ProcessUserAccess()

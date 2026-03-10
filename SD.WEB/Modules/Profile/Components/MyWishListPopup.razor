@@ -55,6 +55,7 @@
         };
         WishApi.DataChanged += model =>
         {
+            Actions?.StartLoading?.Invoke(null);
             Wish = model;
             WishChanged.InvokeAsync(model);
             Actions?.FinishLoading?.Invoke(model);

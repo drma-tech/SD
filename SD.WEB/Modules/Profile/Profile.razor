@@ -115,9 +115,29 @@
     {
         await base.OnInitializedAsync();
 
-        WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
-        WatchingApi.DataChanged += model => { Watching = model; WatchingActionsMovie.FinishLoading.Invoke(model); WatchingActionsTv.FinishLoading.Invoke(model); StateHasChanged(); };
-        WishApi.DataChanged += model => { Wish = model; WishActionsMovie.FinishLoading.Invoke(model); WishActionsTv.FinishLoading.Invoke(model); StateHasChanged(); };
+        WatchedApi.DataChanged += model =>
+        {
+            Watched = model; 
+            StateHasChanged();
+        };
+        WatchingApi.DataChanged += model =>
+        {
+            WatchingActionsMovie.StartLoading.Invoke(null);
+            WatchingActionsTv.StartLoading.Invoke(null);
+            Watching = model; 
+            WatchingActionsMovie.FinishLoading.Invoke(model); 
+            WatchingActionsTv.FinishLoading.Invoke(model); 
+            StateHasChanged();
+        };
+        WishApi.DataChanged += model =>
+        {
+            WishActionsMovie.StartLoading.Invoke(null);
+            WishActionsTv.StartLoading.Invoke(null);
+            Wish = model; 
+            WishActionsMovie.FinishLoading.Invoke(model); 
+            WishActionsTv.FinishLoading.Invoke(model); 
+            StateHasChanged();
+        };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

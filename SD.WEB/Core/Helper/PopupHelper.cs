@@ -36,6 +36,8 @@ public static class PopupHelper
     {
         ComponentActions<HashSet<MediaDetail>> actions = new(list => list == null || list.Empty());
 
+        actions.StartLoading?.Invoke(null);
+
         var parameters = new DialogParameters<CompleteListPopup>
         {
             { x => x.TitleHead, titleHead },
@@ -87,6 +89,8 @@ public static class PopupHelper
     public static async Task MyWatchingListPopup(this IDialogService service, ComponentActions<WatchingList?> actions, MediaType type,
         WatchedList? watched, WatchingList? watching, WishList? wish)
     {
+        actions.StartLoading?.Invoke(null);
+
         var parameters = new DialogParameters<MyWatchingListPopup>
         {
             { x => x.Actions, actions },
@@ -110,6 +114,8 @@ public static class PopupHelper
     public static async Task MyWishListPopup(this IDialogService service, ComponentActions<WishList?> actions, WatchedList? watched, WatchingList? watching, WishList? wish,
         MediaType type)
     {
+        actions.StartLoading?.Invoke(null);
+
         var parameters = new DialogParameters<MyWishListPopup>
         {
             { x => x.Actions, actions },

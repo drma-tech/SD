@@ -313,7 +313,7 @@
 
         try
         {
-            await RecommendationsActions.StartProcessing.Invoke(null);
+            await RecommendationsActions.StartLoading.Invoke(null);
             Recommendations = await TmdbRecommendationsApi.GetList(Type, TmdbId);
             await RecommendationsActions.FinishLoading.Invoke(Recommendations);
         }

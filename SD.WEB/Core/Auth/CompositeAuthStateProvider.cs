@@ -6,7 +6,7 @@ namespace SD.WEB.Core.Auth
     {
         public void OnSupabaseAuthChanged(string? token)
         {
-            supabase.NotifyAuthenticationStateChanged(token);
+            supabase.GenerateClaimsIdentity(token);
             NotifyAuthenticationStateChanged(supabase.GetAuthenticationStateAsync());
         }
 

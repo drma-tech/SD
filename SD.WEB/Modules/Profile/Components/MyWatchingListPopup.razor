@@ -48,9 +48,10 @@
         };
         WatchingApi.DataChanged += model =>
         {
+            Actions.StartLoading?.Invoke(null);
             Watching = model;
             WatchingChanged.InvokeAsync(model);
-            Actions?.FinishLoading?.Invoke(model);
+            Actions.FinishLoading?.Invoke(model);
             StateHasChanged();
         };
         WishApi.DataChanged += model =>

@@ -8,7 +8,7 @@ namespace SD.WEB.Core.Auth
     {
         private ClaimsPrincipal _currentUser = new(new ClaimsIdentity());
 
-        public void NotifyAuthenticationStateChanged(string? token)
+        public void GenerateClaimsIdentity(string? token)
         {
             AppStateStatic.SupabaseToken = null;
 
