@@ -74,7 +74,7 @@ export const swiper = {
 
         const el = document.getElementById(id);
         if (!el) return;
-        const posterSize = 150;
+        const posterSize = 200;
         const margin = mobile ? 8 : 12;
 
         if (el.swiper && typeof el.swiper.destroy === "function") {
