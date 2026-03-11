@@ -52,7 +52,8 @@
             @if (!emailSent)
             {
                 <MudTextField @bind-Value="@email" Label="Email" Placeholder="Enter your email" Disabled="_processing"
-                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="() => LoginWithEmail(email)"></MudTextField>
+                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="() => LoginWithEmail(email)"
+                              HelperText="Microsoft emails (Outlook, Hotmail, etc.) may not work."></MudTextField>
             }
             else
             {
