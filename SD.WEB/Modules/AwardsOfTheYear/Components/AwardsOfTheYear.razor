@@ -9,7 +9,7 @@
 @using SD.WEB.Modules.Profile.Core
 @inherits PageCore<AwardsOfTheYear>
 
-<SeoHeader Title="@EnumLists.AwardsOfTheYear.GetName()" Description="@GlobalTranslations.AwardsYearDescription" Keywords="@(new[] { "Best awards of the year" })" Url="/best-awards-year"></SeoHeader>
+<SeoMeta Title="@EnumLists.AwardsOfTheYear.GetName()" Description="@GlobalTranslations.AwardsYearDescription" Url="/best-awards-year" Index="true"></SeoMeta>
 
 <NewPageSection IsPageHeader="true" Title="@EnumLists.AwardsOfTheYear.GetName()" Subtitle="Main categories of the most popular awards" Description="@GlobalTranslations.AwardsYearDescription"
             Icon="@IconsFA.Solid.Icon("trophy").Font"></NewPageSection>

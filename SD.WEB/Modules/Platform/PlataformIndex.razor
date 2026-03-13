@@ -14,13 +14,12 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<SeoHeader Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/platforms"
-           Keywords="@(["platforms", "streaming", "Netflix", "Disney", "Apple", "Amazon Prime"])"></SeoHeader>
+<SeoMeta Title="@SeoTranslations.ProvidersTitle" Description="@SeoTranslations.ProvidersDescription" Url="/platforms" Index="true"></SeoMeta>
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
 <NewPageSection IsPageHeader="true" Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.ProvidersDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
     <ActionsFragment>
-        <MudSelect T="DeliveryModel ?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="Delivery Model" Dense="true" Class="me-2">
+        <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="Delivery Model" Dense="true" Class="me-2">
             @foreach (var item in DeliveryModels)
             {
                 <MudSelectItem T="DeliveryModel?" Value="@item.Value">@item.Name</MudSelectItem>

@@ -19,8 +19,8 @@
 @inject IpInfoServerApi IpInfoServerApi
 @inject TmdbListApi TmdbListApi
 
-<SeoHeader Title="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription" Url="/" Keywords="@(["streaming"])"></SeoHeader>
-<NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@SeoTranslations.AppName" Subtitle="@SeoTranslations.AppSubtitle">
+<SeoMeta Title="@SeoTranslations.AppSubtitle" Description="@SeoTranslations.AppDescription" Url="/" Index="true"></SeoMeta>
+<NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@SeoTranslations.AppTitle" Subtitle="@SeoTranslations.AppSubtitle">
 </NewPageSection>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress" Class="@Css.Build().Large("mb")"

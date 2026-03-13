@@ -21,7 +21,7 @@
 @inject AllProvidersApi AllProvidersApi
 @inject IHttpClientFactory factory
 
-<SeoHeader Title="@Title" Description="@SeoTranslations.AppDescription" Keywords="@(new[] { Title })" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")" Index="false"></SeoHeader>
+<SeoMeta Title="@Title" Description="@SeoTranslations.AppDescription" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")" Index="false"></SeoMeta>
 <NewPageSection Title="@List?.GetName()"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>

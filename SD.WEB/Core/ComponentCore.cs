@@ -154,7 +154,7 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
 
         MarkupString ptMessage = new($@"
         <div style='text-align:left; line-height:1.5; font-size:14px;'>
-            <p>Você está saindo do {SeoTranslations.AppName} e abrindo um site externo:</p>
+            <p>Você está saindo do {SeoTranslations.AppTitle} e abrindo um site externo:</p>
             <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
                 {encodedUrl}
             </div>
@@ -162,7 +162,7 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
 
         MarkupString esMessage = new($@"
         <div style='text-align:left; line-height:1.5; font-size:14px;'>
-            <p>Está saliendo de {SeoTranslations.AppName} y abriendo un sitio web externo:</p>
+            <p>Está saliendo de {SeoTranslations.AppTitle} y abriendo un sitio web externo:</p>
             <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
                 {encodedUrl}
             </div>
@@ -170,7 +170,7 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
 
         MarkupString enMessage = new($@"
         <div style='text-align:left; line-height:1.5; font-size:14px;'>
-            <p>You are leaving {SeoTranslations.AppName} and opening an external website:</p>
+            <p>You are leaving {SeoTranslations.AppTitle} and opening an external website:</p>
             <div style='background-color:#f5f5f5; padding:8px; border-radius:6px; word-break:break-word; color:black; font-family:monospace; font-size:13px; margin:8px 0;'>
                 {encodedUrl}
             </div>

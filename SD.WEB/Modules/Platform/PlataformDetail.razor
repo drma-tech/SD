@@ -24,9 +24,9 @@
 }
 else
 {
-    <SeoHeader Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")"
-               Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Keywords="@([Provider?.name])">
-    </SeoHeader>
+    <SeoMeta Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")" Index="true">
+    </SeoMeta>
+    @*     Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" *@
 
     @if (Provider != null)
     {

@@ -21,7 +21,7 @@
 @inject WishListApi WishApi
 @inject TmdbRecommendationsApi TmdbRecommendationsApi
 
-<SeoHeader Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")" Keywords="new[] { Media?.title }" Index="false"></SeoHeader>
+<SeoMeta Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")" Index="false"></SeoMeta>
 @if (Media?.title.NotEmpty() ?? false)
 {
     <NewPageSection Title="@Media?.title">

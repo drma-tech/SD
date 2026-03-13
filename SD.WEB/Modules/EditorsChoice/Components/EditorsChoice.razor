@@ -10,7 +10,7 @@
 @using SD.WEB.Modules.Profile.Core
 @inherits PageCore<EditorsChoice>
 
-<SeoHeader Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Keywords="@(new[] { "Editor’s Choice" })" Url="@($"/editors-choice/{Type}")"></SeoHeader>
+<SeoMeta Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Url="@($"/editors-choice/{Type}")" Index="true"></SeoMeta>
 <NewPageSection IsPageHeader="true" Title="@Translations.EditorsChoiceTitle" Subtitle="Top-rated titles for all audiences" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>

@@ -92,7 +92,7 @@
             data.WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated);
             data.WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated);
 
-            var fileName = $"{SeoTranslations.AppName.ToSlug()}_{Principal!.AuthProviders[0]}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
+            var fileName = $"{SeoTranslations.AppTitle.ToSlug()}_{Principal!.AuthProviders[0]}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
             await JsRuntime.Utils().DownloadFile(fileName, "application/json", data.ConvertFromObjectToBytes());
         }
         catch (Exception ex)
@@ -111,7 +111,7 @@
                 return;
             }
 
-            if (await DialogService.ShowMessageBoxAsync(SeoTranslations.AppName, GlobalTranslations.SureDeleteAccount, Button.Ok, Button.Cancel) ?? false)
+            if (await DialogService.ShowMessageBoxAsync(SeoTranslations.AppTitle, GlobalTranslations.SureDeleteAccount, Button.Ok, Button.Cancel) ?? false)
             {
                 //remove data from cosmos db
                 await PrincipalApi.Remove();

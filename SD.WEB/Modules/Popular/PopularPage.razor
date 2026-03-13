@@ -9,7 +9,7 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
-<SeoHeader Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Keywords="@(new[] { "popular Movie Show" })" Url="@($"/popular/{Type}")"></SeoHeader>
+<SeoMeta Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Url="@($"/popular/{Type}")" Index="true"></SeoMeta>
 <NewPageSection IsPageHeader="true" Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
