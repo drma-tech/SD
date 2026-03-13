@@ -35,9 +35,9 @@ export const supabaseConfig = {
 export const baseApiUrl = isLocalhost ? "http://localhost:7071" : "";
 
 // Disable robots for dev environment
-//if (isDev) {
-//    const meta = document.createElement("meta");
-//    meta.name = "robots";
-//    meta.content = "noindex, nofollow";
-//    document.head.appendChild(meta);
-//}
+if (isDev) {
+    const meta = document.createElement("meta");
+    meta.name = "robots";
+    meta.content = "noindex, nofollow";
+    document.head.appendChild(meta);
+}
