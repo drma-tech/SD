@@ -97,10 +97,8 @@ else
     private bool ShowMovieFilter => Provider?.types.Contains(MediaType.movie) ?? false;
     private bool ShowTvFilter => Provider?.types.Contains(MediaType.tv) ?? false;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task ProcessInitialData()
     {
-        await base.OnInitializedAsync();
-
         WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };

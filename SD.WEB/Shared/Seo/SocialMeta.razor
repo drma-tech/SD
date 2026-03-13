@@ -22,16 +22,16 @@
     private const string LongProjectName = "Streaming Discovery";
     private const string ProjectUrl = "https://www.streamingdiscovery.com";
 
-    [Parameter, EditorRequired] public string Title { get; set; }
-    [Parameter, EditorRequired] public string Description { get; set; }
-    [Parameter, EditorRequired] public string Url { get; set; }
-    [Parameter, EditorRequired] public string Image { get; set; }
+    [Parameter, EditorRequired] public string? Title { get; set; }
+    [Parameter, EditorRequired] public string? Description { get; set; }
+    [Parameter, EditorRequired] public string? Url { get; set; }
+    [Parameter, EditorRequired] public string? Image { get; set; }
 
-    private string TitleFull => $"{Title} - {LongProjectName}";
+    private string? TitleFull => $"{Title} - {LongProjectName}";
 
-    private string DescriptionNormalized => Description.TrimEnd('.') + ".";
+    private string? DescriptionNormalized => Description?.TrimEnd('.') + ".";
 
-    private string CanonicalUrl => ProjectUrl + Url;
+    private string? CanonicalUrl => ProjectUrl + Url;
 
-    private string ImageUrl => Image ?? $"{ProjectUrl}/icon/icon-192.png";
+    private string? ImageUrl => Image ?? $"{ProjectUrl}/icon/icon-192.png";
 }
