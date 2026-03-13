@@ -24,7 +24,7 @@
 }
 else
 {
-    <SeoMeta Title="@($"{SeoTranslations.ProvidersTitle} | {Provider?.name}")" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")" Index="true">
+    <SeoMeta Title="@Provider?.name" Description="@Provider?.description" Url="@($"/platforms/{Provider?.id}")" Index="true">
     </SeoMeta>
     @*     Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" *@
 
