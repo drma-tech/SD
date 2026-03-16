@@ -30,6 +30,20 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
     //    return await req.CreateResponse(data, TtlCache.OneDay, cancellationToken);
     //}
 
+    //[Function("PrincipalSyncAll")]
+    //public async Task PrincipalSyncAll(
+    //   [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/sync")] HttpRequestData req, CancellationToken cancellationToken)
+    //{
+    //    var data = await repo.ListAll<AuthPrincipal>(DocumentType.Principal, cancellationToken);
+
+    //    foreach (var item in data)
+    //    {
+    //        item._tsCreated ??= item._ts;
+
+    //        await repo.UpsertItemAsync(item, cancellationToken);
+    //    }
+    //}
+
     [Function("PrincipalAdd")]
     public async Task<AuthPrincipal?> PrincipalAdd(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "principal/add")] HttpRequestData req, CancellationToken cancellationToken)
@@ -74,6 +88,8 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
             Events = body.Events
         };
         model.Initialize(userId);
+
+        model._tsCreated = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
         return await repo.CreateItemAsync(model, cancellationToken);
     }
