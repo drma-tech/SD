@@ -9,8 +9,8 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
-<SeoMeta Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Url="@($"/popular/{Type}")" Index="true"></SeoMeta>
-<NewPageSection IsPageHeader="true" Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font"></NewPageSection>
+<SeoMeta Title="@($"{Translations.Popular} ({Type})")" Description="@GlobalTranslations.PopularIndexDescription" Url="@($"/popular/{Type}")" Index="true"></SeoMeta>
+<NewPageSection IsPageHeader="true" Title="@($"{Translations.Popular} ({Type})")" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 

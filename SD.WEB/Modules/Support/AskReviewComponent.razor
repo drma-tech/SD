@@ -13,90 +13,64 @@ else
 
 @if (Platform != SD.Shared.Enums.Platform.webapp)
 {
-    <div style="width: 100%;">
-        <MudGrid Spacing="@Css.SpaceSmall" Class="@Css.Build().Small("mb")" Justify="Justify.Center" Style="max-width: 700px; justify-self: center;">
-            @if (Platform == SD.Shared.Enums.Platform.windows)
-            {
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_windowsReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Store)
-                    </MudButton>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Site)
-                    </MudButton>
-                </MudItem>
-            }
-            else if (Platform == SD.Shared.Enums.Platform.play)
-            {
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_googleReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/google-play.png" Style="max-width: 35px;"></MudImage> Google Play (Store)
-                    </MudButton>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_googleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/google-play.png" Style="max-width: 35px;"></MudImage> Google Play (Site)
-                    </MudButton>
-                </MudItem>
-            }
-            else if (Platform == SD.Shared.Enums.Platform.ios)
-            {
+    <div class="@Css.Build().Raw("store-grid").Small("mb")">
+        @if (Platform == SD.Shared.Enums.Platform.windows)
+        {
+            <MudButton Href="@_windowsReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Store)
+            </MudButton>
+            <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Site)
+            </MudButton>
+        }
+        else if (Platform == SD.Shared.Enums.Platform.play)
+        {
+            <MudButton Href="@_googleReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/google-play.png" Style="max-width: 35px;"></MudImage> Google Play (Store)
+            </MudButton>
+            <MudButton Href="@_googleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/google-play.png" Style="max-width: 35px;"></MudImage> Google Play (Site)
+            </MudButton>
+        }
+        else if (Platform == SD.Shared.Enums.Platform.ios)
+        {
 
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_appleReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/app-store.png" Style="max-width: 35px;"></MudImage> App Store (Store)
-                    </MudButton>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_appleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/app-store.png" Style="max-width: 35px;"></MudImage> App Store (Site)
-                    </MudButton>
-                </MudItem>
-            }
-            else if (Platform == SD.Shared.Enums.Platform.huawei)
-            {
+            <MudButton Href="@_appleReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/app-store.png" Style="max-width: 35px;"></MudImage> App Store (Store)
+            </MudButton>
+            <MudButton Href="@_appleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/app-store.png" Style="max-width: 35px;"></MudImage> App Store (Site)
+            </MudButton>
+        }
+        else if (Platform == SD.Shared.Enums.Platform.huawei)
+        {
 
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_huaweiReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/huawei.png" Style="max-width: 35px;"></MudImage> Huawei AppGallery (Store)
-                    </MudButton>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_huaweiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/huawei.png" Style="max-width: 35px;"></MudImage> Huawei AppGallery (Site)
-                    </MudButton>
-                </MudItem>
-            }
-            else if (Platform == SD.Shared.Enums.Platform.xiaomi)
-            {
+            <MudButton Href="@_huaweiReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/huawei.png" Style="max-width: 35px;"></MudImage> Huawei AppGallery (Store)
+            </MudButton>
+            <MudButton Href="@_huaweiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/huawei.png" Style="max-width: 35px;"></MudImage> Huawei AppGallery (Site)
+            </MudButton>
+        }
+        else if (Platform == SD.Shared.Enums.Platform.xiaomi)
+        {
 
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_xiaomiReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/xiaomi.png" Style="max-width: 35px;"></MudImage> Xiaomi GetApps (Store)
-                    </MudButton>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_xiaomiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/xiaomi.png" Style="max-width: 35px;"></MudImage> Xiaomi GetApps (Site)
-                    </MudButton>
-                </MudItem>
-            }
-            else if (Platform == SD.Shared.Enums.Platform.amazon)
-            {
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_amazonReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/amazon.png" Style="max-width: 35px;"></MudImage> Amazon Appstore (Store)
-                    </MudButton>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudButton Href="@_amazonStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                        <MudImage Src="/logo/amazon.png" Style="max-width: 35px;"></MudImage> Amazon Appstore (Site)
-                    </MudButton>
-                </MudItem>
-            }
-        </MudGrid>
+            <MudButton Href="@_xiaomiReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/xiaomi.png" Style="max-width: 35px;"></MudImage> Xiaomi GetApps (Store)
+            </MudButton>
+            <MudButton Href="@_xiaomiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/xiaomi.png" Style="max-width: 35px;"></MudImage> Xiaomi GetApps (Site)
+            </MudButton>
+        }
+        else if (Platform == SD.Shared.Enums.Platform.amazon)
+        {
+            <MudButton Href="@_amazonReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/amazon.png" Style="max-width: 35px;"></MudImage> Amazon Appstore (Store)
+            </MudButton>
+            <MudButton Href="@_amazonStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/amazon.png" Style="max-width: 35px;"></MudImage> Amazon Appstore (Site)
+            </MudButton>
+        }
     </div>
 }
 else //webapp
