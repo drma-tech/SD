@@ -80,18 +80,16 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
             item.Ip = ip;
         }
 
-        var model = new AuthPrincipal
+        var principal = new AuthPrincipal
         {
             AuthProviders = body.AuthProviders,
             DisplayName = body.DisplayName,
             Email = body.Email,
             Events = body.Events
         };
-        model.Initialize(userId);
+        principal.Initialize(userId);
 
-        model._tsCreated = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-
-        return await repo.CreateItemAsync(model, cancellationToken);
+        return await repo.CreateItemAsync(principal, cancellationToken);
     }
 
     [Function("PrincipalUpdate")]
@@ -103,11 +101,11 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
 
         if (userId.Empty()) throw new InvalidOperationException("unauthenticated user");
 
-        var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
+        var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
 
-        model!.AuthProviders = body.AuthProviders;
+        principal!.AuthProviders = body.AuthProviders;
 
-        return await repo.UpsertItemAsync(model, cancellationToken);
+        return await repo.UpsertItemAsync(principal, cancellationToken);
     }
 
     [Function("PrincipalEvent")]
@@ -117,14 +115,14 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
         var userId = await req.GetUserIdAsync(cancellationToken);
         var ip = req.GetUserIP(true);
 
-        var model = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
+        var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken) ?? throw new UnhandledException("Client null");
 
         var app = req.GetQueryParameters()["app"];
         var msg = req.GetQueryParameters()["msg"];
 
-        model.Events.Add(new Event(app, msg, ip));
+        principal.Events.Add(new Event(app, msg, ip));
 
-        return await repo.UpsertItemAsync(model, cancellationToken);
+        return await repo.UpsertItemAsync(principal, cancellationToken);
     }
 
     [Function("PrincipalRemove")]

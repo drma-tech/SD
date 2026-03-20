@@ -107,7 +107,6 @@
                 }
 
                 await JsRuntime.Supabase().SendEmailAsync(email!);
-                emailSent = true;
             }
             else
             {
@@ -122,8 +121,9 @@
         }
         finally
         {
-            await Task.Delay(5000);
+            await Task.Delay(8000);
             _processing = false;
+            emailSent = true;
         }
     }
 

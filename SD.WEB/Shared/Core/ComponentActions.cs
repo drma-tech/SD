@@ -51,21 +51,16 @@
         {
             if (CurrentStatus == status) return;
 
-            var frozenStatus = CurrentStatus is RenderStatus.Warning || CurrentStatus is RenderStatus.Error;
-
             if (status == RenderStatus.Loading)
             {
-                if (frozenStatus) return;
                 MessageLoading = msg ?? GlobalTranslations.CustomVisibilityLoading;
             }
             else if (status == RenderStatus.Warning)
             {
-                if (frozenStatus) return;
                 MessageWarning = CustomMessageWarning ?? msg;
             }
             else if (status == RenderStatus.Error)
             {
-                if (frozenStatus) return;
                 MessageError = CustomMessageError ?? msg;
             }
             else if (status == RenderStatus.Content && (instance == null || ExpressionEmpty(instance)) && CustomMessageWarning.NotEmpty())
