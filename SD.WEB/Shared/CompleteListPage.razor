@@ -54,7 +54,7 @@
     public bool DetectRegions { get; set; }
 
     private EnumLists? List { get; set; }
-    private string Title => TitleHead ?? $"{List?.GetCustomAttribute()?.Group} - {List?.GetName()}" ?? "Title Error";
+    private string Title => TitleHead ?? $"{List?.GetName()}" ?? "Title Error";
 
     protected override async Task OnInitializedAsync()
     {

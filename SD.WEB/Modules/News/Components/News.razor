@@ -7,8 +7,8 @@
 
 @inject CacheFlixsterApi CacheFlixsterApi
 
-<SeoMeta Title="@Translations.NewsTitle" Description="@Translations.NewsDescription" Url="@($"/news/{category}")" Index="true"></SeoMeta>
-<NewPageSection IsPageHeader="true" Title="@Translations.NewsTitle" Description="@Translations.NewsDescription" Icon="@IconsFA.Solid.Icon("newspaper").Font"></NewPageSection>
+<SeoMeta Title="@($"{Translations.NewsTitle} ({category})")" Description="@Translations.NewsDescription" Url="@($"/news/{category}")" Index="true"></SeoMeta>
+<NewPageSection IsPageHeader="true" Title="@($"{Translations.NewsTitle} ({category})")" Description="@Translations.NewsDescription" Icon="@IconsFA.Solid.Icon("newspaper").Font"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
