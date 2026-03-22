@@ -11,7 +11,7 @@
     <MudCard Outlined="true" Elevation="4">
         <MudCardContent Class="pa-3">
             <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Basic.GetName()</MudText>
-            <MudText Typo="Typo.h6" Align="Align.Center">@Translations.Free</MudText>
+            <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Secondary">@Translations.Free</MudText>
             <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
                 <MudItem xs="9">
                     <MudText>@Translations.NoAds</MudText>
@@ -68,7 +68,7 @@
     <MudCard Outlined="true" Elevation="4">
         <MudCardContent Class="pa-3">
             <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Premium.GetName()</MudText>
-            <MudText Typo="Typo.h6" Align="Align.Center">@GetPrice(AccountProduct.Premium, Cycle) / @Cycle.GetDescription()</MudText>
+            <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Secondary">@GetPrice(AccountProduct.Premium, Cycle) / @Cycle.GetDescription()</MudText>
             <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
                 <MudItem xs="9">
                     <MudText>@Translations.NoAds</MudText>
