@@ -1,6 +1,6 @@
 "use strict";
 
-import { isBot, noSimdSupport, isLocalhost, isDev, servicesConfig } from "./main.js";
+import { isBot, noSimdSupport, isBotBrowser, isLocalhost, isDev, servicesConfig } from "./main.js";
 import { storage, notification, environment } from "./utils.js";
 
 export const services = {
@@ -71,13 +71,11 @@ export const services = {
     initAdSense(adClient, adSlot, containerId) {
         if (isBot) return;
         if (noSimdSupport) return;
+        if (isBotBrowser) return;
         if (isLocalhost) return;
         if (isDev) return;
 
         try {
-            const scraping = environment.isScraping();
-            if (scraping) return;
-
             const container = document.getElementById(containerId);
             if (!container) return;
 
