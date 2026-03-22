@@ -1,7 +1,7 @@
 "use strict";
 
-import { isBot, noSimdSupport, isBotBrowser, isLocalhost, isDev, servicesConfig } from "./main.js";
-import { storage, notification, environment } from "./utils.js";
+import { isBot, isLocalhost, isDev, servicesConfig } from "./main.js";
+import { storage, notification } from "./utils.js";
 
 export const services = {
     initGoogleAnalytics(version) {
@@ -70,8 +70,6 @@ export const services = {
     },
     initAdSense(adClient, adSlot, containerId) {
         if (isBot) return;
-        if (noSimdSupport) return;
-        if (isBotBrowser) return;
         if (isLocalhost) return;
         if (isDev) return;
 
