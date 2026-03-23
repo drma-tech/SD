@@ -4,26 +4,38 @@ window.browser = window?.bowser?.getParser
     ? window.bowser.getParser(ua)
     : null;
 
-export const isBot =
-    /google|baidu|bingbot|duckduckbot|teoma|slurp|yandex|toutiao|bytespider|applebot/i.test(
-        ua
-    );
+export const isBot = /google|baidu|bingbot|duckduckbot|teoma|slurp|yandex|toutiao|bytespider|applebot/i.test(ua);
 
-function safeSatisfies(rules) {
-    if (/Mediapartners-Google/i.test(ua)) return false; //It doesn't load packages, but it uses an updated version of Chrome.
+function testBrowserVersion(rules, ignore = false, fallback = false) {
+    if (ignore) return false;
+
+    if (!window.browser) return fallback;
+
     return window.browser.satisfies(rules);
 }
 
-export const noSimdSupport = safeSatisfies({
-    chrome: "<91",
-    edge: "<91",
-    firefox: "<89",
-    safari: "<16.4",
-    opera: "<77",
-});
-export const isBotBrowser = window.browser.satisfies({
-    chrome: "<134", //feb 2025
-});
+//browser versions not compatible with SIMD
+export const hideBlazorIndex = testBrowserVersion(
+    {
+        chrome: "<91",
+        edge: "<91",
+        firefox: "<89",
+        safari: "<16.4",
+        opera: "<77",
+    },
+    /Mediapartners-Google/i.test(ua),
+    false // uncertain environment → allow
+);
+
+//probably a bot, so doesnt support sw
+export const disableServiceWorker = testBrowserVersion(
+    {
+        chrome: "<134",
+    },
+    false,
+    true // uncertain environment → disable
+);
+
 export const isLocalhost = location.host.includes("localhost");
 export const isDev = location.hostname.includes("dev.");
 export const isWebview = /webtonative/i.test(ua);

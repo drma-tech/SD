@@ -1,6 +1,6 @@
 "use strict";
 
-import { isBot, noSimdSupport } from "./main.js";
+import { isBot, hideBlazorIndex } from "./main.js";
 import { simd } from "./wasm-feature-detect.js";
 import { appVersion } from "./app-version.js";
 
@@ -201,7 +201,7 @@ export const environment = {
         const wasmSupported = typeof WebAssembly === "object";
 
         //The browser does not support WASM or SIMD.
-        if (!wasmSupported || noSimdSupport) {
+        if (!wasmSupported || hideBlazorIndex) {
             notification.showBrowserWarning();
             return;
         }
