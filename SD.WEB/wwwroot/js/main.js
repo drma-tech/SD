@@ -14,14 +14,14 @@ function testBrowserVersion(rules, ignore = false, fallback = false) {
     return window.browser.satisfies(rules);
 }
 
-//browser versions not compatible with SIMD
+//browser versions not compatible with SIMD (Some versions above for stability)
 export const hideBlazorIndex = testBrowserVersion(
     {
-        chrome: "<91",
-        edge: "<91",
-        firefox: "<89",
-        safari: "<16.4",
-        opera: "<77",
+        chrome: "<96", //nov 21
+        edge: "<96", //nov 21
+        firefox: "<96", //jan 22
+        safari: "<16.6", //jul 23
+        opera: "<82", //dec 21
     },
     /Mediapartners-Google/i.test(ua),
     false // uncertain environment → allow
