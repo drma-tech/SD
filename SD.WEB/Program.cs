@@ -26,14 +26,14 @@ builder.UseSentry(options =>
 
     options.SetBeforeSend(evt =>
     {
-        evt.Release = $"sd-web@{AppStateStatic.Version}";
+        evt.Release = $"sd-blazor@{AppStateStatic.Version ?? "error"}";
 
         evt.SetTag("custom.version", AppStateStatic.Version ?? "error");
         evt.SetTag("custom.platform", AppStateStatic.GetSavedPlatform()?.ToString() ?? "error");
 
-        evt.SetExtra("browser_name", AppStateStatic.BrowserName);
-        evt.SetExtra("browser_version", AppStateStatic.BrowserVersion);
-        evt.SetExtra("operation_system", AppStateStatic.OperatingSystem);
+        evt.SetExtra("browser_name", AppStateStatic.BrowserName ?? "error");
+        evt.SetExtra("browser_version", AppStateStatic.BrowserVersion ?? "error");
+        evt.SetExtra("operation_system", AppStateStatic.OperatingSystem ?? "error");
 
         return evt;
     });
