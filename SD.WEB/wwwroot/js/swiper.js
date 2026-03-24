@@ -12,7 +12,7 @@ export const swiper = {
 
         const temp = new Swiper(el, {
             slidesPerView: "auto",
-            spaceBetween: mobile ? 8 : 12,
+            spaceBetween: mobile ? 4 : 8,
             breakpointsBase: "container",
             navigation: {
                 nextEl: ".swiper-button-next",
@@ -75,7 +75,7 @@ export const swiper = {
         const el = document.getElementById(id);
         if (!el) return;
         const posterSize = 200;
-        const margin = mobile ? 8 : 12;
+        const margin = mobile ? 4 : 8;
 
         if (el.swiper && typeof el.swiper.destroy === "function") {
             el.swiper.destroy(true, true);
@@ -83,7 +83,7 @@ export const swiper = {
 
         const temp = new Swiper(el, {
             slidesPerView: "auto",
-            spaceBetween: mobile ? 8 : 12,
+            spaceBetween: mobile ? 4 : 8,
             breakpointsBase: "container",
             grid: {
                 rows: 2,

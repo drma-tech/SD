@@ -42,10 +42,10 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                 foreach (var item in nodes.Take(mode == "compact" ? 10 : 30) ?? [])
                 {
                     if (item == null) continue;
-                    compactModels.Items.Add(new Item(item.id, 
-                        item.articleTitle?.plainText, 
+                    compactModels.Items.Add(new Item(item.id,
+                        item.articleTitle?.plainText,
                         item.image?.url?.Replace("@._V1_.jpg", "@._V1_UY400_.jpg"), //force height to 400px
-                        item.externalUrl, 
+                        item.externalUrl,
                         item.date));
                 }
 
@@ -116,11 +116,14 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                 foreach (var item in obj?.Take(mode == "compact" ? 20 : 50) ?? [])
                 {
                     if (item == null) continue;
+
+                    var image = item.thumbnails != null && item.thumbnails.Count > 1 ? item.thumbnails[1].url : null;
+
                     compactModels.Items.Add(new MostPopularDataDetail
                     {
                         Id = item.id,
                         Title = item.primaryTitle,
-                        Image = item.thumbnails?[1]?.url,
+                        Image = image,
                         Year = item.startYear?.ToString(),
                         IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture)
                     });
@@ -158,11 +161,14 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                 foreach (var item in obj?.Take(mode == "compact" ? 20 : 50) ?? [])
                 {
                     if (item == null) continue;
+
+                    var image = item.thumbnails != null && item.thumbnails.Count > 1 ? item.thumbnails[1].url : null;
+
                     compactModels.Items.Add(new MostPopularDataDetail
                     {
                         Id = item.id,
                         Title = item.primaryTitle,
-                        Image = item.thumbnails?[1]?.url,
+                        Image = image,
                         Year = item.startYear?.ToString(),
                         IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture)
                     });
@@ -367,7 +373,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
     {
         if (tmdbId.Empty()) return;
 
-        if (doc?.Data != null && releaseDate < DateTime.Now.AddDays(-30)) // at least 1 month launch
+        if (doc?.Data != null && releaseDate < DateTime.Now.AddDays(-15)) // at least 2 weeks launch
         {
             var rating = doc.Data;
 
