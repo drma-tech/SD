@@ -44,7 +44,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                     if (item == null) continue;
                     compactModels.Items.Add(new Item(item.id,
                         item.articleTitle?.plainText,
-                        item.image?.url?.Replace("@._V1_.jpg", "@._V1_UY400_.jpg"), //force height to 400px
+                        item.image?.url?.Replace("@._V1_.jpg", "@._V1_UY500_.jpg"), //force height to 500px
                         item.externalUrl,
                         item.date));
                 }
@@ -81,7 +81,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                 foreach (var item in obj?.contents?.Take(mode == "compact" ? 12 : 100).Select(s => s.video) ?? [])
                 {
                     if (item == null) continue;
-                    compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, mode == "compact" ? item.thumbnails[0].url : item.thumbnails[2].url, item.publishedTimeText));
+                    compactModels.Items.Add(new Shared.Models.Trailers.Item(item.videoId, item.title, mode == "compact" ? item.thumbnails[1].url : item.thumbnails[2].url, item.publishedTimeText));
                 }
 
                 doc = await cacheRepo.UpsertItemAsync(new YoutubeCache(compactModels, cacheKey), cancellationToken);

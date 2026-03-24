@@ -74,7 +74,7 @@ export const swiper = {
 
         const el = document.getElementById(id);
         if (!el) return;
-        const posterSize = 200;
+        const posterSize = 175;
         const margin = mobile ? 4 : 8;
 
         if (el.swiper && typeof el.swiper.destroy === "function") {
@@ -86,7 +86,7 @@ export const swiper = {
             spaceBetween: mobile ? 4 : 8,
             breakpointsBase: "container",
             grid: {
-                rows: 2,
+                rows: 3,
             },
             navigation: {
                 nextEl: ".swiper-button-next",
@@ -123,7 +123,7 @@ export const swiper = {
                                 const h = slide.offsetHeight;
                                 if (h > maxHeight) maxHeight = h;
                             });
-                            el.style.height = maxHeight * 2 + (mobile ? 8 : 12) + "px";
+                            el.style.height = maxHeight * 3 + (mobile ? 4 : 8) + "px";
                         }
                     }
 
