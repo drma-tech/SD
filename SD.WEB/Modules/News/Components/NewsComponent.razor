@@ -110,11 +110,11 @@
         base.OnInitialized();
     }
 
-    private void OnTabChanged(int index)
+    private async Task OnTabChanged(int index)
     {
         _activeIndex = index;
         _loaded[index] = true;
-        _ = ProcessInitialData();
+        await ProcessInitialData();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
