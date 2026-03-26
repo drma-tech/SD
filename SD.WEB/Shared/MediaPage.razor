@@ -1,6 +1,7 @@
 ﻿@page "/media/{type}/{id}"
 
 @using System.Globalization
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Routing
 @using SD.Shared.Models.List
 @using SD.WEB.Modules.Profile.Core
@@ -12,6 +13,7 @@
 
 @inherits PageCore<MediaPopup>
 @implements IDisposable
+@attribute [Authorize]
 
 @inject TmdbApi TmdbApi
 @inject CacheRatingsApi CacheRatingsApi

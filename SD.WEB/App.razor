@@ -16,9 +16,7 @@
                 <Found Context="routeData">
                     <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                         <NotAuthorized>
-                            <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Dense="true">
-                                @Translations.YouAreNotAuthorized
-                            </MudAlert>
+                            <NotAuthorizePage></NotAuthorizePage>
                         </NotAuthorized>
                         <Authorizing>
                             <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true" Icon="@IconsFA.Solid.Icon("spinner").WithAnimation(IconAnimation.Spin).Font">

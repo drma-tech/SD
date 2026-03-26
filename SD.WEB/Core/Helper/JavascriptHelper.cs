@@ -167,10 +167,10 @@ namespace SD.WEB.Core.Helper
     {
         public Task<string> CreateUserAsync(string? id, string? email, string? name) => Invoke<string>("authentication.createUser", id, email, name);
 
-        public async Task SignInAsync(string providerName)
+        public async Task SignInAsync(string providerName, string? returnUrl)
         {
             ApiCore.ResetCacheVersion();
-            await InvokeVoid("authentication.signIn", providerName);
+            await InvokeVoid("authentication.signIn", providerName, returnUrl);
         }
 
         public Task SendEmailAsync(string email) => InvokeVoid("authentication.sendEmail", email);

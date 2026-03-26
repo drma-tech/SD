@@ -1,0 +1,59 @@
+﻿@page "/not-authorized"
+
+@inject NavigationManager Navigation
+
+<PageTitle>401 - Not Authorized</PageTitle>
+<HeadContent>
+    <meta name="robots" content="noindex, nofollow" />
+</HeadContent>
+<style>
+    body {
+        margin: 0;
+        font-family: sans-serif;
+    }
+
+    .container {
+        height: calc(100vh - 64px - 32px - 48px - 24px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 4rem;
+        color: #ffc107;
+        margin: 0;
+    }
+
+    p {
+        font-size: 1.3rem;
+        margin: 16px 0;
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+</style>
+<div class="container">
+    <div>
+        <h1>401</h1>
+        <p>@SD.WEB.Modules.Auth.Resources.Translations.UnauthenticatedUser</p>
+        <p>@SD.WEB.Modules.Auth.Resources.Translations.YouMustLogged</p>
+        <div class="mt-6">
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" IconColor="Color.Secondary" OnClick="Login" Class="me-3">
+                @Button.Login
+            </MudButton>
+            <a href="/">Return to homepage</a>
+        </div>
+    </div>
+</div>
+
+@code {
+    private async Task Login()
+    {
+        Navigation.NavigateTo($"/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+    }
+}

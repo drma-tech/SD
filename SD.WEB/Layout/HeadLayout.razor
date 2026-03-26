@@ -238,7 +238,7 @@
     private async Task Login()
     {
         _open = false;
-        Navigation.NavigateTo("/login");
+        Navigation.NavigateTo($"/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
     }
 
     private async Task Logout()

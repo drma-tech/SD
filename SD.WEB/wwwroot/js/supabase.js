@@ -112,9 +112,9 @@ export const authentication = {
             return data.user.id;
         }
     },
-    async signIn(providerName) {
+    async signIn(providerName, returnUrl) {
         try {
-            const redirectTo = window.location.origin;
+            const redirectTo = returnUrl || window.location.origin;
 
             const baseOptions = {
                 redirectTo,

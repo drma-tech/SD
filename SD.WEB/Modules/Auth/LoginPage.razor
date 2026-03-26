@@ -70,6 +70,10 @@
 </MudContainer>
 
 @code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? ReturnUrl { get; set; }
+
     private string? email;
     private string? otp;
     private bool emailSent;
@@ -111,7 +115,7 @@
             else
             {
                 if (provider == "microsoft") provider = "azure";
-                await JsRuntime.Supabase().SignInAsync(provider!);
+                await JsRuntime.Supabase().SignInAsync(provider!, ReturnUrl);
             }
         }
         catch (Exception ex)
