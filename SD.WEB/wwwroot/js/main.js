@@ -36,7 +36,11 @@ export const hideBlazorIndex = testBrowserVersion(
 //probably a bot, so doesnt support sw
 export const disableServiceWorker = testBrowserVersion(
     {
-        chrome: "<134",
+        chrome: "<134", //special case (usually bots)
+        edge: "<96", //nov 21
+        firefox: "<96", //jan 22
+        safari: "<16.6", //jul 23
+        opera: "<82", //dec 21
     },
     false,
     true // uncertain environment → disable
