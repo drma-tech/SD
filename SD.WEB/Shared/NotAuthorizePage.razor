@@ -19,34 +19,18 @@
         justify-content: center;
         text-align: center;
     }
-
-    h1 {
-        font-size: 4rem;
-        color: #ffc107;
-        margin: 0;
-    }
-
-    p {
-        font-size: 1.3rem;
-        margin: 16px 0;
-    }
-
-    a {
-        color: #007bff;
-        text-decoration: none;
-        font-weight: bold;
-    }
 </style>
 <div class="container">
     <div>
-        <h1>401</h1>
-        <p>@SD.WEB.Modules.Auth.Resources.Translations.UnauthenticatedUser</p>
-        <p>@SD.WEB.Modules.Auth.Resources.Translations.YouMustLogged</p>
-        <div class="mt-6">
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" IconColor="Color.Secondary" OnClick="Login" Class="me-3">
+        <MudText Typo="Typo.h4" Color="Color.Primary">@SD.WEB.Modules.Auth.Resources.Translations.UnauthenticatedUser</MudText>
+        <MudText Typo="Typo.h6">@SD.WEB.Modules.Auth.Resources.Translations.YouMustLogged</MudText>
+        <div class="@Css.Build().Large("mt")">
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="Login" Class="me-3" Size="AppStateStatic.Size">
                 @Button.Login
             </MudButton>
-            <a href="/">Return to homepage</a>
+            <MudButton Variant="Variant.Text" Color="Color.Default" Href="/" Size="AppStateStatic.Size">
+                Return to homepage
+            </MudButton>
         </div>
     </div>
 </div>

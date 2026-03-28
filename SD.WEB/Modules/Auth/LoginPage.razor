@@ -3,6 +3,7 @@
 @using SD.WEB.Core.Auth
 @using SD.WEB.Modules.Auth.Resources
 @using SD.WEB.Modules.Subscription.Core
+@using System.Text.RegularExpressions
 
 @inherits PageCore<LoginPage>
 
@@ -95,6 +96,8 @@
 
     private async Task SignIn(string? provider = null, string? email = null)
     {
+        var success = false;
+
         try
         {
             _processing = true;
@@ -103,19 +106,21 @@
 
             if (provider == "email")
             {
-                if (email.Empty())
+                if (!IsValidEmail(email ?? ""))
                 {
-                    await ShowError("Please enter your email.");
+                    await ShowError("Please enter a valid email.");
                     _processing = false; StateHasChanged();
                     return;
                 }
 
                 await JsRuntime.Supabase().SendEmailAsync(email!);
+                success = true;
             }
             else
             {
                 if (provider == "microsoft") provider = "azure";
                 await JsRuntime.Supabase().SignInAsync(provider!, ReturnUrl);
+                success = true;
             }
         }
         catch (Exception ex)
@@ -125,10 +130,24 @@
         }
         finally
         {
-            await Task.Delay(8000);
+            if (success)
+            {
+                await Task.Delay(8000);
+                emailSent = true;
+            }
+
             _processing = false;
-            emailSent = true;
+            StateHasChanged();
         }
+    }
+
+    private static readonly Regex EmailRegex = new(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+    private static bool IsValidEmail(string? email)
+    {
+        if (email.Empty()) return false;
+
+        return EmailRegex.IsMatch(email);
     }
 
     private async Task ConfirmCode(string? email = null, string? code = null)

@@ -60,12 +60,12 @@
         <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
         <AuthorizeView>
             <Authorized>
-                <MudButton Variant="Variant.Filled" Color="Color.Secondary" IconColor="Color.Error" OnClick="@Logout" Disabled="_blockedActions">
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@Logout" Disabled="_blockedActions">
                     @Button.Logout
                 </MudButton>
             </Authorized>
             <NotAuthorized>
-                <MudButton Variant="Variant.Filled" Color="Color.Secondary" IconColor="Color.Secondary" OnClick="Login" Disabled="_blockedActions">
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="Login" Disabled="_blockedActions">
                     @Button.Login
                 </MudButton>
             </NotAuthorized>
@@ -101,12 +101,12 @@
         <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
         <AuthorizeView>
             <Authorized>
-                <MudButton Variant="Variant.Filled" Color="Color.Secondary" IconColor="Color.Error" OnClick="@Logout" Disabled="_blockedActions">
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@Logout" Disabled="_blockedActions">
                     @Button.Logout
                 </MudButton>
             </Authorized>
             <NotAuthorized>
-                <MudButton Variant="Variant.Filled" Color="Color.Secondary" IconColor="Color.Secondary" OnClick="Login" Disabled="_blockedActions">
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="Login" Disabled="_blockedActions">
                     @Button.Login
                 </MudButton>
             </NotAuthorized>
@@ -149,12 +149,12 @@
             <MudDivider></MudDivider>
             <AuthorizeView>
                 <Authorized>
-                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-from-bracket").Font" OnClick="@Logout" Disabled="_blockedActions" IconColor="Color.Secondary">
+                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-from-bracket").Font" OnClick="@Logout" Disabled="_blockedActions">
                         @Button.Logout
                     </MudNavLink>
                 </Authorized>
                 <NotAuthorized>
-                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-to-bracket").Font" OnClick="Login" Disabled="_blockedActions">
+                    <MudNavLink Icon="@IconsFA.Solid.Icon("right-to-bracket").Font" OnClick="Login" Disabled="_blockedActions" IconColor="Color.Secondary">
                         @Button.Login
                     </MudNavLink>
                 </NotAuthorized>
@@ -200,11 +200,7 @@
             Interlocked.Decrement(ref _processingCount);
 
             await Task.Delay(200);
-
-            if (_processingCount == 0)
-            {
-                await InvokeAsync(StateHasChanged);
-            }
+            await InvokeAsync(StateHasChanged);
         };
     }
 

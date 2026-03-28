@@ -107,7 +107,7 @@ export const authentication = {
         });
 
         if (error) {
-            throw new Error(error.message);
+            throw error.message;
         } else {
             return data.user.id;
         }
@@ -150,7 +150,7 @@ export const authentication = {
             });
         } catch (error) {
             Sentry.captureException(error);
-            throw new Error(error.message);
+            throw error.message;
         }
     },
     async sendEmail(email) {
@@ -161,7 +161,7 @@ export const authentication = {
 
         if (error) {
             Sentry.captureException(error);
-            throw new Error(error.message);
+            throw error.message;
         }
     },
     async confirmCode(email, code) {
@@ -174,7 +174,7 @@ export const authentication = {
 
         if (error) {
             Sentry.captureException(error);
-            throw new Error(error.message);
+            throw error.message;
         }
     },
     async signOut() {
@@ -183,7 +183,7 @@ export const authentication = {
             await supabase.auth.signOut();
         } catch (error) {
             Sentry.captureException(error);
-            throw new Error(error.message);
+            throw error.message;
         }
     },
     async getUser() {
