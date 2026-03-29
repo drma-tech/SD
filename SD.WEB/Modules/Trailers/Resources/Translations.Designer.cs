@@ -19,7 +19,7 @@ namespace SD.WEB.Modules.Trailers.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Translations {
@@ -61,7 +61,7 @@ namespace SD.WEB.Modules.Trailers.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discover the hottest new movie trailers and teasers – your ultimate source for HD previews of upcoming films, blockbusters, and must-watch releases..
+        ///   Looks up a localized string similar to Watch the latest movie trailers and teasers in HD. Stay updated on upcoming films, blockbusters, and must-see releases..
         /// </summary>
         public static string TrailersDescription {
             get {
@@ -70,7 +70,7 @@ namespace SD.WEB.Modules.Trailers.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discover the hottest new movie trailers and teasers.
+        ///   Looks up a localized string similar to Watch the latest movie trailers and teasers in HD..
         /// </summary>
         public static string TrailersDescriptionShort {
             get {

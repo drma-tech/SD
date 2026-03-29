@@ -21,8 +21,8 @@
 @inject AllProvidersApi AllProvidersApi
 @inject IHttpClientFactory factory
 
-<SeoMeta Title="@Title" Description="@SeoTranslations.AppDescription" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")" Index="false"></SeoMeta>
-<NewPageSection Title="@List?.GetName()"></NewPageSection>
+<SeoMeta Title="@Title" Description="@Description" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")" Index="false"></SeoMeta>
+<NewPageSection Title="@Title" Description="@Description"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
@@ -51,10 +51,12 @@
     [Parameter] public bool OnlyYear { get; set; }
     [Parameter] public string? Type { get; set; }
     public string? TitleHead { get; set; }
+    public string? DescriptionHead { get; set; }
     public bool DetectRegions { get; set; }
 
     private EnumLists? List { get; set; }
     private string Title => TitleHead ?? $"{List?.GetName()}" ?? "Title Error";
+    private string Description => DescriptionHead ?? $"{List?.GetDescription()}" ?? "Description Error";
 
     protected override async Task OnInitializedAsync()
     {
@@ -104,17 +106,20 @@
             if (Navigation.Uri.Contains("popular"))
             {
                 TitleHead = $"{provider?.name} - {Modules.Platform.Resources.Translations.Popular} - {TypeSelected!.GetName()}";
+                DescriptionHead = $"Explore the most popular movies and TV shows on {provider?.name}, ranked by audience interest and trending buzz this week.";
                 StringParameters = GetExtraParameters(id, "popularity.desc");
             }
             else if (Navigation.Uri.Contains("new"))
             {
                 TitleHead = $"{provider?.name} - {Modules.Platform.Resources.Translations.Release} - {TypeSelected!.GetName()}";
+                DescriptionHead = $"Stay updated with the latest releases on {provider?.name}, including newly launched movies and shows hitting the market.";
                 DetectRegions = true;
                 StringParameters = GetExtraParameters(id, "primary_release_date.desc");
             }
             else if (Navigation.Uri.Contains("top"))
             {
                 TitleHead = $"{provider?.name} - {Modules.Platform.Resources.Translations.TopRated} - {TypeSelected!.GetName()}";
+                DescriptionHead = $"Discover the highest-rated movies and TV shows on {provider?.name}, curated to highlight the best titles you won’t want to miss.";
                 DetectRegions = true;
                 StringParameters = GetExtraParameters(id, "vote_average.desc");
             }

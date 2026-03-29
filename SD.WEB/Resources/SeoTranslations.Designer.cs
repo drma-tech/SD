@@ -61,20 +61,11 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Manage your streaming platforms, track your watch progress, and discover what to watch next with ease. Browse expert-curated lists like award winners and critic picks - all in one place..
+        ///   Looks up a localized string similar to Track your streaming platforms, manage your watch progress, and discover what to watch next with curated lists, award winners, and critic picks..
         /// </summary>
         public static string AppDescription {
             get {
                 return ResourceManager.GetString("AppDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Manage streaming, track progress &amp; find what to watch - all in one place..
-        /// </summary>
-        public static string AppDescriptionShort {
-            get {
-                return ResourceManager.GetString("AppDescriptionShort", resourceCulture);
             }
         }
         
@@ -97,11 +88,20 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to See your favorite streaming providers, wishlists (movies, series and documentaries), what you&apos;re currently watching and much more..
+        ///   Looks up a localized string similar to Browse streaming services offering movies, TV shows, and documentaries. Discover platforms for every taste, from mainstream hits to niche content..
         /// </summary>
-        public static string ProfileDescription {
+        public static string PlatformsDescription {
             get {
-                return ResourceManager.GetString("ProfileDescription", resourceCulture);
+                return ResourceManager.GetString("PlatformsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Platforms.
+        /// </summary>
+        public static string PlatformsTitle {
+            get {
+                return ResourceManager.GetString("PlatformsTitle", resourceCulture);
             }
         }
         
@@ -111,24 +111,6 @@ namespace SD.WEB.Resources {
         public static string ProfileTitle {
             get {
                 return ResourceManager.GetString("ProfileTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A comprehensive list of streaming services offering movies, TV series, and documentaries. Explore diverse platforms catering to all tastes, from mainstream entertainment to niche content..
-        /// </summary>
-        public static string ProvidersDescription {
-            get {
-                return ResourceManager.GetString("ProvidersDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Platforms.
-        /// </summary>
-        public static string ProvidersTitle {
-            get {
-                return ResourceManager.GetString("ProvidersTitle", resourceCulture);
             }
         }
     }

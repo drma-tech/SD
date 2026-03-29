@@ -19,7 +19,7 @@ namespace SD.WEB.Modules.News.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Translations {
@@ -61,7 +61,7 @@ namespace SD.WEB.Modules.News.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stay updated with the latest movies, TV shows, celebrity news, and pop culture trends. Your go-to source for entertainment updates..
+        ///   Looks up a localized string similar to Get the latest movies, TV shows, celebrity news, and pop culture updates. Stay informed on all things entertainment..
         /// </summary>
         public static string NewsDescription {
             get {
@@ -70,7 +70,7 @@ namespace SD.WEB.Modules.News.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your daily source for movies, TV, and celebrity news..
+        ///   Looks up a localized string similar to Get the latest movies, TV shows, celebrity news, and pop culture updates..
         /// </summary>
         public static string NewsDescriptionShort {
             get {

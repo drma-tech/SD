@@ -20,8 +20,7 @@
 @inject TmdbListApi TmdbListApi
 
 <SeoMeta Title="@SeoTranslations.AppTitle" Description="@SeoTranslations.AppDescription" Url="/" Index="true" ForceTitle="true"></SeoMeta>
-<NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@SeoTranslations.AppTitle" Subtitle="@SeoTranslations.AppSubtitle">
-</NewPageSection>
+<NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@SeoTranslations.AppTitle" Subtitle="@SeoTranslations.AppSubtitle"></NewPageSection>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress" Class="@Css.Build().Large("mb")"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
@@ -39,7 +38,7 @@
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index2"></GoogleAdSense>
 
-<NewPageSection Title="@EnumLists.ExpectedMovieOf2026.GetName()">
+<NewPageSection Title="@EnumLists.ExpectedMovieOf2026.GetName()" Description="@(string.Format(GlobalTranslations.ExpectedMovies, 2026))">
     <BodyFragment>
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
             <Header>

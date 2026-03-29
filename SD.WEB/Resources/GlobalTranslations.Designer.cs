@@ -79,7 +79,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Films and series that won the main awards of the year.
+        ///   Looks up a localized string similar to Explore films and series that won the year’s top awards. Discover main categories, winners, and celebrated titles recognized by critics and audiences..
         /// </summary>
         public static string AwardsYearDescription {
             get {
@@ -88,7 +88,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exclusive selection from Streaming Discovery (Only films and series with 4 or more green ratings are included in this list).
+        ///   Looks up a localized string similar to Discover our Editor’s Choice: films and series consistently rated highly across IMDb, TMDb, Metacritic, Rotten Tomatoes, Trakt, FilmAffinity, and Letterboxd..
         /// </summary>
         public static string CertifiedDescription {
             get {
@@ -169,6 +169,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discover the most anticipated movies of {0}, featuring upcoming blockbusters, fan favorites, and highly awaited releases hitting theaters and streaming..
+        /// </summary>
+        public static string ExpectedMovies {
+            get {
+                return ResourceManager.GetString("ExpectedMovies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External Website Notice.
         /// </summary>
         public static string ExternalWebsiteNotice {
@@ -223,7 +232,7 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last week&apos;s most popular movies, TV shows, and movie stars based on audience interest..
+        ///   Looks up a localized string similar to See last week’s most popular movies, TV shows, and stars, ranked by audience interest. Stay up-to-date on trending entertainment picks..
         /// </summary>
         public static string PopularIndexDescription {
             get {

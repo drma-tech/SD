@@ -61,15 +61,15 @@ else
 
     <RenderControl Actions="Actions">
         <NewMediaList ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/popular/{{0}}")"
-                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter"
+                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@($"Explore the most popular movies and TV shows on {Provider?.name}, ranked by audience interest and trending buzz this week.")"
                       StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </NewMediaList>
         <NewMediaList ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/new/{{0}}")"
-                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter"
+                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@($"Stay updated with the latest releases on {Provider?.name}, including newly launched movies and shows hitting the market.")"
                       StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </NewMediaList>
         <NewMediaList ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/platforms/{Id}/top/{{0}}")"
-                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter"
+                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@($"Discover the highest-rated movies and TV shows on {Provider?.name}, curated to highlight the best titles you won’t want to miss.")"
                       StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </NewMediaList>
     </RenderControl>
