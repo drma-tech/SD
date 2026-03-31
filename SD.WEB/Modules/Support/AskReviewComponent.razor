@@ -92,8 +92,7 @@ else //webapp
             <MudImage Src="/logo/xiaomi.png" Style="max-width: 35px;"></MudImage> Xiaomi GetApps
         </MudButton>
         <MudButton Href="@_amazonStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-            <MudImage Src="/logo/amazon.png" Style="max-width: 35px;"></MudImage>
-            Amazon Appstore
+            <MudImage Src="/logo/amazon.png" Style="max-width: 35px;"></MudImage> Amazon Appstore
         </MudButton>
     </div>
 }
@@ -105,14 +104,23 @@ else //webapp
     </MudText>
 
     <div class="@Css.Build().Raw("store-grid").Small("mb")">
-        <MudButton Href="https://www.modern-matchmaker.com" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-            <MudImage Src="/logo/modern-matchmaker.png" Style="max-width: 35px;"></MudImage> Modern Matchmaker
-        </MudButton>
-        <MudBadge Content="@("Beta")" Overlap="true" Color="Color.Warning">
-            <MudButton Href="https://www.my-next-spot.com" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-                <MudImage Src="/logo/next-spot.png" Style="max-width: 35px;"></MudImage> My Next Spot
-            </MudButton>
-        </MudBadge>
+        @foreach (var product in AppStateStatic.Products)
+        {
+            if (product.Live)
+            {
+                <MudButton Href="@product.Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                    <MudImage Src="@product.Logo" Style="max-width: 35px;"></MudImage> @product.Title
+                </MudButton>
+            }
+            else
+            {
+                <MudBadge Content="@("Beta")" Overlap="true" Color="Color.Warning">
+                    <MudButton Href="@product.Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                        <MudImage Src="@product.Logo" Style="max-width: 35px;"></MudImage> @product.Title
+                    </MudButton>
+                </MudBadge>
+            }
+        }
     </div>
 }
 

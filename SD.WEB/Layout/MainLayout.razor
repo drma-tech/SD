@@ -239,6 +239,7 @@
 
         var reviewed = await JsRuntime.Utils().GetStorage<bool>("store-reviewed");
 
+        accesses.Add(DateTime.UtcNow); //simulate the new access
         bool isOddAccess = accesses.Count % 2 == 1;
 
         if (accesses.Count >= 3 && isOddAccess && !reviewed && !isTooSoon)
