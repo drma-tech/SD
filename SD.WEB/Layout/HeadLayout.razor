@@ -26,7 +26,9 @@
         <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="icon-text-button" Disabled="_blockedActions">
             @Menu.Platforms
         </MudButton>
+
         <MudSpacer />
+
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { _open = true; })" />
     }
     else if (AppStateStatic.Breakpoint == Breakpoint.Sm) //tablet view
@@ -40,9 +42,9 @@
         <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="icon-text-button" Disabled="_blockedActions">
             @Menu.Platforms
         </MudButton>
-     
+
         <MudSpacer />
-        
+
         <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("gem").Font" Class="me-2" OnClick="@OpenSubscription" />
         <AuthorizeView>
             <Authorized>
@@ -79,7 +81,7 @@
         </MudButton>
 
         <MudSpacer />
-       
+
         <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("gem").Font" Class="me-2" OnClick="@OpenSubscription" />
         <AuthorizeView>
             <Authorized>

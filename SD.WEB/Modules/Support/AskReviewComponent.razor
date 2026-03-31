@@ -34,7 +34,7 @@ else
                 <MudImage Src="/logo/google-play.png" Style="max-width: 35px;"></MudImage> Google Play (Site)
             </MudButton>
         }
-        else if (CurrentPlatform == Platform.ios && AppInfo._appleId1.NotEmpty())
+        else if (CurrentPlatform == Platform.ios && AppInfo._appleId.NotEmpty())
         {
 
             <MudButton Href="@_appleReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
@@ -90,7 +90,7 @@ else //webapp
                 <MudImage Src="/logo/google-play.png" Style="max-width: 35px;"></MudImage> Google Play
             </MudButton>
         }
-        @if (AppInfo._appleId1.NotEmpty())
+        @if (AppInfo._appleId.NotEmpty())
         {
             <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.ios).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/app-store.png" Style="max-width: 35px;"></MudImage> App Store
@@ -182,7 +182,7 @@ else //webapp
 
     private readonly string _windowsReview = $"ms-windows-store://review/?ProductId={AppInfo._windowsId}"; //its working
     private readonly string _googleReview = $"market://details?id={AppInfo._googleId}"; //its old. better to use In-App Review API.
-    private readonly string _appleReview = $"itms-apps://itunes.apple.com/app/{AppInfo._appleId2}?action=write-review"; //its working
+    private readonly string _appleReview = $"itms-apps://itunes.apple.com/app/{AppInfo._appleId}?action=write-review"; //its working
     private readonly string _huaweiReview = $"appmarket://details?id={AppInfo._huaweiId}"; //It may work or it may not.
     private readonly string _xiaomiReview = $"mimarket://details?id={AppInfo._xiaomiId}"; //It may work or it may not.
     private readonly string _amazonReview = $"amzn://apps/android?asin={AppInfo._amazonId}"; //not sure if works

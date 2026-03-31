@@ -9,8 +9,10 @@ namespace SD.WEB.Modules.Subscription.Core
             await PostAsync(Endpoint.AppleVerify, receipt);
         }
 
-        public async Task<AuthPrincipal?> StripeCustomer()
+        public async Task<AuthPrincipal?> StripeCustomer(bool isUserAuthenticated)
         {
+            if (!isUserAuthenticated) return null;
+
             return await GetAsync<AuthPrincipal>(Endpoint.StripeCustomer);
         }
 

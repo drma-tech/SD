@@ -45,9 +45,9 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                         Get the App
                     </MudText>
                 </MudListSubheader>
-                @if (Platform == SD.Shared.Enums.Platform.webapp)
+                @if (CurrentPlatform == Platform.webapp)
                 {
-                    var filter = new SD.Shared.Enums.Platform[] { SD.Shared.Enums.Platform.windows, SD.Shared.Enums.Platform.play, SD.Shared.Enums.Platform.ios };
+                    var filter = new Platform[] { Platform.windows, Platform.play, Platform.ios };
                     @foreach (var store in AppInfo.Stores.Where(p => filter.Contains(p.Platform)))
                     {
                         <MudListItem Href="@store.Url" Target="_blank" Class="py-0">
@@ -58,9 +58,9 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                         </MudListItem>
                     }
                 }
-                else if (Platform == SD.Shared.Enums.Platform.windows)
+                else if (CurrentPlatform == Platform.windows)
                 {
-                    var filter = new SD.Shared.Enums.Platform[] { SD.Shared.Enums.Platform.play, SD.Shared.Enums.Platform.ios };
+                    var filter = new Platform[] { Platform.play, Platform.ios };
                     @foreach (var store in AppInfo.Stores.Where(p => filter.Contains(p.Platform)))
                     {
                         <MudListItem Href="@store.Url" Target="_blank" Class="py-0">
@@ -73,7 +73,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                 }
                 else
                 {
-                    var filter = new SD.Shared.Enums.Platform[] { SD.Shared.Enums.Platform.windows };
+                    var filter = new Platform[] { Platform.windows };
                     @foreach (var store in AppInfo.Stores.Where(p => filter.Contains(p.Platform)))
                     {
                         <MudListItem Href="@store.Url" Target="_blank" Class="py-0">
@@ -128,7 +128,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
 @code {
     private static readonly Random rnd = new Random();
     private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
-    private Platform? Platform;
+    private Platform? CurrentPlatform;
 
     protected override void OnInitialized()
     {
@@ -140,7 +140,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
     {
         if (firstRender)
         {
-            Platform = await AppStateStatic.GetPlatform(JsRuntime);
+            CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime);
         }
     }
 }

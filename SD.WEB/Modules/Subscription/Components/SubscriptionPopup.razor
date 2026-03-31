@@ -254,7 +254,7 @@
 
         if (Client != null && Client.StripeCustomerId.Empty())
         {
-            Client = await PaymentAuthApi.StripeCustomer();
+            Client = await PaymentAuthApi.StripeCustomer(AppStateStatic.IsAuthenticated);
         }
     }
 
