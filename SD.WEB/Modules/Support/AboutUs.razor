@@ -6,92 +6,96 @@
 <div class="support-container">
     @if (Language == AppLanguage.pt)
     {
-        <h1 class="support-title">Sobre a DRMA Tech</h1>
+        <h1 class="support-title">Sobre a @AppInfo.CompanyName</h1>
         <div class="support-subtitle">
-            Bem-vindo à <b>DRMA Tech</b> (<a href="https://www.drma-tech.com" target="_blank">www.drma-tech.com</a>)!<br />
-            Criamos ferramentas inteligentes que conectam pessoas ao que realmente combina com elas, tornando decisões mais fáceis, alinhadas e construídas ao redor de quem realmente são.
+            Bem-vindo à <b>@AppInfo.CompanyName</b> (<a href="@AppInfo.CompanyWebSite" target="_blank">@AppInfo.CompanyWebSite</a>)!<br />
+            A @AppInfo.CompanyName cria ferramentas digitais inteligentes que ajudam as pessoas a encontrar o que melhor combina com elas e a tomar decisões de forma mais fácil, alinhada e centrada nas necessidades individuais.
         </div>
         <div class="support-section">
             <h2>1. Nossa Missão</h2>
-            <p>Na DRMA Tech, focamos em construir ferramentas que simplifiquem a tomada de decisões, conectando usuários ao que realmente se encaixa em suas necessidades e valores. Queremos que a tecnologia seja intuitiva, útil e alinhada com a forma como as pessoas vivem.</p>
+            <p>Na @AppInfo.CompanyName, focamos em criar ferramentas que simplificam a tomada de decisões, conectando os usuários ao que realmente se encaixa em suas necessidades e valores. Queremos que a tecnologia seja intuitiva, útil e alinhada com a forma como as pessoas realmente vivem.</p>
         </div>
         <div class="support-section">
             <h2>2. Quem Somos</h2>
-            <p>Somos uma equipe pequena, mas apaixonada, registrada na Estônia, combinando desenvolvimento de software, análise de dados e design. Gostamos de criar coisas que realmente ajudam as pessoas e nos importamos profundamente com privacidade, transparência e confiança.</p>
+            <p>Somos uma equipe pequena, mas apaixonada, registrada na Estônia, combinando desenvolvimento de software, análise de dados e design. Gostamos de criar coisas que realmente ajudam as pessoas e valorizamos profundamente privacidade, transparência e confiança.</p>
         </div>
         <div class="support-section">
             <h2>3. Nossos Produtos</h2>
             <ul>
-                <li><b>Streaming Discovery:</b> Gerencie todo o seu conteúdo de streaming em um só lugar, acompanhe o que assistiu, organize plataformas e explore listas selecionadas de filmes premiados, favoritos da crítica e joias escondidas.</li>
-                <li><b>Modern Matchmaker:</b> Nosso sistema de compatibilidade ajuda você a encontrar pessoas alinhadas com seus valores de forma mais rápida e eficaz do que o matchmaking tradicional.</li>
+                <li><b style="color: var(--mud-palette-secondary);">Streaming Discovery:</b> Acompanhe suas plataformas de streaming, gerencie seu progresso de visualização e descubra o que assistir em seguida com listas curadas, vencedores de prêmios e recomendações de críticos.</li>
+                <li><b style="color: var(--mud-palette-secondary);">Modern Matchmaker:</b> O futuro para encontrar um parceiro de vida chegou. Mais inteligente e acessível do que o matchmaking tradicional, com compatibilidade precisa e sem o deslizar infinito.</li>
+                <li><b style="color: var(--mud-palette-secondary);">My Next Spot:</b> Explore países e cidades, descubra fatos interessantes e crie seu perfil para encontrar destinos que combinam com seu estilo de vida, seja para uma viagem ou um novo lar.</li>
+                <li><b style="color: var(--mud-palette-secondary);">WebStandards:</b> Um conjunto de ferramentas que ajuda desenvolvedores a configurar padrões essenciais da web como sitemaps, manifests, ícones, tags de SEO e arquivos de segurança para sites modernos e PWAs.</li>
             </ul>
-            <p>Estamos constantemente trabalhando em novos projetos e melhorias, e estamos empolgados com o que vem por aí, mas, por enquanto, estes são nossos produtos principais.</p>
+            <p>Estamos constantemente trabalhando em novos projetos e melhorias e estamos animados com o que vem pela frente, mas por enquanto estas são nossas principais soluções.</p>
         </div>
         <div class="support-section">
-            <h2>4. Privacidade & Dados</h2>
-            <p>Você pode usar nossas ferramentas de forma anônima. Quando cria uma conta, coletamos apenas dados mínimos como e-mail, horários de login, endereço de IP e informações do dispositivo, apenas para manter tudo seguro, personalizado e funcionando corretamente. Respeitamos a privacidade e seguimos leis internacionais como GDPR e LGPD.</p>
+            <h2>4. Privacidade e Dados</h2>
+            <p>Você pode usar nossas ferramentas de forma anônima. Ao criar contas, coletamos o mínimo de dados, como e-mail, registros de login, endereço IP e informações do dispositivo, apenas para manter tudo seguro, personalizado e funcionando corretamente. Respeitamos a privacidade e cumprimos leis internacionais como GDPR e LGPD.</p>
         </div>
         <div class="support-section">
-            <h2>5. Legal & Conformidade</h2>
-            <p>Respeitamos propriedade intelectual e direitos autorais. Não hospedamos nem fornecemos streaming de conteúdo de terceiros. Nossa plataforma opera sob a lei estoniana, e os usuários são responsáveis por seguir as regulamentações locais.</p>
+            <h2>5. Legal e Conformidade</h2>
+            <p>Respeitamos leis de propriedade intelectual e direitos autorais. Não hospedamos nem fornecemos streaming de conteúdo de terceiros. Nossa plataforma opera sob a legislação da Estônia, e os usuários são responsáveis por seguir as regulamentações locais.</p>
         </div>
         <div class="support-section">
             <h2>6. Contato</h2>
-            <p>Se você tiver dúvidas, feedback ou quiser apenas dizer oi, pode visitar nossa <a href="/support">página de suporte</a> ou usar as ferramentas de contato na plataforma.</p>
+            <p>Se você tiver dúvidas, feedback ou apenas quiser dizer olá, visite nossa <a href="/support/help">página de suporte</a> ou utilize as ferramentas de contato na plataforma.</p>
         </div>
         <div class="support-footer">
-            <p>Última atualização: 13 de setembro de 2025</p>
+            <p>Última atualização: 31 de março de 2026</p>
         </div>
     }
     else if (Language == AppLanguage.es)
     {
-        <h1 class="support-title">Sobre DRMA Tech</h1>
+        <h1 class="support-title">Sobre @AppInfo.CompanyName</h1>
         <div class="support-subtitle">
-            ¡Bienvenido a <b>DRMA Tech</b> (<a href="https://www.drma-tech.com" target="_blank">www.drma-tech.com</a>)!<br />
-            Creamos herramientas inteligentes que conectan a las personas con lo que realmente les encaja, haciendo que las decisiones sean más fáciles, alineadas y construidas alrededor de quienes realmente son.
+            Bienvenido a <b>@AppInfo.CompanyName</b> (<a href="@AppInfo.CompanyWebSite" target="_blank">@AppInfo.CompanyWebSite</a>)!<br />
+            @AppInfo.CompanyName crea herramientas digitales inteligentes que ayudan a las personas a encontrar lo que mejor se adapta a ellas y a tomar decisiones de manera más fácil, alineada y centrada en sus necesidades individuales.
         </div>
         <div class="support-section">
             <h2>1. Nuestra Misión</h2>
-            <p>En DRMA Tech, nos enfocamos en construir herramientas que simplifiquen la toma de decisiones, conectando a los usuarios con lo que realmente se ajusta a sus necesidades y valores. Queremos que la tecnología sea intuitiva, útil y alineada con la forma en que las personas viven.</p>
+            <p>En @AppInfo.CompanyName, nos enfocamos en crear herramientas que simplifican la toma de decisiones, conectando a los usuarios con lo que realmente se ajusta a sus necesidades y valores. Queremos que la tecnología sea intuitiva, útil y alineada con la forma en que las personas realmente viven.</p>
         </div>
         <div class="support-section">
             <h2>2. Quiénes Somos</h2>
-            <p>Somos un equipo pequeño pero apasionado, registrado en Estonia, combinando desarrollo de software, análisis de datos y diseño. Nos encanta crear cosas que realmente ayudan a las personas y nos importa profundamente la privacidad, la transparencia y la confianza.</p>
+            <p>Somos un equipo pequeño pero apasionado, registrado en Estonia, que combina desarrollo de software, análisis de datos y diseño. Nos encanta crear cosas que realmente ayudan a las personas y valoramos profundamente la privacidad, la transparencia y la confianza.</p>
         </div>
         <div class="support-section">
             <h2>3. Nuestros Productos</h2>
             <ul>
-                <li><b>Streaming Discovery:</b> Administra todo tu contenido de streaming en un solo lugar, sigue lo que has visto, organiza plataformas y explora listas seleccionadas de películas premiadas, favoritas de la crítica y joyas escondidas.</li>
-                <li><b>Modern Matchmaker:</b> Nuestro sistema de compatibilidad te ayuda a encontrar personas alineadas con tus valores más rápido y eficazmente que el matchmaking tradicional.</li>
+                <li><b style="color: var(--mud-palette-secondary);">Streaming Discovery:</b> Sigue tus plataformas de streaming, gestiona tu progreso de visualización y descubre qué ver a continuación con listas curadas, ganadores de premios y recomendaciones de críticos.</li>
+                <li><b style="color: var(--mud-palette-secondary);">Modern Matchmaker:</b> El futuro para encontrar una pareja de vida ya está aquí. Más inteligente y accesible que el matchmaking tradicional, con compatibilidad precisa y sin el deslizamiento infinito.</li>
+                <li><b style="color: var(--mud-palette-secondary);">My Next Spot:</b> Explora países y ciudades, descubre datos interesantes y crea tu perfil para encontrar destinos que se adapten a tu estilo de vida, ya sea para un viaje o un nuevo hogar.</li>
+                <li><b style="color: var(--mud-palette-secondary);">WebStandards:</b> Un conjunto de herramientas que ayuda a los desarrolladores a configurar estándares esenciales de la web como sitemaps, manifests, iconos, etiquetas SEO y archivos de seguridad para sitios modernos y PWAs.</li>
             </ul>
-            <p>Estamos constantemente trabajando en nuevos proyectos y mejoras, y estamos entusiasmados con lo que viene, pero por ahora, estos son nuestros productos principales.</p>
+            <p>Estamos trabajando constantemente en nuevos proyectos y mejoras, y estamos entusiasmados con lo que viene, pero por ahora estas son nuestras principales soluciones.</p>
         </div>
         <div class="support-section">
             <h2>4. Privacidad y Datos</h2>
-            <p>Puedes usar nuestras herramientas de forma anónima. Cuando creas una cuenta, solo recopilamos datos mínimos como correo electrónico, horarios de inicio de sesión, dirección IP e información del dispositivo, únicamente para mantener todo seguro, personalizado y funcionando correctamente. Respetamos la privacidad y cumplimos con leyes internacionales como GDPR y LGPD.</p>
+            <p>Puedes usar nuestras herramientas de forma anónima. Al crear cuentas, recopilamos datos mínimos como correo electrónico, registros de inicio de sesión, dirección IP e información del dispositivo, solo para mantener todo seguro, personalizado y funcionando correctamente. Respetamos la privacidad y cumplimos con leyes internacionales como GDPR y LGPD.</p>
         </div>
         <div class="support-section">
             <h2>5. Legal y Cumplimiento</h2>
-            <p>Respetamos la propiedad intelectual y los derechos de autor. No alojamos ni proporcionamos streaming de contenido de terceros. Nuestra plataforma opera bajo la ley estonia, y los usuarios son responsables de cumplir con las regulaciones locales.</p>
+            <p>Respetamos las leyes de propiedad intelectual y derechos de autor. No alojamos ni proporcionamos streaming de contenido de terceros. Nuestra plataforma opera bajo la legislación de Estonia, y los usuarios son responsables de cumplir con las regulaciones locales.</p>
         </div>
         <div class="support-section">
             <h2>6. Contacto</h2>
-            <p>Si tienes preguntas, comentarios o solo quieres saludar, puedes visitar nuestra <a href="/support">página de soporte</a> o usar las herramientas de contacto de la plataforma.</p>
+            <p>Si tienes preguntas, comentarios o simplemente quieres saludar, puedes visitar nuestra <a href="/support/help">página de soporte</a> o usar las herramientas de contacto en la plataforma.</p>
         </div>
         <div class="support-footer">
-            <p>Última actualización: 13 de septiembre de 2025</p>
+            <p>Última actualización: 31 de marzo de 2026</p>
         </div>
     }
     else
     {
-        <h1 class="support-title">About DRMA Tech</h1>
+        <h1 class="support-title">About @AppInfo.CompanyName</h1>
         <div class="support-subtitle">
-            Welcome to <b>DRMA Tech</b> (<a href="https://www.drma-tech.com" target="_blank">www.drma-tech.com</a>)!<br />
-            We create smart tools that connect people with what fits them best, making decisions easier, more aligned, and built around who they truly are.
+            Welcome to <b>@AppInfo.CompanyName</b> (<a href="@AppInfo.CompanyWebSite" target="_blank">@AppInfo.CompanyWebSite</a>)!<br />
+            @AppInfo.CompanyName builds smart digital tools that help people find what fits them best and make decisions easier, more aligned, and centered on individual needs.
         </div>
         <div class="support-section">
             <h2>1. Our Mission</h2>
-            <p>At DRMA Tech, we focus on building tools that simplify decision-making by connecting users with what truly fits their needs and values. We want technology to feel intuitive, helpful, and aligned with the way people actually live.</p>
+            <p>At @AppInfo.CompanyName, we focus on building tools that simplify decision-making by connecting users with what truly fits their needs and values. We want technology to feel intuitive, helpful, and aligned with the way people actually live.</p>
         </div>
         <div class="support-section">
             <h2>2. Who We Are</h2>
@@ -100,8 +104,10 @@
         <div class="support-section">
             <h2>3. Our Products</h2>
             <ul>
-                <li><b>Streaming Discovery:</b> Manage all your streaming content in one place, track what you’ve watched, organize platforms, and explore curated lists of award-winning films, critic favorites, and hidden gems.</li>
-                <li><b>Modern Matchmaker:</b> Our compatibility system helps you find people aligned with your values more quickly and effectively than traditional matchmaking.</li>
+                <li><b style="color: var(--mud-palette-secondary);">Streaming Discovery:</b> Track your streaming platforms, manage your watch progress, and discover what to watch next with curated lists, award winners, and critic picks.</li>
+                <li><b style="color: var(--mud-palette-secondary);">Modern Matchmaker:</b> The future of finding a life partner is here. Smarter and more affordable than traditional matchmaking, with precise compatibility and no endless swiping.</li>
+                <li><b style="color: var(--mud-palette-secondary);">My Next Spot:</b> Explore countries and cities, learn interesting facts, and create your profile to find destinations that match your lifestyle, whether for a trip or a new home.</li>
+                <li><b style="color: var(--mud-palette-secondary);">WebStandards:</b> A toolkit that helps developers set up essential web standards like sitemaps, manifests, icons, SEO tags, and security files for modern websites and PWAs.</li>
             </ul>
             <p>We are constantly working on new projects and improvements, and we’re excited about what’s ahead, but for now, these are our core offerings.</p>
         </div>
@@ -115,10 +121,10 @@
         </div>
         <div class="support-section">
             <h2>6. Contact</h2>
-            <p>If you have questions, feedback, or just want to say hi, you can visit our <a href="/support">support page</a> or use the contact tools on the platform.</p>
+            <p>If you have questions, feedback, or just want to say hi, you can visit our <a href="/support/help">support page</a> or use the contact tools on the platform.</p>
         </div>
         <div class="support-footer">
-            <p>Last updated: September 13, 2025</p>
+            <p>Last updated: March 31, 2026</p>
         </div>
     }
 </div>

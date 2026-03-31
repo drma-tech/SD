@@ -4,6 +4,9 @@ namespace SD.WEB.Core
 {
     public static class AppInfo
     {
+        public static string CompanyName { get; set; } = "DRMA Tech";
+        public static string CompanyWebSite { get; set; } = $"https://www.drma-tech.com";
+
         public static string Title { get; set; } = "Streaming Discovery";
         public static string Subtitle { get; set; } = "Manage, Track, Discover";
         public static string Domain { get; set; } = "streamingdiscovery";
