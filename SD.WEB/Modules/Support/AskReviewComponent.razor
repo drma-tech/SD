@@ -1,4 +1,6 @@
-﻿@inherits ComponentCore<AskReviewComponent>
+﻿@using SD.Shared.Enums
+
+@inherits ComponentCore<AskReviewComponent>
 
 @if (CustomHeader != null)
 {
@@ -11,63 +13,63 @@ else
     </MudText>
 }
 
-@if (Platform != SD.Shared.Enums.Platform.webapp)
+@if (CurrentPlatform != Platform.webapp)
 {
     <div class="@Css.Build().Raw("store-grid").Small("mb")">
-        @if (Platform == SD.Shared.Enums.Platform.windows)
+        @if (CurrentPlatform == Platform.windows && AppInfo._windowsId.NotEmpty())
         {
             <MudButton Href="@_windowsReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Store)
             </MudButton>
-            <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.windows).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store (Site)
             </MudButton>
         }
-        else if (Platform == SD.Shared.Enums.Platform.play)
+        else if (CurrentPlatform == Platform.play && AppInfo._googleId.NotEmpty())
         {
             <MudButton Href="@_googleReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/google-play.png" Style="max-width: 35px;"></MudImage> Google Play (Store)
             </MudButton>
-            <MudButton Href="@_googleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.play).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/google-play.png" Style="max-width: 35px;"></MudImage> Google Play (Site)
             </MudButton>
         }
-        else if (Platform == SD.Shared.Enums.Platform.ios)
+        else if (CurrentPlatform == Platform.ios && AppInfo._appleId1.NotEmpty())
         {
 
             <MudButton Href="@_appleReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/app-store.png" Style="max-width: 35px;"></MudImage> App Store (Store)
             </MudButton>
-            <MudButton Href="@_appleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.ios).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/app-store.png" Style="max-width: 35px;"></MudImage> App Store (Site)
             </MudButton>
         }
-        else if (Platform == SD.Shared.Enums.Platform.huawei)
+        else if (CurrentPlatform == Platform.huawei && AppInfo._huaweiId.NotEmpty())
         {
 
             <MudButton Href="@_huaweiReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/huawei.png" Style="max-width: 35px;"></MudImage> Huawei AppGallery (Store)
             </MudButton>
-            <MudButton Href="@_huaweiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.huawei).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/huawei.png" Style="max-width: 35px;"></MudImage> Huawei AppGallery (Site)
             </MudButton>
         }
-        else if (Platform == SD.Shared.Enums.Platform.xiaomi)
+        else if (CurrentPlatform == Platform.xiaomi && AppInfo._xiaomiId.NotEmpty())
         {
 
             <MudButton Href="@_xiaomiReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/xiaomi.png" Style="max-width: 35px;"></MudImage> Xiaomi GetApps (Store)
             </MudButton>
-            <MudButton Href="@_xiaomiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.xiaomi).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/xiaomi.png" Style="max-width: 35px;"></MudImage> Xiaomi GetApps (Site)
             </MudButton>
         }
-        else if (Platform == SD.Shared.Enums.Platform.amazon)
+        else if (CurrentPlatform == Platform.amazon && AppInfo._amazonId.NotEmpty())
         {
             <MudButton Href="@_amazonReview" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/amazon.png" Style="max-width: 35px;"></MudImage> Amazon Appstore (Store)
             </MudButton>
-            <MudButton Href="@_amazonStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.amazon).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
                 <MudImage Src="/logo/amazon.png" Style="max-width: 35px;"></MudImage> Amazon Appstore (Site)
             </MudButton>
         }
@@ -76,24 +78,42 @@ else
 else //webapp
 {
     <div class="@Css.Build().Raw("store-grid").Small("mb")">
-        <MudButton Href="@_windowsStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-            <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store
-        </MudButton>
-        <MudButton Href="@_googleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-            <MudImage Src="/logo/google-play.png" Style="max-width: 35px;"></MudImage> Google Play
-        </MudButton>
-        <MudButton Href="@_appleStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-            <MudImage Src="/logo/app-store.png" Style="max-width: 35px;"></MudImage> App Store
-        </MudButton>
-        <MudButton Href="@_huaweiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-            <MudImage Src="/logo/huawei.png" Style="max-width: 35px;"></MudImage> Huawei AppGallery
-        </MudButton>
-        <MudButton Href="@_xiaomiStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-            <MudImage Src="/logo/xiaomi.png" Style="max-width: 35px;"></MudImage> Xiaomi GetApps
-        </MudButton>
-        <MudButton Href="@_amazonStore" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
-            <MudImage Src="/logo/amazon.png" Style="max-width: 35px;"></MudImage> Amazon Appstore
-        </MudButton>
+        @if (AppInfo._windowsId.NotEmpty())
+        {
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.windows).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/microsoft-store.png" Style="max-width: 35px;"></MudImage> Microsoft Store
+            </MudButton>
+        }
+        @if (AppInfo._googleId.NotEmpty())
+        {
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.play).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/google-play.png" Style="max-width: 35px;"></MudImage> Google Play
+            </MudButton>
+        }
+        @if (AppInfo._appleId1.NotEmpty())
+        {
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.ios).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/app-store.png" Style="max-width: 35px;"></MudImage> App Store
+            </MudButton>
+        }
+        @if (AppInfo._huaweiId.NotEmpty())
+        {
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.huawei).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/huawei.png" Style="max-width: 35px;"></MudImage> Huawei AppGallery
+            </MudButton>
+        }
+        @if (AppInfo._xiaomiId.NotEmpty())
+        {
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.xiaomi).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/xiaomi.png" Style="max-width: 35px;"></MudImage> Xiaomi GetApps
+            </MudButton>
+        }
+        @if (AppInfo._amazonId.NotEmpty())
+        {
+            <MudButton Href="@AppInfo.Stores.Single(p => p.Platform == Platform.amazon).Url" Target="_blank" OnClick="Reviewed" Variant="Variant.Filled" FullWidth="true" Color="ActionColor" Class="vertical-button">
+                <MudImage Src="/logo/amazon.png" Style="max-width: 35px;"></MudImage> Amazon Appstore
+            </MudButton>
+        }
     </div>
 }
 
@@ -104,7 +124,7 @@ else //webapp
     </MudText>
 
     <div class="@Css.Build().Raw("store-grid").Small("mb")">
-        @foreach (var product in AppStateStatic.Products)
+        @foreach (var product in AppInfo.Products)
         {
             if (product.Live)
             {
@@ -155,30 +175,23 @@ else //webapp
     [Parameter] public bool ShowClose { get; set; } = true;
     [Parameter] public Color ActionColor { get; set; } = Color.Primary;
 
-    public SD.Shared.Enums.Platform Platform { get; set; }
+    public Platform CurrentPlatform { get; set; }
 
     private bool CloseDisabled { get; set; } = true;
     private int CloseCountdown { get; set; } = 10;
 
-    private readonly string _windowsReview = "ms-windows-store://review/?ProductId=9pb1pkrdd8l0"; //its working
-    private readonly string _googleReview = "market://details?id=com.streamingdiscovery.www.twa"; //its old. better to use In-App Review API.
-    private readonly string _appleReview = "itms-apps://itunes.apple.com/app/id6749285238?action=write-review"; //its working
-    private readonly string _huaweiReview = "appmarket://details?id=C111325113"; //It may work or it may not.
-    private readonly string _xiaomiReview = "mimarket://details?id=com.streamingdiscovery.www.twa"; //It may work or it may not.
-    private readonly string _amazonReview = "amzn://apps/android?asin=B0CL3KXKD9"; //not sure if works
-
-    private readonly string _windowsStore = "https://apps.microsoft.com/detail/9pb1pkrdd8l0";
-    private readonly string _googleStore = "https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa";
-    private readonly string _appleStore = "https://apps.apple.com/us/app/streaming-discovery/id6749285238";
-    private readonly string _huaweiStore = "https://appgallery.huawei.com/app/C111325113";
-    private readonly string _xiaomiStore = "https://global.app.mi.com/details?id=com.streamingdiscovery.www.twa";
-    private readonly string _amazonStore = "https://www.amazon.com/gp/product/B0CL3KXKD9";
+    private readonly string _windowsReview = $"ms-windows-store://review/?ProductId={AppInfo._windowsId}"; //its working
+    private readonly string _googleReview = $"market://details?id={AppInfo._googleId}"; //its old. better to use In-App Review API.
+    private readonly string _appleReview = $"itms-apps://itunes.apple.com/app/{AppInfo._appleId2}?action=write-review"; //its working
+    private readonly string _huaweiReview = $"appmarket://details?id={AppInfo._huaweiId}"; //It may work or it may not.
+    private readonly string _xiaomiReview = $"mimarket://details?id={AppInfo._xiaomiId}"; //It may work or it may not.
+    private readonly string _amazonReview = $"amzn://apps/android?asin={AppInfo._amazonId}"; //not sure if works
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-        Platform = await AppStateStatic.GetPlatform(JsRuntime);
+        CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime);
     }
 
     protected override async Task ProcessComponentData()

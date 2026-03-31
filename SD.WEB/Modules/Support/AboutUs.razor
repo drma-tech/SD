@@ -1,7 +1,7 @@
 ﻿@page "/support/about-us"
 @inherits PageCore<AboutUs>
 
-<SeoMeta Title="About Us" Description="Learn about Streaming Discovery, our mission to help you discover and organize movies and shows, and the team behind the platform." Url=@($"/support/about-us") Index="true"></SeoMeta>
+<SeoMeta Title="About Us" Description="@($"Learn about {AppInfo.Title}, our mission to help you discover and organize movies and shows, and the team behind the platform.")" Url=@($"/support/about-us") Index="true"></SeoMeta>
 
 <div class="support-container">
     @if (Language == AppLanguage.pt)
@@ -124,9 +124,6 @@
 </div>
 
 @code {
-    public string? ProjectTitle => SeoTranslations.AppTitle;
-    public string? ProjectDomain => "www.streamingdiscovery.com";
-
     public AppLanguage Language { get; set; } = AppLanguage.en;
 
     protected override async Task OnInitializedAsync()

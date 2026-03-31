@@ -17,7 +17,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                         More from DRMA Tech
                     </MudText>
                 </MudListSubheader>
-                @foreach (var product in AppStateStatic.Products.OrderBy(x => rnd.Next()).Take(2))
+                @foreach (var product in AppInfo.Products.OrderBy(x => rnd.Next()).Take(2))
                 {
                     <MudListItem Href="@product.Url" Target="_blank" Class="py-0" Text="@product.Title" SecondaryText="@product.SubTitle">
                         <AvatarContent>
@@ -48,7 +48,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                 @if (Platform == SD.Shared.Enums.Platform.webapp)
                 {
                     var filter = new SD.Shared.Enums.Platform[] { SD.Shared.Enums.Platform.windows, SD.Shared.Enums.Platform.play, SD.Shared.Enums.Platform.ios };
-                    @foreach (var store in AppStateStatic.Stores.Where(p => filter.Contains(p.Platform)))
+                    @foreach (var store in AppInfo.Stores.Where(p => filter.Contains(p.Platform)))
                     {
                         <MudListItem Href="@store.Url" Target="_blank" Class="py-0">
                             <ChildContent>
@@ -61,7 +61,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                 else if (Platform == SD.Shared.Enums.Platform.windows)
                 {
                     var filter = new SD.Shared.Enums.Platform[] { SD.Shared.Enums.Platform.play, SD.Shared.Enums.Platform.ios };
-                    @foreach (var store in AppStateStatic.Stores.Where(p => filter.Contains(p.Platform)))
+                    @foreach (var store in AppInfo.Stores.Where(p => filter.Contains(p.Platform)))
                     {
                         <MudListItem Href="@store.Url" Target="_blank" Class="py-0">
                             <ChildContent>
@@ -74,7 +74,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
                 else
                 {
                     var filter = new SD.Shared.Enums.Platform[] { SD.Shared.Enums.Platform.windows };
-                    @foreach (var store in AppStateStatic.Stores.Where(p => filter.Contains(p.Platform)))
+                    @foreach (var store in AppInfo.Stores.Where(p => filter.Contains(p.Platform)))
                     {
                         <MudListItem Href="@store.Url" Target="_blank" Class="py-0">
                             <ChildContent>

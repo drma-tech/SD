@@ -70,24 +70,6 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Manage, Track, Discover.
-        /// </summary>
-        public static string AppSubtitle {
-            get {
-                return ResourceManager.GetString("AppSubtitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Streaming Discovery.
-        /// </summary>
-        public static string AppTitle {
-            get {
-                return ResourceManager.GetString("AppTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Browse streaming services offering movies, TV shows, and documentaries. Discover platforms for every taste, from mainstream hits to niche content..
         /// </summary>
         public static string PlatformsDescription {

@@ -8,7 +8,7 @@
     {
         <h1 class="support-title">Política de Privacidade</h1>
         <div class="support-subtitle">
-            Sua privacidade é uma prioridade no <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>), operado pela DRMA Tech (Delivering Reliable Modern Apps Tech OÜ).<br />
+            Sua privacidade é uma prioridade no <b>@AppInfo.Title</b> (<a href="https://@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>), operado pela DRMA Tech (Delivering Reliable Modern Apps Tech OÜ).<br />
             Por favor, leia esta política com atenção para entender como tratamos seus dados.
         </div>
         <div class="support-section">
@@ -70,7 +70,7 @@
     {
         <h1 class="support-title">Política de Privacidad</h1>
         <div class="support-subtitle">
-            Tu privacidad es una prioridad en <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>), operado por DRMA Tech (Delivering Reliable Modern Apps Tech OÜ).<br />
+            Tu privacidad es una prioridad en <b>@AppInfo.Title</b> (<a href="https://@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>), operado por DRMA Tech (Delivering Reliable Modern Apps Tech OÜ).<br />
             Por favor, lee esta política con atención para entender cómo manejamos tus datos.
         </div>
         <div class="support-section">
@@ -132,7 +132,7 @@
     {
         <h1 class="support-title">隐私政策</h1>
         <div class="support-subtitle">
-            您的隐私是 <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>) 的首要任务，本平台由 DRMA Tech（Delivering Reliable Modern Apps Tech OÜ）运营。<br />
+            您的隐私是 <b>@AppInfo.Title</b> (<a href="https://@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>) 的首要任务，本平台由 DRMA Tech（Delivering Reliable Modern Apps Tech OÜ）运营。<br />
             请仔细阅读本政策，以了解我们如何处理您的数据。
         </div>
         <div class="support-section">
@@ -194,7 +194,7 @@
     {
         <h1 class="support-title">Privacy Policy</h1>
         <div class="support-subtitle">
-            Your privacy is a priority at <b>@ProjectTitle</b> (<a href="https://@ProjectDomain" target="_blank">@ProjectDomain</a>), operated by DRMA Tech (Delivering Reliable Modern Apps Tech OÜ).<br />
+            Your privacy is a priority at <b>@AppInfo.Title</b> (<a href="https://@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>), operated by DRMA Tech (Delivering Reliable Modern Apps Tech OÜ).<br />
             Please read this policy carefully to understand how we handle your data.
         </div>
         <div class="support-section">
@@ -255,9 +255,6 @@
 </div>
 
 @code {
-    public string? ProjectTitle => SeoTranslations.AppTitle;
-    public string ProjectDomain => "www.streamingdiscovery.com";
-
     public AppLanguage Language { get; set; } = AppLanguage.en;
 
     protected override async Task OnInitializedAsync()
