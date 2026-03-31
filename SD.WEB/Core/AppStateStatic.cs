@@ -2,6 +2,7 @@
 using MudBlazor;
 using MudBlazor.Services;
 using SD.WEB.Modules.Subscription.Core;
+using SD.WEB.Modules.Support.Core;
 using System.Security.Claims;
 
 namespace SD.WEB.Core;
@@ -381,4 +382,20 @@ public static class AppStateStatic
     public static Action? UserStateChanged { get; set; }
     public static Action? ProcessingStarted { get; set; }
     public static Action? ProcessingFinished { get; set; }
+
+    public static readonly StoreLink[] Stores =
+    [
+        new(Platform.windows, "Microsoft Store", "https://apps.microsoft.com/detail/9pb1pkrdd8l0", "/logo/microsoft-store.png" ),
+        new(Platform.play, "Google Play", "https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa", "/logo/google-play.png" ),
+        new(Platform.ios, "App Store", "https://apps.apple.com/us/app/streaming-discovery/id6749285238", "/logo/app-store.png" ),
+        new(Platform.huawei, "Huawei AppGallery", "https://appgallery.huawei.com/app/C111325113", "/logo/huawei.png" ),
+        new(Platform.xiaomi, "Xiaomi GetApps", "https://global.app.mi.com/details?lo=ID&id=com.streamingdiscovery.www.twa", "/logo/xiaomi.png" ),
+        new(Platform.amazon, "Amazon Appstore", "https://www.amazon.com/gp/product/B0CL3KXKD9", "/logo/amazon.png" )
+    ];
+
+   public static readonly ProductLink[] Products =
+   [
+        new("Modern Matchmaker", "Find your life partner", "https://www.modern-matchmaker.com", "/logo/modern-matchmaker.png" ),
+        new("My Next Spot", "Match your next destination", "https://www.my-next-spot.com", "/logo/next-spot.png" ),
+   ];
 }

@@ -40,24 +40,17 @@
         <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="icon-text-button" Disabled="_blockedActions">
             @Menu.Platforms
         </MudButton>
-        <MudButton StartIcon="@IconsFA.Solid.Icon("headset").Font" Color="@GetColor("/support")" Href="/support" Variant="@GetVariant("/support")" Class="icon-text-button" Disabled="_blockedActions">
-            @Menu.Support
-        </MudButton>
+     
         <MudSpacer />
-        @if (AppStateStatic.IsAuthenticated)
-        {
-            <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("gem").Font" Class="me-2" OnClick="@OpenSubscription" />
-        }
-        else
-        {
-            <MudIconButton Variant="Variant.Filled" Color="Color.Warning" Icon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Class="me-2" OnClick="@OpenSubscription" />
-        }
+        
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("gem").Font" Class="me-2" OnClick="@OpenSubscription" />
         <AuthorizeView>
             <Authorized>
                 <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("user-gear").Font" Class="me-2" OnClick="@MyAccount" />
             </Authorized>
         </AuthorizeView>
         <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("headset").Font" Class="me-2" OnClick="@(() => Navigation.NavigateTo("/support/help"))" />
         <AuthorizeView>
             <Authorized>
                 <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@Logout" Disabled="_blockedActions">
@@ -84,21 +77,17 @@
         <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="px-3" Disabled="_blockedActions">
             @Menu.Platforms
         </MudButton>
+
         <MudSpacer />
-        @if (AppStateStatic.IsAuthenticated)
-        {
-            <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("gem").Font" Class="me-2" OnClick="@OpenSubscription" />
-        }
-        else
-        {
-            <MudIconButton Variant="Variant.Filled" Color="Color.Warning" Icon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" Class="me-2" OnClick="@OpenSubscription" />
-        }
+       
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("gem").Font" Class="me-2" OnClick="@OpenSubscription" />
         <AuthorizeView>
             <Authorized>
                 <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("user-gear").Font" Class="me-2" OnClick="@MyAccount" />
             </Authorized>
         </AuthorizeView>
         <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("headset").Font" Class="me-2" OnClick="@(() => Navigation.NavigateTo("/support/help"))" />
         <AuthorizeView>
             <Authorized>
                 <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@Logout" Disabled="_blockedActions">
@@ -121,18 +110,9 @@
             <MudText Typo="Typo.h6">@SeoTranslations.AppTitle</MudText>
         </MudDrawerHeader>
         <MudNavMenu>
-            @if (AppStateStatic.IsAuthenticated)
-            {
-                <MudNavLink IconColor="Color.Primary" Icon="@IconsFA.Solid.Icon("gem").Font" OnClick="@OpenSubscription">
-                    Subscription
-                </MudNavLink>
-            }
-            else
-            {
-                <MudNavLink IconColor="Color.Warning" Icon="@IconsFA.Solid.Icon("gem").WithAnimation(IconAnimation.Fade).Font" OnClick="@OpenSubscription">
-                    Subscription
-                </MudNavLink>
-            }
+            <MudNavLink Icon="@IconsFA.Solid.Icon("gem").Font" OnClick="@OpenSubscription">
+                Subscription
+            </MudNavLink>
             <AuthorizeView>
                 <Authorized>
                     <MudNavLink Icon="@IconsFA.Solid.Icon("user-gear").Font" OnClick="@MyAccount">
@@ -143,8 +123,8 @@
             <MudNavLink Icon="@IconsFA.Solid.Icon("cog").Font" OnClick="@OpenConfigurations">
                 Settings
             </MudNavLink>
-            <MudNavLink Icon="@IconsFA.Solid.Icon("headset").Font" Href="/support">
-                Support
+            <MudNavLink Icon="@IconsFA.Solid.Icon("headset").Font" Href="/support/help">
+                Help Center
             </MudNavLink>
             <MudDivider></MudDivider>
             <AuthorizeView>

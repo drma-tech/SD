@@ -160,15 +160,6 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discover our other products.
-        /// </summary>
-        public static string DiscoverProducts {
-            get {
-                return ResourceManager.GetString("DiscoverProducts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Discover the most anticipated movies of {0}, featuring upcoming blockbusters, fan favorites, and highly awaited releases hitting theaters and streaming..
         /// </summary>
         public static string ExpectedMovies {

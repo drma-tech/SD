@@ -51,11 +51,6 @@
         </MudGrid>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@(async () => { await JsRuntime.Utils().ShowCache(); })">
-            @Button.ShowCache
-        </MudButton>
-        @* <MudButton OnClick="@(async () => { await JavascriptVoidAsync("clearLocalStorage"); Navigation.NavigateTo("/", true); })">@Button.ClearCache</MudButton> *@
-        <MudSpacer></MudSpacer>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">
             @Button.Close
         </MudButton>

@@ -24,7 +24,9 @@ export const swiper = {
             },
             breakpoints: {
                 [250 - margin]: { slidesPerView: Math.floor(250 / posterSize) },
+                [275 - margin]: { slidesPerView: Math.floor(275 / posterSize) },
                 [300 - margin]: { slidesPerView: Math.floor(300 / posterSize) },
+                [325 - margin]: { slidesPerView: Math.floor(325 / posterSize) },
                 [350 - margin]: { slidesPerView: Math.floor(350 / posterSize) },
                 [400 - margin]: { slidesPerView: Math.floor(400 / posterSize) },
                 [500 - margin]: { slidesPerView: Math.floor(500 / posterSize) },
@@ -98,7 +100,9 @@ export const swiper = {
             },
             breakpoints: {
                 [250 - margin]: { slidesPerView: Math.floor(250 / posterSize) },
+                [275 - margin]: { slidesPerView: Math.floor(275 / posterSize) },
                 [300 - margin]: { slidesPerView: Math.floor(300 / posterSize) },
+                [325 - margin]: { slidesPerView: Math.floor(325 / posterSize) },
                 [350 - margin]: { slidesPerView: Math.floor(350 / posterSize) },
                 [400 - margin]: { slidesPerView: Math.floor(400 / posterSize) },
                 [500 - margin]: { slidesPerView: Math.floor(500 / posterSize) },
