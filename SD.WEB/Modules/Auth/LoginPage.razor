@@ -50,17 +50,17 @@
                 }
             </MudButton>
             <MudDivider Class="@Css.Build().Medium("my")"></MudDivider>
-            @if (!emailSent)
+            <MudTextField @bind-Value="@email" Label="Email" Placeholder="Enter your email" Disabled="@(_processing || emailSent)" Immediate="true"
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="() => LoginWithEmail(email)"
+                          HelperText="Microsoft emails (Outlook, Hotmail, etc.) may not work."></MudTextField>
+            @if (SuggestEmailCorrection(email).NotEmpty())
             {
-                <MudTextField @bind-Value="@email" Label="Email" Placeholder="Enter your email" Disabled="_processing"
-                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="() => LoginWithEmail(email)"
-                              HelperText="Microsoft emails (Outlook, Hotmail, etc.) may not work."></MudTextField>
+                <MudAlert Variant="Variant.Outlined" Dense="true" Severity="Severity.Warning">
+                    @SuggestEmailCorrection(email)
+                </MudAlert>
             }
-            else
-            {
-                <MudTextField @bind-Value="@otp" Label="OTP Code" Placeholder="Enter the code you received by email." Disabled="@(!emailSent)"
-                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Check" OnAdornmentClick="() => ConfirmCode(email, otp)"></MudTextField>
-            }
+            <MudTextField @bind-Value="@otp" Label="OTP Code" Placeholder="Enter the code you received by email." Disabled="@(!emailSent)"
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Check" OnAdornmentClick="() => ConfirmCode(email, otp)"></MudTextField>
         </MudStack>
         <div style="text-align: center;">
             <MudText Class="@Css.Build().Large("mt").Medium("mb")">
@@ -177,6 +177,35 @@
             await Task.Delay(5000);
             _processing = false;
         }
+    }
+
+    private static readonly HashSet<string> KnownDomains = new(StringComparer.OrdinalIgnoreCase) { "gmail.com", "hotmail.com", "outlook.com", "yahoo.com" };
+
+    public static string? SuggestEmailCorrection(string? email)
+    {
+        if (email.Empty()) return null;
+
+        var parts = email.Split('@');
+        if (parts.Length != 2)
+            return null;
+
+        var local = parts[0];
+        var domain = parts[1];
+
+        if (KnownDomains.Contains(domain))
+            return null;
+
+        // Find closest match
+        var closest = KnownDomains
+            .Select(d => new { Domain = d, Distance = StringHelper.Levenshtein(domain, d) })
+            .OrderBy(x => x.Distance)
+            .First();
+
+        // Threshold to avoid bad suggestions
+        if (closest.Distance <= 2)
+            return $"Did you mean {local}@{closest.Domain}?";
+
+        return null;
     }
 
 }
