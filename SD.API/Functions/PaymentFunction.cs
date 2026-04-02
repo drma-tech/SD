@@ -238,19 +238,19 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         var json = await new StreamReader(req.Body).ReadToEndAsync(cancellationToken);
 
         req.Headers.TryGetValues("Stripe-Signature", out var Signature);
-        if (string.IsNullOrEmpty(Signature?.First())) throw new UnhandledException("Stripe signature missing");
-        var stripeEvent = Stripe.EventUtility.ConstructEvent(json, Signature?.First(), ApiStartup.Configurations.Stripe?.SigningSecret ?? throw new UnhandledException("Stripe SigningSecret not configured"), throwOnApiVersionMismatch: false);
+        if (string.IsNullOrEmpty(Signature?.First())) throw new NotificationException("Stripe signature missing");
+        var stripeEvent = Stripe.EventUtility.ConstructEvent(json, Signature?.First(), ApiStartup.Configurations.Stripe?.SigningSecret ?? throw new NotificationException("Stripe SigningSecret not configured"), throwOnApiVersionMismatch: false);
 
         if (stripeEvent.Type.StartsWith("customer.subscription")) //created, updated, deleted, paused, resumed, trial_will_end, pending_update_applied, pending_update_expired
         {
-            if (stripeEvent.Data.Object is not Stripe.Subscription subscription || subscription.Id.Empty()) throw new UnhandledException("stripe subscription not available");
+            if (stripeEvent.Data.Object is not Stripe.Subscription subscription || subscription.Id.Empty()) throw new NotificationException("stripe subscription not available");
 
-            var results = await repo.Query<AuthPrincipal>(p => p.StripeCustomerId == subscription.CustomerId, DocumentType.Principal, cancellationToken) ?? throw new UnhandledException("AuthPrincipal null");
+            var results = await repo.Query<AuthPrincipal>(p => p.StripeCustomerId == subscription.CustomerId, DocumentType.Principal, cancellationToken) ?? throw new NotificationException("AuthPrincipal null");
             var principal = results.SingleOrDefault();
 
             if (principal == null)
             {
-                req.LogError(new UnhandledException($"principal null - subscriptionId:{subscription.Id}"));
+                req.LogError(new NotificationException($"principal null - subscriptionId:{subscription.Id}"));
                 return;
             }
 
