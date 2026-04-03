@@ -7,7 +7,7 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<NewPageSection Title="@($"Free to Watch ({Region?.GetName()})")" Description="@($"Discover free movies you can watch legally. Updated daily with streaming availability across multiple platforms.")" Icon="@IconsFA.Solid.Icon("play-circle").Font">
+<NewPageSection Title="@($"Free to Watch ({Region?.GetName()})")" Description="@($"Discover free movies and series you can watch legally. Updated daily with streaming availability across multiple platforms.")" Icon="@IconsFA.Solid.Icon("play-circle").Font">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
@@ -17,7 +17,7 @@
                 </MudTooltip>
             </Header>
             <ChildContent>
-                <MudTabPanel Text="@PopularType.Movie.GetName()">
+                <MudTabPanel Text="@MediaType.movie.GetName()">
                     @if (_loaded[0])
                     {
                         <NewMediaList MediaListApi="TmdbDiscoveryApi" OnlyYear="true" StringParameters="_extraParameters" TypeSelected="MediaType.movie"
@@ -25,7 +25,7 @@
                         </NewMediaList>
                     }
                 </MudTabPanel>
-                <MudTabPanel Text="@PopularType.Show.GetName()">
+                <MudTabPanel Text="@MediaType.tv.GetName()">
                     @if (_loaded[1])
                     {
                         <NewMediaList MediaListApi="TmdbDiscoveryApi" OnlyYear="true" StringParameters="_extraParameters" TypeSelected="MediaType.tv"
@@ -49,7 +49,7 @@
     private int _activeIndex = 0;
     private bool[] _loaded = new bool[2] { false, false };
 
-    private PopularType TypeSelected => _activeIndex == 0 ? PopularType.Movie : PopularType.Show;
+    private MediaType TypeSelected => _activeIndex == 0 ? MediaType.movie : MediaType.tv;
 
     private void OnTabChanged(int index)
     {

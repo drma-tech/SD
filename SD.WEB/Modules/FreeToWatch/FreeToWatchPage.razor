@@ -9,21 +9,21 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<SeoMeta Title="@($"Free Movies to Watch in {Region?.GetName()}")" Description="Discover free movies you can watch legally in Brazil. Updated daily with streaming availability across multiple platforms." Url="@($"/free/{Type}")" Index="true"></SeoMeta>
-<NewPageSection IsPageHeader="true" Title="@($"Free Movies to Watch in {Region?.GetName()}")" Description="Discover free movies you can watch legally in Brazil. Updated daily with streaming availability across multiple platforms." Icon="@IconsFA.Solid.Icon("play-circle").Font"></NewPageSection>
+<SeoMeta Title="@($"Free {MediaType.GetName()} to Watch in {Region?.GetName()}")" Description="@($"Discover free {MediaType.GetName()?.ToLower()} you can watch legally in {Region?.GetName()}. Updated daily with streaming availability across multiple platforms.")" Url="@($"/free/{Type}")" Index="true"></SeoMeta>
+<NewPageSection IsPageHeader="true" Title="@($"Free {MediaType.GetName()} to Watch in {Region?.GetName()}")" Description="@($"Discover free {MediaType.GetName()?.ToLower()} you can watch legally in {Region?.GetName()}. Updated daily with streaming availability across multiple platforms.")" Icon="@IconsFA.Solid.Icon("play-circle").Font"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
-@if (PopularType == PopularType.Movie)
+@if (MediaType == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbDiscoveryApi" Watched="WatchedList" Watching="WatchingList" Wish="WishList" OnlyYear="true" TypeSelected="MediaType.movie"
-                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false" StringParameters="_extraParameters">
+                   FullPage="true" ShowHead="false" StringParameters="_extraParameters">
     </MediaListFull>
 }
 else
 {
     <MediaListFull MediaListApi="TmdbDiscoveryApi" Watched="WatchedList" Watching="WatchingList" Wish="WishList" OnlyYear="true" TypeSelected="MediaType.tv"
-                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false" StringParameters="_extraParameters">
+                   FullPage="true" ShowHead="false" StringParameters="_extraParameters">
     </MediaListFull>
 }
 
@@ -31,7 +31,7 @@ else
 
     [Parameter] public string? Type { get; set; }
 
-    public PopularType PopularType => Enum.Parse<PopularType>(Type ?? "movie", true);
+    public MediaType MediaType => Enum.Parse<MediaType>(Type ?? "movie", true);
 
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
