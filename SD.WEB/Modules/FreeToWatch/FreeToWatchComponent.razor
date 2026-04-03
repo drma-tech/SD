@@ -7,13 +7,13 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<NewPageSection Title="@($"Free to Watch ({Region?.GetName()})")" Description="@($"Discover free movies and series you can watch legally. Updated daily with streaming availability across multiple platforms.")" Icon="@IconsFA.Solid.Icon("play-circle").Font">
+<NewPageSection Title="@($"Free to Watch ({(Region?.GetName() ?? "United States")})")" Description="@($"Discover free movies and series you can watch legally. Updated daily with streaming availability across multiple platforms.")" Icon="@IconsFA.Solid.Icon("play-circle").Font">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/free/{TypeSelected.ToString().ToLower()}/{Region.ToString()?.ToLower()}")" />
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/free/{TypeSelected.ToString().ToLower()}/{(Region.ToString()?.ToLower() ?? "us")}")" />
                 </MudTooltip>
             </Header>
             <ChildContent>
