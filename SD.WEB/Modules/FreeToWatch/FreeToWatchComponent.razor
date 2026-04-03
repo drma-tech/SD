@@ -1,0 +1,71 @@
+﻿@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Platform.Resources
+@using SD.WEB.Modules.Subscription.Core
+@inherits ComponentCore<FreeToWatchComponent>
+
+@inject TmdbDiscoveryApi TmdbDiscoveryApi
+@inject IpInfoApi IpInfoApi
+@inject IpInfoServerApi IpInfoServerApi
+
+<NewPageSection Title="@($"Free to Watch ({Region?.GetName()})")" Description="@($"Discover free movies you can watch legally. Updated daily with streaming availability across multiple platforms.")" Icon="@IconsFA.Solid.Icon("play-circle").Font">
+    <BodyFragment>
+        <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
+                 ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
+            <Header>
+                <MudTooltip Text="Expand">
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/free/{TypeSelected.ToString().ToLower()}")" />
+                </MudTooltip>
+            </Header>
+            <ChildContent>
+                <MudTabPanel Text="@PopularType.Movie.GetName()">
+                    @if (_loaded[0])
+                    {
+                        <NewMediaList MediaListApi="TmdbDiscoveryApi" OnlyYear="true" StringParameters="_extraParameters" TypeSelected="MediaType.movie"
+                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList">
+                        </NewMediaList>
+                    }
+                </MudTabPanel>
+                <MudTabPanel Text="@PopularType.Show.GetName()">
+                    @if (_loaded[1])
+                    {
+                        <NewMediaList MediaListApi="TmdbDiscoveryApi" OnlyYear="true" StringParameters="_extraParameters" TypeSelected="MediaType.tv"
+                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList">
+                        </NewMediaList>
+                    }
+                </MudTabPanel>
+            </ChildContent>
+        </MudTabs>
+    </BodyFragment>
+</NewPageSection>
+
+@code {
+    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
+    [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
+    [Parameter][EditorRequired] public WishList? WishList { get; set; }
+
+    private Dictionary<string, string>? _extraParameters;
+    public static Region? Region { get; set; }
+
+    private int _activeIndex = 0;
+    private bool[] _loaded = new bool[2] { false, false };
+
+    private PopularType TypeSelected => _activeIndex == 0 ? PopularType.Movie : PopularType.Show;
+
+    private void OnTabChanged(int index)
+    {
+        _activeIndex = index;
+        _loaded[index] = true;
+    }
+
+    protected override async Task ProcessComponentData()
+    {
+        Region ??= await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
+        _extraParameters = await GetExtraParameters();
+        _loaded[0] = true;
+    }
+
+    private async Task<Dictionary<string, string>> GetExtraParameters()
+    {
+        return new Dictionary<string, string> { { "sort_by", "popularity.desc" }, { "watch_region", Region?.ToString().ToLower() ?? "us" }, { "with_watch_monetization_types", "ads|free" }, { "vote_average.gte", "6" } };
+    }
+}

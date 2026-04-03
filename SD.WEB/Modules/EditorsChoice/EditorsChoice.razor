@@ -18,13 +18,13 @@
 @if (MediaType == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish"
-                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false" Description="@GlobalTranslations.CertifiedDescription">
+                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false">
     </MediaListFull>
 }
 else
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish"
-                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false" Description="@GlobalTranslations.CertifiedDescription">
+                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false">
     </MediaListFull>
 }
 

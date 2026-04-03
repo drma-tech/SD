@@ -1,0 +1,53 @@
+﻿@page "/free/{type}"
+
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Platform.Resources
+@using SD.WEB.Modules.Subscription.Core
+@inherits ComponentCore<FreeToWatchComponent>
+
+@inject TmdbDiscoveryApi TmdbDiscoveryApi
+@inject IpInfoApi IpInfoApi
+@inject IpInfoServerApi IpInfoServerApi
+
+<SeoMeta Title="@($"Free Movies to Watch in {Region?.GetName()}")" Description="Discover free movies you can watch legally in Brazil. Updated daily with streaming availability across multiple platforms." Url="@($"/free/{Type}")" Index="true"></SeoMeta>
+<NewPageSection IsPageHeader="true" Title="@($"Free Movies to Watch in {Region?.GetName()}")" Description="Discover free movies you can watch legally in Brazil. Updated daily with streaming availability across multiple platforms." Icon="@IconsFA.Solid.Icon("play-circle").Font"></NewPageSection>
+
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
+
+@if (PopularType == PopularType.Movie)
+{
+    <MediaListFull MediaListApi="TmdbDiscoveryApi" Watched="WatchedList" Watching="WatchingList" Wish="WishList" OnlyYear="true" TypeSelected="MediaType.movie"
+                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false" StringParameters="_extraParameters">
+    </MediaListFull>
+}
+else
+{
+    <MediaListFull MediaListApi="TmdbDiscoveryApi" Watched="WatchedList" Watching="WatchingList" Wish="WishList" OnlyYear="true" TypeSelected="MediaType.tv"
+                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false" StringParameters="_extraParameters">
+    </MediaListFull>
+}
+
+@code {
+
+    [Parameter] public string? Type { get; set; }
+
+    public PopularType PopularType => Enum.Parse<PopularType>(Type ?? "movie", true);
+
+    public WatchedList? WatchedList { get; set; }
+    public WatchingList? WatchingList { get; set; }
+    public WishList? WishList { get; set; }
+
+    private Dictionary<string, string>? _extraParameters;
+    public static Region? Region { get; set; }
+
+    protected override async Task ProcessInitialData()
+    {
+        Region ??= await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
+        _extraParameters = await GetExtraParameters();
+    }
+
+    private async Task<Dictionary<string, string>> GetExtraParameters()
+    {
+        return new Dictionary<string, string> { { "sort_by", "popularity.desc" }, { "watch_region", Region?.ToString().ToLower() ?? "us" }, { "with_watch_monetization_types", "ads|free" }, { "vote_average.gte", "6" } };
+    }
+}

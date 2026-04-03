@@ -2,7 +2,8 @@
 @page "/index"
 
 @using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.EditorsChoice.Components
+@using SD.WEB.Modules.EditorsChoice
+@using SD.WEB.Modules.FreeToWatch
 @using SD.WEB.Modules.Popular
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.AwardsOfTheYear.Components
@@ -14,9 +15,6 @@
 @inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
-@inject PaymentConfigurationApi ConfigurationApi
-@inject IpInfoApi IpInfoApi
-@inject IpInfoServerApi IpInfoServerApi
 @inject TmdbListApi TmdbListApi
 
 <SeoMeta Title="@AppInfo.Title" Description="@SeoTranslations.AppDescription" Url="/" Index="true" ForceTitle="true"></SeoMeta>
@@ -32,11 +30,13 @@
 
 <PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish"></PopularIndexComponent>
 
+<FreeToWatchComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish"></FreeToWatchComponent>
+
 <EditorsChoiceComponent Watched="Watched" Watching="Watching" Wish="Wish"></EditorsChoiceComponent>
 
-<AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish"></AwardsOfTheYearComponent>
-
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index2"></GoogleAdSense>
+
+<AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish"></AwardsOfTheYearComponent>
 
 <NewPageSection Title="@EnumLists.ExpectedMovieOf2026.GetName()" Description="@(string.Format(GlobalTranslations.ExpectedMovies, 2026))">
     <BodyFragment>

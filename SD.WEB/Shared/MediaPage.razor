@@ -8,6 +8,7 @@
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Resources
 @using Button = SD.WEB.Resources.Button
+@using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Modules.Support
 @using SD.WEB.Shared.Core
 
@@ -22,6 +23,8 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 @inject TmdbRecommendationsApi TmdbRecommendationsApi
+@inject IpInfoApi IpInfoApi
+@inject IpInfoServerApi IpInfoServerApi
 
 <SeoMeta Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")" Index="false"></SeoMeta>
 @if (Media?.title.NotEmpty() ?? false)
@@ -78,7 +81,7 @@
                             Actions="RatingsActions" RatingsCache="_ratingsCache"></MediaAbout>
             </BodyFragment>
         </NewPageSection>
-        <NewPageSection Title="@GlobalTranslations.WhereToWatch" Color="Color.Secondary">
+        <NewPageSection Title="@($"{GlobalTranslations.WhereToWatch} ({Region?.GetName()})")" Color="Color.Secondary">
             <BodyFragment>
                 <MediaStreaming TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaStreaming>
             </BodyFragment>
@@ -214,6 +217,7 @@
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
+    public Region? Region { get; set; }
 
     [Parameter] public string? id { get; set; }
     [Parameter] public string? type { get; set; }
@@ -272,6 +276,7 @@
 
             Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
             Media.Videos.Reverse();
+            Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
 
             await Actions.FinishLoading.Invoke(Media);
         }
