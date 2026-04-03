@@ -1,0 +1,45 @@
+﻿@page "/regions"
+
+@inherits PageCore<Regions>
+
+<SeoMeta Title="Regions" Url="/regions" Index="false"></SeoMeta>
+<NewPageSection IsPageHeader="true" Icon="@IconsFA.Solid.Icon("globe").Font" Title="Regions"></NewPageSection>
+
+<NewPageSection ShowHeader="false">
+    <BodyFragment>
+        <MudGrid Spacing="@Css.SpaceSmall">
+           
+            @foreach (var item in RegionsList)
+            {
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MudCard>
+                        <MudCardHeader Class="pa-2">
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6" Color="Color.Primary">
+                                    @item.GetName()
+                                </MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardActions Class="pa-2">
+                            <MudButton Variant="Variant.Text" Href="@($"/free/movie/{item.ToString().ToLower()}")">
+                                @($"Free Movies")
+                            </MudButton>
+                            <MudButton Variant="Variant.Text" Href="@($"/free/tv/{item.ToString().ToLower()}")">
+                                @($"Free Series")
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    </BodyFragment>
+</NewPageSection>
+
+@code {
+    public List<Region> RegionsList { get; set; } = [];
+
+    protected override async Task ProcessInitialData()
+    {
+        RegionsList = EnumHelper.GetArray<Region>().ToList();
+    }
+}

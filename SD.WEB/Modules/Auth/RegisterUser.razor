@@ -32,12 +32,15 @@
                     </MudText>
                 </MudCheckBox>
 
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="@Css.Build().Large("mt").Raw("me-2")">
-                    @Button.Confirm
-                </MudButton>
-                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Logout" Class="@Css.Build().Large("mt")">
-                    @Button.Cancel / @Button.Logout
-                </MudButton>
+                <div style="display: flex;">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="@Css.Build().Large("mt").Raw("me-2")">
+                        @Button.Confirm
+                    </MudButton>
+                    <MudSpacer></MudSpacer>
+                    <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="Logout" Class="@Css.Build().Large("mt")">
+                        @Button.Cancel / @Button.Logout
+                    </MudButton>
+                </div>                
             </MudPaper>
         }
         else

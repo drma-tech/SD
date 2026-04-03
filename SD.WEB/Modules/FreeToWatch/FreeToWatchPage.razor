@@ -1,20 +1,20 @@
-﻿@page "/free/{type}"
+﻿@page "/free/{type}/{region}"
 
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Subscription.Core
-@inherits ComponentCore<FreeToWatchComponent>
+@inherits PageCore<FreeToWatchComponent>
 
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<SeoMeta Title="@($"Free {MediaType.GetName()} to Watch in {Region?.GetName()}")" Description="@($"Discover free {MediaType.GetName()?.ToLower()} you can watch legally in {Region?.GetName()}. Updated daily with streaming availability across multiple platforms.")" Url="@($"/free/{Type}")" Index="true"></SeoMeta>
-<NewPageSection IsPageHeader="true" Title="@($"Free {MediaType.GetName()} to Watch in {Region?.GetName()}")" Description="@($"Discover free {MediaType.GetName()?.ToLower()} you can watch legally in {Region?.GetName()}. Updated daily with streaming availability across multiple platforms.")" Icon="@IconsFA.Solid.Icon("play-circle").Font"></NewPageSection>
+<SeoMeta Title="@($"Free {TypeEnum.GetName()} to Watch in {RegionEnum.GetName()}")" Description="@($"Discover free {TypeEnum.GetName()?.ToLower()} you can watch legally in {RegionEnum.GetName()}. Updated daily with streaming availability across multiple platforms.")" Url="@($"/free/{Type}")" Index="true"></SeoMeta>
+<NewPageSection IsPageHeader="true" Title="@($"Free {TypeEnum.GetName()} to Watch in {RegionEnum.GetName()}")" Description="@($"Discover free {TypeEnum.GetName()?.ToLower()} you can watch legally in {RegionEnum.GetName()}. Updated daily with streaming availability across multiple platforms.")" Icon="@IconsFA.Solid.Icon("play-circle").Font"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
-@if (MediaType == MediaType.movie)
+@if (TypeEnum == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbDiscoveryApi" Watched="WatchedList" Watching="WatchingList" Wish="WishList" OnlyYear="true" TypeSelected="MediaType.movie"
                    FullPage="true" ShowHead="false" StringParameters="_extraParameters">
@@ -28,25 +28,24 @@ else
 }
 
 @code {
-
     [Parameter] public string? Type { get; set; }
+    [Parameter] public string? Region { get; set; }
 
-    public MediaType MediaType => Enum.Parse<MediaType>(Type ?? "movie", true);
+    public MediaType TypeEnum => Enum.Parse<MediaType>(Type ?? "movie", true);
+    public Region RegionEnum => Enum.Parse<Region>(Region ?? "us", true);
 
     public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
 
     private Dictionary<string, string>? _extraParameters;
-    public static Region? Region { get; set; }
 
-    protected override async Task ProcessInitialData()
+    protected override void OnInitialized()
     {
-        Region ??= await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
-        _extraParameters = await GetExtraParameters();
+        _extraParameters = GetExtraParameters();
     }
 
-    private async Task<Dictionary<string, string>> GetExtraParameters()
+    private Dictionary<string, string> GetExtraParameters()
     {
         return new Dictionary<string, string> { { "sort_by", "popularity.desc" }, { "watch_region", Region?.ToString().ToLower() ?? "us" }, { "with_watch_monetization_types", "ads|free" }, { "vote_average.gte", "6" } };
     }
