@@ -9,7 +9,7 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<SeoMeta Title="@($"Free {TypeEnum.GetName()} to Watch in {RegionEnum.GetName()}")" Description="@($"Discover free {TypeEnum.GetName()?.ToLower()} you can watch legally in {RegionEnum.GetName()}. Updated daily with streaming availability across multiple platforms.")" Url="@($"/free/{Type}")" Index="true"></SeoMeta>
+<SeoMeta Title="@($"Free {TypeEnum.GetName()} to Watch in {RegionEnum.GetName()}")" Description="@($"Discover free {TypeEnum.GetName()?.ToLower()} you can watch legally in {RegionEnum.GetName()}. Updated daily with streaming availability across multiple platforms.")" Url="@($"/free/{Type}/{Region}")" Index="true"></SeoMeta>
 <NewPageSection IsPageHeader="true" Title="@($"Free {TypeEnum.GetName()} to Watch in {RegionEnum.GetName()}")" Description="@($"Discover free {TypeEnum.GetName()?.ToLower()} you can watch legally in {RegionEnum.GetName()}. Updated daily with streaming availability across multiple platforms.")" Icon="@IconsFA.Solid.Icon("play-circle").Font"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
