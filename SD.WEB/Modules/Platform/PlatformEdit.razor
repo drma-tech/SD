@@ -21,8 +21,14 @@
 <MudButton OnClick="@SaveSession" Color="Color.Primary" Variant="Variant.Filled">
     Save Session
 </MudButton>
+<MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="Delivery Model" Dense="true" Class="me-2">
+    @foreach (var item in DeliveryModels)
+    {
+        <MudSelectItem T="DeliveryModel?" Value="@item.Value">@item.Name</MudSelectItem>
+    }
+</MudSelect>
 
-<MudDataGrid T="ProviderModel" Items="@AllProviders?.Items" ReadOnly="false" Filterable="true" Dense="true"
+<MudDataGrid T="ProviderModel" Items="@AllProviders?.Items.Where(p => p.models.Any(a => DeliveryModel == null || a == DeliveryModel))" ReadOnly="false" Filterable="true" Dense="true"
              EditMode="DataGridEditMode.Form" EditTrigger="DataGridEditTrigger.Manual"
              FilterMode="DataGridFilterMode.ColumnFilterMenu" Class="mt-3" RowsPerPage="8"
              CommittedItemChanges="RowUpdated" EditDialogOptions="new DialogOptions(){ FullWidth=true}">
@@ -85,8 +91,10 @@
 
 @code {
     public MediaType MediaType { get; set; } = MediaType.movie;
+    [Custom(Name = "Model")] public DeliveryModel? DeliveryModel { get; set; }
 
     private AllProviders? AllProviders { get; set; }
+    public List<EnumObject<DeliveryModel>> DeliveryModels { get; set; } = [];
 
     public List<EnumObject<ContentLanguage>> Languages { get; set; } = [];
 
@@ -94,6 +102,7 @@
     {
         base.OnInitialized();
         Languages = EnumHelper.GetList<ContentLanguage>();
+        DeliveryModels = EnumHelper.GetList<DeliveryModel>();
     }
 
     protected override async Task ProcessPageData()
