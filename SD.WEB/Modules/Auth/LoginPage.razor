@@ -10,44 +10,20 @@
 <SeoMeta Title="Sign In or Sign Up" Description="Sign In or Sign Up" Url="/login" Index="false"></SeoMeta>
 
 <MudContainer MaxWidth="MaxWidth.Small" Class="@Css.Build().Raw("mb-20")">
-    <MudPaper Elevation="0" Outlined="true" Class="pa-3">
+    <MudPaper Elevation="0" Outlined="true" Class="pa-3" Style="position: relative;">
         <MudStack Spacing="@Css.SpaceSmall">
             <MudText Typo="Typo.h1" Color="Color.Primary" Class="@Css.Build().Medium("mb")" Style="font-size: 23px !important; line-height: 1.6 !important;" Align="Align.Center">
                 Sign In or Sign Up
             </MudText>
 
             <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Disabled="@(Platform == SD.Shared.Enums.Platform.ios || _processing)">
-                @if (_processing)
-                {
-                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                    <MudText Class="ms-2">Processing</MudText>
-                }
-                else
-                {
-                    <MudText>Continue with Google</MudText>
-                }
+                <MudText>Continue with Google</MudText>
             </MudButton>
             <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font" Disabled="@_processing">
-                @if (_processing)
-                {
-                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                    <MudText Class="ms-2">Processing</MudText>
-                }
-                else
-                {
-                    <MudText>Continue with Apple</MudText>
-                }
+                <MudText>Continue with Apple</MudText>
             </MudButton>
             <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font" Disabled="@_processing">
-                @if (_processing)
-                {
-                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                    <MudText Class="ms-2">Processing</MudText>
-                }
-                else
-                {
-                    <MudText>Continue with Microsoft</MudText>
-                }
+                <MudText>Continue with Microsoft</MudText>
             </MudButton>
             <MudDivider Class="@Css.Build().Medium("my")"></MudDivider>
             <MudTextField @bind-Value="@email" Label="Email" Placeholder="Enter your email" Disabled="@(_processing || emailSent)" Immediate="true"
@@ -59,7 +35,7 @@
                     @SuggestEmailCorrection(email)
                 </MudAlert>
             }
-            <MudTextField @bind-Value="@otp" Label="OTP Code" Placeholder="Enter the code you received by email." Disabled="@(!emailSent)"
+            <MudTextField @ref="@txtOTP" @bind-Value="@otp" Label="OTP Code" Placeholder="Enter the code you received by email." Disabled="@(!emailSent)"
                           Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Check" OnAdornmentClick="() => ConfirmCode(email, otp)"></MudTextField>
         </MudStack>
         <div style="text-align: center;">
@@ -67,6 +43,9 @@
                 @((MarkupString)string.Format(Translations.Terms1, $"<a href='legal/terms' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Help.Resources.Translations.TermsUse}</a>", $"<a href='legal/privacy' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Help.Resources.Translations.PrivacyPolicy}</a>"))
             </MudText>
         </div>
+        <MudOverlay Visible="_processing" DarkBackground="true" Absolute="true">
+            <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+        </MudOverlay>
     </MudPaper>
 </MudContainer>
 
@@ -78,6 +57,7 @@
     private string? email;
     private string? otp;
     private bool emailSent;
+    private MudTextField<string>? txtOTP;
 
     private async Task LoginWithGoogle() => await SignIn("google");
     private async Task LoginWithApple() => await SignIn("apple");
@@ -132,12 +112,17 @@
         {
             if (success)
             {
-                await Task.Delay(8000);
+                await Task.Delay(provider == "email" ? 8000 : 15000);
                 emailSent = true;
             }
 
             _processing = false;
             StateHasChanged();
+
+            if (provider == "email" && success)
+            {
+                await txtOTP!.FocusAsync();
+            }
         }
     }
 
