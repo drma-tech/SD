@@ -198,6 +198,10 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             LineItems = [new() { Price = priceId, Quantity = 1, },],
             Mode = "subscription",
             SuccessUrl = url + "?stripe_session_id={CHECKOUT_SESSION_ID}",
+            Metadata = new Dictionary<string, string> {
+                { "app", "sd" },
+                { "UserId", principal.UserId! },
+            }
         };
 
         options.AddExtraParam("managed_payments[enabled]", true);
@@ -245,8 +249,13 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         {
             if (stripeEvent.Data.Object is not Stripe.Subscription subscription || subscription.Id.Empty()) throw new NotificationException("stripe subscription not available");
 
-            var results = await repo.Query<AuthPrincipal>(p => p.StripeCustomerId == subscription.CustomerId, DocumentType.Principal, cancellationToken) ?? throw new NotificationException("AuthPrincipal null");
-            var principal = results.SingleOrDefault();
+            if (!subscription.Metadata.TryGetValue("app", out var app) || app != "sd")
+                return; //session not created by sd, ignore it
+
+            if (!subscription.Metadata.TryGetValue("UserId", out var userId) || userId.Empty())
+                throw new NotificationException("UserId metadata missing in session");
+
+            var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
 
             if (principal == null)
             {
