@@ -199,6 +199,10 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             LineItems = [new() { Price = priceId, Quantity = 1, },],
             Mode = "subscription",
             SuccessUrl = url + "?stripe_session_id={CHECKOUT_SESSION_ID}",
+            Metadata = new Dictionary<string, string> {
+                { "app", "sd" },
+                { "UserId", principal.UserId! },
+            },
             SubscriptionData = new SessionSubscriptionDataOptions
             {
                 Metadata = new Dictionary<string, string> {
