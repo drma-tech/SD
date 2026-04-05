@@ -6,6 +6,7 @@ using SD.Shared.Models.Auth;
 using SD.Shared.Models.Subscription;
 using Stripe.Checkout;
 using System.Globalization;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -239,7 +240,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
     }
 
     [Function("PostStripeWebhook")]
-    public async Task PostStripeWebhook(
+    public async Task<HttpResponseData> PostStripeWebhook(
        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "public/stripe/webhook")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var json = await new StreamReader(req.Body).ReadToEndAsync(cancellationToken);
@@ -253,7 +254,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             if (stripeEvent.Data.Object is not Stripe.Subscription subscription || subscription.Id.Empty()) throw new NotificationException("stripe subscription not available");
 
             if (!subscription.Metadata.TryGetValue("app", out var app) || app != "sd")
-                return; //session not created by sd, ignore it
+                return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}");
 
             if (!subscription.Metadata.TryGetValue("UserId", out var userId) || userId.Empty())
                 throw new NotificationException("UserId metadata missing in session");
@@ -262,8 +263,8 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             if (principal == null)
             {
-                req.LogError(new NotificationException($"principal null - subscriptionId:{subscription.Id}"));
-                return;
+                req.LogError(new NotificationException($"stripe webhook - principal is null - subscriptionId:{subscription.Id}"));
+                return await req.CreateResponse(HttpStatusCode.OK, $"stripe webhook - principal is null - subscriptionId:{subscription.Id}");
             }
 
             var sub = principal.GetSubscription(subscription.Id, PaymentProvider.Stripe);
@@ -285,6 +286,8 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             await repo.UpsertItemAsync(principal, cancellationToken);
         }
+
+        return await req.CreateResponse(HttpStatusCode.OK, "webhook received");
     }
 
     [Function("StripeGePortalLink")]

@@ -63,6 +63,13 @@ public static class HttpRequestDataExtensions
         return response;
     }
 
+    public static async Task<HttpResponseData> CreateResponse(this HttpRequestData req, HttpStatusCode status, string msg)
+    {
+        var response = req.CreateResponse(status);
+        await response.WriteStringAsync(msg);
+        return response;
+    }
+
     public static StringDictionary GetQueryParameters(this HttpRequestData req)
     {
         var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
