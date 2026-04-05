@@ -13,7 +13,7 @@
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Href="@($"/free/{TypeSelected.ToString().ToLower()}/{(Region?.ToString()?.ToLower() ?? "us")}")" />
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/free/{TypeSelected.ToString().ToLower()}/{(Region?.ToString()?.ToLower() ?? "us")}")" />
                 </MudTooltip>
             </Header>
             <ChildContent>

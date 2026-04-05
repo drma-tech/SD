@@ -43,7 +43,7 @@
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" OnClick="@(() => Navigation.NavigateTo($"/list/{(int)EnumLists.ExpectedMovieOf2026}"))" />
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" OnClick="@(() => Navigation.NavigateTo($"/list/{(int)EnumLists.ExpectedMovieOf2026}"))" />
                 </MudTooltip>
             </Header>
             <ChildContent>

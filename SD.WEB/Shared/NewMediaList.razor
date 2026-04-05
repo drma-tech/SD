@@ -16,7 +16,7 @@
                      ActivePanelIndexChanged="@(async (int index) => { TypeSelected = index == 0 ? MediaType.movie : MediaType.tv; await TypeSelectedChangedHandle(TypeSelected); })">
                 <Header>
                     <MudTooltip Text="Expand">
-                        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" OnClick="@(() => Navigation.NavigateTo(GetCustomExpandUrl()))" Disabled="@(List == null && CustomExpand.Empty())" />
+                        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" OnClick="@(() => Navigation.NavigateTo(GetCustomExpandUrl()))" Disabled="@(List == null && CustomExpand.Empty())" />
                     </MudTooltip>
                 </Header>
                 <ChildContent>
