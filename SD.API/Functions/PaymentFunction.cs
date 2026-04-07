@@ -296,6 +296,19 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             await repo.UpsertItemAsync(principal, cancellationToken);
         }
+        else if (stripeEvent.Type == "customer.deleted")
+        {
+            if (stripeEvent.Data.Object is not Stripe.Customer customer || customer.Id.Empty()) throw new NotificationException("stripe customer not available");
+
+            var list = await repo.Query<AuthPrincipal>(p => p.StripeCustomerId == customer.Id, DocumentType.Principal, cancellationToken);
+
+            if (list.Count > 0)
+            {
+                var principal = list[0];
+                principal.StripeCustomerId = null;
+                await repo.UpsertItemAsync(principal, cancellationToken);
+            }
+        }
 
         return await req.CreateResponse(HttpStatusCode.OK, "webhook received");
     }
