@@ -306,9 +306,6 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         {
             if (stripeEvent.Data.Object is not Stripe.Customer obj || obj.Id.Empty()) throw new NotificationException("stripe customer not available");
 
-            if (!obj.Metadata.TryGetValue("app", out var app) || app != APP)
-                return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}");
-
             if (!obj.Metadata.TryGetValue("userId", out var userId) || userId.Empty())
             {
                 //if no metadada, try to find the user with the StripeCustomerId
@@ -323,6 +320,9 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
                 return await req.CreateResponse(HttpStatusCode.OK, "userId metadata missing");
             }
+
+            if (!obj.Metadata.TryGetValue("app", out var app) || app != APP)
+                return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}");
 
             var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
 
