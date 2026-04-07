@@ -309,11 +309,13 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             if (!customer.Metadata.TryGetValue("app", out var app) || app != APP)
                 return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}");
 
-            var list = await repo.Query<AuthPrincipal>(p => p.StripeCustomerId == customer.Id, DocumentType.Principal, cancellationToken);
+            if (!customer.Metadata.TryGetValue("userId", out var userId) || userId.Empty())
+                return await req.CreateResponse(HttpStatusCode.OK, "userId metadata missing");
 
-            if (list.Count > 0)
+            var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
+
+            if (principal != null)
             {
-                var principal = list[0];
                 principal.StripeCustomerId = null;
                 await repo.UpsertItemAsync(principal, cancellationToken);
             }
