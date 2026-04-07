@@ -79,7 +79,7 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             var client = factory.CreateClient("ipinfo");
 
-            var result = await client.GetValueAsync($"https://ipinfo.io/{ip}/country", cancellationToken);
+            var result = await client.GetStringAsync($"https://ipinfo.io/{ip}/country", cancellationToken);
 
             return result;
         }

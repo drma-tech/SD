@@ -7,7 +7,7 @@
 @inject PaymentConfigurationApi ConfigurationApi
 @inject PaymentAuthApi PaymentAuthApi
 
-<MudStack Row="true" Breakpoint="Breakpoint.Xs" Spacing="2">
+<MudStack Row="true" Breakpoint="Breakpoint.Xs" Spacing="2" Style="position: relative;">
     <MudCard Outlined="true" Elevation="4">
         <MudCardContent Class="pa-3">
             <MudText Typo="Typo.subtitle1" Align="Align.Center">@AccountProduct.Basic.GetName()</MudText>
@@ -119,20 +119,14 @@
             </MudGrid>
         </MudCardContent>
         <MudCardActions>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="@(() => OpenCheckout(AccountProduct.Premium))"
-                       Disabled="@((Provider == PaymentProvider.Stripe && Client != null && Client.StripeCustomerId.Empty()) || _processing)">
-                @if (_processing)
-                {
-                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                    <MudText Class="ms-2">Processing</MudText>
-                }
-                else
-                {
-                    <MudText>@Translations.Select</MudText>
-                }
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="@(() => OpenCheckout(AccountProduct.Premium))" Disabled=_processing">
+                <MudText>@Translations.Select</MudText>
             </MudButton>
         </MudCardActions>
     </MudCard>
+    <MudOverlay Visible="_processing" DarkBackground="true" Absolute="true">
+        <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+    </MudOverlay>
 </MudStack>
 <MudText Typo="Typo.caption">
     * Prices are displayed in US dollars. Your payment provider may convert and/or adjust the amount based on your location and local taxes.
@@ -187,6 +181,12 @@
                 }
                 else if (Provider == PaymentProvider.Stripe)
                 {
+                    if (Client != null && Client.StripeCustomerId.Empty())
+                    {
+                        Client = await PaymentAuthApi.StripeCustomer(AppStateStatic.IsAuthenticated);
+                    }
+
+                    //create session and redirect to checkout
                     await JsRuntime.Payments().StripeOpenCheckout(priceId);
                 }
                 else

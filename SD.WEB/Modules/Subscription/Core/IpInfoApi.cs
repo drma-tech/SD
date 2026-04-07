@@ -6,7 +6,7 @@
         {
             try
             {
-                return await GetValueAsync("https://ipinfo.io/country");
+                return await GetStringAsync("https://ipinfo.io/country");
             }
             catch (Exception)
             {
@@ -21,7 +21,7 @@
         {
             try
             {
-                return await GetValueAsync("public/country");
+                return await GetStringAsync("public/country");
             }
             catch (Exception)
             {

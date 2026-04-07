@@ -130,6 +130,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
 
     collection.AddScoped<PaymentConfigurationApi>();
     collection.AddScoped<PaymentAuthApi>();
+    collection.AddScoped<PaymentPublicApi>();
     collection.AddScoped<IpInfoApi>();
     collection.AddScoped<IpInfoServerApi>();
 }

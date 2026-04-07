@@ -4,9 +4,9 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
 {
     public Action<T?>? DataChanged { get; set; }
 
-    protected async Task<string?> GetValueAsync(string endpoint)
+    protected async Task<string?> GetStringAsync(string endpoint)
     {
-        return await base.GetValueAsync(endpoint);
+        return await base.GetStringAsync(endpoint);
     }
 
     protected async Task<T?> GetAsync(string endpoint, bool setNewVersion = false)

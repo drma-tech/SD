@@ -2,6 +2,19 @@
 
 namespace SD.WEB.Modules.Subscription.Core
 {
+    public class PaymentPublicApi(IHttpClientFactory factory) : ApiCosmos<AuthSubscription>(factory, ApiType.Anonymous, null)
+    {
+        public async Task<bool> StripeValidateSession(string id)
+        {
+            return await GetAsync<bool>(Endpoint.StripeValidateSession(id));
+        }
+
+        private struct Endpoint
+        {
+            public static string StripeValidateSession(string id) => $"public/stripe/validate-session/{id}";
+        }
+    }
+
     public class PaymentAuthApi(IHttpClientFactory factory) : ApiCosmos<AuthSubscription>(factory, ApiType.Authenticated, null)
     {
         public async Task AppleVerify(string receipt)
@@ -18,7 +31,7 @@ namespace SD.WEB.Modules.Subscription.Core
 
         public async Task<string?> StripePortalLink()
         {
-            return await GetValueAsync(Endpoint.StripePortalLink);
+            return await GetStringAsync(Endpoint.StripePortalLink);
         }
 
         private struct Endpoint

@@ -1,8 +1,12 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.JSInterop
+@using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Profile.Core
+@using SD.WEB.Modules.Subscription.Core
 
 @inject WatchingListApi WatchingApi
+@inject PrincipalApi PrincipalApi
+@inject PaymentPublicApi PaymentPublicApi
 
 @inject NavigationManager Navigation
 @inject IDialogService DialogService
@@ -192,7 +196,16 @@
         {
             if (stripe_session_id.NotEmpty())
             {
-                await DialogService.SubscriptionPopup();
+                var success = await PaymentPublicApi.StripeValidateSession(stripe_session_id);
+
+                if (success)
+                {
+                    await ShowSuccess("Subscription successful!");
+                }
+                else
+                {
+                    await ShowError("Something didn’t go as expected. If your payment wasn’t completed, please try again. You can also contact support for assistance.");
+                }
             }
 
             await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync);
@@ -259,6 +272,22 @@
     {
         _open = false;
         await DialogService.SubscriptionPopup();
+    }
+
+    protected async Task ShowSuccess(string message)
+    {
+        Snackbar.Add(message, Severity.Success);
+
+        await JsRuntime.Utils().PlayBeep(880, 100, "sine");
+        await JsRuntime.Utils().Vibrate([40]);
+    }
+
+    protected async Task ShowError(string message)
+    {
+        Snackbar.Add(message, Severity.Error);
+
+        await JsRuntime.Utils().PlayBeep(220, 400, "square");
+        await JsRuntime.Utils().Vibrate([200, 100, 200]);
     }
 
 }
