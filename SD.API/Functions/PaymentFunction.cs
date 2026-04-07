@@ -15,6 +15,8 @@ namespace SD.API.Functions;
 
 public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 {
+    private const string APP = "sd";
+
     [Function("PaymentConfigurations")]
     public static PaymentConfigurations PaymentConfigurations(
        [HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/payment/configurations")] HttpRequestData req)
@@ -170,6 +172,10 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         {
             Name = principal.DisplayName,
             Email = principal.Email,
+            Metadata = new Dictionary<string, string> {
+                { "app", APP },
+                { "userId", principal.UserId! },
+            },
         }, cancellationToken: cancellationToken);
 
         principal.StripeCustomerId = customer.Id;
@@ -206,14 +212,14 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
             Mode = "subscription",
             SuccessUrl = url + "?stripe_session_id={CHECKOUT_SESSION_ID}",
             Metadata = new Dictionary<string, string> {
-                { "app", "sd" },
-                { "UserId", principal.UserId! },
+                { "app", APP },
+                { "userId", principal.UserId! },
             },
             SubscriptionData = new SessionSubscriptionDataOptions
             {
                 Metadata = new Dictionary<string, string> {
-                    { "app", "sd" },
-                    { "UserId", principal.UserId! },
+                    { "app", APP },
+                    { "userId", principal.UserId! },
                 }
             }
         };
@@ -263,11 +269,11 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         {
             if (stripeEvent.Data.Object is not Stripe.Subscription subscription || subscription.Id.Empty()) throw new NotificationException("stripe subscription not available");
 
-            if (!subscription.Metadata.TryGetValue("app", out var app) || app != "sd")
+            if (!subscription.Metadata.TryGetValue("app", out var app) || app != APP)
                 return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}");
 
-            if (!subscription.Metadata.TryGetValue("UserId", out var userId) || userId.Empty())
-                throw new NotificationException("UserId metadata missing in session");
+            if (!subscription.Metadata.TryGetValue("userId", out var userId) || userId.Empty())
+                throw new NotificationException("userId metadata missing in session");
 
             var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
 
@@ -299,6 +305,9 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
         else if (stripeEvent.Type == "customer.deleted")
         {
             if (stripeEvent.Data.Object is not Stripe.Customer customer || customer.Id.Empty()) throw new NotificationException("stripe customer not available");
+
+            if (!customer.Metadata.TryGetValue("app", out var app) || app != APP)
+                return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}");
 
             var list = await repo.Query<AuthPrincipal>(p => p.StripeCustomerId == customer.Id, DocumentType.Principal, cancellationToken);
 
