@@ -267,49 +267,49 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
         if (stripeEvent.Type.StartsWith("customer.subscription")) //created, updated, deleted, paused, resumed, trial_will_end, pending_update_applied, pending_update_expired
         {
-            if (stripeEvent.Data.Object is not Stripe.Subscription subscription || subscription.Id.Empty()) throw new NotificationException("stripe subscription not available");
+            if (stripeEvent.Data.Object is not Stripe.Subscription obj || obj.Id.Empty()) throw new NotificationException("stripe subscription not available");
 
-            if (!subscription.Metadata.TryGetValue("app", out var app) || app != APP)
+            if (!obj.Metadata.TryGetValue("app", out var app) || app != APP)
                 return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}");
 
-            if (!subscription.Metadata.TryGetValue("userId", out var userId) || userId.Empty())
+            if (!obj.Metadata.TryGetValue("userId", out var userId) || userId.Empty())
                 throw new NotificationException("userId metadata missing in session");
 
             var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
 
             if (principal == null)
             {
-                req.LogError(new NotificationException($"stripe webhook - principal is null - subscriptionId:{subscription.Id}"));
-                return await req.CreateResponse(HttpStatusCode.OK, $"stripe webhook - principal is null - subscriptionId:{subscription.Id}");
+                req.LogError(new NotificationException($"stripe webhook - principal is null - subscriptionId:{obj.Id}"));
+                return await req.CreateResponse(HttpStatusCode.OK, $"stripe webhook - principal is null - subscriptionId:{obj.Id}");
             }
 
-            var sub = principal.GetSubscription(subscription.Id, PaymentProvider.Stripe);
+            var sub = principal.GetSubscription(obj.Id, PaymentProvider.Stripe);
 
-            sub.Active = subscription.Status is "active" or "trialing";
+            sub.Active = obj.Status is "active" or "trialing";
 
-            sub.Cycle = Enum.Parse<AccountCycle>(subscription.Items.First().Price.Metadata["cycle"]); //if cycle changes, update it
+            sub.Cycle = Enum.Parse<AccountCycle>(obj.Items.First().Price.Metadata["cycle"]); //if cycle changes, update it
 
-            if (subscription.CancelAt.HasValue)
+            if (obj.CancelAt.HasValue)
             {
-                sub.ExpiresDate = subscription.CancelAt.Value;
+                sub.ExpiresDate = obj.CancelAt.Value;
             }
 
             principal.UpdateSubscription(sub);
 
             var ip = req.GetUserIP(true);
             var type = stripeEvent.Type.Split(".")[2];
-            principal.Events.Add(new Event("Stripe (Webhooks)", $"Type = {type}, Status = {subscription.Status}, Cycle = {sub.Cycle} for SubscriptionId = {subscription.Id}", ip));
+            principal.Events.Add(new Event("Stripe (Webhooks)", $"Type = {type}, Status = {obj.Status}, Cycle = {sub.Cycle} for SubscriptionId = {obj.Id}", ip));
 
             await repo.UpsertItemAsync(principal, cancellationToken);
         }
         else if (stripeEvent.Type == "customer.deleted")
         {
-            if (stripeEvent.Data.Object is not Stripe.Customer customer || customer.Id.Empty()) throw new NotificationException("stripe customer not available");
+            if (stripeEvent.Data.Object is not Stripe.Customer obj || obj.Id.Empty()) throw new NotificationException("stripe customer not available");
 
-            if (!customer.Metadata.TryGetValue("app", out var app) || app != APP)
+            if (!obj.Metadata.TryGetValue("app", out var app) || app != APP)
                 return await req.CreateResponse(HttpStatusCode.OK, $"webhook ignored -> app={app ?? "null"}");
 
-            if (!customer.Metadata.TryGetValue("userId", out var userId) || userId.Empty())
+            if (!obj.Metadata.TryGetValue("userId", out var userId) || userId.Empty())
                 return await req.CreateResponse(HttpStatusCode.OK, "userId metadata missing");
 
             var principal = await repo.Get<AuthPrincipal>(DocumentType.Principal, userId, cancellationToken);
