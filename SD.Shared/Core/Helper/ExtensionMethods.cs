@@ -67,8 +67,9 @@ public static class ExtensionMethods
         return Encoding.UTF8.GetString(bytes);
     }
 
-    public static T DeepClone<T>(this T instance) where T : class
+    public static T? DeepClone<T>(this T? instance) where T : class
     {
+        if (instance == null) return null;
         var json = JsonSerializer.Serialize(instance);
         return JsonSerializer.Deserialize<T>(json) ?? throw new InvalidOperationException("Clone failed");
     }
