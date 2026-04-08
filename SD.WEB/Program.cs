@@ -137,39 +137,49 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
 
 static async Task ConfigureCulture(WebAssemblyHost? app, IJSRuntime js)
 {
-    if (app != null)
+    if (app == null) return;
+
+    //app language
+
+    var nav = app.Services.GetService<NavigationManager>();
+    var uri = new Uri(nav!.Uri);
+    var segments = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+    string? appLanguage = segments.Length > 0 ? segments[0].ToLowerInvariant() : null;
+
+    appLanguage = appLanguage switch
     {
-        //app language
+        "pt" or "en" or "es" or "zh" => appLanguage,
+        _ => null
+    };
 
-        var nav = app.Services.GetService<NavigationManager>();
-        var appLanguage = nav?.QueryString("app-language");
+    if (appLanguage.Empty())
+    {
+        appLanguage = (await AppStateStatic.GetAppLanguage(js)).ToString();
 
-        if (appLanguage.Empty())
-        {
-            appLanguage = (await AppStateStatic.GetAppLanguage(js)).ToString();
-        }
-
-        if (appLanguage.NotEmpty())
-        {
-            CultureInfo cultureInfo;
-
-            try
-            {
-                cultureInfo = new CultureInfo(appLanguage);
-            }
-            catch (Exception)
-            {
-                cultureInfo = CultureInfo.CurrentCulture;
-            }
-
-            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-        }
-
-        //content language
-
-        _ = await AppStateStatic.GetContentLanguage(js); //force read previously saved
+        nav.NavigateTo($"/{appLanguage}/", forceLoad: true);
+        return;
     }
+
+    if (appLanguage.NotEmpty())
+    {
+        CultureInfo cultureInfo;
+
+        try
+        {
+            cultureInfo = new CultureInfo(appLanguage);
+        }
+        catch (Exception)
+        {
+            cultureInfo = CultureInfo.CurrentCulture;
+        }
+
+        CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+        CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+    }
+
+    //content language
+
+    _ = await AppStateStatic.GetContentLanguage(js); //force read previously saved
 }
 
 //https://github.com/App-vNext/Polly/wiki/Polly-and-HttpClientFactory

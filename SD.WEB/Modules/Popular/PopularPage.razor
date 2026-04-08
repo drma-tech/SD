@@ -1,4 +1,6 @@
-﻿@page "/popular/{type}"
+﻿@page "/{culture}/popular/{type}"
+
+@inherits PageCore<PopularPage>
 
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
@@ -9,21 +11,21 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
-<SeoMeta Title="@($"{Translations.Popular} ({Type})")" Description="@GlobalTranslations.PopularIndexDescription" Url="@($"/popular/{Type}")" Index="true"></SeoMeta>
-<NewPageSection IsPageHeader="true" Title="@($"{Translations.Popular} ({Type})")" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font"></NewPageSection>
+<SeoMeta Title="@($"{Translations.Popular} ({PopularType.GetName()})")" Description="@GlobalTranslations.PopularIndexDescription" Url="@($"/{Culture}/popular/{Type}")" Index="true"></SeoMeta>
+<NewPageSection IsPageHeader="true" Title="@($"{Translations.Popular} ({PopularType.GetName()})")" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
 @if (PopularType == PopularType.Movie)
 {
     <MediaListFull MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" Watched="Watched" Watching="Watching" Wish="Wish" StringParameters="Params" TypeSelected="MediaType.movie"
-                   Icon="@IconsFA.Solid.Icon("fire").Font" FullPage="true" ShowHead="false">
+                   Icon="@IconsFA.Solid.Icon("fire").Font" FullPage="true" ShowHead="false" Culture="@Culture">
     </MediaListFull>
 }
 else
 {
     <MediaListFull MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" Watched="Watched" Watching="Watching" Wish="Wish" StringParameters="Params" TypeSelected="MediaType.tv"
-                   Icon="@IconsFA.Solid.Icon("fire").Font" FullPage="true" ShowHead="false">
+                   Icon="@IconsFA.Solid.Icon("fire").Font" FullPage="true" ShowHead="false" Culture="@Culture">
     </MediaListFull>
 }
 

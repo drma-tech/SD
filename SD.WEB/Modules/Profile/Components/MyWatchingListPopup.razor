@@ -12,7 +12,7 @@
 <MudDialog Style="width: 100%">
     <DialogContent>
         <WatchingComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
-                           ActionsMovie="Actions" ActionsTv="Actions">
+                           ActionsMovie="Actions" ActionsTv="Actions" Culture="@Culture">
         </WatchingComponent>
     </DialogContent>
     <DialogActions>
@@ -29,6 +29,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public string? Culture { get; set; }
 
     [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }

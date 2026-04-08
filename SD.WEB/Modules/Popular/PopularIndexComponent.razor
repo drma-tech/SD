@@ -10,7 +10,7 @@
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/popular/{TypeSelected.ToString().ToLower()}")" />
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/{Culture}/popular/{TypeSelected.ToString().ToLower()}")" />
                 </MudTooltip>
             </Header>
             <ChildContent>
@@ -18,7 +18,7 @@
                     @if (_loaded[0])
                     {
                         <NewMediaList MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.movie"
-                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList">
+                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList" Culture="@Culture">
                         </NewMediaList>
                     }
                 </MudTabPanel>
@@ -26,7 +26,7 @@
                     @if (_loaded[1])
                     {
                         <NewMediaList MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.tv"
-                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList">
+                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList" Culture="@Culture">
                         </NewMediaList>
                     }
                 </MudTabPanel>
@@ -39,6 +39,7 @@
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public string? Culture { get; set; }
 
     private int _activeIndex = 0;
     private bool[] _loaded = new bool[2] { true, false };

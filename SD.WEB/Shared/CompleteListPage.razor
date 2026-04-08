@@ -1,11 +1,11 @@
-﻿@page "/list/{id}"
-@page "/collections/imdb/popular/{Type}"
-@page "/collections/tmdb/popular/{Type}"
-@page "/collections/tmdb/top/{Type}"
-@page "/collections/tmdb/upcoming"
-@page "/platforms/{id}/popular/{Type}"
-@page "/platforms/{id}/new/{Type}"
-@page "/platforms/{id}/top/{Type}"
+﻿@page "/{culture}/list/{id}"
+@page "/{culture}/collections/imdb/popular/{Type}"
+@page "/{culture}/collections/tmdb/popular/{Type}"
+@page "/{culture}/collections/tmdb/top/{Type}"
+@page "/{culture}/collections/tmdb/upcoming"
+@page "/{culture}/platforms/{id}/popular/{Type}"
+@page "/{culture}/platforms/{id}/new/{Type}"
+@page "/{culture}/platforms/{id}/top/{Type}"
 
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Interface
@@ -21,7 +21,7 @@
 @inject AllProvidersApi AllProvidersApi
 @inject IHttpClientFactory factory
 
-<SeoMeta Title="@Title" Description="@Description" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")" Index="false"></SeoMeta>
+<SeoMeta Title="@Title" Description="@Description" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")" Index="true"></SeoMeta>
 <NewPageSection Title="@Title" Description="@Description"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
@@ -30,7 +30,7 @@
 {
     <MediaListFull IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" DetectRegions="DetectRegions"
                    StringParameters="StringParameters" List="List" TitleHead="@Title" ShowHead="false" FullPage="true"
-                   Watched="Watched" Watching="Watching" Wish="Wish"
+                   Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"
                    CommentsIsImage="CommentsIsImage" OrderByComments="OrderByComments" OnlyYear="OnlyYear">
     </MediaListFull>
 }
@@ -55,7 +55,7 @@
     public bool DetectRegions { get; set; }
 
     private EnumLists? List { get; set; }
-    private string Title => TitleHead ?? $"{List?.GetName()}" ?? "Title Error";
+    private string Title => TitleHead ?? $"{List?.GetName()?.Format(DateTime.Now.Year)}" ?? "Title Error";
     private string Description => DescriptionHead ?? $"{List?.GetDescription()}" ?? "Description Error";
 
     protected override async Task OnInitializedAsync()

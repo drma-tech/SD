@@ -21,13 +21,13 @@
         else
         {
             <NewMediaList ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
-                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
+                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
             </NewMediaList>
             <NewMediaList ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
-                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
+                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
             </NewMediaList>
             <NewMediaList ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
-                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true">
+                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
             </NewMediaList>
         }
     </DialogContent>
@@ -52,6 +52,7 @@
 
 @code {
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
+    [Parameter][EditorRequired] public string? Culture { get; set; }
 
     [Parameter] public ProviderModel? Provider { get; set; }
     [Parameter] public WatchedList? Watched { get; set; }

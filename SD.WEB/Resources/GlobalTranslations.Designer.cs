@@ -196,6 +196,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discover free movies and series you can watch legally. Updated daily with streaming availability across multiple platforms..
+        /// </summary>
+        public static string FreeWatchDescription {
+            get {
+                return ResourceManager.GetString("FreeWatchDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Light Mode.
         /// </summary>
         public static string LightMode {

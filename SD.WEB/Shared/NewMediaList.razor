@@ -94,6 +94,7 @@ else
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public string? Culture { get; set; }
 
     [Parameter] public bool ContainsHeader { get; set; } = false;
     [Parameter] public string? TitleHead { get; set; }
@@ -208,7 +209,7 @@ else
     {
         if (List != null)
         {
-            return $"/list/{(int)List}";
+            return $"/{Culture}/list/{(int)List}";
         }
         else if (!string.IsNullOrEmpty(CustomExpand))
         {
@@ -284,17 +285,17 @@ else
                     });
                 }
 
-                await DialogService.CompleteListPopup($"{media.title}", Watched, Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet());
+                await DialogService.CompleteListPopup($"{media.title}", Watched, Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet(), Culture);
             }
             else
             {
                 if (Popup)
                 {
-                    await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId);
+                    await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId, Culture);
                 }
                 else
                 {
-                    Navigation.NavigateTo($"/media/{media?.MediaType.ToString().ToLower()}/{tmdbId}");
+                    Navigation.NavigateTo($"/{Culture}/media/{media?.MediaType.ToString().ToLower()}/{tmdbId}");
                 }
             }
         }

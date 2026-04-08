@@ -81,12 +81,13 @@
 
 @code {
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
+    [Parameter][EditorRequired] public string? Culture { get; set; }
 
     private MudCarousel<object>? mudCarousel;
 
     private async Task Login()
     {
         MudDialog?.Close();
-        Navigation.NavigateTo("/login");
+        Navigation.NavigateTo($"/{Culture}/login");
     }
 }

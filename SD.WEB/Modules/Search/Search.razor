@@ -1,4 +1,4 @@
-﻿@page "/search"
+﻿@page "/{culture}/search"
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Shared.Core
@@ -9,7 +9,7 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
-<SeoMeta Title="Search" Description="@SeoTranslations.AppDescription" Url="/search" Index="false"></SeoMeta>
+<SeoMeta Title="Search" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}/search") Index="false"></SeoMeta>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Search"></GoogleAdSense>
 
@@ -21,7 +21,7 @@
 
 <RenderControl Actions="Actions">
     <MediaListFull MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false" FullPage="true"
-                   Watched="Watched" Watching="Watching" Wish="Wish">
+                   Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
     </MediaListFull>
 </RenderControl>
 

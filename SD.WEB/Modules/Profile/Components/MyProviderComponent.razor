@@ -48,6 +48,7 @@
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public string? Culture { get; set; }
 
     private ComponentActions<MyProviders?> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
     private AllProviders? AllProviders { get; set; }
@@ -138,7 +139,7 @@
         AllProviders ??= await AllProvidersApi.GetAll();
 
         await DialogService.PlatformPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList,
-            item.region?.ToString(), item.id);
+            item.region?.ToString(), item.id, Culture);
     }
 
     private async Task UpdateProviders()

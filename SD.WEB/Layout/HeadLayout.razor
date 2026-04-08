@@ -21,13 +21,13 @@
 <MudAppBar Fixed="true" Elevation="1" Color="Color.Dark">
     @if (AppStateStatic.Breakpoint <= Breakpoint.Xs) //mobile view
     {
-        <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="icon-text-button" Disabled="_blockedActions">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href=@($"/{Culture}/") Variant="@GetVariant("/")" Class="icon-text-button" Disabled="_blockedActions">
             @Menu.Home
         </MudButton>
-        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="icon-text-button" Disabled="_blockedActions" Target="_self" Rel="noindex, nofollow">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href=@($"/{Culture}/profile") Variant="@GetVariant("/profile")" Class="icon-text-button" Disabled="_blockedActions" Target="_self" Rel="noindex, nofollow">
             @Menu.Profile
         </MudButton>
-        <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="icon-text-button" Disabled="_blockedActions">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href=@($"/{Culture}/platforms") Variant="@GetVariant("/platforms")" Class="icon-text-button" Disabled="_blockedActions">
             @Menu.Platforms
         </MudButton>
 
@@ -37,13 +37,13 @@
     }
     else if (AppStateStatic.Breakpoint == Breakpoint.Sm) //tablet view
     {
-        <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="icon-text-button" Disabled="_blockedActions">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href=@($"/{Culture}/") Variant="@GetVariant("/")" Class="icon-text-button" Disabled="_blockedActions">
             @Menu.Home
         </MudButton>
-        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="icon-text-button" Disabled="_blockedActions" Target="_self" Rel="noindex, nofollow">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href=@($"/{Culture}/profile") Variant="@GetVariant("/profile")" Class="icon-text-button" Disabled="_blockedActions" Target="_self" Rel="noindex, nofollow">
             @Menu.Profile
         </MudButton>
-        <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="icon-text-button" Disabled="_blockedActions">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href=@($"/{Culture}/platforms") Variant="@GetVariant("/platforms")" Class="icon-text-button" Disabled="_blockedActions">
             @Menu.Platforms
         </MudButton>
 
@@ -56,7 +56,7 @@
             </Authorized>
         </AuthorizeView>
         <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
-        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("headset").Font" Class="me-2" OnClick="@(() => Navigation.NavigateTo("/help"))" />
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("headset").Font" Class="me-2" OnClick="@(() => Navigation.NavigateTo($"/{Culture}/help"))" />
         <AuthorizeView>
             <Authorized>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Logout" Disabled="_blockedActions">
@@ -72,15 +72,15 @@
     }
     else //desktop view
     {
-        <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href="/" Variant="@GetVariant("/")" Class="px-3" Disabled="_blockedActions">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("house").Font" Color="@GetColor("/")" Href=@($"/{Culture}/") Variant="@GetVariant("/")" Class="px-3" Disabled="_blockedActions">
             @Menu.Home
         </MudButton>
         <MudBadge Dot="true" Color="Color.Warning" Visible="@(MovieSync || ShowSync)">
-            <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href="/profile" Variant="@GetVariant("/profile")" Class="px-3" Disabled="_blockedActions" Target="_self" Rel="noindex, nofollow">
+            <MudButton StartIcon="@IconsFA.Solid.Icon("circle-user").Font" Color="@GetColor("/profile")" Href=@($"/{Culture}/profile") Variant="@GetVariant("/profile")" Class="px-3" Disabled="_blockedActions" Target="_self" Rel="noindex, nofollow">
                 @Menu.Profile
             </MudButton>
         </MudBadge>
-        <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href="/platforms" Variant="@GetVariant("/platforms")" Class="px-3" Disabled="_blockedActions">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("clapperboard").Font" Color="@GetColor("/platforms")" Href=@($"/{Culture}/platforms") Variant="@GetVariant("/platforms")" Class="px-3" Disabled="_blockedActions">
             @Menu.Platforms
         </MudButton>
 
@@ -93,7 +93,7 @@
             </Authorized>
         </AuthorizeView>
         <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("cog").Font" Class="me-2" OnClick="@OpenConfigurations" />
-        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("headset").Font" Class="me-2" OnClick="@(() => Navigation.NavigateTo("/help"))" />
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@IconsFA.Solid.Icon("headset").Font" Class="me-2" OnClick="@(() => Navigation.NavigateTo($"/{Culture}/help"))" />
         <AuthorizeView>
             <Authorized>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Logout" Disabled="_blockedActions">
@@ -129,7 +129,7 @@
             <MudNavLink Icon="@IconsFA.Solid.Icon("cog").Font" OnClick="@OpenConfigurations">
                 Settings
             </MudNavLink>
-            <MudNavLink Icon="@IconsFA.Solid.Icon("headset").Font" Href="/help">
+            <MudNavLink Icon="@IconsFA.Solid.Icon("headset").Font" Href=@($"/{Culture}/help")>
                 Help Center
             </MudNavLink>
             <MudDivider></MudDivider>
@@ -150,9 +150,8 @@
 }
 
 @code {
-    [Parameter]
-    [SupplyParameterFromQuery(Name = "stripe_session_id")]
-    public string? stripe_session_id { get; set; }
+    [Parameter][SupplyParameterFromQuery(Name = "stripe_session_id")] public string? stripe_session_id { get; set; }
+    private string Culture => Navigation.GetCulture();
 
     private bool _open = false;
 
@@ -229,7 +228,7 @@
     private async Task Login()
     {
         _open = false;
-        Navigation.NavigateTo($"/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+        Navigation.NavigateTo($"/{Culture}/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
     }
 
     private async Task Logout()

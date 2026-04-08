@@ -1,4 +1,4 @@
-﻿@page "/media/{type}/{id}"
+﻿@page "/{culture}/media/{type}/{id}"
 
 @using System.Globalization
 @using Microsoft.AspNetCore.Authorization
@@ -12,7 +12,7 @@
 @using SD.WEB.Modules.Support
 @using SD.WEB.Shared.Core
 
-@inherits PageCore<MediaPopup>
+@inherits PageCore<MediaPage>
 @implements IDisposable
 @attribute [Authorize]
 
@@ -26,7 +26,7 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<SeoMeta Title="@Media?.title" Description="@Media?.plot" Url="@($"/media/{type}/{id}")" Index="false"></SeoMeta>
+<SeoMeta Title="@Media?.title" Description="@Media?.plot" Url="@($"/{Culture}/media/{type}/{id}")" Index="false"></SeoMeta>
 @if (Media?.title.NotEmpty() ?? false)
 {
     <NewPageSection Title="@Media?.title">
@@ -176,7 +176,7 @@
                             {
                                 <div>
                                     <MudIcon Icon="@IconsFA.Brands.Icon("youtube").Font" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
-                                    <MudLink Href="@($"/video/{($"{item.key}|{item.name}".SimpleEncrypt())}")" Color="Color.Secondary"
+                                    <MudLink Href="@($"/{Culture}/video/{($"{item.key}|{item.name}".SimpleEncrypt())}")" Color="Color.Secondary"
                                              Style="@((AppStateStatic.Size == Size.Small ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;"))">
                                         @item.name
                                     </MudLink>
@@ -192,7 +192,7 @@
 
         <NewPageSection Title="@Translations.TabCredits" Color="Color.Secondary">
             <BodyFragment>
-                <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish">
+                <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture">
                 </CreditsComponent>
             </BodyFragment>
         </NewPageSection>
@@ -360,7 +360,7 @@
 
     private void OpenPopupMedia(MediaType? type, string? tmdb_id)
     {
-        Navigation.NavigateTo($"/media/{type.ToString()!.ToLower()}/{tmdb_id}");
+        Navigation.NavigateTo($"/{Culture}/media/{type.ToString()!.ToLower()}/{tmdb_id}");
     }
 
     private async Task OpenPopupSeason(Collection? collection)

@@ -84,7 +84,11 @@
 
         await JsRuntime.Utils().SetStorage("app-language", value);
 
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("app-language", value.ToString()?.ToLower()), true);
+        var uri = new Uri(Navigation.Uri);
+        var segments = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries).Skip(1);
+        var newPath = $"/{value.ToString().ToLower()}/{string.Join("/", segments)}";
+
+        Navigation.NavigateTo(newPath + uri.Query, forceLoad: true);
     }
 
     protected async Task DarkModeChanged(bool value)

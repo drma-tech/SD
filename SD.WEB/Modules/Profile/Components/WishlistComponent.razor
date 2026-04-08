@@ -134,6 +134,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public string? Culture { get; set; }
 
     [Parameter] public MediaType? TypeParam { get; set; }
     [Parameter] public string? CustomTitle { get; set; }
@@ -172,12 +173,12 @@
 
     private async Task OpenCompleteList(MediaType type)
     {
-        await DialogService.MyWishListPopup(type == MediaType.movie ? ActionsMovie : ActionsTv, Watched, Watching, Wish, type);
+        await DialogService.MyWishListPopup(type == MediaType.movie ? ActionsMovie : ActionsTv, Watched, Watching, Wish, type, Culture);
     }
 
     public Task ShowMediaPopup(MediaType type, string? tmdbId, string? name)
     {
-        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, type, tmdbId);
+        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, type, tmdbId, Culture);
     }
 
 }

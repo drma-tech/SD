@@ -1,4 +1,4 @@
-﻿@page "/platforms-edit"
+﻿@page "/{culture}/platforms-edit"
 @attribute [Authorize(Roles = "administrator")]
 
 @inherits PageCore<PlatformEdit>
@@ -13,7 +13,7 @@
 
 @inject AllProvidersApi AllProvidersApi
 
-<SeoMeta Title="platforms-edit" Description="platforms-edit" Url="/platforms-edit" Index="false"></SeoMeta>
+<SeoMeta Title="platforms-edit" Description="platforms-edit" Url=@($"/{Culture}/platforms-edit") Index="false"></SeoMeta>
 
 <MudButton OnClick="@SyncProvidersOnClick" Color="Color.Primary" Variant="Variant.Filled">
     Sync Providers

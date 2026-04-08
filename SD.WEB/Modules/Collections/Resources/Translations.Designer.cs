@@ -19,7 +19,7 @@ namespace SD.WEB.Modules.Collections.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Translations {
@@ -66,6 +66,15 @@ namespace SD.WEB.Modules.Collections.Resources {
         public static string AddWishlist {
             get {
                 return ResourceManager.GetString("AddWishlist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Best awards of the {0}.
+        /// </summary>
+        public static string AwardsOfTheYear {
+            get {
+                return ResourceManager.GetString("AwardsOfTheYear", resourceCulture);
             }
         }
         
@@ -165,6 +174,42 @@ namespace SD.WEB.Modules.Collections.Resources {
         public static string EditorsChoiceTitle {
             get {
                 return ResourceManager.GetString("EditorsChoiceTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Most Expected Movies of {0}.
+        /// </summary>
+        public static string ExpectedMovieOfYear {
+            get {
+                return ResourceManager.GetString("ExpectedMovieOfYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free to Watch.
+        /// </summary>
+        public static string FreeWatch {
+            get {
+                return ResourceManager.GetString("FreeWatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discover free {0} you can watch legally in {1}. Updated daily with streaming availability across multiple platforms..
+        /// </summary>
+        public static string FreeWatchDescriptionExtended {
+            get {
+                return ResourceManager.GetString("FreeWatchDescriptionExtended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free {0} to Watch in {1}.
+        /// </summary>
+        public static string FreeWatchExtended {
+            get {
+                return ResourceManager.GetString("FreeWatchExtended", resourceCulture);
             }
         }
         

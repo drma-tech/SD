@@ -123,14 +123,26 @@
   <data name="AuthenticationInProgress" xml:space="preserve">
     <value>Autenticação em andamento...</value>
   </data>
+  <data name="ContinueWith" xml:space="preserve">
+    <value>Continuar com {0}</value>
+  </data>
   <data name="CreateAccount" xml:space="preserve">
     <value>Criar conta</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
   </data>
+  <data name="EnterCode" xml:space="preserve">
+    <value>Digite o código que você recebeu por e-mail.</value>
+  </data>
+  <data name="EnterEmail" xml:space="preserve">
+    <value>Digite seu e-mail</value>
+  </data>
   <data name="Identification" xml:space="preserve">
     <value>Identificação</value>
+  </data>
+  <data name="MicrosoftEmails" xml:space="preserve">
+    <value>Os e-mails da Microsoft (Outlook, Hotmail, etc.) podem não funcionar.</value>
   </data>
   <data name="MyAccount" xml:space="preserve">
     <value>Minha conta</value>
@@ -138,8 +150,14 @@
   <data name="NothingThisAddress" xml:space="preserve">
     <value>Desculpe, não há nada neste endereço.</value>
   </data>
+  <data name="OTPCode" xml:space="preserve">
+    <value>Código OTP</value>
+  </data>
   <data name="RegistrationInformation" xml:space="preserve">
     <value>Informações de Registro</value>
+  </data>
+  <data name="SignInSignUp" xml:space="preserve">
+    <value>Faça login ou inscreva-se</value>
   </data>
   <data name="Terms1" xml:space="preserve">
     <value>Li e concordo com os {0} e {1}</value>

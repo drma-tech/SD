@@ -1,7 +1,7 @@
-﻿@page "/legal/do-not-sell"
+﻿@page "/{culture}/legal/do-not-sell"
 @inherits PageCore<DoNotSell>
 
-<SeoMeta Title="Do Not Sell or Share My Personal Information" Url=@($"/legal/do-not-sell") Index="false"></SeoMeta>
+<SeoMeta Title="Do Not Sell or Share My Personal Information" Url=@($"/{Culture}/legal/do-not-sell") Index="false"></SeoMeta>
 
 <div class="support-container">
     @if (Language == AppLanguage.pt)
@@ -37,10 +37,5 @@
 </div>
 
 @code {
-    public AppLanguage Language { get; set; } = AppLanguage.en;
-
-    protected override async Task OnInitializedAsync()
-    {
-        Language = await AppStateStatic.GetAppLanguage(JsRuntime);
-    }
+    public AppLanguage Language => AppStateStatic.ConvertAppLanguage(Culture, AppLanguage.en);
 }

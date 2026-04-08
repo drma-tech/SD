@@ -1,8 +1,8 @@
-﻿@page "/regions"
+﻿@page "/{culture}/regions"
 
 @inherits PageCore<Regions>
 
-<SeoMeta Title="Regions" Url="/regions" Index="false"></SeoMeta>
+<SeoMeta Title="Regions" Url=@($"/{Culture}/regions") Index="false"></SeoMeta>
 <NewPageSection IsPageHeader="true" Icon="@IconsFA.Solid.Icon("globe").Font" Title="Regions"></NewPageSection>
 
 <NewPageSection ShowHeader="false">
@@ -21,10 +21,10 @@
                             </CardHeaderContent>
                         </MudCardHeader>
                         <MudCardActions Class="pa-2">
-                            <MudButton Variant="Variant.Text" Href="@($"/free/movie/{item.ToString().ToLower()}")">
+                            <MudButton Variant="Variant.Text" Href="@($"/{Culture}/free/movie/{item.ToString().ToLower()}")">
                                 @($"Free Movies")
                             </MudButton>
-                            <MudButton Variant="Variant.Text" Href="@($"/free/tv/{item.ToString().ToLower()}")">
+                            <MudButton Variant="Variant.Text" Href="@($"/{Culture}/free/tv/{item.ToString().ToLower()}")">
                                 @($"Free Series")
                             </MudButton>
                         </MudCardActions>

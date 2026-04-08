@@ -1,14 +1,14 @@
-﻿@page "/legal/terms"
+﻿@page "/{culture}/legal/terms"
 @inherits PageCore<Terms>
 
-<SeoMeta Title="Terms of Use" Url=@($"/legal/terms") Index="false"></SeoMeta>
+<SeoMeta Title="Terms of Use" Url=@($"/{Culture}/legal/terms") Index="false"></SeoMeta>
 
 <div class="support-container">
     @if (Language == AppLanguage.pt)
     {
         <h1 class="support-title">Termos de Uso</h1>
         <div class="support-subtitle">
-            Bem-vindo ao <b>@AppInfo.Title</b> (<a href="https://@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>)!<br />
+            Bem-vindo ao <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>)!<br />
             Ao acessar ou usar este serviço, você concorda com estes Termos de Uso. Por favor, leia-os com atenção.
         </div>
         <div class="support-section">
@@ -21,7 +21,7 @@
             <p>Você pode usar a plataforma anonimamente. No entanto, recursos como a criação de listas privadas ou o gerenciamento de preferências de conta exigem autenticação. Após o login, coletamos seu e-mail, carimbos de data e hora de login, endereço IP e informações do dispositivo. Esses dados são usados ​​exclusivamente para segurança, diagnóstico, personalização e análise.</p>
             <p>Não coletamos ou armazenamos dados pessoais sensíveis ou geolocalização precisa sem consentimento explícito.</p>
             <p>Implementamos medidas técnicas e organizacionais razoáveis ​​para proteger seus dados contra acesso ou divulgação não autorizados.</p>
-            <p>Usamos ferramentas de análise como o Google Analytics e o Microsoft Clarity para entender os padrões de uso. Para mais detalhes, consulte nossa <a href="/legal/privacy">Política de Privacidade</a>.</p>
+            <p>Usamos ferramentas de análise como o Google Analytics e o Microsoft Clarity para entender os padrões de uso. Para mais detalhes, consulte nossa <a href=@($"/{Culture}/legal/privacy")>Política de Privacidade</a>.</p>
         </div>
         <div class="support-section">
             <h2>3. Funcionalidades e Assinatura</h2>
@@ -81,14 +81,14 @@
         </div>
         <div class="support-footer">
             <p>Última atualização: 5 de agosto de 2025</p>
-            <p>Ao utilizar a plataforma, você concorda com estes Termos de Uso e com a <a href="/legal/privacy">Política de Privacidade</a>.</p>
+            <p>Ao utilizar a plataforma, você concorda com estes Termos de Uso e com a <a href=@($"/{Culture}/legal/privacy")>Política de Privacidade</a>.</p>
         </div>
     }
     else if (Language == AppLanguage.es)
     {
         <h1 class="support-title">Términos de Uso</h1>
         <div class="support-subtitle">
-            Bienvenido a <b>@AppInfo.Title</b> (<a href="https://@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>)!<br />
+            Bienvenido a <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>)!<br />
             Al acceder o utilizar este servicio, aceptas estos Términos de Uso. Por favor, léelos cuidadosamente.
         </div>
         <div class="support-section">
@@ -101,7 +101,7 @@
             <p>Puede usar la plataforma de forma anónima. Sin embargo, funciones como la creación de listas privadas o la gestión de las preferencias de la cuenta requieren autenticación. Al iniciar sesión, recopilamos su correo electrónico, las marcas de tiempo de inicio de sesión, la dirección IP y la información del dispositivo. Estos datos se utilizan únicamente con fines de seguridad, diagnóstico, personalización y análisis.</p>
             <p>No recopilamos ni almacenamos datos personales sensibles ni la geolocalización precisa sin su consentimiento explícito.</p>
             <p>Implementamos medidas técnicas y organizativas razonables para proteger sus datos del acceso o la divulgación no autorizados.</p>
-            <p>Utilizamos herramientas de análisis como Google Analytics y Microsoft Clarity para comprender los patrones de uso. Para obtener más información, consulte nuestra <a href="/legal/privacy">Política de Privacidad</a>.</p>
+            <p>Utilizamos herramientas de análisis como Google Analytics y Microsoft Clarity para comprender los patrones de uso. Para obtener más información, consulte nuestra <a href=@($"/{Culture}/legal/privacy")>Política de Privacidad</a>.</p>
         </div>
         <div class="support-section">
             <h2>3. Funcionalidades y Suscripción</h2>
@@ -161,14 +161,14 @@
         </div>
         <div class="support-footer">
             <p>Última actualización: 5 de agosto de 2025</p>
-            <p>Al utilizar la plataforma, aceptas estos Términos de uso y la <a href="/legal/privacy">Política de privacidad</a>.</p>
+            <p>Al utilizar la plataforma, aceptas estos Términos de uso y la <a href=@($"/{Culture}/legal/privacy")>Política de privacidad</a>.</p>
         </div>
     }
     else if (Language == AppLanguage.zh)
     {
         <h1 class="support-title">使用条款</h1>
         <div class="support-subtitle">
-            欢迎使用 <b>@AppInfo.Title</b> (<a href="https://@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>)！<br />
+            欢迎使用 <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>)！<br />
             访问或使用本服务，即表示您同意本《使用条款》。请仔细阅读。
         </div>
         <div class="support-section">
@@ -181,7 +181,7 @@
             <p>您可以匿名使用本平台。但若要使用创建私人清单或管理账户偏好等功能，则需要身份验证。登录后，我们会收集您的电子邮箱、登录时间戳、IP 地址和设备信息。这些数据仅用于安全、诊断、个性化和分析。</p>
             <p>未经明确同意，我们不会收集或存储敏感的个人数据或精确的地理位置。</p>
             <p>我们采取合理的技术和组织措施，防止您的数据遭到未经授权的访问或泄露。</p>
-            <p>我们使用 Google Analytics 和 Microsoft Clarity 等分析工具来了解使用情况。详情请参阅我们的 <a href="/legal/privacy">隐私政策</a>。</p>
+            <p>我们使用 Google Analytics 和 Microsoft Clarity 等分析工具来了解使用情况。详情请参阅我们的 <a href=@($"/{Culture}/legal/privacy")>隐私政策</a>。</p>
         </div>
         <div class="support-section">
             <h2>3. 功能与订阅</h2>
@@ -241,14 +241,14 @@
         </div>
         <div class="support-footer">
             <p>最后更新日期：2025 年 8 月 5 日</p>
-            <p>使用本平台即表示您同意本《使用条款》和 <a href="/legal/privacy">隐私政策</a>。</p>
+            <p>使用本平台即表示您同意本《使用条款》和 <a href=@($"/{Culture}/legal/privacy")>隐私政策</a>。</p>
         </div>
     }
     else
     {
         <h1 class="support-title">Terms of Use</h1>
         <div class="support-subtitle">
-            Welcome to <b>@AppInfo.Title</b> (<a href="https://@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>)!<br />
+            Welcome to <b>@AppInfo.Title</b> (<a href="@AppInfo.WebSite" target="_blank">@AppInfo.WebSite</a>)!<br />
             By accessing or using this service, you agree to these Terms of Use. Please read them carefully.
         </div>
         <div class="support-section">
@@ -261,7 +261,7 @@
             <p>You may use the platform anonymously. However, features such as creating private lists or managing account preferences require authentication. Upon login, we collect your email, login timestamps, IP address, and device information. This data is used solely for security, diagnostics, personalization, and analytics.</p>
             <p>We do not collect or store sensitive personal data or precise geolocation without explicit consent.</p>
             <p>We implement reasonable technical and organizational measures to protect your data from unauthorized access or disclosure.</p>
-            <p>We use analytics tools such as Google Analytics and Microsoft Clarity to understand usage patterns. For more details, please refer to our <a href="/legal/privacy">Privacy Policy</a>.</p>
+            <p>We use analytics tools such as Google Analytics and Microsoft Clarity to understand usage patterns. For more details, please refer to our <a href=@($"/{Culture}/legal/privacy")>Privacy Policy</a>.</p>
         </div>
         <div class="support-section">
             <h2>3. Features and Subscription</h2>
@@ -321,18 +321,13 @@
         </div>
         <div class="support-footer">
             <p>Last updated: August 5, 2025</p>
-            <p>By using the platform, you agree to this Terms of Use and the <a href="/legal/privacy">Privacy Policy</a>.</p>
+            <p>By using the platform, you agree to this Terms of Use and the <a href=@($"/{Culture}/legal/privacy")>Privacy Policy</a>.</p>
         </div>
     }
 </div>
 
 @code {
-    public AppLanguage Language { get; set; } = AppLanguage.en;
-
-    protected override async Task OnInitializedAsync()
-    {
-        Language = await AppStateStatic.GetAppLanguage(JsRuntime);
-    }
+    public AppLanguage Language => AppStateStatic.ConvertAppLanguage(Culture, AppLanguage.en);
 
     // País/Região Exigência de Tradução   Base Legal Principal
     // China   Explícita e obrigatória PIPL, CSL

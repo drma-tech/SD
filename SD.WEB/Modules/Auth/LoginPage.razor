@@ -1,4 +1,4 @@
-﻿@page "/login"
+﻿@page "/{culture}/login"
 
 @using SD.WEB.Core.Auth
 @using SD.WEB.Modules.Auth.Resources
@@ -7,40 +7,40 @@
 
 @inherits PageCore<LoginPage>
 
-<SeoMeta Title="Sign In or Sign Up" Description="Sign In or Sign Up" Url="/login" Index="false"></SeoMeta>
+<SeoMeta Title="@Resources.Translations.SignInSignUp" Description="@Resources.Translations.SignInSignUp" Url=@($"/{Culture}/login") Index="false"></SeoMeta>
 
 <MudContainer MaxWidth="MaxWidth.Small" Class="@Css.Build().Raw("mb-20")">
     <MudPaper Elevation="0" Outlined="true" Class="pa-3" Style="position: relative;">
         <MudStack Spacing="@Css.SpaceSmall">
             <MudText Typo="Typo.h1" Color="Color.Primary" Class="@Css.Build().Medium("mb")" Style="font-size: 23px !important; line-height: 1.6 !important;" Align="Align.Center">
-                Sign In or Sign Up
+                @Resources.Translations.SignInSignUp
             </MudText>
 
             <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Disabled="@(Platform == SD.Shared.Enums.Platform.ios || _processing)">
-                <MudText>Continue with Google</MudText>
+                <MudText>@Resources.Translations.ContinueWith.Format("Google")</MudText>
             </MudButton>
             <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font" Disabled="@_processing">
-                <MudText>Continue with Apple</MudText>
+                <MudText>@Resources.Translations.ContinueWith.Format("Apple")</MudText>
             </MudButton>
             <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font" Disabled="@_processing">
-                <MudText>Continue with Microsoft</MudText>
+                <MudText>@Resources.Translations.ContinueWith.Format("Microsoft")</MudText>
             </MudButton>
             <MudDivider Class="@Css.Build().Medium("my")"></MudDivider>
-            <MudTextField @bind-Value="@email" Label="Email" Placeholder="Enter your email" Disabled="@(_processing || emailSent)" Immediate="true"
+            <MudTextField @bind-Value="@email" Label="@Resources.Translations.Email" Placeholder="@Resources.Translations.EnterEmail" Disabled="@(_processing || emailSent)" Immediate="true"
                           Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="() => LoginWithEmail(email)"
-                          HelperText="Microsoft emails (Outlook, Hotmail, etc.) may not work."></MudTextField>
+                          HelperText="@Resources.Translations.MicrosoftEmails"></MudTextField>
             @if (SuggestEmailCorrection(email).NotEmpty())
             {
                 <MudAlert Variant="Variant.Outlined" Dense="true" Severity="Severity.Warning">
                     @SuggestEmailCorrection(email)
                 </MudAlert>
             }
-            <MudTextField @ref="@txtOTP" @bind-Value="@otp" Label="OTP Code" Placeholder="Enter the code you received by email." Disabled="@(!emailSent)"
+            <MudTextField @ref="@txtOTP" @bind-Value="@otp" Label="@Resources.Translations.OTPCode" Placeholder="@Resources.Translations.EnterCode" Disabled="@(!emailSent)"
                           Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Check" OnAdornmentClick="() => ConfirmCode(email, otp)"></MudTextField>
         </MudStack>
         <div style="text-align: center;">
             <MudText Class="@Css.Build().Large("mt").Medium("mb")">
-                @((MarkupString)string.Format(Translations.Terms1, $"<a href='legal/terms' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Help.Resources.Translations.TermsUse}</a>", $"<a href='legal/privacy' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Help.Resources.Translations.PrivacyPolicy}</a>"))
+                @((MarkupString)string.Format(Translations.Terms1, $"<a href='/{Culture}/legal/terms' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Help.Resources.Translations.TermsUse}</a>", $"<a href='/{Culture}/legal/privacy' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Help.Resources.Translations.PrivacyPolicy}</a>"))
             </MudText>
         </div>
         <MudOverlay Visible="_processing" DarkBackground="true" Absolute="true">
@@ -62,8 +62,6 @@
     private async Task LoginWithGoogle() => await SignIn("google");
     private async Task LoginWithApple() => await SignIn("apple");
     private async Task LoginWithMicrosoft() => await SignIn("microsoft");
-    private async Task LoginWithX() => await SignIn("x");
-    private async Task LoginWithYahoo() => await SignIn("yahoo");
     private async Task LoginWithEmail(string? email) => await SignIn("email", email);
 
     private SD.Shared.Enums.Platform? Platform { get; set; }
@@ -88,7 +86,7 @@
             {
                 if (!IsValidEmail(email ?? ""))
                 {
-                    await ShowError("Please enter a valid email.");
+                    await ShowError(@Resources.Translations.EnterEmail);
                     _processing = false; StateHasChanged();
                     return;
                 }
@@ -143,14 +141,14 @@
 
             if (code.Empty())
             {
-                await ShowError("Please enter the code you received by email.");
+                await ShowError(@Resources.Translations.EnterCode);
                 _processing = false; StateHasChanged();
                 return;
             }
 
             await JsRuntime.Supabase().ConfirmCode(email!, code!);
 
-            Navigation.NavigateTo("/");
+            Navigation.NavigateTo($"/{Culture}/");
         }
         catch (Exception ex)
         {

@@ -1,4 +1,4 @@
-﻿@page "/editors-choice/{type}"
+﻿@page "/{culture}/editors-choice/{type}"
 
 @inject TmdbListApi TmdbListApi
 @inject WatchedListApi WatchedApi
@@ -10,21 +10,21 @@
 @using SD.WEB.Modules.Profile.Core
 @inherits PageCore<EditorsChoice>
 
-<SeoMeta Title="@($"{Translations.EditorsChoiceTitle} ({Type})")" Description="@GlobalTranslations.CertifiedDescription" Url="@($"/editors-choice/{Type}")" Index="true"></SeoMeta>
-<NewPageSection IsPageHeader="true" Title="@($"{Translations.EditorsChoiceTitle} ({Type})")" Subtitle="Top-rated titles for all audiences" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font"></NewPageSection>
+<SeoMeta Title="@($"{Translations.EditorsChoiceTitle} ({MediaType.GetName()})")" Description="@GlobalTranslations.CertifiedDescription" Url="@($"/{Culture}/editors-choice/{Type}")" Index="true"></SeoMeta>
+<NewPageSection IsPageHeader="true" Title="@($"{Translations.EditorsChoiceTitle} ({MediaType.GetName()})")" Subtitle="Top-rated titles for all audiences" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
 @if (MediaType == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish"
-                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false">
+                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false" Culture="@Culture">
     </MediaListFull>
 }
 else
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish"
-                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false">
+                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false" Culture="@Culture">
     </MediaListFull>
 }
 

@@ -79,6 +79,15 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Continue with {0}.
+        /// </summary>
+        public static string ContinueWith {
+            get {
+                return ResourceManager.GetString("ContinueWith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create Account.
         /// </summary>
         public static string CreateAccount {
@@ -97,11 +106,38 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the code you received by email..
+        /// </summary>
+        public static string EnterCode {
+            get {
+                return ResourceManager.GetString("EnterCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter your email.
+        /// </summary>
+        public static string EnterEmail {
+            get {
+                return ResourceManager.GetString("EnterEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Identification.
         /// </summary>
         public static string Identification {
             get {
                 return ResourceManager.GetString("Identification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Microsoft emails (Outlook, Hotmail, etc.) may not work..
+        /// </summary>
+        public static string MicrosoftEmails {
+            get {
+                return ResourceManager.GetString("MicrosoftEmails", resourceCulture);
             }
         }
         
@@ -124,11 +160,29 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OTP Code.
+        /// </summary>
+        public static string OTPCode {
+            get {
+                return ResourceManager.GetString("OTPCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Registration Information.
         /// </summary>
         public static string RegistrationInformation {
             get {
                 return ResourceManager.GetString("RegistrationInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign In or Sign Up.
+        /// </summary>
+        public static string SignInSignUp {
+            get {
+                return ResourceManager.GetString("SignInSignUp", resourceCulture);
             }
         }
         

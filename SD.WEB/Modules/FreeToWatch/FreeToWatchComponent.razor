@@ -1,19 +1,20 @@
 ﻿@using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Subscription.Core
+@using SD.WEB.Modules.Collections.Resources
 @inherits ComponentCore<FreeToWatchComponent>
 
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<NewPageSection Title="@($"Free to Watch ({(Region?.GetName() ?? "United States")})")" Description="@($"Discover free movies and series you can watch legally. Updated daily with streaming availability across multiple platforms.")" Icon="@IconsFA.Solid.Icon("play-circle").Font">
+<NewPageSection Title="@($"{Collections.Resources.Translations.FreeWatch} ({(Region?.GetName() ?? "United States")})")" Description="@(GlobalTranslations.FreeWatchDescription)" Icon="@IconsFA.Solid.Icon("play-circle").Font">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/free/{TypeSelected.ToString().ToLower()}/{(Region?.ToString()?.ToLower() ?? "us")}")" />
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/{Culture}/free/{TypeSelected.ToString().ToLower()}/{(Region?.ToString()?.ToLower() ?? "us")}")" />
                 </MudTooltip>
             </Header>
             <ChildContent>
@@ -21,7 +22,7 @@
                     @if (_loaded[0])
                     {
                         <NewMediaList MediaListApi="TmdbDiscoveryApi" OnlyYear="true" StringParameters="_extraParameters" TypeSelected="MediaType.movie"
-                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList">
+                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList" Culture="@Culture">
                         </NewMediaList>
                     }
                 </MudTabPanel>
@@ -29,7 +30,7 @@
                     @if (_loaded[1])
                     {
                         <NewMediaList MediaListApi="TmdbDiscoveryApi" OnlyYear="true" StringParameters="_extraParameters" TypeSelected="MediaType.tv"
-                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList">
+                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList" Culture="@Culture">
                         </NewMediaList>
                     }
                 </MudTabPanel>
@@ -42,6 +43,7 @@
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
+    [Parameter][EditorRequired] public string? Culture { get; set; }
 
     private Dictionary<string, string>? _extraParameters;
     public static Region? Region { get; set; }

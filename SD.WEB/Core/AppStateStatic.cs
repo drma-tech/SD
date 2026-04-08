@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Services;
 using SD.WEB.Modules.Subscription.Core;
@@ -112,7 +113,7 @@ public static class AppStateStatic
                 var code = await js.Window().InvokeAsync<string>("eval", "navigator.language");
                 code = code[..2].ToLowerInvariant();
 
-                _appLanguage = ConvertAppLanguage(code) ?? AppLanguage.en;
+                _appLanguage = ConvertAppLanguage(code, AppLanguage.en);
                 await js.Utils().SetStorage("app-language", _appLanguage);
             }
 
@@ -128,16 +129,23 @@ public static class AppStateStatic
         }
     }
 
-    private static AppLanguage? ConvertAppLanguage(string? code)
+    public static AppLanguage ConvertAppLanguage(string? code, AppLanguage fallback)
     {
-        if (code.Empty()) return null;
+        if (code.Empty()) return AppLanguage.en;
 
         if (System.Enum.TryParse<AppLanguage>(code, true, out var language) && System.Enum.IsDefined(language))
         {
             return language;
         }
         else
-            return null;
+            return fallback;
+    }
+
+    public static string GetCulture(this NavigationManager navigation)
+    {
+        var segments = new Uri(navigation.Uri).AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+        if (segments.Length > 0) return segments[0];
+        else return "en";
     }
 
     #endregion AppLanguage

@@ -1,4 +1,5 @@
 ﻿@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Collections.Resources
 @using SD.WEB.Modules.Profile.Core
 @inherits ComponentCore<AwardsOfTheYearComponent>
 
@@ -7,17 +8,17 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<NewPageSection Title="@EnumLists.AwardsOfTheYear.GetName()" Description="@GlobalTranslations.AwardsYearDescription" Icon="@IconsFA.Solid.Icon("trophy").Font">
+<NewPageSection Title="@Translations.AwardsOfTheYear.Format(DateTime.Now.Year)" Description="@GlobalTranslations.AwardsYearDescription" Icon="@IconsFA.Solid.Icon("trophy").Font">
     <BodyFragment>
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@("/best-awards-year")" />
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/{Culture}/best-awards-year")" />
                 </MudTooltip>
             </Header>
             <ChildContent>
                 <MudTabPanel Text="All">
-                    <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="Watched" Watching="Watching" Wish="Wish" CommentsIsImage="true">
+                    <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="Watched" Watching="Watching" Wish="Wish" CommentsIsImage="true" Culture="@Culture">
                     </NewMediaList>
                 </MudTabPanel>
             </ChildContent>
@@ -29,6 +30,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public string? Culture { get; set; }
 
     protected override void OnInitialized()
     {

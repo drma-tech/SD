@@ -1,14 +1,14 @@
-﻿@page "/ask-consent"
+﻿@page "/{culture}/ask-consent"
 @using SD.WEB.Modules.Auth.Resources
 
 @inherits PageCore<AskConsent>
 
-<SeoMeta Title="Ask Consent" Url="/ask-consent" Index="false"></SeoMeta>
+<SeoMeta Title="Ask Consent" Url=@($"/{Culture}/ask-consent") Index="false"></SeoMeta>
 
 <MudPaper Elevation="0" Outlined="true" Class="@Css.Build().Small("pa")">
     <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="@Css.Build().Small("mb")">
         <MudText Inline="true">
-            @((MarkupString)string.Format(Translations.Terms1, $"<a href='legal/terms' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Modules.Help.Resources.Translations.TermsUse}</a>", $"<a href='legal/privacy' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Modules.Help.Resources.Translations.PrivacyPolicy}</a>"))
+            @((MarkupString)string.Format(Translations.Terms1, $"<a href='/{Culture}legal/terms' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Modules.Help.Resources.Translations.TermsUse}</a>", $"<a href='/{Culture}/legal/privacy' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Modules.Help.Resources.Translations.PrivacyPolicy}</a>"))
         </MudText>
     </MudCheckBox>
 
@@ -25,7 +25,7 @@
         try
         {
             await JsRuntime.Utils().SetStorage("consent", true);
-            Navigation.NavigateTo("/", true);
+            Navigation.NavigateTo($"/{Culture}/", true);
         }
         catch (Exception ex)
         {

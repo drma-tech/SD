@@ -1,4 +1,4 @@
-﻿@page "/platforms"
+﻿@page "/{culture}/platforms"
 
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Authorization
@@ -14,7 +14,7 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<SeoMeta Title="@SeoTranslations.PlatformsTitle" Description="@SeoTranslations.PlatformsDescription" Url="/platforms" Index="true"></SeoMeta>
+<SeoMeta Title="@SeoTranslations.PlatformsTitle" Description="@SeoTranslations.PlatformsDescription" Url=@($"/{Culture}/platforms") Index="true"></SeoMeta>
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
 <NewPageSection IsPageHeader="true" Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
@@ -36,7 +36,7 @@
             var favorite = MyProviders?.Items.Any(a => a.id == item.id) ?? false;
 
             <div>
-                <MudLink Href="@($"/platforms/{item.id}")" Style="position: relative;">
+                <MudLink Href="@($"/{Culture}/platforms/{item.id}")" Style="position: relative;">
                     <MudCard Outlined="true">
                         <MudCardContent Style="padding: 0;">
                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" FallbackSrc="images/no-image.png"

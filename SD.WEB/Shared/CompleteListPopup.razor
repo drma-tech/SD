@@ -14,7 +14,7 @@
         <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) => { Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged(); })"
                        IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" Actions="Actions"
                        StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false" FullPage="true" Popup="true"
-                       Watched="Watched" Watching="Watching" Wish="Wish" CommentsIsImage="CommentsIsImage">
+                       Watched="Watched" Watching="Watching" Wish="Wish" CommentsIsImage="CommentsIsImage" Culture="@Culture">
         </MediaListFull>
     </DialogContent>
     <DialogActions>
@@ -31,6 +31,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public string? Culture { get; set; }
     [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }

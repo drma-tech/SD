@@ -1,4 +1,4 @@
-﻿@page "/news/{category}"
+﻿@page "/{culture}/news/{category}"
 @using SD.Shared.Models.News
 @using SD.WEB.Modules.News.Resources
 @using Button = SD.WEB.Resources.Button
@@ -7,8 +7,8 @@
 
 @inject CacheFlixsterApi CacheFlixsterApi
 
-<SeoMeta Title="@($"{Translations.NewsTitle} ({category})")" Description="@Translations.NewsDescription" Url="@($"/news/{category}")" Index="true"></SeoMeta>
-<NewPageSection IsPageHeader="true" Title="@($"{Translations.NewsTitle} ({category})")" Description="@Translations.NewsDescription" Icon="@IconsFA.Solid.Icon("newspaper").Font"></NewPageSection>
+<SeoMeta Title="@($"{Translations.NewsTitle} ({MediaType.GetName()})")" Description="@Translations.NewsDescription" Url="@($"/{Culture}/news/{category}")" Index="true"></SeoMeta>
+<NewPageSection IsPageHeader="true" Title="@($"{Translations.NewsTitle} ({MediaType.GetName()})")" Description="@Translations.NewsDescription" Icon="@IconsFA.Solid.Icon("newspaper").Font"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
@@ -42,6 +42,8 @@
 
 @code {
     [Parameter] public required string category { get; set; }
+
+    public MediaType MediaType => Enum.Parse<MediaType>(category ?? "movie");
 
     public ComponentActions<CacheDocument<NewsModel>?> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
     private CacheDocument<NewsModel>? NewsList { get; set; }

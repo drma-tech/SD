@@ -1,4 +1,4 @@
-﻿@page "/trailers"
+﻿@page "/{culture}/trailers"
 @using SD.Shared.Models.Trailers
 @using SD.WEB.Modules.Trailers.Resources
 @using SD.WEB.Shared.Core
@@ -6,7 +6,7 @@
 
 @inject CacheYoutubeApi CacheYoutubeApi
 
-<SeoMeta Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Url="/trailers" Index="true"></SeoMeta>
+<SeoMeta Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Url=@($"/{Culture}/trailers") Index="true"></SeoMeta>
 <NewPageSection IsPageHeader="true" Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Icon="@IconsFA.Brands.Icon("youtube").Font">
 </NewPageSection>
 
@@ -16,7 +16,7 @@
     <div class="grid-relative-container-trailer">
         @foreach (var item in TrailerModel?.Data?.Items ?? [])
         {
-            <MudLink Href="@($"/video/{($"{item.id}|{item.title}".SimpleEncrypt())}")" rel="noindex, nofollow">
+            <MudLink Href="@($"/{Culture}/video/{($"{item.id}|{item.title}".SimpleEncrypt())}")" rel="noindex, nofollow">
                 <MudCard Outlined="true">
                     <MudCardContent Style="padding: 0; position: relative;">
                         <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%;"></MudImage>

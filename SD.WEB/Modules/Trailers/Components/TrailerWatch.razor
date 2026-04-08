@@ -1,8 +1,8 @@
-﻿@page "/video/{data}"
+﻿@page "/{culture}/video/{data}"
 @using SD.WEB.Modules.Trailers.Resources
 @inherits PageCore<TrailerWatch>
 
-<SeoMeta Title="@Title" Description="@Title" Url="/trailers" Index="false"></SeoMeta>
+<SeoMeta Title="@Title" Description="@Title" Url=@($"/{Culture}/trailers") Index="false"></SeoMeta>
 <NewPageSection IsPageHeader="true" Title="@Title">
 </NewPageSection>
 

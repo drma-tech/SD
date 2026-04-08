@@ -1,4 +1,4 @@
-﻿@page "/register-user"
+﻿@page "/{culture}/register-user"
 @inherits PageCore<RegisterUser>
 
 @using System.Security.Claims
@@ -9,7 +9,7 @@
 @inject LoginApi LoginApi
 @inject PrincipalApi PrincipalApi
 
-<SeoMeta Title="Register User" Description="Register User" Url="/register-user" Index="false"></SeoMeta>
+<SeoMeta Title="Register User" Description="Register User" Url=@($"/{Culture}/register-user") Index="false"></SeoMeta>
 
 @if (AppStateStatic.IsAuthenticated)
 {
@@ -23,7 +23,7 @@
 
                 <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="@Css.Build().Small("mb")">
                     <MudText Inline="true">
-                        @((MarkupString)string.Format(Translations.Terms1, $"<a href='legal/terms' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Help.Resources.Translations.TermsUse}</a>", $"<a href='legal/privacy' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Help.Resources.Translations.PrivacyPolicy}</a>"))
+                        @((MarkupString)string.Format(Translations.Terms1, $"<a href='/{Culture}/legal/terms' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Help.Resources.Translations.TermsUse}</a>", $"<a href='/{Culture}/legal/privacy' target='_blank' class='mud-link mud-primary-text mud-link-underline-hover'>{Help.Resources.Translations.PrivacyPolicy}</a>"))
                     </MudText>
                 </MudCheckBox>
                 <MudCheckBox @bind-Value="_terms2" Color="Color.Primary" Class="@Css.Build().Small("mb")">
@@ -77,7 +77,7 @@
             }
             else
             {
-                Navigation.NavigateTo("/");
+                Navigation.NavigateTo($"/{Culture}/");
             }
         }
         catch (Exception ex)
@@ -129,7 +129,7 @@
             await PrincipalApi.Update(Principal);
         }
 
-        Navigation.NavigateTo("/profile");
+        Navigation.NavigateTo($"/{Culture}/profile");
     }
 
     private async Task Logout()
@@ -138,7 +138,7 @@
 
         await JsRuntime.Supabase().SignOutAsync();
 
-        Navigation.NavigateTo("/");
+        Navigation.NavigateTo($"/{Culture}/");
 
         await JsRuntime.Utils().ClearAllStorage();
     }

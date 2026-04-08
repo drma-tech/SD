@@ -1,5 +1,5 @@
 ﻿@page "/"
-@page "/index"
+@page "/{culture}/"
 
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.EditorsChoice
@@ -10,6 +10,7 @@
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Modules.Trailers.Components
 @using SD.WEB.Modules.News.Components
+@using SD.WEB.Modules.Collections.Resources
 @inherits PageCore<Index>
 
 @inject WatchedListApi WatchedApi
@@ -17,38 +18,38 @@
 @inject WishListApi WishApi
 @inject TmdbListApi TmdbListApi
 
-<SeoMeta Title="@AppInfo.Title" Description="@SeoTranslations.AppDescription" Url="/" Index="true" ForceTitle="true"></SeoMeta>
+<SeoMeta Title="@AppInfo.Title" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}/") Index="true" ForceTitle="true"></SeoMeta>
 <NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@AppInfo.Subtitle"></NewPageSection>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress" Class="@Css.Build().Large("mb")"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
-              OnAdornmentClick="@(() =>{ if (AppStateStatic.Search.NotEmpty()) Navigation.NavigateTo($"/search"); })" Clearable="true"
+              OnAdornmentClick="@(() =>{ if (AppStateStatic.Search.NotEmpty()) Navigation.NavigateTo($"/{Culture}/search"); })" Clearable="true"
               HelperText="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio">
 </MudTextField>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
-<PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish"></PopularIndexComponent>
+<PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture"></PopularIndexComponent>
 
-<FreeToWatchComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish"></FreeToWatchComponent>
+<FreeToWatchComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture"></FreeToWatchComponent>
 
-<EditorsChoiceComponent Watched="Watched" Watching="Watching" Wish="Wish"></EditorsChoiceComponent>
+<EditorsChoiceComponent Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"></EditorsChoiceComponent>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index2"></GoogleAdSense>
 
-<AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish"></AwardsOfTheYearComponent>
+<AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"></AwardsOfTheYearComponent>
 
-<NewPageSection Title="@EnumLists.ExpectedMovieOf2026.GetName()" Description="@(string.Format(GlobalTranslations.ExpectedMovies, 2026))">
+<NewPageSection Title="@Translations.ExpectedMovieOfYear.Format(DateTime.Now.Year)" Description="@(string.Format(GlobalTranslations.ExpectedMovies, 2026))">
     <BodyFragment>
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" OnClick="@(() => Navigation.NavigateTo($"/list/{(int)EnumLists.ExpectedMovieOf2026}"))" />
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" OnClick="@(() => Navigation.NavigateTo($"/{Culture}/list/{(int)EnumLists.ExpectedMovieOf2026}"))" />
                 </MudTooltip>
             </Header>
             <ChildContent>
                 <MudTabPanel Text="All">
-                    <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" Watched="Watched" Watching="Watching" Wish="Wish" />
+                    <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" TitleHead="@Translations.ExpectedMovieOfYear.Format(DateTime.Now.Year)" Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture" />
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>
@@ -57,16 +58,14 @@
 
 <MudGrid Spacing="@Css.SpaceSmall">
     <MudItem xs="12" sm="6">
-        <TrailersComponent></TrailersComponent>
+        <TrailersComponent Culture="@Culture"></TrailersComponent>
     </MudItem>
     <MudItem xs="12" sm="6">
-        <NewsComponent></NewsComponent>
+        <NewsComponent Culture="@Culture"></NewsComponent>
     </MudItem>
 </MudGrid>
 
 @code {
-    [Parameter][SupplyParameterFromQuery(Name = "language")] public string? Language { get; set; }
-
     private WatchedList? Watched { get; set; }
     private WatchingList? Watching { get; set; }
     private WishList? Wish { get; set; }
@@ -102,7 +101,7 @@
 
         if (args.Key == "Enter")
         {
-            Navigation.NavigateTo("/search");
+            Navigation.NavigateTo($"/{Culture}/search");
         }
     }
 

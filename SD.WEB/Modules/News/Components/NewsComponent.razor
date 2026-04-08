@@ -11,7 +11,7 @@
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/news/{(_activeIndex == 0 ? "movie" : "tv")}")" />
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/{Culture}/news/{(_activeIndex == 0 ? "movie" : "tv")}")" />
                 </MudTooltip>
             </Header>
             <ChildContent>
@@ -91,6 +91,8 @@
 </NewPageSection>
 
 @code {
+    [Parameter][EditorRequired] public string? Culture { get; set; }
+
     public ComponentActions<CacheDocument<NewsModel>?> ActionsMovie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
     public ComponentActions<CacheDocument<NewsModel>?> ActionsSerie { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
 

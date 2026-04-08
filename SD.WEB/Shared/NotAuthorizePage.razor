@@ -1,11 +1,11 @@
-﻿@page "/not-authorized"
-
-@inject NavigationManager Navigation
+﻿@page "/{culture}/not-authorized"
+@inherits ComponentCore<NotAuthorizePage>
 
 <PageTitle>401 - Not Authorized</PageTitle>
 <HeadContent>
     <meta name="robots" content="noindex, nofollow" />
 </HeadContent>
+
 <style>
     body {
         margin: 0;
@@ -28,7 +28,7 @@
             <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="Login" Class="me-3" Size="AppStateStatic.Size">
                 @Button.Login
             </MudButton>
-            <MudButton Variant="Variant.Text" Color="Color.Default" Href="/" Size="AppStateStatic.Size">
+            <MudButton Variant="Variant.Text" Color="Color.Default" Href=@($"/{Culture}/") Size="AppStateStatic.Size">
                 Return to homepage
             </MudButton>
         </div>
@@ -36,8 +36,10 @@
 </div>
 
 @code {
+    private string Culture => Navigation.GetCulture();
+
     private async Task Login()
     {
-        Navigation.NavigateTo($"/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+        Navigation.NavigateTo($"/{Culture}/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
     }
 }

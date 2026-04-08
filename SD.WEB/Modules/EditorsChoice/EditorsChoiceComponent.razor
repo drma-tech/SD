@@ -10,21 +10,21 @@
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/editors-choice/{TypeSelected}")" />
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/{Culture}/editors-choice/{TypeSelected}")" />
                 </MudTooltip>
             </Header>
             <ChildContent>
                 <MudTabPanel Text="@MediaType.movie.GetName()">
                     @if (_loaded[0])
                     {
-                        <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish">
+                        <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
                         </NewMediaList>
                     }
                 </MudTabPanel>
                 <MudTabPanel Text="@MediaType.tv.GetName()">
                     @if (_loaded[1])
                     {
-                        <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish">
+                        <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
                         </NewMediaList>
                     }
                 </MudTabPanel>
@@ -37,6 +37,7 @@
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
+    [Parameter][EditorRequired] public string? Culture { get; set; }
 
     private int _activeIndex = 0;
     private bool[] _loaded = new bool[2] { true, false };

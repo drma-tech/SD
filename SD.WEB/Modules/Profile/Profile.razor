@@ -1,4 +1,4 @@
-﻿@page "/profile"
+﻿@page "/{culture}/profile"
 
 @using SD.Shared.Resources.Enum
 @using SD.WEB.Modules.Profile.Components
@@ -14,7 +14,7 @@
 @inject WishListApi WishApi
 @inject PaymentConfigurationApi ConfigurationApi
 
-<SeoMeta Title="@SeoTranslations.ProfileTitle" Url="/profile" Index="false"></SeoMeta>
+<SeoMeta Title="@SeoTranslations.ProfileTitle" Url=@($"/{Culture}/profile") Index="false"></SeoMeta>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Profile"></GoogleAdSense>
 
@@ -82,17 +82,17 @@
     </MudItem>
 </MudGrid>
 
-<MyProviderComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish"></MyProviderComponent>
+<MyProviderComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture"></MyProviderComponent>
 
-<MySuggestions Watched="Watched" Watching="Watching" Wish="Wish"></MySuggestions>
+<MySuggestions Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"></MySuggestions>
 
 <MudGrid Spacing="@Css.SpaceSmall">
     <MudItem xs="12" md="6">
-        <WishlistComponent ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish" ActionsMovie="WishActionsMovie" ActionsTv="WishActionsTv">
+        <WishlistComponent ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish" ActionsMovie="WishActionsMovie" ActionsTv="WishActionsTv" Culture="@Culture">
         </WishlistComponent>
     </MudItem>
     <MudItem xs="12" md="6">
-        <WatchingComponent ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish" ActionsMovie="WatchingActionsMovie" ActionsTv="WatchingActionsTv">
+        <WatchingComponent ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish" ActionsMovie="WatchingActionsMovie" ActionsTv="WatchingActionsTv" Culture="@Culture">
         </WatchingComponent>
     </MudItem>
 </MudGrid>

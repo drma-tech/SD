@@ -47,6 +47,7 @@
     private MudThemeProvider? _mudThemeProvider;
     private bool _darkMode = false;
     private AuthPrincipal? Principal { get; set; }
+    private string Culture => Navigation.GetCulture();
 
     protected override void OnInitialized()
     {
@@ -154,7 +155,7 @@
 
             if (Principal == null)
             {
-                Navigation.NavigateTo("/register-user");
+                Navigation.NavigateTo($"/{Culture}/register-user");
             }
             else
             {
@@ -218,7 +219,7 @@
 
                 if (!consent)
                 {
-                    Navigation.NavigateTo("/ask-consent");
+                    Navigation.NavigateTo($"/{Culture}/ask-consent");
                 }
             }
         }
