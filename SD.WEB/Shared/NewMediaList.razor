@@ -166,22 +166,20 @@ else
 
     protected override async Task ProcessInitialData()
     {
-        await Actions.StartLoading.Invoke(null);
         await LoadItems(TypeSelected);
-        await Actions.FinishLoading.Invoke(Items);
     }
 
     private async Task TypeSelectedChangedHandle(MediaType type)
     {
-        await Actions.StartLoading.Invoke(null);
         await LoadItems(type);
-        await Actions.FinishLoading.Invoke(Items);
     }
 
     private async Task LoadItems(MediaType type)
     {
         try
         {
+            await Actions.StartLoading.Invoke(null);
+
             if (MediaListApi != null)
             {
                 var result = await MediaListApi.GetList([], type, StringParameters, List);
@@ -197,6 +195,8 @@ else
                 }
 
                 if (OrderByComments) Items = Items.OrderByDescending(o => int.Parse(o.comments?.Split(",").Last() ?? "0")).ToHashSet();
+
+                await Actions.FinishLoading.Invoke(Items);
             }
         }
         catch (Exception ex)
