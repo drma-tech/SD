@@ -6,10 +6,19 @@
 <NewPageSection IsPageHeader="true" Icon="@IconsFA.Solid.Icon("globe").Font" Title="Regions"></NewPageSection>
 
 <NewPageSection ShowHeader="false">
+    <ActionsFragment>
+        <MudSelect Label="Continent" FitContent="!IsMobile" Clearable="true" Dense="true" Class="me-2" Variant="Variant.Text"
+                   Value="continent" ValueChanged="@((string? vl) => { continent = vl; StateHasChanged(); })">
+            @foreach (var item in Continents)
+            {
+                <MudSelectItem Value="item">@item</MudSelectItem>
+            }
+        </MudSelect>
+    </ActionsFragment>
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
            
-            @foreach (var item in RegionsList)
+            @foreach (var item in RegionsFiltered)
             {
                 <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudCard>
@@ -37,9 +46,20 @@
 
 @code {
     public List<Region> RegionsList { get; set; } = [];
+    public List<Region> RegionsFiltered => continent == "Default" ?
+        RegionsList.Where(p => p.GetCustomAttribute(false)!.Group == "Americas" || p.GetCustomAttribute(false)!.Group == "Europe").ToList() :
+        RegionsList.Where(p => p.GetCustomAttribute(false)!.Group == continent).ToList();
+
+    private bool IsMobile => AppStateStatic.Breakpoint <= Breakpoint.Xs;
+
+    private List<string?> Continents { get; set; } = [];
+    private string? continent = "Default";
 
     protected override async Task ProcessInitialData()
     {
         RegionsList = EnumHelper.GetArray<Region>().ToList();
+        
+        Continents.Add("Default");
+        Continents.AddRange(RegionsList?.Select(p => p.GetCustomAttribute(false)?.Group).Distinct().ToList() ?? []);
     }
 }
