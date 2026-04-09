@@ -18,7 +18,7 @@
         public double? popularity { get; set; }
     }
 
-    public class Rating 
+    public class Rating
     {
         public string? source { get; set; }
         public double? score { get; set; }

@@ -2,7 +2,7 @@
 
 public enum EnumLists
 {
-    [Custom(Name = "ExpectedMovieOfYear", Description = "Discover the most anticipated movies of 2026, featuring upcoming blockbusters, fan favorites, and highly awaited releases hitting theaters and streaming.", ResourceType =typeof(Resources.Translations))]
+    [Custom(Name = "ExpectedMovieOfYear", Description = "Discover the most anticipated movies of 2026, featuring upcoming blockbusters, fan favorites, and highly awaited releases hitting theaters and streaming.", ResourceType = typeof(Resources.Translations))]
     ExpectedMovieOf2026 = 8544544,
 
     [Custom(Name = "AwardsOfTheYear", Description = "Explore films and series that won the year’s top awards. Discover main categories, winners, and celebrated titles recognized by critics and audiences.", ResourceType = typeof(Resources.Translations))]
