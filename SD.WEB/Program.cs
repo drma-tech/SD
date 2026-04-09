@@ -70,6 +70,13 @@ await app.RunAsync();
 
 static void ConfigureServices(IServiceCollection collection, string baseAddress, IConfiguration configuration)
 {
+    //required by prerendering
+    const string loading = "loading";
+    AppStateStatic.Version = loading;
+    AppStateStatic.BrowserName = loading;
+    AppStateStatic.BrowserVersion = loading;
+    AppStateStatic.OperatingSystem = loading;
+
     collection.AddMudServices(config =>
     {
         config.SnackbarConfiguration.PreventDuplicates = false;

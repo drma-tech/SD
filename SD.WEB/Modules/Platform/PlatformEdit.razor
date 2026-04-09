@@ -127,6 +127,7 @@
             if (AllProviders != null)
             {
                 var details = AllProviders.Items;
+                var blocked_providers = new List<string>() { "Amazon Channel", "Apple TV Channel", "Roku Premium Channel" };
 
                 foreach (var region in EnumHelper.GetArray<Region>())
                 {
@@ -140,9 +141,11 @@
                     using (var http = new HttpClient())
                     {
                         var movies = await http.GetFromJsonAsync<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/movie".ConfigureParameters(parameter));
+                        movies.results.RemoveAll(r => blocked_providers.Any(k => r.provider_name.Contains(k, StringComparison.InvariantCultureIgnoreCase)));
                         if (movies != null) AddProvider(result, movies.results, details, region, MediaType.movie);
 
                         var tvs = await http.GetFromJsonAsync<TMDB_AllProviders>(TmdbOptions.BaseUri + "watch/providers/tv".ConfigureParameters(parameter));
+                        tvs.results.RemoveAll(r => blocked_providers.Any(k => r.provider_name.Contains(k, StringComparison.InvariantCultureIgnoreCase)));
                         if (tvs != null) AddProvider(result, tvs.results, details, region, MediaType.tv);
                     }
                 }
