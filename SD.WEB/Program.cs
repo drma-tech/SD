@@ -79,7 +79,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddPWAUpdater();
     collection.AddScoped<AppVersionHandler>();
 
-    collection.AddHttpClient("Local", c => { c.BaseAddress = new Uri(baseAddress); });
+    collection.AddHttpClient("Local", c => { c.BaseAddress = new Uri(baseAddress); }); //json files and other assets, not the API.
 
     var apiOrigin = configuration["DownstreamApi:BaseUrl"] ??
         (baseAddress.Contains("localhost") || baseAddress.Contains("127.0.0.1") ? throw new UnhandledException($"DownstreamApi:BaseUrl is null.") : $"{baseAddress}api/");

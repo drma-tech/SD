@@ -31,10 +31,9 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
 
             if (HttpRequestDataExtensions.IsOutdated(version))
             {
-                req.LogWarning($"Outdated version detected: {(version ?? "error")}");
                 await context.SetHttpResponseStatusCode(
                     HttpStatusCode.UpgradeRequired,
-                    "An outdated version has been detected. Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it."
+                    $"An outdated version has been detected ({version ?? "error"}). Please update to the latest version to continue using the platform. If you cannot update, try clearing your browser or app cache and reopen it."
                 );
                 return;
             }
