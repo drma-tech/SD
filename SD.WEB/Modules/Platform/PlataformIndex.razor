@@ -19,13 +19,13 @@
 
 <NewPageSection IsPageHeader="true" Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
     <ActionsFragment>
-        <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="Delivery Model" Dense="true" Class="me-2">
+        <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="@Resources.Translations.DeliveryModel" Dense="true" Class="me-2">
             @foreach (var item in DeliveryModels)
             {
                 <MudSelectItem T="DeliveryModel?" Value="@item.Value">@item.Name</MudSelectItem>
             }
         </MudSelect>
-        <MudTextField T="string" Label="Name" @bind-Value="@name" Clearable="true" Variant="Variant.Text" Immediate="true" Style="max-width: 180px;"></MudTextField>
+        <MudTextField T="string" Label="@Resources.Translations.Name" @bind-Value="@name" Clearable="true" Variant="Variant.Text" Immediate="true" Style="max-width: 180px;"></MudTextField>
     </ActionsFragment>
 </NewPageSection>
 

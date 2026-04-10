@@ -106,20 +106,20 @@
             if (Navigation.Uri.Contains("popular"))
             {
                 TitleHead = $"{provider?.name} - {Modules.Platform.Resources.Translations.Popular} - {TypeSelected!.GetName()}";
-                DescriptionHead = $"Explore the most popular movies and TV shows on {provider?.name}, ranked by audience interest and trending buzz this week.";
+                DescriptionHead = Modules.Platform.Resources.Translations.PopularDesc.Format(provider?.name);
                 StringParameters = GetExtraParameters(id, "popularity.desc");
             }
             else if (Navigation.Uri.Contains("new"))
             {
                 TitleHead = $"{provider?.name} - {Modules.Platform.Resources.Translations.Release} - {TypeSelected!.GetName()}";
-                DescriptionHead = $"Stay updated with the latest releases on {provider?.name}, including newly launched movies and shows hitting the market.";
+                DescriptionHead = Modules.Platform.Resources.Translations.NewsDesc.Format(provider?.name);
                 DetectRegions = true;
                 StringParameters = GetExtraParameters(id, "primary_release_date.desc");
             }
             else if (Navigation.Uri.Contains("top"))
             {
                 TitleHead = $"{provider?.name} - {Modules.Platform.Resources.Translations.TopRated} - {TypeSelected!.GetName()}";
-                DescriptionHead = $"Discover the highest-rated movies and TV shows on {provider?.name}, curated to highlight the best titles you won’t want to miss.";
+                DescriptionHead = Modules.Platform.Resources.Translations.RecommendedDesc.Format(provider?.name);
                 DetectRegions = true;
                 StringParameters = GetExtraParameters(id, "vote_average.desc");
             }

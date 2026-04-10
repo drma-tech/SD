@@ -52,7 +52,7 @@
             <CellTemplate>
                 <div style="width: 60px;">
                     <MudIconButton Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
-                    <MudIconButton Icon="@Icons.Material.Outlined.Link" Disabled="context.Item.link.NotEmpty()" Target="_blank"
+                    <MudIconButton Icon="@Icons.Material.Outlined.Link" Disabled="context.Item.link.NotEmpty()" Target="_blank" Rel="noopener"
                                    Href="@($"https://www.google.com/search?q=streaming+{context.Item.name}")" />
                 </div>
             </CellTemplate>

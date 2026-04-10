@@ -19,7 +19,7 @@ namespace SD.WEB.Modules.Subscription.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Translations {
@@ -192,6 +192,15 @@ namespace SD.WEB.Modules.Subscription.Resources {
         public static string PreviouslyBilled {
             get {
                 return ResourceManager.GetString("PreviouslyBilled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to * Prices are displayed in US dollars. Your payment provider may convert and/or adjust the amount based on your location and local taxes..
+        /// </summary>
+        public static string PricesDisplayedDollars {
+            get {
+                return ResourceManager.GetString("PricesDisplayedDollars", resourceCulture);
             }
         }
         

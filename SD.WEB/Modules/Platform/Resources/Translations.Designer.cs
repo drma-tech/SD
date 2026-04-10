@@ -19,7 +19,7 @@ namespace SD.WEB.Modules.Platform.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Translations {
@@ -70,6 +70,15 @@ namespace SD.WEB.Modules.Platform.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Countries.
+        /// </summary>
+        public static string Countries {
+            get {
+                return ResourceManager.GetString("Countries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Models.
         /// </summary>
         public static string DeliveryModel {
@@ -88,11 +97,38 @@ namespace SD.WEB.Modules.Platform.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stay updated with the latest releases on {0}, including newly launched movies and shows hitting the market..
+        /// </summary>
+        public static string NewsDesc {
+            get {
+                return ResourceManager.GetString("NewsDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not Found.
         /// </summary>
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Official Website.
+        /// </summary>
+        public static string OfficialWebsite {
+            get {
+                return ResourceManager.GetString("OfficialWebsite", resourceCulture);
             }
         }
         
@@ -124,6 +160,15 @@ namespace SD.WEB.Modules.Platform.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Explore the most popular movies and TV shows on {0}, ranked by audience interest and trending buzz this week..
+        /// </summary>
+        public static string PopularDesc {
+            get {
+                return ResourceManager.GetString("PopularDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string ProviderPopupTabAbout {
@@ -147,6 +192,15 @@ namespace SD.WEB.Modules.Platform.Resources {
         public static string ProviderPopupTabDetails {
             get {
                 return ResourceManager.GetString("ProviderPopupTabDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discover the highest-rated movies and TV shows on {0}, curated to highlight the best titles you won’t want to miss..
+        /// </summary>
+        public static string RecommendedDesc {
+            get {
+                return ResourceManager.GetString("RecommendedDesc", resourceCulture);
             }
         }
         
