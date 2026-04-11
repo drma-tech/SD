@@ -150,22 +150,8 @@ static async Task ConfigureCulture(WebAssemblyHost? app, IJSRuntime js)
 
     var nav = app.Services.GetService<NavigationManager>();
     var uri = new Uri(nav!.Uri);
-    var segments = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
-    string? appLanguage = segments.Length > 0 ? segments[0].ToLowerInvariant() : null;
 
-    appLanguage = appLanguage switch
-    {
-        "pt" or "en" or "es" or "zh" => appLanguage,
-        _ => null
-    };
-
-    if (appLanguage.Empty())
-    {
-        appLanguage = (await AppStateStatic.GetAppLanguage(js)).ToString();
-
-        nav.NavigateTo($"/{appLanguage}/", forceLoad: true);
-        return;
-    }
+    var appLanguage = await ExtensionMethodsWeb.GetRouteLanguage(js, uri);
 
     if (appLanguage.NotEmpty())
     {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System.Collections.Specialized;
 using System.Web;
 
@@ -20,5 +21,20 @@ public static class ExtensionMethodsWeb
     {
         if (item == null) return [];
         return [item.Value];
+    }
+
+    public static async Task<string> GetRouteLanguage(IJSRuntime js, Uri uri)
+    {
+        var segments = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+        var lang = segments.FirstOrDefault()?.ToLowerInvariant();
+
+        if (lang.IsValidLanguage())
+        {
+            return lang!;
+        }
+        else
+        {
+            return (await AppStateStatic.GetAppLanguage(js)).ToString();
+        }
     }
 }

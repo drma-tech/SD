@@ -148,6 +148,11 @@ public static class AppStateStatic
         else return "en";
     }
 
+    public static bool IsValidLanguage(this string? lang)
+    {
+        return lang is "pt" or "en" or "es" or "zh";
+    }
+
     #endregion AppLanguage
 
     #region DarkMode

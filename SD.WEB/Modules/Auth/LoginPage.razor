@@ -86,7 +86,7 @@
             {
                 if (!IsValidEmail(email ?? ""))
                 {
-                    await ShowError(@Resources.Translations.EnterEmail);
+                    await ShowError(Resources.Translations.EnterEmail);
                     _processing = false; StateHasChanged();
                     return;
                 }
@@ -141,7 +141,7 @@
 
             if (code.Empty())
             {
-                await ShowError(@Resources.Translations.EnterCode);
+                await ShowError(Resources.Translations.EnterCode);
                 _processing = false; StateHasChanged();
                 return;
             }
