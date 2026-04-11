@@ -150,7 +150,7 @@ public static class AppStateStatic
 
     public static bool IsValidLanguage(this string? lang)
     {
-        return lang is "pt" or "en" or "es" or "zh";
+        return lang is "en" or "pt" or "es" or "zh";
     }
 
     #endregion AppLanguage
