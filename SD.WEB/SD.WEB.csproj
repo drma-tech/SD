@@ -171,7 +171,7 @@
 	</ItemGroup>
 	<PropertyGroup>
 		<BlazorWasmPrerenderingMode>Static</BlazorWasmPrerenderingMode>
-		<BlazorWasmPrerenderingUrlPathToExplicitFetch>/en/certified-sd/tv;/en/popular/show;/en/news/tv</BlazorWasmPrerenderingUrlPathToExplicitFetch>
+		<BlazorWasmPrerenderingUrlPathToExplicitFetch>/pt/;/es/</BlazorWasmPrerenderingUrlPathToExplicitFetch>
 		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
 		<CurrentDate>$([System.DateTime]::Now.ToString(yyyy.MM.dd))</CurrentDate>
 	</PropertyGroup>

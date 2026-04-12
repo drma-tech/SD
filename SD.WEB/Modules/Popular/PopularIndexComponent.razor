@@ -12,6 +12,9 @@
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/{Culture}/popular/{TypeSelected.ToString().ToLower()}")" />
                 </MudTooltip>
+                <!--to fill in the sitemap-->
+                <a href="@($"/{Culture}/popular/{PopularType.Movie.ToString().ToLower()}")" style="display:none;"></a>
+                <a href="@($"/{Culture}/popular/{PopularType.Show.ToString().ToLower()}")" style="display:none;"></a>
             </Header>
             <ChildContent>
                 <MudTabPanel Text="@PopularType.Movie.GetName()">

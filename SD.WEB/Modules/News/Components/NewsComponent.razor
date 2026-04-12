@@ -13,6 +13,9 @@
                 <MudTooltip Text="Expand">
                     <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/{Culture}/news/{(_activeIndex == 0 ? "movie" : "tv")}")" />
                 </MudTooltip>
+                <!--to fill in the sitemap-->
+                <a href="@($"/{Culture}/news/{MediaType.movie.ToString().ToLower()}")" style="display:none;"></a>
+                <a href="@($"/{Culture}/news/{MediaType.tv.ToString().ToLower()}")" style="display:none;"></a>
             </Header>
             <ChildContent>
                 <MudTabPanel Text="@MediaType.movie.GetName()">

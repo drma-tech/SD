@@ -7,9 +7,9 @@
 
 <NewPageSection ShowHeader="false">
     <ActionsFragment>
-        <MudSelect Label="Continent" FitContent="!IsMobile" Clearable="true" Dense="true" Class="me-2" Variant="Variant.Text"
-                   Value="continent" ValueChanged="@((string? vl) => { continent = vl; StateHasChanged(); })">
-            @foreach (var item in Continents)
+        <MudSelect Label="Filter" FitContent="!IsMobile" Clearable="true" Dense="true" Class="me-2" Variant="Variant.Text"
+                   Value="filter" ValueChanged="@((string? vl) => { filter = vl; StateHasChanged(); })">
+            @foreach (var item in Options)
             {
                 <MudSelectItem Value="item">@item</MudSelectItem>
             }
@@ -18,7 +18,7 @@
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
            
-            @foreach (var item in RegionsFiltered)
+            @foreach (var item in GetRegions())
             {
                 <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudCard>
@@ -46,20 +46,52 @@
 
 @code {
     public List<Region> RegionsList { get; set; } = [];
-    public List<Region> RegionsFiltered => continent == "Default" ?
-        RegionsList.Where(p => p.GetCustomAttribute(false)!.Group == "Americas" || p.GetCustomAttribute(false)!.Group == "Europe").ToList() :
-        RegionsList.Where(p => p.GetCustomAttribute(false)!.Group == continent).ToList();
 
     private bool IsMobile => AppStateStatic.Breakpoint <= Breakpoint.Xs;
 
-    private List<string?> Continents { get; set; } = [];
-    private string? continent = "Default";
+    private List<string?> Options { get; set; } = [];
+    private string? filter;
 
     protected override async Task ProcessInitialData()
     {
+        filter = Culture;
+
         RegionsList = EnumHelper.GetArray<Region>().ToList();
-        
-        Continents.Add("Default");
-        Continents.AddRange(RegionsList?.Select(p => p.GetCustomAttribute(false)?.Group).Distinct().ToList() ?? []);
+
+        Options.Add("en");
+        Options.Add("pt");
+        Options.Add("es");
+
+        Options.AddRange(RegionsList?.Select(p => p.GetCustomAttribute(false)?.Group).Distinct().ToList() ?? []);
+    }
+
+    public List<Region> GetRegions()
+    {
+        if (filter == "en")
+        {
+            var english = new HashSet<Region> { Region.US, Region.CA, Region.AU, Region.NZ };
+
+            return RegionsList.Where(p => english.Contains(p) || p.GetCustomAttribute(false)!.Group == "Europe").ToList();
+        }
+        else if (filter == "pt")
+        {
+            var portuguese = new HashSet<Region> { Region.BR, Region.PT, Region.AO, Region.MZ, Region.CV };
+
+            return RegionsList.Where(p => portuguese.Contains(p)).ToList();
+        }
+        else if (filter == "es")
+        {
+            var spanish = new HashSet<Region> { Region.ES, Region.GQ };
+
+            return RegionsList.Where(p => spanish.Contains(p) || p.GetCustomAttribute(false)!.Group == "Americas").ToList();
+        }
+        else if (filter.NotEmpty())
+        {
+            return RegionsList.Where(p => p.GetCustomAttribute(false)?.Group == filter).ToList();
+        }
+        else
+        {
+            return RegionsList;
+        }
     }
 }

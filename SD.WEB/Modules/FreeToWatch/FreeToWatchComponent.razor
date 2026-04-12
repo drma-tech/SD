@@ -68,6 +68,12 @@
 
     private async Task<Dictionary<string, string>> GetExtraParameters()
     {
-        return new Dictionary<string, string> { { "sort_by", "popularity.desc" }, { "watch_region", Region?.ToString().ToLower() ?? "us" }, { "with_watch_monetization_types", "ads|free" }, { "vote_average.gte", "6" } };
+        return new Dictionary<string, string> {
+            { "sort_by", "popularity.desc" }, 
+            { "watch_region", Region?.ToString().ToLower() ?? "us" }, 
+            { "with_watch_monetization_types", "ads|free" }, 
+            { "vote_average.gte", "6" },
+            { "primary_release_date.gte", "1970-01-01" }
+        };
     }
 }
