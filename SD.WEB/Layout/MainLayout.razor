@@ -151,7 +151,7 @@
         {
             //register new user or new login (need to be last step on this method)
             if (!AppStateStatic.IsAuthenticated) return;
-            if (Navigation.Uri.Contains("/support/")) return;
+            if (Navigation.Uri.Contains("/legal/")) return;
 
             if (Principal == null)
             {
@@ -208,7 +208,7 @@
 
     private async Task RedirectToRequestConsentForChina()
     {
-        if (!AppStateStatic.IsAuthenticated && !Navigation.Uri.Contains("/support/"))
+        if (!AppStateStatic.IsAuthenticated && !Navigation.Uri.Contains("/legal/"))
         {
             var country = await AppStateStatic.GetCountry(IpInfoApi, IpInfoServerApi, JsRuntime);
 
