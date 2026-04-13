@@ -77,7 +77,7 @@
             }
             else
             {
-                Navigation.NavigateTo($"/{Culture}/");
+                Navigation.NavigateTo($"/{Culture}");
             }
         }
         catch (Exception ex)
@@ -138,7 +138,7 @@
 
         await JsRuntime.Supabase().SignOutAsync();
 
-        Navigation.NavigateTo($"/{Culture}/");
+        Navigation.NavigateTo($"/{Culture}");
 
         await JsRuntime.Utils().ClearAllStorage();
     }

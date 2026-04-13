@@ -85,7 +85,7 @@
             var lang = await ExtensionMethodsWeb.GetRouteLanguage(JsRuntime, uri);
             var path = uri.AbsolutePath.TrimStart('/');
 
-            Navigation.NavigateTo($"/{lang}/{path}", replace: true);
+            Navigation.NavigateTo($"/{lang}/{path}".TrimEnd('/'), replace: true);
         }
     }
 

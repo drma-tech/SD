@@ -148,7 +148,7 @@
 
             await JsRuntime.Supabase().ConfirmCode(email!, code!);
 
-            Navigation.NavigateTo($"/{Culture}/");
+            Navigation.NavigateTo($"/{Culture}");
         }
         catch (Exception ex)
         {

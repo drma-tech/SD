@@ -1,4 +1,4 @@
-﻿@page "/{culture}/"
+﻿@page "/{culture}"
 
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.EditorsChoice
@@ -17,7 +17,7 @@
 @inject WishListApi WishApi
 @inject TmdbListApi TmdbListApi
 
-<SeoMeta Title="@AppInfo.Title" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}/") Index="true" ForceTitle="true"></SeoMeta>
+<SeoMeta Title="@AppInfo.Title" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}") Index="true" ForceTitle="true"></SeoMeta>
 <NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@AppInfo.Subtitle"></NewPageSection>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress" Class="@Css.Build().Large("mb")"
