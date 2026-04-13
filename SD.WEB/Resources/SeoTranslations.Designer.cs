@@ -70,6 +70,24 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Help Center.
+        /// </summary>
+        public static string HelpCenter {
+            get {
+                return ResourceManager.GetString("HelpCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get detailed guides, troubleshooting tips, FAQs, and contact support for {0}. Solve issues and discover features easily..
+        /// </summary>
+        public static string HelpCenterDesc {
+            get {
+                return ResourceManager.GetString("HelpCenterDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse streaming services offering movies, TV shows, and documentaries. Discover platforms for every taste, from mainstream hits to niche content..
         /// </summary>
         public static string PlatformsDescription {
