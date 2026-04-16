@@ -10,10 +10,10 @@
 @using SD.WEB.Modules.Collections.Resources
 @inherits PageCore<AwardsOfTheYear>
 
-<SeoMeta Title="@Translations.AwardsOfTheYear.Format(DateTime.Now.Year)" Description="@GlobalTranslations.AwardsYearDescription" Url=@($"/{Culture}/best-awards-year") Index="true"></SeoMeta>
-
+<HeadComponent Title="@Translations.AwardsOfTheYear.Format(DateTime.Now.Year)" Description="@GlobalTranslations.AwardsYearDescription"
+               Url=@($"/{Culture}/best-awards-year") Index="true" Shared="true"></HeadComponent>
 <NewPageSection IsPageHeader="true" Title="@Translations.AwardsOfTheYear.Format(DateTime.Now.Year)" Subtitle="Main categories of the most popular awards" Description="@GlobalTranslations.AwardsYearDescription"
-            Icon="@IconsFA.Solid.Icon("trophy").Font"></NewPageSection>
+                Icon="@IconsFA.Solid.Icon("trophy").Font" UrlShare="@($"/{Culture}/best-awards-year")"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 

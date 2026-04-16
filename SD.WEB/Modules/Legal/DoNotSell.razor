@@ -1,7 +1,7 @@
 ﻿@page "/{culture}/legal/do-not-sell"
 @inherits PageCore<DoNotSell>
 
-<SeoMeta Title="Do Not Sell or Share My Personal Information" Url=@($"/{Culture}/legal/do-not-sell") Index="false"></SeoMeta>
+<HeadComponent Title="Do Not Sell or Share My Personal Information" Url=@($"/{Culture}/legal/do-not-sell") Index="false"></HeadComponent>
 
 <div class="support-container">
     @if (Language == AppLanguage.pt)

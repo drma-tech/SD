@@ -9,7 +9,7 @@
 @inject LoginApi LoginApi
 @inject PrincipalApi PrincipalApi
 
-<SeoMeta Title="Register User" Description="Register User" Url=@($"/{Culture}/register-user") Index="false"></SeoMeta>
+<HeadComponent Title="Register User" Description="Register User" Url=@($"/{Culture}/register-user") Index="false"></HeadComponent>
 
 @if (AppStateStatic.IsAuthenticated)
 {

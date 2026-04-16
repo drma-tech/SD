@@ -1,7 +1,7 @@
 ﻿@page "/{culture}/company/about-us"
 @inherits PageCore<AboutUs>
 
-<SeoMeta Title="About Us" Description="@($"Learn about {AppInfo.Title}, our mission to help you discover and organize movies and shows, and the team behind the platform.")" Url=@($"/{Culture}/company/about-us") Index="true"></SeoMeta>
+<HeadComponent Title="About Us" Description="@($"Learn about {AppInfo.Title}, our mission to help you discover and organize movies and shows, and the team behind the platform.")" Url=@($"/{Culture}/company/about-us") Index="true"></HeadComponent>
 
 <div class="support-container">
     @if (Language == AppLanguage.pt)

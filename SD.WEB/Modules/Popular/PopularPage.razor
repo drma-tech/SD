@@ -11,8 +11,8 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
-<SeoMeta Title="@($"{Translations.Popular} ({PopularType.GetName()})")" Description="@GlobalTranslations.PopularIndexDescription" Url="@($"/{Culture}/popular/{Type}")" Index="true"></SeoMeta>
-<NewPageSection IsPageHeader="true" Title="@($"{Translations.Popular} ({PopularType.GetName()})")" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font"></NewPageSection>
+<HeadComponent Title="@($"{Translations.Popular} ({PopularType.GetName()})")" Description="@GlobalTranslations.PopularIndexDescription" Url="@($"/{Culture}/popular/{Type}")" Index="true" Shared="true" />
+<NewPageSection IsPageHeader="true" Title="@($"{Translations.Popular} ({PopularType.GetName()})")" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font" UrlShare="@($"/{Culture}/popular/{Type}")" />
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 

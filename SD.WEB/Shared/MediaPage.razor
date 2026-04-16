@@ -26,7 +26,7 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<SeoMeta Title="@Media?.title" Description="@Media?.plot" Url="@($"/{Culture}/media/{type}/{id}")" Index="false"></SeoMeta>
+<HeadComponent Title="@Media?.title" Description="@Media?.plot" Url="@($"/{Culture}/media/{type}/{id}")" Index="false"></HeadComponent>
 @if (Media?.title.NotEmpty() ?? false)
 {
     <NewPageSection Title="@Media?.title">

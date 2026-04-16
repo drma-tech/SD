@@ -6,9 +6,8 @@
 
 @inject CacheYoutubeApi CacheYoutubeApi
 
-<SeoMeta Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Url=@($"/{Culture}/trailers") Index="true"></SeoMeta>
-<NewPageSection IsPageHeader="true" Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Icon="@IconsFA.Brands.Icon("youtube").Font">
-</NewPageSection>
+<HeadComponent Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Url=@($"/{Culture}/trailers") Index="true" Shared="true"></HeadComponent>
+<NewPageSection IsPageHeader="true" Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Icon="@IconsFA.Brands.Icon("youtube").Font" UrlShare="@($"/{Culture}/trailers")"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 

@@ -7,7 +7,7 @@
 
 @inherits PageCore<LoginPage>
 
-<SeoMeta Title="@Resources.Translations.SignInSignUp" Description="@Resources.Translations.SignInSignUp" Url=@($"/{Culture}/login") Index="false"></SeoMeta>
+<HeadComponent Title="@Resources.Translations.SignInSignUp" Description="@Resources.Translations.SignInSignUp" Url=@($"/{Culture}/login") Index="false"></HeadComponent>
 
 <MudContainer MaxWidth="MaxWidth.Small" Class="@Css.Build().Raw("mb-20")">
     <MudPaper Elevation="0" Outlined="true" Class="pa-3" Style="position: relative;">

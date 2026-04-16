@@ -14,7 +14,7 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<SeoMeta Title="@SeoTranslations.PlatformsTitle" Description="@SeoTranslations.PlatformsDescription" Url=@($"/{Culture}/platforms") Index="true"></SeoMeta>
+<HeadComponent Title="@SeoTranslations.PlatformsTitle" Description="@SeoTranslations.PlatformsDescription" Url=@($"/{Culture}/platforms") Index="true"></HeadComponent>
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
 <NewPageSection IsPageHeader="true" Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">

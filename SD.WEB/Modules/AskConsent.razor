@@ -3,7 +3,7 @@
 
 @inherits PageCore<AskConsent>
 
-<SeoMeta Title="Ask Consent" Url=@($"/{Culture}/ask-consent") Index="false"></SeoMeta>
+<HeadComponent Title="Ask Consent" Url=@($"/{Culture}/ask-consent") Index="false"></HeadComponent>
 
 <MudPaper Elevation="0" Outlined="true" Class="@Css.Build().Small("pa")">
     <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="@Css.Build().Small("mb")">

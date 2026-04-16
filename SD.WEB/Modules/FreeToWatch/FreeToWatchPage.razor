@@ -9,8 +9,12 @@
 @inject IpInfoApi IpInfoApi
 @inject IpInfoServerApi IpInfoServerApi
 
-<SeoMeta Title="@(Collections.Resources.Translations.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))" Description="@Collections.Resources.Translations.FreeWatchDescriptionExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())" Url="@($"/{Culture}/free/{Type}/{Region}")" Index="true"></SeoMeta>
-<NewPageSection IsPageHeader="true" Title="@(Collections.Resources.Translations.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))" Description="@Collections.Resources.Translations.FreeWatchDescriptionExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())" Icon="@IconsFA.Solid.Icon("play-circle").Font"></NewPageSection>
+<HeadComponent Title="@(Collections.Resources.Translations.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))"
+               Description="@Collections.Resources.Translations.FreeWatchDescriptionExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())"
+               Url="@($"/{Culture}/free/{Type}/{Region}")" Index="true" Shared="true"></HeadComponent>
+<NewPageSection IsPageHeader="true" Title="@(Collections.Resources.Translations.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))"
+                Description="@Collections.Resources.Translations.FreeWatchDescriptionExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())"
+                Icon="@IconsFA.Solid.Icon("play-circle").Font" UrlShare="@($"/{Culture}/free/{Type}/{Region}")"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 

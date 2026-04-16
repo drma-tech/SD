@@ -21,8 +21,8 @@
 @inject AllProvidersApi AllProvidersApi
 @inject IHttpClientFactory factory
 
-<SeoMeta Title="@Title" Description="@Description" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")" Index="true"></SeoMeta>
-<NewPageSection Title="@Title" Description="@Description"></NewPageSection>
+<HeadComponent Title="@Title" Description="@Description" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")" Index="true" Shared="true"></HeadComponent>
+<NewPageSection IsPageHeader="true" Title="@Title" Description="@Description" UrlShare="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")"></NewPageSection>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 

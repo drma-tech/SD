@@ -24,13 +24,12 @@
 }
 else
 {
-    <SeoMeta Title="@Provider?.name" Description="@Provider?.description" Url="@($"/{Culture}/platforms/{Provider?.id}")" Index="true">
-    </SeoMeta>
-    @*     Icon="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" *@
+    <HeadComponent Title="@Provider?.name" Description="@Provider?.description" Url="@($"/{Culture}/platforms/{Provider?.id}")" Image="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Index="true" Shared="true" />
 
     @if (Provider != null)
     {
-        <NewPageSection IsPageHeader="true" Image="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Subtitle="@GetSubtitle()" Description="@Provider.description">
+        <NewPageSection IsPageHeader="true" Image="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Subtitle="@GetSubtitle()" Description="@Provider.description"
+                        UrlShare="@($"/{Culture}/platforms/{Provider.id}")">
             <ActionsFragment>
                 @if (Provider.link.NotEmpty() && Platform != SD.Shared.Enums.Platform.huawei)
                 {
@@ -42,13 +41,13 @@ else
                 {
                     @if (MyProviders?.Items.Any(a => a.id == Provider?.id) ?? false)
                     {
-                        <MudButton StartIcon="@IconsFA.Solid.Icon("minus").Font" Color="Color.Error" OnClick="@Remove" Variant="Variant.Filled">
+                        <MudButton StartIcon="@IconsFA.Solid.Icon("minus").Font" Color="Color.Error" OnClick="@Remove" Variant="Variant.Filled" Class="me-2">
                             @Button.Remove
                         </MudButton>
                     }
                     else
                     {
-                        <MudButton StartIcon="@IconsFA.Solid.Icon("plus").Font" Color="Color.Primary" OnClick="@Add" Variant="Variant.Filled">
+                        <MudButton StartIcon="@IconsFA.Solid.Icon("plus").Font" Color="Color.Primary" OnClick="@Add" Variant="Variant.Filled" Class="me-2">
                             @Button.Add
                         </MudButton>
                     }
