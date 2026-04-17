@@ -95,7 +95,7 @@
     <script>
         Blazor.start({
             configureRuntime: runtime => runtime.withConfig({
-                loadAllSatelliteResources: true
+                loadAllSatelliteResources: window.location.hostname === "127.0.0.1"
             })
         })
     </script>
