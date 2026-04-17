@@ -10,6 +10,9 @@ public static class ExternalApiHelper
     public static async Task<T?> GetdTmdbList<T>(this HttpClient http, string requestUri, string? token, CancellationToken cancellationToken)
         where T : class
     {
+        //no access limits
+        //multiple languages
+
         using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
 
         request.Headers.Add("Accept", "application/json");
@@ -42,6 +45,9 @@ public static class ExternalApiHelper
 
     public static async Task<T?> GetTrailersByYoutubeSearch<T>(this HttpClient http, CancellationToken cancellationToken) where T : class
     {
+        //hard limit: 500 / Day
+        //only english
+
         const string id = "UCzcRQ3vRNr6fJ1A9rqFn7QA";
         using var request = new HttpRequestMessage(HttpMethod.Get, $"https://youtube-search-and-download.p.rapidapi.com/channel?id={id}&sort=n");
 
@@ -62,6 +68,9 @@ public static class ExternalApiHelper
 
     public static async Task<T?> GetReviewsByImdb8<T>(this HttpClient http, string? tconst, CancellationToken cancellationToken) where T : class
     {
+        //hard limit: 500 / Month
+        //there is a language/country filter, but its not working
+
         if (string.IsNullOrEmpty(tconst)) return null;
 
         using var request = new HttpRequestMessage(HttpMethod.Get, $"https://imdb8.p.rapidapi.com/title/v2/get-metacritic?tconst={tconst}");
@@ -78,6 +87,9 @@ public static class ExternalApiHelper
 
     public static async Task<T?> GetNewsByImdb8<T>(this HttpClient http, string? category, CancellationToken cancellationToken) where T : class
     {
+        //hard limit: 500 / Month
+        //there is a language/country filter, but its not working
+
         using var request = new HttpRequestMessage(HttpMethod.Get, $"https://imdb8.p.rapidapi.com/news/v2/get-by-category?category={category?.ToUpper() ?? "MOVIE"}&first=30&language=en-US");
 
         request.Headers.TryAddWithoutValidation("X-RapidAPI-Key", ApiStartup.Configurations.RapidAPI?.Key);
@@ -92,6 +104,8 @@ public static class ExternalApiHelper
 
     public static async Task<T?> GetFilmShowRatings<T>(this HttpClient http, string? imdbId, CancellationToken cancellationToken) where T : class
     {
+        //hard limit: 100 / Day
+
         if (string.IsNullOrEmpty(imdbId)) return null;
 
         using var request = new HttpRequestMessage();
@@ -109,6 +123,8 @@ public static class ExternalApiHelper
 
     public static async Task<T?> GetMoviesRatings2<T>(this HttpClient http, string? imdbId, CancellationToken cancellationToken) where T : class
     {
+        //hard limit: 10 / Day
+
         if (string.IsNullOrEmpty(imdbId)) return null;
 
         using var request = new HttpRequestMessage();
@@ -126,6 +142,8 @@ public static class ExternalApiHelper
 
     public static async Task<T?> GetUnifiedMovie<T>(this HttpClient http, string? tmdbId, CancellationToken cancellationToken) where T : class
     {
+        //hard limit: 500 / Month
+
         if (string.IsNullOrEmpty(tmdbId)) return null;
 
         using var request = new HttpRequestMessage();
@@ -143,6 +161,9 @@ public static class ExternalApiHelper
 
     public static async Task<T?> GetMostPopular<T>(this HttpClient http, string route, CancellationToken cancellationToken) where T : class
     {
+        //hard limit: 100 / Month
+        //only english
+
         if (string.IsNullOrEmpty(route)) return null;
 
         using var request = new HttpRequestMessage(HttpMethod.Get, $"https://imdb236.p.rapidapi.com/api/imdb/{route}");
