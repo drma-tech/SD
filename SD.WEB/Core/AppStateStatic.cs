@@ -324,7 +324,7 @@ public static class AppStateStatic
 
     #region ContentLanguage
 
-    private static ContentLanguage? _contentLanguage;
+    public static ContentLanguage? _contentLanguage;
     private static readonly SemaphoreSlim _contentLanguageSemaphore = new(1, 1);
 
     public static async Task<ContentLanguage> GetContentLanguage(IJSRuntime? js = null)
@@ -364,7 +364,7 @@ public static class AppStateStatic
         }
     }
 
-    private static ContentLanguage? ConvertContentLanguage(string? code)
+    public static ContentLanguage? ConvertContentLanguage(string? code)
     {
         if (code.Empty()) return null;
 

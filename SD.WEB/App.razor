@@ -77,15 +77,19 @@
     protected override void OnInitialized()
     {
         var uri = new Uri(Navigation.Uri);
-        var path = uri.AbsolutePath;
 
-        var segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
-        var first = segments.FirstOrDefault()?.ToLowerInvariant();
+        if (uri.Host == "127.0.0.1") //only for static pages
+        {
+            var path = uri.AbsolutePath;
 
-        var hasLang = first.IsValidLanguage();
-        var lang = hasLang ? first : ExtensionMethodsWeb.GetRouteLanguage(path);
+            var segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            var first = segments.FirstOrDefault()?.ToLowerInvariant();
 
-        ConfigureCulture(lang);
+            var hasLang = first.IsValidLanguage();
+            var lang = hasLang ? first : ExtensionMethodsWeb.GetRouteLanguage(path);
+
+            ConfigureCulture(lang);
+        }
     }
 
     protected override async Task OnInitializedAsync()
@@ -115,17 +119,22 @@
             Navigation.NavigateTo(finalUrl, replace: true);
         }
     }
-    
+
     private Task OnNavigateAsync(Microsoft.AspNetCore.Components.Routing.NavigationContext args)
     {
-        var segments = args.Path.Split('/', StringSplitOptions.RemoveEmptyEntries);
-        var first = segments.FirstOrDefault()?.ToLowerInvariant();
+        var uri = new Uri(Navigation.Uri);
 
-        var hasLang = first.IsValidLanguage();
-        var lang = hasLang ? first : ExtensionMethodsWeb.GetRouteLanguage(args.Path);
+        if (uri.Host == "127.0.0.1") //only for static pages
+        {
+            var segments = args.Path.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            var first = segments.FirstOrDefault()?.ToLowerInvariant();
 
-        ConfigureCulture(lang);
+            var hasLang = first.IsValidLanguage();
+            var lang = hasLang ? first : ExtensionMethodsWeb.GetRouteLanguage(args.Path);
 
+            ConfigureCulture(lang);
+        }
+        
         return Task.CompletedTask;
     }
 
@@ -205,7 +214,7 @@
 
         //content language
 
-        // _ = await AppStateStatic.GetContentLanguage(JsRuntime); //force read previously saved
+        AppStateStatic._contentLanguage = AppStateStatic.ConvertContentLanguage(lang) ?? ContentLanguage.enUS;
     }
 
 }
