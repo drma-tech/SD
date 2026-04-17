@@ -91,7 +91,14 @@
     <script type="module" src="js/payments.js"></script>
 
     <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
-    <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+    <script src="_framework/blazor.webassembly#[.{fingerprint}].js" autostart="false"></script>
+    <script>
+        Blazor.start({
+            configureRuntime: runtime => runtime.withConfig({
+                loadAllSatelliteResources: window.location.hostname === "127.0.0.1"
+            })
+        })
+    </script>
 
     <script type="module" src="js/init.js"></script>
 </body>

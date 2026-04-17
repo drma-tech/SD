@@ -19,7 +19,7 @@ namespace SD.WEB.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Credit {
@@ -66,24 +66,6 @@ namespace SD.WEB.Resources {
         public static string JustWatch {
             get {
                 return ResourceManager.GetString("JustWatch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A collection of the most anticipated movies of 2025, based on buzz, announcements, and audience interest..
-        /// </summary>
-        public static string MostExpectedMovies2025 {
-            get {
-                return ResourceManager.GetString("MostExpectedMovies2025", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A collection of the most anticipated movies of 2026, based on early announcements, hype, and fan expectations..
-        /// </summary>
-        public static string MostExpectedMovies2026 {
-            get {
-                return ResourceManager.GetString("MostExpectedMovies2026", resourceCulture);
             }
         }
         

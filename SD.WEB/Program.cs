@@ -54,10 +54,7 @@ ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress, builder
 
 var app = builder.Build();
 
-var nav = app.Services.GetService<NavigationManager>();
 var js = app.Services.GetRequiredService<IJSRuntime>();
-
-await ConfigureCulture(nav, js);
 
 AppStateStatic.Version = await AppStateStatic.GetAppVersion(js);
 AppStateStatic.BrowserName = await js.Utils().GetBrowserName();
@@ -153,36 +150,6 @@ static void ConfigureApi(IServiceCollection collection)
     collection.AddScoped<PaymentPublicApi>();
     collection.AddScoped<IpInfoApi>();
     collection.AddScoped<IpInfoServerApi>();
-}
-
-static async Task ConfigureCulture(NavigationManager? nav, IJSRuntime js)
-{
-    //app language
-
-    var uri = new Uri(nav!.Uri);
-
-    var appLanguage = await ExtensionMethodsWeb.GetRouteLanguage(js, uri);
-
-    if (appLanguage.NotEmpty())
-    {
-        CultureInfo cultureInfo;
-
-        try
-        {
-            cultureInfo = new CultureInfo(appLanguage);
-        }
-        catch (Exception)
-        {
-            cultureInfo = CultureInfo.CurrentCulture;
-        }
-
-        CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-        CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-    }
-
-    //content language
-
-    _ = await AppStateStatic.GetContentLanguage(js); //force read previously saved
 }
 
 //https://github.com/App-vNext/Polly/wiki/Polly-and-HttpClientFactory

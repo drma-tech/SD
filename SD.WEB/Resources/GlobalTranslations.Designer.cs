@@ -331,15 +331,6 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to See all items.
-        /// </summary>
-        public static string SeeAllItems {
-            get {
-                return ResourceManager.GetString("SeeAllItems", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
