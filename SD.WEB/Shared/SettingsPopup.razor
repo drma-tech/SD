@@ -84,6 +84,23 @@
 
         await JsRuntime.Utils().SetStorage("app-language", value);
 
+        if (value == AppLanguage.en)
+        {
+            await ContentLanguageValueChanged(ContentLanguage.enUS);
+        }
+        else if (value == AppLanguage.pt)
+        {
+            await ContentLanguageValueChanged(ContentLanguage.ptBR);
+        }
+        else if (value == AppLanguage.es)
+        {
+            await ContentLanguageValueChanged(ContentLanguage.esES);
+        }
+        else if (value == AppLanguage.zh)
+        {
+            await ContentLanguageValueChanged(ContentLanguage.zhCN);
+        }
+
         var uri = new Uri(Navigation.Uri);
         var segments = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries).Skip(1);
         var newPath = $"/{value.ToString().ToLower()}/{string.Join("/", segments)}";

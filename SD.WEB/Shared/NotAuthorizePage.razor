@@ -1,5 +1,5 @@
 ﻿@page "/{culture}/not-authorized"
-@inherits ComponentCore<NotAuthorizePage>
+@inherits PageCore<NotAuthorizePage>
 
 <PageTitle>401 - Not Authorized</PageTitle>
 <HeadContent>
@@ -36,8 +36,6 @@
 </div>
 
 @code {
-    private string Culture => Navigation.GetCulture();
-
     private async Task Login()
     {
         Navigation.NavigateTo($"/{Culture}/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
