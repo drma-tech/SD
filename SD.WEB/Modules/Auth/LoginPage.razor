@@ -111,7 +111,7 @@
             if (success)
             {
                 await Task.Delay(provider == "email" ? 8000 : 15000);
-                emailSent = true;
+                if (provider == "email") emailSent = true;
             }
 
             _processing = false;

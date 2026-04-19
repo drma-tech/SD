@@ -11,12 +11,12 @@
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject TmdbApi TmdbApi
 
-<NewPageSection Icon="@IconsFA.Solid.Icon("thumbs-up").Font" Title="@Translations.MySuggestions" ShowActions="Client?.GetActiveSubscription() != null">
+<NewPageSection Icon="@IconsFA.Solid.Icon("thumbs-up").Font" Title="@Translations.MySuggestions" ShowActions="AppStateStatic.Principal?.GetActiveSubscription() != null">
     <BodyFragment>
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndexChanged="@((int index) => { var type = index == 0 ? MediaType.movie : MediaType.tv; CheckedValueChanged(type); })">
             <Header>
-                @if (Client?.GetActiveSubscription() != null)
+                @if (AppStateStatic.Principal?.GetActiveSubscription() != null)
                 {
                     <MudTooltip Text="@Button.Update">
                         @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (MyProviders?.Items.Any() ?? false))
@@ -98,7 +98,6 @@
 </NewPageSection>
 
 @code {
-    [CascadingParameter] public AuthPrincipal? Client { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }
 
     private MyProviders? MyProviders { get; set; }
@@ -199,7 +198,7 @@
         {
             mySuggestions ??= new SD.Shared.Models.MySuggestions();
 
-            var qtd = Client?.GetActiveSubscription()?.ActiveProduct switch
+            var qtd = AppStateStatic.Principal?.GetActiveSubscription()?.ActiveProduct switch
             {
                 AccountProduct.Premium => AccountProduct.Premium.GetRestrictions().MySuggestions,
                 _ => 0

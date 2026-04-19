@@ -223,29 +223,11 @@ namespace SD.WEB.Modules.Collections.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to More information or Contributions.
-        /// </summary>
-        public static string MoreInformation {
-            get {
-                return ResourceManager.GetString("MoreInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to overview not available in your language.
         /// </summary>
         public static string NoPlot {
             get {
                 return ResourceManager.GetString("NoPlot", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Offering.
-        /// </summary>
-        public static string Offering {
-            get {
-                return ResourceManager.GetString("Offering", resourceCulture);
             }
         }
         

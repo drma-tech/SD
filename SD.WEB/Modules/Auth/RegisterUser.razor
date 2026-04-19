@@ -14,7 +14,7 @@
 @if (AppStateStatic.IsAuthenticated)
 {
     <MudContainer MaxWidth="MaxWidth.Small" Class="@Css.Build().Raw("mb-20")">
-        @if (Principal == null)
+        @if (AppStateStatic.Principal == null)
         {
             <MudPaper Elevation="0" Outlined="true" Class="pa-3">
                 <MudText Typo="Typo.h1" Color="Color.Primary" Class="@Css.Build().Large("mb")" Style="font-size: 23px !important; line-height: 1.6 !important;" Align="Align.Center">
@@ -53,8 +53,6 @@
 }
 
 @code {
-    [CascadingParameter] private AuthPrincipal? Principal { get; set; }
-
     private bool _terms1 { get; set; } = false;
     private bool _terms2 { get; set; } = false;
 
@@ -66,7 +64,7 @@
             {
                 StateHasChanged();
 
-                if (Principal == null) //first access
+                if (AppStateStatic.Principal == null) //first access
                 {
                     //wait the user answer the terms of use (call CreateAccount)
                 }
@@ -90,10 +88,10 @@
     {
         try
         {
-            if (Principal != null) throw new InvalidOperationException("Principal is already set.");
+            if (AppStateStatic.Principal != null) throw new InvalidOperationException("Principal is already set.");
             if (AppStateStatic.User == null) throw new InvalidOperationException("User is null.");
 
-            Principal = new AuthPrincipal
+            AppStateStatic.Principal = new AuthPrincipal
             {
                 AuthProviders = [AppStateStatic.User.FindFirst("idp")!.Value],
                 DisplayName = AppStateStatic.User.FindFirst("name")?.Value,
@@ -102,12 +100,12 @@
 
             if (_terms1)
             {
-                Principal.Events.Add(new Event(AppInfo.Title, "Terms of use accepted.", null));
+                AppStateStatic.Principal.Events.Add(new Event(AppInfo.Title, "Terms of use accepted.", null));
             }
 
-            Principal = await PrincipalApi.Add(Principal);
+            AppStateStatic.Principal = await PrincipalApi.Add(AppStateStatic.Principal);
 
-            if (Principal == null) throw new InvalidOperationException("Failed to create principal.");
+            if (AppStateStatic.Principal == null) throw new InvalidOperationException("Failed to create principal.");
 
             await RegisterLogin();
         }
@@ -123,10 +121,10 @@
 
         await LoginApi.Add(platform);
 
-        if (Principal!.AuthProviders.Empty() || !Principal!.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
+        if (AppStateStatic.Principal!.AuthProviders.Empty() || !AppStateStatic.Principal!.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
         {
-            Principal.AuthProviders = Principal.AuthProviders.Union([AppStateStatic.User!.FindFirst("idp")!.Value]).ToArray();
-            await PrincipalApi.Update(Principal);
+            AppStateStatic.Principal.AuthProviders = AppStateStatic.Principal.AuthProviders.Union([AppStateStatic.User!.FindFirst("idp")!.Value]).ToArray();
+            await PrincipalApi.Update(AppStateStatic.Principal);
         }
 
         Navigation.NavigateTo($"/{Culture}/profile");

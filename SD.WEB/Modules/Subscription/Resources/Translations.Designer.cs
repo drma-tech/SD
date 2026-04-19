@@ -61,38 +61,11 @@ namespace SD.WEB.Modules.Subscription.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Canceled.
-        /// </summary>
-        public static string Canceled {
-            get {
-                return ResourceManager.GetString("Canceled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cancel subscription.
-        /// </summary>
-        public static string CancelSubscription {
-            get {
-                return ResourceManager.GetString("CancelSubscription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cycle.
         /// </summary>
         public static string Cycle {
             get {
                 return ResourceManager.GetString("Cycle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Details.
-        /// </summary>
-        public static string Details {
-            get {
-                return ResourceManager.GetString("Details", resourceCulture);
             }
         }
         
@@ -106,24 +79,6 @@ namespace SD.WEB.Modules.Subscription.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enjoy 7 days free! You won&apos;t be charged until the trial ends..
-        /// </summary>
-        public static string FreePeriod {
-            get {
-                return ResourceManager.GetString("FreePeriod", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inactive billing.
-        /// </summary>
-        public static string InactiveBilling {
-            get {
-                return ResourceManager.GetString("InactiveBilling", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Active?.
         /// </summary>
         public static string IsActive {
@@ -133,38 +88,11 @@ namespace SD.WEB.Modules.Subscription.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Items.
-        /// </summary>
-        public static string Items {
-            get {
-                return ResourceManager.GetString("Items", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Management.
-        /// </summary>
-        public static string Management {
-            get {
-                return ResourceManager.GetString("Management", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to My Subscription.
         /// </summary>
         public static string MySubscription {
             get {
                 return ResourceManager.GetString("MySubscription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Next Billed.
-        /// </summary>
-        public static string NextBilled {
-            get {
-                return ResourceManager.GetString("NextBilled", resourceCulture);
             }
         }
         
@@ -183,15 +111,6 @@ namespace SD.WEB.Modules.Subscription.Resources {
         public static string PaymentProvider {
             get {
                 return ResourceManager.GetString("PaymentProvider", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Previously Billed.
-        /// </summary>
-        public static string PreviouslyBilled {
-            get {
-                return ResourceManager.GetString("PreviouslyBilled", resourceCulture);
             }
         }
         
@@ -228,60 +147,6 @@ namespace SD.WEB.Modules.Subscription.Resources {
         public static string Select {
             get {
                 return ResourceManager.GetString("Select", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Status.
-        /// </summary>
-        public static string Status {
-            get {
-                return ResourceManager.GetString("Status", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Subscription Id.
-        /// </summary>
-        public static string SubscriptionId {
-            get {
-                return ResourceManager.GetString("SubscriptionId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Subscription is being processed. Please wait..
-        /// </summary>
-        public static string SubscriptionProcessed {
-            get {
-                return ResourceManager.GetString("SubscriptionProcessed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to We were unable to identify your subscription. Please contact support..
-        /// </summary>
-        public static string UnableReadSubscription {
-            get {
-                return ResourceManager.GetString("UnableReadSubscription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update payment details.
-        /// </summary>
-        public static string UpdatePaymentDetails {
-            get {
-                return ResourceManager.GetString("UpdatePaymentDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to save {0}%.
-        /// </summary>
-        public static string YearSave {
-            get {
-                return ResourceManager.GetString("YearSave", resourceCulture);
             }
         }
         

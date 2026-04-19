@@ -61,15 +61,6 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Access Provider.
-        /// </summary>
-        public static string AccessProvider {
-            get {
-                return ResourceManager.GetString("AccessProvider", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Authentication in progress....
         /// </summary>
         public static string AuthenticationInProgress {
@@ -124,15 +115,6 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Identification.
-        /// </summary>
-        public static string Identification {
-            get {
-                return ResourceManager.GetString("Identification", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Microsoft emails (Outlook, Hotmail, etc.) may not work..
         /// </summary>
         public static string MicrosoftEmails {
@@ -169,15 +151,6 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registration Information.
-        /// </summary>
-        public static string RegistrationInformation {
-            get {
-                return ResourceManager.GetString("RegistrationInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Sign In or Sign Up.
         /// </summary>
         public static string SignInSignUp {
@@ -210,15 +183,6 @@ namespace SD.WEB.Modules.Auth.Resources {
         public static string UnauthenticatedUser {
             get {
                 return ResourceManager.GetString("UnauthenticatedUser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You are not authorized to access this resource..
-        /// </summary>
-        public static string YouAreNotAuthorized {
-            get {
-                return ResourceManager.GetString("YouAreNotAuthorized", resourceCulture);
             }
         }
         

@@ -27,26 +27,23 @@
 
 <PWAUpdater Text="@GlobalTranslations.PWAUpdaterText" ButtonCaption="@GlobalTranslations.PWAUpdaterButton" />
 
-<CascadingValue Value="Principal">
-    <MudLayout>
-        <HeadLayout></HeadLayout>
-        <MudMainContent>
-            <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="@Css.Build().Medium("my")" Style="min-height: calc(100vh - 64px - 32px - 48px - 24px);">
-                @Body
-            </MudContainer>
-            <FooterComponent></FooterComponent>
-            <MudDivider Class="@Css.Build().Small("my").Medium("mt")"></MudDivider>
-            <MudText Align="Align.Center" Class="@Css.Build().Small("mb")">
-                © @AppInfo.Year-@DateTime.Now.Year - DRMA Tech.
-            </MudText>
-        </MudMainContent>
-    </MudLayout>
-</CascadingValue>
+<MudLayout>
+    <HeadLayout></HeadLayout>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="@Css.Build().Medium("my")" Style="min-height: calc(100vh - 64px - 32px - 48px - 24px);">
+            @Body
+        </MudContainer>
+        <FooterComponent></FooterComponent>
+        <MudDivider Class="@Css.Build().Small("my").Medium("mt")"></MudDivider>
+        <MudText Align="Align.Center" Class="@Css.Build().Small("mb")">
+            © @AppInfo.Year-@DateTime.Now.Year - DRMA Tech.
+        </MudText>
+    </MudMainContent>
+</MudLayout>
 
 @code {
     private MudThemeProvider? _mudThemeProvider;
     private bool _darkMode = false;
-    private AuthPrincipal? Principal { get; set; }
     private string Culture => Navigation.GetCulture();
 
     protected override void OnInitialized()
@@ -57,11 +54,13 @@
             // attention: avoid using asynchronous calls here, as it may affect static html generation (especially for anonymous users)
             // *************************************
 
-            AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
             BufferedEvent.Register(nameof(ShowError), (string msg) => { Snackbar.Add(msg, Severity.Error); return Task.CompletedTask; });
+
+            AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
             AppStateStatic.BreakpointChanged += breakpoint => StateHasChanged();
             AppStateStatic.BrowserWindowSizeChanged += size => StateHasChanged();
-            PrincipalApi.DataChanged += principal => { Principal = principal; StateHasChanged(); };
+
+            PrincipalApi.DataChanged += principal => { AppStateStatic.Principal = principal; StateHasChanged(); };
 
             // 1 = capture the claims
             BufferedEvent.Register(nameof(SupabaseAuthChanged), async (string? token) =>
@@ -133,11 +132,11 @@
 
         //principal to be used for all the app
         if (authenticated)
-            Principal ??= await PrincipalApi.Get(true);
+            AppStateStatic.Principal ??= await PrincipalApi.Get(true);
         else
-            Principal = null;
+            AppStateStatic.Principal = null;
 
-        var sub = Principal?.GetActiveSubscription();
+        var sub = AppStateStatic.Principal?.GetActiveSubscription();
         AppStateStatic.IsPremiumUser = sub?.IsActive() ?? false;
         AppStateStatic.ActiveProduct = sub?.Product ?? AccountProduct.Basic;
 
@@ -153,7 +152,7 @@
             if (!AppStateStatic.IsAuthenticated) return;
             if (Navigation.Uri.Contains("/legal/")) return;
 
-            if (Principal == null)
+            if (AppStateStatic.Principal == null)
             {
                 Navigation.NavigateTo($"/{Culture}/register-user");
             }
@@ -184,10 +183,10 @@
 
         AppStateStatic.LastAccess = now;
 
-        if (Principal!.AuthProviders.Empty() || !Principal!.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
+        if (AppStateStatic.Principal!.AuthProviders.Empty() || !AppStateStatic.Principal!.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
         {
-            Principal.AuthProviders = Principal.AuthProviders.Union([AppStateStatic.User!.FindFirst("idp")!.Value]).ToArray();
-            await PrincipalApi.Update(Principal);
+            AppStateStatic.Principal.AuthProviders = AppStateStatic.Principal.AuthProviders.Union([AppStateStatic.User!.FindFirst("idp")!.Value]).ToArray();
+            await PrincipalApi.Update(AppStateStatic.Principal);
         }
     }
 

@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Services;
+using SD.Shared.Models.Auth;
 using SD.WEB.Modules.Subscription.Core;
 using System.Security.Claims;
 
@@ -14,6 +15,7 @@ public static class AppStateStatic
     public static bool IsPremiumUser { get; set; }
     public static AccountProduct ActiveProduct { get; set; }
     public static ClaimsPrincipal? User { get; set; }
+    public static AuthPrincipal? Principal { get; set; }
     public static string? UserId { get; set; }
     public static DateTimeOffset? LastAccess { get; set; } //control login, so we don't call api too often
 

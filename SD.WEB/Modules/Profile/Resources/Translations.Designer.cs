@@ -19,7 +19,7 @@ namespace SD.WEB.Modules.Profile.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Translations {
@@ -61,33 +61,6 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Access Information.
-        /// </summary>
-        public static string AccessInformation {
-            get {
-                return ResourceManager.GetString("AccessInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account.
-        /// </summary>
-        public static string Account {
-            get {
-                return ResourceManager.GetString("Account", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Actions.
-        /// </summary>
-        public static string Actions {
-            get {
-                return ResourceManager.GetString("Actions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add titles to your wishlist to appear here.
         /// </summary>
         public static string AddTitlesWishlist {
@@ -102,15 +75,6 @@ namespace SD.WEB.Modules.Profile.Resources {
         public static string AuthProviders {
             get {
                 return ResourceManager.GetString("AuthProviders", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Clear Cache.
-        /// </summary>
-        public static string ClearCache {
-            get {
-                return ResourceManager.GetString("ClearCache", resourceCulture);
             }
         }
         
@@ -187,15 +151,6 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to My Profile.
-        /// </summary>
-        public static string MyProfile {
-            get {
-                return ResourceManager.GetString("MyProfile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Watching - Shows.
         /// </summary>
         public static string MyShowWatching {
@@ -255,15 +210,6 @@ namespace SD.WEB.Modules.Profile.Resources {
         public static string RegionsApplied {
             get {
                 return ResourceManager.GetString("RegionsApplied", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Subscription.
-        /// </summary>
-        public static string Subscription {
-            get {
-                return ResourceManager.GetString("Subscription", resourceCulture);
             }
         }
         

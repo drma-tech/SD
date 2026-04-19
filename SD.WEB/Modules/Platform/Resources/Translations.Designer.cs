@@ -61,15 +61,6 @@ namespace SD.WEB.Modules.Platform.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Coming Soon.
-        /// </summary>
-        public static string ComingSoon {
-            get {
-                return ResourceManager.GetString("ComingSoon", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Countries.
         /// </summary>
         public static string Countries {
@@ -84,15 +75,6 @@ namespace SD.WEB.Modules.Platform.Resources {
         public static string DeliveryModel {
             get {
                 return ResourceManager.GetString("DeliveryModel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Media.
-        /// </summary>
-        public static string MediaTypes {
-            get {
-                return ResourceManager.GetString("MediaTypes", resourceCulture);
             }
         }
         
@@ -169,47 +151,11 @@ namespace SD.WEB.Modules.Platform.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to About.
-        /// </summary>
-        public static string ProviderPopupTabAbout {
-            get {
-                return ResourceManager.GetString("ProviderPopupTabAbout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Catalog.
-        /// </summary>
-        public static string ProviderPopupTabCatalog {
-            get {
-                return ResourceManager.GetString("ProviderPopupTabCatalog", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Details.
-        /// </summary>
-        public static string ProviderPopupTabDetails {
-            get {
-                return ResourceManager.GetString("ProviderPopupTabDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Discover the highest-rated movies and TV shows on {0}, curated to highlight the best titles you won’t want to miss..
         /// </summary>
         public static string RecommendedDesc {
             get {
                 return ResourceManager.GetString("RecommendedDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Regions.
-        /// </summary>
-        public static string Regions {
-            get {
-                return ResourceManager.GetString("Regions", resourceCulture);
             }
         }
         

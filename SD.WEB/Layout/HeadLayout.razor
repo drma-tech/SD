@@ -5,8 +5,8 @@
 @using SD.WEB.Modules.Subscription.Core
 
 @inject WatchingListApi WatchingApi
-@inject PrincipalApi PrincipalApi
 @inject PaymentPublicApi PaymentPublicApi
+@inject PrincipalApi PrincipalApi
 
 @inject NavigationManager Navigation
 @inject IDialogService DialogService
@@ -168,9 +168,11 @@
     protected override void OnInitialized()
     {
         Navigation.LocationChanged += delegate { StateHasChanged(); };
+
         AppStateStatic.BreakpointChanged += breakpoint => StateHasChanged();
         AppStateStatic.BrowserWindowSizeChanged += size => StateHasChanged();
 
+        PrincipalApi.DataChanged += principal => StateHasChanged();
         AppStateStatic.UserStateChanged += async () => { await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync); StateHasChanged(); };
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
 
