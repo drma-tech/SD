@@ -31,7 +31,7 @@
 
 <RenderControl Actions="Actions">
     <div class="grid-relative-container-platform">
-        @foreach (var item in GetFilteredProviders())
+        @foreach (var item in GetFilteredProviders(ShowAll))
         {
             var favorite = MyProviders?.Items.Any(a => a.id == item.id) ?? false;
 
@@ -76,6 +76,12 @@
             </div>
         }
     </div>
+    <div style="text-align: center;" class="pt-3">
+        <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ShowAll = true)"
+                   Disabled="@(ShowAll || AllProviders == null || GetFilteredProviders(true).Count == GetFilteredProviders(false).Count)">
+            @Button.LoadMore
+        </MudButton>
+    </div>
 </RenderControl>
 
 @code {
@@ -88,14 +94,17 @@
     private string? name;
 
     public Region Region { get; set; } = Region.US;
+    private bool ShowAll { get; set; } = false;
 
-    public List<ProviderModel> GetFilteredProviders()
+    public List<ProviderModel> GetFilteredProviders(bool all)
     {
         return AllProviders?.Items
                    .Where(p => p.regions.Contains(Region))
                    .Where(p => p.models.Any(a => DeliveryModel == null || a == DeliveryModel))
                    .Where(p => name == null || p.name!.Contains(name, StringComparison.InvariantCultureIgnoreCase))
-                   .OrderBy(o => o.priority).ToList()
+                   .OrderBy(o => o.priority)
+                   .Take(all ? 1000 : 45)
+                   .ToList()
                ?? [];
     }
 
