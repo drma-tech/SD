@@ -12,35 +12,8 @@ public enum ContentLanguage
     [Custom(Name = "ar-AE", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     arAE = 2,
 
-    [Custom(Name = "ar-BH", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    arBH = 3,
-
-    [Custom(Name = "ar-EG", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    arEG = 4,
-
-    [Custom(Name = "ar-IQ", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    arIQ = 5,
-
-    [Custom(Name = "ar-JO", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    arJO = 6,
-
-    [Custom(Name = "ar-LY", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    arLY = 7,
-
-    [Custom(Name = "ar-MA", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    arMA = 8,
-
-    [Custom(Name = "ar-QA", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    arQA = 9,
-
     [Custom(Name = "ar-SA", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     arSA = 10,
-
-    [Custom(Name = "ar-TD", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    arTD = 11,
-
-    [Custom(Name = "ar-YE", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    arYE = 12,
 
     [Custom(Name = "be-BY", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     beBY = 13,
@@ -50,12 +23,6 @@ public enum ContentLanguage
 
     [Custom(Name = "bn-BD", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     bnBD = 15,
-
-    [Custom(Name = "br-FR", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    brFR = 16,
-
-    [Custom(Name = "ca-AD", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    caAD = 17,
 
     [Custom(Name = "ca-ES", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     caES = 18,
@@ -81,125 +48,35 @@ public enum ContentLanguage
     [Custom(Name = "de-DE", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     deDE = 25,
 
-    [Custom(Name = "el-CY", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    elCY = 26,
-
     [Custom(Name = "el-GR", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     elGR = 27,
-
-    [Custom(Name = "en-AG", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enAG = 28,
 
     [Custom(Name = "en-AU", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     enAU = 29,
 
-    [Custom(Name = "en-BB", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enBB = 30,
-
-    [Custom(Name = "en-BZ", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enBZ = 31,
-
     [Custom(Name = "en-CA", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     enCA = 32,
-
-    [Custom(Name = "en-CM", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enCM = 33,
 
     [Custom(Name = "en-GB", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     enGB = 34,
 
-    [Custom(Name = "en-GG", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enGG = 35,
-
-    [Custom(Name = "en-GH", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enGH = 36,
-
-    [Custom(Name = "en-GI", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enGI = 37,
-
-    [Custom(Name = "en-GY", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enGY = 38,
-
     [Custom(Name = "en-IE", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     enIE = 39,
-
-    [Custom(Name = "en-JM", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enJM = 40,
-
-    [Custom(Name = "en-KE", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enKE = 41,
-
-    [Custom(Name = "en-LC", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enLC = 42,
-
-    [Custom(Name = "en-MW", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enMW = 43,
 
     [Custom(Name = "en-NZ", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     enNZ = 44,
 
-    [Custom(Name = "en-PG", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enPG = 45,
-
-    [Custom(Name = "en-TC", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enTC = 46,
-
     [Custom(Name = "en-US", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     enUS = 47,
-
-    [Custom(Name = "en-ZM", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enZM = 48,
-
-    [Custom(Name = "en-ZW", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    enZW = 49,
 
     [Custom(Name = "eo-EO", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     eoEO = 50,
 
-    [Custom(Name = "es-AR", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    esAR = 51,
-
-    [Custom(Name = "es-CL", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    esCL = 52,
-
-    [Custom(Name = "es-DO", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    esDO = 53,
-
-    [Custom(Name = "es-EC", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    esEC = 54,
-
     [Custom(Name = "es-ES", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     esES = 55,
 
-    [Custom(Name = "es-GQ", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    esGQ = 56,
-
-    [Custom(Name = "es-GT", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    esGT = 57,
-
-    [Custom(Name = "es-HN", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    esHN = 58,
-
     [Custom(Name = "es-MX", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     esMX = 59,
-
-    [Custom(Name = "es-NI", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    esNI = 60,
-
-    [Custom(Name = "es-PA", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    esPA = 61,
-
-    [Custom(Name = "es-PE", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    esPE = 62,
-
-    [Custom(Name = "es-PY", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    esPY = 63,
-
-    [Custom(Name = "es-SV", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    esSV = 64,
-
-    [Custom(Name = "es-UY", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    esUY = 65,
 
     [Custom(Name = "et-EE", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     etEE = 66,
@@ -213,38 +90,11 @@ public enum ContentLanguage
     [Custom(Name = "fi-FI", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     fiFI = 69,
 
-    [Custom(Name = "fr-BF", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    frBF = 70,
-
     [Custom(Name = "fr-CA", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     frCA = 71,
 
-    [Custom(Name = "fr-CD", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    frCD = 72,
-
-    [Custom(Name = "fr-CI", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    frCI = 73,
-
     [Custom(Name = "fr-FR", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     frFR = 74,
-
-    [Custom(Name = "fr-GF", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    frGF = 75,
-
-    [Custom(Name = "fr-GP", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    frGP = 76,
-
-    [Custom(Name = "fr-MC", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    frMC = 77,
-
-    [Custom(Name = "fr-ML", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    frML = 78,
-
-    [Custom(Name = "fr-MU", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    frMU = 79,
-
-    [Custom(Name = "fr-PF", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    frPF = 80,
 
     [Custom(Name = "ga-IE", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     gaIE = 81,
@@ -273,9 +123,6 @@ public enum ContentLanguage
     [Custom(Name = "it-IT", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     itIT = 89,
 
-    [Custom(Name = "it-VA", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    itVA = 90,
-
     [Custom(Name = "ja-JP", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     jaJP = 91,
 
@@ -290,9 +137,6 @@ public enum ContentLanguage
 
     [Custom(Name = "ko-KR", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     koKR = 95,
-
-    [Custom(Name = "ku-TR", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    kuTR = 96,
 
     [Custom(Name = "ky-KG", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     kyKG = 97,
@@ -333,20 +177,11 @@ public enum ContentLanguage
     [Custom(Name = "pl-PL", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     plPL = 109,
 
-    [Custom(Name = "pt-AO", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    ptAO = 110,
-
     [Custom(Name = "pt-BR", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     ptBR = 111,
 
-    [Custom(Name = "pt-MZ", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    ptMZ = 112,
-
     [Custom(Name = "pt-PT", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     ptPT = 113,
-
-    [Custom(Name = "ro-MD", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    roMD = 114,
 
     [Custom(Name = "ro-RO", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     roRO = 115,
@@ -363,26 +198,14 @@ public enum ContentLanguage
     [Custom(Name = "sl-SI", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     slSI = 119,
 
-    [Custom(Name = "so-SO", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    soSO = 120,
-
     [Custom(Name = "sq-AL", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     sqAL = 121,
-
-    [Custom(Name = "sq-XK", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    sqXK = 122,
-
-    [Custom(Name = "sr-ME", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    srME = 123,
 
     [Custom(Name = "sr-RS", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     srRS = 124,
 
     [Custom(Name = "sv-SE", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     svSE = 125,
-
-    [Custom(Name = "sw-TZ", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    swTZ = 126,
 
     [Custom(Name = "ta-IN", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     taIN = 127,
@@ -401,12 +224,6 @@ public enum ContentLanguage
 
     [Custom(Name = "uk-UA", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     ukUA = 132,
-
-    [Custom(Name = "ur-PK", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    urPK = 133,
-
-    [Custom(Name = "uz-UZ", ResourceType = typeof(Resources.Enum.ContentLanguage))]
-    uzUZ = 134,
 
     [Custom(Name = "vi-VN", ResourceType = typeof(Resources.Enum.ContentLanguage))]
     viVN = 135,

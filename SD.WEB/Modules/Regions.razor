@@ -75,7 +75,7 @@
         }
         else if (filter == "pt")
         {
-            var portuguese = new HashSet<Region> { Region.BR, Region.PT, Region.AO, Region.MZ, Region.CV };
+            var portuguese = new HashSet<Region> { Region.BR, Region.PT, Region.MZ, Region.CV };
 
             return RegionsList.Where(p => portuguese.Contains(p)).ToList();
         }

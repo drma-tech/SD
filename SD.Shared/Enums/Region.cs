@@ -17,9 +17,6 @@ public enum Region
     [Custom(Name = "AL", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
     AL = 8,
 
-    [Custom(Name = "AO", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
-    AO = 24,
-
     [Custom(Name = "AR", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
     AR = 32,
 
@@ -29,9 +26,6 @@ public enum Region
     [Custom(Name = "AU", Group = "Oceania", ResourceType = typeof(Resources.Enum.Region))]
     AU = 36,
 
-    [Custom(Name = "AZ", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
-    AZ = 31,
-
     [Custom(Name = "BA", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
     BA = 70,
 
@@ -40,9 +34,6 @@ public enum Region
 
     [Custom(Name = "BE", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
     BE = 56,
-
-    [Custom(Name = "BF", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
-    BF = 854,
 
     [Custom(Name = "BG", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
     BG = 100,
@@ -62,17 +53,8 @@ public enum Region
     [Custom(Name = "BS", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
     BS = 44,
 
-    [Custom(Name = "BY", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
-    BY = 112,
-
-    [Custom(Name = "BZ", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
-    BZ = 84,
-
     [Custom(Name = "CA", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
     CA = 124,
-
-    [Custom(Name = "CD", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
-    CD = 180,
 
     [Custom(Name = "CH", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
     CH = 756,
@@ -82,9 +64,6 @@ public enum Region
 
     [Custom(Name = "CL", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
     CL = 152,
-
-    [Custom(Name = "CM", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
-    CM = 120,
 
     [Custom(Name = "CO", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
     CO = 170,
@@ -97,9 +76,6 @@ public enum Region
 
     [Custom(Name = "CV", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
     CV = 132,
-
-    [Custom(Name = "CY", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
-    CY = 196,
 
     [Custom(Name = "CZ", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
     CZ = 203,
@@ -160,9 +136,6 @@ public enum Region
 
     [Custom(Name = "GT", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
     GT = 320,
-
-    [Custom(Name = "GY", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
-    GY = 328,
 
     [Custom(Name = "HK", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
     HK = 344,
@@ -227,9 +200,6 @@ public enum Region
     [Custom(Name = "LT", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
     LT = 440,
 
-    [Custom(Name = "LU", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
-    LU = 442,
-
     [Custom(Name = "LV", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
     LV = 428,
 
@@ -245,26 +215,14 @@ public enum Region
     [Custom(Name = "MD", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
     MD = 498,
 
-    [Custom(Name = "ME", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
-    ME = 499,
-
-    [Custom(Name = "MG", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
-    MG = 450,
-
     [Custom(Name = "MK", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
     MK = 807,
-
-    [Custom(Name = "ML", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
-    ML = 466,
 
     [Custom(Name = "MT", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
     MT = 470,
 
     [Custom(Name = "MU", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
     MU = 480,
-
-    [Custom(Name = "MW", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
-    MW = 454,
 
     [Custom(Name = "MX", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
     MX = 484,
@@ -280,9 +238,6 @@ public enum Region
 
     [Custom(Name = "NG", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
     NG = 566,
-
-    [Custom(Name = "NI", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
-    NI = 558,
 
     [Custom(Name = "NL", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
     NL = 528,
@@ -304,9 +259,6 @@ public enum Region
 
     [Custom(Name = "PF", Group = "Oceania", ResourceType = typeof(Resources.Enum.Region))]
     PF = 258,
-
-    [Custom(Name = "PG", Group = "Oceania", ResourceType = typeof(Resources.Enum.Region))]
-    PG = 598,
 
     [Custom(Name = "PH", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
     PH = 608,
@@ -368,9 +320,6 @@ public enum Region
     [Custom(Name = "TC", Group = "Americas", ResourceType = typeof(Resources.Enum.Region))]
     TC = 796,
 
-    [Custom(Name = "TD", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
-    TD = 148,
-
     [Custom(Name = "TH", Group = "Asia", ResourceType = typeof(Resources.Enum.Region))]
     TH = 764,
 
@@ -388,9 +337,6 @@ public enum Region
 
     [Custom(Name = "TZ", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
     TZ = 834,
-
-    [Custom(Name = "UA", Group = "Europe", ResourceType = typeof(Resources.Enum.Region))]
-    UA = 804,
 
     [Custom(Name = "UG", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
     UG = 800,
@@ -417,8 +363,5 @@ public enum Region
     ZA = 710,
 
     [Custom(Name = "ZM", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
-    ZM = 894,
-
-    [Custom(Name = "ZW", Group = "Africa", ResourceType = typeof(Resources.Enum.Region))]
-    ZW = 716
+    ZM = 894
 }
