@@ -100,6 +100,14 @@
         {
             await ContentLanguageValueChanged(ContentLanguage.zhCN);
         }
+        else if (value == AppLanguage.fr)
+        {
+            await ContentLanguageValueChanged(ContentLanguage.frFR);
+        }
+        else if (value == AppLanguage.it)
+        {
+            await ContentLanguageValueChanged(ContentLanguage.itIT);
+        }
 
         var uri = new Uri(Navigation.Uri);
         var segments = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries).Skip(1);

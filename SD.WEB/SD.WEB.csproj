@@ -152,6 +152,12 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Button.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Credit.it.resx">
+		  <SubType>Designer</SubType>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Credit.fr.resx">
+		  <SubType>Designer</SubType>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Credit.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Credit.Designer.cs</LastGenOutput>

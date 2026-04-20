@@ -12,6 +12,12 @@
         es = 3,
 
         [Custom(Name = "中文")] //Chinese
-        zh = 4
+        zh = 4,
+
+        [Custom(Name = "Français")] //French
+        fr = 5,
+
+        [Custom(Name = "Italiano")] //Italian
+        it = 6,
     }
 }
