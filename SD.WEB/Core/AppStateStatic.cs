@@ -206,7 +206,7 @@ public static class AppStateStatic
         return _country;
     }
 
-    public static async Task<string?> GetCountry(IpInfoApi api, IpInfoServerApi serverApi, IJSRuntime js)
+    public static async Task<string?> GetCountry(IpInfoApi api, IJSRuntime js)
     {
         await _countrySemaphore.WaitAsync();
         try
@@ -228,34 +228,13 @@ public static class AppStateStatic
 
                 if (_country.NotEmpty())
                     await js.Utils().SetStorage("country", _country);
-                else
-                    _country = await GetCountryFromApiServer(serverApi, js);
             }
 
             return _country;
         }
-        catch
-        {
-            return await GetCountryFromApiServer(serverApi, js);
-        }
         finally
         {
             _countrySemaphore.Release();
-        }
-    }
-
-    private static async Task<string?> GetCountryFromApiServer(IpInfoServerApi serverApi, IJSRuntime js)
-    {
-        try
-        {
-            var country = (await serverApi.GetCountry())?.Trim();
-            if (country.NotEmpty()) await js.Utils().SetStorage("country", country);
-
-            return country;
-        }
-        catch
-        {
-            return null;
         }
     }
 
@@ -268,7 +247,7 @@ public static class AppStateStatic
 
     public static Action<Region>? RegionChanged { get; set; }
 
-    public static async Task<Region> GetRegion(IpInfoApi? api = null, IpInfoServerApi? serverApi = null, IJSRuntime? js = null)
+    public static async Task<Region> GetRegion(IpInfoApi? api = null, IJSRuntime? js = null)
     {
         await _regionSemaphore.WaitAsync();
         try
@@ -292,7 +271,7 @@ public static class AppStateStatic
             }
             else
             {
-                var code = api != null && serverApi != null && js != null ? await GetCountry(api, serverApi, js) : null;
+                var code = api != null && js != null ? await GetCountry(api, js) : null;
 
                 _region = ConvertRegion(code) ?? Region.US;
                 if (js != null) await js.Utils().SetStorage("region", _region);

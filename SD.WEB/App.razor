@@ -17,7 +17,7 @@
                 <Found Context="routeData">
                     <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                         <NotAuthorized>
-                            <NotAuthorizePage></NotAuthorizePage>
+                            <NotAuthorizeComponent></NotAuthorizeComponent>
                         </NotAuthorized>
                         <Authorizing>
                             <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true" Icon="@IconsFA.Solid.Icon("spinner").WithAnimation(IconAnimation.Spin).Font">
@@ -28,7 +28,7 @@
                     <FocusOnNavigate RouteData="@routeData" Selector="h1" />
                 </Found>
                 <NotFound>
-                    <NotFoundPage></NotFoundPage>
+                    <NotFoundComponent></NotFoundComponent>
                 </NotFound>
             </Router>
         </CascadingAuthenticationState>

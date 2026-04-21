@@ -16,7 +16,6 @@
 @inject PrincipalApi PrincipalApi
 @inject NavigationManager Navigation
 @inject IpInfoApi IpInfoApi
-@inject IpInfoServerApi IpInfoServerApi
 @inject LoginApi LoginApi
 
 <MudThemeProvider @ref="_mudThemeProvider" IsDarkMode="@_darkMode" />
@@ -209,7 +208,7 @@
     {
         if (!AppStateStatic.IsAuthenticated && !Navigation.Uri.Contains("/legal/"))
         {
-            var country = await AppStateStatic.GetCountry(IpInfoApi, IpInfoServerApi, JsRuntime);
+            var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
 
             //If you can't identify the country, it's probably in a blocked region (like China). Therefore, we force the user to approve consent.
             if (country.Empty() || country.ToUpper() == "CN")

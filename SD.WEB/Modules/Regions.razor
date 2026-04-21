@@ -3,9 +3,9 @@
 @inherits PageCore<Regions>
 
 <HeadComponent Title="Regions" Url=@($"/{Culture}/regions") Index="false"></HeadComponent>
-<NewPageSection IsPageHeader="true" Icon="@IconsFA.Solid.Icon("globe").Font" Title="Regions"></NewPageSection>
+<PageSectionComponent IsPageHeader="true" Icon="@IconsFA.Solid.Icon("globe").Font" Title="Regions"></PageSectionComponent>
 
-<NewPageSection ShowHeader="false">
+<PageSectionComponent ShowHeader="false">
     <ActionsFragment>
         <MudSelect Label="Filter" FitContent="!IsMobile" Clearable="true" Dense="true" Class="me-2" Variant="Variant.Text"
                    Value="filter" ValueChanged="@((string? vl) => { filter = vl; StateHasChanged(); })">
@@ -42,7 +42,7 @@
             }
         </MudGrid>
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
 @code {
     public List<Region> RegionsList { get; set; } = [];

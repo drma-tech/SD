@@ -7,7 +7,7 @@
 @inject CacheYoutubeApi CacheYoutubeApi
 
 <HeadComponent Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Url=@($"/{Culture}/trailers") Index="true" Shared="true"></HeadComponent>
-<NewPageSection IsPageHeader="true" Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Icon="@IconsFA.Brands.Icon("youtube").Font" UrlShare="@($"/{Culture}/trailers")"></NewPageSection>
+<PageSectionComponent IsPageHeader="true" Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Icon="@IconsFA.Brands.Icon("youtube").Font" UrlShare="@($"/{Culture}/trailers")"></PageSectionComponent>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 

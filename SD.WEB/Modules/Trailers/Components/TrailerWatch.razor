@@ -3,8 +3,8 @@
 @inherits PageCore<TrailerWatch>
 
 <HeadComponent Title="@Title" Description="@Title" Url=@($"/{Culture}/trailers") Index="false"></HeadComponent>
-<NewPageSection IsPageHeader="true" Title="@Title">
-</NewPageSection>
+<PageSectionComponent IsPageHeader="true" Title="@Title">
+</PageSectionComponent>
 
 <MudGrid Spacing="@Css.SpaceSmall">    
     <MudItem xs="12" md="8">

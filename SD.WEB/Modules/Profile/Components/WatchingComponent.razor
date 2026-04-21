@@ -9,7 +9,7 @@
 @inject WatchingListApi WatchingApi
 @inject WatchedListApi WatchedApi
 
-<NewPageSection Icon="@IconsFA.Solid.Icon("eye").Font" Title="Watching" ShowHeader="ShowHeader">
+<PageSectionComponent Icon="@IconsFA.Solid.Icon("eye").Font" Title="Watching" ShowHeader="ShowHeader">
     <BodyFragment>
         @if (TypeParam.HasValue)
         {
@@ -147,7 +147,7 @@
             </MudTabs>
         }
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
 @code {
     [Parameter][EditorRequired] public ComponentActions<WatchingList?> ActionsMovie { get; set; }

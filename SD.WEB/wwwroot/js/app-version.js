@@ -1,1 +1,1 @@
-export const appVersion = '2026.04.20'
+export const appVersion = '2026.04.21'

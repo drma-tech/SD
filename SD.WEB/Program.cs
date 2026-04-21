@@ -89,7 +89,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     var apiOrigin = configuration["DownstreamApi:BaseUrl"] ??
         (baseAddress.Contains("localhost") || baseAddress.Contains("127.0.0.1") ? throw new UnhandledException($"DownstreamApi:BaseUrl is null.") : $"{baseAddress}api/");
 
-    collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(60); })
+    collection.AddHttpClient("Anonymous", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(30); })
         .AddHttpMessageHandler<AppVersionHandler>()
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
@@ -97,12 +97,9 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
     collection.AddScoped<SupabaseAuthStateProvider>();
 
     collection.AddScoped<CustomAuthorizationHandler>();
-    collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(60); })
+    collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(30); })
         .AddHttpMessageHandler<CustomAuthorizationHandler>()
         .AddHttpMessageHandler<AppVersionHandler>()
-        .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
-
-    collection.AddHttpClient("External", (service, options) => { options.Timeout = TimeSpan.FromSeconds(60); })
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
     collection.AddAuthorizationCore();
@@ -152,7 +149,6 @@ static void ConfigureApi(IServiceCollection collection)
     collection.AddScoped<PaymentAuthApi>();
     collection.AddScoped<PaymentPublicApi>();
     collection.AddScoped<IpInfoApi>();
-    collection.AddScoped<IpInfoServerApi>();
 }
 
 static async Task ConfigureCulture(NavigationManager? nav, IJSRuntime js)

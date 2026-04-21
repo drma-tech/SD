@@ -63,6 +63,26 @@ public static class HttpRequestDataExtensions
         return response;
     }
 
+    public static async Task<HttpResponseData> CreateResponse(this HttpRequestData req, Stream? stream, TtlCache maxAge, CancellationToken cancellationToken)
+    {
+        var response = req.CreateResponse();
+
+        if (stream != null)
+        {
+            response.StatusCode = HttpStatusCode.OK;
+            response.Headers.Add("Content-Type", "application/json");
+            await stream.CopyToAsync(response.Body, cancellationToken);
+        }
+        else
+        {
+            response.StatusCode = HttpStatusCode.NoContent;
+        }
+
+        response.Headers.Add("Cache-Control", $"public, max-age={(int)maxAge}");
+
+        return response;
+    }
+
     public static async Task<HttpResponseData> CreateResponse(this HttpRequestData req, HttpStatusCode status, string msg)
     {
         var response = req.CreateResponse(status);

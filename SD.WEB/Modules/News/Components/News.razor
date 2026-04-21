@@ -8,7 +8,7 @@
 @inject CacheFlixsterApi CacheFlixsterApi
 
 <HeadComponent Title="@($"{Translations.NewsTitle} ({MediaType.GetName()})")" Description="@Translations.NewsDescription" Url="@($"/{Culture}/news/{category}")" Index="true" Shared="true" />
-<NewPageSection IsPageHeader="true" Title="@($"{Translations.NewsTitle} ({MediaType.GetName()})")" Description="@Translations.NewsDescription" Icon="@IconsFA.Solid.Icon("newspaper").Font" UrlShare="@($"/{Culture}/news/{category}")" />
+<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.NewsTitle} ({MediaType.GetName()})")" Description="@Translations.NewsDescription" Icon="@IconsFA.Solid.Icon("newspaper").Font" UrlShare="@($"/{Culture}/news/{category}")" />
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 

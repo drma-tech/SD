@@ -6,9 +6,8 @@
 
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject IpInfoApi IpInfoApi
-@inject IpInfoServerApi IpInfoServerApi
 
-<NewPageSection Title="@($"{Collections.Resources.Translations.FreeWatch} ({(Region?.GetName() ?? "United States")})")" Description="@(GlobalTranslations.FreeWatchDescription)" Icon="@IconsFA.Solid.Icon("play-circle").Font">
+<PageSectionComponent Title="@($"{Collections.Resources.Translations.FreeWatch} ({(Region?.GetName() ?? "United States")})")" Description="@(GlobalTranslations.FreeWatchDescription)" Icon="@IconsFA.Solid.Icon("play-circle").Font">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
@@ -21,23 +20,23 @@
                 <MudTabPanel Text="@MediaType.movie.GetName()">
                     @if (_loaded[0])
                     {
-                        <NewMediaList MediaListApi="TmdbDiscoveryApi" OnlyYear="true" StringParameters="_extraParameters" TypeSelected="MediaType.movie"
+                        <MediaListComponent MediaListApi="TmdbDiscoveryApi" OnlyYear="true" StringParameters="_extraParameters" TypeSelected="MediaType.movie"
                                       Watched="WatchedList" Watching="WatchingList" Wish="WishList" Culture="@Culture">
-                        </NewMediaList>
+                        </MediaListComponent>
                     }
                 </MudTabPanel>
                 <MudTabPanel Text="@MediaType.tv.GetName()">
                     @if (_loaded[1])
                     {
-                        <NewMediaList MediaListApi="TmdbDiscoveryApi" OnlyYear="true" StringParameters="_extraParameters" TypeSelected="MediaType.tv"
+                        <MediaListComponent MediaListApi="TmdbDiscoveryApi" OnlyYear="true" StringParameters="_extraParameters" TypeSelected="MediaType.tv"
                                       Watched="WatchedList" Watching="WatchingList" Wish="WishList" Culture="@Culture">
-                        </NewMediaList>
+                        </MediaListComponent>
                     }
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
@@ -61,7 +60,7 @@
 
     protected override async Task ProcessComponentData()
     {
-        Region ??= await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
+        Region ??= await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
         _extraParameters = await GetExtraParameters();
         _loaded[0] = true;
     }

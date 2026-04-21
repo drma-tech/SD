@@ -22,7 +22,7 @@
 @inject IHttpClientFactory factory
 
 <HeadComponent Title="@Title" Description="@Description" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")" Index="true" Shared="true"></HeadComponent>
-<NewPageSection IsPageHeader="true" Title="@Title" Description="@Description" UrlShare="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")"></NewPageSection>
+<PageSectionComponent IsPageHeader="true" Title="@Title" Description="@Description" UrlShare="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")"></PageSectionComponent>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 

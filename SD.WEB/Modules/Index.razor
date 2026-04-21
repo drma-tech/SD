@@ -18,7 +18,7 @@
 @inject TmdbListApi TmdbListApi
 
 <HeadComponent Title="@AppInfo.Title" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}") Index="true" ForceTitle="true" Shared="true"></HeadComponent>
-<NewPageSection IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@AppInfo.Subtitle"></NewPageSection>
+<PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@AppInfo.Subtitle"></PageSectionComponent>
 
 <MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress" Class="@Css.Build().Large("mb")"
               AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
@@ -34,11 +34,9 @@
 
 <EditorsChoiceComponent Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"></EditorsChoiceComponent>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index2"></GoogleAdSense>
-
 <AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"></AwardsOfTheYearComponent>
 
-<NewPageSection Title="@Translations.ExpectedMovieOfYear.Format(DateTime.Now.Year)" Description="@(string.Format(GlobalTranslations.ExpectedMovies, 2026))">
+<PageSectionComponent Title="@Translations.ExpectedMovieOfYear.Format(DateTime.Now.Year)" Description="@(string.Format(GlobalTranslations.ExpectedMovies, 2026))">
     <BodyFragment>
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
             <Header>
@@ -48,12 +46,12 @@
             </Header>
             <ChildContent>
                 <MudTabPanel Text="All">
-                    <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" TitleHead="@Translations.ExpectedMovieOfYear.Format(DateTime.Now.Year)" Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture" />
+                    <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" TitleHead="@Translations.ExpectedMovieOfYear.Format(DateTime.Now.Year)" Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture" />
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
 <MudGrid Spacing="@Css.SpaceSmall">
     <MudItem xs="12" sm="6">

@@ -8,7 +8,7 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<NewPageSection Title="@Translations.AwardsOfTheYear.Format(DateTime.Now.Year)" Description="@GlobalTranslations.AwardsYearDescription" Icon="@IconsFA.Solid.Icon("trophy").Font">
+<PageSectionComponent Title="@Translations.AwardsOfTheYear.Format(DateTime.Now.Year)" Description="@GlobalTranslations.AwardsYearDescription" Icon="@IconsFA.Solid.Icon("trophy").Font">
     <BodyFragment>
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
             <Header>
@@ -18,13 +18,13 @@
             </Header>
             <ChildContent>
                 <MudTabPanel Text="All">
-                    <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="Watched" Watching="Watching" Wish="Wish" CommentsIsImage="true" Culture="@Culture">
-                    </NewMediaList>
+                    <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="Watched" Watching="Watching" Wish="Wish" CommentsIsImage="true" Culture="@Culture">
+                    </MediaListComponent>
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }

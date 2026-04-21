@@ -4,7 +4,7 @@
 
 @inject TmdbListApi TmdbListApi
 
-<NewPageSection Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font">
+<PageSectionComponent Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
@@ -20,21 +20,21 @@
                 <MudTabPanel Text="@MediaType.movie.GetName()">
                     @if (_loaded[0])
                     {
-                        <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
-                        </NewMediaList>
+                        <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
+                        </MediaListComponent>
                     }
                 </MudTabPanel>
                 <MudTabPanel Text="@MediaType.tv.GetName()">
                     @if (_loaded[1])
                     {
-                        <NewMediaList MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
-                        </NewMediaList>
+                        <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
+                        </MediaListComponent>
                     }
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? Watched { get; set; }

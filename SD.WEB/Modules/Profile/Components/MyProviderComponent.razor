@@ -9,9 +9,8 @@
 @inject MyProvidersApi MyProvidersApi
 @inject AllProvidersApi AllProvidersApi
 @inject IpInfoApi IpInfoApi
-@inject IpInfoServerApi IpInfoServerApi
 
-<NewPageSection Icon="@IconsFA.Solid.Icon("clapperboard").Font" Title="@Translations.MyPlatforms" ShowActions="ProvidersChanged">
+<PageSectionComponent Icon="@IconsFA.Solid.Icon("clapperboard").Font" Title="@Translations.MyPlatforms" ShowActions="ProvidersChanged">
     <ActionsFragment>
         <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" />
     </ActionsFragment>
@@ -42,7 +41,7 @@
             </div>
         </RenderControl>
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
@@ -91,7 +90,7 @@
     {
         AllProviders ??= await AllProvidersApi.GetAll();
 
-        Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
     }
 
     protected override async Task LoadAuthDataAsync()

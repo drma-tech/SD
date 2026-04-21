@@ -6,15 +6,13 @@
 @inherits PageCore<FreeToWatchPage>
 
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
-@inject IpInfoApi IpInfoApi
-@inject IpInfoServerApi IpInfoServerApi
 
 <HeadComponent Title="@(Collections.Resources.Translations.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))"
                Description="@Collections.Resources.Translations.FreeWatchDescriptionExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())"
                Url="@($"/{Culture}/free/{Type}/{Region}")" Index="true" Shared="true"></HeadComponent>
-<NewPageSection IsPageHeader="true" Title="@(Collections.Resources.Translations.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))"
+<PageSectionComponent IsPageHeader="true" Title="@(Collections.Resources.Translations.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))"
                 Description="@Collections.Resources.Translations.FreeWatchDescriptionExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())"
-                Icon="@IconsFA.Solid.Icon("play-circle").Font" UrlShare="@($"/{Culture}/free/{Type}/{Region}")"></NewPageSection>
+                Icon="@IconsFA.Solid.Icon("play-circle").Font" UrlShare="@($"/{Culture}/free/{Type}/{Region}")"></PageSectionComponent>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 

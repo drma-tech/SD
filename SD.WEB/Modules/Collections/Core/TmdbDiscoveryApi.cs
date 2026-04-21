@@ -19,12 +19,10 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
             if (stringParameters.ContainsValue("popularity.desc")) //popularMedia
                 stringParameters.TryAdd("vote_count.gte", "50"); //ignore low-rated movie
             if (stringParameters.ContainsValue("primary_release_date.desc")) //newMedia
-                stringParameters.TryAdd("primary_release_date.lte",
-                    DateTime.Now.ToString("yyyy-MM-dd")); //only released
+                stringParameters.TryAdd("primary_release_date.lte", DateTime.Now.ToString("yyyy-MM-dd")); //only released
             if (stringParameters.ContainsValue("vote_average.desc")) //topRatedMedia
             {
-                stringParameters.TryAdd("primary_release_date.gte",
-                    DateTime.Now.AddYears(-20).ToString("yyyy-MM-dd")); //only recent releases
+                stringParameters.TryAdd("primary_release_date.gte", DateTime.Now.AddYears(-30).ToString("yyyy-MM-dd")); //only recent releases
                 stringParameters.TryAdd("vote_count.gte", "500"); //ignore low-rated movie
                 stringParameters.TryAdd("vote_average.gte", "7.4"); //only the best
             }
@@ -108,8 +106,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
 
         if (type == MediaType.movie)
         {
-            var result =
-                await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter));
+            var result = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter));
 
             foreach (var item in result?.results ?? [])
                 //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster

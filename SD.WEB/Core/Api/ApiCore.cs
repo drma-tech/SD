@@ -10,7 +10,6 @@ public enum ApiType
     Local,
     Anonymous,
     Authenticated,
-    External
 }
 
 public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType type)
@@ -18,14 +17,12 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
     protected HttpClient LocalHttp => factory.CreateClient("Local");
     protected HttpClient AnonymousHttp => factory.CreateClient("Anonymous");
     protected HttpClient AuthenticatedHttp => factory.CreateClient("Authenticated");
-    protected HttpClient ExternalHttp => factory.CreateClient("External");
 
     private HttpClient GetHttp(ApiType type) => type switch
     {
         ApiType.Local => LocalHttp,
         ApiType.Anonymous => AnonymousHttp,
         ApiType.Authenticated => AuthenticatedHttp,
-        ApiType.External => ExternalHttp,
         _ => throw new NotImplementedException()
     };
 

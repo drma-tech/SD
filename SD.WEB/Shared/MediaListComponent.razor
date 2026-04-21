@@ -1,4 +1,4 @@
-﻿@inherits ComponentCore<NewMediaList>
+﻿@inherits ComponentCore<MediaListComponent>
 
 @inject ExternalIdApi ExternalIdApi
 @inject TmdbCreditApi TmdbCreditApi
@@ -9,7 +9,7 @@
 
 @if (ContainsHeader)
 {
-    <NewPageSection Title="@Title" Icon="@Icon" Image="@Image" Description="@Description">
+    <PageSectionComponent Title="@Title" Icon="@Icon" Image="@Image" Description="@Description">
         <BodyFragment>
             <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                      ActivePanelIndex="@(TypeSelected == MediaType.movie ? 0 : 1)"
@@ -67,7 +67,7 @@
                 </ChildContent>
             </MudTabs>
         </BodyFragment>
-    </NewPageSection>
+    </PageSectionComponent>
 }
 else
 {

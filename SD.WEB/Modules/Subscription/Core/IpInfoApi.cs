@@ -6,21 +6,6 @@
         {
             try
             {
-                return await GetStringAsync("https://ipinfo.io/country");
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-    }
-
-    public class IpInfoServerApi(IHttpClientFactory factory) : ApiCore(factory, null, ApiType.Anonymous)
-    {
-        public async Task<string?> GetCountry()
-        {
-            try
-            {
                 return await GetStringAsync("public/country");
             }
             catch (Exception)

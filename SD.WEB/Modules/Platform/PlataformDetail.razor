@@ -16,11 +16,10 @@
 @inject WishListApi WishApi
 @inject MyProvidersApi MyProvidersApi
 @inject IpInfoApi IpInfoApi
-@inject IpInfoServerApi IpInfoServerApi
 
 @if (isNotFound)
 {
-    <NotFoundPage></NotFoundPage>
+    <NotFoundComponent></NotFoundComponent>
 }
 else
 {
@@ -28,7 +27,7 @@ else
 
     @if (Provider != null)
     {
-        <NewPageSection IsPageHeader="true" Image="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Subtitle="@GetSubtitle()" Description="@Provider.description"
+        <PageSectionComponent IsPageHeader="true" Image="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Subtitle="@GetSubtitle()" Description="@Provider.description"
                         UrlShare="@($"/{Culture}/platforms/{Provider.id}")">
             <ActionsFragment>
                 @if (Provider.link.NotEmpty() && Platform != SD.Shared.Enums.Platform.huawei)
@@ -53,24 +52,24 @@ else
                     }
                 }
             </ActionsFragment>
-        </NewPageSection>
+        </PageSectionComponent>
     }
 
     <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
     <RenderControl Actions="Actions">
-        <NewMediaList ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platforms/{Id}/popular/{{0}}")" Culture="@Culture"
+        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platforms/{Id}/popular/{{0}}")" Culture="@Culture"
                       ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.PopularDesc.Format(Provider?.name)"
                       StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
-        </NewMediaList>
-        <NewMediaList ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platforms/{Id}/new/{{0}}")" Culture="@Culture"
+        </MediaListComponent>
+        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platforms/{Id}/new/{{0}}")" Culture="@Culture"
                       ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.NewsDesc.Format(Provider?.name)"
                       StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
-        </NewMediaList>
-        <NewMediaList ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platforms/{Id}/top/{{0}}")" Culture="@Culture"
+        </MediaListComponent>
+        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platforms/{Id}/top/{{0}}")" Culture="@Culture"
                       ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.RecommendedDesc.Format(Provider?.name)"
                       StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
-        </NewMediaList>
+        </MediaListComponent>
     </RenderControl>
 
     <div style="position: fixed; bottom: 16px; right: 16px; display: flex; z-index: 1000;">
@@ -162,7 +161,7 @@ else
 
             MyProviders ??= new MyProviders();
 
-            var region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
+            var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
 
             var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = region };
             MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct);

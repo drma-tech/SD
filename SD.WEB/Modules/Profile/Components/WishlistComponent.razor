@@ -2,7 +2,7 @@
 @using SD.WEB.Shared.Core
 @inherits ComponentCore<WishlistComponent>
 
-<NewPageSection Icon="@IconsFA.Solid.Icon("bookmark").Font" Title="WishList" ShowHeader="ShowHeader">
+<PageSectionComponent Icon="@IconsFA.Solid.Icon("bookmark").Font" Title="WishList" ShowHeader="ShowHeader">
     <BodyFragment>
         @if (TypeParam.HasValue)
         {
@@ -124,7 +124,7 @@
             </MudTabs>
         }
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
 @code {
     [Parameter][EditorRequired] public ComponentActions<WishList?> ActionsMovie { get; set; }

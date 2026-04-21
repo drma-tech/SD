@@ -67,26 +67,4 @@ public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
         response.WriteString("OK");
         return response;
     }
-
-    [Function("Country")]
-    public async Task<string?> Country([HttpTrigger(AuthorizationLevel.Anonymous, Method.Get, Route = "public/country")] HttpRequestData req, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var ip = req.GetUserIP(false);
-            if (ip.Empty()) return null;
-            if (ip == "127.0.0.1") return null;
-
-            var client = factory.CreateClient("ipinfo");
-
-            var result = await client.GetStringAsync($"https://ipinfo.io/{ip}/country", cancellationToken);
-
-            return result;
-        }
-        catch (Exception ex)
-        {
-            req.LogError(ex);
-            return null;
-        }
-    }
 }

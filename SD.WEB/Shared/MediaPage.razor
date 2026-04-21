@@ -24,12 +24,11 @@
 @inject WishListApi WishApi
 @inject TmdbRecommendationsApi TmdbRecommendationsApi
 @inject IpInfoApi IpInfoApi
-@inject IpInfoServerApi IpInfoServerApi
 
 <HeadComponent Title="@Media?.title" Description="@Media?.plot" Url="@($"/{Culture}/media/{type}/{id}")" Index="false"></HeadComponent>
 @if (Media?.title.NotEmpty() ?? false)
 {
-    <NewPageSection Title="@Media?.title">
+    <PageSectionComponent Title="@Media?.title">
         <ActionsFragment>
             @if (Wish?.Movies.Any(a => a.id == TmdbId) ?? false)
             {
@@ -68,28 +67,26 @@
                 </MudButton>
             }
         </ActionsFragment>
-    </NewPageSection>
+    </PageSectionComponent>
 }
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media"></GoogleAdSense>
 
 <RenderControl Actions="Actions" LoadingHeight="400px">
     <ChildContent>
-        <NewPageSection Title="@Translations.TabAbout" Color="Color.Secondary">
+        <PageSectionComponent Title="@Translations.TabAbout" Color="Color.Secondary">
             <BodyFragment>
                 <MediaAbout ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watched="Watched" Watching="Watching" Wish="Wish" Type="Type"
                             Actions="RatingsActions" RatingsCache="_ratingsCache"></MediaAbout>
             </BodyFragment>
-        </NewPageSection>
-        <NewPageSection Title="@($"{GlobalTranslations.WhereToWatch} ({Region?.GetName()})")" Color="Color.Secondary">
+        </PageSectionComponent>
+        <PageSectionComponent Title="@($"{GlobalTranslations.WhereToWatch} ({Region?.GetName()})")" Color="Color.Secondary">
             <BodyFragment>
                 <MediaStreaming TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaStreaming>
             </BodyFragment>
-        </NewPageSection>
+        </PageSectionComponent>
 
-        <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media2"></GoogleAdSense>
-
-        <NewPageSection Title="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
+        <PageSectionComponent Title="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
             <BodyFragment>
                 <div class="grid-relative-container-poster">
                     @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
@@ -140,8 +137,8 @@
                     }
                 </div>
             </BodyFragment>
-        </NewPageSection>
-        <NewPageSection Title="Recommendations" Color="Color.Secondary">
+        </PageSectionComponent>
+        <PageSectionComponent Title="Recommendations" Color="Color.Secondary">
             <BodyFragment>
                 <RenderControl Actions="RecommendationsActions" Context="ctx">
                     <div id="@_swiperId" class="swiper">
@@ -161,8 +158,8 @@
                     </div>
                 </RenderControl>
             </BodyFragment>
-        </NewPageSection>
-        <NewPageSection Title="Videos" Color="Color.Secondary" Visible="@(Media != null && Media.Videos.Any())">
+        </PageSectionComponent>
+        <PageSectionComponent Title="Videos" Color="Color.Secondary" Visible="@(Media != null && Media.Videos.Any())">
             <BodyFragment>
                 @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])
                 {
@@ -186,17 +183,15 @@
                     </MudPaper>
                 }
             </BodyFragment>
-        </NewPageSection>
+        </PageSectionComponent>
 
-        <GoogleAdSense Section="@GoogleAdSense.AdUnit.Media3"></GoogleAdSense>
-
-        <NewPageSection Title="@Translations.TabCredits" Color="Color.Secondary">
+        <PageSectionComponent Title="@Translations.TabCredits" Color="Color.Secondary">
             <BodyFragment>
                 <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture">
                 </CreditsComponent>
             </BodyFragment>
-        </NewPageSection>
-        <NewPageSection Title="Reviews" Color="Color.Secondary">
+        </PageSectionComponent>
+        <PageSectionComponent Title="Reviews" Color="Color.Secondary">
             <BodyFragment>
                 @if (ImdbId.NotEmpty())
                 {
@@ -205,7 +200,7 @@
                     </ReviewComponent>
                 }
             </BodyFragment>
-        </NewPageSection>
+        </PageSectionComponent>
     </ChildContent>
 </RenderControl>
 
@@ -276,7 +271,7 @@
 
             Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
             Media.Videos.Reverse();
-            Region = await AppStateStatic.GetRegion(IpInfoApi, IpInfoServerApi, JsRuntime);
+            Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
 
             await Actions.FinishLoading.Invoke(Media);
         }

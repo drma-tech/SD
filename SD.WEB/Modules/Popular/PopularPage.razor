@@ -12,7 +12,7 @@
 @inject WishListApi WishApi
 
 <HeadComponent Title="@($"{Translations.Popular} ({PopularType.GetName()})")" Description="@GlobalTranslations.PopularIndexDescription" Url="@($"/{Culture}/popular/{Type}")" Index="true" Shared="true" />
-<NewPageSection IsPageHeader="true" Title="@($"{Translations.Popular} ({PopularType.GetName()})")" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font" UrlShare="@($"/{Culture}/popular/{Type}")" />
+<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Popular} ({PopularType.GetName()})")" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font" UrlShare="@($"/{Culture}/popular/{Type}")" />
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 

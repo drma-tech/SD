@@ -12,8 +12,8 @@
 
 <HeadComponent Title="@($"{Translations.EditorsChoiceTitle} ({MediaType.GetName()})")" Description="@GlobalTranslations.CertifiedDescription"
                Url="@($"/{Culture}/editors-choice/{Type}")" Index="true" Shared="true"></HeadComponent>
-<NewPageSection IsPageHeader="true" Title="@($"{Translations.EditorsChoiceTitle} ({MediaType.GetName()})")" Subtitle="Top-rated titles for all audiences" Description="@GlobalTranslations.CertifiedDescription"
-                Icon="@IconsFA.Solid.Icon("award").Font" UrlShare="@($"/{Culture}/editors-choice/{Type}")"></NewPageSection>
+<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.EditorsChoiceTitle} ({MediaType.GetName()})")" Subtitle="Top-rated titles for all audiences" Description="@GlobalTranslations.CertifiedDescription"
+                Icon="@IconsFA.Solid.Icon("award").Font" UrlShare="@($"/{Culture}/editors-choice/{Type}")"></PageSectionComponent>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 

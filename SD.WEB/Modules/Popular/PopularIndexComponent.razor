@@ -4,7 +4,7 @@
 
 @inject ImdbPopularApi ImdbPopularApi
 
-<NewPageSection Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font">
+<PageSectionComponent Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
@@ -20,23 +20,23 @@
                 <MudTabPanel Text="@PopularType.Movie.GetName()">
                     @if (_loaded[0])
                     {
-                        <NewMediaList MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.movie"
+                        <MediaListComponent MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.movie"
                                       Watched="WatchedList" Watching="WatchingList" Wish="WishList" Culture="@Culture">
-                        </NewMediaList>
+                        </MediaListComponent>
                     }
                 </MudTabPanel>
                 <MudTabPanel Text="@PopularType.Show.GetName()">
                     @if (_loaded[1])
                     {
-                        <NewMediaList MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.tv"
+                        <MediaListComponent MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.tv"
                                       Watched="WatchedList" Watching="WatchingList" Wish="WishList" Culture="@Culture">
-                        </NewMediaList>
+                        </MediaListComponent>
                     }
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>
     </BodyFragment>
-</NewPageSection>
+</PageSectionComponent>
 
 @code {
     [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
