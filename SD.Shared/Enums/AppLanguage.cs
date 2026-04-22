@@ -19,5 +19,8 @@
 
         [Custom(Name = "Italiano")] //Italian
         it = 6,
+
+        [Custom(Name = "Deutsch")] //German
+        de = 7,
     }
 }
