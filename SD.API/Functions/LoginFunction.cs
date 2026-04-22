@@ -6,7 +6,7 @@ using System.Net;
 
 namespace SD.API.Functions;
 
-public class LoginFunction(CosmosRepository repo, IHttpClientFactory factory)
+public class LoginFunction(CosmosRepository repo)
 {
     [Function("LoginGet")]
     public async Task<AuthLogin?> LoginGet(
