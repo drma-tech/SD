@@ -289,7 +289,7 @@ public static class AppStateStatic
     {
         if (code.Empty()) return null;
 
-        if (Enum.TryParse<Region>(code, true, out var region) && Enum.IsDefined(region))
+        if (System.Enum.TryParse<Region>(code, true, out var region) && System.Enum.IsDefined(region))
             return region;
         else
             return null;
@@ -349,11 +349,11 @@ public static class AppStateStatic
     {
         if (code.Empty()) return null;
 
-        if (Enum.TryParse<ContentLanguage>(code, true, out var language) && Enum.IsDefined(language))
+        if (System.Enum.TryParse<ContentLanguage>(code, true, out var language) && System.Enum.IsDefined(language))
             return language;
         else if (code.Length == 2) //few languages have only 2 letter code
         {
-            var languages = Enum.GetValues<ContentLanguage>();
+            var languages = System.Enum.GetValues<ContentLanguage>();
             foreach (var lang in languages)
             {
                 if (lang.ToString().StartsWith(code, StringComparison.InvariantCultureIgnoreCase))

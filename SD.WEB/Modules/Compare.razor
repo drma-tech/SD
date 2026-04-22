@@ -1,0 +1,593 @@
+﻿@page "/{culture}/compare"
+@inherits PageCore<Compare>
+
+<HeadComponent Title="Streaming Discovery vs Aggregators | Better Way to Watch" ForceTitle="true" Description="Compare Streaming Discovery with aggregators. Find where to watch, multi-source ratings, expert reviews, curated lists, and global availability." Url=@($"/{Culture}/compare") Index="true"></HeadComponent>
+<PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="Streaming Discovery vs Aggregators | Better Way to Watch" Description="Compare Streaming Discovery with aggregators. Find where to watch, multi-source ratings, expert reviews, curated lists, and global availability." CustomBodyClass="mb-12"></PageSectionComponent>
+
+@if (Language == AppLanguage.pt)
+{
+    <PageSectionComponent Title="Introdução">
+        <BodyFragment>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-2">
+                Encontrar onde assistir a um filme ou série é apenas parte do problema. Entender o que assistir, por que isso importa e como isso é avaliado em diferentes fontes é igualmente importante.
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-2">
+                A maioria das soluções foca em um único aspecto da descoberta. Algumas listam disponibilidade, outras promovem seus próprios catálogos e algumas fornecem avaliações ou reviews limitados.
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-2">
+                O Streaming Discovery combina disponibilidade, avaliações agregadas, reviews de especialistas, listas curadas e tendências em tempo real em uma camada estruturada de decisão sobre o que assistir.
+            </MudText>
+        </BodyFragment>
+    </PageSectionComponent>
+    <PageSectionComponent Title="Visão Comparativa" Subtitle="Diferentes plataformas resolvem diferentes partes da descoberta de conteúdo.">
+        <BodyFragment>
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Medium("mb")">
+                <MudItem xs="3"><MudText Typo="Typo.h6" Color="Color.Primary">Recurso</MudText></MudItem>
+                <MudItem xs="3"><MudText Typo="Typo.h6" Color="Color.Primary">Plataformas de Streaming</MudText></MudItem>
+                <MudItem xs="3"><MudText Typo="Typo.h6" Color="Color.Primary">Outros Agregadores</MudText></MudItem>
+                <MudItem xs="3"><MudText Typo="Typo.h6" Color="Color.Primary">Streaming Discovery</MudText></MudItem>
+            </MudGrid>
+            <!-- Availability -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Onde Assistir</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudText Inline="true">Apenas catálogo próprio</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Suportado</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Global, estruturado</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Ratings -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Avaliações</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudText Inline="true">Apenas internas</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Poucas fontes</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Múltiplas fontes agregadas</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Reviews -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Reviews de Especialistas</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudText Inline="true">Raros</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Limitados</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Múltiplas fontes especializadas</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Discovery -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Ferramentas de Descoberta</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Filtros limitados</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Navegação por plataforma única</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Descoberta estruturada multi-fonte</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Lists -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Listas Curadas</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Guiadas pela plataforma</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Limitadas</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Populares, prêmios, escolha editorial</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Regional -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Insights Regionais</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudText Inline="true">Catálogos bloqueados por região</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Cobertura regional parcial</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Disponibilidade e tendências por região</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Extras -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Medium("mb")">
+                <MudItem xs="3"><MudText>Conteúdo Extra</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Limitado</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Básico</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Trailers, notícias, prêmios, tendências</MudText>
+                </MudItem>
+            </MudGrid>
+        </BodyFragment>
+    </PageSectionComponent>
+    <PageSectionComponent Title="O que o Streaming Discovery Resolve">
+        <BodyFragment>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-2">
+                A maioria dos usuários não tem dificuldade em encontrar conteúdo em si, mas sim em decidir o que assistir e entender onde ele está disponível em diferentes plataformas e regiões.
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-3">
+                O Streaming Discovery resolve essa fragmentação ao reunir disponibilidade, avaliações, opiniões de especialistas e sinais curados em uma única experiência estruturada.
+            </MudText>
+            <div class="support-section mb-0">
+                <ul>
+                    <li><MudText>O que devo assistir agora com base em sinais reais</MudText></li>
+                    <li><MudText>Esse título realmente vale a pena segundo múltiplas fontes</MudText></li>
+                    <li><MudText>Onde ele está disponível no meu país ou região</MudText></li>
+                    <li><MudText>O que críticos e especialistas pensam em diferentes plataformas</MudText></li>
+                    <li><MudText>O que está em alta, popular ou premiado no momento</MudText></li>
+                </ul>
+            </div>
+        </BodyFragment>
+    </PageSectionComponent>
+    <PageSectionComponent Title="Detalhamento">
+        <BodyFragment>
+            <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Class="mb-2">
+                Plataformas de Streaming
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify">
+                Plataformas de streaming são projetadas principalmente para consumo de conteúdo dentro do próprio ecossistema. Elas oferecem acesso confiável ao catálogo, mas a descoberta é limitada a recomendações internas e metadados básicos. Elas não oferecem visão entre plataformas, nem avaliações externas ou contexto mais amplo.
+            </MudText>
+            <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Class="mt-4 mb-2">
+                Outros Agregadores
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify">
+                Agregadores resolvem a fragmentação ao listar onde o conteúdo está disponível entre plataformas. No entanto, normalmente param na disponibilidade. As fontes de avaliação são limitadas, reviews de especialistas são superficiais ou inexistentes, e as ferramentas de descoberta dependem de filtros simples em vez de inteligência estruturada.
+            </MudText>
+            <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Class="mt-4 mb-2">
+                Streaming Discovery
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify">
+                O Streaming Discovery combina disponibilidade com inteligência estruturada de conteúdo. Ele agrega avaliações de múltiplas plataformas, consolida reviews de especialistas de diversas fontes e organiza o conteúdo em conjuntos curados como títulos em alta, mais bem avaliados e vencedores de prêmios. Também integra disponibilidade regional, trailers, notícias e sinais contextuais para ajudar na decisão do que assistir.
+            </MudText>
+        </BodyFragment>
+    </PageSectionComponent>
+    <PageSectionComponent Title="Por que o Streaming Discovery é diferente">
+        <BodyFragment>
+            <div class="support-section mb-0">
+                <ul>
+                    <li><MudText>Agrega múltiplas plataformas de avaliação em uma visão unificada</MudText></li>
+                    <li><MudText>Combina dezenas de reviews de especialistas em um só lugar</MudText></li>
+                    <li><MudText>Oferece listas curadas baseadas em dados, não em promoção</MudText></li>
+                    <li><MudText>Inclui disponibilidade regional e insights de conteúdo gratuito</MudText></li>
+                    <li><MudText>Expande a descoberta com trailers, notícias e prêmios</MudText></li>
+                </ul>
+            </div>
+        </BodyFragment>
+    </PageSectionComponent>
+}
+else if (Language == AppLanguage.es)
+{
+    <PageSectionComponent Title="Introducción">
+        <BodyFragment>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-2">
+                Encontrar dónde ver una película o serie es solo parte del problema. Entender qué ver, por qué importa y cómo se evalúa en diferentes fuentes es igual de importante.
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-2">
+                La mayoría de las soluciones se enfocan en un solo aspecto del descubrimiento. Algunas listan disponibilidad, otras promocionan sus propios catálogos y algunas ofrecen calificaciones o reseñas limitadas.
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-2">
+                Streaming Discovery combina disponibilidad, calificaciones agregadas, reseñas de expertos, listas curadas y tendencias en tiempo real en una capa estructurada de decisión sobre qué ver.
+            </MudText>
+        </BodyFragment>
+    </PageSectionComponent>
+    <PageSectionComponent Title="Resumen Comparativo" Subtitle="Diferentes plataformas resuelven diferentes partes del descubrimiento de contenido.">
+        <BodyFragment>
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Medium("mb")">
+                <MudItem xs="3"><MudText Typo="Typo.h6" Color="Color.Primary">Funcionalidad</MudText></MudItem>
+                <MudItem xs="3"><MudText Typo="Typo.h6" Color="Color.Primary">Plataformas de Streaming</MudText></MudItem>
+                <MudItem xs="3"><MudText Typo="Typo.h6" Color="Color.Primary">Otros Agregadores</MudText></MudItem>
+                <MudItem xs="3"><MudText Typo="Typo.h6" Color="Color.Primary">Streaming Discovery</MudText></MudItem>
+            </MudGrid>
+            <!-- Availability -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Dónde Ver</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudText Inline="true">Solo catálogo propio</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Soportado</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Global, estructurado</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Ratings -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Fuentes de Calificación</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudText Inline="true">Solo internas</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Pocas fuentes</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Múltiples fuentes agregadas</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Reviews -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Reseñas de Expertos</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudText Inline="true">Raras</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Limitadas</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Múltiples fuentes expertas</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Discovery -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Herramientas de Descubrimiento</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Filtros limitados</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Navegación por una sola plataforma</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Descubrimiento estructurado multi-fuente</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Lists -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Listas Curadas</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Dirigidas por la plataforma</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Limitadas</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Populares, premios, elección del editor</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Regional -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Información Regional</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudText Inline="true">Catálogos bloqueados por región</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Cobertura regional parcial</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Disponibilidad y tendencias por región</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Extras -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Medium("mb")">
+                <MudItem xs="3"><MudText>Contenido Extra</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Limitado</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Básico</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Tráilers, noticias, premios, tendencias</MudText>
+                </MudItem>
+            </MudGrid>
+        </BodyFragment>
+    </PageSectionComponent>
+    <PageSectionComponent Title="Qué Resuelve Streaming Discovery">
+        <BodyFragment>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-2">
+                La mayoría de los usuarios no tienen dificultad para encontrar contenido, sino para decidir qué ver y entender dónde está disponible en diferentes plataformas y regiones.
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-3">
+                Streaming Discovery resuelve esta fragmentación reuniendo disponibilidad, calificaciones, opiniones de expertos y señales curadas en una única experiencia estructurada.
+            </MudText>
+            <div class="support-section mb-0">
+                <ul>
+                    <li><MudText>Qué debería ver ahora basado en señales reales</MudText></li>
+                    <li><MudText>Si este título realmente vale la pena según múltiples fuentes</MudText></li>
+                    <li><MudText>Dónde está disponible en mi país o región</MudText></li>
+                    <li><MudText>Qué piensan críticos y expertos en diferentes plataformas</MudText></li>
+                    <li><MudText>Qué está en tendencia, es popular o ha sido premiado recientemente</MudText></li>
+                </ul>
+            </div>
+        </BodyFragment>
+    </PageSectionComponent>
+    <PageSectionComponent Title="Desglose Detallado">
+        <BodyFragment>
+            <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Class="mb-2">
+                Plataformas de Streaming
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify">
+                Las plataformas de streaming están diseñadas principalmente para el consumo de contenido dentro de su propio ecosistema. Ofrecen acceso confiable a su catálogo, pero el descubrimiento se limita a recomendaciones internas y metadatos básicos. No ofrecen una visión cruzada entre plataformas ni contexto externo.
+            </MudText>
+            <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Class="mt-4 mb-2">
+                Otros Agregadores
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify">
+                Los agregadores resuelven la fragmentación al mostrar dónde está disponible el contenido entre plataformas. Sin embargo, normalmente se limitan a la disponibilidad. Las fuentes de calificación son limitadas, las reseñas de expertos son superficiales o inexistentes, y las herramientas de descubrimiento dependen de filtros simples en lugar de inteligencia estructurada.
+            </MudText>
+            <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Class="mt-4 mb-2">
+                Streaming Discovery
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify">
+                Streaming Discovery combina disponibilidad con inteligencia estructurada de contenido. Agrega calificaciones de múltiples plataformas, consolida reseñas de expertos de diversas fuentes y organiza el contenido en conjuntos curados como títulos en tendencia, mejor valorados y ganadores de premios. También integra disponibilidad regional, tráilers, noticias y señales contextuales para ayudar a tomar decisiones informadas.
+            </MudText>
+        </BodyFragment>
+    </PageSectionComponent>
+    <PageSectionComponent Title="Por qué Streaming Discovery es diferente">
+        <BodyFragment>
+            <div class="support-section mb-0">
+                <ul>
+                    <li><MudText>Agrega múltiples plataformas de calificación en una vista unificada</MudText></li>
+                    <li><MudText>Combina decenas de reseñas de expertos en un solo lugar</MudText></li>
+                    <li><MudText>Ofrece listas curadas basadas en datos, no en promoción</MudText></li>
+                    <li><MudText>Incluye disponibilidad regional e información de contenido gratuito</MudText></li>
+                    <li><MudText>Amplía el descubrimiento con tráilers, noticias y premios</MudText></li>
+                </ul>
+            </div>
+        </BodyFragment>
+    </PageSectionComponent>
+}
+else
+{
+    <PageSectionComponent Title="Introduction">
+        <BodyFragment>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-2">
+                Finding where to watch a movie or TV show is only part of the problem. Understanding what to watch, why it matters, and how it is evaluated across different sources is equally important.
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-2">
+                Most solutions focus on a single aspect of discovery. Some list availability, others promote their own catalogs, and some provide limited ratings or reviews.
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-2">
+                Streaming Discovery combines availability, aggregated ratings, expert reviews, curated lists, and real-time trends into a structured decision layer for what to watch.
+            </MudText>
+        </BodyFragment>
+    </PageSectionComponent>
+    <PageSectionComponent Title="Comparison Overview" Subtitle="Different platforms solve different parts of content discovery.">
+        <BodyFragment>
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Medium("mb")">
+                <MudItem xs="3"><MudText Typo="Typo.h6" Color="Color.Primary">Feature</MudText></MudItem>
+                <MudItem xs="3"><MudText Typo="Typo.h6" Color="Color.Primary">Streaming Platforms</MudText></MudItem>
+                <MudItem xs="3"><MudText Typo="Typo.h6" Color="Color.Primary">Other Aggregators</MudText></MudItem>
+                <MudItem xs="3"><MudText Typo="Typo.h6" Color="Color.Primary">Streaming Discovery</MudText></MudItem>
+            </MudGrid>
+            <!-- Availability -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Where to Watch</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudText Inline="true">Own catalog only</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Supported</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Global, structured</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Ratings -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Ratings Sources</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudText Inline="true">Internal only</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Few sources</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Multiple aggregated sources</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Reviews -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Expert Reviews</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudText Inline="true">Rare</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Limited</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Multiple expert sources</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Discovery -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Discovery Tools</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Limited filtering</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Single-platform browsing</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Multi-source, structured discovery</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Lists -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Curated Lists</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Platform-driven</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Limited</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Popular, awards, editor’s choice</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Regional -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
+                <MudItem xs="3"><MudText>Regional Insights</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudText Inline="true">Region-locked catalogs</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Partial regional coverage</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Region-aware availability and trends</MudText>
+                </MudItem>
+            </MudGrid>
+            <!-- Extras -->
+            <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Medium("mb")">
+                <MudItem xs="3"><MudText>Extra Content</MudText></MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Limited</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudText Inline="true">Basic</MudText>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudText Inline="true">Trailers, news, awards, trending data</MudText>
+                </MudItem>
+            </MudGrid>
+        </BodyFragment>
+    </PageSectionComponent>
+    <PageSectionComponent Title="What Streaming Discovery Solves">
+        <BodyFragment>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-2">
+                Most users do not struggle with finding content itself, but with deciding what to watch and understanding where it is available across different platforms and regions.
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify" Class="mb-3">
+                Streaming Discovery solves this fragmentation by bringing together availability, ratings, expert opinions, and curated signals into a single structured experience.
+            </MudText>
+            <div class="support-section mb-0">
+                <ul>
+                    <li><MudText>What should I watch right now based on real signals</MudText></li>
+                    <li><MudText>Is this title actually worth watching according to multiple sources</MudText></li>
+                    <li><MudText>Where is it available in my country or region</MudText></li>
+                    <li><MudText>What do critics and experts think across different platforms</MudText></li>
+                    <li><MudText>What is trending, popular, or award recognized right now</MudText></li>
+                </ul>
+            </div>
+        </BodyFragment>
+    </PageSectionComponent>
+    <PageSectionComponent Title="Detailed Breakdown">
+        <BodyFragment>
+            <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Class="mb-2">
+                Streaming Platforms
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify">
+                Streaming platforms are designed primarily for content consumption within their own ecosystem. They offer reliable access to their catalog, but discovery is limited to internal recommendations and basic metadata. They do not provide a cross-platform view of availability, external ratings, or broader content context.
+            </MudText>
+            <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Class="mt-4 mb-2">
+                Other Aggregators
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify">
+                Aggregators solve the fragmentation problem by listing where content is available across platforms. However, they typically stop at availability. Rating sources are limited, expert reviews are shallow or absent, and discovery features rely on simple filters rather than structured intelligence.
+            </MudText>
+            <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Class="mt-4 mb-2">
+                Streaming Discovery
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Justify">
+                Streaming Discovery combines availability with structured content intelligence. It aggregates ratings from multiple platforms, consolidates expert reviews from diverse sources, and organizes content into curated datasets such as trending titles, highly rated selections, and award winners. It also integrates regional availability, trailers, news, and contextual signals to help users make informed viewing decisions.
+            </MudText>
+        </BodyFragment>
+    </PageSectionComponent>
+    <PageSectionComponent Title="Why Streaming Discovery is Different">
+        <BodyFragment>
+            <div class="support-section mb-0">
+                <ul>
+                    <li><MudText>Aggregates multiple rating platforms into a unified view</MudText></li>
+                    <li><MudText>Combines dozens of expert reviews in one place</MudText></li>
+                    <li><MudText>Provides curated lists based on data, not promotion</MudText></li>
+                    <li><MudText>Includes regional availability and free-to-watch insights</MudText></li>
+                    <li><MudText>Extends discovery with trailers, news, and awards</MudText></li>
+                </ul>
+            </div>
+        </BodyFragment>
+    </PageSectionComponent>
+}
+
+<FloatingButton Template="Template.Back"></FloatingButton>
+
+@code {
+    public AppLanguage Language => AppStateStatic.ConvertAppLanguage(Culture, AppLanguage.en);
+
+    private async Task Login()
+    {
+        Navigation.NavigateTo($"/{Culture}/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+    }
+}
