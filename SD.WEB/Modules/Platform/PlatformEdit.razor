@@ -69,7 +69,7 @@
         </TemplateColumn>
         <TemplateColumn>
             <CellTemplate>
-                <MudImage Src="@($"https://image.tmdb.org/t/p/original/{context.Item.logo_path}")" Style="width: 34px;"></MudImage>
+                <MudImage Src="@($"https://image.tmdb.org/t/p/original/{context.Item.logo_path}")" Style="width: 34px;" Alt="@context.Item.name"></MudImage>
             </CellTemplate>
         </TemplateColumn>
         <PropertyColumn Property="x => x.name" Title="Name" Editable="false" />
