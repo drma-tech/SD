@@ -1,8 +1,8 @@
 ﻿@page "/{culture}/compare"
 @inherits PageCore<Compare>
 
-<HeadComponent Title="Streaming Discovery vs Aggregators | Better Way to Watch" ForceTitle="true" Description="Compare Streaming Discovery with aggregators. Find where to watch, multi-source ratings, expert reviews, curated lists, and global availability." Url=@($"/{Culture}/compare") Index="true"></HeadComponent>
-<PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="Streaming Discovery vs Aggregators | Better Way to Watch" Description="Compare Streaming Discovery with aggregators. Find where to watch, multi-source ratings, expert reviews, curated lists, and global availability." CustomBodyClass="mb-12"></PageSectionComponent>
+<HeadComponent Title="@SeoTranslations.CompareTitle" ForceTitle="true" Description="@SeoTranslations.CompareDesc" Url=@($"/{Culture}/compare") Index="true"></HeadComponent>
+<PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="@SeoTranslations.CompareTitle" Description="@SeoTranslations.CompareDesc" CustomBodyClass="mb-12"></PageSectionComponent>
 
 @if (Language == AppLanguage.pt)
 {

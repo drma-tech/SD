@@ -70,6 +70,24 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compare Streaming Discovery with aggregators. Find where to watch, multi-source ratings, expert reviews, curated lists, and global availability..
+        /// </summary>
+        public static string CompareDesc {
+            get {
+                return ResourceManager.GetString("CompareDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Streaming Discovery vs Aggregators | Better Way to Watch.
+        /// </summary>
+        public static string CompareTitle {
+            get {
+                return ResourceManager.GetString("CompareTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help Center.
         /// </summary>
         public static string HelpCenter {
