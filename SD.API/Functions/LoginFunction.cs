@@ -22,7 +22,8 @@ public class LoginFunction(CosmosRepository repo)
     public async Task LoginAdd(
         [HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "login/add")] HttpRequestData req, CancellationToken cancellationToken)
     {
-        var platform = req.GetQueryParameters()["platform"] ?? "webapp";
+        var platform = req.GetQueryParameters()["platform"] ?? "error";
+        var country = req.GetQueryParameters()["country"] ?? "error";
         var ip = req.GetUserIP(true);
         var userId = await req.GetUserIdAsync(cancellationToken);
         if (string.IsNullOrEmpty(userId)) throw new InvalidOperationException("unauthenticated user");
@@ -34,7 +35,7 @@ public class LoginFunction(CosmosRepository repo)
             var newLogin = new AuthLogin
             {
                 UserId = userId,
-                Accesses = [new Access { Date = now, Platform = platform, Ip = ip }]
+                Accesses = [new Access { Date = now, Platform = platform, Ip = ip, Country = country }]
             };
             newLogin.Initialize(userId);
 
@@ -54,7 +55,9 @@ public class LoginFunction(CosmosRepository repo)
 
             login.Accesses = login.Accesses
                 .Where(a => a.Date >= cutoff)
-                .Union([new Access { Date = now, Platform = platform, Ip = ip }]).ToArray();
+                .Union([new Access { Date = now, Platform = platform, Ip = ip, Country = country }])
+                .Take(100)
+                .ToArray();
 
             await repo.UpsertItemAsync(login, cancellationToken);
         }

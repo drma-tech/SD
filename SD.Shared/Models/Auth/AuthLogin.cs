@@ -18,4 +18,5 @@ public class Access
     public DateTimeOffset Date { get; set; }
     public string? Platform { get; set; }
     public string? Ip { get; set; }
+    public string? Country { get; set; }
 }

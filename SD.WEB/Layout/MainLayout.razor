@@ -177,8 +177,9 @@
         }
 
         var platform = await AppStateStatic.GetPlatform(JsRuntime);
+        var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
 
-        await LoginApi.Add(platform);
+        await LoginApi.Add(platform, country);
 
         AppStateStatic.LastAccess = now;
 

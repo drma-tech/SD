@@ -11,18 +11,18 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory
         return null;
     }
 
-    public async Task Add(SD.Shared.Enums.Platform platform)
+    public async Task Add(SD.Shared.Enums.Platform platform, string? country)
     {
-        await PostAsync<AuthLogin>(Endpoint.Add(platform.ToString()), null);
+        await PostAsync<AuthLogin>(Endpoint.Add(platform.ToString(), country), null);
     }
 
     private struct Endpoint
     {
         public const string Get = "login/get";
 
-        public static string Add(string platform)
+        public static string Add(string platform, string? country)
         {
-            return $"login/add?platform={platform}";
+            return $"login/add?platform={platform}&country={(country ?? "error")}";
         }
     }
 }
