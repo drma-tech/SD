@@ -6,7 +6,7 @@
         {
             if (AppStateStatic.SupabaseToken.Empty())
             {
-                throw new InvalidOperationException("empty token");
+                throw new InvalidOperationException("unauthenticated user");
             }
 
             request.Headers.Remove("X-Supabase-Token");
