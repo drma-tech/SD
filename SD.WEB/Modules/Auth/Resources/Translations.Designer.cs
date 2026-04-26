@@ -187,7 +187,7 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You must be logged in to access this page..
+        ///   Looks up a localized string similar to You need to be logged in to access this content..
         /// </summary>
         public static string YouMustLogged {
             get {

@@ -259,6 +259,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operation in progress. Please wait....
+        /// </summary>
+        public static string OperationProgress {
+            get {
+                return ResourceManager.GetString("OperationProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to See last week’s most popular movies, TV shows, and stars, ranked by audience interest. Stay up-to-date on trending entertainment picks..
         /// </summary>
         public static string PopularIndexDescription {

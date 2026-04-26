@@ -43,8 +43,9 @@
                 @((MarkupString)string.Format(Translations.Terms1, $"<a href='/{Culture}/legal/terms' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Help.Resources.Translations.TermsUse}</a>", $"<a href='/{Culture}/legal/privacy' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Help.Resources.Translations.PrivacyPolicy}</a>"))
             </MudText>
         </div>
-        <MudOverlay Visible="_processing" DarkBackground="true" Absolute="true">
+        <MudOverlay Visible="_processing" DarkBackground="true" Absolute="true" Style="text-align: center;">
             <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+            <MudText Color="Color.Secondary">@GlobalTranslations.OperationProgress</MudText>
         </MudOverlay>
     </MudPaper>
 </MudContainer>
