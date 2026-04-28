@@ -45,7 +45,6 @@ public class Result
     public string? site { get; set; }
     public int size { get; set; }
     public string? type { get; set; }
-    public DateTime? published_at { get; set; }
 }
 
 public class Videos

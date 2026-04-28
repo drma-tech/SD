@@ -41,7 +41,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
                     rating = item.vote_average,
                     runtime = item.runtime,
                     homepage = item.homepage,
-                    Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name, type = s.type, published_at = s.published_at }).ToList() ?? [],
+                    Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name, type = s.type }).ToList() ?? [],
                     Genres = item.genres.Select(s => s.name ?? "").ToList(),
                     MediaType = MediaType.movie
                 };
@@ -87,7 +87,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
                     rating = item.vote_average,
                     runtime = item.episode_run_time.FirstOrDefault(),
                     homepage = item.homepage,
-                    Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name, type = s.type, published_at = s.published_at }).ToList() ?? [],
+                    Videos = item.videos?.results.Select(s => new Video { id = s.id, key = s.key, name = s.name, type = s.type }).ToList() ?? [],
                     Genres = item.genres.Select(s => s.name ?? "").ToList(),
                     MediaType = MediaType.tv
                 };
