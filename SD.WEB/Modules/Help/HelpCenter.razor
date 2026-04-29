@@ -2,6 +2,16 @@
 @inherits PageCore<HelpCenter>
 
 @using SD.WEB.Layout
+@using SD.WEB.Modules.Auth.Core
+@using SD.WEB.Modules.Profile.Core
+
+@inject PrincipalApi PrincipalApi
+@inject MyProvidersApi MyProvidersApi
+@inject MySuggestionsApi MySuggestionsApi
+@inject WatchedListApi WatchedListApi
+@inject WatchingListApi WatchingListApi
+@inject WishListApi WishListApi
+@inject LoginApi LoginApi
 
 <HeadComponent Title="@SeoTranslations.HelpCenter" Description="@SeoTranslations.HelpCenterDesc.Format(AppInfo.Title)" Url=@($"/{Culture}/help") Index="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Icon="@IconsFA.Solid.Icon("headset").Font" Title="@SeoTranslations.HelpCenter" Description="@SeoTranslations.HelpCenterDesc.Format(AppInfo.Title)"></PageSectionComponent>
@@ -56,6 +66,23 @@
                 <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/regions")>
                     <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("globe").Font"></MudIcon>
                     Browse by Region
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </BodyFragment>
+</PageSectionComponent>
+
+<PageSectionComponent Title="Account">
+    <BodyFragment>
+        <MudGrid Spacing="@Css.SpaceSmall">
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DownloadData" Disabled="Principal == null">
+                    Download Data
+                </MudButton>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DeleteAccount" Disabled="Principal == null">
+                    @SD.WEB.Modules.Profile.Resources.Translations.DeleteAccount
                 </MudButton>
             </MudItem>
         </MudGrid>
@@ -143,3 +170,77 @@
         </MudGrid>
     </BodyFragment>
 </PageSectionComponent>
+
+@code {
+    private AuthPrincipal? Principal { get; set; }
+
+    protected override async Task ProcessPopupData()
+    {
+        Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated, true);
+    }
+
+    private async Task DownloadData()
+    {
+        try
+        {
+            if (Principal == null) return;
+
+            var data = new SuperData() { Principal = Principal };
+
+            var sub = Principal.GetActiveSubscription();
+
+            data.Login = await LoginApi.Get(AppStateStatic.IsAuthenticated);
+            data.Providers = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
+            if (sub?.ActiveProduct is null or AccountProduct.Basic) data.Suggestions = null;
+            else data.Suggestions = await MySuggestionsApi.Get(sub?.ActiveProduct, AppStateStatic.IsAuthenticated);
+            data.WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated);
+            data.WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated);
+            data.WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated);
+
+            var fileName = $"{AppInfo.Title.ToSlug()}_{Principal.AuthProviders[0]}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
+            await JsRuntime.Utils().DownloadFile(fileName, "application/json", data.ConvertFromObjectToBytes());
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    private async Task DeleteAccount()
+    {
+        try
+        {
+            if (Principal == null) return;
+
+            if (Principal.GetActiveSubscription() != null)
+            {
+                await DialogService.ShowMessageBoxAsync("You still have an active subscription", "Please cancel your subscription before deleting your profile.");
+                return;
+            }
+
+            if (await DialogService.ShowMessageBoxAsync(AppInfo.Title, GlobalTranslations.SureDeleteAccount, Button.Ok, Button.Cancel) ?? false)
+            {
+                //remove data from cosmos db
+                await PrincipalApi.Remove();
+
+                //TODO: remove data from supabase table
+
+                //close current login session
+                await Logout();
+            }
+            else
+            {
+                await ShowInfo(GlobalTranslations.OperationCanceled);
+            }
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    private async Task Logout()
+    {
+        await JsRuntime.Supabase().SignOutAsync();
+    }
+}

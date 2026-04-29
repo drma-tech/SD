@@ -3,7 +3,7 @@
     {
       "id": "2",
       "name": "Apple TV Store",
-      "priority": 3,
+      "priority": 13,
       "description": "Apple TV offers access to Apple TV+ with exclusive Apple Originals, plus movies and series available through the Apple TV app, letting you watch across multiple devices anytime.",
       "link": "https://tv.apple.com/",
       "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
@@ -387,7 +387,7 @@
     {
       "id": "11",
       "name": "MUBI",
-      "priority": 31,
+      "priority": 59,
       "description": "MUBI is a curated streaming service showcasing acclaimed films, festival favorites, and hidden gems. A new handpicked movie is added daily, with ad-free streaming and the option to download for offline viewing.",
       "link": "https://mubi.com/",
       "logo_path": "/x570VpH2C9EKDf1riP83rYc5dnL.jpg",
@@ -920,24 +920,6 @@
       "description": "Canal VOD permet d’acheter, louer et télécharger une large sélection de films et séries. Profitez de vos contenus préférés directement sur vos appareils.",
       "link": "https://vod.canalplus.com/",
       "logo_path": "/cAUTwxqoI7zc9XtYr1SMtWZEsXg.jpg",
-      "regions": [
-        250
-      ],
-      "types": [
-        1,
-        2
-      ],
-      "models": [
-        3
-      ]
-    },
-    {
-      "id": "59",
-      "name": "Bbox VOD",
-      "priority": 17,
-      "description": "Bbox VOD propose films, séries, contenus jeunesse et programmes à la demande. Profitez du meilleur des services de divertissement directement via votre Bbox Bouygues Telecom.",
-      "link": "https://www.bouyguestelecom.fr/option-internet",
-      "logo_path": "/s7mg9n4UHrcdJQL78JmaU6oAdHt.jpg",
       "regions": [
         250
       ],
@@ -2572,6 +2554,7 @@
         608,
         616,
         642,
+        702,
         724,
         752,
         756,
@@ -2623,7 +2606,7 @@
     {
       "id": "232",
       "name": "Zee5",
-      "priority": 2,
+      "priority": 3,
       "description": "India's largest streaming platform for Hindi and regional content. Original series, Bollywood movies, live TV channels, and music videos across multiple languages.",
       "link": "https://www.zee5.com/",
       "logo_path": "/gP67NRy1ShUJilrzMsbOmEmdmcv.jpg",
@@ -2943,7 +2926,7 @@
     {
       "id": "283",
       "name": "Crunchyroll",
-      "priority": 12,
+      "priority": 25,
       "description": "World's largest anime streaming service. Watch thousands of episodes including simulcasts, classics, and Crunchyroll Originals with premium subscriptions.",
       "link": "https://www.crunchyroll.com/",
       "logo_path": "/fzN5Jok5Ig1eJ7gyNGoMhnLSCfh.jpg",
@@ -3128,6 +3111,21 @@
       ]
     },
     {
+      "id": "299",
+      "name": "Sling TV Orange and Blue",
+      "priority": 78,
+      "description": null,
+      "link": null,
+      "logo_path": "/bi2aD3dHGsKNMjtt35E9aHyE3z0.jpg",
+      "regions": [
+        840
+      ],
+      "types": [
+        1
+      ],
+      "models": []
+    },
+    {
       "id": "300",
       "name": "Pluto TV",
       "priority": 75,
@@ -3176,7 +3174,7 @@
     {
       "id": "304",
       "name": "Joyn",
-      "priority": 69,
+      "priority": 10,
       "description": "Deutscher Streaming-Dienst mit Live-TV, Serien, Filmen und Sport. Kostenlose Inhalte und Premium-Angebote von ProSieben, Sat.1 und anderen Sendern.",
       "link": "https://www.joyn.de/",
       "logo_path": "/3tKojIkk9QpkDUeU8HgpHQ9Jb2v.jpg",
@@ -3915,8 +3913,8 @@
       "id": "345",
       "name": "Canal+ Séries",
       "priority": 67,
-      "description": "Service de streaming français spécialisé dans les séries TV. Accédez à des productions originales, séries internationales et exclusivités Canal+.",
-      "link": null,
+      "description": "Regarder les meilleurs programmes, films, séries, sports en streaming direct ou en replay. Le programme TV de toutes les chaines est gratuit et sans pub.",
+      "link": "https://www.canalplus.com/",
       "logo_path": "/nBrPDnOWhullZrtcYM0qWpm4xNH.jpg",
       "regions": [
         250
@@ -4045,8 +4043,8 @@
       "id": "356",
       "name": "wavve",
       "priority": 4,
-      "description": "한국 최대 규모의 종합 엔터테인먼트 스트리밍 서비스. 지상파·케이블 방송사 콘텐츠와 오리지널 시리즈를 자유롭게 이용하세요.",
-      "link": null,
+      "description": "세상 얕은 콘텐츠부터 세상 딥한 콘텐츠까지 JUST DIVE! Wavve",
+      "link": "https://www.wavve.com/",
       "logo_path": "/hPcjSaWfMwEqXaCMu7Fkb529Dkc.jpg",
       "regions": [
         410
@@ -4260,8 +4258,8 @@
       "id": "381",
       "name": "Canal+",
       "priority": 34,
-      "description": "French premium television service offering movies, series, sports and original content. Available as traditional subscription and streaming platform.",
-      "link": null,
+      "description": "myCANAL vous propose de regarder les meilleurs films, les dernières séries et les matchs en HD et en VOST ou FR.",
+      "link": "https://www.canalplus.com/streaming/",
       "logo_path": "/geOzgeKZWpZC3lymAVEHVIk3X0q.jpg",
       "regions": [
         40,
@@ -4453,8 +4451,8 @@
       "id": "395",
       "name": "TVNZ+",
       "priority": 11,
-      "description": null,
-      "link": null,
+      "description": "Watch free movies, TV shows, news, sport & live TV online. Enjoy local, international and popular entertainment. Stream to your smart TV, game console, PC, Mac, mobile, tablet.",
+      "link": "https://www.tvnz.co.nz/",
       "logo_path": "/kZRT6tkMn7zzRy8PjPuB3g3TItL.jpg",
       "regions": [
         554
@@ -4471,8 +4469,8 @@
       "id": "396",
       "name": "Film1",
       "priority": 17,
-      "description": null,
-      "link": null,
+      "description": "Online interactive TV platform. You can browse your TV guide, mark your favorite channels or programs, set reminders, record your favorite shows and programs remotely to your TV decoder, or watch newest films",
+      "link": "https://play.film1.nl/",
       "logo_path": "/uYJwhSwKHy1BahLwm3KnjP7ajgt.jpg",
       "regions": [
         528
@@ -4676,7 +4674,6 @@
       "link": "https://www.joyn.de/plus",
       "logo_path": "/5aHLriu21FRDGlxY5zbzyEuoSvA.jpg",
       "regions": [
-        40,
         276
       ],
       "types": [
@@ -4751,7 +4748,7 @@
       "id": "427",
       "name": "Mhz Choice",
       "priority": 85,
-      "description": "The world’s best mysteries, dramas & comedies.™",
+      "description": "The world’s best mysteries, dramas & comedies. No commitment, cancel anytime. Available in the U.S. and Canada.",
       "link": "https://watch.mhzchoice.com/",
       "logo_path": "/tnxLjN2lLYpkTIX8NPSId6bgqh8.jpg",
       "regions": [
@@ -4790,8 +4787,8 @@
       "id": "431",
       "name": "TV 2 Play",
       "priority": 16,
-      "description": null,
-      "link": null,
+      "description": "På TV 2 Play er det alltid noe å se for hele familien",
+      "link": "https://play.tv2.no/",
       "logo_path": "/tpfmd22xEapb1aW2gzjSM5104rx.jpg",
       "regions": [
         578
@@ -4833,23 +4830,6 @@
       "regions": [
         124,
         840
-      ],
-      "types": [
-        1
-      ],
-      "models": [
-        2
-      ]
-    },
-    {
-      "id": "435",
-      "name": "Draken Films",
-      "priority": 16,
-      "description": null,
-      "link": null,
-      "logo_path": "/vyu1bwP7H0p7B8BLB3QRwHVmvlA.jpg",
-      "regions": [
-        752
       ],
       "types": [
         1
@@ -4991,8 +4971,8 @@
       "id": "443",
       "name": "Filmstriben",
       "priority": 13,
-      "description": null,
-      "link": null,
+      "description": "Se hvilke film, der var de mest populære i marts - for voksne, børn og dokumentarfilm.",
+      "link": "https://fjernleje.filmstriben.dk/",
       "logo_path": "/eRRc8n7fzQewjh15d2fao45Xxvi.jpg",
       "regions": [
         208
@@ -5378,23 +5358,6 @@
       ]
     },
     {
-      "id": "466",
-      "name": "Bioskop Online",
-      "priority": 13,
-      "description": null,
-      "link": null,
-      "logo_path": "/rvHcdDDyfuFRD2C4mLkTUtKk2CS.jpg",
-      "regions": [
-        360
-      ],
-      "types": [
-        1
-      ],
-      "models": [
-        3
-      ]
-    },
-    {
       "id": "467",
       "name": "DIRECTV GO",
       "priority": 9,
@@ -5421,8 +5384,8 @@
       "id": "468",
       "name": "genflix",
       "priority": 12,
-      "description": null,
-      "link": null,
+      "description": "Tonton online streaming film HD Indonesia, film Hollywood, Live Show, TV Channel, dan drama Korea terbaru dengan subtitle Indonesia dan Inggris di Genflix.",
+      "link": "https://genflix.co.id/",
       "logo_path": "/o506FcbahVPxvVcsSA5dFLj9drV.jpg",
       "regions": [
         360
@@ -5457,8 +5420,8 @@
       "id": "472",
       "name": "NLZIET",
       "priority": 21,
-      "description": null,
-      "link": null,
+      "description": "Online tv kijken zoals jij dat wilt ✓ Kijk wanneer het jou uitkomt ✓ Overal in de EU ✓ Probeer 14 dagen gratis en ontdek het grote aanbod aan programma's",
+      "link": "https://www.nlziet.nl/nl/",
       "logo_path": "/88ssxWDyhabjrwSrbSf87nCDK2y.jpg",
       "regions": [
         528
@@ -5658,8 +5621,8 @@
       "id": "480",
       "name": "Filmtastic",
       "priority": 40,
-      "description": null,
-      "link": null,
+      "description": "Blockbuster, Kultfilme, Überraschungshits & moderne Klassiker - der neue Streaming-Service für Kino-Fans. Jetzt kostenlos testen!",
+      "link": "https://www.filmtastic.de/",
       "logo_path": "/eptSSZPhXJllBI8QywFDmgOMNkU.jpg",
       "regions": [
         276
@@ -5676,8 +5639,8 @@
       "id": "481",
       "name": "ArthouseCNMA",
       "priority": 41,
-      "description": null,
-      "link": null,
+      "description": "Arthouse auf Abruf: Schau ausgewählte Independent-Filme, Autoren-Werke, preisgekrönte Festival-Highlights und Filmklassiker online - Jetzt kostenlos testen.",
+      "link": "https://www.cnmaarthouse.de/",
       "logo_path": "/eBt8WXNGuJGBgQ28W88Y3eTAWsD.jpg",
       "regions": [
         276
@@ -5710,7 +5673,7 @@
     {
       "id": "483",
       "name": "MAX Stream",
-      "priority": 15,
+      "priority": 14,
       "description": "Let's #NONSTOPNONTON with MAXstream! MAXstream is video application where you can enjoy thousands of movies and TV series from MAXstream Original, HBO GO, iflix, MyPlay, NOMO, Starvision, Sushiroll, Vidio, VIU, WeTV iflix, and other interesting movie series. MAXstream also provides various channels such as WARNER TV, NET TV, RTV, RCTI, HBO, and many more.",
       "link": "https://maxstream.tv/",
       "logo_path": "/zDSJn28xTG4f6h2yxZ6UmCPvZ8j.jpg",
@@ -5801,9 +5764,9 @@
     {
       "id": "489",
       "name": "Vidio",
-      "priority": 17,
-      "description": null,
-      "link": null,
+      "priority": 16,
+      "description": "Streaming TV, film, serial, & olahraga favoritmu. Tayangan eksklusif lokal & internasional. Temukan pengalaman menonton yang #LebihDariHiburan di Vidio.",
+      "link": "https://www.vidio.com/",
       "logo_path": "/l2ZNwMC37iK0fquVuYWfcgIJJdF.jpg",
       "regions": [
         360
@@ -5837,7 +5800,7 @@
     {
       "id": "493",
       "name": "SVT",
-      "priority": 18,
+      "priority": 17,
       "description": "Se dina favoritprogram när du vill i SVT Play - fri television på nätet.",
       "link": "https://www.svtplay.se/",
       "logo_path": "/oBdaG066fB5O7XYrYKQflOZvd89.jpg",
@@ -5855,7 +5818,7 @@
     {
       "id": "496",
       "name": "Cineasterna",
-      "priority": 22,
+      "priority": 21,
       "description": "Välkommen till Cineasterna, en filmtjänst till landets bibliotek. Det är en motsvarighet till liknande filmtjänster som finns på marknaden. Den stora skillnaden är att tjänsten enbart är tillgänglig för bibliotek och dess låntagare.",
       "link": "https://www.cineasterna.com/",
       "logo_path": "/w1V9hzBaRlkpISBWhCv676kI8Mp.jpg",
@@ -5875,9 +5838,9 @@
     {
       "id": "497",
       "name": "Tele2 Play",
-      "priority": 20,
-      "description": null,
-      "link": null,
+      "priority": 19,
+      "description": "Upptäck succéunderhållning från populära streamingtjänster som Disney+, SkyShowtime, HBO Max, Viaplay, TV4 Play eller följ spänningen i direktsänd sport från de största tv-kanalerna. ",
+      "link": "https://www.tele2play.se/",
       "logo_path": "/jy4yvY3szonb0p6rtMXvF5stuX9.jpg",
       "regions": [
         752
@@ -5970,8 +5933,8 @@
       "id": "505",
       "name": "Player",
       "priority": 10,
-      "description": null,
-      "link": null,
+      "description": "Player.pl | Sprawdź najbardziej angażujący serwis VOD w Polsce. Programy i seriale TVN nawet tydzień przed premierą w TV, filmy na życzenie prosto z kina, wyselekcjonowane bajki dla dzieci. Kanały na żywo m.in: TVN24, MINIMINI+, ALEKINO+, NSPORT+, ELEVEN.",
+      "link": "https://player.pl/",
       "logo_path": "/jhMNVBV2UocEGepRkr9oFPD7Gpb.jpg",
       "regions": [
         616
@@ -6109,8 +6072,8 @@
       "id": "513",
       "name": "Shadowz",
       "priority": 24,
-      "description": null,
-      "link": null,
+      "description": "Essayez gratuitement Shadowz, la 1ère plateforme de screaming pendant 7 jours sans engagement. Profitez du plus large catalogue de films de genre (Horreur, Thriller, Fantastique, Science-Fiction...) en streaming sur votre PC, Mac, Smartphone et Tablette. Le meilleur de l'horreur est sur Shadowz.",
+      "link": "https://www.shadowz.fr/home",
       "logo_path": "/qwRq7klF8EijYs7XgvxSaYd6v6w.jpg",
       "regions": [
         250
@@ -6181,9 +6144,9 @@
     {
       "id": "517",
       "name": "TriArt Play",
-      "priority": 21,
-      "description": null,
-      "link": null,
+      "priority": 20,
+      "description": "Streama kvalitetsfilm på TriArt Play.",
+      "link": "https://www.triartplay.se/home",
       "logo_path": "/sgws7qaFHYTEeYhc8RCjZ5D7IlH.jpg",
       "regions": [
         752
@@ -6644,8 +6607,8 @@
       "id": "540",
       "name": "Elisa Viihde",
       "priority": 18,
-      "description": null,
-      "link": null,
+      "description": "Elisa Viihteessä tallenteet, viihde ja monipuolinen urheilutarjonta ovat fiksusti yhdessä. Katso silloin kun sinulle sopii.",
+      "link": "https://elisaviihde.fi/",
       "logo_path": "/eglAxQEXSO13p6gNf3HKymrIu7y.jpg",
       "regions": [
         246
@@ -6812,8 +6775,8 @@
       "id": "548",
       "name": "IFFR Unleashed",
       "priority": 25,
-      "description": null,
-      "link": null,
+      "description": "Welkom bij International Film Festival Rotterdam (IFFR) – een onmisbare bestemming voor filmliefhebbers en filmprofessionals.",
+      "link": "https://iffr.com/nl/",
       "logo_path": "/fpHXCUD89WRC21wJjz3DDCgyudw.jpg",
       "regions": [
         528
@@ -6977,8 +6940,8 @@
       "id": "553",
       "name": "Telia Play",
       "priority": 13,
-      "description": null,
-      "link": null,
+      "description": "Mėgstamiausi TV kanalai, HBO ir naujausi filmai – visada su jumis. Žiūrėkite, kur norite – telefone, kompiuteryje, planšetėje.",
+      "link": "https://play.telia.lt/",
       "logo_path": "/7QzLA6rsML2rKxhuagWlDl7Zxlm.jpg",
       "regions": [
         246,
@@ -7129,8 +7092,8 @@
       "id": "557",
       "name": "More TV",
       "priority": 13,
-      "description": null,
-      "link": null,
+      "description": "",
+      "link": "https://more.tv/",
       "logo_path": "/yyMxS08v80D96O7NtL9supa5sn7.jpg",
       "regions": [
         643
@@ -7318,8 +7281,8 @@
       "id": "563",
       "name": "KPN",
       "priority": 29,
-      "description": null,
-      "link": null,
+      "description": "Met KPN Combivoordeel stel je al jouw thuis en mobiele abonnementen zelf samen. Internet, mobiel, TV, entertainment en meer. Via het netwerk van Nederland.",
+      "link": "https://www.kpn.com/",
       "logo_path": "/nzjqsR28PVVp5GJAlHtbBArNKqN.jpg",
       "regions": [
         528
@@ -7542,8 +7505,8 @@
       "id": "570",
       "name": "Premier",
       "priority": 17,
-      "description": null,
-      "link": null,
+      "description": "Кем бы вы ни были, и что бы ни любили — в онлайн-кинотеатре PREMIER вы найдете фильмы, сериалы, мультфильмы и шоу на свой вкус. Присоединяйтесь, чтобы смотреть российские и зарубежные новинки в хорошем качестве, а также ностальгировать под любимую классику.",
+      "link": "https://premier.one/",
       "logo_path": "/r7cgAhlSLI4r80P1Si9P0jOevrr.jpg",
       "regions": [
         643
@@ -7599,9 +7562,9 @@
     {
       "id": "576",
       "name": "KlikFilm",
-      "priority": 25,
-      "description": null,
-      "link": null,
+      "priority": 24,
+      "description": "KlikFilm adalah layanan streaming movie yang memberikan pengalaman menonton ratusan film Box Office Indonesia.",
+      "link": "https://klikfilm.com/",
       "logo_path": "/f1V0OhsOKnOQVyNb8h8BbioorQ4.jpg",
       "regions": [
         360
@@ -7635,8 +7598,8 @@
       "id": "578",
       "name": "Strim",
       "priority": 27,
-      "description": null,
-      "link": null,
+      "description": "Velkommen til Strim - Norges mest komplette strømmetjeneste, med TV, film og serier på ett sted! · En enklere TV-løsning for deg som vil se TV.",
+      "link": "https://www.strim.no/",
       "logo_path": "/3ZigBD8WTEPcEHAvMWiJGUsv5u4.jpg",
       "regions": [
         578
@@ -7771,8 +7734,8 @@
       "id": "591",
       "name": "Now TV Cinema",
       "priority": 43,
-      "description": null,
-      "link": null,
+      "description": "Choose your NOW Membership and stream the latest movies, TV series, live sports and kids entertainment on demand. ",
+      "link": "https://www.nowtv.com/",
       "logo_path": "/6sJLsWk4TZHz1EffmTRSkaDehkh.jpg",
       "regions": [
         372,
@@ -7883,8 +7846,8 @@
       "id": "621",
       "name": "Nordisk Film+",
       "priority": 26,
-      "description": null,
-      "link": null,
+      "description": "Nordisk Film+ is our streaming service available in Denmark and also widely distributed in Norway and Sweden through partnerships, with a focus on local films. V2",
+      "link": "https://nordiskfilm.com/streaming",
       "logo_path": "/dB6eeNS5TEykyQLPixHOPQqzPcp.jpg",
       "regions": [
         208
@@ -7900,8 +7863,8 @@
       "id": "622",
       "name": "UPC TV",
       "priority": 31,
-      "description": null,
-      "link": null,
+      "description": "Sunrise TV",
+      "link": "https://www.sunrisetv.ch/en/home",
       "logo_path": "/l5SFTF3l9l1KSgZJM7foAppUenz.jpg",
       "regions": [
         756
@@ -7958,8 +7921,8 @@
       "id": "625",
       "name": "LINE TV",
       "priority": 30,
-      "description": null,
-      "link": null,
+      "description": "共享追劇生活！台劇、韓劇、陸劇、BL、泰劇、綜藝、動漫、電影，正版戲劇影音、影視內容免費看！VIP會員高畫質影片線上看，追劇無廣吿再送LINE POINTS",
+      "link": "https://www.linetv.tw/",
       "logo_path": "/j35eayHG7RC9Ll0ehtbOuek0TZL.jpg",
       "regions": [
         344,
@@ -7995,8 +7958,8 @@
       "id": "627",
       "name": "Voyo",
       "priority": 41,
-      "description": null,
-      "link": null,
+      "description": "Sledujte filmy, seriály, obľúbené TV relácie a športové prenosy online. V televízore, počítači, alebo cez mobil či tablet.",
+      "link": "https://voyo.markiza.sk/",
       "logo_path": "/iTzW2q9e1Kk10l2s934SDgPSJNm.jpg",
       "regions": [
         703
@@ -8013,8 +7976,8 @@
       "id": "628",
       "name": "Edisonline",
       "priority": 25,
-      "description": null,
-      "link": null,
+      "description": "VOD filmy dostupné kdekoľvek a kedykoľvek. Vstúpte do najlepšej ponuky festivalových filmov na Slovensku a v Česku.",
+      "link": "https://edisonline.sk/",
       "logo_path": "/hsuv1uc7SUr9YjCXRlLQNELt4UU.jpg",
       "regions": [
         703
@@ -8079,7 +8042,7 @@
       "id": "631",
       "name": "HRTi",
       "priority": 23,
-      "description": null,
+      "description": "Molim instalirajte mobilnu aplikaciju kako biste mogli gledati sadržaj na ovom uređaju. Popis za reprodukciju. Nastavi Pokreni od početka.",
       "link": "https://hrti.hrt.hr/home",
       "logo_path": "/yHqa57jOQqhBarOh9lw2noJno00.jpg",
       "regions": [
@@ -8097,8 +8060,8 @@
       "id": "637",
       "name": "Pickbox NOW",
       "priority": 24,
-      "description": null,
-      "link": null,
+      "description": "Pickbox NOW is streaming thousands of hours of exclusive premieres, hit series, films and documentaries. Watch them anywhere and anytime online.",
+      "link": "https://www.pickboxnow.com/en",
       "logo_path": "/p6hKVngF1iWciIyxYmrl3UUitg7.jpg",
       "regions": [
         191
@@ -8191,8 +8154,8 @@
       "id": "639",
       "name": "CineMember",
       "priority": 35,
-      "description": null,
-      "link": null,
+      "description": "Onbeperkt streamen van meer dan 1500 arthousefilms. Altijd en overal op meerdere schermen tegelijk. vanaf &euro;7,95 per maand. Elke week...",
+      "link": "https://www.cinemember.nl/nl",
       "logo_path": "/6vchFMhgi7jhyXyKBoutzwMmM5b.jpg",
       "regions": [
         56,
@@ -8209,8 +8172,8 @@
       "id": "641",
       "name": "Nexo Plus",
       "priority": 17,
-      "description": null,
-      "link": null,
+      "description": "Scopri il catalogo completo di Nexo TV: centinaia di film d'autore, documentari esclusivi, serie TV e oltre venti canali live in streaming gratuito.",
+      "link": "https://www.nexotv.it/",
       "logo_path": "/jyiwuXdyRrh2R5UwY4MhOF4Xbfy.jpg",
       "regions": [
         380
@@ -8779,8 +8742,8 @@
       "id": "1717",
       "name": "Acontra Plus",
       "priority": 43,
-      "description": null,
-      "link": null,
+      "description": "acontra+ es la única plataforma que te da una entrada para ir al cine y acceso a todo el contenido online.",
+      "link": "https://acontraplus.com/home",
       "logo_path": "/8vES2nJNwOF57muvqLByDLm6snp.jpg",
       "regions": [
         724
@@ -8955,8 +8918,8 @@
       "id": "1768",
       "name": "ESPN Plus",
       "priority": 164,
-      "description": null,
-      "link": null,
+      "description": "Watch your favorite live sports from NFL to College Football, WWE, Soccer, and more with ESPN.",
+      "link": "https://plus.espn.com/",
       "logo_path": "/kYOixe7a3Vg5o6DG1i2S9MMK640.jpg",
       "regions": [
         840
@@ -9214,8 +9177,8 @@
       "id": "1826",
       "name": "TOD TV",
       "priority": 23,
-      "description": null,
-      "link": null,
+      "description": "Follow your favorite football leagues, stream matches and live sports in 4K. Watch new movies, TOD Originals, exclusives, BeIN Sports channels, TV shows & series in HD anytime anywhere.",
+      "link": "https://www.tod.tv/en",
       "logo_path": "/gaDNJ1xISHBBq9LQXwwe8PPSRHD.jpg",
       "regions": [
         792
@@ -9316,7 +9279,7 @@
       "id": "1860",
       "name": "Univer Video",
       "priority": 178,
-      "description": "O Univer Vídeo é uma plataforma de streaming que oferece vídeos baseados em princípios cristãos, motivacionais e apropriados para toda a família. Fundada em 2016, a plataforma conta com mais de 10 mil horas de conteúdo, incluindo filmes, documentários, desenhos, palestras, novelas, minisséries, clipes musicais, animações e muito mais. Uma das principais características do Univer Vídeo são as transmissões ao vivo diárias, que incluem ensinamentos bíblicos, palestras, programas de TV e notícias, proporcionando uma ampla variedade de opções para os usuários. Disponível em 7 idiomas e com assinantes em mais de 140 países, o Univer Vídeo se destaca pela cuidadosa curadoria do seu catálogo, que garante um ambiente seguro e livre de violência, nudez ou linguagem inadequada. A plataforma é uma excelente escolha para aqueles que buscam entretenimento de qualidade, inspiração, fé e valores morais para sua família.",
+      "description": "O Univer Vídeo é uma plataforma de streaming que oferece vídeos baseados em princípios cristãos, motivacionais e apropriados para toda a família. Fundada em 2016, a plataforma conta com mais de 12 mil horas de conteúdo, incluindo filmes, documentários, desenhos, palestras, novelas, minisséries, clipes musicais, animações e muito mais. Uma das principais características do Univer Vídeo são as transmissões ao vivo diárias, que incluem ensinamentos bíblicos, palestras, programas de TV e notícias, proporcionando uma ampla variedade de opções para os usuários. Disponível em 7 idiomas e com assinantes em mais de 140 países, o Univer Vídeo se destaca pela cuidadosa curadoria do seu catálogo, que garante um ambiente seguro e livre de violência, nudez ou linguagem inadequada. A plataforma é uma excelente escolha para aqueles que buscam entretenimento de qualidade, inspiração, fé e valores morais para sua família.",
       "link": "https://www.univervideo.com/",
       "logo_path": "/44E23wCM3WLsvAVRyk6fye76cZb.jpg",
       "regions": [
@@ -9413,8 +9376,8 @@
       "id": "1883",
       "name": "TVING",
       "priority": 29,
-      "description": null,
-      "link": null,
+      "description": "티빙 오리지널부터 드라마•예능, 영화, 스포츠까지! 무제한으로 스트리밍해 보세요.",
+      "link": "https://www.tving.com/onboarding",
       "logo_path": "/qHThQdkJuROK0k5QTCrknaNukWe.jpg",
       "regions": [
         410
@@ -9526,8 +9489,8 @@
       "id": "1902",
       "name": "ARD Plus",
       "priority": 95,
-      "description": null,
-      "link": null,
+      "description": "ARD Plus vereint das größte Tatort-Archiv, die bekanntesten deutschen Kinderfilme und -serien sowie Kult-Klassiker aus 75 Jahren TV-Geschichte in einem",
+      "link": "https://www.ardplus.de/",
       "logo_path": "/qTybjmHLNcXZExZLBnm4muVCDzP.jpg",
       "regions": [
         276
@@ -9544,8 +9507,8 @@
       "id": "1904",
       "name": "TV+",
       "priority": 9,
-      "description": null,
-      "link": null,
+      "description": "Filmden belgesele, diziden spora, canlı tv'den animasyona izlenecek ne varsa TV+'ta. TV Plus ile Canlı TV diziler, filmler, belgeseller ve çocuk içeriklerini her yerden izleyin.",
+      "link": "https://tvplus.com.tr/",
       "logo_path": "/c8ryDZroFQtuyRVPBwXq5PLpTWV.jpg",
       "regions": [
         792
@@ -9611,8 +9574,8 @@
       "id": "1928",
       "name": "Prima Plus",
       "priority": 25,
-      "description": null,
-      "link": null,
+      "description": "Sledujte filmy, seriály a pořady televize Prima kdykoliv a kdekoliv. Pustit si je můžete na počítači, tabletu, mobilu i televizoru.",
+      "link": "https://www.iprima.cz/",
       "logo_path": "/vrefjVylvD4RkEjQguuXebCp9UQ.jpg",
       "regions": [
         203
@@ -9629,8 +9592,8 @@
       "id": "1929",
       "name": "Filmtastic bei Canal+",
       "priority": 57,
-      "description": null,
-      "link": null,
+      "description": "Bei CANAL+ kannst du die besten Filme und Serien in Österreich streamen. Hier ist eine Auswahl unseres Streaming-Angebots.",
+      "link": "https://www.canalplus.at/stream/",
       "logo_path": "/kP741xlbpymqjELaTcPiAet3SnV.jpg",
       "regions": [
         40
@@ -9647,8 +9610,8 @@
       "id": "1939",
       "name": "Lepsi TV",
       "priority": 26,
-      "description": null,
-      "link": null,
+      "description": "Forget about traditional TV. LEPŠÍ.TV is online TV over the internet with 167 channels and thousands of movies and series. Watch from anywhere up to 100 days back.",
+      "link": "https://www.xn--lep-tma39c.tv/en/",
       "logo_path": "/489t5n9o1KhH7voGNQkrXT7vBKV.jpg",
       "regions": [
         203
@@ -9664,9 +9627,9 @@
     {
       "id": "1944",
       "name": "TV4 Play",
-      "priority": 40,
-      "description": null,
-      "link": null,
+      "priority": 39,
+      "description": "Streama program, reality, underhållning, sport, filmer, serier och mycket mer på TV4 Play!",
+      "link": "https://www.tv4play.se/",
       "logo_path": "/5lKPs5yrjeKHFrXh9RIvzyJJzSd.jpg",
       "regions": [
         752
@@ -9797,8 +9760,8 @@
       "id": "1961",
       "name": "Allente",
       "priority": 37,
-      "description": null,
-      "link": null,
+      "description": "Saml de bedste TV-kanaler og streamingpakker med Allente. Få adgang til 18 TV-kanaler og Viaplay Film & Serier og vælg mellem TV 2 Play, HBO Max, SkyShowtime, Apple TV, og mange flere! \nSe udvalget og stream her.",
+      "link": "https://www.allente.dk/",
       "logo_path": "/a6z85DKGuPOyTg03TlJ6ShzzFO6.jpg",
       "regions": [
         208
@@ -9883,8 +9846,8 @@
       "id": "1967",
       "name": "Molotov TV",
       "priority": 33,
-      "description": null,
-      "link": null,
+      "description": "L'installation de l'application Molotov est disponible sur tous vos appareils : Android, iOS, Smart TV et bien d'autres.",
+      "link": "https://www.molotov.tv/",
       "logo_path": "/8qSG9LtUhBQIWy2Fr6fzeW7gBdd.jpg",
       "regions": [
         250
@@ -9990,8 +9953,8 @@
       "id": "1986",
       "name": "NPO Plus",
       "priority": 44,
-      "description": null,
-      "link": null,
+      "description": "Start programma's waar en wanneer je maar wilt op NPO Start. Met een plus-abonnement kijk je zonder reclame alle afleveringen van je favoriete Nederlandse series.",
+      "link": "https://npo.nl/start",
       "logo_path": "/cYyxWlMG0o1dKRvOdpMrVIFrY4F.jpg",
       "regions": [
         528
@@ -10078,8 +10041,8 @@
       "id": "2029",
       "name": "MTV Katsomo",
       "priority": 38,
-      "description": null,
-      "link": null,
+      "description": "Huippuunsa viritettyä urheilua ja viihdettä jokaiseen makuun. Koko Suomen kokoisessa katsomossa on paikka jokaiselle.",
+      "link": "https://www.mtv.fi/",
       "logo_path": "/wRMEDOZ8iAEEHXIY2VyckvT0K8I.jpg",
       "regions": [
         246
@@ -10264,8 +10227,8 @@
       "id": "2101",
       "name": "CANAL+",
       "priority": 33,
-      "description": null,
-      "link": null,
+      "description": "myCANAL vous propose de regarder les meilleurs films, les dernières séries et les matchs en HD et en VOST ou FR.",
+      "link": "canalplus.com/streaming/",
       "logo_path": "/yFjeEJFQqalphfmYivOYyatPVEd.jpg",
       "regions": [
         616
@@ -10317,8 +10280,8 @@
       "id": "2115",
       "name": "Cinu",
       "priority": 49,
-      "description": null,
-      "link": null,
+      "description": "Das aktuelle Kinoprogramm der Kinos Riffraff &amp; Houdini in Zürich und Bourbaki in Luzern und ein breitgefächertes Angebot an Streamingtiteln.",
+      "link": "https://www.cinu.ch/de-ch/programm.html",
       "logo_path": "/twKkyl31iYVtxfICNkDdrxrJ7KS.jpg",
       "regions": [
         756
@@ -10369,8 +10332,8 @@
       "id": "2137",
       "name": "Arthaus+",
       "priority": 122,
-      "description": null,
-      "link": null,
+      "description": "ARTHAUS+ bietet ein von Filmexperten kuratiertes Streaming-Angebot mit einer Mischung aus Kino-Hits, Indie-Filmen & ausgesuchten Serien.",
+      "link": "https://www.arthaus.de/arthaus_plus",
       "logo_path": "/inTlUMvnQrtCee5fnO4J45SuIwH.jpg",
       "regions": [
         276
@@ -10457,8 +10420,8 @@
       "id": "2201",
       "name": "Toggo",
       "priority": 126,
-      "description": null,
-      "link": null,
+      "description": "Ganze Folgen deiner TOGGO Serien ansehen. Coole Spiele, Musik und Gewinnspiele mit deinen TOGGO Helden Ninjago, Angelo oder Barbie – Jetzt klicken!",
+      "link": "https://www.toggo.de/",
       "logo_path": "/745WQrNUjgJfUXxM2OJAoFkPhsw.jpg",
       "regions": [
         276
@@ -10547,8 +10510,8 @@
       "id": "2214",
       "name": "CDA Premium",
       "priority": 42,
-      "description": null,
-      "link": null,
+      "description": "CDA - multimedialna społeczność od 2003 roku. W serwisie znajdziesz: gry, materiały video, śmieszne grafiki oraz dział download.",
+      "link": "https://www.cda.pl/premium",
       "logo_path": "/rZG2UBzS8ysl2kloSbrm9w4Mth2.jpg",
       "regions": [
         616
@@ -10583,8 +10546,8 @@
       "id": "2235",
       "name": "tabii",
       "priority": 59,
-      "description": null,
-      "link": null,
+      "description": "tabii offers Turkish series, movies, documentaries, kids programs, and tabii originals that the whole family can watch. Watch anytime, anywhere you want.",
+      "link": "https://www.tabii.com/",
       "logo_path": "/uWVpt3iJ2pLKtFZ69rAKP0EDVVx.jpg",
       "regions": [
         792
@@ -10636,8 +10599,8 @@
       "id": "2241",
       "name": "Movistar Plus+",
       "priority": 4,
-      "description": null,
-      "link": null,
+      "description": "En Movistar Plus+ puedes ver series, cine, documentales, canales de televisión, el mejor deporte en directo y más. Todo, con tu suscripción de 9,99€/mes.",
+      "link": "https://www.movistarplus.es/",
       "logo_path": "/jse4MOi92Jgetym7nbXFZZBI6LK.jpg",
       "regions": [
         724
@@ -10674,8 +10637,8 @@
       "id": "2283",
       "name": "Monomax",
       "priority": 28,
-      "description": null,
-      "link": null,
+      "description": "Monomax ดูหนังออนไลน์ ซีรีส์ การ์ตูน กีฬา ดูได้ทั้งครอบครัว ทุกที่ ทุกเวลา",
+      "link": "https://www.monomax.me/",
       "logo_path": "/kwuUSaCoI9XN0ofHGVTkRm4BMYt.jpg",
       "regions": [
         764
@@ -10709,7 +10672,7 @@
     {
       "id": "2285",
       "name": "JustWatch TV",
-      "priority": 28,
+      "priority": 29,
       "description": "The full list of movies and TV shows on JustWatchTV. Find out what to watch on JustWatchTV with JustWatch!",
       "link": "https://www.justwatch.com/us/provider/justwatchtv",
       "logo_path": "/g2IaWyo6jCY0rIFjb4qgZ0bSmm3.jpg",
@@ -10864,8 +10827,8 @@
       "id": "2300",
       "name": "ITVX Premium",
       "priority": 113,
-      "description": null,
-      "link": null,
+      "description": "ITVX is the UK’s freshest streaming service, with exclusive new shows, blockbuster films, live events and thousands of boxsets all in one place.",
+      "link": "https://www.itv.com/",
       "logo_path": "/1LuvKw01c2KQCt6DqgAgR06H2pT.jpg",
       "regions": [
         826
@@ -10989,8 +10952,8 @@
       "id": "2311",
       "name": "Channel 4 Plus",
       "priority": 121,
-      "description": null,
-      "link": null,
+      "description": "Watch your favourite shows online, from Channel 4, E4 and Walter Presents",
+      "link": "https://www.channel4.com/",
       "logo_path": "/trVzwZhFnxY3sCqyySnXASGBY9j.jpg",
       "regions": [
         372,
@@ -11141,8 +11104,8 @@
       "id": "2336",
       "name": "JioHotstar",
       "priority": 3,
-      "description": null,
-      "link": null,
+      "description": "Hotstar is India’s largest premium streaming platform with more than 100,000 hours of drama and movies in 17 languages, and coverage of every major global sporting event.",
+      "link": "https://www.hotstar.com/",
       "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
       "regions": [
         356
@@ -12868,6 +12831,7 @@
         508,
         512,
         528,
+        554,
         562,
         578,
         591,

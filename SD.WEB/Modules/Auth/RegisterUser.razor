@@ -135,8 +135,6 @@
 
     private async Task Logout()
     {
-        var auth = await JsRuntime.Utils().GetStorage<AuthProvider>("auth");
-
         await JsRuntime.Supabase().SignOutAsync();
 
         Navigation.NavigateTo($"/{Culture}");

@@ -6,12 +6,7 @@
 @inherits ComponentCore<AccountPopup>
 
 @inject PrincipalApi PrincipalApi
-@inject LoginApi LoginApi
-@inject MyProvidersApi MyProvidersApi
-@inject MySuggestionsApi MySuggestionsApi
-@inject WatchedListApi WatchedListApi
-@inject WatchingListApi WatchingListApi
-@inject WishListApi WishListApi
+
 
 <MudDialog Style="width: 100%; max-height: 70%;">
     <DialogContent>
@@ -53,13 +48,6 @@
         </MudTabs>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@DownloadData" Disabled="Principal == null">
-            Download Data
-        </MudButton>
-        <MudButton OnClick="@DeleteAccount" Color="Color.Error">
-            @Translations.DeleteAccount
-        </MudButton>
-        <MudSpacer></MudSpacer>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">
             @Button.Close
         </MudButton>
@@ -76,74 +64,8 @@
         Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated, true);
     }
 
-    private async Task DownloadData()
-    {
-        try
-        {
-            if (Principal == null) return;
-
-            var data = new SuperData() { Principal = Principal };
-
-            var sub = Principal.GetActiveSubscription();
-
-            data.Login = await LoginApi.Get(AppStateStatic.IsAuthenticated);
-            data.Providers = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
-            if (sub?.ActiveProduct is null or AccountProduct.Basic) data.Suggestions = null;
-            else data.Suggestions = await MySuggestionsApi.Get(sub?.ActiveProduct, AppStateStatic.IsAuthenticated);
-            data.WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated);
-            data.WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated);
-            data.WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated);
-
-            var fileName = $"{AppInfo.Title.ToSlug()}_{Principal.AuthProviders[0]}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
-            await JsRuntime.Utils().DownloadFile(fileName, "application/json", data.ConvertFromObjectToBytes());
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
-    }
-
-    private async Task DeleteAccount()
-    {
-        try
-        {
-            if (Principal == null) return;
-
-            if (Principal.GetActiveSubscription() != null)
-            {
-                await DialogService.ShowMessageBoxAsync("You still have an active subscription", "Please cancel your subscription before deleting your profile.");
-                return;
-            }
-
-            if (await DialogService.ShowMessageBoxAsync(AppInfo.Title, GlobalTranslations.SureDeleteAccount, Button.Ok, Button.Cancel) ?? false)
-            {
-                //remove data from cosmos db
-                await PrincipalApi.Remove();
-
-                //TODO: remove data from supabase table
-
-                //close popup
-                MudDialog!.Close();
-
-                //close current login session
-                await Logout();
-            }
-            else
-            {
-                await ShowInfo(GlobalTranslations.OperationCanceled);
-            }
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
-    }
-
     private async Task Logout()
     {
-        var auth = await JsRuntime.Utils().GetStorage<AuthProvider>("auth");
-
         await JsRuntime.Supabase().SignOutAsync();
     }
-
 }
