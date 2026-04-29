@@ -212,7 +212,8 @@
             var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
 
             //If you can't identify the country, it's probably in a blocked region (like China). Therefore, we force the user to approve consent.
-            if (country.Empty() || country.ToUpper() == "CN")
+            //or singapore because there is a lot of bots
+            if (country.Empty() || country.ToUpper() == "CN" || country.ToUpper() == "SG")
             {
                 var consent = await JsRuntime.Utils().GetStorage<bool>("consent");
 
@@ -290,7 +291,7 @@
         //show only once
         if (!onboarding)
         {
-            await DialogService.OnboardingPopup();
+            await DialogService.OnboardingPopup(Culture);
             await JsRuntime.Utils().SetStorage("onboarding-popup", true);
         }
     }

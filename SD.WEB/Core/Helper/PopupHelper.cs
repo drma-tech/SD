@@ -203,9 +203,14 @@ public static class PopupHelper
         await service.ShowAsync<SubscriptionPopup>(Modules.Subscription.Resources.Translations.MySubscription, parameters, Options(MaxWidth.Medium));
     }
 
-    public static async Task OnboardingPopup(this IDialogService service)
+    public static async Task OnboardingPopup(this IDialogService service, string culture)
     {
-        await service.ShowAsync<Onboarding>(string.Format(GlobalTranslations.WelcomeTo, AppInfo.Title), Options(MaxWidth.Medium));
+        var parameters = new DialogParameters<Onboarding>
+        {
+            { x => x.Culture, culture },
+        };
+
+        await service.ShowAsync<Onboarding>(string.Format(GlobalTranslations.WelcomeTo, AppInfo.Title), parameters, Options(MaxWidth.Medium));
     }
 
     public static async Task AskReviewPopup(this IDialogService service)
