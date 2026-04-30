@@ -99,7 +99,7 @@
     {
         return AllProviders?.Items
                    .Where(p => p.regions.Contains(Region))
-                   .Where(p => p.models.Any(a => DeliveryModel == null || a == DeliveryModel))
+                   .Where(p => p.models.Empty() || p.models.Any(a => DeliveryModel == null || a == DeliveryModel))
                    .Where(p => name == null || p.name!.Contains(name, StringComparison.InvariantCultureIgnoreCase))
                    .OrderBy(o => o.priority)
                    .Take(all ? 1000 : 45)

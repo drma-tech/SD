@@ -28,7 +28,7 @@ else
     @if (Provider != null)
     {
         <PageSectionComponent IsPageHeader="true" Image="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Subtitle="@GetSubtitle()" Description="@Provider.description"
-                        UrlShare="@($"/{Culture}/platforms/{Provider.id}")">
+                              UrlShare="@($"/{Culture}/platforms/{Provider.id}")">
             <ActionsFragment>
                 @if (Provider.link.NotEmpty() && Platform != SD.Shared.Enums.Platform.huawei)
                 {
@@ -59,16 +59,16 @@ else
 
     <RenderControl Actions="Actions">
         <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platforms/{Id}/popular/{{0}}")" Culture="@Culture"
-                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.PopularDesc.Format(Provider?.name)"
-                      StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
+                            ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.PopularDesc.Format(Provider?.name)"
+                            StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </MediaListComponent>
         <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platforms/{Id}/new/{{0}}")" Culture="@Culture"
-                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.NewsDesc.Format(Provider?.name)"
-                      StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
+                            ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.NewsDesc.Format(Provider?.name)"
+                            StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </MediaListComponent>
         <MediaListComponent ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platforms/{Id}/top/{{0}}")" Culture="@Culture"
-                      ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.RecommendedDesc.Format(Provider?.name)"
-                      StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
+                            ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.RecommendedDesc.Format(Provider?.name)"
+                            StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </MediaListComponent>
     </RenderControl>
 
@@ -144,7 +144,7 @@ else
     {
         if (Provider == null) return null;
         var models = string.Join(", ", Provider.models.Select(s => s.GetName()));
-        return $"{Modules.Platform.Resources.Translations.DeliveryModel}: {models} | {Modules.Platform.Resources.Translations.Countries}: {Provider.regions.Count}";
+        return $"{Modules.Platform.Resources.Translations.DeliveryModel}: {(models.Empty() ? "null" : models)} | {Modules.Platform.Resources.Translations.Countries}: {Provider.regions.Count}";
     }
 
     private async Task Add()

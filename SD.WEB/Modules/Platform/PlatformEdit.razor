@@ -28,7 +28,7 @@
     }
 </MudSelect>
 
-<MudDataGrid T="ProviderModel" Items="@AllProviders?.Items.Where(p => p.models.Any(a => DeliveryModel == null || a == DeliveryModel))" ReadOnly="false" Filterable="true" Dense="true"
+<MudDataGrid T="ProviderModel" Items="@AllProviders?.Items.Where(p => p.models.Empty() || p.models.Any(a => DeliveryModel == null || a == DeliveryModel))" ReadOnly="false" Filterable="true" Dense="true"
              EditMode="DataGridEditMode.Form" EditTrigger="DataGridEditTrigger.Manual"
              FilterMode="DataGridFilterMode.ColumnFilterMenu" Class="mt-3" RowsPerPage="8"
              CommittedItemChanges="RowUpdated" EditDialogOptions="new DialogOptions(){ FullWidth=true}">
@@ -50,7 +50,7 @@
                 </Button>
             </EditCommandTemplate> *@
             <CellTemplate>
-                <div style="width: 60px;">
+                <div style="width: 115px;">
                     <MudIconButton Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
                     <MudIconButton Icon="@Icons.Material.Outlined.Link" Disabled="context.Item.link.NotEmpty()" Target="_blank" Rel="noopener"
                                    Href="@($"https://www.google.com/search?q=streaming+{context.Item.name}")" />
@@ -127,7 +127,7 @@
             if (AllProviders != null)
             {
                 var details = AllProviders.Items;
-                var blocked_providers = new List<string>() { "Amazon Channel", "Apple TV Channel", "Roku Premium Channel" };
+                var blocked_providers = new List<string>() { "Amazon Channel", "Amzon Channel", "Apple TV Channel", "Roku Premium Channel", "on U-Next" };
 
                 foreach (var region in EnumHelper.GetArray<Region>())
                 {
