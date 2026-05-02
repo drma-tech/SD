@@ -21,6 +21,8 @@
 <HeadComponent Title="@AppInfo.Title" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}") Index="true" ForceTitle="true" Shared="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@AppInfo.Subtitle"></PageSectionComponent>
 
+<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
+
 <PageSectionComponent Title="@SeoTranslations.Search" Icon="@IconsFA.Solid.Icon("magnifying-glass").Font">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" TabPanelsClass="@Css.Build().Small("pt")" @bind-ActivePanelIndex="@AppStateStatic.Index">
@@ -100,8 +102,6 @@
         </MudTabs>
     </BodyFragment>
 </PageSectionComponent>
-
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
 <PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture"></PopularIndexComponent>
 
