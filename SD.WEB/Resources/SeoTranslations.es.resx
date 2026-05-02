@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Advanced" xml:space="preserve">
+    <value>Avanzado</value>
+  </data>
   <data name="AppDescription" xml:space="preserve">
     <value>Realice un seguimiento de sus plataformas de transmisión, administre el progreso de su visualización y descubra qué mirar a continuación con listas seleccionadas, ganadores de premios y selecciones de críticos.</value>
+  </data>
+  <data name="Basic" xml:space="preserve">
+    <value>Básico</value>
   </data>
   <data name="CompareDesc" xml:space="preserve">
     <value>Compare Streaming Discovery con agregadores. Encuentre dónde mirar, calificaciones de múltiples fuentes, reseñas de expertos, listas seleccionadas y disponibilidad global.</value>
@@ -126,11 +132,23 @@
   <data name="CompareTitle" xml:space="preserve">
     <value>Streaming Discovery frente a agregadores | Mejor manera de mirar</value>
   </data>
+  <data name="EnterKeyword" xml:space="preserve">
+    <value>Ingrese una palabra clave o tema</value>
+  </data>
+  <data name="EnterTitle" xml:space="preserve">
+    <value>Introduzca un título o nombre</value>
+  </data>
+  <data name="Genre" xml:space="preserve">
+    <value>Género</value>
+  </data>
   <data name="HelpCenter" xml:space="preserve">
     <value>Centro de ayuda</value>
   </data>
   <data name="HelpCenterDesc" xml:space="preserve">
     <value>Obtenga guías detalladas, sugerencias para la solución de problemas, preguntas frecuentes y comuníquese con el soporte técnico de {0}. Resuelva problemas y descubra funciones fácilmente.</value>
+  </data>
+  <data name="Keyword" xml:space="preserve">
+    <value>Palabra clave</value>
   </data>
   <data name="PlatformsDescription" xml:space="preserve">
     <value>Explore servicios de transmisión que ofrecen películas, programas de televisión y documentales. Descubra plataformas para todos los gustos, desde éxitos convencionales hasta contenido especializado.</value>
@@ -140,5 +158,17 @@
   </data>
   <data name="ProfileTitle" xml:space="preserve">
     <value>Perfil</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="SearchKeywords" xml:space="preserve">
+    <value>Busque palabras clave relacionadas con películas y series de televisión (solo en inglés).</value>
+  </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Ordenar por</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tipo</value>
   </data>
 </root>

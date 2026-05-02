@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Advanced" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
   <data name="AppDescription" xml:space="preserve">
     <value>Track your streaming platforms, manage your watch progress, and discover what to watch next with curated lists, award winners, and critic picks.</value>
+  </data>
+  <data name="Basic" xml:space="preserve">
+    <value>Basic</value>
   </data>
   <data name="CompareDesc" xml:space="preserve">
     <value>Compare Streaming Discovery with aggregators. Find where to watch, multi-source ratings, expert reviews, curated lists, and global availability.</value>
@@ -126,11 +132,23 @@
   <data name="CompareTitle" xml:space="preserve">
     <value>Streaming Discovery vs Aggregators | Better Way to Watch</value>
   </data>
+  <data name="EnterKeyword" xml:space="preserve">
+    <value>Enter a keyword or theme</value>
+  </data>
+  <data name="EnterTitle" xml:space="preserve">
+    <value>Enter a title or name</value>
+  </data>
+  <data name="Genre" xml:space="preserve">
+    <value>Genre</value>
+  </data>
   <data name="HelpCenter" xml:space="preserve">
     <value>Help Center</value>
   </data>
   <data name="HelpCenterDesc" xml:space="preserve">
     <value>Get detailed guides, troubleshooting tips, FAQs, and contact support for {0}. Solve issues and discover features easily.</value>
+  </data>
+  <data name="Keyword" xml:space="preserve">
+    <value>Keyword</value>
   </data>
   <data name="PlatformsDescription" xml:space="preserve">
     <value>Browse streaming services offering movies, TV shows, and documentaries. Discover platforms for every taste, from mainstream hits to niche content.</value>
@@ -140,5 +158,17 @@
   </data>
   <data name="ProfileTitle" xml:space="preserve">
     <value>Profile</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchKeywords" xml:space="preserve">
+    <value>Search for keywords related to movies and TV series (English only).</value>
+  </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Sort By</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
 </root>

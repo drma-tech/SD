@@ -6,6 +6,7 @@ using Microsoft.JSInterop;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
+using SD.Shared.Models.List.Tmdb;
 using SD.WEB.Core.Auth;
 using SD.WEB.Modules.Auth.Core;
 using SD.WEB.Modules.Collections.Core;
@@ -140,7 +141,8 @@ static void ConfigureApi(IServiceCollection collection)
     collection.AddScoped<TmdbListApi>();
     collection.AddScoped<TmdbDiscoveryApi>();
     collection.AddScoped<TmdbCreditApi>();
-    collection.AddScoped<TmdbSearchApi>();
+    collection.AddScoped<TmdbSearchMultiApi>();
+    collection.AddScoped<TmdbSearchKeywordApi>();
     collection.AddScoped<TmdbRecommendationsApi>();
 
     collection.AddScoped<ImdbPopularApi>();

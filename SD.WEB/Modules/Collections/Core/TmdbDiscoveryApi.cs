@@ -44,6 +44,9 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
             foreach (var item in stringParameters)
                 parameter.TryAdd(item.Key, item.Value);
 
+        if (parameter["watch_region"] == "NONE")
+            parameter.Remove("watch_region");
+
         if (type == null)
         {
             var movies = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter));
@@ -101,7 +104,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
                     });
                 }
 
-            return new ValueTuple<HashSet<MediaDetail>, bool>(currentList, true);
+            return new ValueTuple<HashSet<MediaDetail>, bool>(currentList, page >= movies?.total_pages && page >= shows?.total_pages);
         }
 
         if (type == MediaType.movie)

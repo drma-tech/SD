@@ -45,10 +45,24 @@ public class TmdbResult
     public int vote_count { get; set; }
 }
 
-public class TmdbSearch
+public class TmdbSearchMulti
 {
     public int page { get; set; }
     public List<TmdbResult> results { get; set; } = [];
+    public int total_pages { get; set; }
+    public int total_results { get; set; }
+}
+
+public class TmdbResultKeyword
+{
+    public int id { get; set; }
+    public string? name { get; set; }
+}
+
+public class TmdbSearchKeyword
+{
+    public int page { get; set; }
+    public List<TmdbResultKeyword> results { get; set; } = [];
     public int total_pages { get; set; }
     public int total_results { get; set; }
 }

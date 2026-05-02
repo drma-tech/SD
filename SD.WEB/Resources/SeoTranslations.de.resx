@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Advanced" xml:space="preserve">
+    <value>Fortschrittlich</value>
+  </data>
   <data name="AppDescription" xml:space="preserve">
     <value>Verfolgen Sie Ihre Streaming-Plattformen, verwalten Sie Ihren Wiedergabefortschritt und entdecken Sie mit kuratierten Listen, Preisträgern und Kritikerempfehlungen, was Sie als Nächstes sehen sollten.</value>
+  </data>
+  <data name="Basic" xml:space="preserve">
+    <value>Basic</value>
   </data>
   <data name="CompareDesc" xml:space="preserve">
     <value>Vergleichen Sie Streaming Discovery mit Aggregatoren. Finden Sie heraus, wo Sie die Sendung ansehen können, erhalten Sie Bewertungen aus mehreren Quellen, Expertenrezensionen, kuratierte Listen und weltweite Verfügbarkeit.</value>
@@ -126,11 +132,23 @@
   <data name="CompareTitle" xml:space="preserve">
     <value>Streaming Discovery vs Aggregatoren | Bessere Art zuzuschauen</value>
   </data>
+  <data name="EnterKeyword" xml:space="preserve">
+    <value>Geben Sie ein Schlüsselwort oder Thema ein</value>
+  </data>
+  <data name="EnterTitle" xml:space="preserve">
+    <value>Geben Sie einen Titel oder Namen ein</value>
+  </data>
+  <data name="Genre" xml:space="preserve">
+    <value>Genre</value>
+  </data>
   <data name="HelpCenter" xml:space="preserve">
     <value>Hilfecenter</value>
   </data>
   <data name="HelpCenterDesc" xml:space="preserve">
     <value>Erhalten Sie detaillierte Anleitungen, Tipps zur Fehlerbehebung und häufig gestellte Fragen und wenden Sie sich an den Support für {0}. Lösen Sie Probleme und entdecken Sie Funktionen ganz einfach.</value>
+  </data>
+  <data name="Keyword" xml:space="preserve">
+    <value>Stichwort</value>
   </data>
   <data name="PlatformsDescription" xml:space="preserve">
     <value>Durchsuchen Sie Streaming-Dienste, die Filme, Fernsehsendungen und Dokumentationen anbieten. Entdecken Sie Plattformen für jeden Geschmack, von Mainstream-Hits bis hin zu Nischeninhalten.</value>
@@ -140,5 +158,17 @@
   </data>
   <data name="ProfileTitle" xml:space="preserve">
     <value>Profil</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Suchen</value>
+  </data>
+  <data name="SearchKeywords" xml:space="preserve">
+    <value>Suchen Sie nach Schlüsselwörtern im Zusammenhang mit Filmen und Fernsehserien (nur Englisch).</value>
+  </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Sortieren nach</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Typ</value>
   </data>
 </root>

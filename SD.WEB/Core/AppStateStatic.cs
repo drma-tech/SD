@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Services;
 using SD.Shared.Models.Auth;
+using SD.Shared.Models.List.Tmdb;
 using SD.WEB.Modules.Subscription.Core;
 using System.Security.Claims;
 
@@ -31,7 +32,18 @@ public static class AppStateStatic
     public static string? BrowserVersion { get; set; }
 
     public static string? OperatingSystem { get; set; }
-    public static string? Search { get; set; }
+
+    #region Search
+
+    public static int Index { get; set; } = 0;
+    public static string? Query { get; set; }
+    public static HashSet<TmdbResultKeyword> Keywords { get; set; } = [];
+    public static MediaType? Type;
+    public static MovieGenre? MovieGenre;
+    public static TvGenre? TvGenre;
+    public static string SortBy = "popularity.desc";
+
+    #endregion Search
 
     public static async Task<string> GetAppVersion(IJSRuntime js)
     {

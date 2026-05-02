@@ -3,7 +3,7 @@ using SD.WEB.Modules.Collections.Interface;
 
 namespace SD.WEB.Modules.Collections.Core;
 
-public class TmdbSearchApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
+public class TmdbSearchMultiApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
 {
     public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList,
         MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
@@ -20,7 +20,7 @@ public class TmdbSearchApi(IHttpClientFactory factory) : ApiExternal(factory), I
             foreach (var item in stringParameters)
                 parameter.TryAdd(item.Key, item.Value);
 
-        var result = await GetAsync<TmdbSearch>(TmdbOptions.BaseUri + "search/multi".ConfigureParameters(parameter));
+        var result = await GetAsync<TmdbSearchMulti>(TmdbOptions.BaseUri + "search/multi".ConfigureParameters(parameter));
 
         if (result != null)
             foreach (var item in result.results.OrderByDescending(o => o.popularity))

@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Advanced" xml:space="preserve">
+    <value>Avançado</value>
+  </data>
   <data name="AppDescription" xml:space="preserve">
     <value>Acompanhe suas plataformas de streaming, gerencie o progresso de exibição e descubra o que assistir em seguida com listas selecionadas, vencedores de prêmios e escolhas da crítica.</value>
+  </data>
+  <data name="Basic" xml:space="preserve">
+    <value>Básico</value>
   </data>
   <data name="CompareDesc" xml:space="preserve">
     <value>Compare o Streaming Discovery com agregadores. Encontre onde assistir, classificações de diversas fontes, avaliações de especialistas, listas selecionadas e disponibilidade global.</value>
@@ -126,11 +132,23 @@
   <data name="CompareTitle" xml:space="preserve">
     <value>Streaming Discovery vs agregadores | A melhor maneira de assistir</value>
   </data>
+  <data name="EnterKeyword" xml:space="preserve">
+    <value>Insira uma palavra-chave ou tema</value>
+  </data>
+  <data name="EnterTitle" xml:space="preserve">
+    <value>Insira um título ou nome</value>
+  </data>
+  <data name="Genre" xml:space="preserve">
+    <value>Gênero</value>
+  </data>
   <data name="HelpCenter" xml:space="preserve">
     <value>Central de Ajuda</value>
   </data>
   <data name="HelpCenterDesc" xml:space="preserve">
     <value>Obtenha guias detalhados, dicas para solução de problemas, perguntas frequentes e entre em contato com o suporte de {0}. Resolva problemas e descubra recursos facilmente.</value>
+  </data>
+  <data name="Keyword" xml:space="preserve">
+    <value>Palavra-chave</value>
   </data>
   <data name="PlatformsDescription" xml:space="preserve">
     <value>Procure serviços de streaming que oferecem filmes, programas de TV e documentários. Descubra plataformas para todos os gostos, desde sucessos populares até conteúdo de nicho.</value>
@@ -140,5 +158,17 @@
   </data>
   <data name="ProfileTitle" xml:space="preserve">
     <value>Perfil</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Busca</value>
+  </data>
+  <data name="SearchKeywords" xml:space="preserve">
+    <value>Pesquise palavras-chave relacionadas a filmes e séries de TV (somente em inglês).</value>
+  </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Ordenar por</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tipo</value>
   </data>
 </root>

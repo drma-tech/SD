@@ -4,35 +4,135 @@
 @using SD.WEB.Shared.Core
 @inherits PageCore<Search>
 
-@inject TmdbSearchApi TmdbSearch
+@inject TmdbSearchMultiApi TmdbSearch
+@inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
+@inject TmdbSearchKeywordApi TmdbSearchKeywordApi
 
-<HeadComponent Title="Search" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}/search") Index="false"></HeadComponent>
+<HeadComponent Title="@SeoTranslations.Search" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}/search") Index="false"></HeadComponent>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Search"></GoogleAdSense>
 
-<MudTextField T="string" Label="@GlobalTranslations.TypeSomething" @bind-Text="@AppStateStatic.Search" Immediate="true" OnKeyDown="@KeyPress"
-              AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Search.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary"
-              Variant="Variant.Outlined" OnAdornmentClick="@ProcessPageData" Class="@Css.Build().Large("mb")" Clearable="true"
-              HelperText="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio">
-</MudTextField>
+<PageSectionComponent Title="@SeoTranslations.Search" Icon="@IconsFA.Solid.Icon("magnifying-glass").Font">
+    <BodyFragment>
+        <MudTabs MinimumTabWidth="100" TabPanelsClass="@Css.Build().Small("pt")" @bind-ActivePanelIndex="@AppStateStatic.Index">
+            <ChildContent>
+                <MudTabPanel Text="@SeoTranslations.Basic">
+                    <MudTextField T="string" Label="@SeoTranslations.EnterTitle" Placeholder="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio" @bind-Text="@AppStateStatic.Query" Immediate="true" OnKeyDown="@KeyPress"
+                                  AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary"
+                                  Variant="Variant.Outlined" OnAdornmentClick="@ProcessPageData" Clearable="true"
+                                  HelperText="@GlobalTranslations.TypeSomething">
+                    </MudTextField>
+                </MudTabPanel>
+                <MudTabPanel Text="@SeoTranslations.Keyword">
+                    <MudTextField T="string" Label="@SeoTranslations.EnterKeyword" Placeholder="Example: love, robot, lost, animation, superhero, family" @bind-Text="@AppStateStatic.Query" Immediate="true"
+                                  AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
+                                  OnKeyDown="@KeyPressKeyboard" OnAdornmentClick="@(async() => { if (AppStateStatic.Query.NotEmpty()) await SearchKeyWords(); })"
+                                  Clearable="true" OnClearButtonClick="@(() => AppStateStatic.Keywords = [])" HelperText="@SeoTranslations.SearchKeywords">
+                    </MudTextField>
+                    @foreach (var item in AppStateStatic.Keywords)
+                    {
+                        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" OnClick="@(() => LoadItems(item.id.ToString()))">
+                            @item.name
+                        </MudChip>
+                    }
+                    @if (AppStateStatic.Keywords.NotEmpty())
+                    {
+                        <MudChip T="string" Color="Color.Secondary" Size="AppStateStatic.Size" OnClick="@LoadMore" Disabled="@DisableLoadMore">
+                            @Button.LoadMore
+                        </MudChip>
+                    }
+                </MudTabPanel>
+                <MudTabPanel Text="@SeoTranslations.Advanced">
+                    <MudToolBar Gutters="false" WrapContent="true">
+                        <MudSelect T="MediaType?" @bind-Value="AppStateStatic.Type" Variant="Variant.Outlined" Label="@SeoTranslations.Type" Clearable="true" Class="me-2">
+                            @foreach (var item in EnumHelper.GetArray<MediaType>().Where(p => p != MediaType.person))
+                            {
+                                <MudSelectItem Value="(MediaType?)(object?)item">@item.GetName()</MudSelectItem>
+                            }
+                        </MudSelect>
+                        @if (AppStateStatic.Type == MediaType.movie)
+                        {
+                            <MudSelect T="MovieGenre?" @bind-Value="AppStateStatic.MovieGenre" Variant="Variant.Outlined" Label="@SeoTranslations.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
+                                @foreach (var item in EnumHelper.GetArray<MovieGenre>())
+                                {
+                                    <MudSelectItem Value="(MovieGenre?)(object?)item">@item.GetName()</MudSelectItem>
+                                }
+                            </MudSelect>
+                        }
+                        else
+                        {
+                            <MudSelect T="TvGenre?" @bind-Value="AppStateStatic.TvGenre" Variant="Variant.Outlined" Label="@SeoTranslations.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
+                                @foreach (var item in EnumHelper.GetArray<TvGenre>())
+                                {
+                                    <MudSelectItem Value="(TvGenre?)(object?)item">@item.GetName()</MudSelectItem>
+                                }
+                            </MudSelect>
+                        }
+                        <MudSelect T="string" @bind-Value="AppStateStatic.SortBy" Variant="Variant.Outlined" Label="@SeoTranslations.SortBy" Class="me-2">
+                            <MudSelectItem Value="@("original_title.asc")">original_title.asc</MudSelectItem>
+                            <MudSelectItem Value="@("original_title.desc")">original_title.desc</MudSelectItem>
+                            <MudSelectItem Value="@("popularity.asc")">popularity.asc</MudSelectItem>
+                            <MudSelectItem Value="@("popularity.desc")">popularity.desc</MudSelectItem>
+                            <MudSelectItem Value="@("revenue.asc")">revenue.asc</MudSelectItem>
+                            <MudSelectItem Value="@("revenue.desc")">revenue.desc</MudSelectItem>
+                            <MudSelectItem Value="@("primary_release_date.asc")">primary_release_date.asc</MudSelectItem>
+                            <MudSelectItem Value="@("title.asc")">title.asc</MudSelectItem>
+                            <MudSelectItem Value="@("title.desc")">title.desc</MudSelectItem>
+                            <MudSelectItem Value="@("primary_release_date.desc")">primary_release_date.desc</MudSelectItem>
+                            <MudSelectItem Value="@("vote_average.asc")">vote_average.asc</MudSelectItem>
+                            <MudSelectItem Value="@("vote_average.desc")">vote_average.desc</MudSelectItem>
+                            <MudSelectItem Value="@("vote_count.asc")">vote_count.asc</MudSelectItem>
+                            <MudSelectItem Value="@("vote_count.desc")">vote_count.desc</MudSelectItem>
+                        </MudSelect>
+                        <MudIconButton Icon="@Icons.Material.Filled.Search" Color="Color.Primary" OnClick="@(() => LoadItems(null))"></MudIconButton>
+                    </MudToolBar>
+                </MudTabPanel>
+            </ChildContent>
+        </MudTabs>
+    </BodyFragment>
+</PageSectionComponent>
 
 <RenderControl Actions="Actions">
-    <MediaListFull MediaListApi="TmdbSearch" StringParameters="@StringParameters" Items="Items" ShowHead="false" FullPage="true"
-                   Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
-    </MediaListFull>
+    @if (AppStateStatic.Index == 0)
+    {
+        <MediaListFull MediaListApi="TmdbSearch" StringParameters="@ParametersQuery" Items="Items" ShowHead="false" FullPage="true"
+                       Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
+        </MediaListFull>
+    }
+    else if (AppStateStatic.Index == 1)
+    {
+        <MediaListFull MediaListApi="TmdbDiscoveryApi" StringParameters="@ParametersKeyword" Items="Items" ShowHead="false" FullPage="true"
+                       Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
+        </MediaListFull>
+    }
+    else if (AppStateStatic.Index == 2)
+    {
+        <MediaListFull MediaListApi="TmdbDiscoveryApi" StringParameters="@ParametersAdvanced" Items="Items" ShowHead="false" FullPage="true"
+                       Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture" TypeSelected="@AppStateStatic.Type">
+        </MediaListFull>
+    }
 </RenderControl>
 
-@code {
+    @code {
+    [Parameter][SupplyParameterFromQuery(Name = "keyword")] public string? keyword { get; set; }
+
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
     private HashSet<MediaDetail> Items { get; set; } = [];
     private ComponentActions<HashSet<MediaDetail>> Actions { get; } = new(list => list == null || list.Empty());
-    private Dictionary<string, string> StringParameters => new() { { "query", AppStateStatic.Search ?? "" } };
+    private Dictionary<string, string> ParametersQuery => new() { { "query", AppStateStatic.Query ?? "" } };
+    private Dictionary<string, string> ParametersKeyword = new() { { "sort_by", "popularity.desc" }, { "watch_region", "none" } };
+    private Dictionary<string, string> ParametersAdvanced = new() { { "sort_by", AppStateStatic.SortBy }, { "watch_region", "none" } };
+
+    protected override void OnParametersSet()
+    {
+        if (keyword.NotEmpty()) ParametersKeyword["with_keywords"] = keyword;
+    }
 
     protected override void OnInitialized()
     {
@@ -45,10 +145,39 @@
 
     protected override async Task ProcessPageData()
     {
+        await LoadItems(keyword);
+    }
+
+    private async Task LoadItems(string? keywordId)
+    {
         await Actions.StartLoading.Invoke(null);
         Items.Clear();
-        var result = await TmdbSearch.GetList(Items, null, StringParameters);
-        Items = result.list;
+
+        if (AppStateStatic.Index == 0)
+        {
+            var result = await TmdbSearch.GetList(Items, null, ParametersQuery);
+            Items = result.list;
+        }
+        else if (AppStateStatic.Index == 1)
+        {
+            ParametersKeyword["with_keywords"] = keywordId!;
+            var result = await TmdbDiscoveryApi.GetList(Items, null, ParametersKeyword);
+            Items = result.list;
+        }
+        else if (AppStateStatic.Index == 2)
+        {
+            if (AppStateStatic.Type == MediaType.movie)
+            {
+                ParametersAdvanced["with_genres"] = ((int)AppStateStatic.MovieGenre!.Value).ToString();
+            }
+            else if (AppStateStatic.Type == MediaType.tv)
+            {
+                ParametersAdvanced["with_genres"] = ((int)AppStateStatic.TvGenre!.Value).ToString();
+            }
+            var result = await TmdbDiscoveryApi.GetList(Items, AppStateStatic.Type, ParametersAdvanced);
+            Items = result.list;
+        }
+
         await Actions.FinishLoading.Invoke(Items);
     }
 
@@ -70,12 +199,46 @@
 
     private async Task KeyPress(KeyboardEventArgs args)
     {
-        if (AppStateStatic.Search.Empty()) return;
+        if (AppStateStatic.Query.Empty()) return;
 
         if (args.Key == "Enter")
         {
             await ProcessPageData();
         }
+    }
+
+    private async Task KeyPressKeyboard(KeyboardEventArgs args)
+    {
+        if (AppStateStatic.Query.Empty()) return;
+
+        if (args.Key == "Enter")
+        {
+            await SearchKeyWords();
+        }
+    }
+
+    private int _currentPage = 1;
+    public bool DisableLoadMore { get; set; }
+
+    private async Task SearchKeyWords()
+    {
+        AppStateStatic.Keywords = [];
+        _currentPage = 1;
+        Dictionary<string, string> parameters = new Dictionary<string, string> { { "query", AppStateStatic.Query ?? "" } };
+
+        var result = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++);
+        AppStateStatic.Keywords = result.list;
+
+        DisableLoadMore = result.lastPage || AppStateStatic.Keywords.Count >= 100;
+    }
+
+    private async Task LoadMore()
+    {
+        Dictionary<string, string> parameters = new Dictionary<string, string> { { "query", AppStateStatic.Query ?? "" }, { "sort_by", "popularity.desc" } };
+
+        var result = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++);
+        AppStateStatic.Keywords = result.list;
+        DisableLoadMore = result.lastPage || AppStateStatic.Keywords.Count >= 100;
     }
 
 }

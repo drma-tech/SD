@@ -61,11 +61,29 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced.
+        /// </summary>
+        public static string Advanced {
+            get {
+                return ResourceManager.GetString("Advanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Track your streaming platforms, manage your watch progress, and discover what to watch next with curated lists, award winners, and critic picks..
         /// </summary>
         public static string AppDescription {
             get {
                 return ResourceManager.GetString("AppDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Basic.
+        /// </summary>
+        public static string Basic {
+            get {
+                return ResourceManager.GetString("Basic", resourceCulture);
             }
         }
         
@@ -88,6 +106,33 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter a keyword or theme.
+        /// </summary>
+        public static string EnterKeyword {
+            get {
+                return ResourceManager.GetString("EnterKeyword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a title or name.
+        /// </summary>
+        public static string EnterTitle {
+            get {
+                return ResourceManager.GetString("EnterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genre.
+        /// </summary>
+        public static string Genre {
+            get {
+                return ResourceManager.GetString("Genre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help Center.
         /// </summary>
         public static string HelpCenter {
@@ -102,6 +147,15 @@ namespace SD.WEB.Resources {
         public static string HelpCenterDesc {
             get {
                 return ResourceManager.GetString("HelpCenterDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyword.
+        /// </summary>
+        public static string Keyword {
+            get {
+                return ResourceManager.GetString("Keyword", resourceCulture);
             }
         }
         
@@ -129,6 +183,42 @@ namespace SD.WEB.Resources {
         public static string ProfileTitle {
             get {
                 return ResourceManager.GetString("ProfileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for keywords related to movies and TV series (English only)..
+        /// </summary>
+        public static string SearchKeywords {
+            get {
+                return ResourceManager.GetString("SearchKeywords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sort By.
+        /// </summary>
+        public static string SortBy {
+            get {
+                return ResourceManager.GetString("SortBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
     }
