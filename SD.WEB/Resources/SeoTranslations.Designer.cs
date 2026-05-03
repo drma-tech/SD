@@ -79,6 +79,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discover Movies and Series on Streaming Platforms.
+        /// </summary>
+        public static string AppIndexTitle {
+            get {
+                return ResourceManager.GetString("AppIndexTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Basic.
         /// </summary>
         public static string Basic {
