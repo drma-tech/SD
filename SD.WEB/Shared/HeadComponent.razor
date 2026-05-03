@@ -8,7 +8,7 @@
 
     @if (!Index)
     {
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="noindex" />
     }
 
     <meta name="description" content="@Description" />
@@ -38,12 +38,6 @@
         <meta property="og:title" content="@TitleFull" />
         <meta property="og:description" content="@Description" />
         <meta property="og:image" content="@ImageUrl" />
-
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="@TitleFull" />
-        <meta name="twitter:description" content="@Description" />
-        <meta name="twitter:image" content="@ImageUrl" />
-        <meta name="twitter:site" content="@AppInfo.Title" />
     }
 
 </HeadContent>
@@ -65,11 +59,10 @@
     /// </summary>
     [Parameter] public string? Image { get; set; }
 
-    [Parameter] public bool ForceTitle { get; set; }
     [Parameter] public bool Shared { get; set; }
 
     public string? Culture => AppStateStatic.GetCulture(Navigation);
-    private string? TitleFull => ForceTitle ? Title : $"{Title} - {AppInfo.Title}";
+    private string? TitleFull => $"{Title} | {AppInfo.Title}";
     private string? CanonicalUrl => $"{AppInfo.WebSite.TrimEnd('/')}/{Url.TrimStart('/')}";
     private string? ImageUrl => Image ?? $"{AppInfo.WebSite}/icon/icon-192.png";
 

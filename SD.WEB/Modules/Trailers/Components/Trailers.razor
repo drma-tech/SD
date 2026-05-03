@@ -15,7 +15,7 @@
     <div class="grid-relative-container-trailer">
         @foreach (var item in TrailerModel?.Data?.Items ?? [])
         {
-            <MudLink Href="@($"/{Culture}/video/{($"{item.id}|{item.title}".SimpleEncrypt())}")" rel="noindex, nofollow">
+            <MudLink Href="@($"/{Culture}/video/{($"{item.id}|{item.title}".SimpleEncrypt())}")" rel="nofollow">
                 <MudCard Outlined="true">
                     <MudCardContent Style="padding: 0; position: relative;">
                         <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%;"></MudImage>

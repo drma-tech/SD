@@ -33,8 +33,8 @@
                             <MudButton Variant="Variant.Text" Href="@($"/{Culture}/free/movie/{item.ToString().ToLower()}")">
                                 @($"Free Movies")
                             </MudButton>
-                            <MudButton Variant="Variant.Text" Href="@($"/{Culture}/free/tv/{item.ToString().ToLower()}")">
-                                @($"Free Series")
+                            <MudButton Variant="Variant.Text" Href="@($"/{Culture}/platforms/{item.ToString().ToLower()}")">
+                                @($"Platforms")
                             </MudButton>
                         </MudCardActions>
                     </MudCard>
@@ -69,21 +69,21 @@
     {
         if (filter == "en")
         {
-            var english = new HashSet<Region> { Region.US, Region.CA, Region.AU, Region.NZ };
+            var english = new HashSet<Region> { Region.US, Region.GB, Region.CA, Region.AU };
 
-            return RegionsList.Where(p => english.Contains(p) || p.GetCustomAttribute(false)!.Group == "Europe").ToList();
+            return RegionsList.Where(p => english.Contains(p)).ToList();
         }
         else if (filter == "pt")
         {
-            var portuguese = new HashSet<Region> { Region.BR, Region.PT, Region.MZ, Region.CV };
+            var portuguese = new HashSet<Region> { Region.BR, Region.PT };
 
             return RegionsList.Where(p => portuguese.Contains(p)).ToList();
         }
         else if (filter == "es")
         {
-            var spanish = new HashSet<Region> { Region.ES, Region.GQ };
+            var spanish = new HashSet<Region> { Region.ES, Region.MX, Region.AR, Region.CL, Region.CO };
 
-            return RegionsList.Where(p => spanish.Contains(p) || p.GetCustomAttribute(false)!.Group == "Americas").ToList();
+            return RegionsList.Where(p => spanish.Contains(p)).ToList();
         }
         else if (filter.NotEmpty())
         {

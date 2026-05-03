@@ -88,6 +88,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compare.
+        /// </summary>
+        public static string Compare {
+            get {
+                return ResourceManager.GetString("Compare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compare Streaming Discovery with aggregators. Find where to watch, multi-source ratings, expert reviews, curated lists, and global availability..
         /// </summary>
         public static string CompareDesc {
@@ -156,6 +165,15 @@ namespace SD.WEB.Resources {
         public static string Keyword {
             get {
                 return ResourceManager.GetString("Keyword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: Popular, New &amp; Recommended Movies &amp; Series.
+        /// </summary>
+        public static string PlatformDetailTitle {
+            get {
+                return ResourceManager.GetString("PlatformDetailTitle", resourceCulture);
             }
         }
         

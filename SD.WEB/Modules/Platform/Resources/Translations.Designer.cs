@@ -169,7 +169,7 @@ namespace SD.WEB.Modules.Platform.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Platforms ({0}).
+        ///   Looks up a localized string similar to Streaming Platforms ({0}).
         /// </summary>
         public static string TitleProviders {
             get {

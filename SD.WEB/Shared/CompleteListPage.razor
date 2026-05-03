@@ -3,9 +3,9 @@
 @page "/{culture}/collections/tmdb/popular/{Type}"
 @page "/{culture}/collections/tmdb/top/{Type}"
 @page "/{culture}/collections/tmdb/upcoming"
-@page "/{culture}/platforms/{id}/popular/{Type}"
-@page "/{culture}/platforms/{id}/new/{Type}"
-@page "/{culture}/platforms/{id}/top/{Type}"
+@page "/{culture}/platform/{id}/popular/{Type}"
+@page "/{culture}/platform/{id}/new/{Type}"
+@page "/{culture}/platform/{id}/top/{Type}"
 
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Interface
@@ -90,35 +90,27 @@
 
     private async Task ProcessNonList()
     {
-        if (Navigation.Uri.Contains("imdb/popular"))
-        {
-            IsImdb = true;
-            StringParameters = new() { { "mode", "full" } };
-            OnlyYear = true;
-            TitleHead = $"IMDB - {Modules.Platform.Resources.Translations.Popular} - {TypeSelected!.GetName()}";
-            MediaListApi = new ImdbPopularApi(factory);
-        }
-        else if (Navigation.Uri.Contains("platforms"))
+        if (Navigation.Uri.Contains("platform"))
         {
             var providers = await AllProvidersApi.GetAll();
             var provider = providers?.Items.SingleOrDefault(s => s.id == id);
 
             if (Navigation.Uri.Contains("popular"))
             {
-                TitleHead = $"{provider?.name} - {Modules.Platform.Resources.Translations.Popular} - {TypeSelected!.GetName()}";
+                TitleHead = $"{provider?.name}: {Modules.Platform.Resources.Translations.Popular} ({TypeSelected!.GetName()})";
                 DescriptionHead = Modules.Platform.Resources.Translations.PopularDesc.Format(provider?.name);
                 StringParameters = GetExtraParameters(id, "popularity.desc");
             }
             else if (Navigation.Uri.Contains("new"))
             {
-                TitleHead = $"{provider?.name} - {Modules.Platform.Resources.Translations.Release} - {TypeSelected!.GetName()}";
+                TitleHead = $"{provider?.name}: {Modules.Platform.Resources.Translations.Release} ({TypeSelected!.GetName()})";
                 DescriptionHead = Modules.Platform.Resources.Translations.NewsDesc.Format(provider?.name);
                 DetectRegions = true;
                 StringParameters = GetExtraParameters(id, "primary_release_date.desc");
             }
             else if (Navigation.Uri.Contains("top"))
             {
-                TitleHead = $"{provider?.name} - {Modules.Platform.Resources.Translations.TopRated} - {TypeSelected!.GetName()}";
+                TitleHead = $"{provider?.name}: {Modules.Platform.Resources.Translations.TopRated} ({TypeSelected!.GetName()})";
                 DescriptionHead = Modules.Platform.Resources.Translations.RecommendedDesc.Format(provider?.name);
                 DetectRegions = true;
                 StringParameters = GetExtraParameters(id, "vote_average.desc");

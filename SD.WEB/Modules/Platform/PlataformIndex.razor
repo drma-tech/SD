@@ -1,4 +1,5 @@
 ﻿@page "/{culture}/platforms"
+@page "/{culture}/platforms/{region}"
 
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Authorization
@@ -13,10 +14,10 @@
 @inject MyProvidersApi MyProvidersApi
 @inject IpInfoApi IpInfoApi
 
-<HeadComponent Title="@SeoTranslations.PlatformsTitle" Description="@SeoTranslations.PlatformsDescription" Url=@($"/{Culture}/platforms") Index="true"></HeadComponent>
+<HeadComponent Title="@Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription" Url=@($"/{Culture}/platforms/{Region}") Index="true"></HeadComponent>
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
-<PageSectionComponent IsPageHeader="true" Title="@Translations.TitleProviders.Format(Region.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
+<PageSectionComponent IsPageHeader="true" Title="@Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
     <ActionsFragment>
         <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="@Resources.Translations.DeliveryModel" Dense="true" Class="me-2">
             @foreach (var item in DeliveryModels)
@@ -35,7 +36,7 @@
             var favorite = MyProviders?.Items.Any(a => a.id == item.id) ?? false;
 
             <div>
-                <MudLink Href="@($"/{Culture}/platforms/{item.id}")" Style="position: relative;">
+                <MudLink Href="@($"/{Culture}/platform/{item.id}")" Style="position: relative;">
                     <MudCard Outlined="true">
                         <MudCardContent Style="padding: 0;">
                             <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" FallbackSrc="images/no-image.png"
@@ -92,17 +93,18 @@
     [Custom(Name = "Model")] public DeliveryModel? DeliveryModel { get; set; }
     private string? name;
 
-    public Region Region { get; set; } = Region.US;
+    [Parameter] public string? Region { get; set; }
+    public Region? RegionEnum { get; set; }
     private bool ShowAll { get; set; } = false;
 
     public List<ProviderModel> GetFilteredProviders(bool all)
     {
         return AllProviders?.Items
-                   .Where(p => p.regions.Contains(Region))
+                   .Where(p => RegionEnum.HasValue && p.regions.Contains(RegionEnum.Value))
                    .Where(p => p.models.Empty() || p.models.Any(a => DeliveryModel == null || a == DeliveryModel))
                    .Where(p => name == null || p.name!.Contains(name, StringComparison.InvariantCultureIgnoreCase))
                    .OrderBy(o => o.priority)
-                   .Take(all ? 1000 : 45)
+                   .Take(all ? 1000 : (Region.Empty() ? 45 : 30))
                    .ToList()
                ?? [];
     }
@@ -113,21 +115,17 @@
     {
         base.OnInitialized();
 
-        AppStateStatic.RegionChanged += region => { Region = region; StateHasChanged(); };
+        AppStateStatic.RegionChanged += region => { RegionEnum = region; StateHasChanged(); };
     }
 
     protected override async Task ProcessInitialData()
     {
         DeliveryModels = EnumHelper.GetList<DeliveryModel>();
+        RegionEnum = Region.NotEmpty() ? Enum.Parse<Region>(Region, true) : await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
 
         await Actions.StartLoading.Invoke(null);
         AllProviders = await AllProvidersApi.GetAll();
         await Actions.FinishLoading.Invoke(AllProviders);
-    }
-
-    protected override async Task ProcessPageData()
-    {
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
     }
 
     protected override async Task LoadAuthDataAsync()

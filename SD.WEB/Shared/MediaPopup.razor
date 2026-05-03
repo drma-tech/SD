@@ -55,7 +55,7 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.imdb))
                                     {
                                         <MudTooltip Text="IMDb">
-                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.imdbLink))" rel="noindex, nofollow">
+                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.imdbLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.imdb)" title="" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                                                     <MudImage Src="logo/imdb.png" Alt="imdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.imdb
                                                 </MudChip>
@@ -65,7 +65,7 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.tmdb))
                                     {
                                         <MudTooltip Text="TMDB">
-                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.tmdbLink))" rel="noindex, nofollow">
+                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.tmdbLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.tmdb)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                                                     <MudImage Src="logo/tmdb.png" Alt="tmdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.tmdb
                                                 </MudChip>
@@ -75,7 +75,7 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.metacritic))
                                     {
                                         <MudTooltip Text="Metacritic">
-                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.metacriticLink))" rel="noindex, nofollow">
+                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.metacriticLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.metacritic)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                                                     <MudImage Src="logo/metacritic.png" Alt="metacritic" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.metacritic
                                                 </MudChip>
@@ -85,7 +85,7 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.trakt))
                                     {
                                         <MudTooltip Text="Trakt">
-                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.traktLink))" rel="noindex, nofollow">
+                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.traktLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.trakt)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                                                     <MudImage Src="logo/trakt.png" Alt="trakt" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.trakt
                                                 </MudChip>
@@ -95,7 +95,7 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.rottenTomatoes))
                                     {
                                         <MudTooltip Text="Rotten Tomatoes">
-                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.rottenTomatoesLink))" rel="noindex, nofollow">
+                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.rottenTomatoesLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.rottenTomatoes)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                                                     <MudImage Src="logo/rotten-tomatoes.png" Alt="rotten tomatoes" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.rottenTomatoes
                                                 </MudChip>
@@ -105,7 +105,7 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.filmAffinity))
                                     {
                                         <MudTooltip Text="Film Affinity">
-                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.filmAffinityLink))" rel="noindex, nofollow">
+                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.filmAffinityLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.filmAffinity)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                                                     <MudImage Src="logo/film-affinity.png" Alt="film affinity" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.filmAffinity
                                                 </MudChip>
@@ -115,7 +115,7 @@
                                     @if (_ratingsCache != null && !string.IsNullOrEmpty(_ratingsCache.Data?.letterboxd))
                                     {
                                         <MudTooltip Text="Letterboxd">
-                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.letterboxdLink))" rel="noindex, nofollow">
+                                            <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.letterboxdLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.letterboxd)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
                                                     <MudImage Src="logo/letterboxd.png" Alt="Letterboxd" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.letterboxd
                                                 </MudChip>

@@ -8,7 +8,7 @@ namespace SD.WEB.Core
         public static string CompanyWebSite { get; set; } = $"https://www.drma-tech.com";
 
         public static string Title { get; set; } = "Streaming Discovery";
-        public static string Subtitle { get; set; } = "Manage, Track, Discover";
+        public static string Subtitle { get; set; } = "Discover Movies and Series on Streaming Platforms";
         public static string Domain { get; set; } = "streamingdiscovery";
         public static string WebSite { get; set; } = $"https://www.{Domain}.com";
         public static int Year { get; set; } = 2021;

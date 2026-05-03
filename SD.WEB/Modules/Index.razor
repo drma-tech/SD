@@ -18,7 +18,7 @@
 @inject TmdbListApi TmdbListApi
 @inject TmdbSearchKeywordApi TmdbSearchScoreApi
 
-<HeadComponent Title="@AppInfo.Title" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}") Index="true" ForceTitle="true" Shared="true"></HeadComponent>
+<HeadComponent Title="@AppInfo.Subtitle" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}") Index="true" Shared="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@AppInfo.Subtitle"></PageSectionComponent>
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>

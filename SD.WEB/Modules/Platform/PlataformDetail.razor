@@ -1,4 +1,4 @@
-﻿@page "/{culture}/platforms/{id}"
+﻿@page "/{culture}/platform/{id}"
 
 @using SD.WEB.Modules.Collections.Components
 @using SD.WEB.Modules.Collections.Core
@@ -23,12 +23,12 @@
 }
 else
 {
-    <HeadComponent Title="@Provider?.name" Description="@Provider?.description" Url="@($"/{Culture}/platforms/{Provider?.id}")" Image="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Index="true" Shared="true" />
+    <HeadComponent Title="@SeoTranslations.PlatformDetailTitle.Format(Provider?.name)" Description="@Provider?.description" Url="@($"/{Culture}/platform/{Provider?.id}")" Image="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Index="true" Shared="true" />
 
     @if (Provider != null)
     {
         <PageSectionComponent IsPageHeader="true" Image="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Subtitle="@GetSubtitle()" Description="@Provider.description"
-                              UrlShare="@($"/{Culture}/platforms/{Provider.id}")">
+                              UrlShare="@($"/{Culture}/platform/{Provider.id}")">
             <ActionsFragment>
                 @if (Provider.link.NotEmpty() && Platform != SD.Shared.Enums.Platform.huawei)
                 {
@@ -58,15 +58,15 @@ else
     <GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
     <RenderControl Actions="Actions">
-        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platforms/{Id}/popular/{{0}}")" Culture="@Culture"
+        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platform/{Id}/popular/{{0}}")" Culture="@Culture"
                             ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.PopularDesc.Format(Provider?.name)"
                             StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </MediaListComponent>
-        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platforms/{Id}/new/{{0}}")" Culture="@Culture"
+        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platform/{Id}/new/{{0}}")" Culture="@Culture"
                             ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.NewsDesc.Format(Provider?.name)"
                             StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </MediaListComponent>
-        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platforms/{Id}/top/{{0}}")" Culture="@Culture"
+        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platform/{Id}/top/{{0}}")" Culture="@Culture"
                             ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.RecommendedDesc.Format(Provider?.name)"
                             StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3">
         </MediaListComponent>
