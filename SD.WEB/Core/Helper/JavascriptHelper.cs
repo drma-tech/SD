@@ -157,6 +157,8 @@ namespace SD.WEB.Core.Helper
 
         public Task<string?> GetOperatingSystem() => Invoke<string?>("environment.getOperatingSystem");
 
+        public Task<bool> IsAdBlocked() => Invoke<bool>("environment.isAdBlocked");
+
         #endregion ENVIRONMENT
 
         #region INTEROP

@@ -225,6 +225,26 @@ export const environment = {
     getAppVersion() {
         return appVersion;
     },
+    testUrl(url) {
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+
+            script.src = url;
+
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+
+            document.head.appendChild(script);
+
+            setTimeout(() => resolve(false), 2000);
+        });
+    },
+    async isAdBlocked() {
+        const fundingOk = await environment.testUrl(
+            'https://fundingchoicesmessages.google.com/i/pub-5145928155833172?ers=1'
+        );
+        return !fundingOk;
+    }
 };
 
 export const interop = {
