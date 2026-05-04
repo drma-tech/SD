@@ -151,6 +151,16 @@
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
     }
 
+    protected override async Task ProcessPageData()
+    {
+        var blocked = await JsRuntime.Utils().IsAdBlocked();
+
+        if (blocked)
+        {
+            await ShowWarning(GlobalTranslations.AdBlockerDetected);
+        }
+    }
+
     protected override async Task LoadAuthDataAsync()
     {
         if (AppStateStatic.IsAuthenticated)

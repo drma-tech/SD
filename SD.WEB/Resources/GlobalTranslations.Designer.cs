@@ -61,6 +61,15 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AdBlocker detected. Please consider whitelisting our app to support us. Thank you!.
+        /// </summary>
+        public static string AdBlockerDetected {
+            get {
+                return ResourceManager.GetString("AdBlockerDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to App Language.
         /// </summary>
         public static string AppLanguage {
