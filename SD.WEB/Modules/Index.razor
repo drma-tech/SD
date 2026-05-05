@@ -153,11 +153,19 @@
 
     protected override async Task ProcessPageData()
     {
+        _ = DetectAdBlockAsync();
+    }
+
+    private async Task DetectAdBlockAsync()
+    {
         var blocked = await JsRuntime.Utils().IsAdBlocked();
 
         if (blocked)
         {
-            await ShowWarning(GlobalTranslations.AdBlockerDetected);
+            await InvokeAsync(async () =>
+            {
+                await ShowWarning(GlobalTranslations.AdBlockerDetected);
+            });
         }
     }
 
