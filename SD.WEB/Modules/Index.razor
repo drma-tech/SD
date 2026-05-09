@@ -16,7 +16,7 @@
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 @inject TmdbListApi TmdbListApi
-@inject TmdbSearchKeywordApi TmdbSearchScoreApi
+@inject TmdbSearchKeywordApi TmdbSearchKeywordApi
 
 <HeadComponent Title="@SeoTranslations.AppIndexTitle" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}") Index="true" Shared="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@SeoTranslations.AppIndexTitle"></PageSectionComponent>
@@ -214,7 +214,7 @@
         _currentPage = 1;
         Dictionary<string, string> parameters = new Dictionary<string, string> { { "query", AppStateStatic.Query ?? "" }, { "sort_by", "popularity.desc" } };
 
-        var result = await TmdbSearchScoreApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++);
+        var result = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++);
         AppStateStatic.Keywords = result.list;
         
         DisableLoadMore = result.lastPage || AppStateStatic.Keywords.Count >= 100;
@@ -224,7 +224,7 @@
     {
         Dictionary<string, string> parameters = new Dictionary<string, string> { { "query", AppStateStatic.Query ?? "" }, { "sort_by", "popularity.desc" } };
 
-        var result = await TmdbSearchScoreApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++);
+        var result = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++);
         AppStateStatic.Keywords = result.list;
         DisableLoadMore = result.lastPage || AppStateStatic.Keywords.Count >= 100;
     }
