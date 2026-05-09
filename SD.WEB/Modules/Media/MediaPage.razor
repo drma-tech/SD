@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Routing
 @using SD.Shared.Models.List
+@using SD.WEB.Modules.Media.Components
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Resources
@@ -138,6 +139,11 @@
                 </div>
             </BodyFragment>
         </PageSectionComponent>
+        <PageSectionComponent Title="@SeoTranslations.Keywords" Color="Color.Secondary">
+            <BodyFragment>
+                <KeywordsComponent Culture="@Culture" TmdbId="@TmdbId" Type="@Type"></KeywordsComponent>
+            </BodyFragment>
+        </PageSectionComponent>
         <PageSectionComponent Title="Recommendations" Color="Color.Secondary">
             <BodyFragment>
                 <RenderControl Actions="RecommendationsActions" Context="ctx">
@@ -184,7 +190,6 @@
                 }
             </BodyFragment>
         </PageSectionComponent>
-
         <PageSectionComponent Title="@Translations.TabCredits" Color="Color.Secondary">
             <BodyFragment>
                 <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture">

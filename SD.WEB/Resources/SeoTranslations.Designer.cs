@@ -169,11 +169,11 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Keyword.
+        ///   Looks up a localized string similar to Keywords.
         /// </summary>
-        public static string Keyword {
+        public static string Keywords {
             get {
-                return ResourceManager.GetString("Keyword", resourceCulture);
+                return ResourceManager.GetString("Keywords", resourceCulture);
             }
         }
         

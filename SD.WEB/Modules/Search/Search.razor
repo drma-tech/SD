@@ -26,7 +26,7 @@
                                   HelperText="@GlobalTranslations.TypeSomething">
                     </MudTextField>
                 </MudTabPanel>
-                <MudTabPanel Text="@SeoTranslations.Keyword">
+                <MudTabPanel Text="@SeoTranslations.Keywords">
                     <MudTextField T="string" Label="@SeoTranslations.EnterKeyword" Placeholder="Example: love, robot, lost, animation, superhero, family" @bind-Text="@AppStateStatic.Query" Immediate="true"
                                   AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
                                   OnKeyDown="@KeyPressKeyboard" OnAdornmentClick="@(async() => { if (AppStateStatic.Query.NotEmpty()) await SearchKeyWords(); })"
@@ -116,6 +116,8 @@
     }
 </RenderControl>
 
+<FloatingButton Template="Template.Back"></FloatingButton>
+
     @code {
     [Parameter][SupplyParameterFromQuery(Name = "keyword")] public string? keyword { get; set; }
 
@@ -131,7 +133,11 @@
 
     protected override void OnParametersSet()
     {
-        if (keyword.NotEmpty()) ParametersKeyword["with_keywords"] = keyword;
+        if (keyword.NotEmpty()) 
+        {
+            ParametersKeyword["with_keywords"] = keyword;
+            AppStateStatic.Index = 1;
+        }
     }
 
     protected override void OnInitialized()

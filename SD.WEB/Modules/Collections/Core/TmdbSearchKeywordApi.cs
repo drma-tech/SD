@@ -30,4 +30,28 @@ public class TmdbSearchKeywordApi(IHttpClientFactory factory) : ApiExternal(fact
 
         return new ValueTuple<HashSet<TmdbResultKeyword>, bool>(currentList, page >= result?.total_pages);
     }
+
+    public async Task<List<TmdbResultKeyword>> GetMovieKeywords(string? id)
+    {
+        var parameter = new Dictionary<string, string>
+        {
+            { "api_key", TmdbOptions.ApiKey },
+        };
+
+        var result = await GetAsync<TmdbMovieKeyword>(TmdbOptions.BaseUri + $"movie/{id}/keywords".ConfigureParameters(parameter));
+
+        return result?.keywords ?? [];
+    }
+
+    public async Task<List<TmdbResultKeyword>> GetSerieKeywords(string? id)
+    {
+        var parameter = new Dictionary<string, string>
+        {
+            { "api_key", TmdbOptions.ApiKey },
+        };
+
+        var result = await GetAsync<TmdbSerieKeyword>(TmdbOptions.BaseUri + $"tv/{id}/keywords".ConfigureParameters(parameter));
+
+        return result?.results ?? [];
+    }
 }

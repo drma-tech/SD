@@ -3,6 +3,7 @@ using MudBlazor;
 using SD.WEB.Modules.Auth;
 using SD.WEB.Modules.Collections.Components;
 using SD.WEB.Modules.Help;
+using SD.WEB.Modules.Media;
 using SD.WEB.Modules.Platform.Components;
 using SD.WEB.Modules.Profile.Components;
 using SD.WEB.Modules.Subscription.Components;

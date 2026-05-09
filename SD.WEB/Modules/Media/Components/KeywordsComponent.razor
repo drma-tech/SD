@@ -1,0 +1,35 @@
+﻿@using SD.Shared.Models.List.Tmdb
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Shared.Core
+@inherits ComponentCore<KeywordsComponent>
+
+@inject TmdbSearchKeywordApi TmdbSearchKeywordApi
+
+<RenderControl Actions="Actions" Context="ctx">
+    @foreach (var item in List)
+    {
+        <MudChip T="string" Color="Color.Info" Size="AppStateStatic.Size" OnClick="@(() => Navigation.NavigateTo($"/{Culture}/search?keyword={item.id}"))">
+            @item.name
+        </MudChip>
+    }
+</RenderControl>
+
+@code {
+    [Parameter][EditorRequired] public string? Culture { get; set; }
+    [Parameter][EditorRequired] public string? TmdbId { get; set; }
+    [Parameter][EditorRequired] public MediaType? Type { get; set; }
+
+    private ComponentActions<List<TmdbResultKeyword>> Actions { get; set; } = new(lst => lst == null || lst.Empty());
+
+    private List<TmdbResultKeyword> List { get; set; } = [];
+
+    protected override async Task ProcessComponentData()
+    {
+        await Actions.StartLoading.Invoke(null);
+        if (Type == MediaType.movie)
+            List = await TmdbSearchKeywordApi.GetMovieKeywords(TmdbId);
+        else
+            List = await TmdbSearchKeywordApi.GetSerieKeywords(TmdbId);
+        await Actions.FinishLoading.Invoke(List);
+    }
+}

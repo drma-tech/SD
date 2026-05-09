@@ -66,3 +66,15 @@ public class TmdbSearchKeyword
     public int total_pages { get; set; }
     public int total_results { get; set; }
 }
+
+public class TmdbMovieKeyword
+{
+    public int id { get; set; }
+    public List<TmdbResultKeyword> keywords { get; set; } = [];
+}
+
+public class TmdbSerieKeyword
+{
+    public int id { get; set; }
+    public List<TmdbResultKeyword> results { get; set; } = [];
+}

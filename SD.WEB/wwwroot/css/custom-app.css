@@ -356,10 +356,12 @@ body .pwa-updater[b-pwa-updater] {
 
 .mud-badge.mud-badge-top.right.mud-badge-overlap {
     inset: auto auto calc(100% - 12px) calc(100% - 24px) !important;
+    z-index: 10;
 }
 
 .vertical-button {
     padding: 6px !important;
+    height: 100%;
 }
 
     .vertical-button .mud-button-label {
@@ -367,7 +369,8 @@ body .pwa-updater[b-pwa-updater] {
         align-items: center;
         text-align: center;
         gap: 4px;
-        font-size: x-small;
+        font-size: 12px;
+        text-transform: math-auto;
     }
 
         .vertical-button .mud-button-label .mud-button-icon-start {
