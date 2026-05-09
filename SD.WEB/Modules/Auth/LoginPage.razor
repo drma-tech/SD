@@ -36,7 +36,8 @@
                 </MudAlert>
             }
             <MudTextField @ref="@txtOTP" @bind-Value="@otp" Label="@Resources.Translations.OTPCode" Placeholder="@Resources.Translations.EnterCode" Disabled="@(!emailSent)"
-                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Check" OnAdornmentClick="() => ConfirmCode(email, otp)"></MudTextField>
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Check" OnAdornmentClick="() => ConfirmCode(email, otp)"
+                          HelperText="@Resources.Translations.EmailDelay"></MudTextField>
         </MudStack>
         <div style="text-align: center;">
             <MudText Class="@Css.Build().Large("mt").Medium("mb")">

@@ -97,6 +97,15 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The email may take a minute or more to arrive..
+        /// </summary>
+        public static string EmailDelay {
+            get {
+                return ResourceManager.GetString("EmailDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the code you received by email..
         /// </summary>
         public static string EnterCode {
