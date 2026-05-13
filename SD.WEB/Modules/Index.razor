@@ -1,4 +1,5 @@
-﻿@page "/{culture}"
+﻿@page "/"
+@page "/{culture}"
 
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.EditorsChoice
@@ -6,7 +7,6 @@
 @using SD.WEB.Modules.Popular
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.AwardsOfTheYear.Components
-@using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Modules.Trailers.Components
 @using SD.WEB.Modules.News.Components
 @using SD.WEB.Modules.Collections.Resources
@@ -23,7 +23,7 @@
 
 <GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
 
-<PageSectionComponent Title="@SeoTranslations.Search" Icon="@IconsFA.Solid.Icon("magnifying-glass").Font">
+<PageSectionComponent Title="@SeoTranslations.Search">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" TabPanelsClass="@Css.Build().Small("pt")" @bind-ActivePanelIndex="@AppStateStatic.Index">
             <ChildContent>

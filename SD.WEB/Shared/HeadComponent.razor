@@ -26,8 +26,11 @@
     }
 
     <!-- x-default -->
-    <link rel="alternate" href="@GetUrlForLanguage("en")" hreflang="x-default" />
-
+    @if (SupportedLanguages.NotEmpty())
+    {
+        <link rel="alternate" href="@GetUrlForLanguage("en")" hreflang="x-default" />
+    }
+    
     @if (Shared)
     {
         <link rel="image_src" href="@ImageUrl">
