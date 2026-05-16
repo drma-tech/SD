@@ -50,6 +50,7 @@
                 else
                 {
                     await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", Section, _containerId);
+                    _ = DetectAdBlockAsync();
                 }
             }
 
@@ -59,11 +60,6 @@
         {
             await ProcessException(ex);
         }
-    }
-
-    protected override async Task ProcessComponentData()
-    {
-        _ = DetectAdBlockAsync();
     }
 
     private async Task DetectAdBlockAsync()
