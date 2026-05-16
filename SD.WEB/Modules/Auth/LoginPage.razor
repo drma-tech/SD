@@ -14,19 +14,27 @@
                 @Resources.Translations.SignInSignUp
             </MudText>
 
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Disabled="@(Platform == SD.Shared.Enums.Platform.ios || _processing)">
-                <MudText>@Resources.Translations.ContinueWith.Format("Google")</MudText>
-            </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font" Disabled="@_processing">
-                <MudText>@Resources.Translations.ContinueWith.Format("Apple")</MudText>
-            </MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font" Disabled="@_processing">
-                <MudText>@Resources.Translations.ContinueWith.Format("Microsoft")</MudText>
-            </MudButton>
+            <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "google")" Content="@(Button.Recent)" Overlap="true">
+                <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Disabled="@(Platform == SD.Shared.Enums.Platform.ios || _processing)" FullWidth="true">
+                    <MudText>@Resources.Translations.ContinueWith.Format("Google")</MudText>
+                </MudButton>
+            </MudBadge>
+            <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "apple")" Content="@(Button.Recent)" Overlap="true">
+                <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font" Disabled="@_processing" FullWidth="true">
+                    <MudText>@Resources.Translations.ContinueWith.Format("Apple")</MudText>
+                </MudButton>
+            </MudBadge>
+            <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "microsoft")" Content="@(Button.Recent)" Overlap="true">
+                <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font" Disabled="@_processing" FullWidth="true">
+                    <MudText>@Resources.Translations.ContinueWith.Format("Microsoft")</MudText>
+                </MudButton>
+            </MudBadge>
             <MudDivider Class="@Css.Build().Medium("my")"></MudDivider>
-            <MudTextField @bind-Value="@email" Label="@Resources.Translations.Email" Placeholder="@Resources.Translations.EnterEmail" Disabled="@(_processing || emailSent)" Immediate="true"
-                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="() => LoginWithEmail(email)"
-                          HelperText="@Resources.Translations.MicrosoftEmails"></MudTextField>
+            <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "email")" Content="@(Button.Recent)" Overlap="true">
+                <MudTextField @bind-Value="@email" Label="@Resources.Translations.Email" Placeholder="@Resources.Translations.EnterEmail" Disabled="@(_processing || emailSent)" Immediate="true"
+                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="() => LoginWithEmail(email)"
+                              HelperText="@Resources.Translations.MicrosoftEmails" Variant="Variant.Outlined"></MudTextField>
+            </MudBadge>
             @if (SuggestEmailCorrection(email).NotEmpty())
             {
                 <MudAlert Variant="Variant.Outlined" Dense="true" Severity="Severity.Warning">
@@ -35,7 +43,7 @@
             }
             <MudTextField @ref="@txtOTP" @bind-Value="@otp" Label="@Resources.Translations.OTPCode" Placeholder="@Resources.Translations.EnterCode" Disabled="@(!emailSent)"
                           Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Check" OnAdornmentClick="() => ConfirmCode(email, otp)"
-                          HelperText="@Resources.Translations.EmailDelay"></MudTextField>
+                          HelperText="@Resources.Translations.EmailDelay" Variant="Variant.Outlined"></MudTextField>
         </MudStack>
         <div style="text-align: center;">
             <MudText Class="@Css.Build().Large("mt").Medium("mb")">
@@ -48,6 +56,12 @@
         </MudOverlay>
     </MudPaper>
 </MudContainer>
+
+<style>
+    .mud-badge.mud-badge-top.right.mud-badge-overlap {
+        inset: auto auto calc(100% - 16px) calc(100% - 30px) !important;
+    }
+</style>
 
 @code {
     [Parameter]
@@ -66,10 +80,12 @@
 
     private SD.Shared.Enums.Platform? Platform { get; set; }
     private bool _processing = false;
+    private string? lastUsedProvider = null;
 
     protected override async Task ProcessPopupData()
     {
         Platform = await AppStateStatic.GetPlatform(JsRuntime);
+        lastUsedProvider = await JsRuntime.Utils().GetStorage<string>("auth-last-used");
     }
 
     private async Task SignIn(string? provider = null, string? email = null)
@@ -81,6 +97,7 @@
             _processing = true;
 
             await JsRuntime.Utils().SetStorage<AuthProvider>("auth", AuthProvider.Supabase);
+            await JsRuntime.Utils().SetStorage("auth-last-used", provider);
 
             if (provider == "email")
             {
