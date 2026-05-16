@@ -280,11 +280,9 @@ export const environment = {
         });
     },
     async isAdBlocked() {
-        if (window.location.hostname === 'localhost') {
-            Sentry.captureMessage("ad blocked - running on localhost", "error");
-            return false;
-        }
+        if (window.location.hostname === 'localhost') { return false; }
 
+        //detect if adsense exists
         const els = document.querySelectorAll('.adsbygoogle');
         if (!els.length) {
             Sentry.captureMessage("ad blocked - no .adsbygoogle elements found", "error");
@@ -297,28 +295,31 @@ export const environment = {
             return false;
         }
 
+        //if not filled, test if adsbygoogle can be loaded
         const googlesyndication = await environment.testUrl(
             'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
         );
 
-        if (googlesyndication) {
-            Sentry.captureMessage("ad blocked - googlesyndication failed", "error");
-        }
-        else {
+        if (!googlesyndication) {
             return true;
         }
 
-        const fundingchoicesmessages = await environment.testUrl(
-            'https://fundingchoicesmessages.google.com/i/pub-5145928155833172?ers=1'
-        );
+        //test browser brave as adsbygoogle works normally
+        const isBrave = navigator.brave && typeof navigator.brave.isBrave === 'function' && await navigator.brave.isBrave();
 
-        if (fundingchoicesmessages) {
-            Sentry.captureMessage("ad blocked - fundingchoicesmessages failed", "error");
-            return false;
+        if (isBrave) {
+            const fundingchoicesmessages =
+                await environment.testUrl(
+                    'https://fundingchoicesmessages.google.com/i/pub-5145928155833172?ers=1'
+                );
+
+            if (!fundingchoicesmessages) {
+                return true;
+            }
         }
-        else {
-            return true;
-        }
+
+        Sentry.captureMessage("ad blocked - Ads failed but no blocker detected", "error");
+        return false;
     }
 };
 
