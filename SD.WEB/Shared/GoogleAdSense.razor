@@ -52,10 +52,30 @@
                     await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", Section, _containerId);
                 }
             }
+
+            await base.OnAfterRenderAsync(firstRender);
         }
         catch (Exception ex)
         {
             await ProcessException(ex);
+        }
+    }
+
+    protected override async Task ProcessComponentData()
+    {
+        _ = DetectAdBlockAsync();
+    }
+
+    private async Task DetectAdBlockAsync()
+    {
+        var blocked = await JsRuntime.Utils().IsAdBlocked();
+
+        if (blocked)
+        {
+            await InvokeAsync(async () =>
+            {
+                await ShowWarning(GlobalTranslations.AdBlockerDetected);
+            });
         }
     }
 

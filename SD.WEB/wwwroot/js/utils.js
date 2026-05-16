@@ -305,7 +305,13 @@ export const environment = {
             'https://fundingchoicesmessages.google.com/i/pub-5145928155833172?ers=1'
         );
 
-        return !fundingchoicesmessages;
+        if (fundingchoicesmessages) {
+            return false;
+        }
+        else {
+            Sentry.captureMessage("ad blocked - all tests failed", "error");
+            return true;
+        }
     }
 };
 
