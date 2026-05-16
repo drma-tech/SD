@@ -120,7 +120,12 @@
         </MudCardContent>
         <MudCardActions>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="@(() => OpenCheckout(AccountProduct.Premium))" Disabled="_processing">
-                <MudText>@Translations.Select</MudText>
+                <MudText Class="me-1">
+                    @Translations.Select
+                </MudText>
+                <MudChip T="string" Label="true" Style="height: auto; padding-inline: 6px;" Color="Color.Warning">
+                    @GetPrice(AccountProduct.Premium, Cycle) / @Cycle.GetDescription()
+                </MudChip>
             </MudButton>
         </MudCardActions>
     </MudCard>
