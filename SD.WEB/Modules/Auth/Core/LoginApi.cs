@@ -26,3 +26,29 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory
         }
     }
 }
+
+public class PublicLoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Anonymous, null)
+{
+    public async Task SendEmail(string? email, string? reference)
+    {
+        await PostAsync<AuthLogin>(Endpoint.SendEmail(email, reference), null);
+    }
+
+    public async Task<string?> StatusEmail(string? reference)
+    {
+        return await GetStringAsync(Endpoint.StatusEmail(reference));
+    }
+
+    private struct Endpoint
+    {
+        public static string SendEmail(string? email, string? reference)
+        {
+            return $"public/login/email?email={email}&reference={(reference ?? "error")}";
+        }
+
+        public static string StatusEmail(string? reference)
+        {
+            return $"public/login/status?reference={(reference ?? "error")}";
+        }
+    }
+}

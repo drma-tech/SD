@@ -1,9 +1,12 @@
 ﻿@page "/{culture}/login"
 
+@using SD.WEB.Modules.Auth.Core
 @using SD.WEB.Modules.Auth.Resources
 @using System.Text.RegularExpressions
 
 @inherits PageCore<LoginPage>
+
+@inject PublicLoginApi PublicLoginApi
 
 <HeadComponent Title="@Resources.Translations.SignInSignUp" Description="@Resources.Translations.SignInSignUp" Url=@($"/{Culture}/login") Index="false"></HeadComponent>
 
@@ -15,23 +18,23 @@
             </MudText>
 
             <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "google")" Content="@(Button.Recent)" Overlap="true">
-                <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Disabled="@(Platform == SD.Shared.Enums.Platform.ios || _processing)" FullWidth="true">
+                <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@IconsFA.Brands.Icon("google").Font" Disabled="@(Platform == SD.Shared.Enums.Platform.ios || _processingInProgress)" FullWidth="true">
                     <MudText>@Resources.Translations.ContinueWith.Format("Google")</MudText>
                 </MudButton>
             </MudBadge>
             <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "apple")" Content="@(Button.Recent)" Overlap="true">
-                <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font" Disabled="@_processing" FullWidth="true">
+                <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@IconsFA.Brands.Icon("apple").Font" Disabled="@_processingInProgress" FullWidth="true">
                     <MudText>@Resources.Translations.ContinueWith.Format("Apple")</MudText>
                 </MudButton>
             </MudBadge>
             <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "microsoft")" Content="@(Button.Recent)" Overlap="true">
-                <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font" Disabled="@_processing" FullWidth="true">
+                <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@IconsFA.Brands.Icon("microsoft").Font" Disabled="@_processingInProgress" FullWidth="true">
                     <MudText>@Resources.Translations.ContinueWith.Format("Microsoft")</MudText>
                 </MudButton>
             </MudBadge>
             <MudDivider Class="@Css.Build().Medium("my")"></MudDivider>
             <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "email")" Content="@(Button.Recent)" Overlap="true">
-                <MudTextField @bind-Value="@email" Label="@Resources.Translations.Email" Placeholder="@Resources.Translations.EnterEmail" Disabled="@(_processing || emailSent)" Immediate="true"
+                <MudTextField @bind-Value="@email" Label="@Resources.Translations.Email" Placeholder="@Resources.Translations.EnterEmail" Disabled="@(_processingInProgress || emailProbablySent)" Immediate="true"
                               Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="() => LoginWithEmail(email)"
                               HelperText="@Resources.Translations.MicrosoftEmails" Variant="Variant.Outlined"></MudTextField>
             </MudBadge>
@@ -41,7 +44,7 @@
                     @SuggestEmailCorrection(email)
                 </MudAlert>
             }
-            <MudTextField @ref="@txtOTP" @bind-Value="@otp" Label="@Resources.Translations.OTPCode" Placeholder="@Resources.Translations.EnterCode" Disabled="@(!emailSent)"
+            <MudTextField @ref="@txtOTP" @bind-Value="@otp" Label="@Resources.Translations.OTPCode" Placeholder="@Resources.Translations.EnterCode" Disabled="@(!emailProbablySent)"
                           Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Check" OnAdornmentClick="() => ConfirmCode(email, otp)"
                           HelperText="@Resources.Translations.EmailDelay" Variant="Variant.Outlined"></MudTextField>
         </MudStack>
@@ -50,7 +53,7 @@
                 @((MarkupString)string.Format(Translations.Terms1, $"<a href='/{Culture}/legal/terms' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Help.Resources.Translations.TermsUse}</a>", $"<a href='/{Culture}/legal/privacy' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Help.Resources.Translations.PrivacyPolicy}</a>"))
             </MudText>
         </div>
-        <MudOverlay Visible="_processing" DarkBackground="true" Absolute="true" Style="text-align: center;">
+        <MudOverlay Visible="_processingInProgress" DarkBackground="true" Absolute="true" Style="text-align: center;">
             <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
             <MudText Color="Color.Secondary">@GlobalTranslations.OperationProgress</MudText>
         </MudOverlay>
@@ -70,7 +73,7 @@
 
     private string? email;
     private string? otp;
-    private bool emailSent;
+    private bool emailProbablySent;
     private MudTextField<string>? txtOTP;
 
     private async Task LoginWithGoogle() => await SignIn("google");
@@ -79,7 +82,7 @@
     private async Task LoginWithEmail(string? email) => await SignIn("email", email);
 
     private SD.Shared.Enums.Platform? Platform { get; set; }
-    private bool _processing = false;
+    private bool _processingInProgress = false;
     private string? lastUsedProvider = null;
 
     protected override async Task ProcessPopupData()
@@ -91,10 +94,11 @@
     private async Task SignIn(string? provider = null, string? email = null)
     {
         var success = false;
+        var reference = Guid.NewGuid().ToString("N");
 
         try
         {
-            _processing = true;
+            _processingInProgress = true;
 
             await JsRuntime.Utils().SetStorage<AuthProvider>("auth", AuthProvider.Supabase);
             await JsRuntime.Utils().SetStorage("auth-last-used", provider);
@@ -104,11 +108,11 @@
                 if (!IsValidEmail(email ?? ""))
                 {
                     await ShowError(Resources.Translations.EnterEmail);
-                    _processing = false; StateHasChanged();
+                    _processingInProgress = false; StateHasChanged();
                     return;
                 }
 
-                await JsRuntime.Supabase().SendEmailAsync(email!);
+                await PublicLoginApi.SendEmail(email, reference);
                 success = true;
             }
             else
@@ -121,23 +125,51 @@
         catch (Exception ex)
         {
             await ProcessException(ex);
-            _processing = false; StateHasChanged();
+            _processingInProgress = false; StateHasChanged();
         }
         finally
         {
             if (success)
             {
-                await Task.Delay(provider == "email" ? 8000 : 15000);
-                if (provider == "email") emailSent = true;
+                await Task.Delay(provider == "email" ? 8000 : 20000);
+                if (provider == "email") emailProbablySent = true;
             }
 
-            _processing = false;
+            _processingInProgress = false;
             StateHasChanged();
 
             if (provider == "email" && success)
             {
                 await txtOTP!.FocusAsync();
+                _ = MonitorEmailStatus(reference);
             }
+        }
+    }
+
+    private async Task MonitorEmailStatus(string reference)
+    {
+        try
+        {
+            for (int i = 0; i < 12 && !_processingInProgress; i++)
+            {
+                var message = await PublicLoginApi.StatusEmail(reference);
+
+                if (message.NotEmpty())
+                {
+                    await ShowError(message);
+                    emailProbablySent = false;
+                    StateHasChanged();
+                    break;
+                }
+
+                if (_processingInProgress) break;
+
+                await Task.Delay(5000);
+            }
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
         }
     }
 
@@ -154,12 +186,12 @@
     {
         try
         {
-            _processing = true;
+            _processingInProgress = true;
 
             if (code.Empty())
             {
                 await ShowError(Resources.Translations.EnterCode);
-                _processing = false; StateHasChanged();
+                _processingInProgress = false; StateHasChanged();
                 return;
             }
 
@@ -170,12 +202,12 @@
         catch (Exception ex)
         {
             await ProcessException(ex);
-            _processing = false; StateHasChanged();
+            _processingInProgress = false; StateHasChanged();
         }
         finally
         {
             await Task.Delay(5000);
-            _processing = false;
+            _processingInProgress = false;
         }
     }
 

@@ -180,8 +180,6 @@ namespace SD.WEB.Core.Helper
             await InvokeVoid("authentication.signIn", providerName, returnUrl);
         }
 
-        public Task SendEmailAsync(string email) => InvokeVoid("authentication.sendEmail", email);
-
         public async Task ConfirmCode(string email, string code)
         {
             ApiCore.ResetCacheVersion();

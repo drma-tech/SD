@@ -1,4 +1,4 @@
-﻿namespace SD.Shared.Models;
+﻿namespace SD.Shared.Core.Models;
 
 public class Configurations
 {
@@ -7,6 +7,8 @@ public class Configurations
     public Stripe? Stripe { get; set; }
     public TMDB? TMDB { get; set; }
     public RapidAPI? RapidAPI { get; set; }
+    public SupabaseAuth? SupabaseAuth { get; set; }
+    public ZeptoMail? ZeptoMail { get; set; }
 }
 
 public class CosmosDB
@@ -59,4 +61,17 @@ public class TMDB
 public class RapidAPI
 {
     public string? Key { get; set; }
+}
+
+public class SupabaseAuth
+{
+    public string? Url { get; set; }
+    public string? Key { get; set; }
+    public string? ServiceKey { get; set; }
+}
+
+public class ZeptoMail
+{
+    public string? ApiKey { get; set; }
+    public string? SecrectWebhook { get; set; }
 }
