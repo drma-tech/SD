@@ -111,7 +111,7 @@ public class LoginFunction(CosmosRepository repo, IDistributedCache cache)
 
         var app = req.Headers.GetValues("app").FirstOrDefault();
 
-        if (app != "mm")
+        if (app != "sd")
         {
             return await req.CreateResponse(HttpStatusCode.NotAcceptable, $"webhook ignored -> app={app ?? "null"}");
         }
