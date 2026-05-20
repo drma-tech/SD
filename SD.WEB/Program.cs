@@ -6,7 +6,6 @@ using Microsoft.JSInterop;
 using MudBlazor.Services;
 using Polly;
 using Polly.Extensions.Http;
-using SD.Shared.Models.List.Tmdb;
 using SD.WEB.Core.Auth;
 using SD.WEB.Modules.Auth.Core;
 using SD.WEB.Modules.Collections.Core;

@@ -84,7 +84,7 @@ static void ConfigureServices(IServiceCollection services)
             .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
         services.AddHttpClient("tmdb", client => { client.Timeout = TimeSpan.FromSeconds(30); })
-            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20 })
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { MaxConnectionsPerServer = 20, AutomaticDecompression = DecompressionMethods.GZip })
             .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
         services.AddHttpClient("rapidapi")

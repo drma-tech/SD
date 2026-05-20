@@ -12,7 +12,7 @@ public class ExternalFunction(IHttpClientFactory factory)
     {
         var url = req.GetQueryParameters()["url"]?.ConvertFromBase64ToString() ?? throw new UnhandledException("url null");
 
-        var client = factory.CreateClient();
+        var client = factory.CreateClient("tmdb");
 
         using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 

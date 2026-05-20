@@ -281,6 +281,8 @@ export const environment = {
     },
     async isAdBlocked() {
         if (window.location.hostname === 'localhost') { return false; }
+        if (isBot) return false;
+        if (hideBlazorIndex) return false;
 
         //detect if adsense exists
         const els = document.querySelectorAll('.adsbygoogle');
