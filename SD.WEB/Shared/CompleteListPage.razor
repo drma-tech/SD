@@ -11,8 +11,6 @@
 @using SD.WEB.Modules.Collections.Interface
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Profile.Core
-@using Button = SD.WEB.Resources.Button
-@using SD.WEB.Modules.Subscription.Core
 @inherits PageCore<CompleteListPage>
 
 @inject WatchedListApi WatchedApi
@@ -23,8 +21,6 @@
 
 <HeadComponent Title="@Title" Description="@Description" Url="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")" Index="true" Shared="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Title="@Title" Description="@Description" UrlShare="@($"/{Navigation.ToBaseRelativePath(Navigation.Uri)}")"></PageSectionComponent>
-
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
 @if (MediaListApi != null)
 {

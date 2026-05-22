@@ -15,8 +15,6 @@
 <PageSectionComponent IsPageHeader="true" Title="@Translations.AwardsOfTheYear.Format(DateTime.Now.Year)" Subtitle="Main categories of the most popular awards" Description="@GlobalTranslations.AwardsYearDescription"
                 Icon="@IconsFA.Solid.Icon("trophy").Font" UrlShare="@($"/{Culture}/best-awards-year")"></PageSectionComponent>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
-
 <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.AwardsOfTheYear" Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"
                CommentsIsImage="true" Icon="@IconsFA.Solid.Icon("trophy").Font" FullPage="true" ShowHead="false" Description="@GlobalTranslations.AwardsYearDescription">
 </MediaListFull>

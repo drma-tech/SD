@@ -15,8 +15,6 @@
 <PageSectionComponent IsPageHeader="true" Title="@($"{Translations.EditorsChoiceTitle} ({MediaType.GetName()})")" Subtitle="Top-rated titles for all audiences" Description="@GlobalTranslations.CertifiedDescription"
                 Icon="@IconsFA.Solid.Icon("award").Font" UrlShare="@($"/{Culture}/editors-choice/{Type}")"></PageSectionComponent>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
-
 @if (MediaType == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish"

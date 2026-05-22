@@ -4,19 +4,33 @@
 @inject PaymentConfigurationApi ConfigurationApi
 @inject IpInfoApi IpInfoApi
 
-@if (!Printscreen && !ActiveSubscription && !IsLocalhost)
+@if (IgnoreRoutes.All(p => !Navigation.Uri.Contains(p)))
 {
-    <div style="text-align: center;" class="mb-1">
-        <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">Remove Advertising</MudLink>
-    </div>
-    <div id="@_containerId" @key="@_containerId" style="text-align: center;" class="@Css.Build().Large("mb")"></div>
+    if (IsLocalhost)
+    {
+        <div style="text-align: center;" class="my-1">
+            <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">Remove Advertising</MudLink>
+        </div>
+        <div style="@($"{(Format == AdFormat.Vertical ? "height: 600px; width: 300px;" : "height: 90px;")} text-align: center; align-content: center;")" class="@Css.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
+            Google AdSense
+        </div>
+    }
+    else if (!Printscreen && !ActiveSubscription)
+    {
+        <div style="text-align: center;" class="my-1">
+            <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">Remove Advertising</MudLink>
+        </div>
+        <div id="@_containerId" @key="@_containerId" style="text-align: center; align-content: center;" class="@Css.Build().Medium("mb")">
+        </div>
+    }
 }
 
 @code {
     [Parameter][SupplyParameterFromQuery(Name = "printscreen")] public bool Printscreen { get; set; } = false;
-    [Parameter][EditorRequired] public AdUnit Section { get; set; } = AdUnit.Index;
+    [Parameter][EditorRequired] public AdSlot Slot { get; set; } = AdSlot.DisplayResponsive;
+    [Parameter][EditorRequired] public AdFormat Format { get; set; } = AdFormat.Auto;
+    [Parameter] public string[] IgnoreRoutes { get; set; } = ["login", "legal"];
 
-    private bool IsMobile => AppStateStatic.BrowserWindowSize?.Width <= 600 || AppStateStatic.BrowserWindowSize?.Height <= 600;
     private bool IsLocalhost => Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("develop");
     private bool ActiveSubscription => AppStateStatic.Principal?.GetActiveSubscription() != null;
 
@@ -49,7 +63,7 @@
                 }
                 else
                 {
-                    await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", Section, _containerId);
+                    await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", Slot, _containerId, Format.ToString().ToLowerInvariant());
                     _ = DetectAdBlockAsync();
                 }
             }
@@ -78,15 +92,5 @@
     private async Task OpenSubscription()
     {
         await DialogService.SubscriptionPopup();
-    }
-
-    public enum AdUnit : long
-    {
-        Index = 4046112630,
-        Profile = 4650130753,
-        Platforms = 5359194302,
-        Search = 8540150517,
-        Media = 8348578821,
-        Trailer = 7394396242
     }
 }

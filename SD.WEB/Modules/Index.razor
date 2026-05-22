@@ -19,9 +19,8 @@
 @inject TmdbSearchKeywordApi TmdbSearchKeywordApi
 
 <HeadComponent Title="@SeoTranslations.AppIndexTitle" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}") Index="true" Shared="true"></HeadComponent>
-<PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@SeoTranslations.AppIndexTitle"></PageSectionComponent>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
+<PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@SeoTranslations.AppIndexTitle"></PageSectionComponent>
 
 <PageSectionComponent Title="@SeoTranslations.Search">
     <BodyFragment>
@@ -105,11 +104,15 @@
 
 <PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture"></PopularIndexComponent>
 
+<GoogleAdSense Slot="@AdSlot.DisplayResponsive" Format="@AdFormat.Auto"></GoogleAdSense>
+
 <FreeToWatchComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture"></FreeToWatchComponent>
 
 <EditorsChoiceComponent Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"></EditorsChoiceComponent>
 
 <AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"></AwardsOfTheYearComponent>
+
+<GoogleAdSense Slot="@AdSlot.DisplayResponsive" Format="@AdFormat.Auto"></GoogleAdSense>
 
 <PageSectionComponent Title="@Translations.ExpectedMovieOfYear.Format(DateTime.Now.Year)" Description="@(string.Format(GlobalTranslations.ExpectedMovies, 2026))">
     <BodyFragment>

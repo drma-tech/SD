@@ -9,8 +9,6 @@
 <HeadComponent Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Url=@($"/{Culture}/trailers") Index="true" Shared="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Icon="@IconsFA.Brands.Icon("youtube").Font" UrlShare="@($"/{Culture}/trailers")"></PageSectionComponent>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
-
 <RenderControl Actions="Actions">
     <div class="grid-relative-container-trailer">
         @foreach (var item in TrailerModel?.Data?.Items ?? [])

@@ -14,7 +14,6 @@
 @inject IpInfoApi IpInfoApi
 
 <HeadComponent Title="@Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription" Url=@($"/{Culture}/platforms/{Region}") Index="true"></HeadComponent>
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Platforms"></GoogleAdSense>
 
 <PageSectionComponent IsPageHeader="true" Title="@Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
     <ActionsFragment>
@@ -75,7 +74,7 @@
             </div>
         }
     </div>
-    <div style="text-align: center;" class="pt-3">
+    <div style="text-align: center;" class="@Css.Build().Small("pt").Large("mb")">
         <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ShowAll = true)"
                    Disabled="@(ShowAll || AllProviders == null || GetFilteredProviders(true).Count == GetFilteredProviders(false).Count)">
             @Button.LoadMore

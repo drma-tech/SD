@@ -26,7 +26,7 @@
 </RenderControl>
 @if (MediaListApi != null)
 {
-    <div style="text-align: center;" class="pt-3">
+    <div style="text-align: center;" class="@Css.Build().Small("pt").Large("mb")">
         <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Primary" OnClick="@LoadMore" Disabled="@DisableLoadMore" Variant="Variant.Filled">
             @Button.LoadMore
         </MudButton>

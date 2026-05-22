@@ -5,16 +5,13 @@
 <PageSectionComponent IsPageHeader="true" Title="@Title">
 </PageSectionComponent>
 
-<MudGrid Spacing="@Css.SpaceSmall">    
+<MudGrid Spacing="@Css.SpaceSmall" Justify="Justify.Center">
     <MudItem xs="12" md="8">
         <div style="position: relative; width: 100%; aspect-ratio: 16 / 9;">
             <iframe width="560" height="315" src="@($"https://www.youtube.com/embed/{Id}")" title="YouTube video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
-    </MudItem>
-    <MudItem xs="12" md="4">
-        <GoogleAdSense Section="@GoogleAdSense.AdUnit.Trailer"></GoogleAdSense>
     </MudItem>
 </MudGrid>
 

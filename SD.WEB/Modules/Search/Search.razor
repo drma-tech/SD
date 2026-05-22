@@ -13,8 +13,6 @@
 
 <HeadComponent Title="@SeoTranslations.Search" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}/search") Index="false"></HeadComponent>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Search"></GoogleAdSense>
-
 <PageSectionComponent Title="@SeoTranslations.Search" Icon="@IconsFA.Solid.Icon("magnifying-glass").Font">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" TabPanelsClass="@Css.Build().Small("pt")" @bind-ActivePanelIndex="@AppStateStatic.Index">

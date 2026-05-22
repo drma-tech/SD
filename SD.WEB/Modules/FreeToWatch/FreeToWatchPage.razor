@@ -12,8 +12,6 @@
                 Description="@Collections.Resources.Translations.FreeWatchDescriptionExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())"
                 Icon="@IconsFA.Solid.Icon("play-circle").Font" UrlShare="@($"/{Culture}/free/{Type}/{Region}")"></PageSectionComponent>
 
-<GoogleAdSense Section="@GoogleAdSense.AdUnit.Index"></GoogleAdSense>
-
 @if (TypeEnum == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbDiscoveryApi" Watched="WatchedList" Watching="WatchingList" Wish="WishList" OnlyYear="true" TypeSelected="MediaType.movie"
