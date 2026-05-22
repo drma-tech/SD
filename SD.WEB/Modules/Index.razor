@@ -104,7 +104,7 @@
 
 <PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture"></PopularIndexComponent>
 
-<GoogleAdSense Slot="@AdSlot.DisplayResponsive" Format="@AdFormat.Auto"></GoogleAdSense>
+<GoogleAdSense Slot="@AdSlot.DisplayResponsive"></GoogleAdSense>
 
 <FreeToWatchComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture"></FreeToWatchComponent>
 
@@ -112,7 +112,7 @@
 
 <AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"></AwardsOfTheYearComponent>
 
-<GoogleAdSense Slot="@AdSlot.DisplayResponsive" Format="@AdFormat.Auto"></GoogleAdSense>
+<GoogleAdSense Slot="@AdSlot.DisplayResponsive"></GoogleAdSense>
 
 <PageSectionComponent Title="@Translations.ExpectedMovieOfYear.Format(DateTime.Now.Year)" Description="@(string.Format(GlobalTranslations.ExpectedMovies, 2026))">
     <BodyFragment>
@@ -201,7 +201,7 @@
 
         var result = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++);
         AppStateStatic.Keywords = result.list;
-        
+
         DisableLoadMore = result.lastPage || AppStateStatic.Keywords.Count >= 100;
     }
 
