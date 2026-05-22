@@ -13,7 +13,7 @@
 
 <HeadComponent Title="@SeoTranslations.Search" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}/search") Index="false"></HeadComponent>
 
-<PageSectionComponent Title="@SeoTranslations.Search" Icon="@IconsFA.Solid.Icon("magnifying-glass").Font">
+<PageSectionComponent Title="@SeoTranslations.Search" Icon="@IconsFA.Solid.Icon("magnifying-glass").Font" CustomBodyClass="@Css.Build().Medium("mb")">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" TabPanelsClass="@Css.Build().Small("pt")" @bind-ActivePanelIndex="@AppStateStatic.Index">
             <ChildContent>
@@ -92,6 +92,8 @@
         </MudTabs>
     </BodyFragment>
 </PageSectionComponent>
+
+<GoogleAdSense Slot="@AdSlot.DisplayResponsive"></GoogleAdSense>
 
 <RenderControl Actions="Actions">
     @if (AppStateStatic.Index == 0)

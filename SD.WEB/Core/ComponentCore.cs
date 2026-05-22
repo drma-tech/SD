@@ -92,6 +92,8 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
 
     protected async Task ShowInfo(string message)
     {
+        if (!message.CanShowSnackbar()) return;
+
         Snackbar.Add(message, Severity.Info);
 
         await JsRuntime.Utils().PlayBeep(600, 120, "sine");
@@ -108,6 +110,8 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
 
     protected async Task ShowSuccess(string message)
     {
+        if (!message.CanShowSnackbar()) return;
+
         Snackbar.Add(message, Severity.Success);
 
         await JsRuntime.Utils().PlayBeep(880, 100, "sine");
@@ -116,6 +120,8 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
 
     protected async Task ShowWarning(string message)
     {
+        if (!message.CanShowSnackbar()) return;
+
         Snackbar.Add(message, Severity.Warning);
 
         await JsRuntime.Utils().PlayBeep(440, 200, "triangle");
@@ -124,6 +130,8 @@ public abstract class ComponentCore<T> : ComponentBase where T : class
 
     protected async Task ShowError(string message)
     {
+        if (!message.CanShowSnackbar()) return;
+
         Snackbar.Add(message, Severity.Error);
 
         await JsRuntime.Utils().PlayBeep(220, 400, "square");

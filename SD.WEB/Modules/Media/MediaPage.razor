@@ -82,6 +82,8 @@
             </BodyFragment>
         </PageSectionComponent>
 
+        <GoogleAdSense Slot="@AdSlot.DisplayResponsive"></GoogleAdSense>
+
         <PageSectionComponent Title="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
             <BodyFragment>
                 <div class="grid-relative-container-poster">
@@ -134,11 +136,13 @@
                 </div>
             </BodyFragment>
         </PageSectionComponent>
+
         <PageSectionComponent Title="@SeoTranslations.Keywords" Color="Color.Secondary">
             <BodyFragment>
                 <KeywordsComponent Culture="@Culture" TmdbId="@TmdbId" Type="@Type"></KeywordsComponent>
             </BodyFragment>
         </PageSectionComponent>
+
         <PageSectionComponent Title="Recommendations" Color="Color.Secondary">
             <BodyFragment>
                 <RenderControl Actions="RecommendationsActions" Context="ctx">
@@ -160,6 +164,7 @@
                 </RenderControl>
             </BodyFragment>
         </PageSectionComponent>
+
         <PageSectionComponent Title="Videos" Color="Color.Secondary" Visible="@(Media != null && Media.Videos.Any())">
             <BodyFragment>
                 @foreach (var group in Media?.Videos.GroupBy(g => g.type).Select(s => s.Key) ?? [])
@@ -185,12 +190,16 @@
                 }
             </BodyFragment>
         </PageSectionComponent>
+
+        <GoogleAdSense Slot="@AdSlot.DisplayResponsive"></GoogleAdSense>
+
         <PageSectionComponent Title="@Translations.TabCredits" Color="Color.Secondary">
             <BodyFragment>
                 <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture">
                 </CreditsComponent>
             </BodyFragment>
         </PageSectionComponent>
+        
         <PageSectionComponent Title="Reviews" Color="Color.Secondary">
             <BodyFragment>
                 @if (ImdbId.NotEmpty())
