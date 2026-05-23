@@ -104,7 +104,7 @@
 
 <PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture"></PopularIndexComponent>
 
-<GoogleAdSense Slot="@AdSlot.DisplayResponsive"></GoogleAdSense>
+<GoogleAdSense Slot="@AdSlot.SdMiddle"></GoogleAdSense>
 
 <FreeToWatchComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture"></FreeToWatchComponent>
 
@@ -112,7 +112,7 @@
 
 <AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"></AwardsOfTheYearComponent>
 
-<GoogleAdSense Slot="@AdSlot.DisplayResponsive"></GoogleAdSense>
+<GoogleAdSense Slot="@AdSlot.SdMiddle"></GoogleAdSense>
 
 <PageSectionComponent Title="@Translations.ExpectedMovieOfYear.Format(DateTime.Now.Year)" Description="@(string.Format(GlobalTranslations.ExpectedMovies, 2026))">
     <BodyFragment>

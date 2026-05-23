@@ -27,7 +27,7 @@
 
 @code {
     [Parameter][SupplyParameterFromQuery(Name = "printscreen")] public bool Printscreen { get; set; } = false;
-    [Parameter][EditorRequired] public AdSlot Slot { get; set; } = AdSlot.DisplayResponsive;
+    [Parameter][EditorRequired] public AdSlot Slot { get; set; }
     [Parameter] public AdFormat? Format { get; set; }
     [Parameter] public string[] IgnoreRoutes { get; set; } = ["login", "legal"];
 
