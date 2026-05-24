@@ -230,7 +230,7 @@
     private async Task Login()
     {
         _open = false;
-        Navigation.NavigateTo($"/{Culture}/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+        Navigation.NavigateTo($"/{Culture}/auth/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
     }
 
     private async Task Logout()

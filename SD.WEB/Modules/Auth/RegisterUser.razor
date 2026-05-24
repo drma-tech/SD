@@ -1,4 +1,4 @@
-﻿@page "/{culture}/register-user"
+﻿@page "/{culture}/auth/register-user"
 @inherits PageCore<RegisterUser>
 
 @using SD.WEB.Modules.Auth.Core
@@ -9,7 +9,7 @@
 @inject PrincipalApi PrincipalApi
 @inject IpInfoApi IpInfoApi
 
-<HeadComponent Title="Register User" Description="Register User" Url=@($"/{Culture}/register-user") Index="false"></HeadComponent>
+<HeadComponent Title="Register User" Description="Register User" Url=@($"/{Culture}/auth/register-user") Index="false"></HeadComponent>
 
 @if (AppStateStatic.IsAuthenticated)
 {
