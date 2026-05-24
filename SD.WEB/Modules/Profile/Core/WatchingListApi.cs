@@ -1,37 +1,37 @@
 ﻿namespace SD.WEB.Modules.Profile.Core;
 
-public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingList>(factory, ApiType.Authenticated, "watchinglist")
+public class WatchingListApi(IHttpClientFactory factory) : ApiCosmos<WatchingList>(factory, ApiType.Authenticated, "watchinglist", ApiContext.Default.WatchingList)
 {
-    public async Task<WatchingList?> Get(bool isUserAuthenticated)
+    public async Task<WatchingList?> Get(bool isUserAuthenticated, CancellationToken cancellationToken)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, false, cancellationToken);
 
         return new WatchingList();
     }
 
-    public async Task<WatchingList?> Add(MediaType? mediaType, WatchingList? obj, WatchingListItem? item, AccountProduct? product)
+    public async Task<WatchingList?> Add(MediaType? mediaType, WatchingList? obj, WatchingListItem? item, AccountProduct? product, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(item);
         SubscriptionHelper.ValidateWatching(product, (obj?.Items(mediaType).Count ?? 0) + 1);
 
-        return await PostAsync(Endpoint.Add(mediaType), item);
+        return await PostAsync(Endpoint.Add(mediaType), item, ApiContext.Default.WatchingListItem, cancellationToken);
     }
 
-    public async Task<WatchingList?> Remove(MediaType? mediaType, string? collectionId, string? tmdbId = "null")
+    public async Task<WatchingList?> Remove(MediaType? mediaType, string? collectionId, string? tmdbId = "null", CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(collectionId);
 
-        return await PostAsync<WatchingList>(Endpoint.Remove(mediaType, collectionId, tmdbId ?? "null"), null);
+        return await PostAsync(Endpoint.Remove(mediaType, collectionId, tmdbId ?? "null"), null, ApiContext.Default.WatchingList, cancellationToken);
     }
 
-    public async Task<WatchingList?> Sync(MediaType? mediaType, WatchingList? obj)
+    public async Task<WatchingList?> Sync(MediaType? mediaType, WatchingList? obj, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(obj);
 
-        return await PostAsync<WatchingList>(Endpoint.Sync(mediaType), obj);
+        return await PostAsync(Endpoint.Sync(mediaType), obj, ApiContext.Default.WatchingList, cancellationToken);
     }
 
     private struct Endpoint

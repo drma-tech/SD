@@ -289,15 +289,15 @@
 
     protected override async Task ProcessInitialData()
     {
-        AllProviders = await AllProvidersApi.GetAll();
+        AllProviders = await AllProvidersApi.GetAll(cts.Token);
     }
 
     protected override async Task ProcessComponentData()
     {
         await Actions.StartLoading.Invoke(null);
-        Providers = await TmdbApi.GetWatchProvidersList(TmdbId, Type);
+        Providers = await TmdbApi.GetWatchProvidersList(TmdbId, Type, cts.Token);
         await Actions.FinishLoading.Invoke(Providers);
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
     }
 
     private async Task Update()
@@ -390,7 +390,7 @@
 
         if (AllProviders != null)
         {
-            await JsRuntime.Utils().SetStorage("AllProviders", AllProviders);
+            await JsRuntime.Utils().SetStorage("AllProviders", AllProviders, JavascriptContext.Default.AllProviders, cts.Token);
         }
     }
 

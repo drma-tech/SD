@@ -53,11 +53,11 @@
         {
             if (Type == MediaType.movie)
             {
-                Model = await CacheMetaCriticApi.GetMovieReviews(ImdbId, EnglishTitle, ReleaseDate);
+                Model = await CacheMetaCriticApi.GetMovieReviews(ImdbId, EnglishTitle, ReleaseDate, cts.Token);
             }
             else
             {
-                Model = await CacheMetaCriticApi.GetShowReviews(ImdbId, EnglishTitle, ReleaseDate);
+                Model = await CacheMetaCriticApi.GetShowReviews(ImdbId, EnglishTitle, ReleaseDate, cts.Token);
             }
         }
 

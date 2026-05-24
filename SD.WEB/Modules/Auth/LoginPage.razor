@@ -87,8 +87,8 @@
 
     protected override async Task ProcessPopupData()
     {
-        Platform = await AppStateStatic.GetPlatform(JsRuntime);
-        lastUsedProvider = await JsRuntime.Utils().GetStorage<string>("auth-last-used");
+        Platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
+        lastUsedProvider = await JsRuntime.Utils().GetStorage("auth-last-used", JavascriptContext.Default.String, cts.Token);
     }
 
     private async Task SignIn(string? provider = null, string? email = null)
@@ -100,8 +100,8 @@
         {
             _processingInProgress = true;
 
-            await JsRuntime.Utils().SetStorage<AuthProvider>("auth", AuthProvider.Supabase);
-            await JsRuntime.Utils().SetStorage("auth-last-used", provider);
+            await JsRuntime.Utils().SetStorage<AuthProvider>("auth", AuthProvider.Supabase, JavascriptContext.Default.AuthProvider, cts.Token);
+            await JsRuntime.Utils().SetStorage("auth-last-used", provider, JavascriptContext.Default.String, cts.Token);
 
             if (provider == "email")
             {
@@ -112,13 +112,13 @@
                     return;
                 }
 
-                await PublicLoginApi.SendEmail(email, reference);
+                await PublicLoginApi.SendEmail(email, reference, cts.Token);
                 success = true;
             }
             else
             {
                 if (provider == "microsoft") provider = "azure";
-                await JsRuntime.Supabase().SignInAsync(provider!, ReturnUrl);
+                await JsRuntime.Supabase().SignInAsync(provider!, ReturnUrl, cts.Token);
                 success = true;
             }
         }
@@ -152,7 +152,7 @@
         {
             for (int i = 0; i < 12 && !_processingInProgress; i++)
             {
-                var message = await PublicLoginApi.StatusEmail(reference);
+                var message = await PublicLoginApi.StatusEmail(reference, cts.Token);
 
                 if (message.NotEmpty())
                 {
@@ -162,9 +162,9 @@
                     break;
                 }
 
-                if (_processingInProgress) break;
+                if (_processingInProgress || cts.IsCancellationRequested) break;
 
-                await Task.Delay(5000);
+                await Task.Delay(5000, cts.Token);
             }
         }
         catch (Exception ex)
@@ -195,7 +195,7 @@
                 return;
             }
 
-            await JsRuntime.Supabase().ConfirmCode(email!, code!);
+            await JsRuntime.Supabase().ConfirmCode(email!, code!, cts.Token);
 
             Navigation.NavigateTo($"/{Culture}");
         }

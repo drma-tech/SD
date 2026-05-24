@@ -55,11 +55,11 @@
         var parameters = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", (await AppStateStatic.GetContentLanguage(JsRuntime)).GetName(false) ?? "en-US" }
+            { "language", (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US" }
         };
 
         await Actions.StartLoading.Invoke(null);
-        Season = await TmdbApi.GetSeason(TmdbId, SeasonNumber, parameters);
+        Season = await TmdbApi.GetSeason(TmdbId, SeasonNumber, parameters, cts.Token);
         await Actions.FinishLoading.Invoke(Season);
     }
 

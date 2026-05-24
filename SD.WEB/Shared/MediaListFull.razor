@@ -95,7 +95,7 @@
     {
         if (MediaListApi != null)
         {
-            var result = await MediaListApi.GetList([], TypeSelected, StringParameters, List);
+            var result = await MediaListApi.GetList([], TypeSelected, StringParameters, List, 1, cts.Token);
             // await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazy-load css class)
 
             Items = result.list;
@@ -103,7 +103,7 @@
 
             if (Items.Count < 30) //force reload, if the filters bring few records
             {
-                var result2 = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++_currentPage);
+                var result2 = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++_currentPage, cts.Token);
                 foreach (var item in result2.list)
                 {
                     Items.Add(item);
@@ -124,7 +124,7 @@
 
         if (IsImdb) //for now, only tv series (imdb) need this kind of workaround
         {
-            tmdbId = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id);
+            tmdbId = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id, cts.Token);
         }
         else
         {
@@ -139,7 +139,7 @@
 
         if (media?.MediaType == MediaType.person)
         {
-            var result = await TmdbCreditApi.GetListByPerson(tmdbId);
+            var result = await TmdbCreditApi.GetListByPerson(tmdbId, cts.Token);
             var items = new HashSet<MediaDetail>();
 
             foreach (var item in result?.crew ?? Enumerable.Empty<CrewByPerson>())
@@ -198,7 +198,7 @@
     {
         if (MediaListApi != null)
         {
-            var result = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++_currentPage);
+            var result = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++_currentPage, cts.Token);
             Items = result.list;
             DisableLoadMore = result.lastPage || Items.Count >= 250;
 

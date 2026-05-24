@@ -27,9 +27,9 @@
     {
         await Actions.StartLoading.Invoke(null);
         if (Type == MediaType.movie)
-            List = await TmdbSearchKeywordApi.GetMovieKeywords(TmdbId);
+            List = await TmdbSearchKeywordApi.GetMovieKeywords(TmdbId, cts.Token);
         else
-            List = await TmdbSearchKeywordApi.GetSerieKeywords(TmdbId);
+            List = await TmdbSearchKeywordApi.GetSerieKeywords(TmdbId, cts.Token);
         await Actions.FinishLoading.Invoke(List);
     }
 }

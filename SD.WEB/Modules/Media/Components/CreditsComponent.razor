@@ -105,7 +105,7 @@
     protected override async Task ProcessComponentData()
     {
         await Actions.StartLoading.Invoke(null);
-        Credits = await TmdbCreditApi.GetList(Type, TmdbId);
+        Credits = await TmdbCreditApi.GetList(Type, TmdbId, cts.Token);
         await Actions.FinishLoading.Invoke(Credits);
     }
 
@@ -113,7 +113,7 @@
     {
         try
         {
-            var result = await TmdbCreditApi.GetListByPerson(crew.id.ToString());
+            var result = await TmdbCreditApi.GetListByPerson(crew.id.ToString(), cts.Token);
             var items = new HashSet<MediaDetail>();
 
             foreach (var item in result?.crew.Where(w => w.job == crew.job) ?? [])
@@ -144,7 +144,7 @@
     {
         try
         {
-            var result = await TmdbCreditApi.GetListByPerson(cast.id.ToString());
+            var result = await TmdbCreditApi.GetListByPerson(cast.id.ToString(), cts.Token);
             var items = new HashSet<MediaDetail>();
 
             foreach (var item in result?.cast ?? [])

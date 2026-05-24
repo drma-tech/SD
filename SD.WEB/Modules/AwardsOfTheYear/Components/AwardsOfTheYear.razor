@@ -37,9 +37,9 @@
     {
         if (AppStateStatic.IsAuthenticated)
         {
-            Watched ??= await WatchedApi.Get(true);
-            Watching ??= await WatchingApi.Get(true);
-            Wish ??= await WishApi.Get(true);
+            Watched ??= await WatchedApi.Get(true, cts.Token);
+            Watching ??= await WatchingApi.Get(true, cts.Token);
+            Wish ??= await WishApi.Get(true, cts.Token);
         }
         else
         {

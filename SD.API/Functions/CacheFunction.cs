@@ -10,7 +10,6 @@ using SD.Shared.Models.Reviews;
 using SD.Shared.Models.Trailers;
 using System.Globalization;
 using System.Text.Json;
-using Item = SD.Shared.Models.News.Item;
 
 namespace SD.API.Functions;
 
@@ -42,7 +41,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                 foreach (var item in nodes.Take(mode == "compact" ? 10 : 30) ?? [])
                 {
                     if (item == null) continue;
-                    compactModels.Items.Add(new Item(item.id,
+                    compactModels.Items.Add(new NewsModelItem(item.id,
                         item.articleTitle?.plainText,
                         item.image?.url?.Replace("@._V1_.jpg", "@._V1_UY500_.jpg"), //force height to 500px
                         item.externalUrl,
@@ -81,8 +80,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                 foreach (var item in obj?.contents?.Take(mode == "compact" ? 12 : 100).Select(s => s.video) ?? [])
                 {
                     if (item == null) continue;
-                    compactModels.Items.Add(
-                        new Shared.Models.Trailers.Item(item.videoId, item.title,
+                    compactModels.Items.Add(new TrailerModelItem(item.videoId, item.title,
                         mode == "compact" ? item.thumbnails[1].url : item.thumbnails[2].url, item.publishedTimeText, item.publishedTimeText.ParseRelativeDate()));
                 }
 
@@ -315,7 +313,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
 
                 foreach (var node in obj.data?.title?.metacritic?.reviews?.edges.Select(s => s.node) ?? [])
                 {
-                    newModel.Items.Add(new Shared.Models.Reviews.Item(node?.site, node?.url,
+                    newModel.Items.Add(new ReviewModelItem(node?.site, node?.url,
                         node?.reviewer, node?.score, node?.quote?.value));
                 }
 
@@ -357,7 +355,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
 
                 foreach (var item in obj.items)
                 {
-                    newModel.Items.Add(new Shared.Models.Reviews.Item(item.publicationName, item.url, item.author, item.score, item.quote));
+                    newModel.Items.Add(new ReviewModelItem(item.publicationName, item.url, item.author, item.score, item.quote));
                 }
 
                 ttl = CalculateTtl(releaseDate);

@@ -4,17 +4,16 @@ using System.Globalization;
 
 namespace SD.WEB.Modules.Collections.Core;
 
-public class ImdbPopularApi(IHttpClientFactory factory)
-    : ApiCosmos<CacheDocument<MostPopularData>>(factory, ApiType.Anonymous, null), IMediaListApi
+public class ImdbPopularApi(IHttpClientFactory factory) : ApiCosmos<CacheDocument<MostPopularData>>(factory, ApiType.Anonymous, null, ApiContext.Default.CacheDocumentMostPopularData), IMediaListApi
 {
     public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList,
-        MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
+        MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
         var listMedia = new HashSet<MediaDetail>();
 
         if (type == MediaType.movie)
         {
-            var result = await GetAsync("public/cache/imdb-popular-movies".ConfigureParameters(stringParameters));
+            var result = await GetAsync("public/cache/imdb-popular-movies".ConfigureParameters(stringParameters), false, cancellationToken);
 
             //if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(GlobalTranslations.UnavailableService);
 
@@ -41,7 +40,7 @@ public class ImdbPopularApi(IHttpClientFactory factory)
         }
         else if (type == MediaType.tv)
         {
-            var result = await GetAsync("public/cache/imdb-popular-tv".ConfigureParameters(stringParameters));
+            var result = await GetAsync("public/cache/imdb-popular-tv".ConfigureParameters(stringParameters), false, cancellationToken);
 
             //if (!string.IsNullOrEmpty(result?.Data?.ErrorMessage)) throw new NotificationException(GlobalTranslations.UnavailableService);
 

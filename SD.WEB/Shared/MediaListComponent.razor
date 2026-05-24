@@ -155,8 +155,8 @@ else
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.Swiper().InitLists(_swiperId);
-            await JsRuntime.Swiper().InitLists(_swiperId2);
+            await JsRuntime.Swiper().InitLists(_swiperId, cts.Token);
+            await JsRuntime.Swiper().InitLists(_swiperId2, cts.Token);
         }
         catch (Exception ex)
         {
@@ -182,12 +182,12 @@ else
 
             if (MediaListApi != null)
             {
-                var result = await MediaListApi.GetList([], type, StringParameters, List);
+                var result = await MediaListApi.GetList([], type, StringParameters, List, 1, cts.Token);
                 Items = result.list;
 
                 if (Items.Count < 10) //force reload, if the filters bring few records
                 {
-                    var result2 = await MediaListApi.GetList(Items, type, StringParameters, List, 2);
+                    var result2 = await MediaListApi.GetList(Items, type, StringParameters, List, 2, cts.Token);
                     foreach (var item in result2.list)
                     {
                         Items.Add(item);
@@ -230,7 +230,7 @@ else
             if (IsImdb)
             {
                 //for now, only tv series (imdb) need this kind of workaround (tmdb api only work with imdb id from movies - this info is not documented)
-                tmdbId = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id);
+                tmdbId = await ExternalIdApi.GetTmdbId(media?.MediaType, media?.tmdb_id, cts.Token);
             }
             else
             {
@@ -245,7 +245,7 @@ else
 
             if (media?.MediaType == MediaType.person)
             {
-                var result = await TmdbCreditApi.GetListByPerson(tmdbId);
+                var result = await TmdbCreditApi.GetListByPerson(tmdbId, cts.Token);
                 var items = new HashSet<MediaDetail>();
 
                 foreach (var item in result?.crew ?? Enumerable.Empty<CrewByPerson>())

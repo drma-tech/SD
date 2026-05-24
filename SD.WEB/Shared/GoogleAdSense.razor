@@ -52,7 +52,7 @@
         {
             if (firstRender && !IsLocalhost && !ActiveSubscription)
             {
-                var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
+                var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
 
                 if (country == "CN")
                 {
@@ -65,7 +65,7 @@
                 else
                 {
                     var format = Format != null ? Format.ToString()!.ToLower() : (IsMobile ? AdFormat.Auto.ToString().ToLower() : AdFormat.Horizontal.ToString().ToLower());
-                    await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", Slot, _containerId, format);
+                    await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", Slot, _containerId, format, cts.Token);
                     _ = DetectAdBlockAsync();
                 }
             }
@@ -80,7 +80,7 @@
 
     private async Task DetectAdBlockAsync()
     {
-        var blocked = await JsRuntime.Utils().IsAdBlocked();
+        var blocked = await JsRuntime.Utils().IsAdBlocked(cts.Token);
 
         if (blocked)
         {

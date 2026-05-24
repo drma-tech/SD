@@ -142,12 +142,12 @@
     {
         if (AppStateStatic.IsAuthenticated)
         {
-            var subscriptionPopup = await JsRuntime.Utils().GetStorage<bool>("subscription-popup");
+            var subscriptionPopup = await JsRuntime.Utils().GetStorage("subscription-popup", JavascriptContext.Default.Boolean, cts.Token);
 
             if (!subscriptionPopup)
             {
                 await DialogService.SubscriptionPopup();
-                await JsRuntime.Utils().SetStorage<bool>("subscription-popup", true);
+                await JsRuntime.Utils().SetStorage("subscription-popup", true, JavascriptContext.Default.Boolean, cts.Token);
             }
         }
 
@@ -156,7 +156,7 @@
 
     protected override async Task ProcessPageData()
     {
-        Reviewed = await JsRuntime.Utils().GetStorage<bool>("reviewed");
+        Reviewed = await JsRuntime.Utils().GetStorage("reviewed", JavascriptContext.Default.Boolean, cts.Token);
     }
 
     protected override async Task LoadAuthDataAsync()
@@ -168,9 +168,9 @@
 
         if (AppStateStatic.IsAuthenticated)
         {
-            Watched ??= await WatchedApi.Get(true);
-            Watching ??= await WatchingApi.Get(true);
-            Wish ??= await WishApi.Get(true);
+            Watched ??= await WatchedApi.Get(true, cts.Token);
+            Watching ??= await WatchingApi.Get(true, cts.Token);
+            Wish ??= await WishApi.Get(true, cts.Token);
         }
         else
         {
@@ -184,7 +184,7 @@
         await WatchingActionsMovie.FinishLoading.Invoke(Watching);
         await WatchingActionsTv.FinishLoading.Invoke(Watching);
 
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
     }
 
     // private async Task SetReviewed()

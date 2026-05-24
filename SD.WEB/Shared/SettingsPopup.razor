@@ -71,17 +71,17 @@
 
     protected override async Task ProcessInitialData()
     {
-        Language = await AppStateStatic.GetAppLanguage(JsRuntime);
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
-        ContentLanguage = await AppStateStatic.GetContentLanguage(JsRuntime);
-        DarkMode = await AppStateStatic.GetDarkMode(JsRuntime) ?? false;
+        Language = await AppStateStatic.GetAppLanguage(JsRuntime, cts.Token);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
+        ContentLanguage = await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token);
+        DarkMode = await AppStateStatic.GetDarkMode(JsRuntime, cts.Token) ?? false;
     }
 
     protected async Task AppLanguageValueChanged(AppLanguage value)
     {
         Language = value;
 
-        await JsRuntime.Utils().SetStorage("app-language", value);
+        await JsRuntime.Utils().SetStorage("app-language", value, JavascriptContext.Default.AppLanguage, cts.Token);
 
         if (value == AppLanguage.en)
         {
@@ -119,7 +119,7 @@
     {
         DarkMode = value;
 
-        await JsRuntime.Utils().SetStorage("dark-mode", value);
+        await JsRuntime.Utils().SetStorage("dark-mode", value, JavascriptContext.Default.Boolean, cts.Token);
 
         AppStateStatic.ChangeDarkMode(value);
     }
@@ -128,7 +128,7 @@
     {
         Region = value;
 
-        await JsRuntime.Utils().SetStorage("region", value.GetName(false));
+        await JsRuntime.Utils().SetStorage("region", value.GetName(false), JavascriptContext.Default.String, cts.Token);
 
         AppStateStatic.ChangeRegion(value);
     }
@@ -137,7 +137,7 @@
     {
         ContentLanguage = value;
 
-        await JsRuntime.Utils().SetStorage("content-language", value);
+        await JsRuntime.Utils().SetStorage("content-language", value, JavascriptContext.Default.ContentLanguage, cts.Token);
 
         AppStateStatic.ChangeContentLanguage(value);
     }

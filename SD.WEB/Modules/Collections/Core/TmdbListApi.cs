@@ -3,21 +3,21 @@ using SD.WEB.Modules.Collections.Interface;
 
 namespace SD.WEB.Modules.Collections.Core;
 
-public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(factory, ApiType.Anonymous, null), IMediaListApi
+public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(factory, ApiType.Anonymous, null, ApiContext.Default.CustomListNew), IMediaListApi
 {
     public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList,
-        MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
+        MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
         if (list == null) throw new ArgumentException(null, nameof(list));
 
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", (await AppStateStatic.GetContentLanguage()).GetName(false) ?? "en-US" },
+            { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetName(false) ?? "en-US" },
             { "page", page.ToString() }
         };
 
-        var result = await GetAsync<CustomListNew>($"public/tmdb?url=" + $"{TmdbOptions.BaseUriNew}list/{((int)list).ToString().ConfigureParameters(parameter)}".ConvertFromStringToBase64());
+        var result = await GetAsync<CustomListNew>($"public/tmdb?url=" + $"{TmdbOptions.BaseUriNew}list/{((int)list).ToString().ConfigureParameters(parameter)}".ConvertFromStringToBase64(), false, cancellationToken);
 
         if (result != null)
         {

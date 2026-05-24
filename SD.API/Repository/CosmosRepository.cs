@@ -29,8 +29,7 @@ public class CosmosRepository
 
         try
         {
-            var response = await Container.ReadItemAsync<T>($"{type}:{id}", new PartitionKey($"{type}:{id}"),
-                CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+            var response = await Container.ReadItemAsync<T>($"{type}:{id}", new PartitionKey($"{type}:{id}"), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
             if (response.RequestCharge > 2)
                 _logger.LogWarning("Get - ID {Id}, RequestCharge {Charges}", id, response.RequestCharge);
@@ -155,8 +154,7 @@ public class CosmosRepository
 
         try
         {
-            var response = await Container.PatchItemAsync<T>($"{type}:{id}", new PartitionKey($"{type}:{id}"),
-                operations, CosmosRepositoryExtensions.GetPatchItemRequestOptions(), cancellationToken);
+            var response = await Container.PatchItemAsync<T>($"{type}:{id}", new PartitionKey($"{type}:{id}"), operations, CosmosRepositoryExtensions.GetPatchItemRequestOptions(), cancellationToken);
 
             if (response.RequestCharge > 20)
                 _logger.LogWarning("PatchItem - ID {Id}, RequestCharge {Charges}", id, response.RequestCharge);
@@ -174,8 +172,7 @@ public class CosmosRepository
     {
         try
         {
-            var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Id),
-                CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+            var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey(item.Id), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
 
             if (response.RequestCharge > 20)
                 _logger.LogWarning("Delete - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);

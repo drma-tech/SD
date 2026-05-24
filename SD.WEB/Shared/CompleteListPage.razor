@@ -72,9 +72,9 @@
     {
         if (AppStateStatic.IsAuthenticated)
         {
-            Watched ??= await WatchedApi.Get(true);
-            Watching ??= await WatchingApi.Get(true);
-            Wish ??= await WishApi.Get(true);
+            Watched ??= await WatchedApi.Get(true, cts.Token);
+            Watching ??= await WatchingApi.Get(true, cts.Token);
+            Wish ??= await WishApi.Get(true, cts.Token);
         }
         else
         {
@@ -88,7 +88,7 @@
     {
         if (Navigation.Uri.Contains("platform"))
         {
-            var providers = await AllProvidersApi.GetAll();
+            var providers = await AllProvidersApi.GetAll(cts.Token);
             var provider = providers?.Items.SingleOrDefault(s => s.id == id);
 
             if (Navigation.Uri.Contains("popular"))

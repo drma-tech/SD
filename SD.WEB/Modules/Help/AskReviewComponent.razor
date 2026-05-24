@@ -207,7 +207,7 @@ else //webapp
     {
         await base.OnInitializedAsync();
 
-        CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime);
+        CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
     }
 
     protected override async Task ProcessComponentData()
@@ -231,6 +231,6 @@ else //webapp
 
     private async Task Reviewed()
     {
-        await JsRuntime.Utils().SetStorage("store-reviewed", true);
+        await JsRuntime.Utils().SetStorage("store-reviewed", true, JavascriptContext.Default.Boolean, cts.Token);
     }
 }

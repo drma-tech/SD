@@ -41,7 +41,7 @@
     protected override async Task ProcessInitialData()
     {
         await Actions.StartLoading.Invoke(null);
-        TrailerModel = await CacheYoutubeApi.GetTrailers("full");
+        TrailerModel = await CacheYoutubeApi.GetTrailers("full", cts.Token);
         await Actions.FinishLoading.Invoke(TrailerModel);
     }
 

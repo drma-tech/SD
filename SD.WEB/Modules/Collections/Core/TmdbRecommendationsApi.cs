@@ -4,17 +4,17 @@ namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(factory)
 {
-    public async Task<HashSet<MediaDetail>> GetList(MediaType? type, string? tmdbId)
+    public async Task<HashSet<MediaDetail>> GetList(MediaType? type, string? tmdbId, CancellationToken cancellationToken)
     {
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", (await AppStateStatic.GetContentLanguage()).GetName(false) ?? "en-US" }
+            { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetName(false) ?? "en-US" }
         };
 
         if (type == MediaType.movie)
         {
-            var result = await GetAsync<MoviePopular>(TmdbOptions.BaseUri + $"movie/{tmdbId}/recommendations".ConfigureParameters(parameter));
+            var result = await GetAsync<MoviePopular>(TmdbOptions.BaseUri + $"movie/{tmdbId}/recommendations".ConfigureParameters(parameter), false, cancellationToken);
 
             var currentList = new HashSet<MediaDetail>();
 
@@ -41,7 +41,7 @@ public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(fa
         }
         else //if (type == MediaType.tv)
         {
-            var result = await GetAsync<TVPopular>(TmdbOptions.BaseUri + $"tv/{tmdbId}/recommendations".ConfigureParameters(parameter));
+            var result = await GetAsync<TVPopular>(TmdbOptions.BaseUri + $"tv/{tmdbId}/recommendations".ConfigureParameters(parameter), false, cancellationToken);
 
             var currentList = new HashSet<MediaDetail>();
 

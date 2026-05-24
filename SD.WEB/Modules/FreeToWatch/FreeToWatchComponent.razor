@@ -58,7 +58,7 @@
 
     protected override async Task ProcessComponentData()
     {
-        Region ??= await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
+        Region ??= await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
         _extraParameters = await GetExtraParameters();
         _loaded[0] = true;
     }

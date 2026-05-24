@@ -103,7 +103,7 @@
                 AppStateStatic.Principal.Events.Add(new Event(AppInfo.Title, "Terms of use accepted.", null));
             }
 
-            AppStateStatic.Principal = await PrincipalApi.Add(AppStateStatic.Principal);
+            AppStateStatic.Principal = await PrincipalApi.Add(AppStateStatic.Principal, cts.Token);
 
             if (AppStateStatic.Principal == null) throw new InvalidOperationException("Failed to create principal.");
 
@@ -117,15 +117,15 @@
 
     private async Task RegisterLogin()
     {
-        var platform = await AppStateStatic.GetPlatform(JsRuntime);
-        var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime);
+        var platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
+        var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
 
-        await LoginApi.Add(platform, country);
+        await LoginApi.Add(platform, country, cts.Token);
 
         if (AppStateStatic.Principal!.AuthProviders.Empty() || !AppStateStatic.Principal!.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
         {
             AppStateStatic.Principal.AuthProviders = AppStateStatic.Principal.AuthProviders.Union([AppStateStatic.User!.FindFirst("idp")!.Value]).ToArray();
-            await PrincipalApi.Update(AppStateStatic.Principal);
+            await PrincipalApi.Update(AppStateStatic.Principal, cts.Token);
         }
 
         Navigation.NavigateTo($"/{Culture}/profile");
@@ -133,7 +133,7 @@
 
     private async Task Logout()
     {
-        await JsRuntime.Supabase().SignOutAsync();
+        await JsRuntime.Supabase().SignOutAsync(cts.Token);
 
         Navigation.NavigateTo($"/{Culture}");
 

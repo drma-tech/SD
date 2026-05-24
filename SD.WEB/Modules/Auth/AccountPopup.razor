@@ -58,11 +58,11 @@
 
     protected override async Task ProcessPopupData()
     {
-        Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated, true);
+        Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated, true, cts.Token);
     }
 
     private async Task Logout()
     {
-        await JsRuntime.Supabase().SignOutAsync();
+        await JsRuntime.Supabase().SignOutAsync(cts.Token);
     }
 }

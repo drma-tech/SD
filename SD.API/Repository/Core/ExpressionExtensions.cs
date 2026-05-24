@@ -8,8 +8,7 @@ namespace SD.API.Repository.Core;
 /// </summary>
 internal static class ExpressionExtensions
 {
-    internal static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second,
-        Func<Expression, Expression, Expression> merge)
+    internal static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
     {
         IDictionary<ParameterExpression, ParameterExpression> map = first.Parameters
             .Select((parameter, index) => (parameter, second: second.Parameters[index]))
@@ -20,20 +19,17 @@ internal static class ExpressionExtensions
         return Expression.Lambda<T>(merge(first.Body, secondBody), first.Parameters);
     }
 
-    internal static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> first,
-        Expression<Func<T, bool>> second)
+    internal static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
     {
         return first.Compose(second, Expression.AndAlso);
     }
 
-    internal static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first,
-        Expression<Func<T, bool>> second)
+    internal static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
     {
         return first.Compose(second, Expression.And);
     }
 
-    internal static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first,
-        Expression<Func<T, bool>> second)
+    internal static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
     {
         return first.Compose(second, Expression.Or);
     }

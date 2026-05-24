@@ -41,6 +41,6 @@
 
     protected override async Task ProcessPopupData()
     {
-        CustomerPortalUrl = await PaymentAuthApi.StripePortalLink();
+        CustomerPortalUrl = await PaymentAuthApi.StripePortalLink(cts.Token);
     }
 }

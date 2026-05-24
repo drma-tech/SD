@@ -1,27 +1,27 @@
 ﻿namespace SD.WEB.Modules.Profile.Core;
 
-public class MySuggestionsApi(IHttpClientFactory factory) : ApiCosmos<MySuggestions>(factory, ApiType.Authenticated, "my-suggestions")
+public class MySuggestionsApi(IHttpClientFactory factory) : ApiCosmos<MySuggestions>(factory, ApiType.Authenticated, "my-suggestions", ApiContext.Default.MySuggestions)
 {
-    public async Task<MySuggestions?> Get(AccountProduct? product, bool isUserAuthenticated)
+    public async Task<MySuggestions?> Get(AccountProduct? product, bool isUserAuthenticated, CancellationToken cancellationToken)
     {
         if (product is null or AccountProduct.Basic) return new MySuggestions();
 
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, true, cancellationToken);
 
         return new MySuggestions();
     }
 
-    public async Task<MySuggestions?> Sync(MediaType? mediaType, MySuggestions obj)
+    public async Task<MySuggestions?> Sync(MediaType? mediaType, MySuggestions obj, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(obj);
 
-        return await PostAsync(Endpoint.Sync(mediaType), obj);
+        return await PostAsync(Endpoint.Sync(mediaType), obj, cancellationToken);
     }
 
-    public async Task<MySuggestions?> Add(MySuggestions obj)
+    public async Task<MySuggestions?> Add(MySuggestions obj, CancellationToken cancellationToken)
     {
-        return await PostAsync(Endpoint.Add, obj);
+        return await PostAsync(Endpoint.Add, obj, cancellationToken);
     }
 
     private struct Endpoint

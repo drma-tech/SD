@@ -38,44 +38,44 @@ public struct Endpoint
     }
 }
 
-public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<NewsModel>>(http, ApiType.Anonymous, null)
+public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<NewsModel>>(http, ApiType.Anonymous, null, ApiContext.Default.CacheDocumentNewsModel)
 {
-    public async Task<CacheDocument<NewsModel>?> GetNews(string mode, string category)
+    public async Task<CacheDocument<NewsModel>?> GetNews(string mode, string category, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.News(mode, category));
+        return await GetAsync(Endpoint.News(mode, category), false, cancellationToken);
     }
 }
 
-public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<TrailerModel>>(http, ApiType.Anonymous, null)
+public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<TrailerModel>>(http, ApiType.Anonymous, null, ApiContext.Default.CacheDocumentTrailerModel)
 {
-    public async Task<CacheDocument<TrailerModel>?> GetTrailers(string mode)
+    public async Task<CacheDocument<TrailerModel>?> GetTrailers(string mode, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.Trailers(mode));
+        return await GetAsync(Endpoint.Trailers(mode), false, cancellationToken);
     }
 }
 
-public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<Ratings>>(http, ApiType.Anonymous, null)
+public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<Ratings>>(http, ApiType.Anonymous, null, ApiContext.Default.CacheDocumentRatings)
 {
-    public async Task<CacheDocument<Ratings>?> GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating)
+    public async Task<CacheDocument<Ratings>?> GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetMovieRatings(id, tmdbId, title, releaseDate, tmdbRating));
+        return await GetAsync(Endpoint.GetMovieRatings(id, tmdbId, title, releaseDate, tmdbRating), false, cancellationToken);
     }
 
-    public async Task<CacheDocument<Ratings>?> GetShowRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating)
+    public async Task<CacheDocument<Ratings>?> GetShowRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetShowRatings(id, tmdbId, title, releaseDate, tmdbRating));
+        return await GetAsync(Endpoint.GetShowRatings(id, tmdbId, title, releaseDate, tmdbRating), false, cancellationToken);
     }
 }
 
-public class CacheMetaCriticApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<ReviewModel>>(http, ApiType.Anonymous, null)
+public class CacheMetaCriticApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<ReviewModel>>(http, ApiType.Anonymous, null, ApiContext.Default.CacheDocumentReviewModel)
 {
-    public async Task<CacheDocument<ReviewModel>?> GetMovieReviews(string? id, string? title, DateTime? releaseDate)
+    public async Task<CacheDocument<ReviewModel>?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate));
+        return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate), false, cancellationToken);
     }
 
-    public async Task<CacheDocument<ReviewModel>?> GetShowReviews(string? id, string? title, DateTime? releaseDate)
+    public async Task<CacheDocument<ReviewModel>?> GetShowReviews(string? id, string? title, DateTime? releaseDate, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetShowReviews(id, title, releaseDate));
+        return await GetAsync(Endpoint.GetShowReviews(id, title, releaseDate), false, cancellationToken);
     }
 }

@@ -7,7 +7,7 @@ namespace SD.WEB.Modules.Collections.Core;
 public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
 {
     public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList,
-        MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1)
+        MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
         if (stringParameters != null)
         {
@@ -33,8 +33,8 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
-            { "language", (await AppStateStatic.GetContentLanguage()).GetName(false) ?? "en-US" },
-            { "watch_region", region?.ToUpper() ?? (await AppStateStatic.GetRegion()).ToString().ToUpper() },
+            { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetName(false) ?? "en-US" },
+            { "watch_region", region?.ToUpper() ?? (await AppStateStatic.GetRegion(null, null, cancellationToken)).ToString().ToUpper() },
             { "include_adult", "false" },
             { "include_video", "false" },
             { "page", page.ToString() }
@@ -49,8 +49,8 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
 
         if (type == null)
         {
-            var movies = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter));
-            var shows = await GetAsync<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter));
+            var movies = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), false, cancellationToken);
+            var shows = await GetAsync<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), false, cancellationToken);
 
             var listOrder = new List<Order>();
 
@@ -109,7 +109,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
 
         if (type == MediaType.movie)
         {
-            var result = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter));
+            var result = await GetAsync<MovieDiscover>(TmdbOptions.BaseUri + "discover/movie".ConfigureParameters(parameter), false, cancellationToken);
 
             foreach (var item in result?.results ?? [])
                 //if (string.IsNullOrEmpty(item.poster_path)) continue; //ignore empty poster
@@ -133,7 +133,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
         }
         else //if (type == MediaType.tv)
         {
-            var result = await GetAsync<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter));
+            var result = await GetAsync<TvDiscover>(TmdbOptions.BaseUri + "discover/tv".ConfigureParameters(parameter), false, cancellationToken);
 
             foreach (var item in result?.results ?? [])
             {

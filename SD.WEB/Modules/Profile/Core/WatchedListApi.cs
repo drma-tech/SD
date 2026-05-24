@@ -1,29 +1,29 @@
 ﻿namespace SD.WEB.Modules.Profile.Core;
 
-public class WatchedListApi(IHttpClientFactory factory) : ApiCosmos<WatchedList>(factory, ApiType.Authenticated, "watchedlist")
+public class WatchedListApi(IHttpClientFactory factory) : ApiCosmos<WatchedList>(factory, ApiType.Authenticated, "watchedlist", ApiContext.Default.WatchedList)
 {
-    public async Task<WatchedList?> Get(bool isUserAuthenticated)
+    public async Task<WatchedList?> Get(bool isUserAuthenticated, CancellationToken cancellationToken)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, false, cancellationToken);
 
         return new WatchedList();
     }
 
-    public async Task<WatchedList?> Add(MediaType? mediaType, WatchedList? obj, string? tmdbId, AccountProduct? product)
+    public async Task<WatchedList?> Add(MediaType? mediaType, WatchedList? obj, string? tmdbId, AccountProduct? product, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(tmdbId);
         SubscriptionHelper.ValidateWatched(product, (obj?.Items(mediaType).Count ?? 0) + 1);
 
-        return await PostAsync<WatchedList>(Endpoint.Add(mediaType, tmdbId), null);
+        return await PostAsync(Endpoint.Add(mediaType, tmdbId), null, ApiContext.Default.WatchedList, cancellationToken);
     }
 
-    public async Task<WatchedList?> Remove(MediaType? mediaType, string? tmdbId)
+    public async Task<WatchedList?> Remove(MediaType? mediaType, string? tmdbId, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(mediaType);
         ArgumentNullException.ThrowIfNull(tmdbId);
 
-        return await PostAsync<WatchedList>(Endpoint.Remove(mediaType, tmdbId), null);
+        return await PostAsync(Endpoint.Remove(mediaType, tmdbId), null, ApiContext.Default.WatchedList, cancellationToken);
     }
 
     private struct Endpoint

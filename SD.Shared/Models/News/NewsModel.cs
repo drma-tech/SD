@@ -2,16 +2,16 @@
 
 public class NewsModel
 {
-    public List<Item> Items { get; set; } = [];
+    public List<NewsModelItem> Items { get; set; } = [];
 }
 
-public class Item
+public class NewsModelItem
 {
-    public Item()
+    public NewsModelItem()
     {
     }
 
-    public Item(string? id, string? title, string? url_img, string? link, DateTime? date)
+    public NewsModelItem(string? id, string? title, string? url_img, string? link, DateTime? date)
     {
         this.id = id;
         this.title = title;

@@ -64,11 +64,11 @@ public static class AppStateStatic
 
     #endregion Search
 
-    public static async Task<string> GetAppVersion(IJSRuntime js)
+    public static async Task<string> GetAppVersion(IJSRuntime js, CancellationToken cancellationToken)
     {
         try
         {
-            var vs = await js.Utils().GetAppVersion();
+            var vs = await js.Utils().GetAppVersion(cancellationToken);
 
             return vs?.ReplaceLineEndings("").Trim() ?? "version-error";
         }
@@ -88,9 +88,9 @@ public static class AppStateStatic
         return _platform;
     }
 
-    public static async Task<Platform> GetPlatform(IJSRuntime js)
+    public static async Task<Platform> GetPlatform(IJSRuntime js, CancellationToken cancellationToken)
     {
-        await _platformSemaphore.WaitAsync();
+        await _platformSemaphore.WaitAsync(cancellationToken);
         try
         {
             if (_platform.HasValue)
@@ -98,7 +98,7 @@ public static class AppStateStatic
                 return _platform.Value;
             }
 
-            var cache = await js.Utils().GetStorage<Platform?>("platform");
+            var cache = await js.Utils().GetStorage("platform", JavascriptContext.Default.NullablePlatform, cancellationToken);
 
             if (cache.HasValue)
             {
@@ -107,7 +107,7 @@ public static class AppStateStatic
             else
             {
                 _platform = Platform.webapp;
-                await js.Utils().SetStorage("platform", _platform);
+                await js.Utils().SetStorage("platform", _platform, JavascriptContext.Default.NullablePlatform, cancellationToken);
             }
 
             return _platform.Value;
@@ -125,9 +125,9 @@ public static class AppStateStatic
     private static AppLanguage? _appLanguage;
     private static readonly SemaphoreSlim _appLanguageSemaphore = new(1, 1);
 
-    public static async Task<AppLanguage> GetAppLanguage(IJSRuntime js)
+    public static async Task<AppLanguage> GetAppLanguage(IJSRuntime js, CancellationToken cancellationToken)
     {
-        await _appLanguageSemaphore.WaitAsync();
+        await _appLanguageSemaphore.WaitAsync(cancellationToken);
         try
         {
             if (_appLanguage.HasValue)
@@ -135,7 +135,7 @@ public static class AppStateStatic
                 return _appLanguage.Value;
             }
 
-            var cache = await js.Utils().GetStorage<AppLanguage?>("app-language");
+            var cache = await js.Utils().GetStorage("app-language", JavascriptContext.Default.NullableAppLanguage, cancellationToken);
 
             if (cache.HasValue)
             {
@@ -147,7 +147,7 @@ public static class AppStateStatic
                 code = code[..2].ToLowerInvariant();
 
                 _appLanguage = ConvertAppLanguage(code, AppLanguage.en);
-                await js.Utils().SetStorage("app-language", _appLanguage);
+                await js.Utils().SetStorage("app-language", _appLanguage, JavascriptContext.Default.NullableAppLanguage, cancellationToken);
             }
 
             return _appLanguage.Value;
@@ -195,9 +195,9 @@ public static class AppStateStatic
     private static bool? _darkMode;
     private static readonly SemaphoreSlim _darkModeSemaphore = new(1, 1);
 
-    public static async Task<bool?> GetDarkMode(IJSRuntime js)
+    public static async Task<bool?> GetDarkMode(IJSRuntime js, CancellationToken cancellationToken)
     {
-        await _darkModeSemaphore.WaitAsync();
+        await _darkModeSemaphore.WaitAsync(cancellationToken);
         try
         {
             if (_darkMode.HasValue)
@@ -205,7 +205,7 @@ public static class AppStateStatic
                 return _darkMode.Value;
             }
 
-            _darkMode = await js.Utils().GetStorage<bool?>("dark-mode");
+            _darkMode = await js.Utils().GetStorage("dark-mode", JavascriptContext.Default.NullableBoolean, cancellationToken);
 
             return _darkMode;
         }
@@ -237,9 +237,9 @@ public static class AppStateStatic
         return _country;
     }
 
-    public static async Task<string?> GetCountry(IpInfoApi api, IJSRuntime js)
+    public static async Task<string?> GetCountry(IpInfoApi api, IJSRuntime js, CancellationToken cancellationToken)
     {
-        await _countrySemaphore.WaitAsync();
+        await _countrySemaphore.WaitAsync(cancellationToken);
         try
         {
             if (_country.NotEmpty())
@@ -247,7 +247,7 @@ public static class AppStateStatic
                 return _country;
             }
 
-            var cache = await js.Utils().GetStorage<string>("country");
+            var cache = await js.Utils().GetStorage("country", JavascriptContext.Default.String, cancellationToken);
 
             if (cache.NotEmpty())
             {
@@ -255,10 +255,10 @@ public static class AppStateStatic
             }
             else
             {
-                _country = (await api.GetCountry())?.Trim();
+                _country = (await api.GetCountry(cancellationToken))?.Trim();
 
                 if (_country.NotEmpty())
-                    await js.Utils().SetStorage("country", _country);
+                    await js.Utils().SetStorage("country", _country, JavascriptContext.Default.String, cancellationToken);
             }
 
             return _country;
@@ -278,9 +278,9 @@ public static class AppStateStatic
 
     public static Action<Region>? RegionChanged { get; set; }
 
-    public static async Task<Region> GetRegion(IpInfoApi? api = null, IJSRuntime? js = null)
+    public static async Task<Region> GetRegion(IpInfoApi? api = null, IJSRuntime? js = null, CancellationToken cancellationToken = default)
     {
-        await _regionSemaphore.WaitAsync();
+        await _regionSemaphore.WaitAsync(cancellationToken);
         try
         {
             if (_region.HasValue)
@@ -288,7 +288,7 @@ public static class AppStateStatic
                 return _region.Value;
             }
 
-            var cache = js != null ? await js.Utils().GetStorage<string>("region") : null;
+            var cache = js != null ? await js.Utils().GetStorage("region", JavascriptContext.Default.String, cancellationToken) : null;
 
             if (cache.NotEmpty())
             {
@@ -297,15 +297,15 @@ public static class AppStateStatic
                 if (_region == null)
                 {
                     _region = Region.US;
-                    if (js != null) await js.Utils().SetStorage("region", _region);
+                    if (js != null) await js.Utils().SetStorage("region", _region, JavascriptContext.Default.NullableRegion, cancellationToken);
                 }
             }
             else
             {
-                var code = api != null && js != null ? await GetCountry(api, js) : null;
+                var code = api != null && js != null ? await GetCountry(api, js, cancellationToken) : null;
 
                 _region = ConvertRegion(code) ?? Region.US;
-                if (js != null) await js.Utils().SetStorage("region", _region);
+                if (js != null) await js.Utils().SetStorage("region", _region, JavascriptContext.Default.NullableRegion, cancellationToken);
             }
 
             return _region.Value;
@@ -339,9 +339,9 @@ public static class AppStateStatic
     public static ContentLanguage? _contentLanguage;
     private static readonly SemaphoreSlim _contentLanguageSemaphore = new(1, 1);
 
-    public static async Task<ContentLanguage> GetContentLanguage(IJSRuntime? js = null)
+    public static async Task<ContentLanguage> GetContentLanguage(IJSRuntime? js = null, CancellationToken cancellationToken = default)
     {
-        await _contentLanguageSemaphore.WaitAsync();
+        await _contentLanguageSemaphore.WaitAsync(cancellationToken);
         try
         {
             if (_contentLanguage.HasValue)
@@ -349,7 +349,7 @@ public static class AppStateStatic
                 return _contentLanguage.Value;
             }
 
-            var cache = js != null ? await js.Utils().GetStorage<ContentLanguage?>("content-language") : null;
+            var cache = js != null ? await js.Utils().GetStorage("content-language", JavascriptContext.Default.NullableContentLanguage, cancellationToken) : null;
 
             if (cache.HasValue)
             {
@@ -361,7 +361,7 @@ public static class AppStateStatic
                 code = code.Replace("-", "");
 
                 _contentLanguage = ConvertContentLanguage(code) ?? ContentLanguage.enUS;
-                if (js != null) await js.Utils().SetStorage("content-language", _contentLanguage);
+                if (js != null) await js.Utils().SetStorage("content-language", _contentLanguage, JavascriptContext.Default.NullableContentLanguage, cancellationToken);
             }
 
             return _contentLanguage.Value;

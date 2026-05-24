@@ -186,8 +186,8 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.Swiper().InitLists(_swiperId);
-            await JsRuntime.Swiper().InitLists(_swiperId2);
+            await JsRuntime.Swiper().InitLists(_swiperId, cts.Token);
+            await JsRuntime.Swiper().InitLists(_swiperId2, cts.Token);
         }
         catch (Exception ex)
         {
@@ -214,7 +214,8 @@
     {
         try
         {
-            var watching = await WatchingApi.Get(AppStateStatic.IsAuthenticated); //get a new one (memory may be compromised/corrupted)
+            var watching = await WatchingApi.Get(AppStateStatic.IsAuthenticated, cts.Token); //get a new one (memory may be compromised/corrupted)
+            var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US";
 
             if (type == MediaType.movie)
             {
@@ -227,7 +228,7 @@
                 {
                     try
                     {
-                        var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.movie);
+                        var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.movie, lang, cts.Token);
                         var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
                         if (hasCollection && watching!.DeletedMovies.All(a => a != media.collectionId.ToString()))
@@ -253,7 +254,7 @@
                     {
                         if (ex.Message.Contains("The resource you requested could not be found"))
                         {
-                            Watched = await WatchedApi.Remove(MediaType.movie, tmdbId);
+                            Watched = await WatchedApi.Remove(MediaType.movie, tmdbId, cts.Token);
                         }
                         else
                         {
@@ -262,7 +263,7 @@
                     }
                 }
 
-                watching = await WatchingApi.Sync(MediaType.movie, watching);
+                watching = await WatchingApi.Sync(MediaType.movie, watching, cts.Token);
 
                 Updating = false;
                 StateHasChanged();
@@ -279,7 +280,7 @@
                 {
                     try
                     {
-                        var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.tv);
+                        var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.tv, lang, cts.Token);
                         var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
                         if (hasCollection && watching!.DeletedShows.All(a => a != media.tmdb_id))
@@ -305,7 +306,7 @@
                     {
                         if (ex.Message.Contains("The resource you requested could not be found"))
                         {
-                            Watched = await WatchedApi.Remove(MediaType.tv, tmdbId);
+                            Watched = await WatchedApi.Remove(MediaType.tv, tmdbId, cts.Token);
                         }
                         else
                         {
@@ -314,7 +315,7 @@
                     }
                 }
 
-                watching = await WatchingApi.Sync(MediaType.tv, watching);
+                watching = await WatchingApi.Sync(MediaType.tv, watching, cts.Token);
 
                 Updating = false;
                 StateHasChanged();

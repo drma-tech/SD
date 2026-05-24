@@ -59,15 +59,15 @@ var js = app.Services.GetRequiredService<IJSRuntime>();
 
 await ConfigureCulture(nav, js);
 
-AppStateStatic.Version = await AppStateStatic.GetAppVersion(js);
-AppStateStatic.BrowserName = await js.Utils().GetBrowserName();
-AppStateStatic.BrowserVersion = await js.Utils().GetBrowserVersion();
-AppStateStatic.OperatingSystem = await js.Utils().GetOperatingSystem();
+AppStateStatic.Version = await AppStateStatic.GetAppVersion(js, CancellationToken.None);
+AppStateStatic.BrowserName = await js.Utils().GetBrowserName(CancellationToken.None);
+AppStateStatic.BrowserVersion = await js.Utils().GetBrowserVersion(CancellationToken.None);
+AppStateStatic.OperatingSystem = await js.Utils().GetOperatingSystem(CancellationToken.None);
 
-await js.Utils().SetStorage("app-version", AppStateStatic.Version);
-_ = await AppStateStatic.GetPlatform(js);
-await js.Services().InitGoogleAnalytics(AppStateStatic.Version);
-await js.Services().InitUserBack(AppStateStatic.Version);
+await js.Utils().SetStorage("app-version", AppStateStatic.Version, JavascriptContext.Default.String, CancellationToken.None);
+_ = await AppStateStatic.GetPlatform(js, CancellationToken.None);
+await js.Services().InitGoogleAnalytics(AppStateStatic.Version, CancellationToken.None);
+await js.Services().InitUserBack(AppStateStatic.Version, CancellationToken.None);
 
 await app.RunAsync();
 
@@ -180,7 +180,7 @@ static async Task ConfigureCulture(NavigationManager? nav, IJSRuntime js)
 
     //content language
 
-    _ = await AppStateStatic.GetContentLanguage(js); //force read previously saved
+    _ = await AppStateStatic.GetContentLanguage(js, CancellationToken.None); //force read previously saved
 }
 
 //https://github.com/App-vNext/Polly/wiki/Polly-and-HttpClientFactory

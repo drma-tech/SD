@@ -24,7 +24,7 @@
     {
         try
         {
-            await JsRuntime.Utils().SetStorage("consent", true);
+            await JsRuntime.Utils().SetStorage("consent", true, JavascriptContext.Default.Boolean, cts.Token);
             Navigation.NavigateTo($"/{Culture}", true);
         }
         catch (Exception ex)

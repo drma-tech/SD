@@ -4,6 +4,8 @@
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Subscription.Core
 
+@implements IDisposable
+
 @inject WatchingListApi WatchingApi
 @inject PaymentPublicApi PaymentPublicApi
 @inject PrincipalApi PrincipalApi
@@ -164,6 +166,7 @@
     private bool MovieSync => (Watching?.CanSync(MediaType.movie) ?? false) && (Watching?.Items(MediaType.movie).Any() ?? false);
     private bool ShowSync => (Watching?.CanSync(MediaType.tv) ?? false) && (Watching?.Items(MediaType.tv).Any() ?? false);
     private readonly TaskHelper _taskHelper = new();
+    protected readonly CancellationTokenSource cts = new();
 
     protected override void OnInitialized()
     {
@@ -197,7 +200,7 @@
         {
             if (stripe_session_id.NotEmpty())
             {
-                var success = await PaymentPublicApi.StripeValidateSession(stripe_session_id);
+                var success = await PaymentPublicApi.StripeValidateSession(stripe_session_id, cts.Token);
 
                 if (success)
                 {
@@ -219,7 +222,7 @@
     {
         try
         {
-            Watching = await WatchingApi.Get(AppStateStatic.IsAuthenticated);
+            Watching = await WatchingApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
         }
         catch (Exception ex)
         {
@@ -235,7 +238,7 @@
 
     private async Task Logout()
     {
-        await JsRuntime.Supabase().SignOutAsync();
+        await JsRuntime.Supabase().SignOutAsync(cts.Token);
     }
 
     private async Task OpenConfigurations()
@@ -277,16 +280,22 @@
     {
         Snackbar.Add(message, Severity.Success);
 
-        await JsRuntime.Utils().PlayBeep(880, 100, "sine");
-        await JsRuntime.Utils().Vibrate([40]);
+        await JsRuntime.Utils().PlayBeep(880, 100, "sine", cts.Token);
+        await JsRuntime.Utils().Vibrate([40], cts.Token);
     }
 
     protected async Task ShowError(string message)
     {
         Snackbar.Add(message, Severity.Error);
 
-        await JsRuntime.Utils().PlayBeep(220, 400, "square");
-        await JsRuntime.Utils().Vibrate([200, 100, 200]);
+        await JsRuntime.Utils().PlayBeep(220, 400, "square", cts.Token);
+        await JsRuntime.Utils().Vibrate([200, 100, 200], cts.Token);
     }
 
+    void IDisposable.Dispose()
+    {
+        cts.Cancel();
+        cts.Dispose();
+        GC.SuppressFinalize(this);
+    }
 }

@@ -2,39 +2,39 @@
 
 namespace SD.WEB.Modules.Auth.Core;
 
-public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>(factory, ApiType.Authenticated, "principal")
+public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>(factory, ApiType.Authenticated, "principal", ApiContext.Default.AuthPrincipal)
 {
-    public async Task<AuthPrincipal?> Get(bool isUserAuthenticated, bool setNewVersion = false)
+    public async Task<AuthPrincipal?> Get(bool isUserAuthenticated, bool setNewVersion = false, CancellationToken cancellationToken = default)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, setNewVersion);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, setNewVersion, cancellationToken);
 
         return null;
     }
 
-    public async Task<AuthPrincipal?> Add(AuthPrincipal? obj)
+    public async Task<AuthPrincipal?> Add(AuthPrincipal? obj, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(obj);
 
-        return await PostAsync(Endpoint.Add, obj);
+        return await PostAsync(Endpoint.Add, obj, cancellationToken);
     }
 
-    public async Task<AuthPrincipal?> Update(AuthPrincipal? obj)
+    public async Task<AuthPrincipal?> Update(AuthPrincipal? obj, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(obj);
 
-        return await PutAsync(Endpoint.Update, obj);
+        return await PutAsync(Endpoint.Update, obj, ApiContext.Default.AuthPrincipal, cancellationToken);
     }
 
-    public async Task Event(string app, string msg)
+    public async Task Event(string app, string msg, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(msg);
 
-        await PutAsync<AuthPrincipal>(Endpoint.Event(app, msg), null);
+        await PutAsync(Endpoint.Event(app, msg), null, ApiContext.Default.AuthPrincipal, cancellationToken);
     }
 
-    public async Task Remove()
+    public async Task Remove(CancellationToken cancellationToken)
     {
-        await DeleteAsync(Endpoint.Remove);
+        await DeleteAsync(Endpoint.Remove, cancellationToken);
     }
 
     private struct Endpoint
@@ -48,16 +48,16 @@ public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>
     }
 }
 
-public class PrincipalImportApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>(factory, ApiType.Anonymous, "principal_import")
+public class PrincipalImportApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>(factory, ApiType.Anonymous, "principal_import", ApiContext.Default.AuthPrincipal)
 {
-    public async Task<HashSet<AuthPrincipal>> GetAll()
+    public async Task<HashSet<AuthPrincipal>> GetAll(CancellationToken cancellationToken)
     {
-        return await GetListAsync(Endpoint.GetAll);
+        return await GetListAsync(Endpoint.GetAll, cancellationToken);
     }
 
-    public async Task Migrate(string? oldId, string? newId)
+    public async Task Migrate(string? oldId, string? newId, CancellationToken cancellationToken)
     {
-        await PutAsync<AuthPrincipal>(Endpoint.Migrate(oldId, newId), null);
+        await PutAsync(Endpoint.Migrate(oldId, newId), null, ApiContext.Default.AuthPrincipal, cancellationToken);
     }
 
     private struct Endpoint

@@ -128,8 +128,8 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.Swiper().InitNews(_gallerySwiperId1);
-            await JsRuntime.Swiper().InitNews(_gallerySwiperId2);
+            await JsRuntime.Swiper().InitNews(_gallerySwiperId1, cts.Token);
+            await JsRuntime.Swiper().InitNews(_gallerySwiperId2, cts.Token);
         }
         catch (Exception ex)
         {
@@ -142,13 +142,13 @@
         if (_activeIndex == 0)
         {
             await ActionsMovie.StartLoading.Invoke(null);
-            NewsMovie ??= await CacheFlixsterApi.GetNews("compact", "movie");
+            NewsMovie ??= await CacheFlixsterApi.GetNews("compact", "movie", cts.Token);
             await ActionsMovie.FinishLoading.Invoke(NewsMovie);
         }
         else
         {
             await ActionsSerie.StartLoading.Invoke(null);
-            NewsSerie ??= await CacheFlixsterApi.GetNews("compact", "tv");
+            NewsSerie ??= await CacheFlixsterApi.GetNews("compact", "tv", cts.Token);
             await ActionsSerie.FinishLoading.Invoke(NewsSerie);
         }
     }

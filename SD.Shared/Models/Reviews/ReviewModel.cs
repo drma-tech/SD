@@ -2,16 +2,16 @@
 
 public class ReviewModel
 {
-    public List<Item> Items { get; set; } = [];
+    public List<ReviewModelItem> Items { get; set; } = [];
 }
 
-public class Item
+public class ReviewModelItem
 {
-    public Item()
+    public ReviewModelItem()
     {
     }
 
-    public Item(string? reviewSite, string? reviewUrl, string? reviewer, int? score, string? quote)
+    public ReviewModelItem(string? reviewSite, string? reviewUrl, string? reviewer, int? score, string? quote)
     {
         this.reviewSite = reviewSite;
         this.reviewUrl = reviewUrl;

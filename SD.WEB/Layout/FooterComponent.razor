@@ -2,6 +2,8 @@
 @inject NavigationManager Navigation
 @inject IJSRuntime JsRuntime
 
+@implements IDisposable
+
 @if (AppStateStatic.Breakpoint == Breakpoint.Sm) //mobile
 {
     //todo: smaller footer
@@ -132,6 +134,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
     private static readonly Random rnd = new Random();
     private bool _blockedActions => Navigation.Uri.Contains("register-user") || Navigation.Uri.Contains("ask-consent");
     private Platform? CurrentPlatform;
+    protected readonly CancellationTokenSource cts = new();
 
     protected override void OnInitialized()
     {
@@ -143,7 +146,14 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other devices
     {
         if (firstRender)
         {
-            CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime);
+            CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
         }
+    }
+
+    void IDisposable.Dispose()
+    {
+        cts.Cancel();
+        cts.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

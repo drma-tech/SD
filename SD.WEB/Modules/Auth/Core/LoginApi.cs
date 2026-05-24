@@ -2,18 +2,18 @@
 
 namespace SD.WEB.Modules.Auth.Core;
 
-public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Authenticated, null)
+public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Authenticated, null, ApiContext.Default.AuthLogin)
 {
-    public async Task<AuthLogin?> Get(bool isUserAuthenticated)
+    public async Task<AuthLogin?> Get(bool isUserAuthenticated, CancellationToken cancellationToken)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get);
+        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, true, cancellationToken);
 
         return null;
     }
 
-    public async Task Add(SD.Shared.Enums.Platform platform, string? country)
+    public async Task Add(SD.Shared.Enums.Platform platform, string? country, CancellationToken cancellationToken)
     {
-        await PostAsync<AuthLogin>(Endpoint.Add(platform.ToString(), country), null);
+        await PostAsync(Endpoint.Add(platform.ToString(), country), null, ApiContext.Default.AuthLogin, cancellationToken);
     }
 
     private struct Endpoint
@@ -27,16 +27,16 @@ public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory
     }
 }
 
-public class PublicLoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Anonymous, null)
+public class PublicLoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Anonymous, null, ApiContext.Default.AuthLogin)
 {
-    public async Task SendEmail(string? email, string? reference)
+    public async Task SendEmail(string? email, string? reference, CancellationToken cancellationToken)
     {
-        await PostAsync<AuthLogin>(Endpoint.SendEmail(email, reference), null);
+        await PostAsync(Endpoint.SendEmail(email, reference), null, ApiContext.Default.AuthLogin, cancellationToken);
     }
 
-    public async Task<string?> StatusEmail(string? reference)
+    public async Task<string?> StatusEmail(string? reference, CancellationToken cancellationToken)
     {
-        return await GetStringAsync(Endpoint.StatusEmail(reference));
+        return await GetStringAsync(Endpoint.StatusEmail(reference), cancellationToken);
     }
 
     private struct Endpoint

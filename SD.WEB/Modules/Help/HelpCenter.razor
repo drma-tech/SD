@@ -50,7 +50,7 @@
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Utils().ShowCache(); })">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@(async () => { await JsRuntime.Utils().ShowCache(cts.Token); })">
                     <MudIcon Class="me-2" Icon="@IconsFA.Solid.Icon("database").Font"></MudIcon>
                     @Button.ShowCache
                 </MudButton>
@@ -175,7 +175,7 @@
 
     protected override async Task ProcessPopupData()
     {
-        Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated, true);
+        Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated, true, cts.Token);
     }
 
     private async Task DownloadData()
@@ -188,16 +188,16 @@
 
             var sub = Principal.GetActiveSubscription();
 
-            data.Login = await LoginApi.Get(AppStateStatic.IsAuthenticated);
-            data.Providers = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
+            data.Login = await LoginApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
+            data.Providers = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
             if (sub?.ActiveProduct is null or AccountProduct.Basic) data.Suggestions = null;
-            else data.Suggestions = await MySuggestionsApi.Get(sub?.ActiveProduct, AppStateStatic.IsAuthenticated);
-            data.WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated);
-            data.WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated);
-            data.WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated);
+            else data.Suggestions = await MySuggestionsApi.Get(sub?.ActiveProduct, AppStateStatic.IsAuthenticated, cts.Token);
+            data.WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
+            data.WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
+            data.WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
 
             var fileName = $"{AppInfo.Title.ToSlug()}_{Principal.AuthProviders[0]}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
-            await JsRuntime.Utils().DownloadFile(fileName, "application/json", data.ConvertFromObjectToBytes());
+            await JsRuntime.Utils().DownloadFile(fileName, "application/json", data.ConvertFromObjectToBytes(), cts.Token);
         }
         catch (Exception ex)
         {
@@ -220,7 +220,7 @@
             if (await DialogService.ShowMessageBoxAsync(AppInfo.Title, GlobalTranslations.SureDeleteAccount, Button.Ok, Button.Cancel) ?? false)
             {
                 //remove data from cosmos db
-                await PrincipalApi.Remove();
+                await PrincipalApi.Remove(cts.Token);
 
                 //TODO: remove data from supabase table
 
@@ -240,6 +240,6 @@
 
     private async Task Logout()
     {
-        await JsRuntime.Supabase().SignOutAsync();
+        await JsRuntime.Supabase().SignOutAsync(cts.Token);
     }
 }

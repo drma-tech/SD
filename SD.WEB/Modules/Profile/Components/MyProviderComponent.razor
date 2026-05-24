@@ -78,7 +78,7 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.Swiper().InitLists(_swiperId, 95);
+            await JsRuntime.Swiper().InitLists(_swiperId, cts.Token, 95);
         }
         catch (Exception ex)
         {
@@ -88,16 +88,16 @@
 
     protected override async Task ProcessComponentData()
     {
-        AllProviders ??= await AllProvidersApi.GetAll();
+        AllProviders ??= await AllProvidersApi.GetAll(cts.Token);
 
-        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
+        Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
     }
 
     protected override async Task LoadAuthDataAsync()
     {
         await Actions.StartLoading.Invoke(null);
 
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
 
         foreach (var item in MyProviders?.Items ?? [])
         {
@@ -127,7 +127,7 @@
             }
 
             await ShowInfo(Translations.RegionsApplied);
-            await MyProvidersApi.Update(MyProviders, AppStateStatic.ActiveProduct);
+            await MyProvidersApi.Update(MyProviders, AppStateStatic.ActiveProduct, false, cts.Token);
 
             StateHasChanged();
         }
@@ -135,7 +135,7 @@
 
     public async Task ShowProviderPopup(MyProvidersItem item)
     {
-        AllProviders ??= await AllProvidersApi.GetAll();
+        AllProviders ??= await AllProvidersApi.GetAll(cts.Token);
 
         await DialogService.PlatformPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList,
             item.region?.ToString(), item.id, Culture);
@@ -152,7 +152,7 @@
             item.logo = provider.logo_path;
         }
 
-        MyProviders = await MyProvidersApi.Update(MyProviders, null, false);
+        MyProviders = await MyProvidersApi.Update(MyProviders, null, false, cts.Token);
         ProvidersChanged = false;
     }
 

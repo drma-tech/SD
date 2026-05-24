@@ -67,7 +67,7 @@
     {
         try
         {
-            await JsRuntime.Swiper().InitTrailers(_gallerySwiperId);
+            await JsRuntime.Swiper().InitTrailers(_gallerySwiperId, cts.Token);
 
             await base.OnAfterRenderAsync(firstRender);
         }
@@ -80,7 +80,7 @@
     protected override async Task ProcessInitialData()
     {
         await Actions.StartLoading.Invoke(null);
-        TrailerModel = await CacheYoutubeApi.GetTrailers("compact");
+        TrailerModel = await CacheYoutubeApi.GetTrailers("compact", cts.Token);
         await Actions.FinishLoading.Invoke(TrailerModel);
     }
 

@@ -161,13 +161,13 @@
 
         if (AppStateStatic.Index == 0)
         {
-            var result = await TmdbSearch.GetList(Items, null, ParametersQuery);
+            var result = await TmdbSearch.GetList(Items, null, ParametersQuery, cancellationToken: cts.Token);
             Items = result.list;
         }
         else if (AppStateStatic.Index == 1)
         {
             ParametersKeyword["with_keywords"] = keywordId!;
-            var result = await TmdbDiscoveryApi.GetList(Items, null, ParametersKeyword);
+            var result = await TmdbDiscoveryApi.GetList(Items, null, ParametersKeyword, cancellationToken: cts.Token);
             Items = result.list;
         }
         else if (AppStateStatic.Index == 2)
@@ -180,7 +180,7 @@
             {
                 ParametersAdvanced["with_genres"] = ((int)AppStateStatic.TvGenre!.Value).ToString();
             }
-            var result = await TmdbDiscoveryApi.GetList(Items, AppStateStatic.Type, ParametersAdvanced);
+            var result = await TmdbDiscoveryApi.GetList(Items, AppStateStatic.Type, ParametersAdvanced, cancellationToken: cts.Token);
             Items = result.list;
         }
 
@@ -191,9 +191,9 @@
     {
         if (AppStateStatic.IsAuthenticated)
         {
-            Watched ??= await WatchedApi.Get(true);
-            Watching ??= await WatchingApi.Get(true);
-            Wish ??= await WishApi.Get(true);
+            Watched ??= await WatchedApi.Get(true, cts.Token);
+            Watching ??= await WatchingApi.Get(true, cts.Token);
+            Wish ??= await WishApi.Get(true, cts.Token);
         }
         else
         {
@@ -232,7 +232,7 @@
         _currentPage = 1;
         Dictionary<string, string> parameters = new Dictionary<string, string> { { "query", AppStateStatic.Query ?? "" } };
 
-        var result = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++);
+        var result = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++, cts.Token);
         AppStateStatic.Keywords = result.list;
 
         DisableLoadMore = result.lastPage || AppStateStatic.Keywords.Count >= 100;
@@ -242,7 +242,7 @@
     {
         Dictionary<string, string> parameters = new Dictionary<string, string> { { "query", AppStateStatic.Query ?? "" }, { "sort_by", "popularity.desc" } };
 
-        var result = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++);
+        var result = await TmdbSearchKeywordApi.GetKeywords(AppStateStatic.Keywords, parameters, _currentPage++, cts.Token);
         AppStateStatic.Keywords = result.list;
         DisableLoadMore = result.lastPage || AppStateStatic.Keywords.Count >= 100;
     }

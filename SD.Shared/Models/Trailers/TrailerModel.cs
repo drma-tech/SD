@@ -2,16 +2,16 @@
 
 public class TrailerModel
 {
-    public List<Item> Items { get; set; } = [];
+    public List<TrailerModelItem> Items { get; set; } = [];
 }
 
-public class Item
+public class TrailerModelItem
 {
-    public Item()
+    public TrailerModelItem()
     {
     }
 
-    public Item(string? id, string? title, string? url, string? published, DateTime? dateTime)
+    public TrailerModelItem(string? id, string? title, string? url, string? published, DateTime? dateTime)
     {
         this.id = id;
         this.title = title;

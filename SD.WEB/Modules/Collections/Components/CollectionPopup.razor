@@ -86,20 +86,21 @@
     protected override async Task ProcessPopupData()
     {
         await Actions.StartLoading.Invoke(null);
+        var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US";
 
         if (Type == MediaType.movie)
         {
             var parameters = new Dictionary<string, string>
             {
                 { "api_key", TmdbOptions.ApiKey },
-                { "language", (await AppStateStatic.GetContentLanguage(JsRuntime)).GetName(false) ?? "en-US" }
+                { "language", lang }
             };
 
-            Collection = await TmdbApi.GetCollection(CollectionId, parameters);
+            Collection = await TmdbApi.GetCollection(CollectionId, parameters, cts.Token);
         }
         else
         {
-            var show = await TmdbApi.GetMediaDetail(CollectionId, MediaType.tv);
+            var show = await TmdbApi.GetMediaDetail(CollectionId, MediaType.tv, lang, cts.Token);
 
             Collection = new TmdbCollection
             {
@@ -148,7 +149,7 @@
 
         if (type == MediaType.movie)
         {
-            Watched = await WatchedListApi.Add(type, Watched, string.Join(',', items), AppStateStatic.ActiveProduct);
+            Watched = await WatchedListApi.Add(type, Watched, string.Join(',', items), AppStateStatic.ActiveProduct, cts.Token);
         }
 
         //watching list
@@ -161,19 +162,20 @@
         }
         else
         {
-            var media = await TmdbApi.GetMediaDetail(tmdbId, type.Value);
+            var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US";
+            var media = await TmdbApi.GetMediaDetail(tmdbId, type.Value, lang, cts.Token);
 
             item = new WatchingListItem(tmdbId, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
         }
 
-        Watching = await WatchingListApi.Add(type, Watching, item, AppStateStatic.ActiveProduct);
+        Watching = await WatchingListApi.Add(type, Watching, item, AppStateStatic.ActiveProduct, cts.Token);
 
         // HideModal(); //error on mudblazor
     }
 
     private async Task RemoveCollection()
     {
-        Watching = await WatchingListApi.Remove(Type, CollectionId);
+        Watching = await WatchingListApi.Remove(Type, CollectionId, cancellationToken: cts.Token);
 
         HideModal();
     }

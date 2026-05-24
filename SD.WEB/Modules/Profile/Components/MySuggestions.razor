@@ -34,7 +34,7 @@
                     </MudTooltip>
                 }
                 <MudTooltip Text="Filter">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("filter").Font" Color="@(GenresChanged? Color.Secondary: Color.Primary)"
+                    <MudIconButton Icon="@IconsFA.Solid.Icon("filter").Font" Color="@(GenresChanged ? Color.Secondary : Color.Primary)"
                                    OnClick="@(async () => await OpenConfigurations())" Disabled="@(MyProviders == null || MyProviders.Items.Empty())" />
                 </MudTooltip>
             </Header>
@@ -136,8 +136,8 @@
             ActionsMovie.CustomPremiumDescription = Translations.OurSuggestions2;
             ActionsSerie.CustomPremiumDescription = Translations.OurSuggestions2;
 
-            await JsRuntime.Swiper().InitLists(_swiperId);
-            await JsRuntime.Swiper().InitLists(_swiperId2);
+            await JsRuntime.Swiper().InitLists(_swiperId, cts.Token);
+            await JsRuntime.Swiper().InitLists(_swiperId2, cts.Token);
         }
         catch (Exception ex)
         {
@@ -149,7 +149,7 @@
     {
         Actions.StartLoading?.Invoke(null);
 
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
 
         if (MyProviders == null || MyProviders.Items.Empty())
         {
@@ -157,7 +157,7 @@
         }
         else
         {
-            mySuggestions = await MySuggestionsApi.Get(AppStateStatic.ActiveProduct, AppStateStatic.IsAuthenticated);
+            mySuggestions = await MySuggestionsApi.Get(AppStateStatic.ActiveProduct, AppStateStatic.IsAuthenticated, cts.Token);
 
             if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
             {
@@ -216,7 +216,7 @@
                 var titles = new HashSet<MediaDetail>();
                 foreach (var provider in MyProviders?.Items ?? [])
                 {
-                    var result = await TmdbDiscoveryApi.GetList([], MediaType.movie, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"));
+                    var result = await TmdbDiscoveryApi.GetList([], MediaType.movie, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"), cancellationToken: cts.Token);
 
                     foreach (var item in result.list)
                     {
@@ -232,7 +232,7 @@
 
                     if (mySuggestions.Movies.Count < qtd)
                     {
-                        var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.movie);
+                        var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.movie, cts.Token);
                         if (providers != null && MyProviders != null)
                         {
                             List<ProviderBase> allProviders = [];
@@ -255,7 +255,7 @@
 
                 if (mySuggestions.Items(MediaType.movie).Empty()) Actions.ShowWarning?.Invoke(null);
 
-                mySuggestions = await MySuggestionsApi.Sync(MediaType.movie, mySuggestions);
+                mySuggestions = await MySuggestionsApi.Sync(MediaType.movie, mySuggestions, cts.Token);
                 MovieUpdating = false;
             }
             else
@@ -268,7 +268,7 @@
                 var titles = new HashSet<MediaDetail>();
                 foreach (var provider in MyProviders?.Items ?? [])
                 {
-                    var result = await TmdbDiscoveryApi.GetList([], MediaType.tv, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"));
+                    var result = await TmdbDiscoveryApi.GetList([], MediaType.tv, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"), cancellationToken: cts.Token);
 
                     foreach (var item in result.list)
                     {
@@ -284,7 +284,7 @@
 
                     if (mySuggestions.Shows.Count < qtd)
                     {
-                        var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.tv);
+                        var providers = await TmdbApi.GetWatchProvidersList(item.tmdb_id, MediaType.tv, cts.Token);
                         if (providers != null && MyProviders != null)
                         {
                             List<ProviderBase> allProviders = [];
@@ -307,7 +307,7 @@
 
                 if (mySuggestions.Items(MediaType.tv).Empty()) Actions.ShowWarning?.Invoke(null);
 
-                mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions);
+                mySuggestions = await MySuggestionsApi.Sync(MediaType.tv, mySuggestions, cts.Token);
                 ShowUpdating = false;
             }
 
@@ -348,7 +348,7 @@
 
     private async Task UpdateMySuggestions(SD.Shared.Models.MySuggestions obj)
     {
-        mySuggestions = await MySuggestionsApi.Add(obj);
+        mySuggestions = await MySuggestionsApi.Add(obj, cts.Token);
 
         StateHasChanged();
 

@@ -48,7 +48,7 @@
     protected override async Task ProcessInitialData()
     {
         await Actions.StartLoading.Invoke(null);
-        NewsList = await CacheFlixsterApi.GetNews("full", category);
+        NewsList = await CacheFlixsterApi.GetNews("full", category, cts.Token);
         await Actions.FinishLoading.Invoke(NewsList);
     }
 

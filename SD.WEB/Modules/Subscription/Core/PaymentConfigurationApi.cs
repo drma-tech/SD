@@ -2,11 +2,11 @@
 
 namespace SD.WEB.Modules.Subscription.Core;
 
-public class PaymentConfigurationApi(IHttpClientFactory factory) : ApiCosmos<PaymentConfigurations>(factory, ApiType.Anonymous, null)
+public class PaymentConfigurationApi(IHttpClientFactory factory) : ApiCosmos<PaymentConfigurations>(factory, ApiType.Anonymous, null, ApiContext.Default.PaymentConfigurations)
 {
-    public async Task<PaymentConfigurations?> GetConfigurations(PaymentProvider provider)
+    public async Task<PaymentConfigurations?> GetConfigurations(PaymentProvider provider, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.Configurations(provider));
+        return await GetAsync(Endpoint.Configurations(provider), false, cancellationToken);
     }
 
     private struct Endpoint

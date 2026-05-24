@@ -14,21 +14,21 @@
     {
         try
         {
-            var list = await PrincipalImportApi.GetAll();
+            var list = await PrincipalImportApi.GetAll(cts.Token);
 
             foreach (var item in list)
             {
                 try
                 {
-                    await JsRuntime.Supabase().CreateUserAsync(item.UserId, item.Email, item.DisplayName);
+                    await JsRuntime.Supabase().CreateUserAsync(item.UserId, item.Email, item.DisplayName, cts.Token);
                 }
                 catch (Exception ex)
                 {
                     if (ex.Message.Contains("uuid v4 format"))
                     {
-                        var newid = await JsRuntime.Supabase().CreateUserAsync(null, item.Email, item.DisplayName);
+                        var newid = await JsRuntime.Supabase().CreateUserAsync(null, item.Email, item.DisplayName, cts.Token);
 
-                        await PrincipalImportApi.Migrate(item.UserId, newid);
+                        await PrincipalImportApi.Migrate(item.UserId, newid, cts.Token);
                     }
                     else
                     {

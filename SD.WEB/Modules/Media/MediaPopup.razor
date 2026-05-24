@@ -332,11 +332,12 @@
     protected override async Task ProcessPopupData()
     {
         await Actions.StartLoading.Invoke(null);
-        Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value);
+        var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US";
+        Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, lang, cts.Token);
         Media.Videos.Reverse();
         await Actions.FinishLoading.Invoke(Media);
 
-        ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId);
+        ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId, cts.Token);
 
         EnglishTitle = Media?.original_title;
         await MudDialog!.SetTitleAsync(Media?.title);
@@ -344,7 +345,7 @@
         if (Media != null && Media.original_language != "en")
         {
             //title must be in English
-            var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US");
+            var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US", cts.Token);
             EnglishTitle = enMedia.title;
         }
 
@@ -355,11 +356,11 @@
         await RatingsActions.StartLoading.Invoke(null);
         if (Media?.MediaType == MediaType.movie)
         {
-            _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"));
+            _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), cts.Token);
         }
         else
         {
-            _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"));
+            _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), cts.Token);
         }
         await RatingsActions.FinishLoading.Invoke(_ratingsCache);
     }
@@ -393,7 +394,7 @@
 
             var item = new WishListItem(Media.tmdb_id, Media.title, Media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), Media.runtime);
 
-            Wish = await WishListApi.Add(Media.MediaType, Wish, item, AppStateStatic.ActiveProduct);
+            Wish = await WishListApi.Add(Media.MediaType, Wish, item, AppStateStatic.ActiveProduct, cts.Token);
         }
         catch (Exception ex)
         {
@@ -407,7 +408,7 @@
 
         try
         {
-            Wish = await WishListApi.Remove(Media.MediaType, Media?.tmdb_id);
+            Wish = await WishListApi.Remove(Media.MediaType, Media?.tmdb_id, cts.Token);
         }
         catch (Exception ex)
         {
@@ -435,7 +436,7 @@
             }
             else
             {
-                Watched = await WatchedListApi.Add(Media.MediaType, Watched, Media.tmdb_id, AppStateStatic.ActiveProduct);
+                Watched = await WatchedListApi.Add(Media.MediaType, Watched, Media.tmdb_id, AppStateStatic.ActiveProduct, cts.Token);
             }
         }
         catch (Exception ex)
@@ -450,11 +451,11 @@
 
         if (media.MediaType == MediaType.movie)
         {
-            Watched = await WatchedListApi.Add(MediaType.movie, Watched, string.Join(',', items), AppStateStatic.ActiveProduct);
+            Watched = await WatchedListApi.Add(MediaType.movie, Watched, string.Join(',', items), AppStateStatic.ActiveProduct, cts.Token);
         }
         else
         {
-            Watched = await WatchedListApi.Add(MediaType.tv, Watched, media.tmdb_id, AppStateStatic.ActiveProduct);
+            Watched = await WatchedListApi.Add(MediaType.tv, Watched, media.tmdb_id, AppStateStatic.ActiveProduct, cts.Token);
         }
 
         //watching list
@@ -470,7 +471,7 @@
             item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
         }
 
-        Watching = await WatchingListApi.Add(Type, Watching, item, AppStateStatic.ActiveProduct);
+        Watching = await WatchingListApi.Add(Type, Watching, item, AppStateStatic.ActiveProduct, cts.Token);
     }
 
     private async Task IsNotWatched()
@@ -481,7 +482,7 @@
         {
             //watched
 
-            Watched = await WatchedListApi.Remove(Media.MediaType, Media.tmdb_id);
+            Watched = await WatchedListApi.Remove(Media.MediaType, Media.tmdb_id, cts.Token);
 
             //watching
 
@@ -491,8 +492,8 @@
             {
                 Watching = Media.MediaType switch
                 {
-                    MediaType.movie => await WatchingListApi.Remove(Media.MediaType, Media.collectionId?.ToString(), Media.tmdb_id),
-                    MediaType.tv => await WatchingListApi.Remove(Media.MediaType, Media.tmdb_id, null),
+                    MediaType.movie => await WatchingListApi.Remove(Media.MediaType, Media.collectionId?.ToString(), Media.tmdb_id, cts.Token),
+                    MediaType.tv => await WatchingListApi.Remove(Media.MediaType, Media.tmdb_id, null, cts.Token),
                     _ => Watching
                 };
             }

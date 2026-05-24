@@ -97,7 +97,7 @@ else
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
 
         Actions.StartLoading?.Invoke(null);
-        AllProviders = await AllProvidersApi.GetAll();
+        AllProviders = await AllProvidersApi.GetAll(cts.Token);
         Provider = AllProviders?.Items.SingleOrDefault(s => s.id == Id);
         Actions.FinishLoading?.Invoke(Provider);
 
@@ -109,18 +109,18 @@ else
 
     protected override async Task ProcessPageData()
     {
-        Platform = await AppStateStatic.GetPlatform(JsRuntime);
+        Platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
     }
 
     protected override async Task LoadAuthDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated);
+        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
 
         if (AppStateStatic.IsAuthenticated)
         {
-            Watched ??= await WatchedApi.Get(true);
-            Watching ??= await WatchingApi.Get(true);
-            Wish ??= await WishApi.Get(true);
+            Watched ??= await WatchedApi.Get(true, cts.Token);
+            Watching ??= await WatchingApi.Get(true, cts.Token);
+            Wish ??= await WishApi.Get(true, cts.Token);
         }
         else
         {
@@ -156,10 +156,10 @@ else
 
             MyProviders ??= new MyProviders();
 
-            var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime);
+            var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
 
             var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = region };
-            MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct);
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, cts.Token);
 
             await ShowSuccess(Translations.PlatformAdded);
         }
@@ -181,7 +181,7 @@ else
 
             MyProviders ??= new MyProviders();
 
-            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == Provider?.id));
+            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == Provider?.id), ApiContext.Default.MyProvidersItem, cts.Token);
 
             await ShowSuccess(Translations.PlatformRemoved);
         }
