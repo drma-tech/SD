@@ -70,6 +70,15 @@ namespace SD.WEB.Modules.Auth.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We&apos;ve sent a verification code to {0}. Please enter it to continue..
+        /// </summary>
+        public static string CodeSent {
+            get {
+                return ResourceManager.GetString("CodeSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Continue with {0}.
         /// </summary>
         public static string ContinueWith {

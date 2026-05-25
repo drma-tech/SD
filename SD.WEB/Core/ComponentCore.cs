@@ -4,6 +4,10 @@ using MudBlazor;
 
 namespace SD.WEB.Core;
 
+/// <summary>
+/// There is a memory cost when implementing this class. Use it when necessary.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : class
 {
     [Inject] private ILogger<T> Logger { get; set; } = null!;
