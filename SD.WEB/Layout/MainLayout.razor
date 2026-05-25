@@ -14,6 +14,7 @@
 @inject ILogger<MainLayout> Logger
 @inject IJSRuntime JsRuntime
 @inject AuthenticationStateProvider AuthStateProvider
+@inject IBrowserViewportService BrowserViewportService
 
 @inject PrincipalApi PrincipalApi
 @inject NavigationManager Navigation
@@ -94,6 +95,12 @@
         {
             ex.ProcessException(Snackbar, Logger);
         }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //Get the value at the beginning (NotifyBrowserViewportChangeAsync is too slow)
+        AppStateStatic.Breakpoint = await BrowserViewportService.GetCurrentBreakpointAsync();
     }
 
     /// <summary>

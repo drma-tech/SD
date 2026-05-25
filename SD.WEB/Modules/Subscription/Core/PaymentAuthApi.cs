@@ -1,5 +1,4 @@
 ﻿using SD.Shared.Models.Auth;
-using System.Text.Json.Serialization.Metadata;
 
 namespace SD.WEB.Modules.Subscription.Core
 {
@@ -18,9 +17,9 @@ namespace SD.WEB.Modules.Subscription.Core
 
     public class PaymentAuthApi(IHttpClientFactory factory) : ApiCosmos<AuthSubscription>(factory, ApiType.Authenticated, null, ApiContext.Default.AuthSubscription)
     {
-        public async Task AppleVerify(string receipt, JsonTypeInfo<string?> requestTypeInfo, CancellationToken cancellationToken)
+        public async Task AppleVerify(string receipt, CancellationToken cancellationToken)
         {
-            await PostAsync(Endpoint.AppleVerify, receipt, requestTypeInfo, cancellationToken);
+            await PostAsync(Endpoint.AppleVerify, receipt, ApiContext.Default.String, cancellationToken);
         }
 
         public async Task<AuthPrincipal?> StripeCustomer(bool isUserAuthenticated, CancellationToken cancellationToken)

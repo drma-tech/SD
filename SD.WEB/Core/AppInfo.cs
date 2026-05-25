@@ -32,7 +32,7 @@ namespace SD.WEB.Core
         public static readonly ProductLink[] Products =
         [
             //new("Streaming Discovery", "Discover Movies and Series on Streaming Platforms", "https://www.streamingdiscovery.com", "/logo/streamingdiscovery.png", true ),
-            new("Modern Matchmaker", "Find a Compatible Partner Through Smart Matching", "https://www.modern-matchmaker.com", "/logo/modern-matchmaker.png", true ),
+            new("Modern Matchmaker", "Find a compatible partner through Smart Matchmaking", "https://www.modern-matchmaker.com", "/logo/modern-matchmaker.png", true ),
             new("My Next Spot", "Find the Best Cities and Countries to Live or Travel", "https://www.my-next-spot.com", "/logo/next-spot.png", false ),
             new("WebStandards", "Web Standards Generator for Websites and PWAs", "https://www.web-standards.com", "/logo/webstandards.png", false ),
        ];

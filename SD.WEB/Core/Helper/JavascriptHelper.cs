@@ -9,7 +9,7 @@ namespace SD.WEB.Core.Helper
     {
         private static readonly Dictionary<string, IJSObjectReference> cache = [];
 
-        public static async Task<IJSObjectReference> Load(IJSRuntime js, CancellationToken cancellationToken, string path)
+        public static async Task<IJSObjectReference> Load(IJSRuntime js, string path, CancellationToken cancellationToken)
         {
             if (!cache.TryGetValue(path, out var module))
             {
@@ -25,14 +25,14 @@ namespace SD.WEB.Core.Helper
     {
         protected async Task InvokeVoid(string identifier, CancellationToken cancellationToken, params object?[] args)
         {
-            var module = await JsModuleLoader.Load(js, cancellationToken, path);
+            var module = await JsModuleLoader.Load(js, path, cancellationToken);
             await module.InvokeVoidAsync(identifier, cancellationToken, args);
         }
 
         protected async Task<T> Invoke<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties)] T>
             (string identifier, CancellationToken cancellationToken, params object?[] args)
         {
-            var module = await JsModuleLoader.Load(js, cancellationToken, path);
+            var module = await JsModuleLoader.Load(js, path, cancellationToken);
             return await module.InvokeAsync<T>(identifier, cancellationToken, args);
         }
     }
