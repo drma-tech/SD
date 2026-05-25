@@ -60,7 +60,7 @@
 
     protected override void OnInitialized()
     {
-        OnError = async (msg) => { await Actions.ShowError.Invoke(msg); };
+        OnError.Subscribe(async msg => await Actions.ShowError.Invoke(msg), cts.Token);
         Actions.CustomMessageWarning = Modules.Profile.Resources.Translations.MarkPlatforms;
 
         MyProvidersApi.DataChanged += model =>

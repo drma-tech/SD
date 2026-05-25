@@ -61,8 +61,7 @@
             BufferedEvent.Register(nameof(ShowError), (string msg) => { Snackbar.Add(msg, Severity.Error); return Task.CompletedTask; });
 
             AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
-            AppStateStatic.BreakpointChanged += breakpoint => StateHasChanged();
-            AppStateStatic.BrowserWindowSizeChanged += size => StateHasChanged();
+            AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), cts.Token);
 
             PrincipalApi.DataChanged += principal => { AppStateStatic.Principal = principal; StateHasChanged(); };
 
@@ -145,7 +144,7 @@
         AppStateStatic.ActiveProduct = sub?.Product ?? AccountProduct.Basic;
 
         await ProcessUserAccess(cancellationToken);
-        AppStateStatic.UserStateChanged?.Invoke();
+        await AppStateStatic.UserStateChanged.PublishAsync();
     }
 
     private async Task ProcessUserAccess(CancellationToken cancellationToken)

@@ -191,7 +191,7 @@
 
     public string? BodyClass { get; set; }
 
-    private bool IsMobile => AppStateStatic.Breakpoint <= Breakpoint.Xs;
+    private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
     private string? AbsolutelUrl => $"{AppInfo.WebSite.TrimEnd('/')}/{UrlShare?.TrimStart('/')}";
 
     private string headerImageSize => IsMobile ? "40px" : "48px";
@@ -207,7 +207,7 @@
         if (CustomBodyClass.Empty())
         {
             BodyClass = Css.Build().Large("mb");
-            AppStateStatic.BreakpointChanged += client => BodyClass = Css.Build().Large("mb");
+            AppStateStatic.BreakpointChanged.Subscribe(breakpoint => BodyClass = Css.Build().Large("mb"), cts.Token);
         }
         else
         {

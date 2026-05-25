@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
-using MudBlazor.Services;
 using SD.Shared.Models.Auth;
 using SD.Shared.Models.List.Tmdb;
 using SD.WEB.Modules.Subscription.Core;
@@ -20,34 +19,31 @@ public static class AppStateStatic
     public static string? UserId { get; set; }
     public static DateTimeOffset? LastAccess { get; set; } //control login, so we don't call api too often
 
-    public static Breakpoint Breakpoint { get; set; } = Breakpoint.Xs;
-    public static Action<Breakpoint>? BreakpointChanged { get; set; }
     public static Size Size { get; set; } = Size.Small;
-
-    public static BrowserWindowSize? BrowserWindowSize { get; set; }
-    public static Action<BrowserWindowSize>? BrowserWindowSizeChanged { get; set; }
+    public static Breakpoint Breakpoint { get; set; } = Breakpoint.Xs;
+    public static ActionDispatcher<Breakpoint> BreakpointChanged { get; } = new();
 
     public static string? Version { get; set; }
     public static string? BrowserName { get; set; }
     public static string? BrowserVersion { get; set; }
     public static string? OperatingSystem { get; set; }
 
-    public static string? _lastSnackbarMessage;
-    public static DateTime _lastSnackbarAt = DateTime.MinValue;
-    public static readonly TimeSpan _snackbarDelay = TimeSpan.FromSeconds(5);
+    private static string? LastSnackbarMessage { get; set; }
+    private static DateTime LastSnackbarAt { get; set; } = DateTime.MinValue;
+    private static readonly TimeSpan SnackbarDelay = TimeSpan.FromSeconds(5);
 
     public static bool CanShowSnackbar(this string message)
     {
         var now = DateTime.UtcNow;
 
-        if (_lastSnackbarMessage == message &&
-            now - _lastSnackbarAt < _snackbarDelay)
+        if (LastSnackbarMessage == message &&
+            now - LastSnackbarAt < SnackbarDelay)
         {
             return false;
         }
 
-        _lastSnackbarMessage = message;
-        _lastSnackbarAt = now;
+        LastSnackbarMessage = message;
+        LastSnackbarAt = now;
 
         return true;
     }
@@ -276,7 +272,7 @@ public static class AppStateStatic
     private static Region? _region;
     private static readonly SemaphoreSlim _regionSemaphore = new(1, 1);
 
-    public static Action<Region>? RegionChanged { get; set; }
+    public static ActionDispatcher<Region> RegionChanged { get; } = new();
 
     public static async Task<Region> GetRegion(IpInfoApi? api = null, IJSRuntime? js = null, CancellationToken cancellationToken = default)
     {
@@ -329,14 +325,14 @@ public static class AppStateStatic
     public static void ChangeRegion(Region value)
     {
         _region = value;
-        RegionChanged?.Invoke(value);
+        RegionChanged.Publish(value);
     }
 
     #endregion Region
 
     #region ContentLanguage
 
-    public static ContentLanguage? _contentLanguage;
+    private static ContentLanguage? _contentLanguage { get; set; }
     private static readonly SemaphoreSlim _contentLanguageSemaphore = new(1, 1);
 
     public static async Task<ContentLanguage> GetContentLanguage(IJSRuntime? js = null, CancellationToken cancellationToken = default)
@@ -403,7 +399,7 @@ public static class AppStateStatic
 
     #endregion ContentLanguage
 
-    public static Action? UserStateChanged { get; set; }
-    public static Action? ProcessingStarted { get; set; }
-    public static Action? ProcessingFinished { get; set; }
+    public static TaskDispatcher UserStateChanged { get; } = new();
+    public static TaskDispatcher ProcessingStarted { get; } = new();
+    public static TaskDispatcher ProcessingFinished { get; } = new();
 }

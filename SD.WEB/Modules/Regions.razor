@@ -47,7 +47,7 @@
 @code {
     public List<Region> RegionsList { get; set; } = [];
 
-    private bool IsMobile => AppStateStatic.Breakpoint <= Breakpoint.Xs;
+    private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
 
     private List<string?> Options { get; set; } = [];
     private string? filter;

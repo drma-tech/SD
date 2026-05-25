@@ -214,7 +214,7 @@
 
         //content language
 
-        AppStateStatic._contentLanguage = AppStateStatic.ConvertContentLanguage(lang) ?? ContentLanguage.enUS;
+        AppStateStatic.ChangeContentLanguage(AppStateStatic.ConvertContentLanguage(lang) ?? ContentLanguage.enUS);
     }
 
 }

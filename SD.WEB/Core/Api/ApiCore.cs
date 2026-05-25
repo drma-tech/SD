@@ -49,7 +49,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
     {
         try
         {
-            AppStateStatic.ProcessingStarted?.Invoke();
+            await AppStateStatic.ProcessingStarted.PublishAsync();
 
             if (key.NotEmpty())
                 return await GetHttp(type).GetStringAsync(uri.ConfigureParameters(GetVersion()), cancellationToken);
@@ -57,7 +57,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
         finally
         {
-            AppStateStatic.ProcessingFinished?.Invoke();
+            await AppStateStatic.ProcessingFinished.PublishAsync();
         }
     }
 
@@ -65,7 +65,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
     {
         try
         {
-            AppStateStatic.ProcessingStarted?.Invoke();
+            await AppStateStatic.ProcessingStarted.PublishAsync();
 
             var http = GetHttp(type);
 
@@ -76,7 +76,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
         finally
         {
-            AppStateStatic.ProcessingFinished?.Invoke();
+            await AppStateStatic.ProcessingFinished.PublishAsync();
         }
     }
 
@@ -84,7 +84,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
     {
         try
         {
-            AppStateStatic.ProcessingStarted?.Invoke();
+            await AppStateStatic.ProcessingStarted.PublishAsync();
 
             if (setNewVersion) SetNewVersion(key);
 
@@ -94,7 +94,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
         finally
         {
-            AppStateStatic.ProcessingFinished?.Invoke();
+            await AppStateStatic.ProcessingFinished.PublishAsync();
         }
     }
 
@@ -102,7 +102,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
     {
         try
         {
-            AppStateStatic.ProcessingStarted?.Invoke();
+            await AppStateStatic.ProcessingStarted.PublishAsync();
 
             if (key.NotEmpty())
             {
@@ -117,7 +117,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
         finally
         {
-            AppStateStatic.ProcessingFinished?.Invoke();
+            await AppStateStatic.ProcessingFinished.PublishAsync();
         }
     }
 
@@ -125,7 +125,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
     {
         try
         {
-            AppStateStatic.ProcessingStarted?.Invoke();
+            await AppStateStatic.ProcessingStarted.PublishAsync();
 
             SetNewVersion(key);
 
@@ -140,7 +140,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
         finally
         {
-            AppStateStatic.ProcessingFinished?.Invoke();
+            await AppStateStatic.ProcessingFinished.PublishAsync();
         }
     }
 
@@ -148,7 +148,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
     {
         try
         {
-            AppStateStatic.ProcessingStarted?.Invoke();
+            await AppStateStatic.ProcessingStarted.PublishAsync();
 
             SetNewVersion(key);
 
@@ -163,7 +163,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
         finally
         {
-            AppStateStatic.ProcessingFinished?.Invoke();
+            await AppStateStatic.ProcessingFinished.PublishAsync();
         }
     }
 
@@ -171,7 +171,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
     {
         try
         {
-            AppStateStatic.ProcessingStarted?.Invoke();
+            await AppStateStatic.ProcessingStarted.PublishAsync();
 
             SetNewVersion(key);
 
@@ -186,7 +186,7 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
         finally
         {
-            AppStateStatic.ProcessingFinished?.Invoke();
+            await AppStateStatic.ProcessingFinished.PublishAsync();
         }
     }
 }

@@ -141,7 +141,7 @@ else
             if (MediaListApi == null) throw new ArgumentNullException(nameof(MediaListApi));
             // if (ShowHead && List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
 
-            if (DetectRegions) AppStateStatic.RegionChanged += async region => await ProcessInitialData();
+            if (DetectRegions) AppStateStatic.RegionChanged.Subscribe(async region => await ProcessInitialData(), cts.Token);
         }
         catch (Exception ex)
         {

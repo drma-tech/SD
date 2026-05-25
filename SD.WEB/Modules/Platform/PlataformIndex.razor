@@ -113,7 +113,7 @@
     {
         base.OnInitialized();
 
-        AppStateStatic.RegionChanged += region => { RegionEnum = region; StateHasChanged(); };
+        AppStateStatic.RegionChanged.Subscribe(region => { RegionEnum = region; StateHasChanged(); }, cts.Token);
     }
 
     protected override async Task ProcessInitialData()

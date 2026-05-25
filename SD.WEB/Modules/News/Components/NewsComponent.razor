@@ -110,7 +110,7 @@
 
     protected override void OnInitialized()
     {
-        OnError = async (msg) => { await ActionsMovie.ShowError.Invoke(msg); await ActionsSerie.ShowError.Invoke(msg); };
+        OnError.Subscribe(async (msg) => { await ActionsMovie.ShowError.Invoke(msg); await ActionsSerie.ShowError.Invoke(msg); }, cts.Token);
 
         base.OnInitialized();
     }

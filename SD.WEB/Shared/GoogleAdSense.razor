@@ -31,7 +31,7 @@
     [Parameter] public AdFormat? Format { get; set; }
     [Parameter] public string[] IgnoreRoutes { get; set; } = ["auth", "legal"];
 
-    private bool IsMobile => AppStateStatic.BrowserWindowSize?.Width <= 600 || AppStateStatic.BrowserWindowSize?.Height <= 600;
+    private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
     private bool IsLocalhost => Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("develop");
     private bool ActiveSubscription => AppStateStatic.Principal?.GetActiveSubscription() != null;
 

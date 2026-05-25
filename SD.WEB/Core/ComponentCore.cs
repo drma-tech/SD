@@ -13,8 +13,8 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
     [Inject] protected NavigationManager Navigation { get; set; } = null!;
 
     protected readonly CancellationTokenSource cts = new();
-    protected readonly TaskHelper _taskHelper = new();
-    protected Action<string>? OnError { get; set; }
+    private readonly TaskHelper _taskHelper = new();
+    protected ActionDispatcher<string> OnError { get; } = new();
 
     /// <summary>
     /// Mandatory data to fill out the page/component without delay (essential for bots, SEO, etc.)
@@ -50,16 +50,15 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
     {
         try
         {
-            AppStateStatic.BreakpointChanged += breakpoint => StateHasChanged();
-            AppStateStatic.BrowserWindowSizeChanged += size => StateHasChanged();
-            AppStateStatic.UserStateChanged += async () => { await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync); StateHasChanged(); };
+            AppStateStatic.BreakpointChanged.Subscribe(breakpoint => _ = InvokeAsync(StateHasChanged), cts.Token);
+            AppStateStatic.UserStateChanged.Subscribe(async () => { await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync); StateHasChanged(); }, cts.Token);
 
             await ProcessInitialData();
         }
         catch (Exception ex)
         {
             if (OnError != null)
-                OnError(ex.Message);
+                OnError.Publish(ex.Message);
             else
                 await ProcessException(ex, false);
         }
@@ -83,7 +82,7 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
         catch (Exception ex)
         {
             if (OnError != null)
-                OnError(ex.Message);
+                OnError.Publish(ex.Message);
             else
                 await ProcessException(ex);
         }
@@ -253,31 +252,13 @@ public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, 
     {
         if (AppStateStatic.Breakpoint != browserViewportEventArgs.Breakpoint)
         {
-            AppStateStatic.Size = GetSizeForBreakpoint(browserViewportEventArgs.Breakpoint);
-
+            AppStateStatic.Size = browserViewportEventArgs.Breakpoint == Breakpoint.Xs ? Size.Small : Size.Medium;
             AppStateStatic.Breakpoint = browserViewportEventArgs.Breakpoint;
-            AppStateStatic.BreakpointChanged?.Invoke(browserViewportEventArgs.Breakpoint);
-        }
-
-        if (AppStateStatic.BrowserWindowSize != browserViewportEventArgs.BrowserWindowSize)
-        {
-            AppStateStatic.BrowserWindowSize = browserViewportEventArgs.BrowserWindowSize;
-            AppStateStatic.BrowserWindowSizeChanged?.Invoke(browserViewportEventArgs.BrowserWindowSize);
+            AppStateStatic.BreakpointChanged.Publish(browserViewportEventArgs.Breakpoint);
         }
 
         return InvokeAsync(StateHasChanged);
     }
-
-    private static Size GetSizeForBreakpoint(Breakpoint breakpoint) => breakpoint switch
-    {
-        Breakpoint.Xs => Size.Small, //mobile view
-        //Breakpoint.Sm => Size.Medium, //tablet view
-        //Breakpoint.Md => Size.Medium,
-        //Breakpoint.Lg => Size.Large,
-        //Breakpoint.Xl => Size.Large,
-        //Breakpoint.Xxl => Size.Large,
-        _ => Size.Medium
-    };
 
     public virtual async ValueTask DisposeAsync()
     {

@@ -81,7 +81,7 @@
         // AppState.WishListChanged += StateHasChanged;
         // AppState.WatchedListChanged += StateHasChanged;
 
-        if (DetectRegions) AppStateStatic.RegionChanged += async (Region) => await ProcessInitialData();
+        if (DetectRegions) AppStateStatic.RegionChanged.Subscribe(async (Region) => await ProcessInitialData(), cts.Token);
     }
 
     protected override async Task ProcessInitialData()
