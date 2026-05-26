@@ -145,21 +145,20 @@
 
                 if (country?.ToUpper() == "CN")
                 {
-                    Network = AdNetwork.Baidu;
+                    Network = AdNetwork.Baidu; StateHasChanged();
                     //todo: implement https://www.baiduadvertising.com/
                 }
                 else if (country.NotEmpty() && _YandexCountries.Contains(country.ToUpper()))
                 {
-                    Network = AdNetwork.Yandex;
+                    Network = AdNetwork.Yandex; StateHasChanged();
                 }
                 else if (country.NotEmpty() && _AdSenseBlockedCountries.Contains(country.ToUpper()))
                 {
-                    Network = AdNetwork.None;
+                    Network = AdNetwork.None; StateHasChanged();
                 }
                 else //adsense
                 {
-                    Network = AdNetwork.Adsense;
-                    StateHasChanged();
+                    Network = AdNetwork.Adsense; StateHasChanged();
 
                     await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", GetAdSenseId(Slot), _containerId, cts.Token);
                     _ = DetectAdBlockAsync();
