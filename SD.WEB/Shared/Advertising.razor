@@ -26,12 +26,13 @@
         }
         @if (Network == AdNetwork.Adsense)
         {
-            <div id="@_containerId" @key="@_containerId" style="text-align: center; align-content: center;" class="@Css.Build().Medium("mb")">
+            <div id="@_containerId" @key="@_containerId" style="text-align: center; align-content: center;" class="@Css.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
             </div>
         }
         else if (Network == AdNetwork.Yandex)
         {
-            <div id="@($"yandex_rtb_{GetYandexSlotId(Slot)}")"></div>
+            <div id="@($"yandex_rtb_{GetYandexSlotId(Slot)}")" @key="@_containerId" style="text-align: center; align-content: center;" class="@Css.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
+            </div>
         }
         else if (Network == AdNetwork.Baidu)
         {
