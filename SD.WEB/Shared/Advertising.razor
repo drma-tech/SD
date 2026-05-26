@@ -158,6 +158,7 @@
                 else //adsense
                 {
                     Network = AdNetwork.Adsense;
+                    StateHasChanged();
 
                     await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", GetAdSenseId(Slot), _containerId, cts.Token);
                     _ = DetectAdBlockAsync();
