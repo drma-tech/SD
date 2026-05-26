@@ -1,17 +1,17 @@
 ﻿namespace SD.WEB.Shared.Core
 {
-    public enum AdSlot : long
+    public enum AdNetwork
     {
-        SdHeader = 7737592628,
-        SdMiddle = 6324586995,
-        SdFooter = 4604311219,
+        None = 0,
+        Adsense = 1,
+        Yandex = 2,
+        Baidu = 3
     }
 
-    public enum AdFormat
+    public enum AdSlot
     {
-        Auto,
-        Horizontal,
-        Vertical,
-        Rectangle
+        Header,
+        Middle,
+        Footer
     }
 }

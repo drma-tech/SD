@@ -33,9 +33,9 @@
     <HeadLayout></HeadLayout>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="@Css.Build().Medium("my")">
-            <GoogleAdSense Slot="@AdSlot.SdHeader"></GoogleAdSense>
+            <Advertising Slot="@AdSlot.Header"></Advertising>
             @Body
-            <GoogleAdSense Slot="@AdSlot.SdFooter"></GoogleAdSense>
+            <Advertising Slot="@AdSlot.Footer"></Advertising>
         </MudContainer>
         <FooterComponent></FooterComponent>
         <MudDivider Class="@Css.Build().Small("my").Medium("mt")"></MudDivider>

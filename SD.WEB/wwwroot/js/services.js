@@ -67,7 +67,7 @@ export const services = {
             (d.head || d.body).appendChild(s);
         })(document);
     },
-    initAdSense(adClient, adSlot, containerId, format) {
+    initAdSense(adClient, adSlot, containerId) {
         if (isBot) return;
         if (isLocalhost) return;
         if (isDev) return;
@@ -84,7 +84,7 @@ export const services = {
             ins.className = "adsbygoogle " + (isMobile ? "custom-ad-mobile" : "custom-ad");
             ins.setAttribute("data-ad-client", adClient);
             ins.setAttribute("data-ad-slot", adSlot);
-            ins.setAttribute("data-ad-format", format);
+            ins.setAttribute("data-ad-format", "auto");
             ins.setAttribute('data-full-width-responsive', false);
             container.appendChild(ins);
 

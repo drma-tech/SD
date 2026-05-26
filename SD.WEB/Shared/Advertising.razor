@@ -1,0 +1,192 @@
+﻿@using Microsoft.AspNetCore.Components.Routing
+@using SD.WEB.Modules.Subscription.Core
+@inherits ComponentCore<Advertising>
+
+@inject PaymentConfigurationApi ConfigurationApi
+@inject IpInfoApi IpInfoApi
+
+@if (IgnoreRoutes.All(p => !Navigation.Uri.Contains(p)))
+{
+    if (IsLocalhost)
+    {
+        <div style="text-align: center;" class="my-1">
+            <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">Remove Advertising</MudLink>
+        </div>
+        <div style="@($"height: 90px; text-align: center; align-content: center;")" class="@Css.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
+            Advertising
+        </div>
+    }
+    else
+    {
+        @if (Network != AdNetwork.None)
+        {
+            <div style="text-align: center;" class="my-1">
+                <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">Remove Advertising</MudLink>
+            </div>
+        }
+        @if (Network == AdNetwork.Adsense)
+        {
+            <div id="@_containerId" @key="@_containerId" style="text-align: center; align-content: center;" class="@Css.Build().Medium("mb")">
+            </div>
+        }
+        else if (Network == AdNetwork.Yandex)
+        {
+            <div id="@($"yandex_rtb_{GetYandexSlotId(Slot)}")"></div>
+            <script>
+                window.yaContextCb.push(() => {
+                    Ya.Context.AdvManager.render({
+                        "blockId": "@GetYandexSlotId(Slot)",
+                        "renderTo": "yandex_rtb_@GetYandexSlotId(Slot)"
+                    })
+                })
+            </script>
+        }
+        else if (Network == AdNetwork.Baidu)
+        {
+            <div style="@($"height: 90px; text-align: center; align-content: center;")" class="@Css.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
+                baidu advertising
+            </div>
+        }
+    }
+}
+
+@code {
+    [Parameter][SupplyParameterFromQuery(Name = "printscreen")] public bool Printscreen { get; set; } = false;
+    [Parameter][EditorRequired] public AdSlot Slot { get; set; }
+    [Parameter] public string[] IgnoreRoutes { get; set; } = ["auth", "legal"];
+
+    private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
+    private bool IsLocalhost => Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("develop");
+    private bool ActiveSubscription => AppStateStatic.Principal?.GetActiveSubscription() != null;
+
+    private AdNetwork Network { get; set; } = AdNetwork.None;
+    private const string AdClientId = "5145928155833172";
+
+    private string? _lastUri;
+    private int _adVersion;
+    private int _lastRenderedVersion = -1;
+    private string _containerId = $"ad-container-{Guid.NewGuid()}";
+
+    private readonly HashSet<string> _AdSenseBlockedCountries = new()
+    {
+        "CU", // Cuba
+        "IR", // Iran
+        "KP", // North Korea
+    };
+
+    private readonly HashSet<string> _YandexCountries = new()
+    {
+        "RU", // Russia
+        "BY", // Belarus
+        "KZ", // Kazakhstan
+        "AM", // Armenia
+        "AZ", // Azerbaijan
+        "KG", // Kyrgyzstan
+        "TJ", // Tajikistan
+        "UZ", // Uzbekistan
+        "MD", // Moldova
+        "TM"  // Turkmenistan
+    };
+
+    private string GetAdSenseId(AdSlot slot) => _adsenseSlots[slot];
+
+    private static readonly Dictionary<AdSlot, string> _adsenseSlots = new()
+    {
+        { AdSlot.Header, "7737592628" },
+        { AdSlot.Middle, "6324586995" },
+        { AdSlot.Footer, "4604311219" }
+    };
+
+    private string GetYandexSlotId(AdSlot slot) => _yandexSlots[slot];
+
+    private static readonly Dictionary<AdSlot, string> _yandexSlots = new()
+    {
+        { AdSlot.Header, "R-A-19337518-2" },
+        { AdSlot.Middle, "R-A-19337518-1" },
+        { AdSlot.Footer, "R-A-19337518-3" }
+    };
+
+    protected override void OnInitialized()
+    {
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        if (_lastUri == e.Location)
+            return;
+
+        _lastUri = e.Location;
+
+        _adVersion++;
+        _containerId = $"ad-container-{Guid.NewGuid()}";
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (_adVersion == _lastRenderedVersion)
+                return;
+
+            _lastRenderedVersion = _adVersion;
+            Network = AdNetwork.None;
+
+            if (IsLocalhost || Printscreen || ActiveSubscription)
+            {
+                Network = AdNetwork.None;
+            }
+            else
+            {
+                var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
+
+                if (country == "CN")
+                {
+                    Network = AdNetwork.Baidu;
+                    //todo: implement https://www.baiduadvertising.com/
+                }
+                else if (country.NotEmpty() && _YandexCountries.Contains(country))
+                {
+                    Network = AdNetwork.Yandex;
+                }
+                else if (country.NotEmpty() && _AdSenseBlockedCountries.Contains(country))
+                {
+                    Network = AdNetwork.None;
+                }
+                else //adsense
+                {
+                    Network = AdNetwork.Adsense;
+
+                    await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", GetAdSenseId(Slot), _containerId, cts.Token);
+                    _ = DetectAdBlockAsync();
+                }
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    private async Task DetectAdBlockAsync()
+    {
+        var blocked = await JsRuntime.Utils().IsAdBlocked(cts.Token);
+
+        if (blocked)
+        {
+            await InvokeAsync(async () =>
+            {
+                await ShowWarning(GlobalTranslations.AdBlockerDetected);
+            });
+        }
+    }
+
+    private async Task OpenSubscription()
+    {
+        await DialogService.SubscriptionPopup();
+    }
+}

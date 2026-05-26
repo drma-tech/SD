@@ -82,7 +82,7 @@
             </BodyFragment>
         </PageSectionComponent>
 
-        <GoogleAdSense Slot="@AdSlot.SdMiddle"></GoogleAdSense>
+        <Advertising Slot="@AdSlot.Middle"></Advertising>
 
         <PageSectionComponent Title="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
             <BodyFragment>
@@ -191,7 +191,7 @@
             </BodyFragment>
         </PageSectionComponent>
 
-        <GoogleAdSense Slot="@AdSlot.SdMiddle"></GoogleAdSense>
+        <Advertising Slot="@AdSlot.Middle"></Advertising>
 
         <PageSectionComponent Title="@Translations.TabCredits" Color="Color.Secondary">
             <BodyFragment>
