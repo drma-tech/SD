@@ -1,4 +1,5 @@
-﻿@using SD.WEB.Modules.Subscription.Core
+﻿@using Microsoft.AspNetCore.Components.Routing
+@using SD.WEB.Modules.Subscription.Core
 @inherits ComponentCore<GoogleAdSense>
 
 @inject PaymentConfigurationApi ConfigurationApi
@@ -36,7 +37,10 @@
     private bool ActiveSubscription => AppStateStatic.Principal?.GetActiveSubscription() != null;
 
     private const string AdClientId = "5145928155833172";
-    private readonly string _containerId = $"ad-container-{Guid.NewGuid()}";
+
+    private int _adVersion;
+    private int _lastRenderedVersion = -1;
+    private string _containerId = $"ad-container-{Guid.NewGuid()}";
 
     private readonly Dictionary<string, string> _BlockedCountries = new()
     {
@@ -46,11 +50,29 @@
         { "CN", "China (Mainland)" }
     };
 
+    protected override void OnInitialized()
+    {
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        _adVersion++;
+        _containerId = $"ad-container-{Guid.NewGuid()}";
+
+        InvokeAsync(StateHasChanged);
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         try
         {
-            if (firstRender && !IsLocalhost && !ActiveSubscription)
+            if (_adVersion == _lastRenderedVersion)
+                return;
+
+            _lastRenderedVersion = _adVersion;
+
+            if (!IsLocalhost && !ActiveSubscription)
             {
                 var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
 

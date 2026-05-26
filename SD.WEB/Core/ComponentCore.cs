@@ -100,16 +100,16 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
 
         Snackbar.Add(message, Severity.Info);
 
-        await JsRuntime.Utils().PlayBeep(600, 120, "sine", cts.Token);
-        await JsRuntime.Utils().Vibrate([50], cts.Token);
+        await JsRuntime.Utils().PlayBeep(600, 120, "sine", CancellationToken.None);
+        await JsRuntime.Utils().Vibrate([50], CancellationToken.None);
     }
 
     protected async Task ShowInfo(RenderFragment message)
     {
         Snackbar.Add(message, Severity.Info);
 
-        await JsRuntime.Utils().PlayBeep(600, 120, "sine", cts.Token);
-        await JsRuntime.Utils().Vibrate([50], cts.Token);
+        await JsRuntime.Utils().PlayBeep(600, 120, "sine", CancellationToken.None);
+        await JsRuntime.Utils().Vibrate([50], CancellationToken.None);
     }
 
     protected async Task ShowSuccess(string message)
@@ -118,8 +118,8 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
 
         Snackbar.Add(message, Severity.Success);
 
-        await JsRuntime.Utils().PlayBeep(880, 100, "sine", cts.Token);
-        await JsRuntime.Utils().Vibrate([40], cts.Token);
+        await JsRuntime.Utils().PlayBeep(880, 100, "sine", CancellationToken.None);
+        await JsRuntime.Utils().Vibrate([40], CancellationToken.None);
     }
 
     protected async Task ShowWarning(string message)
@@ -128,8 +128,8 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
 
         Snackbar.Add(message, Severity.Warning);
 
-        await JsRuntime.Utils().PlayBeep(440, 200, "triangle", cts.Token);
-        await JsRuntime.Utils().Vibrate([100, 80, 100], cts.Token);
+        await JsRuntime.Utils().PlayBeep(440, 200, "triangle", CancellationToken.None);
+        await JsRuntime.Utils().Vibrate([100, 80, 100], CancellationToken.None);
     }
 
     protected async Task ShowError(string message)
@@ -138,8 +138,8 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
 
         Snackbar.Add(message, Severity.Error);
 
-        await JsRuntime.Utils().PlayBeep(220, 400, "square", cts.Token);
-        await JsRuntime.Utils().Vibrate([200, 100, 200], cts.Token);
+        await JsRuntime.Utils().PlayBeep(220, 400, "square", CancellationToken.None);
+        await JsRuntime.Utils().Vibrate([200, 100, 200], CancellationToken.None);
     }
 
     protected async Task ProcessException(Exception ex, bool showMessage = true)
@@ -148,6 +148,10 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
         {
             Logger.LogWarning(exc.Message);
             if (showMessage) await ShowWarning(exc.Message);
+        }
+        else if (ex is OperationCanceledException)
+        {
+            Console.WriteLine($"Operation was canceled: {ex.Message}");
         }
         else
         {

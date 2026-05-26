@@ -17,7 +17,7 @@
                     }
                     @if (IsMobile)
                     {
-                        <MudText Typo="Typo.h1" Color="Color.Primary" Style="@($"font-size: {titleFontSize}; line-height: 1.2;")">
+                        <MudText Typo="Typo.h1" Color="Color" Style="@($"font-size: {titleFontSize}; line-height: 1.2;")">
                             @Title
                         </MudText>
                         @if (Subtitle.NotEmpty())
@@ -30,7 +30,7 @@
                     else
                     {
                         <div>
-                            <MudText Typo="Typo.h1" Color="Color.Primary" Style="@($"font-size: {titleFontSize}; line-height: 1.2;")">
+                            <MudText Typo="Typo.h1" Color="Color" Style="@($"font-size: {titleFontSize}; line-height: 1.2;")">
                                 @Title
                             </MudText>
                             @if (Subtitle.NotEmpty())

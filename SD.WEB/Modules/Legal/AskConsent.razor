@@ -1,9 +1,9 @@
-﻿@page "/{culture}/ask-consent"
+﻿@page "/{culture}/legal/ask-consent"
 @using SD.WEB.Modules.Auth.Resources
 
 @inherits PageCore<AskConsent>
 
-<HeadComponent Title="Ask Consent" Url=@($"/{Culture}/ask-consent") Index="false"></HeadComponent>
+<HeadComponent Title="Ask Consent" Url=@($"/{Culture}/legal/ask-consent") Index="false"></HeadComponent>
 
 <MudPaper Elevation="0" Outlined="true" Class="@Css.Build().Small("pa")">
     <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="@Css.Build().Small("mb")">
