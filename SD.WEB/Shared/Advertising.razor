@@ -52,6 +52,7 @@
 
 @code {
     [Parameter][SupplyParameterFromQuery(Name = "printscreen")] public bool Printscreen { get; set; } = false;
+    [Parameter][SupplyParameterFromQuery(Name = "country")] public string? Country { get; set; }
     [Parameter][EditorRequired] public AdSlot Slot { get; set; }
     [Parameter] public string[] IgnoreRoutes { get; set; } = ["auth", "legal"];
 
@@ -140,18 +141,18 @@
             }
             else
             {
-                var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
+                var country = Country ?? await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
 
-                if (country == "CN")
+                if (country?.ToUpper() == "CN")
                 {
                     Network = AdNetwork.Baidu;
                     //todo: implement https://www.baiduadvertising.com/
                 }
-                else if (country.NotEmpty() && _YandexCountries.Contains(country))
+                else if (country.NotEmpty() && _YandexCountries.Contains(country.ToUpper()))
                 {
                     Network = AdNetwork.Yandex;
                 }
-                else if (country.NotEmpty() && _AdSenseBlockedCountries.Contains(country))
+                else if (country.NotEmpty() && _AdSenseBlockedCountries.Contains(country.ToUpper()))
                 {
                     Network = AdNetwork.None;
                 }
