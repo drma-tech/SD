@@ -32,14 +32,6 @@
         else if (Network == AdNetwork.Yandex)
         {
             <div id="@($"yandex_rtb_{GetYandexSlotId(Slot)}")"></div>
-            <script>
-                window.yaContextCb.push(() => {
-                    Ya.Context.AdvManager.render({
-                        "blockId": "@GetYandexSlotId(Slot)",
-                        "renderTo": "yandex_rtb_@GetYandexSlotId(Slot)"
-                    })
-                })
-            </script>
         }
         else if (Network == AdNetwork.Baidu)
         {
@@ -151,6 +143,8 @@
                 else if (country.NotEmpty() && _YandexCountries.Contains(country.ToUpper()))
                 {
                     Network = AdNetwork.Yandex; StateHasChanged();
+
+                    await JsRuntime.Services().InitYandex(GetYandexSlotId(Slot), cts.Token);
                 }
                 else if (country.NotEmpty() && _AdSenseBlockedCountries.Contains(country.ToUpper()))
                 {

@@ -94,6 +94,15 @@ export const services = {
             notification.showError(error.message);
         }
     },
+    initYandex(id) {
+        window.yaContextCb = window.yaContextCb || [];
+        window.yaContextCb.push(() => {
+            Ya.Context.AdvManager.render({
+                "blockId": id,
+                "renderTo": "yandex_rtb_" + id
+            })
+        });
+    }
 };
 
 services.initMicrosoftClarity(servicesConfig.ClarityKey);
