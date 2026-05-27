@@ -4,8 +4,7 @@
     {
         None = 0,
         Adsense = 1,
-        Yandex = 2,
-        Baidu = 3
+        Yandex = 2
     }
 
     public enum AdSlot

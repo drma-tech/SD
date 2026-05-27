@@ -151,7 +151,7 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
         }
         else if (ex is OperationCanceledException)
         {
-            Console.WriteLine($"Operation was canceled: {ex.Message}");
+            //ignored
         }
         else
         {

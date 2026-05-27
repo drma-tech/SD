@@ -12,7 +12,7 @@
         <div style="text-align: center;" class="my-1">
             <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">Remove Advertising</MudLink>
         </div>
-        <div style="@($"height: 90px; text-align: center; align-content: center;")" class="@Css.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
+        <div style="@($"height: 280px; text-align: center; align-content: center;")" class="@Css.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
             Advertising
         </div>
     }
@@ -32,12 +32,6 @@
         else if (Network == AdNetwork.Yandex)
         {
             <div id="@($"yandex_rtb_{GetYandexSlotId(Slot)}")" @key="@_containerId" style="text-align: center; align-content: center;" class="@Css.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
-            </div>
-        }
-        else if (Network == AdNetwork.Baidu)
-        {
-            <div style="@($"height: 90px; text-align: center; align-content: center;")" class="@Css.Build().Medium("mb").Raw("adsbygoogle custom-ad")">
-                baidu advertising
             </div>
         }
     }
@@ -136,12 +130,7 @@
             {
                 var country = Country ?? await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
 
-                if (country?.ToUpper() == "CN")
-                {
-                    Network = AdNetwork.Baidu; StateHasChanged();
-                    //todo: implement https://www.baiduadvertising.com/
-                }
-                else if (country.NotEmpty() && _YandexCountries.Contains(country.ToUpper()))
+                if (country.NotEmpty() && _YandexCountries.Contains(country.ToUpper()))
                 {
                     Network = AdNetwork.Yandex; StateHasChanged();
 
