@@ -38,9 +38,7 @@ public class MySuggestionsFunction(CosmosRepository repo)
             obj = body;
         }
 
-        var type = Enum.Parse<MediaType>(mediaType);
-
-        if (type == MediaType.movie)
+        if (mediaType.ParseToEnum(MediaType.movie) == MediaType.movie)
             obj.MovieSyncDate = DateTime.Now;
         else
             obj.ShowSyncDate = DateTime.Now;

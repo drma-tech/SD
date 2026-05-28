@@ -39,7 +39,7 @@
 @code {
     [Parameter] public required string category { get; set; }
 
-    public MediaType MediaType => Enum.Parse<MediaType>(category ?? "movie");
+    public MediaType MediaType => category.ParseToEnum(MediaType.movie);
 
     public ComponentActions<CacheDocument<NewsModel>?> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
     private CacheDocument<NewsModel>? NewsList { get; set; }

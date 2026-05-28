@@ -119,7 +119,7 @@
     protected override async Task ProcessInitialData()
     {
         DeliveryModels = EnumHelper.GetList<DeliveryModel>();
-        RegionEnum = Region.NotEmpty() ? Enum.Parse<Region>(Region, true) : await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
+        RegionEnum = Region.NotEmpty() ? Region.ParseToEnum<Region>() : await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
 
         await Actions.StartLoading.Invoke(null);
         AllProviders = await AllProvidersApi.GetAll(cts.Token);

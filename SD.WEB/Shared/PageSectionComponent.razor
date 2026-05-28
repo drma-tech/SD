@@ -156,9 +156,16 @@
             }
             @if (HasBody)
             {
-                <MudPaper Class="@Css.Build().Small("pa")" Style="@($"background-color: transparent; {(HasActions ? "border-radius: 0px 0px 4px 4px;" : "")}")" Outlined="true" Elevation="0">
+                @if (HasBodyBox)
+                {
+                    <MudPaper Class="@Css.Build().Small("pa")" Style="@($"background-color: transparent; {(HasActions ? "border-radius: 0px 0px 4px 4px;" : "")}")" Outlined="true" Elevation="0">
+                        @BodyFragment
+                    </MudPaper>
+                }
+                else
+                {
                     @BodyFragment
-                </MudPaper>
+                }
             }
         }
 
@@ -183,6 +190,7 @@
     [Parameter] public string? ImageStyle { get; set; }
     [Parameter] public bool Visible { get; set; } = true;
     [Parameter] public string? CustomBodyClass { get; set; }
+    [Parameter] public bool HasBodyBox { get; set; } = true;
 
     //Fragments
     [Parameter] public RenderFragment? ExtraFragment { get; set; }

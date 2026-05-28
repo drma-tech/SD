@@ -287,7 +287,7 @@ public class PaymentFunction(CosmosRepository repo, IHttpClientFactory factory)
 
             sub.Active = obj.Status is "active" or "trialing";
 
-            sub.Cycle = Enum.Parse<AccountCycle>(obj.Items.First().Price.Metadata["cycle"]); //if cycle changes, update it
+            sub.Cycle = obj.Items.First().Price.Metadata["cycle"].ParseToEnum<AccountCycle>();
 
             if (obj.CancelAt.HasValue)
             {

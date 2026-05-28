@@ -59,7 +59,7 @@
             // attention: avoid using asynchronous calls here, as it may affect static html generation (especially for anonymous users)
             // *************************************
 
-            BufferedEvent.Register(nameof(ShowError), (string msg) => { Snackbar.Add(msg, Severity.Error); return Task.CompletedTask; });
+            BufferedEvent.Register(nameof(ShowError), async (string msg) => { await ShowNotificationError(msg); });
 
             AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
             AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), cts.Token);
@@ -304,6 +304,16 @@
             await DialogService.OnboardingPopup(Culture);
             await JsRuntime.Utils().SetStorage("onboarding-popup", true, JavascriptContext.Default.Boolean, cancellationToken);
         }
+    }
+
+    protected async Task ShowNotificationError(string message)
+    {
+        if (!message.CanShowSnackbar()) return;
+
+        Snackbar.Add(message, Severity.Error);
+
+        await JsRuntime.Utils().PlayBeep(220, 400, "square", CancellationToken.None);
+        await JsRuntime.Utils().Vibrate([200, 100, 200], CancellationToken.None);
     }
 
     [JSInvokable]

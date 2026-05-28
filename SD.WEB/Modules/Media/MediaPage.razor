@@ -199,7 +199,7 @@
                 </CreditsComponent>
             </BodyFragment>
         </PageSectionComponent>
-        
+
         <PageSectionComponent Title="Reviews" Color="Color.Secondary">
             <BodyFragment>
                 @if (ImdbId.NotEmpty())
@@ -253,7 +253,7 @@
 
     private void LocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        ProcessPageData().ContinueWith(delegate { JsRuntime.Swiper().InitLists(_swiperId, cts.Token); });
+        ProcessPageData().ContinueWith(delegate { JsRuntime.Swiper().InitLists(_swiperId, CancellationToken.None); });
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -301,10 +301,10 @@
 
         StateHasChanged();
 
-        ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId, cts.Token);
-
         try
         {
+            ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId, cts.Token);
+
             await RatingsActions.StartLoading.Invoke(null);
             if (Media?.MediaType == MediaType.movie)
             {

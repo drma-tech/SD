@@ -149,7 +149,7 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
             Logger.LogWarning(exc.Message);
             if (showMessage) await ShowWarning(exc.Message);
         }
-        else if (ex is OperationCanceledException)
+        else if (ex is OperationCanceledException or TaskCanceledException)
         {
             //ignored
         }

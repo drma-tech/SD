@@ -161,7 +161,7 @@
     private AuthPrincipal? Client { get; set; }
     private List<PaymentProvider> Providers { get; set; } = [];
 
-    private AccountCycle Cycle { get; set; } = AccountCycle.Weekly;
+    private AccountCycle Cycle { get; set; } = AccountCycle.Yearly;
     private SD.Shared.Enums.Platform? Platform { get; set; }
     private PaymentProvider Provider { get; set; } = PaymentProvider.Stripe;
     private string? CurrentCountry { get; set; }

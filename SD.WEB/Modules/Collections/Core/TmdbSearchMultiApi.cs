@@ -27,7 +27,7 @@ public class TmdbSearchMultiApi(IHttpClientFactory factory) : ApiExternal(factor
             {
                 if (item.media_type == "collection") continue;
 
-                var mediaType = Enum.Parse<MediaType>(item.media_type ?? "");
+                var mediaType = item.media_type.ParseToEnum<MediaType>();
 
                 currentList.Add(new MediaDetail
                 {

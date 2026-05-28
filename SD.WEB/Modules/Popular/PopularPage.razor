@@ -30,7 +30,7 @@ else
 @code {
     [Parameter] public string? Type { get; set; }
 
-    public PopularType PopularType => Enum.Parse<PopularType>(Type ?? "movie", true);
+    public PopularType PopularType => Type.ParseToEnum(PopularType.Movie);
 
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }

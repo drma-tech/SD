@@ -13,7 +13,7 @@
 <HeadComponent Title="@($"{Translations.EditorsChoiceTitle} ({MediaType.GetName()})")" Description="@GlobalTranslations.CertifiedDescription"
                Url="@($"/{Culture}/editors-choice/{Type}")" Index="true" Shared="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Title="@($"{Translations.EditorsChoiceTitle} ({MediaType.GetName()})")" Subtitle="Top-rated titles for all audiences" Description="@GlobalTranslations.CertifiedDescription"
-                Icon="@IconsFA.Solid.Icon("award").Font" UrlShare="@($"/{Culture}/editors-choice/{Type}")"></PageSectionComponent>
+                      Icon="@IconsFA.Solid.Icon("award").Font" UrlShare="@($"/{Culture}/editors-choice/{Type}")"></PageSectionComponent>
 
 @if (MediaType == MediaType.movie)
 {
@@ -31,7 +31,7 @@ else
 @code {
     [Parameter] public string? Type { get; set; }
 
-    public MediaType MediaType => Enum.Parse<MediaType>(Type ?? "movie");
+    public MediaType MediaType => Type.ParseToEnum(MediaType.movie);
 
     public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }

@@ -35,7 +35,7 @@ public class WishListFunction(CosmosRepository repo)
             obj.Initialize(userId);
         }
 
-        obj.AddItem(Enum.Parse<MediaType>(type), newItem);
+        obj.AddItem(type.ParseToEnum<MediaType>(), newItem);
 
         return await repo.UpsertItemAsync(obj, cancellationToken);
     }
@@ -56,7 +56,7 @@ public class WishListFunction(CosmosRepository repo)
             obj.Initialize(userId);
         }
 
-        obj.RemoveItem(Enum.Parse<MediaType>(type), id);
+        obj.RemoveItem(type.ParseToEnum<MediaType>(), id);
 
         return await repo.UpsertItemAsync(obj, cancellationToken);
     }

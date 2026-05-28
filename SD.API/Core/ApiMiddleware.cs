@@ -40,11 +40,6 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
 
             await next(context);
         }
-        catch (CosmosOperationCanceledException ex)
-        {
-            req?.LogError(ex);
-            await context.SetHttpResponseStatusCode(HttpStatusCode.RequestTimeout, "Cosmos Request Timeout!");
-        }
         catch (CosmosException ex)
         {
             req?.LogError(ex);
@@ -54,12 +49,17 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
         {
             await context.SetHttpResponseStatusCode(HttpStatusCode.BadRequest, ex.Message);
         }
-        catch (TaskCanceledException ex)
+        catch (CosmosOperationCanceledException)
         {
-            if (ex.CancellationToken.IsCancellationRequested)
-                await context.SetHttpResponseStatusCode(HttpStatusCode.InternalServerError, "Invocation cancelled!");
-            else
-                await context.SetHttpResponseStatusCode(HttpStatusCode.RequestTimeout, "Request Timeout!");
+            // ignored
+        }
+        catch (TaskCanceledException)
+        {
+            // ignored
+        }
+        catch (OperationCanceledException)
+        {
+            // ignored
         }
         catch (Exception ex)
         {

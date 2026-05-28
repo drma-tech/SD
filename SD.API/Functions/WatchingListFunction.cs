@@ -36,7 +36,7 @@ public class WatchingListFunction(CosmosRepository repo)
             obj.Initialize(userId);
         }
 
-        obj.AddItem(Enum.Parse<MediaType>(mediaType), newItem);
+        obj.AddItem(mediaType.ParseToEnum<MediaType>(), newItem);
 
         return await repo.UpsertItemAsync(obj, cancellationToken);
     }
@@ -58,7 +58,7 @@ public class WatchingListFunction(CosmosRepository repo)
             obj.Initialize(userId);
         }
 
-        obj.RemoveItem(Enum.Parse<MediaType>(mediaType), collectionId, tmdbId == "null" ? null : tmdbId);
+        obj.RemoveItem(mediaType.ParseToEnum<MediaType>(), collectionId, tmdbId == "null" ? null : tmdbId);
 
         return await repo.UpsertItemAsync(obj, cancellationToken);
     }
@@ -81,7 +81,7 @@ public class WatchingListFunction(CosmosRepository repo)
             obj.Initialize(userId);
         }
 
-        var type = Enum.Parse<MediaType>(mediaType);
+        var type = mediaType.ParseToEnum<MediaType>();
 
         if (type == MediaType.movie)
         {

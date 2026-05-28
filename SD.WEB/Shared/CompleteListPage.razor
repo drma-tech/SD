@@ -56,8 +56,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (id.NotEmpty() && Navigation.Uri.Contains("list")) List = Enum.Parse<EnumLists>(id!);
-        if (Type.NotEmpty()) TypeSelected = Enum.Parse<MediaType>(Type!, true);
+        if (id.NotEmpty() && Navigation.Uri.Contains("list")) List = id.ParseToEnum<EnumLists>();
+        if (Type.NotEmpty()) TypeSelected = Type.ParseToEnum<MediaType>();
 
         WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
