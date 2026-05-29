@@ -80,6 +80,9 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
             item.Ip = ip;
         }
 
+        var zepto = new ZeptoMailClient(ApiStartup.Configurations.ZeptoMail!.JobApiKey!);
+        if (body.Email.NotEmpty()) _ = zepto.SendWelcomeEmail(body.Email, userId, cancellationToken);
+
         var principal = new AuthPrincipal
         {
             AuthProviders = body.AuthProviders,

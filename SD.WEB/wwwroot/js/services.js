@@ -78,10 +78,8 @@ export const services = {
 
             container.innerHTML = ""; // remove old ad
 
-            const isMobile = window.innerWidth <= 600 || window.innerHeight <= 600;
-
             const ins = document.createElement("ins");
-            ins.className = "adsbygoogle " + (isMobile ? "custom-ad-mobile" : "custom-ad");
+            ins.className = "adsbygoogle custom-ad";
             ins.setAttribute("data-ad-client", adClient);
             ins.setAttribute("data-ad-slot", adSlot);
             ins.setAttribute("data-ad-format", "auto");

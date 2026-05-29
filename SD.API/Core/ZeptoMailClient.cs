@@ -7,61 +7,325 @@ namespace SD.API.Core
     {
         private readonly HttpClient _httpClient = new();
         private readonly string _apiKey = apiKey;
+        private readonly string _uri = "https://api.zeptomail.com/v1.1/email";
+
+        private const string appName = "Streaming Discovery";
+        private const string supportEmail = "support@streamingdiscovery.com";
+        private static string year => DateTime.Now.Year.ToString();
+
+        private static readonly string CssBase = @"
+        /* BASE */
+        body { margin: 0; padding: 0; background: #f3f5f7; font-family: Arial, Helvetica, sans-serif; color: #111827; }
+        * { box-sizing: border-box; }
+        a { text-decoration: none; }
+        .email-wrapper { padding: 24px 12px; background: #f3f5f7; }
+        .email-container { max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 18px; overflow: hidden; }
+        /* HEADER */
+        .email-header { background-color: #5a4be2; padding: 16px 16px; text-align: center; }
+        .email-logo { width: 48px; height: 48px; }
+        .email-app-name { margin: 0; color: #ffffff; font-size: 30px; font-weight: 700; }
+        .email-tagline { margin-top: 10px; color: rgba(255,255,255,0.85); font-size: 14px; }
+        /* CONTENT */
+        .email-content { padding: 24px 16px; text-align: center; }
+        .email-title { margin: 0 0 20px; font-size: 28px; color: #111827; }
+        .email-text { margin: 0 0 20px; font-size: 15px; line-height: 1.7; color: #4b5563; }
+        .email-highlight { color: #5a4be2; font-weight: 700; }
+        .email-button { display: inline-block; margin-top: 16px; padding: 14px 22px; background: #5a4be2; color: #ffffff !important; border-radius: 10px; font-size: 15px; font-weight: 700; }
+        .email-divider { margin: 32px 0; border: 0; border-top: 1px solid #e5e7eb; }
+        .email-support { font-size: 14px; color: #6b7280; }
+        .email-support a { color: #5a4be2; font-weight: 600; }
+        .email-signature { margin-top: 24px; }
+        .email-signature small { display: block; color: #9ca3af; font-size: 13px; margin-bottom: 6px; }
+        .email-signature strong { font-size: 15px; color: #111827; }
+        /* FOOTER */
+        .email-footer { padding: 16px 16px; background: #eaebed; border-top: 1px solid #e5e7eb; text-align: center; }
+        .footer-socials { margin-bottom: 16px; display: none; }
+        .footer-socials a { display: inline-block; margin: 0 4px; }
+        .footer-socials img { width: 20px; height: 20px; }
+        .footer-apps { margin-bottom: 16px; }
+        .footer-apps a { display: inline-block; margin: 0 4px; }
+        .footer-apps img { height: 20px; margin: 0 6px; vertical-align: bottom; }
+        .footer-links { margin-bottom: 16px; }
+        .footer-links a { margin: 0 10px; font-size: 13px; color: #6b7280; }
+        .footer-copy { font-size: 12px; color: #9ca3af; line-height: 1.6; }
+        @media only screen and (max-width: 600px) {
+        .email-title { font-size: 24px; }
+        .email-app-name { font-size: 26px; }
+        }";
+
+        private static readonly string CssSections = ".email-section { margin-top: 32px; } .section-title { margin-bottom: 16px; font-size: 18px; font-weight: 700; color: #5a4be2; }";
+        private static readonly string CssQuickLinks = ".link-grid { text-align: center; } .link-card { display: inline-block; margin: 4px; padding: 8px 12px; background: #6b728024; border: 1px solid #e5e7eb; border-radius: 999px; color: #ff4081 !important; font-size: 14px; font-weight: 600; transition: 0.2s ease; }";
+        private static readonly string CssProducts = ".product-list { margin-top: 12px; } .product-card { display: block; margin-bottom: 10px; padding: 10px; background: #6b728024; border: 1px solid #e5e7eb; border-radius: 12px; text-align: left; } .product-name { margin-bottom: 4px; color: #ff4081; font-size: 15px; font-weight: 700; } .product-name img { height: 20px; margin: 0 6px; vertical-align: bottom; } .product-description { color: #6b7280; font-size: 14px; line-height: 1.5; }";
+
+        private static readonly string CssOtp = ".otp { display: inline-block; padding: 16px; margin: 12px 0; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 14px; font-size: 36px; font-weight: 700; letter-spacing: 4px; color: #5a4be2; }";
+
+        private static readonly string HtmlHeader = @$"
+        <div class=""email-header"">
+            <img class=""email-logo"" src=""https://streamingdiscovery.com/icon/icon-71.png"" alt=""{appName} Logo"">
+            <h1 class=""email-app-name"">
+                {appName}
+            </h1>
+            <div class=""email-tagline"">
+                Discover Movies and Series on Streaming Platforms
+            </div>
+        </div>";
+
+        private static readonly string HtmlProducts = @$"
+        <div class=""email-section"">
+            <div class=""section-title"">
+                More from DRMA Tech
+            </div>
+            <div class=""product-list"">
+                <a href=""https://www.modern-matchmaker.com"" class=""product-card"" target=""_blank"">
+                    <div class=""product-name"">
+                        <img src=""https://www.streamingdiscovery.com/logo/modern-matchmaker.png"" alt=""Modern Matchmaker"">Modern Matchmaker
+                    </div>
+                    <div class=""product-description"">
+                        Find a compatible partner through Smart Matchmaking
+                    </div>
+                </a>
+                <a href=""https://www.my-next-spot.com"" class=""product-card"" target=""_blank"">
+                    <div class=""product-name"">
+                        <img src=""https://www.streamingdiscovery.com/logo/next-spot.png"" alt=""My Next Spot"">My Next Spot
+                    </div>
+                    <div class=""product-description"">
+                        Find the Best Cities and Countries to Live or Travel
+                    </div>
+                </a>
+                <a href=""https://www.web-standards.com"" class=""product-card"" target=""_blank"">
+                    <div class=""product-name"">
+                        <img src=""https://www.streamingdiscovery.com/logo/webstandards.png"" alt=""Web Standards"">Web Standards
+                    </div>
+                    <div class=""product-description"">
+                        Web Standards Generator for Websites and PWAs
+                    </div>
+                </a>
+            </div>
+        </div>";
+
+        private static readonly string HtmlFooter = @$"
+        <div class=""email-footer"">
+            <!-- SOCIALS -->
+            <div class=""footer-socials"">
+                <a href=""{{instagramUrl}}"">
+                    <img src=""{{instagramIcon}}"" alt=""Instagram"">
+                </a>
+                <a href=""{{twitterUrl}}"">
+                    <img src=""{{twitterIcon}}"" alt=""Twitter"">
+                </a>
+                <a href=""{{youtubeUrl}}"">
+                    <img src=""{{youtubeIcon}}"" alt=""YouTube"">
+                </a>
+            </div>
+
+            <!-- APP STORES -->
+            <div class=""footer-apps"">
+                <a href=""https://apps.microsoft.com/detail/9pb1pkrdd8l0"" target=""_blank"">
+                    <img src=""https://www.streamingdiscovery.com/logo/microsoft-store.png"" alt=""Microsoft Store"">Microsoft Store
+                </a>
+                <a href=""https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa"" target=""_blank"">
+                    <img src=""https://www.streamingdiscovery.com/logo/google-play.png"" alt=""Google Play"">Google Play
+                </a>
+                <a href=""https://apps.apple.com/us/app/id6749285238"" target=""_blank"">
+                    <img src=""https://www.streamingdiscovery.com/logo/app-store.png"" alt=""App Store"">App Store
+                </a>
+                <a href=""https://www.streamingdiscovery.com/en/help#get-the-app"" target=""_blank"">
+                    <img src=""https://www.streamingdiscovery.com/logo/website-logo.png"" alt=""More"">More
+                </a>
+            </div>
+
+            <!-- LINKS -->
+            <div class=""footer-links"">
+                <a href=""https://www.streamingdiscovery.com"" target=""_blank"">
+                    Website
+                </a>
+                <a href=""https://www.streamingdiscovery.com/legal/terms"" target=""_blank"">
+                    Terms
+                </a>
+                <a href=""https://www.streamingdiscovery.com/legal/privacy"" target=""_blank"">
+                    Privacy
+                </a>
+            </div>
+
+            <!-- COPYRIGHT -->
+            <div class=""footer-copy"">
+                © {year} DRMA Tech.<br>
+                All rights reserved.
+            </div>
+        </div>";
 
         public async Task SendOtpEmail(string toEmail, string reference, string? otp, CancellationToken cancellationToken)
         {
-            var appName = "Streaming Discovery";
-            var supportEmail = "support@streamingdiscovery.com";
-
             var payload = new
             {
                 from = new { address = "noreply@drma-tech.com", name = "DRMA Tech" },
                 to = new[] { new { email_address = new { address = toEmail, name = "" } } },
                 subject = "DRMA Tech - Your OTP Code",
-                htmlbody = @$"<table cellspacing=""0"" cellpadding=""0"" style="" width: 100%;font-size: 14px;"">
-                    <tbody>
-                        <tr>
-                            <td style=""padding:32px"">
-                                <div>
-                                    <h1 style=""margin: 0 0 32px;font-size:20px;text-align:center""><span>{appName}</span>
-                                    </h1>
-                                </div>
-                                <div style=""background: #fff;border-radius: 10px;overflow: hidden;border: solid 1px #E5E5E5;border-radius: 10px;"">
-                                    <table cellspacing=""0"" cellpadding=""0"" style=""width:100%;font-size: 14px;"">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div style=""padding: 32px 26px;text-align: center;"">
-                                                        <h2 style=""margin:0 0 20px;font-size: 20px;"">Verification code</h2>
-                                                        <p style=""font-size: 14px; margin: 0;line-height: 1.6;"">
-                                                        Enter the below one time password to verify your {appName} account:
-                                                        </p>
-                                                        <p style=""font-size: 24px; margin: 24px 0;color:#264DED"">{otp}</p>
-                                                        <p style=""font-size: 13px; margin: 0;line-height: 1.5;"">The verification code expires in <span style=""color: #AA2222"">10 min</span></p>
+                htmlbody = @$"
+                 <!DOCTYPE html>
+                <html lang=""en"">
+                <head>
+                    <meta charset=""utf-8"">
+                    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                    <style>
+                        {CssBase}
+                        {CssOtp}
+                    </style>
+                </head>
+                <body>
+                    <div class=""email-wrapper"">
+                        <div class=""email-container"">
 
-                                                        <hr style=""border-style: dashed;border-width: 1px 0 0;border-color: #CECECE;margin: 24px 0"">
+                            <!-- HEADER -->
+                            {HtmlHeader}
 
-                                                        <p style=""font-size:14px;line-height: 1.6;margin: 24px 0 0"">If you have further questions, write to us at <a href=""#"" style=""color:#006CFF;text-decoration: none;"">{supportEmail}</a> and our team will get back to you.</p>
-                                                        <div style=""margin-top: 32px;line-height: 1.6;"">
-                                                            <p style=""font-size: 13px; margin: 0;"">Have a great day!</p>
-                                                            <h3 style=""font-size: 15px; margin: 4px 0 0;"">Team DRMA Tech</h3>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            <!-- CONTENT -->
+                            <div class=""email-content"">
+                                <h2 class=""email-title"">
+                                    Verification Code
+                                </h2>
+                               
+                                <p>Use the code below to confirm your {appName} account.</p>
+                                <div style=""text-align:center"">
+                                    <div class=""otp"">{otp}</div>
                                 </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>",
+                                <p>This code expires in <span style=""color: #ff4081; font-weight: bold;"">10 minutes</span>.</p>
+                                                             
+                                <hr class=""email-divider"">
+                                <div class=""email-support"">
+                                    Questions? Contact
+                                    <a href=""mailto:{supportEmail}"">
+                                        {supportEmail}
+                                    </a>
+                                </div>
+                                <div class=""email-signature"">
+                                    <small>Have a great day,</small>
+                                    <strong>Team DRMA Tech</strong>
+                                </div>
+                            </div>
+
+                            <!-- FOOTER -->
+                            {HtmlFooter}
+                        </div>
+                    </div>
+                </body>
+                </html>",
                 client_reference = reference
             };
 
             var json = JsonSerializer.Serialize(payload);
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "https://api.zeptomail.com/v1.1/email");
+            var request = new HttpRequestMessage(HttpMethod.Post, _uri);
+
+            request.Headers.Add("Authorization", _apiKey);
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.SendAsync(request, cancellationToken);
+
+            var body = await response.Content.ReadAsStringAsync(cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new NotificationException($"ZeptoMail error: {response.StatusCode} - {body}");
+            }
+        }
+
+        public async Task SendWelcomeEmail(string toEmail, string reference, CancellationToken cancellationToken)
+        {
+            var payload = new
+            {
+                from = new { address = "noreply@drma-tech.com", name = "DRMA Tech" },
+                to = new[] { new { email_address = new { address = toEmail, name = "" } } },
+                subject = $"DRMA Tech - Welcome to {appName}",
+                htmlbody = @$"
+                 <!DOCTYPE html>
+                <html lang=""en"">
+                <head>
+                    <meta charset=""utf-8"">
+                    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                    <style>
+                        {CssBase}
+                        {CssSections}
+                        {CssQuickLinks}
+                        {CssProducts}
+                    </style>
+                </head>
+                <body>
+                    <div class=""email-wrapper"">
+                        <div class=""email-container"">
+
+                            <!-- HEADER -->
+                            {HtmlHeader}
+
+                            <!-- CONTENT -->
+                            <div class=""email-content"">
+                                <h2 class=""email-title"">
+                                    Welcome to {appName}!
+                                </h2>
+                                <p class=""email-text"">
+                                    Hello {toEmail.Split("@")[0]}, we are very glad you joined
+                                    <span class=""email-highlight"">{appName}</span>.
+                                </p>
+                                <p class=""email-text"">
+                                    Keep track of your streaming platforms,
+                                    manage your viewing progress, and discover
+                                    what to watch next with curated lists,
+                                    award winners, and critical recommendations.
+                                </p>
+                                <!-- QUICK LINKS -->
+                                <div class=""email-section"">
+                                    <div class=""section-title"">
+                                        Explore {appName}
+                                    </div>
+                                    <div class=""link-grid"">
+                                        <a href=""https://www.streamingdiscovery.com/platforms"" class=""link-card"" target=""_blank"">
+                                            Streaming Platforms
+                                        </a>
+                                        <a href=""https://www.streamingdiscovery.com/compare"" class=""link-card"" target=""_blank"">
+                                            Compare Services
+                                        </a>
+                                        <a href=""https://www.streamingdiscovery.com/regions"" class=""link-card"" target=""_blank"">
+                                            Free Movies to Watch
+                                        </a>
+                                        <a href=""https://www.streamingdiscovery.com/best-awards-year"" class=""link-card"" target=""_blank"">
+                                            Best awards of the {year}
+                                        </a>
+                                        <a href=""https://www.streamingdiscovery.com/list/8544544"" class=""link-card"" target=""_blank"">
+                                            Most Expected Movies of {year}
+                                        </a>
+                                        <a href=""https://www.streamingdiscovery.com/help"" class=""link-card"" target=""_blank"">
+                                            Help Center
+                                        </a>
+                                    </div>
+                                </div>
+                                <hr class=""email-divider"">
+                                <!-- OTHER PRODUCTS -->
+                                {HtmlProducts}
+                                <hr class=""email-divider"">
+                                <div class=""email-support"">
+                                    Questions? Contact
+                                    <a href=""mailto:{supportEmail}"">
+                                        {supportEmail}
+                                    </a>
+                                </div>
+                                <div class=""email-signature"">
+                                    <small>Have a great day,</small>
+                                    <strong>Team DRMA Tech</strong>
+                                </div>
+                            </div>
+
+                            <!-- FOOTER -->
+                            {HtmlFooter}
+                        </div>
+                    </div>
+                </body>
+                </html>",
+                client_reference = reference
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+
+            var request = new HttpRequestMessage(HttpMethod.Post, _uri);
 
             request.Headers.Add("Authorization", _apiKey);
             request.Content = new StringContent(json, Encoding.UTF8, "application/json");

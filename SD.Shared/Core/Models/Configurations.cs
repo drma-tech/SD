@@ -74,4 +74,5 @@ public class ZeptoMail
 {
     public string? ApiKey { get; set; }
     public string? SecrectWebhook { get; set; }
+    public string? JobApiKey { get; set; }
 }

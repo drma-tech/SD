@@ -27,6 +27,12 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
                 return;
             }
 
+            if (req.Url.AbsolutePath.Contains("job", StringComparison.OrdinalIgnoreCase))
+            {
+                await next(context);
+                return;
+            }
+
             var version = req.Headers.TryGetValues("X-App-Version", out var values) ? values.FirstOrDefault() : null;
 
             if (HttpRequestDataExtensions.IsOutdated(version))
@@ -58,6 +64,10 @@ internal sealed class ApiMiddleware() : IFunctionsWorkerMiddleware
             // ignored
         }
         catch (OperationCanceledException)
+        {
+            // ignored
+        }
+        catch (ObjectDisposedException)
         {
             // ignored
         }
