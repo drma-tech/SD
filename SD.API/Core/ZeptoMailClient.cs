@@ -122,16 +122,16 @@ namespace SD.API.Core
             <!-- APP STORES -->
             <div class=""footer-apps"">
                 <a href=""https://apps.microsoft.com/detail/9pb1pkrdd8l0"" target=""_blank"">
-                    <img src=""https://www.streamingdiscovery.com/logo/microsoft-store.png"" alt=""Microsoft Store"">Microsoft Store
+                    <img src=""https://www.{domain}.com/logo/microsoft-store.png"" alt=""Microsoft Store"">Microsoft Store
                 </a>
                 <a href=""https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa"" target=""_blank"">
-                    <img src=""https://www.streamingdiscovery.com/logo/google-play.png"" alt=""Google Play"">Google Play
+                    <img src=""https://www.{domain}.com/logo/google-play.png"" alt=""Google Play"">Google Play
                 </a>
                 <a href=""https://apps.apple.com/us/app/id6749285238"" target=""_blank"">
-                    <img src=""https://www.streamingdiscovery.com/logo/app-store.png"" alt=""App Store"">App Store
+                    <img src=""https://www.{domain}.com/logo/app-store.png"" alt=""App Store"">App Store
                 </a>
-                <a href=""https://www.streamingdiscovery.com/en/help#get-the-app"" target=""_blank"">
-                    <img src=""https://www.streamingdiscovery.com/logo/website-logo.png"" alt=""More"">More
+                <a href=""https://www.{domain}.com/en/help#get-the-app"" target=""_blank"">
+                    <img src=""https://www.{domain}.com/logo/website-logo.png"" alt=""More"">More
                 </a>
             </div>
 
@@ -279,22 +279,22 @@ namespace SD.API.Core
                                         Explore {appName}
                                     </div>
                                     <div class=""link-grid"">
-                                        <a href=""https://www.streamingdiscovery.com/platforms"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://www.{domain}.com/platforms"" class=""link-card"" target=""_blank"">
                                             Streaming Platforms
                                         </a>
-                                        <a href=""https://www.streamingdiscovery.com/compare"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://www.{domain}.com/compare"" class=""link-card"" target=""_blank"">
                                             Compare Services
                                         </a>
-                                        <a href=""https://www.streamingdiscovery.com/regions"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://www.{domain}.com/regions"" class=""link-card"" target=""_blank"">
                                             Free Movies to Watch
                                         </a>
-                                        <a href=""https://www.streamingdiscovery.com/best-awards-year"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://www.{domain}.com/best-awards-year"" class=""link-card"" target=""_blank"">
                                             Best awards of the {year}
                                         </a>
-                                        <a href=""https://www.streamingdiscovery.com/list/8544544"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://www.{domain}.com/list/8544544"" class=""link-card"" target=""_blank"">
                                             Most Expected Movies of {year}
                                         </a>
-                                        <a href=""https://www.streamingdiscovery.com/help"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://www.{domain}.com/help"" class=""link-card"" target=""_blank"">
                                             Help Center
                                         </a>
                                     </div>
