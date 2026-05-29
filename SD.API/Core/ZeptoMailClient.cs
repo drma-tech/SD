@@ -268,10 +268,7 @@ namespace SD.API.Core
                                     <span class=""email-highlight"">{appName}</span>.
                                 </p>
                                 <p class=""email-text"">
-                                    Keep track of your streaming platforms,
-                                    manage your viewing progress, and discover
-                                    what to watch next with curated lists,
-                                    award winners, and critical recommendations.
+                                    Track your streaming platforms, manage your watch progress, and discover what to watch next with curated lists, award winners, and critic picks.
                                 </p>
                                 <!-- QUICK LINKS -->
                                 <div class=""email-section"">
