@@ -73,7 +73,7 @@
                 provider.OnSupabaseAuthChanged(token);
 
                 var state = await AuthStateProvider.GetAuthenticationStateAsync();
-                await ProcessAuthClaims(state.User, cts.Token);
+                await ProcessAuthClaims(state.User);
             });
 
             // 2 = transform claims into useful data
@@ -82,7 +82,7 @@
                 try
                 {
                     var state = await task;
-                    await ProcessAuthClaims(state.User, cts.Token); // idempotente
+                    await ProcessAuthClaims(state.User); // idempotente
                     StateHasChanged();
                 }
                 catch (Exception ex)
@@ -128,7 +128,7 @@
         }
     }
 
-    private async Task ProcessAuthClaims(ClaimsPrincipal user, CancellationToken cancellationToken)
+    private async Task ProcessAuthClaims(ClaimsPrincipal user)
     {
         AppStateStatic.User = user;
         AppStateStatic.UserId = user?.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -141,7 +141,7 @@
 
         //principal to be used for all the app
         if (authenticated)
-            AppStateStatic.Principal ??= await PrincipalApi.Get(true, cancellationToken: cts.Token);
+            AppStateStatic.Principal ??= await PrincipalApi.Get(true);
         else
             AppStateStatic.Principal = null;
 
@@ -149,11 +149,11 @@
         AppStateStatic.IsPremiumUser = sub?.IsActive() ?? false;
         AppStateStatic.ActiveProduct = sub?.Product ?? AccountProduct.Basic;
 
-        await ProcessUserAccess(cancellationToken);
+        await ProcessUserAccess();
         await AppStateStatic.UserStateChanged.PublishAsync();
     }
 
-    private async Task ProcessUserAccess(CancellationToken cancellationToken)
+    private async Task ProcessUserAccess()
     {
         try
         {
@@ -167,7 +167,7 @@
             }
             else
             {
-                await RegisterLogin(cancellationToken);
+                await RegisterLogin();
             }
         }
         catch (Exception ex)
@@ -176,7 +176,7 @@
         }
     }
 
-    private async Task RegisterLogin(CancellationToken cancellationToken)
+    private async Task RegisterLogin()
     {
         var minInterval = TimeSpan.FromHours(1);
         var now = DateTimeOffset.UtcNow;
@@ -186,17 +186,17 @@
             return;
         }
 
-        var platform = await AppStateStatic.GetPlatform(JsRuntime, cancellationToken);
-        var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cancellationToken);
+        var platform = await AppStateStatic.GetPlatform(JsRuntime, CancellationToken.None);
+        var country = await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, CancellationToken.None);
 
-        await LoginApi.Add(platform, country, cancellationToken);
+        await LoginApi.Add(platform, country, CancellationToken.None);
 
         AppStateStatic.LastAccess = now;
 
         if (AppStateStatic.Principal!.AuthProviders.Empty() || !AppStateStatic.Principal!.AuthProviders.Contains(AppStateStatic.User!.FindFirst("idp")!.Value)) //if its a new auth provider
         {
             AppStateStatic.Principal.AuthProviders = AppStateStatic.Principal.AuthProviders.Union([AppStateStatic.User!.FindFirst("idp")!.Value]).ToArray();
-            await PrincipalApi.Update(AppStateStatic.Principal, cancellationToken);
+            await PrincipalApi.Update(AppStateStatic.Principal, CancellationToken.None);
         }
     }
 
