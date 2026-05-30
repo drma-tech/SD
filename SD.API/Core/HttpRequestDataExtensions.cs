@@ -114,13 +114,14 @@ public static class HttpRequestDataExtensions
         var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
 
         var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
+        var version = req.Headers.TryGetValues("X-App-Version", out var values) ? values.FirstOrDefault() : null;
 
         req.Body.Position = 0; //in case of a previous read
 
         var log = new LogModel
         {
             Params = string.Join("|", valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
-            AppVersion = req.GetQueryParameters()["vs"],
+            AppVersion = version,
             Ip = req.GetUserIP(false),
         };
 
@@ -132,12 +133,13 @@ public static class HttpRequestDataExtensions
         var logger = req.FunctionContext.GetLogger(req.FunctionContext.FunctionDefinition.Name);
 
         var valueCollection = HttpUtility.ParseQueryString(req.Url.Query);
+        var version = req.Headers.TryGetValues("X-App-Version", out var values) ? values.FirstOrDefault() : null;
 
         var log = new LogModel
         {
             Message = message,
             Params = string.Join("|", valueCollection.AllKeys.Select(key => $"{key}={req.GetQueryParameters()[key!]}")),
-            AppVersion = req.GetQueryParameters()["vs"],
+            AppVersion = version,
             Ip = req.GetUserIP(false),
         };
 
