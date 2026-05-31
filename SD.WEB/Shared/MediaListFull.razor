@@ -102,7 +102,7 @@
             Items = result.list;
             DisableLoadMore = result.lastPage || Items.Count >= 200;
 
-            if (!Navigation.IsPrerendering() && Items.Count < MinQtdItems) //force reload, if the filters bring few records
+            if (Items.Count < MinQtdItems) //force reload, if the filters bring few records
             {
                 var result2 = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++_currentPage, cts.Token);
                 foreach (var item in result2.list)
