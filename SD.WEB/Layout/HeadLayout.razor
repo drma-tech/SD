@@ -178,33 +178,23 @@
         AppStateStatic.UserStateChanged.Subscribe(async () => { await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync); StateHasChanged(); }, cts.Token);
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
 
-        AppStateStatic.ProcessingStarted.Subscribe(async () =>
+        //avoid - Object reference not set to an instance of an object.
+        //commit: breakpoint refactorer / ActionDispatcher and TaskDispatcher (2026-05-25)
+        if (!Navigation.IsPrerendering())
         {
-            try
+            AppStateStatic.ProcessingStarted.Subscribe(async () =>
             {
                 Interlocked.Increment(ref _processingCount);
                 await InvokeAsync(StateHasChanged);
-            }
-            catch (Exception)
-            {
-                //ignored (error on project publish) - Object reference not set to an instance of an object.
-                //commit: breakpoint refactorer / ActionDispatcher and TaskDispatcher (2026-05-25)
-            }
-        }, cts.Token);
+            }, cts.Token);
 
-        AppStateStatic.ProcessingFinished.Subscribe(async () =>
-        {
-            try
+            AppStateStatic.ProcessingFinished.Subscribe(async () =>
             {
                 Interlocked.Decrement(ref _processingCount);
                 await Task.Delay(200);
                 await InvokeAsync(StateHasChanged);
-            }
-            catch (Exception)
-            {
-                //ignored (error on project publish) - Object reference not set to an instance of an object.
-            }
-        }, cts.Token);
+            }, cts.Token);
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
