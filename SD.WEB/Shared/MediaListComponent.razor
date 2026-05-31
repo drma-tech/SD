@@ -114,6 +114,7 @@ else
     [Parameter] public EnumLists? List { get; set; }
     [Parameter] public Dictionary<string, string> StringParameters { get; set; } = new();
     [Parameter] public bool IsImdb { get; set; }
+    [Parameter] public int MinQtdItems { get; set; } = 10;
 
     [Parameter] public bool DetectRegions { get; set; }
 
@@ -185,7 +186,7 @@ else
                 var result = await MediaListApi.GetList([], type, StringParameters, List, 1, cts.Token);
                 Items = result.list;
 
-                if (Items.Count < 10) //force reload, if the filters bring few records
+                if (!Navigation.IsPrerendering() && Items.Count < MinQtdItems) //force reload, if the filters bring few records
                 {
                     var result2 = await MediaListApi.GetList(Items, type, StringParameters, List, 2, cts.Token);
                     foreach (var item in result2.list)

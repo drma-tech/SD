@@ -28,9 +28,9 @@ public class CosmosJobRepository
 
         try
         {
-            var response = await Container.ReadItemAsync<T>($"{type}:{id}", new PartitionKey($"{type}:{id}"), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+            var response = await Container.ReadItemAsync<T>($"{type}:{id}", new PartitionKey($"{type}:{id}"), null, cancellationToken);
 
-            if (response.RequestCharge > 2)
+            if (response.RequestCharge > 3)
                 _logger.LogWarning("Get - ID {Id}, RequestCharge {Charges}", id, response.RequestCharge);
 
             return response.Resource;
@@ -79,7 +79,7 @@ public class CosmosJobRepository
     {
         try
         {
-            var response = await Container.CreateItemAsync(item, new PartitionKey((int)item.Type), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+            var response = await Container.CreateItemAsync(item, new PartitionKey((int)item.Type), null, cancellationToken);
 
             if (response.RequestCharge > 20)
                 _logger.LogWarning("CreateItemAsync - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);
@@ -96,7 +96,7 @@ public class CosmosJobRepository
     {
         try
         {
-            var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey((int)item.Type), CosmosRepositoryExtensions.GetItemRequestOptions(), cancellationToken);
+            var response = await Container.DeleteItemAsync<T>(item.Id, new PartitionKey((int)item.Type), null, cancellationToken);
 
             if (response.RequestCharge > 20)
                 _logger.LogWarning("Delete - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);

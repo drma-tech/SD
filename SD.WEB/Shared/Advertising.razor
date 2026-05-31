@@ -7,7 +7,7 @@
 
 @if (IgnoreRoutes.All(p => !Navigation.Uri.Contains(p)))
 {
-    if (IsLocalhost)
+    if (Navigation.IsLocalhost())
     {
         <div style="text-align: center;" class="my-1">
             <MudLink Typo="Typo.caption" OnClick="OpenSubscription" Color="Color.Secondary">Remove Advertising</MudLink>
@@ -46,7 +46,6 @@
     [Parameter] public string[] IgnoreRoutes { get; set; } = ["auth", "legal"];
 
     private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
-    private bool IsLocalhost => Navigation.BaseUri.Contains("localhost") || Navigation.BaseUri.Contains("develop");
     private bool ActiveSubscription => AppStateStatic.Principal?.GetActiveSubscription() != null;
 
     private AdNetwork Network { get; set; } = AdNetwork.None;
@@ -124,7 +123,7 @@
             _lastRenderedVersion = _adVersion;
             Network = AdNetwork.None;
 
-            if (IsLocalhost || Printscreen || ActiveSubscription)
+            if (Navigation.IsLocalhost() || Printscreen || ActiveSubscription)
             {
                 Network = AdNetwork.None;
             }

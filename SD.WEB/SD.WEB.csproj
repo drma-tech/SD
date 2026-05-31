@@ -177,7 +177,7 @@
 	</ItemGroup>
 	<PropertyGroup>
 		<BlazorWasmPrerenderingMode>Static</BlazorWasmPrerenderingMode>
-		<BlazorWasmPrerenderingUrlPathToExplicitFetch>/pt/;/es/</BlazorWasmPrerenderingUrlPathToExplicitFetch>
+		<BlazorWasmPrerenderingUrlPathToExplicitFetch>/en;/pt;/es</BlazorWasmPrerenderingUrlPathToExplicitFetch>
 		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
 		<CurrentDate>$([System.DateTime]::Now.ToString(yyyy.MM.dd))</CurrentDate>
 	</PropertyGroup>

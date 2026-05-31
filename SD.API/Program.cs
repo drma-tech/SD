@@ -105,13 +105,14 @@ static void ConfigureServices(IServiceCollection services)
         {
             return new CosmosClient(ApiStartup.Configurations.CosmosDB?.ConnectionString, new CosmosClientOptions
             {
-                ConnectionMode = ConnectionMode.Gateway,
+                ConnectionMode = ConnectionMode.Direct,
                 SerializerOptions = new CosmosSerializationOptions
                 {
                     PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
                 }
             });
         });
+        services.AddHostedService<CosmosWarmupService>();
 
         services.AddSingleton<CosmosRepository>();
         services.AddSingleton<CosmosCacheRepository>();
