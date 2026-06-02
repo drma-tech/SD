@@ -35,8 +35,8 @@
             <MudDivider Class="@Css.Build().Medium("my")"></MudDivider>
             <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "email")" Content="@(Button.Recent)" Overlap="true">
                 <MudTextField @bind-Value="@email" Label="@Resources.Translations.Email" Placeholder="@Resources.Translations.EnterEmail" Disabled="@(_processingInProgress || emailProbablySent)" Immediate="true"
-                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" AdornmentColor="Color.Primary" OnAdornmentClick="() => LoginWithEmail(email)"
-                              HelperText="@Resources.Translations.MicrosoftEmails" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" AdornmentColor="Color.Primary" IconSize="Size.Large" InputType="InputType.Email"
+                              OnAdornmentClick="() => LoginWithEmail(email)" HelperText="@Resources.Translations.MicrosoftEmails" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
             </MudBadge>
             @if (SuggestEmailCorrection(email).NotEmpty())
             {
@@ -45,8 +45,8 @@
                 </MudAlert>
             }
             <MudTextField @ref="@txtOTP" @bind-Value="@otp" Label="@Resources.Translations.OTPCode" Placeholder="@Resources.Translations.EnterCode" Disabled="@(!emailProbablySent)"
-                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Check" AdornmentColor="Color.Primary" OnAdornmentClick="() => ConfirmCode(email, otp)"
-                          HelperText="@Resources.Translations.EmailDelay" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Check" AdornmentColor="Color.Primary" IconSize="Size.Large" InputType="InputType.Number"
+                          OnAdornmentClick="() => ConfirmCode(email, otp)" HelperText="@Resources.Translations.EmailDelay" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
         </MudStack>
         <div style="text-align: center;">
             <MudText Class="@Css.Build().Large("mt").Medium("mb")">

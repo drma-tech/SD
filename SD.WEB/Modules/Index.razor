@@ -30,14 +30,14 @@
                     <MudTextField T="string" Label="@SeoTranslations.EnterTitle" Placeholder="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio" @bind-Text="@AppStateStatic.Query" Immediate="true" OnKeyDown="@KeyPress"
                                   AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
                                   OnAdornmentClick="@(() =>{ if (AppStateStatic.Query.NotEmpty()) Navigation.NavigateTo($"/{Culture}/search"); })" Clearable="true"
-                                  HelperText="@GlobalTranslations.TypeSomething">
+                                  HelperText="@GlobalTranslations.TypeSomething" InputType="InputType.Text">
                     </MudTextField>
                 </MudTabPanel>
                 <MudTabPanel Text="@SeoTranslations.Keywords">
                     <MudTextField T="string" Label="@SeoTranslations.EnterKeyword" Placeholder="Example: love, robot, lost, animation, superhero, family" @bind-Text="@AppStateStatic.Query" Immediate="true"
                                   AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
-                                  OnKeyDown="@KeyPressKeyboard" OnAdornmentClick="@(async() => { if (AppStateStatic.Query.NotEmpty()) await SearchKeyWords(); })"
-                                  Clearable="true" OnClearButtonClick="@(() => AppStateStatic.Keywords = [])" HelperText="@SeoTranslations.SearchKeywords">
+                                  OnKeyDown="@KeyPressKeyboard" OnAdornmentClick="@(async() => { if (AppStateStatic.Query.NotEmpty()) await SearchKeyWords(); })" Clearable="true" 
+                                  OnClearButtonClick="@(() => AppStateStatic.Keywords = [])" HelperText="@SeoTranslations.SearchKeywords" InputType="InputType.Text">
                     </MudTextField>
                     @foreach (var item in AppStateStatic.Keywords)
                     {
