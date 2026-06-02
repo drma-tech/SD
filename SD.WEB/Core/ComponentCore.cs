@@ -55,7 +55,11 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
         try
         {
             AppStateStatic.BreakpointChanged.Subscribe(breakpoint => _ = InvokeAsync(StateHasChanged), cts.Token);
-            AppStateStatic.UserStateChanged.Subscribe(async () => { await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync); StateHasChanged(); }, cts.Token);
+            AppStateStatic.UserStateChanged.Subscribe(async () =>
+            {
+                await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync); 
+                await InvokeAsync(StateHasChanged);
+            }, cts.Token);
 
             await ProcessInitialData();
         }

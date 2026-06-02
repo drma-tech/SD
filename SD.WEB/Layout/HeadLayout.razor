@@ -170,11 +170,11 @@
 
     protected override void OnInitialized()
     {
-        Navigation.LocationChanged += delegate { StateHasChanged(); };
+        Navigation.LocationChanged += delegate { _ = InvokeAsync(StateHasChanged); };
 
-        AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), cts.Token);
+        AppStateStatic.BreakpointChanged.Subscribe(breakpoint => _ = InvokeAsync(StateHasChanged), cts.Token);
 
-        PrincipalApi.DataChanged += principal => StateHasChanged();
+        PrincipalApi.DataChanged += principal => _ = InvokeAsync(StateHasChanged    );
         AppStateStatic.UserStateChanged.Subscribe(async () => { await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync); StateHasChanged(); }, cts.Token);
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
 
