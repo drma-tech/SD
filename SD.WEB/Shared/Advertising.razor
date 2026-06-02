@@ -48,12 +48,12 @@
     private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
     private bool ActiveSubscription => AppStateStatic.Principal?.GetActiveSubscription() != null;
 
+    private string? country { get; set; }
     private AdNetwork Network { get; set; } = AdNetwork.None;
     private const string AdClientId = "5145928155833172";
 
+    private bool _adInitialized;
     private string? _lastUri;
-    private int _adVersion;
-    private int _lastRenderedVersion = -1;
     private string _containerId = $"ad-container-{Guid.NewGuid()}";
 
     private readonly HashSet<string> _AdSenseBlockedCountries = new()
@@ -107,7 +107,7 @@
 
         _lastUri = e.Location;
 
-        _adVersion++;
+        _adInitialized = false;
         _containerId = $"ad-container-{Guid.NewGuid()}";
 
         InvokeAsync(StateHasChanged);
@@ -117,36 +117,49 @@
     {
         try
         {
-            if (_adVersion == _lastRenderedVersion)
-                return;
-
-            _lastRenderedVersion = _adVersion;
-            Network = AdNetwork.None;
-
-            if (Navigation.IsLocalhost() || Printscreen || ActiveSubscription)
+            if (firstRender)
             {
-                Network = AdNetwork.None;
+                //detect country
+                country = Country ?? await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
+
+                //detect network
+                if (Navigation.IsLocalhost() || Printscreen || ActiveSubscription)
+                {
+                    Network = AdNetwork.None;
+                }
+                else
+                {
+                    if (country.NotEmpty() && _YandexCountries.Contains(country.ToUpper()))
+                    {
+                        Network = AdNetwork.Yandex;
+                    }
+                    else if (country.NotEmpty() && _AdSenseBlockedCountries.Contains(country.ToUpper()))
+                    {
+                        Network = AdNetwork.None;
+                    }
+                    else //adsense
+                    {
+                        Network = AdNetwork.Adsense;
+                    }
+                }
+
+                StateHasChanged(); //re-render to create ad container
             }
-            else
+            else if (Network != AdNetwork.None)
             {
-                var country = Country ?? await AppStateStatic.GetCountry(IpInfoApi, JsRuntime, cts.Token);
+                if (_adInitialized)
+                    return;
 
-                if (country.NotEmpty() && _YandexCountries.Contains(country.ToUpper()))
-                {
-                    Network = AdNetwork.Yandex; StateHasChanged();
+                _adInitialized = true;
 
-                    await JsRuntime.Services().InitYandex(GetYandexSlotId(Slot), cts.Token);
-                }
-                else if (country.NotEmpty() && _AdSenseBlockedCountries.Contains(country.ToUpper()))
+                if (Network == AdNetwork.Adsense)
                 {
-                    Network = AdNetwork.None; StateHasChanged();
-                }
-                else //adsense
-                {
-                    Network = AdNetwork.Adsense; StateHasChanged();
-
                     await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", GetAdSenseId(Slot), _containerId, cts.Token);
-                    _ = DetectAdBlockAsync();
+                    _ = Task.Run(DetectAdBlockAsync);
+                }
+                else if (Network == AdNetwork.Yandex)
+                {
+                    await JsRuntime.Services().InitYandex(GetYandexSlotId(Slot), cts.Token);
                 }
             }
 
