@@ -142,7 +142,7 @@
         SentrySdk.CaptureException(ex);
 
         _isUpdateAvailable = await JsRuntime.InvokeAsync<bool>("checkUpdateReady");
-        await InvokeAsync(StateHasChanged);
+        StateHasChanged();
 
         StartUpdatePolling();
     }

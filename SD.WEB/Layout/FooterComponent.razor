@@ -138,7 +138,7 @@ else if (AppStateStatic.Breakpoint > Breakpoint.Sm) //other bigger devices
 
     protected override void OnInitialized()
     {
-        AppStateStatic.BreakpointChanged.Subscribe(breakpoint => _ = InvokeAsync(StateHasChanged), cts.Token);
+        AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), cts.Token);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

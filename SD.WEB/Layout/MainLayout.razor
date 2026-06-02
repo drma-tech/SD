@@ -61,10 +61,10 @@
 
             BufferedEvent.Register(nameof(ShowError), async (string msg) => { await ShowNotificationError(msg); });
 
-            AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; _ = InvokeAsync(StateHasChanged); };
-            AppStateStatic.BreakpointChanged.Subscribe(breakpoint => _ = InvokeAsync(StateHasChanged), cts.Token);
+            AppStateStatic.DarkModeChanged += dark => { _darkMode = dark; StateHasChanged(); };
+            AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), cts.Token);
 
-            PrincipalApi.DataChanged += principal => { AppStateStatic.Principal = principal; _ = InvokeAsync(StateHasChanged); };
+            PrincipalApi.DataChanged += principal => { AppStateStatic.Principal = principal; StateHasChanged(); };
 
             // 1 = capture the claims
             BufferedEvent.Register(nameof(SupabaseAuthChanged), async (string? token) =>
@@ -83,7 +83,7 @@
                 {
                     var state = await task;
                     await ProcessAuthClaims(state.User); // idempotente
-                    await InvokeAsync(StateHasChanged);
+                    StateHasChanged();
                 }
                 catch (Exception ex)
                 {
