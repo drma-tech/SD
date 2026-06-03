@@ -55,7 +55,11 @@ namespace SD.API.Core.Scraping
                 ratings.letterboxd ??= letterboxdRating?.ToString(CultureInfo.InvariantCulture);
                 ratings.letterboxdLink ??= result?.result?.links?.Letterboxd;
             }
-            catch (TaskCanceledException)
+            catch (OperationCanceledException)
+            {
+                //do nothing
+            }
+            catch (ObjectDisposedException)
             {
                 //do nothing
             }
@@ -109,7 +113,11 @@ namespace SD.API.Core.Scraping
                 if (rating4.HasValue) rating4 /= 10;
                 ratings.rottenTomatoes ??= rating4?.ToString(CultureInfo.InvariantCulture);
             }
-            catch (TaskCanceledException)
+            catch (OperationCanceledException)
+            {
+                //do nothing
+            }
+            catch (ObjectDisposedException)
             {
                 //do nothing
             }
@@ -165,7 +173,11 @@ namespace SD.API.Core.Scraping
                 ratings.letterboxd ??= letterboxdRating?.ToString(CultureInfo.InvariantCulture);
                 ratings.letterboxdLink ??= result?.ratings?.letterboxd?.url;
             }
-            catch (TaskCanceledException)
+            catch (OperationCanceledException)
+            {
+                //do nothing
+            }
+            catch (ObjectDisposedException)
             {
                 //do nothing
             }

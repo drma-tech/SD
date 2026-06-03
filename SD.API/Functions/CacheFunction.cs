@@ -313,8 +313,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
 
                 foreach (var node in obj.data?.title?.metacritic?.reviews?.edges.Select(s => s.node) ?? [])
                 {
-                    newModel.Items.Add(new ReviewModelItem(node?.site, node?.url,
-                        node?.reviewer, node?.score, node?.quote?.value));
+                    newModel.Items.Add(new ReviewModelItem(node?.site, node?.url, node?.reviewer, node?.score, node?.quote?.value));
                 }
 
                 ttl = CalculateTtl(releaseDate);
@@ -348,14 +347,14 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
 
             if (doc == null)
             {
-                var obj = ScrapingReview.GetTvReviews(title, releaseDate.Year);
+                var list = ScrapingReview.GetTvReviews(title, releaseDate.Year);
                 //if (obj.meta?.title == "undefined critic reviews") return null;
 
                 var newModel = new ReviewModel();
 
-                foreach (var item in obj.items)
+                foreach (var item in list)
                 {
-                    newModel.Items.Add(new ReviewModelItem(item.publicationName, item.url, item.author, item.score, item.quote));
+                    newModel.Items.Add(new ReviewModelItem(item.Site, item.Url, item.Reviewer, item.Score, item.Quote));
                 }
 
                 ttl = CalculateTtl(releaseDate);

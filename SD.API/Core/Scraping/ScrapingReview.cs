@@ -1,5 +1,4 @@
 ﻿using HtmlAgilityPack;
-using Newtonsoft.Json;
 using SD.Shared.Models.Reviews.MetaCriticSite;
 using System.Text.RegularExpressions;
 
@@ -9,9 +8,9 @@ public static class ScrapingReview
 {
     private const string TvUrl = "https://www.metacritic.com/tv/{0}/critic-reviews/?sort-by=Recently%20Added";
 
-    public static RootMetacriticReview GetTvReviews(string? tvName, int year)
+    public static List<RootMetacriticReviewNew> GetTvReviews(string? tvName, int year)
     {
-        if (tvName == null) return new RootMetacriticReview();
+        if (tvName == null) return [];
 
         var result = ProcessHtml(string.Format(TvUrl, tvName));
 
@@ -19,7 +18,7 @@ public static class ScrapingReview
         result ??= ProcessHtml(string.Format(TvUrl, CleanTitle(tvName)));
         result ??= ProcessHtml(string.Format(TvUrl, $"{CleanTitle(tvName)}-{year}"));
 
-        return result ?? new RootMetacriticReview();
+        return result ?? [];
     }
 
     private static string CleanTitle(string tvName)
@@ -30,38 +29,38 @@ public static class ScrapingReview
         return cleanedName;
     }
 
-    private static RootMetacriticReview? ProcessHtml(string path)
+    private static List<RootMetacriticReviewNew> ProcessHtml(string path)
     {
         var web = new HtmlWeb();
         var doc = web.Load(path);
-        var htmlBody = doc.Text;
 
-        var startIndex = htmlBody.IndexOf("j.components=", StringComparison.Ordinal) + "j.components=".Length;
-        var endIndex = htmlBody.IndexOf(";j.footer=", startIndex, StringComparison.Ordinal);
+        if (doc.DocumentNode.InnerText.Contains("Page Not Found")) return [];
 
-        if (startIndex < 0 || endIndex < 0)
+        var divs = doc.DocumentNode.SelectNodes("//*[@id=\"__nuxt\"]/div[2]/main/div/div/div/div/section/div[3]/div[2]/div");
+
+        List<RootMetacriticReviewNew> result = [];
+
+        foreach (var div in divs)
         {
-            startIndex = htmlBody.IndexOf("k.components=", StringComparison.Ordinal) + "k.components=".Length;
-            endIndex = htmlBody.IndexOf(";k.footer=", startIndex, StringComparison.Ordinal);
+            var site = div.SelectSingleNode("div[1]/a/text()").InnerText;
+            var url = div.SelectSingleNode("div[2]/a[2]").GetAttributeValue("href", "");
+            var reviewer = div.SelectSingleNode("div[2]/a[1]").InnerText;
+            var score = int.Parse(div.SelectSingleNode("div[1]/a/div/div/span").InnerText);
+            var quote = div.SelectSingleNode("div[1]/div[2]/div").InnerText;
 
-            if (startIndex < 0 || endIndex < 0)
+            var reviewerLink = div.SelectSingleNode("div[2]/div") == null;
+
+            result.Add(new RootMetacriticReviewNew
             {
-                startIndex = htmlBody.IndexOf("l.components=", StringComparison.Ordinal) + "l.components=".Length;
-                endIndex = htmlBody.IndexOf(";l.footer=", startIndex, StringComparison.Ordinal);
-
-                if (startIndex < 0 || endIndex < 0) return null;
-            }
+                Site = site.Trim(),
+                Url = reviewerLink ? url.Trim() : div.SelectSingleNode("div[2]/a[1]").GetAttributeValue("href", "").Trim(),
+                Reviewer = reviewerLink ? reviewer.Trim() : div.SelectSingleNode("div[2]/div").InnerText.Trim(),
+                Score = score,
+                Quote = quote.Trim()
+            });
         }
 
-        var jsonContent = htmlBody.Substring(startIndex, endIndex - startIndex).Trim();
-
-        jsonContent = Regex.Replace(jsonContent, @",[b-t],", ",\"\",", RegexOptions.None, TimeSpan.FromMilliseconds(100));
-        jsonContent = Regex.Replace(jsonContent, @":[b-t](?=[^a-z])", ":\"\"", RegexOptions.None, TimeSpan.FromMilliseconds(100));
-        jsonContent = Regex.Replace(jsonContent, @":\[[b-t]\]", ":[\"\"]", RegexOptions.None, TimeSpan.FromMilliseconds(100));
-
-        var result = JsonConvert.DeserializeObject<List<RootMetacriticReview>>(jsonContent)?[2];
-
-        if (result != null) result.items = result.items.TakeLast(10).OrderByDescending(x => x.score).ToList();
+        result = result.TakeLast(10).OrderByDescending(x => x.Score).ToList();
 
         return result;
     }

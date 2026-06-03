@@ -58,7 +58,6 @@
         702,
         703,
         705,
-        710,
         724,
         752,
         756,
@@ -134,7 +133,6 @@
         682,
         702,
         703,
-        710,
         724,
         752,
         756,
@@ -388,7 +386,7 @@
     {
       "id": "11",
       "name": "MUBI",
-      "priority": 30,
+      "priority": 8,
       "description": "MUBI is a curated streaming service showcasing acclaimed films, festival favorites, and hidden gems. A new handpicked movie is added daily, with ad-free streaming and the option to download for offline viewing.",
       "link": "https://mubi.com/",
       "logo_path": "/x570VpH2C9EKDf1riP83rYc5dnL.jpg",
@@ -490,7 +488,6 @@
         702,
         703,
         705,
-        710,
         724,
         752,
         756,
@@ -867,23 +864,6 @@
       ]
     },
     {
-      "id": "54",
-      "name": "BoxOffice",
-      "priority": 5,
-      "description": "BoxOffice on DStv lets you stream live sports, TV shows, movies, and kids’ programs on mobile, web, and smart TVs. Download content for offline viewing and check the TV guide anytime.",
-      "link": "https://now.dstv.com/",
-      "logo_path": "/4JswJbaxqZhut2TpJ3IPUBnNdy8.jpg",
-      "regions": [
-        710
-      ],
-      "types": [
-        1
-      ],
-      "models": [
-        3
-      ]
-    },
-    {
       "id": "58",
       "name": "Canal VOD",
       "priority": 9,
@@ -1094,7 +1074,7 @@
     {
       "id": "79",
       "name": "NBC",
-      "priority": 48,
+      "priority": 49,
       "description": "NBC lets you stream episodes and content from NBCUniversal networks online. Watch popular shows, specials, and exclusive programming anytime on computers, mobile devices, or smart TVs.",
       "link": "https://www.nbc.com/shows/nbc/popular",
       "logo_path": "/6hFf3sIdmXSAczy3i6tLSmy6gwK.jpg",
@@ -1285,7 +1265,6 @@
         643,
         702,
         703,
-        710,
         724,
         752,
         756,
@@ -1669,9 +1648,7 @@
       "link": "https://www.videobuster.de/",
       "logo_path": "/82hFfWsPYtyskBrnkL8Y36vHcVf.jpg",
       "regions": [
-        40,
-        276,
-        756
+        276
       ],
       "types": [
         1,
@@ -2096,7 +2073,7 @@
     {
       "id": "182",
       "name": "Hollywood Suite",
-      "priority": 27,
+      "priority": 28,
       "description": "Celebrate decades of cinema with four commercial-free channels dedicated to the 70s, 80s, 90s, and 2000s. Essential classics and cult favorites on demand.",
       "link": "https://hollywoodsuite.ca/",
       "logo_path": "/qsOM361vYHE7pcNFG7bCJHyievG.jpg",
@@ -2896,7 +2873,7 @@
     {
       "id": "283",
       "name": "Crunchyroll",
-      "priority": 24,
+      "priority": 11,
       "description": "World's largest anime streaming service. Watch thousands of episodes including simulcasts, classics, and Crunchyroll Originals with premium subscriptions.",
       "link": "https://www.crunchyroll.com/",
       "logo_path": "/fzN5Jok5Ig1eJ7gyNGoMhnLSCfh.jpg",
@@ -3144,7 +3121,7 @@
     {
       "id": "304",
       "name": "Joyn",
-      "priority": 10,
+      "priority": 11,
       "description": "Deutscher Streaming-Dienst mit Live-TV, Serien, Filmen und Sport. Kostenlose Inhalte und Premium-Angebote von ProSieben, Sat.1 und anderen Sendern.",
       "link": "https://www.joyn.de/",
       "logo_path": "/3tKojIkk9QpkDUeU8HgpHQ9Jb2v.jpg",
@@ -3181,7 +3158,7 @@
     {
       "id": "309",
       "name": "Sun Nxt",
-      "priority": 8,
+      "priority": 3,
       "description": "Streaming service for South Indian content. Watch Tamil, Telugu, and Malayalam movies, TV serials, and live channels from the Sun Network.",
       "link": "https://www.sunnxt.com/",
       "logo_path": "/6KEQzITx2RrCAQt5Nw9WrL1OI8z.jpg",
@@ -4322,7 +4299,7 @@
       "priority": 11,
       "description": "European streaming platform for arthouse cinema, independent films and film festivals. Curated selection of international content and cultural programming.",
       "link": "https://sooner.de/en/",
-      "logo_path": "/umwf1XIMl3VHlkeuZYCUrq5FOoY.jpg",
+      "logo_path": "/brt7T1qjJhyKaazaHP2N9r31TRS.jpg",
       "regions": [
         56,
         250,
@@ -6428,7 +6405,7 @@
     {
       "id": "538",
       "name": "Plex",
-      "priority": 26,
+      "priority": 4,
       "description": "Paying to watch movies is a thing of the past. Watch FREE MOVIES ONLINE at zero cost on any device with Plex. Browse our collection of 100,000+ FREE movies and shows.",
       "link": "https://www.plex.tv/watch-free/",
       "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
@@ -7161,7 +7138,6 @@
         702,
         703,
         705,
-        710,
         724,
         752,
         756,
@@ -7352,7 +7328,6 @@
         702,
         703,
         705,
-        710,
         724,
         752,
         756,
@@ -7865,29 +7840,9 @@
       ]
     },
     {
-      "id": "624",
-      "name": "KKTV",
-      "priority": 29,
-      "description": "KKTV 台灣影音服務 No.1 品牌，日劇、動漫、台劇、陸劇、韓綜、泰劇，同步最新獨家戲劇綜藝，高畫質免費線上看。最優質在地化翻譯與雙字幕語言學習、跨裝置接續播放",
-      "link": "https://www.kktv.me",
-      "logo_path": "/r9rEesXJjzY8sH3NLqNdkPdZ714.jpg",
-      "regions": [
-        344,
-        99999
-      ],
-      "types": [
-        1,
-        2
-      ],
-      "models": [
-        1,
-        2
-      ]
-    },
-    {
       "id": "625",
       "name": "LINE TV",
-      "priority": 30,
+      "priority": 29,
       "description": "共享追劇生活！台劇、韓劇、陸劇、BL、泰劇、綜藝、動漫、電影，正版戲劇影音、影視內容免費看！VIP會員高畫質影片線上看，追劇無廣吿再送LINE POINTS",
       "link": "https://www.linetv.tw/",
       "logo_path": "/j35eayHG7RC9Ll0ehtbOuek0TZL.jpg",
@@ -8060,6 +8015,7 @@
         70,
         132,
         191,
+        192,
         226,
         242,
         254,
@@ -8155,7 +8111,7 @@
     {
       "id": "677",
       "name": "Eventive",
-      "priority": 18,
+      "priority": 5,
       "description": "Stream independent film from film festivals, art house cinemas, virtual cinema screenings, classic repertory catalogs, and special events. Easily search the entire Eventive catalog for the freshest content anywhere.",
       "link": "https://watch.eventive.org/",
       "logo_path": "/fwx5Ed64TkfWiRH1SOSkc4781Ts.jpg",
@@ -8181,6 +8137,7 @@
         170,
         188,
         191,
+        192,
         203,
         208,
         214,
@@ -8253,7 +8210,6 @@
         702,
         703,
         705,
-        710,
         724,
         752,
         756,
@@ -8303,7 +8259,7 @@
     {
       "id": "692",
       "name": "Cultpix",
-      "priority": 19,
+      "priority": 6,
       "description": "Streaming classic cult, exploitation, grindhouse and genre films that other sites are afraid to show you. Join for $6.66 a month or $59 for full year.",
       "link": "https://www.cultpix.com/",
       "logo_path": "/uauVx3dGWt0GICqdMCBYJObd3Mo.jpg",
@@ -8464,7 +8420,7 @@
     {
       "id": "701",
       "name": "FilmBox+",
-      "priority": 20,
+      "priority": 3,
       "description": "Filmbox+ is an entertainment service that you can watch hundreds of movies and videos online with a single subscription.",
       "link": "https://www.filmbox.com/",
       "logo_path": "/fbveJTcro9Xw2KuPIIoPPePHiwy.jpg",
@@ -8610,7 +8566,7 @@
     {
       "id": "704",
       "name": "IROKOTV",
-      "priority": 21,
+      "priority": 8,
       "description": "Watch thousands of Nollywood movies and series right on your PC, Mac, tablet or smartphone. Subscribe and watch today.",
       "link": "https://irokotv.com/",
       "logo_path": "/4bsFc5AgxDNdDeS1NIjVRviARhB.jpg",
@@ -8646,7 +8602,7 @@
     {
       "id": "1715",
       "name": "Shahid VIP",
-      "priority": 22,
+      "priority": 9,
       "description": "Shahid is the number one Arabic VOD service in the world with premium originals, exclusive series and movies, Live TV, Sports & much more",
       "link": "https://shahid.mbc.net/",
       "logo_path": "/7qZED0kLBtiV8mLRNBtW4PQCAqW.jpg",
@@ -8899,7 +8855,7 @@
     {
       "id": "1771",
       "name": "Takflix",
-      "priority": 23,
+      "priority": 10,
       "description": "All films. Unforgettable films selected by Takflix curators.",
       "link": "https://takflix.com/en",
       "logo_path": "/ed0vz5bryWIhQB5sHiuGvHKnHHn.jpg",
@@ -8996,7 +8952,6 @@
         702,
         703,
         705,
-        710,
         724,
         752,
         756,
@@ -9485,6 +9440,21 @@
       "models": []
     },
     {
+      "id": "1909",
+      "name": "VTM GO",
+      "priority": 44,
+      "description": null,
+      "link": null,
+      "logo_path": "/c1XK0IXg1OYWIxDvVsDA8XHFsgt.jpg",
+      "regions": [
+        56
+      ],
+      "types": [
+        2
+      ],
+      "models": []
+    },
+    {
       "id": "1912",
       "name": "Apollo",
       "priority": 65,
@@ -9617,7 +9587,8 @@
         276
       ],
       "types": [
-        1
+        1,
+        2
       ],
       "models": [
         1
@@ -9793,7 +9764,7 @@
     {
       "id": "1967",
       "name": "Molotov TV",
-      "priority": 34,
+      "priority": 33,
       "description": "L'installation de l'application Molotov est disponible sur tous vos appareils : Android, iOS, Smart TV et bien d'autres.",
       "link": "https://www.molotov.tv/",
       "logo_path": "/8qSG9LtUhBQIWy2Fr6fzeW7gBdd.jpg",
@@ -10582,7 +10553,7 @@
     {
       "id": "2285",
       "name": "JustWatch TV",
-      "priority": 27,
+      "priority": 5,
       "description": "The full list of movies and TV shows on JustWatchTV. Find out what to watch on JustWatchTV with JustWatch!",
       "link": "https://www.justwatch.com/us/provider/justwatchtv",
       "logo_path": "/g2IaWyo6jCY0rIFjb4qgZ0bSmm3.jpg",
@@ -10684,7 +10655,6 @@
         702,
         703,
         705,
-        710,
         724,
         752,
         756,
@@ -10879,7 +10849,7 @@
     {
       "id": "2330",
       "name": "Jolt Film",
-      "priority": 28,
+      "priority": 6,
       "description": "Jolt is a streaming platform connecting extraordinary independent films with the most relevant audiences.",
       "link": "https://www.jolt.film/",
       "logo_path": "/sBTV0rN8JUhF4G3uIceinWtQ3gi.jpg",
@@ -10905,6 +10875,7 @@
         170,
         188,
         191,
+        192,
         203,
         208,
         214,
@@ -10979,7 +10950,6 @@
         702,
         703,
         705,
-        710,
         724,
         752,
         756,
@@ -11110,7 +11080,7 @@
     {
       "id": "2478",
       "name": "FOUND TV",
-      "priority": 327,
+      "priority": 7,
       "description": "Explore a world of found footage horror with FOUND! Stream your favorite horror movies and experience fan moments in your local area.",
       "link": "https://foundtv.com/",
       "logo_path": "/mD3KV7olfMJOBxJqKKPjvNrpVJF.jpg",
@@ -11302,7 +11272,7 @@
     {
       "id": "2525",
       "name": "Super Channel Plus",
-      "priority": 35,
+      "priority": 23,
       "description": "Entertainment at its best! From feel-good and heart-warming, to a unique selection of popular films, exclusive series and documentaries! With plenty to watch for the true romantic AND the true crime enthusiast, Super Channel+ offers \r\nsomething for everyone.",
       "link": "https://signup.superchannelplus.ca/",
       "logo_path": "/pK3bUzescsBuvzrCCZkj1YTdoDA.jpg",
@@ -11396,7 +11366,7 @@
     {
       "id": "2555",
       "name": "Bloodstream",
-      "priority": 341,
+      "priority": 9,
       "description": "Bloodstreamtv | Stream the best in horror, thriller, and sci-fi. Blood Stream delivers chilling classics, bold indies, and festival hits—all in one terrifyingly good platform. Join the horror revolution now.",
       "link": "https://bloodstreamtv.com/home",
       "logo_path": "/qlsnWCrmcisQH5JnEDxPV2v2vlb.jpg",
@@ -11423,6 +11393,7 @@
         170,
         188,
         191,
+        192,
         203,
         208,
         214,
@@ -11497,7 +11468,6 @@
         702,
         703,
         705,
-        710,
         724,
         752,
         756,
@@ -11585,7 +11555,6 @@
         643,
         682,
         702,
-        710,
         724,
         764,
         784,
@@ -11605,7 +11574,7 @@
     {
       "id": "2601",
       "name": "Pathé Home",
-      "priority": 56,
+      "priority": 55,
       "description": "Regardez les dernières nouveautés ou classiques intemporels, des plus grands blockbusters aux films d’auteurs primés, quelques semaines après leur sortie au cinéma.",
       "link": "https://www.pathehome.com/",
       "logo_path": "/yvui9yFtpWHt0ZrsPelItbuTavI.jpg",
@@ -12027,7 +11996,6 @@
         702,
         703,
         705,
-        710,
         724,
         752,
         756,
@@ -12660,6 +12628,38 @@
       ],
       "types": [
         1
+      ],
+      "models": []
+    },
+    {
+      "id": "2710",
+      "name": "LRT Epika",
+      "priority": 37,
+      "description": null,
+      "link": null,
+      "logo_path": "/v674z8uFLCzlWrOY2J58vMesY1a.jpg",
+      "regions": [
+        440
+      ],
+      "types": [
+        1,
+        2
+      ],
+      "models": []
+    },
+    {
+      "id": "2711",
+      "name": "Thai PBS",
+      "priority": 41,
+      "description": null,
+      "link": null,
+      "logo_path": "/7dzDnGE9FQBqqTWlM3fOmee8rj1.jpg",
+      "regions": [
+        764
+      ],
+      "types": [
+        1,
+        2
       ],
       "models": []
     }

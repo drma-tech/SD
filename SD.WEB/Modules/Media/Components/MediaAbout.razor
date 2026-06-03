@@ -41,7 +41,7 @@
         }
         <div>
             <RenderControl Actions="Actions" LoadingHeight="40px" HideIfEmpty="true">
-                @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.imdb))
+                @if (RatingsCache?.Data != null && (RatingsCache.Data.imdb.NotEmpty() || RatingsCache.Data.imdbLink.NotEmpty()))
                 {
                     <MudTooltip Text="IMDb">
                         <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.imdbLink))" rel="nofollow">
@@ -51,7 +51,7 @@
                         </MudLink>
                     </MudTooltip>
                 }
-                @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.tmdb))
+                @if (RatingsCache?.Data != null && (RatingsCache.Data.tmdb.NotEmpty() || RatingsCache.Data.tmdbLink.NotEmpty()))
                 {
                     <MudTooltip Text="TMDB">
                         <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.tmdbLink))" rel="nofollow">
@@ -61,7 +61,7 @@
                         </MudLink>
                     </MudTooltip>
                 }
-                @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.metacritic))
+                @if (RatingsCache?.Data != null && (RatingsCache.Data.metacritic.NotEmpty() || RatingsCache.Data.metacriticLink.NotEmpty()))
                 {
                     <MudTooltip Text="Metacritic">
                         <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.metacriticLink))" rel="nofollow">
@@ -71,7 +71,7 @@
                         </MudLink>
                     </MudTooltip>
                 }
-                @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.trakt))
+                @if (RatingsCache?.Data != null && (RatingsCache.Data.trakt.NotEmpty() || RatingsCache.Data.traktLink.NotEmpty()))
                 {
                     <MudTooltip Text="Trakt">
                         <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.traktLink))" rel="nofollow">
@@ -81,7 +81,7 @@
                         </MudLink>
                     </MudTooltip>
                 }
-                @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.rottenTomatoes))
+                @if (RatingsCache?.Data != null && (RatingsCache.Data.rottenTomatoes.NotEmpty() || RatingsCache.Data.rottenTomatoesLink.NotEmpty()))
                 {
                     <MudTooltip Text="Rotten Tomatoes">
                         <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.rottenTomatoesLink))" rel="nofollow">
@@ -91,7 +91,7 @@
                         </MudLink>
                     </MudTooltip>
                 }
-                @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.filmAffinity))
+                @if (RatingsCache?.Data != null && (RatingsCache.Data.filmAffinity.NotEmpty() || RatingsCache.Data.filmAffinityLink.NotEmpty()))
                 {
                     <MudTooltip Text="Film Affinity">
                         <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.filmAffinityLink))" rel="nofollow">
@@ -101,7 +101,7 @@
                         </MudLink>
                     </MudTooltip>
                 }
-                @if (RatingsCache != null && !string.IsNullOrEmpty(RatingsCache.Data?.letterboxd))
+                @if (RatingsCache?.Data != null && (RatingsCache.Data.letterboxd.NotEmpty() || RatingsCache.Data.letterboxdLink.NotEmpty()))
                 {
                     <MudTooltip Text="Letterboxd">
                         <MudLink OnClick="@(() => OpenExternalWebsite(RatingsCache.Data?.letterboxdLink))" rel="nofollow">

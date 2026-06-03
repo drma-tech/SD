@@ -88,6 +88,15 @@ public class RootMetacriticReview
     public int? total { get; set; }
 }
 
+public class RootMetacriticReviewNew
+{
+    public string? Site { get; set; }
+    public string? Url { get; set; }
+    public string? Reviewer { get; set; }
+    public int Score { get; set; }
+    public string? Quote { get; set; }
+}
+
 public class Season
 {
     public object? id { get; set; }
