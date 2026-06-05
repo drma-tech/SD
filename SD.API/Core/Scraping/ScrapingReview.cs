@@ -46,7 +46,8 @@ public static class ScrapingReview
             var url = div.SelectSingleNode("div[2]/a[2]").GetAttributeValue("href", "");
             var reviewer = div.SelectSingleNode("div[2]/a[1]").InnerText;
             var score = int.Parse(div.SelectSingleNode("div[1]/a/div/div/span").InnerText);
-            var quote = div.SelectSingleNode("div[1]/div[2]/div").InnerText;
+            var quote = div.SelectSingleNode("div[1]/div[2]/div")?.InnerText;
+            quote ??= div.SelectSingleNode("div[1]/div/div")?.InnerText;
 
             var reviewerLink = div.SelectSingleNode("div[2]/div") == null;
 
