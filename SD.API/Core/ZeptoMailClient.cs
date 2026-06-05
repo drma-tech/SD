@@ -62,7 +62,7 @@ namespace SD.API.Core
 
         private static readonly string HtmlHeader = @$"
         <div class=""email-header"">
-            <img class=""email-logo"" src=""https://www.{domain}.com/icon/icon-71.png"" alt=""{appName} Logo"">
+            <img class=""email-logo"" src=""https://www.{domain}.com/icon/icon-71.webp"" alt=""{appName} Logo"">
             <h1 class=""email-app-name"">
                 {appName}
             </h1>
@@ -79,7 +79,7 @@ namespace SD.API.Core
             <div class=""product-list"">
                 <a href=""https://www.modern-matchmaker.com"" class=""product-card"" target=""_blank"">
                     <div class=""product-name"">
-                        <img src=""https://www.{domain}.com/logo/modern-matchmaker.png"" alt=""Modern Matchmaker"">Modern Matchmaker
+                        <img src=""https://www.{domain}.com/logo/modern-matchmaker.webp"" alt=""Modern Matchmaker"">Modern Matchmaker
                     </div>
                     <div class=""product-description"">
                         Find a compatible partner through Smart Matchmaking
@@ -87,7 +87,7 @@ namespace SD.API.Core
                 </a>
                 <a href=""https://www.my-next-spot.com"" class=""product-card"" target=""_blank"">
                     <div class=""product-name"">
-                        <img src=""https://www.{domain}.com/logo/next-spot.png"" alt=""My Next Spot"">My Next Spot
+                        <img src=""https://www.{domain}.com/logo/next-spot.webp"" alt=""My Next Spot"">My Next Spot
                     </div>
                     <div class=""product-description"">
                         Find the Best Cities and Countries to Live or Travel
@@ -95,7 +95,7 @@ namespace SD.API.Core
                 </a>
                 <a href=""https://www.web-standards.com"" class=""product-card"" target=""_blank"">
                     <div class=""product-name"">
-                        <img src=""https://www.{domain}.com/logo/webstandards.png"" alt=""Web Standards"">Web Standards
+                        <img src=""https://www.{domain}.com/logo/webstandards.webp"" alt=""Web Standards"">Web Standards
                     </div>
                     <div class=""product-description"">
                         Web Standards Generator for Websites and PWAs
@@ -122,16 +122,16 @@ namespace SD.API.Core
             <!-- APP STORES -->
             <div class=""footer-apps"">
                 <a href=""https://apps.microsoft.com/detail/9pb1pkrdd8l0"" target=""_blank"">
-                    <img src=""https://www.{domain}.com/logo/microsoft-store.png"" alt=""Microsoft Store"">Microsoft Store
+                    <img src=""https://www.{domain}.com/logo/microsoft-store.webp"" alt=""Microsoft Store"">Microsoft Store
                 </a>
                 <a href=""https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa"" target=""_blank"">
-                    <img src=""https://www.{domain}.com/logo/google-play.png"" alt=""Google Play"">Google Play
+                    <img src=""https://www.{domain}.com/logo/google-play.webp"" alt=""Google Play"">Google Play
                 </a>
                 <a href=""https://apps.apple.com/us/app/id6749285238"" target=""_blank"">
-                    <img src=""https://www.{domain}.com/logo/app-store.png"" alt=""App Store"">App Store
+                    <img src=""https://www.{domain}.com/logo/app-store.webp"" alt=""App Store"">App Store
                 </a>
                 <a href=""https://www.{domain}.com/en/help#get-the-app"" target=""_blank"">
-                    <img src=""https://www.{domain}.com/logo/website-logo.png"" alt=""More"">More
+                    <img src=""https://www.{domain}.com/logo/website-logo.webp"" alt=""More"">More
                 </a>
             </div>
 
