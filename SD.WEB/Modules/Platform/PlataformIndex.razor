@@ -15,7 +15,7 @@
 
 <HeadComponent Title="@Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription" Url=@($"/{Culture}/platforms/{Region}") Index="true"></HeadComponent>
 
-<PageSectionComponent IsPageHeader="true" Title="@Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription" Icon="@IconsFA.Solid.Icon("clapperboard").Font">
+<PageSectionComponent IsPageHeader="true" Title="@Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription">
     <ActionsFragment>
         <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="@Resources.Translations.DeliveryModel" Dense="true" Class="me-2">
             @foreach (var item in DeliveryModels)
@@ -37,11 +37,11 @@
                 <MudLink Href="@($"/{Culture}/platform/{item.id}")" Style="position: relative;">
                     <MudCard Outlined="true">
                         <MudCardContent Style="padding: 0;">
-                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" FallbackSrc="images/no-image.png"
+                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" FallbackSrc="images/no-image.webp"
                                       Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
                             @if (favorite)
                             {
-                                <MudChip T="string" Icon="@IconsFA.Solid.Icon("star").Font" Color="Color.Success" Size="AppStateStatic.Size" Label="true" Class="chip-no-text"
+                                <MudChip T="string" Icon="@Icons.Material.Filled.Star" Color="Color.Success" Size="AppStateStatic.Size" Label="true" Class="chip-no-text"
                                          Style="padding: 0.2rem; position: absolute; top: 0; right: 0; white-space: inherit; height: auto; width: 26.4px; z-index: 1;">
                                 </MudChip>
                             }
@@ -75,7 +75,7 @@
         }
     </div>
     <div style="text-align: center;" class="@Css.Build().Small("pt").Large("mb")">
-        <MudButton StartIcon="@IconsFA.Solid.Icon("rotate").Font" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ShowAll = true)"
+        <MudButton StartIcon="@Icons.Material.Filled.ExpandMore" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ShowAll = true)"
                    Disabled="@(ShowAll || AllProviders == null || GetFilteredProviders(true).Count == GetFilteredProviders(false).Count)">
             @Button.LoadMore
         </MudButton>

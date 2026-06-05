@@ -13,18 +13,18 @@
 <HeadComponent Title="@($"{Translations.EditorsChoiceTitle} ({MediaType.GetName()})")" Description="@GlobalTranslations.CertifiedDescription"
                Url="@($"/{Culture}/editors-choice/{Type}")" Index="true" Shared="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Title="@($"{Translations.EditorsChoiceTitle} ({MediaType.GetName()})")" Subtitle="Top-rated titles for all audiences" Description="@GlobalTranslations.CertifiedDescription"
-                      Icon="@IconsFA.Solid.Icon("award").Font" UrlShare="@($"/{Culture}/editors-choice/{Type}")"></PageSectionComponent>
+                      UrlShare="@($"/{Culture}/editors-choice/{Type}")"></PageSectionComponent>
 
 @if (MediaType == MediaType.movie)
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish"
-                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false" Culture="@Culture">
+                   FullPage="true" ShowHead="false" Culture="@Culture">
     </MediaListFull>
 }
 else
 {
     <MediaListFull MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish"
-                   Icon="@IconsFA.Solid.Icon("award").Font" FullPage="true" ShowHead="false" Culture="@Culture">
+                   FullPage="true" ShowHead="false" Culture="@Culture">
     </MediaListFull>
 }
 

@@ -4,13 +4,13 @@
 
 @inject TmdbListApi TmdbListApi
 
-<PageSectionComponent Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription" Icon="@IconsFA.Solid.Icon("award").Font">
+<PageSectionComponent Title="@Translations.EditorsChoiceTitle" Description="@GlobalTranslations.CertifiedDescription">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/{Culture}/editors-choice/{TypeSelected}")" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" Href="@($"/{Culture}/editors-choice/{TypeSelected}")" />
                 </MudTooltip>
                 <!--to fill in the sitemap-->
                 <a href="@($"/{Culture}/editors-choice/{MediaType.movie.ToString().ToLower()}")" style="display:none;"></a>

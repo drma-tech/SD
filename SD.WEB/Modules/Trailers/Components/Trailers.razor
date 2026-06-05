@@ -7,7 +7,7 @@
 @inject CacheYoutubeApi CacheYoutubeApi
 
 <HeadComponent Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Url=@($"/{Culture}/trailers") Index="true" Shared="true"></HeadComponent>
-<PageSectionComponent IsPageHeader="true" Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Icon="@IconsFA.Brands.Icon("youtube").Font" UrlShare="@($"/{Culture}/trailers")"></PageSectionComponent>
+<PageSectionComponent IsPageHeader="true" Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" UrlShare="@($"/{Culture}/trailers")"></PageSectionComponent>
 
 <RenderControl Actions="Actions">
     <div class="grid-relative-container-trailer">
@@ -16,7 +16,7 @@
             <MudLink Href="@($"/{Culture}/video/{($"{item.id}|{item.title}".SimpleEncrypt())}")" rel="nofollow">
                 <MudCard Outlined="true">
                     <MudCardContent Style="padding: 0; position: relative;">
-                        <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%;"></MudImage>
+                        <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.webp" Style="width: 100%;"></MudImage>
                         <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
                             @item?.DateTime.Humanize()
                         </MudChip>

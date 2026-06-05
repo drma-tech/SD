@@ -14,7 +14,7 @@
                 {
                     <MudListItem Class="px-2 py-1">
                         <div style="display: flex; gap: 8px;">
-                            <MudImage Src="@(TmdbOptions.SmallPosterPath + item.still_path)" Alt="@item.name" FallbackSrc="images/no-image.png"
+                            <MudImage Src="@(TmdbOptions.SmallPosterPath + item.still_path)" Alt="@item.name" FallbackSrc="images/no-image.webp"
                                       style="max-width: 185px; max-height: 110px;"></MudImage>
                             <div>
                                 <MudText Typo="Typo.subtitle1" Color="Color.Secondary">
@@ -31,7 +31,7 @@
         </RenderControl>
     </DialogContent>
     <DialogActions>
-        <MudAlert Severity="Severity.Warning" Variant="Variant.Text" Dense="true" Icon="@IconsFA.Solid.Icon("circle-exclamation").WithAnimation(IconAnimation.Beat).Font">
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Text" Dense="true" Icon="@Icons.Material.Filled.Warning">
             @Translations.PlatformForManaging
         </MudAlert>
         <MudSpacer></MudSpacer>

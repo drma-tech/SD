@@ -30,7 +30,7 @@ public static class AppStateStatic
 
     private static string? LastSnackbarMessage { get; set; }
     private static DateTime LastSnackbarAt { get; set; } = DateTime.MinValue;
-    private static readonly TimeSpan SnackbarDelay = TimeSpan.FromSeconds(5);
+    private static readonly TimeSpan SnackbarDelay = TimeSpan.FromSeconds(10);
 
     public static bool IsLocalhost(this NavigationManager navigation)
     {
@@ -46,8 +46,7 @@ public static class AppStateStatic
     {
         var now = DateTime.UtcNow;
 
-        if (LastSnackbarMessage == message &&
-            now - LastSnackbarAt < SnackbarDelay)
+        if (LastSnackbarMessage == message && now - LastSnackbarAt < SnackbarDelay)
         {
             return false;
         }
@@ -74,9 +73,7 @@ public static class AppStateStatic
     {
         try
         {
-            var vs = await js.Utils().GetAppVersion(cancellationToken);
-
-            return vs?.ReplaceLineEndings("").Trim() ?? "version-error";
+            return await js.InvokeAsync<string>("eval", cancellationToken, "window.appVersion");
         }
         catch (Exception)
         {
@@ -273,6 +270,10 @@ public static class AppStateStatic
             }
 
             return _country;
+        }
+        catch
+        {
+            return null;
         }
         finally
         {

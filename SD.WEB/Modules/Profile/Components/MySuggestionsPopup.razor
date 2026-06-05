@@ -5,7 +5,7 @@
     <DialogContent>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12">
-                <MudSelect T="MovieGenre" Adornment="Adornment.Start" AdornmentIcon="@IconsFA.Solid.Icon("film").Font" Label="Movie Genres" Clearable="true"
+                <MudSelect T="MovieGenre" Adornment="Adornment.Start" Label="Movie Genres" Clearable="true"
                            Placeholder="Select your favorite movie genres" MultiSelection="true" FullWidth="true" @bind-SelectedValues="@MySuggestions!.MovieGenres">
                     @foreach (var genre in MovieGenres)
                     {
@@ -14,7 +14,7 @@
                 </MudSelect>
             </MudItem>
             <MudItem xs="12">
-                <MudSelect T="TvGenre" Adornment="Adornment.Start" AdornmentIcon="@IconsFA.Solid.Icon("tv").Font" Label="TV Genres" Clearable="true"
+                <MudSelect T="TvGenre" Adornment="Adornment.Start" Label="TV Genres" Clearable="true"
                            Placeholder="Select your favorite tv genres" MultiSelection="true" FullWidth="true" @bind-SelectedValues="@MySuggestions!.TvGenres">
                     @foreach (var genre in TvGenres)
                     {

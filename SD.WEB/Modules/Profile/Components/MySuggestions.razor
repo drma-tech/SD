@@ -11,7 +11,7 @@
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject TmdbApi TmdbApi
 
-<PageSectionComponent Icon="@IconsFA.Solid.Icon("thumbs-up").Font" Title="@Translations.MySuggestions" ShowActions="AppStateStatic.Principal?.GetActiveSubscription() != null">
+<PageSectionComponent Title="@Translations.MySuggestions" ShowActions="AppStateStatic.Principal?.GetActiveSubscription() != null" Icon="@Icons.Material.Filled.ThumbUp">
     <BodyFragment>
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndexChanged="@((int index) => { var type = index == 0 ? MediaType.movie : MediaType.tv; CheckedValueChanged(type); })">
@@ -21,20 +21,18 @@
                     <MudTooltip Text="@Button.Update">
                         @if (SearchType == MediaType.movie && (mySuggestions == null || mySuggestions.MovieCanSync) && (MyProviders?.Items.Any() ?? false))
                         {
-                            <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" OnClick="() => ImportFromProviders(MediaType.movie)" Disabled="@MovieUpdating">
-
+                            <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Warning" OnClick="() => ImportFromProviders(MediaType.movie)" Disabled="@MovieUpdating">
                             </MudIconButton>
                         }
                         @if (SearchType == MediaType.tv && (mySuggestions == null || mySuggestions.ShowCanSync) && (MyProviders?.Items.Any() ?? false))
                         {
-                            <MudIconButton Icon="@IconsFA.Solid.Icon("rotate").Font" Color="Color.Warning" OnClick="() => ImportFromProviders(MediaType.tv)" Disabled="@ShowUpdating">
-
+                            <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Warning" OnClick="() => ImportFromProviders(MediaType.tv)" Disabled="@ShowUpdating">
                             </MudIconButton>
                         }
                     </MudTooltip>
                 }
                 <MudTooltip Text="Filter">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("filter").Font" Color="@(GenresChanged ? Color.Secondary : Color.Primary)"
+                    <MudIconButton Icon="@Icons.Material.Filled.FilterAlt" Color="@(GenresChanged ? Color.Secondary : Color.Primary)"
                                    OnClick="@(async () => await OpenConfigurations())" Disabled="@(MyProviders == null || MyProviders.Items.Empty())" />
                 </MudTooltip>
             </Header>
@@ -47,7 +45,7 @@
                                 {
                                     <div class="swiper-slide" style="height: auto !important;">
                                         <div style="cursor: pointer;" @onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))">
-                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                                         </div>
                                         <MudGrid Spacing="@Css.SpaceSmall" Justify="Justify.FlexStart">
                                             @foreach (var provider in item.Providers)
@@ -73,7 +71,7 @@
                                 {
                                     <div class="swiper-slide" style="height: auto !important;">
                                         <div style="cursor: pointer;" @onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))">
-                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                                         </div>
                                         <MudGrid Spacing="@Css.SpaceSmall" Justify="Justify.FlexStart">
                                             @foreach (var provider in item.Providers)

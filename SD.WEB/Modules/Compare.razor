@@ -2,7 +2,7 @@
 @inherits PageCore<Compare>
 
 <HeadComponent Title="@SeoTranslations.CompareTitle" Description="@SeoTranslations.CompareDesc" Url=@($"/{Culture}/compare") Index="true"></HeadComponent>
-<PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="@SeoTranslations.CompareTitle" Description="@SeoTranslations.CompareDesc" CustomBodyClass="mb-12"></PageSectionComponent>
+<PageSectionComponent IsPageHeader="true" Image="icon/icon-71.webp" Title="@SeoTranslations.CompareTitle" Description="@SeoTranslations.CompareDesc" CustomBodyClass="mb-12"></PageSectionComponent>
 
 @if (Language == AppLanguage.pt)
 {
@@ -31,15 +31,15 @@
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Onde Assistir</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVeryDissatisfied" Color="Color.Error" />
                     <MudText Inline="true">Apenas catálogo próprio</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Suportado</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Global, estruturado</MudText>
                 </MudItem>
             </MudGrid>
@@ -47,15 +47,15 @@
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Avaliações</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVeryDissatisfied" Color="Color.Error" />
                     <MudText Inline="true">Apenas internas</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Poucas fontes</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Múltiplas fontes agregadas</MudText>
                 </MudItem>
             </MudGrid>
@@ -63,15 +63,15 @@
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Reviews de Especialistas</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVeryDissatisfied" Color="Color.Error" />
                     <MudText Inline="true">Raros</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Limitados</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Múltiplas fontes especializadas</MudText>
                 </MudItem>
             </MudGrid>
@@ -79,15 +79,15 @@
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Ferramentas de Descoberta</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Filtros limitados</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Navegação por plataforma única</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Descoberta estruturada multi-fonte</MudText>
                 </MudItem>
             </MudGrid>
@@ -95,15 +95,15 @@
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Listas Curadas</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Guiadas pela plataforma</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Limitadas</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Populares, prêmios, escolha editorial</MudText>
                 </MudItem>
             </MudGrid>
@@ -111,15 +111,15 @@
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Insights Regionais</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVeryDissatisfied" Color="Color.Error" />
                     <MudText Inline="true">Catálogos bloqueados por região</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Cobertura regional parcial</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Disponibilidade e tendências por região</MudText>
                 </MudItem>
             </MudGrid>
@@ -127,15 +127,15 @@
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Medium("mb")">
                 <MudItem xs="3"><MudText>Conteúdo Extra</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Limitado</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Básico</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Trailers, notícias, prêmios, tendências</MudText>
                 </MudItem>
             </MudGrid>
@@ -223,15 +223,15 @@ else if (Language == AppLanguage.es)
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Dónde Ver</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVeryDissatisfied" Color="Color.Error" />
                     <MudText Inline="true">Solo catálogo propio</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Soportado</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Global, estructurado</MudText>
                 </MudItem>
             </MudGrid>
@@ -239,15 +239,15 @@ else if (Language == AppLanguage.es)
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Fuentes de Calificación</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVeryDissatisfied" Color="Color.Error" />
                     <MudText Inline="true">Solo internas</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Pocas fuentes</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Múltiples fuentes agregadas</MudText>
                 </MudItem>
             </MudGrid>
@@ -255,15 +255,15 @@ else if (Language == AppLanguage.es)
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Reseñas de Expertos</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVeryDissatisfied" Color="Color.Error" />
                     <MudText Inline="true">Raras</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Limitadas</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Múltiples fuentes expertas</MudText>
                 </MudItem>
             </MudGrid>
@@ -271,15 +271,15 @@ else if (Language == AppLanguage.es)
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Herramientas de Descubrimiento</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Filtros limitados</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Navegación por una sola plataforma</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Descubrimiento estructurado multi-fuente</MudText>
                 </MudItem>
             </MudGrid>
@@ -287,15 +287,15 @@ else if (Language == AppLanguage.es)
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Listas Curadas</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Dirigidas por la plataforma</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Limitadas</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Populares, premios, elección del editor</MudText>
                 </MudItem>
             </MudGrid>
@@ -303,15 +303,15 @@ else if (Language == AppLanguage.es)
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Información Regional</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVeryDissatisfied" Color="Color.Error" />
                     <MudText Inline="true">Catálogos bloqueados por región</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Cobertura regional parcial</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Disponibilidad y tendencias por región</MudText>
                 </MudItem>
             </MudGrid>
@@ -319,15 +319,15 @@ else if (Language == AppLanguage.es)
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Medium("mb")">
                 <MudItem xs="3"><MudText>Contenido Extra</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Limitado</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" />
                     <MudText Inline="true">Básico</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" />
                     <MudText Inline="true">Tráilers, noticias, premios, tendencias</MudText>
                 </MudItem>
             </MudGrid>
@@ -415,15 +415,15 @@ else
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Where to Watch</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVeryDissatisfied" Color="Color.Error" Style="vertical-align: middle;" />
                     <MudText Inline="true">Own catalog only</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" Style="vertical-align: middle;" />
                     <MudText Inline="true">Supported</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" Style="vertical-align: middle;" />
                     <MudText Inline="true">Global, structured</MudText>
                 </MudItem>
             </MudGrid>
@@ -431,15 +431,15 @@ else
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Ratings Sources</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVeryDissatisfied" Color="Color.Error" Style="vertical-align: middle;" />
                     <MudText Inline="true">Internal only</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" Style="vertical-align: middle;" />
                     <MudText Inline="true">Few sources</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" Style="vertical-align: middle;" />
                     <MudText Inline="true">Multiple aggregated sources</MudText>
                 </MudItem>
             </MudGrid>
@@ -447,15 +447,15 @@ else
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Expert Reviews</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVeryDissatisfied" Color="Color.Error" Style="vertical-align: middle;" />
                     <MudText Inline="true">Rare</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" Style="vertical-align: middle;" />
                     <MudText Inline="true">Limited</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" Style="vertical-align: middle;" />
                     <MudText Inline="true">Multiple expert sources</MudText>
                 </MudItem>
             </MudGrid>
@@ -463,15 +463,15 @@ else
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Discovery Tools</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" Style="vertical-align: middle;" />
                     <MudText Inline="true">Limited filtering</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" Style="vertical-align: middle;" />
                     <MudText Inline="true">Single-platform browsing</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" Style="vertical-align: middle;" />
                     <MudText Inline="true">Multi-source, structured discovery</MudText>
                 </MudItem>
             </MudGrid>
@@ -479,15 +479,15 @@ else
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Curated Lists</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" Style="vertical-align: middle;" />
                     <MudText Inline="true">Platform-driven</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" Style="vertical-align: middle;" />
                     <MudText Inline="true">Limited</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" Style="vertical-align: middle;" />
                     <MudText Inline="true">Popular, awards, editor’s choice</MudText>
                 </MudItem>
             </MudGrid>
@@ -495,15 +495,15 @@ else
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Small("mb")">
                 <MudItem xs="3"><MudText>Regional Insights</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-frown").Font" Color="Color.Error" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVeryDissatisfied" Color="Color.Error" Style="vertical-align: middle;" />
                     <MudText Inline="true">Region-locked catalogs</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" Style="vertical-align: middle;" />
                     <MudText Inline="true">Partial regional coverage</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" Style="vertical-align: middle;" />
                     <MudText Inline="true">Region-aware availability and trends</MudText>
                 </MudItem>
             </MudGrid>
@@ -511,15 +511,15 @@ else
             <MudGrid Spacing="@Css.SpaceMedium" Class="@Css.Build().Medium("mb")">
                 <MudItem xs="3"><MudText>Extra Content</MudText></MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" Style="vertical-align: middle;" />
                     <MudText Inline="true">Limited</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-meh").Font" Color="Color.Warning" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentNeutral" Color="Color.Warning" Style="vertical-align: middle;" />
                     <MudText Inline="true">Basic</MudText>
                 </MudItem>
                 <MudItem xs="3">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("face-smile").Font" Color="Color.Success" />
+                    <MudIcon Icon="@Icons.Material.Filled.SentimentVerySatisfied" Color="Color.Success" Style="vertical-align: middle;" />
                     <MudText Inline="true">Trailers, news, awards, trending data</MudText>
                 </MudItem>
             </MudGrid>

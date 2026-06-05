@@ -5,12 +5,12 @@
 
 @inject CacheYoutubeApi CacheYoutubeApi
 
-<PageSectionComponent Title="@($"{Translations.TrailersTitle}")" Description="@Translations.TrailersDescriptionShort" Icon="@IconsFA.Brands.Icon("youtube").Font">
+<PageSectionComponent Title="@($"{Translations.TrailersTitle}")" Description="@Translations.TrailersDescriptionShort">
     <BodyFragment>
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href=@($"/{Culture}/trailers") />
+                    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" Href=@($"/{Culture}/trailers") />
                 </MudTooltip>
             </Header>
             <ChildContent>
@@ -24,7 +24,7 @@
                                         <MudLink OnClick="() => VideoClick(item)" rel="nofollow">
                                             <MudCard Outlined="true" Style="height: 100%;">
                                                 <MudCardContent Style="padding: 0;">
-                                                    <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.png" Style="width: 100%;" ObjectFit="ObjectFit.Contain"></MudImage>
+                                                    <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.webp" Style="width: 100%;" ObjectFit="ObjectFit.Contain"></MudImage>
                                                     <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
                                                         @item?.DateTime.Humanize()
                                                     </MudChip>

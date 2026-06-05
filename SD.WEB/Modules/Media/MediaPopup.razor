@@ -35,7 +35,7 @@
                                         @Media?.release_date?.ToShortDateString()
                                     </MudChip>
                                 }
-                                <MudImage Src="@(Media?.poster_large ?? "images/no-image.png")" Alt="@Media?.title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                <MudImage Src="@(Media?.poster_large ?? "images/no-image.webp")" Alt="@Media?.title" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                             </div>
                         </MudItem>
                         <MudItem xs="12" md="8">
@@ -58,7 +58,7 @@
                                         <MudTooltip Text="IMDb">
                                             <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.imdbLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.imdb)" title="" Variant="Variant.Outlined" Size="AppStateStatic.Size">
-                                                    <MudImage Src="logo/imdb.png" Alt="imdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.imdb
+                                                    <MudImage Src="logo/imdb.webp" Alt="imdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.imdb
                                                 </MudChip>
                                             </MudLink>
                                         </MudTooltip>
@@ -68,7 +68,7 @@
                                         <MudTooltip Text="TMDB">
                                             <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.tmdbLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.tmdb)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
-                                                    <MudImage Src="logo/tmdb.png" Alt="tmdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.tmdb
+                                                    <MudImage Src="logo/tmdb.webp" Alt="tmdb" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.tmdb
                                                 </MudChip>
                                             </MudLink>
                                         </MudTooltip>
@@ -78,7 +78,7 @@
                                         <MudTooltip Text="Metacritic">
                                             <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.metacriticLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.metacritic)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
-                                                    <MudImage Src="logo/metacritic.png" Alt="metacritic" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.metacritic
+                                                    <MudImage Src="logo/metacritic.webp" Alt="metacritic" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.metacritic
                                                 </MudChip>
                                             </MudLink>
                                         </MudTooltip>
@@ -88,7 +88,7 @@
                                         <MudTooltip Text="Trakt">
                                             <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.traktLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.trakt)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
-                                                    <MudImage Src="logo/trakt.png" Alt="trakt" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.trakt
+                                                    <MudImage Src="logo/trakt.webp" Alt="trakt" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.trakt
                                                 </MudChip>
                                             </MudLink>
                                         </MudTooltip>
@@ -98,7 +98,7 @@
                                         <MudTooltip Text="Rotten Tomatoes">
                                             <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.rottenTomatoesLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.rottenTomatoes)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
-                                                    <MudImage Src="logo/rotten-tomatoes.png" Alt="rotten tomatoes" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.rottenTomatoes
+                                                    <MudImage Src="logo/rotten-tomatoes.webp" Alt="rotten tomatoes" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.rottenTomatoes
                                                 </MudChip>
                                             </MudLink>
                                         </MudTooltip>
@@ -108,7 +108,7 @@
                                         <MudTooltip Text="Film Affinity">
                                             <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.filmAffinityLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.filmAffinity)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
-                                                    <MudImage Src="logo/film-affinity.png" Alt="film affinity" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.filmAffinity
+                                                    <MudImage Src="logo/film-affinity.webp" Alt="film affinity" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.filmAffinity
                                                 </MudChip>
                                             </MudLink>
                                         </MudTooltip>
@@ -118,7 +118,7 @@
                                         <MudTooltip Text="Letterboxd">
                                             <MudLink OnClick="@(() => OpenExternalWebsite(_ratingsCache.Data?.letterboxdLink))" rel="nofollow">
                                                 <MudChip T="string" Color="GetColorByRating(_ratingsCache.Data?.letterboxd)" Variant="Variant.Outlined" Size="AppStateStatic.Size">
-                                                    <MudImage Src="logo/letterboxd.png" Alt="Letterboxd" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.letterboxd
+                                                    <MudImage Src="logo/letterboxd.webp" Alt="Letterboxd" Class="me-1" Style="height: 20px;"></MudImage>@_ratingsCache.Data?.letterboxd
                                                 </MudChip>
                                             </MudLink>
                                         </MudTooltip>
@@ -140,8 +140,7 @@
                                     </MudLink>
                                 </MudPaper>
                             }
-                            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true"
-                                      Icon="@IconsFA.Solid.Icon("circle-exclamation").WithAnimation(IconAnimation.Beat).Font">
+                            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Warning">
                                 @Translations.PlatformForManaging
                             </MudAlert>
                         </MudItem>
@@ -180,7 +179,7 @@
                                             var wishedMovie = Wish?.Contains(MediaType.movie, item.id) ?? false;
                                             if (wishedMovie)
                                             {
-                                                <MudIcon Icon="@IconsFA.Solid.Icon("bookmark").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
+                                                <MudIcon Icon="@Icons.Material.Filled.Bookmark" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
                                             }
                                         }
 
@@ -188,10 +187,10 @@
                                         var showWatched = Watching?.GetWatchingItems(MediaType.tv, Media?.tmdb_id).Any(a => a == item.id) ?? false;
                                         if (movieWatched || showWatched)
                                         {
-                                            <MudIcon Icon="@IconsFA.Solid.Icon("eye").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
+                                            <MudIcon Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
                                         }
 
-                                        <MudImage Src="@(item.poster_small ?? "images/no-image.png")" Alt="@item.title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                        <MudImage Src="@(item.poster_small ?? "images/no-image.webp")" Alt="@item.title" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                                     }
                                 </div>
                                 <MudText Align="Align.Center">@item.title</MudText>
@@ -211,7 +210,7 @@
                                 @foreach (var item in Media?.Videos.Where(w => w.type == group) ?? [])
                                 {
                                     <div>
-                                        <MudIcon Icon="@IconsFA.Brands.Icon("youtube").Font" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
+                                        <MudIcon Icon="@Icons.Custom.Brands.YouTube" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
                                         <MudLink Href="@($"/{Culture}/video/{($"{item.key}|{item.name}".SimpleEncrypt())}")" Color="Color.Secondary">
                                             @item.name
                                         </MudLink>
@@ -224,7 +223,7 @@
                 <MudTabPanel Tag="@Translations.TabCredits" Text="@Translations.TabCredits">
                     <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture">
                     </CreditsComponent>
-                </MudTabPanel>               
+                </MudTabPanel>
                 <MudTabPanel Tag="@("Reviews")" Text="Reviews">
                     <ReviewComponent ImdbId="@ImdbId" EnglishTitle="@EnglishTitle?.RemoveSpecialCharacters().RemoveDiacritics().Replace(" ", "-").ToLower()"
                                      Type="@Type" ReleaseDate="@Media?.release_date">

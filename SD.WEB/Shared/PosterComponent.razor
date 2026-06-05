@@ -1,6 +1,6 @@
 ﻿<div>
     <div @onclick="@Clicked" style="@($"{(Clicked.HasDelegate ? "cursor: pointer;" : "")} position: relative;")">
-        <MudImage Src="@(Poster ?? "images/no-image.png")" Alt="@Title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;" />
+        <MudImage Src="@(Poster ?? "images/no-image.webp")" Alt="@Title" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;" />
 
         @if (TopLeft != null)
         {
@@ -40,7 +40,7 @@
                     @foreach (var item in Comments!.Split(CommentsSeparator))
                     {
                         <MudItem xs="3">
-                            <MudTooltip RootClass="tooltip-image" Text="@item.Replace("logo/", "").Replace(".png", "")">
+                            <MudTooltip RootClass="tooltip-image" Text="@item.Replace("logo/", "").Replace(".webp", "")">
                                 <MudPaper Outlined="true" Class="my-1">
                                     <MudImage Src="@item" Alt="@item" Fluid="true" ObjectFit="ObjectFit.Contain" Class="rounded-lg" Style="vertical-align: bottom;"></MudImage>
                                 </MudPaper>
@@ -184,7 +184,7 @@
             {
                 CenterLeft = new PosterBadge
                 {
-                    Icon = IconsFA.Solid.Icon("bookmark").Font,
+                    Icon = Icons.Material.Filled.Bookmark,
                     Color = Color.Dark
                 };
             }
@@ -203,7 +203,7 @@
             {
                 CenterRight = new PosterBadge
                 {
-                    Icon = IconsFA.Solid.Icon("eye").Font,
+                    Icon = Icons.Material.Filled.RemoveRedEye,
                     Color = Color.Dark
                 };
             }

@@ -114,7 +114,7 @@
                                         var wishedMovie = Wish?.Contains(MediaType.movie, item.id) ?? false;
                                         if (wishedMovie)
                                         {
-                                            <MudIcon Icon="@IconsFA.Solid.Icon("bookmark").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
+                                            <MudIcon Icon="@Icons.Material.Filled.Bookmark" Color="Color.Info" Class="absolute" Style="bottom: 6px; left: 5px; z-index: 1;"></MudIcon>
                                         }
                                     }
 
@@ -122,10 +122,10 @@
                                     var showWatched = Watching?.GetWatchingItems(MediaType.tv, Media?.tmdb_id).Any(a => a == item.id) ?? false;
                                     if (movieWatched || showWatched)
                                     {
-                                        <MudIcon Icon="@IconsFA.Solid.Icon("eye").Font" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
+                                        <MudIcon Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
                                     }
 
-                                    <MudImage Src="@(item.poster_small ?? "images/no-image.png")" Alt="@item.title" FallbackSrc="images/no-image.png" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                    <MudImage Src="@(item.poster_small ?? "images/no-image.webp")" Alt="@item.title" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                                 }
                             </div>
                             <MudText Align="Align.Center" Typo="Typo.h2" Class="custom-title-list">
@@ -178,7 +178,7 @@
                             @foreach (var item in Media?.Videos.Where(w => w.type == group) ?? [])
                             {
                                 <div>
-                                    <MudIcon Icon="@IconsFA.Brands.Icon("youtube").Font" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
+                                    <MudIcon Icon="@Icons.Custom.Brands.YouTube" Color="Color.Primary" Style="vertical-align: top;"></MudIcon>
                                     <MudLink Href="@($"/{Culture}/video/{($"{item.key}|{item.name}".SimpleEncrypt())}")" Color="Color.Secondary"
                                              Style="@((AppStateStatic.Size == Size.Small ? "font-size: 0.8rem !important;" : "font-size: 1rem !important;"))">
                                         @item.name

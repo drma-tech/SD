@@ -4,13 +4,13 @@
 
 @inject ImdbPopularApi ImdbPopularApi
 
-<PageSectionComponent Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription" Icon="@IconsFA.Solid.Icon("fire").Font">
+<PageSectionComponent Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/{Culture}/popular/{TypeSelected.ToString().ToLower()}")" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" Href="@($"/{Culture}/popular/{TypeSelected.ToString().ToLower()}")" />
                 </MudTooltip>
                 <!--to fill in the sitemap-->
                 <a href="@($"/{Culture}/popular/{PopularType.Movie.ToString().ToLower()}")" style="display:none;"></a>

@@ -39,13 +39,13 @@ else
                 {
                     @if (MyProviders?.Items.Any(a => a.id == Provider?.id) ?? false)
                     {
-                        <MudButton StartIcon="@IconsFA.Solid.Icon("minus").Font" Color="Color.Error" OnClick="@Remove" Variant="Variant.Filled" Class="me-2">
+                        <MudButton StartIcon="@Icons.Material.Filled.Remove" Color="Color.Error" OnClick="@Remove" Variant="Variant.Filled" Class="me-2">
                             @Button.Remove
                         </MudButton>
                     }
                     else
                     {
-                        <MudButton StartIcon="@IconsFA.Solid.Icon("plus").Font" Color="Color.Primary" OnClick="@Add" Variant="Variant.Filled" Class="me-2">
+                        <MudButton StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" OnClick="@Add" Variant="Variant.Filled" Class="me-2">
                             @Button.Add
                         </MudButton>
                     }

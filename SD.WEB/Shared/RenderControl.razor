@@ -8,13 +8,13 @@
 }
 else if (Actions.CurrentStatus == RenderStatus.Error)
 {
-    <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("bug").Font" Style="text-align: justify;">
+    <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.BugReport" Style="text-align: justify;">
         @(Actions.MessageError ?? GlobalTranslations.CustomVisibilityInvalid)
     </MudAlert>
 }
 else if (PremiumFeature && !IsPremium)
 {
-    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("gem").Font" Style="text-align: justify;">
+    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Diamond" Style="text-align: justify;">
         <span class="me-2" style="font-weight: bold;">@GlobalTranslations.PremiumFeature</span>
         @if (!string.IsNullOrEmpty(Actions.CustomPremiumDescription))
         {
@@ -24,13 +24,13 @@ else if (PremiumFeature && !IsPremium)
 }
 else if (PrivateFeature && !IsAuthenticated)
 {
-    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("lock").Font" Style="text-align: justify;">
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Lock" Style="text-align: justify;">
         @Modules.Auth.Resources.Translations.UnauthenticatedUser
     </MudAlert>
 }
 else if (Actions.CurrentStatus == RenderStatus.Warning)
 {
-    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("circle-exclamation").Font" Style="text-align: justify;">
+    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning" Style="text-align: justify;">
         @(Actions.MessageWarning ?? GlobalTranslations.CustomVisibilityNoData)
     </MudAlert>
 }
@@ -44,7 +44,7 @@ else //Content
         }
         else
         {
-            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@IconsFA.Solid.Icon("circle-exclamation").Font" Style="text-align: justify;">
+            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning" Style="text-align: justify;">
                 @GlobalTranslations.CustomVisibilityNoData
             </MudAlert>
         }

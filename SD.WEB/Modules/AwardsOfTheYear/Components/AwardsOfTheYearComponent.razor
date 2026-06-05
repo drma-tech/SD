@@ -8,12 +8,12 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<PageSectionComponent Title="@Translations.AwardsOfTheYear.Format(DateTime.Now.Year)" Description="@GlobalTranslations.AwardsYearDescription" Icon="@IconsFA.Solid.Icon("trophy").Font">
+<PageSectionComponent Title="@Translations.AwardsOfTheYear.Format(DateTime.Now.Year)" Description="@GlobalTranslations.AwardsYearDescription">
     <BodyFragment>
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/{Culture}/best-awards-year")" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" Href="@($"/{Culture}/best-awards-year")" />
                 </MudTooltip>
             </Header>
             <ChildContent>

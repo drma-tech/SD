@@ -5,13 +5,13 @@
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject IpInfoApi IpInfoApi
 
-<PageSectionComponent Title="@($"{Collections.Resources.Translations.FreeWatch} ({(Region?.GetName() ?? "United States")})")" Description="@(GlobalTranslations.FreeWatchDescription)" Icon="@IconsFA.Solid.Icon("play-circle").Font">
+<PageSectionComponent Title="@($"{Collections.Resources.Translations.FreeWatch} ({(Region?.GetName() ?? "United States")})")" Description="@(GlobalTranslations.FreeWatchDescription)">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Href="@($"/{Culture}/free/{TypeSelected.ToString().ToLower()}/{(Region?.ToString()?.ToLower() ?? "us")}")" Rel="nofollow" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" Href="@($"/{Culture}/free/{TypeSelected.ToString().ToLower()}/{(Region?.ToString()?.ToLower() ?? "us")}")" Rel="nofollow" />
                 </MudTooltip>
             </Header>
             <ChildContent>

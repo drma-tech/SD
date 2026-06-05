@@ -20,7 +20,7 @@
 
 <HeadComponent Title="@SeoTranslations.AppIndexTitle" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}") Index="true" Shared="true"></HeadComponent>
 
-<PageSectionComponent IsPageHeader="true" Image="icon/icon-71.png" Title="@AppInfo.Title" Subtitle="@SeoTranslations.AppIndexTitle"></PageSectionComponent>
+<PageSectionComponent IsPageHeader="true" Image="icon/icon-71.webp" Title="@AppInfo.Title" Subtitle="@SeoTranslations.AppIndexTitle"></PageSectionComponent>
 
 <PageSectionComponent Title="@SeoTranslations.Search">
     <BodyFragment>
@@ -28,14 +28,14 @@
             <ChildContent>
                 <MudTabPanel Text="@SeoTranslations.Basic">
                     <MudTextField T="string" Label="@SeoTranslations.EnterTitle" Placeholder="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio" @bind-Text="@AppStateStatic.Query" Immediate="true" OnKeyDown="@KeyPress"
-                                  AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
+                                  AdornmentIcon="@Icons.Material.Filled.Search" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
                                   OnAdornmentClick="@(() =>{ if (AppStateStatic.Query.NotEmpty()) Navigation.NavigateTo($"/{Culture}/search"); })" Clearable="true"
                                   HelperText="@GlobalTranslations.TypeSomething" InputType="InputType.Text">
                     </MudTextField>
                 </MudTabPanel>
                 <MudTabPanel Text="@SeoTranslations.Keywords">
                     <MudTextField T="string" Label="@SeoTranslations.EnterKeyword" Placeholder="Example: love, robot, lost, animation, superhero, family" @bind-Text="@AppStateStatic.Query" Immediate="true"
-                                  AdornmentIcon="@IconsFA.Solid.Icon("magnifying-glass").Font" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
+                                  AdornmentIcon="@Icons.Material.Filled.Search" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
                                   OnKeyDown="@KeyPressKeyboard" OnAdornmentClick="@(async() => { if (AppStateStatic.Query.NotEmpty()) await SearchKeyWords(); })" Clearable="true" 
                                   OnClearButtonClick="@(() => AppStateStatic.Keywords = [])" HelperText="@SeoTranslations.SearchKeywords" InputType="InputType.Text">
                     </MudTextField>
@@ -119,7 +119,7 @@
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
             <Header>
                 <MudTooltip Text="Expand">
-                    <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" OnClick="@(() => Navigation.NavigateTo($"/{Culture}/list/{(int)EnumLists.ExpectedMovieOf2026}"))" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" OnClick="@(() => Navigation.NavigateTo($"/{Culture}/list/{(int)EnumLists.ExpectedMovieOf2026}"))" />
                 </MudTooltip>
             </Header>
             <ChildContent>

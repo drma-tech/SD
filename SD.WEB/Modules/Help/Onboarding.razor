@@ -6,7 +6,7 @@
                      TData="object" SelectedIndexChanged="StateHasChanged">
             <MudCarouselItem>
                 <div class="pa-4" style="text-align: center; height: 100%;">
-                    <MudImage Src="images/onboarding-step-1.png" Style="height: 200px;"></MudImage>
+                    <MudImage Src="images/onboarding-step-1.webp" Style="height: 200px;"></MudImage>
                     <MudText Typo="Typo.h6" Color="Color.Secondary">
                         @Resources.Translations.Step1Title
                     </MudText>
@@ -17,7 +17,7 @@
             </MudCarouselItem>
             <MudCarouselItem>
                 <div class="pa-4" style="text-align: center; height: 100%;">
-                    <MudImage Src="images/onboarding-step-2.png" Style="height: 200px;"></MudImage>
+                    <MudImage Src="images/onboarding-step-2.webp" Style="height: 200px;"></MudImage>
                     <MudText Typo="Typo.h6" Color="Color.Secondary">
                         @Resources.Translations.Step2Title
                     </MudText>
@@ -28,7 +28,7 @@
             </MudCarouselItem>
             <MudCarouselItem>
                 <div class="pa-4" style="text-align: center; height: 100%;">
-                    <MudImage Src="images/onboarding-step-3.png" Style="height: 200px;"></MudImage>
+                    <MudImage Src="images/onboarding-step-3.webp" Style="height: 200px;"></MudImage>
                     <MudText Typo="Typo.h6" Color="Color.Secondary">
                         @Resources.Translations.Step3Title
                     </MudText>
@@ -39,7 +39,7 @@
             </MudCarouselItem>
             <MudCarouselItem>
                 <div class="pa-4" style="text-align: center; height: 100%;">
-                    <MudImage Src="icon/icon-300.png" Style="height: 200px;"></MudImage>
+                    <MudImage Src="icon/icon-300.webp" Style="height: 200px;"></MudImage>
                     <MudText Typo="Typo.h6">
                         @Resources.Translations.Step4Subtitle
                     </MudText>
@@ -52,7 +52,7 @@
                 <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="@(() => { mudCarousel?.Previous(); StateHasChanged(); })" Class="@Css.Build().Small("me")">
                     @WEB.Resources.Button.Back
                 </MudButton>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" OnClick="Login" FullWidth="true" StartIcon="@IconsFA.Solid.Icon("right-to-bracket").Font">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Secondary" OnClick="Login" FullWidth="true" StartIcon="@Icons.Material.Filled.KeyboardArrowRight">
                     @Resources.Translations.Step4Title
                 </MudButton>
             }

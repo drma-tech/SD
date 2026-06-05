@@ -1,8 +1,6 @@
 "use strict";
 
 import { isBot, hideBlazorIndex } from "./main.js";
-import { simd } from "./wasm-feature-detect.js";
-import { appVersion } from "./app-version.js";
 
 export const storage = {
     clearAllStorage() {
@@ -107,15 +105,15 @@ export const notification = {
                 </p>
                 <div style="text-align:left; font-size:1rem; color:#444;">
                     <div style="margin:0.8rem 0; display:flex; align-items:center;">
-                        <img src="logo/google-play.png" width="22" style="margin-right:8px;" alt="Google Play" />
+                        <img src="logo/google-play.webp" width="22" style="margin-right:8px;" alt="Google Play" />
                         <span><strong>Android:</strong> update <strong>Google Chrome</strong> in the Play Store</span>
                     </div>
                     <div style="margin:0.8rem 0; display:flex; align-items:center;">
-                        <img src="logo/app-store.png" width="22" style="margin-right:8px;" alt="App Store" />
+                        <img src="logo/app-store.webp" width="22" style="margin-right:8px;" alt="App Store" />
                         <span><strong>iOS / macOS:</strong> update your system (Safari is included)</span>
                     </div>
                     <div style="margin:0.8rem 0; display:flex; align-items:center;">
-                        <img src="logo/microsoft-store.png" width="22" style="margin-right:8px;" alt="Microsoft Store" />
+                        <img src="logo/microsoft-store.webp" width="22" style="margin-right:8px;" alt="Microsoft Store" />
                         <span><strong>Windows:</strong> run Windows Update (Edge is included)</span>
                     </div>
                 </div>
@@ -202,15 +200,6 @@ export const environment = {
         //The browser does not support WASM or SIMD.
         if (!wasmSupported || hideBlazorIndex) {
             notification.showBrowserWarning();
-            return;
-        }
-
-        const simdSupported = await simd();
-
-        if (!simdSupported) {
-            notification.showError(
-                "Your browser is out of date or some security mechanism is blocking something essential for the platform to function properly, such as Edge's Enhanced Security Mode."
-            );
         }
     },
     getBrowserName() {
@@ -221,9 +210,6 @@ export const environment = {
     },
     getOperatingSystem() {
         return window.browser?.getOSName() ?? "no bowser loaded";
-    },
-    getAppVersion() {
-        return appVersion;
     },
     inspectAdElement(el) {
         if (!el) return { rendered: false, hasSize: false };

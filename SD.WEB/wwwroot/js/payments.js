@@ -2,7 +2,6 @@
 
 import { baseApiUrl } from "./main.js";
 import { storage, notification, interop } from "./utils.js";
-import { appVersion } from "./app-version.js";
 
 export const apple = {
     openCheckout(productId) {
@@ -85,7 +84,7 @@ export const stripe = {
                         method: "POST",
                         headers: {
                             "X-Supabase-Token": `Bearer ${data.session.access_token}`,
-                            "X-App-Version": appVersion,
+                            "X-App-Version": window.appVersion,
                         },
                     }
                 );

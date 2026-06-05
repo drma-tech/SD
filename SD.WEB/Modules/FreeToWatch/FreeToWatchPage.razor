@@ -10,7 +10,7 @@
                Url="@($"/{Culture}/free/{Type}/{Region}")" Index="true" Shared="true"></HeadComponent>
 <PageSectionComponent IsPageHeader="true" Title="@(Collections.Resources.Translations.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))"
                       Description="@Collections.Resources.Translations.FreeWatchDescriptionExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())"
-                      Icon="@IconsFA.Solid.Icon("play-circle").Font" UrlShare="@($"/{Culture}/free/{Type}/{Region}")"></PageSectionComponent>
+                      UrlShare="@($"/{Culture}/free/{Type}/{Region}")"></PageSectionComponent>
 
 @if (TypeEnum == MediaType.movie)
 {
@@ -46,11 +46,11 @@ else
     private Dictionary<string, string> GetExtraParameters()
     {
         return new Dictionary<string, string> {
-            { "sort_by", "popularity.desc" }, 
-            { "watch_region", RegionEnum.ToString().ToLower() }, 
-            { "with_watch_monetization_types", "ads|free" }, 
+            { "sort_by", "popularity.desc" },
+            { "watch_region", RegionEnum.ToString().ToLower() },
+            { "with_watch_monetization_types", "ads|free" },
             { "vote_average.gte", "6" },
-            { "primary_release_date.gte", "1970-01-01" } 
+            { "primary_release_date.gte", "1970-01-01" }
         };
     }
 }

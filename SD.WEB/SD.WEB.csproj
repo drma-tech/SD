@@ -28,7 +28,7 @@
 		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="10.0.8" />
 		<PackageReference Include="MudBlazor" Version="9.5.0" />
 		<PackageReference Include="Sentry.AspNetCore.Blazor.WebAssembly" Version="6.6.0" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.18.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.1" />
 		<PackageReference Include="Toolbelt.Blazor.PWA.Updater" Version="3.2.0" />
 	</ItemGroup>
 	<ItemGroup>
@@ -182,6 +182,6 @@
 		<CurrentDate>$([System.DateTime]::Now.ToString(yyyy.MM.dd))</CurrentDate>
 	</PropertyGroup>
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-		<WriteLinesToFile File="$(ProjectDir)wwwroot\js\app-version.js" Lines="export const appVersion = '$(CurrentDate)';" Overwrite="true" />
+		<WriteLinesToFile File="$(ProjectDir)wwwroot\js\app-version.js" Lines="window.appVersion = '$(CurrentDate)';" Overwrite="true" />
 	</Target>
 </Project>

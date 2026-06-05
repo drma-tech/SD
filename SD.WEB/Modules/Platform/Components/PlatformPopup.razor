@@ -14,7 +14,7 @@
     <DialogContent>
         @if (Provider == null)
         {
-            <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true" Icon="@IconsFA.Solid.Icon("trash").Font">
+            <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Error">
                 @Translations.NotFound
             </MudAlert>
         }
@@ -34,13 +34,13 @@
     <DialogActions>
         @if (MyProviders?.Items.Any(a => a.id == ProviderId) ?? false)
         {
-            <MudButton Color="Color.Error" StartIcon="@IconsFA.Solid.Icon("minus").Font" OnClick="@Remove" Disabled="@(!AppStateStatic.IsAuthenticated)">
+            <MudButton Color="Color.Error" StartIcon="@Icons.Material.Filled.Remove" OnClick="@Remove" Disabled="@(!AppStateStatic.IsAuthenticated)">
                 @Button.Remove
             </MudButton>
         }
         else
         {
-            <MudButton Color="Color.Primary" StartIcon="@IconsFA.Solid.Icon("plus").Font" OnClick="@Add" Disabled="@(!AppStateStatic.IsAuthenticated)">
+            <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="@Add" Disabled="@(!AppStateStatic.IsAuthenticated)">
                 @Button.Add
             </MudButton>
         }

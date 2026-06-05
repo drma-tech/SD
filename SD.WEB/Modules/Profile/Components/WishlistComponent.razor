@@ -1,7 +1,7 @@
 ﻿@using SD.WEB.Shared.Core
 @inherits ComponentCore<WishlistComponent>
 
-<PageSectionComponent Icon="@IconsFA.Solid.Icon("bookmark").Font" Title="WishList" ShowHeader="ShowHeader">
+<PageSectionComponent Title="WishList" ShowHeader="ShowHeader" Icon="@Icons.Material.Filled.Bookmark">
     <BodyFragment>
         @if (TypeParam.HasValue)
         {
@@ -47,7 +47,7 @@
                      ActivePanelIndexChanged="@((int index) => { if (index == 0) _type = MediaType.movie; else _type = MediaType.tv; })">
                 <Header>
                     <MudTooltip Text="Expand">
-                        <MudIconButton Icon="@IconsFA.Solid.Icon("expand").Font" Color="Color.Primary" Disabled="false" OnClick="@(async () => await OpenCompleteList(_type))" />
+                        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" Disabled="false" OnClick="@(async () => await OpenCompleteList(_type))" />
                     </MudTooltip>
                 </Header>
                 <ChildContent>

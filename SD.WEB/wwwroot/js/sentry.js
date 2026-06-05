@@ -1,6 +1,5 @@
 ﻿import { servicesConfig } from "./main.js";
 import { storage, environment } from "./utils.js";
-import { appVersion } from "./app-version.js";
 
 const env = (() => {
     if (location.hostname === "localhost") return "development";
@@ -17,30 +16,30 @@ const ignoredErrors = [
     /token has expired/i,
 ];
 
-const version = appVersion?.trim() ? appVersion : "error";
+window.sentryOnLoad = function () {
+    Sentry.init({
+        dsn: servicesConfig.SentryDsn,
+        SendDefaultPii: true, // enable ip
+        release: `sd-js@${window.appVersion}`,
+        environment: env,
+        beforeSend(event) {
+            const message = event.exception?.values?.[0]?.value || event.message || "";
 
-Sentry.init({
-    dsn: servicesConfig.SentryDsn,
-    SendDefaultPii: true, // enable ip
-    release: `sd-js@${version}`,
-    environment: env,
-    beforeSend(event) {
-        const message = event.exception?.values?.[0]?.value || event.message || "";
+            if (message && ignoredErrors.some(err => err.test(message))) {
+                return null;
+            }
 
-        if (message && ignoredErrors.some(err => err.test(message))) {
-            return null;
-        }
+            event.tags = {
+                "custom.version": window.appVersion,
+                "custom.platform": storage.getLocalStorage("platform") ?? "error",
+            };
+            event.extra = {
+                browser_name: environment.getBrowserName() ?? "error",
+                browser_version: environment.getBrowserVersion() ?? "error",
+                operation_system: environment.getOperatingSystem() ?? "error",
+            };
 
-        event.tags = {
-            "custom.version": version,
-            "custom.platform": storage.getLocalStorage("platform") ?? "error",
-        };
-        event.extra = {
-            browser_name: environment.getBrowserName() ?? "error",
-            browser_version: environment.getBrowserVersion() ?? "error",
-            operation_system: environment.getOperatingSystem() ?? "error",
-        };
-
-        return event;
-    },
-});
+            return event;
+        },
+    });
+}
