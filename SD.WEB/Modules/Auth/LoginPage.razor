@@ -18,38 +18,46 @@
             </MudText>
 
             <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "google")" Content="@(Button.Recent)" Overlap="true">
-                <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@Icons.Custom.Brands.Google" Disabled="@(Platform == SD.Shared.Enums.Platform.ios || _processingInProgress)" FullWidth="true">
+                <MudButton Variant="Variant.Filled" OnClick="LoginWithGoogle" StartIcon="@Icons.Custom.Brands.Google" Disabled="@(Platform == SD.Shared.Enums.Platform.ios || _processingInProgress)"
+                           FullWidth="true" Color="Color.Primary">
                     <MudText>@Resources.Translations.ContinueWith.Format("Google")</MudText>
                 </MudButton>
             </MudBadge>
             <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "apple")" Content="@(Button.Recent)" Overlap="true">
-                <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@Icons.Custom.Brands.Apple" Disabled="@_processingInProgress" FullWidth="true">
+                <MudButton Variant="Variant.Filled" OnClick="LoginWithApple" StartIcon="@Icons.Custom.Brands.Apple" Disabled="@_processingInProgress" FullWidth="true" Color="Color.Primary">
                     <MudText>@Resources.Translations.ContinueWith.Format("Apple")</MudText>
                 </MudButton>
             </MudBadge>
             <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "microsoft")" Content="@(Button.Recent)" Overlap="true">
-                <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@Icons.Custom.Brands.Microsoft" Disabled="@_processingInProgress" FullWidth="true">
+                <MudButton Variant="Variant.Filled" OnClick="LoginWithMicrosoft" StartIcon="@Icons.Custom.Brands.Microsoft" Disabled="@_processingInProgress" FullWidth="true" Color="Color.Primary">
                     <MudText>@Resources.Translations.ContinueWith.Format("Microsoft")</MudText>
                 </MudButton>
             </MudBadge>
             <MudDivider Class="@Css.Build().Medium("my")"></MudDivider>
-            <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "email")" Content="@(Button.Recent)" Overlap="true">
-                <MudTextField @bind-Value="@email" Label="@Resources.Translations.Email" Placeholder="@Resources.Translations.EnterEmail" Disabled="@(_processingInProgress || emailProbablySent)" Immediate="true"
-                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send" AdornmentColor="Color.Primary" InputType="InputType.Email"
-                              OnAdornmentClick="() => LoginWithEmail(email)" HelperText="@Resources.Translations.MicrosoftEmails" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
-            </MudBadge>
+            <MudToolBar Gutters="false" Style="height: auto;">
+                <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "email")" Content="@(Button.Recent)" Overlap="true" Style="width: 100%;" Class="me-5">
+                    <MudTextField @bind-Value="@email" Label="@Resources.Translations.Email" Placeholder="@Resources.Translations.EnterEmail" Disabled="@(_processingInProgress || emailProbablySent)"
+                                  Immediate="true" InputType="InputType.Email" HelperText="@Resources.Translations.MicrosoftEmails" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+                </MudBadge>
+                <MudIconButton Icon="@Icons.Material.Filled.Send" Color="Color.Primary" Variant="Variant.Filled" OnClick="() => LoginWithEmail(email)"
+                               Style="align-self: start; margin-top: 8px;" Disabled="@(_processingInProgress || emailProbablySent)" />
+            </MudToolBar>
             @if (SuggestEmailCorrection(email).NotEmpty())
             {
                 <MudAlert Variant="Variant.Outlined" Dense="true" Severity="Severity.Warning">
                     @SuggestEmailCorrection(email)
                 </MudAlert>
             }
-            <MudTextField @ref="@txtOTP" @bind-Value="@otp" Label="@Resources.Translations.OTPCode" Placeholder="@Resources.Translations.EnterCode" Disabled="@(!emailProbablySent)"
-                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Check" AdornmentColor="Color.Primary" InputType="InputType.Number"
-                          OnAdornmentClick="() => ConfirmCode(email, otp)" HelperText="@Resources.Translations.EmailDelay" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+            <MudToolBar Gutters="false" Style="height: auto;">
+                <MudTextField @ref="@txtOTP" @bind-Value="@otp" Label="@Resources.Translations.OTPCode" Placeholder="@Resources.Translations.EnterCode" Disabled="@(!emailProbablySent)"
+                              InputType="InputType.Number" HelperText="@Resources.Translations.EmailDelay" Variant="Variant.Outlined" Margin="Margin.Dense" Class="me-5" />
+                <MudIconButton Icon="@Icons.Material.Filled.Check" Color="Color.Primary" Variant="Variant.Filled" OnClick="() => ConfirmCode(email, otp)"
+                               Style="align-self: start; margin-top: 8px;" Disabled="@(!emailProbablySent)" />
+            </MudToolBar>
         </MudStack>
-        <div style="text-align: center;">
-            <MudText Class="@Css.Build().Large("mt").Medium("mb")">
+        <div style="text-align: center;" class="@Css.Build().Large("mt").Medium("mb")">
+            <MudIcon Icon="@Icons.Material.Filled.CheckBox" Size="Size.Small" Style="vertical-align: sub;" />
+            <MudText Inline="true">
                 @((MarkupString)string.Format(Translations.Terms1, $"<a href='/{Culture}/legal/terms' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Help.Resources.Translations.TermsUse}</a>", $"<a href='/{Culture}/legal/privacy' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{SD.WEB.Modules.Help.Resources.Translations.PrivacyPolicy}</a>"))
             </MudText>
         </div>
