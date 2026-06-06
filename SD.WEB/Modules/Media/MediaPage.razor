@@ -282,24 +282,24 @@
             Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
 
             await Actions.FinishLoading.Invoke(Media);
+
+            EnglishTitle = Media?.original_title;
+
+            if (Media != null && Media.original_language != "en")
+            {
+                //title must be in English
+                var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US", cts.Token);
+                EnglishTitle = enMedia.title;
+            }
+
+            EnglishTitle = EnglishTitle?.Replace("&", "");
+
+            StateHasChanged();
         }
         catch (Exception ex)
         {
             await Actions.ShowError.Invoke(ex.Message);
         }
-
-        EnglishTitle = Media?.original_title;
-
-        if (Media != null && Media.original_language != "en")
-        {
-            //title must be in English
-            var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US", cts.Token);
-            EnglishTitle = enMedia.title;
-        }
-
-        EnglishTitle = EnglishTitle?.Replace("&", "");
-
-        StateHasChanged();
 
         try
         {
