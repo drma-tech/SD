@@ -155,7 +155,7 @@
                 if (Network == AdNetwork.Adsense)
                 {
                     await JsRuntime.Services().InitAdSense($"ca-pub-{AdClientId}", GetAdSenseId(Slot), _containerId, cts.Token);
-                    _ = Task.Run(DetectAdBlockAsync);
+                    _ = Task.Run(() => DetectAdBlockAsync(cts.Token));
                 }
                 else if (Network == AdNetwork.Yandex)
                 {
@@ -171,9 +171,9 @@
         }
     }
 
-    private async Task DetectAdBlockAsync()
+    private async Task DetectAdBlockAsync(CancellationToken cancellationToken)
     {
-        var blocked = await JsRuntime.Utils().IsAdBlocked(cts.Token);
+        var blocked = await JsRuntime.Utils().IsAdBlocked(cancellationToken);
 
         if (blocked)
         {

@@ -123,6 +123,11 @@ namespace SD.API.Core.Scraping
             }
             catch (Exception ex)
             {
+                if (ex.Message == "Not Found")
+                {
+                    return;
+                }
+
                 req.LogError(ex);
 
                 if (ex.Message.Contains("Too Many Requests"))
