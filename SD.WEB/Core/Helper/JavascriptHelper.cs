@@ -203,8 +203,6 @@ namespace SD.WEB.Core.Helper
     {
         public Task InitLists(string id, CancellationToken cancellationToken, int? size = null) => InvokeVoid("swiper.initLists", cancellationToken, id, size);
 
-        public Task InitNews(string id, CancellationToken cancellationToken) => InvokeVoid("swiper.initNews", cancellationToken, id);
-
         public Task InitTrailers(string id, CancellationToken cancellationToken) => InvokeVoid("swiper.initTrailers", cancellationToken, id);
     }
 
