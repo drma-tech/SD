@@ -1,0 +1,30 @@
+﻿<span class="fa-layers" style="@($"font-size: {FontSize};")">
+    <i class="@BaseIcon" style="color: var(--mud-palette-@BaseColor.ToString().ToLower());"></i>
+    @if (OverlayIcon.NotEmpty())
+    {
+        <i class="@OverlayIcon" data-fa-transform="shrink-6" style="color: var(--mud-palette-@OverlayColor.ToString().ToLower());"></i>
+    }
+    else if (OverlayText.NotEmpty())
+    {
+        <span class="fa-layers-text fa-inverse" data-fa-transform="shrink-11.5 rotate--30" style="color: var(--mud-palette-@OverlayColor.ToString().ToLower()); font-weight:900;">
+            @OverlayText
+        </span>
+    }
+    else if (OverlayBadge.NotEmpty())
+    {
+        <span class="fa-layers-counter" style="background-color: var(--mud-palette-@OverlayColor.ToString().ToLower()); transform: scale(0.3);">
+            @OverlayBadge
+        </span>
+    }
+</span>
+
+@code {
+    [Parameter] public required string FontSize { get; set; }
+    [Parameter] public required string BaseIcon { get; set; }
+    [Parameter] public Color BaseColor { get; set; } = Color.Default;
+
+    [Parameter] public string? OverlayIcon { get; set; }
+    [Parameter] public string? OverlayText { get; set; }
+    [Parameter] public string? OverlayBadge { get; set; }
+    [Parameter] public Color OverlayColor { get; set; } = Color.Default;
+}
