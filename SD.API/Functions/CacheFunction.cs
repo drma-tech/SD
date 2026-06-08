@@ -123,7 +123,7 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                     {
                         Id = item.id,
                         Title = item.primaryTitle,
-                        Image = image,
+                        Image = image?.Replace("@._V1_QL75_UX280_CR0,0,280,414_.jpg", "@._V1_QL75_UX130_.jpg"),
                         Year = item.startYear?.ToString(),
                         IMDbRating = item.averageRating?.ToString("0.0", CultureInfo.InvariantCulture)
                     });
