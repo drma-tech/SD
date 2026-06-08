@@ -1,6 +1,6 @@
 ﻿<div>
     <div @onclick="@Clicked" style="@($"{(Clicked.HasDelegate ? "cursor: pointer;" : "")} position: relative;")">
-        <MudImage Src="@(Poster ?? "images/no-image.webp")" Alt="@Title" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;" loading="lazy" />
+        <MudImage Src="@(Poster ?? "images/no-image.webp")" Alt="@Title" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;" />
 
         @if (TopLeft != null)
         {
