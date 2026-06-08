@@ -34,7 +34,7 @@
                                                 <MudLink OnClick="() => VideoClick(item)" rel="nofollow">
                                                     <MudCard Outlined="true" Style="height: 100%;">
                                                         <MudCardContent Style="padding: 0;">
-                                                            <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.webp" Style="width: 100%;" ObjectFit="ObjectFit.Contain"></MudImage>
+                                                            <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.webp" Style="width: 100%;" ObjectFit="ObjectFit.Contain" loading="lazy"></MudImage>
                                                             <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
                                                                 @item?.DateTime.Humanize()
                                                             </MudChip>
