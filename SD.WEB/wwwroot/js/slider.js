@@ -8,6 +8,9 @@ export const slider = {
         if (!el) return;
         const margin = mobile ? "4px" : "8px";
 
+        if (el.dataset.splideInit === "1") return;
+        el.dataset.splideInit = "1";
+
         const temp = new Splide(el, {
             autoWidth: true,
             gap: margin,
@@ -22,6 +25,9 @@ export const slider = {
         const el = document.getElementById(id);
         if (!el) return;
         const margin = mobile ? "4px" : "8px";
+
+        if (el.dataset.splideInit === "1") return;
+        el.dataset.splideInit = "1";
 
         const temp = new Splide(el, {
             autoWidth: true,
