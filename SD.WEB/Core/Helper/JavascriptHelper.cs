@@ -47,7 +47,7 @@ namespace SD.WEB.Core.Helper
 
         public static ServicesJs Services(this IJSRuntime js) => new(js);
 
-        public static SwiperJs Swiper(this IJSRuntime js) => new(js);
+        public static SliderJs Slider(this IJSRuntime js) => new(js);
 
         public static PaymentsJs Payments(this IJSRuntime js) => new(js);
     }
@@ -199,11 +199,11 @@ namespace SD.WEB.Core.Helper
         public Task InitYandex(string id, CancellationToken cancellationToken) => InvokeVoid("services.initYandex", cancellationToken, id);
     }
 
-    public class SwiperJs(IJSRuntime js) : JsModuleBase(js, "./js/swiper.js")
+    public class SliderJs(IJSRuntime js) : JsModuleBase(js, "./js/slider.js")
     {
-        public Task InitLists(string id, CancellationToken cancellationToken, int? size = null) => InvokeVoid("swiper.initLists", cancellationToken, id, size);
+        public Task InitLists(string id, CancellationToken cancellationToken, int? size = null) => InvokeVoid("slider.initLists", cancellationToken, id, size);
 
-        public Task InitTrailers(string id, CancellationToken cancellationToken) => InvokeVoid("swiper.initTrailers", cancellationToken, id);
+        public Task InitTrailers(string id, CancellationToken cancellationToken) => InvokeVoid("slider.initTrailers", cancellationToken, id);
     }
 
     public class PaymentsJs(IJSRuntime js) : JsModuleBase(js, "./js/payments.js")

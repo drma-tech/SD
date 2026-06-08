@@ -8,7 +8,6 @@
             <RenderControl Actions="@(TypeParam == MediaType.movie ? ActionsMovie : ActionsTv)" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
                 @if (FullScreen)
                 {
-                    <span>FullScreen</span>
                     <div class="grid-relative-container-poster">
                         @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems) ?? [])
                         {
@@ -22,21 +21,30 @@
                 }
                 else
                 {
-                    <span>non FullScreen</span>
-                    <div id="@_swiperId" class="swiper">
-                        <div class="swiper-wrapper">
-                            @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems) ?? [])
-                            {
-                                var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-                                <div class="swiper-slide" style="height: auto !important;">
-                                    <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
-                                                     Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
-                                    </PosterComponent>
-                                </div>
-                            }
+                    <div id="@_swiperId" class="splide" role="group">
+                        <div class="splide__arrows">
+                            <button class="splide__arrow splide__arrow--prev">
+                                <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
+                            </button>
+                            <button class="splide__arrow splide__arrow--next">
+                                <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
+                            </button>
                         </div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
+                        <div class="splide__track">
+                            <ul class="splide__list">
+                                @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems) ?? [])
+                                {
+                                    var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                                    <li class="splide__slide">
+                                        <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
+                                            <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
+                                                             Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                            </PosterComponent>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
                     </div>
                 }
             </RenderControl>
@@ -67,20 +75,30 @@
                             }
                             else
                             {
-                                <div id="@_swiperId" class="swiper">
-                                    <div class="swiper-wrapper">
-                                        @foreach (var item in Wish?.Movies.Take(GetTotalItems) ?? [])
-                                        {
-                                            var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-                                            <div class="swiper-slide" style="height: auto !important;">
-                                                <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.movie"
-                                                                 Clicked="@(async () => await ShowMediaPopup(MediaType.movie, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
-                                                </PosterComponent>
-                                            </div>
-                                        }
+                                <div id="@_swiperId" class="splide" role="group">
+                                    <div class="splide__arrows">
+                                        <button class="splide__arrow splide__arrow--prev">
+                                            <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
+                                        </button>
+                                        <button class="splide__arrow splide__arrow--next">
+                                            <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
+                                        </button>
                                     </div>
-                                    <div class="swiper-button-next"></div>
-                                    <div class="swiper-button-prev"></div>
+                                    <div class="splide__track">
+                                        <ul class="splide__list">
+                                            @foreach (var item in Wish?.Movies.Take(GetTotalItems) ?? [])
+                                            {
+                                                var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                                                <li class="splide__slide">
+                                                    <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
+                                                        <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.movie"
+                                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.movie, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                                        </PosterComponent>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
                                 </div>
                             }
                         </RenderControl>
@@ -101,20 +119,30 @@
                             }
                             else
                             {
-                                <div id="@_swiperId2" class="swiper">
-                                    <div class="swiper-wrapper">
-                                        @foreach (var item in Wish?.Shows.Take(GetTotalItems) ?? [])
-                                        {
-                                            var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
-                                            <div class="swiper-slide" style="height: auto !important;">
-                                                <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.tv"
-                                                                 Clicked="@(async () => await ShowMediaPopup(MediaType.tv, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
-                                                </PosterComponent>
-                                            </div>
-                                        }
+                                <div id="@_swiperId2" class="splide" role="group">
+                                    <div class="splide__arrows">
+                                        <button class="splide__arrow splide__arrow--prev">
+                                            <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
+                                        </button>
+                                        <button class="splide__arrow splide__arrow--next">
+                                            <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
+                                        </button>
                                     </div>
-                                    <div class="swiper-button-next"></div>
-                                    <div class="swiper-button-prev"></div>
+                                    <div class="splide__track">
+                                        <ul class="splide__list">
+                                            @foreach (var item in Wish?.Shows.Take(GetTotalItems) ?? [])
+                                            {
+                                                var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                                                <li class="splide__slide">
+                                                    <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
+                                                        <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.tv"
+                                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.tv, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                                        </PosterComponent>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
                                 </div>
                             }
                         </RenderControl>
@@ -143,6 +171,7 @@
     private HashSet<WishListItem> Items(MediaType type) => type == MediaType.movie ? Wish?.Movies ?? [] : Wish?.Shows ?? [];
 
     private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Wishlist : AccountProduct.Basic.GetRestrictions().Wishlist;
+    private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
 
     private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
     private readonly string _swiperId2 = $"swiper-{Guid.NewGuid()}";
@@ -161,8 +190,8 @@
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await JsRuntime.Swiper().InitLists(_swiperId, cts.Token);
-            await JsRuntime.Swiper().InitLists(_swiperId2, cts.Token);
+            await JsRuntime.Slider().InitLists(_swiperId, cts.Token);
+            await JsRuntime.Slider().InitLists(_swiperId2, cts.Token);
         }
         catch (Exception ex)
         {

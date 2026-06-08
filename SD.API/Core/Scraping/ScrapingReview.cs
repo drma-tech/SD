@@ -42,10 +42,10 @@ public static class ScrapingReview
 
         foreach (var div in divs)
         {
-            var site = div.SelectSingleNode("div[1]/a/text()").InnerText;
-            var url = div.SelectSingleNode("div[2]/a[2]").GetAttributeValue("href", "");
-            var reviewer = div.SelectSingleNode("div[2]/a[1]").InnerText;
-            var score = int.Parse(div.SelectSingleNode("div[1]/a/div/div/span").InnerText);
+            var site = div.SelectSingleNode("div[1]/a/text()")?.InnerText;
+            var url = div.SelectSingleNode("div[2]/a[2]")?.GetAttributeValue("href", "");
+            var reviewer = div.SelectSingleNode("div[2]/a[1]")?.InnerText;
+            var score = int.Parse(div.SelectSingleNode("div[1]/a/div/div/span")?.InnerText ?? "0");
             var quote = div.SelectSingleNode("div[1]/div[2]/div")?.InnerText;
             quote ??= div.SelectSingleNode("div[1]/div/div")?.InnerText;
 
@@ -53,11 +53,11 @@ public static class ScrapingReview
 
             result.Add(new RootMetacriticReviewNew
             {
-                Site = site.Trim(),
-                Url = reviewerLink ? url.Trim() : div.SelectSingleNode("div[2]/a[1]").GetAttributeValue("href", "").Trim(),
-                Reviewer = reviewerLink ? reviewer.Trim() : div.SelectSingleNode("div[2]/div").InnerText.Trim(),
+                Site = site?.Trim(),
+                Url = reviewerLink ? url?.Trim() : div.SelectSingleNode("div[2]/a[1]")?.GetAttributeValue("href", "")?.Trim(),
+                Reviewer = reviewerLink ? reviewer?.Trim() : div.SelectSingleNode("div[2]/div")?.InnerText?.Trim(),
                 Score = score,
-                Quote = quote.Trim()
+                Quote = quote?.Trim()
             });
         }
 

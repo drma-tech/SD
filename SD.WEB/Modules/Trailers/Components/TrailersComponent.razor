@@ -16,30 +16,39 @@
             <ChildContent>
                 <MudTabPanel Text="All">
                     <RenderControl Actions="Actions">
-                        <div id="@_gallerySwiperId" class="swiper">
-                            <div class="swiper-wrapper">
-                                @foreach (var item in TrailerModel?.Data?.Items ?? [])
-                                {
-                                    <div class="swiper-slide swiper-slide-grid">
-                                        <MudLink OnClick="() => VideoClick(item)" rel="nofollow">
-                                            <MudCard Outlined="true" Style="height: 100%;">
-                                                <MudCardContent Style="padding: 0;">
-                                                    <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.webp" Style="width: 100%;" ObjectFit="ObjectFit.Contain"></MudImage>
-                                                    <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
-                                                        @item?.DateTime.Humanize()
-                                                    </MudChip>
-                                                </MudCardContent>
-                                                <MudCardContent Style="text-align: center; padding: 4px;" Class="custom-title-list">
-                                                    @item?.title
-                                                </MudCardContent>
-                                            </MudCard>
-                                        </MudLink>
-                                    </div>
-                                }
+                        <div id="@_gallerySwiperId" class="splide" role="group">
+                            <div class="splide__arrows">
+                                <button class="splide__arrow splide__arrow--prev">
+                                    <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
+                                </button>
+                                <button class="splide__arrow splide__arrow--next">
+                                    <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
+                                </button>
                             </div>
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                            @* <div class="swiper-pagination"></div> *@
+                            <div class="splide__track">
+                                <ul class="splide__list">
+                                    @foreach (var item in TrailerModel?.Data?.Items ?? [])
+                                    {
+                                        <li class="splide__slide">
+                                            <div class="swiper-slide" style="width: 190px; height: 160px;">
+                                                <MudLink OnClick="() => VideoClick(item)" rel="nofollow">
+                                                    <MudCard Outlined="true" Style="height: 100%;">
+                                                        <MudCardContent Style="padding: 0;">
+                                                            <MudImage Src="@item?.url" Alt="@item?.title" FallbackSrc="images/no-image.webp" Style="width: 100%;" ObjectFit="ObjectFit.Contain"></MudImage>
+                                                            <MudChip T="string" Label="true" Color="Color.Secondary" Class="poster-chip" Style="top: 0; left: 0; position: absolute; opacity: 0.75;" Size="AppStateStatic.Size">
+                                                                @item?.DateTime.Humanize()
+                                                            </MudChip>
+                                                        </MudCardContent>
+                                                        <MudCardContent Style="text-align: center; padding: 4px;" Class="custom-title-list">
+                                                            @item?.title
+                                                        </MudCardContent>
+                                                    </MudCard>
+                                                </MudLink>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
                         </div>
                     </RenderControl>
                 </MudTabPanel>
@@ -67,7 +76,7 @@
     {
         try
         {
-            await JsRuntime.Swiper().InitTrailers(_gallerySwiperId, cts.Token);
+            await JsRuntime.Slider().InitTrailers(_gallerySwiperId, cts.Token);
 
             await base.OnAfterRenderAsync(firstRender);
         }
