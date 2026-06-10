@@ -1,0 +1,57 @@
+﻿@using Microsoft.JSInterop
+
+@typeparam T
+
+@inject IJSRuntime JsRuntime
+
+<RenderControl Actions="Actions" LoadingHeight="@LoadingHeight">
+    <div id="@_id" class="splide" role="group">
+        <div class="splide__arrows">
+            <button class="splide__arrow splide__arrow--prev">
+                <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
+            </button>
+            <button class="splide__arrow splide__arrow--next">
+                <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
+            </button>
+        </div>
+        <div class="splide__track">
+            <ul class="splide__list">
+                @foreach (var item in List)
+                {
+                    <li class="splide__slide">
+                        @ChildContent(item)
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</RenderControl>
+
+@code {
+    [Parameter][EditorRequired] public IEnumerable<T> List { get; set; } = [];
+    [Parameter][EditorRequired] public RenderFragment<T> ChildContent { get; set; } = null!;
+
+    [Parameter] public string? LoadingHeight { get; set; } = "100px";
+
+    private ComponentActions<IEnumerable<T>> Actions { get; set; } = new(list => list == null || list.Empty());
+    private readonly string _id = $"{Guid.NewGuid()}";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await Actions.FinishLoading.Invoke(List);
+        await JsRuntime.Slider().InitLists(_id, CancellationToken.None);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            await Actions.FinishLoading.Invoke(List);
+            await JsRuntime.Slider().InitLists(_id, CancellationToken.None);
+        }
+        catch (Exception ex)
+        {
+            await Actions.ShowError(ex.Message);
+        }
+    }
+}

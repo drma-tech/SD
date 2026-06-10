@@ -29,32 +29,17 @@
                 }
                 else
                 {
-                    <div id="@_swiperId" class="splide" role="group">
-                        <div class="splide__arrows">
-                            <button class="splide__arrow splide__arrow--prev">
-                                <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                            </button>
-                            <button class="splide__arrow splide__arrow--next">
-                                <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                            </button>
+                    <Slider List="Items(TypeParam.Value).Take(GetTotalItems)" Context="item">
+                        @{
+                            var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.webp" : TmdbOptions.SmallPosterPath + item.logo;
+                            var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                        }
+                        <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
+                            <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                             Clicked="@(async () => await ShowCollectionPopup(TypeParam.Value, item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                            </PosterComponent>
                         </div>
-                        <div class="splide__track">
-                            <ul class="splide__list">
-                                @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems))
-                                {
-                                    var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.webp" : TmdbOptions.SmallPosterPath + item.logo;
-                                    var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
-                                    <li class="splide__slide">
-                                        <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
-                                            <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
-                                                             Clicked="@(async () => await ShowCollectionPopup(TypeParam.Value, item.id, item.name))" WatchedList="Watched" WishList="Wish">
-                                            </PosterComponent>
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
+                    </Slider>
                 }
             </RenderControl>
         }
@@ -93,32 +78,17 @@
                             }
                             else
                             {
-                                <div id="@_swiperId" class="splide" role="group">
-                                    <div class="splide__arrows">
-                                        <button class="splide__arrow splide__arrow--prev">
-                                            <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                                        </button>
-                                        <button class="splide__arrow splide__arrow--next">
-                                            <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                                        </button>
+                                <Slider List="Items(MediaType.movie).Take(GetTotalItems)" Context="item">
+                                    @{
+                                        var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.webp" : TmdbOptions.SmallPosterPath + item.logo;
+                                        var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                                    }
+                                    <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
+                                        <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.movie, item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                                        </PosterComponent>
                                     </div>
-                                    <div class="splide__track">
-                                        <ul class="splide__list">
-                                            @foreach (var item in Items(MediaType.movie).Take(GetTotalItems))
-                                            {
-                                                var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.webp" : TmdbOptions.SmallPosterPath + item.logo;
-                                                var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
-                                                <li class="splide__slide">
-                                                    <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
-                                                        <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
-                                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.movie, item.id, item.name))" WatchedList="Watched" WishList="Wish">
-                                                        </PosterComponent>
-                                                    </div>
-                                                </li>
-                                            }
-                                        </ul>
-                                    </div>
-                                </div>
+                                </Slider>
                             }
                         </RenderControl>
                     </MudTabPanel>
@@ -140,32 +110,17 @@
                             }
                             else
                             {
-                                <div id="@_swiperId2" class="splide" role="group">
-                                    <div class="splide__arrows">
-                                        <button class="splide__arrow splide__arrow--prev">
-                                            <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                                        </button>
-                                        <button class="splide__arrow splide__arrow--next">
-                                            <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                                        </button>
+                                <Slider List="Items(MediaType.tv).Take(GetTotalItems)" Context="item">
+                                    @{
+                                        var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.webp" : TmdbOptions.SmallPosterPath + item.logo;
+                                        var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
+                                    }
+                                    <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
+                                        <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
+                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.tv, item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                                        </PosterComponent>
                                     </div>
-                                    <div class="splide__track">
-                                        <ul class="splide__list">
-                                            @foreach (var item in Items(MediaType.tv).Take(GetTotalItems))
-                                            {
-                                                var logo = string.IsNullOrEmpty(item.logo) ? "images/no-image.webp" : TmdbOptions.SmallPosterPath + item.logo;
-                                                var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
-                                                <li class="splide__slide">
-                                                    <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
-                                                        <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
-                                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.tv, item.id, item.name))" WatchedList="Watched" WishList="Wish">
-                                                        </PosterComponent>
-                                                    </div>
-                                                </li>
-                                            }
-                                        </ul>
-                                    </div>
-                                </div>
+                                </Slider>
                             }
                         </RenderControl>
                     </MudTabPanel>
@@ -197,8 +152,6 @@
     private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
 
     public bool Updating { get; set; }
-    private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
-    private readonly string _swiperId2 = $"swiper-{Guid.NewGuid()}";
 
     protected override void OnInitialized()
     {
@@ -206,21 +159,6 @@
 
         ActionsMovie.CustomMessageWarning = Modules.Profile.Resources.Translations.MarkTitlesWatched;
         ActionsTv.CustomMessageWarning = Modules.Profile.Resources.Translations.MarkTitlesWatched;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        try
-        {
-            await base.OnAfterRenderAsync(firstRender);
-
-            await JsRuntime.Slider().InitLists(_swiperId, cts.Token);
-            await JsRuntime.Slider().InitLists(_swiperId2, cts.Token);
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
     }
 
     private async Task OpenCompleteList(MediaType type)

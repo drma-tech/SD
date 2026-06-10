@@ -37,6 +37,7 @@ public static class ScrapingReview
         if (doc.DocumentNode.InnerText.Contains("Page Not Found")) return [];
 
         var divs = doc.DocumentNode.SelectNodes("//*[@id=\"__nuxt\"]/div[2]/main/div/div/div/div/section/div[3]/div[2]/div");
+        if (divs == null) return [];
 
         List<RootMetacriticReviewNew> result = [];
 

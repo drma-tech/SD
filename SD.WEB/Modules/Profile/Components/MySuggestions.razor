@@ -39,74 +39,40 @@
             <ChildContent>
                 <MudTabPanel Text="@MediaType.movie.GetName()">
                     <RenderControl Actions="ActionsMovie" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated" PremiumFeature="true" IsPremium="AppStateStatic.IsPremiumUser">
-                        <div id="@_swiperId" class="splide" role="group">
-                            <div class="splide__arrows">
-                                <button class="splide__arrow splide__arrow--prev">
-                                    <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                                </button>
-                                <button class="splide__arrow splide__arrow--next">
-                                    <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                                </button>
-                            </div>
-                            <div class="splide__track">
-                                <ul class="splide__list">
-                                    @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)) ?? new List<SuggestionListItem>())
+                        <Slider List="mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)) ?? new List<SuggestionListItem>()" Context="item">
+                            <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
+                                <div style="cursor: pointer;" @onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))">
+                                    <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                </div>
+                                <MudGrid Spacing="@Css.SpaceSmall" Justify="Justify.FlexStart">
+                                    @foreach (var provider in item.Providers)
                                     {
-                                        <li class="splide__slide">
-                                            <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
-                                                <div style="cursor: pointer;" @onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))">
-                                                    <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
-                                                </div>
-                                                <MudGrid Spacing="@Css.SpaceSmall" Justify="Justify.FlexStart">
-                                                    @foreach (var provider in item.Providers)
-                                                    {
-                                                        <MudItem xs="4">
-                                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + provider)" Alt="@provider" Style="width: 100%; vertical-align: bottom;"></MudImage>
-                                                        </MudItem>
-                                                    }
-                                                </MudGrid>
-                                            </div>
-                                        </li>
+                                        <MudItem xs="4">
+                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + provider)" Alt="@provider" Style="width: 100%; vertical-align: bottom;"></MudImage>
+                                        </MudItem>
                                     }
-                                </ul>
+                                </MudGrid>
                             </div>
-                        </div>
+                        </Slider>
                     </RenderControl>
                 </MudTabPanel>
                 <MudTabPanel Text="@MediaType.tv.GetName()">
                     <RenderControl Actions="ActionsSerie" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated" PremiumFeature="true" IsPremium="AppStateStatic.IsPremiumUser">
-                        <div id="@_swiperId2" class="splide" role="group">
-                            <div class="splide__arrows">
-                                <button class="splide__arrow splide__arrow--prev">
-                                    <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                                </button>
-                                <button class="splide__arrow splide__arrow--next">
-                                    <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                                </button>
-                            </div>
-                            <div class="splide__track">
-                                <ul class="splide__list">
-                                    @foreach (var item in mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)) ?? new List<SuggestionListItem>())
+                        <Slider List="mySuggestions?.Items(SearchType).Where(w => !IsWatched(SearchType, w)) ?? new List<SuggestionListItem>()" Context="item">
+                            <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
+                                <div style="cursor: pointer;" @onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))">
+                                    <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
+                                </div>
+                                <MudGrid Spacing="@Css.SpaceSmall" Justify="Justify.FlexStart">
+                                    @foreach (var provider in item.Providers)
                                     {
-                                        <li class="splide__slide">
-                                            <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
-                                                <div style="cursor: pointer;" @onclick="@(async () => await ShowMediaPopup(item.id, item.name, SearchType))">
-                                                    <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo)" Alt="@item.name" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
-                                                </div>
-                                                <MudGrid Spacing="@Css.SpaceSmall" Justify="Justify.FlexStart">
-                                                    @foreach (var provider in item.Providers)
-                                                    {
-                                                        <MudItem xs="4">
-                                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + provider)" Alt="@provider" Style="width: 100%; vertical-align: bottom;"></MudImage>
-                                                        </MudItem>
-                                                    }
-                                                </MudGrid>
-                                            </div>
-                                        </li>
+                                        <MudItem xs="4">
+                                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + provider)" Alt="@provider" Style="width: 100%; vertical-align: bottom;"></MudImage>
+                                        </MudItem>
                                     }
-                                </ul>
+                                </MudGrid>
                             </div>
-                        </div>
+                        </Slider>
                     </RenderControl>
                 </MudTabPanel>
             </ChildContent>
@@ -133,9 +99,6 @@
     private ComponentActions<SD.Shared.Models.MySuggestions?> ActionsSerie { get; set; } = new(obj => obj == null || obj.Items(MediaType.tv).Empty());
     private ComponentActions<SD.Shared.Models.MySuggestions?> Actions => SearchType == MediaType.movie ? ActionsMovie : ActionsSerie;
 
-    private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
-    private readonly string _swiperId2 = $"swiper-{Guid.NewGuid()}";
-
     private bool GenresChanged => (mySuggestions?.MovieGenres.Any() ?? false) || (mySuggestions?.TvGenres.Any() ?? false);
     private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
 
@@ -143,25 +106,10 @@
     {
         OnError.Subscribe(async (msg) => { await ActionsMovie.ShowError.Invoke(msg); await ActionsSerie.ShowError.Invoke(msg); }, cts.Token);
 
+        ActionsMovie.CustomPremiumDescription = Translations.OurSuggestions2;
+        ActionsSerie.CustomPremiumDescription = Translations.OurSuggestions2;
+
         base.OnInitialized();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        try
-        {
-            await base.OnAfterRenderAsync(firstRender);
-
-            ActionsMovie.CustomPremiumDescription = Translations.OurSuggestions2;
-            ActionsSerie.CustomPremiumDescription = Translations.OurSuggestions2;
-
-            await JsRuntime.Slider().InitLists(_swiperId, cts.Token);
-            await JsRuntime.Slider().InitLists(_swiperId2, cts.Token);
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
     }
 
     protected override async Task LoadAuthDataAsync()

@@ -58,6 +58,7 @@
         702,
         703,
         705,
+        710,
         724,
         752,
         756,
@@ -133,6 +134,7 @@
         682,
         702,
         703,
+        710,
         724,
         752,
         756,
@@ -386,7 +388,7 @@
     {
       "id": "11",
       "name": "MUBI",
-      "priority": 8,
+      "priority": 30,
       "description": "MUBI is a curated streaming service showcasing acclaimed films, festival favorites, and hidden gems. A new handpicked movie is added daily, with ad-free streaming and the option to download for offline viewing.",
       "link": "https://mubi.com/",
       "logo_path": "/x570VpH2C9EKDf1riP83rYc5dnL.jpg",
@@ -488,6 +490,7 @@
         702,
         703,
         705,
+        710,
         724,
         752,
         756,
@@ -576,7 +579,7 @@
     {
       "id": "21",
       "name": "Stan",
-      "priority": 11,
+      "priority": 12,
       "description": "Stan provides unlimited streaming of movies, TV series, and exclusive premieres. Discover iconic titles and fresh content, all accessible on multiple devices, with a 30-day free trial available.",
       "link": "https://www.stan.com.au/",
       "logo_path": "/sSfxJXq7s8oHf3XWd0FtqagPDsF.jpg",
@@ -632,7 +635,7 @@
     {
       "id": "29",
       "name": "Sky Go",
-      "priority": 6,
+      "priority": 5,
       "description": "Sky Go bietet Sport, Serien und Filme in HD und UHD. Mit flexiblen Optionen für Neu- und Bestandskunden kannst du jederzeit auf deine Lieblingsinhalte auf verschiedenen Geräten zugreifen.",
       "link": "https://www.sky.at/",
       "logo_path": "/kAZkQcIxMxTmlwdgSB05fqtymp0.jpg",
@@ -774,7 +777,7 @@
     {
       "id": "39",
       "name": "Now TV",
-      "priority": 10,
+      "priority": 9,
       "description": "Now TV lets you pick a membership to stream movies, TV series, live sports, and kids’ content on demand. Watch across devices anytime, anywhere with flexible options.",
       "link": "https://www.nowtv.com/",
       "logo_path": "/g0E9h3JAeIwmdvxlT73jiEuxdNj.jpg",
@@ -794,7 +797,7 @@
     {
       "id": "40",
       "name": "CHILI",
-      "priority": 32,
+      "priority": 31,
       "description": "Without subscription, wherever you are, forever. LIVE YOUR MOVIE!",
       "link": "https://it.chili.com/",
       "logo_path": "/cNqhhi5UYjAvJv2M69t5cwSn0So.jpg",
@@ -862,6 +865,21 @@
         2,
         3
       ]
+    },
+    {
+      "id": "54",
+      "name": "BoxOffice",
+      "priority": 5,
+      "description": null,
+      "link": null,
+      "logo_path": "/4JswJbaxqZhut2TpJ3IPUBnNdy8.jpg",
+      "regions": [
+        710
+      ],
+      "types": [
+        1
+      ],
+      "models": []
     },
     {
       "id": "58",
@@ -1074,7 +1092,7 @@
     {
       "id": "79",
       "name": "NBC",
-      "priority": 49,
+      "priority": 48,
       "description": "NBC lets you stream episodes and content from NBCUniversal networks online. Watch popular shows, specials, and exclusive programming anytime on computers, mobile devices, or smart TVs.",
       "link": "https://www.nbc.com/shows/nbc/popular",
       "logo_path": "/6hFf3sIdmXSAczy3i6tLSmy6gwK.jpg",
@@ -1111,7 +1129,7 @@
     {
       "id": "82",
       "name": "10",
-      "priority": 22,
+      "priority": 23,
       "description": "AMC offers full episodes and bonus videos of popular shows like The Walking Dead, Better Call Saul, and Mad Men. Stream your favorite series anytime on multiple devices.",
       "link": "https://10play.com.au/",
       "logo_path": "/8fIieu3ZfmTPu8eozZbtgATcPO5.jpg",
@@ -1265,6 +1283,7 @@
         643,
         702,
         703,
+        710,
         724,
         752,
         756,
@@ -1304,7 +1323,7 @@
     {
       "id": "109",
       "name": "Timvision",
-      "priority": 13,
+      "priority": 8,
       "description": "TIMVISION offre un nuovo modo di guardare la TV, con i migliori programmi disponibili su PC, Mac, tablet e smartphone, per goderti serie, film e intrattenimento ovunque.",
       "link": "https://www.timvision.it/",
       "logo_path": "/FyDfVwFZGuu2KVv7Kuz4ww7Ra3.jpg",
@@ -1625,7 +1644,7 @@
     {
       "id": "132",
       "name": "SBS On Demand",
-      "priority": 20,
+      "priority": 21,
       "description": "Australia's free streaming service for world-class dramas, documentaries, and news. Explore a diverse library of curated international and local content without a subscription.",
       "link": "https://www.sbs.com.au/ondemand/",
       "logo_path": "/cR4okiAS0zcXb4ufs3mi4PImXPB.jpg",
@@ -1661,7 +1680,7 @@
     {
       "id": "134",
       "name": "Foxtel Now",
-      "priority": 9,
+      "priority": 10,
       "description": "Stream premium live and on-demand TV from Australia. Enjoy top channels showcasing the best in sport, drama, movies, and news with flexible, no-lock-in contracts.",
       "link": "https://www.foxtel.com.au/",
       "logo_path": "/fejdSG7TwNQ5E0p6u7A6LVs280R.jpg",
@@ -1679,7 +1698,7 @@
     {
       "id": "135",
       "name": "ABC iview",
-      "priority": 19,
+      "priority": 20,
       "description": "Australia's public broadcaster brings you free, quality streaming. Catch up on ABC's acclaimed news, dramas, comedies, and documentaries for all ages.",
       "link": "https://iview.abc.net.au/",
       "logo_path": "/zR1TJmEwssf0ZThB2iByNtZi2Oo.jpg",
@@ -2646,7 +2665,7 @@
     {
       "id": "234",
       "name": "Arte",
-      "priority": 37,
+      "priority": 36,
       "description": "European cultural channel offering documentaries, films, and series focused on arts and culture. Free streaming available in multiple languages.",
       "link": "https://www.arte.tv/en/",
       "logo_path": "/vPZrjHe7wvALuwJEXT2kwYLi0gV.jpg",
@@ -2710,7 +2729,7 @@
     {
       "id": "246",
       "name": "7plus",
-      "priority": 18,
+      "priority": 19,
       "description": "Free Australian streaming service from Channel 7. Watch live TV, catch up on shows, and explore exclusive 7plus content including news, sport, and entertainment.",
       "link": "https://7plus.com.au/",
       "logo_path": "/uU4gqmoX0koF8L5yJSlfaaFd9Tz.jpg",
@@ -2873,7 +2892,7 @@
     {
       "id": "283",
       "name": "Crunchyroll",
-      "priority": 11,
+      "priority": 24,
       "description": "World's largest anime streaming service. Watch thousands of episodes including simulcasts, classics, and Crunchyroll Originals with premium subscriptions.",
       "link": "https://www.crunchyroll.com/",
       "logo_path": "/fzN5Jok5Ig1eJ7gyNGoMhnLSCfh.jpg",
@@ -3158,7 +3177,7 @@
     {
       "id": "309",
       "name": "Sun Nxt",
-      "priority": 3,
+      "priority": 8,
       "description": "Streaming service for South Indian content. Watch Tamil, Telugu, and Malayalam movies, TV serials, and live channels from the Sun Network.",
       "link": "https://www.sunnxt.com/",
       "logo_path": "/6KEQzITx2RrCAQt5Nw9WrL1OI8z.jpg",
@@ -4023,7 +4042,7 @@
     {
       "id": "359",
       "name": "Mediaset Infinity",
-      "priority": 11,
+      "priority": 12,
       "description": "Scopri Mediaset Infinity: guarda gratis film, canali TV live, documentari, soap, nuove fiction, serie TV e programmi di intrattenimento in streaming online!",
       "link": "https://mediasetinfinity.mediaset.it/",
       "logo_path": "/2hBbMVUI2G4GAGRAD0RZCZqDMUh.jpg",
@@ -4182,7 +4201,7 @@
     {
       "id": "378",
       "name": "9Now",
-      "priority": 16,
+      "priority": 17,
       "description": "Australian free-to-air catch-up service from Channel Nine. Stream news, sports, reality shows and dramas including NRL matches and local productions.",
       "link": "https://www.9now.com.au/",
       "logo_path": "/xoId9luelz6lXMQkzLyJf3ssXTL.jpg",
@@ -4241,7 +4260,7 @@
     {
       "id": "385",
       "name": "BINGE",
-      "priority": 84,
+      "priority": 5,
       "description": "Australian streaming service featuring HBO content, blockbuster movies and popular TV series. Offers entertainment from various studios in one platform.",
       "link": "https://binge.com.au/",
       "logo_path": "/7QX5OdsQZrXGNBKq9SPzoPV9OYQ.jpg",
@@ -5045,7 +5064,7 @@
     {
       "id": "446",
       "name": "Retrocrush",
-      "priority": 79,
+      "priority": 80,
       "description": "RetroCrush is a streaming service dedicated to the Golden Age of anime. All fans, old and new, are welcome.",
       "link": "https://www.retrocrush.tv/",
       "logo_path": "/5zUnCq0pvixEtQafzOBBWqxNRvX.jpg",
@@ -5805,7 +5824,6 @@
       "link": "https://www.southpark.lat/",
       "logo_path": "/9kxo34bWuDJcGvNQBlSY4o6OujZ.jpg",
       "regions": [
-        70,
         276,
         528,
         566,
@@ -6204,6 +6222,23 @@
       ]
     },
     {
+      "id": "529",
+      "name": "ARROW",
+      "priority": 363,
+      "description": null,
+      "link": null,
+      "logo_path": "/wAuMUrRTVaJ2CZ4ZpyQbayZx0iU.jpg",
+      "regions": [
+        124,
+        826,
+        840
+      ],
+      "types": [
+        1
+      ],
+      "models": []
+    },
+    {
       "id": "531",
       "name": "Paramount Plus",
       "priority": 6,
@@ -6371,7 +6406,6 @@
         788,
         818,
         834,
-        858,
         887,
         99999
       ],
@@ -6405,7 +6439,7 @@
     {
       "id": "538",
       "name": "Plex",
-      "priority": 4,
+      "priority": 26,
       "description": "Paying to watch movies is a thing of the past. Watch FREE MOVIES ONLINE at zero cost on any device with Plex. Browse our collection of 100,000+ FREE movies and shows.",
       "link": "https://www.plex.tv/watch-free/",
       "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
@@ -7001,7 +7035,6 @@
         826,
         834,
         840,
-        858,
         862,
         887,
         99999
@@ -7138,6 +7171,7 @@
         702,
         703,
         705,
+        710,
         724,
         752,
         756,
@@ -7149,7 +7183,6 @@
         826,
         834,
         840,
-        858,
         862,
         887,
         99999
@@ -7328,6 +7361,7 @@
         702,
         703,
         705,
+        710,
         724,
         752,
         756,
@@ -7339,7 +7373,6 @@
         826,
         834,
         840,
-        858,
         862,
         887,
         99999
@@ -7430,7 +7463,6 @@
         792,
         826,
         840,
-        858,
         862,
         887,
         99999
@@ -8111,7 +8143,7 @@
     {
       "id": "677",
       "name": "Eventive",
-      "priority": 5,
+      "priority": 18,
       "description": "Stream independent film from film festivals, art house cinemas, virtual cinema screenings, classic repertory catalogs, and special events. Easily search the entire Eventive catalog for the freshest content anywhere.",
       "link": "https://watch.eventive.org/",
       "logo_path": "/fwx5Ed64TkfWiRH1SOSkc4781Ts.jpg",
@@ -8210,6 +8242,7 @@
         702,
         703,
         705,
+        710,
         724,
         752,
         756,
@@ -8225,7 +8258,6 @@
         826,
         834,
         840,
-        858,
         862,
         887,
         894,
@@ -8420,7 +8452,7 @@
     {
       "id": "701",
       "name": "FilmBox+",
-      "priority": 3,
+      "priority": 20,
       "description": "Filmbox+ is an entertainment service that you can watch hundreds of movies and videos online with a single subscription.",
       "link": "https://www.filmbox.com/",
       "logo_path": "/fbveJTcro9Xw2KuPIIoPPePHiwy.jpg",
@@ -8855,7 +8887,7 @@
     {
       "id": "1771",
       "name": "Takflix",
-      "priority": 10,
+      "priority": 23,
       "description": "All films. Unforgettable films selected by Takflix curators.",
       "link": "https://takflix.com/en",
       "logo_path": "/ed0vz5bryWIhQB5sHiuGvHKnHHn.jpg",
@@ -8952,6 +8984,7 @@
         702,
         703,
         705,
+        710,
         724,
         752,
         756,
@@ -8967,7 +9000,6 @@
         826,
         834,
         840,
-        858,
         862,
         887,
         894,
@@ -9764,7 +9796,7 @@
     {
       "id": "1967",
       "name": "Molotov TV",
-      "priority": 33,
+      "priority": 34,
       "description": "L'installation de l'application Molotov est disponible sur tous vos appareils : Android, iOS, Smart TV et bien d'autres.",
       "link": "https://www.molotov.tv/",
       "logo_path": "/8qSG9LtUhBQIWy2Fr6fzeW7gBdd.jpg",
@@ -9889,7 +9921,7 @@
     {
       "id": "1988",
       "name": "Brollie",
-      "priority": 59,
+      "priority": 60,
       "description": "Brollie is a free streaming service dedicated to showcasing some of the best award-winning movies and TV from Australia and around the world.",
       "link": "https://watch.brollie.com.au/",
       "logo_path": "/zlOChFXWhfIqK2QCf6KPxu0nH2D.jpg",
@@ -10145,7 +10177,7 @@
     {
       "id": "2101",
       "name": "CANAL+",
-      "priority": 33,
+      "priority": 32,
       "description": "myCANAL vous propose de regarder les meilleurs films, les dernières séries et les matchs en HD et en VOST ou FR.",
       "link": "canalplus.com/streaming/",
       "logo_path": "/yFjeEJFQqalphfmYivOYyatPVEd.jpg",
@@ -10163,7 +10195,7 @@
     {
       "id": "2102",
       "name": "Premiery Canal+",
-      "priority": 34,
+      "priority": 33,
       "description": "Pakiety TV z dostępem przez telewizję satelitarną oraz przez internet. Darmowa dostawa, dekoder HD lub 4K Ultra HD. Zamów online!",
       "link": "https://pl.canalplus.com/oferta/satelitarna",
       "logo_path": "/mBliLuM0AbkRPGDoVa7IGxwC59b.jpg",
@@ -10238,6 +10270,7 @@
       "link": "https://kinofilmcollection.com/",
       "logo_path": "/l8nPh3HtqfIJiFTYT7RdNdsv1XD.jpg",
       "regions": [
+        124,
         840
       ],
       "types": [
@@ -10428,7 +10461,7 @@
     {
       "id": "2214",
       "name": "CDA Premium",
-      "priority": 42,
+      "priority": 41,
       "description": "CDA - multimedialna społeczność od 2003 roku. W serwisie znajdziesz: gry, materiały video, śmieszne grafiki oraz dział download.",
       "link": "https://www.cda.pl/premium",
       "logo_path": "/rZG2UBzS8ysl2kloSbrm9w4Mth2.jpg",
@@ -10553,7 +10586,7 @@
     {
       "id": "2285",
       "name": "JustWatch TV",
-      "priority": 5,
+      "priority": 27,
       "description": "The full list of movies and TV shows on JustWatchTV. Find out what to watch on JustWatchTV with JustWatch!",
       "link": "https://www.justwatch.com/us/provider/justwatchtv",
       "logo_path": "/g2IaWyo6jCY0rIFjb4qgZ0bSmm3.jpg",
@@ -10655,6 +10688,7 @@
         702,
         703,
         705,
+        710,
         724,
         752,
         756,
@@ -10849,7 +10883,7 @@
     {
       "id": "2330",
       "name": "Jolt Film",
-      "priority": 6,
+      "priority": 28,
       "description": "Jolt is a streaming platform connecting extraordinary independent films with the most relevant audiences.",
       "link": "https://www.jolt.film/",
       "logo_path": "/sBTV0rN8JUhF4G3uIceinWtQ3gi.jpg",
@@ -10950,6 +10984,7 @@
         702,
         703,
         705,
+        710,
         724,
         752,
         756,
@@ -10965,7 +11000,6 @@
         826,
         834,
         840,
-        858,
         862,
         887,
         894,
@@ -11000,7 +11034,7 @@
     {
       "id": "2363",
       "name": "Polsat Box Go",
-      "priority": 47,
+      "priority": 46,
       "description": "W Polsat Box Go możesz oglądać bez reklam ulubione seriale, filmy, programy rozrywkowe, bajki, newsy oraz najlepszy sport na żywo!",
       "link": "https://polsatboxgo.pl/start",
       "logo_path": "/2YCt92ETw8xLXxhkURtMjZnzfKT.jpg",
@@ -11080,7 +11114,7 @@
     {
       "id": "2478",
       "name": "FOUND TV",
-      "priority": 7,
+      "priority": 29,
       "description": "Explore a world of found footage horror with FOUND! Stream your favorite horror movies and experience fan moments in your local area.",
       "link": "https://foundtv.com/",
       "logo_path": "/mD3KV7olfMJOBxJqKKPjvNrpVJF.jpg",
@@ -11366,7 +11400,7 @@
     {
       "id": "2555",
       "name": "Bloodstream",
-      "priority": 9,
+      "priority": 31,
       "description": "Bloodstreamtv | Stream the best in horror, thriller, and sci-fi. Blood Stream delivers chilling classics, bold indies, and festival hits—all in one terrifyingly good platform. Join the horror revolution now.",
       "link": "https://bloodstreamtv.com/home",
       "logo_path": "/qlsnWCrmcisQH5JnEDxPV2v2vlb.jpg",
@@ -11468,6 +11502,7 @@
         702,
         703,
         705,
+        710,
         724,
         752,
         756,
@@ -11483,7 +11518,6 @@
         826,
         834,
         840,
-        858,
         862,
         887,
         894,
@@ -11555,6 +11589,7 @@
         643,
         682,
         702,
+        710,
         724,
         764,
         784,
@@ -11574,7 +11609,7 @@
     {
       "id": "2601",
       "name": "Pathé Home",
-      "priority": 55,
+      "priority": 56,
       "description": "Regardez les dernières nouveautés ou classiques intemporels, des plus grands blockbusters aux films d’auteurs primés, quelques semaines après leur sortie au cinéma.",
       "link": "https://www.pathehome.com/",
       "logo_path": "/yvui9yFtpWHt0ZrsPelItbuTavI.jpg",
@@ -11589,7 +11624,7 @@
     {
       "id": "2603",
       "name": "KableOne",
-      "priority": 349,
+      "priority": 33,
       "description": "Discover KableOne, the first global OTT platform dedicated to Punjabi entertainment. Watch movies, shows, and more, anytime, anywhere. Join the Punjabi revolution.",
       "link": "https://www.kableone.com/",
       "logo_path": "/nOE9GjiyF5UhUVRJ2yGSzdCh0ec.jpg",
@@ -11739,7 +11774,7 @@
     {
       "id": "2620",
       "name": "CaixaForum+",
-      "priority": 353,
+      "priority": 34,
       "description": "Todo o conteúdo audiovisual de cultura e ciência. A plataforma de streaming de que estava à espera. Acesso gratuito e a partir de...",
       "link": "https://caixaforumplus.org/",
       "logo_path": "/9pRY14ZWkDCRzQBuASRnYJ1KZwQ.jpg",
@@ -11904,11 +11939,12 @@
     {
       "id": "2623",
       "name": "Artiflix",
-      "priority": 356,
+      "priority": 35,
       "description": "Welcome to Artiflix, your gateway to a world of forgotten cinematic treasures! Our mission is to bring you thousands of classic movies that were once thought to be lost to the ravages of time and film degradation. Through extensive efforts, our master collectors scoured the depths of film history to assemble and convert these rare gems into a stunning digital library. Now, you have the opportunity to make them a part of your personal collection.",
       "link": "https://artiflix.com/",
       "logo_path": "/5MsbQCp7FpYr3INLpeKDLJrlDh8.jpg",
       "regions": [
+        8,
         12,
         20,
         28,
@@ -11968,6 +12004,7 @@
         434,
         438,
         440,
+        458,
         470,
         480,
         484,
@@ -11979,9 +12016,11 @@
         528,
         554,
         562,
+        566,
         578,
         591,
         604,
+        608,
         616,
         620,
         634,
@@ -11996,6 +12035,7 @@
         702,
         703,
         705,
+        710,
         724,
         752,
         756,
@@ -12007,14 +12047,15 @@
         796,
         800,
         807,
+        818,
         826,
         834,
         840,
-        858,
         862,
         887,
         894,
-        88888
+        88888,
+        99999
       ],
       "types": [
         1
@@ -12056,7 +12097,7 @@
     {
       "id": "2658",
       "name": "TVP",
-      "priority": 63,
+      "priority": 62,
       "description": "Oglądaj online wybrane kanały TVP! Nie przegap najnowszych informacji, transmisji sportowych i kanałów tematycznych.",
       "link": "https://stream.tvp.pl/",
       "logo_path": "/mhsYsVY18PVcVh76y2XFrodqbBD.jpg",
@@ -12135,7 +12176,7 @@
     {
       "id": "2669",
       "name": "Pilot WP",
-      "priority": 64,
+      "priority": 63,
       "description": "Nowoczesna telewizja online, którą pokochasz! Oglądaj 130+ kanałów na żywo, tysiące filmów w ofercie TVOD. Bez umów, dekodera – po prostu włącz i ciesz się rozrywką na każdym urządzeniu w Polsce i za granicą!",
       "link": "https://pilot.wp.pl/",
       "logo_path": "/4OlZobihZLTpizChDitPeH3PmND.jpg",
@@ -12278,7 +12319,7 @@
     {
       "id": "2685",
       "name": "Artify",
-      "priority": 360,
+      "priority": 37,
       "description": "Watch Tunisian films, Tunisian series and Tunisian theatre scenes",
       "link": "https://artify.tv/",
       "logo_path": "/rQqxsXq63XsDY8xcabqBWU5WWbw.jpg",

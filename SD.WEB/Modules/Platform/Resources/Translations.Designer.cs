@@ -79,6 +79,15 @@ namespace SD.WEB.Modules.Platform.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Media Type.
+        /// </summary>
+        public static string MediaType {
+            get {
+                return ResourceManager.GetString("MediaType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {

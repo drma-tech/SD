@@ -49,8 +49,6 @@
 
         private async Task ChangeStatus(RenderStatus status, string? msg = null, T? instance = null)
         {
-            if (CurrentStatus == status) return;
-
             if (status == RenderStatus.Loading)
             {
                 MessageLoading = msg ?? GlobalTranslations.CustomVisibilityLoading;

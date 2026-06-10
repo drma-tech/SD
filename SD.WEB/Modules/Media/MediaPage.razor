@@ -146,31 +146,14 @@
         <PageSectionComponent Title="Recommendations" Color="Color.Secondary">
             <BodyFragment>
                 <RenderControl Actions="RecommendationsActions" Context="ctx">
-                    <div id="@_swiperId" class="splide" role="group">
-                        <div class="splide__arrows">
-                            <button class="splide__arrow splide__arrow--prev">
-                                <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                            </button>
-                            <button class="splide__arrow splide__arrow--next">
-                                <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                            </button>
+                    <Slider List="Recommendations" Context="item">
+                        <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
+                            <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item.MediaType, item.tmdb_id))" MediaType="@item.MediaType"
+                                             Date="@item.release_date" Rating="@item.rating"
+                                             WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments">
+                            </PosterComponent>
                         </div>
-                        <div class="splide__track">
-                            <ul class="splide__list">
-                                @foreach (var item in Recommendations)
-                                {
-                                    <li class="splide__slide">
-                                        <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
-                                            <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item.MediaType, item.tmdb_id))" MediaType="@item.MediaType"
-                                                             Date="@item.release_date" Rating="@item.rating"
-                                                             WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments">
-                                            </PosterComponent>
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
+                    </Slider>
                 </RenderControl>
             </BodyFragment>
         </PageSectionComponent>
@@ -251,7 +234,6 @@
     private ComponentActions<CacheDocument<Ratings>?> RatingsActions { get; set; } = new(obj => obj?.Data == null);
     private CacheDocument<Ratings>? _ratingsCache;
 
-    private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
     private ComponentActions<HashSet<MediaDetail>> RecommendationsActions { get; set; } = new(lst => lst == null || lst.Empty());
     public HashSet<MediaDetail> Recommendations { get; set; } = [];
 
@@ -264,21 +246,7 @@
 
     private void LocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        ProcessPageData().ContinueWith(delegate { JsRuntime.Slider().InitLists(_swiperId, CancellationToken.None); });
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        try
-        {
-            await base.OnAfterRenderAsync(firstRender);
-
-            await JsRuntime.Slider().InitLists(_swiperId, cts.Token);
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
+        _ = ProcessPageData();
     }
 
     protected override async Task ProcessPageData()

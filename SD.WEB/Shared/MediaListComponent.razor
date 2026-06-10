@@ -24,31 +24,14 @@
                     {
                         <MudTabPanel Text="@MediaType.movie.GetName()">
                             <RenderControl Actions="Actions">
-                                <div id="@_swiperId" class="splide" role="group">
-                                    <div class="splide__arrows">
-                                        <button class="splide__arrow splide__arrow--prev">
-                                            <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                                        </button>
-                                        <button class="splide__arrow splide__arrow--next">
-                                            <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                                        </button>
+                                <Slider List="Items" Context="item">
+                                    <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
+                                        <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                                         Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
+                                                         Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
+                                        </PosterComponent>
                                     </div>
-                                    <div class="splide__track">
-                                        <ul class="splide__list">
-                                            @foreach (var item in Items)
-                                            {
-                                                <li class="splide__slide">
-                                                    <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
-                                                        <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                                                         Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
-                                                                         Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
-                                                        </PosterComponent>
-                                                    </div>
-                                                </li>
-                                            }
-                                        </ul>
-                                    </div>
-                                </div>
+                                </Slider>
                             </RenderControl>
                         </MudTabPanel>
                     }
@@ -56,31 +39,14 @@
                     {
                         <MudTabPanel Text="@MediaType.tv.GetName()">
                             <RenderControl Actions="Actions">
-                                <div id="@_swiperId2" class="splide" role="group">
-                                    <div class="splide__arrows">
-                                        <button class="splide__arrow splide__arrow--prev">
-                                            <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                                        </button>
-                                        <button class="splide__arrow splide__arrow--next">
-                                            <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                                        </button>
+                                <Slider List="Items" Context="item">
+                                    <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
+                                        <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                                         Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
+                                                         Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
+                                        </PosterComponent>
                                     </div>
-                                    <div class="splide__track">
-                                        <ul class="splide__list">
-                                            @foreach (var item in Items)
-                                            {
-                                                <li class="splide__slide">
-                                                    <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
-                                                        <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                                                         Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
-                                                                         Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
-                                                        </PosterComponent>
-                                                    </div>
-                                                </li>
-                                            }
-                                        </ul>
-                                    </div>
-                                </div>
+                                </Slider>
                             </RenderControl>
                         </MudTabPanel>
                     }
@@ -92,31 +58,14 @@
 else
 {
     <RenderControl Actions="Actions">
-        <div id="@_swiperId" class="splide" role="group">
-            <div class="splide__arrows">
-                <button class="splide__arrow splide__arrow--prev">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                </button>
-                <button class="splide__arrow splide__arrow--next">
-                    <MudIcon Icon="@IconsFA.Solid.Icon("circle-chevron-right").Font" Color="Color.Primary" Style="font-size: 30px;"></MudIcon>
-                </button>
+        <Slider List="Items" Context="item">
+            <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
+                <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
+                                 Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
+                                 Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
+                </PosterComponent>
             </div>
-            <div class="splide__track">
-                <ul class="splide__list">
-                    @foreach (var item in Items)
-                    {
-                        <li class="splide__slide">
-                            <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
-                                <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
-                                                 Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
-                                                 Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
-                                </PosterComponent>
-                            </div>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
+        </Slider>
     </RenderControl>
 }
 
@@ -156,9 +105,6 @@ else
     public ComponentActions<HashSet<MediaDetail>> Actions { get; set; } = new(list => list != null && list.Empty());
     public HashSet<MediaDetail> Items { get; set; } = [];
 
-    private readonly string _swiperId = $"swiper-{Guid.NewGuid()}";
-    private readonly string _swiperId2 = $"swiper-{Guid.NewGuid()}";
-
     protected override async Task OnInitializedAsync()
     {
         if (ContainsHeader)
@@ -184,21 +130,6 @@ else
     protected override async Task ProcessInitialData()
     {
         await LoadItems(TypeSelected);
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        try
-        {
-            await base.OnAfterRenderAsync(firstRender);
-
-            await JsRuntime.Slider().InitLists(_swiperId, cts.Token);
-            await JsRuntime.Slider().InitLists(_swiperId2, cts.Token);
-        }
-        catch (Exception ex)
-        {
-            await ProcessException(ex);
-        }
     }
 
     private async Task TypeSelectedChangedHandle(MediaType type)

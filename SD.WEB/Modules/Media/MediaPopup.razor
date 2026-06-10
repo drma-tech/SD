@@ -366,7 +366,7 @@
 
     private Color GetColorByRating(string? rating)
     {
-        if (string.IsNullOrEmpty(rating)) return Color.Secondary;
+        if (string.IsNullOrEmpty(rating)) return Color.Default;
 
         float.TryParse(rating.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var val);
 

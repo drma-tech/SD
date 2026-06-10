@@ -23,63 +23,116 @@
                 <MudSelectItem T="DeliveryModel?" Value="@item.Value">@item.Name</MudSelectItem>
             }
         </MudSelect>
+        <MudSelect T="MediaType?" @bind-Value="@MediaType" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="@Resources.Translations.MediaType" Dense="true" Class="me-2">
+            @foreach (var item in MediaTypes)
+            {
+                <MudSelectItem T="MediaType?" Value="@item.Value">@item.Name</MudSelectItem>
+            }
+        </MudSelect>
         <MudTextField T="string" Label="@Resources.Translations.Name" @bind-Value="@name" Clearable="true" Variant="Variant.Text" Immediate="true" Style="max-width: 180px;"></MudTextField>
     </ActionsFragment>
 </PageSectionComponent>
 
 <RenderControl Actions="Actions">
-    <div class="grid-relative-container-platform">
-        @foreach (var item in GetFilteredProviders(ShowAll))
-        {
-            var favorite = MyProviders?.Items.Any(a => a.id == item.id) ?? false;
+    @if (GetFilteredProviders(ShowAll).Any())
+    {
+        <div class="grid-relative-container-platform">
+            @foreach (var item in GetFilteredProviders(ShowAll))
+            {
+                var favorite = MyProviders?.Items.Any(a => a.id == item.id) ?? false;
 
-            <div>
-                <MudLink Href="@($"/{Culture}/platform/{item.id}")" Style="position: relative;">
+                <div>
                     <MudCard Outlined="true">
-                        <MudCardContent Style="padding: 0;">
-                            <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" FallbackSrc="images/no-image.webp"
-                                      Fluid="true" ObjectFit="ObjectFit.Contain" Style="vertical-align: bottom;"></MudImage>
+                        <MudCardHeader Style="padding: 8px;">
+                            <CardHeaderAvatar>
+                                <MudLink Href="@($"/{Culture}/platform/{item.id}")">
+                                    <MudAvatar Size="Size.Large">
+                                        <MudImage Src="@(TmdbOptions.OriginalPosterPath + item.logo_path)" Alt="@item.name" FallbackSrc="images/no-image.webp"></MudImage>
+                                    </MudAvatar>
+                                </MudLink>
+                            </CardHeaderAvatar>
+                            <CardHeaderContent>
+                                <MudLink Href="@($"/{Culture}/platform/{item.id}")">
+                                    <MudText Typo="Typo.h2" Color="Color.Primary" Style="font-size: 1rem">
+                                        @item.name
+                                    </MudText>
+                                </MudLink>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent Class="py-1 px-2" Style="height: 48px;">
+                            <MudText Typo="Typo.body2" Color="Color.Secondary" Inline="true">
+                                @Modules.Platform.Resources.Translations.DeliveryModel:
+                            </MudText>
+                            <MudText Typo="Typo.body2" Inline="true">
+                                @(item.models.Any() ? string.Join(", ", item.models.Select(m => m.GetName())) : "N/A")
+                            </MudText>
+                        </MudCardContent>
+                        <MudCardContent Class="py-1 px-2">
+                            <MudText Typo="Typo.body2" Color="Color.Secondary" Inline="true">
+                                @Modules.Platform.Resources.Translations.MediaType:
+                            </MudText>
+                            <MudText Typo="Typo.body2" Inline="true">
+                                @(item.types.Any() ? string.Join(", ", item.types.Select(m => m.GetName())) : "N/A")
+                            </MudText>
+                        </MudCardContent>
+                        <MudCardContent Class="py-1 px-2">
+                            <MudText Typo="Typo.body2" Color="Color.Secondary" Inline="true">
+                                @Modules.Platform.Resources.Translations.Countries:
+                            </MudText>
+                            <MudText Typo="Typo.body2" Inline="true">
+                                @item.regions.Count
+                            </MudText>
+                        </MudCardContent>
+                        <MudCardActions Style="padding: 4px;">
                             @if (favorite)
                             {
-                                <MudChip T="string" Icon="@Icons.Material.Filled.Star" Color="Color.Success" Size="AppStateStatic.Size" Label="true" Class="chip-no-text"
-                                         Style="padding: 0.2rem; position: absolute; top: 0; right: 0; white-space: inherit; height: auto; width: 26.4px; z-index: 1;">
-                                </MudChip>
+                                <MudIconButton Icon="@Icons.Material.Filled.Star" Color="Color.Success" OnClick="@(() => Remove(item))" />
                             }
-                        </MudCardContent>
-                        <MudCardContent Style="text-align: center; padding: 4px; line-height: normal; font-size: 0.73rem; min-height: 38px">
-                            <MudText Typo="Typo.h2" Class="custom-title-list">@item.name</MudText>
-                        </MudCardContent>
+                            else
+                            {
+                                <MudIconButton Icon="@Icons.Material.Filled.Star" Color="Color.Default" OnClick="@(() => Add(item))" />
+                            }
+                            <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" OnClick="@(() => JsRuntime.Utils().Share(item.name, item.description, $"/{Culture}/platform/{item.id}", CancellationToken.None))" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Primary" Href="@($"/{Culture}/platform/{item.id}")" />
+                        </MudCardActions>
                     </MudCard>
-                </MudLink>
-                <AuthorizeView Roles="administrator" Context="ctx">
-                    <Authorized>
-                        @*  @if (string.IsNullOrEmpty(item.link))
+                    <AuthorizeView Roles="administrator" Context="ctx">
+                        <Authorized>
+                            @*  @if (string.IsNullOrEmpty(item.link))
                         {
                             <p class="m-0" style="color: red">link</p>
                         } *@
-                        @*  @if (string.IsNullOrEmpty(item.description))
+                            @*  @if (string.IsNullOrEmpty(item.description))
                         {
                             <p class="m-0" style="color: red">description</p>
                         } *@
-                        @if (item.models.Empty())
-                        {
-                            <p class="m-0" style="color: red">model</p>
-                        }
-                        @*  @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && item.plans.Empty())
+                            @if (item.models.Empty())
+                            {
+                                <p class="m-0" style="color: red">model</p>
+                            }
+                            @*  @if (item.models.Any(a => a == SD.Shared.Enums.DeliveryModel.SVOD) && item.plans.Empty())
                         {
                             <p class="m-0" style="color: red">plan</p>
                         } *@
-                    </Authorized>
-                </AuthorizeView>
-            </div>
-        }
-    </div>
-    <div style="text-align: center;" class="@Css.Build().Small("pt").Large("mb")">
-        <MudButton StartIcon="@Icons.Material.Filled.ExpandMore" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ShowAll = true)"
-                   Disabled="@(ShowAll || AllProviders == null || GetFilteredProviders(true).Count == GetFilteredProviders(false).Count)">
-            @Button.LoadMore
-        </MudButton>
-    </div>
+                        </Authorized>
+                    </AuthorizeView>
+                </div>
+            }
+        </div>
+        <div style="text-align: center;" class="@Css.Build().Small("pt").Large("mb")">
+            <MudButton StartIcon="@Icons.Material.Filled.ExpandMore" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ShowAll = true)"
+                       Disabled="@(ShowAll || AllProviders == null || GetFilteredProviders(true).Count == GetFilteredProviders(false).Count)">
+                @Button.LoadMore
+            </MudButton>
+        </div>
+    }
+    else
+    {
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning"
+                  Class="@Css.Build().Large("mb")" Style="text-align: justify; width: 100%;">
+            @GlobalTranslations.CustomVisibilityNoData
+        </MudAlert>
+    }
 </RenderControl>
 
 @code {
@@ -89,6 +142,7 @@
     private MyProviders? MyProviders { get; set; }
 
     [Custom(Name = "Model")] public DeliveryModel? DeliveryModel { get; set; }
+    [Custom(Name = "Type")] public MediaType? MediaType { get; set; }
     private string? name;
 
     [Parameter] public string? Region { get; set; }
@@ -100,6 +154,7 @@
         return AllProviders?.Items
                    .Where(p => RegionEnum.HasValue && p.regions.Contains(RegionEnum.Value))
                    .Where(p => p.models.Empty() || p.models.Any(a => DeliveryModel == null || a == DeliveryModel))
+                   .Where(p => p.types.Empty() || p.types.Any(a => MediaType == null || a == MediaType))
                    .Where(p => name == null || p.name!.Contains(name, StringComparison.InvariantCultureIgnoreCase))
                    .OrderBy(o => o.priority)
                    .Take(all ? 1000 : (Region.Empty() ? 45 : 10))
@@ -108,6 +163,7 @@
     }
 
     public List<EnumObject<DeliveryModel>> DeliveryModels { get; set; } = [];
+    public List<EnumObject<MediaType>> MediaTypes { get; set; } = [];
 
     protected override void OnInitialized()
     {
@@ -119,6 +175,7 @@
     protected override async Task ProcessInitialData()
     {
         DeliveryModels = EnumHelper.GetList<DeliveryModel>();
+        MediaTypes = EnumHelper.GetList<MediaType>().Where(p => p.Value != SD.Shared.Enums.MediaType.person).ToList();
         RegionEnum = Region.NotEmpty() ? Region.ParseToEnum<Region>() : await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
 
         await Actions.StartLoading.Invoke(null);
@@ -129,6 +186,53 @@
     protected override async Task LoadAuthDataAsync()
     {
         MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
+    }
+
+    private async Task Add(ProviderModel provider)
+    {
+        try
+        {
+            if (!AppStateStatic.IsAuthenticated)
+            {
+                await ShowWarning(GlobalTranslations.YouMustLogged);
+                return;
+            }
+
+            MyProviders ??= new MyProviders();
+
+            var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
+
+            var item = new MyProvidersItem { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = region };
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, cts.Token);
+
+            await ShowSuccess(Translations.PlatformAdded);
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
+    }
+
+    private async Task Remove(ProviderModel provider)
+    {
+        try
+        {
+            if (!AppStateStatic.IsAuthenticated)
+            {
+                await ShowWarning(GlobalTranslations.YouMustLogged);
+                return;
+            }
+
+            MyProviders ??= new MyProviders();
+
+            MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == provider?.id), ApiContext.Default.MyProvidersItem, cts.Token);
+
+            await ShowSuccess(Translations.PlatformRemoved);
+        }
+        catch (Exception ex)
+        {
+            await ProcessException(ex);
+        }
     }
 
 }
