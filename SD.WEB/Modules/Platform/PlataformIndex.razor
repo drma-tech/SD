@@ -67,7 +67,7 @@
                                 @(item.models.Any() ? string.Join(", ", item.models.Select(m => m.GetName())) : "N/A")
                             </MudText>
                         </MudCardContent>
-                        <MudCardContent Class="py-1 px-2">
+                        <MudCardContent Class="py-1 px-2" Style="height: 48px;">
                             <MudText Typo="Typo.body2" Color="Color.Secondary" Inline="true">
                                 @Modules.Platform.Resources.Translations.MediaType:
                             </MudText>
@@ -134,6 +134,13 @@
         </MudAlert>
     }
 </RenderControl>
+
+<style>
+    .mud-card-header .mud-card-header-avatar {
+        margin-right: 8px;
+        margin-inline-end: 8px;
+    }
+</style>
 
 @code {
     public ComponentActions<AllProviders?> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
