@@ -4,11 +4,9 @@ namespace SD.WEB.Modules.Auth.Core;
 
 public class LoginApi(IHttpClientFactory factory) : ApiCosmos<AuthLogin>(factory, ApiType.Authenticated, null, ApiContext.Default.AuthLogin)
 {
-    public async Task<AuthLogin?> Get(bool isUserAuthenticated, CancellationToken cancellationToken)
+    public async Task<AuthLogin?> Get(CancellationToken cancellationToken)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, true, cancellationToken);
-
-        return null;
+        return await GetAsync(Endpoint.Get, true, null, cancellationToken);
     }
 
     public async Task Add(SD.Shared.Enums.Platform platform, string? country, CancellationToken cancellationToken)

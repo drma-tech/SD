@@ -4,7 +4,7 @@ namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(factory)
 {
-    public async Task<HashSet<MediaDetail>> GetList(MediaType? type, string? tmdbId, CancellationToken cancellationToken)
+    public async Task<HashSet<MediaDetail>> GetList(MediaType? type, string? tmdbId, ComponentActions<HashSet<MediaDetail>>? actions, CancellationToken cancellationToken)
     {
         var parameter = new Dictionary<string, string>
         {
@@ -12,9 +12,11 @@ public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(fa
             { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetName(false) ?? "en-US" }
         };
 
+        if (actions != null) await actions.StartLoading.Invoke(null);
+
         if (type == MediaType.movie)
         {
-            var result = await GetAsync<MoviePopular>(TmdbOptions.BaseUri + $"movie/{tmdbId}/recommendations".ConfigureParameters(parameter), false, cancellationToken);
+            var result = await GetAsync<MoviePopular>(TmdbOptions.BaseUri + $"movie/{tmdbId}/recommendations".ConfigureParameters(parameter), false, null, cancellationToken);
 
             var currentList = new HashSet<MediaDetail>();
 
@@ -41,7 +43,7 @@ public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(fa
         }
         else //if (type == MediaType.tv)
         {
-            var result = await GetAsync<TVPopular>(TmdbOptions.BaseUri + $"tv/{tmdbId}/recommendations".ConfigureParameters(parameter), false, cancellationToken);
+            var result = await GetAsync<TVPopular>(TmdbOptions.BaseUri + $"tv/{tmdbId}/recommendations".ConfigureParameters(parameter), false, null, cancellationToken);
 
             var currentList = new HashSet<MediaDetail>();
 
@@ -63,6 +65,8 @@ public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(fa
                     MediaType = MediaType.tv
                 });
             }
+
+            if (actions != null) await actions.FinishLoading.Invoke(currentList);
 
             return currentList;
         }

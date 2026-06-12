@@ -4,11 +4,9 @@ namespace SD.WEB.Modules.Auth.Core;
 
 public class PrincipalApi(IHttpClientFactory factory) : ApiCosmos<AuthPrincipal>(factory, ApiType.Authenticated, "principal", ApiContext.Default.AuthPrincipal)
 {
-    public async Task<AuthPrincipal?> Get(bool isUserAuthenticated, bool setNewVersion = false, CancellationToken cancellationToken = default)
+    public async Task<AuthPrincipal?> Get(bool setNewVersion = false, CancellationToken cancellationToken = default)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, setNewVersion, cancellationToken);
-
-        return null;
+        return await GetAsync(Endpoint.Get, setNewVersion, null, cancellationToken);
     }
 
     public async Task<AuthPrincipal?> Add(AuthPrincipal? obj, CancellationToken cancellationToken)
@@ -52,7 +50,7 @@ public class PrincipalImportApi(IHttpClientFactory factory) : ApiCosmos<AuthPrin
 {
     public async Task<HashSet<AuthPrincipal>> GetAll(CancellationToken cancellationToken)
     {
-        return await GetListAsync(Endpoint.GetAll, cancellationToken);
+        return await GetListAsync(Endpoint.GetAll, null, cancellationToken);
     }
 
     public async Task Migrate(string? oldId, string? newId, CancellationToken cancellationToken)

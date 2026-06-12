@@ -38,30 +38,21 @@
     [Parameter] public MediaType? Type { get; set; }
 
     public CacheDocument<ReviewModel>? Model { get; set; }
-    private ComponentActions<ReviewModel?> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
-
-    protected override void OnInitialized()
-    {
-        OnError.Subscribe(async (msg) => { await Actions.ShowError.Invoke(msg); }, cts.Token);
-    }
+    private ComponentActions<CacheDocument<ReviewModel>?> Actions { get; set; } = new(obj => obj?.Data == null || obj.Data.Items.Empty());
 
     protected override async Task ProcessComponentData()
     {
-        Actions.StartLoading?.Invoke(null);
-
         if (!string.IsNullOrEmpty(ImdbId))
         {
             if (Type == MediaType.movie)
             {
-                Model = await CacheMetaCriticApi.GetMovieReviews(ImdbId, EnglishTitle, ReleaseDate, cts.Token);
+                Model = await CacheMetaCriticApi.GetMovieReviews(ImdbId, EnglishTitle, ReleaseDate, Actions, cts.Token);
             }
             else
             {
-                Model = await CacheMetaCriticApi.GetShowReviews(ImdbId, EnglishTitle, ReleaseDate, cts.Token);
+                Model = await CacheMetaCriticApi.GetShowReviews(ImdbId, EnglishTitle, ReleaseDate, Actions, cts.Token);
             }
         }
-
-        Actions.FinishLoading?.Invoke(Model?.Data);
     }
 
     private static Color GetColorByRating(int? val)

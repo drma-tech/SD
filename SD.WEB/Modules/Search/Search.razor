@@ -161,13 +161,13 @@
 
         if (AppStateStatic.Index == 0)
         {
-            var result = await TmdbSearch.GetList(Items, null, ParametersQuery, cancellationToken: cts.Token);
+            var result = await TmdbSearch.GetList(Items, Actions, null, ParametersQuery, cancellationToken: cts.Token);
             Items = result.list;
         }
         else if (AppStateStatic.Index == 1)
         {
             ParametersKeyword["with_keywords"] = keywordId!;
-            var result = await TmdbDiscoveryApi.GetList(Items, null, ParametersKeyword, cancellationToken: cts.Token);
+            var result = await TmdbDiscoveryApi.GetList(Items, Actions, null, ParametersKeyword, cancellationToken: cts.Token);
             Items = result.list;
         }
         else if (AppStateStatic.Index == 2)
@@ -180,7 +180,7 @@
             {
                 ParametersAdvanced["with_genres"] = ((int)AppStateStatic.TvGenre!.Value).ToString();
             }
-            var result = await TmdbDiscoveryApi.GetList(Items, AppStateStatic.Type, ParametersAdvanced, cancellationToken: cts.Token);
+            var result = await TmdbDiscoveryApi.GetList(Items, Actions, AppStateStatic.Type, ParametersAdvanced, cancellationToken: cts.Token);
             Items = result.list;
         }
 
@@ -189,18 +189,9 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        if (AppStateStatic.IsAuthenticated)
-        {
-            Watched ??= await WatchedApi.Get(true, cts.Token);
-            Watching ??= await WatchingApi.Get(true, cts.Token);
-            Wish ??= await WishApi.Get(true, cts.Token);
-        }
-        else
-        {
-            Watched = null;
-            Watching = null;
-            Wish = null;
-        }
+        Watched = await WatchedApi.Get(null, cts.Token);
+        Watching = await WatchingApi.Get(null, cts.Token);
+        Wish = await WishApi.Get(null, cts.Token);
     }
 
     private async Task KeyPress(KeyboardEventArgs args)

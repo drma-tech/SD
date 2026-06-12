@@ -99,13 +99,6 @@
     private int _activeIndex = 0;
     private bool[] _loaded = new bool[2] { true, false };
 
-    protected override void OnInitialized()
-    {
-        OnError.Subscribe(async (msg) => { await ActionsMovie.ShowError.Invoke(msg); await ActionsSerie.ShowError.Invoke(msg); }, cts.Token);
-
-        base.OnInitialized();
-    }
-
     private async Task OnTabChanged(int index)
     {
         _activeIndex = index;
@@ -117,15 +110,11 @@
     {
         if (_activeIndex == 0)
         {
-            await ActionsMovie.StartLoading.Invoke(null);
-            NewsMovie ??= await CacheFlixsterApi.GetNews("compact", "movie", cts.Token);
-            await ActionsMovie.FinishLoading.Invoke(NewsMovie);
+            NewsMovie ??= await CacheFlixsterApi.GetNews("compact", "movie", ActionsMovie, cts.Token);
         }
         else
         {
-            await ActionsSerie.StartLoading.Invoke(null);
-            NewsSerie ??= await CacheFlixsterApi.GetNews("compact", "tv", cts.Token);
-            await ActionsSerie.FinishLoading.Invoke(NewsSerie);
+            NewsSerie ??= await CacheFlixsterApi.GetNews("compact", "tv", ActionsSerie, cts.Token);
         }
     }
 

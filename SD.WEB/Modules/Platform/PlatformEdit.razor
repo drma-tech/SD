@@ -106,7 +106,7 @@
 
     protected override async Task ProcessPageData()
     {
-        AllProviders = await AllProvidersApi.GetAll(cts.Token);
+        AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
     }
 
     protected async Task SaveSession()

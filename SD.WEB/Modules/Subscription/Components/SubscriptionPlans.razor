@@ -188,7 +188,7 @@
                 {
                     if (Client != null && Client.StripeCustomerId.Empty())
                     {
-                        Client = await PaymentAuthApi.StripeCustomer(AppStateStatic.IsAuthenticated, cts.Token);
+                        Client = await PaymentAuthApi.StripeCustomer(cts.Token);
                     }
 
                     //create session and redirect to checkout

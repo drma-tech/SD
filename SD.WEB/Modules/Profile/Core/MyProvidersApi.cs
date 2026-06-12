@@ -4,11 +4,9 @@ namespace SD.WEB.Modules.Profile.Core;
 
 public class MyProvidersApi(IHttpClientFactory factory) : ApiCosmos<MyProviders>(factory, ApiType.Authenticated, "my-providers", ApiContext.Default.MyProviders)
 {
-    public async Task<MyProviders?> Get(bool isUserAuthenticated, CancellationToken cancellationToken)
+    public async Task<MyProviders?> Get(ComponentActions<MyProviders?>? actions, CancellationToken cancellationToken)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.MyProviders, true, cancellationToken);
-
-        return new MyProviders();
+        return await GetAsync(Endpoint.MyProviders, true, actions, cancellationToken);
     }
 
     public async Task<MyProviders?> Add(MyProviders? obj, MyProvidersItem? item, AccountProduct? product, JsonTypeInfo<MyProvidersItem?> requestTypeInfo, CancellationToken cancellationToken)

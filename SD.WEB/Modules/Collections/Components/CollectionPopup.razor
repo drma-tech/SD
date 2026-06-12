@@ -100,7 +100,7 @@
         }
         else
         {
-            var show = await TmdbApi.GetMediaDetail(CollectionId, MediaType.tv, lang, cts.Token);
+            var show = await TmdbApi.GetMediaDetail(CollectionId, MediaType.tv, lang, null, cts.Token);
 
             Collection = new TmdbCollection
             {
@@ -163,7 +163,7 @@
         else
         {
             var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US";
-            var media = await TmdbApi.GetMediaDetail(tmdbId, type.Value, lang, cts.Token);
+            var media = await TmdbApi.GetMediaDetail(tmdbId, type.Value, lang, null, cts.Token);
 
             item = new WatchingListItem(tmdbId, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), collectionItemsCount, items);
         }

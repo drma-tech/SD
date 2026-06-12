@@ -5,9 +5,11 @@ namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbSearchMultiApi(IHttpClientFactory factory) : ApiExternal(factory), IMediaListApi
 {
-    public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList,
+    public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, ComponentActions<HashSet<MediaDetail>>? actions,
         MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
+        if (actions != null && currentList.Empty()) await actions.StartLoading(null);
+
         var parameter = new Dictionary<string, string>
         {
             { "api_key", TmdbOptions.ApiKey },
@@ -20,7 +22,7 @@ public class TmdbSearchMultiApi(IHttpClientFactory factory) : ApiExternal(factor
             foreach (var item in stringParameters)
                 parameter.TryAdd(item.Key, item.Value);
 
-        var result = await GetAsync<TmdbSearchMulti>(TmdbOptions.BaseUri + "search/multi".ConfigureParameters(parameter), false, cancellationToken);
+        var result = await GetAsync<TmdbSearchMulti>(TmdbOptions.BaseUri + "search/multi".ConfigureParameters(parameter), false, null, cancellationToken);
 
         if (result != null)
             foreach (var item in result.results.OrderByDescending(o => o.popularity))
@@ -47,6 +49,7 @@ public class TmdbSearchMultiApi(IHttpClientFactory factory) : ApiExternal(factor
                 });
             }
 
+        if (actions != null) await actions.FinishLoading(currentList);
         return new ValueTuple<HashSet<MediaDetail>, bool>(currentList, page >= result?.total_pages);
     }
 

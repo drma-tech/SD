@@ -65,13 +65,6 @@
 
     private readonly string _gallerySwiperId = $"swiper-trailer-{Guid.NewGuid()}";
 
-    protected override void OnInitialized()
-    {
-        OnError.Subscribe(async (msg) => await Actions.ShowError.Invoke(msg), cts.Token);
-
-        base.OnInitialized();
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         try
@@ -88,9 +81,7 @@
 
     protected override async Task ProcessInitialData()
     {
-        await Actions.StartLoading.Invoke(null);
-        TrailerModel = await CacheYoutubeApi.GetTrailers("compact", cts.Token);
-        await Actions.FinishLoading.Invoke(TrailerModel);
+        TrailerModel = await CacheYoutubeApi.GetTrailers("compact", Actions, cts.Token);
     }
 
     private void VideoClick(TrailerModelItem item)

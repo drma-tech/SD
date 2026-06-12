@@ -35,18 +35,8 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        if (AppStateStatic.IsAuthenticated)
-        {
-            Watched ??= await WatchedApi.Get(true, cts.Token);
-            Watching ??= await WatchingApi.Get(true, cts.Token);
-            Wish ??= await WishApi.Get(true, cts.Token);
-        }
-        else
-        {
-            Watched = null;
-            Watching = null;
-            Wish = null;
-        }
+        Watched = await WatchedApi.Get(null, cts.Token);
+        Watching = await WatchingApi.Get(null, cts.Token);
+        Wish = await WishApi.Get(null, cts.Token);
     }
-
 }

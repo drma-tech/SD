@@ -97,7 +97,7 @@ else
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
 
         Actions.StartLoading?.Invoke(null);
-        AllProviders = await AllProvidersApi.GetAll(cts.Token);
+        AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
         Provider = AllProviders?.Items.SingleOrDefault(s => s.id == Id);
         Actions.FinishLoading?.Invoke(Provider);
 
@@ -114,20 +114,11 @@ else
 
     protected override async Task LoadAuthDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
+        MyProviders = await MyProvidersApi.Get(null, cts.Token);
 
-        if (AppStateStatic.IsAuthenticated)
-        {
-            Watched ??= await WatchedApi.Get(true, cts.Token);
-            Watching ??= await WatchingApi.Get(true, cts.Token);
-            Wish ??= await WishApi.Get(true, cts.Token);
-        }
-        else
-        {
-            Watched = null;
-            Watching = null;
-            Wish = null;
-        }
+        Watched = await WatchedApi.Get(null, cts.Token);
+        Watching = await WatchingApi.Get(null, cts.Token);
+        Wish = await WishApi.Get(null, cts.Token);
     }
 
     private static Dictionary<string, string> GetExtraParameters(string? providerId, string sortBy)

@@ -180,7 +180,7 @@
     {
         try
         {
-            var watching = await WatchingApi.Get(AppStateStatic.IsAuthenticated, cts.Token); //get a new one (memory may be compromised/corrupted)
+            var watching = await WatchingApi.Get(type == MediaType.movie ? ActionsMovie : ActionsTv, cts.Token); //get a new one (memory may be compromised/corrupted)
             var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US";
 
             if (type == MediaType.movie)
@@ -194,7 +194,7 @@
                 {
                     try
                     {
-                        var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.movie, lang, cts.Token);
+                        var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.movie, lang, null, cts.Token);
                         var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
                         if (hasCollection && watching!.DeletedMovies.All(a => a != media.collectionId.ToString()))
@@ -246,7 +246,7 @@
                 {
                     try
                     {
-                        var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.tv, lang, cts.Token);
+                        var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.tv, lang, null, cts.Token);
                         var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
                         if (hasCollection && watching!.DeletedShows.All(a => a != media.tmdb_id))

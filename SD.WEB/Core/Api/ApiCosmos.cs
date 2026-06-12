@@ -6,14 +6,14 @@ public abstract class ApiCosmos<T>(IHttpClientFactory factory, ApiType type, str
 {
     public Action<T?>? DataChanged { get; set; }
 
-    protected async Task<T?> GetAsync(string endpoint, bool setNewVersion, CancellationToken cancellationToken)
+    protected async Task<T?> GetAsync(string endpoint, bool setNewVersion, ComponentActions<T?>? actions, CancellationToken cancellationToken)
     {
-        return await base.GetAsync<T>(endpoint, setNewVersion, cancellationToken);
+        return await base.GetAsync<T>(endpoint, setNewVersion, actions, cancellationToken);
     }
 
-    protected async Task<HashSet<T>> GetListAsync(string endpoint, CancellationToken cancellationToken)
+    protected async Task<HashSet<T>> GetListAsync(string endpoint, ComponentActions<HashSet<T>>? actions, CancellationToken cancellationToken)
     {
-        return await base.GetListAsync<T>(endpoint, cancellationToken);
+        return await base.GetListAsync<T>(endpoint, actions, cancellationToken);
     }
 
     protected async Task<T?> PostAsync(string endpoint, T? obj, CancellationToken cancellationToken)

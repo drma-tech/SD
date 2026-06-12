@@ -40,42 +40,42 @@ public struct Endpoint
 
 public class CacheFlixsterApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<NewsModel>>(http, ApiType.Anonymous, null, ApiContext.Default.CacheDocumentNewsModel)
 {
-    public async Task<CacheDocument<NewsModel>?> GetNews(string mode, string category, CancellationToken cancellationToken)
+    public async Task<CacheDocument<NewsModel>?> GetNews(string mode, string category, ComponentActions<CacheDocument<NewsModel>?> actions, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.News(mode, category), false, cancellationToken);
+        return await GetAsync(Endpoint.News(mode, category), false, actions, cancellationToken);
     }
 }
 
 public class CacheYoutubeApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<TrailerModel>>(http, ApiType.Anonymous, null, ApiContext.Default.CacheDocumentTrailerModel)
 {
-    public async Task<CacheDocument<TrailerModel>?> GetTrailers(string mode, CancellationToken cancellationToken)
+    public async Task<CacheDocument<TrailerModel>?> GetTrailers(string mode, ComponentActions<CacheDocument<TrailerModel>?> actions, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.Trailers(mode), false, cancellationToken);
+        return await GetAsync(Endpoint.Trailers(mode), false, actions, cancellationToken);
     }
 }
 
 public class CacheRatingsApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<Ratings>>(http, ApiType.Anonymous, null, ApiContext.Default.CacheDocumentRatings)
 {
-    public async Task<CacheDocument<Ratings>?> GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, CancellationToken cancellationToken)
+    public async Task<CacheDocument<Ratings>?> GetMovieRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, ComponentActions<CacheDocument<Ratings>?> actions, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetMovieRatings(id, tmdbId, title, releaseDate, tmdbRating), false, cancellationToken);
+        return await GetAsync(Endpoint.GetMovieRatings(id, tmdbId, title, releaseDate, tmdbRating), false, actions, cancellationToken);
     }
 
-    public async Task<CacheDocument<Ratings>?> GetShowRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, CancellationToken cancellationToken)
+    public async Task<CacheDocument<Ratings>?> GetShowRatings(string? id, string? tmdbId, string? title, DateTime? releaseDate, string? tmdbRating, ComponentActions<CacheDocument<Ratings>?> actions, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetShowRatings(id, tmdbId, title, releaseDate, tmdbRating), false, cancellationToken);
+        return await GetAsync(Endpoint.GetShowRatings(id, tmdbId, title, releaseDate, tmdbRating), false, actions, cancellationToken);
     }
 }
 
 public class CacheMetaCriticApi(IHttpClientFactory http) : ApiCosmos<CacheDocument<ReviewModel>>(http, ApiType.Anonymous, null, ApiContext.Default.CacheDocumentReviewModel)
 {
-    public async Task<CacheDocument<ReviewModel>?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, CancellationToken cancellationToken)
+    public async Task<CacheDocument<ReviewModel>?> GetMovieReviews(string? id, string? title, DateTime? releaseDate, ComponentActions<CacheDocument<ReviewModel>?> actions, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate), false, cancellationToken);
+        return await GetAsync(Endpoint.GetMovieReviews(id, title, releaseDate), false, actions, cancellationToken);
     }
 
-    public async Task<CacheDocument<ReviewModel>?> GetShowReviews(string? id, string? title, DateTime? releaseDate, CancellationToken cancellationToken)
+    public async Task<CacheDocument<ReviewModel>?> GetShowReviews(string? id, string? title, DateTime? releaseDate, ComponentActions<CacheDocument<ReviewModel>?> actions, CancellationToken cancellationToken)
     {
-        return await GetAsync(Endpoint.GetShowReviews(id, title, releaseDate), false, cancellationToken);
+        return await GetAsync(Endpoint.GetShowReviews(id, title, releaseDate), false, actions, cancellationToken);
     }
 }

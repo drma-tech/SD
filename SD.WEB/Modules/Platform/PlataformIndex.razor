@@ -185,14 +185,12 @@
         MediaTypes = EnumHelper.GetList<MediaType>().Where(p => p.Value != SD.Shared.Enums.MediaType.person).ToList();
         RegionEnum = Region.NotEmpty() ? Region.ParseToEnum<Region>() : await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
 
-        await Actions.StartLoading.Invoke(null);
-        AllProviders = await AllProvidersApi.GetAll(cts.Token);
-        await Actions.FinishLoading.Invoke(AllProviders);
+        AllProviders = await AllProvidersApi.GetAll(Actions, cts.Token);
     }
 
     protected override async Task LoadAuthDataAsync()
     {
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
+        MyProviders = await MyProvidersApi.Get(null, cts.Token);
     }
 
     private async Task Add(ProviderModel provider)

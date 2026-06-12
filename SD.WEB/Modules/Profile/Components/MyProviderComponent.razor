@@ -53,30 +53,25 @@
 
     protected override void OnInitialized()
     {
-        OnError.Subscribe(async msg => await Actions.ShowError.Invoke(msg), cts.Token);
         Actions.CustomMessageWarning = Modules.Profile.Resources.Translations.MarkPlatforms;
 
         MyProvidersApi.DataChanged += model =>
         {
-            Actions.StartLoading?.Invoke(null);
             MyProviders = model;
-            Actions.FinishLoading.Invoke(model);
             StateHasChanged();
         };
     }
 
     protected override async Task ProcessComponentData()
     {
-        AllProviders ??= await AllProvidersApi.GetAll(cts.Token);
+        AllProviders ??= await AllProvidersApi.GetAll(null, cts.Token);
 
         Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
     }
 
     protected override async Task LoadAuthDataAsync()
     {
-        await Actions.StartLoading.Invoke(null);
-
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
+        MyProviders = await MyProvidersApi.Get(Actions, cts.Token);
 
         foreach (var item in MyProviders?.Items ?? [])
         {
@@ -87,8 +82,6 @@
                 ProvidersChanged = true;
             }
         }
-
-        await Actions.FinishLoading.Invoke(MyProviders);
 
         if (MyProviders != null && MyProviders.Items.Any(a => !a.region.HasValue)) //update region (legacy)
         {
@@ -114,10 +107,9 @@
 
     public async Task ShowProviderPopup(MyProvidersItem item)
     {
-        AllProviders ??= await AllProvidersApi.GetAll(cts.Token);
+        AllProviders ??= await AllProvidersApi.GetAll(null, cts.Token);
 
-        await DialogService.PlatformPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList,
-            item.region?.ToString(), item.id, Culture);
+        await DialogService.PlatformPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList, item.region?.ToString(), item.id, Culture);
     }
 
     private async Task UpdateProviders()

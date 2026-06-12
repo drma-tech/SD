@@ -4,7 +4,7 @@ namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbCreditApi(IHttpClientFactory factory) : ApiExternal(factory)
 {
-    public async Task<Credits?> GetList(MediaType? type, string? tmdbId, CancellationToken cancellationToken)
+    public async Task<Credits?> GetList(MediaType? type, string? tmdbId, ComponentActions<Credits?>? actions, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(tmdbId)) return null;
 
@@ -15,9 +15,9 @@ public class TmdbCreditApi(IHttpClientFactory factory) : ApiExternal(factory)
         };
 
         if (type == MediaType.movie)
-            return await GetAsync<Credits>(TmdbOptions.BaseUri + $"movie/{tmdbId}/credits".ConfigureParameters(parameter), false, cancellationToken);
+            return await GetAsync<Credits>(TmdbOptions.BaseUri + $"movie/{tmdbId}/credits".ConfigureParameters(parameter), false, actions, cancellationToken);
 
-        return await GetAsync<Credits>(TmdbOptions.BaseUri + $"tv/{tmdbId}/credits".ConfigureParameters(parameter), false, cancellationToken);
+        return await GetAsync<Credits>(TmdbOptions.BaseUri + $"tv/{tmdbId}/credits".ConfigureParameters(parameter), false, actions, cancellationToken);
     }
 
     public async Task<CreditsByPerson?> GetListByPerson(string? personId, CancellationToken cancellationToken)
@@ -30,6 +30,6 @@ public class TmdbCreditApi(IHttpClientFactory factory) : ApiExternal(factory)
             { "language", (await AppStateStatic.GetContentLanguage(cancellationToken: cancellationToken)).GetName(false) ?? "en-US" }
         };
 
-        return await GetAsync<CreditsByPerson>(TmdbOptions.BaseUri + $"person/{personId}/combined_credits".ConfigureParameters(parameter), false, cancellationToken);
+        return await GetAsync<CreditsByPerson>(TmdbOptions.BaseUri + $"person/{personId}/combined_credits".ConfigureParameters(parameter), false, null, cancellationToken);
     }
 }

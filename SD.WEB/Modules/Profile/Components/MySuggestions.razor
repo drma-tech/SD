@@ -97,6 +97,7 @@
 
     private ComponentActions<SD.Shared.Models.MySuggestions?> ActionsMovie { get; set; } = new(obj => obj == null || obj.Items(MediaType.movie).Empty());
     private ComponentActions<SD.Shared.Models.MySuggestions?> ActionsSerie { get; set; } = new(obj => obj == null || obj.Items(MediaType.tv).Empty());
+
     private ComponentActions<SD.Shared.Models.MySuggestions?> Actions => SearchType == MediaType.movie ? ActionsMovie : ActionsSerie;
 
     private bool GenresChanged => (mySuggestions?.MovieGenres.Any() ?? false) || (mySuggestions?.TvGenres.Any() ?? false);
@@ -104,8 +105,6 @@
 
     protected override void OnInitialized()
     {
-        OnError.Subscribe(async (msg) => { await ActionsMovie.ShowError.Invoke(msg); await ActionsSerie.ShowError.Invoke(msg); }, cts.Token);
-
         ActionsMovie.CustomPremiumDescription = Translations.OurSuggestions2;
         ActionsSerie.CustomPremiumDescription = Translations.OurSuggestions2;
 
@@ -114,9 +113,7 @@
 
     protected override async Task LoadAuthDataAsync()
     {
-        Actions.StartLoading?.Invoke(null);
-
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
+        MyProviders = await MyProvidersApi.Get(null, cts.Token);
 
         if (MyProviders == null || MyProviders.Items.Empty())
         {
@@ -124,15 +121,13 @@
         }
         else
         {
-            mySuggestions = await MySuggestionsApi.Get(AppStateStatic.ActiveProduct, AppStateStatic.IsAuthenticated, cts.Token);
+            mySuggestions = await MySuggestionsApi.Get(AppStateStatic.ActiveProduct, Actions, cts.Token);
 
             if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
             {
                 Actions.ShowWarning?.Invoke(Translations.OurSuggestions2);
             }
         }
-
-        Actions.FinishLoading?.Invoke(mySuggestions);
     }
 
     public Task ShowMediaPopup(string? tmdbId, string? name, MediaType type)
@@ -183,7 +178,7 @@
                 var titles = new HashSet<MediaDetail>();
                 foreach (var provider in MyProviders?.Items ?? [])
                 {
-                    var result = await TmdbDiscoveryApi.GetList([], MediaType.movie, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"), cancellationToken: cts.Token);
+                    var result = await TmdbDiscoveryApi.GetList([], null, MediaType.movie, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"), cancellationToken: cts.Token);
 
                     foreach (var item in result.list)
                     {
@@ -235,7 +230,7 @@
                 var titles = new HashSet<MediaDetail>();
                 foreach (var provider in MyProviders?.Items ?? [])
                 {
-                    var result = await TmdbDiscoveryApi.GetList([], MediaType.tv, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"), cancellationToken: cts.Token);
+                    var result = await TmdbDiscoveryApi.GetList([], null, MediaType.tv, GetExtraParameters(provider.id, provider.region.ToString(), "vote_average.desc"), cancellationToken: cts.Token);
 
                     foreach (var item in result.list)
                     {

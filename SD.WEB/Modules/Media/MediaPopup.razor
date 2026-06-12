@@ -330,11 +330,9 @@
 
     protected override async Task ProcessPopupData()
     {
-        await Actions.StartLoading.Invoke(null);
         var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US";
-        Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, lang, cts.Token);
+        Media = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, lang, Actions, cts.Token);
         Media.Videos.Reverse();
-        await Actions.FinishLoading.Invoke(Media);
 
         ImdbId = await ExternalIdApi.GetImdbId(Type, TmdbId, cts.Token);
 
@@ -344,7 +342,7 @@
         if (Media != null && Media.original_language != "en")
         {
             //title must be in English
-            var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US", cts.Token);
+            var enMedia = await TmdbApi.GetMediaDetail(TmdbId, Type!.Value, "en-US", null, cts.Token);
             EnglishTitle = enMedia.title;
         }
 
@@ -352,16 +350,14 @@
 
         StateHasChanged();
 
-        await RatingsActions.StartLoading.Invoke(null);
         if (Media?.MediaType == MediaType.movie)
         {
-            _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), cts.Token);
+            _ratingsCache = await CacheRatingsApi.GetMovieRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), RatingsActions, cts.Token);
         }
         else
         {
-            _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), cts.Token);
+            _ratingsCache = await CacheRatingsApi.GetShowRatings(ImdbId, Media?.tmdb_id, EnglishTitle, Media?.release_date, Media?.rating.ToString("#.#"), RatingsActions, cts.Token);
         }
-        await RatingsActions.FinishLoading.Invoke(_ratingsCache);
     }
 
     private Color GetColorByRating(string? rating)

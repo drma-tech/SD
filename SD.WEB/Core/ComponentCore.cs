@@ -17,8 +17,8 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
     [Inject] protected NavigationManager Navigation { get; set; } = null!;
 
     protected readonly CancellationTokenSource cts = new();
-    private readonly TaskHelper _taskHelper = new();
-    protected ActionDispatcher<string> OnError { get; } = new();
+    protected readonly TaskHelper _taskHelper = new();
+    protected virtual bool ShowExceptions => false;
 
     /// <summary>
     /// Mandatory data to fill out the page/component without delay (essential for bots, SEO, etc.)
@@ -61,10 +61,7 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
         }
         catch (Exception ex)
         {
-            if (OnError != null)
-                OnError.Publish(ex.Message);
-            else
-                await ProcessException(ex, false);
+            await ProcessException(ex, false);
         }
     }
 
@@ -85,10 +82,7 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
         }
         catch (Exception ex)
         {
-            if (OnError != null)
-                OnError.Publish(ex.Message);
-            else
-                await ProcessException(ex);
+            await ProcessException(ex, ShowExceptions);
         }
     }
 
@@ -208,12 +202,30 @@ public abstract class ComponentCore<T> : ComponentBase, IDisposable where T : cl
         }
     }
 
+    #region Dispose
+
+    private bool isDisposed;
+
     public void Dispose()
     {
-        cts.Cancel();
-        cts.Dispose();
+        Dispose(true);
         GC.SuppressFinalize(this);
     }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (isDisposed) return;
+
+        if (disposing)
+        {
+            cts.Cancel();
+            cts.Dispose();
+        }
+
+        isDisposed = true;
+    }
+
+    #endregion Dispose
 }
 
 public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, IAsyncDisposable where T : class
@@ -221,6 +233,8 @@ public abstract class PageCore<T> : ComponentCore<T>, IBrowserViewportObserver, 
     [Inject] private IBrowserViewportService BrowserViewportService { get; set; } = null!;
 
     [Parameter] public string? Culture { get; set; }
+
+    protected override bool ShowExceptions => true;
 
     /// <summary>
     /// NOTE: This method cannot depend on previously loaded variables, as events can be executed in parallel.

@@ -2,11 +2,9 @@
 
 public class WatchedListApi(IHttpClientFactory factory) : ApiCosmos<WatchedList>(factory, ApiType.Authenticated, "watchedlist", ApiContext.Default.WatchedList)
 {
-    public async Task<WatchedList?> Get(bool isUserAuthenticated, CancellationToken cancellationToken)
+    public async Task<WatchedList?> Get(ComponentActions<WatchedList?>? actions, CancellationToken cancellationToken)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, false, cancellationToken);
-
-        return new WatchedList();
+        return await GetAsync(Endpoint.Get, false, actions, cancellationToken);
     }
 
     public async Task<WatchedList?> Add(MediaType? mediaType, WatchedList? obj, string? tmdbId, AccountProduct? product, CancellationToken cancellationToken)

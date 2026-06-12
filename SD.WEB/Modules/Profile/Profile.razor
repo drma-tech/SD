@@ -115,25 +115,25 @@
 
         WatchedApi.DataChanged += model =>
         {
-            Watched = model; 
+            Watched = model;
             StateHasChanged();
         };
         WatchingApi.DataChanged += model =>
         {
             WatchingActionsMovie.StartLoading.Invoke(null);
             WatchingActionsTv.StartLoading.Invoke(null);
-            Watching = model; 
-            WatchingActionsMovie.FinishLoading.Invoke(model); 
-            WatchingActionsTv.FinishLoading.Invoke(model); 
+            Watching = model;
+            WatchingActionsMovie.FinishLoading.Invoke(model);
+            WatchingActionsTv.FinishLoading.Invoke(model);
             StateHasChanged();
         };
         WishApi.DataChanged += model =>
         {
             WishActionsMovie.StartLoading.Invoke(null);
             WishActionsTv.StartLoading.Invoke(null);
-            Wish = model; 
-            WishActionsMovie.FinishLoading.Invoke(model); 
-            WishActionsTv.FinishLoading.Invoke(model); 
+            Wish = model;
+            WishActionsMovie.FinishLoading.Invoke(model);
+            WishActionsTv.FinishLoading.Invoke(model);
             StateHasChanged();
         };
     }
@@ -166,25 +166,16 @@
         await WishActionsMovie.StartLoading.Invoke(null);
         await WishActionsTv.StartLoading.Invoke(null);
 
-        if (AppStateStatic.IsAuthenticated)
-        {
-            Watched ??= await WatchedApi.Get(true, cts.Token);
-            Watching ??= await WatchingApi.Get(true, cts.Token);
-            Wish ??= await WishApi.Get(true, cts.Token);
-        }
-        else
-        {
-            Watched = null;
-            Watching = null;
-            Wish = null;
-        }
+        Watched = await WatchedApi.Get(null, cts.Token);
+        Watching = await WatchingApi.Get(null, cts.Token);
+        Wish = await WishApi.Get(null, cts.Token);
 
         await WishActionsMovie.FinishLoading.Invoke(Wish);
         await WishActionsTv.FinishLoading.Invoke(Wish);
         await WatchingActionsMovie.FinishLoading.Invoke(Watching);
         await WatchingActionsTv.FinishLoading.Invoke(Watching);
 
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
+        MyProviders = await MyProvidersApi.Get(null, cts.Token);
     }
 
     // private async Task SetReviewed()

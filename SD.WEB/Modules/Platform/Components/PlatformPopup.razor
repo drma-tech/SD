@@ -93,7 +93,7 @@
 
     protected override async Task ProcessPopupData()
     {
-        MyProviders = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
+        MyProviders = await MyProvidersApi.Get(null, cts.Token);
     }
 
     private static Dictionary<string, string> GetExtraParameters(string? providerId, string? sortBy, string? watchRegion)

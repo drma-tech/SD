@@ -225,7 +225,7 @@
     {
         try
         {
-            Watching = await WatchingApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
+            Watching = await WatchingApi.Get(null, cts.Token);
         }
         catch (Exception ex)
         {

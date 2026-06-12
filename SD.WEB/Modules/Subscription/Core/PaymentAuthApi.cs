@@ -6,7 +6,7 @@ namespace SD.WEB.Modules.Subscription.Core
     {
         public async Task<bool> StripeValidateSession(string id, CancellationToken cancellationToken)
         {
-            return await GetAsync<bool>(Endpoint.StripeValidateSession(id), true, cancellationToken);
+            return await GetAsync<bool>(Endpoint.StripeValidateSession(id), true, null, cancellationToken);
         }
 
         private struct Endpoint
@@ -22,11 +22,9 @@ namespace SD.WEB.Modules.Subscription.Core
             await PostAsync(Endpoint.AppleVerify, receipt, ApiContext.Default.String, cancellationToken);
         }
 
-        public async Task<AuthPrincipal?> StripeCustomer(bool isUserAuthenticated, CancellationToken cancellationToken)
+        public async Task<AuthPrincipal?> StripeCustomer(CancellationToken cancellationToken)
         {
-            if (!isUserAuthenticated) return null;
-
-            return await GetAsync<AuthPrincipal>(Endpoint.StripeCustomer, true, cancellationToken);
+            return await GetAsync<AuthPrincipal>(Endpoint.StripeCustomer, true, null, cancellationToken);
         }
 
         public async Task<string?> StripePortalLink(CancellationToken cancellationToken)

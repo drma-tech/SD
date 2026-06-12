@@ -289,7 +289,7 @@
 
     protected override async Task ProcessInitialData()
     {
-        AllProviders = await AllProvidersApi.GetAll(cts.Token);
+        AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
     }
 
     protected override async Task ProcessComponentData()

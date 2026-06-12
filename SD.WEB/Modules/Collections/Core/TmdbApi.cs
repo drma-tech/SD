@@ -5,7 +5,7 @@ namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
 {
-    public async Task<MediaDetail> GetMediaDetail(string? tmdbId, MediaType type, string language, CancellationToken cancellationToken)
+    public async Task<MediaDetail> GetMediaDetail(string? tmdbId, MediaType type, string language, ComponentActions<MediaDetail?>? actions, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(tmdbId);
 
@@ -16,11 +16,13 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
             { "append_to_response", "videos" }
         };
 
+        if (actions != null) await actions.StartLoading.Invoke(null);
+
         var objReturn = new MediaDetail();
 
         if (type == MediaType.movie)
         {
-            var item = await GetAsync<MovieDetail>(TmdbOptions.BaseUri + "movie/" + tmdbId.ConfigureParameters(parameter), false, cancellationToken);
+            var item = await GetAsync<MovieDetail>(TmdbOptions.BaseUri + "movie/" + tmdbId.ConfigureParameters(parameter), false, null, cancellationToken);
 
             if (item != null)
             {
@@ -65,7 +67,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
         }
         else
         {
-            var item = await GetAsync<TVDetail>(TmdbOptions.BaseUri + "tv/" + tmdbId.ConfigureParameters(parameter), false, cancellationToken);
+            var item = await GetAsync<TVDetail>(TmdbOptions.BaseUri + "tv/" + tmdbId.ConfigureParameters(parameter), false, null, cancellationToken);
 
             if (item != null)
             {
@@ -95,6 +97,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
             }
         }
 
+        if (actions != null) await actions.FinishLoading.Invoke(objReturn);
         return objReturn;
     }
 
@@ -129,7 +132,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
     {
         if (collectionId == null) return null;
 
-        return await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" + collectionId.ConfigureParameters(parameters), false, cancellationToken);
+        return await GetAsync<TmdbCollection>(TmdbOptions.BaseUri + "collection/" + collectionId.ConfigureParameters(parameters), false, null, cancellationToken);
     }
 
     public async Task<MediaProviders?> GetWatchProvidersList(string? tmdbId, MediaType? type, CancellationToken cancellationToken)
@@ -143,10 +146,10 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
         };
 
         if (type == MediaType.movie)
-            return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"movie/{tmdbId}/watch/providers".ConfigureParameters(parameter), false, cancellationToken);
+            return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"movie/{tmdbId}/watch/providers".ConfigureParameters(parameter), false, null, cancellationToken);
 
         //tv
-        return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"tv/{tmdbId}/watch/providers".ConfigureParameters(parameter), false, cancellationToken);
+        return await GetAsync<MediaProviders>(TmdbOptions.BaseUri + $"tv/{tmdbId}/watch/providers".ConfigureParameters(parameter), false, null, cancellationToken);
     }
 
     public async Task<TmdbSeason?> GetSeason(string? tmdbId, int? seasonNumber, Dictionary<string, string> parameters, CancellationToken cancellationToken)
@@ -154,7 +157,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
         if (tmdbId == null) return null;
         if (seasonNumber == null) return null;
 
-        return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri + $"tv/{tmdbId}/season/{seasonNumber}".ConfigureParameters(parameters), false, cancellationToken);
+        return await GetAsync<TmdbSeason>(TmdbOptions.BaseUri + $"tv/{tmdbId}/season/{seasonNumber}".ConfigureParameters(parameters), false, null, cancellationToken);
     }
 }
 

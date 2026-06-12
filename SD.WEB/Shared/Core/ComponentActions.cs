@@ -8,7 +8,7 @@
         Error,
     }
 
-    public class ComponentActions<T> where T : class?
+    public class ComponentActions<T>
     {
         public Func<string?, Task> StartLoading { get; set; }
         public Func<T?, Task> FinishLoading { get; set; }
@@ -47,7 +47,7 @@
             ShowError = async msg => await ChangeStatus(RenderStatus.Error, msg);
         }
 
-        private async Task ChangeStatus(RenderStatus status, string? msg = null, T? instance = null)
+        private async Task ChangeStatus(RenderStatus status, string? msg = null, T? instance = default)
         {
             if (status == RenderStatus.Loading)
             {
@@ -61,7 +61,7 @@
             {
                 MessageError = CustomMessageError ?? msg;
             }
-            else if (status == RenderStatus.Content && (instance == null || ExpressionEmpty(instance)) && CustomMessageWarning.NotEmpty())
+            else if (status == RenderStatus.Content && (Equals(instance, default(T)) || ExpressionEmpty(instance)) && CustomMessageWarning.NotEmpty())
             {
                 await ChangeStatus(RenderStatus.Warning, GlobalTranslations.CustomVisibilityNoData);
                 return;

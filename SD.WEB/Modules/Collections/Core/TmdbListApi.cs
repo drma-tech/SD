@@ -5,10 +5,11 @@ namespace SD.WEB.Modules.Collections.Core;
 
 public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(factory, ApiType.Anonymous, null, ApiContext.Default.CustomListNew), IMediaListApi
 {
-    public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList,
+    public async Task<(HashSet<MediaDetail> list, bool lastPage)> GetList(HashSet<MediaDetail> currentList, ComponentActions<HashSet<MediaDetail>>? actions,
         MediaType? type = null, Dictionary<string, string>? stringParameters = null, EnumLists? list = null, int page = 1, CancellationToken cancellationToken = default)
     {
         if (list == null) throw new ArgumentException(null, nameof(list));
+        if (actions != null && currentList.Empty()) await actions.StartLoading(null);
 
         var parameter = new Dictionary<string, string>
         {
@@ -17,7 +18,7 @@ public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(
             { "page", page.ToString() }
         };
 
-        var result = await GetAsync<CustomListNew>($"public/tmdb?url=" + $"{TmdbOptions.BaseUriNew}list/{((int)list).ToString().ConfigureParameters(parameter)}".ConvertFromStringToBase64(), false, cancellationToken);
+        var result = await GetAsync<CustomListNew>($"public/tmdb?url=" + $"{TmdbOptions.BaseUriNew}list/{((int)list).ToString().ConfigureParameters(parameter)}".ConvertFromStringToBase64(), false, null, cancellationToken);
 
         if (result != null)
         {
@@ -47,6 +48,7 @@ public class TmdbListApi(IHttpClientFactory factory) : ApiCosmos<CustomListNew>(
             }
         }
 
+        if (actions != null) await actions.FinishLoading(currentList);
         return new ValueTuple<HashSet<MediaDetail>, bool>(currentList, page >= result?.total_pages);
     }
 }

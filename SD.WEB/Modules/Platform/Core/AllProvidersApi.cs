@@ -4,8 +4,11 @@ namespace SD.WEB.Modules.Platform.Core;
 
 public class AllProvidersApi(IHttpClientFactory factory) : ApiCore(factory, null, ApiType.Local)
 {
-    public async Task<AllProviders?> GetAll(CancellationToken cancellationToken)
+    public async Task<AllProviders?> GetAll(ComponentActions<AllProviders?>? actions, CancellationToken cancellationToken)
     {
-        return await LocalHttp.GetFromJsonAsync("/data/providers.json", JavascriptContext.Default.AllProviders, cancellationToken);
+        if (actions != null) await actions.StartLoading(null);
+        var result = await LocalHttp.GetFromJsonAsync("/data/providers.json", JavascriptContext.Default.AllProviders, cancellationToken);
+        if (actions != null) await actions.FinishLoading(result);
+        return result;
     }
 }

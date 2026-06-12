@@ -2,11 +2,9 @@
 
 public class WishListApi(IHttpClientFactory factory) : ApiCosmos<WishList>(factory, ApiType.Authenticated, "wishlist", ApiContext.Default.WishList)
 {
-    public async Task<WishList?> Get(bool isUserAuthenticated, CancellationToken cancellationToken)
+    public async Task<WishList?> Get(ComponentActions<WishList?>? actions, CancellationToken cancellationToken)
     {
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, false, cancellationToken);
-
-        return new WishList();
+        return await GetAsync(Endpoint.Get, false, actions, cancellationToken);
     }
 
     public async Task<WishList?> Add(MediaType? mediaType, WishList? obj, WishListItem item, AccountProduct? product, CancellationToken cancellationToken)

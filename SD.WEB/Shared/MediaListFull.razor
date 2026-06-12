@@ -96,7 +96,7 @@
     {
         if (MediaListApi != null)
         {
-            var result = await MediaListApi.GetList([], TypeSelected, StringParameters, List, 1, cts.Token);
+            var result = await MediaListApi.GetList([], Actions, TypeSelected, StringParameters, List, 1, cts.Token);
             // await Task.Delay(1); //TODO: for some reason, changing the media type is not updating the post image (probably because of the lazy-load css class)
 
             Items = result.list;
@@ -104,7 +104,7 @@
 
             if (Items.Count < MinQtdItems) //force reload, if the filters bring few records
             {
-                var result2 = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++_currentPage, cts.Token);
+                var result2 = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, ++_currentPage, cts.Token);
                 foreach (var item in result2.list)
                 {
                     Items.Add(item);
@@ -199,7 +199,7 @@
     {
         if (MediaListApi != null)
         {
-            var result = await MediaListApi.GetList(Items, TypeSelected, StringParameters, List, ++_currentPage, cts.Token);
+            var result = await MediaListApi.GetList(Items, Actions, TypeSelected, StringParameters, List, ++_currentPage, cts.Token);
             Items = result.list;
             DisableLoadMore = result.lastPage || Items.Count >= 250;
 

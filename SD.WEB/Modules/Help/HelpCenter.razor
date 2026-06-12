@@ -191,7 +191,7 @@
 
     protected override async Task ProcessPopupData()
     {
-        Principal = await PrincipalApi.Get(AppStateStatic.IsAuthenticated, true, cts.Token);
+        Principal = await PrincipalApi.Get(true, cts.Token);
     }
 
     private async Task DownloadData()
@@ -204,13 +204,13 @@
 
             var sub = Principal.GetActiveSubscription();
 
-            data.Login = await LoginApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
-            data.Providers = await MyProvidersApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
+            data.Login = await LoginApi.Get(cts.Token);
+            data.Providers = await MyProvidersApi.Get(null, cts.Token);
             if (sub?.ActiveProduct is null or AccountProduct.Basic) data.Suggestions = null;
-            else data.Suggestions = await MySuggestionsApi.Get(sub?.ActiveProduct, AppStateStatic.IsAuthenticated, cts.Token);
-            data.WatchedList = await WatchedListApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
-            data.WatchingList = await WatchingListApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
-            data.WishList = await WishListApi.Get(AppStateStatic.IsAuthenticated, cts.Token);
+            else data.Suggestions = await MySuggestionsApi.Get(sub?.ActiveProduct, null, cts.Token);
+            data.WatchedList = await WatchedListApi.Get(null, cts.Token);
+            data.WatchingList = await WatchingListApi.Get(null, cts.Token);
+            data.WishList = await WishListApi.Get(null, cts.Token);
 
             var fileName = $"{AppInfo.Title.ToSlug()}_{Principal.AuthProviders[0]}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
             await JsRuntime.Utils().DownloadFile(fileName, "application/json", data.ConvertFromObjectToBytes(), cts.Token);

@@ -2,13 +2,11 @@
 
 public class MySuggestionsApi(IHttpClientFactory factory) : ApiCosmos<MySuggestions>(factory, ApiType.Authenticated, "my-suggestions", ApiContext.Default.MySuggestions)
 {
-    public async Task<MySuggestions?> Get(AccountProduct? product, bool isUserAuthenticated, CancellationToken cancellationToken)
+    public async Task<MySuggestions?> Get(AccountProduct? product, ComponentActions<MySuggestions?>? actions, CancellationToken cancellationToken)
     {
         if (product is null or AccountProduct.Basic) return new MySuggestions();
 
-        if (isUserAuthenticated) return await GetAsync(Endpoint.Get, true, cancellationToken);
-
-        return new MySuggestions();
+        return await GetAsync(Endpoint.Get, true, actions, cancellationToken);
     }
 
     public async Task<MySuggestions?> Sync(MediaType? mediaType, MySuggestions obj, CancellationToken cancellationToken)

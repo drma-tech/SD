@@ -61,18 +61,38 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
     }
 
-    protected async Task<byte[]> GetBytesAsync(string uri, CancellationToken cancellationToken)
+    protected async Task<byte[]> GetBytesAsync(string uri, ComponentActions<byte[]>? actions, CancellationToken cancellationToken)
     {
         try
         {
+            if (actions != null) await actions.StartLoading(null);
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
-            var http = GetHttp(type);
+            byte[] result = [];
 
-            if (key.NotEmpty())
-                uri = uri.ConfigureParameters(GetVersion());
+            if (type == ApiType.Authenticated && !AppStateStatic.IsAuthenticated)
+            {
+                //return default if user is not authenticated and api requires authentication
+            }
+            else
+            {
+                if (key.NotEmpty()) uri = uri.ConfigureParameters(GetVersion());
+                result = await GetHttp(type).GetByteArrayAsync(uri, cancellationToken);
+            }
 
-            return await http.GetByteArrayAsync(uri, cancellationToken);
+            if (actions != null) await actions.FinishLoading(result);
+
+            return result;
+        }
+        catch (NotificationException ex)
+        {
+            if (actions != null) await actions.ShowWarning(ex.Message);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            if (actions != null) await actions.ShowError(ex.Message);
+            throw;
         }
         finally
         {
@@ -80,17 +100,42 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
     }
 
-    protected async Task<T?> GetAsync<T>(string uri, bool setNewVersion, CancellationToken cancellationToken)
+    protected async Task<T?> GetAsync<T>(string uri, bool setNewVersion, ComponentActions<T?>? actions, CancellationToken cancellationToken)
     {
         try
         {
+            if (actions != null) await actions.StartLoading(null);
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
             if (setNewVersion) SetNewVersion(key);
 
-            if (key.NotEmpty())
-                return await GetHttp(type).GetJsonFromApi<T>(uri.ConfigureParameters(GetVersion()), cancellationToken);
-            return await GetHttp(type).GetJsonFromApi<T>(uri, cancellationToken);
+            T? result = default;
+
+            if (type == ApiType.Authenticated && !AppStateStatic.IsAuthenticated)
+            {
+                //return default if user is not authenticated and api requires authentication
+            }
+            else
+            {
+                if (key.NotEmpty())
+                    result = await GetHttp(type).GetJsonFromApi<T>(uri.ConfigureParameters(GetVersion()), cancellationToken);
+                else
+                    result = await GetHttp(type).GetJsonFromApi<T>(uri, cancellationToken);
+            }
+
+            if (actions != null) await actions.FinishLoading(result);
+
+            return result;
+        }
+        catch (NotificationException ex)
+        {
+            if (actions != null) await actions.ShowWarning(ex.Message);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            if (actions != null) await actions.ShowError(ex.Message);
+            throw;
         }
         finally
         {
@@ -98,22 +143,39 @@ public abstract class ApiCore(IHttpClientFactory factory, string? key, ApiType t
         }
     }
 
-    protected async Task<HashSet<T>> GetListAsync<T>(string uri, CancellationToken cancellationToken)
+    protected async Task<HashSet<T>> GetListAsync<T>(string uri, ComponentActions<HashSet<T>>? actions, CancellationToken cancellationToken)
     {
         try
         {
+            if (actions != null) await actions.StartLoading(null);
             await AppStateStatic.ProcessingStarted.PublishAsync();
 
-            if (key.NotEmpty())
+            HashSet<T>? result = default;
+
+            if (type == ApiType.Authenticated && !AppStateStatic.IsAuthenticated)
             {
-                var result = await GetHttp(type).GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetVersion()), cancellationToken);
-                return result ?? [];
+                //return default if user is not authenticated and api requires authentication
             }
             else
             {
-                var result = await GetHttp(type).GetJsonFromApi<HashSet<T>>(uri, cancellationToken);
-                return result ?? [];
+                if (key.NotEmpty())
+                    result = await GetHttp(type).GetJsonFromApi<HashSet<T>>(uri.ConfigureParameters(GetVersion()), cancellationToken);
+                else
+                    result = await GetHttp(type).GetJsonFromApi<HashSet<T>>(uri, cancellationToken);
             }
+
+            if (actions != null) await actions.FinishLoading(result);
+            return result ?? [];
+        }
+        catch (NotificationException ex)
+        {
+            if (actions != null) await actions.ShowWarning(ex.Message);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            if (actions != null) await actions.ShowError(ex.Message);
+            throw;
         }
         finally
         {
