@@ -93,9 +93,7 @@ static void ConfigureServices(IServiceCollection collection, string baseAddress,
         .AddHttpMessageHandler<AppVersionHandler>()
         .AddPolicyHandler(request => request.Method == HttpMethod.Get ? GetRetryPolicy() : Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>());
 
-    collection.AddScoped<AuthenticationStateProvider, CompositeAuthStateProvider>();
-    collection.AddScoped<SupabaseAuthStateProvider>();
-
+    collection.AddScoped<AuthenticationStateProvider, SupabaseAuthStateProvider>();
     collection.AddScoped<CustomAuthorizationHandler>();
     collection.AddHttpClient("Authenticated", (service, options) => { options.BaseAddress = new Uri(apiOrigin); options.Timeout = TimeSpan.FromSeconds(30); })
         .AddHttpMessageHandler<CustomAuthorizationHandler>()
