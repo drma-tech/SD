@@ -13,7 +13,7 @@
 @inject MyProvidersApi MyProvidersApi
 @inject IpInfoApi IpInfoApi
 
-<HeadComponent Title="@Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription" Url=@($"/{Culture}/platforms/{Region}") Index="true"></HeadComponent>
+<HeadComponent Title="@Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription" Url=@($"/{Culture}/platforms/{Region}") Index="@Region.NotEmpty()"></HeadComponent>
 
 <PageSectionComponent IsPageHeader="true" Title="@Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription">
     <ActionsFragment>

@@ -18,7 +18,7 @@
 @inject TmdbListApi TmdbListApi
 @inject TmdbSearchKeywordApi TmdbSearchKeywordApi
 
-<HeadComponent Title="@SeoTranslations.AppIndexTitle" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}") Index="true" Shared="true"></HeadComponent>
+<HeadComponent Title="@SeoTranslations.AppIndexTitle" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}") Index="true" Shared="@Culture.NotEmpty()"></HeadComponent>
 
 <PageSectionComponent IsPageHeader="true" Image="icon/icon-71.webp" Title="@AppInfo.Title" Subtitle="@SeoTranslations.AppIndexTitle"></PageSectionComponent>
 
