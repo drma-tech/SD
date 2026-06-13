@@ -175,7 +175,11 @@
         AppStateStatic.BreakpointChanged.Subscribe(breakpoint => StateHasChanged(), cts.Token);
 
         PrincipalApi.DataChanged += principal => StateHasChanged();
-        AppStateStatic.UserStateChanged.Subscribe(async () => { await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync); StateHasChanged(); }, cts.Token);
+        AppStateStatic.UserStateChanged.Subscribe(async () =>
+        {
+            await _taskHelper.RunSingleAsync("LoadAuthDataAsync", AppStateStatic.IsAuthenticated, LoadAuthDataAsync, cts.Token);
+            await InvokeAsync(StateHasChanged);
+        }, cts.Token);
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
 
         //avoid - Object reference not set to an instance of an object.
@@ -215,17 +219,17 @@
                 }
             }
 
-            await _taskHelper.RunSingleAsync("LoadAuthDataAsync", LoadAuthDataAsync);
+            await _taskHelper.RunSingleAsync("LoadAuthDataAsync", AppStateStatic.IsAuthenticated, LoadAuthDataAsync, cts.Token);
         }
 
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    protected async Task LoadAuthDataAsync()
+    protected async Task LoadAuthDataAsync(CancellationToken token)
     {
         try
         {
-            Watching = await WatchingApi.Get(null, cts.Token);
+            Watching = await WatchingApi.Get(null, token);
         }
         catch (Exception ex)
         {

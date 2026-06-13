@@ -240,9 +240,9 @@
         Provider = Providers[0]; //todo: when implemented, select native provider by default
     }
 
-    protected override async Task LoadAuthDataAsync()
+    protected override async Task LoadAuthDataAsync(CancellationToken token)
     {
-        Client = await PrincipalApi.Get(true, cts.Token);
+        Client = await PrincipalApi.Get(true, token);
 
         var sub = Client?.GetActiveSubscription();
 

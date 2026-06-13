@@ -187,11 +187,11 @@
         await Actions.FinishLoading.Invoke(Items);
     }
 
-    protected override async Task LoadAuthDataAsync()
+    protected override async Task LoadAuthDataAsync(CancellationToken token)
     {
-        Watched = await WatchedApi.Get(null, cts.Token);
-        Watching = await WatchingApi.Get(null, cts.Token);
-        Wish = await WishApi.Get(null, cts.Token);
+        Watched = await WatchedApi.Get(null, token);
+        Watching = await WatchingApi.Get(null, token);
+        Wish = await WishApi.Get(null, token);
     }
 
     private async Task KeyPress(KeyboardEventArgs args)

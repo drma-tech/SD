@@ -69,9 +69,9 @@
         Region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
     }
 
-    protected override async Task LoadAuthDataAsync()
+    protected override async Task LoadAuthDataAsync(CancellationToken token)
     {
-        MyProviders = await MyProvidersApi.Get(Actions, cts.Token);
+        MyProviders = await MyProvidersApi.Get(Actions, token);
 
         foreach (var item in MyProviders?.Items ?? [])
         {
@@ -99,7 +99,7 @@
             }
 
             await ShowInfo(Translations.RegionsApplied);
-            await MyProvidersApi.Update(MyProviders, AppStateStatic.ActiveProduct, false, cts.Token);
+            await MyProvidersApi.Update(MyProviders, AppStateStatic.ActiveProduct, false, token);
 
             StateHasChanged();
         }

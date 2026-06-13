@@ -112,13 +112,13 @@ else
         Platform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
     }
 
-    protected override async Task LoadAuthDataAsync()
+    protected override async Task LoadAuthDataAsync(CancellationToken token)
     {
-        MyProviders = await MyProvidersApi.Get(null, cts.Token);
+        MyProviders = await MyProvidersApi.Get(null, token);
 
-        Watched = await WatchedApi.Get(null, cts.Token);
-        Watching = await WatchingApi.Get(null, cts.Token);
-        Wish = await WishApi.Get(null, cts.Token);
+        Watched = await WatchedApi.Get(null, token);
+        Watching = await WatchingApi.Get(null, token);
+        Wish = await WishApi.Get(null, token);
     }
 
     private static Dictionary<string, string> GetExtraParameters(string? providerId, string sortBy)

@@ -188,9 +188,9 @@
         AllProviders = await AllProvidersApi.GetAll(Actions, cts.Token);
     }
 
-    protected override async Task LoadAuthDataAsync()
+    protected override async Task LoadAuthDataAsync(CancellationToken token)
     {
-        MyProviders = await MyProvidersApi.Get(null, cts.Token);
+        MyProviders = await MyProvidersApi.Get(null, token);
     }
 
     private async Task Add(ProviderModel provider)

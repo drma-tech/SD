@@ -159,23 +159,23 @@
         Reviewed = await JsRuntime.Utils().GetStorage("reviewed", JavascriptContext.Default.Boolean, cts.Token);
     }
 
-    protected override async Task LoadAuthDataAsync()
+    protected override async Task LoadAuthDataAsync(CancellationToken token)
     {
         await WatchingActionsMovie.StartLoading.Invoke(null);
         await WatchingActionsTv.StartLoading.Invoke(null);
         await WishActionsMovie.StartLoading.Invoke(null);
         await WishActionsTv.StartLoading.Invoke(null);
 
-        Watched = await WatchedApi.Get(null, cts.Token);
-        Watching = await WatchingApi.Get(null, cts.Token);
-        Wish = await WishApi.Get(null, cts.Token);
+        Watched = await WatchedApi.Get(null, token);
+        Watching = await WatchingApi.Get(null, token);
+        Wish = await WishApi.Get(null, token);
 
         await WishActionsMovie.FinishLoading.Invoke(Wish);
         await WishActionsTv.FinishLoading.Invoke(Wish);
         await WatchingActionsMovie.FinishLoading.Invoke(Watching);
         await WatchingActionsTv.FinishLoading.Invoke(Watching);
 
-        MyProviders = await MyProvidersApi.Get(null, cts.Token);
+        MyProviders = await MyProvidersApi.Get(null, token);
     }
 
     // private async Task SetReviewed()

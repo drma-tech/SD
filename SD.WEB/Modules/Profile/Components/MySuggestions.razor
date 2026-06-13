@@ -111,9 +111,9 @@
         base.OnInitialized();
     }
 
-    protected override async Task LoadAuthDataAsync()
+    protected override async Task LoadAuthDataAsync(CancellationToken token)
     {
-        MyProviders = await MyProvidersApi.Get(null, cts.Token);
+        MyProviders = await MyProvidersApi.Get(null, token);
 
         if (MyProviders == null || MyProviders.Items.Empty())
         {
@@ -121,7 +121,7 @@
         }
         else
         {
-            mySuggestions = await MySuggestionsApi.Get(AppStateStatic.ActiveProduct, Actions, cts.Token);
+            mySuggestions = await MySuggestionsApi.Get(AppStateStatic.ActiveProduct, Actions, token);
 
             if (mySuggestions == null || mySuggestions.Items(SearchType).Empty())
             {
