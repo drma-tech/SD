@@ -39,6 +39,8 @@ public class TmdbRecommendationsApi(IHttpClientFactory factory) : ApiExternal(fa
                 });
             }
 
+            if (actions != null) await actions.FinishLoading.Invoke(currentList);
+
             return currentList;
         }
         else //if (type == MediaType.tv)
