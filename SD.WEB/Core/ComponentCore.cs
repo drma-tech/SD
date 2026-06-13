@@ -183,7 +183,7 @@ public abstract class ComponentCore<T> : BaseComponentCore<T> where T : class
             {
                 await ProcessComponentData();
                 await ProcessPopupData();
-                await _taskHelper.RunSingleAsync("LoadAuthDataAsync", AppStateStatic.IsAuthenticated, LoadAuthDataAsync, cts.Token); //start or route changes
+                await _taskHelper.RunSingleAsync("LoadAuthDataAsync", false, LoadAuthDataAsync, cts.Token); //start or route changes
 
                 StateHasChanged();
             }
