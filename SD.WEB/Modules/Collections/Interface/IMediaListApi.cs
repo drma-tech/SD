@@ -1,6 +1,4 @@
-﻿using SD.WEB.Modules.Collections.Core;
-
-namespace SD.WEB.Modules.Collections.Interface;
+﻿namespace SD.WEB.Modules.Collections.Interface;
 
 public interface IMediaListApi
 {

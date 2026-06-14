@@ -43,6 +43,24 @@ public static class ExternalApiHelper
         }
     }
 
+    public static async Task RemoveTmdbListItem(this HttpClient http, int listId, int tmdbId, MediaType type, string? token, CancellationToken cancellationToken)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Delete, $"https://api.tmdb.org/4/list/{listId}/items");
+
+        request.Headers.Add("Accept", "application/json");
+        request.Headers.Add("Authorization", $"Bearer {token}");
+        var obj = new { items = new[] { new { media_type = type == MediaType.movie ? "movie" : "tv", media_id = tmdbId } } };
+        request.Content = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
+
+        var response = await http.SendAsync(request, cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
+            throw new UnhandledException(responseContent);
+        }
+    }
+
     public static async Task<T?> GetTrailersByYoutubeSearch<T>(this HttpClient http, CancellationToken cancellationToken) where T : class
     {
         //hard limit: 500 / Day

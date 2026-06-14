@@ -1,4 +1,4 @@
-﻿namespace SD.WEB.Modules.Collections.Core;
+﻿namespace SD.Shared.Core;
 
 public enum EnumLists
 {

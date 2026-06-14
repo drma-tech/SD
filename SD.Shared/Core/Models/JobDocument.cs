@@ -2,7 +2,7 @@
 
 public enum JobType
 {
-    //Welcome = 1,
+    ExpectedMovies = 1,
 }
 
 public abstract class JobDocument : CosmosDocument
