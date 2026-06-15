@@ -7,8 +7,8 @@ namespace SD.API.Functions;
 
 public class JobFunction(CosmosJobRepository repo, IHttpClientFactory factory)
 {
-    [Function("Welcome")]
-    public async Task Welcome([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "job/clear-expected-movies")] HttpRequestData req, CancellationToken cancellationToken)
+    [Function("ClearExpectedMovies")]
+    public async Task ClearExpectedMovies([HttpTrigger(AuthorizationLevel.Anonymous, Method.Post, Route = "job/clear-expected-movies")] HttpRequestData req, CancellationToken cancellationToken)
     {
         var cacheKey = $"{TmdbOptions.BaseUriNew}list/{(int)EnumLists.ExpectedMovieOf2026}";
         var tmdbWriteToken = ApiStartup.Configurations.TMDB?.WriteToken;

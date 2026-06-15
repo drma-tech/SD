@@ -74,6 +74,9 @@
             return this;
         }
 
+        /// <summary>
+        /// If the icon is inside a conditional (if + rendering caused by user action) + FA (JavaScript), it may cause an error in Blazor. Use a traditional icon instead.
+        /// </summary>
         public string? Font => IconHelper.GetFont(this);
     }
 
