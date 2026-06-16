@@ -276,22 +276,22 @@ namespace SD.API.Core
                                         Explore {appName}
                                     </div>
                                     <div class=""link-grid"">
-                                        <a href=""https://www.{domain}.com/platforms"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://www.{domain}.com/default/platforms"" class=""link-card"" target=""_blank"">
                                             Streaming Platforms
                                         </a>
-                                        <a href=""https://www.{domain}.com/compare"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://www.{domain}.com/default/compare"" class=""link-card"" target=""_blank"">
                                             Compare Services
                                         </a>
-                                        <a href=""https://www.{domain}.com/regions"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://www.{domain}.com/default/regions"" class=""link-card"" target=""_blank"">
                                             Free Movies to Watch
                                         </a>
-                                        <a href=""https://www.{domain}.com/best-awards-year"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://www.{domain}.com/default/best-awards-year"" class=""link-card"" target=""_blank"">
                                             Best awards of the {year}
                                         </a>
-                                        <a href=""https://www.{domain}.com/list/8544544"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://www.{domain}.com/default/list/8544544"" class=""link-card"" target=""_blank"">
                                             Most Expected Movies of {year}
                                         </a>
-                                        <a href=""https://www.{domain}.com/help"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://www.{domain}.com/default/help"" class=""link-card"" target=""_blank"">
                                             Help Center
                                         </a>
                                     </div>
