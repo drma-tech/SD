@@ -278,6 +278,8 @@ export const environment = {
         if (isBot) return false;
         if (hideBlazorIndex) return false;
 
+        if (window.isAdBlocked === false) return;
+
         //detect if adsense exists
         const els = document.querySelectorAll('.adsbygoogle');
         if (!els.length) {
@@ -330,6 +332,8 @@ export const environment = {
         if (!clarity) {
             return true;
         }
+
+        window.isAdBlocked = false;
 
         Sentry.captureMessage("ad blocked - Ads failed but no blocker detected", "error");
         return false;

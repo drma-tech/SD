@@ -397,7 +397,14 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
             {
                 var tmdbWriteToken = ApiStartup.Configurations.TMDB?.WriteToken;
                 var client = factory.CreateClient("tmdb");
-                await client.AddTmdbListItem(listId, int.Parse(tmdbId), type, tmdbWriteToken, token);
+                try
+                {
+                    await client.AddTmdbListItem(listId, int.Parse(tmdbId), type, tmdbWriteToken, token);
+                }
+                catch (Exception)
+                {
+                    //if the item is already in the list
+                }
             }
         }
     }
