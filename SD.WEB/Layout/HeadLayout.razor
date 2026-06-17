@@ -38,22 +38,24 @@
 
     @if (!AppStateStatic.IsPremiumUser)
     {
-        <MudIconButton Color="Color.Warning" Icon="@IconsFA.Solid.Icon("gem").Animation(IconAnimation.Fade).Font" Class="me-3" OnClick="@OpenSubscription" />
+        <MudIconButton Color="Color.Warning" Icon="@IconsFA.Solid.Icon("gem").Animation(IconAnimation.Fade).Font" Style="margin-right: -8px;" OnClick="@OpenSubscription" />
     }
+
+    <MudIconButton Icon="@Icons.Material.Filled.Apps" Color="Color.Inherit" Class="me-1" OnClick="@(() => { _openApps = true; })" />
 
     <AuthorizeView>
         <Authorized>
             <MudAvatar>
-                <MudImage Src=@(AppStateStatic.User?.FindFirst(c => c.Type == "avatar")?.Value ?? "images/no-user.webp") onclick="@(() => { _open = true; })" Style="cursor: pointer;"></MudImage>
+                <MudImage Src=@(AppStateStatic.User?.FindFirst(c => c.Type == "avatar")?.Value ?? "images/no-user.webp") onclick="@(() => { _openMenu = true; })" Style="cursor: pointer;"></MudImage>
             </MudAvatar>
         </Authorized>
         <NotAuthorized>
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { _open = true; })" />
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { _openMenu = true; })" />
         </NotAuthorized>
     </AuthorizeView>
 </MudAppBar>
 
-<MudDrawer @bind-Open="@_open" Anchor="Anchor.Right" Elevation="1" Variant="@DrawerVariant.Temporary" OverlayAutoClose="true" Width="250px">
+<MudDrawer @bind-Open="@_openMenu" Anchor="Anchor.Right" Elevation="1" Variant="@DrawerVariant.Temporary" OverlayAutoClose="true" Width="275px">
     <MudDrawerHeader>
         <MudText Typo="Typo.h6" Color="Color.Primary">@AppInfo.Title</MudText>
     </MudDrawerHeader>
@@ -128,11 +130,36 @@
     </MudText>
 </MudDrawer>
 
+<MudDrawer @bind-Open="@_openApps" Anchor="Anchor.Right" Elevation="1" Variant="@DrawerVariant.Temporary" OverlayAutoClose="true" Width="275px">
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6" Color="Color.Primary"> @GlobalTranslations.MorefromDRMATech</MudText>
+    </MudDrawerHeader>
+    @foreach (var product in AppInfo.Products)
+    {
+        <MudDivider Style="flex-grow: unset;"></MudDivider>
+        <div style="padding: 8px 16px 0px 16px; display: flex; align-items: center;">
+            <MudImage Src=@product.Logo Style="width: 40px;" Class="me-2"></MudImage>
+            <div>
+                <MudText Style="font-size: 14px;" Color="Color.Secondary">
+                    @product.Title
+                </MudText>
+                <MudText Style="font-size: 14px;" Color="Color.Inherit">
+                    @product.SubTitle
+                </MudText>
+            </div>
+        </div>
+        <MudLink style="padding: 0px 16px 8px 16px;" Href="@product.Url" Target="_blank" Color="Color.Tertiary">
+            @product.Url
+        </MudLink>
+    }
+</MudDrawer>
+
 @code {
     [Parameter][SupplyParameterFromQuery(Name = "stripe_session_id")] public string? stripe_session_id { get; set; }
     private string Culture => Navigation.GetCulture();
 
-    private bool _open = false;
+    private bool _openMenu = false;
+    private bool _openApps = false;
 
     private int _processingCount = 0;
     private bool _processing => _processingCount > 0;
@@ -217,25 +244,25 @@
 
     private async Task Login()
     {
-        _open = false;
+        _openMenu = false;
         Navigation.NavigateTo($"/{Culture}/auth/login?returnUrl={Uri.EscapeDataString(Navigation.Uri.Split('#')[0])}");
     }
 
     private async Task Logout()
     {
-        _open = false;
+        _openMenu = false;
         await JsRuntime.Supabase().SignOutAsync(cts.Token);
     }
 
     private async Task OpenConfigurations()
     {
-        _open = false;
+        _openMenu = false;
         await DialogService.SettingsPopup();
     }
 
     private async Task MyAccount()
     {
-        _open = false;
+        _openMenu = false;
         await DialogService.AccountPopup();
     }
 
@@ -258,7 +285,7 @@
 
     private async Task OpenSubscription()
     {
-        _open = false;
+        _openMenu = false;
         await DialogService.SubscriptionPopup();
     }
 
