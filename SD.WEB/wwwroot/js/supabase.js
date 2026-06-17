@@ -203,6 +203,7 @@ export const authentication = {
                     userId: user.id,
                     name: user.user_metadata.full_name || null,
                     email: user.email || null,
+                    avatar: user.user_metadata.avatar_url
                 };
             }
         } catch (error) {

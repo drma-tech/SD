@@ -11,22 +11,22 @@
             <MudTabPanel Text="Auth">
                 <MudGrid Spacing="@Css.SpaceSmall">
                     <MudItem xs="12">
-                        <MudTextField T="@string" Label="@Translations.AuthProviders" Text="@(string.Join(", ", Principal?.AuthProviders ?? []))" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
+                        <MudTextField T="@string" Label="@Translations.AuthProviders" Text="@(string.Join(", ", AppStateStatic.Principal?.AuthProviders ?? []))" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField T="@string" Label="@Translations.Identification" Text="@Principal?.UserId" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
+                        <MudTextField T="@string" Label="@Translations.Identification" Text="@AppStateStatic.Principal?.UserId" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField T="@string" Label="Display Name" Text="@Principal?.DisplayName" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
+                        <MudTextField T="@string" Label="Display Name" Text="@AppStateStatic.Principal?.DisplayName" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField T="@string" Label="@Translations.Email" Text="@Principal?.Email" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
+                        <MudTextField T="@string" Label="@Translations.Email" Text="@AppStateStatic.Principal?.Email" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                 </MudGrid>
             </MudTabPanel>
             <MudTabPanel Text="Events">
                 <MudGrid Spacing="@Css.SpaceSmall">
-                    @foreach (var item in Principal?.Events ?? [])
+                    @foreach (var item in AppStateStatic.Principal?.Events ?? [])
                     {
                         <MudItem xs="12" Style="text-align: justify;">
                             <MudPaper Outlined="true" Class="pa-2">
@@ -53,13 +53,6 @@
 
 @code {
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
-
-    private AuthPrincipal? Principal { get; set; }
-
-    protected override async Task ProcessPopupData()
-    {
-        Principal = await PrincipalApi.Get(true, cts.Token);
-    }
 
     private async Task Logout()
     {

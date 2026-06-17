@@ -36,7 +36,7 @@
             <MudDivider Class="@Css.Build().Medium("my")"></MudDivider>
             <MudToolBar Gutters="false" Style="height: auto;">
                 <MudBadge Color="Color.Warning" Visible="@(lastUsedProvider == "email")" Content="@(Button.Recent)" Overlap="true" Style="width: 100%;" Class="me-5">
-                    <MudTextField @bind-Value="@email" Label="@Resources.Translations.Email" Placeholder="@Resources.Translations.EnterEmail" Disabled="@(_processingInProgress || emailProbablySent)"
+                    <MudTextField @bind-Value="@email" Label="@Resources.Translations.ContinueWith.Format(Resources.Translations.Email)" Placeholder="@Resources.Translations.EnterEmail" Disabled="@(_processingInProgress || emailProbablySent)"
                                   Immediate="true" InputType="InputType.Email" HelperText="@Resources.Translations.MicrosoftEmails" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
                 </MudBadge>
                 <MudIconButton Icon="@Icons.Material.Filled.Send" Color="Color.Primary" Variant="Variant.Filled" OnClick="() => LoginWithEmail(email)"

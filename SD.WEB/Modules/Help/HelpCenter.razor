@@ -91,12 +91,12 @@
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DownloadData" Disabled="Principal == null">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DownloadData" Disabled="AppStateStatic.Principal == null">
                     Download Data
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DeleteAccount" Disabled="Principal == null">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="@DeleteAccount" Disabled="AppStateStatic.Principal == null">
                     @SD.WEB.Modules.Profile.Resources.Translations.DeleteAccount
                 </MudButton>
             </MudItem>
@@ -187,22 +187,15 @@
 </PageSectionComponent>
 
 @code {
-    private AuthPrincipal? Principal { get; set; }
-
-    protected override async Task ProcessPopupData()
-    {
-        Principal = await PrincipalApi.Get(true, cts.Token);
-    }
-
     private async Task DownloadData()
     {
         try
         {
-            if (Principal == null) return;
+            if (AppStateStatic.Principal == null) return;
 
-            var data = new SuperData() { Principal = Principal };
+            var data = new SuperData() { Principal = AppStateStatic.Principal };
 
-            var sub = Principal.GetActiveSubscription();
+            var sub = AppStateStatic.Principal.GetActiveSubscription();
 
             data.Login = await LoginApi.Get(cts.Token);
             data.Providers = await MyProvidersApi.Get(null, cts.Token);
@@ -212,7 +205,7 @@
             data.WatchingList = await WatchingListApi.Get(null, cts.Token);
             data.WishList = await WishListApi.Get(null, cts.Token);
 
-            var fileName = $"{AppInfo.Title.ToSlug()}_{Principal.AuthProviders[0]}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
+            var fileName = $"{AppInfo.Title.ToSlug()}_{AppStateStatic.Principal.AuthProviders[0]}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
             await JsRuntime.Utils().DownloadFile(fileName, "application/json", data.ConvertFromObjectToBytes(), cts.Token);
         }
         catch (Exception ex)
@@ -225,9 +218,9 @@
     {
         try
         {
-            if (Principal == null) return;
+            if (AppStateStatic.Principal == null) return;
 
-            if (Principal.GetActiveSubscription() != null)
+            if (AppStateStatic.Principal.GetActiveSubscription() != null)
             {
                 await DialogService.ShowMessageBoxAsync("You still have an active subscription", "Please cancel your subscription before deleting your profile.");
                 return;
