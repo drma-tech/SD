@@ -149,7 +149,7 @@
             </div>
         </div>
         <MudLink style="padding: 0px 16px 8px 16px;" Href="@product.Url" Target="_blank" Color="Color.Tertiary">
-            @product.Url
+            @(new Uri(product.Url).Host)
         </MudLink>
     }
 </MudDrawer>
