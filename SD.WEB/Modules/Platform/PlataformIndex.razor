@@ -1,5 +1,6 @@
 ﻿@page "/{culture}/platforms"
 @page "/{culture}/platforms/{region}"
+@page "/{culture}/free/platforms/{region}"
 
 @using Microsoft.AspNetCore.Components.Authorization
 @using SD.WEB.Modules.Platform.Core
@@ -19,11 +20,13 @@
 }
 else
 {
-    <HeadComponent Title="@Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription" Url=@($"/{Culture}/platforms/{Region}") Index="@Region.NotEmpty()"></HeadComponent>
+    <HeadComponent Title="@(FreePlatforms ? Translations.FreeTitleProviders.Format(RegionEnum?.GetName() ?? "invalid country") : Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country"))"
+                   Description="@SeoTranslations.PlatformsDescription" Url=@($"/{Culture}/platforms/{Region}") Index="@Region.NotEmpty()"></HeadComponent>
 
-    <PageSectionComponent IsPageHeader="true" Title="@Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country")" Description="@SeoTranslations.PlatformsDescription">
+    <PageSectionComponent IsPageHeader="true" Title="@(FreePlatforms ? Translations.FreeTitleProviders.Format(RegionEnum?.GetName() ?? "invalid country") : Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country"))"
+                          Description="@SeoTranslations.PlatformsDescription">
         <ActionsFragment>
-            <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="@Resources.Translations.DeliveryModel" Dense="true" Class="me-2">
+            <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="@Resources.Translations.DeliveryModel" Dense="true" Class="me-2" Disabled="FreePlatforms">
                 @foreach (var item in DeliveryModels)
                 {
                     <MudSelectItem T="DeliveryModel?" Value="@item.Value">@item.Name</MudSelectItem>
@@ -165,11 +168,13 @@ else
     public Region? RegionEnum { get; set; }
     private bool ShowAll { get; set; } = false;
 
+    public bool FreePlatforms => Navigation.Uri.Contains("/free/");
+
     public List<ProviderModel> GetFilteredProviders(bool all)
     {
         return AllProviders?.Items
                    .Where(p => RegionEnum.HasValue && p.regions.Contains(RegionEnum.Value))
-                   .Where(p => p.models.Empty() || p.models.Any(a => DeliveryModel == null || a == DeliveryModel))
+                   .Where(p => FreePlatforms ? p.models.Any(a => a == SD.Shared.Enums.DeliveryModel.FREE || a == SD.Shared.Enums.DeliveryModel.AVOD) : p.models.Empty() || p.models.Any(a => DeliveryModel == null || a == DeliveryModel))
                    .Where(p => p.types.Empty() || p.types.Any(a => MediaType == null || a == MediaType))
                    .Where(p => name == null || p.name!.Contains(name, StringComparison.InvariantCultureIgnoreCase))
                    .OrderBy(o => o.priority)

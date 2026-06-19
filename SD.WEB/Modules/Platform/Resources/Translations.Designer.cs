@@ -79,6 +79,15 @@ namespace SD.WEB.Modules.Platform.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Free Streaming Platforms ({0}).
+        /// </summary>
+        public static string FreeTitleProviders {
+            get {
+                return ResourceManager.GetString("FreeTitleProviders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Media Type.
         /// </summary>
         public static string MediaType {
