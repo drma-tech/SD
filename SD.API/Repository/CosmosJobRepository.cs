@@ -75,11 +75,11 @@ public class CosmosJobRepository
         }
     }
 
-    public async Task<T> CreateItemAsync<T>(T item, CancellationToken cancellationToken) where T : JobDocument, new()
+    public async Task<T> UpsertItemAsync<T>(T item, CancellationToken cancellationToken) where T : JobDocument, new()
     {
         try
         {
-            var response = await Container.CreateItemAsync(item, new PartitionKey((int)item.Type), null, cancellationToken);
+            var response = await Container.UpsertItemAsync(item, new PartitionKey((int)item.Type), null, cancellationToken);
 
             if (response.RequestCharge > 20)
                 _logger.LogWarning("CreateItemAsync - ID {Id}, RequestCharge {Charges}", item.Id, response.RequestCharge);
