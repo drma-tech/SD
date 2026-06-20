@@ -65,6 +65,16 @@ namespace SD.API.Core.Scraping
             }
             catch (Exception ex)
             {
+                if (ex.Message == "Not Found")
+                {
+                    return;
+                }
+
+                if (ex.Message == "Bad Gateway")
+                {
+                    return;
+                }
+
                 req.LogError(ex);
 
                 if (ex.Message.Contains("Too Many Requests"))
@@ -124,6 +134,11 @@ namespace SD.API.Core.Scraping
             catch (Exception ex)
             {
                 if (ex.Message == "Not Found")
+                {
+                    return;
+                }
+
+                if (ex.Message == "Bad Gateway")
                 {
                     return;
                 }
@@ -188,9 +203,19 @@ namespace SD.API.Core.Scraping
             }
             catch (Exception ex)
             {
+                if (ex.Message == "Not Found")
+                {
+                    return;
+                }
+
+                if (ex.Message == "Bad Gateway")
+                {
+                    return;
+                }
+
                 req.LogError(ex);
 
-                if (ex.Message.Contains("Too Many Requests"))
+                if (ex.Message == "Too Many Requests")
                 {
                     throw new ApiRateLimitException(ex.Message);
                 }

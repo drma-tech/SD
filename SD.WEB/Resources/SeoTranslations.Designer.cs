@@ -88,15 +88,6 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Basic.
-        /// </summary>
-        public static string Basic {
-            get {
-                return ResourceManager.GetString("Basic", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Compare.
         /// </summary>
         public static string Compare {
@@ -237,6 +228,15 @@ namespace SD.WEB.Resources {
         public static string SortBy {
             get {
                 return ResourceManager.GetString("SortBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
         

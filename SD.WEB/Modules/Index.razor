@@ -26,7 +26,7 @@
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" TabPanelsClass="@Css.Build().Small("pt")" @bind-ActivePanelIndex="@AppStateStatic.Index">
             <ChildContent>
-                <MudTabPanel Text="@SeoTranslations.Basic">
+                <MudTabPanel Text="@SeoTranslations.Title">
                     <MudTextField T="string" Label="@SeoTranslations.EnterTitle" Placeholder="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio" @bind-Text="@AppStateStatic.Query" Immediate="true" OnKeyDown="@KeyPress"
                                   AdornmentIcon="@Icons.Material.Filled.Search" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
                                   OnAdornmentClick="@(() =>{ if (AppStateStatic.Query.NotEmpty()) Navigation.NavigateTo($"/{Culture}/search"); })" Clearable="true"
