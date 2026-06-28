@@ -7,7 +7,6 @@
 @inherits ComponentCore<CollectionPopup>
 
 @inject TmdbApi TmdbApi
-@inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
@@ -20,7 +19,7 @@
                     var logo = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path;
 
                     <PosterComponent Poster="@logo" Title="@item.title" MediaType="Type" TmdbId="@item.id.ToString()" CollectionId="@Collection?.id.ToString()"
-                                     Date="item.release_date.GetDate()" ShowWished="Type == MediaType.movie" WishList="Wish" WatchedList="Watched" WatchingList="Watching">
+                                     Date="item.release_date.GetDate()" ShowWished="Type == MediaType.movie" WishList="Wish" WatchingList="Watching">
                     </PosterComponent>
                 }
             </div>
@@ -30,7 +29,7 @@
         @if (AppStateStatic.IsAuthenticated)
         {
             <MudButton Color="Color.Primary" OnClick="@IsWatched">
-                @Translations.ButtonWatched
+                @Button.Update
             </MudButton>
             <MudButton Color="Color.Error" OnClick="@RemoveCollection">
                 @GlobalTranslations.RemoveCollection
@@ -45,10 +44,8 @@
 @code {
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
-    [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
 
@@ -63,12 +60,6 @@
         if (string.IsNullOrEmpty(CollectionId)) throw new ArgumentNullException(nameof(CollectionId));
         if (Type == null) throw new ArgumentNullException(nameof(Type));
 
-        WatchedListApi.DataChanged += model =>
-        {
-            Watched = model;
-            WatchedChanged.InvokeAsync(model);
-            StateHasChanged();
-        };
         WatchingListApi.DataChanged += model =>
         {
             Watching = model;
@@ -144,13 +135,6 @@
         if (collection == null) throw new ArgumentNullException(nameof(collection));
         if (tmdbId.Empty()) throw new ArgumentNullException(nameof(tmdbId));
         if (items.Empty()) throw new ArgumentNullException(nameof(items));
-
-        //watched list
-
-        if (type == MediaType.movie)
-        {
-            Watched = await WatchedListApi.Add(type, Watched, string.Join(',', items), AppStateStatic.ActiveProduct, cts.Token);
-        }
 
         //watching list
 

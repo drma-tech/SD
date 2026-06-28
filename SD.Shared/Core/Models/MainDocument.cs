@@ -5,10 +5,10 @@ public enum DocumentType
     Principal = 1,
     MyProvider = 3,
     WishList = 4,
-    WatchedList = 5,
+    //WatchedList = 5,
     WatchingList = 9,
     Login = 10,
-    MySuggestions = 11
+    //MySuggestions = 11
 }
 
 public abstract class MainDocument : CosmosDocument

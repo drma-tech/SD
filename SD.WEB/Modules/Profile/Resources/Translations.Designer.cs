@@ -97,6 +97,24 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Following.
+        /// </summary>
+        public static string Following {
+            get {
+                return ResourceManager.GetString("Following", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Follow titles so they appear here (if it is a series or a movie that is part of a sequence)..
+        /// </summary>
+        public static string FollowTitle {
+            get {
+                return ResourceManager.GetString("FollowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Identification.
         /// </summary>
         public static string Identification {
@@ -115,20 +133,11 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mark titles as watched to appear here (if it is a series or a film that belongs to a sequence).
+        ///   Looks up a localized string similar to Following - Movies.
         /// </summary>
-        public static string MarkTitlesWatched {
+        public static string MyMovieFollowing {
             get {
-                return ResourceManager.GetString("MarkTitlesWatched", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Watching - Movies.
-        /// </summary>
-        public static string MyMovieWatching {
-            get {
-                return ResourceManager.GetString("MyMovieWatching", resourceCulture);
+                return ResourceManager.GetString("MyMovieFollowing", resourceCulture);
             }
         }
         
@@ -151,47 +160,20 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Watching - Shows.
+        ///   Looks up a localized string similar to Following - Series.
         /// </summary>
-        public static string MyShowWatching {
+        public static string MySeriesFollowing {
             get {
-                return ResourceManager.GetString("MyShowWatching", resourceCulture);
+                return ResourceManager.GetString("MySeriesFollowing", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wishlist - Shows.
+        ///   Looks up a localized string similar to Wishlist - Series.
         /// </summary>
-        public static string MyShowWishlist {
+        public static string MySeriesWishlist {
             get {
-                return ResourceManager.GetString("MyShowWishlist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to My Suggestions.
-        /// </summary>
-        public static string MySuggestions {
-            get {
-                return ResourceManager.GetString("MySuggestions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Our suggestions are based on the providers you&apos;ve favorited.
-        /// </summary>
-        public static string OurSuggestions1 {
-            get {
-                return ResourceManager.GetString("OurSuggestions1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Our suggestions are based on your favorite providers and your genre preferences (excluding titles that are already on your personal lists)..
-        /// </summary>
-        public static string OurSuggestions2 {
-            get {
-                return ResourceManager.GetString("OurSuggestions2", resourceCulture);
+                return ResourceManager.GetString("MySeriesWishlist", resourceCulture);
             }
         }
         
@@ -210,33 +192,6 @@ namespace SD.WEB.Modules.Profile.Resources {
         public static string RegionsApplied {
             get {
                 return ResourceManager.GetString("RegionsApplied", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Your preferences will take effect in the next update of this list.
-        /// </summary>
-        public static string UpdateMySuggestions {
-            get {
-                return ResourceManager.GetString("UpdateMySuggestions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Watched.
-        /// </summary>
-        public static string Watched {
-            get {
-                return ResourceManager.GetString("Watched", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Watching.
-        /// </summary>
-        public static string Watching {
-            get {
-                return ResourceManager.GetString("Watching", resourceCulture);
             }
         }
         

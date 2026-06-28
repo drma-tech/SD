@@ -12,7 +12,6 @@
 @using SD.WEB.Modules.Collections.Resources
 @inherits PageCore<Index>
 
-@inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 @inject TmdbListApi TmdbListApi
@@ -102,15 +101,15 @@
     </BodyFragment>
 </PageSectionComponent>
 
-<PopularIndexComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture"></PopularIndexComponent>
+<PopularIndexComponent WatchingList="Watching" WishList="Wish" Culture="@Culture"></PopularIndexComponent>
 
-<FreeToWatchComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture"></FreeToWatchComponent>
+<FreeToWatchComponent WatchingList="Watching" WishList="Wish" Culture="@Culture"></FreeToWatchComponent>
 
 <Advertising Slot="@AdSlot.Middle"></Advertising>
 
-<EditorsChoiceComponent Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"></EditorsChoiceComponent>
+<EditorsChoiceComponent Watching="Watching" Wish="Wish" Culture="@Culture"></EditorsChoiceComponent>
 
-<AwardsOfTheYearComponent Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"></AwardsOfTheYearComponent>
+<AwardsOfTheYearComponent Watching="Watching" Wish="Wish" Culture="@Culture"></AwardsOfTheYearComponent>
 
 <Advertising Slot="@AdSlot.Middle"></Advertising>
 
@@ -124,7 +123,7 @@
             </Header>
             <ChildContent>
                 <MudTabPanel Text="All">
-                    <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" TitleHead="@Translations.ExpectedMovieOfYear.Format(DateTime.Now.Year)" Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture" />
+                    <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.ExpectedMovieOf2026" TitleHead="@Translations.ExpectedMovieOfYear.Format(DateTime.Now.Year)" Watching="Watching" Wish="Wish" Culture="@Culture" />
                 </MudTabPanel>
             </ChildContent>
         </MudTabs>
@@ -141,7 +140,6 @@
 </MudGrid>
 
 @code {
-    private WatchedList? Watched { get; set; }
     private WatchingList? Watching { get; set; }
     private WishList? Wish { get; set; }
 
@@ -149,14 +147,12 @@
     {
         await base.OnInitializedAsync();
 
-        WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
     }
 
     protected override async Task LoadAuthDataAsync(CancellationToken token)
     {
-        Watched = await WatchedApi.Get(null, token);
         Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);
     }

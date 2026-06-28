@@ -121,11 +121,9 @@ static void ConfigureApi(IServiceCollection collection)
     collection.AddScoped<PrincipalImportApi>();
     collection.AddScoped<LoginApi>();
     collection.AddScoped<PublicLoginApi>();
-    collection.AddScoped<WatchedListApi>();
     collection.AddScoped<WishListApi>();
     collection.AddScoped<WatchingListApi>();
     collection.AddScoped<MyProvidersApi>();
-    collection.AddScoped<MySuggestionsApi>();
     collection.AddScoped<AllProvidersApi>();
 
     collection.AddScoped<ExternalIdApi>();

@@ -20,14 +20,14 @@
                 <MudTabPanel Text="@MediaType.movie.GetName()">
                     @if (_loaded[0])
                     {
-                        <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
+                        <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryMovies" Watching="Watching" Wish="Wish" Culture="@Culture">
                         </MediaListComponent>
                     }
                 </MudTabPanel>
                 <MudTabPanel Text="@MediaType.tv.GetName()">
                     @if (_loaded[1])
                     {
-                        <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
+                        <MediaListComponent MediaListApi="TmdbListApi" List="@EnumLists.CertifiedStreamingDiscoveryShows" Watching="Watching" Wish="Wish" Culture="@Culture">
                         </MediaListComponent>
                     }
                 </MudTabPanel>
@@ -37,7 +37,6 @@
 </PageSectionComponent>
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }

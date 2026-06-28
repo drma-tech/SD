@@ -358,15 +358,6 @@ namespace SD.WEB.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Suggestion Filters.
-        /// </summary>
-        public static string SuggestionFilters {
-            get {
-                return ResourceManager.GetString("SuggestionFilters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete your account? This action cannot be undone..
         /// </summary>
         public static string SureDeleteAccount {

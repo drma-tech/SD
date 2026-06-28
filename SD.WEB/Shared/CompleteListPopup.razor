@@ -1,11 +1,9 @@
-﻿@using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Collections.Interface
+﻿@using SD.WEB.Modules.Collections.Interface
 @using SD.WEB.Modules.Profile.Core
 @using Button = SD.WEB.Resources.Button
 @using SD.WEB.Shared.Core
 @inherits ComponentCore<CompleteListPopup>
 
-@inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
@@ -14,7 +12,7 @@
         <MediaListFull Items="Items" ItemsChanged="@((HashSet<MediaDetail> list) => { Items = list; ItemsChanged.InvokeAsync(list); StateHasChanged(); })"
                        IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" Actions="Actions"
                        StringParameters="StringParameters" List="List" TitleHead="@TitleHead" ShowHead="false" FullPage="true" Popup="true"
-                       Watched="Watched" Watching="Watching" Wish="Wish" CommentsIsImage="CommentsIsImage" Culture="@Culture">
+                       Watching="Watching" Wish="Wish" CommentsIsImage="CommentsIsImage" Culture="@Culture">
         </MediaListFull>
     </DialogContent>
     <DialogActions>
@@ -28,11 +26,9 @@
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
     [Parameter][EditorRequired] public string? TitleHead { get; set; }
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }
-    [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
 
@@ -51,12 +47,6 @@
     {
         if (List == null && string.IsNullOrEmpty(TitleHead)) throw new ArgumentNullException(nameof(TitleHead));
 
-        WatchedListApi.DataChanged += model =>
-        {
-            Watched = model;
-            WatchedChanged.InvokeAsync(model);
-            StateHasChanged();
-        };
         WatchingListApi.DataChanged += model =>
         {
             Watching = model;

@@ -14,14 +14,14 @@
 
 @if (TypeEnum == MediaType.movie)
 {
-    <MediaListFull MediaListApi="TmdbDiscoveryApi" Watched="WatchedList" Watching="WatchingList" Wish="WishList" OnlyYear="true" TypeSelected="MediaType.movie"
-                   FullPage="true" ShowHead="false" StringParameters="_extraParameters" Culture="@Culture" MinQtdItems="20">
+    <MediaListFull MediaListApi="TmdbDiscoveryApi" Watching="WatchingList" Wish="WishList" OnlyYear="true" TypeSelected="MediaType.movie"
+                   FullPage="true" ShowHead="false" StringParameters="_extraParameters" Culture="@Culture" MinQtdItems="30">
     </MediaListFull>
 }
 else
 {
-    <MediaListFull MediaListApi="TmdbDiscoveryApi" Watched="WatchedList" Watching="WatchingList" Wish="WishList" OnlyYear="true" TypeSelected="MediaType.tv"
-                   FullPage="true" ShowHead="false" StringParameters="_extraParameters" Culture="@Culture" MinQtdItems="20">
+    <MediaListFull MediaListApi="TmdbDiscoveryApi" Watching="WatchingList" Wish="WishList" OnlyYear="true" TypeSelected="MediaType.tv"
+                   FullPage="true" ShowHead="false" StringParameters="_extraParameters" Culture="@Culture" MinQtdItems="30">
     </MediaListFull>
 }
 
@@ -32,7 +32,6 @@ else
     public MediaType TypeEnum => Type.ParseToEnum(MediaType.movie);
     public Region RegionEnum => Region.ParseToEnum(SD.Shared.Enums.Region.US);
 
-    public WatchedList? WatchedList { get; set; }
     public WatchingList? WatchingList { get; set; }
     public WishList? WishList { get; set; }
 

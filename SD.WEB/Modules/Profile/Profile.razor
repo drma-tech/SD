@@ -9,7 +9,6 @@
 @inherits PageCore<Profile>
 
 @inject MyProvidersApi MyProvidersApi
-@inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 @inject PaymentConfigurationApi ConfigurationApi
@@ -17,7 +16,7 @@
 <HeadComponent Title="@SeoTranslations.ProfileTitle" Url=@($"/{Culture}/profile") Index="false"></HeadComponent>
 
 <MudGrid Spacing="@Css.SpaceSmall" Class="@Css.Build().Large("mb")">
-    <MudItem xs="6" md="3">
+    <MudItem xs="6" md="4">
         <MudPaper Outlined="true" Class="pa-1">
             <div class="d-flex" style="align-self: center;">
                 <MudIcon Icon="@Icons.Material.Filled.Movie" Color="Color.Primary" Class="me-2"></MudIcon>
@@ -30,7 +29,7 @@
             </MudChip>
         </MudPaper>
     </MudItem>
-    <MudItem xs="6" md="3">
+    <MudItem xs="6" md="4">
         <MudPaper Outlined="true" Class="pa-1">
             <div class="d-flex" style="align-self: center;">
                 <MudIcon Icon="@Icons.Material.Filled.Bookmark" Color="Color.Primary" Class="me-2"></MudIcon>
@@ -46,12 +45,12 @@
             </MudChip>
         </MudPaper>
     </MudItem>
-    <MudItem xs="6" md="3">
+    <MudItem xs="6" md="4">
         <MudPaper Outlined="true" Class="pa-1">
             <div class="d-flex" style="align-self: center;">
                 <MudIcon Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary" Class="me-2"></MudIcon>
                 <MudText Typo="Typo.subtitle1" Color="Color.Primary">
-                    @Translations.Watching
+                    @Translations.Following
                 </MudText>
             </div>
             <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
@@ -62,35 +61,17 @@
             </MudChip>
         </MudPaper>
     </MudItem>
-    <MudItem xs="6" md="3">
-        <MudPaper Outlined="true" Class="pa-1">
-            <div class="d-flex" style="align-self: center;">
-                <MudIcon Icon="@Icons.Material.Filled.AccessTime" Color="Color.Primary" Class="me-2"></MudIcon>
-                <MudText Typo="Typo.subtitle1" Color="Color.Primary">
-                    @Translations.Watched
-                </MudText>
-            </div>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
-                @(Watched?.Movies.Count ?? 0) @PopularType.MovieName
-            </MudChip>
-            <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
-                @(Watched?.Shows.Count ?? 0) @PopularType.ShowName
-            </MudChip>
-        </MudPaper>
-    </MudItem>
 </MudGrid>
 
-<MyProviderComponent WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture"></MyProviderComponent>
-
-<MySuggestions Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"></MySuggestions>
+<MyProviderComponent WatchingList="Watching" WishList="Wish" Culture="@Culture"></MyProviderComponent>
 
 <MudGrid Spacing="@Css.SpaceSmall">
     <MudItem xs="12" md="6">
-        <WishlistComponent ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish" ActionsMovie="WishActionsMovie" ActionsTv="WishActionsTv" Culture="@Culture">
+        <WishlistComponent ShowHeader="true" FullScreen="false" Watching="Watching" Wish="Wish" ActionsMovie="WishActionsMovie" ActionsTv="WishActionsTv" Culture="@Culture">
         </WishlistComponent>
     </MudItem>
     <MudItem xs="12" md="6">
-        <WatchingComponent ShowHeader="true" FullScreen="false" Watched="Watched" Watching="Watching" Wish="Wish" ActionsMovie="WatchingActionsMovie" ActionsTv="WatchingActionsTv" Culture="@Culture">
+        <WatchingComponent ShowHeader="true" FullScreen="false" Watching="Watching" Wish="Wish" ActionsMovie="WatchingActionsMovie" ActionsTv="WatchingActionsTv" Culture="@Culture">
         </WatchingComponent>
     </MudItem>
 </MudGrid>
@@ -103,7 +84,6 @@
     public ComponentActions<WatchingList?> WatchingActionsTv { get; set; } = new(list => list == null || list.Shows.Empty());
 
     private MyProviders? MyProviders { get; set; }
-    public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
@@ -113,11 +93,6 @@
     {
         await base.OnInitializedAsync();
 
-        WatchedApi.DataChanged += model =>
-        {
-            Watched = model;
-            StateHasChanged();
-        };
         WatchingApi.DataChanged += model =>
         {
             WatchingActionsMovie.StartLoading.Invoke(null);
@@ -166,7 +141,6 @@
         await WishActionsMovie.StartLoading.Invoke(null);
         await WishActionsTv.StartLoading.Invoke(null);
 
-        Watched = await WatchedApi.Get(null, token);
         Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);
 

@@ -6,7 +6,6 @@
 
 @inject TmdbSearchMultiApi TmdbSearch
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
-@inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 @inject TmdbSearchKeywordApi TmdbSearchKeywordApi
@@ -99,19 +98,19 @@
     @if (AppStateStatic.Index == 0)
     {
         <MediaListFull MediaListApi="TmdbSearch" StringParameters="@ParametersQuery" Items="Items" ShowHead="false" FullPage="true"
-                       Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
+                       Watching="Watching" Wish="Wish" Culture="@Culture">
         </MediaListFull>
     }
     else if (AppStateStatic.Index == 1)
     {
         <MediaListFull MediaListApi="TmdbDiscoveryApi" StringParameters="@ParametersKeyword" Items="Items" ShowHead="false" FullPage="true"
-                       Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture">
+                       Watching="Watching" Wish="Wish" Culture="@Culture">
         </MediaListFull>
     }
     else if (AppStateStatic.Index == 2)
     {
         <MediaListFull MediaListApi="TmdbDiscoveryApi" StringParameters="@ParametersAdvanced" Items="Items" ShowHead="false" FullPage="true"
-                       Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture" TypeSelected="@AppStateStatic.Type">
+                       Watching="Watching" Wish="Wish" Culture="@Culture" TypeSelected="@AppStateStatic.Type">
         </MediaListFull>
     }
 </RenderControl>
@@ -121,7 +120,6 @@
 @code {
     [Parameter][SupplyParameterFromQuery(Name = "keyword")] public string? keyword { get; set; }
 
-    public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
@@ -144,7 +142,6 @@
     {
         Actions.CustomMessageWarning = GlobalTranslations.SearchReturnedNothing;
 
-        WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
     }
@@ -189,7 +186,6 @@
 
     protected override async Task LoadAuthDataAsync(CancellationToken token)
     {
-        Watched = await WatchedApi.Get(null, token);
         Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);
     }

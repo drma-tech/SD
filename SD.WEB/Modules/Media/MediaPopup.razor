@@ -11,7 +11,6 @@
 @inject TmdbApi TmdbApi
 @inject CacheRatingsApi CacheRatingsApi
 @inject ExternalIdApi ExternalIdApi
-@inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
@@ -183,13 +182,6 @@
                                             }
                                         }
 
-                                        var movieWatched = Watched?.Contains(MediaType.movie, item.id) ?? false;
-                                        var showWatched = Watching?.GetWatchingItems(MediaType.tv, Media?.tmdb_id).Any(a => a == item.id) ?? false;
-                                        if (movieWatched || showWatched)
-                                        {
-                                            <MudIcon Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
-                                        }
-
                                         <MudImage Src="@(item.poster_small ?? "images/no-image.webp")" Alt="@item.title" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                                     }
                                 </div>
@@ -221,7 +213,7 @@
                     }
                 </MudTabPanel>
                 <MudTabPanel Tag="@Translations.TabCredits" Text="@Translations.TabCredits">
-                    <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture">
+                    <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchingList="Watching" WishList="Wish" Culture="@Culture">
                     </CreditsComponent>
                 </MudTabPanel>
                 <MudTabPanel Tag="@("Reviews")" Text="Reviews">
@@ -254,22 +246,16 @@
                 </MudButton>
             }
 
-            @if (Watched?.Movies.Contains(TmdbId ?? "") ?? false)
+            @if (Watching?.Contains(Type, Watching.GetItem(Type, TmdbId ?? "")) ?? false)
             {
                 <MudButton Color="Color.Error" OnClick="@IsNotWatched">
-                    @Translations.ButtonNotWatched
-                </MudButton>
-            }
-            else if (Watched?.Shows.Contains(TmdbId ?? "") ?? false)
-            {
-                <MudButton Color="Color.Error" OnClick="@IsNotWatched">
-                    @Translations.ButtonNotWatched
+                    @Translations.Unfollow
                 </MudButton>
             }
             else
             {
                 <MudButton Color="Color.Primary" OnClick="@IsWatched" Disabled="!AppStateStatic.IsAuthenticated">
-                    @Translations.ButtonWatched
+                    @Translations.Follow
                 </MudButton>
             }
         }
@@ -283,10 +269,8 @@
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }
 
-    [Parameter] public WatchedList? Watched { get; set; }
     [Parameter] public WatchingList? Watching { get; set; }
     [Parameter] public WishList? Wish { get; set; }
-    [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
 
@@ -308,12 +292,6 @@
         if (string.IsNullOrEmpty(TmdbId)) throw new ArgumentNullException(nameof(TmdbId));
         if (Type == null) throw new ArgumentNullException(nameof(Type));
 
-        WatchedListApi.DataChanged += model =>
-        {
-            Watched = model;
-            WatchedChanged.InvokeAsync(model);
-            StateHasChanged();
-        };
         WatchingListApi.DataChanged += model =>
         {
             Watching = model;
@@ -431,7 +409,7 @@
             }
             else
             {
-                Watched = await WatchedListApi.Add(Media.MediaType, Watched, Media.tmdb_id, AppStateStatic.ActiveProduct, cts.Token);
+                await ShowWarning("This item cannot be followed.");
             }
         }
         catch (Exception ex)
@@ -442,17 +420,6 @@
 
     private async Task SelectedItemsChanged(MediaDetail media, HashSet<string> items, int collectionItemsCount)
     {
-        //watched list
-
-        if (media.MediaType == MediaType.movie)
-        {
-            Watched = await WatchedListApi.Add(MediaType.movie, Watched, string.Join(',', items), AppStateStatic.ActiveProduct, cts.Token);
-        }
-        else
-        {
-            Watched = await WatchedListApi.Add(MediaType.tv, Watched, media.tmdb_id, AppStateStatic.ActiveProduct, cts.Token);
-        }
-
         //watching list
 
         WatchingListItem item;
@@ -475,10 +442,6 @@
 
         try
         {
-            //watched
-
-            Watched = await WatchedListApi.Remove(Media.MediaType, Media.tmdb_id, cts.Token);
-
             //watching
 
             var hasCollection = Media.Collection.Any() && Media.Collection.Count > 1;
@@ -509,7 +472,7 @@
 
     private async Task OpenPopupMedia(Collection? collection, MediaType? mediaType)
     {
-        await DialogService.MediaPopup(Watched, Watching, Wish, mediaType, collection?.id, Culture);
+        await DialogService.MediaPopup(Watching, Wish, mediaType, collection?.id, Culture);
     }
 
     private async Task OpenPopupSeason(Collection? collection)

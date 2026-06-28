@@ -129,17 +129,20 @@
   <data name="Email" xml:space="preserve">
     <value>Correo electrónico</value>
   </data>
+  <data name="Following" xml:space="preserve">
+    <value>Siguiente</value>
+  </data>
+  <data name="FollowTitle" xml:space="preserve">
+    <value>Sigue los títulos para que aparezcan aquí (si es una serie o una película que forma parte de una secuencia).</value>
+  </data>
   <data name="Identification" xml:space="preserve">
     <value>Identificación</value>
   </data>
   <data name="MarkPlatforms" xml:space="preserve">
     <value>Marcar plataformas como favoritas para aparecer aquí</value>
   </data>
-  <data name="MarkTitlesWatched" xml:space="preserve">
-    <value>Marcar títulos como vistos para que aparezcan aquí (si es una serie o una película que pertenece a una secuencia)</value>
-  </data>
-  <data name="MyMovieWatching" xml:space="preserve">
-    <value>Viendo - Películas</value>
+  <data name="MyMovieFollowing" xml:space="preserve">
+    <value>Siguiendo - Películas</value>
   </data>
   <data name="MyMovieWishlist" xml:space="preserve">
     <value>Mi lista - Películas</value>
@@ -147,20 +150,11 @@
   <data name="MyPlatforms" xml:space="preserve">
     <value>Plataformas favoritas</value>
   </data>
-  <data name="MyShowWatching" xml:space="preserve">
-    <value>Viendo - Serie</value>
+  <data name="MySeriesFollowing" xml:space="preserve">
+    <value>Siguiendo - Serie</value>
   </data>
-  <data name="MyShowWishlist" xml:space="preserve">
-    <value>Mi lista - Serie</value>
-  </data>
-  <data name="MySuggestions" xml:space="preserve">
-    <value>Mis sugerencias</value>
-  </data>
-  <data name="OurSuggestions1" xml:space="preserve">
-    <value>Nuestras sugerencias se basan en los proveedores que ha marcado como favoritos</value>
-  </data>
-  <data name="OurSuggestions2" xml:space="preserve">
-    <value>Nuestras sugerencias se basan en sus proveedores favoritos y sus preferencias de género (excluidos los títulos que ya están en sus listas personales).</value>
+  <data name="MySeriesWishlist" xml:space="preserve">
+    <value>Lista de deseos - Serie</value>
   </data>
   <data name="Platforms" xml:space="preserve">
     <value>Plataformas</value>
@@ -168,16 +162,7 @@
   <data name="RegionsApplied" xml:space="preserve">
     <value>Las regiones se han aplicado automáticamente para sus proveedores favoritos. Si están equivocados, retírelos y agréguelos nuevamente.</value>
   </data>
-  <data name="UpdateMySuggestions" xml:space="preserve">
-    <value>Sus preferencias entrarán en vigor en la próxima actualización de esta lista</value>
-  </data>
-  <data name="Watched" xml:space="preserve">
-    <value>Visto</value>
-  </data>
-  <data name="Watching" xml:space="preserve">
-    <value>Viendo</value>
-  </data>
   <data name="Wishlist" xml:space="preserve">
-    <value>Mi lista</value>
+    <value>Lista de deseos</value>
   </data>
 </root>

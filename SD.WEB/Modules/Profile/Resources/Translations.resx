@@ -129,17 +129,20 @@
   <data name="Email" xml:space="preserve">
     <value>Email</value>
   </data>
+  <data name="Following" xml:space="preserve">
+    <value>Following</value>
+  </data>
+  <data name="FollowTitle" xml:space="preserve">
+    <value>Follow titles so they appear here (if it is a series or a movie that is part of a sequence).</value>
+  </data>
   <data name="Identification" xml:space="preserve">
     <value>Identification</value>
   </data>
   <data name="MarkPlatforms" xml:space="preserve">
     <value>Mark platforms as favorites to appear here</value>
   </data>
-  <data name="MarkTitlesWatched" xml:space="preserve">
-    <value>Mark titles as watched to appear here (if it is a series or a film that belongs to a sequence)</value>
-  </data>
-  <data name="MyMovieWatching" xml:space="preserve">
-    <value>Watching - Movies</value>
+  <data name="MyMovieFollowing" xml:space="preserve">
+    <value>Following - Movies</value>
   </data>
   <data name="MyMovieWishlist" xml:space="preserve">
     <value>Wishlist - Movies</value>
@@ -147,35 +150,17 @@
   <data name="MyPlatforms" xml:space="preserve">
     <value>Favorite Platforms</value>
   </data>
-  <data name="MyShowWatching" xml:space="preserve">
-    <value>Watching - Shows</value>
+  <data name="MySeriesFollowing" xml:space="preserve">
+    <value>Following - Series</value>
   </data>
-  <data name="MyShowWishlist" xml:space="preserve">
-    <value>Wishlist - Shows</value>
-  </data>
-  <data name="MySuggestions" xml:space="preserve">
-    <value>My Suggestions</value>
-  </data>
-  <data name="OurSuggestions1" xml:space="preserve">
-    <value>Our suggestions are based on the providers you've favorited</value>
-  </data>
-  <data name="OurSuggestions2" xml:space="preserve">
-    <value>Our suggestions are based on your favorite providers and your genre preferences (excluding titles that are already on your personal lists).</value>
+  <data name="MySeriesWishlist" xml:space="preserve">
+    <value>Wishlist - Series</value>
   </data>
   <data name="Platforms" xml:space="preserve">
     <value>Platforms</value>
   </data>
   <data name="RegionsApplied" xml:space="preserve">
     <value>Regions have been automatically applied for your favorite providers. If they are wrong, please remove and add them again.</value>
-  </data>
-  <data name="UpdateMySuggestions" xml:space="preserve">
-    <value>Your preferences will take effect in the next update of this list</value>
-  </data>
-  <data name="Watched" xml:space="preserve">
-    <value>Watched</value>
-  </data>
-  <data name="Watching" xml:space="preserve">
-    <value>Watching</value>
   </data>
   <data name="Wishlist" xml:space="preserve">
     <value>Wishlist</value>

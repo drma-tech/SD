@@ -21,7 +21,7 @@
                     @if (_loaded[0])
                     {
                         <MediaListComponent MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.movie"
-                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList" Culture="@Culture">
+                                      Watching="WatchingList" Wish="WishList" Culture="@Culture">
                         </MediaListComponent>
                     }
                 </MudTabPanel>
@@ -29,7 +29,7 @@
                     @if (_loaded[1])
                     {
                         <MediaListComponent MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.tv"
-                                      Watched="WatchedList" Watching="WatchingList" Wish="WishList" Culture="@Culture">
+                                      Watching="WatchingList" Wish="WishList" Culture="@Culture">
                         </MediaListComponent>
                     }
                 </MudTabPanel>
@@ -39,7 +39,6 @@
 </PageSectionComponent>
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }

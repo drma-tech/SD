@@ -89,7 +89,6 @@
     [Parameter] public bool ShowWished { get; set; } = true;
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
     [Parameter] public bool ShowWatched { get; set; } = true;
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter] public string? CollectionId { get; set; }
     [Parameter] public WatchingList? WatchingList { get; set; }
     //BOTTOM
@@ -195,9 +194,7 @@
     {
         if (ShowWatched)
         {
-            var watched = CollectionId.NotEmpty() ?
-                WatchingList?.GetWatchingItems(MediaType, CollectionId).Contains(TmdbId!) ?? false :
-                WatchedList?.Contains(MediaType, TmdbId) ?? false;
+            var watched = CollectionId.NotEmpty() ? WatchingList?.GetWatchingItems(MediaType, CollectionId).Contains(TmdbId!) ?? false : false;
 
             if (watched)
             {

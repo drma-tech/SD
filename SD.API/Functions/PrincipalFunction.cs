@@ -143,12 +143,6 @@ public class PrincipalFunction(CosmosRepository repo, CosmosCacheRepository repo
         var myProviders = await repo.Get<MyProviders>(DocumentType.MyProvider, userId, cancellationToken);
         if (myProviders != null) await repo.Delete(myProviders, cancellationToken);
 
-        var mySuggestions = await repo.Get<MySuggestions>(DocumentType.MySuggestions, userId, cancellationToken);
-        if (mySuggestions != null) await repo.Delete(mySuggestions, cancellationToken);
-
-        var myWatched = await repo.Get<WatchedList>(DocumentType.WatchedList, userId, cancellationToken);
-        if (myWatched != null) await repo.Delete(myWatched, cancellationToken);
-
         var myWatching = await repo.Get<WatchingList>(DocumentType.WatchingList, userId, cancellationToken);
         if (myWatching != null) await repo.Delete(myWatching, cancellationToken);
 

@@ -13,7 +13,6 @@
 @using SD.WEB.Modules.Profile.Core
 @inherits PageCore<CompleteListPage>
 
-@inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 @inject AllProvidersApi AllProvidersApi
@@ -26,7 +25,7 @@
 {
     <MediaListFull IsImdb="IsImdb" MediaListApi="MediaListApi" TypeSelected="TypeSelected" DetectRegions="DetectRegions"
                    StringParameters="StringParameters" List="List" TitleHead="@Title" ShowHead="false" FullPage="true"
-                   Watched="Watched" Watching="Watching" Wish="Wish" Culture="@Culture"
+                   Watching="Watching" Wish="Wish" Culture="@Culture"
                    CommentsIsImage="CommentsIsImage" OrderByComments="OrderByComments" OnlyYear="OnlyYear">
     </MediaListFull>
 }
@@ -34,7 +33,6 @@
 @code {
     [Parameter] public string? id { get; set; }
 
-    public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
     public bool OrderByComments { get; set; }
@@ -59,7 +57,6 @@
         if (id.NotEmpty() && Navigation.Uri.Contains("list")) List = id.ParseToEnum<EnumLists>();
         if (Type.NotEmpty()) TypeSelected = Type.ParseToEnum<MediaType>();
 
-        WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
 
@@ -70,7 +67,6 @@
 
     protected override async Task LoadAuthDataAsync(CancellationToken token)
     {
-        Watched = await WatchedApi.Get(null, token);
         Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);
     }

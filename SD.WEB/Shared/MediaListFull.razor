@@ -19,7 +19,7 @@
         {
             <PosterComponent Date="@item.release_date" Rating="@item.rating" Poster="@item.poster_small" Title="@item.title" OnlyYear="OnlyYear" FullPage="FullPage"
                              Comments="@item.comments" CommentsSeparator="@CommentsSeparator" TmdbId="@item.tmdb_id" MediaType="@item.MediaType"
-                             Clicked="@(() => OpenPopupMedia(item))" WatchedList="Watched" WishList="Wish" CommentsIsImage="CommentsIsImage">
+                             Clicked="@(() => OpenPopupMedia(item))" WishList="Wish" CommentsIsImage="CommentsIsImage">
             </PosterComponent>
         }
     </div>
@@ -39,7 +39,6 @@
 }
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }
@@ -180,13 +179,13 @@
                 });
             }
 
-            await DialogService.CompleteListPopup($"{media.title}", Watched, Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet(), Culture);
+            await DialogService.CompleteListPopup($"{media.title}", Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet(), Culture);
         }
         else
         {
             if (Popup)
             {
-                await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId, Culture);
+                await DialogService.MediaPopup(Watching, Wish, media?.MediaType, tmdbId, Culture);
             }
             else
             {

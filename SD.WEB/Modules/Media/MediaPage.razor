@@ -17,7 +17,6 @@
 @inject TmdbApi TmdbApi
 @inject CacheRatingsApi CacheRatingsApi
 @inject ExternalIdApi ExternalIdApi
-@inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 @inject TmdbRecommendationsApi TmdbRecommendationsApi
@@ -46,22 +45,16 @@
                     @Translations.AddWishlist
                 </MudButton>
             }
-            @if (Watched?.Movies.Contains(TmdbId ?? "") ?? false)
+            @if (Watching?.Contains(Type, Watching.GetItem(Type, TmdbId ?? "")) ?? false)
             {
                 <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@IsNotWatched" Class="me-2">
-                    @Translations.ButtonNotWatched
-                </MudButton>
-            }
-            else if (Watched?.Shows.Contains(TmdbId ?? "") ?? false)
-            {
-                <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@IsNotWatched" Class="me-2">
-                    @Translations.ButtonNotWatched
+                    @Translations.Unfollow
                 </MudButton>
             }
             else
             {
                 <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@IsWatched" Class="me-2">
-                    @Translations.ButtonWatched
+                    @Translations.Follow
                 </MudButton>
             }
         </ActionsFragment>
@@ -72,7 +65,7 @@
     <ChildContent>
         <PageSectionComponent Title="@Translations.TabAbout" Color="Color.Secondary">
             <BodyFragment>
-                <MediaAbout ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watched="Watched" Watching="Watching" Wish="Wish" Type="Type"
+                <MediaAbout ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="Type"
                             Actions="RatingsActions" RatingsCache="_ratingsCache"></MediaAbout>
             </BodyFragment>
         </PageSectionComponent>
@@ -118,13 +111,6 @@
                                         }
                                     }
 
-                                    var movieWatched = Watched?.Contains(MediaType.movie, item.id) ?? false;
-                                    var showWatched = Watching?.GetWatchingItems(MediaType.tv, Media?.tmdb_id).Any(a => a == item.id) ?? false;
-                                    if (movieWatched || showWatched)
-                                    {
-                                        <MudIcon Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Info" Class="absolute" Style="bottom: 6px; right: 5px; z-index: 1;"></MudIcon>
-                                    }
-
                                     <MudImage Src="@(item.poster_small ?? "images/no-image.webp")" Alt="@item.title" FallbackSrc="images/no-image.webp" Fluid="true" ObjectFit="ObjectFit.Contain"></MudImage>
                                 }
                             </div>
@@ -150,7 +136,7 @@
                         <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
                             <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item.MediaType, item.tmdb_id))" MediaType="@item.MediaType"
                                              Date="@item.release_date" Rating="@item.rating"
-                                             WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments">
+                                             WishList="Wish" TmdbId="@item.tmdb_id" Comments="@item.comments">
                             </PosterComponent>
                         </div>
                     </Slider>
@@ -188,7 +174,7 @@
 
         <PageSectionComponent Title="@Translations.TabCredits" Color="Color.Secondary">
             <BodyFragment>
-                <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchedList="Watched" WatchingList="Watching" WishList="Wish" Culture="@Culture">
+                <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchingList="Watching" WishList="Wish" Culture="@Culture">
                 </CreditsComponent>
             </BodyFragment>
         </PageSectionComponent>
@@ -209,7 +195,6 @@
 <FloatingButton Template="Template.Back"></FloatingButton>
 
 @code {
-    public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
     public Region? Region { get; set; }
@@ -310,7 +295,6 @@
 
     protected override async Task LoadAuthDataAsync(CancellationToken token)
     {
-        Watched = await WatchedApi.Get(null, token);
         Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);
     }
@@ -401,7 +385,7 @@
             }
             else
             {
-                Watched = await WatchedApi.Add(Media.MediaType, Watched, Media.tmdb_id, AppStateStatic.ActiveProduct, cts.Token);
+                await ShowWarning("This item cannot be followed.");
             }
         }
         catch (Exception ex)
@@ -416,10 +400,6 @@
 
         try
         {
-            //watched
-
-            Watched = await WatchedApi.Remove(Media.MediaType, Media.tmdb_id, cts.Token);
-
             //watching
 
             var hasCollection = Media.Collection.Any() && Media.Collection.Count > 1;
@@ -444,17 +424,6 @@
     {
         try
         {
-            //watched list
-
-            if (media.MediaType == MediaType.movie)
-            {
-                Watched = await WatchedApi.Add(MediaType.movie, Watched, string.Join(',', items), AppStateStatic.ActiveProduct, cts.Token);
-            }
-            else
-            {
-                Watched = await WatchedApi.Add(MediaType.tv, Watched, media.tmdb_id, AppStateStatic.ActiveProduct, cts.Token);
-            }
-
             //watching list
 
             WatchingListItem item;

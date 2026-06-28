@@ -5,13 +5,12 @@
 @using SD.WEB.Shared.Core
 @inherits ComponentCore<MyWishListPopup>
 
-@inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <WishlistComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+        <WishlistComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watching="Watching" Wish="Wish"
                            ActionsMovie="Actions" ActionsTv="Actions" Culture="@Culture">
         </WishlistComponent>
     </DialogContent>
@@ -27,27 +26,19 @@
 
     [Parameter][EditorRequired] public ComponentActions<WishList?>? Actions { get; set; }
 
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }
 
-    [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
     [Parameter][EditorRequired] public MediaType MediaType { get; set; }
 
-    private string Title => MediaType == MediaType.movie ? Translations.MyMovieWishlist : Translations.MyShowWishlist;
+    private string Title => MediaType == MediaType.movie ? Translations.MyMovieWishlist : Translations.MySeriesWishlist;
     private int Quantity => MediaType == MediaType.movie ? Wish?.Movies.Count ?? 0 : Wish?.Shows.Count ?? 0;
 
     protected override void OnInitialized()
     {
-        WatchedApi.DataChanged += model =>
-        {
-            Watched = model;
-            WatchedChanged.InvokeAsync(model);
-            StateHasChanged();
-        };
         WatchingApi.DataChanged += model =>
         {
             Watching = model;

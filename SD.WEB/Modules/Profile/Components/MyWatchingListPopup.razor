@@ -5,13 +5,12 @@
 @using SD.WEB.Shared.Core
 @inherits ComponentCore<MyWatchingListPopup>
 
-@inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
 <MudDialog Style="width: 100%">
     <DialogContent>
-        <WatchingComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watched="Watched" Watching="Watching" Wish="Wish"
+        <WatchingComponent TypeParam="MediaType" ShowHeader="false" FullScreen="true" Watching="Watching" Wish="Wish"
                            ActionsMovie="Actions" ActionsTv="Actions" Culture="@Culture">
         </WatchingComponent>
     </DialogContent>
@@ -26,27 +25,19 @@
     [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
     [Parameter][EditorRequired] public ComponentActions<WatchingList?> Actions { get; set; }
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }
 
-    [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
     [Parameter][EditorRequired] public MediaType MediaType { get; set; }
 
-    private string Title => MediaType == MediaType.movie ? Translations.MyMovieWatching : Translations.MyShowWatching;
+    private string Title => MediaType == MediaType.movie ? Translations.MyMovieFollowing : Translations.MySeriesFollowing;
     private int Quantity => MediaType == MediaType.movie ? Watching?.Movies.Count ?? 0 : Watching?.Shows.Count ?? 0;
 
     protected override void OnInitialized()
     {
-        WatchedApi.DataChanged += model =>
-        {
-            Watched = model;
-            WatchedChanged.InvokeAsync(model);
-            StateHasChanged();
-        };
         WatchingApi.DataChanged += model =>
         {
             Actions.StartLoading?.Invoke(null);

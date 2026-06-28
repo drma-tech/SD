@@ -8,7 +8,6 @@ using SD.WEB.Modules.Platform.Components;
 using SD.WEB.Modules.Profile.Components;
 using SD.WEB.Modules.Subscription.Components;
 using SD.WEB.Shared;
-using SD.WEB.Shared.Core;
 
 namespace SD.WEB.Core.Helper;
 
@@ -16,16 +15,14 @@ public static class PopupHelper
 {
     public static readonly EventCallbackFactory Factory = new();
 
-    public static async Task CollectionPopup(this IDialogService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? collectionId)
+    public static async Task CollectionPopup(this IDialogService service, WatchingList? watching, WishList? wish, MediaType? type, string? collectionId)
     {
         var parameters = new DialogParameters<CollectionPopup>
         {
             { x => x.CollectionId, collectionId },
             { x => x.Type, type },
-            { x => x.Watched, watched },
             { x => x.Watching, watching },
             { x => x.Wish, wish },
-            { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? lst) => { watched = lst; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
         };
@@ -33,7 +30,7 @@ public static class PopupHelper
         await service.ShowAsync<CollectionPopup>(null, parameters, Options(MaxWidth.Medium));
     }
 
-    public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchedList? watched, WatchingList? watching, WishList? wish, HashSet<MediaDetail> items, string? culture)
+    public static async Task CompleteListPopup(this IDialogService service, string? titleHead, WatchingList? watching, WishList? wish, HashSet<MediaDetail> items, string? culture)
     {
         ComponentActions<HashSet<MediaDetail>> actions = new(list => list == null || list.Empty());
 
@@ -42,14 +39,12 @@ public static class PopupHelper
         var parameters = new DialogParameters<CompleteListPopup>
         {
             { x => x.TitleHead, titleHead },
-            { x => x.Watched, watched },
             { x => x.Watching, watching },
             { x => x.Wish, wish },
             { x => x.Culture, culture },
             { x => x.Items, items },
             { x => x.Actions, actions },
             { x => x.ItemsChanged, Factory.Create(new object(), (HashSet<MediaDetail> lst) => { items = lst; }) },
-            { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? lst) => { watched = lst; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
         };
@@ -59,17 +54,15 @@ public static class PopupHelper
         actions.FinishLoading?.Invoke(items);
     }
 
-    public static async Task MediaPopup(this IDialogService service, WatchedList? watched, WatchingList? watching, WishList? wish, MediaType? type, string? tmdbId, string? culture)
+    public static async Task MediaPopup(this IDialogService service, WatchingList? watching, WishList? wish, MediaType? type, string? tmdbId, string? culture)
     {
         var parameters = new DialogParameters<MediaPopup>
         {
             { x => x.TmdbId, tmdbId },
             { x => x.Type, type },
-            { x => x.Watched, watched },
             { x => x.Watching, watching },
             { x => x.Wish, wish },
             { x => x.Culture, culture },
-            { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? lst) => { watched = lst; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList ? lst) => { watching = lst; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList ? lst) => { wish = lst; }) },
         };
@@ -77,20 +70,8 @@ public static class PopupHelper
         await service.ShowAsync<MediaPopup>(null, parameters, Options(MaxWidth.Large));
     }
 
-    public static async Task MySuggestionsPopup(this IDialogService service, SD.Shared.Models.MySuggestions? mySuggestions,
-        EventCallback<SD.Shared.Models.MySuggestions>? mySuggestionsChanged)
-    {
-        var parameters = new DialogParameters<MySuggestionsPopup>
-        {
-            { x => x.MySuggestions, mySuggestions },
-            { x => x.MySuggestionsChanged, mySuggestionsChanged },
-        };
-
-        await service.ShowAsync<MySuggestionsPopup>(GlobalTranslations.SuggestionFilters, parameters, Options(MaxWidth.Small));
-    }
-
     public static async Task MyWatchingListPopup(this IDialogService service, ComponentActions<WatchingList?> actions, MediaType type,
-        WatchedList? watched, WatchingList? watching, WishList? wish, string? culture)
+        WatchingList? watching, WishList? wish, string? culture)
     {
         actions.StartLoading?.Invoke(null);
 
@@ -98,16 +79,14 @@ public static class PopupHelper
         {
             { x => x.Actions, actions },
             { x => x.MediaType, type },
-            { x => x.Watched, watched },
             { x => x.Watching, watching },
             { x => x.Wish, wish },
             { x => x.Culture, culture },
-            { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }) },
         };
 
-        var Title = type == MediaType.movie ? Modules.Profile.Resources.Translations.MyMovieWatching : Modules.Profile.Resources.Translations.MyShowWatching;
+        var Title = type == MediaType.movie ? Modules.Profile.Resources.Translations.MyMovieFollowing : Modules.Profile.Resources.Translations.MySeriesFollowing;
         var Quantity = type == MediaType.movie ? watching?.Movies.Count ?? 0 : watching?.Shows.Count ?? 0;
 
         await service.ShowAsync<MyWatchingListPopup>(Title.Format(Quantity), parameters, Options(MaxWidth.Large));
@@ -115,7 +94,7 @@ public static class PopupHelper
         actions.FinishLoading?.Invoke(watching);
     }
 
-    public static async Task MyWishListPopup(this IDialogService service, ComponentActions<WishList?> actions, WatchedList? watched, WatchingList? watching, WishList? wish,
+    public static async Task MyWishListPopup(this IDialogService service, ComponentActions<WishList?> actions, WatchingList? watching, WishList? wish,
         MediaType type, string? culture)
     {
         actions.StartLoading?.Invoke(null);
@@ -124,16 +103,14 @@ public static class PopupHelper
         {
             { x => x.Actions, actions },
             { x => x.MediaType, type },
-            { x => x.Watched, watched },
             { x => x.Watching, watching },
             { x => x.Wish, wish },
             { x => x.Culture, culture },
-            { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }) },
         };
 
-        var Title = type == MediaType.movie ? Modules.Profile.Resources.Translations.MyMovieWishlist : Modules.Profile.Resources.Translations.MyShowWishlist;
+        var Title = type == MediaType.movie ? Modules.Profile.Resources.Translations.MyMovieWishlist : Modules.Profile.Resources.Translations.MySeriesWishlist;
         var Quantity = type == MediaType.movie ? wish?.Movies.Count ?? 0 : wish?.Shows.Count ?? 0;
 
         await service.ShowAsync<MyWishListPopup>(Title.Format(Quantity), parameters, Options(MaxWidth.Large));
@@ -148,17 +125,15 @@ public static class PopupHelper
         await service.ShowAsync<AccountPopup>(Modules.Auth.Resources.Translations.MyAccount, parameters, Options(MaxWidth.Small));
     }
 
-    public static async Task PlatformPopup(this IDialogService service, ProviderModel? provider, WatchedList? watched, WatchingList? watching, WishList? wish,
+    public static async Task PlatformPopup(this IDialogService service, ProviderModel? provider, WatchingList? watching, WishList? wish,
         string? watchRegion, string? providerId, string? culture)
     {
         var parameters = new DialogParameters<PlatformPopup>
         {
             { x => x.Provider, provider },
-            { x => x.Watched, watched },
             { x => x.Watching, watching },
             { x => x.Wish, wish },
             { x => x.Culture, culture },
-            { x => x.WatchedChanged, Factory.Create(new object(), (WatchedList? list) => { watched = list; }) },
             { x => x.WatchingChanged, Factory.Create(new object(), (WatchingList? list) => { watching = list; }) },
             { x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }) },
             { x => x.WatchRegion, watchRegion },

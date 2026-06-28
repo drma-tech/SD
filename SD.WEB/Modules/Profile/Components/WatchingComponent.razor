@@ -1,14 +1,12 @@
 ﻿@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Core
-@using Button = SD.WEB.Resources.Button
 @using SD.WEB.Shared.Core
 @inherits ComponentCore<WatchingComponent>
 
 @inject TmdbApi TmdbApi
 @inject WatchingListApi WatchingApi
-@inject WatchedListApi WatchedApi
 
-<PageSectionComponent Title="Watching" ShowHeader="ShowHeader" Icon="@Icons.Material.Filled.RemoveRedEye">
+<PageSectionComponent Title="@WEB.Modules.Profile.Resources.Translations.Following" ShowHeader="ShowHeader" Icon="@Icons.Material.Filled.RemoveRedEye" CustomBodyClass="mb-0">
     <BodyFragment>
         @if (TypeParam.HasValue)
         {
@@ -22,7 +20,7 @@
                             var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
 
                             <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
-                                             Clicked="@(async () => await ShowCollectionPopup(TypeParam.Value, item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                                             Clicked="@(async () => await ShowCollectionPopup(TypeParam.Value, item.id, item.name))" WishList="Wish">
                             </PosterComponent>
                         }
                     </div>
@@ -36,7 +34,7 @@
                         }
                         <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
                             <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
-                                             Clicked="@(async () => await ShowCollectionPopup(TypeParam.Value, item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                                             Clicked="@(async () => await ShowCollectionPopup(TypeParam.Value, item.id, item.name))" WishList="Wish">
                             </PosterComponent>
                         </div>
                     </Slider>
@@ -48,13 +46,13 @@
             <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                      ActivePanelIndexChanged="@((int index) => { if (index == 0) _type = MediaType.movie; else _type = MediaType.tv; })">
                 <Header>
-                    @if ((Watching?.CanSync(_type) ?? false) && (Watching?.Items(_type).Any() ?? false))
+                    @* @if ((Watching?.CanSync(_type) ?? false) && (Watching?.Items(_type).Any() ?? false))
                     {
                         <MudTooltip Text="@Button.Update">
                             <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Warning" OnClick="() => ImportFromWatched(_type)" Disabled="@Updating">
                             </MudIconButton>
                         </MudTooltip>
-                    }
+                    } *@
                     <MudTooltip Text="Expand">
                         <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="Color.Primary" Disabled="false" OnClick="@(async () => await OpenCompleteList(_type))" />
                     </MudTooltip>
@@ -71,7 +69,7 @@
                                         var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
 
                                         <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
-                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.movie, item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.movie, item.id, item.name))" WishList="Wish">
                                         </PosterComponent>
                                     }
                                 </div>
@@ -85,7 +83,7 @@
                                     }
                                     <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
                                         <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
-                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.movie, item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.movie, item.id, item.name))" WishList="Wish">
                                         </PosterComponent>
                                     </div>
                                 </Slider>
@@ -103,7 +101,7 @@
                                         var percentComplete = (int)Math.Round((double)(100 * item.watched.Count) / item.maxItems);
 
                                         <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
-                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.tv, item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.tv, item.id, item.name))" WishList="Wish">
                                         </PosterComponent>
                                     }
                                 </div>
@@ -117,7 +115,7 @@
                                     }
                                     <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
                                         <PosterComponent Poster="@logo" Title="@item.name" Percent="@percentComplete"
-                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.tv, item.id, item.name))" WatchedList="Watched" WishList="Wish">
+                                                         Clicked="@(async () => await ShowCollectionPopup(MediaType.tv, item.id, item.name))" WishList="Wish">
                                         </PosterComponent>
                                     </div>
                                 </Slider>
@@ -136,7 +134,6 @@
 
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }
@@ -157,146 +154,146 @@
     {
         base.OnInitialized();
 
-        ActionsMovie.CustomMessageWarning = Modules.Profile.Resources.Translations.MarkTitlesWatched;
-        ActionsTv.CustomMessageWarning = Modules.Profile.Resources.Translations.MarkTitlesWatched;
+        ActionsMovie.CustomMessageWarning = Modules.Profile.Resources.Translations.FollowTitle;
+        ActionsTv.CustomMessageWarning = Modules.Profile.Resources.Translations.FollowTitle;
     }
 
     private async Task OpenCompleteList(MediaType type)
     {
-        await DialogService.MyWatchingListPopup(type == MediaType.movie ? ActionsMovie : ActionsTv, type, Watched, Watching, Wish, Culture);
+        await DialogService.MyWatchingListPopup(type == MediaType.movie ? ActionsMovie : ActionsTv, type, Watching, Wish, Culture);
     }
 
     public Task ShowMediaPopup(MediaType type, string? tmdbId, string? name)
     {
-        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, type, tmdbId, Culture);
+        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watching, Wish, type, tmdbId, Culture);
     }
 
     public Task ShowCollectionPopup(MediaType type, string? collectionId, string? name)
     {
-        return string.IsNullOrEmpty(collectionId) ? null! : DialogService.CollectionPopup(Watched, Watching, Wish, type, collectionId);
+        return string.IsNullOrEmpty(collectionId) ? null! : DialogService.CollectionPopup(Watching, Wish, type, collectionId);
     }
 
-    private async Task ImportFromWatched(MediaType type)
-    {
-        try
-        {
-            var watching = await WatchingApi.Get(type == MediaType.movie ? ActionsMovie : ActionsTv, cts.Token); //get a new one (memory may be compromised/corrupted)
-            var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US";
+    // private async Task ImportFromWatched(MediaType type)
+    // {
+    //     try
+    //     {
+    //         var watching = await WatchingApi.Get(type == MediaType.movie ? ActionsMovie : ActionsTv, cts.Token); //get a new one (memory may be compromised/corrupted)
+    //         var lang = (await AppStateStatic.GetContentLanguage(JsRuntime, cts.Token)).GetName(false) ?? "en-US";
 
-            if (type == MediaType.movie)
-            {
-                watching?.Movies.Clear();
-                Updating = true;
-                StateHasChanged();
-                await ActionsMovie.StartProcessing.Invoke(null);
+    //         if (type == MediaType.movie)
+    //         {
+    //             watching?.Movies.Clear();
+    //             Updating = true;
+    //             StateHasChanged();
+    //             await ActionsMovie.StartProcessing.Invoke(null);
 
-                foreach (var tmdbId in Watched?.GetItems(MediaType.movie) ?? [])
-                {
-                    try
-                    {
-                        var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.movie, lang, null, cts.Token);
-                        var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
+    //             foreach (var tmdbId in Watched?.GetItems(MediaType.movie) ?? [])
+    //             {
+    //                 try
+    //                 {
+    //                     var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.movie, lang, null, cts.Token);
+    //                     var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-                        if (hasCollection && watching!.DeletedMovies.All(a => a != media.collectionId.ToString()))
-                        {
-                            var item = watching?.GetItem(MediaType.movie, media.collectionId?.ToString());
+    //                     if (hasCollection && watching!.DeletedMovies.All(a => a != media.collectionId.ToString()))
+    //                     {
+    //                         var item = watching?.GetItem(MediaType.movie, media.collectionId?.ToString());
 
-                            if (item == null)
-                            {
-                                var items = new HashSet<string> { tmdbId };
+    //                         if (item == null)
+    //                         {
+    //                             var items = new HashSet<string> { tmdbId };
 
-                                item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
-                            }
-                            else
-                            {
-                                item.maxItems = media.Collection.Count;
-                                item.watched.Add(tmdbId);
-                            }
+    //                             item = new WatchingListItem(media.collectionId?.ToString(), media.collectionName, media.collectionLogo?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+    //                         }
+    //                         else
+    //                         {
+    //                             item.maxItems = media.Collection.Count;
+    //                             item.watched.Add(tmdbId);
+    //                         }
 
-                            watching?.AddItem(MediaType.movie, item);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        if (ex.Message.Contains("The resource you requested could not be found"))
-                        {
-                            Watched = await WatchedApi.Remove(MediaType.movie, tmdbId, cts.Token);
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                }
+    //                         watching?.AddItem(MediaType.movie, item);
+    //                     }
+    //                 }
+    //                 catch (Exception ex)
+    //                 {
+    //                     if (ex.Message.Contains("The resource you requested could not be found"))
+    //                     {
+    //                         Watched = await WatchedApi.Remove(MediaType.movie, tmdbId, cts.Token);
+    //                     }
+    //                     else
+    //                     {
+    //                         throw;
+    //                     }
+    //                 }
+    //             }
 
-                watching = await WatchingApi.Sync(MediaType.movie, watching, cts.Token);
+    //             watching = await WatchingApi.Sync(MediaType.movie, watching, cts.Token);
 
-                Updating = false;
-                StateHasChanged();
-                await ActionsMovie.FinishProcessing.Invoke(watching);
-            }
-            else
-            {
-                watching?.Shows.Clear();
-                Updating = true;
-                StateHasChanged();
-                await ActionsTv.StartProcessing.Invoke(null);
+    //             Updating = false;
+    //             StateHasChanged();
+    //             await ActionsMovie.FinishProcessing.Invoke(watching);
+    //         }
+    //         else
+    //         {
+    //             watching?.Shows.Clear();
+    //             Updating = true;
+    //             StateHasChanged();
+    //             await ActionsTv.StartProcessing.Invoke(null);
 
-                foreach (var tmdbId in Watched?.GetItems(MediaType.tv) ?? [])
-                {
-                    try
-                    {
-                        var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.tv, lang, null, cts.Token);
-                        var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
+    //             foreach (var tmdbId in Watched?.GetItems(MediaType.tv) ?? [])
+    //             {
+    //                 try
+    //                 {
+    //                     var media = await TmdbApi.GetMediaDetail(tmdbId, MediaType.tv, lang, null, cts.Token);
+    //                     var hasCollection = media.Collection.Any() && media.Collection.Count > 1;
 
-                        if (hasCollection && watching!.DeletedShows.All(a => a != media.tmdb_id))
-                        {
-                            var item = watching?.GetItem(MediaType.tv, media.tmdb_id);
+    //                     if (hasCollection && watching!.DeletedShows.All(a => a != media.tmdb_id))
+    //                     {
+    //                         var item = watching?.GetItem(MediaType.tv, media.tmdb_id);
 
-                            if (item == null)
-                            {
-                                var items = new HashSet<string> { media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "" };
+    //                         if (item == null)
+    //                         {
+    //                             var items = new HashSet<string> { media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "" };
 
-                                item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
-                            }
-                            else
-                            {
-                                item.maxItems = media.Collection.Count;
-                                item.watched.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
-                            }
+    //                             item = new WatchingListItem(media.tmdb_id, media.title, media.poster_small?.Replace(TmdbOptions.SmallPosterPath, ""), media.Collection.Count, items);
+    //                         }
+    //                         else
+    //                         {
+    //                             item.maxItems = media.Collection.Count;
+    //                             item.watched.Add(media.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).FirstOrDefault()?.id ?? "");
+    //                         }
 
-                            watching?.AddItem(MediaType.tv, item);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        if (ex.Message.Contains("The resource you requested could not be found"))
-                        {
-                            Watched = await WatchedApi.Remove(MediaType.tv, tmdbId, cts.Token);
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                }
+    //                         watching?.AddItem(MediaType.tv, item);
+    //                     }
+    //                 }
+    //                 catch (Exception ex)
+    //                 {
+    //                     if (ex.Message.Contains("The resource you requested could not be found"))
+    //                     {
+    //                         Watched = await WatchedApi.Remove(MediaType.tv, tmdbId, cts.Token);
+    //                     }
+    //                     else
+    //                     {
+    //                         throw;
+    //                     }
+    //                 }
+    //             }
 
-                watching = await WatchingApi.Sync(MediaType.tv, watching, cts.Token);
+    //             watching = await WatchingApi.Sync(MediaType.tv, watching, cts.Token);
 
-                Updating = false;
-                StateHasChanged();
-                await ActionsTv.FinishProcessing.Invoke(watching);
-            }
+    //             Updating = false;
+    //             StateHasChanged();
+    //             await ActionsTv.FinishProcessing.Invoke(watching);
+    //         }
 
-            StateHasChanged();
-        }
-        catch (Exception ex)
-        {
-            Updating = false;
-            await ActionsMovie.ShowError.Invoke(ex.Message);
-            await ActionsTv.ShowError.Invoke(ex.Message);
-            await ProcessException(ex);
-        }
-    }
+    //         StateHasChanged();
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Updating = false;
+    //         await ActionsMovie.ShowError.Invoke(ex.Message);
+    //         await ActionsTv.ShowError.Invoke(ex.Message);
+    //         await ProcessException(ex);
+    //     }
+    // }
 
 }

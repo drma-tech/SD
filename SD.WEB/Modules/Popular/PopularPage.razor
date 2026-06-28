@@ -7,7 +7,6 @@
 @using SD.WEB.Modules.Platform.Resources
 
 @inject ImdbPopularApi ImdbPopularApi
-@inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
@@ -16,13 +15,13 @@
 
 @if (PopularType == PopularType.Movie)
 {
-    <MediaListFull MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" Watched="Watched" Watching="Watching" Wish="Wish" StringParameters="Params" TypeSelected="MediaType.movie"
+    <MediaListFull MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" Watching="Watching" Wish="Wish" StringParameters="Params" TypeSelected="MediaType.movie"
                    FullPage="true" ShowHead="false" Culture="@Culture">
     </MediaListFull>
 }
 else
 {
-    <MediaListFull MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" Watched="Watched" Watching="Watching" Wish="Wish" StringParameters="Params" TypeSelected="MediaType.tv"
+    <MediaListFull MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" Watching="Watching" Wish="Wish" StringParameters="Params" TypeSelected="MediaType.tv"
                    FullPage="true" ShowHead="false" Culture="@Culture">
     </MediaListFull>
 }
@@ -32,7 +31,6 @@ else
 
     public PopularType PopularType => Type.ParseToEnum(PopularType.Movie);
 
-    public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
@@ -42,7 +40,6 @@ else
     {
         await base.OnInitializedAsync();
 
-        WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
     }

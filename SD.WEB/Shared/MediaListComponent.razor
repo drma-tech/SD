@@ -28,7 +28,7 @@
                                     <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
                                         <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
                                                          Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
-                                                         Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
+                                                         Rating="@item.rating" WishList="Wish" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
                                         </PosterComponent>
                                     </div>
                                 </Slider>
@@ -43,7 +43,7 @@
                                     <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
                                         <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
                                                          Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
-                                                         Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
+                                                         Rating="@item.rating" WishList="Wish" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
                                         </PosterComponent>
                                     </div>
                                 </Slider>
@@ -62,7 +62,7 @@ else
             <div class="swiper-slide" style="@($"width: {(IsMobile ? "110" : "130")}px")">
                 <PosterComponent Poster="@item.poster_small" Title="@item.title" Clicked="@(() => OpenPopupMedia(item))" MediaType="@item.MediaType"
                                  Date="@item.release_date" OnlyYear="OnlyYear" ForceTypoTitle="ForceTypoTitle"
-                                 Rating="@item.rating" WishList="Wish" WatchedList="Watched" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
+                                 Rating="@item.rating" WishList="Wish" TmdbId="@item.tmdb_id" Comments="@item.comments" CommentsIsImage="CommentsIsImage">
                 </PosterComponent>
             </div>
         </Slider>
@@ -70,7 +70,6 @@ else
 }
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }
@@ -248,13 +247,13 @@ else
                     });
                 }
 
-                await DialogService.CompleteListPopup($"{media.title}", Watched, Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet(), Culture);
+                await DialogService.CompleteListPopup($"{media.title}", Watching, Wish, items.OrderByDescending(o => o.release_date).ToHashSet(), Culture);
             }
             else
             {
                 if (Popup)
                 {
-                    await DialogService.MediaPopup(Watched, Watching, Wish, media?.MediaType, tmdbId, Culture);
+                    await DialogService.MediaPopup(Watching, Wish, media?.MediaType, tmdbId, Culture);
                 }
                 else
                 {

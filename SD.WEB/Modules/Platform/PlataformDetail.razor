@@ -10,7 +10,6 @@
 
 @inject AllProvidersApi AllProvidersApi
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
-@inject WatchedListApi WatchedApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 @inject MyProvidersApi MyProvidersApi
@@ -29,6 +28,14 @@ else
         <PageSectionComponent IsPageHeader="true" Image="@(TmdbOptions.OriginalPosterPath + Provider.logo_path)" Title="@Provider.name" Subtitle="@GetSubtitle()" Description="@Provider.description"
                               UrlShare="@($"/{Culture}/platform/{Provider.id}")">
             <ActionsFragment>
+                <div>
+                    <MudSelect T="Region?" Value="SelectedRegion" ValueChanged="SelectedRegionChanged" Label="@GlobalTranslations.Region" Variant="Variant.Text" Dense="true" Class="me-2" Style="width: 150px;">
+                        @foreach (var item in regions.OrderBy(p => p.GetName()))
+                        {
+                            <MudSelectItem Value="@((Region?)item)">@item.GetName()</MudSelectItem>
+                        }
+                    </MudSelect>
+                </div>
                 @if (Provider.link.NotEmpty() && Platform != SD.Shared.Enums.Platform.huawei)
                 {
                     <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Link" OnClick="@(() => OpenExternalWebsite(Provider.link))" Class="me-2" Variant="Variant.Filled">
@@ -57,15 +64,15 @@ else
     <RenderControl Actions="Actions">
         <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platform/{Id}/popular/{{0}}")" Culture="@Culture"
                             ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.PopularDesc.Format(Provider?.name)"
-                            StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3" MinQtdItems="12">
+                            StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3" MinQtdItems="12" DetectRegions="true">
         </MediaListComponent>
         <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platform/{Id}/new/{{0}}")" Culture="@Culture"
                             ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.NewsDesc.Format(Provider?.name)"
-                            StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3" MinQtdItems="12">
+                            StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3" MinQtdItems="12" DetectRegions="true">
         </MediaListComponent>
         <MediaListComponent ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platform/{Id}/top/{{0}}")" Culture="@Culture"
                             ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.RecommendedDesc.Format(Provider?.name)"
-                            StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watched="Watched" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3" MinQtdItems="12">
+                            StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3" MinQtdItems="12" DetectRegions="true">
         </MediaListComponent>
     </RenderControl>
 
@@ -79,32 +86,51 @@ else
     public ComponentActions<ProviderModel?> Actions { get; set; } = new(obj => obj == null);
     private AllProviders? AllProviders { get; set; }
     public ProviderModel? Provider { get; set; }
+    private List<Region> regions = [];
 
-    public WatchedList? Watched { get; set; }
     public WatchingList? Watching { get; set; }
     public WishList? Wish { get; set; }
 
     public MyProviders? MyProviders { get; set; }
     public SD.Shared.Enums.Platform? Platform { get; set; }
+    public SD.Shared.Enums.Region? SelectedRegion { get; set; }
 
     private bool ShowMovieFilter => Provider?.types.Contains(MediaType.movie) ?? false;
     private bool ShowTvFilter => Provider?.types.Contains(MediaType.tv) ?? false;
 
     protected override async Task ProcessInitialData()
     {
-        WatchedApi.DataChanged += model => { Watched = model; StateHasChanged(); };
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };
 
         Actions.StartLoading?.Invoke(null);
+
         AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
         Provider = AllProviders?.Items.SingleOrDefault(s => s.id == Id);
-        Actions.FinishLoading?.Invoke(Provider);
 
         if (Provider == null)
         {
             isNotFound = true;
         }
+        else
+        {
+            regions = Enum.GetValues<Region>().Where(p => Provider.regions.Contains(p)).ToList();
+
+            if (AppStateStatic.IsPrerendering(Navigation))
+            {
+                SelectedRegion = regions.First();
+            }
+            else
+            {
+                var temp = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
+                if (regions.Contains(temp))
+                {
+                    SelectedRegion = temp;
+                }
+            }
+        }
+
+        Actions.FinishLoading?.Invoke(Provider);
     }
 
     protected override async Task ProcessPageData()
@@ -116,16 +142,31 @@ else
     {
         MyProviders = await MyProvidersApi.Get(null, token);
 
-        Watched = await WatchedApi.Get(null, token);
         Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);
     }
 
-    private static Dictionary<string, string> GetExtraParameters(string? providerId, string sortBy)
+    private async Task SelectedRegionChanged(Region? value)
+    {
+        SelectedRegion = value;
+
+        if (value.HasValue)
+        {
+            await JsRuntime.Utils().SetStorage("region", value.GetName(false), JavascriptContext.Default.String, cts.Token);
+
+            AppStateStatic.ChangeRegion(value.Value);
+        }
+    }
+
+    private Dictionary<string, string> GetExtraParameters(string? providerId, string sortBy)
     {
         if (providerId == null) throw new ArgumentNullException(nameof(providerId));
 
-        return new Dictionary<string, string> { { "with_watch_providers", providerId }, { "sort_by", sortBy } };
+        return new Dictionary<string, string> {
+            { "with_watch_providers", providerId },
+            { "sort_by", sortBy },
+            { "watch_region", SelectedRegion?.ToString() ?? "NONE" }
+        };
     }
 
     private string? GetSubtitle()

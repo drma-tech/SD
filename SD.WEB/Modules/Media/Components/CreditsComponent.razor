@@ -91,7 +91,6 @@
 </RenderControl>
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }
@@ -130,7 +129,7 @@
                 });
             }
 
-            await DialogService.CompleteListPopup($"{crew.original_name} ({crew.job})", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), Culture);
+            await DialogService.CompleteListPopup($"{crew.original_name} ({crew.job})", WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), Culture);
         }
         catch (Exception ex)
         {
@@ -166,7 +165,7 @@
                 });
             }
 
-            await DialogService.CompleteListPopup($"{cast.original_name}", WatchedList, WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), Culture);
+            await DialogService.CompleteListPopup($"{cast.original_name}", WatchingList, WishList, items.OrderByDescending(o => o.release_date).ToHashSet(), Culture);
         }
         catch (Exception ex)
         {

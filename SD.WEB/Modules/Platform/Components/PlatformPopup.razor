@@ -6,7 +6,6 @@
 
 @inject MyProvidersApi MyProvidersApi
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
-@inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
@@ -21,13 +20,13 @@
         else
         {
             <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
-                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
+                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
             </MediaListComponent>
             <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
-                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
+                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
             </MediaListComponent>
             <MediaListComponent ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
-                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watched="Watched" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
+                          ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
             </MediaListComponent>
         }
     </DialogContent>
@@ -55,10 +54,8 @@
     [Parameter][EditorRequired] public string? Culture { get; set; }
 
     [Parameter] public ProviderModel? Provider { get; set; }
-    [Parameter] public WatchedList? Watched { get; set; }
     [Parameter] public WatchingList? Watching { get; set; }
     [Parameter] public WishList? Wish { get; set; }
-    [Parameter] public EventCallback<WatchedList?> WatchedChanged { get; set; }
     [Parameter] public EventCallback<WatchingList?> WatchingChanged { get; set; }
     [Parameter] public EventCallback<WishList?> WishChanged { get; set; }
     [Parameter] public string? WatchRegion { get; set; }
@@ -71,12 +68,6 @@
 
     protected override void OnInitialized()
     {
-        WatchedListApi.DataChanged += model =>
-        {
-            Watched = model;
-            WatchedChanged.InvokeAsync(model);
-            StateHasChanged();
-        };
         WatchingListApi.DataChanged += model =>
         {
             Watching = model;

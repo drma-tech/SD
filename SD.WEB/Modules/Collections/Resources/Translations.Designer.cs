@@ -79,24 +79,6 @@ namespace SD.WEB.Modules.Collections.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mark as unwatched.
-        /// </summary>
-        public static string ButtonNotWatched {
-            get {
-                return ResourceManager.GetString("ButtonNotWatched", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mark as watched.
-        /// </summary>
-        public static string ButtonWatched {
-            get {
-                return ResourceManager.GetString("ButtonWatched", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cast.
         /// </summary>
         public static string Cast {
@@ -183,6 +165,15 @@ namespace SD.WEB.Modules.Collections.Resources {
         public static string ExpectedMovieOfYear {
             get {
                 return ResourceManager.GetString("ExpectedMovieOfYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Follow.
+        /// </summary>
+        public static string Follow {
+            get {
+                return ResourceManager.GetString("Follow", resourceCulture);
             }
         }
         
@@ -309,6 +300,15 @@ namespace SD.WEB.Modules.Collections.Resources {
         public static string TitleNotReleased {
             get {
                 return ResourceManager.GetString("TitleNotReleased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unfollow.
+        /// </summary>
+        public static string Unfollow {
+            get {
+                return ResourceManager.GetString("Unfollow", resourceCulture);
             }
         }
         

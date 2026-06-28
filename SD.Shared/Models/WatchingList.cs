@@ -11,9 +11,6 @@ public class WatchingList() : PrivateMainDocument(DocumentType.WatchingList)
     public HashSet<WatchingListItem> Movies { get; init; } = [];
     public HashSet<WatchingListItem> Shows { get; init; } = [];
 
-    public HashSet<string> DeletedMovies { get; init; } = [];
-    public HashSet<string> DeletedShows { get; init; } = [];
-
     [JsonIgnore]
     [NotMapped]
     public bool MovieCanSync => !MovieSyncDate.HasValue || MovieSyncDate.Value < DateTime.Now.AddDays(-14);
@@ -80,11 +77,6 @@ public class WatchingList() : PrivateMainDocument(DocumentType.WatchingList)
             if (collection.watched.Count == 0)
             {
                 Items(type).Remove(collection);
-
-                if (type == MediaType.movie)
-                    DeletedMovies.Add(collectionId);
-                else
-                    DeletedShows.Add(collectionId);
             }
         }
     }

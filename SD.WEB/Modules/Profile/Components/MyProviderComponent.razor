@@ -15,7 +15,7 @@
     </ActionsFragment>
     <BodyFragment>
         <RenderControl Actions="Actions" PrivateFeature="true" IsAuthenticated="AppStateStatic.IsAuthenticated">
-            <Slider List="MyProviders?.Items.Take(AccountProduct.Premium.GetRestrictions().MySuggestions) ?? new List<MyProvidersItem>()" Context="item">
+            <Slider List="MyProviders?.Items.Take(AccountProduct.Premium.GetRestrictions().FavoriteProviders) ?? new List<MyProvidersItem>()" Context="item">
                 <div style="@($"width: 95px")">
                     <div style="position: relative; cursor: pointer;" @onclick="@(() => ShowProviderPopup(item))">
                         <MudChip T="string" Color="Color.Info" Label="true" Style="padding: 0.2rem; position: absolute; top: 0; left: 0; height: auto; z-index: 1;" Size="AppStateStatic.Size">
@@ -37,7 +37,6 @@
 </PageSectionComponent>
 
 @code {
-    [Parameter][EditorRequired] public WatchedList? WatchedList { get; set; }
     [Parameter][EditorRequired] public WatchingList? WatchingList { get; set; }
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }
@@ -109,7 +108,7 @@
     {
         AllProviders ??= await AllProvidersApi.GetAll(null, cts.Token);
 
-        await DialogService.PlatformPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchedList, WatchingList, WishList, item.region?.ToString(), item.id, Culture);
+        await DialogService.PlatformPopup(AllProviders?.Items.FirstOrDefault(f => f.id == item.id), WatchingList, WishList, item.region?.ToString(), item.id, Culture);
     }
 
     private async Task UpdateProviders()

@@ -6,8 +6,6 @@
 
 @inject PrincipalApi PrincipalApi
 @inject MyProvidersApi MyProvidersApi
-@inject MySuggestionsApi MySuggestionsApi
-@inject WatchedListApi WatchedListApi
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 @inject LoginApi LoginApi
@@ -199,9 +197,6 @@
 
             data.Login = await LoginApi.Get(cts.Token);
             data.Providers = await MyProvidersApi.Get(null, cts.Token);
-            if (sub?.ActiveProduct is null or AccountProduct.Basic) data.Suggestions = null;
-            else data.Suggestions = await MySuggestionsApi.Get(sub?.ActiveProduct, null, cts.Token);
-            data.WatchedList = await WatchedListApi.Get(null, cts.Token);
             data.WatchingList = await WatchingListApi.Get(null, cts.Token);
             data.WishList = await WishListApi.Get(null, cts.Token);
 

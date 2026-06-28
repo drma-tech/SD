@@ -178,7 +178,7 @@ else
                    .Where(p => p.types.Empty() || p.types.Any(a => MediaType == null || a == MediaType))
                    .Where(p => name == null || p.name!.Contains(name, StringComparison.InvariantCultureIgnoreCase))
                    .OrderBy(o => o.priority)
-                   .Take(all ? 1000 : (Region.Empty() ? 45 : 10))
+                   .Take(all ? 1000 : (Region.Empty() ? 45 : 20))
                    .ToList()
                ?? [];
     }

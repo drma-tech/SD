@@ -1,14 +1,9 @@
 ﻿@using SD.Shared.Models.List
 @using System.Globalization
 @using SD.WEB.Modules.Collections.Resources
-@using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Shared.Core
 
 @inherits ComponentCore<MediaAbout>
-
-@inject WatchedListApi WatchedApi
-@inject WatchingListApi WatchingApi
-@inject WishListApi WishApi
 
 <MudStack Row="false" Breakpoint="Breakpoint.SmAndUp">
     <div Style="position: relative; min-width: 300px;">
@@ -141,7 +136,6 @@
     [Parameter] public string? EnglishTitle { get; set; }
     [Parameter] public MediaType? Type { get; set; }
 
-    [Parameter] public WatchedList? Watched { get; set; }
     [Parameter] public WatchingList? Watching { get; set; }
     [Parameter] public WishList? Wish { get; set; }
 

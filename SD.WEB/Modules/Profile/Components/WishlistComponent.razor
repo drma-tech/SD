@@ -1,7 +1,7 @@
 ﻿@using SD.WEB.Shared.Core
 @inherits ComponentCore<WishlistComponent>
 
-<PageSectionComponent Title="WishList" ShowHeader="ShowHeader" Icon="@Icons.Material.Filled.Bookmark">
+<PageSectionComponent Title="@WEB.Modules.Profile.Resources.Translations.Wishlist" ShowHeader="ShowHeader" Icon="@Icons.Material.Filled.Bookmark">
     <BodyFragment>
         @if (TypeParam.HasValue)
         {
@@ -14,7 +14,7 @@
                             var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
 
                             <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
-                                             Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                             Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WishList="Wish">
                             </PosterComponent>
                         }
                     </div>
@@ -27,7 +27,7 @@
                         }
                         <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
                             <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
-                                             Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                             Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WishList="Wish">
                             </PosterComponent>
                         </div>
                     </Slider>
@@ -53,7 +53,7 @@
                                     {
                                         var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                                         <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.movie"
-                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.movie, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.movie, item.id, item.name))" ShowWished="false" WishList="Wish">
                                         </PosterComponent>
                                     }
                                 </div>
@@ -66,7 +66,7 @@
                                     }
                                     <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
                                         <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.movie"
-                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.movie, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.movie, item.id, item.name))" ShowWished="false" WishList="Wish">
                                         </PosterComponent>
                                     </div>
                                 </Slider>
@@ -82,7 +82,7 @@
                                     {
                                         var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
                                         <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.tv"
-                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.tv, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.tv, item.id, item.name))" ShowWished="false" WishList="Wish">
                                         </PosterComponent>
                                     }
                                 </div>
@@ -95,7 +95,7 @@
                                     }
                                     <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
                                         <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.tv"
-                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.tv, item.id, item.name))" ShowWished="false" WatchedList="Watched" WishList="Wish">
+                                                         Clicked="@(async () => await ShowMediaPopup(MediaType.tv, item.id, item.name))" ShowWished="false" WishList="Wish">
                                         </PosterComponent>
                                     </div>
                                 </Slider>
@@ -113,7 +113,6 @@
     [Parameter][EditorRequired] public ComponentActions<WishList?> ActionsTv { get; set; }
     [Parameter][EditorRequired] public bool ShowHeader { get; set; }
     [Parameter][EditorRequired] public bool FullScreen { get; set; }
-    [Parameter][EditorRequired] public WatchedList? Watched { get; set; }
     [Parameter][EditorRequired] public WatchingList? Watching { get; set; }
     [Parameter][EditorRequired] public WishList? Wish { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }
@@ -138,12 +137,12 @@
 
     private async Task OpenCompleteList(MediaType type)
     {
-        await DialogService.MyWishListPopup(type == MediaType.movie ? ActionsMovie : ActionsTv, Watched, Watching, Wish, type, Culture);
+        await DialogService.MyWishListPopup(type == MediaType.movie ? ActionsMovie : ActionsTv, Watching, Wish, type, Culture);
     }
 
     public Task ShowMediaPopup(MediaType type, string? tmdbId, string? name)
     {
-        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watched, Watching, Wish, type, tmdbId, Culture);
+        return string.IsNullOrEmpty(tmdbId) ? null! : DialogService.MediaPopup(Watching, Wish, type, tmdbId, Culture);
     }
 
 }
