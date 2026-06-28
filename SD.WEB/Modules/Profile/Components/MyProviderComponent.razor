@@ -41,7 +41,7 @@
     [Parameter][EditorRequired] public WishList? WishList { get; set; }
     [Parameter][EditorRequired] public string? Culture { get; set; }
 
-    private ComponentActions<MyProviders?> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
+    [Parameter] public ComponentActions<MyProviders?> Actions { get; set; } = new(obj => obj == null || obj.Items.Empty());
     private AllProviders? AllProviders { get; set; }
     private MyProviders? MyProviders { get; set; }
     private bool ProvidersChanged { get; set; }

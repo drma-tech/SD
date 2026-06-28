@@ -11,7 +11,15 @@
                     <div class="grid-relative-container-poster">
                         @foreach (var item in Items(TypeParam.Value).Take(GetTotalItems) ?? [])
                         {
-                            var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                            string? logo = null;
+                            if (item.logo.NotEmpty() && item.logo.StartsWith("http"))
+                            {
+                                logo = item.logo;
+                            }
+                            else
+                            {
+                                logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                            }
 
                             <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
                                              Clicked="@(async () => await ShowMediaPopup(TypeParam.Value, item.id, item.name))" ShowWished="false" WishList="Wish">
@@ -23,7 +31,15 @@
                 {
                     <Slider List="Items(TypeParam.Value).Take(GetTotalItems) ?? []" Context="item">
                         @{
-                            var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                            string? logo = null;
+                            if (item.logo.NotEmpty() && item.logo.StartsWith("http"))
+                            {
+                                logo = item.logo;
+                            }
+                            else
+                            {
+                                logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                            }
                         }
                         <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
                             <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="TypeParam.Value"
@@ -51,7 +67,15 @@
                                 <div class="grid-relative-container-poster">
                                     @foreach (var item in Wish?.Movies.Take(GetTotalItems) ?? [])
                                     {
-                                        var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                                        string? logo = null;
+                                        if (item.logo.NotEmpty() && item.logo.StartsWith("http"))
+                                        {
+                                            logo = item.logo;
+                                        }
+                                        else
+                                        {
+                                            logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                                        }
                                         <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.movie"
                                                          Clicked="@(async () => await ShowMediaPopup(MediaType.movie, item.id, item.name))" ShowWished="false" WishList="Wish">
                                         </PosterComponent>
@@ -62,7 +86,15 @@
                             {
                                 <Slider List="Wish?.Movies.Take(GetTotalItems) ?? []" Context="item">
                                     @{
-                                        var logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                                        string? logo = null;
+                                        if (item.logo.NotEmpty() && item.logo.StartsWith("http"))
+                                        {
+                                            logo = item.logo;
+                                        }
+                                        else
+                                        {
+                                            logo = string.IsNullOrEmpty(item.logo) ? "" : TmdbOptions.SmallPosterPath + item.logo;
+                                        }
                                     }
                                     <div style="@($"width: {(IsMobile ? "110" : "130")}px")">
                                         <PosterComponent Poster="@logo" Title="@item.name" Runtime="item.runtime" TmdbId="@item.id" MediaType="MediaType.movie"

@@ -88,6 +88,15 @@ namespace SD.WEB.Modules.Profile.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We&apos;ve set up your profile with a few sample items to give you a quick tour of the available features..
+        /// </summary>
+        public static string DemoAlert {
+            get {
+                return ResourceManager.GetString("DemoAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string Email {

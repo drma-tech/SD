@@ -214,6 +214,15 @@ namespace SD.WEB.Modules.Collections.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This film is not part of a franchise, therefore it cannot be followed..
+        /// </summary>
+        public static string NoFollow {
+            get {
+                return ResourceManager.GetString("NoFollow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to overview not available in your language.
         /// </summary>
         public static string NoPlot {

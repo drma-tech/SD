@@ -6,12 +6,18 @@
 @using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Shared.Core
+@using SD.WEB.Modules.Collections.Core
+@using SD.WEB.Modules.Platform.Core
 @inherits PageCore<Profile>
 
+@inject AllProvidersApi AllProvidersApi
 @inject MyProvidersApi MyProvidersApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 @inject PaymentConfigurationApi ConfigurationApi
+@inject ImdbPopularApi ImdbPopularApi
+@inject WatchingListApi WatchingListApi
+@inject IpInfoApi IpInfoApi
 
 <HeadComponent Title="@SeoTranslations.ProfileTitle" Url=@($"/{Culture}/profile") Index="false"></HeadComponent>
 
@@ -63,7 +69,7 @@
     </MudItem>
 </MudGrid>
 
-<MyProviderComponent WatchingList="Watching" WishList="Wish" Culture="@Culture"></MyProviderComponent>
+<MyProviderComponent WatchingList="Watching" WishList="Wish" Culture="@Culture" Actions="ProviderActions"></MyProviderComponent>
 
 <MudGrid Spacing="@Css.SpaceSmall">
     <MudItem xs="12" md="6">
@@ -77,6 +83,8 @@
 </MudGrid>
 
 @code {
+    public ComponentActions<MyProviders?> ProviderActions { get; set; } = new(obj => obj == null || obj.Items.Empty());
+
     public ComponentActions<WishList?> WishActionsMovie { get; set; } = new(list => list == null || list.Movies.Empty());
     public ComponentActions<WishList?> WishActionsTv { get; set; } = new(list => list == null || list.Shows.Empty());
 
@@ -136,13 +144,37 @@
 
     protected override async Task LoadAuthDataAsync(CancellationToken token)
     {
-        await WatchingActionsMovie.StartLoading.Invoke(null);
-        await WatchingActionsTv.StartLoading.Invoke(null);
+        var demo = false;
+       
         await WishActionsMovie.StartLoading.Invoke(null);
         await WishActionsTv.StartLoading.Invoke(null);
+        await WatchingActionsMovie.StartLoading.Invoke(null);
+        await WatchingActionsTv.StartLoading.Invoke(null);
 
-        Watching = await WatchingApi.Get(null, token);
         Wish = await WishApi.Get(null, token);
+        Watching = await WatchingApi.Get(null, token);
+
+        if (Wish == null && AppStateStatic.IsAuthenticated)
+        {
+            Wish ??= new WishList();
+
+            var result = await ImdbPopularApi.GetList([], null, SD.Shared.Enums.MediaType.movie);
+            var media = result.list.FirstOrDefault();
+
+            if (media != null)
+            {
+                var item = new WishListItem(media.tmdb_id, media.title, media.poster_small, media.runtime);
+
+                Wish = await WishApi.Add(SD.Shared.Enums.MediaType.movie, Wish, item, null, cts.Token);
+
+                demo = true;
+            }
+        }
+
+        if (Watching == null && AppStateStatic.IsAuthenticated)
+        {
+            //todo: generate demo
+        }
 
         await WishActionsMovie.FinishLoading.Invoke(Wish);
         await WishActionsTv.FinishLoading.Invoke(Wish);
@@ -150,6 +182,30 @@
         await WatchingActionsTv.FinishLoading.Invoke(Watching);
 
         MyProviders = await MyProvidersApi.Get(null, token);
+
+        if (MyProviders == null && AppStateStatic.IsAuthenticated)
+        {
+            await ProviderActions.StartLoading.Invoke(null);
+
+            MyProviders ??= new MyProviders();
+
+            var AllProviders = await AllProvidersApi.GetAll(null, cts.Token);
+            var region = await AppStateStatic.GetRegion(IpInfoApi, JsRuntime, cts.Token);
+
+            var provider = AllProviders?.Items.Where(p => p.regions.Contains(region)).OrderBy(o => o.priority).FirstOrDefault();
+
+            var item = new MyProvidersItem { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = region };
+            MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, cts.Token);
+
+            demo = true;
+
+            await ProviderActions.FinishLoading.Invoke(MyProviders);
+        }
+
+        if (demo)
+        {
+            await ShowInfo(Resources.Translations.DemoAlert);
+        }
     }
 
     // private async Task SetReviewed()
