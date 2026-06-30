@@ -40,7 +40,7 @@
                     @foreach (var item in Comments!.Split(CommentsSeparator))
                     {
                         <MudItem xs="3">
-                            <MudTooltip RootClass="tooltip-image" Text="@item.Replace("logo/", "").Replace(".webp", "")">
+                            <MudTooltip RootClass="tooltip-image" Text="@item.Replace("logo/", "").Replace(".png", "")">
                                 <MudPaper Outlined="true" Class="my-1">
                                     <MudImage Src="@item" Alt="@item" Fluid="true" ObjectFit="ObjectFit.Contain" Class="rounded-lg" Style="vertical-align: bottom;"></MudImage>
                                 </MudPaper>
