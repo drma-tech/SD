@@ -1,4 +1,4 @@
-﻿<span class="fa-layers" style="@($"font-size: {FontSize};")">
+﻿<span class="fa-layers @Class" style="@($"font-size: {FontSize};")">
     <i class="@BaseIcon" style="color: var(--mud-palette-@BaseColor.ToString().ToLower());"></i>
     @if (OverlayIcon.NotEmpty())
     {
@@ -27,4 +27,6 @@
     [Parameter] public string? OverlayText { get; set; }
     [Parameter] public string? OverlayBadge { get; set; }
     [Parameter] public Color OverlayColor { get; set; } = Color.Default;
+
+    [Parameter] public string? Class { get; set; }
 }
