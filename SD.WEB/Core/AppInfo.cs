@@ -9,7 +9,7 @@ namespace SD.WEB.Core
 
         public static string Title { get; set; } = "Streaming Discovery";
         public static string Domain { get; set; } = "streamingdiscovery";
-        public static string WebSite { get; set; } = $"https://www.{Domain}.com";
+        public static string WebSite { get; set; } = $"https://{Domain}.com";
         public static int Year { get; set; } = 2021;
 
         public static readonly string? _windowsId = "9pb1pkrdd8l0";
@@ -31,10 +31,10 @@ namespace SD.WEB.Core
 
         public static readonly ProductLink[] Products =
         [
-            //new("Streaming Discovery", "Discover Movies and Series on Streaming Platforms", "https://www.streamingdiscovery.com", "/logo/streamingdiscovery.webp", true ),
-            new("Modern Matchmaker", "Find a compatible partner through Smart Matchmaking", "https://www.modern-matchmaker.com", "/logo/modern-matchmaker.webp", true ),
-            new("My Next Spot", "Find the Best Cities and Countries to Live or Travel", "https://www.my-next-spot.com", "/logo/next-spot.webp", true ),
-            new("Web Standards", "Web Standards Generator for Websites and PWAs", "https://www.web-standards.com", "/logo/webstandards.webp", false ),
+            //new("Streaming Discovery", "Discover Movies and Series on Streaming Platforms", "https://streamingdiscovery.com", "/logo/streamingdiscovery.webp", true ),
+            new("Modern Matchmaker", "Find a compatible partner through Smart Matchmaking", "https://modern-matchmaker.com", "/logo/modern-matchmaker.webp", true ),
+            new("My Next Spot", "Find the Best Cities and Countries to Live or Travel", "https://my-next-spot.com", "/logo/next-spot.webp", true ),
+            new("Web Standards", "Web Standards Generator for Websites and PWAs", "https://web-standards.com", "/logo/webstandards.webp", false ),
        ];
     }
 }

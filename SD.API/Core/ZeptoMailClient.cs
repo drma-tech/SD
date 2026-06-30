@@ -62,7 +62,7 @@ namespace SD.API.Core
 
         private static readonly string HtmlHeader = @$"
         <div class=""email-header"">
-            <img class=""email-logo"" src=""https://www.{domain}.com/icon/icon-71.png"" alt=""{appName} Logo"">
+            <img class=""email-logo"" src=""https://{domain}.com/icon/icon-71.png"" alt=""{appName} Logo"">
             <h1 class=""email-app-name"">
                 {appName}
             </h1>
@@ -77,25 +77,25 @@ namespace SD.API.Core
                 More from DRMA Tech
             </div>
             <div class=""product-list"">
-                <a href=""https://www.modern-matchmaker.com"" class=""product-card"" target=""_blank"">
+                <a href=""https://modern-matchmaker.com"" class=""product-card"" target=""_blank"">
                     <div class=""product-name"">
-                        <img src=""https://www.{domain}.com/logo/modern-matchmaker.png"" alt=""Modern Matchmaker"">Modern Matchmaker
+                        <img src=""https://{domain}.com/logo/modern-matchmaker.png"" alt=""Modern Matchmaker"">Modern Matchmaker
                     </div>
                     <div class=""product-description"">
                         Find a compatible partner through Smart Matchmaking
                     </div>
                 </a>
-                <a href=""https://www.my-next-spot.com"" class=""product-card"" target=""_blank"">
+                <a href=""https://my-next-spot.com"" class=""product-card"" target=""_blank"">
                     <div class=""product-name"">
-                        <img src=""https://www.{domain}.com/logo/next-spot.png"" alt=""My Next Spot"">My Next Spot
+                        <img src=""https://{domain}.com/logo/next-spot.png"" alt=""My Next Spot"">My Next Spot
                     </div>
                     <div class=""product-description"">
                         Find the Best Cities and Countries to Live or Travel
                     </div>
                 </a>
-                <a href=""https://www.web-standards.com"" class=""product-card"" target=""_blank"">
+                <a href=""https://web-standards.com"" class=""product-card"" target=""_blank"">
                     <div class=""product-name"">
-                        <img src=""https://www.{domain}.com/logo/webstandards.png"" alt=""Web Standards"">Web Standards
+                        <img src=""https://{domain}.com/logo/webstandards.png"" alt=""Web Standards"">Web Standards
                     </div>
                     <div class=""product-description"">
                         Web Standards Generator for Websites and PWAs
@@ -122,28 +122,28 @@ namespace SD.API.Core
             <!-- APP STORES -->
             <div class=""footer-apps"">
                 <a href=""https://apps.microsoft.com/detail/9pb1pkrdd8l0"" target=""_blank"">
-                    <img src=""https://www.{domain}.com/logo/microsoft-store.png"" alt=""Microsoft Store"">Microsoft Store
+                    <img src=""https://{domain}.com/logo/microsoft-store.png"" alt=""Microsoft Store"">Microsoft Store
                 </a>
                 <a href=""https://play.google.com/store/apps/details?id=com.streamingdiscovery.www.twa"" target=""_blank"">
-                    <img src=""https://www.{domain}.com/logo/google-play.png"" alt=""Google Play"">Google Play
+                    <img src=""https://{domain}.com/logo/google-play.png"" alt=""Google Play"">Google Play
                 </a>
                 <a href=""https://apps.apple.com/us/app/id6749285238"" target=""_blank"">
-                    <img src=""https://www.{domain}.com/logo/app-store.png"" alt=""App Store"">App Store
+                    <img src=""https://{domain}.com/logo/app-store.png"" alt=""App Store"">App Store
                 </a>
-                <a href=""https://www.{domain}.com/en/help#get-the-app"" target=""_blank"">
-                    <img src=""https://www.{domain}.com/logo/website-logo.png"" alt=""More"">More
+                <a href=""https://{domain}.com/en/help#get-the-app"" target=""_blank"">
+                    <img src=""https://{domain}.com/logo/website-logo.png"" alt=""More"">More
                 </a>
             </div>
 
             <!-- LINKS -->
             <div class=""footer-links"">
-                <a href=""https://www.{domain}.com"" target=""_blank"">
+                <a href=""https://{domain}.com"" target=""_blank"">
                     Website
                 </a>
-                <a href=""https://www.{domain}.com/legal/terms"" target=""_blank"">
+                <a href=""https://{domain}.com/legal/terms"" target=""_blank"">
                     Terms
                 </a>
-                <a href=""https://www.{domain}.com/legal/privacy"" target=""_blank"">
+                <a href=""https://{domain}.com/legal/privacy"" target=""_blank"">
                     Privacy
                 </a>
             </div>
@@ -276,22 +276,22 @@ namespace SD.API.Core
                                         Explore {appName}
                                     </div>
                                     <div class=""link-grid"">
-                                        <a href=""https://www.{domain}.com/default/platforms"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://{domain}.com/default/platforms"" class=""link-card"" target=""_blank"">
                                             Streaming Platforms
                                         </a>
-                                        <a href=""https://www.{domain}.com/default/compare"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://{domain}.com/default/compare"" class=""link-card"" target=""_blank"">
                                             Compare Services
                                         </a>
-                                        <a href=""https://www.{domain}.com/default/regions"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://{domain}.com/default/regions"" class=""link-card"" target=""_blank"">
                                             Free Movies to Watch
                                         </a>
-                                        <a href=""https://www.{domain}.com/default/best-awards-year"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://{domain}.com/default/best-awards-year"" class=""link-card"" target=""_blank"">
                                             Best awards of the {year}
                                         </a>
-                                        <a href=""https://www.{domain}.com/default/list/8544544"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://{domain}.com/default/list/8544544"" class=""link-card"" target=""_blank"">
                                             Most Expected Movies of {year}
                                         </a>
-                                        <a href=""https://www.{domain}.com/default/help"" class=""link-card"" target=""_blank"">
+                                        <a href=""https://{domain}.com/default/help"" class=""link-card"" target=""_blank"">
                                             Help Center
                                         </a>
                                     </div>
