@@ -213,6 +213,8 @@ public class CacheFunction(CosmosCacheRepository cacheRepo, IDistributedCache ca
                     tmdb = tmdbRating,
                 };
 
+                //todo: do scrap only with the right url (no guess anymore)
+
                 await cache.ExecuteWithCooldownAsync("filmshow", () => req.ProcessApiFilmShowRatings(factory, ratings, cancellationToken), cancellationToken);
 
                 await cache.ExecuteWithCooldownAsync("unifiedmovie", () => req.ProcessApiUnifiedMovie(factory, ratings, cancellationToken), cancellationToken);
