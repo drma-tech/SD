@@ -145,7 +145,7 @@
 
     private HashSet<WatchingListItem> Items(MediaType type) => type == MediaType.movie ? Watching?.Movies ?? [] : Watching?.Shows ?? [];
 
-    private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Watching : AccountProduct.Basic.GetRestrictions().Watching;
+    private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Watching : 7;
     private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
 
     public bool Updating { get; set; }

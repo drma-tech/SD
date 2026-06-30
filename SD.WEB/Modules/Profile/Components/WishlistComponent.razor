@@ -156,7 +156,7 @@
 
     private HashSet<WishListItem> Items(MediaType type) => type == MediaType.movie ? Wish?.Movies ?? [] : Wish?.Shows ?? [];
 
-    private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Wishlist : AccountProduct.Basic.GetRestrictions().Wishlist;
+    private int GetTotalItems => FullScreen ? AccountProduct.Premium.GetRestrictions().Wishlist : 7;
     private bool IsMobile => AppStateStatic.Breakpoint == Breakpoint.Xs;
 
     protected override void OnInitialized()
