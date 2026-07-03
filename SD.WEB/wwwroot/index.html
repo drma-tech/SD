@@ -38,7 +38,6 @@
     <script type="module" src="js/slider.js"></script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4PREF5QX1F"></script>
-    <script defer src="https://js.sentry-cdn.com/94ae67eb3fb0bc82327607ddd9d6aebb.min.js" crossorigin="anonymous"></script>
 
     <!-- Google Adsense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5145928155833172" crossorigin="anonymous"></script>
@@ -98,6 +97,7 @@
 
     <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js" autostart="false"></script>
+    <script src="https://js.sentry-cdn.com/94ae67eb3fb0bc82327607ddd9d6aebb.min.js" crossorigin="anonymous"></script>
     <script>
         try {
             Blazor.start({
@@ -105,7 +105,7 @@
                     loadAllSatelliteResources: window.location.hostname === "127.0.0.1"
                 })
             })
-        } catch {
+        } catch (error) {
             const toast = document.createElement("div");
             toast.className = "toast";
             toast.textContent = "An error occurred while loading the platform. Please try reloading the page or opening the app again.";
@@ -116,6 +116,8 @@
             setTimeout(() => {
                 toast.remove();
             }, 10000);
+
+            Sentry.captureException(error);
         }
     </script>
 

@@ -1,4 +1,4 @@
-﻿namespace SD.WEB.Modules.Support.Core
+﻿namespace SD.WEB.Modules.Help.Core
 {
     public class StoreLink(SD.Shared.Enums.Platform platform, string store, string url, string logo)
     {

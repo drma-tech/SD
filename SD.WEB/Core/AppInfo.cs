@@ -1,4 +1,4 @@
-﻿using SD.WEB.Modules.Support.Core;
+﻿using SD.WEB.Modules.Help.Core;
 
 namespace SD.WEB.Core
 {
