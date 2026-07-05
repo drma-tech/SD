@@ -2,7 +2,6 @@
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-import { isBot, isPrintScreen, supabaseConfig } from "./main.js";
 import { storage, notification, interop } from "./utils.js";
 
 let authReadyResolve;
@@ -24,8 +23,8 @@ let serviceRoleKey = null;
 
 function initAuth() {
     const supabase = createClient(
-        supabaseConfig.projectUrl,
-        serviceRoleKey ?? supabaseConfig.supabaseKey,
+        window.appConfig.supabaseConfig.projectUrl,
+        serviceRoleKey ?? window.appConfig.supabaseConfig.supabaseKey,
         {
             auth: {
                 persistSession: true,
@@ -41,7 +40,7 @@ function initAuth() {
     authReadyResolve(); // any call to ensureAuthReady will now proceed
 }
 
-if (!isBot && !isPrintScreen) {
+if (!window.appConfig.isBot && !window.appConfig.isPrintScreen) {
     setTimeout(() => {
         try {
             initAuth();

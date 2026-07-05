@@ -1,6 +1,5 @@
 ﻿"use strict";
 
-import { baseApiUrl } from "./main.js";
 import { storage, notification, interop } from "./utils.js";
 
 export const apple = {
@@ -79,7 +78,7 @@ export const stripe = {
                 const { data } = await window.supabase.auth.getSession();
 
                 response = await fetch(
-                    `${baseApiUrl}/api/stripe/create-checkout-session/${priceId}?url=${window.location.href}`,
+                    `${window.appConfig.baseApiUrl}/api/stripe/create-checkout-session/${priceId}?url=${window.location.href}`,
                     {
                         method: "POST",
                         headers: {

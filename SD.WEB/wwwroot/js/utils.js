@@ -1,7 +1,5 @@
 "use strict";
 
-import { isBot, hideBlazorIndex } from "./main.js";
-
 export const storage = {
     clearAllStorage() {
         localStorage.clear();
@@ -203,10 +201,7 @@ export const environment = {
         storage.setLocalStorage("platform", platform);
     },
     async validateBrowserAndPlatform() {
-        const wasmSupported = typeof WebAssembly === "object";
-
-        //The browser does not support WASM or SIMD.
-        if (!wasmSupported || hideBlazorIndex) {
+        if (!window.appConfig.blazorSupported) {
             notification.showBrowserWarning();
         }
     },
@@ -278,9 +273,9 @@ export const environment = {
         });
     },
     async isAdBlocked() {
-        if (window.location.hostname === 'localhost') { return false; }
-        if (isBot) { return false; }
-        if (hideBlazorIndex) { return false; }
+        if (window.appConfig.isLocalhost) { return false; }
+        if (window.appConfig.isBot) { return false; }
+        if (!window.appConfig.blazorSupported) { return false; }
         if (window.isAdBlocked === false) { return false; }
 
         //detect if adsense exists
@@ -395,7 +390,7 @@ export const interop = {
     }
 };
 
-if (!isBot) {
+if (!window.appConfig.isBot) {
     environment.detectPlatform();
     environment.validateBrowserAndPlatform();
 }

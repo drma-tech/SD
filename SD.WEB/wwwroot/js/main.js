@@ -1,12 +1,9 @@
-﻿const ua = navigator.userAgent;
+﻿"use strict";
 
-window.browser = window?.bowser?.getParser
-    ? window.bowser.getParser(ua)
-    : null;
-
+const ua = navigator.userAgent;
+window.browser = window.bowser?.getParser ? window.bowser.getParser(ua) : null;
 const botUAs = ["google", "baidu", "bingbot", "duckduckbot", "teoma", "slurp", "yandex", "toutiao", "bytespider", "applebot", "crawler"];
-
-export const isBot = botUAs.some(bot => ua.toLowerCase().includes(bot)) || navigator.webdriver;
+const isBot = botUAs.some(bot => ua.toLowerCase().includes(bot)) || navigator.webdriver;
 
 function testBrowserVersion(rules, ignore = false, fallback = false) {
     if (ignore) return false;
@@ -20,8 +17,15 @@ function testBrowserVersion(rules, ignore = false, fallback = false) {
     }
 }
 
+const wasmSupported = typeof WebAssembly === "object";
+const isLocalhost = window.location.hostname === "localhost";
+const isPrerendering = window.location.hostname === "127.0.0.1"
+const isDev = location.hostname.includes("develop");
+const isWebview = /webtonative/i.test(ua);
+const isPrintScreen = location.href.includes("printscreen");
+
 //browser versions not compatible with SIMD
-export const hideBlazorIndex = testBrowserVersion(
+const simdNotSupported = testBrowserVersion(
     {
         chrome: "<91", //may 21
         edge: "<91", //may 21
@@ -33,8 +37,11 @@ export const hideBlazorIndex = testBrowserVersion(
     false // uncertain environment → allow
 );
 
+//The browser does not support WASM or SIMD.
+const blazorSupported = wasmSupported && !simdNotSupported;
+
 //probably a bot, so doesnt support sw
-export const disableServiceWorker = testBrowserVersion(
+const disableServiceWorker = testBrowserVersion(
     {
         chrome: "<134", //special case (usually bots)
         edge: "<91", //may 21
@@ -42,25 +49,34 @@ export const disableServiceWorker = testBrowserVersion(
         safari: "<16.4", //mar 23
         opera: "<77", //jun 21
     },
-    false,
+    isWebview,
     true // uncertain environment → disable
 );
 
-export const isLocalhost = location.host.includes("localhost");
-export const isDev = location.hostname.includes("develop");
-export const isWebview = /webtonative/i.test(ua);
-export const isPrintScreen = location.href.includes("printscreen");
-
-export const servicesConfig = {
+const servicesConfig = {
     AnalyticsCode: "G-4PREF5QX1F",
     ClarityKey: "r2iwqdpwtv",
     UserBackToken: "A-A2J4M5NKCbDp1QyQe7ogemmmq",
     SentryDsn: "https://94ae67eb3fb0bc82327607ddd9d6aebb@o4510938040041472.ingest.us.sentry.io/4510938043711488",
 };
 
-export const supabaseConfig = {
+const supabaseConfig = {
     projectUrl: "https://mlsztbywzbbqqbwgplky.supabase.co",
     supabaseKey: "sb_publishable_kwSh9KlLSaccPHPd7ZsqGw_VGpAs73w",
 };
 
-export const baseApiUrl = isLocalhost ? "http://localhost:7071" : "";
+const baseApiUrl = isLocalhost ? "http://localhost:7071" : "";
+
+window.appConfig = {
+    isBot,
+    blazorSupported,
+    disableServiceWorker,
+    isLocalhost,
+    isPrerendering,
+    isDev,
+    isWebview,
+    isPrintScreen,
+    servicesConfig,
+    supabaseConfig,
+    baseApiUrl
+};
