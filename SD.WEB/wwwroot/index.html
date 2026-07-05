@@ -109,50 +109,26 @@
     <script src="https://js.sentry-cdn.com/94ae67eb3fb0bc82327607ddd9d6aebb.min.js" crossorigin="anonymous"></script>
     <script>
         try {
-            if (window.appConfig.blazorSupported) {
-                if (window.Blazor) {
-                    Blazor.start({
-                        configureRuntime: runtime => runtime.withConfig({
-                            loadAllSatelliteResources: window.appConfig.isPrerendering
-                        })
+            if (window.Blazor) {
+                Blazor.start({
+                    configureRuntime: runtime => runtime.withConfig({
+                        loadAllSatelliteResources: window.appConfig.isPrerendering
                     })
-                }
-                else {
-                    const os = window.browser?.getOSName();
-                    const browser = window.browser?.getBrowserName();
-                    const version = window.browser?.getBrowserVersion();
+                })
+            }
+            else {
+                const toast = document.createElement("div");
+                toast.className = "toast";
+                toast.textContent = "The app could not be started due to an unexpected failure. Try refreshing the page, reopening the app, disabling strict content blockers, or using the latest version of a modern browser.";
 
-                    document.body.innerHTML = `
-                        <div style="display:flex; align-items:center; justify-content:center; min-height:100vh; background:#f0f2f5; font-family:'Segoe UI', Roboto, sans-serif; padding:1rem;">
-                            <div style="background:#fff; padding:1.2rem; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.1); width:100%; max-width:450px; text-align:center; color:#333;">
-                                <div style="font-size:2.2rem; margin-bottom:0.5rem;">⚠️</div>
-                                <h2 style="font-size:1.3rem; margin-bottom:0.75rem;">Application failed to start</h2>
-                                <p style="font-size:1rem; line-height:1.5; margin-bottom:1rem;">
-                                    The app could not be started due to an unexpected failure.
-                                    Try refreshing the page, reopening the app, disabling strict content blockers, or using the latest version of a modern browser, such as Chrome, Edge, Firefox, or Safari.
-                                </p>
-                                <div style="background:#f9fafb; border-radius:12px; padding:0.8rem; font-size:0.95rem; color:#444; margin-bottom:1rem;">
-                                    <strong>Detected environment:</strong><br>
-                                    ${os}<br>
-                                    ${browser} ${version}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
+                const stack = document.getElementById("toast-stack");
+                stack.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.remove();
+                }, 10000);
             }
         } catch (error) {
-            const toast = document.createElement("div");
-            toast.className = "toast";
-            toast.textContent = "An error occurred while loading the platform. Please try reloading the page or opening the app again.";
-
-            const stack = document.getElementById("toast-stack");
-            stack.appendChild(toast);
-
-            setTimeout(() => {
-                toast.remove();
-            }, 10000);
-
             Sentry.captureException(error);
         }
     </script>

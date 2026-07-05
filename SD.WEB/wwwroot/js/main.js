@@ -24,21 +24,19 @@ const isDev = location.hostname.includes("develop");
 const isWebview = /webtonative/i.test(ua);
 const isPrintScreen = location.href.includes("printscreen");
 
-//browser versions not compatible with SIMD
-const simdNotSupported = testBrowserVersion(
-    {
-        chrome: "<91", //may 21
-        edge: "<91", //may 21
-        firefox: "<89", //may 21
-        safari: "<16.4", //mar 23
-        opera: "<77", //jun 21
-    },
-    /Mediapartners-Google/i.test(ua),
-    false // uncertain environment → allow
-);
+function supportsWasmSimd() {
+    if (typeof WebAssembly === "undefined") return false;
+    const bytes = new Uint8Array([
+        0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
+        0x01, 0x05, 0x01, 0x60, 0x00, 0x01, 0x7b,
+        0x03, 0x02, 0x01, 0x00,
+        0x0a, 0x0a, 0x01, 0x08, 0x00, 0x41, 0x00, 0xfd, 0x0f, 0xfd, 0x62, 0x0b
+    ]);
+    return WebAssembly.validate(bytes);
+}
 
 //The browser does not support WASM or SIMD.
-const blazorSupported = wasmSupported && !simdNotSupported;
+const blazorSupported = wasmSupported && supportsWasmSimd();
 
 //probably a bot, so doesnt support sw
 const disableServiceWorker = testBrowserVersion(
