@@ -132,6 +132,14 @@
         <MudGrid Spacing="@Css.SpaceSmall">
             @foreach (var store in AppInfo.Stores)
             {
+                if (CurrentPlatform == SD.Shared.Enums.Platform.ios)
+                {
+                    if (store.Platform == SD.Shared.Enums.Platform.play)
+                    {
+                        continue;
+                    }
+                }
+
                 <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudButton Variant="Variant.Filled" FullWidth="true" Href="@store.Url" Target="_blank" rel="noopener">
                         <MudImage Src="@store.Logo" Class="me-2" Style="width: 20px; vertical-align: top;" Alt="@store.Store" />
@@ -185,6 +193,16 @@
 </PageSectionComponent>
 
 @code {
+    private SD.Shared.Enums.Platform? CurrentPlatform;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            CurrentPlatform = await AppStateStatic.GetPlatform(JsRuntime, cts.Token);
+        }
+    }
+
     private async Task DownloadData()
     {
         try
