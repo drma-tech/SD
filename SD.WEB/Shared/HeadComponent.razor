@@ -52,10 +52,16 @@
 </script>
 
 @code {
+    /// <summary>
+    /// less than 70 characters
+    /// </summary>
     [Parameter, EditorRequired] public string? Title { get; set; }
     [Parameter, EditorRequired] public string Url { get; set; }
     [Parameter, EditorRequired] public bool Index { get; set; }
 
+    /// <summary>
+    /// between 25 and 160 characters in length
+    /// </summary>
     [Parameter] public string? Description { get; set; }
     /// <summary>
     /// optional, but absolute url is necessary if provided

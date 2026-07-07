@@ -1,5 +1,4 @@
 ﻿using SD.Shared.Models.List.Tmdb;
-using SD.WEB.Modules.Collections.Resources;
 
 namespace SD.WEB.Modules.Collections.Core;
 
@@ -32,7 +31,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
                     title = item.title,
                     original_title = item.original_title,
                     original_language = item.original_language,
-                    plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
+                    plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
                     release_date = item.release_date?.GetDate(),
                     poster_small = string.IsNullOrEmpty(item.poster_path)
                         ? null
@@ -77,7 +76,7 @@ public class TmdbApi(IHttpClientFactory factory) : ApiExternal(factory)
                     title = item.name,
                     original_title = item.original_name,
                     original_language = item.original_language,
-                    plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
+                    plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
                     release_date = item.first_air_date?.GetDate(),
                     poster_small = string.IsNullOrEmpty(item.poster_path)
                         ? null

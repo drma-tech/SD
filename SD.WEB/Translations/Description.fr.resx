@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppDescription" xml:space="preserve">
+    <value>Suivez vos plateformes de streaming, gérez la progression de votre visionnage et découvrez ce qu'il faut regarder ensuite grâce à des listes organisées, des lauréats et des choix de critiques.</value>
+  </data>
+  <data name="AwardsYear" xml:space="preserve">
+    <value>Découvrez les films et séries qui ont remporté les plus grands prix de l’année. Découvrez les principales catégories, les gagnants et les titres célèbres reconnus par la critique et le public.</value>
+  </data>
+  <data name="Compare" xml:space="preserve">
+    <value>Comparez Streaming Discovery avec les agrégateurs. Trouvez où regarder, les évaluations multi-sources, les avis d'experts, les listes organisées et la disponibilité mondiale.</value>
+  </data>
+  <data name="EditorsChoice" xml:space="preserve">
+    <value>Découvrez notre choix de l'éditeur : des films et des séries régulièrement bien notés sur IMDb, TMDb, Metacritic, Rotten Tomatoes, Trakt, FilmAffinity et Letterboxd.</value>
+  </data>
+  <data name="ExpectedMovies" xml:space="preserve">
+    <value>Découvrez les films les plus attendus de {0}, avec les superproductions à venir, les favoris des fans et les sorties très attendues en salles et en streaming.</value>
+  </data>
+  <data name="FreeWatch" xml:space="preserve">
+    <value>Découvrez des films et séries gratuits que vous pouvez regarder légalement. Mis à jour quotidiennement avec une disponibilité en streaming sur plusieurs plates-formes.</value>
+  </data>
+  <data name="FreeWatchExtended" xml:space="preserve">
+    <value>Découvrez gratuitement {0} que vous pouvez regarder légalement dans {1}. Mis à jour quotidiennement avec une disponibilité en streaming sur plusieurs plates-formes.</value>
+  </data>
+  <data name="HelpCenter" xml:space="preserve">
+    <value>Obtenez des guides détaillés, des conseils de dépannage, des FAQ et contactez l'assistance pour {0}. Résolvez les problèmes et découvrez facilement les fonctionnalités.</value>
+  </data>
+  <data name="HowItWorks" xml:space="preserve">
+    <value>Découvrez comment Modern Matchmaker évalue la compatibilité, suggère des correspondances significatives et offre une alternative plus intelligente aux rencontres et au matchmaking traditionnels.</value>
+  </data>
+  <data name="News" xml:space="preserve">
+    <value>Recevez les derniers films, émissions de télévision, actualités sur les célébrités et mises à jour sur la culture pop. Restez informé de tout ce qui concerne le divertissement.</value>
+  </data>
+  <data name="NewsShort" xml:space="preserve">
+    <value>Recevez les derniers films, émissions de télévision, actualités sur les célébrités et mises à jour sur la culture pop.</value>
+  </data>
+  <data name="Platforms" xml:space="preserve">
+    <value>Parcourez les services de streaming proposant des films, des émissions de télévision et des documentaires. Découvrez des plateformes pour tous les goûts, des succès grand public aux contenus de niche.</value>
+  </data>
+  <data name="PopularIndex" xml:space="preserve">
+    <value>Découvrez les films, émissions de télévision et stars les plus populaires de la semaine dernière, classés par intérêt du public. Restez au courant des tendances en matière de divertissement.</value>
+  </data>
+  <data name="Trailers" xml:space="preserve">
+    <value>Regardez les dernières bandes-annonces et teasers de films en HD. Restez informé des films à venir, des superproductions et des sorties incontournables.</value>
+  </data>
+  <data name="TrailersShort" xml:space="preserve">
+    <value>Regardez les dernières bandes-annonces et teasers de films en HD.</value>
+  </data>
+  <data name="WhoIsItFor" xml:space="preserve">
+    <value>Modern Matchmaker s'adresse aux personnes qui recherchent des relations significatives et à long terme sans les limites des applications de rencontres ni le coût élevé du jumelage traditionnel.</value>
+  </data>
+</root>

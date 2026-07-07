@@ -1,7 +1,5 @@
 ﻿@using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Collections.Core
-@using Button = SD.WEB.Resources.Button
 @inherits ComponentCore<PlatformPopup>
 
 @inject MyProvidersApi MyProvidersApi
@@ -14,18 +12,18 @@
         @if (Provider == null)
         {
             <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Error">
-                @Translations.NotFound
+                @Translations.Module.Media.NotFound
             </MudAlert>
         }
         else
         {
-            <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
+            <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Module.Media.Popular" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "popularity.desc", WatchRegion)"
                           ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
             </MediaListComponent>
-            <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
+            <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Module.Media.Release" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "primary_release_date.desc", WatchRegion)"
                           ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
             </MediaListComponent>
-            <MediaListComponent ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
+            <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Module.Media.TopRated" MediaListApi="TmdbDiscoveryApi" StringParameters="@GetExtraParameters(ProviderId, "vote_average.desc", WatchRegion)"
                           ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Watching="Watching" Wish="Wish" Popup="true" Culture="@Culture">
             </MediaListComponent>
         }
@@ -34,17 +32,17 @@
         @if (MyProviders?.Items.Any(a => a.id == ProviderId) ?? false)
         {
             <MudButton Color="Color.Error" StartIcon="@Icons.Material.Filled.Remove" OnClick="@Remove" Disabled="@(!AppStateStatic.IsAuthenticated)">
-                @Button.Remove
+                @Translations.Button.Remove
             </MudButton>
         }
         else
         {
             <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="@Add" Disabled="@(!AppStateStatic.IsAuthenticated)">
-                @Button.Add
+                @Translations.Button.Add
             </MudButton>
         }
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">
-            @Button.Close
+            @Translations.Button.Close
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -105,7 +103,7 @@
             var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = await AppStateStatic.GetRegion(null, null, cts.Token) };
             MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, cts.Token);
 
-            await ShowSuccess(GlobalTranslations.OperationCompleted);
+            await ShowSuccess(Translations.Notification.OperationCompleted);
         }
         catch (Exception ex)
         {
@@ -121,12 +119,11 @@
 
             MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == ProviderId), ApiContext.Default.MyProvidersItem, cts.Token);
 
-            await ShowSuccess(GlobalTranslations.OperationCompleted);
+            await ShowSuccess(Translations.Notification.OperationCompleted);
         }
         catch (Exception ex)
         {
             await ProcessException(ex);
         }
     }
-
 }

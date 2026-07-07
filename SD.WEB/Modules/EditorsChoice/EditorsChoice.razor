@@ -5,13 +5,12 @@
 @inject WishListApi WishApi
 
 @using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Collections.Resources
 @using SD.WEB.Modules.Profile.Core
 @inherits PageCore<EditorsChoice>
 
-<HeadComponent Title="@($"{Translations.EditorsChoiceTitle} ({MediaType.GetName()})")" Description="@GlobalTranslations.CertifiedDescription"
+<HeadComponent Title="@($"{Translations.Title.EditorsChoice} ({MediaType.GetName()})")" Description="@Translations.Description.EditorsChoice"
                Url="@($"/{Culture}/editors-choice/{Type}")" Index="true" Shared="true"></HeadComponent>
-<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.EditorsChoiceTitle} ({MediaType.GetName()})")" Subtitle="Top-rated titles for all audiences" Description="@GlobalTranslations.CertifiedDescription"
+<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Title.EditorsChoice} ({MediaType.GetName()})")" Subtitle="Top-rated titles for all audiences" Description="@Translations.Description.EditorsChoice"
                       UrlShare="@($"/{Culture}/editors-choice/{Type}")"></PageSectionComponent>
 
 @if (MediaType == MediaType.movie)

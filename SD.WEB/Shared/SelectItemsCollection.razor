@@ -1,5 +1,4 @@
-﻿@using Button = SD.WEB.Resources.Button
-@inherits ComponentCore<SelectItemsCollection>
+﻿@inherits ComponentCore<SelectItemsCollection>
 
 <MudDialog Style="width: 100%">
     <DialogContent>
@@ -14,13 +13,13 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@SelectAll" Color="Color.Primary">
-            All
+            Translations.Button.All
         </MudButton>
         <MudButton OnClick="@Confirm" Color="Color.Primary" Disabled="SelectedItems.Empty()">
-            @Button.Ok
+            @Translations.Button.Ok
         </MudButton>
         <MudButton OnClick="@HideModal" Color="Color.Error">
-            @Button.Cancel
+            @Translations.Button.Cancel
         </MudButton>
     </DialogActions>
 </MudDialog>

@@ -232,7 +232,7 @@ public abstract class ComponentCore<T> : BaseComponentCore<T> where T : class
             _ => enMessage
         };
 
-        bool? result = await DialogService.ShowMessageBoxAsync(GlobalTranslations.ExternalWebsiteNotice, message, yesText: Button.ContinueWebsite, cancelText: Button.Cancel);
+        bool? result = await DialogService.ShowMessageBoxAsync(Translations.Notification.ExternalWebsiteNotice, message, yesText: Translations.Button.ContinueWebsite, cancelText: Translations.Button.Cancel);
 
         if (result == true)
         {

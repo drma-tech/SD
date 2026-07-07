@@ -1,7 +1,6 @@
 ﻿@using SD.Shared.Models.List.Tmdb
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Core
-@using Button = SD.WEB.Resources.Button
 @using SD.WEB.Shared.Core
 @inherits ComponentCore<CollectionPopup>
 
@@ -28,14 +27,14 @@
         @if (AppStateStatic.IsAuthenticated)
         {
             <MudButton Color="Color.Primary" OnClick="@IsWatched">
-                @Button.Update
+                @Translations.Button.Update
             </MudButton>
             <MudButton Color="Color.Error" OnClick="@RemoveCollection">
-                @GlobalTranslations.RemoveCollection
+                @Translations.Button.RemoveCollection
             </MudButton>
         }
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">
-            @Button.Close
+            @Translations.Button.Close
         </MudButton>
     </DialogActions>
 </MudDialog>

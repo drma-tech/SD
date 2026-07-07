@@ -7,8 +7,8 @@
     <DialogContent>
         <MudGrid Spacing="@Css.SpaceMedium">
             <MudItem xs="12">
-                <MudSelect Value="@Region" ValueChanged="@((Region vl) => RegionValueChanged(vl))" Label="@GlobalTranslations.Region"
-                           HelperText="@GlobalTranslations.RegionDesc" FullWidth="true">
+                <MudSelect Value="@Region" ValueChanged="@((Region vl) => RegionValueChanged(vl))" Label="@Translations.Module.Help.Region"
+                           HelperText="@Translations.Module.Help.RegionDesc" FullWidth="true">
                     @foreach (var item in regions.OrderBy(p => p.GetName()))
                     {
                         <MudSelectItem Value="@item">@item.GetName()</MudSelectItem>
@@ -16,8 +16,8 @@
                 </MudSelect>
             </MudItem>
             <MudItem xs="12">
-                <MudSelect Value="@Language" ValueChanged="@((AppLanguage vl) => AppLanguageValueChanged(vl))" Label="@GlobalTranslations.AppLanguage"
-                           HelperText="@GlobalTranslations.AppLanguageDesc" FullWidth="true">
+                <MudSelect Value="@Language" ValueChanged="@((AppLanguage vl) => AppLanguageValueChanged(vl))" Label="@Translations.Module.Help.AppLanguage"
+                           HelperText="@Translations.Module.Help.AppLanguageDesc" FullWidth="true">
                     @foreach (var item in appLanguages.OrderBy(p => p.GetName()))
                     {
                         <MudSelectItem Value="@item">@item.GetName()</MudSelectItem>
@@ -25,8 +25,8 @@
                 </MudSelect>
             </MudItem>
             <MudItem xs="12">
-                <MudSelect Value="@ContentLanguage" ValueChanged="@((ContentLanguage vl) => ContentLanguageValueChanged(vl))" Label="@GlobalTranslations.ContentLanguage"
-                           HelperText="@GlobalTranslations.ContentLanguageDesc" FullWidth="true">
+                <MudSelect Value="@ContentLanguage" ValueChanged="@((ContentLanguage vl) => ContentLanguageValueChanged(vl))" Label="@Translations.Module.Help.ContentLanguage"
+                           HelperText="@Translations.Module.Help.ContentLanguageDesc" FullWidth="true">
                     @foreach (var item in contentLanguages.OrderBy(p => p.GetName()))
                     {
                         <MudSelectItem Value="@item">@item.GetName()</MudSelectItem>
@@ -34,16 +34,16 @@
                 </MudSelect>
             </MudItem>
             <MudItem xs="12">
-                <MudText Class="mb-1" Style="font-size: 14px;">@GlobalTranslations.AppTheme</MudText>
+                <MudText Class="mb-1" Style="font-size: 14px;">@Translations.Module.Help.AppTheme</MudText>
                 <MudToggleGroup Value="DarkMode" ValueChanged="(bool vl) => DarkModeChanged(vl)" SelectionMode="SelectionMode.SingleSelection"
                                 Vertical="false" Color="Color.Primary">
                     <MudToggleItem Value="false">
-                        <MudIcon Icon="@Icons.Material.Filled.LightMode" Title="@GlobalTranslations.LightMode" Class="me-1"></MudIcon>
-                        @GlobalTranslations.LightMode
+                        <MudIcon Icon="@Icons.Material.Filled.LightMode" Title="@Translations.Module.Help.LightMode" Class="me-1"></MudIcon>
+                        @Translations.Module.Help.LightMode
                     </MudToggleItem>
                     <MudToggleItem Value="true">
-                        <MudIcon Icon="@Icons.Material.Filled.DarkMode" Title="@GlobalTranslations.DarkMode" Class="me-1"></MudIcon>
-                        @GlobalTranslations.DarkMode
+                        <MudIcon Icon="@Icons.Material.Filled.DarkMode" Title="@Translations.Module.Help.DarkMode" Class="me-1"></MudIcon>
+                        @Translations.Module.Help.DarkMode
                     </MudToggleItem>
                 </MudToggleGroup>
             </MudItem>
@@ -51,7 +51,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">
-            @Button.Close
+            @Translations.Button.Close
         </MudButton>
     </DialogActions>
 </MudDialog>

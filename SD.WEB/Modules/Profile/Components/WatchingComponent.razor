@@ -6,7 +6,7 @@
 @inject TmdbApi TmdbApi
 @inject WatchingListApi WatchingApi
 
-<PageSectionComponent Title="@WEB.Modules.Profile.Resources.Translations.Following" ShowHeader="ShowHeader" Icon="@Icons.Material.Filled.RemoveRedEye" CustomBodyClass="mb-0">
+<PageSectionComponent Title="@Translations.Module.Profile.Following" ShowHeader="ShowHeader" Icon="@Icons.Material.Filled.RemoveRedEye" CustomBodyClass="mb-0">
     <BodyFragment>
         @if (TypeParam.HasValue)
         {
@@ -154,8 +154,8 @@
     {
         base.OnInitialized();
 
-        ActionsMovie.CustomMessageWarning = Modules.Profile.Resources.Translations.FollowTitle;
-        ActionsTv.CustomMessageWarning = Modules.Profile.Resources.Translations.FollowTitle;
+        ActionsMovie.CustomMessageWarning = Translations.Module.Profile.FollowTitle;
+        ActionsTv.CustomMessageWarning = Translations.Module.Profile.FollowTitle;
     }
 
     private async Task OpenCompleteList(MediaType type)

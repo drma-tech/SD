@@ -10,24 +10,24 @@
 @inject WishListApi WishApi
 @inject TmdbSearchKeywordApi TmdbSearchKeywordApi
 
-<HeadComponent Title="@SeoTranslations.Search" Description="@SeoTranslations.AppDescription" Url=@($"/{Culture}/search") Index="false"></HeadComponent>
+<HeadComponent Title="@Translations.Title.AppSubtitle" Description="@Translations.Description.AppDescription" Url=@($"/{Culture}/search") Index="false"></HeadComponent>
 
-<PageSectionComponent Title="@SeoTranslations.Search" CustomBodyClass="@Css.Build().Medium("mb")">
+<PageSectionComponent Title="@Translations.Module.Landing.Search" CustomBodyClass="@Css.Build().Medium("mb")">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" TabPanelsClass="@Css.Build().Small("pt")" @bind-ActivePanelIndex="@AppStateStatic.Index">
             <ChildContent>
-                <MudTabPanel Text="@SeoTranslations.Title">
-                    <MudTextField T="string" Label="@SeoTranslations.EnterTitle" Placeholder="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio" @bind-Text="@AppStateStatic.Query" Immediate="true" OnKeyDown="@KeyPress"
+                <MudTabPanel Text="@Translations.Module.Landing.Title">
+                    <MudTextField T="string" Label="@Translations.Module.Landing.EnterTitle" Placeholder="Example: Superman, Dune, Dexter, Andor, Henry Cavill, Leonardo DiCaprio" @bind-Text="@AppStateStatic.Query" Immediate="true" OnKeyDown="@KeyPress"
                                   AdornmentIcon="@Icons.Material.Filled.Search" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary"
                                   Variant="Variant.Outlined" OnAdornmentClick="@ProcessPageData" Clearable="true"
-                                  HelperText="@GlobalTranslations.TypeSomething" InputType="InputType.Text">
+                                  HelperText="@Translations.Module.Landing.TypeSomething" InputType="InputType.Text">
                     </MudTextField>
                 </MudTabPanel>
-                <MudTabPanel Text="@SeoTranslations.Keywords">
-                    <MudTextField T="string" Label="@SeoTranslations.EnterKeyword" Placeholder="Example: love, robot, lost, animation, superhero, family" @bind-Text="@AppStateStatic.Query" Immediate="true"
+                <MudTabPanel Text="@Translations.Module.Landing.Keywords">
+                    <MudTextField T="string" Label="@Translations.Module.Landing.EnterKeyword" Placeholder="Example: love, robot, lost, animation, superhero, family" @bind-Text="@AppStateStatic.Query" Immediate="true"
                                   AdornmentIcon="@Icons.Material.Filled.Search" Adornment="@(AppStateStatic.Query.NotEmpty() ? Adornment.End : Adornment.None)" AdornmentColor="Color.Primary" Variant="Variant.Outlined"
                                   OnKeyDown="@KeyPressKeyboard" OnAdornmentClick="@(async() => { if (AppStateStatic.Query.NotEmpty()) await SearchKeyWords(); })" Clearable="true" 
-                                  OnClearButtonClick="@(() => AppStateStatic.Keywords = [])" HelperText="@SeoTranslations.SearchKeywords" InputType="InputType.Text">
+                                  OnClearButtonClick="@(() => AppStateStatic.Keywords = [])" HelperText="@Translations.Module.Landing.SearchKeywords" InputType="InputType.Text">
                     </MudTextField>
                     @foreach (var item in AppStateStatic.Keywords)
                     {
@@ -38,13 +38,13 @@
                     @if (AppStateStatic.Keywords.NotEmpty())
                     {
                         <MudChip T="string" Color="Color.Secondary" Size="AppStateStatic.Size" OnClick="@LoadMore" Disabled="@DisableLoadMore">
-                            @Button.LoadMore
+                            @Translations.Button.LoadMore
                         </MudChip>
                     }
                 </MudTabPanel>
-                <MudTabPanel Text="@SeoTranslations.Advanced">
+                <MudTabPanel Text="@Translations.Module.Landing.Advanced">
                     <MudToolBar Gutters="false" WrapContent="true">
-                        <MudSelect T="MediaType?" @bind-Value="AppStateStatic.Type" Variant="Variant.Outlined" Label="@SeoTranslations.Type" Clearable="true" Class="me-2">
+                        <MudSelect T="MediaType?" @bind-Value="AppStateStatic.Type" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Type" Clearable="true" Class="me-2">
                             @foreach (var item in EnumHelper.GetArray<MediaType>().Where(p => p != MediaType.person))
                             {
                                 <MudSelectItem Value="(MediaType?)(object?)item">@item.GetName()</MudSelectItem>
@@ -52,7 +52,7 @@
                         </MudSelect>
                         @if (AppStateStatic.Type == MediaType.movie)
                         {
-                            <MudSelect T="MovieGenre?" @bind-Value="AppStateStatic.MovieGenre" Variant="Variant.Outlined" Label="@SeoTranslations.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
+                            <MudSelect T="MovieGenre?" @bind-Value="AppStateStatic.MovieGenre" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
                                 @foreach (var item in EnumHelper.GetArray<MovieGenre>())
                                 {
                                     <MudSelectItem Value="(MovieGenre?)(object?)item">@item.GetName()</MudSelectItem>
@@ -61,14 +61,14 @@
                         }
                         else
                         {
-                            <MudSelect T="TvGenre?" @bind-Value="AppStateStatic.TvGenre" Variant="Variant.Outlined" Label="@SeoTranslations.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
+                            <MudSelect T="TvGenre?" @bind-Value="AppStateStatic.TvGenre" Variant="Variant.Outlined" Label="@Translations.Module.Landing.Genre" Clearable="true" Disabled="AppStateStatic.Type == null" Class="me-2">
                                 @foreach (var item in EnumHelper.GetArray<TvGenre>())
                                 {
                                     <MudSelectItem Value="(TvGenre?)(object?)item">@item.GetName()</MudSelectItem>
                                 }
                             </MudSelect>
                         }
-                        <MudSelect T="string" @bind-Value="AppStateStatic.SortBy" Variant="Variant.Outlined" Label="@SeoTranslations.SortBy" Class="me-2">
+                        <MudSelect T="string" @bind-Value="AppStateStatic.SortBy" Variant="Variant.Outlined" Label="@Translations.Module.Landing.SortBy" Class="me-2">
                             <MudSelectItem Value="@("original_title.asc")">original_title.asc</MudSelectItem>
                             <MudSelectItem Value="@("original_title.desc")">original_title.desc</MudSelectItem>
                             <MudSelectItem Value="@("popularity.asc")">popularity.asc</MudSelectItem>
@@ -140,7 +140,7 @@
 
     protected override void OnInitialized()
     {
-        Actions.CustomMessageWarning = GlobalTranslations.SearchReturnedNothing;
+        Actions.CustomMessageWarning = Translations.Module.Landing.SearchReturnedNothing;
 
         WatchingApi.DataChanged += model => { Watching = model; StateHasChanged(); };
         WishApi.DataChanged += model => { Wish = model; StateHasChanged(); };

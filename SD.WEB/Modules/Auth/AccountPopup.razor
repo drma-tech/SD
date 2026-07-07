@@ -1,5 +1,4 @@
 ﻿@using SD.WEB.Modules.Auth.Core
-@using SD.WEB.Modules.Profile.Resources
 
 @inherits ComponentCore<AccountPopup>
 
@@ -11,16 +10,16 @@
             <MudTabPanel Text="Auth">
                 <MudGrid Spacing="@Css.SpaceSmall">
                     <MudItem xs="12">
-                        <MudTextField T="@string" Label="@Translations.AuthProviders" Text="@(string.Join(", ", AppStateStatic.Principal?.AuthProviders ?? []))" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
+                        <MudTextField T="@string" Label="@Translations.Module.Profile.AuthProviders" Text="@(string.Join(", ", AppStateStatic.Principal?.AuthProviders ?? []))" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField T="@string" Label="@Translations.Identification" Text="@AppStateStatic.Principal?.UserId" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
+                        <MudTextField T="@string" Label="@Translations.Module.Profile.Identification" Text="@AppStateStatic.Principal?.UserId" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                     <MudItem xs="12">
                         <MudTextField T="@string" Label="Display Name" Text="@AppStateStatic.Principal?.DisplayName" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField T="@string" Label="@Translations.Email" Text="@AppStateStatic.Principal?.Email" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
+                        <MudTextField T="@string" Label="@Translations.Module.Profile.Email" Text="@AppStateStatic.Principal?.Email" Variant="Variant.Filled" ReadOnly="true"></MudTextField>
                     </MudItem>
                 </MudGrid>
             </MudTabPanel>
@@ -46,7 +45,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">
-            @Button.Close
+            @Translations.Button.Close
         </MudButton>
     </DialogActions>
 </MudDialog>

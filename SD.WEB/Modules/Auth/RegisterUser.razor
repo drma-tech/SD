@@ -2,7 +2,6 @@
 @inherits PageCore<RegisterUser>
 
 @using SD.WEB.Modules.Auth.Core
-@using SD.WEB.Modules.Auth.Resources
 @using SD.WEB.Modules.Subscription.Core
 
 @inject LoginApi LoginApi
@@ -18,27 +17,27 @@
         {
             <MudPaper Elevation="0" Outlined="true" Class="pa-3">
                 <MudText Typo="Typo.h1" Color="Color.Primary" Class="@Css.Build().Large("mb")" Style="font-size: 23px !important; line-height: 1.6 !important;" Align="Align.Center">
-                    @Translations.CreateAccount
+                    @Translations.Module.Auth.CreateAccount
                 </MudText>
 
                 <MudCheckBox @bind-Value="_terms1" Color="Color.Primary" Class="@Css.Build().Small("mb")">
                     <MudText Inline="true">
-                        @((MarkupString)string.Format(Translations.Terms1, $"<a href='/{Culture}/legal/terms' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Help.Resources.Translations.TermsUse}</a>", $"<a href='/{Culture}/legal/privacy' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Help.Resources.Translations.PrivacyPolicy}</a>"))
+                        @((MarkupString)string.Format(SD.WEB.Translations.Module.Auth.Terms1, $"<a href='/{Culture}/legal/terms' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Translations.Module.Legal.TermsUse}</a>", $"<a href='/{Culture}/legal/privacy' target='_blank' rel='noopener' class='mud-link mud-primary-text mud-link-underline-hover'>{Translations.Module.Legal.PrivacyPolicy}</a>"))
                     </MudText>
                 </MudCheckBox>
                 <MudCheckBox @bind-Value="_terms2" Color="Color.Primary" Class="@Css.Build().Small("mb")">
                     <MudText Inline="true">
-                        @Translations.Terms2
+                        @Translations.Module.Auth.Terms2
                     </MudText>
                 </MudCheckBox>
 
                 <div style="display: flex;">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAccount" Disabled="(!_terms1 || !_terms2)" Class="@Css.Build().Large("mt").Raw("me-2")">
-                        @Button.Confirm
+                        @Translations.Button.Confirm
                     </MudButton>
                     <MudSpacer></MudSpacer>
                     <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="Logout" Class="@Css.Build().Large("mt")">
-                        @Button.Cancel / @Button.Logout
+                        @Translations.Button.Cancel / @Translations.Button.Logout
                     </MudButton>
                 </div>
             </MudPaper>
@@ -46,7 +45,7 @@
         else
         {
             <MudAlert Variant="Variant.Filled" Severity="Severity.Warning" Dense="true" Icon="@IconsFA.Solid.Icon("spinner").Animation(IconAnimation.Spin).Font">
-                @Translations.AuthenticationInProgress
+                @Translations.Module.Auth.AuthenticationInProgress
             </MudAlert>
         }
     </MudContainer>

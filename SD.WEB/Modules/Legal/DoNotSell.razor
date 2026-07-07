@@ -1,7 +1,7 @@
 ﻿@page "/{culture}/legal/do-not-sell"
 @inherits PageCore<DoNotSell>
 
-<HeadComponent Title="Do Not Sell or Share My Personal Information" Url=@($"/{Culture}/legal/do-not-sell") Index="false"></HeadComponent>
+<HeadComponent Title="@Translations.Module.Legal.DoNotSell" Url=@($"/{Culture}/legal/do-not-sell") Index="false"></HeadComponent>
 
 <div class="support-container">
     @if (Language == AppLanguage.pt)

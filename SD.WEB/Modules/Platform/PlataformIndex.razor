@@ -5,7 +5,6 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Shared.Core
 @inherits PageCore<PlataformIndex>
@@ -20,25 +19,25 @@
 }
 else
 {
-    <HeadComponent Title="@(FreePlatforms ? Translations.FreeTitleProviders.Format(RegionEnum?.GetName() ?? "invalid country") : Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country"))"
-                   Description="@SeoTranslations.PlatformsDescription" Url=@($"/{Culture}/platforms/{Region}") Index="@Region.NotEmpty()"></HeadComponent>
+    <HeadComponent Title="@(FreePlatforms ? Translations.Title.FreeProviders.Format(RegionEnum?.GetName() ?? "invalid country") : Translations.Title.Providers.Format(RegionEnum?.GetName() ?? "invalid country"))"
+                   Description="@Translations.Description.Platforms" Url=@($"/{Culture}/platforms/{Region}") Index="@Region.NotEmpty()"></HeadComponent>
 
-    <PageSectionComponent IsPageHeader="true" Title="@(FreePlatforms ? Translations.FreeTitleProviders.Format(RegionEnum?.GetName() ?? "invalid country") : Translations.TitleProviders.Format(RegionEnum?.GetName() ?? "invalid country"))"
-                          Description="@SeoTranslations.PlatformsDescription">
+    <PageSectionComponent IsPageHeader="true" Title="@(FreePlatforms ? Translations.Title.FreeProviders.Format(RegionEnum?.GetName() ?? "invalid country") : Translations.Title.Providers.Format(RegionEnum?.GetName() ?? "invalid country"))"
+                          Description="@Translations.Description.Platforms">
         <ActionsFragment>
-            <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="@Resources.Translations.DeliveryModel" Dense="true" Class="me-2" Disabled="FreePlatforms">
+            <MudSelect T="DeliveryModel?" @bind-Value="@DeliveryModel" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="@Translations.Module.Media.DeliveryModel" Dense="true" Class="me-2" Disabled="FreePlatforms">
                 @foreach (var item in DeliveryModels)
                 {
                     <MudSelectItem T="DeliveryModel?" Value="@item.Value">@item.Name</MudSelectItem>
                 }
             </MudSelect>
-            <MudSelect T="MediaType?" @bind-Value="@MediaType" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="@Resources.Translations.MediaType" Dense="true" Class="me-2">
+            <MudSelect T="MediaType?" @bind-Value="@MediaType" Clearable="true" FitContent="true" Style="min-width: 150px;" Label="@Translations.Module.Media.MediaType" Dense="true" Class="me-2">
                 @foreach (var item in MediaTypes)
                 {
                     <MudSelectItem T="MediaType?" Value="@item.Value">@item.Name</MudSelectItem>
                 }
             </MudSelect>
-            <MudTextField T="string" Label="@Resources.Translations.Name" @bind-Value="@name" Clearable="true" Variant="Variant.Text" Immediate="true" Style="max-width: 180px;"></MudTextField>
+            <MudTextField T="string" Label="@Translations.Module.Media.Name" @bind-Value="@name" Clearable="true" Variant="Variant.Text" Immediate="true" Style="max-width: 180px;"></MudTextField>
         </ActionsFragment>
     </PageSectionComponent>
 
@@ -70,7 +69,7 @@ else
                             </MudCardHeader>
                             <MudCardContent Class="py-1 px-2" Style="height: 48px;">
                                 <MudText Typo="Typo.body2" Color="Color.Secondary" Inline="true">
-                                    @Modules.Platform.Resources.Translations.DeliveryModel:
+                                    @Translations.Module.Media.DeliveryModel:
                                 </MudText>
                                 <MudText Typo="Typo.body2" Inline="true">
                                     @(item.models.Any() ? string.Join(", ", item.models.Select(m => m.GetName())) : "N/A")
@@ -78,7 +77,7 @@ else
                             </MudCardContent>
                             <MudCardContent Class="py-1 px-2" Style="height: 48px;">
                                 <MudText Typo="Typo.body2" Color="Color.Secondary" Inline="true">
-                                    @Modules.Platform.Resources.Translations.MediaType:
+                                    @Translations.Module.Media.MediaType:
                                 </MudText>
                                 <MudText Typo="Typo.body2" Inline="true">
                                     @(item.types.Any() ? string.Join(", ", item.types.Select(m => m.GetName())) : "N/A")
@@ -86,7 +85,7 @@ else
                             </MudCardContent>
                             <MudCardContent Class="py-1 px-2">
                                 <MudText Typo="Typo.body2" Color="Color.Secondary" Inline="true">
-                                    @Modules.Platform.Resources.Translations.Countries:
+                                    @Translations.Module.Media.Countries:
                                 </MudText>
                                 <MudText Typo="Typo.body2" Inline="true">
                                     @item.regions.Count
@@ -131,7 +130,7 @@ else
             <div style="text-align: center;" class="@Css.Build().Small("pt").Large("mb")">
                 <MudButton StartIcon="@Icons.Material.Filled.ExpandMore" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ShowAll = true)"
                            Disabled="@(ShowAll || AllProviders == null || GetFilteredProviders(true).Count == GetFilteredProviders(false).Count)">
-                    @Button.LoadMore
+                    @Translations.Button.LoadMore
                 </MudButton>
             </div>
         }
@@ -139,7 +138,7 @@ else
         {
             <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning"
                       Class="@Css.Build().Large("mb")" Style="text-align: justify; width: 100%;">
-                @GlobalTranslations.CustomVisibilityNoData
+                @Translations.Notification.CustomVisibilityNoData
             </MudAlert>
         }
     </RenderControl>
@@ -221,7 +220,7 @@ else
         {
             if (!AppStateStatic.IsAuthenticated)
             {
-                await ShowWarning(GlobalTranslations.YouMustLogged);
+                await ShowWarning(Translations.Notification.YouMustLogged);
                 return;
             }
 
@@ -232,7 +231,7 @@ else
             var item = new MyProvidersItem { id = provider?.id, name = provider?.name, logo = provider?.logo_path, region = region };
             MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, cts.Token);
 
-            await ShowSuccess(Translations.PlatformAdded);
+            await ShowSuccess(Translations.Notification.PlatformAdded);
         }
         catch (Exception ex)
         {
@@ -246,7 +245,7 @@ else
         {
             if (!AppStateStatic.IsAuthenticated)
             {
-                await ShowWarning(GlobalTranslations.YouMustLogged);
+                await ShowWarning(Translations.Notification.YouMustLogged);
                 return;
             }
 
@@ -254,7 +253,7 @@ else
 
             MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == provider?.id), ApiContext.Default.MyProvidersItem, cts.Token);
 
-            await ShowSuccess(Translations.PlatformRemoved);
+            await ShowSuccess(Translations.Notification.PlatformRemoved);
         }
         catch (Exception ex)
         {

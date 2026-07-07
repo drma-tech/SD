@@ -1,6 +1,5 @@
 ﻿@using SD.WEB.Modules.Collections.Interface
 @using SD.WEB.Modules.Profile.Core
-@using Button = SD.WEB.Resources.Button
 @using SD.WEB.Shared.Core
 @inherits ComponentCore<CompleteListPopup>
 
@@ -17,7 +16,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@HideModal">
-            @Button.Close
+            @Translations.Button.Close
         </MudButton>
     </DialogActions>
 </MudDialog>

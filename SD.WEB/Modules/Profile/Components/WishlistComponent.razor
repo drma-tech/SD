@@ -1,7 +1,7 @@
 ﻿@using SD.WEB.Shared.Core
 @inherits ComponentCore<WishlistComponent>
 
-<PageSectionComponent Title="@WEB.Modules.Profile.Resources.Translations.Wishlist" ShowHeader="ShowHeader" Icon="@Icons.Material.Filled.Bookmark">
+<PageSectionComponent Title="@Translations.Module.Profile.Wishlist" ShowHeader="ShowHeader" Icon="@Icons.Material.Filled.Bookmark">
     <BodyFragment>
         @if (TypeParam.HasValue)
         {
@@ -163,8 +163,8 @@
     {
         base.OnInitialized();
 
-        ActionsMovie.CustomMessageWarning = Modules.Profile.Resources.Translations.AddTitlesWishlist;
-        ActionsTv.CustomMessageWarning = Modules.Profile.Resources.Translations.AddTitlesWishlist;
+        ActionsMovie.CustomMessageWarning = Translations.Module.Profile.AddTitlesWishlist;
+        ActionsTv.CustomMessageWarning = Translations.Module.Profile.AddTitlesWishlist;
     }
 
     private async Task OpenCompleteList(MediaType type)

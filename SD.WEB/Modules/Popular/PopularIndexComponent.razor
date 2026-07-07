@@ -1,10 +1,9 @@
 ﻿@using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Platform.Resources
 @inherits ComponentCore<PopularIndexComponent>
 
 @inject ImdbPopularApi ImdbPopularApi
 
-<PageSectionComponent Title="@Translations.Popular" Description="@GlobalTranslations.PopularIndexDescription">
+<PageSectionComponent Title="@Translations.Module.Media.Popular" Description="@Translations.Description.PopularIndex">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">

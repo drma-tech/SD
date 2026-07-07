@@ -6,7 +6,6 @@
 @using SD.WEB.Modules.Media.Components
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Collections.Resources
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Shared.Core
 
@@ -30,31 +29,31 @@
             @if (Wish?.Movies.Any(a => a.id == TmdbId) ?? false)
             {
                 <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@Remove" Class="me-2">
-                    @Translations.RemoveWishlist
+                    @Translations.Button.RemoveWishlist
                 </MudButton>
             }
             else if (Wish?.Shows.Any(a => a.id == TmdbId) ?? false)
             {
                 <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@Remove" Class="me-2">
-                    @Translations.RemoveWishlist
+                    @Translations.Button.RemoveWishlist
                 </MudButton>
             }
             else
             {
                 <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@Add" Class="me-2">
-                    @Translations.AddWishlist
+                    @Translations.Button.AddWishlist
                 </MudButton>
             }
             @if (Watching?.Contains(Type, Watching.GetItem(Type, TmdbId ?? "")) ?? false)
             {
                 <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@IsNotWatched" Class="me-2">
-                    @Translations.Unfollow
+                    @Translations.Button.Unfollow
                 </MudButton>
             }
             else
             {
                 <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@IsWatched" Class="me-2">
-                    @Translations.Follow
+                    @Translations.Button.Follow
                 </MudButton>
             }
         </ActionsFragment>
@@ -63,13 +62,13 @@
 
 <RenderControl Actions="Actions" LoadingHeight="400px">
     <ChildContent>
-        <PageSectionComponent Title="@Translations.TabAbout" Color="Color.Secondary">
+        <PageSectionComponent Title="@Translations.Module.Media.TabAbout" Color="Color.Secondary">
             <BodyFragment>
                 <MediaAbout ImdbId="@ImdbId" TmdbId="@TmdbId" Media="@Media" EnglishTitle="@EnglishTitle" Watching="Watching" Wish="Wish" Type="Type"
                             Actions="RatingsActions" RatingsCache="_ratingsCache"></MediaAbout>
             </BodyFragment>
         </PageSectionComponent>
-        <PageSectionComponent Title="@($"{GlobalTranslations.WhereToWatch} ({Region?.GetName()})")" Color="Color.Secondary">
+        <PageSectionComponent Title="@($"{Translations.Module.Media.WhereToWatch} ({Region?.GetName()})")" Color="Color.Secondary">
             <BodyFragment>
                 <MediaStreaming TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaStreaming>
             </BodyFragment>
@@ -77,7 +76,7 @@
 
         <Advertising Slot="@AdSlot.Middle"></Advertising>
 
-        <PageSectionComponent Title="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
+        <PageSectionComponent Title="@(Media?.MediaType == MediaType.movie ? Translations.Module.Media.TabCollection1 : Translations.Module.Media.TabCollection2)" Color="Color.Secondary" Visible="@(Media?.Collection.Any() ?? false)">
             <BodyFragment>
                 <div class="grid-relative-container-poster">
                     @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
@@ -123,7 +122,7 @@
             </BodyFragment>
         </PageSectionComponent>
 
-        <PageSectionComponent Title="@SeoTranslations.Keywords" Color="Color.Secondary">
+        <PageSectionComponent Title="@Translations.Module.Landing.Keywords" Color="Color.Secondary">
             <BodyFragment>
                 <KeywordsComponent Culture="@Culture" TmdbId="@TmdbId" Type="@Type"></KeywordsComponent>
             </BodyFragment>
@@ -172,7 +171,7 @@
 
         <Advertising Slot="@AdSlot.Middle"></Advertising>
 
-        <PageSectionComponent Title="@Translations.TabCredits" Color="Color.Secondary">
+        <PageSectionComponent Title="@Translations.Module.Media.TabCredits" Color="Color.Secondary">
             <BodyFragment>
                 <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchingList="Watching" WishList="Wish" Culture="@Culture">
                 </CreditsComponent>
@@ -329,7 +328,7 @@
         {
             if (!AppStateStatic.IsAuthenticated)
             {
-                await ShowWarning(GlobalTranslations.YouMustLogged);
+                await ShowWarning(Translations.Notification.YouMustLogged);
                 return;
             }
 
@@ -367,7 +366,7 @@
         {
             if (!AppStateStatic.IsAuthenticated)
             {
-                await ShowWarning(GlobalTranslations.YouMustLogged);
+                await ShowWarning(Translations.Notification.YouMustLogged);
                 return;
             }
 
@@ -385,7 +384,7 @@
             }
             else
             {
-                await ShowWarning(Translations.NoFollow);
+                await ShowWarning(Translations.Notification.NoFollow);
             }
         }
         catch (Exception ex)

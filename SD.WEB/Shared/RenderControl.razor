@@ -9,13 +9,13 @@
 else if (Actions.CurrentStatus == RenderStatus.Error)
 {
     <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.BugReport" Style="text-align: justify;">
-        @(Actions.MessageError ?? GlobalTranslations.CustomVisibilityInvalid)
+        @(Actions.MessageError ?? Translations.Notification.CustomVisibilityInvalid)
     </MudAlert>
 }
 else if (PremiumFeature && !IsPremium)
 {
     <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Diamond" Style="text-align: justify;">
-        <span class="me-2" style="font-weight: bold;">@GlobalTranslations.PremiumFeature</span>
+        <span class="me-2" style="font-weight: bold;">@Translations.Notification.PremiumFeature</span>
         @if (!string.IsNullOrEmpty(Actions.CustomPremiumDescription))
         {
             @Actions.CustomPremiumDescription
@@ -25,13 +25,13 @@ else if (PremiumFeature && !IsPremium)
 else if (PrivateFeature && !IsAuthenticated)
 {
     <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Lock" Style="text-align: justify;">
-        @Modules.Auth.Resources.Translations.UnauthenticatedUser
+        @Translations.Module.Auth.UnauthenticatedUser
     </MudAlert>
 }
 else if (Actions.CurrentStatus == RenderStatus.Warning)
 {
     <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning" Style="text-align: justify;">
-        @(Actions.MessageWarning ?? GlobalTranslations.CustomVisibilityNoData)
+        @(Actions.MessageWarning ?? Translations.Notification.CustomVisibilityNoData)
     </MudAlert>
 }
 else //Content
@@ -45,7 +45,7 @@ else //Content
         else
         {
             <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning" Style="text-align: justify;">
-                @GlobalTranslations.CustomVisibilityNoData
+                @Translations.Notification.CustomVisibilityNoData
             </MudAlert>
         }
     }

@@ -3,7 +3,6 @@
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Platform.Resources
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Shared.Core
 @inherits PageCore<PlataformDetail>
@@ -21,7 +20,7 @@
 }
 else
 {
-    <HeadComponent Title="@SeoTranslations.PlatformDetailTitle.Format(Provider?.name)" Description="@Provider?.description" Url="@($"/{Culture}/platform/{Provider?.id}")" Image="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Index="true" Shared="true" />
+    <HeadComponent Title="@Translations.Title.PlatformDetail.Format(Provider?.name)" Description="@Provider?.description" Url="@($"/{Culture}/platform/{Provider?.id}")" Image="@(TmdbOptions.OriginalPosterPath + Provider?.logo_path)" Index="true" Shared="true" />
 
     @if (Provider != null)
     {
@@ -29,7 +28,7 @@ else
                               UrlShare="@($"/{Culture}/platform/{Provider.id}")">
             <ActionsFragment>
                 <div>
-                    <MudSelect T="Region?" Value="SelectedRegion" ValueChanged="SelectedRegionChanged" Label="@GlobalTranslations.Region" Variant="Variant.Text" Dense="true" Class="me-2" Style="width: 150px;">
+                    <MudSelect T="Region?" Value="SelectedRegion" ValueChanged="SelectedRegionChanged" Label="@Translations.Module.Media.Region" Variant="Variant.Text" Dense="true" Class="me-2" Style="width: 150px;">
                         @foreach (var item in regions.OrderBy(p => p.GetName()))
                         {
                             <MudSelectItem Value="@((Region?)item)">@item.GetName()</MudSelectItem>
@@ -39,7 +38,7 @@ else
                 @if (Provider.link.NotEmpty() && Platform != SD.Shared.Enums.Platform.huawei)
                 {
                     <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Link" OnClick="@(() => OpenExternalWebsite(Provider.link))" Class="me-2" Variant="Variant.Filled">
-                        @Modules.Platform.Resources.Translations.OfficialWebsite
+                        @Translations.Module.Media.OfficialWebsite
                     </MudButton>
                 }
                 @if (Provider != null)
@@ -47,13 +46,13 @@ else
                     @if (MyProviders?.Items.Any(a => a.id == Provider?.id) ?? false)
                     {
                         <MudButton StartIcon="@Icons.Material.Filled.Remove" Color="Color.Error" OnClick="@Remove" Variant="Variant.Filled" Class="me-2">
-                            @Button.Remove
+                            @Translations.Button.Remove
                         </MudButton>
                     }
                     else
                     {
                         <MudButton StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" OnClick="@Add" Variant="Variant.Filled" Class="me-2">
-                            @Button.Add
+                            @Translations.Button.Add
                         </MudButton>
                     }
                 }
@@ -62,16 +61,16 @@ else
     }
 
     <RenderControl Actions="Actions">
-        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platform/{Id}/popular/{{0}}")" Culture="@Culture"
-                            ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.PopularDesc.Format(Provider?.name)"
+        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Module.Media.Popular" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platform/{Id}/popular/{{0}}")" Culture="@Culture"
+                            ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Translations.Module.Media.PopularDesc.Format(Provider?.name)"
                             StringParameters="@GetExtraParameters(Id, "popularity.desc")" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3" MinQtdItems="12" DetectRegions="true">
         </MediaListComponent>
-        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platform/{Id}/new/{{0}}")" Culture="@Culture"
-                            ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.NewsDesc.Format(Provider?.name)"
+        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Module.Media.Release" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platform/{Id}/new/{{0}}")" Culture="@Culture"
+                            ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Translations.Module.Media.NewsDesc.Format(Provider?.name)"
                             StringParameters="@GetExtraParameters(Id, "primary_release_date.desc")" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3" MinQtdItems="12" DetectRegions="true">
         </MediaListComponent>
-        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platform/{Id}/top/{{0}}")" Culture="@Culture"
-                            ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Resources.Translations.RecommendedDesc.Format(Provider?.name)"
+        <MediaListComponent ContainsHeader="true" TitleHead="@Translations.Module.Media.TopRated" MediaListApi="TmdbDiscoveryApi" CustomExpand="@($"/{Culture}/platform/{Id}/top/{{0}}")" Culture="@Culture"
+                            ShowMovieFilter="ShowMovieFilter" ShowTvFilter="ShowTvFilter" Description="@Translations.Module.Media.RecommendedDesc.Format(Provider?.name)"
                             StringParameters="@GetExtraParameters(Id, "vote_average.desc")" Watching="Watching" Wish="Wish" ForceTypoTitle="Typo.h3" MinQtdItems="12" DetectRegions="true">
         </MediaListComponent>
     </RenderControl>
@@ -173,7 +172,7 @@ else
     {
         if (Provider == null) return null;
         var models = string.Join(", ", Provider.models.Select(s => s.GetName()));
-        return $"{Modules.Platform.Resources.Translations.DeliveryModel}: {(models.Empty() ? "null" : models)} | {Modules.Platform.Resources.Translations.Countries}: {Provider.regions.Count}";
+        return $"{Translations.Module.Media.DeliveryModel}: {(models.Empty() ? "null" : models)} | {Translations.Module.Media.Countries}: {Provider.regions.Count}";
     }
 
     private async Task Add()
@@ -182,7 +181,7 @@ else
         {
             if (!AppStateStatic.IsAuthenticated)
             {
-                await ShowWarning(GlobalTranslations.YouMustLogged);
+                await ShowWarning(Translations.Notification.YouMustLogged);
                 return;
             }
 
@@ -193,7 +192,7 @@ else
             var item = new MyProvidersItem { id = Provider?.id, name = Provider?.name, logo = Provider?.logo_path, region = region };
             MyProviders = await MyProvidersApi.Add(MyProviders, item, AppStateStatic.ActiveProduct, ApiContext.Default.MyProvidersItem, cts.Token);
 
-            await ShowSuccess(Translations.PlatformAdded);
+            await ShowSuccess(Translations.Notification.PlatformAdded);
         }
         catch (Exception ex)
         {
@@ -207,7 +206,7 @@ else
         {
             if (!AppStateStatic.IsAuthenticated)
             {
-                await ShowWarning(GlobalTranslations.YouMustLogged);
+                await ShowWarning(Translations.Notification.YouMustLogged);
                 return;
             }
 
@@ -215,7 +214,7 @@ else
 
             MyProviders = await MyProvidersApi.Remove(MyProviders.Items.First(f => f.id == Provider?.id), ApiContext.Default.MyProvidersItem, cts.Token);
 
-            await ShowSuccess(Translations.PlatformRemoved);
+            await ShowSuccess(Translations.Notification.PlatformRemoved);
         }
         catch (Exception ex)
         {

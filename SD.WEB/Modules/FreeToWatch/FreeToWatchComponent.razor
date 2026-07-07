@@ -5,7 +5,7 @@
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 @inject IpInfoApi IpInfoApi
 
-<PageSectionComponent Title="@($"{Collections.Resources.Translations.FreeWatch} ({(Region?.GetName() ?? "United States")})")" Description="@(GlobalTranslations.FreeWatchDescription)">
+<PageSectionComponent Title="@($"{Translations.Title.FreeWatch} ({(Region?.GetName() ?? "United States")})")" Description="@Translations.Description.FreeWatch">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">

@@ -1,6 +1,5 @@
 ﻿using SD.Shared.Models.List.Tmdb;
 using SD.WEB.Modules.Collections.Interface;
-using SD.WEB.Modules.Collections.Resources;
 
 namespace SD.WEB.Modules.Collections.Core;
 
@@ -70,7 +69,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
                     {
                         tmdb_id = item.id.ToString(),
                         title = item.title,
-                        plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
+                        plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
                         release_date = item.release_date?.GetDate(),
                         poster_small = string.IsNullOrEmpty(item.poster_path)
                             ? null
@@ -93,7 +92,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
                     {
                         tmdb_id = item.id.ToString(),
                         title = item.name,
-                        plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
+                        plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
                         release_date = item.first_air_date?.GetDate(),
                         poster_small = string.IsNullOrEmpty(item.poster_path)
                             ? null
@@ -120,7 +119,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
                 {
                     tmdb_id = item.id.ToString(),
                     title = item.title,
-                    plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
+                    plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
                     release_date = item.release_date?.GetDate(),
                     poster_small = string.IsNullOrEmpty(item.poster_path)
                         ? null
@@ -147,7 +146,7 @@ public class TmdbDiscoveryApi(IHttpClientFactory factory) : ApiExternal(factory)
                 {
                     tmdb_id = item.id.ToString(),
                     title = item.name,
-                    plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
+                    plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
                     release_date = item.first_air_date?.GetDate(),
                     poster_small = string.IsNullOrEmpty(item.poster_path)
                         ? null

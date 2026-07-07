@@ -22,11 +22,11 @@
 
 <div class="container">
     <div>
-        <MudText Typo="Typo.h4" Color="Color.Primary">@SD.WEB.Modules.Auth.Resources.Translations.UnauthenticatedUser</MudText>
-        <MudText Typo="Typo.h6">@SD.WEB.Modules.Auth.Resources.Translations.YouMustLogged</MudText>
+        <MudText Typo="Typo.h4" Color="Color.Primary">@Translations.Module.Auth.UnauthenticatedUser</MudText>
+        <MudText Typo="Typo.h6">@Translations.Module.Auth.YouMustLogged</MudText>
         <div class="@Css.Build().Large("mt")">
             <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="Login" Class="me-3" Size="AppStateStatic.Size">
-                @Button.Login
+                @Translations.Button.Login
             </MudButton>
             <MudButton Variant="Variant.Text" Color="Color.Default" Href=@($"/{Culture}") Size="AppStateStatic.Size">
                 Return to homepage

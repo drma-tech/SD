@@ -1,5 +1,4 @@
 ﻿@using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Collections.Resources
 @using SD.WEB.Modules.Profile.Core
 @inherits ComponentCore<AwardsOfTheYearComponent>
 
@@ -7,7 +6,7 @@
 @inject WatchingListApi WatchingListApi
 @inject WishListApi WishListApi
 
-<PageSectionComponent Title="@Translations.AwardsOfTheYear.Format(DateTime.Now.Year)" Description="@GlobalTranslations.AwardsYearDescription">
+<PageSectionComponent Title="@Translations.Title.AwardsOfTheYear.Format(DateTime.Now.Year)" Description="@Translations.Description.AwardsYear">
     <BodyFragment>
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
             <Header>

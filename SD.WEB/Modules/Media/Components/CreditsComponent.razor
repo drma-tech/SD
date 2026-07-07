@@ -1,6 +1,5 @@
 ﻿@using SD.Shared.Models.List.Tmdb
 @using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Collections.Resources
 @using SD.WEB.Shared.Core
 @inherits ComponentCore<CreditsComponent>
 
@@ -14,7 +13,7 @@
         {
             <MudPaper Outlined="true" Class="pt-2 px-2 mb-2">
                 <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                    @Translations.Directing
+                    @Translations.Module.Media.Directing
                 </MudText>
                 <MudDivider Class="mb-2"></MudDivider>
                 <MudGrid Spacing="@Css.SpaceSmall" Class="mb-2">
@@ -42,7 +41,7 @@
         {
             <MudPaper Outlined="true" Class="pt-2 px-2 mb-2">
                 <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                    @Translations.Writing
+                    @Translations.Module.Media.Writing
                 </MudText>
                 <MudDivider Class="mb-2"></MudDivider>
                 <MudGrid Spacing="@Css.SpaceSmall" Class="mb-2">
@@ -67,7 +66,7 @@
     }
     <MudPaper Outlined="true" Class="pt-2 px-2 mb-2">
         <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-            @Translations.Cast
+            @Translations.Module.Media.Cast
         </MudText>
         <MudDivider Class="mb-2"></MudDivider>
         <MudGrid Spacing="@Css.SpaceSmall" Class="mb-2">
@@ -120,7 +119,7 @@
                 {
                     tmdb_id = item.id.ToString(),
                     title = type == MediaType.movie ? item.title : item.name,
-                    plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
+                    plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
                     release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
                     poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                     poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,
@@ -155,7 +154,7 @@
                 {
                     tmdb_id = item.id.ToString(),
                     title = type == MediaType.movie ? item.title : item.name,
-                    plot = string.IsNullOrEmpty(item.overview) ? Translations.NoPlot : item.overview,
+                    plot = string.IsNullOrEmpty(item.overview) ? Translations.Module.Media.NoPlot : item.overview,
                     release_date = type == MediaType.movie ? item.release_date?.GetDate() : item.first_air_date?.GetDate(),
                     poster_small = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.SmallPosterPath + item.poster_path,
                     poster_large = string.IsNullOrEmpty(item.poster_path) ? null : TmdbOptions.LargePosterPath + item.poster_path,

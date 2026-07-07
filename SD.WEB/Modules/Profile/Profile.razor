@@ -3,7 +3,6 @@
 @using SD.Shared.Resources.Enum
 @using SD.WEB.Modules.Profile.Components
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Shared.Core
 @using SD.WEB.Modules.Collections.Core
@@ -19,7 +18,7 @@
 @inject WatchingListApi WatchingListApi
 @inject IpInfoApi IpInfoApi
 
-<HeadComponent Title="@SeoTranslations.ProfileTitle" Url=@($"/{Culture}/profile") Index="false"></HeadComponent>
+<HeadComponent Title="@Translations.Title.Profile" Description="@Translations.Description.Profile" Url=@($"/{Culture}/profile") Index="false"></HeadComponent>
 
 <MudGrid Spacing="@Css.SpaceSmall" Class="@Css.Build().Large("mb")">
     <MudItem xs="6" md="4">
@@ -27,7 +26,7 @@
             <div class="d-flex" style="align-self: center;">
                 <MudIcon Icon="@Icons.Material.Filled.Movie" Color="Color.Primary" Class="me-2"></MudIcon>
                 <MudText Typo="Typo.subtitle1" Color="Color.Primary">
-                    @Translations.Platforms
+                    @Translations.Module.Profile.Platforms
                 </MudText>
             </div>
             <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
@@ -40,7 +39,7 @@
             <div class="d-flex" style="align-self: center;">
                 <MudIcon Icon="@Icons.Material.Filled.Bookmark" Color="Color.Primary" Class="me-2"></MudIcon>
                 <MudText Typo="Typo.subtitle1" Color="Color.Primary">
-                    @Translations.Wishlist
+                    @Translations.Module.Profile.Wishlist
                 </MudText>
             </div>
             <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
@@ -56,7 +55,7 @@
             <div class="d-flex" style="align-self: center;">
                 <MudIcon Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary" Class="me-2"></MudIcon>
                 <MudText Typo="Typo.subtitle1" Color="Color.Primary">
-                    @Translations.Following
+                    @Translations.Module.Profile.Following
                 </MudText>
             </div>
             <MudChip T="string" Color="Color.Secondary" Label="true" Style="padding: 0.2rem; height: auto;" Size="AppStateStatic.Size">
@@ -204,7 +203,7 @@
 
         if (demo)
         {
-            await ShowInfo(Resources.Translations.DemoAlert);
+            await ShowInfo(Translations.Module.Profile.DemoAlert);
         }
     }
 

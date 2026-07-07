@@ -1,13 +1,12 @@
 ﻿@page "/{culture}/trailers"
 @using SD.Shared.Models.Trailers
-@using SD.WEB.Modules.Trailers.Resources
 @using SD.WEB.Shared.Core
 @inherits PageCore<Trailers>
 
 @inject CacheYoutubeApi CacheYoutubeApi
 
-<HeadComponent Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" Url=@($"/{Culture}/trailers") Index="true" Shared="true"></HeadComponent>
-<PageSectionComponent IsPageHeader="true" Title="@Translations.TrailersTitle" Description="@Translations.TrailersDescription" UrlShare="@($"/{Culture}/trailers")"></PageSectionComponent>
+<HeadComponent Title="@Translations.Title.Trailers" Description="@Translations.Description.Trailers" Url=@($"/{Culture}/trailers") Index="true" Shared="true"></HeadComponent>
+<PageSectionComponent IsPageHeader="true" Title="@Translations.Title.Trailers" Description="@Translations.Description.Trailers" UrlShare="@($"/{Culture}/trailers")"></PageSectionComponent>
 
 <RenderControl Actions="Actions">
     <div class="grid-relative-container-trailer">

@@ -80,21 +80,21 @@
 
             if (Navigation.Uri.Contains("popular"))
             {
-                TitleHead = $"{provider?.name}: {Modules.Platform.Resources.Translations.Popular} ({TypeSelected!.GetName()})";
-                DescriptionHead = Modules.Platform.Resources.Translations.PopularDesc.Format(provider?.name);
+                TitleHead = $"{provider?.name}: {Translations.Module.Media.Popular} ({TypeSelected!.GetName()})";
+                DescriptionHead = Translations.Module.Media.PopularDesc.Format(provider?.name);
                 StringParameters = GetExtraParameters(id, "popularity.desc");
             }
             else if (Navigation.Uri.Contains("new"))
             {
-                TitleHead = $"{provider?.name}: {Modules.Platform.Resources.Translations.Release} ({TypeSelected!.GetName()})";
-                DescriptionHead = Modules.Platform.Resources.Translations.NewsDesc.Format(provider?.name);
+                TitleHead = $"{provider?.name}: {Translations.Module.Media.Release} ({TypeSelected!.GetName()})";
+                DescriptionHead = Translations.Module.Media.NewsDesc.Format(provider?.name);
                 DetectRegions = true;
                 StringParameters = GetExtraParameters(id, "primary_release_date.desc");
             }
             else if (Navigation.Uri.Contains("top"))
             {
-                TitleHead = $"{provider?.name}: {Modules.Platform.Resources.Translations.TopRated} ({TypeSelected!.GetName()})";
-                DescriptionHead = Modules.Platform.Resources.Translations.RecommendedDesc.Format(provider?.name);
+                TitleHead = $"{provider?.name}: {Translations.Module.Media.TopRated} ({TypeSelected!.GetName()})";
+                DescriptionHead = Translations.Module.Media.RecommendedDesc.Format(provider?.name);
                 DetectRegions = true;
                 StringParameters = GetExtraParameters(id, "vote_average.desc");
             }

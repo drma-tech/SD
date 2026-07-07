@@ -40,139 +40,106 @@
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="Modules\Auth\Resources\Translations.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Translations.resx</DependentUpon>
+		<Compile Update="Translations\Button.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Button.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Modules\Collections\Resources\Translations.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Translations.resx</DependentUpon>
+		<Compile Update="Translations\Description.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Description.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Modules\News\Resources\Translations.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Translations.resx</DependentUpon>
+		<Compile Update="Translations\Module\Auth.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Auth.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Modules\Profile\Resources\Translations.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Translations.resx</DependentUpon>
+		<Compile Update="Translations\Module\Help.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Help.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Modules\Subscription\Resources\Translations.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Translations.resx</DependentUpon>
+		<Compile Update="Translations\Module\Landing.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Landing.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Modules\Suggestions\Resources\Translations.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Translations.resx</DependentUpon>
+		<Compile Update="Translations\Module\Legal.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Legal.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Modules\Platform\Resources\Translations.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Translations.resx</DependentUpon>
+		<Compile Update="Translations\Module\Media.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Media.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Modules\Help\Resources\Translations.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Translations.resx</DependentUpon>
+		<Compile Update="Translations\Module\Profile.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Profile.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Modules\Trailers\Resources\Translations.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Translations.resx</DependentUpon>
+		<Compile Update="Translations\Module\Subscription.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Subscription.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Resources\Button.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Button.resx</DependentUpon>
+		<Compile Update="Translations\Notification.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Notification.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Resources\Credit.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Credit.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Resources\GlobalTranslations.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>GlobalTranslations.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Resources\Menu.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Menu.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Resources\SeoTranslations.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>SeoTranslations.resx</DependentUpon>
+		<Compile Update="Translations\Title.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Title.resx</DependentUpon>
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-		<EmbeddedResource Update="Modules\Auth\Resources\Translations.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Translations\Button.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Button.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Modules\Collections\Resources\Translations.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Translations\Description.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Description.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Modules\News\Resources\Translations.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Translations\Module\Auth.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Auth.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Modules\Profile\Resources\Translations.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Translations\Module\Help.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Help.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Modules\Subscription\Resources\Translations.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Translations\Module\Landing.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Landing.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Modules\Suggestions\Resources\Translations.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Translations\Module\Legal.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Legal.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Modules\Platform\Resources\Translations.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Translations\Module\Media.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Media.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Modules\Help\Resources\Translations.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Translations\Module\Profile.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Profile.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Modules\Trailers\Resources\Translations.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Translations.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Translations\Module\Subscription.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Subscription.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Button.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Button.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Translations\Notification.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Notification.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Credit.it.resx">
-		  <SubType>Designer</SubType>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Credit.fr.resx">
-		  <SubType>Designer</SubType>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Credit.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Credit.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\GlobalTranslations.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>GlobalTranslations.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Menu.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Menu.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\SeoTranslations.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>SeoTranslations.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Translations\Title.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Title.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
 	<PropertyGroup>

@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Advanced" xml:space="preserve">
+    <value>Avançado</value>
+  </data>
+  <data name="Approach01" xml:space="preserve">
+    <value>Sistema de compatibilidade</value>
+  </data>
+  <data name="Approach01Desc" xml:space="preserve">
+    <value>Sugerimos combinações usando nosso sistema de compatibilidade que avalia valores, estilo de vida e objetivos de relacionamento.</value>
+  </data>
+  <data name="Approach02" xml:space="preserve">
+    <value>Conexões Intencionais</value>
+  </data>
+  <data name="Approach02Desc" xml:space="preserve">
+    <value>Nossa plataforma foi projetada para apoiar relacionamentos sérios, concentrando-se em apresentações significativas, em vez de na navegação casual.</value>
+  </data>
+  <data name="Approach03" xml:space="preserve">
+    <value>Perfis verificados</value>
+  </data>
+  <data name="Approach03Desc" xml:space="preserve">
+    <value>A verificação de identidade e foto é necessária antes da interação para ajudar a garantir autenticidade e confiança.</value>
+  </data>
+  <data name="Approach04" xml:space="preserve">
+    <value>Privacidade e Segurança</value>
+  </data>
+  <data name="Approach04Desc" xml:space="preserve">
+    <value>Nossa plataforma protege seus dados e fornece um ambiente seguro para todos os usuários, proporcionando confiança durante a conexão.</value>
+  </data>
+  <data name="Approach05" xml:space="preserve">
+    <value>Moeda Sparks</value>
+  </data>
+  <data name="Approach05Desc" xml:space="preserve">
+    <value>Sparks é nossa moeda virtual usada para acessar ações e recursos premium em toda a plataforma.</value>
+  </data>
+  <data name="Approach06" xml:space="preserve">
+    <value>Recursos futuros à frente</value>
+  </data>
+  <data name="Approach06Desc" xml:space="preserve">
+    <value>À medida que a plataforma cresce, novos recursos e melhorias de matchmaking serão desbloqueados para mais formas de conexão.</value>
+  </data>
+  <data name="Cities" xml:space="preserve">
+    <value>Cidades</value>
+  </data>
+  <data name="CompareCall" xml:space="preserve">
+    <value>Compare-nos com aplicativos de namoro típicos e veja o que torna nossa abordagem diferente. Explore os principais recursos que nos diferenciam e crie conexões mais significativas.</value>
+  </data>
+  <data name="CompareCall2" xml:space="preserve">
+    <value>Veja você mesmo a diferença e descubra correspondências baseadas em compatibilidade real.</value>
+  </data>
+  <data name="CompatibilitySystem" xml:space="preserve">
+    <value>Sistema de compatibilidade</value>
+  </data>
+  <data name="CompatibilitySystemDesc" xml:space="preserve">
+    <value>Desenvolvemos o sistema de compatibilidade mais avançado e cientificamente respaldado para criar relacionamentos significativos e duradouros.</value>
+  </data>
+  <data name="Countries" xml:space="preserve">
+    <value>Países</value>
+  </data>
+  <data name="CountriesRegistered" xml:space="preserve">
+    <value>Países onde os usuários se registraram até agora</value>
+  </data>
+  <data name="EnterKeyword" xml:space="preserve">
+    <value>Insira uma palavra-chave ou tema</value>
+  </data>
+  <data name="EnterTitle" xml:space="preserve">
+    <value>Insira um título ou nome</value>
+  </data>
+  <data name="Genre" xml:space="preserve">
+    <value>Gênero</value>
+  </data>
+  <data name="HowItWorksCall" xml:space="preserve">
+    <value>Veja como combinamos você com pessoas que se adaptam ao seu estilo de vida, valores e objetivos. Aprenda sobre o processo passo a passo e como o Sparks ajuda você a se envolver de forma significativa.</value>
+  </data>
+  <data name="HowItWorksCall2" xml:space="preserve">
+    <value>Agora que você sabe como funciona, dê o primeiro passo para encontrar sua alma gêmea.</value>
+  </data>
+  <data name="Keywords" xml:space="preserve">
+    <value>Palavras-chave</value>
+  </data>
+  <data name="LastUsers" xml:space="preserve">
+    <value>Últimos usuários</value>
+  </data>
+  <data name="LastUsersSubtitle" xml:space="preserve">
+    <value>Usuários que se cadastraram recentemente na plataforma</value>
+  </data>
+  <data name="OurApproach" xml:space="preserve">
+    <value>Nossa abordagem</value>
+  </data>
+  <data name="OurNumbers" xml:space="preserve">
+    <value>Nossos Números</value>
+  </data>
+  <data name="OurNumbersMsg1" xml:space="preserve">
+    <value>Juntos estamos construindo algo incrível!</value>
+  </data>
+  <data name="OurNumbersMsg2" xml:space="preserve">
+    <value>Nossos números estão crescendo a cada dia. Junte-se à nossa comunidade e encontre seu par perfeito.</value>
+  </data>
+  <data name="OurRoadmap" xml:space="preserve">
+    <value>Nosso Roteiro</value>
+  </data>
+  <data name="OurRoadmapMsg1" xml:space="preserve">
+    <value>Novos recursos desbloqueados conforme nossa comunidade se expande!</value>
+  </data>
+  <data name="OurRoadmapMsg2" xml:space="preserve">
+    <value>Estamos em constante evolução! Novos recursos podem ser lançados antecipadamente caso o desenvolvimento seja concluído antes do prazo. Agradecemos seu feedback e suas sugestões podem ajudar a moldar o futuro da nossa plataforma!</value>
+  </data>
+  <data name="Phase1Opt1" xml:space="preserve">
+    <value>Cadastre-se no nosso banco de perfis para matchmaking</value>
+  </data>
+  <data name="Phase1Opt2" xml:space="preserve">
+    <value>Explore nosso sistema de compatibilidade</value>
+  </data>
+  <data name="Phase1Opt3" xml:space="preserve">
+    <value>Sparks: US$ 1 por unidade</value>
+  </data>
+  <data name="Phase1Title" xml:space="preserve">
+    <value>Fase 1 (0-10k usuários)</value>
+  </data>
+  <data name="Phase2Opt1" xml:space="preserve">
+    <value>Os usuários podem se candidatar como clientes de matchmaking</value>
+  </data>
+  <data name="Phase2Opt3" xml:space="preserve">
+    <value>Sparks: US$ 2 por unidade</value>
+  </data>
+  <data name="Phase2Title" xml:space="preserve">
+    <value>Fase 2 (10k-20k usuários)</value>
+  </data>
+  <data name="Phase3Opt1" xml:space="preserve">
+    <value>Destaque - Impulsione seu perfil na plataforma.</value>
+  </data>
+  <data name="Phase3Opt2" xml:space="preserve">
+    <value>Sparks: US$3 por unidade</value>
+  </data>
+  <data name="Phase3Title" xml:space="preserve">
+    <value>Fase 3 (20k-30k usuários)</value>
+  </data>
+  <data name="Phase4Opt1" xml:space="preserve">
+    <value>Novos recursos a serem anunciados</value>
+  </data>
+  <data name="Phase4Opt2" xml:space="preserve">
+    <value>Sparks: US$ 4 por unidade</value>
+  </data>
+  <data name="Phase4Title" xml:space="preserve">
+    <value>Fase 4 (30k-40k usuários)</value>
+  </data>
+  <data name="RecentlyJoined" xml:space="preserve">
+    <value>Ingressou recentemente</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Busca</value>
+  </data>
+  <data name="SearchKeywords" xml:space="preserve">
+    <value>Pesquise palavras-chave relacionadas a filmes e séries de TV (somente em inglês).</value>
+  </data>
+  <data name="SearchReturnedNothing" xml:space="preserve">
+    <value>Seus termos de pesquisa não retornaram resultados. Altere-os e tente novamente.</value>
+  </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Ordenar por</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Título</value>
+  </data>
+  <data name="TotalUsers" xml:space="preserve">
+    <value>Total de usuários</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="TypeSomething" xml:space="preserve">
+    <value>Pesquise filmes, séries ou pessoas</value>
+  </data>
+  <data name="WhoIsItForCall" xml:space="preserve">
+    <value>Descubra se o Modern Matchmaker é ideal para você e seus objetivos de relacionamento. Entenda quem se beneficia mais com nossa abordagem intencional ao namoro sério.</value>
+  </data>
+  <data name="WhoIsItForCall2" xml:space="preserve">
+    <value>Agora que você sabe que esta plataforma foi feita para você, dê o primeiro passo para encontrar sua alma gêmea.</value>
+  </data>
+</root>

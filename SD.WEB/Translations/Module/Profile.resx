@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddTitlesWishlist" xml:space="preserve">
+    <value>Add titles to your wishlist to appear here</value>
+  </data>
+  <data name="AuthProviders" xml:space="preserve">
+    <value>Auth Providers</value>
+  </data>
+  <data name="BasicRequired" xml:space="preserve">
+    <value>The basic section is mandatory for now. The other sections can be filled in later.</value>
+  </data>
+  <data name="BirthdateTip" xml:space="preserve">
+    <value>Only your age will be published. (We use the Gregorian calendar)</value>
+  </data>
+  <data name="BodyPhoto" xml:space="preserve">
+    <value>Body Photo</value>
+  </data>
+  <data name="Compatibility" xml:space="preserve">
+    <value>Compatibility</value>
+  </data>
+  <data name="CompatibilityDeveloping" xml:space="preserve">
+    <value>Our compatibility system is still developing. If you have any suggestions or feedback, please submit a support ticket or email us.</value>
+  </data>
+  <data name="CompatibilityHigh" xml:space="preserve">
+    <value>Congratulations, you two are made for each other. This relationship has a bright future ahead of it.</value>
+  </data>
+  <data name="CompatibilityLow" xml:space="preserve">
+    <value>Unfortunately, you don't have much in common. We wish you both the best of luck, as it won't be an easy task.</value>
+  </data>
+  <data name="CompatibilityMedium" xml:space="preserve">
+    <value>You are not a perfect couple, but that doesn't mean that the relationship will fail. Review our report carefully and work through these differences together.</value>
+  </data>
+  <data name="CompleteAllSteps" xml:space="preserve">
+    <value>To make your profile public, first complete all the steps</value>
+  </data>
+  <data name="CompleteYourProfile" xml:space="preserve">
+    <value>Complete your profile</value>
+  </data>
+  <data name="DeleteAccount" xml:space="preserve">
+    <value>Delete Account</value>
+  </data>
+  <data name="DemoAlert" xml:space="preserve">
+    <value>We've set up your profile with a few sample items to give you a quick tour of the available features.</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="ExpectedCompatibility" xml:space="preserve">
+    <value>Expected Compatibility</value>
+  </data>
+  <data name="FacePhoto" xml:space="preserve">
+    <value>Face Photo</value>
+  </data>
+  <data name="FeatureNotAvailable" xml:space="preserve">
+    <value>This feature is only available in phase {0}</value>
+  </data>
+  <data name="Following" xml:space="preserve">
+    <value>Following</value>
+  </data>
+  <data name="FollowTitle" xml:space="preserve">
+    <value>Follow titles so they appear here (if it is a series or a movie that is part of a sequence).</value>
+  </data>
+  <data name="GalleryTerm1" xml:space="preserve">
+    <value>The photo taken by your camera will be kept private (it will not be accessible within the platform) for future verification, if necessary.</value>
+  </data>
+  <data name="GalleryTerm2" xml:space="preserve">
+    <value>The data resulting from this validation (attributes of your face) will not be kept on our servers and will only exist during the detection process.</value>
+  </data>
+  <data name="GalleryValidation" xml:space="preserve">
+    <value>Gallery Validation</value>
+  </data>
+  <data name="GeneralCompatibility" xml:space="preserve">
+    <value>General Compatibility</value>
+  </data>
+  <data name="GenerateSimulation" xml:space="preserve">
+    <value>Do you want to generate a match simulation? This is just to demonstrate how our compatibility system works.</value>
+  </data>
+  <data name="GpsNotAccurate" xml:space="preserve">
+    <value>The GPS position is not accurate and may result in an incorrect location. If your city is wrong, please try again later or test on another device or browser.</value>
+  </data>
+  <data name="HelpUsUnlock" xml:space="preserve">
+    <value>Help us unlock the next phase faster! Leave a review to help us grow. The more people who know about the app and sign up, the sooner all the features will be available for you to enjoy.</value>
+  </data>
+  <data name="HeroButton" xml:space="preserve">
+    <value>Create Free Account</value>
+  </data>
+  <data name="HeroCall" xml:space="preserve">
+    <value>Start your journey to find your ideal partner</value>
+  </data>
+  <data name="HeroNote" xml:space="preserve">
+    <value>Note: Not a dating app. A curated matchmaking experience focused on real compatibility.</value>
+  </data>
+  <data name="Identification" xml:space="preserve">
+    <value>Identification</value>
+  </data>
+  <data name="ITrustPlataform" xml:space="preserve">
+    <value>I trust the platform's compatibility system and will only select what is non-negotiable for me.</value>
+  </data>
+  <data name="Likes" xml:space="preserve">
+    <value>Likes</value>
+  </data>
+  <data name="MarkPlatforms" xml:space="preserve">
+    <value>Mark platforms as favorites to appear here</value>
+  </data>
+  <data name="Matches" xml:space="preserve">
+    <value>Matches</value>
+  </data>
+  <data name="Maximum3Items" xml:space="preserve">
+    <value>Choose a maximum of 3 items for each field</value>
+  </data>
+  <data name="MyMovieFollowing" xml:space="preserve">
+    <value>Following - Movies</value>
+  </data>
+  <data name="MyMovieWishlist" xml:space="preserve">
+    <value>Wishlist - Movies</value>
+  </data>
+  <data name="MyPlatforms" xml:space="preserve">
+    <value>Favorite Platforms</value>
+  </data>
+  <data name="MySeriesFollowing" xml:space="preserve">
+    <value>Following - Series</value>
+  </data>
+  <data name="MySeriesWishlist" xml:space="preserve">
+    <value>Wishlist - Series</value>
+  </data>
+  <data name="NotAnswered" xml:space="preserve">
+    <value>Not answered</value>
+  </data>
+  <data name="OptionalSection" xml:space="preserve">
+    <value>Other (optional section)</value>
+  </data>
+  <data name="PartnerProfileNotAvailable" xml:space="preserve">
+    <value>Your partner's profile is not yet available</value>
+  </data>
+  <data name="Platforms" xml:space="preserve">
+    <value>Platforms</value>
+  </data>
+  <data name="PopulateFilterDescription" xml:space="preserve">
+    <value>This process is constantly evolving. If you would like to report an error or improvement, please open a ticket with our support team.</value>
+  </data>
+  <data name="PopulateFilterTitle" xml:space="preserve">
+    <value>Fields automatically populated</value>
+  </data>
+  <data name="PreferHelpTopic1" xml:space="preserve">
+    <value>Here you can define your ideal profile type, so that we can properly calculate your compatibility index</value>
+  </data>
+  <data name="PreferHelpTopic2" xml:space="preserve">
+    <value>The more specific you are in the filters, the less profile options you will have available</value>
+  </data>
+  <data name="Private" xml:space="preserve">
+    <value>Private</value>
+  </data>
+  <data name="ProfileDataBioTip1" xml:space="preserve">
+    <value>To ensure a positive environment, we take harassment and bias seriously. If you encounter this type of behavior, please report the profile immediately.</value>
+  </data>
+  <data name="ProfileDataBioTip2" xml:space="preserve">
+    <value>If you find it challenging to interact or recognize harmful intentions, consider reaching out to friends or family for support.</value>
+  </data>
+  <data name="ProfileDataPersonTip1" xml:space="preserve">
+    <value>For more complex personalities, explore tests on specialized sites. Some can be answered just by reading the item descriptions.</value>
+  </data>
+  <data name="ProfileFilterWarning" xml:space="preserve">
+    <value>Select only what really matters. You can choose up to 8 filters to keep matches relevant.</value>
+  </data>
+  <data name="ProfileNotAvailable" xml:space="preserve">
+    <value>Profile not available</value>
+  </data>
+  <data name="ProfileNotFound" xml:space="preserve">
+    <value>Profile not found or not yet registered properly.</value>
+  </data>
+  <data name="ProfilePrivateMode" xml:space="preserve">
+    <value>Your profile is now in private mode and will not be seen or shared with anyone</value>
+  </data>
+  <data name="ProfilePublicMode" xml:space="preserve">
+    <value>Your profile is now public and can be made available to our customers</value>
+  </data>
+  <data name="Public" xml:space="preserve">
+    <value>Public</value>
+  </data>
+  <data name="RegionsApplied" xml:space="preserve">
+    <value>Regions have been automatically applied for your favorite providers. If they are wrong, please remove and add them again.</value>
+  </data>
+  <data name="StepFilter" xml:space="preserve">
+    <value>Set Filters</value>
+  </data>
+  <data name="StepFilterDesc" xml:space="preserve">
+    <value>Define your non-negotiable preferences.</value>
+  </data>
+  <data name="StepGallery" xml:space="preserve">
+    <value>Photo Gallery</value>
+  </data>
+  <data name="StepGalleryDesc" xml:space="preserve">
+    <value>Upload and organize your photos.</value>
+  </data>
+  <data name="StepProfile" xml:space="preserve">
+    <value>Create Profile</value>
+  </data>
+  <data name="StepProfileDesc" xml:space="preserve">
+    <value>Fill in your details: Basic, Bio, Lifestyle, Personality, Interests, Relationship, and Goals.</value>
+  </data>
+  <data name="StepSettings" xml:space="preserve">
+    <value>Adjust Settings</value>
+  </data>
+  <data name="StepSettingsDesc" xml:space="preserve">
+    <value>Control your profile options and platform behavior.</value>
+  </data>
+  <data name="StepValidation" xml:space="preserve">
+    <value>Profile Validation</value>
+  </data>
+  <data name="StepValidationDesc" xml:space="preserve">
+    <value>The system will verify your information before your profile goes public.</value>
+  </data>
+  <data name="Suggestions" xml:space="preserve">
+    <value>Suggestions</value>
+  </data>
+  <data name="TermTopic1" xml:space="preserve">
+    <value>Be honest in the answers given on this form. All information contained herein is open to denouncements and may be evaluated;</value>
+  </data>
+  <data name="TermTopic2" xml:space="preserve">
+    <value>To be aware of how your data will be treated, we ask you to read our</value>
+  </data>
+  <data name="Tips" xml:space="preserve">
+    <value>Tips</value>
+  </data>
+  <data name="UnableDetectGps" xml:space="preserve">
+    <value>We were unable to detect a GPS system on your device. Please try again or release access to your device's GPS.</value>
+  </data>
+  <data name="Undefined" xml:space="preserve">
+    <value>Undefined</value>
+  </data>
+  <data name="WhatHaveYouWatched" xml:space="preserve">
+    <value>What items have you already watched?</value>
+  </data>
+  <data name="WhyImportant" xml:space="preserve">
+    <value>Why is it important?</value>
+  </data>
+  <data name="Wishlist" xml:space="preserve">
+    <value>Wishlist</value>
+  </data>
+  <data name="Years" xml:space="preserve">
+    <value>Years</value>
+  </data>
+  <data name="YouHaveSelected" xml:space="preserve">
+    <value>You have selected more than {0} options</value>
+  </data>
+  <data name="YourCurrentLocation" xml:space="preserve">
+    <value>Your current location:</value>
+  </data>
+  <data name="YourPartnerProfile" xml:space="preserve">
+    <value>Your partner's profile</value>
+  </data>
+  <data name="YourProfile" xml:space="preserve">
+    <value>Your profile (or preferences)</value>
+  </data>
+</root>

@@ -1,11 +1,10 @@
 ﻿@using SD.Shared.Models.Trailers
-@using SD.WEB.Modules.Trailers.Resources
 @using SD.WEB.Shared.Core
 @inherits ComponentCore<TrailersComponent>
 
 @inject CacheYoutubeApi CacheYoutubeApi
 
-<PageSectionComponent Title="@($"{Translations.TrailersTitle}")" Description="@Translations.TrailersDescriptionShort">
+<PageSectionComponent Title="@Translations.Title.Trailers" Description="@Translations.Description.TrailersShort">
     <BodyFragment>
         <MudTabs KeepPanelsAlive="true" MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")">
             <Header>

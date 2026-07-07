@@ -2,7 +2,6 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using SD.Shared.Models.List.Tmdb
 @using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Collections.Resources
 @using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Shared.Core
@@ -24,7 +23,7 @@
                 <MudItem xs="12" md="6" lg="4">
                     <MudPaper Outlined="true" Class="pt-2 px-2 mud-theme-primary">
                         <MudText Typo="Typo.subtitle1">
-                            @Translations.DeliveryModelFree
+                            @Translations.Module.Media.DeliveryModelFree
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
                         <MudToolBar WrapContent="true" Gutters="false">
@@ -61,7 +60,7 @@
                 <MudItem xs="12" md="6" lg="4">
                     <MudPaper Outlined="true" Class="pt-2 px-2 mud-theme-primary">
                         <MudText Typo="Typo.subtitle1">
-                            @Translations.DeliveryModelAds
+                            @Translations.Module.Media.DeliveryModelAds
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
                         <MudToolBar WrapContent="true" Gutters="false">
@@ -98,7 +97,7 @@
                 <MudItem xs="12" md="6" lg="4">
                     <MudPaper Outlined="true" Class="pt-2 px-2">
                         <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                            @Translations.DeliveryModelFlatRate
+                            @Translations.Module.Media.DeliveryModelFlatRate
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
                         <MudToolBar WrapContent="true" Gutters="false">
@@ -135,7 +134,7 @@
                 <MudItem xs="12" md="6" lg="4">
                     <MudPaper Outlined="true" Class="pt-2 px-2">
                         <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                            @Translations.DeliveryModelFlatRateBuy
+                            @Translations.Module.Media.DeliveryModelFlatRateBuy
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
                         <MudToolBar WrapContent="true" Gutters="false">
@@ -172,7 +171,7 @@
                 <MudItem xs="12" md="6" lg="4">
                     <MudPaper Outlined="true" Class="pt-2 px-2">
                         <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                            @Translations.DeliveryModelRent
+                            @Translations.Module.Media.DeliveryModelRent
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
                         <MudToolBar WrapContent="true" Gutters="false">
@@ -209,7 +208,7 @@
                 <MudItem xs="12" md="6" lg="4">
                     <MudPaper Outlined="true" Class="pt-2 px-2">
                         <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                            @Translations.DeliveryModelBuy
+                            @Translations.Module.Media.DeliveryModelBuy
                         </MudText>
                         <MudDivider Class="mb-2"></MudDivider>
                         <MudToolBar WrapContent="true" Gutters="false">
@@ -245,13 +244,13 @@
                     @if (ReleaseDate?.Date > DateTime.Now.Date)
                     {
                         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning">
-                            @Translations.TitleNotReleased
+                            @Translations.Module.Media.TitleNotReleased
                         </MudAlert>
                     }
                     else
                     {
                         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Warning">
-                            @(string.Format(Translations.TitleNotAvailable, Region.GetName()))
+                            @(string.Format(Translations.Module.Media.TitleNotAvailable, Region.GetName()))
                         </MudAlert>
                     }
 

@@ -1,7 +1,6 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Routing
 @using SD.WEB.Layout
-@using SD.WEB.Modules.Auth.Resources
 @using Microsoft.JSInterop
 @using System.Globalization
 @using Toolbelt.Blazor.PWA.Updater.Service
@@ -27,7 +26,7 @@
                             </NotAuthorized>
                             <Authorizing>
                                 <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true" Icon="@IconsFA.Solid.Icon("spinner").Animation(IconAnimation.Spin).Font">
-                                    @Translations.AuthenticationInProgress
+                                    @Translations.Module.Auth.AuthenticationInProgress
                                 </MudAlert>
                             </Authorizing>
                         </AuthorizeRouteView>

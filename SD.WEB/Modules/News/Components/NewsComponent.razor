@@ -1,11 +1,10 @@
 ﻿@using SD.Shared.Models.News
-@using SD.WEB.Modules.News.Resources
 @using SD.WEB.Shared.Core
 @inherits ComponentCore<NewsComponent>
 
 @inject CacheFlixsterApi CacheFlixsterApi
 
-<PageSectionComponent Title="@($"{Translations.NewsTitle}")" Description="@Translations.NewsDescriptionShort">
+<PageSectionComponent Title="@($"{Translations.Title.News}")" Description="@Translations.Description.NewsShort">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">

@@ -1,6 +1,5 @@
 ﻿@using SD.WEB.Modules.Platform.Core
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Profile.Resources
 @using SD.WEB.Modules.Subscription.Core
 @using SD.WEB.Shared.Core
 @inherits ComponentCore<MyProviderComponent>
@@ -9,7 +8,7 @@
 @inject AllProvidersApi AllProvidersApi
 @inject IpInfoApi IpInfoApi
 
-<PageSectionComponent Title="@Translations.MyPlatforms" ShowActions="ProvidersChanged" Icon="@Icons.Material.Filled.Movie">
+<PageSectionComponent Title="@Translations.Module.Profile.MyPlatforms" ShowActions="ProvidersChanged" Icon="@Icons.Material.Filled.Movie">
     <ActionsFragment>
         <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Warning" Variant="Variant.Filled" OnClick="UpdateProviders" />
     </ActionsFragment>
@@ -52,7 +51,7 @@
 
     protected override void OnInitialized()
     {
-        Actions.CustomMessageWarning = Modules.Profile.Resources.Translations.MarkPlatforms;
+        Actions.CustomMessageWarning = Translations.Module.Profile.MarkPlatforms;
 
         MyProvidersApi.DataChanged += model =>
         {
@@ -97,7 +96,7 @@
                 }
             }
 
-            await ShowInfo(Translations.RegionsApplied);
+            await ShowInfo(Translations.Module.Profile.RegionsApplied);
             await MyProvidersApi.Update(MyProviders, AppStateStatic.ActiveProduct, false, token);
 
             StateHasChanged();

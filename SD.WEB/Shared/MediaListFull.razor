@@ -1,7 +1,6 @@
 ﻿@using SD.Shared.Models.List.Tmdb
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Collections.Interface
-@using Button = SD.WEB.Resources.Button
 @using SD.WEB.Shared.Core
 @inherits ComponentCore<MediaListFull>
 
@@ -28,7 +27,7 @@
 {
     <div style="text-align: center;" class="@Css.Build().Small("pt").Large("mb")">
         <MudButton StartIcon="@Icons.Material.Filled.ExpandMore" Color="Color.Primary" OnClick="@LoadMore" Disabled="@DisableLoadMore" Variant="Variant.Filled">
-            @Button.LoadMore
+            @Translations.Button.LoadMore
         </MudButton>
     </div>
 }

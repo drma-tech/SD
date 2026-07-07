@@ -86,7 +86,7 @@ public static class PopupHelper
             { x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }) },
         };
 
-        var Title = type == MediaType.movie ? Modules.Profile.Resources.Translations.MyMovieFollowing : Modules.Profile.Resources.Translations.MySeriesFollowing;
+        var Title = type == MediaType.movie ? Translations.Module.Profile.MyMovieFollowing : Translations.Module.Profile.MySeriesFollowing;
         var Quantity = type == MediaType.movie ? watching?.Movies.Count ?? 0 : watching?.Shows.Count ?? 0;
 
         await service.ShowAsync<MyWatchingListPopup>(Title.Format(Quantity), parameters, Options(MaxWidth.Large));
@@ -110,7 +110,7 @@ public static class PopupHelper
             { x => x.WishChanged, Factory.Create(new object(), (WishList? list) => { wish = list; }) },
         };
 
-        var Title = type == MediaType.movie ? Modules.Profile.Resources.Translations.MyMovieWishlist : Modules.Profile.Resources.Translations.MySeriesWishlist;
+        var Title = type == MediaType.movie ? Translations.Module.Profile.MyMovieWishlist : Translations.Module.Profile.MySeriesWishlist;
         var Quantity = type == MediaType.movie ? wish?.Movies.Count ?? 0 : wish?.Shows.Count ?? 0;
 
         await service.ShowAsync<MyWishListPopup>(Title.Format(Quantity), parameters, Options(MaxWidth.Large));
@@ -122,7 +122,7 @@ public static class PopupHelper
     {
         var parameters = new DialogParameters<AccountPopup> { };
 
-        await service.ShowAsync<AccountPopup>(Modules.Auth.Resources.Translations.MyAccount, parameters, Options(MaxWidth.Small));
+        await service.ShowAsync<AccountPopup>(Translations.Module.Auth.MyAccount, parameters, Options(MaxWidth.Small));
     }
 
     public static async Task PlatformPopup(this IDialogService service, ProviderModel? provider, WatchingList? watching, WishList? wish,
@@ -153,7 +153,7 @@ public static class PopupHelper
             { x => x.SelectedItemsChanged, itemsChanged },
         };
 
-        await service.ShowAsync<SelectItemsCollection>(GlobalTranslations.WhatHaveYouWatched, parameters, Options(MaxWidth.ExtraSmall));
+        await service.ShowAsync<SelectItemsCollection>(Translations.Module.Profile.WhatHaveYouWatched, parameters, Options(MaxWidth.ExtraSmall));
     }
 
     public static async Task SeasonPopup(this IDialogService service, string? showTitle, string? showSeasonName, string? tmdbId, int? seasonNumber)
@@ -169,14 +169,14 @@ public static class PopupHelper
 
     public static async Task SettingsPopup(this IDialogService service)
     {
-        await service.ShowAsync<SettingsPopup>(GlobalTranslations.Settings, Options(MaxWidth.Small));
+        await service.ShowAsync<SettingsPopup>(Translations.Module.Help.Settings, Options(MaxWidth.Small));
     }
 
     public static async Task SubscriptionPopup(this IDialogService service)
     {
         var parameters = new DialogParameters<SubscriptionPopup> { };
 
-        await service.ShowAsync<SubscriptionPopup>(Modules.Subscription.Resources.Translations.MySubscription, parameters, Options(MaxWidth.Medium));
+        await service.ShowAsync<SubscriptionPopup>(Translations.Module.Subscription.MySubscription, parameters, Options(MaxWidth.Medium));
     }
 
     public static async Task OnboardingPopup(this IDialogService service, string culture)
@@ -186,12 +186,12 @@ public static class PopupHelper
             { x => x.Culture, culture },
         };
 
-        await service.ShowAsync<Onboarding>(string.Format(GlobalTranslations.WelcomeTo, AppInfo.Title), parameters, Options(MaxWidth.Medium));
+        await service.ShowAsync<Onboarding>(string.Format(Translations.Module.Help.WelcomeTo, AppInfo.Title), parameters, Options(MaxWidth.Medium));
     }
 
     public static async Task AskReviewPopup(this IDialogService service)
     {
-        await service.ShowAsync<AskReview>(string.Format(GlobalTranslations.WriteReviewTitle, AppInfo.Title), Options(MaxWidth.Small, false, false));
+        await service.ShowAsync<AskReview>(string.Format(Translations.Module.Help.WriteReviewTitle, AppInfo.Title), Options(MaxWidth.Small, false, false));
     }
 
     public static DialogOptions Options(MaxWidth width, bool allowClose = true, bool showHeader = true)

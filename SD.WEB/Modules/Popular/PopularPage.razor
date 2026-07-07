@@ -4,14 +4,13 @@
 
 @using SD.WEB.Modules.Collections.Core
 @using SD.WEB.Modules.Profile.Core
-@using SD.WEB.Modules.Platform.Resources
 
 @inject ImdbPopularApi ImdbPopularApi
 @inject WatchingListApi WatchingApi
 @inject WishListApi WishApi
 
-<HeadComponent Title="@($"{Translations.Popular} ({PopularType.GetName()})")" Description="@GlobalTranslations.PopularIndexDescription" Url="@($"/{Culture}/popular/{Type}")" Index="true" Shared="true" />
-<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Popular} ({PopularType.GetName()})")" Description="@GlobalTranslations.PopularIndexDescription" UrlShare="@($"/{Culture}/popular/{Type}")" />
+<HeadComponent Title="@($"{Translations.Module.Media.Popular} ({PopularType.GetName()})")" Description="@Translations.Description.PopularIndex" Url="@($"/{Culture}/popular/{Type}")" Index="true" Shared="true" />
+<PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Module.Media.Popular} ({PopularType.GetName()})")" Description="@Translations.Description.PopularIndex" UrlShare="@($"/{Culture}/popular/{Type}")" />
 
 @if (PopularType == PopularType.Movie)
 {

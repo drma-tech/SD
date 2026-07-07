@@ -5,11 +5,11 @@
 
 @inject TmdbDiscoveryApi TmdbDiscoveryApi
 
-<HeadComponent Title="@(Collections.Resources.Translations.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))"
-               Description="@Collections.Resources.Translations.FreeWatchDescriptionExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())"
+<HeadComponent Title="@(Translations.Title.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))"
+               Description="@Translations.Description.FreeWatchExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())"
                Url="@($"/{Culture}/free/{Type}/{Region}")" Index="true" Shared="true"></HeadComponent>
-<PageSectionComponent IsPageHeader="true" Title="@(Collections.Resources.Translations.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))"
-                      Description="@Collections.Resources.Translations.FreeWatchDescriptionExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())"
+<PageSectionComponent IsPageHeader="true" Title="@(Translations.Title.FreeWatchExtended.Format(TypeEnum.GetName(), RegionEnum.GetName()))"
+                      Description="@Translations.Description.FreeWatchExtended.Format(TypeEnum.GetName()?.ToLower(), RegionEnum.GetName())"
                       UrlShare="@($"/{Culture}/free/{Type}/{Region}")"></PageSectionComponent>
 
 @if (TypeEnum == MediaType.movie)

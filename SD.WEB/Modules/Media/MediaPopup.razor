@@ -3,8 +3,6 @@
 @using SD.WEB.Modules.Media.Components
 @using SD.WEB.Modules.Profile.Core
 @using SD.WEB.Modules.Collections.Core
-@using SD.WEB.Modules.Collections.Resources
-@using Button = SD.WEB.Resources.Button
 @using SD.WEB.Shared.Core
 @inherits ComponentCore<MediaPopup>
 
@@ -18,7 +16,7 @@
     <DialogContent>
         <RenderControl Actions="Actions">
             <MudTabs Border="true" Outlined="true" TabPanelsClass="pt-2" MinimumTabWidth="100px">
-                <MudTabPanel Tag="@Translations.TabAbout" Text="@Translations.TabAbout">
+                <MudTabPanel Tag="@Translations.Module.Media.TabAbout" Text="@Translations.Module.Media.TabAbout">
                     <MudGrid Spacing="@Css.SpaceSmall">
                         <MudItem xs="12" md="4">
                             <div style="position: relative;">
@@ -131,7 +129,7 @@
                             {
                                 <MudPaper Outlined="true" Class="pa-2 mb-3">
                                     <MudText Color="Color.Primary" Typo="Typo.subtitle1">
-                                        @Translations.Homepage
+                                        @Translations.Module.Media.Homepage
                                     </MudText>
                                     <MudDivider Class="mb-2"></MudDivider>
                                     <MudLink OnClick="@(() => OpenExternalWebsite(Media.homepage))" Color="Color.Secondary" Style="word-break: break-all;">
@@ -140,15 +138,15 @@
                                 </MudPaper>
                             }
                             <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Icon="@Icons.Material.Filled.Warning">
-                                @Translations.PlatformForManaging
+                                @Translations.Module.Media.PlatformForManaging
                             </MudAlert>
                         </MudItem>
                     </MudGrid>
                 </MudTabPanel>
-                <MudTabPanel Tag="@Translations.TabPlatforms" Text="@GlobalTranslations.WhereToWatch">
+                <MudTabPanel Tag="@Translations.Module.Media.TabPlatforms" Text="@Translations.Module.Media.WhereToWatch">
                     <MediaStreaming TmdbId="@TmdbId" Type="@Type" ReleaseDate="@Media?.release_date"></MediaStreaming>
                 </MudTabPanel>
-                <MudTabPanel Tag="@("Collections")" Text="@(Media?.MediaType == MediaType.movie ? Translations.TabCollection1 : Translations.TabCollection2)"
+                <MudTabPanel Tag="@("Collections")" Text="@(Media?.MediaType == MediaType.movie ? Translations.Module.Media.TabCollection1 : Translations.Module.Media.TabCollection2)"
                              Visible="@(Media?.Collection.Any() ?? false)">
                     <div class="grid-relative-container-poster">
                         @foreach (var item in Media?.Collection.OrderBy(o => o.release_date ?? DateTime.MaxValue).ToList() ?? [])
@@ -212,7 +210,7 @@
                         </MudPaper>
                     }
                 </MudTabPanel>
-                <MudTabPanel Tag="@Translations.TabCredits" Text="@Translations.TabCredits">
+                <MudTabPanel Tag="@Translations.Module.Media.TabCredits" Text="@Translations.Module.Media.TabCredits">
                     <CreditsComponent TmdbId="@TmdbId" Type="@Type" WatchingList="Watching" WishList="Wish" Culture="@Culture">
                     </CreditsComponent>
                 </MudTabPanel>
@@ -230,37 +228,37 @@
             @if (Wish?.Movies.Any(a => a.id == TmdbId) ?? false)
             {
                 <MudButton Color="Color.Error" OnClick="@Remove">
-                    @Translations.RemoveWishlist
+                    @Translations.Button.RemoveWishlist
                 </MudButton>
             }
             else if (Wish?.Shows.Any(a => a.id == TmdbId) ?? false)
             {
                 <MudButton Color="Color.Error" OnClick="@Remove">
-                    @Translations.RemoveWishlist
+                    @Translations.Button.RemoveWishlist
                 </MudButton>
             }
             else
             {
                 <MudButton Color="Color.Primary" OnClick="@Add" Disabled="!AppStateStatic.IsAuthenticated">
-                    @Translations.AddWishlist
+                    @Translations.Button.AddWishlist
                 </MudButton>
             }
 
             @if (Watching?.Contains(Type, Watching.GetItem(Type, TmdbId ?? "")) ?? false)
             {
                 <MudButton Color="Color.Error" OnClick="@IsNotWatched">
-                    @Translations.Unfollow
+                    @Translations.Button.Unfollow
                 </MudButton>
             }
             else
             {
                 <MudButton Color="Color.Primary" OnClick="@IsWatched" Disabled="!AppStateStatic.IsAuthenticated">
-                    @Translations.Follow
+                    @Translations.Button.Follow
                 </MudButton>
             }
         }
         <MudButton OnClick="@(() => { MudDialog?.Close(); })">
-            @Button.Close
+            @Translations.Button.Close
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -409,7 +407,7 @@
             }
             else
             {
-                await ShowWarning(Translations.NoFollow);
+                await ShowWarning(Translations.Notification.NoFollow);
             }
         }
         catch (Exception ex)
