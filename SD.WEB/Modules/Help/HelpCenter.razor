@@ -29,7 +29,7 @@
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/help/faq")>
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/help/faq") rel="nofollow">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Chat"></MudIcon>
                     Browse FAQ
                 </MudButton>
@@ -75,7 +75,7 @@
             @foreach (var lang in Enum.GetValues<AppLanguage>().Where(p => AppStateStatic.SitemapTranslations.Contains(p.ToString())))
             {
                 <MudItem xs="12" sm="6" md="4" lg="3">
-                    <MudButton Variant="Variant.Filled" FullWidth="true" Href="@($"/{lang.ToString()}/help")" OnClick="@(() => Navigation.NavigateTo($"/{lang.ToString()}/help", true))">
+                    <MudButton Variant="Variant.Filled" FullWidth="true" Href="@($"/{lang.ToString()}/help")" OnClick="@(() => Navigation.NavigateTo($"/{lang.ToString()}/help", true))" Rel="nofollow">
                         <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Translate"></MudIcon>
                         @lang.GetName()
                     </MudButton>
@@ -155,13 +155,13 @@
     <BodyFragment>
         <MudGrid Spacing="@Css.SpaceSmall">
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/company/about-us")>
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href=@($"/{Culture}/company/about-us") rel="nofollow">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Business"></MudIcon>
                     About us
                 </MudButton>
             </MudItem>
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudButton Variant="Variant.Filled" FullWidth="true" Href="mailto:contact@drma-tech.com">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Href="mailto:contact@drma-tech.com" rel="nofollow">
                     <MudIcon Class="me-2" Icon="@Icons.Material.Filled.Email"></MudIcon>
                     Contact us
                 </MudButton>
