@@ -133,15 +133,6 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Learn how Modern Matchmaker evaluates compatibility, suggests meaningful matches, and offers a smarter alternative to traditional dating and matchmaking..
-        /// </summary>
-        internal static string HowItWorks {
-            get {
-                return ResourceManager.GetString("HowItWorks", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Get the latest news about {0} and pop culture updates. Stay up to date with everything happening in the world of entertainment..
         /// </summary>
         internal static string News {
@@ -201,15 +192,6 @@ namespace SD.WEB.Translations {
         internal static string TrailersShort {
             get {
                 return ResourceManager.GetString("TrailersShort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Modern Matchmaker is for people seeking meaningful, long-term relationships without the limits of dating apps or the high cost of traditional matchmaking..
-        /// </summary>
-        internal static string WhoIsItFor {
-            get {
-                return ResourceManager.GetString("WhoIsItFor", resourceCulture);
             }
         }
     }

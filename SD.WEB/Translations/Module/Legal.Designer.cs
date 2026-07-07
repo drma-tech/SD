@@ -61,15 +61,6 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Child Safety Policy.
-        /// </summary>
-        internal static string ChildPolicy {
-            get {
-                return ResourceManager.GetString("ChildPolicy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Credits.
         /// </summary>
         internal static string Credits {
@@ -111,15 +102,6 @@ namespace SD.WEB.Translations.Module {
         internal static string PrivacyPolicy {
             get {
                 return ResourceManager.GetString("PrivacyPolicy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Privacy Terms.
-        /// </summary>
-        internal static string PrivacyTerms {
-            get {
-                return ResourceManager.GetString("PrivacyTerms", resourceCulture);
             }
         }
         

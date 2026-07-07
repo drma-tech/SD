@@ -160,15 +160,6 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to How It Works.
-        /// </summary>
-        internal static string HowItWorks {
-            get {
-                return ResourceManager.GetString("HowItWorks", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Main.
         /// </summary>
         internal static string Main {
@@ -228,15 +219,6 @@ namespace SD.WEB.Translations {
         internal static string Trailers {
             get {
                 return ResourceManager.GetString("Trailers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Who Is It For.
-        /// </summary>
-        internal static string WhoIsItFor {
-            get {
-                return ResourceManager.GetString("WhoIsItFor", resourceCulture);
             }
         }
     }

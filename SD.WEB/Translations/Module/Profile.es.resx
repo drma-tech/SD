@@ -123,36 +123,6 @@
   <data name="AuthProviders" xml:space="preserve">
     <value>Proveedores de autenticación</value>
   </data>
-  <data name="BasicRequired" xml:space="preserve">
-    <value>La sección básica es obligatoria por ahora. Las demás secciones se pueden completar más adelante.</value>
-  </data>
-  <data name="BirthdateTip" xml:space="preserve">
-    <value>Sólo se publicará tu edad. (Usamos el calendario gregoriano)</value>
-  </data>
-  <data name="BodyPhoto" xml:space="preserve">
-    <value>Foto del cuerpo</value>
-  </data>
-  <data name="Compatibility" xml:space="preserve">
-    <value>Compatibilidad</value>
-  </data>
-  <data name="CompatibilityDeveloping" xml:space="preserve">
-    <value>Nuestro sistema de compatibilidad aún está en desarrollo. Si tiene alguna sugerencia o comentario, envíenos un ticket de soporte o un correo electrónico.</value>
-  </data>
-  <data name="CompatibilityHigh" xml:space="preserve">
-    <value>Felicidades, ustedes dos están hechos el uno para el otro. Esta relación tiene un futuro brillante por delante.</value>
-  </data>
-  <data name="CompatibilityLow" xml:space="preserve">
-    <value>Lamentablemente, no tienen mucho en común. Les deseamos mucha suerte a ambos, ya que no será una tarea fácil.</value>
-  </data>
-  <data name="CompatibilityMedium" xml:space="preserve">
-    <value>No son una pareja perfecta, pero eso no significa que la relación vaya a fracasar. Revisen nuestro informe con atención y resuelvan juntos estas diferencias.</value>
-  </data>
-  <data name="CompleteAllSteps" xml:space="preserve">
-    <value>Para hacer público tu perfil, primero completa todos los pasos</value>
-  </data>
-  <data name="CompleteYourProfile" xml:space="preserve">
-    <value>Completa tu perfil</value>
-  </data>
   <data name="DeleteAccount" xml:space="preserve">
     <value>Borrar cuenta</value>
   </data>
@@ -162,68 +132,17 @@
   <data name="Email" xml:space="preserve">
     <value>Correo electrónico</value>
   </data>
-  <data name="ExpectedCompatibility" xml:space="preserve">
-    <value>Compatibilidad esperada</value>
-  </data>
-  <data name="FacePhoto" xml:space="preserve">
-    <value>Foto de la cara</value>
-  </data>
-  <data name="FeatureNotAvailable" xml:space="preserve">
-    <value>Esta función solo está disponible en la fase {0}</value>
-  </data>
   <data name="Following" xml:space="preserve">
     <value>Siguiente</value>
   </data>
   <data name="FollowTitle" xml:space="preserve">
     <value>Sigue los títulos para que aparezcan aquí (si es una serie o una película que forma parte de una secuencia).</value>
   </data>
-  <data name="GalleryTerm1" xml:space="preserve">
-    <value>La foto tomada por tu cámara se mantendrá privada (no será accesible dentro de la plataforma) para verificación futura, si es necesario.</value>
-  </data>
-  <data name="GalleryTerm2" xml:space="preserve">
-    <value>Los datos resultantes de esta validación (atributos de tu rostro) no se conservarán en nuestros servidores y sólo existirán durante el proceso de detección.</value>
-  </data>
-  <data name="GalleryValidation" xml:space="preserve">
-    <value>Validación de la galería</value>
-  </data>
-  <data name="GeneralCompatibility" xml:space="preserve">
-    <value>Compatibilidad general</value>
-  </data>
-  <data name="GenerateSimulation" xml:space="preserve">
-    <value>¿Quieres generar una simulación de conexiones? Esto es solo para demostrar cómo funciona nuestro sistema de compatibilidad.</value>
-  </data>
-  <data name="GpsNotAccurate" xml:space="preserve">
-    <value>La posición del GPS no es precisa y puede dar como resultado una ubicación incorrecta. Si la ciudad no es la correcta, inténtelo de nuevo más tarde o pruebe en otro dispositivo o navegador.</value>
-  </data>
-  <data name="HelpUsUnlock" xml:space="preserve">
-    <value>¡Ayúdanos a desbloquear la siguiente fase más rápido! Deja un comentario para ayudarnos a crecer. Cuantas más personas conozcan la aplicación y se registren, antes estarán disponibles todas las funciones para que las disfrutes.</value>
-  </data>
-  <data name="HeroButton" xml:space="preserve">
-    <value>Crear una cuenta gratuita</value>
-  </data>
-  <data name="HeroCall" xml:space="preserve">
-    <value>Comienza tu viaje para encontrar tu pareja ideal</value>
-  </data>
-  <data name="HeroNote" xml:space="preserve">
-    <value>No es una app de citas. Una experiencia de matchmaking cuidadosamente seleccionada, enfocada en compatibilidad real.</value>
-  </data>
   <data name="Identification" xml:space="preserve">
     <value>Identificación</value>
   </data>
-  <data name="ITrustPlataform" xml:space="preserve">
-    <value>Confío en el sistema de compatibilidad de la plataforma y solo seleccionaré lo que para mí no es negociable.</value>
-  </data>
-  <data name="Likes" xml:space="preserve">
-    <value>Gustos</value>
-  </data>
   <data name="MarkPlatforms" xml:space="preserve">
     <value>Marcar plataformas como favoritas para aparecer aquí</value>
-  </data>
-  <data name="Matches" xml:space="preserve">
-    <value>Citas</value>
-  </data>
-  <data name="Maximum3Items" xml:space="preserve">
-    <value>Elija un máximo de 3 elementos para cada campo</value>
   </data>
   <data name="MyMovieFollowing" xml:space="preserve">
     <value>Siguiendo - Películas</value>
@@ -240,133 +159,19 @@
   <data name="MySeriesWishlist" xml:space="preserve">
     <value>Lista de deseos - Serie</value>
   </data>
-  <data name="NotAnswered" xml:space="preserve">
-    <value>No respondido</value>
-  </data>
-  <data name="OptionalSection" xml:space="preserve">
-    <value>Otro (sección opcional)</value>
-  </data>
   <data name="PartnerProfileNotAvailable" xml:space="preserve">
     <value>El perfil de tu pareja aún no está disponible</value>
   </data>
   <data name="Platforms" xml:space="preserve">
     <value>Plataformas</value>
   </data>
-  <data name="PopulateFilterDescription" xml:space="preserve">
-    <value>Este proceso evoluciona constantemente. Si desea informar un error o una mejora, abra un ticket con nuestro equipo de soporte.</value>
-  </data>
-  <data name="PopulateFilterTitle" xml:space="preserve">
-    <value>Campos rellenados automáticamente</value>
-  </data>
-  <data name="PreferHelpTopic1" xml:space="preserve">
-    <value>Aquí puede definir su tipo de perfil ideal, para que podamos calcular correctamente su índice de compatibilidad</value>
-  </data>
-  <data name="PreferHelpTopic2" xml:space="preserve">
-    <value>Cuanto más específico seas en los filtros, menos opciones de perfil tendrás disponibles</value>
-  </data>
-  <data name="Private" xml:space="preserve">
-    <value>Privado</value>
-  </data>
-  <data name="ProfileDataBioTip1" xml:space="preserve">
-    <value>Para garantizar un ambiente positivo, nos tomamos muy en serio el acoso y los prejuicios. Si detecta este tipo de comportamiento, por favor, reporte el perfil inmediatamente.</value>
-  </data>
-  <data name="ProfileDataBioTip2" xml:space="preserve">
-    <value>Si le resulta difícil interactuar o reconocer intenciones dañinas, considere comunicarse con amigos o familiares para obtener apoyo.</value>
-  </data>
-  <data name="ProfileDataPersonTip1" xml:space="preserve">
-    <value>Para personalidades más complejas, explore las pruebas en sitios especializados. Algunos se pueden responder simplemente leyendo las descripciones de los artículos.</value>
-  </data>
-  <data name="ProfileFilterWarning" xml:space="preserve">
-    <value>Seleccione sólo lo que realmente importa. Puede elegir hasta 8 filtros para mantener las coincidencias relevantes.</value>
-  </data>
-  <data name="ProfileNotAvailable" xml:space="preserve">
-    <value>Perfil no disponible</value>
-  </data>
-  <data name="ProfileNotFound" xml:space="preserve">
-    <value>Perfil no encontrado o aún no registrado correctamente.</value>
-  </data>
-  <data name="ProfilePrivateMode" xml:space="preserve">
-    <value>Tu perfil ahora está en modo privado y no será visto ni compartido con nadie</value>
-  </data>
-  <data name="ProfilePublicMode" xml:space="preserve">
-    <value>Su perfil ahora es público y puede estar disponible para nuestros clientes</value>
-  </data>
-  <data name="Public" xml:space="preserve">
-    <value>Público</value>
-  </data>
   <data name="RegionsApplied" xml:space="preserve">
     <value>Las regiones se han aplicado automáticamente para sus proveedores favoritos. Si están equivocados, retírelos y agréguelos nuevamente.</value>
-  </data>
-  <data name="StepFilter" xml:space="preserve">
-    <value>Establecer filtros</value>
-  </data>
-  <data name="StepFilterDesc" xml:space="preserve">
-    <value>Defina sus preferencias no negociables.</value>
-  </data>
-  <data name="StepGallery" xml:space="preserve">
-    <value>Galería de fotos</value>
-  </data>
-  <data name="StepGalleryDesc" xml:space="preserve">
-    <value>Sube y organiza tus fotos.</value>
-  </data>
-  <data name="StepProfile" xml:space="preserve">
-    <value>Crear perfil</value>
-  </data>
-  <data name="StepProfileDesc" xml:space="preserve">
-    <value>Complete sus datos: básico, bio, estilo de vida, personalidad, intereses, relaciones y objetivos.</value>
-  </data>
-  <data name="StepSettings" xml:space="preserve">
-    <value>Ajustar la configuración</value>
-  </data>
-  <data name="StepSettingsDesc" xml:space="preserve">
-    <value>Controle las opciones de su perfil y el comportamiento de la plataforma.</value>
-  </data>
-  <data name="StepValidation" xml:space="preserve">
-    <value>Validación de perfil</value>
-  </data>
-  <data name="StepValidationDesc" xml:space="preserve">
-    <value>El sistema verificará su información antes de que su perfil se haga público.</value>
-  </data>
-  <data name="Suggestions" xml:space="preserve">
-    <value>Sugerencias</value>
-  </data>
-  <data name="TermTopic1" xml:space="preserve">
-    <value>Sea honesto en las respuestas dadas en este formulario. Toda la información contenida en este documento está abierta a denuncias y puede ser evaluada;</value>
-  </data>
-  <data name="TermTopic2" xml:space="preserve">
-    <value>Para conocer cómo serán tratados sus datos, le pedimos que lea nuestra</value>
-  </data>
-  <data name="Tips" xml:space="preserve">
-    <value>Consejos</value>
-  </data>
-  <data name="UnableDetectGps" xml:space="preserve">
-    <value>No hemos podido detectar un sistema GPS en su dispositivo. Inténtalo de nuevo o libera el acceso al GPS de tu dispositivo.</value>
-  </data>
-  <data name="Undefined" xml:space="preserve">
-    <value>Indefinido</value>
   </data>
   <data name="WhatHaveYouWatched" xml:space="preserve">
     <value>¿Qué artículos ya has visto?</value>
   </data>
-  <data name="WhyImportant" xml:space="preserve">
-    <value>¿Por qué es importante?</value>
-  </data>
   <data name="Wishlist" xml:space="preserve">
     <value>Lista de deseos</value>
-  </data>
-  <data name="Years" xml:space="preserve">
-    <value>Años</value>
-  </data>
-  <data name="YouHaveSelected" xml:space="preserve">
-    <value>Has seleccionado más de {0} opciones</value>
-  </data>
-  <data name="YourCurrentLocation" xml:space="preserve">
-    <value>Su ubicación actual:</value>
-  </data>
-  <data name="YourPartnerProfile" xml:space="preserve">
-    <value>El perfil de tu pareja</value>
-  </data>
-  <data name="YourProfile" xml:space="preserve">
-    <value>Tu perfil (o preferencias)</value>
   </data>
 </root>

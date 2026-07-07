@@ -79,15 +79,6 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirmation.
-        /// </summary>
-        internal static string Confirmation {
-            get {
-                return ResourceManager.GetString("Confirmation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Invalid operation. Please try again..
         /// </summary>
         internal static string CustomVisibilityInvalid {
@@ -138,15 +129,6 @@ namespace SD.WEB.Translations {
         internal static string FeatureUnavailableMessage {
             get {
                 return ResourceManager.GetString("FeatureUnavailableMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This module is still under development. If you wish to report a bug, please contact us via the feedback button..
-        /// </summary>
-        internal static string ModuleUnderDevelopment {
-            get {
-                return ResourceManager.GetString("ModuleUnderDevelopment", resourceCulture);
             }
         }
         
@@ -228,15 +210,6 @@ namespace SD.WEB.Translations {
         internal static string PWAUpdaterText {
             get {
                 return ResourceManager.GetString("PWAUpdaterText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description contains suspicious or spam-like content..
-        /// </summary>
-        internal static string SpamLike {
-            get {
-                return ResourceManager.GetString("SpamLike", resourceCulture);
             }
         }
         

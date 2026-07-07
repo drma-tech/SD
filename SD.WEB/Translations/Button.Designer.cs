@@ -97,15 +97,6 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chat.
-        /// </summary>
-        internal static string Chat {
-            get {
-                return ResourceManager.GetString("Chat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Clear cache.
         /// </summary>
         internal static string ClearCache {
@@ -142,128 +133,11 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dating.
-        /// </summary>
-        internal static string Dating {
-            get {
-                return ResourceManager.GetString("Dating", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete.
-        /// </summary>
-        internal static string Delete {
-            get {
-                return ResourceManager.GetString("Delete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dislike.
-        /// </summary>
-        internal static string Dislike {
-            get {
-                return ResourceManager.GetString("Dislike", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Done.
-        /// </summary>
-        internal static string Done {
-            get {
-                return ResourceManager.GetString("Done", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Feedback.
-        /// </summary>
-        internal static string Feedback {
-            get {
-                return ResourceManager.GetString("Feedback", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filters.
-        /// </summary>
-        internal static string Filters {
-            get {
-                return ResourceManager.GetString("Filters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Follow.
         /// </summary>
         internal static string Follow {
             get {
                 return ResourceManager.GetString("Follow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gallery.
-        /// </summary>
-        internal static string Gallery {
-            get {
-                return ResourceManager.GetString("Gallery", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Generate.
-        /// </summary>
-        internal static string Generate {
-            get {
-                return ResourceManager.GetString("Generate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to I agree.
-        /// </summary>
-        internal static string IAgree {
-            get {
-                return ResourceManager.GetString("IAgree", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Identity.
-        /// </summary>
-        internal static string Identity {
-            get {
-                return ResourceManager.GetString("Identity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to I do not agree.
-        /// </summary>
-        internal static string IDoNotAgree {
-            get {
-                return ResourceManager.GetString("IDoNotAgree", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Learn More.
-        /// </summary>
-        internal static string LearnMore {
-            get {
-                return ResourceManager.GetString("LearnMore", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Like.
-        /// </summary>
-        internal static string Like {
-            get {
-                return ResourceManager.GetString("Like", resourceCulture);
             }
         }
         
@@ -313,24 +187,6 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pending.
-        /// </summary>
-        internal static string Pending {
-            get {
-                return ResourceManager.GetString("Pending", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Profile.
-        /// </summary>
-        internal static string Profile {
-            get {
-                return ResourceManager.GetString("Profile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Read More.
         /// </summary>
         internal static string ReadMore {
@@ -345,15 +201,6 @@ namespace SD.WEB.Translations {
         internal static string Recent {
             get {
                 return ResourceManager.GetString("Recent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Relationship.
-        /// </summary>
-        internal static string Relationship {
-            get {
-                return ResourceManager.GetString("Relationship", resourceCulture);
             }
         }
         
@@ -385,69 +232,6 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Report.
-        /// </summary>
-        internal static string Report {
-            get {
-                return ResourceManager.GetString("Report", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reset.
-        /// </summary>
-        internal static string Reset {
-            get {
-                return ResourceManager.GetString("Reset", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Retrieve GPS position.
-        /// </summary>
-        internal static string RetrieveGPSPosition {
-            get {
-                return ResourceManager.GetString("RetrieveGPSPosition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save.
-        /// </summary>
-        internal static string Save {
-            get {
-                return ResourceManager.GetString("Save", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select your photo.
-        /// </summary>
-        internal static string SelectPhoto {
-            get {
-                return ResourceManager.GetString("SelectPhoto", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Send.
-        /// </summary>
-        internal static string Send {
-            get {
-                return ResourceManager.GetString("Send", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Settings.
-        /// </summary>
-        internal static string Settings {
-            get {
-                return ResourceManager.GetString("Settings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Share.
         /// </summary>
         internal static string Share {
@@ -466,38 +250,11 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show pending items.
-        /// </summary>
-        internal static string ShowPendingItems {
-            get {
-                return ResourceManager.GetString("ShowPendingItems", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Simulate.
         /// </summary>
         internal static string Simulate {
             get {
                 return ResourceManager.GetString("Simulate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start new validation.
-        /// </summary>
-        internal static string StartNewValidation {
-            get {
-                return ResourceManager.GetString("StartNewValidation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Take Shot.
-        /// </summary>
-        internal static string TakeShot {
-            get {
-                return ResourceManager.GetString("TakeShot", resourceCulture);
             }
         }
         
@@ -516,24 +273,6 @@ namespace SD.WEB.Translations {
         internal static string Update {
             get {
                 return ResourceManager.GetString("Update", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use prior validation.
-        /// </summary>
-        internal static string UsePriorValidation {
-            get {
-                return ResourceManager.GetString("UsePriorValidation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Validations.
-        /// </summary>
-        internal static string Validations {
-            get {
-                return ResourceManager.GetString("Validations", resourceCulture);
             }
         }
     }

@@ -124,15 +124,6 @@ namespace SD.WEB.Translations.Module {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Help.
-        /// </summary>
-        internal static string HelpTitle {
-            get {
-                return ResourceManager.GetString("HelpTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Light Mode.
         /// </summary>
         internal static string LightMode {
