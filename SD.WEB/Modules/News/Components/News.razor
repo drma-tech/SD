@@ -5,7 +5,7 @@
 
 @inject CacheFlixsterApi CacheFlixsterApi
 
-<HeadComponent Title="@($"{Translations.Title.News} ({MediaType.GetName()})")" Description="@Translations.Description.News" Url="@($"/{Culture}/news/{category}")" Index="true" Shared="true" />
+<HeadComponent Title="@($"{Translations.Title.News} ({MediaType.GetName()})")" Description="@Translations.Description.News.Format(MediaType.GetName())" Url="@($"/{Culture}/news/{category}")" Index="true" Shared="true" />
 <PageSectionComponent IsPageHeader="true" Title="@($"{Translations.Title.News} ({MediaType.GetName()})")" Description="@Translations.Description.News" UrlShare="@($"/{Culture}/news/{category}")" />
 
 <RenderControl Actions="Actions">

@@ -3,7 +3,7 @@
 
 @inject TmdbListApi TmdbListApi
 
-<PageSectionComponent Title="@Translations.Title.EditorsChoice" Description="@Translations.Description.EditorsChoice">
+<PageSectionComponent Title="@Translations.Title.EditorsChoice" Description="@Translations.Description.EditorsChoice.Format(TypeSelected.GetName())">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">

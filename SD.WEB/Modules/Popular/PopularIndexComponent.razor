@@ -3,7 +3,8 @@
 
 @inject ImdbPopularApi ImdbPopularApi
 
-<PageSectionComponent Title="@Translations.Module.Media.Popular" Description="@Translations.Description.PopularIndex">
+<PageSectionComponent Title="@Translations.Module.Media.Popular"
+                      Description="@Translations.Description.PopularIndex.Format(TypeSelected.GetName())">
     <BodyFragment>
         <MudTabs MinimumTabWidth="100" ApplyEffectsToContainer="true" TabPanelsClass="@Css.Build().Small("pt")"
                  ActivePanelIndex="_activeIndex" ActivePanelIndexChanged="OnTabChanged" KeepPanelsAlive="true">
@@ -20,7 +21,7 @@
                     @if (_loaded[0])
                     {
                         <MediaListComponent MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.movie"
-                                      Watching="WatchingList" Wish="WishList" Culture="@Culture">
+                                            Watching="WatchingList" Wish="WishList" Culture="@Culture">
                         </MediaListComponent>
                     }
                 </MudTabPanel>
@@ -28,7 +29,7 @@
                     @if (_loaded[1])
                     {
                         <MediaListComponent MediaListApi="ImdbPopularApi" IsImdb="true" OnlyYear="true" StringParameters="Params" TypeSelected="MediaType.tv"
-                                      Watching="WatchingList" Wish="WishList" Culture="@Culture">
+                                            Watching="WatchingList" Wish="WishList" Culture="@Culture">
                         </MediaListComponent>
                     }
                 </MudTabPanel>

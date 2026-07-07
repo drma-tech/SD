@@ -88,7 +88,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discover our Editor’s Choice: films and series consistently rated highly across IMDb, TMDb, Metacritic, Rotten Tomatoes, Trakt, FilmAffinity, and Letterboxd..
+        ///   Looks up a localized string similar to Discover our Editor’s Choice: {0} consistently rated highly across IMDb, TMDb, Metacritic, Rotten Tomatoes, Trakt, FilmAffinity, and Letterboxd..
         /// </summary>
         internal static string EditorsChoice {
             get {
@@ -142,7 +142,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get the latest movies, TV shows, celebrity news, and pop culture updates. Stay informed on all things entertainment..
+        ///   Looks up a localized string similar to Get the latest news about {0} and pop culture updates. Stay up to date with everything happening in the world of entertainment..
         /// </summary>
         internal static string News {
             get {
@@ -160,7 +160,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Browse streaming services offering movies, TV shows, and documentaries. Discover platforms for every taste, from mainstream hits to niche content..
+        ///   Looks up a localized string similar to Explore streaming services that offer movies, TV shows, and documentaries. Discover platforms available in your region ({0})..
         /// </summary>
         internal static string Platforms {
             get {
@@ -169,7 +169,7 @@ namespace SD.WEB.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to See last week’s most popular movies, TV shows, and stars, ranked by audience interest. Stay up-to-date on trending entertainment picks..
+        ///   Looks up a localized string similar to See last week’s most popular {0}, ranked by audience interest. Stay up-to-date on trending entertainment picks..
         /// </summary>
         internal static string PopularIndex {
             get {
